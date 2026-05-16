@@ -1,50 +1,1123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Teachers+Pet&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">    
-    <title>🎉 Math Fun Zone 🎉</title>
-    <style>
-        body {
-            font-family: 'Poetsen One', sans-serif;
-            text-align: center;
-            background-color: #ffefd5;
+<!doctype html>
+<html lang="en" class="h-full w-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="Java Code Genie - Write simple Java-style commands to draw, experiment, and learn from friendly feedback.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23101827' width='192' height='192'/><text x='50%' y='50%' font-size='100' font-weight='900' text-anchor='middle' dominant-baseline='middle' fill='%2334d399' font-family='Arial'>J</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23101827' width='192' height='192'/><text x='50%' y='50%' font-size='100' font-weight='900' text-anchor='middle' dominant-baseline='middle' fill='%2334d399' font-family='Arial'>J</text></svg>">
+  <title>Java Code Genie</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Nunito:wght@500;700;800;900&display=swap');
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: "Nunito", sans-serif;
+    }
+
+    .app-shell {
+      height: 100%;
+      width: 100%;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(255, 196, 87, 0.26), transparent 28%),
+        radial-gradient(circle at 90% 12%, rgba(52, 211, 153, 0.18), transparent 30%),
+        linear-gradient(135deg, #101827 0%, #17213a 45%, #0e2a33 100%);
+      color: #f8fafc;
+    }
+
+    .glass-card {
+      background: rgba(248, 250, 252, 0.09);
+      border: 1px solid rgba(248, 250, 252, 0.18);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(16px);
+    }
+
+    .drawing-board {
+      background:
+        linear-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+        #f8fafc;
+      background-size: calc(100% / 7.6) calc(100% / 3.6);
+    }
+
+    .code-font {
+      font-family: "Fira Code", monospace;
+    }
+
+    .btn {
+      transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .turtle {
+      filter: drop-shadow(0 8px 10px rgba(15, 23, 42, 0.28));
+      transition: transform 120ms linear;
+    }
+
+    .toast {
+      animation: slideIn 360ms ease both;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(248, 250, 252, 0.32) rgba(248, 250, 252, 0.08);
+    }
+
+    .panel-scroll::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .panel-scroll::-webkit-scrollbar-thumb {
+      background: rgba(248, 250, 252, 0.32);
+      border-radius: 999px;
+    }
+
+    input[type="range"] {
+      accent-color: #34d399;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus,
+    button:focus-visible {
+      outline: 3px solid rgba(52, 211, 153, 0.55);
+      outline-offset: 2px;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div id="appShell" class="app-shell">
+   <header class="w-full px-5 py-4 md:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
+     <div>
+      <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-300/10 px-3 py-1 text-sm font-bold text-emerald-100">
+       <i data-lucide="bug" class="h-4 w-4"></i> Grade 8–9 Java drawing lab
+      </div>
+      <h1 id="appTitle" class="text-3xl font-black tracking-tight md:text-5xl">Java Turtle Drawing Tutor</h1>
+      <p id="appSubtitle" class="mt-2 max-w-2xl text-base font-semibold text-slate-200 md:text-lg">Write simple Java-style commands to draw, experiment, and learn from friendly feedback.</p>
+     </div>
+    </div>
+   </header>
+   <main class="w-full px-5 pb-6 md:px-8">
+    <div class="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[420px_1fr]">
+     <section class="glass-card rounded-3xl p-4 md:p-5" aria-labelledby="editorTitle">
+      <div class="mb-4 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
+       <div class="flex items-center gap-2">
+        <h2 id="editorTitle" class="flex items-center gap-2 text-xl font-black"><i data-lucide="code-2" class="h-5 w-5 text-emerald-300"></i> <span id="editorLabel">Java code</span></h2>
+       </div>
+       <div class="flex gap-2"><button id="editorTab" class="rounded-lg bg-emerald-400/20 px-3 py-2 text-sm font-bold text-emerald-200 transition-colors">Editor</button> <button id="examplesTab" class="rounded-lg bg-white/12 px-3 py-2 text-sm font-bold text-slate-300 transition-colors hover:bg-white/20">Examples</button> <button id="lineNumbersToggle" class="rounded-lg bg-white/12 px-3 py-2 text-sm font-bold text-slate-300 transition-colors hover:bg-white/20" title="Toggle line numbers"><i data-lucide="list" class="h-4 w-4"></i></button>
+       </div>
+      </div><label for="codeEditor" class="sr-only">Java drawing code editor</label>
+      <div class="relative rounded-2xl border border-white/15 overflow-hidden bg-white" style="height: 280px;">
+       <div id="lineNumbers" class="code-font text-sm leading-6 absolute left-0 top-0 bottom-0 bg-slate-200 text-slate-500 text-right px-3 py-4 select-none" style="width: 40px; overflow: hidden;"></div><textarea id="codeEditor" class="code-font text-sm leading-6 w-full h-full rounded-0 border-0 bg-white text-slate-900 resize-none" style="padding: 1rem 1rem 1rem 50px; box-sizing: border-box;" spellcheck="false">Pen n = new Pen();
+n.setColor(37, 99, 235);
+n.setSpeed(6);
+n.move(100);
+n.turnRight(90);
+n.move(100);
+n.turnRight(90);
+n.move(100);
+n.turnRight(90);
+n.move(100);</textarea>
+      </div>
+      <div id="examplesPanel" class="hidden max-h-96 overflow-y-auto rounded-2xl border border-white/15 bg-slate-950/72 p-4">
+       <div class="space-y-3">
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="square_simple"> <h4 class="font-bold text-emerald-100">Drawing a square</h4><p class="text-xs text-slate-400">Beginner: move and turn to draw 4 sides</p><code class="code-font mt-2 block text-xs text-sky-200">move(100); turnRight(90); ...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="square_loop"> <h4 class="font-bold text-emerald-100">Square using repeat loop</h4><p class="text-xs text-slate-400">Intermediate: use repeat(4) to draw efficiently</p><code class="code-font mt-2 block text-xs text-sky-200">repeat(4) { move(100); turnRight(90); }</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="rectangle"> <h4 class="font-bold text-emerald-100">Drawing a rectangle</h4><p class="text-xs text-slate-400">Beginner: longer and shorter sides</p><code class="code-font mt-2 block text-xs text-sky-200">move(150); turnRight(90); move(80); ...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="triangle"> <h4 class="font-bold text-emerald-100">Drawing a triangle</h4><p class="text-xs text-slate-400">Beginner: 3 equal sides, each turn 120°</p><code class="code-font mt-2 block text-xs text-sky-200">move(100); turnRight(120); ...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="pattern_squares"> <h4 class="font-bold text-emerald-100">Pattern with squares</h4><p class="text-xs text-slate-400">Intermediate: nested loops create a grid pattern</p><code class="code-font mt-2 block text-xs text-sky-200">repeat() to draw multiple squares...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="spiral"> <h4 class="font-bold text-emerald-100">Spiral pattern</h4><p class="text-xs text-slate-400">Intermediate: growing sides create a spiral</p><code class="code-font mt-2 block text-xs text-sky-200">repeat(12) { move(20); turnRight(90); ... }</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="house"> <h4 class="font-bold text-emerald-100">Drawing a house</h4><p class="text-xs text-slate-400">Intermediate: multiple shapes and penUp to move</p><code class="code-font mt-2 block text-xs text-sky-200">draw walls, then penUp, then draw roof...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="initials"> <h4 class="font-bold text-emerald-100">Write your initials</h4><p class="text-xs text-slate-400">Advanced: draw letter shapes with positioning</p><code class="code-font mt-2 block text-xs text-sky-200">setPosition(), move(), penUp() for letters...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="star"> <h4 class="font-bold text-emerald-100">Drawing a star</h4><p class="text-xs text-slate-400">Intermediate: 5 points with math</p><code class="code-font mt-2 block text-xs text-sky-200">repeat(5) with 72° turns...</code> </button>
+        </div>
+        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="hexagon"> <h4 class="font-bold text-emerald-100">Drawing a hexagon</h4><p class="text-xs text-slate-400">Beginner: 6 equal sides, each turn 60°</p><code class="code-font mt-2 block text-xs text-sky-200">repeat(6) { move(80); turnRight(60); }</code> </button>
+        </div>
+       </div>
+      </div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+       <button id="runButton" class="btn flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-4 py-3 font-black text-slate-950 shadow-lg shadow-emerald-950/20 hover:bg-emerald-300"> <i data-lucide="play" class="h-5 w-5"></i> <span id="runButtonText">Run code</span> </button> <button id="resetButton" class="btn flex items-center justify-center gap-2 rounded-2xl bg-amber-300 px-4 py-3 font-black text-slate-950 shadow-lg shadow-amber-950/20 hover:bg-amber-200"> <i data-lucide="rotate-ccw" class="h-5 w-5"></i> <span id="resetButtonText">Reset drawing</span> </button>
+      </div>
+      <aside class="mt-5 rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4">
+       <h3 class="mb-3 flex items-center gap-2 text-base font-black"><i data-lucide="lightbulb" class="h-4 w-4 text-emerald-100"></i> Command cheat sheet</h3>
+       <ul class="code-font max-h-48 overflow-y-auto space-y-3 text-xs text-emerald-50 pr-2">
+        <li>
+         <div class="font-bold text-emerald-200">
+          Pen n = new Pen();
+         </div>
+         <div class="text-emerald-100">
+          creates a pen object
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.move(100);
+         </div>
+         <div class="text-emerald-100">
+          draws forward 100 pixels
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.turnRight(90);
+         </div>
+         <div class="text-emerald-100">
+          turns clockwise 90°
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.turnLeft(45);
+         </div>
+         <div class="text-emerald-100">
+          turns anti-clockwise 45°
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.setColor(255, 100, 50);
+         </div>
+         <div class="text-emerald-100">
+          RGB colour (0–255)
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.setSpeed(8);
+         </div>
+         <div class="text-emerald-100">
+          changes drawing speed (1–10)
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.penUp();
+         </div>
+         <div class="text-emerald-100">
+          moves without drawing
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.penDown();
+         </div>
+         <div class="text-emerald-100">
+          starts drawing again
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.setPosition(200, 120);
+         </div>
+         <div class="text-emerald-100">
+          jumps to a place
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          n.setDirection(90);
+         </div>
+         <div class="text-emerald-100">
+          points down
+         </div></li>
+        <li>
+         <div class="font-bold text-emerald-200">
+          for(int i = 0; i &lt; 4; i = i + 1) { ... }
+         </div>
+         <div class="text-emerald-100">
+          repeats commands
+         </div></li>
+       </ul>
+      </aside>
+     </section>
+     <section class="grid gap-5">
+      <div class="glass-card rounded-3xl p-4 md:p-5" aria-labelledby="canvasTitle">
+       <div class="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+         <h2 id="canvasTitle" class="flex items-center gap-2 text-xl font-black"><i data-lucide="pencil-ruler" class="h-5 w-5 text-amber-200"></i> Drawing board</h2>
+         <p class="text-sm font-semibold text-slate-300">The turtle starts at your chosen position and faces your chosen direction.</p>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs font-black">
+         <span id="positionReadout" class="rounded-full bg-white/12 px-3 py-2">x: 100, y: 100</span> <span id="directionReadout" class="rounded-full bg-white/12 px-3 py-2">direction: 0°</span> <span id="penReadout" class="rounded-full bg-white/12 px-3 py-2">pen: down</span>
+        </div>
+       </div>
+       <div class="relative overflow-hidden rounded-3xl border-4 border-white/20 bg-white shadow-2xl">
+        <div class="flex h-96">
+         <!-- Left axis labels (Y-axis: 0 at top, 360 at bottom) -->
+         <div class="flex flex-col justify-between py-2 pr-2 text-xs font-bold text-slate-400 w-12">
+          <span>0</span> <span>100</span> <span>200</span> <span>300</span>
+         </div><!-- SVG canvas with top axis -->
+         <div class="flex-1 flex flex-col">
+          <!-- Top axis labels (X-axis: 0 to 760) -->
+          <div class="flex justify-between px-2 pb-1 text-xs font-bold text-slate-400 h-6">
+           <span>0</span> <span>100</span> <span>200</span> <span>300</span> <span>400</span> <span>500</span> <span>600</span> <span>700</span>
+          </div><!-- Canvas -->
+          <svg id="drawingSvg" class="drawing-board block w-full flex-1" viewbox="0 0 760 360" role="img" aria-label="Turtle drawing canvas">
+           <g id="pathLayer"></g> <g id="turtleGroup" class="turtle" transform="translate(100 100) rotate(0)">
+            <path d="M 22 0 L -15 -13 L -9 0 L -15 13 Z" fill="#34d399" stroke="#0f172a" stroke-width="3" stroke-linejoin="round"></path>
+            <circle cx="-4" cy="0" r="5" fill="#0f172a"></circle>
+           </g>
+          </svg>
+         </div>
+        </div>
+       </div>
+      </div>
+      <section class="glass-card rounded-3xl p-4 md:p-5" aria-labelledby="outputTitle">
+       <div class="mb-4 flex items-center justify-between gap-3">
+        <h2 id="outputTitle" class="flex items-center gap-2 text-xl font-black"><i data-lucide="terminal-square" class="h-5 w-5 text-emerald-300"></i> <span id="outputLabel">Output &amp; feedback</span></h2><button id="stopButton" class="btn hidden rounded-xl bg-red-400 px-4 py-2 text-sm font-black text-white hover:bg-red-300"> Stop </button>
+       </div>
+       <div id="outputWindow" class="panel-scroll code-font max-h-72 overflow-auto rounded-2xl border border-white/15 bg-slate-950/80 p-4 text-sm leading-6 text-slate-100">
+        <p class="text-slate-300">Ready. Press <strong class="text-emerald-300">Run code</strong> to execute your commands.</p>
+       </div>
+      </section>
+     </section>
+    </div>
+   </main>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_color: "#101827",
+      surface_color: "#17213a",
+      text_color: "#f8fafc",
+      primary_action_color: "#34d399",
+      secondary_action_color: "#fcd34d",
+      font_family: "Nunito",
+      font_size: 16,
+      app_title: "Java Code Genie",
+      app_subtitle: "Write simple Java-style commands to draw, experiment, and learn from friendly feedback.",
+      editor_label: "Java code",
+      output_label: "Output & feedback",
+      run_button_text: "Run code",
+      reset_button_text: "Reset drawing"
+    };
+
+    const colorMap = {
+      blue: "rgb(37, 99, 235)",
+      red: "rgb(239, 68, 68)",
+      green: "rgb(34, 197, 94)",
+      orange: "rgb(249, 115, 22)",
+      purple: "rgb(168, 85, 247)",
+      black: "rgb(17, 23, 39)"
+    };
+
+    const examples = {
+      square_simple: `Pen n = new Pen();
+n.setColor(37, 99, 235);
+n.setSpeed(6);
+n.move(100);
+n.turnRight(90);
+n.move(100);
+n.turnRight(90);
+n.move(100);
+n.turnRight(90);
+n.move(100);`,
+      square_loop: `Pen n = new Pen();
+n.setColor(37, 99, 235);
+n.setSpeed(7);
+
+for(int side = 0; side < 4; side = side + 1) {
+  n.move(100);
+  n.turnRight(90);
+}`,
+      rectangle: `Pen n = new Pen();
+n.setColor(34, 197, 94);
+n.setSpeed(6);
+n.move(150);
+n.turnRight(90);
+n.move(80);
+n.turnRight(90);
+n.move(150);
+n.turnRight(90);
+n.move(80);`,
+      triangle: `Pen n = new Pen();
+n.setColor(239, 68, 68);
+n.setSpeed(6);
+n.move(120);
+n.turnRight(120);
+n.move(120);
+n.turnRight(120);
+n.move(120);`,
+      hexagon: `Pen n = new Pen();
+n.setColor(168, 85, 247);
+n.setSpeed(7);
+
+for(int side = 0; side < 6; side = side + 1) {
+  n.move(80);
+  n.turnRight(60);
+}`,
+      pattern_squares: `Pen n = new Pen();
+n.setColor(249, 115, 22);
+n.setSpeed(5);
+
+for(int i = 0; i < 3; i = i + 1) {
+  n.move(60);
+  n.turnRight(90);
+  n.move(60);
+  n.turnRight(90);
+  n.move(60);
+  n.turnRight(90);
+  n.move(60);
+  n.turnRight(90);
+  n.penUp();
+  n.move(70);
+  n.penDown();
+}`,
+      spiral: `Pen n = new Pen();
+n.setColor(168, 85, 247);
+n.setSpeed(8);
+n.setPosition(200, 150);
+
+for(int i = 0; i < 12; i = i + 1) {
+  n.move(20 + i * 5);
+  n.turnRight(90);
+}`,
+      house: `Pen n = new Pen();
+n.setColor(249, 115, 22);
+n.setSpeed(7);
+n.setPosition(100, 100);
+n.move(150);
+n.turnRight(90);
+n.move(120);
+n.turnRight(90);
+n.move(150);
+n.turnRight(90);
+n.move(120);
+
+n.penUp();
+n.setPosition(100, 100);
+n.penDown();
+
+n.setColor(239, 68, 68);
+n.setDirection(315);
+n.move(106);
+
+n.penUp();
+n.setPosition(250, 100);
+n.penDown();
+
+n.setDirection(225);
+n.move(106);`,
+      initials: `Pen n = new Pen();
+n.setColor(37, 99, 235);
+n.setSpeed(6);
+n.setPosition(80, 150);
+n.move(80);
+n.turnRight(90);
+n.move(50);
+n.turnRight(90);
+n.move(25);
+n.turnRight(90);
+n.move(50);
+
+n.penUp();
+n.setPosition(200, 150);
+n.penDown();
+
+n.setColor(34, 197, 94);
+n.move(50);
+n.turnRight(90);
+n.move(80);
+n.turnRight(90);
+n.move(50);`,
+      star: `Pen n = new Pen();
+n.setColor(249, 115, 22);
+n.setSpeed(7);
+n.setPosition(300, 150);
+
+for(int i = 0; i < 5; i = i + 1) {
+  n.move(100);
+  n.turnRight(144);
+  n.move(100);
+  n.turnRight(36);
+}`,
+      blank: `Pen n = new Pen();
+// Write your commands here`
+    };
+
+    const appTitle = document.getElementById("appTitle");
+    const appSubtitle = document.getElementById("appSubtitle");
+    const editorLabel = document.getElementById("editorLabel");
+    const outputLabel = document.getElementById("outputLabel");
+    const runButtonText = document.getElementById("runButtonText");
+    const resetButtonText = document.getElementById("resetButtonText");
+    const appShell = document.getElementById("appShell");
+    const runButton = document.getElementById("runButton");
+    const resetButton = document.getElementById("resetButton");
+    const stopButton = document.getElementById("stopButton");
+    const codeEditor = document.getElementById("codeEditor");
+    const outputWindow = document.getElementById("outputWindow");
+    const pathLayer = document.getElementById("pathLayer");
+    const turtleGroup = document.getElementById("turtleGroup");
+    const editorTab = document.getElementById("editorTab");
+    const examplesTab = document.getElementById("examplesTab");
+    const codeEditorElement = document.getElementById("codeEditor");
+    const examplesPanel = document.getElementById("examplesPanel");
+    const lineNumbers = document.getElementById("lineNumbers");
+    const lineNumbersToggle = document.getElementById("lineNumbersToggle");
+
+    let lineNumbersVisible = true;
+
+    function updateLineNumbers() {
+      const lines = codeEditor.value.split('\n').length;
+      let html = '';
+      for (let i = 1; i <= lines; i++) {
+        html += i + '<br>';
+      }
+      lineNumbers.innerHTML = html;
+    }
+
+    function toggleLineNumbers() {
+      lineNumbersVisible = !lineNumbersVisible;
+      if (lineNumbersVisible) {
+        lineNumbers.style.display = 'block';
+        codeEditor.style.paddingLeft = '50px';
+        lineNumbersToggle.style.backgroundColor = '#34d399';
+        lineNumbersToggle.style.color = '#0f172a';
+      } else {
+        lineNumbers.style.display = 'none';
+        codeEditor.style.paddingLeft = '1rem';
+        lineNumbersToggle.style.backgroundColor = 'rgba(248, 250, 252, 0.12)';
+        lineNumbersToggle.style.color = '#cbd5e1';
+      }
+    }
+
+    codeEditor.addEventListener('input', updateLineNumbers);
+    codeEditor.addEventListener('scroll', () => {
+      lineNumbers.scrollTop = codeEditor.scrollTop;
+    });
+    lineNumbersToggle.addEventListener('click', toggleLineNumbers);
+
+    updateLineNumbers();
+
+    let turtle = {
+      x: 100,
+      y: 100,
+      direction: 0,
+      colorR: 37,
+      colorG: 99,
+      colorB: 235,
+      speed: 6,
+      penDown: true
+    };
+
+    function getRgbString() {
+      return `rgb(${turtle.colorR}, ${turtle.colorG}, ${turtle.colorB})`;
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + [r, g, b].map(x => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      }).join("").toUpperCase();
+    }
+
+    let isRunning = false;
+    let stopRequested = false;
+
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function addOutput(message, type = "info") {
+      const colors = {
+        info: "text-slate-100",
+        success: "text-emerald-300",
+        error: "text-red-300",
+        warning: "text-amber-300",
+        command: "text-sky-300"
+      };
+      const p = document.createElement("p");
+      p.className = colors[type] || colors.info;
+      p.innerHTML = message;
+      outputWindow.appendChild(p);
+      outputWindow.scrollTop = outputWindow.scrollHeight;
+    }
+
+    function clearOutput(message) {
+      outputWindow.innerHTML = "";
+      if (message) addOutput(message, "info");
+    }
+
+    function resetTurtle(clearPaths = true) {
+      if (clearPaths) pathLayer.innerHTML = "";
+      turtle = {
+        x: 260,
+        y: 210,
+        direction: 0,
+        colorR: 37,
+        colorG: 99,
+        colorB: 235,
+        speed: 6,
+        penDown: true
+      };
+      updateTurtleVisual();
+    }
+
+    function updateTurtleVisual() {
+      turtleGroup.setAttribute("transform", `translate(${turtle.x} ${turtle.y}) rotate(${turtle.direction})`);
+      positionReadout.textContent = `x: ${Math.round(turtle.x)}, y: ${Math.round(turtle.y)}`;
+      directionReadout.textContent = `direction: ${Math.round(((turtle.direction % 360) + 360) % 360)}°`;
+      penReadout.textContent = `pen: ${turtle.penDown ? "down" : "up"}`;
+    }
+
+    function drawLine(x1, y1, x2, y2, r, g, b) {
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", x1);
+      line.setAttribute("y1", y1);
+      line.setAttribute("x2", x2);
+      line.setAttribute("y2", y2);
+      line.setAttribute("stroke", `rgb(${r}, ${g}, ${b})`);
+      line.setAttribute("stroke-width", "5");
+      line.setAttribute("stroke-linecap", "round");
+      pathLayer.appendChild(line);
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function stripComments(code) {
+      return code
+        .split("\n")
+        .map(line => line.replace(/\/\/.*$/, ""))
+        .join("\n");
+    }
+
+    function expandLoops(code) {
+      let expanded = code;
+      
+      // Handle for loops: for(int i = 0; i < n; i = i + 1) { ... }
+      const forPattern = /for\s*\(\s*int\s+\w+\s*=\s*(\d+)\s*;\s*\w+\s*<\s*(\d+)\s*;\s*\w+\s*=\s*\w+\s*\+\s*1\s*\)\s*\{([^{}]*)\}/gm;
+
+      expanded = expanded.replace(forPattern, (match, start, end, body) => {
+        const startNum = Number(start);
+        const endNum = Number(end);
+        const iterations = Math.min(endNum - startNum, 50);
+        return Array(iterations).fill(body.trim()).join("\n");
+      });
+
+      // Also handle repeat() for backwards compatibility
+      const repeatPattern = /repeat\s*\(\s*(\d+)\s*\)\s*\{([^{}]*)\}/gm;
+      expanded = expanded.replace(repeatPattern, (match, count, body) => {
+        const n = Math.min(Number(count), 50);
+        return Array(n).fill(body.trim()).join("\n");
+      });
+
+      // Check for any remaining unmatched loops
+      if (/\bfor\s*\(/.test(expanded) || /\brepeat\s*\(/.test(expanded)) {
+        return {
+          ok: false,
+          error: "I found a loop I could not read. For loops should look like: for(int side = 0; side < 4; side = side + 1) { move(100); }"
+        };
+      }
+
+      return { ok: true, code: expanded };
+    }
+
+    function parseCommands(rawCode) {
+      let extractedCode = rawCode;
+
+      // Try to extract from main method if present
+      const mainMatch = rawCode.match(/public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*)\}/);
+      if (mainMatch) {
+        extractedCode = mainMatch[1];
+      }
+
+      // Remove class declaration if present
+      extractedCode = extractedCode.replace(/public\s+class\s+\w+\s*\{/, '').replace(/^\s*\{/, '');
+
+      // Remove leading/trailing braces and whitespace
+      extractedCode = extractedCode.replace(/\}\s*$/, '').trim();
+
+      const noComments = stripComments(extractedCode).trim();
+      if (!noComments) {
+        return { ok: false, errors: [{ line: 1, text: "Your code is empty. Add code like Pen n = new Pen();" }] };
+      }
+
+      const repeated = expandLoops(noComments);
+      if (!repeated.ok) {
+        return { ok: false, errors: [{ line: 1, text: repeated.error }] };
+      }
+
+      const lines = repeated.code
+        .split("\n")
+        .flatMap(line => line.split(";").map((part, index, array) => {
+          const trimmed = part.trim();
+          if (!trimmed) return null;
+          return {
+            text: index < array.length - 1 ? trimmed + ";" : trimmed,
+            original: trimmed,
+            needsSemicolon: index === array.length - 1 && !line.trim().endsWith(";")
+          };
+        }))
+        .filter(Boolean);
+
+      const commands = [];
+      const errors = [];
+      let penInitialized = false;
+      let penName = null;
+
+      lines.forEach((item, index) => {
+        const lineNo = index + 1;
+
+        if (item.needsSemicolon) {
+          errors.push({ line: lineNo, text: `Missing semicolon after "${escapeHtml(item.original)}". Java commands usually end with ;` });
+          return;
         }
-        h1 {
-            font-size: 3em;
-            color: #ff4500;
+
+        const line = item.original;
+
+        // Check for Pen initialization: Pen n = new Pen();
+        const penInitMatch = line.match(/^Pen\s+(\w+)\s*=\s*new\s+Pen\s*\(\s*\)$/);
+        if (penInitMatch) {
+          penInitialized = true;
+          penName = penInitMatch[1];
+          commands.push({ type: "init", source: `${line};` });
+          return;
         }
-        .game-links {
-            list-style: none;
-            padding: 0;
+
+        // Check that all subsequent commands use the pen object
+        if (!penInitialized && !/^Pen\s+\w+\s*=/.test(line)) {
+          errors.push({ line: lineNo, text: "Start with: Pen n = new Pen();" });
+          return;
         }
-        .game-links li {
-            margin: 15px 0;
+
+        // Parse object method calls: n.move(100), n.setColor(255, 0, 0), etc.
+        let match;
+        if ((match = line.match(/^(\w+)\.move\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+          const distance = Number(match[2]);
+          if (distance === 0) errors.push({ line: lineNo, text: "move(0) will not draw anything. Try a bigger number." });
+          commands.push({ type: "move", value: distance, source: `${line};` });
+          return;
         }
-        .game-links a {
-            text-decoration: none;
-            font-size: 20;
-            color: #008080;
-            background: #ffcc00;
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
+
+        if ((match = line.match(/^(\w+)\.turnRight\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+          commands.push({ type: "turn", value: Number(match[2]), source: `${line};` });
+          return;
         }
-        .game-links a:hover {
-            background: #ff4500;
-            color: white;
+
+        if ((match = line.match(/^(\w+)\.turnLeft\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+          commands.push({ type: "turn", value: -Number(match[2]), source: `${line};` });
+          return;
         }
-    </style>
-</head>
-<body>
-    <h1>🎓 Welcome to Math Fun Zone! 🚀</h1>
-    <p>Click on a game below to start playing!</p>
-    <ul class="game-links">
-        <li><a href="13Underwater.html">Bonds of 13</a></li>
-        <li><a href="14Safari.html">Bonds of 14</a></li>
-        <li><a href="15Farmyard.html">Bonds of 15</a></li>
-    </ul>
-</body>
+
+        if ((match = line.match(/^(\w+)\.setDirection\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+          commands.push({ type: "direction", value: Number(match[2]), source: `${line};` });
+          return;
+        }
+
+        if ((match = line.match(/^(\w+)\.setSpeed\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+          const speed = Number(match[2]);
+          if (speed < 1 || speed > 10) {
+            errors.push({ line: lineNo, text: "setSpeed should be from 1 to 10." });
+          }
+          commands.push({ type: "speed", value: Math.max(1, Math.min(10, speed)), source: `${line};` });
+          return;
+        }
+
+        if ((match = line.match(/^(\w+)\.setColor\s*\(\s*(?:new\s+Color\s*\()?\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:\))?\s*\)$/))) {
+          const r = Number(match[2]);
+          const g = Number(match[3]);
+          const b = Number(match[4]);
+          
+          if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+            errors.push({ line: lineNo, text: "Color values must be between 0 and 255. Example: n.setColor(255, 100, 50);" });
+          } else {
+            commands.push({ type: "color", r, g, b, source: `${line};` });
+          }
+          return;
+        }
+
+        if ((match = line.match(/^(\w+)\.setPosition\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+          commands.push({ type: "position", x: Number(match[2]), y: Number(match[3]), source: `${line};` });
+          return;
+        }
+
+        if ((match = line.match(/^(\w+)\.penUp\s*\(\s*\)$/))) {
+          commands.push({ type: "pen", value: false, source: `${line};` });
+          return;
+        }
+
+        if ((match = line.match(/^(\w+)\.penDown\s*\(\s*\)$/))) {
+          commands.push({ type: "pen", value: true, source: `${line};` });
+          return;
+        }
+
+        if (/^for\s*\(|^while\s*\(/.test(line)) {
+          errors.push({ line: lineNo, text: "For loops use this format: for(int side = 0; side < 4; side = side + 1) { n.move(100); }" });
+          return;
+        }
+
+        if (/^setColour/.test(line)) {
+          errors.push({ line: lineNo, text: "Use the American spelling: n.setColor(255, 100, 50);" });
+          return;
+        }
+
+        if (/^setColor\s*\(\s*["']/.test(line)) {
+          errors.push({ line: lineNo, text: 'Use n.setColor(r, g, b) with RGB numbers. Example: n.setColor(255, 100, 50);' });
+          return;
+        }
+
+        if (/^move\s*\(/.test(line) || /^turnRight\s*\(/.test(line)) {
+          errors.push({ line: lineNo, text: 'Use object notation like n.move(100) instead of move(100)' });
+          return;
+        }
+
+        if (/^n\.move\s*\(\s*["']/.test(line)) {
+          errors.push({ line: lineNo, text: "move needs a number, not text. Example: n.move(100);" });
+          return;
+        }
+
+        if (line.length > 0 && !line.includes("//")) {
+          errors.push({ line: lineNo, text: `I do not recognise "${escapeHtml(line)}". Check spelling, brackets, and semicolon.` });
+        }
+      });
+
+      if (!penInitialized && commands.length === 0) {
+        errors.push({ line: 1, text: "Start with: Pen n = new Pen();" });
+      }
+
+      if (commands.length > 250) {
+        errors.push({ line: 1, text: "That is a lot of commands. Try fewer than 250 so the drawing stays easy to follow." });
+      }
+
+      return errors.length
+        ? { ok: false, errors }
+        : { ok: true, commands };
+    }
+
+    async function executeCommands(commands) {
+      isRunning = true;
+      stopRequested = false;
+      runButton.disabled = true;
+      runButton.classList.add("opacity-60");
+      stopButton.classList.remove("hidden");
+
+      for (let i = 0; i < commands.length; i++) {
+        if (stopRequested) {
+          addOutput("Stopped by learner.", "warning");
+          break;
+        }
+
+        const command = commands[i];
+        addOutput(`▶ ${escapeHtml(command.source)}`, "command");
+
+        if (command.type === "move") {
+          const radians = turtle.direction * Math.PI / 180;
+          const newX = turtle.x + Math.cos(radians) * command.value;
+          const newY = turtle.y + Math.sin(radians) * command.value;
+
+          if (turtle.penDown) {
+            // Draw line smoothly as the turtle moves
+            const startX = turtle.x;
+            const startY = turtle.y;
+            const steps = Math.max(10, Math.abs(command.value) / 5);
+            const stepDuration = (720 - turtle.speed * 60) / steps;
+
+            for (let step = 0; step <= steps; step++) {
+              const progress = step / steps;
+              const currentX = startX + (newX - startX) * progress;
+              const currentY = startY + (newY - startY) * progress;
+
+              turtle.x = currentX;
+              turtle.y = currentY;
+              updateTurtleVisual();
+              
+              if (step < steps) {
+                await sleep(stepDuration);
+              }
+            }
+            
+            // Draw the final line
+            drawLine(startX, startY, newX, newY, turtle.colorR, turtle.colorG, turtle.colorB);
+            turtle.x = newX;
+            turtle.y = newY;
+          } else {
+            turtle.x = newX;
+            turtle.y = newY;
+            updateTurtleVisual();
+            await sleep(720 - turtle.speed * 60);
+          }
+
+          if (turtle.x < 0 || turtle.x > 760 || turtle.y < 0 || turtle.y > 430) {
+            addOutput("Logic hint: the turtle moved outside the board. Try a smaller move or turn first.", "warning");
+          }
+        }
+
+        if (command.type === "turn") {
+          turtle.direction += command.value;
+          updateTurtleVisual();
+          await sleep(360 - turtle.speed * 30);
+        }
+
+        if (command.type === "direction") {
+          turtle.direction = command.value;
+          updateTurtleVisual();
+          await sleep(360 - turtle.speed * 30);
+        }
+
+        if (command.type === "speed") {
+          turtle.speed = command.value;
+        }
+
+        if (command.type === "color") {
+          turtle.colorR = command.r;
+          turtle.colorG = command.g;
+          turtle.colorB = command.b;
+        }
+
+        if (command.type === "position") {
+          turtle.x = command.x;
+          turtle.y = command.y;
+          updateTurtleVisual();
+          await sleep(360 - turtle.speed * 30);
+        }
+
+        if (command.type === "pen") {
+          turtle.penDown = command.value;
+          updateTurtleVisual();
+        }
+      }
+
+      if (!stopRequested) {
+        addOutput("Great work! Code finished running.", "success");
+      }
+
+      isRunning = false;
+      runButton.disabled = false;
+      runButton.classList.remove("opacity-60");
+      stopButton.classList.add("hidden");
+    }
+
+    function runCode() {
+      if (isRunning) return;
+      resetTurtle(true);
+      clearOutput("Checking your code...");
+      const parsed = parseCommands(codeEditor.value);
+
+      if (!parsed.ok) {
+        clearOutput("I found something to fix:");
+        parsed.errors.forEach(error => {
+          addOutput(`Line ${error.line}: ${error.text}`, "error");
+        });
+        addOutput("Tip: commands should look like move(100); or turnRight(90);", "warning");
+        return;
+      }
+
+      clearOutput("No syntax errors found. Running commands...");
+      executeCommands(parsed.commands);
+    }
+
+    runButton.addEventListener("click", runCode);
+
+    resetButton.addEventListener("click", () => {
+      stopRequested = true;
+      resetTurtle(true);
+      clearOutput("Drawing reset. Ready for your next run.");
+    });
+
+    stopButton.addEventListener("click", () => {
+      stopRequested = true;
+      stopButton.textContent = "Stopping...";
+      setTimeout(() => {
+        stopButton.textContent = "Stop";
+      }, 500);
+    });
+
+
+
+    // Tab switching
+    editorTab.addEventListener("click", () => {
+      codeEditorElement.classList.remove("hidden");
+      examplesPanel.classList.add("hidden");
+      editorTab.classList.add("bg-emerald-400/20", "text-emerald-200");
+      editorTab.classList.remove("bg-white/12", "text-slate-300");
+      examplesTab.classList.remove("bg-emerald-400/20", "text-emerald-200");
+      examplesTab.classList.add("bg-white/12", "text-slate-300");
+    });
+
+    examplesTab.addEventListener("click", () => {
+      codeEditorElement.classList.add("hidden");
+      examplesPanel.classList.remove("hidden");
+      examplesTab.classList.add("bg-emerald-400/20", "text-emerald-200");
+      examplesTab.classList.remove("bg-white/12", "text-slate-300");
+      editorTab.classList.remove("bg-emerald-400/20", "text-emerald-200");
+      editorTab.classList.add("bg-white/12", "text-slate-300");
+    });
+
+    // Example loader buttons
+    document.querySelectorAll(".exampleLoader").forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const exampleKey = button.getAttribute("data-example");
+        if (examples[exampleKey] !== undefined) {
+          codeEditor.value = examples[exampleKey];
+          clearOutput(`${button.querySelector("h4").textContent} loaded. Click Editor tab and then Run code.`);
+          editorTab.click();
+        }
+      });
+    });
+
+    document.getElementById("exampleSquare").addEventListener("click", () => {
+      codeEditor.value = examples.square_simple;
+      clearOutput("Square example loaded. Press Run code.");
+    });
+
+    document.getElementById("exampleHouse").addEventListener("click", () => {
+      codeEditor.value = examples.house;
+      clearOutput("House example loaded. Press Run code.");
+    });
+
+    document.getElementById("exampleSpiral").addEventListener("click", () => {
+      codeEditor.value = examples.spiral;
+      clearOutput("Spiral example loaded. Press Run code.");
+    });
+
+    document.getElementById("exampleClear").addEventListener("click", () => {
+      codeEditor.value = examples.blank;
+      clearOutput("Blank editor loaded. Try writing move(100);");
+    });
+
+    function applyConfig(config) {
+      const cfg = Object.assign({}, defaultConfig, config || {});
+      const fontStack = `${cfg.font_family}, Nunito, sans-serif`;
+      const codeFontStack = `"Fira Code", monospace`;
+      const base = Number(cfg.font_size) || 16;
+
+      appTitle.textContent = cfg.app_title;
+      appSubtitle.textContent = cfg.app_subtitle;
+      editorLabel.textContent = cfg.editor_label;
+      outputLabel.textContent = cfg.output_label;
+      runButtonText.textContent = cfg.run_button_text;
+      resetButtonText.textContent = cfg.reset_button_text;
+
+      appShell.style.background = `
+        radial-gradient(circle at 12% 15%, ${cfg.secondary_action_color}42, transparent 28%),
+        radial-gradient(circle at 90% 12%, ${cfg.primary_action_color}2e, transparent 30%),
+        linear-gradient(135deg, ${cfg.background_color} 0%, ${cfg.surface_color} 48%, #0e2a33 100%)
+      `;
+      appShell.style.color = cfg.text_color;
+
+      document.body.style.fontFamily = fontStack;
+      appTitle.style.fontFamily = fontStack;
+      appSubtitle.style.fontFamily = fontStack;
+      codeEditor.style.fontFamily = codeFontStack;
+      outputWindow.style.fontFamily = codeFontStack;
+
+      appTitle.style.fontSize = `${base * 2.8}px`;
+      appSubtitle.style.fontSize = `${base * 1.05}px`;
+      document.querySelectorAll("button, label, input, select, p, li, span, h2, h3").forEach(el => {
+        if (el !== appTitle && el !== appSubtitle) el.style.fontSize = `${base * 0.92}px`;
+      });
+      codeEditor.style.fontSize = `${base * 0.86}px`;
+      outputWindow.style.fontSize = `${base * 0.86}px`;
+
+      runButton.style.backgroundColor = cfg.primary_action_color;
+      resetButton.style.backgroundColor = cfg.secondary_action_color;
+      runButton.style.color = "#0f172a";
+      resetButton.style.color = "#0f172a";
+
+      document.querySelectorAll(".glass-card").forEach(card => {
+        card.style.backgroundColor = `${cfg.surface_color}cc`;
+        card.style.borderColor = `${cfg.text_color}2c`;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => window.elementSdk.setConfig({ background_color: value })
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => window.elementSdk.setConfig({ surface_color: value })
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => window.elementSdk.setConfig({ text_color: value })
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => window.elementSdk.setConfig({ primary_action_color: value })
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => window.elementSdk.setConfig({ secondary_action_color: value })
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => window.elementSdk.setConfig({ font_family: value })
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => window.elementSdk.setConfig({ font_size: value })
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["app_title", config.app_title || defaultConfig.app_title],
+          ["app_subtitle", config.app_subtitle || defaultConfig.app_subtitle],
+          ["editor_label", config.editor_label || defaultConfig.editor_label],
+          ["output_label", config.output_label || defaultConfig.output_label],
+          ["run_button_text", config.run_button_text || defaultConfig.run_button_text],
+          ["reset_button_text", config.reset_button_text || defaultConfig.reset_button_text]
+        ])
+      });
+    } else {
+      applyConfig(defaultConfig);
+    }
+
+    resetTurtle(true);
+    lucide.createIcons();
+
+    // Service Worker Registration for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9fc8263d00340db4',t:'MTc3ODkxMTA5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
