@@ -204,8 +204,13 @@
     .cheat-desc { font-size: 10px; color: rgba(221,225,240,0.38); }
 
     /* ── Right column ── */
-    #rightCol { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow-y: auto; }
-    #canvasPanel { flex-shrink: 0; }
+    /* Right column fills the grid cell exactly, no overflow */
+    #rightCol {
+      display: flex; flex-direction: column; gap: 8px;
+      min-height: 0; overflow: hidden;
+    }
+    /* Canvas panel grows to fill remaining space after output panel */
+    #canvasPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
     /* ── Readouts ── */
     .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -216,15 +221,28 @@
     }
 
     /* ── Drawing board ── */
+    /*
+      canvas-outer fills the remaining height of #canvasPanel.
+      max-aspect-ratio constraint prevents it becoming too tall on wide screens —
+      it will never exceed the 76:48 ratio, but can be narrower/shorter.
+      The SVG viewBox stays 76×48 so coordinate space is unchanged.
+    */
     .canvas-outer {
-      margin: 0 12px 12px; border-radius: 10px; overflow: hidden;
+      margin: 0 12px 12px;
+      border-radius: 10px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.09); background: #f8f9ff;
-      width: 100%; aspect-ratio: 76 / 48;
+      flex: 1; min-height: 0;
+      /* Prevent canvas from ever being taller than its natural 76:48 ratio */
+      max-width: 100%;
+      aspect-ratio: 76 / 48;
+      /* When height-constrained, let the element shrink below the aspect-ratio height */
+      align-self: stretch;
+      width: auto;
     }
     #drawingSvg { width: 100%; height: 100%; display: block; }
     .turtle { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22)); transition: transform 80ms linear; }
 
-    /* ── Output ── */
+    /* ── Output panel — fixed height, always visible ── */
     #outputPanel { flex-shrink: 0; }
     .stop-btn {
       display: flex; align-items: center; gap: 5px; font-family: "DM Sans", sans-serif;
@@ -236,7 +254,7 @@
     #outputWindow {
       font-family: "JetBrains Mono", monospace; font-size: 11px; line-height: 19px;
       background: #06091a; border-radius: 0 0 13px 13px;
-      padding: 10px 13px; height: 120px; overflow-y: auto;
+      padding: 10px 13px; height: 100px; overflow-y: auto;
     }
     #outputWindow p { margin: 0 0 1px; }
 
