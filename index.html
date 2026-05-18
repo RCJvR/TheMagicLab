@@ -1,163 +1,670 @@
 <!doctype html>
-<html lang="en" class="h-full w-full">
- <head>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
+  <meta name="theme-color" content="#0a0f1e">
   <title>Java Code Genie</title>
+
+  <!-- ── Favicon: SVG lamp/genie icon embedded as data URI ─────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='shine' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23a5b4fc'/%3E%3Cstop offset='1' stop-color='%236ee7b7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3C!-- lamp body --%3E%3Cellipse cx='32' cy='40' rx='16' ry='10' fill='%23fbbf24'/%3E%3Cellipse cx='32' cy='38' rx='16' ry='10' fill='%23fcd34d'/%3E%3C!-- lamp spout --%3E%3Cpath d='M48 36 Q56 30 54 24 Q52 20 46 22 Q44 28 48 36Z' fill='%23f59e0b'/%3E%3C!-- lamp handle --%3E%3Cpath d='M16 38 Q8 36 10 44 Q12 50 18 46' fill='none' stroke='%23f59e0b' stroke-width='3.5' stroke-linecap='round'/%3E%3C!-- magic smoke/sparkle --%3E%3Cpath d='M46 20 Q44 12 38 8 Q34 5 32 10 Q34 14 38 12 Q42 10 46 20Z' fill='url(%23shine)' opacity='0.9'/%3E%3Ccircle cx='40' cy='10' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='50' cy='14' r='1.8' fill='%236ee7b7'/%3E%3Ccircle cx='44' cy='5' r='1.5' fill='%23fcd34d'/%3E%3C!-- code brackets on lamp --%3E%3Ctext x='26' y='43' font-family='monospace' font-size='10' font-weight='bold' fill='%23854d0e' opacity='0.8'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+
+  <!-- ── Web-app manifest meta (PWA install icon) ───────────────────────────── -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Code Genie">
+  <!-- inline apple-touch-icon as data URI (same design, 180×180) -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='38' fill='url(%23bg)'/%3E%3Cellipse cx='90' cy='112' rx='44' ry='28' fill='%23fcd34d'/%3E%3Cellipse cx='90' cy='106' rx='44' ry='28' fill='%23fde68a'/%3E%3Cpath d='M134 100 Q156 84 152 66 Q148 56 130 62 Q126 78 134 100Z' fill='%23f59e0b'/%3E%3Cpath d='M46 108 Q22 102 26 122 Q30 140 50 132' fill='none' stroke='%23f59e0b' stroke-width='9' stroke-linecap='round'/%3E%3Cpath d='M130 56 Q124 34 108 24 Q96 14 90 28 Q94 40 106 34 Q118 28 130 56Z' fill='%23a5b4fc' opacity='0.95'/%3E%3Ccircle cx='114' cy='28' r='7' fill='%23a5b4fc'/%3E%3Ccircle cx='140' cy='40' r='5' fill='%236ee7b7'/%3E%3Ccircle cx='122' cy='14' r='4' fill='%23fcd34d'/%3E%3Ctext x='72' y='120' font-family='monospace' font-size='28' font-weight='bold' fill='%23854d0e' opacity='0.8'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+
   <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="/_sdk/data_sdk.js"></script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Nunito:wght@500;700;800;900&display=swap');
-    html, body { height: 100%; width: 100%; margin: 0; overflow: hidden; }
-    body { font-family: "Nunito", sans-serif; }
-    .app-shell {
-      height: 100%; width: 100%; overflow: auto;
-      background:
-        radial-gradient(circle at 12% 15%, rgba(255, 196, 87, 0.26), transparent 28%),
-        radial-gradient(circle at 90% 12%, rgba(52, 211, 153, 0.18), transparent 30%),
-        linear-gradient(135deg, #101827 0%, #17213a 45%, #0e2a33 100%);
-      color: #f8fafc;
+    /* ── Reset & base ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      background: #0a0f1e;
+      color: #dde1f0;
     }
-    .glass-card { background: rgba(248,250,252,0.09); border: 1px solid rgba(248,250,252,0.18); box-shadow: 0 24px 70px rgba(0,0,0,0.28); backdrop-filter: blur(16px); }
-    .drawing-board {
+
+    /* ── App shell ──────────────────────────────────────────────────────────── */
+    #appShell {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       background:
-        linear-gradient(rgba(15,23,42,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15,23,42,0.06) 1px, transparent 1px),
-        #f8fafc;
-      background-size: calc(100% / 7.6) calc(100% / 3.6);
+        radial-gradient(ellipse 55% 35% at 6% 4%,  rgba(99,102,241,0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(16,185,129,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(245,158,11,0.10) 0%, transparent 60%),
+        #0a0f1e;
     }
-    .code-font { font-family: "Fira Code", monospace; }
-    .btn { transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease; }
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-    .turtle { filter: drop-shadow(0 8px 10px rgba(15,23,42,0.28)); transition: transform 120ms linear; }
-    .panel-scroll { scrollbar-width: thin; scrollbar-color: rgba(248,250,252,0.32) rgba(248,250,252,0.08); }
-    .panel-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
-    .panel-scroll::-webkit-scrollbar-thumb { background: rgba(248,250,252,0.32); border-radius: 999px; }
-    input[type="range"] { accent-color: #34d399; }
-    textarea:focus, input:focus, select:focus, button:focus-visible { outline: 3px solid rgba(52,211,153,0.55); outline-offset: 2px; }
-    body { box-sizing: border-box; }
+
+    /* ── Header ─────────────────────────────────────────────────────────────── */
+    #appHeader {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 20px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      background: rgba(99,102,241,0.18);
+      border: 1px solid rgba(99,102,241,0.35);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      white-space: nowrap;
+    }
+
+    h1.app-title {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: clamp(20px, 2.4vw, 30px);
+      line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-sub {
+      font-size: 12px;
+      color: rgba(221,225,240,0.45);
+      margin-left: auto;
+      max-width: 240px;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    /* ── Main two-column grid ───────────────────────────────────────────────── */
+    #mainGrid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 12px;
+      padding: 10px 16px 12px;
+      min-height: 0; /* allow children to shrink */
+      overflow: hidden;
+    }
+
+    /* ── Panels ─────────────────────────────────────────────────────────────── */
+    .panel {
+      background: rgba(255,255,255,0.038);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .panel-hd {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 13px 7px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .panel-title {
+      font-family: "Syne", sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: #b0b8d8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── Left column ─────────────────────────────────────────────────────────── */
+    #leftCol {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* editor panel takes as much vertical space as available */
+    #editorPanel { flex: 1; min-height: 0; }
+
+    /* ── Tab group ───────────────────────────────────────────────────────────── */
+    .tab-group {
+      display: flex;
+      gap: 3px;
+      background: rgba(0,0,0,0.30);
+      border-radius: 7px;
+      padding: 3px;
+    }
+
+    .tab-btn {
+      font-family: "DM Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: all 130ms ease;
+      color: rgba(221,225,240,0.45);
+      background: transparent;
+    }
+
+    .tab-btn.active {
+      background: rgba(99,102,241,0.28);
+      color: #a5b4fc;
+    }
+
+    .tab-btn:hover:not(.active) { color: rgba(221,225,240,0.8); }
+
+    .icon-btn {
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: rgba(221,225,240,0.45);
+      transition: all 130ms;
+      flex-shrink: 0;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+    .icon-btn.active { background: rgba(99,102,241,0.30); border-color: rgba(99,102,241,0.50); color: #a5b4fc; }
+
+    /* ── Code editor ─────────────────────────────────────────────────────────── */
+    .editor-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      background: #06091a;
+      display: flex;
+      overflow: hidden;
+    }
+
+    #lineNumbers {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 21px;
+      width: 36px;
+      flex-shrink: 0;
+      background: rgba(0,0,0,0.28);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.20);
+      text-align: right;
+      padding: 12px 6px 12px 0;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    #codeEditor {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 21px;
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      color: #e2e8ff;
+      resize: none;
+      padding: 12px 12px 12px 10px;
+      outline: none;
+      overflow-y: auto;
+    }
+
+    #codeEditor::selection { background: rgba(99,102,241,0.38); }
+
+    /* ── Examples panel ──────────────────────────────────────────────────────── */
+    #examplesPanel {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      background: #06091a;
+    }
+
+    .ex-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 9px 13px;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: none;
+      cursor: pointer;
+      transition: background 110ms;
+      color: inherit;
+    }
+    .ex-item:last-child { border-bottom: none; }
+    .ex-item:hover { background: rgba(99,102,241,0.12); }
+
+    .ex-item h4 { font-size: 12px; font-weight: 600; color: #c7cfe8; margin-bottom: 2px; }
+    .ex-item p  { font-size: 11px; color: rgba(221,225,240,0.38); }
+
+    .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; letter-spacing: 0.04em; text-transform: uppercase; }
+    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
+
+    /* ── Action buttons ───────────────────────────────────────────────────────── */
+    .actions-row {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      padding: 9px 12px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .act-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 9px;
+      border: none;
+      font-family: "DM Sans", sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .act-btn:hover  { transform: translateY(-1px); }
+    .act-btn:active { transform: translateY(0); }
+    .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+
+    .btn-run {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff;
+      box-shadow: 0 3px 14px rgba(16,185,129,0.28);
+    }
+    .btn-run:hover { box-shadow: 0 5px 18px rgba(16,185,129,0.42); }
+
+    .btn-reset {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #b0b8d8;
+    }
+    .btn-reset:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Cheat sheet ─────────────────────────────────────────────────────────── */
+    #cheatPanel {
+      flex-shrink: 0;
+      border-radius: 14px;
+    }
+
+    .cheat-list {
+      padding: 8px 12px;
+      overflow-y: auto;
+      max-height: 170px;
+    }
+
+    .cheat-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .cheat-row:last-child { border-bottom: none; }
+
+    .cheat-cmd  { font-family: "JetBrains Mono", monospace; font-size: 10.5px; color: #818cf8; white-space: nowrap; flex-shrink: 0; }
+    .cheat-desc { font-size: 10.5px; color: rgba(221,225,240,0.38); }
+
+    /* ── Right column ────────────────────────────────────────────────────────── */
+    #rightCol {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    /* canvas panel grows to fill */
+    #canvasPanel { flex: 1; min-height: 0; }
+
+    /* ── Canvas readouts ─────────────────────────────────────────────────────── */
+    .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .readout {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(0,0,0,0.30);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(221,225,240,0.55);
+      white-space: nowrap;
+      transition: color 200ms;
+    }
+
+    /* ── Drawing board ───────────────────────────────────────────────────────── */
+    .canvas-outer {
+      flex: 1;
+      min-height: 0;
+      margin: 0 12px 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: #f8f9ff;
+      display: flex;
+    }
+
+    #drawingSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .turtle { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.22)); transition: transform 120ms linear; }
+
+    /* grid pattern painted purely in SVG, so no CSS bg tricks needed */
+
+    /* ── Output panel ─────────────────────────────────────────────────────────── */
+    #outputPanel { flex-shrink: 0; }
+
+    .stop-btn {
+      display: flex; align-items: center; gap: 5px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(239,68,68,0.18);
+      border: 1px solid rgba(239,68,68,0.35);
+      color: #fca5a5;
+      cursor: pointer;
+      transition: all 140ms;
+    }
+    .stop-btn:hover { background: rgba(239,68,68,0.30); }
+
+    #outputWindow {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      line-height: 19px;
+      background: #06091a;
+      border-radius: 0 0 13px 13px;
+      padding: 10px 13px;
+      height: 130px;
+      overflow-y: auto;
+    }
+    #outputWindow p { margin: 0 0 1px; }
+
+    /* ── Scrollbars ───────────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+
+    /* ── Focus ────────────────────────────────────────────────────────────────── */
+    button:focus-visible, textarea:focus-visible {
+      outline: 2px solid rgba(99,102,241,0.60);
+      outline-offset: 2px;
+    }
+
+    .hidden { display: none !important; }
   </style>
-  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body>
-  <div id="appShell" class="app-shell">
-   <header class="w-full px-5 py-4 md:px-8">
-    <div class="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
-     <div>
-      <div class="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-300/10 px-3 py-1 text-sm font-bold text-emerald-100"><i data-lucide="bug" class="h-4 w-4"></i> Java drawing app</div>
-      <h1 id="appTitle" class="text-3xl font-black tracking-tight md:text-5xl">Java Code Genie</h1>
-      <p id="appSubtitle" class="mt-2 max-w-2xl text-base font-semibold text-slate-200 md:text-lg">Write simple Java commands to learn the basics of Java coding from friendly feedback.</p>
-     </div>
+</head>
+<body>
+<div id="appShell">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────────── -->
+  <header id="appHeader">
+    <div class="badge">
+      <i data-lucide="sparkles" style="width:11px;height:11px;"></i>
+      Grade 8–9
     </div>
-   </header>
-   <main class="w-full px-5 pb-6 md:px-8">
-    <div class="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[420px_1fr]">
-     <section class="glass-card rounded-3xl p-4 md:p-5" aria-labelledby="editorTitle">
-      <div class="mb-4 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
-       <div class="flex items-center gap-2">
-        <h2 id="editorTitle" class="flex items-center gap-2 text-xl font-black"><i data-lucide="code-2" class="h-5 w-5 text-emerald-300"></i> <span id="editorLabel">Java code</span></h2>
-       </div>
-       <div class="flex gap-2">
-        <button id="editorTab" class="rounded-lg bg-emerald-400/20 px-3 py-2 text-sm font-bold text-emerald-200 transition-colors">Editor</button>
-        <button id="examplesTab" class="rounded-lg bg-white/12 px-3 py-2 text-sm font-bold text-slate-300 transition-colors hover:bg-white/20">Examples</button>
-        <button id="lineNumbersToggle" class="rounded-lg bg-white/12 px-3 py-2 text-sm font-bold text-slate-300 transition-colors hover:bg-white/20" title="Toggle line numbers"><i data-lucide="list" class="h-4 w-4"></i></button>
-       </div>
-      </div>
-      <label for="codeEditor" class="sr-only">Java drawing code editor</label>
-      <div class="relative rounded-2xl border border-white/15 overflow-hidden bg-white" style="height: 280px;">
-       <div id="lineNumbers" class="code-font text-sm leading-6 absolute left-0 top-0 bottom-0 bg-slate-200 text-slate-500 text-right px-3 py-4 select-none" style="width: 40px; overflow: hidden;"></div>
-       <textarea id="codeEditor" class="code-font text-sm leading-6 w-full h-full rounded-0 border-0 bg-white text-slate-900 resize-none" style="padding: 1rem 1rem 1rem 50px; box-sizing: border-box;" spellcheck="false">Pen n = new Pen();
+    <h1 class="app-title">Java Code Genie</h1>
+    <p class="header-sub">Write Java commands to draw shapes and learn from instant feedback.</p>
+  </header>
+
+  <!-- ── Main grid ───────────────────────────────────────────────────────────── -->
+  <div id="mainGrid">
+
+    <!-- ══ LEFT COLUMN ════════════════════════════════════════════════════════ -->
+    <div id="leftCol">
+
+      <!-- Editor panel -->
+      <div class="panel" id="editorPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="code-2" style="width:14px;height:14px;color:#818cf8;"></i>
+            <span>Java code</span>
+          </h2>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div class="tab-group">
+              <button id="editorTab"   class="tab-btn active">Editor</button>
+              <button id="examplesTab" class="tab-btn">Examples</button>
+            </div>
+            <button id="lineNumbersToggle" class="icon-btn active" title="Toggle line numbers">
+              <i data-lucide="list" style="width:13px;height:13px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Code editor (shown by default) -->
+        <div class="editor-wrap" id="editorWrap">
+          <label for="codeEditor" class="sr-only">Java drawing code editor</label>
+          <div id="lineNumbers"></div>
+          <textarea id="codeEditor" spellcheck="false">Pen n = new Pen();
 n.setColor(37, 99, 235);
 n.setSpeed(6);
-for(int side = 0; side < 4; side = side + 1) {
+for(int side = 0; side &lt; 4; side++) {
   n.move(100);
   n.turnRight(90);
 }</textarea>
-      </div>
-      <div id="examplesPanel" class="hidden max-h-96 overflow-y-auto rounded-2xl border border-white/15 bg-slate-950/72 p-4">
-       <div class="space-y-3">
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="square_simple"><h4 class="font-bold text-emerald-100">Drawing a square</h4><p class="text-xs text-slate-400">Beginner: move and turn to draw 4 sides</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="square_loop"><h4 class="font-bold text-emerald-100">Square using for loop</h4><p class="text-xs text-slate-400">Intermediate: use for loop to draw efficiently</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="rectangle"><h4 class="font-bold text-emerald-100">Drawing a rectangle</h4><p class="text-xs text-slate-400">Beginner: longer and shorter sides</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="triangle"><h4 class="font-bold text-emerald-100">Drawing a triangle</h4><p class="text-xs text-slate-400">Beginner: 3 equal sides, each turn 120°</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="hexagon"><h4 class="font-bold text-emerald-100">Drawing a hexagon</h4><p class="text-xs text-slate-400">6 equal sides, each turn 60°</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="pattern_squares"><h4 class="font-bold text-emerald-100">Pattern with squares</h4><p class="text-xs text-slate-400">Intermediate: loop creates a grid pattern</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="spiral"><h4 class="font-bold text-emerald-100">Spiral pattern</h4><p class="text-xs text-slate-400">Intermediate: growing sides create a spiral</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="house"><h4 class="font-bold text-emerald-100">Drawing a house</h4><p class="text-xs text-slate-400">Intermediate: multiple shapes and penUp to move</p></button></div>
-        <div class="group cursor-pointer rounded-xl border border-white/12 bg-white/5 p-3 hover:bg-white/12"><button class="exampleLoader w-full text-left" data-example="star"><h4 class="font-bold text-emerald-100">Drawing a star</h4><p class="text-xs text-slate-400">Intermediate: 5 points with 144° turns</p></button></div>
-       </div>
-      </div>
-      <div class="mt-4 grid gap-3 sm:grid-cols-2">
-       <button id="runButton" class="btn flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-4 py-3 font-black text-slate-950 shadow-lg shadow-emerald-950/20 hover:bg-emerald-300"><i data-lucide="play" class="h-5 w-5"></i> <span id="runButtonText">Run code</span></button>
-       <button id="resetButton" class="btn flex items-center justify-center gap-2 rounded-2xl bg-amber-300 px-4 py-3 font-black text-slate-950 shadow-lg shadow-amber-950/20 hover:bg-amber-200"><i data-lucide="rotate-ccw" class="h-5 w-5"></i> <span id="resetButtonText">Reset drawing</span></button>
-      </div>
-      <aside class="mt-5 rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4">
-       <h3 class="mb-3 flex items-center gap-2 text-base font-black"><i data-lucide="lightbulb" class="h-4 w-4 text-emerald-100"></i> Command cheat sheet</h3>
-       <ul class="code-font max-h-48 overflow-y-auto space-y-3 text-xs text-emerald-50 pr-2">
-        <li><div class="font-bold text-emerald-200">Pen n = new Pen();</div><div class="text-emerald-100">creates a pen object</div></li>
-        <li><div class="font-bold text-emerald-200">n.move(100);</div><div class="text-emerald-100">draws forward 100 pixels</div></li>
-        <li><div class="font-bold text-emerald-200">n.turnRight(90);</div><div class="text-emerald-100">turns clockwise 90°</div></li>
-        <li><div class="font-bold text-emerald-200">n.turnLeft(45);</div><div class="text-emerald-100">turns anti-clockwise 45°</div></li>
-        <li><div class="font-bold text-emerald-200">n.setColor(255, 100, 50);</div><div class="text-emerald-100">RGB colour (0–255)</div></li>
-        <li><div class="font-bold text-emerald-200">n.setSpeed(8);</div><div class="text-emerald-100">changes drawing speed (1–10)</div></li>
-        <li><div class="font-bold text-emerald-200">n.penUp();</div><div class="text-emerald-100">moves without drawing</div></li>
-        <li><div class="font-bold text-emerald-200">n.penDown();</div><div class="text-emerald-100">starts drawing again</div></li>
-        <li><div class="font-bold text-emerald-200">n.setPosition(200, 120);</div><div class="text-emerald-100">jumps to a place</div></li>
-        <li><div class="font-bold text-emerald-200">n.setDirection(90);</div><div class="text-emerald-100">points down</div></li>
-        <li><div class="font-bold text-emerald-200">for(int i = 0; i &lt; 4; i = i + 1) { ... }</div><div class="text-emerald-100">repeats commands</div></li>
-       </ul>
-      </aside>
-     </section>
-     <section class="grid gap-5">
-      <div class="glass-card rounded-3xl p-4 md:p-5" aria-labelledby="canvasTitle">
-       <div class="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div>
-         <h2 id="canvasTitle" class="flex items-center gap-2 text-xl font-black"><i data-lucide="pencil-ruler" class="h-5 w-5 text-amber-200"></i> Drawing board</h2>
-         <p class="text-sm font-semibold text-slate-300">The arrow starts at the centre of the board.</p>
         </div>
-        <div class="flex flex-wrap gap-2 text-xs font-black">
-         <span id="positionReadout" class="rounded-full bg-white/12 px-3 py-2">x: 260, y: 210</span>
-         <span id="directionReadout" class="rounded-full bg-white/12 px-3 py-2">direction: 0°</span>
-         <span id="penReadout" class="rounded-full bg-white/12 px-3 py-2">pen: down</span>
+
+        <!-- Examples panel (hidden by default) -->
+        <div id="examplesPanel" class="hidden">
+          <button class="ex-item exampleLoader" data-example="square_simple">
+            <h4>Drawing a square <span class="diff diff-b">beginner</span></h4>
+            <p>move and turn to draw 4 sides</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="square_loop">
+            <h4>Square with for loop <span class="diff diff-i">intermediate</span></h4>
+            <p>use a for loop to draw efficiently</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="rectangle">
+            <h4>Drawing a rectangle <span class="diff diff-b">beginner</span></h4>
+            <p>longer and shorter sides</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="triangle">
+            <h4>Drawing a triangle <span class="diff diff-b">beginner</span></h4>
+            <p>3 equal sides, each turn 120°</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="hexagon">
+            <h4>Drawing a hexagon <span class="diff diff-i">intermediate</span></h4>
+            <p>6 equal sides, each turn 60°</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="pattern_squares">
+            <h4>Pattern with squares <span class="diff diff-i">intermediate</span></h4>
+            <p>loop creates a repeated grid</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="spiral">
+            <h4>Spiral pattern <span class="diff diff-i">intermediate</span></h4>
+            <p>growing sides create a spiral</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="house">
+            <h4>Drawing a house <span class="diff diff-i">intermediate</span></h4>
+            <p>multiple shapes and penUp to move</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="star">
+            <h4>Drawing a star <span class="diff diff-i">intermediate</span></h4>
+            <p>5 points with 144° turns</p>
+          </button>
         </div>
-       </div>
-       <div class="relative overflow-hidden rounded-3xl border-4 border-white/20 bg-white shadow-2xl">
-        <div class="flex h-96">
-         <div class="flex flex-col justify-between py-2 pr-2 text-xs font-bold text-slate-400 w-12"><span>0</span><span>100</span><span>200</span><span>300</span></div>
-         <div class="flex-1 flex flex-col">
-          <div class="flex justify-between px-2 pb-1 text-xs font-bold text-slate-400 h-6"><span>0</span><span>100</span><span>200</span><span>300</span><span>400</span><span>500</span><span>600</span><span>700</span></div>
-          <svg id="drawingSvg" class="drawing-board block w-full flex-1" viewBox="0 0 760 360" role="img" aria-label="Turtle drawing canvas">
-           <g id="pathLayer"></g>
-           <g id="turtleGroup" class="turtle" transform="translate(260 210) rotate(0)">
-            <path d="M 22 0 L -15 -13 L -9 0 L -15 13 Z" fill="#34d399" stroke="#0f172a" stroke-width="3" stroke-linejoin="round"></path>
-            <circle cx="-4" cy="0" r="5" fill="#0f172a"></circle>
-           </g>
+
+        <!-- Run / Reset -->
+        <div class="actions-row">
+          <button id="runButton" class="act-btn btn-run">
+            <i data-lucide="play" style="width:14px;height:14px;"></i>
+            <span id="runButtonText">Run code</span>
+          </button>
+          <button id="resetButton" class="act-btn btn-reset">
+            <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>
+            <span id="resetButtonText">Reset</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cheat sheet panel -->
+      <div class="panel" id="cheatPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="lightbulb" style="width:14px;height:14px;color:#fbbf24;"></i>
+            Command reference
+          </h2>
+        </div>
+        <div class="cheat-list">
+          <div class="cheat-row"><span class="cheat-cmd">Pen n = new Pen();</span>     <span class="cheat-desc">create a pen object</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.move(100);</span>            <span class="cheat-desc">draw forward 100 px</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.turnRight(90);</span>        <span class="cheat-desc">turn clockwise 90°</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.turnLeft(45);</span>         <span class="cheat-desc">turn anti-clockwise 45°</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.setColor(255,100,50);</span> <span class="cheat-desc">RGB colour 0–255</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.setSpeed(8);</span>          <span class="cheat-desc">speed 1–10</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.penUp();</span>              <span class="cheat-desc">move without drawing</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.penDown();</span>            <span class="cheat-desc">start drawing again</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.setPosition(200,120);</span><span class="cheat-desc">jump to coordinates</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.setDirection(90);</span>    <span class="cheat-desc">point in a direction</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">for(int i=0; i&lt;4; i++)</span><span class="cheat-desc">repeat 4 times</span></div>
+        </div>
+      </div>
+
+    </div><!-- /leftCol -->
+
+    <!-- ══ RIGHT COLUMN ═══════════════════════════════════════════════════════ -->
+    <div id="rightCol">
+
+      <!-- Drawing board panel -->
+      <div class="panel" id="canvasPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="pencil-ruler" style="width:14px;height:14px;color:#fbbf24;"></i>
+            Drawing board
+            <span style="font-size:10px;font-weight:400;color:rgba(221,225,240,0.35);margin-left:4px;">turtle starts at centre</span>
+          </h2>
+          <div class="readouts">
+            <span id="positionReadout"  class="readout">x: 380, y: 240</span>
+            <span id="directionReadout" class="readout">dir: 0°</span>
+            <span id="penReadout"       class="readout">pen ↓</span>
+          </div>
+        </div>
+
+        <!-- SVG canvas fills the rest of the panel -->
+        <div class="canvas-outer">
+          <!--
+            The SVG viewBox is 760 × 480.
+            Axis labels are drawn INSIDE the SVG so they always align perfectly
+            with the turtle coordinate space regardless of how the SVG scales.
+
+            Grid lines are at every 100 units (760 wide → 8 lines; 480 tall → 5 lines).
+            Labels sit just inside the border so they never clip.
+
+            Turtle default start: x=380, y=240 (centre of 760×480).
+          -->
+          <svg id="drawingSvg" viewBox="0 0 760 480" preserveAspectRatio="xMidYMid meet"
+               role="img" aria-label="Turtle drawing canvas">
+
+            <!-- ── Grid (100-unit squares) ────────────────────────────────── -->
+            <g id="gridLayer" stroke="rgba(15,23,42,0.07)" stroke-width="1">
+              <!-- vertical lines at x = 100,200,300,400,500,600,700 -->
+              <line x1="100" y1="0" x2="100" y2="480"/>
+              <line x1="200" y1="0" x2="200" y2="480"/>
+              <line x1="300" y1="0" x2="300" y2="480"/>
+              <line x1="400" y1="0" x2="400" y2="480"/>
+              <line x1="500" y1="0" x2="500" y2="480"/>
+              <line x1="600" y1="0" x2="600" y2="480"/>
+              <line x1="700" y1="0" x2="700" y2="480"/>
+              <!-- horizontal lines at y = 100,200,300,400 -->
+              <line x1="0" y1="100" x2="760" y2="100"/>
+              <line x1="0" y1="200" x2="760" y2="200"/>
+              <line x1="0" y1="300" x2="760" y2="300"/>
+              <line x1="0" y1="400" x2="760" y2="400"/>
+            </g>
+
+            <!-- ── Axis labels (X across top, Y down left) ─────────────────── -->
+            <g font-family="'JetBrains Mono',monospace" font-size="9" fill="rgba(100,116,139,0.7)">
+              <!-- X labels at top, centred on their grid column -->
+              <text x="100" y="11" text-anchor="middle">100</text>
+              <text x="200" y="11" text-anchor="middle">200</text>
+              <text x="300" y="11" text-anchor="middle">300</text>
+              <text x="400" y="11" text-anchor="middle">400</text>
+              <text x="500" y="11" text-anchor="middle">500</text>
+              <text x="600" y="11" text-anchor="middle">600</text>
+              <text x="700" y="11" text-anchor="middle">700</text>
+              <!-- origin -->
+              <text x="4"   y="11" text-anchor="start">0</text>
+
+              <!-- Y labels on left, centred on their grid row -->
+              <text x="4" y="103" dominant-baseline="middle">100</text>
+              <text x="4" y="203" dominant-baseline="middle">200</text>
+              <text x="4" y="303" dominant-baseline="middle">300</text>
+              <text x="4" y="403" dominant-baseline="middle">400</text>
+            </g>
+
+            <!-- ── Drawings go here ────────────────────────────────────────── -->
+            <g id="pathLayer"></g>
+
+            <!-- ── Turtle (indigo arrow) ──────────────────────────────────── -->
+            <!-- starts at 380,240 pointing right (direction=0) -->
+            <g id="turtleGroup" class="turtle" transform="translate(380 240) rotate(0)">
+              <path d="M 20 0 L -14 -12 L -8 0 L -14 12 Z"
+                    fill="#6366f1" stroke="#1e1b4b" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="-4" cy="0" r="4" fill="#1e1b4b"/>
+            </g>
+
           </svg>
-         </div>
         </div>
-       </div>
       </div>
-      <section class="glass-card rounded-3xl p-4 md:p-5" aria-labelledby="outputTitle">
-       <div class="mb-4 flex items-center justify-between gap-3">
-        <h2 id="outputTitle" class="flex items-center gap-2 text-xl font-black"><i data-lucide="terminal-square" class="h-5 w-5 text-emerald-300"></i> <span id="outputLabel">Output &amp; feedback</span></h2>
-        <button id="stopButton" class="btn hidden rounded-xl bg-red-400 px-4 py-2 text-sm font-black text-white hover:bg-red-300">Stop</button>
-       </div>
-       <div id="outputWindow" class="panel-scroll code-font max-h-72 overflow-auto rounded-2xl border border-white/15 bg-slate-950/80 p-4 text-sm leading-6 text-slate-100">
-        <p class="text-slate-300">Ready. Press <strong class="text-emerald-300">Run code</strong> to execute your commands.</p>
-       </div>
-      </section>
-     </section>
-    </div>
-   </main>
-  </div>
-  <script>
-    // ─── Examples ─────────────────────────────────────────────────────────────
-    const examples = {
-      square_simple: `Pen n = new Pen();
+
+      <!-- Output panel -->
+      <div class="panel" id="outputPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="terminal-square" style="width:14px;height:14px;color:#34d399;"></i>
+            <span id="outputLabel">Output &amp; feedback</span>
+          </h2>
+          <button id="stopButton" class="stop-btn hidden">
+            <i data-lucide="square" style="width:11px;height:11px;"></i>
+            Stop
+          </button>
+        </div>
+        <div id="outputWindow">
+          <p style="color:rgba(221,225,240,0.38);">Ready — press <strong style="color:#6ee7b7;">Run code</strong> to execute your commands.</p>
+        </div>
+      </div>
+
+    </div><!-- /rightCol -->
+  </div><!-- /mainGrid -->
+</div><!-- /appShell -->
+
+<script>
+// ─── SVG canvas dimensions (must match viewBox) ───────────────────────────────
+const CANVAS_W = 760;
+const CANVAS_H = 480;
+// Default turtle start = centre
+const START_X = 380;
+const START_Y = 240;
+
+// ─── Examples ────────────────────────────────────────────────────────────────
+const examples = {
+  square_simple: `Pen n = new Pen();
 n.setColor(37, 99, 235);
 n.setSpeed(6);
 n.move(100);
@@ -167,14 +674,14 @@ n.turnRight(90);
 n.move(100);
 n.turnRight(90);
 n.move(100);`,
-      square_loop: `Pen n = new Pen();
+  square_loop: `Pen n = new Pen();
 n.setColor(37, 99, 235);
 n.setSpeed(7);
-for(int side = 0; side < 4; side = side + 1) {
+for(int side = 0; side < 4; side++) {
   n.move(100);
   n.turnRight(90);
 }`,
-      rectangle: `Pen n = new Pen();
+  rectangle: `Pen n = new Pen();
 n.setColor(34, 197, 94);
 n.setSpeed(6);
 n.move(150);
@@ -184,7 +691,7 @@ n.turnRight(90);
 n.move(150);
 n.turnRight(90);
 n.move(80);`,
-      triangle: `Pen n = new Pen();
+  triangle: `Pen n = new Pen();
 n.setColor(239, 68, 68);
 n.setSpeed(6);
 n.move(120);
@@ -192,17 +699,17 @@ n.turnRight(120);
 n.move(120);
 n.turnRight(120);
 n.move(120);`,
-      hexagon: `Pen n = new Pen();
+  hexagon: `Pen n = new Pen();
 n.setColor(168, 85, 247);
 n.setSpeed(7);
-for(int side = 0; side < 6; side = side + 1) {
+for(int side = 0; side < 6; side++) {
   n.move(80);
   n.turnRight(60);
 }`,
-      pattern_squares: `Pen n = new Pen();
+  pattern_squares: `Pen n = new Pen();
 n.setColor(249, 115, 22);
 n.setSpeed(5);
-for(int i = 0; i < 3; i = i + 1) {
+for(int i = 0; i < 3; i++) {
   n.move(60);
   n.turnRight(90);
   n.move(60);
@@ -215,18 +722,18 @@ for(int i = 0; i < 3; i = i + 1) {
   n.move(70);
   n.penDown();
 }`,
-      spiral: `Pen n = new Pen();
+  spiral: `Pen n = new Pen();
 n.setColor(168, 85, 247);
 n.setSpeed(8);
-n.setPosition(200, 150);
-for(int i = 0; i < 12; i = i + 1) {
-  n.move(20);
+n.setPosition(300, 200);
+for(int i = 0; i < 16; i++) {
+  n.move(20 + i * 8);
   n.turnRight(90);
 }`,
-      house: `Pen n = new Pen();
+  house: `Pen n = new Pen();
 n.setColor(249, 115, 22);
 n.setSpeed(7);
-n.setPosition(100, 100);
+n.setPosition(200, 150);
 n.move(150);
 n.turnRight(90);
 n.move(120);
@@ -235,542 +742,517 @@ n.move(150);
 n.turnRight(90);
 n.move(120);
 n.penUp();
-n.setPosition(100, 100);
+n.setPosition(200, 150);
 n.penDown();
 n.setColor(239, 68, 68);
 n.setDirection(315);
 n.move(106);
 n.penUp();
-n.setPosition(250, 100);
+n.setPosition(350, 150);
 n.penDown();
 n.setDirection(225);
 n.move(106);`,
-      star: `Pen n = new Pen();
+  star: `Pen n = new Pen();
 n.setColor(249, 115, 22);
 n.setSpeed(7);
-n.setPosition(300, 150);
-for(int i = 0; i < 5; i = i + 1) {
+n.setPosition(380, 180);
+for(int i = 0; i < 5; i++) {
   n.move(100);
   n.turnRight(144);
   n.move(100);
   n.turnRight(36);
 }`
-    };
+};
 
-    // ─── DOM refs ─────────────────────────────────────────────────────────────
-    const appTitle         = document.getElementById("appTitle");
-    const appSubtitle      = document.getElementById("appSubtitle");
-    const editorLabel      = document.getElementById("editorLabel");
-    const outputLabel      = document.getElementById("outputLabel");
-    const runButtonText    = document.getElementById("runButtonText");
-    const resetButtonText  = document.getElementById("resetButtonText");
-    const appShell         = document.getElementById("appShell");
-    const runButton        = document.getElementById("runButton");
-    const resetButton      = document.getElementById("resetButton");
-    const stopButton       = document.getElementById("stopButton");
-    const codeEditor       = document.getElementById("codeEditor");
-    const outputWindow     = document.getElementById("outputWindow");
-    const pathLayer        = document.getElementById("pathLayer");
-    const turtleGroup      = document.getElementById("turtleGroup");
-    const editorTab        = document.getElementById("editorTab");
-    const examplesTab      = document.getElementById("examplesTab");
-    const examplesPanel    = document.getElementById("examplesPanel");
-    const lineNumbers      = document.getElementById("lineNumbers");
-    const lineNumbersToggle= document.getElementById("lineNumbersToggle");
-    const positionReadout  = document.getElementById("positionReadout");
-    const directionReadout = document.getElementById("directionReadout");
-    const penReadout       = document.getElementById("penReadout");
+// ─── DOM refs ─────────────────────────────────────────────────────────────────
+const runButton         = document.getElementById("runButton");
+const resetButton       = document.getElementById("resetButton");
+const stopButton        = document.getElementById("stopButton");
+const codeEditor        = document.getElementById("codeEditor");
+const outputWindow      = document.getElementById("outputWindow");
+const pathLayer         = document.getElementById("pathLayer");
+const turtleGroup       = document.getElementById("turtleGroup");
+const editorTab         = document.getElementById("editorTab");
+const examplesTab       = document.getElementById("examplesTab");
+const editorWrap        = document.getElementById("editorWrap");
+const examplesPanel     = document.getElementById("examplesPanel");
+const lineNumbers       = document.getElementById("lineNumbers");
+const lineNumbersToggle = document.getElementById("lineNumbersToggle");
+const positionReadout   = document.getElementById("positionReadout");
+const directionReadout  = document.getElementById("directionReadout");
+const penReadout        = document.getElementById("penReadout");
 
-    // ─── Line numbers ─────────────────────────────────────────────────────────
-    let lineNumbersVisible = true;
-    function updateLineNumbers() {
-      const lines = codeEditor.value.split('\n').length;
-      let html = '';
-      for (let i = 1; i <= lines; i++) html += i + '<br>';
-      lineNumbers.innerHTML = html;
+// ─── Line numbers ─────────────────────────────────────────────────────────────
+let lineNumbersVisible = true;
+
+function updateLineNumbers() {
+  const lines = codeEditor.value.split('\n').length;
+  let html = '';
+  for (let i = 1; i <= lines; i++) html += i + '<br>';
+  lineNumbers.innerHTML = html;
+}
+
+function toggleLineNumbers() {
+  lineNumbersVisible = !lineNumbersVisible;
+  if (lineNumbersVisible) {
+    lineNumbers.style.display = '';
+    lineNumbersToggle.classList.add('active');
+  } else {
+    lineNumbers.style.display = 'none';
+    lineNumbersToggle.classList.remove('active');
+  }
+}
+
+codeEditor.addEventListener('input', updateLineNumbers);
+codeEditor.addEventListener('scroll', () => { lineNumbers.scrollTop = codeEditor.scrollTop; });
+lineNumbersToggle.addEventListener('click', toggleLineNumbers);
+updateLineNumbers();
+
+// ─── Turtle state ─────────────────────────────────────────────────────────────
+let turtle = {};
+let isRunning = false;
+let stopRequested = false;
+
+function makeTurtle() {
+  return { x: START_X, y: START_Y, direction: 0, colorR: 99, colorG: 102, colorB: 241, speed: 6, penDown: true };
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c])
+  );
+}
+
+function addOutput(message, type = "info") {
+  const cols = { info:"rgba(221,225,240,0.72)", success:"#6ee7b7", error:"#fca5a5", warning:"#fcd34d", command:"#93c5fd" };
+  const p = document.createElement("p");
+  p.style.color = cols[type] || cols.info;
+  p.innerHTML = message;
+  outputWindow.appendChild(p);
+  outputWindow.scrollTop = outputWindow.scrollHeight;
+}
+
+function clearOutput(message) {
+  outputWindow.innerHTML = "";
+  if (message) addOutput(message, "info");
+}
+
+function resetTurtle(clearPaths = true) {
+  if (clearPaths) pathLayer.innerHTML = "";
+  turtle = makeTurtle();
+  updateTurtleVisual();
+}
+
+function updateTurtleVisual() {
+  turtleGroup.setAttribute("transform", `translate(${turtle.x} ${turtle.y}) rotate(${turtle.direction})`);
+  positionReadout.textContent = `x: ${Math.round(turtle.x)}, y: ${Math.round(turtle.y)}`;
+  directionReadout.textContent = `dir: ${Math.round(((turtle.direction % 360) + 360) % 360)}°`;
+  penReadout.textContent = `pen ${turtle.penDown ? "↓" : "↑"}`;
+  penReadout.style.color = turtle.penDown ? "rgba(110,231,183,0.85)" : "rgba(252,211,77,0.85)";
+}
+
+function drawLine(x1, y1, x2, y2, r, g, b) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", x1); line.setAttribute("y1", y1);
+  line.setAttribute("x2", x2); line.setAttribute("y2", y2);
+  line.setAttribute("stroke", `rgb(${r},${g},${b})`);
+  line.setAttribute("stroke-width", "4");
+  line.setAttribute("stroke-linecap", "round");
+  pathLayer.appendChild(line);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ─── Safe arithmetic evaluator ────────────────────────────────────────────────
+function evalArith(expr) {
+  if (!/^[\d\s\+\-\*\/\(\)\.]+$/.test(expr.trim())) return null;
+  try {
+    const result = Function('"use strict"; return (' + expr + ')')();
+    return (typeof result === 'number' && isFinite(result))
+      ? String(Math.round(result * 1000) / 1000)
+      : null;
+  } catch(e) { return null; }
+}
+
+// ─── Loop expander ────────────────────────────────────────────────────────────
+// Accepts both:  i = i + 1   and   i++   and   ++i
+function expandLoops(code) {
+  let result = code;
+  let safety = 0;
+  const MAX = 200;
+
+  function findMatchingBrace(str, openBracePos) {
+    let depth = 1, pos = openBracePos + 1;
+    while (pos < str.length && depth > 0) {
+      const ch = str[pos], nx = str[pos + 1];
+      if (ch === '/' && nx === '/') {
+        pos = str.indexOf('\n', pos);
+        if (pos === -1) return -1;
+      } else if (ch === '"' || ch === "'") {
+        const q = ch; pos++;
+        while (pos < str.length) {
+          if (str[pos] === '\\') { pos += 2; continue; }
+          if (str[pos] === q)   { pos++; break; }
+          pos++;
+        }
+        continue;
+      } else if (ch === '{') { depth++; }
+        else if (ch === '}') { depth--; if (depth === 0) return pos; }
+      pos++;
     }
-    function toggleLineNumbers() {
-      lineNumbersVisible = !lineNumbersVisible;
-      if (lineNumbersVisible) {
-        lineNumbers.style.display = 'block';
-        codeEditor.style.paddingLeft = '50px';
-        lineNumbersToggle.style.backgroundColor = '#34d399';
-        lineNumbersToggle.style.color = '#0f172a';
+    return -1;
+  }
+
+  while (safety++ < MAX) {
+    const forIdx    = result.search(/\bfor\s*\(/);
+    const repeatIdx = result.search(/\brepeat\s*\(/);
+    const hasFor    = forIdx    !== -1;
+    const hasRepeat = repeatIdx !== -1;
+    if (!hasFor && !hasRepeat) break;
+
+    const useFor    = hasFor && (!hasRepeat || forIdx < repeatIdx);
+    const loopStart = useFor ? forIdx : repeatIdx;
+
+    if (useFor) {
+      let pos = loopStart + 3;
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '(') return { ok: false, error: 'For loop: expected ( after for' };
+
+      let parenDepth = 1;
+      const condStart = pos + 1;
+      pos++;
+      while (pos < result.length && parenDepth > 0) {
+        if (result[pos] === '(') parenDepth++;
+        else if (result[pos] === ')') parenDepth--;
+        if (parenDepth > 0) pos++;
+      }
+      if (parenDepth !== 0) return { ok: false, error: 'For loop: mismatched parentheses in condition' };
+      const condEnd = pos;
+      const condition = result.substring(condStart, condEnd);
+
+      // ── Accept i = i + 1  OR  i++  OR  ++i  OR  i += 1 ──────────────────
+      const m = condition.match(
+        /^\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;\s*(?:\1\s*=\s*\1\s*\+\s*1|\1\s*\+=\s*1|\1\+\+|\+\+\1)\s*$/
+      );
+      if (!m) return {
+        ok: false,
+        error: 'For loop format: for(int i = 0; i < 4; i++) { ... }  or use  i = i + 1'
+      };
+
+      const varName  = m[1];
+      const startVal = parseInt(m[2], 10);
+      const endVal   = parseInt(m[3], 10);
+
+      pos = condEnd + 1;
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '{') return { ok: false, error: 'For loop: expected { after condition' };
+
+      const bodyEnd = findMatchingBrace(result, pos);
+      if (bodyEnd === -1) return { ok: false, error: 'For loop: mismatched braces' };
+
+      const body  = result.substring(pos + 1, bodyEnd).trim();
+      const count = Math.min(endVal - startVal, 50);
+      const expanded = [];
+
+      for (let i = startVal; i < startVal + count; i++) {
+        let iteration = body.replace(new RegExp('\\b' + varName + '\\b', 'g'), String(i));
+        // evaluate arithmetic inside method calls, e.g. n.move(20 + i * 8) after substitution
+        iteration = iteration.replace(
+          /(\w+\.\w+\s*\(\s*)([\d\s\+\-\*\/\(\)\.]+?)(\s*\))/g,
+          (match, prefix, expr, suffix) => {
+            const val = evalArith(expr);
+            return val !== null ? prefix + val + suffix : match;
+          }
+        );
+        expanded.push(iteration);
+      }
+
+      result =
+        result.substring(0, loopStart) +
+        '\n' + expanded.join('\n') + '\n' +
+        result.substring(bodyEnd + 1);
+
+    } else {
+      // repeat(n) { ... }
+      let pos = loopStart + 6;
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '(') return { ok: false, error: 'Repeat: expected ( after repeat' };
+      pos++;
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      let numStr = '';
+      while (pos < result.length && /\d/.test(result[pos])) { numStr += result[pos++]; }
+      if (!numStr) return { ok: false, error: 'Repeat: missing count' };
+      const repeatCount = parseInt(numStr, 10);
+      while (pos < result.length && result[pos] !== ')') pos++;
+      if (pos >= result.length) return { ok: false, error: 'Repeat: missing )' };
+      pos++;
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '{') return { ok: false, error: 'Repeat: expected {' };
+      const bodyEnd = findMatchingBrace(result, pos);
+      if (bodyEnd === -1) return { ok: false, error: 'Repeat: mismatched braces' };
+      const body = result.substring(pos + 1, bodyEnd).trim();
+      const expanded = Array.from({ length: Math.min(repeatCount, 50) }, () => body);
+      result =
+        result.substring(0, loopStart) +
+        '\n' + expanded.join('\n') + '\n' +
+        result.substring(bodyEnd + 1);
+    }
+  }
+
+  return { ok: true, code: result };
+}
+
+function stripComments(code) {
+  return code.split("\n").map(l => l.replace(/\/\/.*$/, "")).join("\n");
+}
+
+// ─── parseCommands ────────────────────────────────────────────────────────────
+function parseCommands(rawCode) {
+  let extractedCode = rawCode;
+  const mainMatch = rawCode.match(/public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*)\}/);
+  if (mainMatch) {
+    extractedCode = mainMatch[1];
+  } else {
+    const hasClass = /public\s+class\s+\w+\s*\{/.test(extractedCode);
+    extractedCode = extractedCode.replace(/public\s+class\s+\w+\s*\{/, '').replace(/^\s*\{/, '');
+    if (hasClass) extractedCode = extractedCode.replace(/\}\s*$/, '');
+  }
+  extractedCode = extractedCode.trim();
+
+  const noComments = stripComments(extractedCode).trim();
+  if (!noComments) return { ok: false, errors: [{ line: 1, text: "Code is empty. Start with: Pen n = new Pen();" }] };
+
+  const repeated = expandLoops(noComments);
+  if (!repeated.ok) return { ok: false, errors: [{ line: 1, text: repeated.error }] };
+
+  const rawLines = repeated.code.split("\n");
+  const items = [];
+  rawLines.forEach(rawLine => {
+    const trimmedLine = rawLine.trim();
+    if (!trimmedLine) return;
+    const parts = trimmedLine.split(";");
+    parts.forEach((part, idx) => {
+      const trimmed = part.trim();
+      if (!trimmed) return;
+      const needsSemicolon = idx === parts.length - 1 && !trimmedLine.endsWith(";");
+      items.push({ original: trimmed, needsSemicolon });
+    });
+  });
+
+  const commands = [], errors = [];
+  let penInitialized = false;
+
+  items.forEach((item, index) => {
+    const lineNo = index + 1;
+    if (item.needsSemicolon) {
+      errors.push({ line: lineNo, text: `Missing semicolon after "${escapeHtml(item.original)}". Java commands end with ;` });
+      return;
+    }
+    const line = item.original;
+
+    const penInitMatch = line.match(/^Pen\s+(\w+)\s*=\s*new\s+Pen\s*\(\s*\)$/);
+    if (penInitMatch) {
+      penInitialized = true;
+      commands.push({ type: "init", source: `${line};` });
+      return;
+    }
+
+    if (!penInitialized && !/^Pen\s+\w+\s*=/.test(line)) {
+      errors.push({ line: lineNo, text: "Start with: Pen n = new Pen();" });
+      return;
+    }
+
+    let m;
+    if ((m = line.match(/^(\w+)\.move\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+      const d = Number(m[2]);
+      if (d === 0) errors.push({ line: lineNo, text: "move(0) will not draw anything." });
+      commands.push({ type: "move", value: d, source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.turnRight\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+      commands.push({ type: "turn", value: Number(m[2]), source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.turnLeft\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+      commands.push({ type: "turn", value: -Number(m[2]), source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.setDirection\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+      commands.push({ type: "direction", value: Number(m[2]), source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.setSpeed\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+      const spd = Number(m[2]);
+      if (spd < 1 || spd > 10) errors.push({ line: lineNo, text: "setSpeed: use a value from 1 to 10." });
+      commands.push({ type: "speed", value: Math.max(1, Math.min(10, spd)), source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.setColor\s*\(\s*(?:new\s+Color\s*\()?\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:\))?\s*\)$/))) {
+      const r = Number(m[2]), g = Number(m[3]), b = Number(m[4]);
+      if (r<0||r>255||g<0||g>255||b<0||b>255) {
+        errors.push({ line: lineNo, text: "Color values must be 0–255." });
       } else {
-        lineNumbers.style.display = 'none';
-        codeEditor.style.paddingLeft = '1rem';
-        lineNumbersToggle.style.backgroundColor = 'rgba(248,250,252,0.12)';
-        lineNumbersToggle.style.color = '#cbd5e1';
+        commands.push({ type: "color", r, g, b, source: `${line};` });
+      }
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.setPosition\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
+      commands.push({ type: "position", x: Number(m[2]), y: Number(m[3]), source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.penUp\s*\(\s*\)$/))) {
+      commands.push({ type: "pen", value: false, source: `${line};` });
+      return;
+    }
+    if ((m = line.match(/^(\w+)\.penDown\s*\(\s*\)$/))) {
+      commands.push({ type: "pen", value: true, source: `${line};` });
+      return;
+    }
+    if (/^for\s*\(|^while\s*\(/.test(line)) {
+      errors.push({ line: lineNo, text: "For loop format: for(int i = 0; i < 4; i++) { n.move(100); }" });
+      return;
+    }
+    if (/^setColou?r/.test(line)) {
+      errors.push({ line: lineNo, text: "Use: n.setColor(255, 100, 50);" });
+      return;
+    }
+    if (/^move\s*\(/.test(line) || /^turnRight\s*\(/.test(line)) {
+      errors.push({ line: lineNo, text: "Use object notation: n.move(100) not move(100)" });
+      return;
+    }
+    if (line.length > 0 && !line.includes("//")) {
+      errors.push({ line: lineNo, text: `Unrecognised: "${escapeHtml(line)}". Check spelling, brackets, semicolon.` });
+    }
+  });
+
+  if (!penInitialized && commands.length === 0) errors.push({ line: 1, text: "Start with: Pen n = new Pen();" });
+  if (commands.length > 500) errors.push({ line: 1, text: "Too many commands (max 500). Try fewer loop iterations." });
+
+  return errors.length ? { ok: false, errors } : { ok: true, commands };
+}
+
+// ─── Execute ──────────────────────────────────────────────────────────────────
+async function executeCommands(commands) {
+  isRunning = true;
+  stopRequested = false;
+  runButton.disabled = true;
+  stopButton.classList.remove("hidden");
+
+  for (let i = 0; i < commands.length; i++) {
+    if (stopRequested) { addOutput("Stopped.", "warning"); break; }
+    const cmd = commands[i];
+    addOutput(`▶ ${escapeHtml(cmd.source)}`, "command");
+
+    if (cmd.type === "move") {
+      const rad = turtle.direction * Math.PI / 180;
+      const newX = turtle.x + Math.cos(rad) * cmd.value;
+      const newY = turtle.y + Math.sin(rad) * cmd.value;
+      if (turtle.penDown) {
+        const sx = turtle.x, sy = turtle.y;
+        const steps = Math.max(10, Math.abs(cmd.value) / 5);
+        const stepDur = (720 - turtle.speed * 60) / steps;
+        for (let s = 0; s <= steps; s++) {
+          const p = s / steps;
+          turtle.x = sx + (newX - sx) * p;
+          turtle.y = sy + (newY - sy) * p;
+          updateTurtleVisual();
+          if (s < steps) await sleep(stepDur);
+        }
+        drawLine(sx, sy, newX, newY, turtle.colorR, turtle.colorG, turtle.colorB);
+      } else {
+        turtle.x = newX; turtle.y = newY;
+        updateTurtleVisual();
+        await sleep(720 - turtle.speed * 60);
+      }
+      turtle.x = newX; turtle.y = newY;
+      if (turtle.x < 0 || turtle.x > CANVAS_W || turtle.y < 0 || turtle.y > CANVAS_H) {
+        addOutput("Hint: turtle moved outside the board. Try a smaller move or turn.", "warning");
       }
     }
-    codeEditor.addEventListener('input', updateLineNumbers);
-    codeEditor.addEventListener('scroll', () => { lineNumbers.scrollTop = codeEditor.scrollTop; });
-    lineNumbersToggle.addEventListener('click', toggleLineNumbers);
-    updateLineNumbers();
-
-    // ─── Turtle state ─────────────────────────────────────────────────────────
-    let turtle = { x:260, y:210, direction:0, colorR:37, colorG:99, colorB:235, speed:6, penDown:true };
-    let isRunning = false;
-    let stopRequested = false;
-
-    function escapeHtml(text) {
-      return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    if (cmd.type === "turn") {
+      turtle.direction += cmd.value;
+      updateTurtleVisual();
+      await sleep(360 - turtle.speed * 30);
     }
-    function addOutput(message, type = "info") {
-      const colors = { info:"text-slate-100", success:"text-emerald-300", error:"text-red-300", warning:"text-amber-300", command:"text-sky-300" };
-      const p = document.createElement("p");
-      p.className = colors[type] || colors.info;
-      p.innerHTML = message;
-      outputWindow.appendChild(p);
-      outputWindow.scrollTop = outputWindow.scrollHeight;
+    if (cmd.type === "direction") {
+      turtle.direction = cmd.value;
+      updateTurtleVisual();
+      await sleep(360 - turtle.speed * 30);
     }
-    function clearOutput(message) {
-      outputWindow.innerHTML = "";
-      if (message) addOutput(message, "info");
+    if (cmd.type === "speed")    { turtle.speed = cmd.value; }
+    if (cmd.type === "color")    { turtle.colorR = cmd.r; turtle.colorG = cmd.g; turtle.colorB = cmd.b; }
+    if (cmd.type === "position") {
+      turtle.x = cmd.x; turtle.y = cmd.y;
+      updateTurtleVisual();
+      await sleep(360 - turtle.speed * 30);
     }
-    function resetTurtle(clearPaths = true) {
-      if (clearPaths) pathLayer.innerHTML = "";
-      turtle = { x:260, y:210, direction:0, colorR:37, colorG:99, colorB:235, speed:6, penDown:true };
+    if (cmd.type === "pen") {
+      turtle.penDown = cmd.value;
       updateTurtleVisual();
     }
-    function updateTurtleVisual() {
-      turtleGroup.setAttribute("transform", `translate(${turtle.x} ${turtle.y}) rotate(${turtle.direction})`);
-      positionReadout.textContent = `x: ${Math.round(turtle.x)}, y: ${Math.round(turtle.y)}`;
-      directionReadout.textContent = `direction: ${Math.round(((turtle.direction % 360) + 360) % 360)}°`;
-      penReadout.textContent = `pen: ${turtle.penDown ? "down" : "up"}`;
+  }
+
+  if (!stopRequested) addOutput("✓ Great work! Code finished.", "success");
+  isRunning = false;
+  runButton.disabled = false;
+  stopButton.classList.add("hidden");
+}
+
+// ─── Run / Reset ──────────────────────────────────────────────────────────────
+function runCode() {
+  if (isRunning) return;
+  resetTurtle(true);
+  clearOutput("Checking your code…");
+  const parsed = parseCommands(codeEditor.value);
+  if (!parsed.ok) {
+    clearOutput("Found something to fix:");
+    parsed.errors.forEach(e => addOutput(`Line ${e.line}: ${e.text}`, "error"));
+    addOutput("Tip: commands look like  n.move(100);  or  n.turnRight(90);", "warning");
+    return;
+  }
+  clearOutput("No errors. Running…");
+  executeCommands(parsed.commands);
+}
+
+runButton.addEventListener("click", runCode);
+resetButton.addEventListener("click", () => {
+  stopRequested = true;
+  resetTurtle(true);
+  clearOutput("Drawing reset. Ready for your next run.");
+});
+stopButton.addEventListener("click", () => { stopRequested = true; });
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+editorTab.addEventListener("click", () => {
+  editorWrap.classList.remove("hidden");
+  examplesPanel.classList.add("hidden");
+  editorTab.classList.add("active");
+  examplesTab.classList.remove("active");
+});
+
+examplesTab.addEventListener("click", () => {
+  editorWrap.classList.add("hidden");
+  examplesPanel.classList.remove("hidden");
+  examplesTab.classList.add("active");
+  editorTab.classList.remove("active");
+});
+
+document.querySelectorAll(".exampleLoader").forEach(btn => {
+  btn.addEventListener("click", e => {
+    e.preventDefault();
+    const key = btn.getAttribute("data-example");
+    if (examples[key] !== undefined) {
+      codeEditor.value = examples[key];
+      clearOutput("Example loaded. Switch to Editor tab and press Run code.");
+      editorTab.click();
+      updateLineNumbers();
     }
-    function drawLine(x1, y1, x2, y2, r, g, b) {
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", x1); line.setAttribute("y1", y1);
-      line.setAttribute("x2", x2); line.setAttribute("y2", y2);
-      line.setAttribute("stroke", `rgb(${r},${g},${b})`);
-      line.setAttribute("stroke-width", "5");
-      line.setAttribute("stroke-linecap", "round");
-      pathLayer.appendChild(line);
-    }
-    function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+  });
+});
 
-    // ─── FIX: safe arithmetic expression evaluator ────────────────────────────
-    // Used to evaluate things like "20 + i * 5" after substituting i with a number.
-    function evalArith(expr) {
-      // Only allow digits, spaces, and basic arithmetic operators — no function calls.
-      if (!/^[\d\s\+\-\*\/\(\)\.]+$/.test(expr.trim())) return null;
-      try {
-        const result = Function('"use strict"; return (' + expr + ')')();
-        return (typeof result === 'number' && isFinite(result)) ? String(Math.round(result * 1000) / 1000) : null;
-      } catch(e) { return null; }
-    }
-
-    // ─── Loop expander (fixed) ────────────────────────────────────────────────
-    function expandLoops(code) {
-      let result = code;
-      let safety = 0;
-      const MAX = 200;
-
-      function findMatchingBrace(str, openBracePos) {
-        let depth = 1;
-        let pos = openBracePos + 1;
-        while (pos < str.length && depth > 0) {
-          const ch = str[pos];
-          const nx = str[pos + 1];
-          if (ch === '/' && nx === '/') {
-            pos = str.indexOf('\n', pos);
-            if (pos === -1) return -1;
-          } else if (ch === '"' || ch === "'") {
-            const q = ch; pos++;
-            while (pos < str.length) {
-              if (str[pos] === '\\') { pos += 2; continue; }
-              if (str[pos] === q)    { pos++; break; }
-              pos++;
-            }
-            continue;
-          } else if (ch === '{') {
-            depth++;
-          } else if (ch === '}') {
-            depth--;
-            if (depth === 0) return pos;
-          }
-          pos++;
-        }
-        return -1;
-      }
-
-      while (safety++ < MAX) {
-        // FIX: use .search() (returns index) not .match() (returns 0 for match at start)
-        const forIdx    = result.search(/\bfor\s*\(/);
-        const repeatIdx = result.search(/\brepeat\s*\(/);
-        const hasFor    = forIdx    !== -1;
-        const hasRepeat = repeatIdx !== -1;
-        if (!hasFor && !hasRepeat) break;
-
-        const useFor    = hasFor && (!hasRepeat || forIdx < repeatIdx);
-        const loopStart = useFor ? forIdx : repeatIdx;
-
-        if (useFor) {
-          // FIX: use loopStart directly — no second indexOf("for") call
-          let pos = loopStart + 3; // skip "for"
-          while (pos < result.length && /\s/.test(result[pos])) pos++;
-          if (result[pos] !== '(') return { ok: false, error: 'For loop: expected ( after for' };
-
-          let parenDepth = 1;
-          const condStart = pos + 1;
-          pos++;
-          while (pos < result.length && parenDepth > 0) {
-            if (result[pos] === '(') parenDepth++;
-            else if (result[pos] === ')') parenDepth--;
-            if (parenDepth > 0) pos++;
-          }
-          if (parenDepth !== 0) return { ok: false, error: 'For loop: mismatched parentheses in condition' };
-          const condEnd = pos;
-          const condition = result.substring(condStart, condEnd);
-
-          const m = condition.match(
-            /^\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;\s*\1\s*=\s*\1\s*\+\s*1\s*$/
-          );
-          if (!m) return { ok: false, error: 'For loop: use format  for(int i = 0; i < 4; i = i + 1) { ... }' };
-
-          const varName  = m[1];
-          const startVal = parseInt(m[2], 10);
-          const endVal   = parseInt(m[3], 10);
-
-          pos = condEnd + 1;
-          while (pos < result.length && /\s/.test(result[pos])) pos++;
-          if (result[pos] !== '{') return { ok: false, error: 'For loop: expected { after condition' };
-
-          const bodyEnd = findMatchingBrace(result, pos);
-          if (bodyEnd === -1) return { ok: false, error: 'For loop: mismatched braces' };
-
-          const body = result.substring(pos + 1, bodyEnd).trim();
-          const count = Math.min(endVal - startVal, 50);
-          const expanded = [];
-
-          for (let i = startVal; i < startVal + count; i++) {
-            // Replace loop variable with its value
-            let iteration = body.replace(new RegExp('\\b' + varName + '\\b', 'g'), String(i));
-
-            // FIX: evaluate any remaining arithmetic expressions inside method calls
-            // e.g. n.move(20 + 3 * 5) → n.move(35)
-            iteration = iteration.replace(
-              /(\w+\.\w+\s*\(\s*)([\d\s\+\-\*\/\(\)\.]+?)(\s*\))/g,
-              (match, prefix, expr, suffix) => {
-                const val = evalArith(expr);
-                return val !== null ? prefix + val + suffix : match;
-              }
-            );
-
-            expanded.push(iteration);
-          }
-
-          result =
-            result.substring(0, loopStart) +
-            '\n' + expanded.join('\n') + '\n' +
-            result.substring(bodyEnd + 1);
-
-        } else {
-          // repeat(n) { ... }
-          let pos = loopStart + 6; // skip "repeat"
-          while (pos < result.length && /\s/.test(result[pos])) pos++;
-          if (result[pos] !== '(') return { ok: false, error: 'Repeat loop: expected ( after repeat' };
-          pos++;
-          while (pos < result.length && /\s/.test(result[pos])) pos++;
-          let numStr = '';
-          while (pos < result.length && /\d/.test(result[pos])) { numStr += result[pos++]; }
-          if (!numStr) return { ok: false, error: 'Repeat loop: missing count number' };
-          const repeatCount = parseInt(numStr, 10);
-          while (pos < result.length && result[pos] !== ')') pos++;
-          if (pos >= result.length) return { ok: false, error: 'Repeat loop: missing )' };
-          pos++;
-          while (pos < result.length && /\s/.test(result[pos])) pos++;
-          if (result[pos] !== '{') return { ok: false, error: 'Repeat loop: expected { after repeat(n)' };
-          const bodyEnd = findMatchingBrace(result, pos);
-          if (bodyEnd === -1) return { ok: false, error: 'Repeat loop: mismatched braces' };
-          const body = result.substring(pos + 1, bodyEnd).trim();
-          const limit = Math.min(repeatCount, 50);
-          const expanded = Array.from({ length: limit }, () => body);
-          result =
-            result.substring(0, loopStart) +
-            '\n' + expanded.join('\n') + '\n' +
-            result.substring(bodyEnd + 1);
-        }
-      }
-
-      return { ok: true, code: result };
-    }
-
-    // ─── stripComments ────────────────────────────────────────────────────────
-    function stripComments(code) {
-      return code.split("\n").map(line => line.replace(/\/\/.*$/, "")).join("\n");
-    }
-
-    // ─── parseCommands ────────────────────────────────────────────────────────
-    function parseCommands(rawCode) {
-      let extractedCode = rawCode;
-      const mainMatch = rawCode.match(/public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*)\}/);
-      if (mainMatch) {
-        // Code was wrapped in a main method — mainMatch[1] already extracted the inner body
-        extractedCode = mainMatch[1];
-      } else {
-        // No main method — only strip a class-level wrapper { } if present, never blindly strip trailing }
-        const hasClassWrapper = /public\s+class\s+\w+\s*\{/.test(extractedCode);
-        extractedCode = extractedCode.replace(/public\s+class\s+\w+\s*\{/, '').replace(/^\s*\{/, '');
-        if (hasClassWrapper) extractedCode = extractedCode.replace(/\}\s*$/, '');
-      }
-      extractedCode = extractedCode.trim();
-
-      const noComments = stripComments(extractedCode).trim();
-      if (!noComments) return { ok: false, errors: [{ line: 1, text: "Your code is empty. Add code like Pen n = new Pen();" }] };
-
-      const repeated = expandLoops(noComments);
-      if (!repeated.ok) return { ok: false, errors: [{ line: 1, text: repeated.error }] };
-
-      // FIX: split on newlines first, then on semicolons.
-      // This prevents the semicolon-splitter from wrongly flagging loop body lines
-      // that have already been expanded (they have their own semicolons).
-      const rawLines = repeated.code.split("\n");
-      const items = [];
-      rawLines.forEach(rawLine => {
-        const trimmedLine = rawLine.trim();
-        if (!trimmedLine) return;
-        // Split on semicolons within this line
-        const parts = trimmedLine.split(";");
-        parts.forEach((part, idx) => {
-          const trimmed = part.trim();
-          if (!trimmed) return;
-          // If it's the last part of the line AND the line didn't end with ;
-          const needsSemicolon = idx === parts.length - 1 && !trimmedLine.endsWith(";");
-          items.push({ original: trimmed, needsSemicolon });
-        });
-      });
-
-      const commands = [];
-      const errors = [];
-      let penInitialized = false;
-
-      items.forEach((item, index) => {
-        const lineNo = index + 1;
-        if (item.needsSemicolon) {
-          errors.push({ line: lineNo, text: `Missing semicolon after "${escapeHtml(item.original)}". Java commands end with ;` });
-          return;
-        }
-        const line = item.original;
-
-        const penInitMatch = line.match(/^Pen\s+(\w+)\s*=\s*new\s+Pen\s*\(\s*\)$/);
-        if (penInitMatch) {
-          penInitialized = true;
-          commands.push({ type: "init", source: `${line};` });
-          return;
-        }
-
-        if (!penInitialized && !/^Pen\s+\w+\s*=/.test(line)) {
-          errors.push({ line: lineNo, text: "Start with: Pen n = new Pen();" });
-          return;
-        }
-
-        let match;
-        if ((match = line.match(/^(\w+)\.move\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-          const distance = Number(match[2]);
-          if (distance === 0) errors.push({ line: lineNo, text: "move(0) will not draw anything." });
-          commands.push({ type: "move", value: distance, source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.turnRight\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-          commands.push({ type: "turn", value: Number(match[2]), source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.turnLeft\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-          commands.push({ type: "turn", value: -Number(match[2]), source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.setDirection\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-          commands.push({ type: "direction", value: Number(match[2]), source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.setSpeed\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-          const speed = Number(match[2]);
-          if (speed < 1 || speed > 10) errors.push({ line: lineNo, text: "setSpeed should be from 1 to 10." });
-          commands.push({ type: "speed", value: Math.max(1, Math.min(10, speed)), source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.setColor\s*\(\s*(?:new\s+Color\s*\()?\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:\))?\s*\)$/))) {
-          const r = Number(match[2]), g = Number(match[3]), b = Number(match[4]);
-          if (r < 0||r > 255||g < 0||g > 255||b < 0||b > 255) {
-            errors.push({ line: lineNo, text: "Color values must be between 0 and 255." });
-          } else {
-            commands.push({ type: "color", r, g, b, source: `${line};` });
-          }
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.setPosition\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-          commands.push({ type: "position", x: Number(match[2]), y: Number(match[3]), source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.penUp\s*\(\s*\)$/))) {
-          commands.push({ type: "pen", value: false, source: `${line};` });
-          return;
-        }
-        if ((match = line.match(/^(\w+)\.penDown\s*\(\s*\)$/))) {
-          commands.push({ type: "pen", value: true, source: `${line};` });
-          return;
-        }
-        if (/^for\s*\(|^while\s*\(/.test(line)) {
-          errors.push({ line: lineNo, text: "For loops use this format: for(int i = 0; i < 4; i = i + 1) { n.move(100); }" });
-          return;
-        }
-        if (/^setColour/.test(line)) {
-          errors.push({ line: lineNo, text: "Use the American spelling: n.setColor(255, 100, 50);" });
-          return;
-        }
-        if (/^move\s*\(/.test(line) || /^turnRight\s*\(/.test(line)) {
-          errors.push({ line: lineNo, text: 'Use object notation like n.move(100) instead of move(100)' });
-          return;
-        }
-        if (line.length > 0 && !line.includes("//")) {
-          errors.push({ line: lineNo, text: `I do not recognise "${escapeHtml(line)}". Check spelling, brackets, and semicolon.` });
-        }
-      });
-
-      if (!penInitialized && commands.length === 0) {
-        errors.push({ line: 1, text: "Start with: Pen n = new Pen();" });
-      }
-      if (commands.length > 500) {
-        errors.push({ line: 1, text: "Too many commands (max 500). Try fewer loop iterations." });
-      }
-
-      return errors.length ? { ok: false, errors } : { ok: true, commands };
-    }
-
-    // ─── Execute ──────────────────────────────────────────────────────────────
-    async function executeCommands(commands) {
-      isRunning = true;
-      stopRequested = false;
-      runButton.disabled = true;
-      runButton.classList.add("opacity-60");
-      stopButton.classList.remove("hidden");
-
-      for (let i = 0; i < commands.length; i++) {
-        if (stopRequested) { addOutput("Stopped.", "warning"); break; }
-        const command = commands[i];
-        addOutput(`▶ ${escapeHtml(command.source)}`, "command");
-
-        if (command.type === "move") {
-          const radians = turtle.direction * Math.PI / 180;
-          const newX = turtle.x + Math.cos(radians) * command.value;
-          const newY = turtle.y + Math.sin(radians) * command.value;
-          if (turtle.penDown) {
-            const startX = turtle.x, startY = turtle.y;
-            const steps = Math.max(10, Math.abs(command.value) / 5);
-            const stepDuration = (720 - turtle.speed * 60) / steps;
-            for (let step = 0; step <= steps; step++) {
-              const p = step / steps;
-              turtle.x = startX + (newX - startX) * p;
-              turtle.y = startY + (newY - startY) * p;
-              updateTurtleVisual();
-              if (step < steps) await sleep(stepDuration);
-            }
-            drawLine(startX, startY, newX, newY, turtle.colorR, turtle.colorG, turtle.colorB);
-          } else {
-            turtle.x = newX; turtle.y = newY;
-            updateTurtleVisual();
-            await sleep(720 - turtle.speed * 60);
-          }
-          turtle.x = newX; turtle.y = newY;
-          if (turtle.x < 0 || turtle.x > 760 || turtle.y < 0 || turtle.y > 360) {
-            addOutput("Hint: turtle moved outside the board. Try a smaller move or turn first.", "warning");
-          }
-        }
-        if (command.type === "turn") {
-          turtle.direction += command.value;
-          updateTurtleVisual();
-          await sleep(360 - turtle.speed * 30);
-        }
-        if (command.type === "direction") {
-          turtle.direction = command.value;
-          updateTurtleVisual();
-          await sleep(360 - turtle.speed * 30);
-        }
-        if (command.type === "speed") { turtle.speed = command.value; }
-        if (command.type === "color") {
-          turtle.colorR = command.r; turtle.colorG = command.g; turtle.colorB = command.b;
-        }
-        if (command.type === "position") {
-          turtle.x = command.x; turtle.y = command.y;
-          updateTurtleVisual();
-          await sleep(360 - turtle.speed * 30);
-        }
-        if (command.type === "pen") {
-          turtle.penDown = command.value;
-          updateTurtleVisual();
-        }
-      }
-
-      if (!stopRequested) addOutput("Great work! Code finished running.", "success");
-      isRunning = false;
-      runButton.disabled = false;
-      runButton.classList.remove("opacity-60");
-      stopButton.classList.add("hidden");
-    }
-
-    // ─── Run / Reset ──────────────────────────────────────────────────────────
-    function runCode() {
-      if (isRunning) return;
-      resetTurtle(true);
-      clearOutput("Checking your code...");
-      const parsed = parseCommands(codeEditor.value);
-      if (!parsed.ok) {
-        clearOutput("I found something to fix:");
-        parsed.errors.forEach(e => addOutput(`Line ${e.line}: ${e.text}`, "error"));
-        addOutput("Tip: commands look like n.move(100); or n.turnRight(90);", "warning");
-        return;
-      }
-      clearOutput("No errors found. Running commands...");
-      executeCommands(parsed.commands);
-    }
-
-    runButton.addEventListener("click", runCode);
-    resetButton.addEventListener("click", () => {
-      stopRequested = true;
-      resetTurtle(true);
-      clearOutput("Drawing reset. Ready for your next run.");
-    });
-    stopButton.addEventListener("click", () => {
-      stopRequested = true;
-      stopButton.textContent = "Stopping...";
-      setTimeout(() => { stopButton.textContent = "Stop"; }, 500);
-    });
-
-    // ─── Tab switching ────────────────────────────────────────────────────────
-    editorTab.addEventListener("click", () => {
-      codeEditor.classList.remove("hidden");
-      examplesPanel.classList.add("hidden");
-      editorTab.classList.add("bg-emerald-400/20","text-emerald-200");
-      editorTab.classList.remove("bg-white/12","text-slate-300");
-      examplesTab.classList.remove("bg-emerald-400/20","text-emerald-200");
-      examplesTab.classList.add("bg-white/12","text-slate-300");
-    });
-    examplesTab.addEventListener("click", () => {
-      codeEditor.classList.add("hidden");
-      examplesPanel.classList.remove("hidden");
-      examplesTab.classList.add("bg-emerald-400/20","text-emerald-200");
-      examplesTab.classList.remove("bg-white/12","text-slate-300");
-      editorTab.classList.remove("bg-emerald-400/20","text-emerald-200");
-      editorTab.classList.add("bg-white/12","text-slate-300");
-    });
-    document.querySelectorAll(".exampleLoader").forEach(button => {
-      button.addEventListener("click", (e) => {
-        e.preventDefault();
-        const key = button.getAttribute("data-example");
-        if (examples[key] !== undefined) {
-          codeEditor.value = examples[key];
-          clearOutput(`${button.querySelector("h4").textContent} loaded. Click Editor tab then Run code.`);
-          editorTab.click();
-          updateLineNumbers();
-        }
-      });
-    });
-
-    // ─── Init ─────────────────────────────────────────────────────────────────
-    resetTurtle(true);
-    lucide.createIcons();
-  </script>
- </body>
+// ─── Init ─────────────────────────────────────────────────────────────────────
+resetTurtle(true);
+lucide.createIcons();
+</script>
+</body>
 </html>
