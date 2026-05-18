@@ -617,36 +617,158 @@ for(int i = 0; i < 5; i = i + 1) {
         .join("\n");
     }
 
-    function expandLoops(code) {
-      let expanded = code;
-      
-      // Handle for loops: for(int i = 0; i < n; i = i + 1) { ... }
-      const forPattern = /for\s*\(\s*int\s+\w+\s*=\s*(\d+)\s*;\s*\w+\s*<\s*(\d+)\s*;\s*\w+\s*=\s*\w+\s*\+\s*1\s*\)\s*\{([^{}]*)\}/gm;
+    // ─── DROP-IN REPLACEMENT for expandLoops() ───────────────────────────────────
+// Fixes:
+//  1. forPos re-search offset drift across multiple loops
+//  2. Loop-variable regex replacing wrong tokens
+//  3. Whitespace flexibility in the for-header condition
 
-      expanded = expanded.replace(forPattern, (match, start, end, body) => {
-        const startNum = Number(start);
-        const endNum = Number(end);
-        const iterations = Math.min(endNum - startNum, 50);
-        return Array(iterations).fill(body.trim()).join("\n");
-      });
+function expandLoops(code) {
+  let result = code;
+  let safety = 0;
+  const MAX = 200; // max total expansions to prevent infinite loops
 
-      // Also handle repeat() for backwards compatibility
-      const repeatPattern = /repeat\s*\(\s*(\d+)\s*\)\s*\{([^{}]*)\}/gm;
-      expanded = expanded.replace(repeatPattern, (match, count, body) => {
-        const n = Math.min(Number(count), 50);
-        return Array(n).fill(body.trim()).join("\n");
-      });
+  // Finds the closing } that matches the { at openBracePos
+  function findMatchingBrace(str, openBracePos) {
+    let depth = 1;
+    let pos = openBracePos + 1;
+    while (pos < str.length && depth > 0) {
+      const ch = str[pos];
+      const nx = str[pos + 1];
+      if (ch === '/' && nx === '/') {          // skip line comment
+        pos = str.indexOf('\n', pos);
+        if (pos === -1) return -1;
+      } else if (ch === '"' || ch === "'") {   // skip string literal
+        const q = ch; pos++;
+        while (pos < str.length) {
+          if (str[pos] === '\\') { pos += 2; continue; }
+          if (str[pos] === q)    { pos++; break; }
+          pos++;
+        }
+        continue;
+      } else if (ch === '{') {
+        depth++;
+      } else if (ch === '}') {
+        depth--;
+        if (depth === 0) return pos;
+      }
+      pos++;
+    }
+    return -1;
+  }
 
-      // Check for any remaining unmatched loops
-      if (/\bfor\s*\(/.test(expanded) || /\brepeat\s*\(/.test(expanded)) {
+  while (safety++ < MAX) {
+    // ── Find the first loop keyword ──────────────────────────────────────────
+    const forIdx    = result.search(/\bfor\s*\(/);
+    const repeatIdx = result.search(/\brepeat\s*\(/);
+
+    const hasFor    = forIdx    !== -1;
+    const hasRepeat = repeatIdx !== -1;
+
+    if (!hasFor && !hasRepeat) break; // no more loops
+
+    const useFor = hasFor && (!hasRepeat || forIdx < repeatIdx);
+    const loopStart = useFor ? forIdx : repeatIdx;
+
+    // ── FOR loop ─────────────────────────────────────────────────────────────
+    if (useFor) {
+      // Skip past "for"
+      let pos = loopStart + 3;
+
+      // Find opening paren
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '(') return { ok: false, error: 'For loop: expected ( after for' };
+
+      // Find matching closing paren
+      let parenDepth = 1;
+      let condStart = pos + 1;
+      pos++;
+      while (pos < result.length && parenDepth > 0) {
+        if (result[pos] === '(') parenDepth++;
+        else if (result[pos] === ')') parenDepth--;
+        if (parenDepth > 0) pos++;
+      }
+      if (parenDepth !== 0) return { ok: false, error: 'For loop: mismatched parentheses in condition' };
+      const condEnd = pos; // points at ')'
+      const condition = result.substring(condStart, condEnd);
+
+      // Parse  int varName = start ; varName < end ; varName = varName + 1
+      const m = condition.match(
+        /^\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;\s*\1\s*=\s*\1\s*\+\s*1\s*$/
+      );
+      if (!m) {
         return {
           ok: false,
-          error: "I found a loop I could not read. For loops should look like: for(int side = 0; side < 4; side = side + 1) { move(100); }"
+          error: 'For loop: use format  for(int i = 0; i < 4; i = i + 1) { ... }'
         };
       }
+      const varName  = m[1];
+      const startVal = parseInt(m[2], 10);
+      const endVal   = parseInt(m[3], 10);
 
-      return { ok: true, code: expanded };
+      // Find opening brace of body
+      pos = condEnd + 1;
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '{') return { ok: false, error: 'For loop: expected { after condition' };
+
+      const bodyEnd = findMatchingBrace(result, pos);
+      if (bodyEnd === -1) return { ok: false, error: 'For loop: mismatched braces' };
+
+      const body = result.substring(pos + 1, bodyEnd).trim();
+
+      // Expand
+      const count = Math.min(endVal - startVal, 50);
+      const expanded = [];
+      for (let i = startVal; i < startVal + count; i++) {
+        // Replace the loop variable safely (whole-word match)
+        const iteration = body.replace(new RegExp('\\b' + varName + '\\b', 'g'), String(i));
+        expanded.push(iteration);
+      }
+
+      result =
+        result.substring(0, loopStart) +
+        '\n' + expanded.join('\n') + '\n' +
+        result.substring(bodyEnd + 1);
     }
+
+    // ── REPEAT loop ──────────────────────────────────────────────────────────
+    else {
+      let pos = loopStart + 6; // skip "repeat"
+
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '(') return { ok: false, error: 'Repeat loop: expected ( after repeat' };
+      pos++;
+
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      let numStr = '';
+      while (pos < result.length && /\d/.test(result[pos])) { numStr += result[pos++]; }
+      if (!numStr) return { ok: false, error: 'Repeat loop: missing count number' };
+
+      const repeatCount = parseInt(numStr, 10);
+
+      while (pos < result.length && result[pos] !== ')') pos++;
+      if (pos >= result.length) return { ok: false, error: 'Repeat loop: missing )' };
+      pos++; // skip ')'
+
+      while (pos < result.length && /\s/.test(result[pos])) pos++;
+      if (result[pos] !== '{') return { ok: false, error: 'Repeat loop: expected { after repeat(n)' };
+
+      const bodyEnd = findMatchingBrace(result, pos);
+      if (bodyEnd === -1) return { ok: false, error: 'Repeat loop: mismatched braces' };
+
+      const body = result.substring(pos + 1, bodyEnd).trim();
+      const limit = Math.min(repeatCount, 50);
+      const expanded = Array.from({ length: limit }, () => body);
+
+      result =
+        result.substring(0, loopStart) +
+        '\n' + expanded.join('\n') + '\n' +
+        result.substring(bodyEnd + 1);
+    }
+  }
+
+  return { ok: true, code: result };
+}
 
     function parseCommands(rawCode) {
       let extractedCode = rawCode;
