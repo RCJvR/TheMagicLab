@@ -335,10 +335,11 @@
       flex-direction: column;
       gap: 10px;
       min-height: 0;
+      overflow-y: auto;
     }
 
-    /* canvas panel grows to fill */
-    #canvasPanel { flex: 1; min-height: 0; }
+    /* canvas panel sizes to its content (board + header) */
+    #canvasPanel { flex-shrink: 0; }
 
     /* ── Canvas readouts ─────────────────────────────────────────────────────── */
     .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -356,15 +357,19 @@
     }
 
     /* ── Drawing board ───────────────────────────────────────────────────────── */
+    /*
+      The SVG viewBox is 760×480. We use the modern aspect-ratio property
+      to lock the container to exactly that ratio so it always fills the
+      available width with zero letterbox whitespace at any screen size.
+    */
     .canvas-outer {
-      flex: 1;
-      min-height: 0;
       margin: 0 12px 12px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.09);
       background: #f8f9ff;
-      display: flex;
+      width: 100%;
+      aspect-ratio: 760 / 480;
     }
 
     #drawingSvg {
@@ -418,6 +423,16 @@
     }
 
     .hidden { display: none !important; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body>
@@ -465,7 +480,9 @@
 n.setColor(37, 99, 235);
 n.setSpeed(6);
 for(int side = 0; side &lt; 4; side++) {
-  n.move(100);
+  for(int step = 0; step &lt; 100; step++) {
+    n.move();
+  }
   n.turnRight(90);
 }</textarea>
         </div>
@@ -533,7 +550,7 @@ for(int side = 0; side &lt; 4; side++) {
         </div>
         <div class="cheat-list">
           <div class="cheat-row"><span class="cheat-cmd">Pen n = new Pen();</span>     <span class="cheat-desc">create a pen object</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.move(100);</span>            <span class="cheat-desc">draw forward 100 px</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">n.move();</span>              <span class="cheat-desc">move forward 1 unit</span></div>
           <div class="cheat-row"><span class="cheat-cmd">n.turnRight(90);</span>        <span class="cheat-desc">turn clockwise 90°</span></div>
           <div class="cheat-row"><span class="cheat-cmd">n.turnLeft(45);</span>         <span class="cheat-desc">turn anti-clockwise 45°</span></div>
           <div class="cheat-row"><span class="cheat-cmd">n.setColor(255,100,50);</span> <span class="cheat-desc">RGB colour 0–255</span></div>
@@ -578,7 +595,7 @@ for(int side = 0; side &lt; 4; side++) {
 
             Turtle default start: x=380, y=240 (centre of 760×480).
           -->
-          <svg id="drawingSvg" viewBox="0 0 760 480" preserveAspectRatio="xMidYMid meet"
+          <svg id="drawingSvg" viewBox="0 0 760 480" preserveAspectRatio="none"
                role="img" aria-label="Turtle drawing canvas">
 
             <!-- ── Grid (100-unit squares) ────────────────────────────────── -->
@@ -667,59 +684,63 @@ const examples = {
   square_simple: `Pen n = new Pen();
 n.setColor(37, 99, 235);
 n.setSpeed(6);
-n.move(100);
+for(int s = 0; s < 100; s++) { n.move(); }
 n.turnRight(90);
-n.move(100);
+for(int s = 0; s < 100; s++) { n.move(); }
 n.turnRight(90);
-n.move(100);
+for(int s = 0; s < 100; s++) { n.move(); }
 n.turnRight(90);
-n.move(100);`,
+for(int s = 0; s < 100; s++) { n.move(); }`,
   square_loop: `Pen n = new Pen();
 n.setColor(37, 99, 235);
 n.setSpeed(7);
 for(int side = 0; side < 4; side++) {
-  n.move(100);
+  for(int s = 0; s < 100; s++) {
+    n.move();
+  }
   n.turnRight(90);
 }`,
   rectangle: `Pen n = new Pen();
 n.setColor(34, 197, 94);
 n.setSpeed(6);
-n.move(150);
+for(int s = 0; s < 150; s++) { n.move(); }
 n.turnRight(90);
-n.move(80);
+for(int s = 0; s < 80; s++) { n.move(); }
 n.turnRight(90);
-n.move(150);
+for(int s = 0; s < 150; s++) { n.move(); }
 n.turnRight(90);
-n.move(80);`,
+for(int s = 0; s < 80; s++) { n.move(); }`,
   triangle: `Pen n = new Pen();
 n.setColor(239, 68, 68);
 n.setSpeed(6);
-n.move(120);
+for(int s = 0; s < 120; s++) { n.move(); }
 n.turnRight(120);
-n.move(120);
+for(int s = 0; s < 120; s++) { n.move(); }
 n.turnRight(120);
-n.move(120);`,
+for(int s = 0; s < 120; s++) { n.move(); }`,
   hexagon: `Pen n = new Pen();
 n.setColor(168, 85, 247);
 n.setSpeed(7);
 for(int side = 0; side < 6; side++) {
-  n.move(80);
+  for(int s = 0; s < 80; s++) {
+    n.move();
+  }
   n.turnRight(60);
 }`,
   pattern_squares: `Pen n = new Pen();
 n.setColor(249, 115, 22);
 n.setSpeed(5);
 for(int i = 0; i < 3; i++) {
-  n.move(60);
+  for(int s = 0; s < 60; s++) { n.move(); }
   n.turnRight(90);
-  n.move(60);
+  for(int s = 0; s < 60; s++) { n.move(); }
   n.turnRight(90);
-  n.move(60);
+  for(int s = 0; s < 60; s++) { n.move(); }
   n.turnRight(90);
-  n.move(60);
+  for(int s = 0; s < 60; s++) { n.move(); }
   n.turnRight(90);
   n.penUp();
-  n.move(70);
+  for(int s = 0; s < 70; s++) { n.move(); }
   n.penDown();
 }`,
   spiral: `Pen n = new Pen();
@@ -727,39 +748,41 @@ n.setColor(168, 85, 247);
 n.setSpeed(8);
 n.setPosition(300, 200);
 for(int i = 0; i < 16; i++) {
-  n.move(20 + i * 8);
+  for(int s = 0; s < 20; s++) {
+    n.move();
+  }
   n.turnRight(90);
 }`,
   house: `Pen n = new Pen();
 n.setColor(249, 115, 22);
 n.setSpeed(7);
 n.setPosition(200, 150);
-n.move(150);
+for(int s = 0; s < 150; s++) { n.move(); }
 n.turnRight(90);
-n.move(120);
+for(int s = 0; s < 120; s++) { n.move(); }
 n.turnRight(90);
-n.move(150);
+for(int s = 0; s < 150; s++) { n.move(); }
 n.turnRight(90);
-n.move(120);
+for(int s = 0; s < 120; s++) { n.move(); }
 n.penUp();
 n.setPosition(200, 150);
 n.penDown();
 n.setColor(239, 68, 68);
 n.setDirection(315);
-n.move(106);
+for(int s = 0; s < 106; s++) { n.move(); }
 n.penUp();
 n.setPosition(350, 150);
 n.penDown();
 n.setDirection(225);
-n.move(106);`,
+for(int s = 0; s < 106; s++) { n.move(); }`,
   star: `Pen n = new Pen();
 n.setColor(249, 115, 22);
 n.setSpeed(7);
 n.setPosition(380, 180);
 for(int i = 0; i < 5; i++) {
-  n.move(100);
+  for(int s = 0; s < 100; s++) { n.move(); }
   n.turnRight(144);
-  n.move(100);
+  for(int s = 0; s < 100; s++) { n.move(); }
   n.turnRight(36);
 }`
 };
@@ -1063,10 +1086,12 @@ function parseCommands(rawCode) {
     }
 
     let m;
+    if ((m = line.match(/^(\w+)\.move\s*\(\s*\)$/))) {
+      commands.push({ type: "move", value: 1, source: `${line};` });
+      return;
+    }
     if ((m = line.match(/^(\w+)\.move\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
-      const d = Number(m[2]);
-      if (d === 0) errors.push({ line: lineNo, text: "move(0) will not draw anything." });
-      commands.push({ type: "move", value: d, source: `${line};` });
+      errors.push({ line: lineNo, text: `n.move() takes no argument — it always moves 1 unit. To move ${m[2]} units, use a loop: for(int i = 0; i < ${m[2]}; i++) { n.move(); }` });
       return;
     }
     if ((m = line.match(/^(\w+)\.turnRight\s*\(\s*(-?\d+(?:\.\d+)?)\s*\)$/))) {
@@ -1109,7 +1134,7 @@ function parseCommands(rawCode) {
       return;
     }
     if (/^for\s*\(|^while\s*\(/.test(line)) {
-      errors.push({ line: lineNo, text: "For loop format: for(int i = 0; i < 4; i++) { n.move(100); }" });
+      errors.push({ line: lineNo, text: "For loop format: for(int i = 0; i < 4; i++) { n.move(); }" });
       return;
     }
     if (/^setColou?r/.test(line)) {
@@ -1117,7 +1142,7 @@ function parseCommands(rawCode) {
       return;
     }
     if (/^move\s*\(/.test(line) || /^turnRight\s*\(/.test(line)) {
-      errors.push({ line: lineNo, text: "Use object notation: n.move(100) not move(100)" });
+      errors.push({ line: lineNo, text: "Use object notation: n.move() not move()" });
       return;
     }
     if (line.length > 0 && !line.includes("//")) {
@@ -1144,29 +1169,18 @@ async function executeCommands(commands) {
     addOutput(`▶ ${escapeHtml(cmd.source)}`, "command");
 
     if (cmd.type === "move") {
+      // always 1 unit — students use loops or repeated calls to cover distance
       const rad = turtle.direction * Math.PI / 180;
-      const newX = turtle.x + Math.cos(rad) * cmd.value;
-      const newY = turtle.y + Math.sin(rad) * cmd.value;
+      const newX = turtle.x + Math.cos(rad);
+      const newY = turtle.y + Math.sin(rad);
       if (turtle.penDown) {
-        const sx = turtle.x, sy = turtle.y;
-        const steps = Math.max(10, Math.abs(cmd.value) / 5);
-        const stepDur = (720 - turtle.speed * 60) / steps;
-        for (let s = 0; s <= steps; s++) {
-          const p = s / steps;
-          turtle.x = sx + (newX - sx) * p;
-          turtle.y = sy + (newY - sy) * p;
-          updateTurtleVisual();
-          if (s < steps) await sleep(stepDur);
-        }
-        drawLine(sx, sy, newX, newY, turtle.colorR, turtle.colorG, turtle.colorB);
-      } else {
-        turtle.x = newX; turtle.y = newY;
-        updateTurtleVisual();
-        await sleep(720 - turtle.speed * 60);
+        drawLine(turtle.x, turtle.y, newX, newY, turtle.colorR, turtle.colorG, turtle.colorB);
       }
       turtle.x = newX; turtle.y = newY;
+      updateTurtleVisual();
+      await sleep(720 - turtle.speed * 60);
       if (turtle.x < 0 || turtle.x > CANVAS_W || turtle.y < 0 || turtle.y > CANVAS_H) {
-        addOutput("Hint: turtle moved outside the board. Try a smaller move or turn.", "warning");
+        addOutput("Hint: turtle moved outside the board. Try turning or using fewer move() calls.", "warning");
       }
     }
     if (cmd.type === "turn") {
@@ -1207,7 +1221,7 @@ function runCode() {
   if (!parsed.ok) {
     clearOutput("Found something to fix:");
     parsed.errors.forEach(e => addOutput(`Line ${e.line}: ${e.text}`, "error"));
-    addOutput("Tip: commands look like  n.move(100);  or  n.turnRight(90);", "warning");
+    addOutput("Tip: commands look like  n.move();  or  n.turnRight(90);", "warning");
     return;
   }
   clearOutput("No errors. Running…");
