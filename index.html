@@ -208,7 +208,8 @@
       display: flex; flex-direction: column; gap: 8px;
       min-height: 0; overflow: hidden;
     }
-    #canvasPanel { flex-shrink: 0; }
+    /* Canvas panel fills the right column entirely */
+    #canvasPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
     /* ── Readouts ── */
     .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -232,13 +233,15 @@
       width-constrained and shorter than 340px — still perfectly square internally.
     */
     .canvas-outer {
-      margin: 0 12px 10px;
+      margin: 0 12px 12px;
       border-radius: 10px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.09); background: #f8f9ff;
+      /* padding-bottom trick: enforces exact 76:48 aspect ratio */
       width: calc(100% - 24px);
       height: 0;
       padding-bottom: calc((100% - 24px) * 48 / 76);
       position: relative;
+      flex-shrink: 0;
     }
     #drawingSvg {
       position: absolute; top: 0; left: 0;
@@ -247,8 +250,8 @@
     }
     .turtle { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22)); transition: transform 80ms linear; }
 
-    /* ── Output panel — scrollable, takes remaining space ── */
-    #outputPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    /* ── Output panel — fixed height in left column ── */
+    #outputPanel { flex-shrink: 0; }
     .stop-btn {
       display: flex; align-items: center; gap: 5px; font-family: "DM Sans", sans-serif;
       font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
@@ -257,9 +260,9 @@
     }
     .stop-btn:hover { background: rgba(239,68,68,0.30); }
     #outputWindow {
-      font-family: "JetBrains Mono", monospace; font-size: 11px; line-height: 19px;
+      font-family: "JetBrains Mono", monospace; font-size: 13px; line-height: 21px;
       background: #06091a; border-radius: 0 0 13px 13px;
-      padding: 10px 13px; flex: 1; min-height: 80px; overflow-y: auto;
+      padding: 10px 13px; height: 160px; overflow-y: auto;
     }
     #outputWindow p { margin: 0 0 1px; }
 
@@ -297,8 +300,9 @@
           </h2>
           <div style="display:flex;align-items:center;gap:5px;">
             <div class="tab-group">
-              <button id="editorTab"   class="tab-btn active">Editor</button>
+              <button id="editorTab"    class="tab-btn active">Editor</button>
               <button id="examplesTab" class="tab-btn">Examples</button>
+              <button id="referenceTab" class="tab-btn">Reference</button>
             </div>
             <button id="lineNumbersToggle" class="icon-btn active" title="Toggle line numbers">
               <i data-lucide="list" style="width:13px;height:13px;"></i>
@@ -372,6 +376,10 @@
           </button>
         </div>
 
+        <div id="referencePanel" class="hidden" style="flex:1;overflow-y:auto;background:#06091a;">
+          <div class="cheat-list" style="max-height:none;padding:10px 14px;" id="referenceList"></div>
+        </div>
+
         <div class="actions-row">
           <button id="runButton" class="act-btn btn-run">
             <i data-lucide="play" style="width:14px;height:14px;"></i> Run code
@@ -392,29 +400,19 @@
         </div>
       </div>
 
-      <!-- Cheat sheet -->
-      <div class="panel" id="cheatPanel">
+      <!-- Output & feedback — lives in the left column below the editor -->
+      <div class="panel" id="outputPanel">
         <div class="panel-hd">
           <h2 class="panel-title">
-            <i data-lucide="lightbulb" style="width:14px;height:14px;color:#fbbf24;"></i>
-            Command reference
+            <i data-lucide="terminal-square" style="width:14px;height:14px;color:#34d399;"></i>
+            Output &amp; feedback
           </h2>
+          <button id="stopButton" class="stop-btn hidden">
+            <i data-lucide="square" style="width:11px;height:11px;"></i> Stop
+          </button>
         </div>
-        <div class="cheat-list">
-          <div class="cheat-row"><span class="cheat-cmd">Pen n = new Pen();</span><span class="cheat-desc">create pen (required)</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.move();</span><span class="cheat-desc">move forward 1 unit</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.turnRight(90);</span><span class="cheat-desc">turn clockwise 90°</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.turnLeft(45);</span><span class="cheat-desc">turn anti-clockwise 45°</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.setDirection(Pen.UP);</span><span class="cheat-desc">point UP / DOWN / LEFT / RIGHT</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.setColor(255,100,50);</span><span class="cheat-desc">RGB colour 0–255</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.setLineWidth(3);</span><span class="cheat-desc">line width 1–50 (default 1)</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.penUp();</span><span class="cheat-desc">move without drawing</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.penDown();</span><span class="cheat-desc">start drawing again</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.setPosition(20,10);</span><span class="cheat-desc">jump to coordinates</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">n.setGridSize(76,48);</span><span class="cheat-desc">resize the canvas</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">for(int i=0; i&lt;4; i++)</span><span class="cheat-desc">repeat 4 times</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">// comment</span><span class="cheat-desc">single-line comment</span></div>
-          <div class="cheat-row"><span class="cheat-cmd">/* comment */</span><span class="cheat-desc">multi-line comment</span></div>
+        <div id="outputWindow">
+          <p style="color:rgba(221,225,240,0.38);">Ready — press <strong style="color:#6ee7b7;">Run code</strong> to execute.</p>
         </div>
       </div>
     </div><!-- /leftCol -->
@@ -467,20 +465,6 @@
         </div>
       </div>
 
-      <div class="panel" id="outputPanel">
-        <div class="panel-hd">
-          <h2 class="panel-title">
-            <i data-lucide="terminal-square" style="width:14px;height:14px;color:#34d399;"></i>
-            Output &amp; feedback
-          </h2>
-          <button id="stopButton" class="stop-btn hidden">
-            <i data-lucide="square" style="width:11px;height:11px;"></i> Stop
-          </button>
-        </div>
-        <div id="outputWindow">
-          <p style="color:rgba(221,225,240,0.38);">Ready — press <strong style="color:#6ee7b7;">Run code</strong> to execute.</p>
-        </div>
-      </div>
     </div><!-- /rightCol -->
   </div><!-- /mainGrid -->
 </div><!-- /appShell -->
@@ -975,6 +959,8 @@ const axisLabels        = document.getElementById("axisLabels");
 const turtleGroup       = document.getElementById("turtleGroup");
 const editorTab         = document.getElementById("editorTab");
 const examplesTab       = document.getElementById("examplesTab");
+const referenceTab      = document.getElementById("referenceTab");
+const referencePanel    = document.getElementById("referencePanel");
 const editorWrap        = document.getElementById("editorWrap");
 const examplesPanel     = document.getElementById("examplesPanel");
 const lineNumbers       = document.getElementById("lineNumbers");
@@ -1122,6 +1108,35 @@ codeEditor.addEventListener('scroll', () => {
 lineNumbersToggle.addEventListener('click', toggleLineNumbers);
 updateLineNumbers();
 updateHighlight();
+
+// ── Populate reference panel with syntax-highlighted command rows ─────────────
+(function buildReference() {
+  const rows = [
+    ['Pen n = new Pen();',          'create pen (required)'],
+    ['n.move();',                    'move forward 1 unit'],
+    ['n.turnRight(90);',             'turn clockwise 90°'],
+    ['n.turnLeft(45);',              'turn anti-clockwise 45°'],
+    ['n.setDirection(Pen.UP);',      'point UP / DOWN / LEFT / RIGHT'],
+    ['n.setColor(255, 100, 50);',    'RGB colour 0–255'],
+    ['n.setLineWidth(3);',           'line width 1–50'],
+    ['n.penUp();',                   'move without drawing'],
+    ['n.penDown();',                 'start drawing again'],
+    ['n.setPosition(20, 10);',       'jump to coordinates'],
+    ['n.setGridSize(76, 48);',       'resize the canvas'],
+    ['for(int i = 0; i < 4; i++)',   'repeat 4 times'],
+    ['// comment',                   'single-line comment'],
+    ['/* comment */',                'multi-line comment'],
+  ];
+  const list = document.getElementById('referenceList');
+  rows.forEach(([cmd, desc]) => {
+    const row = document.createElement('div');
+    row.className = 'cheat-row';
+    row.innerHTML =
+      `<span class="cheat-cmd" style="font-size:11px;">${highlight(cmd)}</span>` +
+      `<span class="cheat-desc" style="font-size:11px;color:rgba(221,225,240,0.45);">${desc}</span>`;
+    list.appendChild(row);
+  });
+})();
 
 // ── Grid rendering ───────────────────────────────────────────────────────────
 function buildGrid(w, h) {
@@ -1652,18 +1667,21 @@ resetButton.addEventListener("click", () => {
 stopButton.addEventListener("click", () => { stopRequested = true; });
 
 // ── Tab switching ─────────────────────────────────────────────────────────────
-editorTab.addEventListener("click", () => {
-  editorWrap.classList.remove("hidden");
-  examplesPanel.classList.add("hidden");
-  editorTab.classList.add("active");
-  examplesTab.classList.remove("active");
-});
-examplesTab.addEventListener("click", () => {
+function switchTab(active) {
+  // hide all panes
   editorWrap.classList.add("hidden");
-  examplesPanel.classList.remove("hidden");
-  examplesTab.classList.add("active");
-  editorTab.classList.remove("active");
-});
+  examplesPanel.classList.add("hidden");
+  referencePanel.classList.add("hidden");
+  // deactivate all tabs
+  [editorTab, examplesTab, referenceTab].forEach(t => t.classList.remove("active"));
+  // show selected
+  if (active === "editor")    { editorWrap.classList.remove("hidden");    editorTab.classList.add("active"); }
+  if (active === "examples")  { examplesPanel.classList.remove("hidden"); examplesTab.classList.add("active"); }
+  if (active === "reference") { referencePanel.classList.remove("hidden"); referenceTab.classList.add("active"); }
+}
+editorTab.addEventListener("click",    () => switchTab("editor"));
+examplesTab.addEventListener("click",  () => switchTab("examples"));
+referenceTab.addEventListener("click", () => switchTab("reference"));
 document.querySelectorAll(".exampleLoader").forEach(btn => {
   btn.addEventListener("click", e => {
     e.preventDefault();
@@ -1671,7 +1689,7 @@ document.querySelectorAll(".exampleLoader").forEach(btn => {
     if (examples[key] !== undefined) {
       codeEditor.value = examples[key];
       clearOutput("Example loaded — press Run code.");
-      editorTab.click();
+      switchTab("editor");
       updateLineNumbers();
       updateHighlight();
     }
@@ -1702,7 +1720,7 @@ fileInput.addEventListener("change", e => {
     updateLineNumbers();
     updateHighlight();
     clearOutput(`Loaded: ${file.name}. Press Run code to execute.`);
-    editorTab.click();
+    switchTab("editor");
   };
   reader.readAsText(file);
   fileInput.value = ''; // allow re-loading same file
