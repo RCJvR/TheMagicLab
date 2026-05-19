@@ -204,13 +204,11 @@
     .cheat-desc { font-size: 10px; color: rgba(221,225,240,0.38); }
 
     /* ── Right column ── */
-    /* Right column fills the grid cell exactly, no overflow */
     #rightCol {
       display: flex; flex-direction: column; gap: 8px;
       min-height: 0; overflow: hidden;
     }
-    /* Canvas panel grows to fill remaining space after output panel */
-    #canvasPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    #canvasPanel { flex-shrink: 0; }
 
     /* ── Readouts ── */
     .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -222,28 +220,35 @@
 
     /* ── Drawing board ── */
     /*
-      canvas-outer fills the remaining height of #canvasPanel.
-      max-aspect-ratio constraint prevents it becoming too tall on wide screens —
-      it will never exceed the 76:48 ratio, but can be narrower/shorter.
-      The SVG viewBox stays 76×48 so coordinate space is unchanged.
+      The SVG viewBox is 76 × 48. A square in coordinate space must look square
+      on screen. The only reliable way to guarantee this is:
+        1. Use preserveAspectRatio="xMidYMid meet" on the SVG so it NEVER
+           stretches — it always preserves its own internal proportions.
+        2. Give the container a fixed pixel height so neither dimension is
+           ambiguous. Width is 100%; the SVG will letterbox horizontally if
+           the container is wider than 76:48 — but it will never squish.
+      340px height → natural width = 340 × (76/48) ≈ 538px.
+      On most screens the right column is narrower so the SVG will be
+      width-constrained and shorter than 340px — still perfectly square internally.
     */
     .canvas-outer {
-      margin: 0 12px 12px;
+      margin: 0 12px 10px;
       border-radius: 10px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.09); background: #f8f9ff;
-      flex: 1; min-height: 0;
-      /* Prevent canvas from ever being taller than its natural 76:48 ratio */
-      max-width: 100%;
-      aspect-ratio: 76 / 48;
-      /* When height-constrained, let the element shrink below the aspect-ratio height */
-      align-self: stretch;
-      width: auto;
+      width: calc(100% - 24px);
+      height: 0;
+      padding-bottom: calc((100% - 24px) * 48 / 76);
+      position: relative;
     }
-    #drawingSvg { width: 100%; height: 100%; display: block; }
+    #drawingSvg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
     .turtle { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22)); transition: transform 80ms linear; }
 
-    /* ── Output panel — fixed height, always visible ── */
-    #outputPanel { flex-shrink: 0; }
+    /* ── Output panel — scrollable, takes remaining space ── */
+    #outputPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
     .stop-btn {
       display: flex; align-items: center; gap: 5px; font-family: "DM Sans", sans-serif;
       font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
@@ -254,7 +259,7 @@
     #outputWindow {
       font-family: "JetBrains Mono", monospace; font-size: 11px; line-height: 19px;
       background: #06091a; border-radius: 0 0 13px 13px;
-      padding: 10px 13px; height: 100px; overflow-y: auto;
+      padding: 10px 13px; flex: 1; min-height: 80px; overflow-y: auto;
     }
     #outputWindow p { margin: 0 0 1px; }
 
@@ -357,6 +362,10 @@
             <h4>Star <span class="diff diff-i">intermediate</span></h4>
             <p>5-pointed star with 144° turns</p>
           </button>
+          <button class="ex-item exampleLoader" data-example="curve_tutorial">
+            <h4>Drawing curves <span class="diff diff-a">tutorial</span></h4>
+            <p>circles and arcs using tiny turns in a loop</p>
+          </button>
           <button class="ex-item exampleLoader" data-example="nested_tutorial">
             <h4>Nested loop tutorial <span class="diff diff-a">tutorial</span></h4>
             <p>step-by-step explanation of nested loops</p>
@@ -376,9 +385,9 @@
         <div class="ctrl-row">
           <i data-lucide="gauge" style="width:13px;height:13px;color:#818cf8;flex-shrink:0;"></i>
           <label for="speedSlider" class="ctrl-label">Speed</label>
-          <span class="speed-tag speed-tag--slow">1/s</span>
+          <span class="speed-tag speed-tag--slow">1</span>
           <input type="range" id="speedSlider" min="1" max="100" value="30" step="1" class="speed-slider">
-          <span class="speed-tag speed-tag--fast">100/s</span>
+          <span class="speed-tag speed-tag--fast">100</span>
           <span id="speedValue" class="speed-value">30/s</span>
         </div>
       </div>
@@ -426,36 +435,33 @@
           </div>
         </div>
         <div class="canvas-outer" id="canvasOuter">
-          <svg id="drawingSvg" viewBox="0 0 76 48" preserveAspectRatio="none"
+          <svg id="drawingSvg" viewBox="0 0 76 48" preserveAspectRatio="xMidYMid meet"
                role="img" aria-label="Turtle drawing canvas">
             <g id="gridLayer"></g>
             <g id="axisLabels"></g>
             <g id="pathLayer"></g>
-            <!-- pen avatar: tip at (0,0) pointing right, rotates with direction -->
+            <!-- pen avatar: tilted 45° left, tip at (0,0) = the draw point -->
             <g id="turtleGroup" class="turtle" transform="translate(38 24) rotate(0)">
-              <!-- nib tip (the drawing point, sits at origin) -->
-              <polygon points="0,0 -0.8,-0.5 -0.8,0.5"
-                       fill="#e0e7ff" stroke="#312e81" stroke-width="0.12" stroke-linejoin="round"/>
-              <!-- nib base line (collar between nib and barrel) -->
-              <line x1="-0.8" y1="-0.55" x2="-0.8" y2="0.55"
-                    stroke="#312e81" stroke-width="0.18"/>
+              <!-- nib: sharp triangle, tip exactly at (0,0) -->
+              <polygon points="0,0 -0.955,-0.318 -0.318,-0.955"
+                       fill="#dde8ff" stroke="#1e1b4b" stroke-width="0.1" stroke-linejoin="round"/>
+              <!-- grip section (darker, just behind nib) -->
+              <polygon points="-1.004,-0.269 -0.269,-1.004 -0.764,-1.499 -1.499,-0.764"
+                       fill="#4338ca" stroke="#1e1b4b" stroke-width="0.1"/>
               <!-- barrel body -->
-              <rect x="-3.6" y="-0.55" width="2.8" height="1.1" rx="0.2"
-                    fill="#6366f1" stroke="#312e81" stroke-width="0.13"/>
-              <!-- grip section (slightly darker band near nib) -->
-              <rect x="-1.5" y="-0.55" width="0.7" height="1.1" rx="0.1"
-                    fill="#4f46e5" stroke="none"/>
-              <!-- clip (thin line along top of barrel) -->
-              <rect x="-3.4" y="-0.65" width="2.2" height="0.18" rx="0.09"
-                    fill="#a5b4fc" stroke="none"/>
-              <!-- rounded cap at back end -->
-              <ellipse cx="-3.6" cy="0" rx="0.3" ry="0.55"
-                       fill="#818cf8" stroke="#312e81" stroke-width="0.13"/>
-              <!-- clip loop at cap -->
-              <path d="M -3.6,-0.55 Q -4.1,-0.55 -4.1,0 Q -4.1,0.3 -3.7,0.3"
-                    fill="none" stroke="#a5b4fc" stroke-width="0.18" stroke-linecap="round"/>
+              <polygon points="-1.457,-0.806 -0.806,-1.457 -2.39,-2.984 -2.984,-2.39"
+                       fill="#6366f1" stroke="#1e1b4b" stroke-width="0.1"/>
+              <!-- clip strip along barrel -->
+              <line x1="-1.626" y1="-0.919" x2="-2.828" y2="-2.121"
+                    stroke="#a5b4fc" stroke-width="0.22" stroke-linecap="round"/>
+              <!-- rounded cap -->
+              <ellipse cx="-2.97" cy="-2.97" rx="0.42" ry="0.42"
+                       fill="#818cf8" stroke="#1e1b4b" stroke-width="0.1"/>
+              <!-- cap body (connects barrel to cap ellipse) -->
+              <polygon points="-2.984,-2.39 -2.39,-2.984 -2.72,-3.22 -3.22,-2.72"
+                       fill="#818cf8" stroke="#1e1b4b" stroke-width="0.1"/>
               <!-- ink dot at tip -->
-              <circle cx="0" cy="0" r="0.15" fill="#fbbf24"/>
+              <circle cx="0" cy="0" r="0.14" fill="#fbbf24"/>
             </g>
           </svg>
         </div>
@@ -608,10 +614,26 @@ const examples = {
 
     // This loop runs 4 times, once for each side.
     for(int side = 0; side < 4; side++) {
-      n.move(); n.move(); n.move(); n.move(); n.move();
-      n.move(); n.move(); n.move(); n.move(); n.move();
-      n.move(); n.move(); n.move(); n.move(); n.move();
-      n.move(); n.move(); n.move(); n.move(); n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
       n.turnRight(90);
     }
   }
@@ -628,9 +650,11 @@ const examples = {
     // Inner loop: 20 steps per side.
     // Total: 4 x 20 = 80 move() calls.
     for(int side = 0; side < 4; side++) {
-      for(int step = 0; step < 20; step++) {
+      for(int step = 0;
+      step < 20;
+      step++) {
         n.move();
-      }
+    }
       n.turnRight(90);
     }
   }
@@ -644,13 +668,21 @@ const examples = {
     n.setColor(34, 197, 94);
 
     // Long sides = 30 steps, short sides = 12 steps.
-    for(int s = 0; s < 30; s++) { n.move(); }
+    for(int s = 0; s < 30; s++) {
+      n.move();
+    }
     n.turnRight(90);
-    for(int s = 0; s < 12; s++) { n.move(); }
+    for(int s = 0; s < 12; s++) {
+      n.move();
+    }
     n.turnRight(90);
-    for(int s = 0; s < 30; s++) { n.move(); }
+    for(int s = 0; s < 30; s++) {
+      n.move();
+    }
     n.turnRight(90);
-    for(int s = 0; s < 12; s++) { n.move(); }
+    for(int s = 0; s < 12; s++) {
+      n.move();
+    }
   }
 }`,
 
@@ -663,7 +695,10 @@ const examples = {
 
     // 3 sides, turn 120 degrees after each one.
     for(int side = 0; side < 3; side++) {
-      for(int s = 0; s < 20; s++) { n.move(); }
+      for(int s = 0;
+      s < 20;
+      s++) { n.move();
+    }
       n.turnRight(120);
     }
   }
@@ -680,7 +715,10 @@ const examples = {
     n.setPosition(28, 20);
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 6; side++) {
-      for(int s = 0; s < 12; s++) { n.move(); }
+      for(int s = 0;
+      s < 12;
+      s++) { n.move();
+    }
       n.turnRight(60);
     }
   }
@@ -696,13 +734,39 @@ const examples = {
     n.setColor(249, 115, 22);
     n.setPosition(20, 38);
     n.setDirection(Pen.RIGHT);
-    for(int s = 0; s < 24; s++) { n.move(); }
+    for(int s = 0; s < 24; s++) {
+      n.move();
+    }
     n.setDirection(Pen.UP);
-    for(int s = 0; s < 14; s++) { n.move(); }
+    for(int s = 0; s < 14; s++) {
+      n.move();
+    }
     n.setDirection(Pen.LEFT);
-    for(int s = 0; s < 24; s++) { n.move(); }
+    for(int s = 0; s < 24; s++) {
+      n.move();
+    }
     n.setDirection(Pen.DOWN);
-    for(int s = 0; s < 14; s++) { n.move(); }
+    for(int s = 0; s < 14; s++) {
+      n.move();
+    }
+
+    // Draw the door (centred on the bottom wall)
+    n.setColor(139, 92, 246);
+    n.penUp();
+    n.setPosition(30, 38);
+    n.penDown();
+    n.setDirection(Pen.UP);
+    for(int s = 0; s < 6; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.RIGHT);
+    for(int s = 0; s < 4; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.DOWN);
+    for(int s = 0; s < 6; s++) {
+      n.move();
+    }
 
     // Draw the roof
     n.setColor(239, 68, 68);
@@ -710,9 +774,13 @@ const examples = {
     n.setPosition(20, 24);
     n.penDown();
     n.setDirection(315);
-    for(int s = 0; s < 17; s++) { n.move(); }
+    for(int s = 0; s < 17; s++) {
+      n.move();
+    }
     n.setDirection(45);
-    for(int s = 0; s < 17; s++) { n.move(); }
+    for(int s = 0; s < 17; s++) {
+      n.move();
+    }
   }
 }`,
 
@@ -727,9 +795,14 @@ const examples = {
 
     // Move 18, turn right 144, move 18, turn left 72 — repeat 5 times.
     for(int point = 0; point < 5; point++) {
-      for(int s = 0; s < 18; s++) { n.move(); }
+      for(int s = 0;
+      s < 18;
+      s++) { n.move();
+    }
       n.turnRight(144);
-      for(int s = 0; s < 18; s++) { n.move(); }
+      for(int s = 0; s < 18; s++) {
+      n.move();
+    }
       n.turnLeft(72);
     }
   }
@@ -746,7 +819,10 @@ const examples = {
     n.setPosition(5, 18);
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 14; s++) { n.move(); }
+      for(int s = 0;
+      s < 14;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
 
@@ -756,7 +832,10 @@ const examples = {
     n.penDown();
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 14; s++) { n.move(); }
+      for(int s = 0;
+      s < 14;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
 
@@ -766,7 +845,10 @@ const examples = {
     n.penDown();
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 14; s++) { n.move(); }
+      for(int s = 0;
+      s < 14;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
   }
@@ -774,7 +856,43 @@ const examples = {
 
 
 
-  // ── 10. Nested loops tutorial ─────────────────────────────────────────────
+  // ── 10. Curve tutorial ──────────────────────────────────────────────────
+  curve_tutorial:
+`public class Curves {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+
+    // A curve is made by moving forward a tiny amount
+    // and turning a tiny amount, many times in a loop.
+    //
+    // A full circle = 360 moves of 1 step, turning 1 degree each time.
+    // A semicircle  = 180 moves of 1 step, turning 1 degree each time.
+    //
+    // The tighter the turn each step, the more curved the line.
+
+    // Draw a full circle
+    n.setColor(37, 99, 235);
+    n.setPosition(38, 32);
+    n.setDirection(Pen.UP);
+    for(int step = 0; step < 360; step++) {
+      n.move();
+      n.turnRight(1);
+    }
+
+    // Draw a semicircle above
+    n.setColor(239, 68, 68);
+    n.penUp();
+    n.setPosition(20, 20);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int step = 0; step < 180; step++) {
+      n.move();
+      n.turnLeft(1);
+    }
+  }
+}`,
+
+  // ── 11. Nested loops tutorial ─────────────────────────────────────────────
   nested_tutorial:
 `public class NestedLoops {
   public static void main(String[] args) {
@@ -792,7 +910,10 @@ const examples = {
     n.setPosition(4, 19);
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 10; s++) { n.move(); }
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
 
@@ -803,7 +924,10 @@ const examples = {
     n.penDown();
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 10; s++) { n.move(); }
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
 
@@ -814,7 +938,10 @@ const examples = {
     n.penDown();
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 10; s++) { n.move(); }
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
 
@@ -825,7 +952,10 @@ const examples = {
     n.penDown();
     n.setDirection(Pen.RIGHT);
     for(int side = 0; side < 4; side++) {
-      for(int s = 0; s < 10; s++) { n.move(); }
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
       n.turnRight(90);
     }
   }
@@ -868,7 +998,7 @@ function setGlobalSpeed(val) {
   globalSpeed = Math.max(1, Math.min(100, val));
   speedSlider.value = globalSpeed;
   speedSlider.style.setProperty('--val', globalSpeed);
-  speedValue.textContent = globalSpeed + '/s';
+  speedValue.textContent = String(globalSpeed);
 }
 speedSlider.addEventListener('input', () => setGlobalSpeed(Number(speedSlider.value)));
 setGlobalSpeed(30);
@@ -972,6 +1102,18 @@ function toggleLineNumbers() {
 }
 
 codeEditor.addEventListener('input', () => { updateLineNumbers(); updateHighlight(); });
+codeEditor.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const start = codeEditor.selectionStart;
+    const end   = codeEditor.selectionEnd;
+    const val   = codeEditor.value;
+    codeEditor.value = val.substring(0, start) + '  ' + val.substring(end);
+    codeEditor.selectionStart = codeEditor.selectionEnd = start + 2;
+    updateLineNumbers();
+    updateHighlight();
+  }
+});
 codeEditor.addEventListener('scroll', () => {
   lineNumbers.scrollTop     = codeEditor.scrollTop;
   highlightLayer.scrollTop  = codeEditor.scrollTop;
@@ -1011,7 +1153,8 @@ function applyGridSize(w, h) {
   START_X  = Math.round(w / 2);
   START_Y  = Math.round(h / 2);
   drawingSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-  canvasOuter.style.aspectRatio = `${w} / ${h}`;
+  // Recalculate padding-bottom to maintain correct aspect ratio
+  canvasOuter.style.paddingBottom = `calc((100% - 24px) * ${h} / ${w})`;
   gridSizeLabel.textContent = `${w} × ${h}  · pen starts at centre`;
   buildGrid(w, h);
 }
@@ -1134,7 +1277,21 @@ function expandLoops(code) {
     const m = condition.match(
       /^\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;\s*(?:\1\s*=\s*\1\s*\+\s*1|\1\s*\+=\s*1|\1\+\+|\+\+\1)\s*$/
     );
-    if (!m) return { ok: false, error: 'For loop format: for(int i = 0; i < 4; i++) { ... }' };
+    if (!m) {
+      // Diagnose common for-loop mistakes with specific feedback
+      let loopErr = 'For loop format: for(int i = 0; i < 4; i++) { ... }';
+      if (!/\bint\b/.test(condition))
+        loopErr = 'For loop: missing "int" before the variable name. Write: for(int i = 0; ...)';
+      else if (!/=\s*\d/.test(condition.split(';')[0]))
+        loopErr = 'For loop: missing start value. Write: for(int i = 0; ...)';
+      else if (!condition.includes('<'))
+        loopErr = 'For loop: missing condition. Write: for(int i = 0; i < 4; ...)';
+      else if (!/\+\+|\+=|\+\s*1/.test(condition))
+        loopErr = 'For loop: missing increment. Write: for(int i = 0; i < 4; i++)';
+      else if ((condition.match(/\b(\w+)\b/g) || []).filter(w => w !== 'int').length < 2)
+        loopErr = 'For loop: the variable name must match in all three parts. E.g. for(int i = 0; i < 4; i++)';
+      return { ok: false, error: loopErr };
+    }
 
     const varName  = m[1];
     const startVal = parseInt(m[2], 10);
