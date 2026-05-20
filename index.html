@@ -1,119 +1,307 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CoRo Labs</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-font-family:'DM Sans',sans-serif;
-background:
-radial-gradient(circle at top left, rgba(99,102,241,0.25), transparent 30%),
-radial-gradient(circle at bottom right, rgba(16,185,129,0.18), transparent 30%),
-#0a0f1e;
-color:#dde1f0;
-min-height:100vh;
-}
-header{padding:24px 40px;}
-.logo{
-font-family:'Syne',sans-serif;
-font-size:2rem;
-font-weight:800;
-background:linear-gradient(135deg,#fff,#a5b4fc,#6ee7b7);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-.hero{text-align:center;padding:80px 20px 50px;}
-.hero h1{
-font-size:clamp(3rem,7vw,6rem);
-font-family:'Syne',sans-serif;
-margin-bottom:20px;
-}
-.hero p{
-max-width:700px;
-margin:auto;
-line-height:1.8;
-color:rgba(221,225,240,0.7);
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:28px;
-max-width:1100px;
-margin:60px auto;
-padding:0 30px 80px;
-}
-.card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-border-radius:24px;
-padding:32px;
-}
-.card h2{
-font-family:'Syne',sans-serif;
-margin-bottom:12px;
-font-size:2rem;
-}
-.card p{
-line-height:1.7;
-margin-bottom:24px;
-color:rgba(221,225,240,0.7);
-}
-.btn{
-display:inline-block;
-padding:14px 22px;
-border-radius:12px;
-background:linear-gradient(135deg,#6366f1,#10b981);
-color:white;
-text-decoration:none;
-font-weight:700;
-}
-footer{
-text-align:center;
-padding:40px;
-color:rgba(221,225,240,0.4);
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Code Lab — STEM Learning Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; width: 100%; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: #0a0f1e;
+      color: #dde1f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 8% 5%,  rgba(99,102,241,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 95% 8%,  rgba(16,185,129,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 50% 95%, rgba(245,158,11,0.08) 0%, transparent 60%);
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+
+    .nav-logo {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 20px;
+      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 8px; }
+
+    .nav-link {
+      font-size: 12px; font-weight: 600; padding: 6px 14px;
+      border-radius: 8px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: #b0b8d8;
+      text-decoration: none; transition: all 140ms;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.10); color: #e2e8ff; }
+
+    /* ── Hero ── */
+    .hero {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 64px 24px 48px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 99px;
+      background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.30);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #a5b4fc; margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 1.05; margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 40%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero p {
+      font-size: clamp(15px, 2vw, 18px); color: rgba(221,225,240,0.60);
+      max-width: 540px; line-height: 1.65; margin-bottom: 48px;
+    }
+
+    /* ── Tool cards grid ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 72px;
+    }
+
+    .tool-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 200ms, transform 200ms, box-shadow 200ms;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+
+    .tool-card:hover {
+      border-color: rgba(255,255,255,0.16);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+    }
+
+    .tool-card:hover::before { opacity: 1; }
+
+    /* Per-card accent colours */
+    .card-java { --accent: #6366f1; --accent2: #10b981; }
+    .card-java::before { background: radial-gradient(ellipse at 0% 0%, rgba(99,102,241,0.08), transparent 60%); }
+    .card-java:hover { border-color: rgba(99,102,241,0.35); }
+
+    .card-web { --accent: #06b6d4; --accent2: #a78bfa; }
+    .card-web::before { background: radial-gradient(ellipse at 0% 0%, rgba(6,182,212,0.08), transparent 60%); }
+    .card-web:hover { border-color: rgba(6,182,212,0.35); }
+
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; flex-shrink: 0;
+      font-size: 24px;
+    }
+
+    .card-java .card-icon {
+      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(16,185,129,0.15));
+      border: 1px solid rgba(99,102,241,0.30);
+    }
+
+    .card-web .card-icon {
+      background: linear-gradient(135deg, rgba(6,182,212,0.25), rgba(167,139,250,0.15));
+      border: 1px solid rgba(6,182,212,0.30);
+    }
+
+    .card-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: 22px; color: #e8eaf4; margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 14px; line-height: 1.65;
+      color: rgba(221,225,240,0.55);
+      flex: 1;           /* pushes button to bottom */
+      margin-bottom: 24px;
+    }
+
+    .card-tags {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .tag {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px; font-weight: 600;
+      padding: 3px 8px; border-radius: 5px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(221,225,240,0.50);
+    }
+
+    .card-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 11px 22px; border-radius: 11px;
+      font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 700;
+      text-decoration: none; transition: all 160ms ease;
+      cursor: pointer; border: none; width: 100%;
+      /* mt-auto handled by flex column + card-desc flex:1 */
+    }
+
+    .card-btn:hover { transform: translateY(-1px); }
+    .card-btn:active { transform: translateY(0); }
+
+    .btn-java {
+      background: linear-gradient(135deg, #4f46e5, #10b981);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.30);
+    }
+    .btn-java:hover { box-shadow: 0 6px 22px rgba(99,102,241,0.45); }
+
+    .btn-web {
+      background: linear-gradient(135deg, #0891b2, #7c3aed);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(6,182,212,0.25);
+    }
+    .btn-web:hover { box-shadow: 0 6px 22px rgba(6,182,212,0.40); }
+
+    /* ── Coming soon overlay on card ── */
+    .card-soon { opacity: 0.6; pointer-events: none; }
+    .soon-badge {
+      position: absolute; top: 16px; right: 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px;
+      background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.30);
+      color: #fcd34d;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 20px 48px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      font-size: 12px; color: rgba(221,225,240,0.30);
+    }
+
+    .footer-links { display: flex; gap: 20px; }
+    .footer-link {
+      font-size: 12px; color: rgba(221,225,240,0.35);
+      text-decoration: none; transition: color 130ms;
+    }
+    .footer-link:hover { color: rgba(221,225,240,0.70); }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .hero { padding: 48px 20px 32px; }
+      .tools-grid { padding: 0 16px 48px; grid-template-columns: 1fr; }
+      footer { padding: 16px 20px; flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-<div class="logo">CoRo Labs</div>
-</header>
+  <nav>
+    <a href="index.html" class="nav-logo">⚗️ Code Lab</a>
+    <div class="nav-links">
+      <a href="java-genie.html" class="nav-link">Java Genie</a>
+      <a href="html-editor.html" class="nav-link">Web Wizard</a>
+    </div>
+  </nav>
 
-<section class="hero">
-<h1>Build. Create. Experiment.</h1>
-<p>
-A futuristic browser-based STEM ecosystem where learners code,
-design and experiment through instant visual feedback.
-</p>
-</section>
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <i data-lucide="flask-conical" style="width:12px;height:12px;"></i>
+      STEM Learning Tools
+    </div>
+    <h1>Learn to code.<br>Build real things.</h1>
+    <p>Hands-on, browser-based tools designed for beginners. Write real code, see real results — no setup needed.</p>
+  </section>
 
-<section class="grid">
+  <div class="tools-grid">
 
-<div class="card">
-<h2>🧠 Java Genie</h2>
-<p>
-Learn Java visually with turtle graphics, loops and interactive tutorials.
-</p>
-<a class="btn" href="java-genie.html">Launch Java Genie</a>
-</div>
+    <!-- Java Genie -->
+    <div class="tool-card card-java">
+      <div class="card-icon">🧞</div>
+      <div class="card-title">Java Genie</div>
+      <p class="card-desc">Learn Java visually with turtle graphics, loops, and interactive step-by-step tutorials. Write real Java programs from day one.</p>
+      <div class="card-tags">
+        <span class="tag">Java</span>
+        <span class="tag">Turtle graphics</span>
+        <span class="tag">Loops</span>
+        <span class="tag">OOP</span>
+      </div>
+      <a href="java-genie.html" class="card-btn btn-java">
+        <i data-lucide="play" style="width:15px;height:15px;"></i>
+        Launch Java Genie
+      </a>
+    </div>
 
-<div class="card">
-<h2>🌐 Web Wizard</h2>
-<p>
-Design websites live in your browser using HTML and CSS.
-</p>
-<a class="btn" href="html-css-studio.html">Open Web Wizard</a>
-</div>
+    <!-- Web Wizard -->
+    <div class="tool-card card-web">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Web Wizard</div>
+      <p class="card-desc">Design websites live in your browser using HTML and CSS. See your changes instantly in a live preview panel as you type.</p>
+      <div class="card-tags">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">Live preview</span>
+        <span class="tag">Web design</span>
+      </div>
+      <a href="html-editor.html" class="card-btn btn-web">
+        <i data-lucide="globe" style="width:15px;height:15px;"></i>
+        Open Web Wizard
+      </a>
+    </div>
 
-</section>
+  </div>
 
-<footer>
-CoRo Labs · Future-Ready STEM Learning
-</footer>
+  <footer>
+    <span class="footer-text">Code Lab — STEM Learning Tools</span>
+    <div class="footer-links">
+      <a href="java-genie.html" class="footer-link">Java Genie</a>
+      <a href="html-editor.html" class="footer-link">Web Wizard</a>
+    </div>
+  </footer>
 
+  <script>lucide.createIcons();</script>
 </body>
 </html>
