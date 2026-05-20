@@ -1,0 +1,2556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Java Code Genie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='shine' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23a5b4fc'/%3E%3Cstop offset='1' stop-color='%236ee7b7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Cellipse cx='32' cy='40' rx='16' ry='10' fill='%23fbbf24'/%3E%3Cellipse cx='32' cy='38' rx='16' ry='10' fill='%23fcd34d'/%3E%3Cpath d='M48 36 Q56 30 54 24 Q52 20 46 22 Q44 28 48 36Z' fill='%23f59e0b'/%3E%3Cpath d='M16 38 Q8 36 10 44 Q12 50 18 46' fill='none' stroke='%23f59e0b' stroke-width='3.5' stroke-linecap='round'/%3E%3Cpath d='M46 20 Q44 12 38 8 Q34 5 32 10 Q34 14 38 12 Q42 10 46 20Z' fill='url(%23shine)' opacity='0.9'/%3E%3Ccircle cx='40' cy='10' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='50' cy='14' r='1.8' fill='%236ee7b7'/%3E%3Ccircle cx='44' cy='5' r='1.5' fill='%23fcd34d'/%3E%3Ctext x='26' y='43' font-family='monospace' font-size='10' font-weight='bold' fill='%23854d0e' opacity='0.8'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Code Genie">
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="manifest" href="data:application/manifest+json,%7B%0A%20%20%22name%22%3A%20%22Java%20Code%20Genie%22%2C%0A%20%20%22short_name%22%3A%20%22Code%20Genie%22%2C%0A%20%20%22description%22%3A%20%22Learn%20Java%20drawing%20with%20the%20Code%20Genie%20sandbox%22%2C%0A%20%20%22start_url%22%3A%20%22.%22%2C%0A%20%20%22display%22%3A%20%22standalone%22%2C%0A%20%20%22background_color%22%3A%20%22%230a0f1e%22%2C%0A%20%20%22theme_color%22%3A%20%22%236366f1%22%2C%0A%20%20%22orientation%22%3A%20%22landscape%22%2C%0A%20%20%22icons%22%3A%20%5B%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22src%22%3A%20%22data%3Aimage/svg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20192%20192%27%253E%253Crect%20width%3D%27192%27%20height%3D%27192%27%20rx%3D%2740%27%20fill%3D%27%25236366f1%27/%253E%253Cellipse%20cx%3D%2796%27%20cy%3D%27120%27%20rx%3D%2744%27%20ry%3D%2728%27%20fill%3D%27%2523fcd34d%27/%253E%253Cellipse%20cx%3D%2796%27%20cy%3D%27114%27%20rx%3D%2744%27%20ry%3D%2728%27%20fill%3D%27%2523fde68a%27/%253E%253Cpath%20d%3D%27M140%20108%20Q162%2092%20158%2074%20Q154%2064%20136%2070%20Q132%2086%20140%20108Z%27%20fill%3D%27%2523f59e0b%27/%253E%253Cpath%20d%3D%27M52%20116%20Q28%20110%2032%20130%20Q36%20148%2056%20140%27%20fill%3D%27none%27%20stroke%3D%27%2523f59e0b%27%20stroke-width%3D%279%27%20stroke-linecap%3D%27round%27/%253E%253Cpath%20d%3D%27M136%2064%20Q130%2042%20114%2032%20Q102%2022%2096%2036%20Q100%2048%20112%2042%20Q124%2036%20136%2064Z%27%20fill%3D%27%2523a5b4fc%27/%253E%253Ccircle%20cx%3D%27120%27%20cy%3D%2736%27%20r%3D%277%27%20fill%3D%27%2523a5b4fc%27/%253E%253Ccircle%20cx%3D%27146%27%20cy%3D%2748%27%20r%3D%275%27%20fill%3D%27%25236ee7b7%27/%253E%253Ccircle%20cx%3D%27128%27%20cy%3D%2722%27%20r%3D%274%27%20fill%3D%27%2523fcd34d%27/%253E%253Ctext%20x%3D%2778%27%20y%3D%27128%27%20font-family%3D%27monospace%27%20font-size%3D%2728%27%20font-weight%3D%27bold%27%20fill%3D%27%2523854d0e%27%253E%257B%257D%253C/text%253E%253C/svg%253E%22%2C%0A%20%20%20%20%20%20%22sizes%22%3A%20%22192x192%22%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22image/svg%2Bxml%22%2C%0A%20%20%20%20%20%20%22purpose%22%3A%20%22any%20maskable%22%0A%20%20%20%20%7D%2C%0A%20%20%20%20%7B%0A%20%20%20%20%20%20%22src%22%3A%20%22data%3Aimage/svg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20512%20512%27%253E%253Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%27100%27%20fill%3D%27%25236366f1%27/%253E%253Cellipse%20cx%3D%27256%27%20cy%3D%27320%27%20rx%3D%27118%27%20ry%3D%2774%27%20fill%3D%27%2523fcd34d%27/%253E%253Cellipse%20cx%3D%27256%27%20cy%3D%27304%27%20rx%3D%27118%27%20ry%3D%2774%27%20fill%3D%27%2523fde68a%27/%253E%253Cpath%20d%3D%27M374%20288%20Q432%20248%20422%20198%20Q412%20170%20364%20186%20Q352%20228%20374%20288Z%27%20fill%3D%27%2523f59e0b%27/%253E%253Cpath%20d%3D%27M138%20308%20Q74%20294%2084%20346%20Q94%20396%20148%20372%27%20fill%3D%27none%27%20stroke%3D%27%2523f59e0b%27%20stroke-width%3D%2724%27%20stroke-linecap%3D%27round%27/%253E%253Cpath%20d%3D%27M362%20170%20Q346%20112%20304%2086%20Q272%2058%20256%2096%20Q266%20128%20298%20112%20Q330%2096%20362%20170Z%27%20fill%3D%27%2523a5b4fc%27/%253E%253Ccircle%20cx%3D%27320%27%20cy%3D%2796%27%20r%3D%2718%27%20fill%3D%27%2523a5b4fc%27/%253E%253Ccircle%20cx%3D%27390%27%20cy%3D%27128%27%20r%3D%2713%27%20fill%3D%27%25236ee7b7%27/%253E%253Ccircle%20cx%3D%27342%27%20cy%3D%2758%27%20r%3D%2711%27%20fill%3D%27%2523fcd34d%27/%253E%253Ctext%20x%3D%27208%27%20y%3D%27338%27%20font-family%3D%27monospace%27%20font-size%3D%2774%27%20font-weight%3D%27bold%27%20fill%3D%27%2523854d0e%27%253E%257B%257D%253C/text%253E%253C/svg%253E%22%2C%0A%20%20%20%20%20%20%22sizes%22%3A%20%22512x512%22%2C%0A%20%20%20%20%20%20%22type%22%3A%20%22image/svg%2Bxml%22%2C%0A%20%20%20%20%20%20%22purpose%22%3A%20%22any%20maskable%22%0A%20%20%20%20%7D%0A%20%20%5D%0A%7D">
+
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    body { font-family: "DM Sans", sans-serif; font-size: 13px; background: #0a0f1e; color: #dde1f0; }
+
+    #appShell {
+      height: 100%; width: 100%;
+      display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 35% at 6% 4%,  rgba(99,102,241,0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(16,185,129,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(245,158,11,0.10) 0%, transparent 60%),
+        #0a0f1e;
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+      padding: 8px 16px 7px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px;
+      border-radius: 6px; background: rgba(99,102,241,0.18); border: 1px solid rgba(99,102,241,0.35);
+      font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+      color: #a5b4fc; white-space: nowrap;
+    }
+    h1.app-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(18px, 2vw, 26px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .header-actions { margin-left: auto; display: flex; gap: 6px; }
+    .hdr-btn {
+      display: flex; align-items: center; gap: 5px; padding: 5px 11px;
+      border-radius: 7px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06); font-size: 11px; font-weight: 600;
+      color: #b0b8d8; cursor: pointer; transition: all 130ms;
+    }
+    .hdr-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+
+    /* ── Main grid ── */
+    #mainGrid {
+      flex: 1; display: grid; grid-template-columns: 380px 1fr;
+      gap: 10px; padding: 8px 14px 10px; min-height: 0; overflow: hidden;
+    }
+
+    /* ── Panels ── */
+    .panel {
+      background: rgba(255,255,255,0.038); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; min-height: 0;
+    }
+    .panel-hd {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px 7px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .panel-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.04em; color: #b0b8d8; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── Left column ── */
+    #leftCol { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: hidden; }
+    #editorPanel { flex: 1; min-height: 0; }
+
+    /* ── Tabs ── */
+    .tab-group { display: flex; gap: 3px; background: rgba(0,0,0,0.30); border-radius: 7px; padding: 3px; }
+    .tab-btn {
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      padding: 4px 9px; border-radius: 5px; border: none; cursor: pointer;
+      transition: all 130ms ease; color: rgba(221,225,240,0.45); background: transparent;
+    }
+    .tab-btn.active { background: rgba(99,102,241,0.28); color: #a5b4fc; }
+    .tab-btn:hover:not(.active) { color: rgba(221,225,240,0.8); }
+
+    .icon-btn {
+      width: 26px; height: 26px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(221,225,240,0.45); transition: all 130ms; flex-shrink: 0;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+    .icon-btn.active { background: rgba(99,102,241,0.30); border-color: rgba(99,102,241,0.50); color: #a5b4fc; }
+
+    /* ── Code editor ── */
+    /* 14: syntax highlighting overlay */
+    .editor-wrap { position: relative; flex: 1; min-height: 0; background: #06091a; display: flex; overflow: hidden; }
+    #lineNumbers {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      width: 36px; flex-shrink: 0; background: rgba(0,0,0,0.28);
+      border-right: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.20);
+      text-align: right; padding: 12px 6px 12px 0; overflow: hidden; user-select: none;
+    }
+    /* The real textarea stays on top, transparent background so highlight layer shows */
+    #codeEditor {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 36px; right: 0; bottom: 0;
+      border: none; background: transparent; color: transparent; caret-color: #e2e8ff;
+      resize: none; padding: 12px 12px 12px 10px; outline: none; overflow-y: auto;
+      z-index: 2; white-space: pre; overflow-wrap: normal;
+    }
+    #codeEditor::selection { background: rgba(99,102,241,0.38); }
+    /* Highlight layer */
+    #highlightLayer {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 36px; right: 0; bottom: 0;
+      padding: 12px 12px 12px 10px; pointer-events: none; overflow: hidden;
+      white-space: pre; overflow-wrap: normal; z-index: 1; color: #e2e8ff;
+    }
+    /* Syntax colours */
+    .hl-kw   { color: #c084fc; }   /* keywords: public class static void int for */
+    .hl-type { color: #60a5fa; }   /* types: Pen String */
+    .hl-str  { color: #86efac; }   /* string literals */
+    .hl-num  { color: #fb923c; }   /* numbers */
+    .hl-cmt  { color: #6b7280; font-style: italic; }  /* comments */
+    .hl-dir  { color: #fbbf24; }   /* direction constants UP DOWN LEFT RIGHT */
+    .hl-met  { color: #34d399; }   /* method calls n.xxx() */
+    .hl-op   { color: #e2e8ff; }   /* default */
+
+    /* ── Examples panel ── */
+    #examplesPanel { flex: 1; min-height: 0; overflow-y: auto; background: #06091a; }
+    .ex-item {
+      display: block; width: 100%; text-align: left; padding: 8px 12px;
+      border: none; border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: none; cursor: pointer; transition: background 110ms; color: inherit;
+    }
+    .ex-item:last-child { border-bottom: none; }
+    .ex-item:hover { background: rgba(99,102,241,0.12); }
+    .ex-item h4 { font-size: 12px; font-weight: 600; color: #c7cfe8; margin-bottom: 2px; }
+    .ex-item p  { font-size: 11px; color: rgba(221,225,240,0.38); }
+    .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; letter-spacing: 0.04em; text-transform: uppercase; }
+    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .diff-a { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+
+    /* ── Action buttons ── */
+    .actions-row {
+      flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr;
+      gap: 7px; padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .act-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 7px 12px; border-radius: 9px; border: none;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 150ms ease;
+    }
+    .act-btn:hover  { transform: translateY(-1px); }
+    .act-btn:active { transform: translateY(0); }
+    .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+    .btn-run { background: linear-gradient(135deg, #059669, #10b981); color: #fff; box-shadow: 0 3px 14px rgba(16,185,129,0.28); }
+    .btn-run:hover { box-shadow: 0 5px 18px rgba(16,185,129,0.42); }
+    .btn-reset { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    .btn-reset:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Speed + controls row ── */
+    .ctrl-row {
+      flex-shrink: 0; display: flex; align-items: center; gap: 7px;
+      padding: 6px 12px 8px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .ctrl-label { font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.50); white-space: nowrap; }
+    .speed-tag { font-family: "JetBrains Mono", monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+    .speed-tag--slow { color: rgba(252,211,77,0.6); }
+    .speed-tag--fast { color: rgba(110,231,183,0.7); }
+    .speed-slider {
+      flex: 1; height: 4px; -webkit-appearance: none; appearance: none; border-radius: 99px;
+      background: linear-gradient(to right, #6366f1 0%, #6366f1 calc((var(--val,50) - 1) / 99 * 100%), rgba(255,255,255,0.12) calc((var(--val,50) - 1) / 99 * 100%));
+      outline: none; cursor: pointer;
+    }
+    .speed-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+      background: #a5b4fc; border: 2px solid #1e1b4b; cursor: pointer;
+      box-shadow: 0 0 0 2px rgba(99,102,241,0.35);
+    }
+    .speed-slider::-moz-range-thumb {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #a5b4fc; border: 2px solid #1e1b4b; cursor: pointer;
+    }
+    .speed-value {
+      font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+      color: #a5b4fc; min-width: 28px; text-align: center;
+    }
+
+    /* ── Cheat sheet ── */
+    #cheatPanel { flex-shrink: 0; }
+    .cheat-list { padding: 6px 12px; overflow-y: auto; max-height: 160px; }
+    .cheat-row { display: flex; align-items: baseline; gap: 8px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .cheat-row:last-child { border-bottom: none; }
+    .cheat-cmd  { font-family: "JetBrains Mono", monospace; font-size: 10px; color: #818cf8; white-space: nowrap; flex-shrink: 0; }
+    .cheat-desc { font-size: 10px; color: rgba(221,225,240,0.38); }
+
+    /* ── Right column ── */
+    #rightCol {
+      display: flex; flex-direction: column; gap: 8px;
+      min-height: 0; overflow: hidden;
+    }
+    /* Canvas panel fills the right column entirely */
+    #canvasPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+    /* ── Readouts ── */
+    .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
+    .readout {
+      font-family: "JetBrains Mono", monospace; font-size: 10px; padding: 3px 8px;
+      border-radius: 5px; background: rgba(0,0,0,0.30); border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(221,225,240,0.55); white-space: nowrap; transition: color 200ms;
+    }
+
+    /* ── Drawing board ── */
+    /*
+      The SVG viewBox is 76 × 48. A square in coordinate space must look square
+      on screen. The only reliable way to guarantee this is:
+        1. Use preserveAspectRatio="xMidYMid meet" on the SVG so it NEVER
+           stretches — it always preserves its own internal proportions.
+        2. Give the container a fixed pixel height so neither dimension is
+           ambiguous. Width is 100%; the SVG will letterbox horizontally if
+           the container is wider than 76:48 — but it will never squish.
+      340px height → natural width = 340 × (76/48) ≈ 538px.
+      On most screens the right column is narrower so the SVG will be
+      width-constrained and shorter than 340px — still perfectly square internally.
+    */
+    .canvas-outer {
+      margin: 0 12px 12px;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.09); background: #f8f9ff;
+      /* padding-bottom trick: enforces exact 76:48 aspect ratio */
+      width: calc(100% - 24px);
+      height: 0;
+      padding-bottom: calc((100% - 24px) * 48 / 76);
+      position: relative;
+      flex-shrink: 0;
+    }
+    #drawingSvg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+    .turtle { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.22)); transition: transform 80ms linear; }
+
+    /* ── Output panel — fixed height in left column ── */
+    #outputPanel { flex-shrink: 0; }
+    .stop-btn {
+      display: flex; align-items: center; gap: 5px; font-family: "DM Sans", sans-serif;
+      font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+      background: rgba(239,68,68,0.18); border: 1px solid rgba(239,68,68,0.35);
+      color: #fca5a5; cursor: pointer; transition: all 140ms;
+    }
+    .stop-btn:hover { background: rgba(239,68,68,0.30); }
+    #outputWindow {
+      font-family: "JetBrains Mono", monospace; font-size: 13px; line-height: 21px;
+      background: #06091a; border-radius: 0 0 13px 13px;
+      padding: 10px 13px; height: 160px; overflow-y: auto;
+    }
+    #outputWindow p { margin: 0 0 1px; }
+
+    /* ── Scrollbars ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+
+    button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(99,102,241,0.60); outline-offset: 2px; }
+
+    /* ── Tutorial overlay ─────────────────────────────────────────────────────── */
+    #tutorialOverlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(6, 9, 26, 0.96);
+      display: flex; align-items: stretch; justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    #tutorialBox {
+      width: 100%; max-width: 780px;
+      display: flex; flex-direction: column;
+      background: #0f1629;
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 18px;
+      overflow: hidden;
+      align-self: flex-start;
+      margin: auto;
+    }
+    #tutorialHeader {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+    #tutorialHeader h2 {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: 18px;
+      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .tut-close {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: #b0b8d8; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 130ms;
+    }
+    .tut-close:hover { background: rgba(255,255,255,0.14); }
+    /* progress dots */
+    #tutorialProgress {
+      display: flex; align-items: center; gap: 6px; padding: 10px 20px 0;
+      flex-shrink: 0;
+    }
+    .tut-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); transition: all 200ms;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .tut-dot.active { background: #6366f1; transform: scale(1.3); }
+    .tut-dot.done   { background: #34d399; }
+    #tutorialStepLabel {
+      margin-left: auto; font-size: 11px; font-weight: 600;
+      color: rgba(221,225,240,0.35);
+    }
+    /* slide content */
+    #tutorialSlides { flex: 1; }
+    .tut-slide { display: none; padding: 20px 24px; }
+    .tut-slide.active { display: block; }
+    .tut-slide h3 {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 15px;
+      color: #a5b4fc; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .tut-slide h3 .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(99,102,241,0.25); border: 1px solid rgba(99,102,241,0.4);
+      font-size: 12px; color: #a5b4fc; flex-shrink: 0;
+    }
+    .tut-slide p {
+      font-size: 13px; line-height: 1.65; color: rgba(221,225,240,0.75);
+      margin-bottom: 12px;
+    }
+    .tut-slide p strong { color: #e2e8ff; font-weight: 600; }
+    .tut-slide p em { color: #6ee7b7; font-style: normal; font-weight: 600; }
+    /* code blocks inside tutorial */
+    .tut-code {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      background: #06091a; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 14px;
+      overflow-x: auto; white-space: pre;
+    }
+    /* inline code */
+    .tut-slide code {
+      font-family: "JetBrains Mono", monospace; font-size: 11.5px;
+      background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 4px; padding: 1px 5px; color: #a5b4fc;
+    }
+    /* callout boxes */
+    .tut-callout {
+      border-radius: 9px; padding: 10px 14px; margin-bottom: 14px;
+      font-size: 12.5px; line-height: 1.6;
+    }
+    .tut-callout.tip  { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
+    .tut-callout.info { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; }
+    .tut-callout.warn { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+    /* nav bar */
+    #tutorialNav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      flex-shrink: 0;
+    }
+    .tut-nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      padding: 7px 16px; border-radius: 8px; border: none; cursor: pointer;
+      transition: all 140ms;
+    }
+    #tutPrev { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    #tutPrev:hover { background: rgba(255,255,255,0.13); }
+    #tutNext { background: linear-gradient(135deg,#059669,#10b981); color: #fff; box-shadow: 0 3px 12px rgba(16,185,129,0.25); }
+    #tutNext:hover { box-shadow: 0 5px 16px rgba(16,185,129,0.4); }
+    #tutTryBtn {
+      background: linear-gradient(135deg,#4f46e5,#6366f1); color: #fff;
+      box-shadow: 0 3px 12px rgba(99,102,241,0.3);
+    }
+    #tutTryBtn:hover { box-shadow: 0 5px 16px rgba(99,102,241,0.45); }
+
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  
+	/* ════════════════════════════════════════════════════════════════════════
+   Tutorial animations + polish
+════════════════════════════════════════════════════════════════════════ */
+
+#tutorialOverlay {
+  animation: tutorialFadeIn 180ms ease;
+  backdrop-filter: blur(8px);
+}
+
+#tutorialBox {
+  animation: tutorialScaleIn 220ms ease;
+}
+
+.tut-slide {
+  animation: slideFade 180ms ease;
+}
+
+.tut-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tut-dot:hover {
+  transform: scale(1.2);
+}
+
+@keyframes tutorialFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tutorialScaleIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+
+.tutorial-quiz{
+  margin-top:14px;
+  padding:14px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.quiz-question{
+  font-weight:600;
+  color:#e2e8ff;
+  margin-bottom:10px;
+}
+.quiz-options{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.quiz-btn{
+  border:none;
+  border-radius:8px;
+  padding:8px 12px;
+  background:rgba(99,102,241,0.18);
+  color:#c7d2fe;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:600;
+}
+.quiz-btn:hover{
+  background:rgba(99,102,241,0.32);
+}
+.quiz-feedback{
+  margin-top:10px;
+  font-size:12px;
+  font-weight:700;
+}
+.quiz-correct{ color:#6ee7b7; }
+.quiz-wrong{ color:#fca5a5; }
+
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+  
+  
+/* Interactive tutorial widgets */
+.tut-action-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:14px 0;
+}
+.tut-action-btn{
+  border:none;
+  border-radius:9px;
+  padding:8px 14px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 140ms ease;
+  background:rgba(99,102,241,0.18);
+  color:#c7d2fe;
+  border:1px solid rgba(99,102,241,0.35);
+}
+.tut-action-btn:hover{
+  transform:translateY(-1px);
+  background:rgba(99,102,241,0.28);
+}
+.tut-quiz{
+  margin-top:14px;
+  padding:14px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.tut-quiz h4{
+  margin-bottom:10px;
+  color:#e2e8ff;
+}
+.quiz-option{
+  display:block;
+  width:100%;
+  text-align:left;
+  margin:8px 0;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#111827;
+  color:#dbe4ff;
+  border:1px solid rgba(255,255,255,0.08);
+  cursor:pointer;
+}
+.quiz-option.correct{
+  background:rgba(16,185,129,0.18);
+  border-color:rgba(16,185,129,0.5);
+}
+.quiz-option.wrong{
+  background:rgba(239,68,68,0.18);
+  border-color:rgba(239,68,68,0.5);
+}
+.quiz-feedback{
+  margin-top:8px;
+  font-size:12px;
+  color:#a5b4fc;
+}
+
+</style>
+</head>
+<body>
+<div id="appShell">
+
+  <header id="appHeader">
+    <h1 class="app-title">Java Code Genie</h1>
+    <div class="header-actions">
+      <button id="learnBtn" class="hdr-btn" style="background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.4);color:#a5b4fc;">
+        <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn Java
+      </button>
+      <button id="installBtn" class="hdr-btn hidden" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#6ee7b7;" title="Install as an app on this device">
+        <i data-lucide="monitor-smartphone" style="width:13px;height:13px;"></i> Install app
+      </button>
+      <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
+      <button id="loadBtn" class="hdr-btn"><i data-lucide="upload" style="width:13px;height:13px;"></i> Load</button>
+      <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
+    </div>
+  </header>
+
+  <div id="mainGrid">
+
+    <!-- ══ LEFT COLUMN ══ -->
+    <div id="leftCol">
+      <div class="panel" id="editorPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="code-2" style="width:14px;height:14px;color:#818cf8;"></i>
+            <span>Java code</span>
+          </h2>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div class="tab-group">
+              <button id="editorTab"    class="tab-btn active">Editor</button>
+              <button id="examplesTab" class="tab-btn">Examples</button>
+              <button id="referenceTab" class="tab-btn">Reference</button>
+            </div>
+            <button id="lineNumbersToggle" class="icon-btn active" title="Toggle line numbers">
+              <i data-lucide="list" style="width:13px;height:13px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-wrap" id="editorWrap">
+          <label for="codeEditor" class="sr-only">Java drawing code editor</label>
+          <div id="lineNumbers"></div>
+          <div id="highlightLayer" aria-hidden="true"></div>
+          <textarea id="codeEditor" spellcheck="false" autocorrect="off" autocapitalize="off">public class MyDrawing {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(37, 99, 235);
+    for(int side = 0; side &lt; 4; side++) {
+      for(int step = 0; step &lt; 20; step++) {
+        n.move();
+      }
+      n.turnRight(90);
+    }
+  }
+}</textarea>
+        </div>
+
+        <div id="examplesPanel" class="hidden">
+          <button class="ex-item exampleLoader" data-example="square_simple">
+            <h4>Square — no loop <span class="diff diff-b">beginner</span></h4>
+            <p>repeated move() calls, no loop needed</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="square_loop">
+            <h4>Square — single loop <span class="diff diff-b">beginner</span></h4>
+            <p>one for loop draws all 4 sides</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="square_nested">
+            <h4>Square — nested loops <span class="diff diff-i">intermediate</span></h4>
+            <p>outer loop: sides · inner loop: steps per side</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="rectangle">
+            <h4>Rectangle <span class="diff diff-b">beginner</span></h4>
+            <p>longer and shorter sides</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="triangle">
+            <h4>Triangle <span class="diff diff-b">beginner</span></h4>
+            <p>3 equal sides, each turn 120°</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="hexagon">
+            <h4>Hexagon <span class="diff diff-i">intermediate</span></h4>
+            <p>6 sides, nested loops</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="pattern_squares">
+            <h4>Pattern with squares <span class="diff diff-i">intermediate</span></h4>
+            <p>3 squares drawn in a row</p>
+          </button>
+
+          <button class="ex-item exampleLoader" data-example="house">
+            <h4>House <span class="diff diff-i">intermediate</span></h4>
+            <p>walls + roof using setDirection</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="star">
+            <h4>Star <span class="diff diff-i">intermediate</span></h4>
+            <p>5-pointed star with 144° turns</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="curve_tutorial">
+            <h4>Drawing curves <span class="diff diff-a">tutorial</span></h4>
+            <p>circles and arcs using tiny turns in a loop</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="nested_tutorial">
+            <h4>Nested loop tutorial <span class="diff diff-a">tutorial</span></h4>
+            <p>step-by-step explanation of nested loops</p>
+          </button>
+        </div>
+
+        <div id="referencePanel" class="hidden" style="flex:1;overflow-y:auto;background:#06091a;">
+          <div class="cheat-list" style="max-height:none;padding:10px 14px;" id="referenceList"></div>
+        </div>
+
+        <div class="actions-row">
+          <button id="runButton" class="act-btn btn-run">
+            <i data-lucide="play" style="width:14px;height:14px;"></i> Run code
+          </button>
+          <button id="resetButton" class="act-btn btn-reset">
+            <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset
+          </button>
+        </div>
+
+        <!-- Speed control: 1–100 actions/sec -->
+        <div class="ctrl-row">
+          <i data-lucide="gauge" style="width:13px;height:13px;color:#818cf8;flex-shrink:0;"></i>
+          <label for="speedSlider" class="ctrl-label">Speed</label>
+          <span class="speed-tag speed-tag--slow">1</span>
+          <input type="range" id="speedSlider" min="1" max="100" value="30" step="1" class="speed-slider">
+          <span class="speed-tag speed-tag--fast">100</span>
+          <span id="speedValue" class="speed-value">30/s</span>
+        </div>
+      </div>
+
+      <!-- Output & feedback — lives in the left column below the editor -->
+      <div class="panel" id="outputPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="terminal-square" style="width:14px;height:14px;color:#34d399;"></i>
+            Output &amp; feedback
+          </h2>
+          <button id="stopButton" class="stop-btn hidden">
+            <i data-lucide="square" style="width:11px;height:11px;"></i> Stop
+          </button>
+        </div>
+        <div id="outputWindow">
+          <p style="color:rgba(221,225,240,0.38);">Ready — press <strong style="color:#6ee7b7;">Run code</strong> to execute.</p>
+        </div>
+      </div>
+    </div><!-- /leftCol -->
+
+    <!-- ══ RIGHT COLUMN ══ -->
+    <div id="rightCol">
+      <div class="panel" id="canvasPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="pencil-ruler" style="width:14px;height:14px;color:#fbbf24;"></i>
+            Drawing board
+            <span style="font-size:10px;font-weight:400;color:rgba(221,225,240,0.35);margin-left:4px;" id="gridSizeLabel">76 × 48  · pen starts at centre</span>
+          </h2>
+          <div class="readouts">
+            <span id="positionReadout"  class="readout">x: 38, y: 24</span>
+            <span id="directionReadout" class="readout">dir: 0°</span>
+            <span id="penReadout"       class="readout">pen ↓</span>
+          </div>
+        </div>
+        <div class="canvas-outer" id="canvasOuter">
+          <svg id="drawingSvg" viewBox="0 0 76 48" preserveAspectRatio="xMidYMid meet"
+               role="img" aria-label="Turtle drawing canvas">
+            <g id="gridLayer"></g>
+            <g id="axisLabels"></g>
+            <g id="pathLayer"></g>
+            <!-- pen avatar: tilted 45° left, tip at (0,0) = the draw point -->
+            <g id="turtleGroup" class="turtle" transform="translate(38 24) rotate(0)">
+              <!-- nib: sharp triangle, tip exactly at (0,0) -->
+              <polygon points="0,0 -0.955,-0.318 -0.318,-0.955"
+                       fill="#dde8ff" stroke="#1e1b4b" stroke-width="0.1" stroke-linejoin="round"/>
+              <!-- grip section (darker, just behind nib) -->
+              <polygon points="-1.004,-0.269 -0.269,-1.004 -0.764,-1.499 -1.499,-0.764"
+                       fill="#4338ca" stroke="#1e1b4b" stroke-width="0.1"/>
+              <!-- barrel body -->
+              <polygon points="-1.457,-0.806 -0.806,-1.457 -2.39,-2.984 -2.984,-2.39"
+                       fill="#6366f1" stroke="#1e1b4b" stroke-width="0.1"/>
+              <!-- clip strip along barrel -->
+              <line x1="-1.626" y1="-0.919" x2="-2.828" y2="-2.121"
+                    stroke="#a5b4fc" stroke-width="0.22" stroke-linecap="round"/>
+              <!-- rounded cap -->
+              <ellipse cx="-2.97" cy="-2.97" rx="0.42" ry="0.42"
+                       fill="#818cf8" stroke="#1e1b4b" stroke-width="0.1"/>
+              <!-- cap body (connects barrel to cap ellipse) -->
+              <polygon points="-2.984,-2.39 -2.39,-2.984 -2.72,-3.22 -3.22,-2.72"
+                       fill="#818cf8" stroke="#1e1b4b" stroke-width="0.1"/>
+              <!-- ink dot at tip -->
+              <circle cx="0" cy="0" r="0.14" fill="#fbbf24"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+    </div><!-- /rightCol -->
+  </div><!-- /mainGrid -->
+  <!-- ══ TUTORIAL OVERLAY ══ -->
+  <div id="tutorialOverlay" class="hidden">
+    <div id="tutorialBox">
+
+      <div id="tutorialHeader">
+        <h2>&#x1F4DA; Learn Java with Code Genie</h2>
+        <button class="tut-close" id="tutClose">&#x2715;</button>
+      </div>
+
+      <div id="tutorialProgress">
+        <div class="tut-dot active" data-slide="0"></div>
+        <div class="tut-dot" data-slide="1"></div>
+        <div class="tut-dot" data-slide="2"></div>
+        <div class="tut-dot" data-slide="3"></div>
+        <div class="tut-dot" data-slide="4"></div>
+        <div class="tut-dot" data-slide="5"></div>
+        <div class="tut-dot" data-slide="6"></div>
+        <div class="tut-dot" data-slide="7"></div>
+        <span id="tutorialStepLabel">Step 1 of 8</span>
+      </div>
+
+      <div id="tutorialSlides">
+
+        <!-- ── Slide 0: What is Java? ── -->
+        <div class="tut-slide active">
+          <h3><span class="step-num">1</span> What is Java?</h3>
+          <p>
+            <strong>Java</strong> is one of the most popular programming languages in the world.
+            It is used to build apps, games, websites, and much more.
+            Many schools and universities teach Java as a first programming language.
+          </p>
+          <p>
+            In this walkthrough you will learn the basic building blocks of Java —
+            step by step — and then write your very first program that draws a square.
+          </p>
+          <div class="tut-callout info">
+            &#x1F4A1; Every Java program you write in Code Genie is real Java code —
+            the same language professional developers use every day.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: What keyword starts a class in Java?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">class</button><button class="quiz-btn" data-correct="false">start</button><button class="quiz-btn" data-correct="false">main</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+
+          <p>A Java program always has this basic structure:</p>
+          <div class="tut-code" id="slide0code"></div>
+          <div class="tut-callout tip">
+            The curly braces <strong>{ }</strong> mark the beginning and end of a block of code.
+            Everything inside <code>main</code> is what runs when your program starts.
+          </div>
+        </div>
+
+        <!-- ── Slide 1: Variables ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">2</span> Variables and Storing Information</h3>
+          <p>
+            A <strong>variable</strong> stores information that your program can use later.
+            In drawing programs, variables are useful for storing things like the number
+            of sides in a shape, step counts, colours, or positions.
+          </p>
+          <div class="tut-code">int side = 4;</div>
+          <p>Breaking that down:</p>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>int</code> — the <strong>type</strong>. It means this variable holds a whole number (integer).</li>
+            <li><code>side</code> — the variable name. It stores the number of sides in a shape.</li>
+            <li><code>= 4</code> — the value stored in the variable.</li>
+            <li><code>;</code> — every Java statement ends with a semicolon.</li>
+          </ul>
+          <div class="tut-callout tip">
+            Variable names must start with a letter and cannot contain spaces.
+            Java is <strong>case-sensitive</strong> — <code>side</code> and <code>Side</code> are different variables.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: Which symbol ends most Java statements?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">;</button><button class="quiz-btn" data-correct="false">:</button><button class="quiz-btn" data-correct="false">.</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+
+        </div>
+
+        <!-- ── Slide 2: Objects ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">3</span> Creating an Object</h3>
+          <p>
+            Java is an <strong>object-oriented</strong> language. That means we work with
+            <em>objects</em> — things that have their own properties and actions.
+          </p>
+          <p>
+            In Code Genie, <code>Pen</code> is an object. You create one like this:
+          </p>
+          <div class="tut-code" id="slide2code"></div>
+          <p>Breaking that down:</p>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>Pen</code> — the <strong>type</strong> (a class, like a blueprint).</li>
+            <li><code>n</code> — the <strong>name</strong> you give your pen object.</li>
+            <li><code>new Pen()</code> — this <strong>creates</strong> a brand new Pen object.</li>
+          </ul>
+          <div class="tut-callout info">
+            This is exactly the same pattern as declaring a variable — you give it
+            a type, a name, and a value. The difference is the value is a new object.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: What does new Pen() do?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">Creates a new object</button><button class="quiz-btn" data-correct="false">Deletes an object</button><button class="quiz-btn" data-correct="false">Renames a variable</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+
+        </div>
+
+        <!-- ── Slide 3: Calling methods ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">4</span> Calling a Method</h3>
+          <p>
+            A <strong>method</strong> is an action that an object can perform.
+            You call a method using a <strong>dot</strong> between the object name and the method name.
+          </p>
+          <div class="tut-code" id="slide3code"></div>
+          <div class="tut-action-row"><button class="tut-action-btn tutorial-load" data-example="square_simple">Load movement example</button></div>
+          <p>Breaking that down:</p>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>n</code> — the name of your pen object.</li>
+            <li><code>.</code> — the dot connects the object to its method.</li>
+            <li><code>move()</code> — the method name. This tells the pen to move forward 1 unit.</li>
+            <li><code>turnRight(90)</code> — passes the number <strong>90</strong> as an <em>argument</em> (extra information the method needs).</li>
+          </ul>
+          <div class="tut-callout tip">
+            The dot notation <code>object.method()</code> is one of the most important
+            patterns in Java. You will see it everywhere.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: What symbol connects an object to a method?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">.</button><button class="quiz-btn" data-correct="false">#</button><button class="quiz-btn" data-correct="false">:</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+
+        </div>
+
+        <!-- ── Slide 4: Sequences ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">5</span> Sequences Without Loops</h3>
+          <p>
+            A <strong>sequence</strong> is a list of statements that run one after another,
+            from top to bottom. This is the most basic form of programming.
+          </p>
+          <p>
+            Here is a sequence that moves the pen forward 5 steps — each step is one line of code:
+          </p>
+          <div class="tut-code" id="slide4code"></div>
+          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadSequence">&#x1F4E5; Load sequence example</button></div>
+          <div class="tut-callout warn">
+            &#x26A0; That is already 5 lines just to move 5 steps!
+            A full square side needs 20 steps — 20 lines. Four sides means 80 lines of code.
+            There must be a better way...
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: What is a sequence?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">Code running top to bottom</button><button class="quiz-btn" data-correct="false">A type of loop</button><button class="quiz-btn" data-correct="false">A Java error</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+
+        </div>
+
+        <!-- ── Slide 5: For loop concept ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">6</span> Repeating with a For Loop</h3>
+          <p>
+            A <strong>for loop</strong> repeats a block of code a set number of times.
+            On the last slide we wrote <code>n.move();</code> 5 times by hand.
+            Imagine doing that 20 times for a full side! A loop makes it much shorter:
+          </p>
+          <div class="tut-code" id="slide5code"></div>
+          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadLoop">&#x1F4E5; Load loop example</button></div>
+          <p>The three parts inside the brackets are:</p>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>int i = 0</code> — create a counter variable and start it at 0.</li>
+            <li><code>i &lt; 20</code> — keep looping <strong>while</strong> i is less than 20.</li>
+            <li><code>i++</code> — after each loop, add 1 to i. (<code>i++</code> means <code>i = i + 1</code>).</li>
+          </ul>
+          <div class="tut-callout tip">
+            The loop runs 20 times (when i = 0, 1, 2 ... 19).
+            When i reaches 20, the condition <code>i &lt; 20</code> is false and the loop stops.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: How many times does i < 20 loop?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">20</button><button class="quiz-btn" data-correct="false">19</button><button class="quiz-btn" data-correct="false">21</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+
+        </div>
+
+        <!-- ── Slide 6: Drawing a square ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">7</span> Putting it Together — Drawing a Square</h3>
+          <p>
+            A square has <strong>4 equal sides</strong>. After each side we turn <strong>90°</strong>.
+            We can use a for loop for each side, and another loop to repeat all 4 sides:
+          </p>
+          <div class="tut-code" id="slide6code"></div>
+          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadSquare">&#x1F4E5; Load square program</button></div>
+          <div class="tut-quiz"><h4>Quick challenge ⚡</h4><p style="margin-bottom:10px;">How many sides does the outer loop draw?</p><button class="quiz-option" data-correct="true">4</button><button class="quiz-option">20</button><button class="quiz-option">80</button><div class="quiz-feedback"></div></div>
+          <div class="tut-callout info">
+            The <strong>outer loop</strong> runs 4 times — once for each side of the square.<br>
+            The <strong>inner loop</strong> runs 20 times — once for each step of that side.<br>
+            Total: 4 × 20 = 80 move() calls, in just 6 lines of code.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Quick Quiz: In the square code, what does <code>n.turnRight(90)</code> do?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="true">Turns the pen 90° at each corner</button>
+    <button class="quiz-btn" data-correct="false">Moves the pen 90 steps forward</button>
+    <button class="quiz-btn" data-correct="false">Sets the pen speed to 90</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+        </div>
+
+        <!-- ── Slide 7: Try it ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">8</span> Now Try it Yourself!</h3>
+          <p>
+            You have just learned the core building blocks of Java:
+          </p>
+          <ul style="font-size:13px;line-height:2;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:14px;">
+            <li>&#x2705; <strong>Variables</strong> — store values with a type and name</li>
+            <li>&#x2705; <strong>Objects</strong> — create things using <code>new ClassName()</code></li>
+            <li>&#x2705; <strong>Methods</strong> — call actions using <code>object.method()</code></li>
+            <li>&#x2705; <strong>Sequences</strong> — statements run top to bottom</li>
+            <li>&#x2705; <strong>For loops</strong> — repeat code a set number of times</li>
+          </ul>
+          <p>
+            Click <strong>Close &amp; Run</strong> below. The square program will load into the editor and run automatically.
+            Then try changing the number of steps or the turn angle and see what happens!
+          </p>
+          <div class="tut-callout tip">
+            &#x1F3AE; <strong>Challenge:</strong> can you change the square into a triangle?
+            A triangle has 3 sides and each turn is 120°. Change the loop count and turn angle to find out!
+          </div>
+        </div>
+
+      </div><!-- /tutorialSlides -->
+
+      <div id="tutorialNav">
+        <button class="tut-nav-btn" id="tutPrev">&#x2190; Back</button>
+        <button class="tut-nav-btn" id="tutNext">Next &#x2192;</button>
+        <button class="tut-nav-btn hidden" id="tutTryBtn" style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 3px 12px rgba(16,185,129,0.25);">
+          <i data-lucide="play" style="width:13px;height:13px;"></i> Close &amp; Run
+        </button>
+      </div>
+
+    </div><!-- /tutorialBox -->
+  </div><!-- /tutorialOverlay -->
+
+</div><!-- /appShell -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════════
+// Java Code Genie — main script
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Canvas state (can be changed by n.setGridSize) ───────────────────────────
+let CANVAS_W = 76;
+let CANVAS_H = 48;
+let START_X  = 38;
+let START_Y  = 24;
+
+// ── Direction constants (item 1) ─────────────────────────────────────────────
+const PenDirections = { UP: 270, DOWN: 90, LEFT: 180, RIGHT: 0 };
+
+// ── Examples (items 4–8 fixed, 12 nested tutorial added) ─────────────────────
+const examples = {
+
+  // ── 1. Square: no loop — just repeated commands ───────────────────────────
+  square_simple:
+`public class Square {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(37, 99, 235);
+
+    // A square has 4 equal sides.
+    // We draw each side one at a time.
+
+    // Side 1
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.turnRight(90);
+
+    // Side 2
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.turnRight(90);
+
+    // Side 3
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.turnRight(90);
+
+    // Side 4
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+  }
+}`,
+
+  // ── 2. Square: using one for loop ────────────────────────────────────────
+  square_loop:
+`public class SquareLoop {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(37, 99, 235);
+
+    // This loop runs 4 times, once for each side.
+    for(int side = 0; side < 4; side++) {
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.move();
+      n.turnRight(90);
+    }
+  }
+}`,
+
+  // ── 3. Square: nested loops explained simply ──────────────────────────────
+  square_nested:
+`public class SquareNested {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(99, 102, 241);
+
+    // Outer loop: 4 sides.
+    // Inner loop: 20 steps per side.
+    // Total: 4 x 20 = 80 move() calls.
+    for(int side = 0; side < 4; side++) {
+      for(int step = 0;
+      step < 20;
+      step++) {
+        n.move();
+    }
+      n.turnRight(90);
+    }
+  }
+}`,
+
+  // ── 4. Rectangle ─────────────────────────────────────────────────────────
+  rectangle:
+`public class Rectangle {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(34, 197, 94);
+
+    // Long sides = 30 steps, short sides = 12 steps.
+    for(int s = 0; s < 30; s++) {
+      n.move();
+    }
+    n.turnRight(90);
+    for(int s = 0; s < 12; s++) {
+      n.move();
+    }
+    n.turnRight(90);
+    for(int s = 0; s < 30; s++) {
+      n.move();
+    }
+    n.turnRight(90);
+    for(int s = 0; s < 12; s++) {
+      n.move();
+    }
+  }
+}`,
+
+  // ── 5. Triangle ──────────────────────────────────────────────────────────
+  triangle:
+`public class Triangle {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(239, 68, 68);
+
+    // 3 sides, turn 120 degrees after each one.
+    for(int side = 0; side < 3; side++) {
+      for(int s = 0; s < 20; s++) {
+        n.move();
+      }
+      n.turnRight(120);
+    }
+  }
+}`,
+
+  // ── 6. Hexagon ───────────────────────────────────────────────────────────
+  hexagon:
+`public class Hexagon {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(168, 85, 247);
+
+    // 6 sides, turn 60 degrees after each one.
+    n.setPosition(28, 20);
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 6; side++) {
+      for(int s = 0;
+      s < 12;
+      s++) { n.move();
+    }
+      n.turnRight(60);
+    }
+  }
+}`,
+
+  // ── 7. House ─────────────────────────────────────────────────────────────
+  house:
+`public class House {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+
+    // Draw the walls
+    n.setColor(249, 115, 22);
+    n.setPosition(20, 38);
+    n.setDirection(Pen.RIGHT);
+    for(int s = 0; s < 24; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.UP);
+    for(int s = 0; s < 14; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.LEFT);
+    for(int s = 0; s < 24; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.DOWN);
+    for(int s = 0; s < 14; s++) {
+      n.move();
+    }
+
+    // Draw the door (centred on the bottom wall)
+    n.setColor(139, 92, 246);
+    n.penUp();
+    n.setPosition(30, 38);
+    n.penDown();
+    n.setDirection(Pen.UP);
+    for(int s = 0; s < 6; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.RIGHT);
+    for(int s = 0; s < 4; s++) {
+      n.move();
+    }
+    n.setDirection(Pen.DOWN);
+    for(int s = 0; s < 6; s++) {
+      n.move();
+    }
+
+    // Draw the roof
+    n.setColor(239, 68, 68);
+    n.penUp();
+    n.setPosition(20, 24);
+    n.penDown();
+    n.setDirection(315);
+    for(int s = 0; s < 17; s++) {
+      n.move();
+    }
+    n.setDirection(45);
+    for(int s = 0; s < 17; s++) {
+      n.move();
+    }
+  }
+}`,
+
+  // ── 8. Star ──────────────────────────────────────────────────────────────
+  star:
+`public class Star {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(249, 115, 22);
+    n.setPosition(39, 18);
+    n.setDirection(0);
+
+    // Move 18, turn right 144, move 18, turn left 72 — repeat 5 times.
+    for(int point = 0; point < 5; point++) {
+      for(int s = 0;
+      s < 18;
+      s++) { n.move();
+    }
+      n.turnRight(144);
+      for(int s = 0; s < 18; s++) {
+      n.move();
+    }
+      n.turnLeft(72);
+    }
+  }
+}`,
+
+  // ── 9. Pattern: 3 squares in a row ───────────────────────────────────────
+  pattern_squares:
+`public class PatternSquares {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.setColor(249, 115, 22);
+
+    // Draw Square 1
+    n.setPosition(5, 18);
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 14;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+
+    // Draw Square 2 (move right to a new starting position)
+    n.penUp();
+    n.setPosition(22, 18);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 14;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+
+    // Draw Square 3
+    n.penUp();
+    n.setPosition(39, 18);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 14;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+  }
+}`,
+
+
+
+  // ── 10. Curve tutorial ──────────────────────────────────────────────────
+  curve_tutorial:
+`public class Curves {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+
+    // A curve is made by moving forward a tiny amount
+    // and turning a tiny amount, many times in a loop.
+    //
+    // A full circle = 360 moves of 1 step, turning 1 degree each time.
+    // A semicircle  = 180 moves of 1 step, turning 1 degree each time.
+    //
+    // The tighter the turn each step, the more curved the line.
+
+    // Draw a full circle
+    n.setColor(37, 99, 235);
+    n.setPosition(38, 32);
+    n.setDirection(Pen.UP);
+    for(int step = 0; step < 360; step++) {
+      n.move();
+      n.turnRight(1);
+    }
+
+    // Draw a semicircle above
+    n.setColor(239, 68, 68);
+    n.penUp();
+    n.setPosition(20, 20);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int step = 0; step < 180; step++) {
+      n.move();
+      n.turnLeft(1);
+    }
+  }
+}`,
+
+  // ── 11. Nested loops tutorial ─────────────────────────────────────────────
+  nested_tutorial:
+`public class NestedLoops {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+
+    // A nested loop is a loop INSIDE another loop.
+    // The inner loop runs completely every time the outer loop runs once.
+    //
+    // Here the outer loop draws each square (runs 4 times).
+    // The inner loop draws each side of that square (runs 4 times).
+    // Result: 4 squares x 4 sides = 16 sides drawn in total.
+
+    // Square 1
+    n.setColor(239, 68, 68);
+    n.setPosition(4, 19);
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+
+    // Square 2
+    n.setColor(249, 115, 22);
+    n.penUp();
+    n.setPosition(17, 19);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+
+    // Square 3
+    n.setColor(34, 197, 94);
+    n.penUp();
+    n.setPosition(30, 19);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+
+    // Square 4
+    n.setColor(99, 102, 241);
+    n.penUp();
+    n.setPosition(43, 19);
+    n.penDown();
+    n.setDirection(Pen.RIGHT);
+    for(int side = 0; side < 4; side++) {
+      for(int s = 0;
+      s < 10;
+      s++) { n.move();
+    }
+      n.turnRight(90);
+    }
+  }
+}`
+};
+
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const runButton         = document.getElementById("runButton");
+const resetButton       = document.getElementById("resetButton");
+const stopButton        = document.getElementById("stopButton");
+const codeEditor        = document.getElementById("codeEditor");
+const highlightLayer    = document.getElementById("highlightLayer");
+const outputWindow      = document.getElementById("outputWindow");
+const pathLayer         = document.getElementById("pathLayer");
+const gridLayer         = document.getElementById("gridLayer");
+const axisLabels        = document.getElementById("axisLabels");
+const turtleGroup       = document.getElementById("turtleGroup");
+const editorTab         = document.getElementById("editorTab");
+const examplesTab       = document.getElementById("examplesTab");
+const referenceTab      = document.getElementById("referenceTab");
+const referencePanel    = document.getElementById("referencePanel");
+const editorWrap        = document.getElementById("editorWrap");
+const examplesPanel     = document.getElementById("examplesPanel");
+const lineNumbers       = document.getElementById("lineNumbers");
+const lineNumbersToggle = document.getElementById("lineNumbersToggle");
+const positionReadout   = document.getElementById("positionReadout");
+const directionReadout  = document.getElementById("directionReadout");
+const penReadout        = document.getElementById("penReadout");
+const speedSlider       = document.getElementById("speedSlider");
+const speedValue        = document.getElementById("speedValue");
+const canvasOuter       = document.getElementById("canvasOuter");
+const drawingSvg        = document.getElementById("drawingSvg");
+const gridSizeLabel     = document.getElementById("gridSizeLabel");
+const saveBtn           = document.getElementById("saveBtn");
+const loadBtn           = document.getElementById("loadBtn");
+const fileInput         = document.getElementById("fileInput");
+
+// ── Speed: 1–100 actions per second ─────────────────────────────────────────
+let globalSpeed = 30; // actions/sec
+
+function setGlobalSpeed(val) {
+  globalSpeed = Math.max(1, Math.min(100, val));
+  speedSlider.value = globalSpeed;
+  speedSlider.style.setProperty('--val', globalSpeed);
+  speedValue.textContent = String(globalSpeed);
+}
+speedSlider.addEventListener('input', () => setGlobalSpeed(Number(speedSlider.value)));
+setGlobalSpeed(30);
+
+// ── Syntax highlighting (item 14) ────────────────────────────────────────────
+function highlight(code) {
+  // Single-pass tokeniser — scans left-to-right, never re-processes matched text.
+  // Each token regex is tried at the current position; the first match wins.
+  // Unmatched characters are emitted as plain (escaped) text.
+
+  const KEYWORDS  = new Set(['public','class','static','void','int','for','if','else','new','return','String','args','true','false']);
+  const PEN_METHS = new Set(['move','turnRight','turnLeft','setDirection','setColor','setLineWidth','setPosition','setGridSize','penUp','penDown']);
+
+  // Ordered list of token patterns (tried in order at each position)
+  const TOKENS = [
+    // Multi-line comment
+    { re: /^\/\*[\s\S]*?\*\//, cls: 'hl-cmt' },
+    // Single-line comment
+    { re: /^\/\/[^\n]*/, cls: 'hl-cmt' },
+    // String literal
+    { re: /^"[^"]*"/, cls: 'hl-str' },
+    // Pen direction constant:  Pen.UP  Pen.DOWN  etc.
+    { re: /^Pen\.(UP|DOWN|LEFT|RIGHT)\b/, cls: 'hl-dir' },
+    // Pen type on its own (must come after Pen.X check)
+    { re: /^Pen\b/, cls: 'hl-type' },
+    // Method call:  identifier.methodName
+    { re: /^\w+\.(move|turnRight|turnLeft|setDirection|setColor|setLineWidth|setPosition|setGridSize|penUp|penDown)\b/, cls: 'hl-met' },
+    // Word token — keyword or plain identifier
+    { re: /^[A-Za-z_]\w*/, cls: null },   // cls=null means we classify below
+    // Number
+    { re: /^\d+(\.\d+)?/, cls: 'hl-num' },
+    // Anything else (single char)
+    { re: /^[\s\S]/, cls: null },
+  ];
+
+  function esc(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function wrap(cls, text) {
+    return `<span class="${cls}">${esc(text)}</span>`;
+  }
+
+  let out = '';
+  let pos = 0;
+
+  while (pos < code.length) {
+    let matched = false;
+    for (const tok of TOKENS) {
+      const m = code.slice(pos).match(tok.re);
+      if (!m) continue;
+
+      const raw = m[0];
+      pos += raw.length;
+      matched = true;
+
+      if (tok.cls === 'hl-cmt' || tok.cls === 'hl-str' || tok.cls === 'hl-dir' ||
+          tok.cls === 'hl-type' || tok.cls === 'hl-met' || tok.cls === 'hl-num') {
+        out += wrap(tok.cls, raw);
+      } else if (tok.cls === null) {
+        // Word token — decide if keyword
+        if (/^[A-Za-z_]\w*$/.test(raw) && KEYWORDS.has(raw)) {
+          out += wrap('hl-kw', raw);
+        } else {
+          out += esc(raw);
+        }
+      } else {
+        out += esc(raw);
+      }
+      break;
+    }
+    if (!matched) { out += esc(code[pos]); pos++; } // safety fallback
+  }
+  return out;
+}
+
+function updateHighlight() {
+  highlightLayer.innerHTML = highlight(codeEditor.value);
+  // Sync scroll
+  highlightLayer.scrollTop  = codeEditor.scrollTop;
+  highlightLayer.scrollLeft = codeEditor.scrollLeft;
+}
+
+// ── Line numbers ─────────────────────────────────────────────────────────────
+let lineNumbersVisible = true;
+
+function updateLineNumbers() {
+  const lines = codeEditor.value.split('\n').length;
+  let html = '';
+  for (let i = 1; i <= lines; i++) html += i + '<br>';
+  lineNumbers.innerHTML = html;
+}
+
+function toggleLineNumbers() {
+  lineNumbersVisible = !lineNumbersVisible;
+  lineNumbers.style.display = lineNumbersVisible ? '' : 'none';
+  lineNumbersToggle.classList.toggle('active', lineNumbersVisible);
+  // Adjust highlight/editor left position
+  const left = lineNumbersVisible ? '36px' : '0px';
+  highlightLayer.style.left = left;
+  codeEditor.style.left     = left;
+}
+
+codeEditor.addEventListener('input', () => { updateLineNumbers(); updateHighlight(); });
+codeEditor.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const start = codeEditor.selectionStart;
+    const end   = codeEditor.selectionEnd;
+    const val   = codeEditor.value;
+    codeEditor.value = val.substring(0, start) + '  ' + val.substring(end);
+    codeEditor.selectionStart = codeEditor.selectionEnd = start + 2;
+    updateLineNumbers();
+    updateHighlight();
+  }
+});
+codeEditor.addEventListener('scroll', () => {
+  lineNumbers.scrollTop     = codeEditor.scrollTop;
+  highlightLayer.scrollTop  = codeEditor.scrollTop;
+  highlightLayer.scrollLeft = codeEditor.scrollLeft;
+});
+lineNumbersToggle.addEventListener('click', toggleLineNumbers);
+updateLineNumbers();
+updateHighlight();
+
+// ── Populate reference panel with syntax-highlighted command rows ─────────────
+(function buildReference() {
+  const rows = [
+    ['Pen n = new Pen();',          'create pen (required)'],
+    ['n.move();',                    'move forward 1 unit'],
+    ['n.turnRight(90);',             'turn clockwise 90°'],
+    ['n.turnLeft(45);',              'turn anti-clockwise 45°'],
+    ['n.setDirection(Pen.UP);',      'point UP / DOWN / LEFT / RIGHT'],
+    ['n.setColor(255, 100, 50);',    'RGB colour 0–255'],
+    ['n.setLineWidth(3);',           'line width 1–50'],
+    ['n.penUp();',                   'move without drawing'],
+    ['n.penDown();',                 'start drawing again'],
+    ['n.setPosition(20, 10);',       'jump to coordinates'],
+    ['n.setGridSize(76, 48);',       'resize the canvas'],
+    ['for(int i = 0; i < 4; i++)',   'repeat 4 times'],
+    ['// comment',                   'single-line comment'],
+    ['/* comment */',                'multi-line comment'],
+  ];
+  const list = document.getElementById('referenceList');
+  rows.forEach(([cmd, desc]) => {
+    const row = document.createElement('div');
+    row.className = 'cheat-row';
+    row.innerHTML =
+      `<span class="cheat-cmd" style="font-size:11px;">${highlight(cmd)}</span>` +
+      `<span class="cheat-desc" style="font-size:11px;color:rgba(221,225,240,0.45);">${desc}</span>`;
+    list.appendChild(row);
+  });
+})();
+
+// ── Grid rendering ───────────────────────────────────────────────────────────
+function buildGrid(w, h) {
+  const step = 10;
+  let gLines = '';
+  for (let x = step; x < w; x += step)
+    gLines += `<line x1="${x}" y1="0" x2="${x}" y2="${h}"/>`;
+  for (let y = step; y < h; y += step)
+    gLines += `<line x1="0" y1="${y}" x2="${w}" y2="${y}"/>`;
+  gridLayer.innerHTML = gLines;
+  gridLayer.setAttribute('stroke', 'rgba(15,23,42,0.07)');
+  gridLayer.setAttribute('stroke-width', '0.3');
+
+  // Axis labels
+  const fs = 1.8;
+  let lHtml = `<g font-family="'JetBrains Mono',monospace" font-size="${fs}" fill="rgba(100,116,139,0.7)">`;
+  lHtml += `<text x="0.8" y="${fs}" text-anchor="start">0</text>`;
+  for (let x = step; x < w; x += step)
+    lHtml += `<text x="${x}" y="${fs}" text-anchor="middle">${x}</text>`;
+  for (let y = step; y < h; y += step)
+    lHtml += `<text x="0.8" y="${y + 0.6}" dominant-baseline="middle">${y}</text>`;
+  lHtml += '</g>';
+  axisLabels.innerHTML = lHtml;
+}
+
+// ── Grid size setter (item 10) ───────────────────────────────────────────────
+function applyGridSize(w, h) {
+  CANVAS_W = w; CANVAS_H = h;
+  START_X  = Math.round(w / 2);
+  START_Y  = Math.round(h / 2);
+  drawingSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  // Recalculate padding-bottom to maintain correct aspect ratio
+  canvasOuter.style.paddingBottom = `calc((100% - 24px) * ${h} / ${w})`;
+  gridSizeLabel.textContent = `${w} × ${h}  · pen starts at centre`;
+  buildGrid(w, h);
+}
+
+// ── Turtle state ─────────────────────────────────────────────────────────────
+let turtle = {};
+let isRunning = false;
+let stopRequested = false;
+
+function makeTurtle() {
+  return {
+    x: START_X, y: START_Y, direction: 0,
+    colorR: 99, colorG: 102, colorB: 241,
+    lineWidth: 0.4,   // SVG units (item 2, default visible width)
+    penDown: true
+  };
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c])
+  );
+}
+
+function addOutput(message, type = "info") {
+  const cols = { info:"rgba(221,225,240,0.72)", success:"#6ee7b7", error:"#fca5a5", warning:"#fcd34d", command:"#93c5fd" };
+  const p = document.createElement("p");
+  p.style.color = cols[type] || cols.info;
+  p.innerHTML = message;
+  outputWindow.appendChild(p);
+  outputWindow.scrollTop = outputWindow.scrollHeight;
+}
+
+function clearOutput(msg) {
+  outputWindow.innerHTML = "";
+  if (msg) addOutput(msg, "info");
+}
+
+function resetTurtle(clearPaths = true) {
+  if (clearPaths) pathLayer.innerHTML = "";
+  turtle = makeTurtle();
+  updateTurtleVisual();
+}
+
+function updateTurtleVisual() {
+  turtleGroup.setAttribute("transform", `translate(${turtle.x} ${turtle.y}) rotate(${turtle.direction})`);
+  positionReadout.textContent = `x: ${Math.round(turtle.x)}, y: ${Math.round(turtle.y)}`;
+  directionReadout.textContent = `dir: ${Math.round(((turtle.direction % 360) + 360) % 360)}°`;
+  penReadout.textContent = `pen ${turtle.penDown ? "↓" : "↑"}`;
+  penReadout.style.color = turtle.penDown ? "rgba(110,231,183,0.85)" : "rgba(252,211,77,0.85)";
+}
+
+function drawLine(x1, y1, x2, y2, r, g, b, w) {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", x1); line.setAttribute("y1", y1);
+  line.setAttribute("x2", x2); line.setAttribute("y2", y2);
+  line.setAttribute("stroke", `rgb(${r},${g},${b})`);
+  line.setAttribute("stroke-width", String(w));
+  line.setAttribute("stroke-linecap", "round");
+  pathLayer.appendChild(line);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Comment stripper (items 13: single + multi-line) ─────────────────────────
+function stripComments(code) {
+  // Remove /* ... */ first (may span lines)
+  code = code.replace(/\/\*[\s\S]*?\*\//g, '');
+  // Remove // to end of line
+  code = code.split("\n").map(l => l.replace(/\/\/.*$/, "")).join("\n");
+  return code;
+}
+
+// ── Arithmetic evaluator ─────────────────────────────────────────────────────
+function evalArith(expr) {
+  if (!/^[\d\s\+\-\*\/\(\)\.]+$/.test(expr.trim())) return null;
+  try {
+    const result = Function('"use strict"; return (' + expr + ')')();
+    return (typeof result === 'number' && isFinite(result))
+      ? String(Math.round(result * 1000) / 1000) : null;
+  } catch(e) { return null; }
+}
+
+// ── Loop expander ─────────────────────────────────────────────────────────────
+function expandLoops(code) {
+  let result = code;
+  let safety = 0;
+  const MAX = 500;
+
+  function findMatchingBrace(str, openPos) {
+    let depth = 1, pos = openPos + 1;
+    while (pos < str.length && depth > 0) {
+      if (str[pos] === '{') depth++;
+      else if (str[pos] === '}') { depth--; if (depth === 0) return pos; }
+      pos++;
+    }
+    return -1;
+  }
+
+  while (safety++ < MAX) {
+    const forIdx = result.search(/\bfor\s*\(/);
+    if (forIdx === -1) break;
+
+    let pos = forIdx + 3;
+    while (pos < result.length && /\s/.test(result[pos])) pos++;
+    if (result[pos] !== '(') return { ok: false, error: 'For loop: expected ( after for' };
+
+    let parenDepth = 1;
+    const condStart = pos + 1;
+    pos++;
+    while (pos < result.length && parenDepth > 0) {
+      if (result[pos] === '(') parenDepth++;
+      else if (result[pos] === ')') parenDepth--;
+      if (parenDepth > 0) pos++;
+    }
+    if (parenDepth !== 0) return { ok: false, error: 'For loop: mismatched parentheses' };
+    const condEnd = pos;
+    const condition = result.substring(condStart, condEnd);
+
+    const m = condition.match(
+      /^\s*int\s+(\w+)\s*=\s*(\d+)\s*;\s*\1\s*<\s*(\d+)\s*;\s*(?:\1\s*=\s*\1\s*\+\s*1|\1\s*\+=\s*1|\1\+\+|\+\+\1)\s*$/
+    );
+    if (!m) {
+      // Diagnose common for-loop mistakes with specific feedback
+      let loopErr = 'For loop format: for(int i = 0; i < 4; i++) { ... }';
+      if (!/\bint\b/.test(condition))
+        loopErr = 'For loop: missing "int" before the variable name. Write: for(int i = 0; ...)';
+      else if (!/=\s*\d/.test(condition.split(';')[0]))
+        loopErr = 'For loop: missing start value. Write: for(int i = 0; ...)';
+      else if (!condition.includes('<'))
+        loopErr = 'For loop: missing condition. Write: for(int i = 0; i < 4; ...)';
+      else if (!/\+\+|\+=|\+\s*1/.test(condition))
+        loopErr = 'For loop: missing increment. Write: for(int i = 0; i < 4; i++)';
+      else if ((condition.match(/\b(\w+)\b/g) || []).filter(w => w !== 'int').length < 2)
+        loopErr = 'For loop: the variable name must match in all three parts. E.g. for(int i = 0; i < 4; i++)';
+      return { ok: false, error: loopErr };
+    }
+
+    const varName  = m[1];
+    const startVal = parseInt(m[2], 10);
+    const endVal   = parseInt(m[3], 10);
+    const count    = Math.max(0, endVal - startVal);
+
+    if (count > 2000) return { ok: false, error: `Loop runs ${count} times — max is 2000. Use a smaller count.` };
+
+    pos = condEnd + 1;
+    while (pos < result.length && /\s/.test(result[pos])) pos++;
+    if (result[pos] !== '{') return { ok: false, error: 'For loop: expected { after condition' };
+
+    const bodyEnd = findMatchingBrace(result, pos);
+    if (bodyEnd === -1) return { ok: false, error: 'For loop: mismatched braces' };
+
+    const body = result.substring(pos + 1, bodyEnd).trim();
+    const expanded = [];
+
+    for (let i = startVal; i < startVal + count; i++) {
+      let iteration = body.replace(new RegExp('\\b' + varName + '\\b', 'g'), String(i));
+      // evaluate arithmetic in method args
+      iteration = iteration.replace(
+        /(\w+\.\w+\s*\(\s*)([\d\s\+\-\*\/\(\)\.]+?)(\s*\))/g,
+        (match, prefix, expr, suffix) => {
+          const val = evalArith(expr);
+          return val !== null ? prefix + val + suffix : match;
+        }
+      );
+      // also evaluate plain int x = expr
+      iteration = iteration.replace(
+        /\bint\s+(\w+)\s*=\s*([\d\s\+\-\*\/\(\)\.]+);/g,
+        (match, vname, expr) => {
+          const val = evalArith(expr);
+          return val !== null ? `int ${vname} = ${val};` : match;
+        }
+      );
+      expanded.push(iteration);
+    }
+
+    result =
+      result.substring(0, forIdx) +
+      '\n' + expanded.join('\n') + '\n' +
+      result.substring(bodyEnd + 1);
+  }
+
+  return { ok: true, code: result };
+}
+
+// ── parseCommands (items 9, 16 fixed) ────────────────────────────────────────
+function parseCommands(rawCode) {
+  // Item 9: require class + main wrapper
+  const hasClass = /public\s+class\s+\w+/.test(rawCode);
+  const hasMain  = /public\s+static\s+void\s+main\s*\(/.test(rawCode);
+
+  if (!hasClass || !hasMain) {
+    return { ok: false, errors: [{ line: 1, text:
+      'Your program must start with:\n' +
+      '  public class ClassName {\n' +
+      '    public static void main(String[] args) {\n' +
+      '  and close with two closing braces: }}\n' +
+      'This teaches real Java program structure!'
+    }]};
+  }
+
+  // Extract body of main method
+  const mainMatch = rawCode.match(/public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*)/);
+  if (!mainMatch) return { ok: false, errors: [{ line: 1, text: 'Could not find main method body.' }] };
+
+  // Find the matching close brace for main (then class)
+  let depth = 1, i = 0, body = mainMatch[1];
+  while (i < body.length && depth > 0) {
+    if (body[i] === '{') depth++;
+    else if (body[i] === '}') { depth--; if (depth === 0) break; }
+    i++;
+  }
+  let extractedCode = body.substring(0, i).trim();
+
+  // Resolve Pen.UP etc. before comment strip
+  extractedCode = extractedCode
+    .replace(/Pen\.UP/g,    '270')
+    .replace(/Pen\.DOWN/g,  '90')
+    .replace(/Pen\.LEFT/g,  '180')
+    .replace(/Pen\.RIGHT/g, '0');
+
+  // Strip comments (items 13: single + multi)
+  const noComments = stripComments(extractedCode).trim();
+  if (!noComments) return { ok: false, errors: [{ line: 1, text: 'main() body is empty. Add some drawing commands!' }] };
+
+  // Expand loops
+  const expanded = expandLoops(noComments);
+  if (!expanded.ok) return { ok: false, errors: [{ line: 1, text: expanded.error }] };
+
+  // Tokenise into semicolon-terminated statements
+  // Item 16: track source line numbers properly from pre-expansion code
+  const rawLines = expanded.code.split('\n');
+  const items = [];
+  rawLines.forEach(rawLine => {
+    const trimmedLine = rawLine.trim();
+    if (!trimmedLine) return;
+    const parts = trimmedLine.split(';');
+    parts.forEach((part, idx) => {
+      const trimmed = part.trim();
+      if (!trimmed) return;
+      const needsSemicolon = idx === parts.length - 1 && !trimmedLine.endsWith(';');
+      items.push({ original: trimmed, needsSemicolon });
+    });
+  });
+
+  const commands = [], errors = [];
+  let penInitialized = false;
+  // Item 16: only report the FIRST error, then stop parsing
+  let firstErrorFound = false;
+
+  // Handle int variable declarations (from loop expansion)
+  const varMap = {};
+
+  for (let idx = 0; idx < items.length; idx++) {
+    if (firstErrorFound) break;
+    const item = items[idx];
+    // Use source line 1-based from original code, not expanded line
+    // We report the command index + 1 as a fallback since expansion changes lines
+    const lineNo = idx + 1;
+
+    if (item.needsSemicolon) {
+      errors.push({ line: lineNo, text: `Missing semicolon after "${escapeHtml(item.original)}"` });
+      firstErrorFound = true;
+      break;
+    }
+
+    const line = item.original;
+
+    // Skip int declarations from expansion
+    const intDecl = line.match(/^int\s+\w+\s*=\s*[\d.]+$/);
+    if (intDecl) {
+      const parts2 = line.split('=');
+      const vname = parts2[0].replace('int','').trim();
+      varMap[vname] = parseFloat(parts2[1].trim());
+      continue;
+    }
+
+    // Pen initialisation
+    const penInitMatch = line.match(/^Pen\s+(\w+)\s*=\s*new\s+Pen\s*\(\s*\)$/);
+    if (penInitMatch) {
+      penInitialized = true;
+      commands.push({ type: "init", source: `${line};` });
+      continue;
+    }
+
+    if (!penInitialized && !/^Pen\s+\w+\s*=/.test(line)) {
+      errors.push({ line: lineNo, text: "Add 'Pen n = new Pen();' before using pen commands." });
+      firstErrorFound = true;
+      break;
+    }
+
+    let m;
+
+    // n.move() — no args
+    if ((m = line.match(/^(\w+)\.move\s*\(\s*\)$/))) {
+      commands.push({ type: "move", source: `${line};` });
+      continue;
+    }
+    if ((m = line.match(/^(\w+)\.move\s*\(\s*(-?[\d.]+)\s*\)$/))) {
+      errors.push({ line: lineNo, text: `n.move() takes no argument. To move ${m[2]} units, use: for(int i = 0; i < ${m[2]}; i++) { n.move(); }` });
+      firstErrorFound = true;
+      break;
+    }
+
+    // n.turnRight / turnLeft
+    if ((m = line.match(/^(\w+)\.turnRight\s*\(\s*(-?[\d.]+)\s*\)$/))) {
+      commands.push({ type: "turn", value: Number(m[2]), source: `${line};` });
+      continue;
+    }
+    if ((m = line.match(/^(\w+)\.turnLeft\s*\(\s*(-?[\d.]+)\s*\)$/))) {
+      commands.push({ type: "turn", value: -Number(m[2]), source: `${line};` });
+      continue;
+    }
+
+    // n.setDirection — numeric OR constant (already resolved above)
+    if ((m = line.match(/^(\w+)\.setDirection\s*\(\s*(-?[\d.]+)\s*\)$/))) {
+      commands.push({ type: "direction", value: Number(m[2]), source: `${line};` });
+      continue;
+    }
+
+    // n.setColor
+    if ((m = line.match(/^(\w+)\.setColor\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/))) {
+      const r = Number(m[2]), g = Number(m[3]), b = Number(m[4]);
+      if (r<0||r>255||g<0||g>255||b<0||b>255) {
+        errors.push({ line: lineNo, text: "Color values must be 0–255." });
+        firstErrorFound = true; break;
+      }
+      commands.push({ type: "color", r, g, b, source: `${line};` });
+      continue;
+    }
+
+    // n.setLineWidth (item 2)
+    if ((m = line.match(/^(\w+)\.setLineWidth\s*\(\s*(-?[\d.]+)\s*\)$/))) {
+      const w = Number(m[2]);
+      if (w < 1 || w > 50) {
+        errors.push({ line: lineNo, text: "setLineWidth: value must be 1–50." });
+        firstErrorFound = true; break;
+      }
+      // Convert from "pen units" to SVG units: scale relative to canvas size
+      // 1 pen unit ≈ 0.05 SVG units so range 1–50 maps to 0.05–2.5
+      commands.push({ type: "linewidth", value: w * 0.05, source: `${line};` });
+      continue;
+    }
+
+    // n.setPosition
+    if ((m = line.match(/^(\w+)\.setPosition\s*\(\s*(-?[\d.]+)\s*,\s*(-?[\d.]+)\s*\)$/))) {
+      commands.push({ type: "position", x: Number(m[2]), y: Number(m[3]), source: `${line};` });
+      continue;
+    }
+
+    // n.setGridSize (item 10)
+    if ((m = line.match(/^(\w+)\.setGridSize\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)$/))) {
+      const gw = Number(m[2]), gh = Number(m[3]);
+      if (gw < 10 || gw > 500 || gh < 10 || gh > 500) {
+        errors.push({ line: lineNo, text: "setGridSize: width and height must be 10–500." });
+        firstErrorFound = true; break;
+      }
+      commands.push({ type: "gridsize", w: gw, h: gh, source: `${line};` });
+      continue;
+    }
+
+    // n.penUp / penDown
+    if ((m = line.match(/^(\w+)\.penUp\s*\(\s*\)$/)))   { commands.push({ type:"pen", value:false, source:`${line};` }); continue; }
+    if ((m = line.match(/^(\w+)\.penDown\s*\(\s*\)$/))) { commands.push({ type:"pen", value:true,  source:`${line};` }); continue; }
+
+    // Helpful errors
+    if (/^for\s*\(|^while\s*\(/.test(line)) {
+      errors.push({ line: lineNo, text: 'For loop format: for(int i = 0; i < 4; i++) { ... }' });
+      firstErrorFound = true; break;
+    }
+    if (/^setColou?r/.test(line)) {
+      errors.push({ line: lineNo, text: 'Use: n.setColor(255, 100, 50);' });
+      firstErrorFound = true; break;
+    }
+    if (/^move\s*\(/.test(line) || /^turnRight\s*\(/.test(line)) {
+      errors.push({ line: lineNo, text: 'Use object notation: n.move() not move()' });
+      firstErrorFound = true; break;
+    }
+    if (line.length > 0 && !line.startsWith('//')) {
+      errors.push({ line: lineNo, text: `Unrecognised: "${escapeHtml(line)}" — check spelling, brackets, semicolons.` });
+      firstErrorFound = true; break;
+    }
+  }
+
+  if (!penInitialized && commands.length === 0 && errors.length === 0) {
+    errors.push({ line: 1, text: "Add 'Pen n = new Pen();' inside your main method." });
+  }
+  if (commands.length > 20000) {
+    errors.push({ line: 1, text: "Too many commands (max 20 000). Reduce loop counts." });
+  }
+
+  return errors.length ? { ok: false, errors } : { ok: true, commands };
+}
+
+// ── Execute ──────────────────────────────────────────────────────────────────
+async function executeCommands(commands) {
+  isRunning = true;
+  stopRequested = false;
+  runButton.disabled = true;
+  stopButton.classList.remove("hidden");
+
+  const msPerAction = () => Math.max(0, 1000 / globalSpeed);
+  // Batch move() commands at high speed for performance
+  const SILENT_THRESHOLD = 20; // don't log every single move() when speed is high
+
+  for (let i = 0; i < commands.length; i++) {
+    if (stopRequested) { addOutput("Stopped.", "warning"); break; }
+    const cmd = commands[i];
+
+    if (cmd.type === "move") {
+      // Batch consecutive moves silently at high speed
+      while (i < commands.length && commands[i].type === "move") {
+        const rad  = turtle.direction * Math.PI / 180;
+        const prevX = turtle.x;
+        const prevY = turtle.y;
+        // 1. Update turtle position first
+        turtle.x = prevX + Math.cos(rad);
+        turtle.y = prevY + Math.sin(rad);
+        // 2. Draw line from previous to new position (tip now matches turtle)
+        if (turtle.penDown) {
+          drawLine(prevX, prevY, turtle.x, turtle.y, turtle.colorR, turtle.colorG, turtle.colorB, turtle.lineWidth);
+        }
+        // 3. Render turtle at its new position — always in sync with line tip
+        i++;
+        const delay = msPerAction();
+        if (delay > 0) {
+          updateTurtleVisual();
+          await sleep(delay);
+        }
+        if (stopRequested) break;
+      }
+      i--; // back up one since outer loop will increment
+      updateTurtleVisual();
+      if (turtle.x < 0 || turtle.x > CANVAS_W || turtle.y < 0 || turtle.y > CANVAS_H) {
+        addOutput("Hint: pen moved outside the board.", "warning");
+      }
+      continue;
+    }
+
+    // Non-move commands: log and execute
+    addOutput(`▶ ${escapeHtml(cmd.source)}`, "command");
+
+    if (cmd.type === "turn") {
+      turtle.direction += cmd.value;
+      updateTurtleVisual();
+      await sleep(msPerAction());
+    }
+    if (cmd.type === "direction") {
+      turtle.direction = cmd.value;
+      updateTurtleVisual();
+      await sleep(msPerAction());
+    }
+    if (cmd.type === "color")     { turtle.colorR = cmd.r; turtle.colorG = cmd.g; turtle.colorB = cmd.b; }
+    if (cmd.type === "linewidth") { turtle.lineWidth = cmd.value; }
+    if (cmd.type === "position")  {
+      turtle.x = cmd.x; turtle.y = cmd.y;
+      updateTurtleVisual();
+      await sleep(msPerAction());
+    }
+    if (cmd.type === "pen")  { turtle.penDown = cmd.value; updateTurtleVisual(); }
+    if (cmd.type === "gridsize") {
+      applyGridSize(cmd.w, cmd.h);
+      resetTurtle(true);
+    }
+  }
+
+  if (!stopRequested) addOutput("✓ Great work! Code finished.", "success");
+  isRunning = false;
+  runButton.disabled = false;
+  stopButton.classList.add("hidden");
+}
+
+// ── Run / Reset ───────────────────────────────────────────────────────────────
+function runCode() {
+  if (isRunning) return;
+  resetTurtle(true);
+  clearOutput("Checking your code…");
+  const parsed = parseCommands(codeEditor.value);
+  if (!parsed.ok) {
+    clearOutput("Found a problem:");
+    parsed.errors.forEach(e => addOutput(`${e.text}`, "error"));
+    addOutput("Tip: each command ends with ;  e.g.  n.move();  n.turnRight(90);", "warning");
+    return;
+  }
+  clearOutput("No errors. Running…");
+  executeCommands(parsed.commands);
+}
+
+runButton.addEventListener("click", runCode);
+resetButton.addEventListener("click", () => {
+  stopRequested = true;
+  resetTurtle(true);
+  clearOutput("Drawing reset. Ready for your next run.");
+});
+stopButton.addEventListener("click", () => { stopRequested = true; });
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(active) {
+  // hide all panes
+  editorWrap.classList.add("hidden");
+  examplesPanel.classList.add("hidden");
+  referencePanel.classList.add("hidden");
+  // deactivate all tabs
+  [editorTab, examplesTab, referenceTab].forEach(t => t.classList.remove("active"));
+  // show selected
+  if (active === "editor")    { editorWrap.classList.remove("hidden");    editorTab.classList.add("active"); }
+  if (active === "examples")  { examplesPanel.classList.remove("hidden"); examplesTab.classList.add("active"); }
+  if (active === "reference") { referencePanel.classList.remove("hidden"); referenceTab.classList.add("active"); }
+}
+editorTab.addEventListener("click",    () => switchTab("editor"));
+examplesTab.addEventListener("click",  () => switchTab("examples"));
+referenceTab.addEventListener("click", () => switchTab("reference"));
+document.querySelectorAll(".exampleLoader").forEach(btn => {
+  btn.addEventListener("click", e => {
+    e.preventDefault();
+    const key = btn.getAttribute("data-example");
+    if (examples[key] !== undefined) {
+      codeEditor.value = examples[key];
+      clearOutput("Example loaded — press Run code.");
+      switchTab("editor");
+      updateLineNumbers();
+      updateHighlight();
+    }
+  });
+});
+
+// ── Save / Load (item 15) ─────────────────────────────────────────────────────
+saveBtn.addEventListener("click", () => {
+  const code = codeEditor.value;
+  // Try to get class name for filename
+  const classMatch = code.match(/public\s+class\s+(\w+)/);
+  const filename = (classMatch ? classMatch[1] : 'MyDrawing') + '.java';
+  const blob = new Blob([code], { type: 'text/plain' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+  addOutput(`✓ Saved as ${filename}`, "success");
+});
+
+loadBtn.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    codeEditor.value = ev.target.result;
+    updateLineNumbers();
+    updateHighlight();
+    clearOutput(`Loaded: ${file.name}. Press Run code to execute.`);
+    switchTab("editor");
+  };
+  reader.readAsText(file);
+  fileInput.value = ''; // allow re-loading same file
+});
+
+
+// ── Tutorial ──────────────────────────────────────────────────────────────────
+
+// ── Tutorial ─────────────────────────────────────────────────────────────────
+(function initTutorial() {
+
+  const overlay   = document.getElementById('tutorialOverlay');
+  const learnBtn  = document.getElementById('learnBtn');
+  const tutClose  = document.getElementById('tutClose');
+  const tutPrev   = document.getElementById('tutPrev');
+  const tutNext   = document.getElementById('tutNext');
+  const tutTryBtn = document.getElementById('tutTryBtn');
+  const tutRunBtn = document.getElementById('tutRunBtn');
+  const slides    = Array.from(document.querySelectorAll('.tut-slide'));
+  const dots      = Array.from(document.querySelectorAll('.tut-dot'));
+  const stepLabel = document.getElementById('tutorialStepLabel');
+  const total     = slides.length;
+
+  let cur      = 0;
+  let resumeAt = null;   // null = start from 0 on next open
+
+  // ── Per-slide editor programs ───────────────────────────────────────────
+  const slidePrograms = [
+`public class MyDrawing {
+  public static void main(String[] args) {
+    // Your code goes here
+  }
+}`,
+`public class Variables {
+  public static void main(String[] args) {
+    int score = 10;
+  }
+}`,
+`public class ObjectExample {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+  }
+}`,
+`public class Methods {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.move();
+    n.turnRight(90);
+  }
+}`,
+`public class Sequence {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+    n.move();
+  }
+}`,
+`public class LoopExample {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    for(int i = 0; i < 20; i++) {
+      n.move();
+    }
+  }
+}`,
+`public class Square {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    for(int side = 0; side < 4; side++) {
+      for(int step = 0; step < 20; step++) {
+        n.move();
+      }
+      n.turnRight(90);
+    }
+  }
+}`,
+`public class Square {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    for(int side = 0; side < 4; side++) {
+      for(int step = 0; step < 20; step++) {
+        n.move();
+      }
+      n.turnRight(90);
+    }
+  }
+}`,
+  ];
+
+  // ── Syntax-highlight the code blocks shown inside the slides ───────────
+  const slideCodeBlocks = {
+    slide0code: 'public class MyDrawing {\n  public static void main(String[] args) {\n    // Your code goes here\n  }\n}',
+    slide1code: 'int score = 10;',
+    slide2code: 'Pen n = new Pen();',
+    slide3code: 'n.move();\nn.turnRight(90);',
+    slide4code: 'n.move();\nn.move();\nn.move();\nn.move();\nn.move();\n// ... 15 more lines',
+    slide5code: 'for(int i = 0; i < 20; i++) {\n  n.move();\n}',
+    slide6code: 'Pen n = new Pen();\nfor(int side = 0; side < 4; side++) {\n  for(int step = 0; step < 20; step++) {\n    n.move();\n  }\n  n.turnRight(90);\n}',
+  };
+  Object.entries(slideCodeBlocks).forEach(([id, code]) => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = highlight(code.replace(/\\n/g, '\n'));
+  });
+
+  // ── Load editor for this slide ──────────────────────────────────────────
+  function loadSlideCode(index) {
+    const prog = slidePrograms[index];
+    if (!prog) return;
+    codeEditor.value = prog;
+    updateLineNumbers();
+    updateHighlight();
+  }
+
+  // ── Navigate to a slide ─────────────────────────────────────────────────
+  function goTo(index) {
+    index = Math.max(0, Math.min(total - 1, index));
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === index);
+      d.classList.toggle('done', i < index);
+    });
+    cur      = index;
+    resumeAt = cur;
+    stepLabel.textContent = `Step ${cur + 1} of ${total}`;
+    tutPrev.style.visibility = cur === 0 ? 'hidden' : 'visible';
+    const isLast = cur === total - 1;
+    tutNext.classList.toggle('hidden', isLast);
+    if (tutTryBtn) tutTryBtn.classList.toggle('hidden', !isLast);
+    loadSlideCode(cur);
+  }
+
+  // ── Open / close ────────────────────────────────────────────────────────
+  function openTutorial() {
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    goTo(resumeAt !== null ? resumeAt : 0);
+  }
+
+  function closeTutorial() {
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (cur === total - 1) resumeAt = null; // finished → restart next time
+  }
+
+  // ── Wire up buttons (once only) ─────────────────────────────────────────
+  learnBtn.addEventListener('click', openTutorial);
+  tutClose.addEventListener('click', closeTutorial);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeTutorial(); });
+  tutNext.addEventListener('click', () => goTo(cur + 1));
+  tutPrev.addEventListener('click', () => goTo(cur - 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+  if (tutTryBtn) {
+    tutTryBtn.addEventListener('click', () => {
+      closeTutorial();
+      switchTab('editor');
+      setTimeout(() => { runCode(); }, 150);
+    });
+  }
+
+  // "Load square program" inside slide 7
+  // Generic helper: load a program, confirm, switch to editor
+  function loadAndShow(btn, code, label) {
+    codeEditor.value = code;
+    updateLineNumbers();
+    updateHighlight();
+    btn.textContent = '✓ Loaded — switched to Editor!';
+    btn.style.color = '#6ee7b7';
+    switchTab('editor');
+    closeTutorial();
+    setTimeout(() => {
+      btn.innerHTML = label;
+      btn.style.color = '';
+    }, 2000);
+  }
+
+  const tutLoadSquare = document.getElementById('tutLoadSquare');
+  if (tutLoadSquare) {
+    tutLoadSquare.addEventListener('click', () => {
+      loadAndShow(tutLoadSquare, slidePrograms[6], '&#x1F4E5; Load square program');
+    });
+  }
+
+  const tutLoadSequence = document.getElementById('tutLoadSequence');
+  if (tutLoadSequence) {
+    tutLoadSequence.addEventListener('click', () => {
+      loadAndShow(tutLoadSequence, slidePrograms[4], '&#x1F4E5; Load sequence example');
+    });
+  }
+
+  const tutLoadLoop = document.getElementById('tutLoadLoop');
+  if (tutLoadLoop) {
+    tutLoadLoop.addEventListener('click', () => {
+      loadAndShow(tutLoadLoop, slidePrograms[5], '&#x1F4E5; Load loop example');
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (overlay.classList.contains('hidden')) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(cur + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(cur - 1);
+    if (e.key === 'Escape') closeTutorial();
+  });
+
+  tutPrev.style.visibility = 'hidden';
+
+  // ── Quiz handlers (delegated — works for both .quiz-btn and .quiz-option) ──
+  document.getElementById('tutorialOverlay').addEventListener('click', e => {
+    // Handle .quiz-btn (tutorial-quiz style)
+    const btn = e.target.closest('.quiz-btn');
+    if (btn) {
+      const quiz = btn.closest('.tutorial-quiz');
+      if (!quiz) return;
+      quiz.querySelectorAll('.quiz-btn').forEach(b => {
+        b.classList.remove('quiz-correct', 'quiz-wrong');
+        b.style.outline = '';
+      });
+      const feedback = quiz.querySelector('.quiz-feedback');
+      if (btn.dataset.correct === 'true') {
+        btn.classList.add('quiz-correct');
+        btn.style.outline = '2px solid #34d399';
+        if (feedback) { feedback.textContent = '✅ Correct!'; feedback.className = 'quiz-feedback quiz-correct'; }
+      } else {
+        btn.classList.add('quiz-wrong');
+        btn.style.outline = '2px solid #ef4444';
+        if (feedback) { feedback.textContent = '❌ Not quite — try again!'; feedback.className = 'quiz-feedback quiz-wrong'; }
+      }
+      return;
+    }
+    // Handle .quiz-option (tut-quiz style)
+    const opt = e.target.closest('.quiz-option');
+    if (opt) {
+      const quiz = opt.closest('.tut-quiz');
+      if (!quiz) return;
+      quiz.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('correct', 'wrong'));
+      const feedback = quiz.querySelector('.quiz-feedback');
+      if (opt.dataset.correct === 'true') {
+        opt.classList.add('correct');
+        if (feedback) { feedback.textContent = '✅ Correct! The outer loop draws the 4 sides.'; feedback.style.color = '#6ee7b7'; }
+      } else {
+        opt.classList.add('wrong');
+        if (feedback) { feedback.textContent = '❌ Not quite. Think about what the outer loop controls.'; feedback.style.color = '#fca5a5'; }
+      }
+    }
+  });
+
+})();
+
+
+// ── PWA Install ───────────────────────────────────────────────────────────────
+(function initInstall() {
+  const installBtn = document.getElementById('installBtn');
+  let deferredPrompt = null;
+
+  // The browser fires this when the page meets install criteria.
+  // We hold onto the event so we can trigger it from our own button.
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();               // stop the automatic mini-bar
+    deferredPrompt = e;
+    installBtn.classList.remove('hidden');  // show our button
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();          // show the native install dialog
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      installBtn.classList.add('hidden');
+      addOutput('✓ App installed! You can now open Code Genie from your home screen.', 'success');
+    }
+    deferredPrompt = null;
+  });
+
+  // Hide the button once already installed
+  window.addEventListener('appinstalled', () => {
+    installBtn.classList.add('hidden');
+    deferredPrompt = null;
+  });
+})();
+
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+applyGridSize(76, 48);
+resetTurtle(true);
+lucide.createIcons();
+
+</script>
+
+</body>
+</html>
