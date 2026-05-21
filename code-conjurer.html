@@ -232,6 +232,187 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
     button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(244,63,94,0.60); outline-offset: 2px; }
+
+    /* ── Grade selector bar ── */
+    #gradeSelectorBar {
+      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+      padding: 7px 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.18);
+    }
+    .grade-sel-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(221,225,240,0.35); white-space: nowrap;
+    }
+    .grade-pill-group { display: flex; gap: 4px; }
+    .grade-pill {
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.40);
+      cursor: pointer; transition: all 150ms;
+    }
+    .grade-pill:hover { color: rgba(221,225,240,0.80); background: rgba(255,255,255,0.10); }
+    .grade-pill.active-10 { background: rgba(244,63,94,0.22);  border-color: rgba(244,63,94,0.45);  color: #fda4af; }
+    .grade-pill.active-11 { background: rgba(249,115,22,0.22); border-color: rgba(249,115,22,0.45); color: #fdba74; }
+    .grade-pill.active-12 { background: rgba(168,85,247,0.22); border-color: rgba(168,85,247,0.45); color: #d8b4fe; }
+    .grade-pill-open {
+      margin-left: auto; font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      padding: 4px 12px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      color: #b0b8d8; cursor: pointer; transition: all 150ms; display: flex; align-items: center; gap: 5px;
+    }
+    .grade-pill-open:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+
+    /* ── Lesson overlay ── */
+    #lessonOverlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(6,9,26,0.97);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    #lessonShell {
+      display: flex; flex-direction: column; height: 100%; overflow: hidden;
+    }
+    /* Lesson header */
+    #lessonHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.30);
+    }
+    #lessonHeader h2 {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 16px;
+      background: linear-gradient(125deg, #fff 0%, #fda4af 50%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    #lessonGradeToggle { display: flex; gap: 4px; margin-left: 0; }
+    .les-grade-btn {
+      font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05);
+      color: rgba(221,225,240,0.40); cursor: pointer; transition: all 150ms;
+    }
+    .les-grade-btn.active { }
+    .les-grade-btn.gr10.active { background: rgba(244,63,94,0.22); border-color: rgba(244,63,94,0.45); color: #fda4af; }
+    .les-grade-btn.gr11.active { background: rgba(249,115,22,0.22); border-color: rgba(249,115,22,0.45); color: #fdba74; }
+    .les-grade-btn.gr12.active { background: rgba(168,85,247,0.22); border-color: rgba(168,85,247,0.45); color: #d8b4fe; }
+    .les-close {
+      margin-left: auto; width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: #b0b8d8; font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background 130ms;
+    }
+    .les-close:hover { background: rgba(255,255,255,0.14); }
+
+    /* Main lesson body: sidebar + content */
+    #lessonBody { flex: 1; display: flex; min-height: 0; overflow: hidden; }
+
+    /* Sidebar — lesson list */
+    #lessonSidebar {
+      width: 240px; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.07);
+      overflow-y: auto; background: rgba(0,0,0,0.20);
+    }
+    .les-unit-header {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+      padding: 12px 14px 4px; color: rgba(221,225,240,0.28);
+    }
+    .les-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 14px; cursor: pointer; transition: background 110ms;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .les-item:hover { background: rgba(255,255,255,0.05); }
+    .les-item.active { background: rgba(244,63,94,0.12); border-left: 2px solid #fda4af; padding-left: 12px; }
+    .les-item.active.gr11 { background: rgba(249,115,22,0.12); border-left-color: #fdba74; }
+    .les-item.active.gr12 { background: rgba(168,85,247,0.12); border-left-color: #d8b4fe; }
+    .les-num {
+      font-family: "JetBrains Mono", monospace; font-size: 10px;
+      color: rgba(221,225,240,0.25); width: 18px; flex-shrink: 0;
+    }
+    .les-name { font-size: 12px; font-weight: 600; color: rgba(221,225,240,0.65); line-height: 1.3; }
+    .les-done { margin-left: auto; font-size: 10px; color: #34d399; flex-shrink: 0; }
+
+    /* Content pane */
+    #lessonContent {
+      flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+    }
+    #lessonContentInner {
+      flex: 1; overflow-y: auto; padding: 24px 28px;
+    }
+    .les-topic-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 12px;
+    }
+    .les-topic-badge.gr10 { background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.30); color: #fda4af; }
+    .les-topic-badge.gr11 { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.30); color: #fdba74; }
+    .les-topic-badge.gr12 { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.30); color: #d8b4fe; }
+    .les-title {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 20px;
+      color: #e8eaf4; margin-bottom: 14px; line-height: 1.2;
+    }
+    .les-body p {
+      font-size: 13px; line-height: 1.70; color: rgba(221,225,240,0.72);
+      margin-bottom: 12px;
+    }
+    .les-body p strong { color: #e2e8ff; font-weight: 600; }
+    .les-body p em { color: #fda4af; font-style: normal; font-weight: 600; }
+    .les-body ul, .les-body ol {
+      font-size: 13px; line-height: 1.8; color: rgba(221,225,240,0.68);
+      padding-left: 20px; margin-bottom: 12px;
+    }
+    .les-code {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 20px;
+      background: #06091a; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+      overflow-x: auto; white-space: pre;
+    }
+    .les-callout {
+      border-radius: 9px; padding: 10px 14px; margin-bottom: 14px;
+      font-size: 12.5px; line-height: 1.65;
+    }
+    .les-callout.tip  { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.22); color: #6ee7b7; }
+    .les-callout.info { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.22); color: #a5b4fc; }
+    .les-callout.warn { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.22); color: #fcd34d; }
+    .les-callout.exam { background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.22); color: #d8b4fe; }
+    .les-challenge {
+      background: rgba(244,63,94,0.07); border: 1px solid rgba(244,63,94,0.20);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+    }
+    .les-challenge h4 {
+      font-size: 12px; font-weight: 700; color: #fda4af; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .les-challenge p, .les-challenge li {
+      font-size: 12px; line-height: 1.65; color: rgba(221,225,240,0.65);
+    }
+    .les-challenge ul { padding-left: 16px; margin-top: 6px; }
+    .les-load-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.35);
+      color: #fda4af; transition: all 140ms; margin-bottom: 4px;
+    }
+    .les-load-btn:hover { background: rgba(244,63,94,0.28); }
+    .les-load-btn.gr11 { background: rgba(249,115,22,0.18); border-color: rgba(249,115,22,0.35); color: #fdba74; }
+    .les-load-btn.gr12 { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.35); color: #d8b4fe; }
+
+    /* Nav footer */
+    #lessonNav {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.20);
+    }
+    .les-nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 16px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600; transition: all 140ms;
+    }
+    #lesPrev { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    #lesPrev:hover { background: rgba(255,255,255,0.12); }
+    #lesNext { background: linear-gradient(135deg,#be123c,#f97316); color: #fff; box-shadow: 0 3px 12px rgba(190,18,60,0.25); }
+    #lesNext:hover { box-shadow: 0 5px 16px rgba(190,18,60,0.40); }
+    #lesProgress { font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.30); }
+
     .hidden { display: none !important; }
     .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
@@ -390,6 +571,20 @@ public class HelloWorld {
     <!-- ── RIGHT COLUMN ── -->
     <div id="rightCol">
 
+      <!-- Grade selector bar above console -->
+      <div id="gradeSelectorBar">
+        <span class="grade-sel-label">Lessons:</span>
+        <div class="grade-pill-group">
+          <button class="grade-pill" data-grade="10">Gr 10</button>
+          <button class="grade-pill" data-grade="11">Gr 11</button>
+          <button class="grade-pill" data-grade="12">Gr 12</button>
+        </div>
+        <button class="grade-pill-open hidden" id="openLessonsBtn">
+          <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+          Open lessons
+        </button>
+      </div>
+
       <!-- Console -->
       <div class="panel" id="consolePanel">
         <div class="panel-hd">
@@ -428,6 +623,34 @@ public class HelloWorld {
 
     </div><!-- /rightCol -->
   </div>
+  <!-- ══ LESSON OVERLAY ══ -->
+  <div id="lessonOverlay" class="hidden">
+    <div id="lessonShell">
+      <div id="lessonHeader">
+        <div class="app-icon" style="width:28px;height:28px;font-size:14px;">📜</div>
+        <h2>IEB/CAPS Java Curriculum</h2>
+        <div id="lessonGradeToggle">
+          <button class="les-grade-btn gr10 active" data-grade="10">Grade 10</button>
+          <button class="les-grade-btn gr11" data-grade="11">Grade 11</button>
+          <button class="les-grade-btn gr12" data-grade="12">Grade 12</button>
+        </div>
+        <button class="les-close" id="lesClose">&#x2715;</button>
+      </div>
+
+      <div id="lessonBody">
+        <div id="lessonSidebar"></div>
+        <div id="lessonContent">
+          <div id="lessonContentInner"></div>
+          <div id="lessonNav">
+            <button class="les-nav-btn" id="lesPrev">&#x2190; Previous</button>
+            <span id="lesProgress">Lesson 1 of 1</span>
+            <button class="les-nav-btn" id="lesNext">Next &#x2192;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
