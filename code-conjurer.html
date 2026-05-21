@@ -1,0 +1,1156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Code Conjurer — Gr 10–12 Java IDE</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23be123c'/%3E%3Crect x='12' y='8' width='28' height='36' rx='4' fill='none' stroke='%23fda4af' stroke-width='3'/%3E%3Crect x='8' y='12' width='8' height='28' rx='3' fill='rgba(253,164,175,0.25)' stroke='rgba(253,164,175,0.5)' stroke-width='2'/%3E%3Cline x1='17' y1='18' x2='35' y2='18' stroke='%23fda4af' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='23' x2='33' y2='23' stroke='%23fda4af' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='28' x2='35' y2='28' stroke='%23fda4af' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='48' cy='16' r='6' fill='%23fbbf24'/%3E%3Cline x1='48' y1='8' x2='48' y2='24' stroke='%23fbbf24' stroke-width='2' opacity='0.5'/%3E%3Cline x1='40' y1='16' x2='56' y2='16' stroke='%23fbbf24' stroke-width='2' opacity='0.5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    body { font-family: "DM Sans", sans-serif; font-size: 13px; background: #0a0f1e; color: #dde1f0; }
+
+    #appShell {
+      height: 100%; width: 100%;
+      display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 35% at 6%  4%, rgba(244,63,94,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96%  6%, rgba(249,115,22,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(99,102,241,0.10) 0%, transparent 60%),
+        #0a0f1e;
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px 7px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+      padding: 5px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.55);
+      text-decoration: none; transition: all 130ms; flex-shrink: 0;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: #dde1f0; }
+    .app-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, #be123c, #f97316);
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    h1.app-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(16px, 1.8vw, 22px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #fda4af 50%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grade-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 99px;
+      background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.30); color: #fda4af;
+    }
+    .header-actions { margin-left: auto; display: flex; gap: 6px; }
+    .hdr-btn {
+      display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      font-size: 11px; font-weight: 600; color: #b0b8d8; cursor: pointer; transition: all 130ms;
+    }
+    .hdr-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+
+    /* ── Main grid ── */
+    #mainGrid {
+      flex: 1; display: grid; grid-template-columns: 440px 1fr;
+      gap: 10px; padding: 10px 14px 12px; min-height: 0; overflow: hidden;
+    }
+
+    /* ── Panel base ── */
+    .panel {
+      background: rgba(255,255,255,0.038); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; min-height: 0;
+    }
+    .panel-hd {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px 7px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .panel-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.04em; color: #b0b8d8; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── Left column ── */
+    #leftCol { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: hidden; }
+    #editorPanel { flex: 1; min-height: 0; }
+
+    /* ── Tabs ── */
+    .tab-group { display: flex; gap: 3px; background: rgba(0,0,0,0.30); border-radius: 7px; padding: 3px; }
+    .tab-btn {
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 5px; border: none; cursor: pointer;
+      transition: all 130ms; color: rgba(221,225,240,0.45); background: transparent;
+    }
+    .tab-btn.active { background: rgba(244,63,94,0.22); color: #fda4af; }
+    .tab-btn:hover:not(.active) { color: rgba(221,225,240,0.80); }
+    .icon-btn {
+      width: 26px; height: 26px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(221,225,240,0.45); transition: all 130ms; flex-shrink: 0;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+    .icon-btn.active { background: rgba(244,63,94,0.22); border-color: rgba(244,63,94,0.40); color: #fda4af; }
+
+    /* ── Code editor ── */
+    .editor-wrap { position: relative; flex: 1; min-height: 0; background: #06091a; display: flex; overflow: hidden; }
+    #lineNumbers {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      width: 40px; flex-shrink: 0; background: rgba(0,0,0,0.28);
+      border-right: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.20);
+      text-align: right; padding: 12px 7px 12px 0; overflow: hidden; user-select: none;
+    }
+    #codeEditor {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 40px; right: 0; bottom: 0;
+      border: none; background: transparent; color: transparent;
+      caret-color: #e2e8ff; resize: none; padding: 12px 12px 12px 10px;
+      outline: none; overflow-y: auto; z-index: 2; white-space: pre; overflow-wrap: normal;
+    }
+    #codeEditor::selection { background: rgba(244,63,94,0.30); }
+    #highlightLayer {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 40px; right: 0; bottom: 0;
+      padding: 12px 12px 12px 10px; pointer-events: none;
+      overflow: hidden; white-space: pre; overflow-wrap: normal; z-index: 1; color: #e2e8ff;
+    }
+    /* Syntax colours */
+    .hl-kw  { color: #f472b6; }
+    .hl-typ { color: #67e8f9; }
+    .hl-str { color: #86efac; }
+    .hl-num { color: #fb923c; }
+    .hl-cmt { color: #4b5563; font-style: italic; }
+    .hl-met { color: #34d399; }
+    .hl-ann { color: #fbbf24; }
+
+    /* ── Examples panel ── */
+    #examplesPanel { flex: 1; min-height: 0; overflow-y: auto; background: #06091a; }
+    .ex-item {
+      display: block; width: 100%; text-align: left; padding: 9px 13px;
+      border: none; border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: none; cursor: pointer; transition: background 110ms; color: inherit;
+    }
+    .ex-item:last-child { border-bottom: none; }
+    .ex-item:hover { background: rgba(244,63,94,0.10); }
+    .ex-item h4 { font-size: 12px; font-weight: 600; color: #c7cfe8; margin-bottom: 2px; }
+    .ex-item p  { font-size: 11px; color: rgba(221,225,240,0.38); }
+    .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; text-transform: uppercase; }
+    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .diff-a { background: rgba(244,63,94,0.15); color: #fda4af; }
+
+    /* ── Action buttons ── */
+    .actions-row {
+      flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 7px; padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .act-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 7px 10px; border-radius: 9px; border: none;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 150ms ease;
+    }
+    .act-btn:hover  { transform: translateY(-1px); }
+    .act-btn:active { transform: translateY(0); }
+    .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+    .btn-run   { background: linear-gradient(135deg, #be123c, #f97316); color: #fff; box-shadow: 0 3px 14px rgba(190,18,60,0.28); }
+    .btn-run:hover { box-shadow: 0 5px 18px rgba(190,18,60,0.42); }
+    .btn-reset { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    .btn-reset:hover { background: rgba(255,255,255,0.12); }
+    .btn-stop  { background: rgba(239,68,68,0.18); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }
+    .btn-stop:hover { background: rgba(239,68,68,0.30); }
+
+    /* ── Right column ── */
+    #rightCol { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: hidden; }
+
+    /* ── Console output ── */
+    #consolePanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    #consoleOutput {
+      flex: 1; min-height: 0; overflow-y: auto;
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 20px;
+      background: #06091a; padding: 12px 14px;
+      color: #e2e8ff; white-space: pre-wrap; word-break: break-word;
+    }
+    .con-out   { color: #e2e8ff; }
+    .con-err   { color: #fca5a5; }
+    .con-info  { color: rgba(221,225,240,0.35); font-style: italic; }
+    .con-input { color: #67e8f9; }
+
+    /* ── Input row ── */
+    #inputRow {
+      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.20);
+    }
+    #inputRow label { font-size: 11px; font-weight: 600; color: #67e8f9; white-space: nowrap; }
+    #inputField {
+      flex: 1; background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 7px; padding: 6px 10px; color: #67e8f9;
+      font-family: "JetBrains Mono", monospace; font-size: 12px; outline: none;
+      transition: border-color 130ms;
+    }
+    #inputField:focus { border-color: rgba(6,182,212,0.55); }
+    #inputSubmit {
+      padding: 6px 14px; border-radius: 7px; border: 1px solid rgba(6,182,212,0.35);
+      background: rgba(6,182,212,0.15); color: #67e8f9;
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      cursor: pointer; transition: all 130ms;
+    }
+    #inputSubmit:hover { background: rgba(6,182,212,0.25); }
+    #inputRow.hidden { display: none; }
+
+    /* ── Variable inspector ── */
+    #inspectorPanel { flex-shrink: 0; }
+    #inspectorBody {
+      font-family: "JetBrains Mono", monospace; font-size: 11px; line-height: 19px;
+      background: #06091a; padding: 8px 12px; max-height: 140px; overflow-y: auto;
+    }
+    .var-row { display: flex; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); padding: 2px 0; }
+    .var-type { color: #67e8f9; flex-shrink: 0; min-width: 60px; }
+    .var-name { color: #a5b4fc; flex-shrink: 0; min-width: 80px; }
+    .var-val  { color: #86efac; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── Cheat sheet panel ── */
+    #cheatPanel { flex-shrink: 0; }
+    .cheat-list { padding: 6px 12px; max-height: 130px; overflow-y: auto; }
+    .cheat-row { display: flex; align-items: baseline; gap: 8px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .cheat-row:last-child { border-bottom: none; }
+    .cheat-cmd  { font-family: "JetBrains Mono", monospace; font-size: 10px; color: #f472b6; white-space: nowrap; flex-shrink: 0; }
+    .cheat-desc { font-size: 10px; color: rgba(221,225,240,0.38); }
+
+    /* ── Scrollbars ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+    button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(244,63,94,0.60); outline-offset: 2px; }
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    @media (max-width: 860px) {
+      #mainGrid { grid-template-columns: 1fr; overflow-y: auto; }
+      html, body, #appShell { height: auto; overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+<div id="appShell">
+
+  <header id="appHeader">
+    <a href="index.html" class="home-btn"><i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home</a>
+    <div class="app-icon">📜</div>
+    <h1 class="app-title">Code Conjurer</h1>
+    <span class="grade-badge">Grade 10–12 IT</span>
+    <div class="header-actions">
+      <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
+      <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
+      <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
+    </div>
+  </header>
+
+  <div id="mainGrid">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div id="leftCol">
+      <div class="panel" id="editorPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="code-2" style="width:14px;height:14px;color:#f472b6;"></i>
+            Java editor
+          </h2>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div class="tab-group">
+              <button id="editorTab"   class="tab-btn active">Editor</button>
+              <button id="examplesTab" class="tab-btn">Examples</button>
+            </div>
+            <button id="lineNumbersToggle" class="icon-btn active" title="Toggle line numbers">
+              <i data-lucide="list" style="width:13px;height:13px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-wrap" id="editorWrap">
+          <label for="codeEditor" class="sr-only">Java code editor</label>
+          <div id="lineNumbers"></div>
+          <div id="highlightLayer" aria-hidden="true"></div>
+          <textarea id="codeEditor" spellcheck="false" autocorrect="off" autocapitalize="off">import java.util.Scanner;
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = sc.nextLine();
+
+        System.out.println("Hello, " + name + "!");
+        System.out.println("Welcome to Code Conjurer.");
+    }
+}</textarea>
+        </div>
+
+        <!-- Examples panel -->
+        <div id="examplesPanel" class="hidden">
+          <button class="ex-item exampleLoader" data-example="hello_input">
+            <h4>Hello with input <span class="diff diff-b">beginner</span></h4>
+            <p>Scanner, nextLine(), string concatenation</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="variables">
+            <h4>Variables and types <span class="diff diff-b">beginner</span></h4>
+            <p>int, double, boolean, String, char — declaring and printing</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="arithmetic">
+            <h4>Arithmetic and casting <span class="diff diff-b">beginner</span></h4>
+            <p>operators, integer division, casting, Math methods</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="if_else">
+            <h4>If / else if / else <span class="diff diff-b">beginner</span></h4>
+            <p>grade classifier — reads a mark and prints a symbol</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="loops">
+            <h4>Loops — for, while, do-while <span class="diff diff-i">intermediate</span></h4>
+            <p>all three loop types with a times table example</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="arrays_1d">
+            <h4>1D Arrays <span class="diff diff-i">intermediate</span></h4>
+            <p>declare, populate, find min/max, print</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="arrays_2d">
+            <h4>2D Arrays <span class="diff diff-i">intermediate</span></h4>
+            <p>multiplication table stored in a 2D array</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="string_methods">
+            <h4>String methods <span class="diff diff-i">intermediate</span></h4>
+            <p>length, substring, toUpperCase, indexOf, charAt</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="methods">
+            <h4>Methods <span class="diff diff-i">intermediate</span></h4>
+            <p>static methods with parameters and return values</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="classes_oop">
+            <h4>Classes and OOP <span class="diff diff-a">advanced</span></h4>
+            <p>class with constructor, fields, methods, toString()</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="switch_stmt">
+            <h4>Switch statement <span class="diff diff-i">intermediate</span></h4>
+            <p>day-of-week example using switch and break</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="try_catch">
+            <h4>Exception handling <span class="diff diff-a">advanced</span></h4>
+            <p>try/catch for NumberFormatException — Gr 12</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="search_sort">
+            <h4>Search and sort <span class="diff diff-a">advanced</span></h4>
+            <p>linear search and bubble sort on an array</p>
+          </button>
+        </div>
+
+        <div class="actions-row">
+          <button id="runButton" class="act-btn btn-run">
+            <i data-lucide="play" style="width:14px;height:14px;"></i> Run
+          </button>
+          <button id="resetButton" class="act-btn btn-reset">
+            <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset
+          </button>
+          <button id="stopButton" class="act-btn btn-stop">
+            <i data-lucide="square" style="width:14px;height:14px;"></i> Stop
+          </button>
+        </div>
+      </div>
+
+      <!-- Cheat sheet -->
+      <div class="panel" id="cheatPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title"><i data-lucide="lightbulb" style="width:14px;height:14px;color:#fbbf24;"></i> Quick reference</h2>
+        </div>
+        <div class="cheat-list">
+          <div class="cheat-row"><span class="cheat-cmd">int x = 5;</span><span class="cheat-desc">declare integer variable</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">double d = 3.14;</span><span class="cheat-desc">declare double</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">String s = "hello";</span><span class="cheat-desc">declare String</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Scanner sc = new Scanner(System.in);</span><span class="cheat-desc">create scanner</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">sc.nextLine() / nextInt() / nextDouble()</span><span class="cheat-desc">read input</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">System.out.println(x);</span><span class="cheat-desc">print with newline</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Math.pow(x,2) / Math.sqrt(x)</span><span class="cheat-desc">Math methods</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Integer.parseInt("42")</span><span class="cheat-desc">String → int</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">s.length() / .substring(0,3)</span><span class="cheat-desc">String methods</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">int[] arr = new int[5];</span><span class="cheat-desc">1D array</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">for(int x : arr)</span><span class="cheat-desc">enhanced for loop</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">try { } catch(Exception e) { }</span><span class="cheat-desc">exception handling</span></div>
+        </div>
+      </div>
+    </div><!-- /leftCol -->
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div id="rightCol">
+
+      <!-- Console -->
+      <div class="panel" id="consolePanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="terminal-square" style="width:14px;height:14px;color:#34d399;"></i>
+            Console output
+          </h2>
+          <button id="clearBtn" class="icon-btn" title="Clear console">
+            <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+        <div id="consoleOutput">
+          <span class="con-info">Ready. Press Run to execute your program.</span>
+        </div>
+        <!-- Input row (shown when program requests input) -->
+        <div id="inputRow" class="hidden">
+          <label for="inputField">⌨ Input:</label>
+          <input type="text" id="inputField" placeholder="Type your input and press Enter…" autocomplete="off">
+          <button id="inputSubmit">Submit</button>
+        </div>
+      </div>
+
+      <!-- Variable inspector -->
+      <div class="panel" id="inspectorPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="eye" style="width:14px;height:14px;color:#a5b4fc;"></i>
+            Variable inspector
+            <span style="font-size:10px;font-weight:400;color:rgba(221,225,240,0.30);margin-left:4px;">after run</span>
+          </h2>
+        </div>
+        <div id="inspectorBody">
+          <span style="color:rgba(221,225,240,0.25);font-size:11px;">No variables yet.</span>
+        </div>
+      </div>
+
+    </div><!-- /rightCol -->
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// JAVA INTERPRETER — tokeniser, parser, tree-walker
+// ═══════════════════════════════════════════════════════════════════════════
+</script>
+<script src="conjurer_interpreter.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// CODE CONJURER UI
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── Examples ─────────────────────────────────────────────────────────────
+const examples = {
+
+hello_input:
+`import java.util.Scanner;
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = sc.nextLine();
+
+        System.out.println("Hello, " + name + "!");
+        System.out.println("Welcome to Code Conjurer.");
+    }
+}`,
+
+variables:
+`public class Variables {
+    public static void main(String[] args) {
+        // Primitive types
+        int age = 16;
+        double height = 1.73;
+        boolean isStudent = true;
+        char grade = 'A';
+
+        // String (reference type)
+        String name = "Thabo";
+
+        System.out.println("Name:       " + name);
+        System.out.println("Age:        " + age);
+        System.out.println("Height:     " + height + " m");
+        System.out.println("Is student: " + isStudent);
+        System.out.println("Grade:      " + grade);
+    }
+}`,
+
+arithmetic:
+`public class Arithmetic {
+    public static void main(String[] args) {
+        int a = 17;
+        int b = 5;
+
+        System.out.println("a = " + a + ", b = " + b);
+        System.out.println("a + b = " + (a + b));
+        System.out.println("a - b = " + (a - b));
+        System.out.println("a * b = " + (a * b));
+        System.out.println("a / b = " + (a / b) + "  (integer division!)");
+        System.out.println("a % b = " + (a % b) + "  (remainder)");
+
+        // Casting to get decimal division
+        double result = (double) a / b;
+        System.out.println("(double)a / b = " + result);
+
+        // Math library
+        System.out.println("Math.pow(2, 8) = " + Math.pow(2, 8));
+        System.out.println("Math.sqrt(144) = " + Math.sqrt(144));
+        System.out.println("Math.abs(-42)  = " + Math.abs(-42));
+    }
+}`,
+
+if_else:
+`import java.util.Scanner;
+
+public class GradeClassifier {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your mark (0-100): ");
+        int mark = sc.nextInt();
+
+        String symbol;
+        if (mark >= 80) {
+            symbol = "A";
+        } else if (mark >= 70) {
+            symbol = "B";
+        } else if (mark >= 60) {
+            symbol = "C";
+        } else if (mark >= 50) {
+            symbol = "D";
+        } else if (mark >= 40) {
+            symbol = "E";
+        } else {
+            symbol = "F (fail)";
+        }
+
+        System.out.println("Mark: " + mark + "% → Symbol: " + symbol);
+    }
+}`,
+
+loops:
+`public class Loops {
+    public static void main(String[] args) {
+        // for loop: times table
+        System.out.println("--- 7 times table ---");
+        for (int i = 1; i <= 10; i++) {
+            System.out.println("7 x " + i + " = " + (7 * i));
+        }
+
+        // while loop: count down
+        System.out.println("\\n--- Countdown ---");
+        int n = 5;
+        while (n > 0) {
+            System.out.println(n);
+            n--;
+        }
+        System.out.println("Go!");
+
+        // do-while: runs at least once
+        System.out.println("\\n--- do-while ---");
+        int x = 1;
+        do {
+            System.out.println("x = " + x);
+            x *= 2;
+        } while (x < 20);
+    }
+}`,
+
+arrays_1d:
+`public class Arrays1D {
+    public static void main(String[] args) {
+        // Declare and initialise
+        int[] scores = {72, 85, 91, 68, 77, 95, 60};
+
+        System.out.println("Scores: ");
+        for (int i = 0; i < scores.length; i++) {
+            System.out.println("  [" + i + "] = " + scores[i]);
+        }
+
+        // Find min and max
+        int min = scores[0];
+        int max = scores[0];
+        int total = 0;
+
+        for (int s : scores) {
+            if (s < min) min = s;
+            if (s > max) max = s;
+            total += s;
+        }
+
+        double average = (double) total / scores.length;
+
+        System.out.println("\\nMin:     " + min);
+        System.out.println("Max:     " + max);
+        System.out.println("Average: " + average);
+    }
+}`,
+
+arrays_2d:
+`public class Arrays2D {
+    public static void main(String[] args) {
+        int rows = 5;
+        int cols = 5;
+        int[][] table = new int[rows][cols];
+
+        // Fill multiplication table
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                table[r][c] = (r + 1) * (c + 1);
+            }
+        }
+
+        // Print with headers
+        System.out.print("   ");
+        for (int c = 1; c <= cols; c++) {
+            System.out.print("  " + c);
+        }
+        System.out.println();
+
+        for (int r = 0; r < rows; r++) {
+            System.out.print(" " + (r + 1) + " ");
+            for (int c = 0; c < cols; c++) {
+                System.out.print("  " + table[r][c]);
+            }
+            System.out.println();
+        }
+    }
+}`,
+
+string_methods:
+`public class StringMethods {
+    public static void main(String[] args) {
+        String s = "Hello, World!";
+
+        System.out.println("Original:       " + s);
+        System.out.println("Length:         " + s.length());
+        System.out.println("Uppercase:      " + s.toUpperCase());
+        System.out.println("Lowercase:      " + s.toLowerCase());
+        System.out.println("charAt(0):      " + s.charAt(0));
+        System.out.println("substring(7):   " + s.substring(7));
+        System.out.println("substring(0,5): " + s.substring(0, 5));
+        System.out.println("indexOf('o'):   " + s.indexOf("o"));
+        System.out.println("contains World: " + s.contains("World"));
+        System.out.println("replace l→L:    " + s.replace("l", "L"));
+        System.out.println("trim '  hi  ':  " + "  hi  ".trim());
+
+        // Parsing numbers from strings
+        String numStr = "42";
+        int num = Integer.parseInt(numStr);
+        System.out.println("\\nParsed int:     " + num + " + 8 = " + (num + 8));
+    }
+}`,
+
+methods:
+`public class Methods {
+    // Method with no return value (void)
+    public static void printLine(String label, int value) {
+        System.out.println(label + ": " + value);
+    }
+
+    // Method that returns a value
+    public static int factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    // Method with double return type
+    public static double average(int[] arr) {
+        int sum = 0;
+        for (int x : arr) {
+            sum += x;
+        }
+        return (double) sum / arr.length;
+    }
+
+    public static void main(String[] args) {
+        printLine("Result", 42);
+        printLine("Factorial of 6", factorial(6));
+
+        int[] data = {10, 20, 30, 40, 50};
+        System.out.println("Average: " + average(data));
+
+        // Loop calling factorial
+        System.out.println("\\nFactorials:");
+        for (int i = 1; i <= 8; i++) {
+            System.out.println(i + "! = " + factorial(i));
+        }
+    }
+}`,
+
+classes_oop:
+`public class OOPExample {
+    // Inner class definition
+    static class Student {
+        String name;
+        int age;
+        double[] marks;
+
+        // Constructor
+        public Student(String name, int age) {
+            this.name = name;
+            this.age  = age;
+            this.marks = new double[0];
+        }
+
+        // Method to calculate average
+        public double getAverage() {
+            if (marks.length == 0) return 0;
+            double sum = 0;
+            for (double m : marks) sum += m;
+            return sum / marks.length;
+        }
+
+        // toString method
+        public String toString() {
+            return name + " (age " + age + ") — avg: " + getAverage();
+        }
+    }
+
+    public static void main(String[] args) {
+        Student s1 = new Student("Amara", 16);
+        s1.marks = new double[]{75, 82, 91, 68};
+
+        Student s2 = new Student("Diego", 17);
+        s2.marks = new double[]{88, 94, 79, 85};
+
+        System.out.println("Student 1: " + s1.toString());
+        System.out.println("Student 2: " + s2.toString());
+
+        // Access fields directly
+        System.out.println("\\n" + s1.name + "'s marks:");
+        for (double m : s1.marks) {
+            System.out.println("  " + m);
+        }
+    }
+}`,
+
+switch_stmt:
+`import java.util.Scanner;
+
+public class SwitchExample {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter day number (1-7): ");
+        int day = sc.nextInt();
+
+        String dayName;
+        switch (day) {
+            case 1:  dayName = "Monday";    break;
+            case 2:  dayName = "Tuesday";   break;
+            case 3:  dayName = "Wednesday"; break;
+            case 4:  dayName = "Thursday";  break;
+            case 5:  dayName = "Friday";    break;
+            case 6:  dayName = "Saturday";  break;
+            case 7:  dayName = "Sunday";    break;
+            default: dayName = "Invalid";
+        }
+
+        System.out.println("Day " + day + " is " + dayName);
+
+        // Is it a weekday or weekend?
+        if (day >= 1 && day <= 5) {
+            System.out.println("It is a weekday.");
+        } else if (day == 6 || day == 7) {
+            System.out.println("It is a weekend.");
+        }
+    }
+}`,
+
+try_catch:
+`import java.util.Scanner;
+
+public class ExceptionHandling {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        String input = sc.nextLine();
+
+        try {
+            int number = Integer.parseInt(input);
+            System.out.println("You entered: " + number);
+            System.out.println("Doubled: " + (number * 2));
+
+            // Arithmetic exception
+            System.out.print("Enter a divisor: ");
+            int divisor = Integer.parseInt(sc.nextLine());
+            System.out.println(number + " / " + divisor + " = " + (number / divisor));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: '" + input + "' is not a valid number.");
+        } catch (ArithmeticException e) {
+            System.out.println("Error: Cannot divide by zero!");
+        } finally {
+            System.out.println("Program complete.");
+        }
+    }
+}`,
+
+search_sort:
+`public class SearchSort {
+    // Linear search
+    public static int linearSearch(int[] arr, int target) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == target) return i;
+        }
+        return -1;
+    }
+
+    // Bubble sort
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j]     = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] data = {64, 34, 25, 12, 22, 11, 90};
+
+        System.out.print("Original: ");
+        for (int x : data) System.out.print(x + " ");
+
+        int idx = linearSearch(data, 22);
+        System.out.println("\\nLinear search for 22: index " + idx);
+
+        bubbleSort(data);
+        System.out.print("Sorted:   ");
+        for (int x : data) System.out.print(x + " ");
+        System.out.println("\\nDone.");
+    }
+}`
+
+}; // end examples
+
+// ── DOM refs ─────────────────────────────────────────────────────────────
+const codeEditor        = document.getElementById('codeEditor');
+const highlightLayer    = document.getElementById('highlightLayer');
+const lineNumbers       = document.getElementById('lineNumbers');
+const lineNumbersToggle = document.getElementById('lineNumbersToggle');
+const editorTab         = document.getElementById('editorTab');
+const examplesTab       = document.getElementById('examplesTab');
+const editorWrap        = document.getElementById('editorWrap');
+const examplesPanel     = document.getElementById('examplesPanel');
+const runButton         = document.getElementById('runButton');
+const resetButton       = document.getElementById('resetButton');
+const stopButton        = document.getElementById('stopButton');
+const consoleOutput     = document.getElementById('consoleOutput');
+const inputRow          = document.getElementById('inputRow');
+const inputField        = document.getElementById('inputField');
+const inputSubmit       = document.getElementById('inputSubmit');
+const inspectorBody     = document.getElementById('inspectorBody');
+const clearBtn          = document.getElementById('clearBtn');
+const saveBtn           = document.getElementById('saveBtn');
+const loadBtn           = document.getElementById('loadBtn');
+const fileInput         = document.getElementById('fileInput');
+
+// ── Syntax highlighting ───────────────────────────────────────────────────
+const JAVA_KW = new Set([
+  'public','private','protected','static','final','abstract','void','class','interface',
+  'extends','implements','new','return','if','else','for','while','do','switch','case',
+  'break','continue','default','try','catch','finally','throw','throws','import','package',
+  'instanceof','this','super','null','true','false'
+]);
+const JAVA_TYPES = new Set(['int','double','long','float','boolean','char','String','byte','short']);
+
+function highlight(code) {
+  const TOKENS = [
+    { re: /^\/\*[\s\S]*?\*\//, cls: 'hl-cmt' },
+    { re: /^\/\/[^\n]*/,       cls: 'hl-cmt' },
+    { re: /^"[^"\\]*(?:\\.[^"\\]*)*"/, cls: 'hl-str' },
+    { re: /^'(?:\\.|[^'])'/, cls: 'hl-str' },
+    { re: /^@\w+/, cls: 'hl-ann' },
+    { re: /^\b\d+(\.\d+)?\b/, cls: 'hl-num' },
+    { re: /^[A-Za-z_$][\w$]*/, cls: null },
+    { re: /^[\s\S]/, cls: null },
+  ];
+  function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  let out = '', pos = 0;
+  while (pos < code.length) {
+    let matched = false;
+    for (const tok of TOKENS) {
+      const m = code.slice(pos).match(tok.re);
+      if (!m) continue;
+      const raw = m[0]; pos += raw.length; matched = true;
+      if (tok.cls) { out += `<span class="${tok.cls}">${esc(raw)}</span>`; }
+      else if (/^[A-Za-z_$]/.test(raw)) {
+        if (JAVA_KW.has(raw))    out += `<span class="hl-kw">${esc(raw)}</span>`;
+        else if (JAVA_TYPES.has(raw)) out += `<span class="hl-typ">${esc(raw)}</span>`;
+        else if (/^[A-Z]/.test(raw))  out += `<span class="hl-typ">${esc(raw)}</span>`;
+        else if (code[pos] === '(')   out += `<span class="hl-met">${esc(raw)}</span>`;
+        else out += esc(raw);
+      } else { out += esc(raw); }
+      break;
+    }
+    if (!matched) { out += esc(code[pos]); pos++; }
+  }
+  return out;
+}
+
+function updateHighlight() {
+  highlightLayer.innerHTML = highlight(codeEditor.value);
+  highlightLayer.scrollTop  = codeEditor.scrollTop;
+  highlightLayer.scrollLeft = codeEditor.scrollLeft;
+}
+
+// ── Line numbers ──────────────────────────────────────────────────────────
+let lineNumbersVisible = true;
+function updateLineNumbers() {
+  const n = codeEditor.value.split('\n').length;
+  lineNumbers.innerHTML = Array.from({length:n},(_,i)=>i+1).join('<br>');
+}
+function toggleLineNumbers() {
+  lineNumbersVisible = !lineNumbersVisible;
+  lineNumbers.style.display = lineNumbersVisible ? '' : 'none';
+  const left = lineNumbersVisible ? '40px' : '0';
+  highlightLayer.style.left = codeEditor.style.left = left;
+  lineNumbersToggle.classList.toggle('active', lineNumbersVisible);
+}
+lineNumbersToggle.addEventListener('click', toggleLineNumbers);
+
+codeEditor.addEventListener('input', () => { updateLineNumbers(); updateHighlight(); });
+codeEditor.addEventListener('scroll', () => {
+  lineNumbers.scrollTop    = codeEditor.scrollTop;
+  highlightLayer.scrollTop = codeEditor.scrollTop;
+  highlightLayer.scrollLeft= codeEditor.scrollLeft;
+});
+codeEditor.addEventListener('keydown', e => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const s = codeEditor.selectionStart, en = codeEditor.selectionEnd;
+    codeEditor.value = codeEditor.value.substring(0,s) + '    ' + codeEditor.value.substring(en);
+    codeEditor.selectionStart = codeEditor.selectionEnd = s + 4;
+    updateLineNumbers(); updateHighlight();
+  }
+});
+
+// ── Console helpers ───────────────────────────────────────────────────────
+function conPrint(text, cls='con-out', newline=true) {
+  const span = document.createElement('span');
+  span.className = cls;
+  span.textContent = newline ? text + '\n' : text;
+  consoleOutput.appendChild(span);
+  consoleOutput.scrollTop = consoleOutput.scrollHeight;
+}
+
+function clearConsole() {
+  consoleOutput.innerHTML = '';
+}
+
+// ── Input handling (async, awaits user) ───────────────────────────────────
+let inputResolve = null;
+
+function requestInput(prompt) {
+  return new Promise(resolve => {
+    inputResolve = resolve;
+    inputRow.classList.remove('hidden');
+    inputField.value = '';
+    inputField.focus();
+    if (prompt && prompt !== 'Input:') {
+      // Show the prompt in the console (System.out.print already did it)
+    }
+  });
+}
+
+function submitInput() {
+  if (!inputResolve) return;
+  const val = inputField.value;
+  conPrint(val, 'con-input');
+  inputRow.classList.add('hidden');
+  const res = inputResolve;
+  inputResolve = null;
+  res(val);
+}
+
+inputSubmit.addEventListener('click', submitInput);
+inputField.addEventListener('keydown', e => { if (e.key === 'Enter') submitInput(); });
+
+// ── Variable inspector ────────────────────────────────────────────────────
+function updateInspector(env) {
+  if (!env) return;
+  // Collect all vars from top-level env
+  const vars = env.vars;
+  if (!vars || Object.keys(vars).length === 0) { inspectorBody.innerHTML = '<span style="color:rgba(221,225,240,0.25);font-size:11px;">No variables.</span>'; return; }
+  let html = '';
+  for (const [name, val] of Object.entries(vars)) {
+    if (name === 'args') continue;
+    const type = Array.isArray(val) ? 'array' : val === null ? 'null' : typeof val;
+    const display = Array.isArray(val) ? '[' + val.slice(0,8).join(', ') + (val.length>8?'...':'')+']' : String(val);
+    html += `<div class="var-row"><span class="var-type">${type}</span><span class="var-name">${name}</span><span class="var-val">${display}</span></div>`;
+  }
+  inspectorBody.innerHTML = html;
+}
+
+// ── Run ───────────────────────────────────────────────────────────────────
+let isRunning = false;
+let stopRequested = false;
+let currentInterpreter = null;
+
+async function runCode() {
+  if (isRunning) return;
+  isRunning = true; stopRequested = false;
+  clearConsole();
+  runButton.disabled = true;
+  inputRow.classList.add('hidden');
+
+  // Accumulated print buffer (for System.out.print without newline)
+  let printBuf = '';
+
+  const outputFn = (text, newline=true) => {
+    if (stopRequested) return;
+    if (newline) {
+      conPrint(printBuf + text, 'con-out');
+      printBuf = '';
+    } else {
+      printBuf += text;
+      // Update last partial line
+      const last = consoleOutput.lastChild;
+      if (last && last.dataset.partial) {
+        last.textContent = printBuf;
+      } else {
+        const span = document.createElement('span');
+        span.className = 'con-out';
+        span.textContent = printBuf;
+        span.dataset.partial = '1';
+        consoleOutput.appendChild(span);
+      }
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+  };
+
+  const inputFn = async (prompt) => {
+    // Flush any pending print buffer
+    if (printBuf) { conPrint(printBuf, 'con-out', false); printBuf = ''; }
+    return requestInput(prompt);
+  };
+
+  try {
+    const interp = new JavaInterpreter(outputFn, inputFn);
+    currentInterpreter = interp;
+
+    // Patch step to check stopRequested
+    const origStep = interp.step.bind(interp);
+    interp.step = () => { if (stopRequested) throw { message: 'Program stopped by user.' }; origStep(); };
+
+    await interp.run(codeEditor.value);
+
+    // Flush remaining print buf
+    if (printBuf) { conPrint(printBuf, 'con-out', false); printBuf = ''; }
+
+    // Show final env in inspector
+    conPrint('\n✓ Program finished.', 'con-info');
+
+    // Try to get main scope vars — best effort
+    updateInspector(interp._lastEnv);
+
+  } catch (e) {
+    if (printBuf) { conPrint(printBuf); printBuf = ''; }
+    inputRow.classList.add('hidden'); inputResolve = null;
+    const msg = e.message || String(e);
+    if (msg !== 'Program stopped by user.') {
+      conPrint('\n⚠ ' + msg, 'con-err');
+      // Helpful hints
+      if (msg.includes('Expected') || msg.includes('Unexpected')) {
+        conPrint('  Check for missing ; or { }', 'con-info');
+      }
+    } else {
+      conPrint('\n■ Stopped.', 'con-info');
+    }
+  } finally {
+    isRunning = false;
+    runButton.disabled = false;
+    currentInterpreter = null;
+    inputRow.classList.add('hidden');
+  }
+}
+
+runButton.addEventListener('click', runCode);
+
+stopButton.addEventListener('click', () => {
+  stopRequested = true;
+  inputRow.classList.add('hidden');
+  if (inputResolve) { inputResolve(''); inputResolve = null; }
+});
+
+resetButton.addEventListener('click', () => {
+  stopRequested = true;
+  clearConsole();
+  conPrint('Console cleared. Ready.', 'con-info');
+  inputRow.classList.add('hidden');
+  inputResolve = null;
+  inspectorBody.innerHTML = '<span style="color:rgba(221,225,240,0.25);font-size:11px;">No variables yet.</span>';
+});
+
+clearBtn.addEventListener('click', () => { clearConsole(); });
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+editorTab.addEventListener('click', () => {
+  editorWrap.classList.remove('hidden');
+  examplesPanel.classList.add('hidden');
+  editorTab.classList.add('active');
+  examplesTab.classList.remove('active');
+});
+examplesTab.addEventListener('click', () => {
+  editorWrap.classList.add('hidden');
+  examplesPanel.classList.remove('hidden');
+  examplesTab.classList.add('active');
+  editorTab.classList.remove('active');
+});
+document.querySelectorAll('.exampleLoader').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.getAttribute('data-example');
+    if (examples[key]) {
+      codeEditor.value = examples[key];
+      updateLineNumbers(); updateHighlight();
+      editorTab.click();
+      clearConsole();
+      conPrint('Example loaded — press Run.', 'con-info');
+    }
+  });
+});
+
+// ── Save / Load ───────────────────────────────────────────────────────────
+saveBtn.addEventListener('click', () => {
+  const code = codeEditor.value;
+  const classMatch = code.match(/public\s+class\s+(\w+)/);
+  const filename = (classMatch ? classMatch[1] : 'Program') + '.java';
+  const blob = new Blob([code], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+});
+loadBtn.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    codeEditor.value = ev.target.result;
+    updateLineNumbers(); updateHighlight();
+    editorTab.click();
+    clearConsole();
+    conPrint('File loaded: ' + file.name, 'con-info');
+  };
+  r.readAsText(file);
+  fileInput.value = '';
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────
+updateLineNumbers();
+updateHighlight();
+lucide.createIcons();
+</script>
+</body>
+</html>
