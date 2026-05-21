@@ -1031,8 +1031,16 @@ async function runCode() {
   };
 
   const inputFn = async (prompt) => {
-    // Flush any pending print buffer
-    if (printBuf) { conPrint(printBuf, 'con-out', false); printBuf = ''; }
+    // Finalise any pending System.out.print buffer in-place.
+    // Don't re-print it — it's already visible as a partial span.
+    // Just mark it as no longer partial so it won't be overwritten.
+    if (printBuf) {
+      const last = consoleOutput.lastChild;
+      if (last && last.dataset && last.dataset.partial) {
+        delete last.dataset.partial; // seal it in place
+      }
+      printBuf = '';
+    }
     return requestInput(prompt);
   };
 
