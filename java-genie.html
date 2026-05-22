@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0a0f1e">
-  <title>Java Genie</title>
+  <title>Java Code Genie</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='shine' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23a5b4fc'/%3E%3Cstop offset='1' stop-color='%236ee7b7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Cellipse cx='32' cy='40' rx='16' ry='10' fill='%23fbbf24'/%3E%3Cellipse cx='32' cy='38' rx='16' ry='10' fill='%23fcd34d'/%3E%3Cpath d='M48 36 Q56 30 54 24 Q52 20 46 22 Q44 28 48 36Z' fill='%23f59e0b'/%3E%3Cpath d='M16 38 Q8 36 10 44 Q12 50 18 46' fill='none' stroke='%23f59e0b' stroke-width='3.5' stroke-linecap='round'/%3E%3Cpath d='M46 20 Q44 12 38 8 Q34 5 32 10 Q34 14 38 12 Q42 10 46 20Z' fill='url(%23shine)' opacity='0.9'/%3E%3Ccircle cx='40' cy='10' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='50' cy='14' r='1.8' fill='%236ee7b7'/%3E%3Ccircle cx='44' cy='5' r='1.5' fill='%23fcd34d'/%3E%3Ctext x='26' y='43' font-family='monospace' font-size='10' font-weight='bold' fill='%23854d0e' opacity='0.8'%3E%7B%7D%3C/text%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Code Genie">
@@ -18,12 +18,12 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; width: 100%; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
     body { font-family: "DM Sans", sans-serif; font-size: 13px; background: #0a0f1e; color: #dde1f0; }
 
     #appShell {
       height: 100%; width: 100%;
-      display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
+      display: flex; flex-direction: column; overflow: hidden;
       background:
         radial-gradient(ellipse 55% 35% at 6% 4%,  rgba(99,102,241,0.20) 0%, transparent 60%),
         radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(16,185,129,0.14) 0%, transparent 55%),
@@ -60,11 +60,7 @@
     /* ── Main grid ── */
     #mainGrid {
       flex: 1; display: grid; grid-template-columns: 380px 1fr;
-      gap: 10px; padding: 8px 14px 10px; min-height: 0;
-    }
-    @media (max-width: 860px) {
-      #mainGrid { grid-template-columns: 1fr; overflow-y: visible; }
-      #appShell { height: auto; }
+      gap: 10px; padding: 8px 14px 10px; min-height: 0; overflow: hidden;
     }
 
     /* ── Panels ── */
@@ -212,9 +208,10 @@
     /* ── Right column ── */
     #rightCol {
       display: flex; flex-direction: column; gap: 8px;
-      min-height: 0;
+      min-height: 0; overflow: hidden;
     }
-    #canvasPanel { flex-shrink: 0; }
+    /* Canvas panel fills the right column entirely */
+    #canvasPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
     /* ── Readouts ── */
     .readouts { display: flex; gap: 5px; flex-wrap: wrap; }
@@ -241,10 +238,15 @@
       margin: 0 12px 12px;
       border-radius: 10px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.09); background: #f8f9ff;
+      /* padding-bottom trick: enforces exact 76:48 aspect ratio */
       width: calc(100% - 24px);
-      aspect-ratio: 76 / 48;
+      height: 0;
+      padding-bottom: calc((100% - 24px) * 48 / 76);
+      position: relative;
+      flex-shrink: 0;
     }
     #drawingSvg {
+      position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
       display: block;
     }
@@ -559,10 +561,7 @@
 <div id="appShell">
 
   <header id="appHeader">
-    <a href="index.html" style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:5px 10px;border-radius:7px;border:1px solid rgba(255,255,255,0.10);background:rgba(255,255,255,0.05);color:rgba(221,225,240,0.55);text-decoration:none;transition:all 130ms;flex-shrink:0;" onmouseover="this.style.background='rgba(255,255,255,0.10)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-      <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home
-    </a>
-    <h1 class="app-title">Java Genie</h1>
+    <h1 class="app-title">Java Code Genie</h1>
     <div class="header-actions">
       <button id="learnBtn" class="hdr-btn" style="background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.4);color:#a5b4fc;">
         <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn Java
@@ -778,221 +777,336 @@
 
       <div id="tutorialSlides">
 
+
         <!-- ── Slide 0: What is Java? ── -->
         <div class="tut-slide active">
           <h3><span class="step-num">1</span> What is Java?</h3>
           <p>
-            <strong>Java</strong> is one of the most popular programming languages in the world.
-            It is used to build apps, games, websites, and much more.
-            Many schools and universities teach Java as a first programming language.
+            <strong>Java</strong> is one of the world's most popular programming languages —
+            used to build Android apps, banking systems, games, school timetabling software,
+            and much more. It was created in 1995 and is still one of the top languages
+            used by professional developers today.
           </p>
           <p>
-            In this walkthrough you will learn the basic building blocks of Java —
-            step by step — and then write your very first program that draws a square.
+            Java is an <strong>object-oriented</strong>, <strong>compiled</strong> language.
+            That means your code describes real-world things (objects) and their actions,
+            and the computer turns your instructions into something it can run.
           </p>
           <div class="tut-callout info">
-            &#x1F4A1; Every Java program you write in Code Genie is real Java code —
-            the same language professional developers use every day.
+            💡 Every Java program you write in Code Genie is <em>real</em> Java code —
+            the same language used at companies like Google, Amazon, and Netflix every day.
+          </div>
+          <p>Every Java program follows this basic skeleton:</p>
+          <div class="tut-code" id="slide0code"></div>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>public class MyProgram</code> — every program lives inside a <strong>class</strong>. Think of a class as a container.</li>
+            <li><code>public static void main(String[] args)</code> — this is the <strong>entry point</strong>. Java always starts running here.</li>
+            <li><strong>{ }</strong> — curly braces mark the start and end of every block of code.</li>
+          </ul>
+          <div class="tut-callout tip">
+            Java is <strong>case-sensitive</strong>. <code>Pen</code> and <code>pen</code> are completely different things to Java.
+            Every statement ends with a <strong>semicolon ;</strong>
           </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: What keyword starts a class in Java?</p>
-  <div class="quiz-options"><button class="quiz-btn" data-correct="true">class</button><button class="quiz-btn" data-correct="false">start</button><button class="quiz-btn" data-correct="false">main</button></div>
+  <p class="quiz-question">🧩 Q1: What keyword is used to define a class in Java?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">class</button><button class="quiz-btn" data-correct="false">start</button><button class="quiz-btn" data-correct="false">program</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
-          <p>A Java program always has this basic structure:</p>
-          <div class="tut-code" id="slide0code"></div>
-          <div class="tut-callout tip">
-            The curly braces <strong>{ }</strong> mark the beginning and end of a block of code.
-            Everything inside <code>main</code> is what runs when your program starts.
-          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: Where does Java always begin running a program?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">At the last line of code</button><button class="quiz-btn" data-correct="true">Inside the main method</button><button class="quiz-btn" data-correct="false">At the top of the file</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What do curly braces { } do in Java?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">They store a number value</button><button class="quiz-btn" data-correct="false">They mark the end of a statement</button><button class="quiz-btn" data-correct="true">They mark the beginning and end of a block of code</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
         <!-- ── Slide 1: Variables ── -->
         <div class="tut-slide">
-          <h3><span class="step-num">2</span> Variables and Storing Information</h3>
+          <h3><span class="step-num">2</span> Variables — Storing Information</h3>
           <p>
-            A <strong>variable</strong> stores information that your program can use later.
-            In drawing programs, variables are useful for storing things like the number
-            of sides in a shape, step counts, colours, or positions.
+            A <strong>variable</strong> is a named storage location in memory.
+            You use it to store information your program needs — like a number, a colour value,
+            or how many sides a shape has.
           </p>
-          <div class="tut-code">int side = 4;</div>
+          <div class="tut-code">int sides = 4;</div>
           <p>Breaking that down:</p>
           <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
-            <li><code>int</code> — the <strong>type</strong>. It means this variable holds a whole number (integer).</li>
-            <li><code>side</code> — the variable name. It stores the number of sides in a shape.</li>
-            <li><code>= 4</code> — the value stored in the variable.</li>
-            <li><code>;</code> — every Java statement ends with a semicolon.</li>
+            <li><code>int</code> — the <strong>data type</strong>. <code>int</code> means a whole number (integer). Java needs to know what kind of value you are storing.</li>
+            <li><code>sides</code> — the <strong>variable name</strong>. You choose this. Use something descriptive.</li>
+            <li><code>= 4</code> — the <strong>value</strong> being stored. The <code>=</code> sign assigns the value.</li>
+            <li><code>;</code> — every Java statement <strong>must</strong> end with a semicolon.</li>
           </ul>
+          <p>You can also change a variable's value later:</p>
+          <div class="tut-code">sides = 6;   // now sides holds 6</div>
           <div class="tut-callout tip">
-            Variable names must start with a letter and cannot contain spaces.
-            Java is <strong>case-sensitive</strong> — <code>side</code> and <code>Side</code> are different variables.
+            Variable names must start with a letter, cannot have spaces, and are case-sensitive.
+            Good names: <code>stepCount</code>, <code>turnAngle</code>, <code>redValue</code>.
+            Bad names: <code>x</code>, <code>stuff</code>, <code>my variable</code>.
+          </div>
+          <div class="tut-callout info">
+            Common types in Java: <code>int</code> (whole numbers), <code>double</code> (decimal numbers),
+            <code>boolean</code> (true/false), <code>String</code> (text).
           </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: Which symbol ends most Java statements?</p>
+  <p class="quiz-question">🧩 Q1: Which symbol ends most Java statements?</p>
   <div class="quiz-options"><button class="quiz-btn" data-correct="true">;</button><button class="quiz-btn" data-correct="false">:</button><button class="quiz-btn" data-correct="false">.</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: What data type would you use to store the number 42?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">String</button><button class="quiz-btn" data-correct="false">boolean</button><button class="quiz-btn" data-correct="true">int</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: Which of these is a valid Java variable name?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">my sides</button><button class="quiz-btn" data-correct="true">sideCount</button><button class="quiz-btn" data-correct="false">4sides</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
         <!-- ── Slide 2: Objects ── -->
         <div class="tut-slide">
           <h3><span class="step-num">3</span> Creating an Object</h3>
           <p>
-            Java is an <strong>object-oriented</strong> language. That means we work with
-            <em>objects</em> — things that have their own properties and actions.
+            Java is an <strong>object-oriented</strong> language. This means we model things
+            in our program as <em>objects</em> — just like real objects in the world.
+            A car is an object. A pen is an object. A bank account is an object.
           </p>
           <p>
-            In Code Genie, <code>Pen</code> is an object. You create one like this:
+            Objects are created from a <strong>class</strong> — which is like a blueprint or recipe.
+            The class defines what the object can store (its <em>properties</em>) and what it can do (its <em>methods</em>).
           </p>
+          <p>In Code Genie, <code>Pen</code> is a class. You create a Pen object like this:</p>
           <div class="tut-code" id="slide2code"></div>
-          <p>Breaking that down:</p>
           <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
-            <li><code>Pen</code> — the <strong>type</strong> (a class, like a blueprint).</li>
-            <li><code>n</code> — the <strong>name</strong> you give your pen object.</li>
-            <li><code>new Pen()</code> — this <strong>creates</strong> a brand new Pen object.</li>
+            <li><code>Pen</code> — the <strong>class</strong> (the blueprint). Notice it starts with a capital letter.</li>
+            <li><code>n</code> — the <strong>variable name</strong> you give your new object. You can call it anything.</li>
+            <li><code>new Pen()</code> — the <code>new</code> keyword <strong>creates</strong> a brand new object from the blueprint.</li>
+            <li><code>;</code> — ends the statement as always.</li>
           </ul>
           <div class="tut-callout info">
-            This is exactly the same pattern as declaring a variable — you give it
-            a type, a name, and a value. The difference is the value is a new object.
+            💡 In Java, class names always start with a <strong>capital letter</strong> by convention.
+            Variable names start with a <strong>lowercase letter</strong>. This helps you tell them apart at a glance.
+          </div>
+          <div class="tut-callout tip">
+            You can create as many Pen objects as you like — <code>Pen a = new Pen();</code>
+            and <code>Pen b = new Pen();</code> are two completely separate pens.
           </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: What does new Pen() do?</p>
-  <div class="quiz-options"><button class="quiz-btn" data-correct="true">Creates a new object</button><button class="quiz-btn" data-correct="false">Deletes an object</button><button class="quiz-btn" data-correct="false">Renames a variable</button></div>
+  <p class="quiz-question">🧩 Q1: What does the keyword <code>new</code> do in Java?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">Creates a new object from a class blueprint</button><button class="quiz-btn" data-correct="false">Deletes an existing object</button><button class="quiz-btn" data-correct="false">Renames a variable</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: In Java, how do class names typically start?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">With a lowercase letter</button><button class="quiz-btn" data-correct="false">With a number</button><button class="quiz-btn" data-correct="true">With a capital letter</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What is a class in Java?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">A variable that stores text</button><button class="quiz-btn" data-correct="true">A blueprint used to create objects</button><button class="quiz-btn" data-correct="false">A type of loop</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
-        <!-- ── Slide 3: Calling methods ── -->
+        <!-- ── Slide 3: Methods ── -->
         <div class="tut-slide">
           <h3><span class="step-num">4</span> Calling a Method</h3>
           <p>
             A <strong>method</strong> is an action that an object can perform.
-            You call a method using a <strong>dot</strong> between the object name and the method name.
+            For example, a Pen object can move forward, turn right, change colour, or lift off the page.
+            These are all methods.
           </p>
+          <p>You call a method using <strong>dot notation</strong> — a dot between the object and the method:</p>
           <div class="tut-code" id="slide3code"></div>
-          <div class="tut-action-row"><button class="tut-action-btn tutorial-load" data-example="square_simple">Load movement example</button></div>
-          <p>Breaking that down:</p>
+          <div class="tut-action-row"><button class="tut-action-btn tutorial-load" data-example="square_simple">📥 Load movement example</button></div>
           <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
-            <li><code>n</code> — the name of your pen object.</li>
+            <li><code>n</code> — the name of your Pen object.</li>
             <li><code>.</code> — the dot connects the object to its method.</li>
-            <li><code>move()</code> — the method name. This tells the pen to move forward 1 unit.</li>
-            <li><code>turnRight(90)</code> — passes the number <strong>90</strong> as an <em>argument</em> (extra information the method needs).</li>
+            <li><code>move()</code> — the method name. Tells the pen to draw forward 1 unit.</li>
+            <li><code>turnRight(90)</code> — the <code>90</code> is an <strong>argument</strong> — extra information the method needs. This turns the pen 90 degrees clockwise.</li>
           </ul>
+          <p>Some useful Pen methods:</p>
+          <div class="tut-code">n.move();          // draw forward 1 step
+n.turnRight(90);   // turn clockwise 90°
+n.turnLeft(45);    // turn anticlockwise 45°
+n.penUp();         // stop drawing (just move)
+n.penDown();       // start drawing again
+n.setColor(255, 0, 0);  // set pen colour to red (RGB)</div>
           <div class="tut-callout tip">
-            The dot notation <code>object.method()</code> is one of the most important
-            patterns in Java. You will see it everywhere.
+            The dot notation <code>object.method()</code> is one of the most fundamental
+            patterns in Java. Everything in Java is an object, and you do things by calling methods on them.
           </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: What symbol connects an object to a method?</p>
-  <div class="quiz-options"><button class="quiz-btn" data-correct="true">.</button><button class="quiz-btn" data-correct="false">#</button><button class="quiz-btn" data-correct="false">:</button></div>
+  <p class="quiz-question">🧩 Q1: What symbol connects an object to its method in Java?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">. (dot)</button><button class="quiz-btn" data-correct="false"># (hash)</button><button class="quiz-btn" data-correct="false">: (colon)</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: In <code>n.turnRight(90)</code>, what is the value 90 called?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">A variable</button><button class="quiz-btn" data-correct="false">A class</button><button class="quiz-btn" data-correct="true">An argument</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What does <code>n.penUp()</code> do?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">Deletes the pen object</button><button class="quiz-btn" data-correct="true">Moves the pen without drawing a line</button><button class="quiz-btn" data-correct="false">Increases the pen speed</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
         <!-- ── Slide 4: Sequences ── -->
         <div class="tut-slide">
-          <h3><span class="step-num">5</span> Sequences Without Loops</h3>
+          <h3><span class="step-num">5</span> Sequences — Code Runs Top to Bottom</h3>
           <p>
-            A <strong>sequence</strong> is a list of statements that run one after another,
-            from top to bottom. This is the most basic form of programming.
+            A <strong>sequence</strong> is the simplest control structure in programming.
+            It just means: execute one statement, then the next, then the next —
+            from the <strong>top of the code to the bottom</strong>, in order.
           </p>
           <p>
-            Here is a sequence that moves the pen forward 5 steps — each step is one line of code:
+            Every program you write starts as a sequence. Here is one that draws a short line
+            by calling <code>move()</code> five times in a row:
           </p>
           <div class="tut-code" id="slide4code"></div>
-          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadSequence">&#x1F4E5; Load sequence example</button></div>
+          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadSequence">📥 Load sequence example</button></div>
+          <p>
+            The pen executes each line in order — move, move, move, move, move.
+            The order matters: swap two lines and you get a different result.
+          </p>
           <div class="tut-callout warn">
-            &#x26A0; That is already 5 lines just to move 5 steps!
-            A full square side needs 20 steps — 20 lines. Four sides means 80 lines of code.
+            ⚠ That is 5 lines for just 5 steps. A full square side = 20 steps = 20 lines.
+            Four sides = 80 lines. Writing sequences by hand does not scale well at all.
             There must be a better way...
           </div>
+          <div class="tut-callout tip">
+            Java reads your code <strong>exactly as written</strong> — no shortcuts, no assumptions.
+            If you write the wrong method or spell it incorrectly, Java will not guess what you meant.
+            Precision matters.
+          </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: What is a sequence?</p>
-  <div class="quiz-options"><button class="quiz-btn" data-correct="true">Code running top to bottom</button><button class="quiz-btn" data-correct="false">A type of loop</button><button class="quiz-btn" data-correct="false">A Java error</button></div>
+  <p class="quiz-question">🧩 Q1: In what order does Java execute statements in a sequence?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">Bottom to top</button><button class="quiz-btn" data-correct="true">Top to bottom, one at a time</button><button class="quiz-btn" data-correct="false">In alphabetical order</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: If you call <code>n.move();</code> five times in sequence, what happens?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">The pen moves 1 step and stops</button><button class="quiz-btn" data-correct="true">The pen draws 5 steps forward, one after another</button><button class="quiz-btn" data-correct="false">The pen turns right 5 times</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: Why is a sequence alone not efficient for drawing a large shape?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">Sequences are not allowed in Java</button><button class="quiz-btn" data-correct="true">You need one line of code for every single step, which becomes very long</button><button class="quiz-btn" data-correct="false">Sequences draw shapes in the wrong order</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
-        <!-- ── Slide 5: For loop concept ── -->
+        <!-- ── Slide 5: For loop ── -->
         <div class="tut-slide">
           <h3><span class="step-num">6</span> Repeating with a For Loop</h3>
           <p>
-            A <strong>for loop</strong> repeats a block of code a set number of times.
-            On the last slide we wrote <code>n.move();</code> 5 times by hand.
-            Imagine doing that 20 times for a full side! A loop makes it much shorter:
+            A <strong>for loop</strong> lets you repeat a block of code a specific number of times
+            without writing it out over and over. It is one of the most powerful tools in programming.
           </p>
+          <p>Instead of writing <code>n.move();</code> 20 times, we write this:</p>
           <div class="tut-code" id="slide5code"></div>
-          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadLoop">&#x1F4E5; Load loop example</button></div>
-          <p>The three parts inside the brackets are:</p>
+          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadLoop">📥 Load loop example</button></div>
+          <p>The for loop has <strong>three parts</strong> inside the brackets, separated by semicolons:</p>
           <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
-            <li><code>int i = 0</code> — create a counter variable and start it at 0.</li>
-            <li><code>i &lt; 20</code> — keep looping <strong>while</strong> i is less than 20.</li>
-            <li><code>i++</code> — after each loop, add 1 to i. (<code>i++</code> means <code>i = i + 1</code>).</li>
+            <li><code>int i = 0</code> — the <strong>initialiser</strong>. Create a counter variable <code>i</code> and start it at 0.</li>
+            <li><code>i &lt; 20</code> — the <strong>condition</strong>. Keep looping <em>while</em> this is true.</li>
+            <li><code>i++</code> — the <strong>update</strong>. After each loop, add 1 to i. (<code>i++</code> is shorthand for <code>i = i + 1</code>).</li>
           </ul>
           <div class="tut-callout tip">
-            The loop runs 20 times (when i = 0, 1, 2 ... 19).
-            When i reaches 20, the condition <code>i &lt; 20</code> is false and the loop stops.
+            The loop runs when i = 0, 1, 2, 3 … 19. That is <strong>20 times</strong>.
+            When i reaches 20, the condition <code>i &lt; 20</code> becomes false and the loop stops.
+          </div>
+          <div class="tut-callout info">
+            💡 The variable <code>i</code> is the conventional name for a loop counter.
+            You can call it anything — <code>step</code>, <code>count</code>, <code>side</code> —
+            but <code>i</code> is so common that most Java developers will recognise it instantly.
           </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: How many times does i < 20 loop?</p>
+  <p class="quiz-question">🧩 Q1: How many times does <code>for(int i = 0; i &lt; 20; i++)</code> repeat?</p>
   <div class="quiz-options"><button class="quiz-btn" data-correct="true">20</button><button class="quiz-btn" data-correct="false">19</button><button class="quiz-btn" data-correct="false">21</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: What is <code>i++</code> shorthand for?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">i = i - 1</button><button class="quiz-btn" data-correct="true">i = i + 1</button><button class="quiz-btn" data-correct="false">i = i * 2</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: In a for loop, what happens when the condition becomes false?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">The program crashes</button><button class="quiz-btn" data-correct="false">The loop restarts from i = 0</button><button class="quiz-btn" data-correct="true">The loop stops and the program continues to the next line</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
         <!-- ── Slide 6: Drawing a square ── -->
         <div class="tut-slide">
           <h3><span class="step-num">7</span> Putting it Together — Drawing a Square</h3>
           <p>
-            A square has <strong>4 equal sides</strong>. After each side we turn <strong>90°</strong>.
-            We can use a for loop for each side, and another loop to repeat all 4 sides:
+            Now we combine everything. A square has <strong>4 equal sides</strong>.
+            After drawing each side, the pen turns <strong>90°</strong> to face the next direction.
+            We use a <strong>nested loop</strong> — a loop inside a loop:
           </p>
           <div class="tut-code" id="slide6code"></div>
-          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadSquare">&#x1F4E5; Load square program</button></div>
-          <div class="tut-quiz"><h4>Quick challenge ⚡</h4><p style="margin-bottom:10px;">How many sides does the outer loop draw?</p><button class="quiz-option" data-correct="true">4</button><button class="quiz-option">20</button><button class="quiz-option">80</button><div class="quiz-feedback"></div></div>
+          <div class="tut-action-row"><button class="tut-action-btn" id="tutLoadSquare">📥 Load square program</button></div>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><strong>Outer loop</strong> — runs 4 times (once for each <em>side</em> of the square).</li>
+            <li><strong>Inner loop</strong> — runs 20 times (once for each <em>step</em> along that side).</li>
+            <li><code>n.turnRight(90)</code> — after finishing a side, turn 90° to face the next direction.</li>
+          </ul>
           <div class="tut-callout info">
-            The <strong>outer loop</strong> runs 4 times — once for each side of the square.<br>
-            The <strong>inner loop</strong> runs 20 times — once for each step of that side.<br>
-            Total: 4 × 20 = 80 move() calls, in just 6 lines of code.
+            Total moves: 4 sides × 20 steps = <strong>80 move() calls</strong> — in just 6 lines of code.
+            Without loops you would need to write 80 lines by hand.
+          </div>
+          <div class="tut-callout tip">
+            💡 Try changing 4 to 3 and 90 to 120 — you will draw a triangle!
+            6 sides at 60° makes a hexagon. The pattern is: <strong>sides × turn angle = 360°</strong>.
           </div>
 <div class="tutorial-quiz">
-  <p class="quiz-question">🧩 Quick Quiz: In the square code, what does <code>n.turnRight(90)</code> do?</p>
-  <div class="quiz-options">
-    <button class="quiz-btn" data-correct="true">Turns the pen 90° at each corner</button>
-    <button class="quiz-btn" data-correct="false">Moves the pen 90 steps forward</button>
-    <button class="quiz-btn" data-correct="false">Sets the pen speed to 90</button>
-  </div>
+  <p class="quiz-question">🧩 Q1: In the square program, how many times does the outer loop run?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="true">4</button><button class="quiz-btn" data-correct="false">20</button><button class="quiz-btn" data-correct="false">80</button></div>
   <div class="quiz-feedback"></div>
 </div>
-
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: What does <code>n.turnRight(90)</code> do after each side?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">Moves the pen 90 steps forward</button><button class="quiz-btn" data-correct="true">Turns the pen 90° clockwise to face the next side</button><button class="quiz-btn" data-correct="false">Sets the pen speed to 90</button></div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: To draw a triangle instead of a square, which values would you change?</p>
+  <div class="quiz-options"><button class="quiz-btn" data-correct="false">The pen colour and speed</button><button class="quiz-btn" data-correct="false">The number of steps in the inner loop only</button><button class="quiz-btn" data-correct="true">The outer loop count to 3 and the turn angle to 120°</button></div>
+  <div class="quiz-feedback"></div>
+</div>
         </div>
 
-        <!-- ── Slide 7: Try it ── -->
+        <!-- ── Slide 7: Try it yourself ── -->
         <div class="tut-slide">
           <h3><span class="step-num">8</span> Now Try it Yourself!</h3>
-          <p>
-            You have just learned the core building blocks of Java:
-          </p>
-          <ul style="font-size:13px;line-height:2;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:14px;">
-            <li>&#x2705; <strong>Variables</strong> — store values with a type and name</li>
-            <li>&#x2705; <strong>Objects</strong> — create things using <code>new ClassName()</code></li>
-            <li>&#x2705; <strong>Methods</strong> — call actions using <code>object.method()</code></li>
-            <li>&#x2705; <strong>Sequences</strong> — statements run top to bottom</li>
-            <li>&#x2705; <strong>For loops</strong> — repeat code a set number of times</li>
+          <p>Excellent work — you have just learned the core building blocks of Java programming:</p>
+          <ul style="font-size:13px;line-height:2.1;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:14px;">
+            <li>✅ <strong>Variables</strong> — store values with a type (<code>int</code>, <code>double</code>, etc.) and a name</li>
+            <li>✅ <strong>Classes and Objects</strong> — a class is a blueprint; <code>new</code> creates an object from it</li>
+            <li>✅ <strong>Methods</strong> — actions on objects, called with dot notation: <code>object.method()</code></li>
+            <li>✅ <strong>Sequences</strong> — statements execute top to bottom, one at a time</li>
+            <li>✅ <strong>For loops</strong> — repeat a block of code a set number of times efficiently</li>
+            <li>✅ <strong>Nested loops</strong> — a loop inside another loop, for more complex patterns</li>
           </ul>
           <p>
-            Click <strong>Close &amp; Run</strong> below. The square program will load into the editor and run automatically.
-            Then try changing the number of steps or the turn angle and see what happens!
+            Click <strong>Close &amp; Run</strong> below. The square program will load into the editor
+            and run automatically. Then experiment — change values and see what happens!
           </p>
           <div class="tut-callout tip">
-            &#x1F3AE; <strong>Challenge:</strong> can you change the square into a triangle?
-            A triangle has 3 sides and each turn is 120°. Change the loop count and turn angle to find out!
+            🎮 <strong>Challenges to try:</strong><br>
+            • Change the square into a <strong>triangle</strong> (3 sides, 120° turns)<br>
+            • Make a <strong>hexagon</strong> (6 sides, 60° turns)<br>
+            • Draw a <strong>spiral</strong> by making the inner loop count increase each time the outer loop runs<br>
+            • Use <code>n.setColor(255, 0, 0);</code> to draw in red
           </div>
         </div>
 
@@ -1013,7 +1127,7 @@
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════════════
-// Java Genie — main script
+// Java Code Genie — main script
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ── Canvas state (can be changed by n.setGridSize) ───────────────────────────
@@ -1710,7 +1824,7 @@ function applyGridSize(w, h) {
   START_Y  = Math.round(h / 2);
   drawingSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
   // Recalculate padding-bottom to maintain correct aspect ratio
-  canvasOuter.style.aspectRatio = `${w} / ${h}`;
+  canvasOuter.style.paddingBottom = `calc((100% - 24px) * ${h} / ${w})`;
   gridSizeLabel.textContent = `${w} × ${h}  · pen starts at centre`;
   buildGrid(w, h);
 }

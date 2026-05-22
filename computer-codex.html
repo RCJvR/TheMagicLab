@@ -334,6 +334,23 @@
       color: #fbbf24; display: inline-block;
     }
 
+    /* Quiz toggle */
+    .quiz-section { margin: 18px 0 16px; }
+    .quiz-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 14px; border-radius: 10px; width: 100%;
+      background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.18);
+      color: #a5b4fc; font-family: "DM Sans", sans-serif;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      transition: all 150ms; text-align: left;
+    }
+    .quiz-toggle:hover { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.30); }
+    .quiz-toggle .toggle-icon { margin-left: auto; font-size: 14px; transition: transform 200ms; }
+    .quiz-toggle.open { background: rgba(99,102,241,0.14); border-color: rgba(99,102,241,0.32); }
+    .quiz-toggle.open .toggle-icon { transform: rotate(180deg); }
+    .quiz-inner { display: none; padding-top: 12px; }
+    .quiz-inner.open { display: block; }
+
     /* Quiz */
     .quiz-box {
       background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
@@ -495,14 +512,112 @@ const LESSONS = [
 
 <div class="callout tip"><strong>Tip:</strong> Right-clicking anywhere on the desktop opens a context menu with useful options like creating new folders or changing your wallpaper.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Quick Quiz: Where do deleted files go first in Windows?</div>
+  <div class="quiz-q">🧩 Q1: Where do deleted files go first in Windows?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">They are permanently deleted immediately</button>
     <button class="quiz-opt" data-correct="true">The Recycle Bin</button>
     <button class="quiz-opt" data-correct="false">The Downloads folder</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What does an operating system do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Connects you to the internet</button>
+    <button class="quiz-opt" data-correct="true">Manages hardware and lets you run programs</button>
+    <button class="quiz-opt" data-correct="false">Creates documents and spreadsheets</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What is the name of Microsoft's operating system?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">macOS</button>
+    <button class="quiz-opt" data-correct="false">Linux</button>
+    <button class="quiz-opt" data-correct="true">Windows</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: Which part of the desktop shows open programs and the Start button?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The Notification Area</button>
+    <button class="quiz-opt" data-correct="true">The Taskbar</button>
+    <button class="quiz-opt" data-correct="false">The Desktop</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What keyboard key opens the Start Menu?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl</button>
+    <button class="quiz-opt" data-correct="false">Alt</button>
+    <button class="quiz-opt" data-correct="true">Win key (⊞)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: What is the System Tray?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">The area in the bottom-right showing clock, Wi-Fi, and volume</button>
+    <button class="quiz-opt" data-correct="false">The folder where system files are stored</button>
+    <button class="quiz-opt" data-correct="false">A special type of recycling bin</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: How do you open a program from a desktop icon?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Single click</button>
+    <button class="quiz-opt" data-correct="true">Double click</button>
+    <button class="quiz-opt" data-correct="false">Right click</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: What appears when you right-click on the desktop?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The computer restarts</button>
+    <button class="quiz-opt" data-correct="true">A context menu with options like New Folder</button>
+    <button class="quiz-opt" data-correct="false">The screensaver turns on</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: What does it mean to minimise a window?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Close the program permanently</button>
+    <button class="quiz-opt" data-correct="false">Delete the file</button>
+    <button class="quiz-opt" data-correct="true">Hide the window to the taskbar while the program keeps running</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: Which statement about the Recycle Bin is TRUE?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Files in the Recycle Bin are permanently deleted</button>
+    <button class="quiz-opt" data-correct="true">Files in the Recycle Bin can be restored until you empty it</button>
+    <button class="quiz-opt" data-correct="false">The Recycle Bin stores downloaded files</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -578,14 +693,112 @@ const LESSONS = [
   <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Win</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">D</span></div><div class="shortcut-desc">Show/hide Desktop</div></div>
 </div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You want to browse your files and folders. Which program do you open?</div>
+  <div class="quiz-q">🧩 Q1: You want to browse your files and folders. Which program do you open?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Control Panel</button>
     <button class="quiz-opt" data-correct="true">File Explorer</button>
     <button class="quiz-opt" data-correct="false">Task Manager</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What is the keyboard shortcut to open File Explorer?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + E</button>
+    <button class="quiz-opt" data-correct="true">Win + E</button>
+    <button class="quiz-opt" data-correct="false">Alt + F</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: In File Explorer, what does the left Navigation Pane show?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Your recent documents only</button>
+    <button class="quiz-opt" data-correct="true">A folder tree showing your drives and common locations</button>
+    <button class="quiz-opt" data-correct="false">Your internet bookmarks</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: What does Ctrl + Z do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Redo the last action</button>
+    <button class="quiz-opt" data-correct="true">Undo the last action</button>
+    <button class="quiz-opt" data-correct="false">Close the window</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Which button in the top-right of a window CLOSES it completely?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The minus button</button>
+    <button class="quiz-opt" data-correct="false">The square button</button>
+    <button class="quiz-opt" data-correct="true">The X button</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: What shortcut shows or hides the Desktop instantly?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Win + D</button>
+    <button class="quiz-opt" data-correct="false">Win + E</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + D</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What does Ctrl + C do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Close the program</button>
+    <button class="quiz-opt" data-correct="true">Copy the selected item</button>
+    <button class="quiz-opt" data-correct="false">Create a new file</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: What does Alt + F4 do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Opens File Explorer</button>
+    <button class="quiz-opt" data-correct="false">Takes a screenshot</button>
+    <button class="quiz-opt" data-correct="true">Closes the active window</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: What is the difference between Minimise and Close?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">There is no difference</button>
+    <button class="quiz-opt" data-correct="true">Minimise hides the window but the program keeps running; Close ends the program</button>
+    <button class="quiz-opt" data-correct="false">Minimise deletes the file; Close saves it</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: Which shortcut do you use to save a file?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + P</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + S</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + F</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -630,14 +843,112 @@ const LESSONS = [
 
 <div class="callout info"><strong>File path:</strong> Every file has an address called a <em>path</em>. For example: <code>C:\Users\Thabo\Documents\Assignment.docx</code> — this tells you exactly where the file lives.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You want to move a file to a new folder (remove it from the old location). Which shortcut do you use first?</div>
+  <div class="quiz-q">🧩 Q1: You want to MOVE a file to a new folder. Which shortcut do you use first?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Ctrl + C (Copy)</button>
     <button class="quiz-opt" data-correct="true">Ctrl + X (Cut)</button>
     <button class="quiz-opt" data-correct="false">Ctrl + Z (Undo)</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: You want to keep the original AND put a copy elsewhere. Which do you use?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Cut then Paste</button>
+    <button class="quiz-opt" data-correct="true">Copy then Paste</button>
+    <button class="quiz-opt" data-correct="false">Delete then re-create</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What shortcut permanently deletes a file, skipping the Recycle Bin?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + Delete</button>
+    <button class="quiz-opt" data-correct="true">Shift + Delete</button>
+    <button class="quiz-opt" data-correct="false">Alt + Delete</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: How do you rename a file in File Explorer?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Double-click it</button>
+    <button class="quiz-opt" data-correct="true">Select it and press F2</button>
+    <button class="quiz-opt" data-correct="false">Right-click and choose Open</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What is a file path?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The speed at which a file opens</button>
+    <button class="quiz-opt" data-correct="true">The full address showing where a file is stored on the computer</button>
+    <button class="quiz-opt" data-correct="false">The size of a file in megabytes</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which shortcut opens Windows Search?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Press the Win key and start typing</button>
+    <button class="quiz-opt" data-correct="false">Press F1</button>
+    <button class="quiz-opt" data-correct="false">Press Ctrl + H</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What is best practice for naming folders?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Use spaces and special characters freely</button>
+    <button class="quiz-opt" data-correct="true">Use clear names with underscores, e.g. Grade_10_IT</button>
+    <button class="quiz-opt" data-correct="false">Use only numbers</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: After copying a file, what do you press to place it in a new location?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + X</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + V</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + P</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: Where is a file stored after you press Delete (without Shift)?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It is permanently gone</button>
+    <button class="quiz-opt" data-correct="true">The Recycle Bin</button>
+    <button class="quiz-opt" data-correct="false">The Downloads folder</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: What does it mean to extract a .zip file?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Delete the compressed file</button>
+    <button class="quiz-opt" data-correct="true">Decompress the contents so you can use the files inside</button>
+    <button class="quiz-opt" data-correct="false">Send the file by email</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -687,14 +998,112 @@ const LESSONS = [
 
 <div class="callout warn"><strong>Showing extensions:</strong> By default Windows hides file extensions. To show them: File Explorer → View → Show → File name extensions. This is important so you can always see what type a file really is.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 A teacher sends you a file called "Notes.pdf". What does the .pdf extension tell you?</div>
+  <div class="quiz-q">🧩 Q1: A teacher sends you Notes.pdf. What does .pdf tell you?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It is a Word document that you can edit easily</button>
+    <button class="quiz-opt" data-correct="false">It is a Word document you can edit easily</button>
     <button class="quiz-opt" data-correct="true">It is a Portable Document Format that looks the same on any device</button>
     <button class="quiz-opt" data-correct="false">It is an image file</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Which extension is used by modern Microsoft Word documents?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">.txt</button>
+    <button class="quiz-opt" data-correct="true">.docx</button>
+    <button class="quiz-opt" data-correct="false">.pdf</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Which image format supports transparent backgrounds?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">.jpg</button>
+    <button class="quiz-opt" data-correct="false">.bmp</button>
+    <button class="quiz-opt" data-correct="true">.png</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You want to share a final version that cannot easily be edited. Which format?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.docx</button>
+    <button class="quiz-opt" data-correct="false">*.txt</button>
+    <button class="quiz-opt" data-correct="true">*.pdf</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What does a .zip file contain?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A virus scanner</button>
+    <button class="quiz-opt" data-correct="true">One or more files compressed into a single archive</button>
+    <button class="quiz-opt" data-correct="false">A Windows system file</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which file type should you be CAREFUL about running from an unknown source?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.jpg</button>
+    <button class="quiz-opt" data-correct="false">*.txt</button>
+    <button class="quiz-opt" data-correct="true">*.exe</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What is the extension for a Microsoft Excel spreadsheet?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.pptx</button>
+    <button class="quiz-opt" data-correct="true">*.xlsx</button>
+    <button class="quiz-opt" data-correct="false">*.docx</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: Which image format is best for photographs because it produces small file sizes?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.png</button>
+    <button class="quiz-opt" data-correct="false">*.bmp</button>
+    <button class="quiz-opt" data-correct="true">*.jpg</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: Why should you enable Show file name extensions in Windows?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It makes files open faster</button>
+    <button class="quiz-opt" data-correct="true">So you can always see what type a file really is</button>
+    <button class="quiz-opt" data-correct="false">It is required for printing</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: What is the file extension for a Microsoft PowerPoint presentation?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.xlsx</button>
+    <button class="quiz-opt" data-correct="false">*.docx</button>
+    <button class="quiz-opt" data-correct="true">*.pptx</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -783,14 +1192,112 @@ const LESSONS = [
 
 <div class="callout info"><strong>Quick Access Toolbar:</strong> The small toolbar above the Ribbon (top-left) has frequently used buttons like Save, Undo, and Redo. You can customise it by right-clicking any Ribbon button and choosing "Add to Quick Access Toolbar".</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You want to change the font size of selected text in Word. Which Ribbon group would you find this in on the Home tab?</div>
+  <div class="quiz-q">🧩 Q1: You want to change the font size in Word. Which Ribbon group on the Home tab?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Paragraph</button>
     <button class="quiz-opt" data-correct="true">Font</button>
     <button class="quiz-opt" data-correct="false">Styles</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What opens when you click the File tab?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The Font dialog box</button>
+    <button class="quiz-opt" data-correct="true">The Backstage View with file management options</button>
+    <button class="quiz-opt" data-correct="false">The Insert toolbar</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Which tab would you use to insert a picture or table?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Home</button>
+    <button class="quiz-opt" data-correct="false">Design</button>
+    <button class="quiz-opt" data-correct="true">Insert</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: What is the Quick Access Toolbar?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A floating toolbar that follows your cursor</button>
+    <button class="quiz-opt" data-correct="true">A customisable toolbar above the Ribbon with frequently used commands</button>
+    <button class="quiz-opt" data-correct="false">The tab bar at the top</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What are Groups on the Ribbon?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The individual command buttons</button>
+    <button class="quiz-opt" data-correct="true">Sections within a tab that organise related commands</button>
+    <button class="quiz-opt" data-correct="false">The colour themes for Office</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which shortcut opens the Save As dialog?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + S</button>
+    <button class="quiz-opt" data-correct="true">F12</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + A</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What does the small arrow in the bottom-right of a Ribbon group do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It collapses the Ribbon</button>
+    <button class="quiz-opt" data-correct="true">It opens a dialog with more detailed options</button>
+    <button class="quiz-opt" data-correct="false">It saves the document</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: Which Ribbon tab contains options for changing page margins?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Home</button>
+    <button class="quiz-opt" data-correct="false">Insert</button>
+    <button class="quiz-opt" data-correct="true">Layout</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: What does Close do in the File Backstage View?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Closes Word completely</button>
+    <button class="quiz-opt" data-correct="true">Closes the current file but keeps Word open</button>
+    <button class="quiz-opt" data-correct="false">Saves and closes the file</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: Which option lets you save with a new name or different format?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Save (Ctrl+S)</button>
+    <button class="quiz-opt" data-correct="true">Save As (F12)</button>
+    <button class="quiz-opt" data-correct="false">Export</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -849,14 +1356,112 @@ const LESSONS = [
 
 <div class="callout warn"><strong>Important:</strong> When you are given a .docx file to work on and asked to submit it as a PDF, always use <strong>Save As → PDF</strong>. Do NOT just rename the file extension — that doesn't actually convert it.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You have finished a Word assignment and need to submit it. Your teacher asked for a PDF. What do you do?</div>
+  <div class="quiz-q">🧩 Q1: You need to submit a Word assignment as a PDF. What do you do?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Rename the file from Assignment.docx to Assignment.pdf</button>
-    <button class="quiz-opt" data-correct="true">File → Save As → change file type to PDF → Save</button>
+    <button class="quiz-opt" data-correct="false">Rename the file from .docx to .pdf</button>
+    <button class="quiz-opt" data-correct="true">File > Save As > change type to PDF > Save</button>
     <button class="quiz-opt" data-correct="false">Press Ctrl + P to print it</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What keyboard shortcut creates a new document in Word?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + O</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + N</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + W</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What is the difference between Save and Save As?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">There is no difference</button>
+    <button class="quiz-opt" data-correct="true">Save updates the existing file; Save As lets you choose name, location, or format</button>
+    <button class="quiz-opt" data-correct="false">Save As is only for PDFs</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You open a document, make changes, and press Ctrl+S. What happens?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A Save As dialog always opens</button>
+    <button class="quiz-opt" data-correct="true">The changes are saved to the same file with the same name</button>
+    <button class="quiz-opt" data-correct="false">The file is saved as a PDF</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Which file format should you use if you need to keep editing the document?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.pdf</button>
+    <button class="quiz-opt" data-correct="false">*.txt</button>
+    <button class="quiz-opt" data-correct="true">*.docx</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: What does AutoSave do in Word?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Automatically emails your document</button>
+    <button class="quiz-opt" data-correct="true">Saves automatically every few seconds when stored on OneDrive</button>
+    <button class="quiz-opt" data-correct="false">Creates a backup PDF</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What keyboard shortcut is Save As in Word?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + S</button>
+    <button class="quiz-opt" data-correct="true">F12</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + Shift + S</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: Why would you save a document as .txt?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">To make it smaller with all formatting intact</button>
+    <button class="quiz-opt" data-correct="true">When you need plain text only with no formatting</button>
+    <button class="quiz-opt" data-correct="false">To share with iPhone users</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: Which format looks the same on any device or printer?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">*.docx</button>
+    <button class="quiz-opt" data-correct="false">*.txt</button>
+    <button class="quiz-opt" data-correct="true">*.pdf</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: What does Ctrl + O do in Word?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Opens a new blank document</button>
+    <button class="quiz-opt" data-correct="true">Opens the Open dialog to load an existing file</button>
+    <button class="quiz-opt" data-correct="false">Opens the Options menu</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -922,14 +1527,112 @@ const LESSONS = [
 
 <div class="callout tip"><strong>How to apply a style:</strong> Click anywhere in the paragraph (no need to select the whole line), then click the style name in the Styles gallery on the Home tab.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 What is the main advantage of using Heading styles in a Word document?</div>
+  <div class="quiz-q">🧩 Q1: What is the main advantage of using Heading styles?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">It makes the text larger automatically</button>
-    <button class="quiz-opt" data-correct="true">It ensures consistent formatting and allows features like automatic Table of Contents</button>
+    <button class="quiz-opt" data-correct="true">Ensures consistent formatting and enables an automatic Table of Contents</button>
     <button class="quiz-opt" data-correct="false">It saves the document as a PDF</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Which shortcut applies Bold formatting?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + I</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + B</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + U</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What does Ctrl + J do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Justifies text so it aligns on both left and right margins</button>
+    <button class="quiz-opt" data-correct="false">Centers the text</button>
+    <button class="quiz-opt" data-correct="false">Indents the paragraph</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You want to centre a heading. Which shortcut?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + L</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + R</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + E</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Which shortcut applies Italic formatting?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + B</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + U</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + I</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Where are Styles found in Word?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Insert tab, Text group</button>
+    <button class="quiz-opt" data-correct="true">Home tab, Styles group</button>
+    <button class="quiz-opt" data-correct="false">Design tab, Fonts group</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What is the correct way to apply a Style to a paragraph?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Select every character, then apply</button>
+    <button class="quiz-opt" data-correct="true">Click anywhere in the paragraph, then click the style name</button>
+    <button class="quiz-opt" data-correct="false">Type the style name in the font box</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: Which shortcut selects ALL content in a Word document?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + S</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + A</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + F</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: What does Ctrl + U do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Removes all formatting</button>
+    <button class="quiz-opt" data-correct="true">Draws a line beneath selected text</button>
+    <button class="quiz-opt" data-correct="false">Changes font colour to blue</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: Why is using Styles better than manually formatting each heading?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Styles are the only way to change font size</button>
+    <button class="quiz-opt" data-correct="true">Styles ensure consistency and changing one style updates all matching headings at once</button>
+    <button class="quiz-opt" data-correct="false">Styles automatically save the document</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -1003,14 +1706,112 @@ const LESSONS = [
 
 <div class="callout tip"><strong>Cell range:</strong> A range is a group of cells. <span class="key-term">A1:A10</span> means all cells from A1 to A10. <span class="key-term">A1:C4</span> means a rectangular block from A1 to C4.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 What is the cell reference for the cell in column C, row 5?</div>
+  <div class="quiz-q">🧩 Q1: What is the cell reference for column C, row 5?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">5C</button>
     <button class="quiz-opt" data-correct="true">C5</button>
     <button class="quiz-opt" data-correct="false">C:5</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: In Excel, which way do columns run?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Horizontally, left to right</button>
+    <button class="quiz-opt" data-correct="true">Vertically, top to bottom</button>
+    <button class="quiz-opt" data-correct="false">Diagonally</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What symbol must every Excel formula start with?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">+</button>
+    <button class="quiz-opt" data-correct="true"> =</button>
+    <button class="quiz-opt" data-correct="false">#</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You type data in a cell and press Tab. What happens?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The text is deleted</button>
+    <button class="quiz-opt" data-correct="true">The text is confirmed and the cursor moves one cell to the right</button>
+    <button class="quiz-opt" data-correct="false">A new row is inserted</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What does the range A1:C4 refer to?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Only cells A1 and C4</button>
+    <button class="quiz-opt" data-correct="false">A single column from A to C</button>
+    <button class="quiz-opt" data-correct="true">A rectangular block of cells from A1 to C4</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which type of data is aligned to the RIGHT in Excel by default?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Text labels</button>
+    <button class="quiz-opt" data-correct="true">Numbers and dates</button>
+    <button class="quiz-opt" data-correct="false">Formulas only</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What is the Name Box in Excel?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A box where you type the spreadsheet title</button>
+    <button class="quiz-opt" data-correct="true">The box in the top-left showing the address of the active cell</button>
+    <button class="quiz-opt" data-correct="false">The search box</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: How many rows does Excel have?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">65,536</button>
+    <button class="quiz-opt" data-correct="true">1,048,576</button>
+    <button class="quiz-opt" data-correct="false">10,000</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: A cell shows 42 and the formula bar shows =6*7. What is in the cell?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The text 42</button>
+    <button class="quiz-opt" data-correct="true">A formula that calculates to 42</button>
+    <button class="quiz-opt" data-correct="false">An error</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: What shortcut confirms a cell entry and moves the cursor DOWN?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Tab</button>
+    <button class="quiz-opt" data-correct="true">Enter</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + D</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -1086,14 +1887,112 @@ const LESSONS = [
 
 <div class="callout tip"><strong>AutoSum:</strong> Select the cell below a column of numbers and press <span class="key-term">Alt + =</span> — Excel automatically inserts a SUM formula for you.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Which function would you use to find the highest value in the range D2:D50?</div>
+  <div class="quiz-q">🧩 Q1: Which function finds the highest value in D2:D50?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=SUM(D2:D50)</button>
     <button class="quiz-opt" data-correct="false">=AVERAGE(D2:D50)</button>
     <button class="quiz-opt" data-correct="true">=MAX(D2:D50)</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What does =COUNT(B2:B20) count?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">All cells including empty ones</button>
+    <button class="quiz-opt" data-correct="true">Only cells containing numbers</button>
+    <button class="quiz-opt" data-correct="false">Only cells containing text</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What is the difference between COUNT and COUNTA?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">There is no difference</button>
+    <button class="quiz-opt" data-correct="true">COUNT counts numbers only; COUNTA counts any non-empty cell</button>
+    <button class="quiz-opt" data-correct="false">COUNTA counts empty cells; COUNT counts full cells</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: Which function adds all values in a range?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=AVERAGE()</button>
+    <button class="quiz-opt" data-correct="true">=SUM()</button>
+    <button class="quiz-opt" data-correct="false">=COUNT()</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What does =COUNTBLANK(A1:A10) return?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The number of cells with numbers</button>
+    <button class="quiz-opt" data-correct="true">The number of empty cells in the range</button>
+    <button class="quiz-opt" data-correct="false">The total of all blank values</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which shortcut inserts a SUM formula automatically?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + S</button>
+    <button class="quiz-opt" data-correct="true">Alt + =</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + Sum</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What does =AVERAGE(C2:C10) calculate?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The largest value</button>
+    <button class="quiz-opt" data-correct="true">The total divided by the count</button>
+    <button class="quiz-opt" data-correct="false">The number of values</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: Which function finds the smallest value?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=LOW()</button>
+    <button class="quiz-opt" data-correct="false">=MINIMUM()</button>
+    <button class="quiz-opt" data-correct="true">=MIN()</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: =SUM(A1:A5) gives the same result as which?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">=A1+A2+A3+A4+A5</button>
+    <button class="quiz-opt" data-correct="false">=COUNT(A1:A5)</button>
+    <button class="quiz-opt" data-correct="false">=MAX(A1:A5)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: Test scores in B2:B30. Which formula gives the class average?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=SUM(B2:B30)</button>
+    <button class="quiz-opt" data-correct="true">=AVERAGE(B2:B30)</button>
+    <button class="quiz-opt" data-correct="false">=COUNT(B2:B30)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -1160,14 +2059,112 @@ const LESSONS = [
 
 <div class="callout info"><strong>SUMIF vs COUNTIF:</strong> COUNTIF simply counts how many cells match. SUMIF adds up a different column based on the match. Use COUNTIF when you want a count; use SUMIF when you want a total.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You have a list of sales by region in column A, and amounts in column B. You want to add up all sales from "Cape Town" only. Which formula is correct?</div>
+  <div class="quiz-q">🧩 Q1: Sales by region in col A, amounts in col B. Which formula totals only Cape Town sales?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">=COUNTIF(A2:A20,"Cape Town")</button>
-    <button class="quiz-opt" data-correct="false">=SUM(B2:B20,"Cape Town")</button>
+    <button class="quiz-opt" data-correct="false">=SUM(B2:B20) filtered</button>
     <button class="quiz-opt" data-correct="true">=SUMIF(A2:A20,"Cape Town",B2:B20)</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What is the syntax of COUNTIF?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=COUNTIF(sum_range, criteria, range)</button>
+    <button class="quiz-opt" data-correct="true">=COUNTIF(range, criteria)</button>
+    <button class="quiz-opt" data-correct="false">=COUNTIF(criteria, range, sum_range)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Count students scoring 50 or more. Scores in C2:C30. Which is correct?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">=COUNTIF(C2:C30,">=50")</button>
+    <button class="quiz-opt" data-correct="false">=COUNT(C2:C30,50)</button>
+    <button class="quiz-opt" data-correct="false">=SUMIF(C2:C30,">50")</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: What is the difference between COUNTIF and SUMIF?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">COUNTIF adds values; SUMIF counts them</button>
+    <button class="quiz-opt" data-correct="true">COUNTIF counts matching cells; SUMIF adds values from a second range based on a match</button>
+    <button class="quiz-opt" data-correct="false">They are the same</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: In =SUMIF(A2:A10, "Fruit", B2:B10) — what is the sum_range?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A2:A10</button>
+    <button class="quiz-opt" data-correct="false">"Fruit"</button>
+    <button class="quiz-opt" data-correct="true">B2:B10</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which criteria counts cells NOT equal to zero?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">"=0"</button>
+    <button class="quiz-opt" data-correct="true">"<>0"</button>
+    <button class="quiz-opt" data-correct="false">">0"</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: Count cells in B2:B20 containing "Pass". Which is correct?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=COUNT(B2:B20,"Pass")</button>
+    <button class="quiz-opt" data-correct="true">=COUNTIF(B2:B20,"Pass")</button>
+    <button class="quiz-opt" data-correct="false">=SUMIF(B2:B20,"Pass")</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: Why must text criteria in COUNTIF be in double quotes?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It is optional</button>
+    <button class="quiz-opt" data-correct="true">Excel needs quotes to recognise text vs cell references or numbers</button>
+    <button class="quiz-opt" data-correct="false">Quotes change the text to uppercase</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: What does =COUNTIF(D2:D20, ">100") count?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Cells equal to 100</button>
+    <button class="quiz-opt" data-correct="true">Cells with values greater than 100</button>
+    <button class="quiz-opt" data-correct="false">Cells with values less than 100</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: =SUMIF(B2:B10,"North",C2:C10). Where does Excel get the numbers to add?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">From B2:B10</button>
+    <button class="quiz-opt" data-correct="true">From C2:C10</button>
+    <button class="quiz-opt" data-correct="false">From both ranges combined</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -1225,14 +2222,112 @@ const LESSONS = [
 
 <div class="callout tip"><strong>Rule of thumb:</strong> Use absolute references ($) any time your formula refers to a cell that contains a single shared value — like a tax rate, a discount percentage, or a conversion factor — that should not change as you copy the formula down or across.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You type =B2*C1 in D2 and copy it down to D3. What does the formula in D3 become?</div>
+  <div class="quiz-q">🧩 Q1: You type =B2*C1 in D2 and copy it to D3. What does D3 contain?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">=B2*C1 (unchanged)</button>
-    <button class="quiz-opt" data-correct="true">=B3*C2 (both references shift down by 1 row)</button>
-    <button class="quiz-opt" data-correct="false">=B3*C1 (only B adjusts)</button>
+    <button class="quiz-opt" data-correct="false">=B2*C1 unchanged</button>
+    <button class="quiz-opt" data-correct="true">=B3*C2 — both shift down by 1 row</button>
+    <button class="quiz-opt" data-correct="false">=B3*C1 — only B adjusts</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What does the $ symbol do in $B$1?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Formats the cell as currency</button>
+    <button class="quiz-opt" data-correct="true">Locks the reference so it does not change when the formula is copied</button>
+    <button class="quiz-opt" data-correct="false">Multiplies by 100</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Which shortcut adds $ signs to a cell reference in the formula bar?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">F2</button>
+    <button class="quiz-opt" data-correct="true">F4</button>
+    <button class="quiz-opt" data-correct="false">F9</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You have a VAT rate in A1. Which reference ensures it does NOT shift when copied?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A1</button>
+    <button class="quiz-opt" data-correct="false">$A1</button>
+    <button class="quiz-opt" data-correct="true">$A$1</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What type of reference is C5?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Absolute</button>
+    <button class="quiz-opt" data-correct="false">Mixed</button>
+    <button class="quiz-opt" data-correct="true">Relative</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: What type of reference is $C$5?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Absolute</button>
+    <button class="quiz-opt" data-correct="false">Mixed</button>
+    <button class="quiz-opt" data-correct="false">Relative</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: In $A1, what is fixed and what adjusts when the formula is copied?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Both column and row are fixed</button>
+    <button class="quiz-opt" data-correct="true">Column A is fixed; the row number adjusts</button>
+    <button class="quiz-opt" data-correct="false">Row 1 is fixed; the column adjusts</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: You copy =A2*$B$1 from C2 down to C3. What is the formula in C3?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=A2*$B$1</button>
+    <button class="quiz-opt" data-correct="true">=A3*$B$1</button>
+    <button class="quiz-opt" data-correct="false">=A3*$B$2</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: When should you use a relative reference?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">When the referenced cell should stay fixed wherever you copy</button>
+    <button class="quiz-opt" data-correct="false">When referring to a shared constant like a tax rate</button>
+    <button class="quiz-opt" data-correct="true">When each row should use its own corresponding cell, like =A2*B2 copied down</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: What is a mixed reference?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A reference using both letters and numbers</button>
+    <button class="quiz-opt" data-correct="true">A reference where either the column OR the row is locked, but not both</button>
+    <button class="quiz-opt" data-correct="false">A reference to two different cells</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 },
 
@@ -1293,14 +2388,112 @@ const LESSONS = [
 
 <div class="callout tip"><strong>Moving a chart:</strong> Click the chart to select it, then drag it to reposition. Drag the corner handles to resize. To move it to its own sheet: right-click the chart → Move Chart → New Sheet.</div>
 
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 10 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 You want to show how your school's monthly electricity usage changed over the course of the year (12 months). Which chart type is most appropriate?</div>
+  <div class="quiz-q">🧩 Q1: Monthly electricity usage over 12 months. Which chart type is most appropriate?</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Pie chart</button>
     <button class="quiz-opt" data-correct="true">Line chart</button>
     <button class="quiz-opt" data-correct="false">Scatter chart</button>
   </div>
   <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Comparing sales per product across categories. Which chart is best?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Line chart</button>
+    <button class="quiz-opt" data-correct="false">Pie chart</button>
+    <button class="quiz-opt" data-correct="true">Column or Bar chart</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: When is a pie chart most appropriate?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">When comparing many data series over time</button>
+    <button class="quiz-opt" data-correct="true">When showing parts of a whole with one data series</button>
+    <button class="quiz-opt" data-correct="false">When showing the relationship between two variables</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: What is the first step to creating a chart in Excel?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Click Insert without selecting anything</button>
+    <button class="quiz-opt" data-correct="true">Select the data you want to chart including headers</button>
+    <button class="quiz-opt" data-correct="false">Choose a chart type from the Home tab</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Which Ribbon tab do you use to insert a chart?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Home</button>
+    <button class="quiz-opt" data-correct="true">Insert</button>
+    <button class="quiz-opt" data-correct="false">Design</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: What should every chart always have?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">At least 3 data series</button>
+    <button class="quiz-opt" data-correct="true">A clear descriptive title</button>
+    <button class="quiz-opt" data-correct="false">A scatter trendline</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: What does a Legend on a chart explain?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The title of the chart</button>
+    <button class="quiz-opt" data-correct="false">The source of the data</button>
+    <button class="quiz-opt" data-correct="true">What each colour or line in the chart represents</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: What is a Data Label on a chart?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The chart title</button>
+    <button class="quiz-opt" data-correct="true">The actual value shown on a bar, slice, or data point</button>
+    <button class="quiz-opt" data-correct="false">The axis title</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q9: You have 15 product categories. Why should you avoid a pie chart?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Pie charts can only show 5 slices</button>
+    <button class="quiz-opt" data-correct="true">With too many categories it becomes very hard to read — use a bar chart</button>
+    <button class="quiz-opt" data-correct="false">Pie charts only work with negative numbers</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q10: How do you move a chart to its own worksheet?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Cut and paste it into a new sheet</button>
+    <button class="quiz-opt" data-correct="true">Right-click the chart, choose Move Chart, then New Sheet</button>
+    <button class="quiz-opt" data-correct="false">Drag it to the sheet tab at the bottom</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
 </div>`
 }
 
@@ -1403,6 +2596,13 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { completed.add(currentLesson); updateProgress(); goTo(currentLesson+1); }
   if (e.key === 'ArrowLeft')  goTo(currentLesson-1);
 });
+
+// ── Quiz toggle ───────────────────────────────────────────────────────────────
+function toggleQuiz(btn) {
+  btn.classList.toggle('open');
+  const inner = btn.nextElementSibling;
+  inner.classList.toggle('open');
+}
 
 // ── Init ──────────────────────────────────────────────────────────────────
 renderLesson();
