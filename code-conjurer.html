@@ -751,7 +751,888 @@ public class GradeClassifier {
             symbol = "F (fail)";
         }
 
-        System.out.println("Mark: " + mark + "% → Symbol: " + symbol);
+        System.out.println("Mark: " + mark + "% = Symbol: " + symbol);
+    }
+}`,
+
+loops:
+`public class Loops {
+    public static void main(String[] args) {
+        // for loop: times table
+        System.out.println("--- 7 times table ---");
+        for (int i = 1; i <= 10; i++) {
+            System.out.println("7 x " + i + " = " + (7 * i));
+        }
+
+        // while loop: count down
+        System.out.println("\\n--- Countdown ---");
+        int n = 5;
+        while (n > 0) {
+            System.out.println(n);
+            n--;
+        }
+        System.out.println("Go!");
+
+        // do-while: runs at least once
+        System.out.println("\\n--- do-while ---");
+        int x = 1;
+        do {
+            System.out.println("x = " + x);
+            x *= 2;
+        } while (x < 20);
+    }
+}`,
+
+arrays_1d:
+`public class Arrays1D {
+    public static void main(String[] args) {
+        // Declare and initialise
+        int[] scores = {72, 85, 91, 68, 77, 95, 60};
+
+        System.out.println("Scores: ");
+        for (int i = 0; i < scores.length; i++) {
+            System.out.println("  [" + i + "] = " + scores[i]);
+        }
+
+        // Find min and max
+        int min = scores[0];
+        int max = scores[0];
+        int total = 0;
+
+        for (int s : scores) {
+            if (s < min) min = s;
+            if (s > max) max = s;
+            total += s;
+        }
+
+        double average = (double) total / scores.length;
+
+        System.out.println("\\nMin:     " + min);
+        System.out.println("Max:     " + max);
+        System.out.println("Average: " + average);
+    }
+}`,
+
+arrays_2d:
+`public class Arrays2D {
+    public static void main(String[] args) {
+        int rows = 5;
+        int cols = 5;
+        int[][] table = new int[rows][cols];
+
+        // Fill multiplication table
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                table[r][c] = (r + 1) * (c + 1);
+            }
+        }
+
+        // Print with headers
+        System.out.print("   ");
+        for (int c = 1; c <= cols; c++) {
+            System.out.print("  " + c);
+        }
+        System.out.println();
+
+        for (int r = 0; r < rows; r++) {
+            System.out.print(" " + (r + 1) + " ");
+            for (int c = 0; c < cols; c++) {
+                System.out.print("  " + table[r][c]);
+            }
+            System.out.println();
+        }
+    }
+}`,
+
+string_methods:
+`public class Methods {
+    // Method with no return value (void)
+    public static void printLine(String label, int value) {
+        System.out.println(label + ": " + value);
+    }
+
+    // Method that returns a value
+    public static int factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    // Method with double return type
+    public static double average(int[] arr) {
+        int sum = 0;
+        for (int x : arr) {
+            sum += x;
+        }
+        return (double) sum / arr.length;
+    }
+
+    public static void main(String[] args) {
+        printLine("Result", 42);
+        printLine("Factorial of 6", factorial(6));
+
+        int[] data = {10, 20, 30, 40, 50};
+        System.out.println("Average: " + average(data));
+
+        System.out.println("Factorials:");
+        for (int i = 1; i <= 8; i++) {
+            System.out.println(i + "! = " + factorial(i));
+        }
+    }
+}`,
+doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Code Conjurer — Gr 10–12 Java IDE</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23be123c'/%3E%3Crect x='12' y='8' width='28' height='36' rx='4' fill='none' stroke='%23fda4af' stroke-width='3'/%3E%3Crect x='8' y='12' width='8' height='28' rx='3' fill='rgba(253,164,175,0.25)' stroke='rgba(253,164,175,0.5)' stroke-width='2'/%3E%3Cline x1='17' y1='18' x2='35' y2='18' stroke='%23fda4af' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='23' x2='33' y2='23' stroke='%23fda4af' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='28' x2='35' y2='28' stroke='%23fda4af' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='48' cy='16' r='6' fill='%23fbbf24'/%3E%3Cline x1='48' y1='8' x2='48' y2='24' stroke='%23fbbf24' stroke-width='2' opacity='0.5'/%3E%3Cline x1='40' y1='16' x2='56' y2='16' stroke='%23fbbf24' stroke-width='2' opacity='0.5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    body { font-family: "DM Sans", sans-serif; font-size: 13px; background: #0a0f1e; color: #dde1f0; }
+
+    #appShell {
+      height: 100%; width: 100%;
+      display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 35% at 6%  4%, rgba(244,63,94,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96%  6%, rgba(249,115,22,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(99,102,241,0.10) 0%, transparent 60%),
+        #0a0f1e;
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px 7px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+      padding: 5px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.55);
+      text-decoration: none; transition: all 130ms; flex-shrink: 0;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: #dde1f0; }
+    .app-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, #be123c, #f97316);
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    h1.app-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(16px, 1.8vw, 22px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #fda4af 50%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grade-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 99px;
+      background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.30); color: #fda4af;
+    }
+    .header-actions { margin-left: auto; display: flex; gap: 6px; }
+    .hdr-btn {
+      display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      font-size: 11px; font-weight: 600; color: #b0b8d8; cursor: pointer; transition: all 130ms;
+    }
+    .hdr-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+
+    /* ── Main grid ── */
+    #mainGrid {
+      flex: 1; display: grid; grid-template-columns: 440px 1fr;
+      gap: 10px; padding: 10px 14px 12px; min-height: 0; overflow: hidden;
+    }
+
+    /* ── Panel base ── */
+    .panel {
+      background: rgba(255,255,255,0.038); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; min-height: 0;
+    }
+    .panel-hd {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px 7px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .panel-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.04em; color: #b0b8d8; display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── Left column ── */
+    #leftCol { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: hidden; }
+    #editorPanel { flex: 1; min-height: 0; }
+
+    /* ── Tabs ── */
+    .tab-group { display: flex; gap: 3px; background: rgba(0,0,0,0.30); border-radius: 7px; padding: 3px; }
+    .tab-btn {
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 5px; border: none; cursor: pointer;
+      transition: all 130ms; color: rgba(221,225,240,0.45); background: transparent;
+    }
+    .tab-btn.active { background: rgba(244,63,94,0.22); color: #fda4af; }
+    .tab-btn:hover:not(.active) { color: rgba(221,225,240,0.80); }
+    .icon-btn {
+      width: 26px; height: 26px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(221,225,240,0.45); transition: all 130ms; flex-shrink: 0;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+    .icon-btn.active { background: rgba(244,63,94,0.22); border-color: rgba(244,63,94,0.40); color: #fda4af; }
+
+    /* ── Code editor ── */
+    .editor-wrap { position: relative; flex: 1; min-height: 0; background: #06091a; display: flex; overflow: hidden; }
+    #lineNumbers {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      width: 40px; flex-shrink: 0; background: rgba(0,0,0,0.28);
+      border-right: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.20);
+      text-align: right; padding: 12px 7px 12px 0; overflow: hidden; user-select: none;
+    }
+    #codeEditor {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 40px; right: 0; bottom: 0;
+      border: none; background: transparent; color: transparent;
+      caret-color: #e2e8ff; resize: none; padding: 12px 12px 12px 10px;
+      outline: none; overflow-y: auto; z-index: 2; white-space: pre; overflow-wrap: normal;
+    }
+    #codeEditor::selection { background: rgba(244,63,94,0.30); }
+    #highlightLayer {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 40px; right: 0; bottom: 0;
+      padding: 12px 12px 12px 10px; pointer-events: none;
+      overflow: hidden; white-space: pre; overflow-wrap: normal; z-index: 1; color: #e2e8ff;
+    }
+    /* Syntax colours */
+    .hl-kw  { color: #f472b6; }
+    .hl-typ { color: #67e8f9; }
+    .hl-str { color: #86efac; }
+    .hl-num { color: #fb923c; }
+    .hl-cmt { color: #4b5563; font-style: italic; }
+    .hl-met { color: #34d399; }
+    .hl-ann { color: #fbbf24; }
+
+    /* ── Examples panel ── */
+    #examplesPanel { flex: 1; min-height: 0; overflow-y: auto; background: #06091a; }
+    .ex-item {
+      display: block; width: 100%; text-align: left; padding: 9px 13px;
+      border: none; border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: none; cursor: pointer; transition: background 110ms; color: inherit;
+    }
+    .ex-item:last-child { border-bottom: none; }
+    .ex-item:hover { background: rgba(244,63,94,0.10); }
+    .ex-item h4 { font-size: 12px; font-weight: 600; color: #c7cfe8; margin-bottom: 2px; }
+    .ex-item p  { font-size: 11px; color: rgba(221,225,240,0.38); }
+    .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; text-transform: uppercase; }
+    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .diff-a { background: rgba(244,63,94,0.15); color: #fda4af; }
+
+    /* ── Action buttons ── */
+    .actions-row {
+      flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 7px; padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .act-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 7px 10px; border-radius: 9px; border: none;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 150ms ease;
+    }
+    .act-btn:hover  { transform: translateY(-1px); }
+    .act-btn:active { transform: translateY(0); }
+    .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+    .btn-run   { background: linear-gradient(135deg, #be123c, #f97316); color: #fff; box-shadow: 0 3px 14px rgba(190,18,60,0.28); }
+    .btn-run:hover { box-shadow: 0 5px 18px rgba(190,18,60,0.42); }
+    .btn-reset { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    .btn-reset:hover { background: rgba(255,255,255,0.12); }
+    .btn-stop  { background: rgba(239,68,68,0.18); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }
+    .btn-stop:hover { background: rgba(239,68,68,0.30); }
+
+    /* ── Right column ── */
+    #rightCol { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: hidden; }
+
+    /* ── Console output ── */
+    #consolePanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    #consoleOutput {
+      flex: 1; min-height: 0; overflow-y: auto;
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 20px;
+      background: #06091a; padding: 12px 14px;
+      color: #e2e8ff; white-space: pre-wrap; word-break: break-word;
+    }
+    .con-out   { color: #e2e8ff; }
+    .con-err   { color: #fca5a5; }
+    .con-info  { color: rgba(221,225,240,0.35); font-style: italic; }
+    .con-input { color: #67e8f9; }
+
+    /* ── Input row ── */
+    #inputRow {
+      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.20);
+    }
+    #inputRow label { font-size: 11px; font-weight: 600; color: #67e8f9; white-space: nowrap; }
+    #inputField {
+      flex: 1; background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 7px; padding: 6px 10px; color: #67e8f9;
+      font-family: "JetBrains Mono", monospace; font-size: 12px; outline: none;
+      transition: border-color 130ms;
+    }
+    #inputField:focus { border-color: rgba(6,182,212,0.55); }
+    #inputSubmit {
+      padding: 6px 14px; border-radius: 7px; border: 1px solid rgba(6,182,212,0.35);
+      background: rgba(6,182,212,0.15); color: #67e8f9;
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      cursor: pointer; transition: all 130ms;
+    }
+    #inputSubmit:hover { background: rgba(6,182,212,0.25); }
+    #inputRow.hidden { display: none; }
+
+    /* ── Variable inspector ── */
+    #inspectorPanel { flex-shrink: 0; }
+    #inspectorBody {
+      font-family: "JetBrains Mono", monospace; font-size: 11px; line-height: 19px;
+      background: #06091a; padding: 8px 12px; max-height: 140px; overflow-y: auto;
+    }
+    .var-row { display: flex; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); padding: 2px 0; }
+    .var-type { color: #67e8f9; flex-shrink: 0; min-width: 60px; }
+    .var-name { color: #a5b4fc; flex-shrink: 0; min-width: 80px; }
+    .var-val  { color: #86efac; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── Cheat sheet panel ── */
+    #cheatPanel { flex-shrink: 0; }
+    .cheat-list { padding: 6px 12px; max-height: 130px; overflow-y: auto; }
+    .cheat-row { display: flex; align-items: baseline; gap: 8px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .cheat-row:last-child { border-bottom: none; }
+    .cheat-cmd  { font-family: "JetBrains Mono", monospace; font-size: 10px; color: #f472b6; white-space: nowrap; flex-shrink: 0; }
+    .cheat-desc { font-size: 10px; color: rgba(221,225,240,0.38); }
+
+    /* ── Scrollbars ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+    button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(244,63,94,0.60); outline-offset: 2px; }
+
+    /* ── Grade selector bar ── */
+    #gradeSelectorBar {
+      flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+      padding: 7px 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.18);
+    }
+    .grade-sel-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(221,225,240,0.35); white-space: nowrap;
+    }
+    .grade-pill-group { display: flex; gap: 4px; }
+    .grade-pill {
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.40);
+      cursor: pointer; transition: all 150ms;
+    }
+    .grade-pill:hover { color: rgba(221,225,240,0.80); background: rgba(255,255,255,0.10); }
+    .grade-pill.active-10 { background: rgba(244,63,94,0.22);  border-color: rgba(244,63,94,0.45);  color: #fda4af; }
+    .grade-pill.active-11 { background: rgba(249,115,22,0.22); border-color: rgba(249,115,22,0.45); color: #fdba74; }
+    .grade-pill.active-12 { background: rgba(168,85,247,0.22); border-color: rgba(168,85,247,0.45); color: #d8b4fe; }
+    .grade-pill-open {
+      margin-left: auto; font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      padding: 4px 12px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      color: #b0b8d8; cursor: pointer; transition: all 150ms; display: flex; align-items: center; gap: 5px;
+    }
+    .grade-pill-open:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+
+    /* ── Lesson overlay ── */
+    #lessonOverlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(6,9,26,0.97);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    #lessonShell {
+      display: flex; flex-direction: column; height: 100%; overflow: hidden;
+    }
+    /* Lesson header */
+    #lessonHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.30);
+    }
+    #lessonHeader h2 {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 16px;
+      background: linear-gradient(125deg, #fff 0%, #fda4af 50%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    #lessonGradeToggle { display: flex; gap: 4px; margin-left: 0; }
+    .les-grade-btn {
+      font-size: 11px; font-weight: 700; padding: 4px 14px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05);
+      color: rgba(221,225,240,0.40); cursor: pointer; transition: all 150ms;
+    }
+    .les-grade-btn.active { }
+    .les-grade-btn.gr10.active { background: rgba(244,63,94,0.22); border-color: rgba(244,63,94,0.45); color: #fda4af; }
+    .les-grade-btn.gr11.active { background: rgba(249,115,22,0.22); border-color: rgba(249,115,22,0.45); color: #fdba74; }
+    .les-grade-btn.gr12.active { background: rgba(168,85,247,0.22); border-color: rgba(168,85,247,0.45); color: #d8b4fe; }
+    .les-close {
+      margin-left: auto; width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: #b0b8d8; font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background 130ms;
+    }
+    .les-close:hover { background: rgba(255,255,255,0.14); }
+
+    /* Main lesson body: sidebar + content */
+    #lessonBody { flex: 1; display: flex; min-height: 0; overflow: hidden; }
+
+    /* Sidebar — lesson list */
+    #lessonSidebar {
+      width: 240px; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.07);
+      overflow-y: auto; background: rgba(0,0,0,0.20);
+    }
+    .les-unit-header {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+      padding: 12px 14px 4px; color: rgba(221,225,240,0.28);
+    }
+    .les-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 14px; cursor: pointer; transition: background 110ms;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .les-item:hover { background: rgba(255,255,255,0.05); }
+    .les-item.active { background: rgba(244,63,94,0.12); border-left: 2px solid #fda4af; padding-left: 12px; }
+    .les-item.active.gr11 { background: rgba(249,115,22,0.12); border-left-color: #fdba74; }
+    .les-item.active.gr12 { background: rgba(168,85,247,0.12); border-left-color: #d8b4fe; }
+    .les-num {
+      font-family: "JetBrains Mono", monospace; font-size: 10px;
+      color: rgba(221,225,240,0.25); width: 18px; flex-shrink: 0;
+    }
+    .les-name { font-size: 12px; font-weight: 600; color: rgba(221,225,240,0.65); line-height: 1.3; }
+    .les-done { margin-left: auto; font-size: 10px; color: #34d399; flex-shrink: 0; }
+
+    /* Content pane */
+    #lessonContent {
+      flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+    }
+    #lessonContentInner {
+      flex: 1; overflow-y: auto; padding: 24px 28px;
+    }
+    .les-topic-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 12px;
+    }
+    .les-topic-badge.gr10 { background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.30); color: #fda4af; }
+    .les-topic-badge.gr11 { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.30); color: #fdba74; }
+    .les-topic-badge.gr12 { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.30); color: #d8b4fe; }
+    .les-title {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 20px;
+      color: #e8eaf4; margin-bottom: 14px; line-height: 1.2;
+    }
+    .les-body p {
+      font-size: 13px; line-height: 1.70; color: rgba(221,225,240,0.72);
+      margin-bottom: 12px;
+    }
+    .les-body p strong { color: #e2e8ff; font-weight: 600; }
+    .les-body p em { color: #fda4af; font-style: normal; font-weight: 600; }
+    .les-body ul, .les-body ol {
+      font-size: 13px; line-height: 1.8; color: rgba(221,225,240,0.68);
+      padding-left: 20px; margin-bottom: 12px;
+    }
+    .les-code {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 20px;
+      background: #06091a; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+      overflow-x: auto; white-space: pre;
+    }
+    .les-callout {
+      border-radius: 9px; padding: 10px 14px; margin-bottom: 14px;
+      font-size: 12.5px; line-height: 1.65;
+    }
+    .les-callout.tip  { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.22); color: #6ee7b7; }
+    .les-callout.info { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.22); color: #a5b4fc; }
+    .les-callout.warn { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.22); color: #fcd34d; }
+    .les-callout.exam { background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.22); color: #d8b4fe; }
+    .les-challenge {
+      background: rgba(244,63,94,0.07); border: 1px solid rgba(244,63,94,0.20);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+    }
+    .les-challenge h4 {
+      font-size: 12px; font-weight: 700; color: #fda4af; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .les-challenge p, .les-challenge li {
+      font-size: 12px; line-height: 1.65; color: rgba(221,225,240,0.65);
+    }
+    .les-challenge ul { padding-left: 16px; margin-top: 6px; }
+    .les-load-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      background: rgba(244,63,94,0.18); border: 1px solid rgba(244,63,94,0.35);
+      color: #fda4af; transition: all 140ms; margin-bottom: 4px;
+    }
+    .les-load-btn:hover { background: rgba(244,63,94,0.28); }
+    .les-load-btn.gr11 { background: rgba(249,115,22,0.18); border-color: rgba(249,115,22,0.35); color: #fdba74; }
+    .les-load-btn.gr12 { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.35); color: #d8b4fe; }
+
+    /* Nav footer */
+    #lessonNav {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.20);
+    }
+    .les-nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 16px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600; transition: all 140ms;
+    }
+    #lesPrev { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    #lesPrev:hover { background: rgba(255,255,255,0.12); }
+    #lesNext { background: linear-gradient(135deg,#be123c,#f97316); color: #fff; box-shadow: 0 3px 12px rgba(190,18,60,0.25); }
+    #lesNext:hover { box-shadow: 0 5px 16px rgba(190,18,60,0.40); }
+    #lesProgress { font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.30); }
+
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    @media (max-width: 860px) {
+      #mainGrid { grid-template-columns: 1fr; overflow-y: auto; }
+      html, body, #appShell { height: auto; overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+<div id="appShell">
+
+  <header id="appHeader">
+    <a href="index.html" class="home-btn"><i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home</a>
+    <div class="app-icon">📜</div>
+    <h1 class="app-title">Code Conjurer</h1>
+    <span class="grade-badge">Grade 10–12 IT</span>
+    <div class="header-actions">
+      <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
+      <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
+      <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
+    </div>
+  </header>
+
+  <div id="mainGrid">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div id="leftCol">
+      <div class="panel" id="editorPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="code-2" style="width:14px;height:14px;color:#f472b6;"></i>
+            Java editor
+          </h2>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div class="tab-group">
+              <button id="editorTab"   class="tab-btn active">Editor</button>
+              <button id="examplesTab" class="tab-btn">Examples</button>
+            </div>
+            <button id="lineNumbersToggle" class="icon-btn active" title="Toggle line numbers">
+              <i data-lucide="list" style="width:13px;height:13px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-wrap" id="editorWrap">
+          <label for="codeEditor" class="sr-only">Java code editor</label>
+          <div id="lineNumbers"></div>
+          <div id="highlightLayer" aria-hidden="true"></div>
+          <textarea id="codeEditor" spellcheck="false" autocorrect="off" autocapitalize="off">import java.util.Scanner;
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = sc.nextLine();
+
+        System.out.println("Hello, " + name + "!");
+        System.out.println("Welcome to Code Conjurer.");
+    }
+}</textarea>
+        </div>
+
+        <!-- Examples panel -->
+        <div id="examplesPanel" class="hidden">
+          <button class="ex-item exampleLoader" data-example="hello_input">
+            <h4>Hello with input <span class="diff diff-b">beginner</span></h4>
+            <p>Scanner, nextLine(), string concatenation</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="variables">
+            <h4>Variables and types <span class="diff diff-b">beginner</span></h4>
+            <p>int, double, boolean, String, char — declaring and printing</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="arithmetic">
+            <h4>Arithmetic and casting <span class="diff diff-b">beginner</span></h4>
+            <p>operators, integer division, casting, Math methods</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="if_else">
+            <h4>If / else if / else <span class="diff diff-b">beginner</span></h4>
+            <p>grade classifier — reads a mark and prints a symbol</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="loops">
+            <h4>Loops — for, while, do-while <span class="diff diff-i">intermediate</span></h4>
+            <p>all three loop types with a times table example</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="arrays_1d">
+            <h4>1D Arrays <span class="diff diff-i">intermediate</span></h4>
+            <p>declare, populate, find min/max, print</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="arrays_2d">
+            <h4>2D Arrays <span class="diff diff-i">intermediate</span></h4>
+            <p>multiplication table stored in a 2D array</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="string_methods">
+            <h4>String methods <span class="diff diff-i">intermediate</span></h4>
+            <p>length, substring, toUpperCase, indexOf, charAt</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="methods">
+            <h4>Methods <span class="diff diff-i">intermediate</span></h4>
+            <p>static methods with parameters and return values</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="classes_oop">
+            <h4>Classes and OOP <span class="diff diff-a">advanced</span></h4>
+            <p>class with constructor, fields, methods, toString()</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="switch_stmt">
+            <h4>Switch statement <span class="diff diff-i">intermediate</span></h4>
+            <p>day-of-week example using switch and break</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="try_catch">
+            <h4>Exception handling <span class="diff diff-a">advanced</span></h4>
+            <p>try/catch for NumberFormatException — Gr 12</p>
+          </button>
+          <button class="ex-item exampleLoader" data-example="search_sort">
+            <h4>Search and sort <span class="diff diff-a">advanced</span></h4>
+            <p>linear search and bubble sort on an array</p>
+          </button>
+        </div>
+
+        <div class="actions-row">
+          <button id="runButton" class="act-btn btn-run">
+            <i data-lucide="play" style="width:14px;height:14px;"></i> Run
+          </button>
+          <button id="resetButton" class="act-btn btn-reset">
+            <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset
+          </button>
+          <button id="stopButton" class="act-btn btn-stop">
+            <i data-lucide="square" style="width:14px;height:14px;"></i> Stop
+          </button>
+        </div>
+      </div>
+
+      <!-- Cheat sheet -->
+      <div class="panel" id="cheatPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title"><i data-lucide="lightbulb" style="width:14px;height:14px;color:#fbbf24;"></i> Quick reference</h2>
+        </div>
+        <div class="cheat-list">
+          <div class="cheat-row"><span class="cheat-cmd">int x = 5;</span><span class="cheat-desc">declare integer variable</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">double d = 3.14;</span><span class="cheat-desc">declare double</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">String s = "hello";</span><span class="cheat-desc">declare String</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Scanner sc = new Scanner(System.in);</span><span class="cheat-desc">create scanner</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">sc.nextLine() / nextInt() / nextDouble()</span><span class="cheat-desc">read input</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">System.out.println(x);</span><span class="cheat-desc">print with newline</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Math.pow(x,2) / Math.sqrt(x)</span><span class="cheat-desc">Math methods</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Integer.parseInt("42")</span><span class="cheat-desc">String → int</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">s.length() / .substring(0,3)</span><span class="cheat-desc">String methods</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">int[] arr = new int[5];</span><span class="cheat-desc">1D array</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">for(int x : arr)</span><span class="cheat-desc">enhanced for loop</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">try { } catch(Exception e) { }</span><span class="cheat-desc">exception handling</span></div>
+        </div>
+      </div>
+    </div><!-- /leftCol -->
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div id="rightCol">
+
+      <!-- Grade selector bar above console -->
+      <div id="gradeSelectorBar">
+        <span class="grade-sel-label">Lessons:</span>
+        <div class="grade-pill-group">
+          <button class="grade-pill" data-grade="10">Gr 10</button>
+          <button class="grade-pill" data-grade="11">Gr 11</button>
+          <button class="grade-pill" data-grade="12">Gr 12</button>
+        </div>
+        <button class="grade-pill-open hidden" id="openLessonsBtn">
+          <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+          Open lessons
+        </button>
+      </div>
+
+      <!-- Console -->
+      <div class="panel" id="consolePanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="terminal-square" style="width:14px;height:14px;color:#34d399;"></i>
+            Console output
+          </h2>
+          <button id="clearBtn" class="icon-btn" title="Clear console">
+            <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+        <div id="consoleOutput">
+          <span class="con-info">Ready. Press Run to execute your program.</span>
+        </div>
+        <!-- Input row (shown when program requests input) -->
+        <div id="inputRow" class="hidden">
+          <label for="inputField">⌨ Input:</label>
+          <input type="text" id="inputField" placeholder="Type your input and press Enter…" autocomplete="off">
+          <button id="inputSubmit">Submit</button>
+        </div>
+      </div>
+
+      <!-- Variable inspector -->
+      <div class="panel" id="inspectorPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="eye" style="width:14px;height:14px;color:#a5b4fc;"></i>
+            Variable inspector
+            <span style="font-size:10px;font-weight:400;color:rgba(221,225,240,0.30);margin-left:4px;">after run</span>
+          </h2>
+        </div>
+        <div id="inspectorBody">
+          <span style="color:rgba(221,225,240,0.25);font-size:11px;">No variables yet.</span>
+        </div>
+      </div>
+
+    </div><!-- /rightCol -->
+  </div>
+  <!-- ══ LESSON OVERLAY ══ -->
+  <div id="lessonOverlay" class="hidden">
+    <div id="lessonShell">
+      <div id="lessonHeader">
+        <div class="app-icon" style="width:28px;height:28px;font-size:14px;">📜</div>
+        <h2>IEB/CAPS Java Curriculum</h2>
+        <div id="lessonGradeToggle">
+          <button class="les-grade-btn gr10 active" data-grade="10">Grade 10</button>
+          <button class="les-grade-btn gr11" data-grade="11">Grade 11</button>
+          <button class="les-grade-btn gr12" data-grade="12">Grade 12</button>
+        </div>
+        <button class="les-close" id="lesClose">&#x2715;</button>
+      </div>
+
+      <div id="lessonBody">
+        <div id="lessonSidebar"></div>
+        <div id="lessonContent">
+          <div id="lessonContentInner"></div>
+          <div id="lessonNav">
+            <button class="les-nav-btn" id="lesPrev">&#x2190; Previous</button>
+            <span id="lesProgress">Lesson 1 of 1</span>
+            <button class="les-nav-btn" id="lesNext">Next &#x2192;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// JAVA INTERPRETER — tokeniser, parser, tree-walker
+// ═══════════════════════════════════════════════════════════════════════════
+</script>
+<script src="conjurer_interpreter.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// CODE CONJURER UI
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── Examples ─────────────────────────────────────────────────────────────
+const examples = {
+
+hello_input:
+`import java.util.Scanner;
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = sc.nextLine();
+
+        System.out.println("Hello, " + name + "!");
+        System.out.println("Welcome to Code Conjurer.");
+    }
+}`,
+
+variables:
+`public class Variables {
+    public static void main(String[] args) {
+        // Primitive types
+        int age = 16;
+        double height = 1.73;
+        boolean isStudent = true;
+        char grade = 'A';
+
+        // String (reference type)
+        String name = "Thabo";
+
+        System.out.println("Name:       " + name);
+        System.out.println("Age:        " + age);
+        System.out.println("Height:     " + height + " m");
+        System.out.println("Is student: " + isStudent);
+        System.out.println("Grade:      " + grade);
+    }
+}`,
+
+arithmetic:
+`public class Arithmetic {
+    public static void main(String[] args) {
+        int a = 17;
+        int b = 5;
+
+        System.out.println("a = " + a + ", b = " + b);
+        System.out.println("a + b = " + (a + b));
+        System.out.println("a - b = " + (a - b));
+        System.out.println("a * b = " + (a * b));
+        System.out.println("a / b = " + (a / b) + "  (integer division!)");
+        System.out.println("a % b = " + (a % b) + "  (remainder)");
+
+        // Casting to get decimal division
+        double result = (double) a / b;
+        System.out.println("(double)a / b = " + result);
+
+        // Math library
+        System.out.println("Math.pow(2, 8) = " + Math.pow(2, 8));
+        System.out.println("Math.sqrt(144) = " + Math.sqrt(144));
+        System.out.println("Math.abs(-42)  = " + Math.abs(-42));
+    }
+}`,
+
+if_else:
+`import java.util.Scanner;
+
+public class GradeClassifier {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your mark (0-100): ");
+        int mark = sc.nextInt();
+
+        String symbol;
+        if (mark >= 80) {
+            symbol = "A";
+        } else if (mark >= 70) {
+            symbol = "B";
+        } else if (mark >= 60) {
+            symbol = "C";
+        } else if (mark >= 50) {
+            symbol = "D";
+        } else if (mark >= 40) {
+            symbol = "E";
+        } else {
+            symbol = "F (fail)";
+        }
+
+        System.out.println("Mark: " + mark + "% = Symbol: " + symbol);
     }
 }`,
 
@@ -858,7 +1739,7 @@ string_methods:
         System.out.println("substring(0,5): " + s.substring(0, 5));
         System.out.println("indexOf('o'):   " + s.indexOf("o"));
         System.out.println("contains World: " + s.contains("World"));
-        System.out.println("replace l→L:    " + s.replace("l", "L"));
+        System.out.println("replace l to L: " + s.replace("l", "L"));
         System.out.println("trim '  hi  ':  " + "  hi  ".trim());
 
         // Parsing numbers from strings
@@ -930,7 +1811,7 @@ classes_oop:
 
         // toString method
         public String toString() {
-            return name + " (age " + age + ") — avg: " + getAverage();
+            return name + " (age " + age + ") - avg: " + getAverage();
         }
     }
 
