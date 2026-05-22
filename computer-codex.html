@@ -1,0 +1,1411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Computer Codex — Digital Literacy</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23475569'/%3E%3Crect x='10' y='8' width='28' height='36' rx='3' fill='none' stroke='%23cbd5e1' stroke-width='3'/%3E%3Crect x='8' y='12' width='6' height='28' rx='2' fill='rgba(203,213,225,0.2)' stroke='rgba(203,213,225,0.5)' stroke-width='2'/%3E%3Cline x1='17' y1='17' x2='33' y2='17' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='22' x2='31' y2='22' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='17' y1='27' x2='33' y2='27' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round'/%3E%3Ctext x='38' y='56' font-family='monospace' font-size='12' fill='%23818cf8'%3E01%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    body {
+      font-family: "DM Sans", sans-serif; font-size: 13px;
+      background: #0a0f1e; color: #dde1f0;
+      display: flex; flex-direction: column; height: 100%;
+    }
+
+    /* ── App shell ── */
+    #appShell {
+      height: 100%; display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 35% at 6%  4%, rgba(100,116,139,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96%  6%, rgba(99,102,241,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(245,158,11,0.06) 0%, transparent 60%),
+        #0a0f1e;
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+      padding: 5px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.55);
+      text-decoration: none; transition: all 130ms; flex-shrink: 0;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: #dde1f0; }
+    .app-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, #475569, #6366f1);
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    h1.app-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(16px, 1.8vw, 22px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #cbd5e1 50%, #818cf8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grade-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 99px;
+      background: rgba(100,116,139,0.20); border: 1px solid rgba(100,116,139,0.35); color: #94a3b8;
+    }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .progress-text { font-size: 11px; color: rgba(221,225,240,0.35); }
+
+    /* ── Main layout ── */
+    #mainLayout {
+      flex: 1; display: flex; min-height: 0; overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 260px; flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; overflow: hidden;
+      background: rgba(0,0,0,0.20);
+    }
+    #sidebarHeader {
+      flex-shrink: 0; padding: 10px 14px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .sidebar-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+      color: rgba(221,225,240,0.30);
+    }
+    #sidebarList { flex: 1; overflow-y: auto; padding-bottom: 12px; }
+    .unit-header {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+      padding: 12px 14px 4px; color: rgba(221,225,240,0.25);
+    }
+    .lesson-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 14px; cursor: pointer; transition: background 110ms;
+      border-left: 2px solid transparent;
+    }
+    .lesson-item:hover { background: rgba(255,255,255,0.04); }
+    .lesson-item.active {
+      background: rgba(99,102,241,0.10); border-left-color: #818cf8;
+    }
+    .lesson-num {
+      font-family: "JetBrains Mono", monospace; font-size: 10px;
+      color: rgba(221,225,240,0.22); width: 18px; flex-shrink: 0;
+    }
+    .lesson-name { font-size: 12px; font-weight: 500; color: rgba(221,225,240,0.60); line-height: 1.3; }
+    .lesson-item.active .lesson-name { color: #c7d2fe; font-weight: 600; }
+    .lesson-done { margin-left: auto; font-size: 10px; color: #34d399; flex-shrink: 0; }
+
+    /* ── Progress bar ── */
+    #progressBar {
+      flex-shrink: 0; padding: 8px 14px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .progress-label {
+      font-size: 10px; color: rgba(221,225,240,0.30); margin-bottom: 5px;
+      display: flex; justify-content: space-between;
+    }
+    .progress-track {
+      height: 3px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, #6366f1, #34d399);
+      border-radius: 99px; transition: width 400ms ease;
+    }
+
+    /* ── Content area ── */
+    #contentArea {
+      flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+    }
+    #lessonScroll {
+      flex: 1; overflow-y: auto; padding: 28px 36px 20px;
+    }
+
+    /* ── Lesson content styles ── */
+    .lesson-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px; margin-bottom: 12px;
+      background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.25); color: #818cf8;
+    }
+    .lesson-title {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 22px;
+      color: #e8eaf4; margin-bottom: 6px; line-height: 1.2;
+    }
+    .lesson-subtitle {
+      font-size: 13px; color: rgba(221,225,240,0.45); margin-bottom: 22px;
+    }
+
+    /* Body text */
+    .lesson-body p { font-size: 13px; line-height: 1.75; color: rgba(221,225,240,0.72); margin-bottom: 14px; }
+    .lesson-body p strong { color: #e2e8ff; font-weight: 600; }
+    .lesson-body p em { color: #818cf8; font-style: normal; font-weight: 600; }
+    .lesson-body h3 {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 14px;
+      color: #a5b4fc; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .lesson-body ul, .lesson-body ol {
+      font-size: 13px; line-height: 1.8; color: rgba(221,225,240,0.68);
+      padding-left: 20px; margin-bottom: 14px;
+    }
+    .lesson-body li { margin-bottom: 3px; }
+
+    /* Callout boxes */
+    .callout {
+      border-radius: 10px; padding: 11px 15px; margin-bottom: 16px;
+      font-size: 12.5px; line-height: 1.65;
+    }
+    .callout.tip  { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.22); color: #6ee7b7; }
+    .callout.info { background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.22); color: #a5b4fc; }
+    .callout.warn { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.22); color: #fcd34d; }
+    .callout strong { font-weight: 700; }
+
+    /* Key term */
+    .key-term {
+      display: inline-block; background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.22); border-radius: 5px;
+      padding: 1px 7px; font-size: 12px; color: #a5b4fc;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    /* Visual boxes */
+    .visual-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 16px 20px; margin-bottom: 16px;
+    }
+    .visual-box-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(221,225,240,0.30); margin-bottom: 12px;
+    }
+
+    /* Windows UI mockup */
+    .win-mockup {
+      background: #1e2030; border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; overflow: hidden; margin-bottom: 16px; font-size: 11px;
+    }
+    .win-titlebar {
+      background: #2d3148; padding: 5px 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .win-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .win-titlebar-text { font-size: 11px; color: rgba(221,225,240,0.55); flex: 1; text-align: center; }
+    .win-body { padding: 12px 14px; }
+
+    /* Taskbar mockup */
+    .taskbar {
+      background: rgba(15,20,40,0.95); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 6px 12px;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+      font-size: 11px; flex-wrap: wrap;
+    }
+    .taskbar-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .taskbar-label { font-size: 10px; color: rgba(221,225,240,0.50); text-align: center; margin-top: 2px; }
+    .taskbar-group { display: flex; flex-direction: column; align-items: center; }
+
+    /* File explorer */
+    .file-tree {
+      background: #0f1220; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+    }
+    .file-row {
+      display: flex; align-items: center; gap: 6px; padding: 3px 0;
+      color: rgba(221,225,240,0.60);
+    }
+    .file-row.folder { color: #fbbf24; }
+    .file-row.indent-1 { padding-left: 16px; }
+    .file-row.indent-2 { padding-left: 32px; }
+    .file-row.highlight { background: rgba(99,102,241,0.15); border-radius: 4px; padding: 3px 6px; color: #a5b4fc; }
+
+    /* Extension table */
+    .ext-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 12px; }
+    .ext-table th {
+      text-align: left; padding: 7px 12px; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; color: rgba(221,225,240,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .ext-table td { padding: 7px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(221,225,240,0.65); }
+    .ext-table tr:last-child td { border-bottom: none; }
+    .ext-tag {
+      display: inline-block; padding: 2px 7px; border-radius: 4px;
+      font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 600;
+    }
+
+    /* Ribbon mockup */
+    .ribbon {
+      background: #1a3a5c; border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; overflow: hidden; margin-bottom: 16px;
+    }
+    .ribbon-tabs {
+      background: #12293f; display: flex; gap: 0; padding: 0 8px;
+    }
+    .ribbon-tab {
+      padding: 6px 14px; font-size: 11px; font-weight: 600;
+      color: rgba(221,225,240,0.45); cursor: default; border-bottom: 2px solid transparent;
+    }
+    .ribbon-tab.active { color: #fff; border-bottom-color: #2196f3; }
+    .ribbon-body {
+      padding: 10px 14px; display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;
+    }
+    .ribbon-group {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding-right: 16px; border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .ribbon-group:last-child { border-right: none; }
+    .ribbon-group-label { font-size: 9px; color: rgba(221,225,240,0.30); margin-top: 2px; }
+    .ribbon-btns { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
+    .ribbon-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      padding: 4px 7px; border-radius: 4px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08); cursor: default; min-width: 36px;
+    }
+    .ribbon-btn-icon { font-size: 14px; }
+    .ribbon-btn-label { font-size: 9px; color: rgba(221,225,240,0.45); white-space: nowrap; }
+    .ribbon-btn.big { padding: 8px 10px; min-width: 44px; }
+    .ribbon-btn.big .ribbon-btn-icon { font-size: 20px; }
+
+    /* Shortcut cards */
+    .shortcut-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px; margin-bottom: 16px;
+    }
+    .shortcut-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px; padding: 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .shortcut-keys {
+      display: flex; align-items: center; gap: 3px; flex-shrink: 0;
+    }
+    .kbd {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-bottom: 2px solid rgba(255,255,255,0.10); border-radius: 4px;
+      padding: 2px 6px; font-family: "JetBrains Mono", monospace; font-size: 10px;
+      color: #c7d2fe; white-space: nowrap;
+    }
+    .shortcut-desc { font-size: 11px; color: rgba(221,225,240,0.55); }
+
+    /* Excel grid */
+    .excel-grid {
+      background: #ffffff08; border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; overflow: hidden; margin-bottom: 16px;
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+    }
+    .excel-row { display: flex; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .excel-row:last-child { border-bottom: none; }
+    .excel-cell {
+      padding: 5px 8px; border-right: 1px solid rgba(255,255,255,0.05);
+      min-width: 80px; color: rgba(221,225,240,0.65);
+    }
+    .excel-cell:last-child { border-right: none; }
+    .excel-cell.header { background: rgba(255,255,255,0.06); color: rgba(221,225,240,0.40); font-weight: 600; text-align: center; }
+    .excel-cell.row-header { background: rgba(255,255,255,0.04); color: rgba(221,225,240,0.35); text-align: center; min-width: 36px; }
+    .excel-cell.formula { color: #86efac; }
+    .excel-cell.result  { color: #fbbf24; font-weight: 600; }
+    .excel-cell.abs     { color: #f472b6; }
+    .excel-cell.active  { background: rgba(99,102,241,0.15); color: #a5b4fc; outline: 1px solid #6366f1; }
+
+    /* Formula reference */
+    .formula-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
+    }
+    .formula-name {
+      font-family: "JetBrains Mono", monospace; font-size: 13px; font-weight: 600;
+      color: #86efac; margin-bottom: 4px;
+    }
+    .formula-syntax {
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      color: rgba(221,225,240,0.45); margin-bottom: 6px;
+    }
+    .formula-desc { font-size: 12px; color: rgba(221,225,240,0.60); margin-bottom: 6px; }
+    .formula-example {
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      background: rgba(0,0,0,0.30); border-radius: 5px; padding: 4px 8px;
+      color: #fbbf24; display: inline-block;
+    }
+
+    /* Quiz */
+    .quiz-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 14px 16px; margin: 18px 0 16px;
+    }
+    .quiz-q { font-size: 13px; font-weight: 600; color: #c7d2fe; margin-bottom: 10px; }
+    .quiz-opts { display: flex; flex-direction: column; gap: 6px; }
+    .quiz-opt {
+      padding: 8px 12px; border-radius: 7px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(221,225,240,0.65); font-size: 12px; cursor: pointer; transition: all 120ms;
+      text-align: left;
+    }
+    .quiz-opt:hover { background: rgba(255,255,255,0.08); }
+    .quiz-opt.correct { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.40); color: #6ee7b7; }
+    .quiz-opt.wrong   { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+    .quiz-feedback { font-size: 11.5px; margin-top: 8px; min-height: 16px; }
+    .quiz-feedback.correct { color: #6ee7b7; }
+    .quiz-feedback.wrong   { color: #fca5a5; }
+
+    /* Bottom nav */
+    #bottomNav {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px; border-top: 1px solid rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.20);
+    }
+    .nav-btn {
+      display: flex; align-items: center; gap: 6px; padding: 7px 16px;
+      border-radius: 8px; border: none; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      transition: all 140ms;
+    }
+    #prevBtn { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    #prevBtn:hover { background: rgba(255,255,255,0.12); }
+    #nextBtn { background: linear-gradient(135deg,#475569,#6366f1); color: #fff; box-shadow: 0 3px 12px rgba(99,102,241,0.25); }
+    #nextBtn:hover { box-shadow: 0 5px 16px rgba(99,102,241,0.40); }
+    #lessonCounter { font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.30); }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 720px) {
+      #sidebar { display: none; }
+      #lessonScroll { padding: 18px 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+<div id="appShell">
+
+  <!-- Header -->
+  <header id="appHeader">
+    <a href="index.html" class="home-btn">
+      <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home
+    </a>
+    <div class="app-icon">📖</div>
+    <h1 class="app-title">Computer Codex</h1>
+    <span class="grade-badge">Grade 8 – 10</span>
+    <div class="header-right">
+      <span class="progress-text" id="headerProgress">Lesson 1 of 20</span>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div id="mainLayout">
+
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div id="sidebarHeader">
+        <div class="sidebar-title">Lessons</div>
+      </div>
+      <div id="sidebarList"></div>
+      <div id="progressBar">
+        <div class="progress-label">
+          <span>Progress</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div id="contentArea">
+      <div id="lessonScroll">
+        <div id="lessonContent"></div>
+      </div>
+      <div id="bottomNav">
+        <button class="nav-btn" id="prevBtn">&#x2190; Previous</button>
+        <span id="lessonCounter">1 / 20</span>
+        <button class="nav-btn" id="nextBtn">Next &#x2192;</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// COMPUTER CODEX — LESSON DATA
+// ═══════════════════════════════════════════════════════════════════════════
+
+const LESSONS = [
+
+// ─── UNIT 1: THE WINDOWS OPERATING SYSTEM ─────────────────────────────────
+
+{
+  unit: "Unit 1 — The Windows Operating System",
+  title: "What is an Operating System?",
+  subtitle: "The software that runs your computer",
+  content: `
+<p>An <strong>operating system (OS)</strong> is the most important software on a computer. It manages all the hardware (screen, keyboard, hard drive) and lets you run other programs like Word or Chrome.</p>
+<p><em>Windows</em> is the operating system made by Microsoft and is the most widely used OS in schools and businesses in South Africa.</p>
+
+<div class="callout info"><strong>Key idea:</strong> Without an operating system, your computer is just expensive metal. The OS is what makes everything work together.</div>
+
+<h3><i data-lucide="monitor" style="width:14px;height:14px;"></i> The Windows Desktop</h3>
+<p>When Windows starts up, you see the <strong>Desktop</strong> — your main workspace. Here are the key parts:</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Windows Desktop Layout</div>
+  <div style="background:#0d47a1;border-radius:8px;padding:16px;font-size:11px;position:relative;min-height:140px;">
+    <div style="display:flex;gap:24px;margin-bottom:20px;">
+      <div style="text-align:center;color:rgba(255,255,255,0.8);">
+        <div style="font-size:24px;">📁</div><div style="font-size:9px;margin-top:3px;">This PC</div>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.8);">
+        <div style="font-size:24px;">🗑️</div><div style="font-size:9px;margin-top:3px;">Recycle Bin</div>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,0.8);">
+        <div style="font-size:24px;">📄</div><div style="font-size:9px;margin-top:3px;">My Document</div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:8px;left:0;right:0;background:rgba(0,0,30,0.7);padding:5px 10px;display:flex;align-items:center;gap:8px;border-radius:0 0 6px 6px;">
+      <span style="font-size:14px;">⊞</span>
+      <span style="background:rgba(255,255,255,0.1);border-radius:4px;padding:2px 8px;font-size:10px;color:rgba(255,255,255,0.6);">🔍 Search</span>
+      <div style="display:flex;gap:6px;margin-left:auto;">
+        <span style="font-size:12px;">📁</span>
+        <span style="font-size:12px;">🌐</span>
+        <span style="font-size:12px;">📧</span>
+      </div>
+      <span style="font-size:10px;color:rgba(255,255,255,0.5);margin-left:auto;">14:30</span>
+    </div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Desktop</strong> — the blue background area where you place shortcuts and files</li>
+  <li><strong>Icons</strong> — small pictures that represent programs or files; double-click to open</li>
+  <li><strong>Taskbar</strong> — the bar at the bottom; shows open programs and the Start button</li>
+  <li><strong>Start Button (⊞)</strong> — opens the Start Menu where you find all your programs</li>
+  <li><strong>System Tray</strong> — bottom right; shows the clock, Wi-Fi, volume, and notifications</li>
+  <li><strong>Recycle Bin</strong> — deleted files go here; they are not permanently deleted until you empty it</li>
+</ul>
+
+<div class="callout tip"><strong>Tip:</strong> Right-clicking anywhere on the desktop opens a context menu with useful options like creating new folders or changing your wallpaper.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Quick Quiz: Where do deleted files go first in Windows?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">They are permanently deleted immediately</button>
+    <button class="quiz-opt" data-correct="true">The Recycle Bin</button>
+    <button class="quiz-opt" data-correct="false">The Downloads folder</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 1 — The Windows Operating System",
+  title: "Navigating Windows",
+  subtitle: "Start Menu, File Explorer, and window controls",
+  content: `
+<h3><i data-lucide="layout-grid" style="width:14px;height:14px;"></i> The Start Menu</h3>
+<p>Click the <strong>Start Button (⊞)</strong> or press the <span class="key-term">⊞ Win</span> key on your keyboard to open the Start Menu. From here you can:</p>
+<ul>
+  <li>Find and launch any program installed on your computer</li>
+  <li>Search for files, settings, and apps</li>
+  <li>Shut down, restart, or sleep your computer</li>
+</ul>
+
+<h3><i data-lucide="folder" style="width:14px;height:14px;"></i> File Explorer</h3>
+<p><strong>File Explorer</strong> is the program you use to browse all the files and folders on your computer. Open it with <span class="key-term">⊞ Win + E</span> or click the folder icon on the taskbar.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">File Explorer — Left panel (Navigation Pane)</div>
+  <div class="file-tree">
+    <div class="file-row folder">📁 Quick Access</div>
+    <div class="file-row folder indent-1">🖥️ Desktop</div>
+    <div class="file-row folder indent-1">⬇️ Downloads</div>
+    <div class="file-row folder indent-1">📄 Documents</div>
+    <div class="file-row folder indent-1">🖼️ Pictures</div>
+    <div class="file-row folder">💻 This PC</div>
+    <div class="file-row folder indent-1 highlight">💾 Local Disk (C:)</div>
+    <div class="file-row indent-2">📁 Program Files</div>
+    <div class="file-row indent-2">📁 Users</div>
+    <div class="file-row indent-2">📁 Windows</div>
+    <div class="file-row folder indent-1">📀 DVD Drive (D:)</div>
+  </div>
+</div>
+
+<h3><i data-lucide="app-window" style="width:14px;height:14px;"></i> Window Controls</h3>
+<p>Every window in Windows has three buttons in the top-right corner:</p>
+
+<div class="shortcut-grid">
+  <div class="shortcut-card">
+    <div style="font-size:20px;">—</div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:#e2e8ff;">Minimise</div>
+      <div class="shortcut-desc">Hides the window to the taskbar — the program is still running</div>
+    </div>
+  </div>
+  <div class="shortcut-card">
+    <div style="font-size:18px;">⬜</div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:#e2e8ff;">Maximise / Restore</div>
+      <div class="shortcut-desc">Makes the window fill the full screen, or restores it to its previous size</div>
+    </div>
+  </div>
+  <div class="shortcut-card">
+    <div style="font-size:18px;color:#ef4444;">✕</div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:#e2e8ff;">Close</div>
+      <div class="shortcut-desc">Closes the window and the program</div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="keyboard" style="width:14px;height:14px;"></i> Essential Keyboard Shortcuts</h3>
+<div class="shortcut-grid">
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">C</span></div><div class="shortcut-desc">Copy selected item</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">X</span></div><div class="shortcut-desc">Cut selected item</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">V</span></div><div class="shortcut-desc">Paste item</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">Z</span></div><div class="shortcut-desc">Undo last action</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">S</span></div><div class="shortcut-desc">Save current file</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Alt</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">F4</span></div><div class="shortcut-desc">Close active window</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Win</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">E</span></div><div class="shortcut-desc">Open File Explorer</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Win</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">D</span></div><div class="shortcut-desc">Show/hide Desktop</div></div>
+</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You want to browse your files and folders. Which program do you open?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Control Panel</button>
+    <button class="quiz-opt" data-correct="true">File Explorer</button>
+    <button class="quiz-opt" data-correct="false">Task Manager</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 1 — The Windows Operating System",
+  title: "Working with Files and Folders",
+  subtitle: "Creating, moving, copying, and organising",
+  content: `
+<p>Files are the documents, photos, and programs stored on your computer. <strong>Folders</strong> are containers that help you organise files — like drawers in a filing cabinet.</p>
+
+<h3><i data-lucide="folder-plus" style="width:14px;height:14px;"></i> Creating Files and Folders</h3>
+<p>To create a new folder in File Explorer:</p>
+<ul>
+  <li>Right-click in an empty area → <strong>New → Folder</strong>, or</li>
+  <li>Click the <strong>New Folder</strong> button on the toolbar</li>
+  <li>Type a name and press <span class="key-term">Enter</span></li>
+</ul>
+
+<div class="callout tip"><strong>Good folder naming:</strong> Use clear, descriptive names. Avoid spaces — use underscores or hyphens instead. E.g. <code>Grade_10_IT</code> rather than <code>my stuff</code>.</div>
+
+<h3><i data-lucide="copy" style="width:14px;height:14px;"></i> Copy, Cut, and Paste</h3>
+<div class="shortcut-grid">
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">C</span></div><div class="shortcut-desc"><strong>Copy</strong> — keeps the original in place, makes a copy</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">X</span></div><div class="shortcut-desc"><strong>Cut</strong> — removes from current location, ready to move</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">V</span></div><div class="shortcut-desc"><strong>Paste</strong> — places the copied/cut item at the new location</div></div>
+</div>
+
+<div class="callout warn"><strong>Copy vs Cut:</strong> Copy leaves the original — the file exists in BOTH places. Cut removes it from the original location — the file MOVES. If you forget to paste after a Cut, the file is still in the clipboard until you cut or copy something else.</div>
+
+<h3><i data-lucide="trash-2" style="width:14px;height:14px;"></i> Deleting Files</h3>
+<ul>
+  <li>Select a file and press <span class="key-term">Delete</span> — sends to Recycle Bin</li>
+  <li>Press <span class="key-term">Shift + Delete</span> — permanently deletes (skips Recycle Bin!)</li>
+  <li>Right-click the Recycle Bin → <strong>Empty Recycle Bin</strong> to permanently remove files</li>
+</ul>
+
+<h3><i data-lucide="search" style="width:14px;height:14px;"></i> Searching for Files</h3>
+<p>Windows Search is powerful. Press <span class="key-term">⊞ Win</span> and start typing the file name. You can also search inside File Explorer using the search bar in the top-right.</p>
+
+<h3><i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Renaming Files</h3>
+<p>Click a file once to select it, then press <span class="key-term">F2</span> to rename it. Or right-click → <strong>Rename</strong>.</p>
+
+<div class="callout info"><strong>File path:</strong> Every file has an address called a <em>path</em>. For example: <code>C:\Users\Thabo\Documents\Assignment.docx</code> — this tells you exactly where the file lives.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You want to move a file to a new folder (remove it from the old location). Which shortcut do you use first?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Ctrl + C (Copy)</button>
+    <button class="quiz-opt" data-correct="true">Ctrl + X (Cut)</button>
+    <button class="quiz-opt" data-correct="false">Ctrl + Z (Undo)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+// ─── UNIT 2: FILE EXTENSIONS ───────────────────────────────────────────────
+
+{
+  unit: "Unit 2 — File Extensions",
+  title: "What is a File Extension?",
+  subtitle: "How Windows knows what type a file is",
+  content: `
+<p>A <strong>file extension</strong> is the short suffix after the dot in a filename that tells the operating system — and you — what type of file it is and which program can open it.</p>
+
+<div class="callout info"><strong>Example:</strong> In the filename <code>Assignment.docx</code> — the extension is <strong>.docx</strong>. Windows uses this to know it should open Word. In <code>Photo.jpg</code> — the extension is <strong>.jpg</strong>, so Windows opens an image viewer.</div>
+
+<h3><i data-lucide="file-text" style="width:14px;height:14px;"></i> Document File Extensions</h3>
+
+<table class="ext-table">
+  <tr><th>Extension</th><th>Full Name</th><th>Opens With</th><th>Notes</th></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(37,99,235,0.20);color:#93c5fd;">.docx</span></td><td>Word Document</td><td>Microsoft Word</td><td>Standard Word format since 2007</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(37,99,235,0.20);color:#93c5fd;">.doc</span></td><td>Word Document (old)</td><td>Microsoft Word</td><td>Older format, still widely used</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(22,163,74,0.20);color:#86efac;">.xlsx</span></td><td>Excel Spreadsheet</td><td>Microsoft Excel</td><td>Standard Excel format since 2007</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(234,88,12,0.20);color:#fdba74;">.pptx</span></td><td>PowerPoint Presentation</td><td>Microsoft PowerPoint</td><td>Slides for presentations</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(239,68,68,0.20);color:#fca5a5;">.pdf</span></td><td>Portable Document Format</td><td>Adobe Reader / Browser</td><td>Cannot easily be edited; looks the same on any device</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(100,116,139,0.20);color:#cbd5e1;">.txt</span></td><td>Plain Text File</td><td>Notepad</td><td>No formatting; just raw text</td></tr>
+</table>
+
+<h3><i data-lucide="image" style="width:14px;height:14px;"></i> Image File Extensions</h3>
+
+<table class="ext-table">
+  <tr><th>Extension</th><th>Best For</th><th>Notes</th></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(245,158,11,0.20);color:#fcd34d;">.jpg / .jpeg</span></td><td>Photos</td><td>Compressed — small file size, slight quality loss. Best for photos.</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(245,158,11,0.20);color:#fcd34d;">.png</span></td><td>Screenshots, logos</td><td>Lossless compression, supports transparent backgrounds</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(245,158,11,0.20);color:#fcd34d;">.gif</span></td><td>Simple animations</td><td>Limited colours; used for animated images online</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(245,158,11,0.20);color:#fcd34d;">.bmp</span></td><td>Uncompressed images</td><td>Large file size, no quality loss — rarely used today</td></tr>
+</table>
+
+<h3><i data-lucide="music" style="width:14px;height:14px;"></i> Other Common Extensions</h3>
+
+<table class="ext-table">
+  <tr><th>Extension</th><th>Type</th><th>Notes</th></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(168,85,247,0.20);color:#d8b4fe;">.mp3</span></td><td>Audio</td><td>Compressed music file</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(168,85,247,0.20);color:#d8b4fe;">.mp4</span></td><td>Video</td><td>Common video format for internet and devices</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(168,85,247,0.20);color:#d8b4fe;">.zip</span></td><td>Compressed folder</td><td>Multiple files compressed into one. Right-click → Extract to open.</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(239,68,68,0.20);color:#fca5a5;">.exe</span></td><td>Program installer</td><td>Running this installs or runs a program. Be careful — only run from trusted sources.</td></tr>
+  <tr><td><span class="ext-tag" style="background:rgba(16,185,129,0.20);color:#6ee7b7;">.html</span></td><td>Web page</td><td>Opens in a browser; the language websites are written in</td></tr>
+</table>
+
+<div class="callout warn"><strong>Showing extensions:</strong> By default Windows hides file extensions. To show them: File Explorer → View → Show → File name extensions. This is important so you can always see what type a file really is.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 A teacher sends you a file called "Notes.pdf". What does the .pdf extension tell you?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It is a Word document that you can edit easily</button>
+    <button class="quiz-opt" data-correct="true">It is a Portable Document Format that looks the same on any device</button>
+    <button class="quiz-opt" data-correct="false">It is an image file</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+// ─── UNIT 3: OFFICE RIBBON ────────────────────────────────────────────────
+
+{
+  unit: "Unit 3 — Microsoft Office and the Ribbon",
+  title: "Understanding the Ribbon Interface",
+  subtitle: "How Word, Excel, and PowerPoint are organised",
+  content: `
+<p>All Microsoft Office programs (Word, Excel, PowerPoint) use the same <strong>Ribbon</strong> interface — a toolbar at the top organised into <em>tabs</em> and <em>groups</em>.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">The Ribbon (Microsoft Word — Home tab shown)</div>
+  <div class="ribbon">
+    <div class="ribbon-tabs">
+      <div class="ribbon-tab">File</div>
+      <div class="ribbon-tab active">Home</div>
+      <div class="ribbon-tab">Insert</div>
+      <div class="ribbon-tab">Design</div>
+      <div class="ribbon-tab">Layout</div>
+      <div class="ribbon-tab">References</div>
+      <div class="ribbon-tab">Review</div>
+      <div class="ribbon-tab">View</div>
+    </div>
+    <div class="ribbon-body">
+      <div class="ribbon-group">
+        <div class="ribbon-btns">
+          <div class="ribbon-btn big"><div class="ribbon-btn-icon">📋</div><div class="ribbon-btn-label">Paste</div></div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">✂️</div><div class="ribbon-btn-label">Cut</div></div>
+            <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">📄</div><div class="ribbon-btn-label">Copy</div></div>
+          </div>
+        </div>
+        <div class="ribbon-group-label">Clipboard</div>
+      </div>
+      <div class="ribbon-group">
+        <div class="ribbon-btns">
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;font-family:serif;font-weight:bold;">A</div><div class="ribbon-btn-label">Font</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;font-weight:bold;">B</div><div class="ribbon-btn-label">Bold</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;font-style:italic;">I</div><div class="ribbon-btn-label">Italic</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;text-decoration:underline;">U</div><div class="ribbon-btn-label">Underline</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">12</div><div class="ribbon-btn-label">Size</div></div>
+        </div>
+        <div class="ribbon-group-label">Font</div>
+      </div>
+      <div class="ribbon-group">
+        <div class="ribbon-btns">
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">≡</div><div class="ribbon-btn-label">Left</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">☰</div><div class="ribbon-btn-label">Centre</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">≡</div><div class="ribbon-btn-label">Right</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">•</div><div class="ribbon-btn-label">List</div></div>
+        </div>
+        <div class="ribbon-group-label">Paragraph</div>
+      </div>
+      <div class="ribbon-group">
+        <div class="ribbon-btns">
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">H1</div><div class="ribbon-btn-label">Heading 1</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">H2</div><div class="ribbon-btn-label">Heading 2</div></div>
+          <div class="ribbon-btn"><div class="ribbon-btn-icon" style="font-size:11px;">Aa</div><div class="ribbon-btn-label">Normal</div></div>
+        </div>
+        <div class="ribbon-group-label">Styles</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="layers" style="width:14px;height:14px;"></i> Ribbon Structure</h3>
+<ul>
+  <li><strong>Tabs</strong> — the top labels (Home, Insert, Design, etc.). Each tab shows a different set of commands related to a task.</li>
+  <li><strong>Groups</strong> — sections within a tab (e.g. Font, Paragraph, Styles). Related commands are grouped together.</li>
+  <li><strong>Buttons</strong> — the individual commands within each group. Click to use them.</li>
+  <li><strong>Dialog launchers</strong> — the small arrow in the bottom-right corner of some groups. Click it to open more detailed options.</li>
+</ul>
+
+<h3><i data-lucide="file" style="width:14px;height:14px;"></i> The File Tab (Backstage View)</h3>
+<p>Clicking <strong>File</strong> opens the <em>Backstage View</em> — a full-screen menu for file-level tasks:</p>
+<ul>
+  <li><strong>New</strong> — create a new blank document or use a template</li>
+  <li><strong>Open</strong> — open an existing file</li>
+  <li><strong>Save</strong> — save with the same name and location</li>
+  <li><strong>Save As</strong> — save with a new name, location, or file format</li>
+  <li><strong>Print</strong> — print the document</li>
+  <li><strong>Close</strong> — close the file (not the program)</li>
+</ul>
+
+<div class="callout info"><strong>Quick Access Toolbar:</strong> The small toolbar above the Ribbon (top-left) has frequently used buttons like Save, Undo, and Redo. You can customise it by right-clicking any Ribbon button and choosing "Add to Quick Access Toolbar".</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You want to change the font size of selected text in Word. Which Ribbon group would you find this in on the Home tab?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Paragraph</button>
+    <button class="quiz-opt" data-correct="true">Font</button>
+    <button class="quiz-opt" data-correct="false">Styles</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+// ─── UNIT 4: WORD ─────────────────────────────────────────────────────────
+
+{
+  unit: "Unit 4 — Microsoft Word",
+  title: "Creating and Saving Word Documents",
+  subtitle: "New, Save, Save As, and file formats",
+  content: `
+<h3><i data-lucide="file-plus" style="width:14px;height:14px;"></i> Creating a New Document</h3>
+<ul>
+  <li>Open Word and click <strong>Blank document</strong>, or</li>
+  <li>Use <span class="key-term">Ctrl + N</span> while Word is open</li>
+  <li>You can also choose a template for pre-designed layouts</li>
+</ul>
+
+<h3><i data-lucide="save" style="width:14px;height:14px;"></i> Saving Your Work</h3>
+<p>Always save regularly — losing unsaved work is one of the most common student mistakes.</p>
+
+<div class="shortcut-grid">
+  <div class="shortcut-card">
+    <div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">S</span></div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:#e2e8ff;">Save</div>
+      <div class="shortcut-desc">Saves with the current name. First time shows the Save dialog.</div>
+    </div>
+  </div>
+  <div class="shortcut-card">
+    <div class="shortcut-keys"><span class="kbd">F12</span></div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:#e2e8ff;">Save As</div>
+      <div class="shortcut-desc">Always shows the dialog — change name, location, or file type.</div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="folder-open" style="width:14px;height:14px;"></i> Save vs Save As</h3>
+<table class="ext-table">
+  <tr><th>Action</th><th>When to use it</th></tr>
+  <tr><td><strong>Save (Ctrl+S)</strong></td><td>You want to update the same file you already opened. Same name, same place.</td></tr>
+  <tr><td><strong>Save As (F12)</strong></td><td>You want to: save with a different name, save to a different folder, or save in a different format (e.g. PDF).</td></tr>
+</table>
+
+<h3><i data-lucide="file-type" style="width:14px;height:14px;"></i> Saving in Different Formats</h3>
+<p>When you click Save As, the <em>Save as type</em> dropdown lets you choose the format:</p>
+<table class="ext-table">
+  <tr><th>Format</th><th>Extension</th><th>Use when…</th></tr>
+  <tr><td>Word Document</td><td><span class="ext-tag" style="background:rgba(37,99,235,0.20);color:#93c5fd;">.docx</span></td><td>You will continue editing it in Word later (default)</td></tr>
+  <tr><td>Word 97-2003</td><td><span class="ext-tag" style="background:rgba(37,99,235,0.15);color:#93c5fd;">.doc</span></td><td>You need to share with someone using very old software</td></tr>
+  <tr><td>PDF</td><td><span class="ext-tag" style="background:rgba(239,68,68,0.20);color:#fca5a5;">.pdf</span></td><td>You want to share a final version that cannot easily be edited</td></tr>
+  <tr><td>Plain Text</td><td><span class="ext-tag" style="background:rgba(100,116,139,0.20);color:#cbd5e1;">.txt</span></td><td>You need text only, no formatting</td></tr>
+</table>
+
+<div class="callout tip"><strong>AutoSave:</strong> If you save your document to OneDrive (Microsoft's cloud storage), AutoSave turns on and saves every few seconds automatically. Look for the AutoSave toggle in the top-left of Word.</div>
+
+<div class="callout warn"><strong>Important:</strong> When you are given a .docx file to work on and asked to submit it as a PDF, always use <strong>Save As → PDF</strong>. Do NOT just rename the file extension — that doesn't actually convert it.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You have finished a Word assignment and need to submit it. Your teacher asked for a PDF. What do you do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Rename the file from Assignment.docx to Assignment.pdf</button>
+    <button class="quiz-opt" data-correct="true">File → Save As → change file type to PDF → Save</button>
+    <button class="quiz-opt" data-correct="false">Press Ctrl + P to print it</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 4 — Microsoft Word",
+  title: "Text Formatting and Styles",
+  subtitle: "Fonts, alignment, and applying heading styles",
+  content: `
+<h3><i data-lucide="type" style="width:14px;height:14px;"></i> Basic Text Formatting</h3>
+<p>Select text first, then apply formatting. The three most common are:</p>
+
+<div class="shortcut-grid">
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">B</span></div><div class="shortcut-desc"><strong>Bold</strong> — makes text heavier/darker</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">I</span></div><div class="shortcut-desc"><em>Italic</em> — slants the text</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">U</span></div><div class="shortcut-desc"><u>Underline</u> — draws a line beneath</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">A</span></div><div class="shortcut-desc">Select All — selects everything in the document</div></div>
+</div>
+
+<h3><i data-lucide="align-left" style="width:14px;height:14px;"></i> Paragraph Alignment</h3>
+<div class="shortcut-grid">
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">L</span></div><div class="shortcut-desc">Align Left — text lines up on the left margin (most documents)</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">E</span></div><div class="shortcut-desc">Centre — text is centred (headings, titles)</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">R</span></div><div class="shortcut-desc">Align Right — text lines up on the right margin</div></div>
+  <div class="shortcut-card"><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="font-size:10px;color:#666;">+</span><span class="kbd">J</span></div><div class="shortcut-desc">Justify — text lines up on BOTH margins (like in a book or newspaper)</div></div>
+</div>
+
+<h3><i data-lucide="heading" style="width:14px;height:14px;"></i> Using Styles</h3>
+<p><strong>Styles</strong> are pre-set combinations of formatting. Instead of manually setting font, size, and colour for every heading, you apply a Style and Word handles it consistently throughout the document.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Styles Gallery (Home tab)</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;padding:8px;">
+    <div style="border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:8px 14px;background:rgba(255,255,255,0.04);">
+      <div style="font-size:13px;color:#e2e8ff;">Normal</div>
+      <div style="font-size:9px;color:rgba(221,225,240,0.35);margin-top:2px;">Body text</div>
+    </div>
+    <div style="border:2px solid #4f78c8;border-radius:6px;padding:8px 14px;background:rgba(79,120,200,0.10);">
+      <div style="font-size:16px;font-weight:800;color:#93c5fd;">Heading 1</div>
+      <div style="font-size:9px;color:rgba(221,225,240,0.35);margin-top:2px;">Main sections</div>
+    </div>
+    <div style="border:1px solid rgba(255,255,255,0.10);border-radius:6px;padding:8px 14px;background:rgba(255,255,255,0.03);">
+      <div style="font-size:14px;font-weight:700;color:#a5b4fc;">Heading 2</div>
+      <div style="font-size:9px;color:rgba(221,225,240,0.35);margin-top:2px;">Sub-sections</div>
+    </div>
+    <div style="border:1px solid rgba(255,255,255,0.10);border-radius:6px;padding:8px 14px;background:rgba(255,255,255,0.03);">
+      <div style="font-size:13px;font-weight:600;color:#c7d2fe;">Heading 3</div>
+      <div style="font-size:9px;color:rgba(221,225,240,0.35);margin-top:2px;">Smaller sections</div>
+    </div>
+    <div style="border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 14px;background:rgba(255,255,255,0.02);">
+      <div style="font-size:12px;font-style:italic;color:rgba(221,225,240,0.55);">No Spacing</div>
+      <div style="font-size:9px;color:rgba(221,225,240,0.35);margin-top:2px;">Compact text</div>
+    </div>
+  </div>
+</div>
+
+<p><strong>Why use Styles?</strong></p>
+<ul>
+  <li>Consistency — every Heading 1 in the document looks the same automatically</li>
+  <li>Automatic Table of Contents — Word uses Heading styles to generate a TOC</li>
+  <li>Navigation pane — you can jump between headings using the View → Navigation Pane</li>
+  <li>Easy global changes — change the Heading 1 style once, every heading updates</li>
+</ul>
+
+<div class="callout tip"><strong>How to apply a style:</strong> Click anywhere in the paragraph (no need to select the whole line), then click the style name in the Styles gallery on the Home tab.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 What is the main advantage of using Heading styles in a Word document?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It makes the text larger automatically</button>
+    <button class="quiz-opt" data-correct="true">It ensures consistent formatting and allows features like automatic Table of Contents</button>
+    <button class="quiz-opt" data-correct="false">It saves the document as a PDF</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+// ─── UNIT 5: EXCEL ────────────────────────────────────────────────────────
+
+{
+  unit: "Unit 5 — Microsoft Excel",
+  title: "Introduction to Spreadsheets",
+  subtitle: "What Excel is, rows, columns, and cells",
+  content: `
+<p>A <strong>spreadsheet</strong> is a grid of rows and columns used to organise, calculate, and analyse data. Microsoft <em>Excel</em> is the most widely used spreadsheet program in the world.</p>
+
+<h3><i data-lucide="grid" style="width:14px;height:14px;"></i> The Excel Grid</h3>
+
+<div class="excel-grid">
+  <div class="excel-row">
+    <div class="excel-cell row-header"></div>
+    <div class="excel-cell header">A</div>
+    <div class="excel-cell header">B</div>
+    <div class="excel-cell header">C</div>
+    <div class="excel-cell header">D</div>
+  </div>
+  <div class="excel-row">
+    <div class="excel-cell row-header">1</div>
+    <div class="excel-cell active">Name</div>
+    <div class="excel-cell">Age</div>
+    <div class="excel-cell">Mark (%)</div>
+    <div class="excel-cell">Grade</div>
+  </div>
+  <div class="excel-row">
+    <div class="excel-cell row-header">2</div>
+    <div class="excel-cell">Amara</div>
+    <div class="excel-cell">16</div>
+    <div class="excel-cell">82</div>
+    <div class="excel-cell">B</div>
+  </div>
+  <div class="excel-row">
+    <div class="excel-cell row-header">3</div>
+    <div class="excel-cell">Diego</div>
+    <div class="excel-cell">17</div>
+    <div class="excel-cell">67</div>
+    <div class="excel-cell">C</div>
+  </div>
+  <div class="excel-row">
+    <div class="excel-cell row-header">4</div>
+    <div class="excel-cell">Leila</div>
+    <div class="excel-cell">16</div>
+    <div class="excel-cell">91</div>
+    <div class="excel-cell">A</div>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Columns</strong> — run vertically, labelled A, B, C, D… (up to XFD in Excel)</li>
+  <li><strong>Rows</strong> — run horizontally, labelled 1, 2, 3… (up to 1,048,576 rows)</li>
+  <li><strong>Cell</strong> — the intersection of a column and row. The highlighted cell above is <em>A1</em></li>
+  <li><strong>Cell reference</strong> — the address of a cell: column letter + row number. e.g. <span class="key-term">C3</span> = column C, row 3</li>
+  <li><strong>Active cell</strong> — the cell you have selected (shown in the Name Box at the top-left)</li>
+</ul>
+
+<h3><i data-lucide="database" style="width:14px;height:14px;"></i> What Goes in a Cell?</h3>
+<table class="ext-table">
+  <tr><th>Type</th><th>Example</th><th>Aligned</th></tr>
+  <tr><td><strong>Text (Labels)</strong></td><td>Name, City, Product</td><td>Left</td></tr>
+  <tr><td><strong>Numbers (Values)</strong></td><td>42, 3.14, -10</td><td>Right</td></tr>
+  <tr><td><strong>Formulas</strong></td><td>=A1+B1, =SUM(A1:A10)</td><td>Right (shows result)</td></tr>
+  <tr><td><strong>Dates</strong></td><td>2024/01/15</td><td>Right</td></tr>
+</table>
+
+<div class="callout info"><strong>Entering data:</strong> Click a cell, type your data, then press <span class="key-term">Enter</span> to confirm and move down, or <span class="key-term">Tab</span> to confirm and move right.</div>
+
+<div class="callout tip"><strong>Cell range:</strong> A range is a group of cells. <span class="key-term">A1:A10</span> means all cells from A1 to A10. <span class="key-term">A1:C4</span> means a rectangular block from A1 to C4.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 What is the cell reference for the cell in column C, row 5?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">5C</button>
+    <button class="quiz-opt" data-correct="true">C5</button>
+    <button class="quiz-opt" data-correct="false">C:5</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 5 — Microsoft Excel",
+  title: "Excel Formulas and Functions",
+  subtitle: "SUM, AVERAGE, MIN, MAX, COUNT and more",
+  content: `
+<p>A <strong>formula</strong> in Excel always starts with an <strong>=</strong> sign. Excel then calculates the result and displays it in the cell.</p>
+<p>A <strong>function</strong> is a built-in formula with a name: <code>=SUM(A1:A10)</code> adds up all values from A1 to A10.</p>
+
+<div class="excel-grid" style="margin-bottom:8px;">
+  <div class="excel-row">
+    <div class="excel-cell row-header"></div>
+    <div class="excel-cell header">A</div>
+    <div class="excel-cell header">B</div>
+  </div>
+  <div class="excel-row"><div class="excel-cell row-header">1</div><div class="excel-cell">Score</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">2</div><div class="excel-cell">72</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">3</div><div class="excel-cell">85</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">4</div><div class="excel-cell">91</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">5</div><div class="excel-cell">68</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">6</div><div class="excel-cell">77</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">7</div><div class="excel-cell formula">=SUM(A2:A6)</div><div class="excel-cell result">393</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">8</div><div class="excel-cell formula">=AVERAGE(A2:A6)</div><div class="excel-cell result">78.6</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">9</div><div class="excel-cell formula">=MIN(A2:A6)</div><div class="excel-cell result">68</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">10</div><div class="excel-cell formula">=MAX(A2:A6)</div><div class="excel-cell result">91</div></div>
+</div>
+
+<h3><i data-lucide="function-square" style="width:14px;height:14px;"></i> Essential Functions</h3>
+
+<div class="formula-card">
+  <div class="formula-name">=SUM( )</div>
+  <div class="formula-syntax">=SUM(range)</div>
+  <div class="formula-desc">Adds all numbers in the range.</div>
+  <div class="formula-example">=SUM(B2:B10)</div>
+</div>
+
+<div class="formula-card">
+  <div class="formula-name">=AVERAGE( )</div>
+  <div class="formula-syntax">=AVERAGE(range)</div>
+  <div class="formula-desc">Calculates the arithmetic mean (total divided by count).</div>
+  <div class="formula-example">=AVERAGE(B2:B10)</div>
+</div>
+
+<div class="formula-card">
+  <div class="formula-name">=MIN( ) and =MAX( )</div>
+  <div class="formula-syntax">=MIN(range) &nbsp; =MAX(range)</div>
+  <div class="formula-desc">Returns the smallest or largest number in the range.</div>
+  <div class="formula-example">=MIN(C2:C20) &nbsp;&nbsp; =MAX(C2:C20)</div>
+</div>
+
+<div class="formula-card">
+  <div class="formula-name">=COUNT( )</div>
+  <div class="formula-syntax">=COUNT(range)</div>
+  <div class="formula-desc">Counts how many cells contain <strong>numbers</strong>. Ignores text and empty cells.</div>
+  <div class="formula-example">=COUNT(B2:B20)</div>
+</div>
+
+<div class="formula-card">
+  <div class="formula-name">=COUNTA( )</div>
+  <div class="formula-syntax">=COUNTA(range)</div>
+  <div class="formula-desc">Counts how many cells are <strong>not empty</strong> (numbers AND text).</div>
+  <div class="formula-example">=COUNTA(A2:A20)</div>
+</div>
+
+<div class="formula-card">
+  <div class="formula-name">=COUNTBLANK( )</div>
+  <div class="formula-syntax">=COUNTBLANK(range)</div>
+  <div class="formula-desc">Counts how many cells in the range are <strong>empty</strong>.</div>
+  <div class="formula-example">=COUNTBLANK(B2:B20)</div>
+</div>
+
+<div class="callout tip"><strong>AutoSum:</strong> Select the cell below a column of numbers and press <span class="key-term">Alt + =</span> — Excel automatically inserts a SUM formula for you.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Which function would you use to find the highest value in the range D2:D50?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=SUM(D2:D50)</button>
+    <button class="quiz-opt" data-correct="false">=AVERAGE(D2:D50)</button>
+    <button class="quiz-opt" data-correct="true">=MAX(D2:D50)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 5 — Microsoft Excel",
+  title: "COUNTIF and SUMIF",
+  subtitle: "Counting and summing with conditions",
+  content: `
+<p><strong>COUNTIF</strong> and <strong>SUMIF</strong> are more powerful versions of COUNT and SUM — they only count or add cells that meet a specific condition.</p>
+
+<h3><i data-lucide="filter" style="width:14px;height:14px;"></i> COUNTIF — Count cells meeting a condition</h3>
+
+<div class="formula-card">
+  <div class="formula-name">=COUNTIF( )</div>
+  <div class="formula-syntax">=COUNTIF(range, criteria)</div>
+  <div class="formula-desc">Counts cells in <em>range</em> that match the <em>criteria</em>.</div>
+  <div class="formula-example">=COUNTIF(B2:B20, "Pass")</div>
+</div>
+
+<div class="excel-grid">
+  <div class="excel-row">
+    <div class="excel-cell row-header"></div>
+    <div class="excel-cell header">A</div>
+    <div class="excel-cell header">B</div>
+    <div class="excel-cell header">C</div>
+  </div>
+  <div class="excel-row"><div class="excel-cell row-header">1</div><div class="excel-cell">Name</div><div class="excel-cell">Result</div><div class="excel-cell">Score</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">2</div><div class="excel-cell">Amara</div><div class="excel-cell">Pass</div><div class="excel-cell">82</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">3</div><div class="excel-cell">Diego</div><div class="excel-cell">Fail</div><div class="excel-cell">35</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">4</div><div class="excel-cell">Leila</div><div class="excel-cell">Pass</div><div class="excel-cell">91</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">5</div><div class="excel-cell">Sipho</div><div class="excel-cell">Pass</div><div class="excel-cell">74</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">6</div><div class="excel-cell">Riya</div><div class="excel-cell">Fail</div><div class="excel-cell">42</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">8</div><div class="excel-cell">Passes:</div><div class="excel-cell formula">=COUNTIF(B2:B6,"Pass")</div><div class="excel-cell result">3</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">9</div><div class="excel-cell">Score &gt;= 75:</div><div class="excel-cell formula">=COUNTIF(C2:C6,">=75")</div><div class="excel-cell result">2</div></div>
+</div>
+
+<p>The criteria can be:</p>
+<ul>
+  <li>A text value: <span class="key-term">"Pass"</span> — must be in double quotes</li>
+  <li>A number: <span class="key-term">100</span></li>
+  <li>A comparison: <span class="key-term">">=75"</span> <span class="key-term">"&lt;50"</span> <span class="key-term">"&lt;&gt;0"</span> (not equal to 0)</li>
+  <li>A cell reference: <span class="key-term">A1</span> — counts cells equal to whatever is in A1</li>
+</ul>
+
+<h3><i data-lucide="sigma" style="width:14px;height:14px;"></i> SUMIF — Sum cells meeting a condition</h3>
+
+<div class="formula-card">
+  <div class="formula-name">=SUMIF( )</div>
+  <div class="formula-syntax">=SUMIF(range, criteria, sum_range)</div>
+  <div class="formula-desc">Checks each cell in <em>range</em> against the <em>criteria</em>, and adds the corresponding cell from <em>sum_range</em>.</div>
+  <div class="formula-example">=SUMIF(B2:B6, "Pass", C2:C6)</div>
+</div>
+
+<div class="excel-grid">
+  <div class="excel-row">
+    <div class="excel-cell row-header">10</div>
+    <div class="excel-cell">Total of Pass scores:</div>
+    <div class="excel-cell formula">=SUMIF(B2:B6,"Pass",C2:C6)</div>
+    <div class="excel-cell result">247</div>
+  </div>
+</div>
+
+<p>This adds C2+C4+C5 (82+91+74 = 247) because B2, B4, B5 all equal "Pass".</p>
+
+<div class="callout info"><strong>SUMIF vs COUNTIF:</strong> COUNTIF simply counts how many cells match. SUMIF adds up a different column based on the match. Use COUNTIF when you want a count; use SUMIF when you want a total.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You have a list of sales by region in column A, and amounts in column B. You want to add up all sales from "Cape Town" only. Which formula is correct?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=COUNTIF(A2:A20,"Cape Town")</button>
+    <button class="quiz-opt" data-correct="false">=SUM(B2:B20,"Cape Town")</button>
+    <button class="quiz-opt" data-correct="true">=SUMIF(A2:A20,"Cape Town",B2:B20)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 5 — Microsoft Excel",
+  title: "Relative vs Absolute Cell References",
+  subtitle: "The difference between A1 and $A$1",
+  content: `
+<p>This is one of the most important concepts in Excel — and one of the most misunderstood.</p>
+
+<h3><i data-lucide="move" style="width:14px;height:14px;"></i> Relative References</h3>
+<p>By default, all cell references are <strong>relative</strong>. This means when you copy a formula, the references <em>adjust automatically</em> based on where you paste it.</p>
+
+<div class="excel-grid">
+  <div class="excel-row">
+    <div class="excel-cell row-header"></div>
+    <div class="excel-cell header">A</div>
+    <div class="excel-cell header">B</div>
+    <div class="excel-cell header">C</div>
+  </div>
+  <div class="excel-row"><div class="excel-cell row-header">1</div><div class="excel-cell">Price</div><div class="excel-cell">Qty</div><div class="excel-cell">Total</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">2</div><div class="excel-cell">10.00</div><div class="excel-cell">5</div><div class="excel-cell formula">=A2*B2</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">3</div><div class="excel-cell">25.00</div><div class="excel-cell">3</div><div class="excel-cell formula">=A3*B3 (auto-adjusted)</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">4</div><div class="excel-cell">8.50</div><div class="excel-cell">12</div><div class="excel-cell formula">=A4*B4 (auto-adjusted)</div></div>
+</div>
+
+<p>When you type <code>=A2*B2</code> in C2 and then copy it down to C3 and C4, Excel automatically changes it to <code>=A3*B3</code> and <code>=A4*B4</code>. This is useful — you only type the formula once.</p>
+
+<h3><i data-lucide="lock" style="width:14px;height:14px;"></i> Absolute References</h3>
+<p>Sometimes you DON'T want the reference to change. You <strong>lock</strong> it by adding <strong>$</strong> signs. Press <span class="key-term">F4</span> after clicking a cell in the formula bar to add the dollar signs automatically.</p>
+
+<div class="excel-grid">
+  <div class="excel-row">
+    <div class="excel-cell row-header"></div>
+    <div class="excel-cell header">A</div>
+    <div class="excel-cell header">B</div>
+    <div class="excel-cell header">C</div>
+  </div>
+  <div class="excel-row"><div class="excel-cell row-header">1</div><div class="excel-cell">VAT Rate</div><div class="excel-cell">15%</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">2</div><div class="excel-cell">Price</div><div class="excel-cell">VAT Amount</div><div class="excel-cell"></div></div>
+  <div class="excel-row"><div class="excel-cell row-header">3</div><div class="excel-cell">100.00</div><div class="excel-cell abs">=A3*$B$1</div><div class="excel-cell result">15.00</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">4</div><div class="excel-cell">250.00</div><div class="excel-cell abs">=A4*$B$1 (B1 stays fixed)</div><div class="excel-cell result">37.50</div></div>
+  <div class="excel-row"><div class="excel-cell row-header">5</div><div class="excel-cell">80.00</div><div class="excel-cell abs">=A5*$B$1 (B1 stays fixed)</div><div class="excel-cell result">12.00</div></div>
+</div>
+
+<p><code>$B$1</code> means "always look at column B, row 1 — never change this reference when copying."</p>
+
+<table class="ext-table">
+  <tr><th>Reference</th><th>Type</th><th>What stays fixed</th></tr>
+  <tr><td><span class="key-term">A1</span></td><td>Relative</td><td>Nothing — both column and row adjust when copied</td></tr>
+  <tr><td><span class="key-term">$A$1</span></td><td>Absolute</td><td>Both column AND row — never changes</td></tr>
+  <tr><td><span class="key-term">$A1</span></td><td>Mixed</td><td>Column A is fixed; row adjusts</td></tr>
+  <tr><td><span class="key-term">A$1</span></td><td>Mixed</td><td>Row 1 is fixed; column adjusts</td></tr>
+</table>
+
+<div class="callout tip"><strong>Rule of thumb:</strong> Use absolute references ($) any time your formula refers to a cell that contains a single shared value — like a tax rate, a discount percentage, or a conversion factor — that should not change as you copy the formula down or across.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You type =B2*C1 in D2 and copy it down to D3. What does the formula in D3 become?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">=B2*C1 (unchanged)</button>
+    <button class="quiz-opt" data-correct="true">=B3*C2 (both references shift down by 1 row)</button>
+    <button class="quiz-opt" data-correct="false">=B3*C1 (only B adjusts)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+},
+
+{
+  unit: "Unit 5 — Microsoft Excel",
+  title: "Creating Charts in Excel",
+  subtitle: "Visualising data with bar, pie, and line charts",
+  content: `
+<p>A <strong>chart</strong> (also called a graph) turns your spreadsheet data into a visual representation, making it much easier to spot trends, compare values, and communicate results.</p>
+
+<h3><i data-lucide="bar-chart-2" style="width:14px;height:14px;"></i> How to Create a Chart</h3>
+<ol style="font-size:13px;line-height:2;color:rgba(221,225,240,0.70);padding-left:20px;margin-bottom:14px;">
+  <li>Select the data you want to chart (include headers)</li>
+  <li>Click the <strong>Insert</strong> tab on the Ribbon</li>
+  <li>In the <strong>Charts</strong> group, choose a chart type</li>
+  <li>Excel inserts the chart — you can move and resize it</li>
+  <li>Use the <strong>Chart Design</strong> and <strong>Format</strong> tabs to customise it</li>
+</ol>
+
+<h3><i data-lucide="pie-chart" style="width:14px;height:14px;"></i> Choosing the Right Chart Type</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">Chart Type Guide</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;padding:12px;">
+      <div style="font-size:20px;margin-bottom:6px;">📊</div>
+      <div style="font-size:12px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">Column / Bar Chart</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.55);">Compare values between categories. E.g. sales per month, marks per subject.</div>
+    </div>
+    <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);border-radius:8px;padding:12px;">
+      <div style="font-size:20px;margin-bottom:6px;">📈</div>
+      <div style="font-size:12px;font-weight:700;color:#6ee7b7;margin-bottom:4px;">Line Chart</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.55);">Show trends over time. E.g. temperature changes, stock prices, population growth.</div>
+    </div>
+    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.18);border-radius:8px;padding:12px;">
+      <div style="font-size:20px;margin-bottom:6px;">🥧</div>
+      <div style="font-size:12px;font-weight:700;color:#fcd34d;margin-bottom:4px;">Pie Chart</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.55);">Show parts of a whole (percentages). E.g. budget breakdown, market share. Only use with ONE data series.</div>
+    </div>
+    <div style="background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.18);border-radius:8px;padding:12px;">
+      <div style="font-size:20px;margin-bottom:6px;">⊹</div>
+      <div style="font-size:12px;font-weight:700;color:#f9a8d4;margin-bottom:4px;">Scatter Chart</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.55);">Show the relationship between two numeric variables. E.g. study hours vs marks.</div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="settings" style="width:14px;height:14px;"></i> Customising a Chart</h3>
+<ul>
+  <li><strong>Chart Title</strong> — click the title text to edit it. Always give charts a clear, descriptive title.</li>
+  <li><strong>Axis Labels</strong> — add labels to the X and Y axes via Chart Design → Add Chart Element → Axis Titles</li>
+  <li><strong>Legend</strong> — explains what each colour represents. Can be moved or hidden.</li>
+  <li><strong>Data Labels</strong> — show the actual values on the chart bars/slices</li>
+  <li><strong>Chart Style</strong> — choose a pre-set visual style from the Chart Design tab</li>
+</ul>
+
+<div class="callout warn"><strong>Common mistake:</strong> Using a pie chart for more than 6 or 7 categories makes it very hard to read. If you have many categories, use a bar or column chart instead.</div>
+
+<div class="callout tip"><strong>Moving a chart:</strong> Click the chart to select it, then drag it to reposition. Drag the corner handles to resize. To move it to its own sheet: right-click the chart → Move Chart → New Sheet.</div>
+
+<div class="quiz-box">
+  <div class="quiz-q">🧩 You want to show how your school's monthly electricity usage changed over the course of the year (12 months). Which chart type is most appropriate?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Pie chart</button>
+    <button class="quiz-opt" data-correct="true">Line chart</button>
+    <button class="quiz-opt" data-correct="false">Scatter chart</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>`
+}
+
+]; // end LESSONS
+
+// ═══════════════════════════════════════════════════════════════════════════
+// APP LOGIC
+// ═══════════════════════════════════════════════════════════════════════════
+
+let currentLesson = 0;
+const completed = new Set();
+
+// ── Build sidebar ──────────────────────────────────────────────────────────
+function buildSidebar() {
+  const list = document.getElementById('sidebarList');
+  let html = '', lastUnit = '';
+  LESSONS.forEach((les, i) => {
+    if (les.unit !== lastUnit) {
+      html += `<div class="unit-header">${les.unit}</div>`;
+      lastUnit = les.unit;
+    }
+    const done = completed.has(i) ? '<span class="lesson-done">✓</span>' : '';
+    const active = i === currentLesson ? 'active' : '';
+    html += `<div class="lesson-item ${active}" data-idx="${i}">
+      <span class="lesson-num">${i+1}</span>
+      <span class="lesson-name">${les.title}</span>${done}
+    </div>`;
+  });
+  list.innerHTML = html;
+  list.querySelectorAll('.lesson-item').forEach(el => {
+    el.addEventListener('click', () => goTo(parseInt(el.dataset.idx)));
+  });
+}
+
+// ── Render lesson ──────────────────────────────────────────────────────────
+function renderLesson() {
+  const les = LESSONS[currentLesson];
+  const total = LESSONS.length;
+
+  document.getElementById('lessonContent').innerHTML = `
+    <div class="lesson-badge">
+      <i data-lucide="book-open" style="width:11px;height:11px;"></i>
+      ${les.unit}
+    </div>
+    <h1 class="lesson-title">${les.title}</h1>
+    <p class="lesson-subtitle">${les.subtitle}</p>
+    <div class="lesson-body">${les.content}</div>
+  `;
+
+  // Wire up quizzes
+  document.querySelectorAll('.quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const box = btn.closest('.quiz-box');
+      const fb  = box.querySelector('.quiz-feedback');
+      box.querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('correct','wrong'));
+      if (btn.dataset.correct === 'true') {
+        btn.classList.add('correct');
+        fb.textContent = '✅ Correct!'; fb.className = 'quiz-feedback correct';
+        completed.add(currentLesson);
+        updateProgress();
+        buildSidebar();
+      } else {
+        btn.classList.add('wrong');
+        fb.textContent = '❌ Not quite — try again!'; fb.className = 'quiz-feedback wrong';
+      }
+    });
+  });
+
+  // Update nav
+  document.getElementById('prevBtn').style.visibility = currentLesson === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = currentLesson === total-1 ? 'Finish ✓' : 'Next →';
+  document.getElementById('lessonCounter').textContent = `${currentLesson+1} / ${total}`;
+  document.getElementById('headerProgress').textContent = `Lesson ${currentLesson+1} of ${total}`;
+
+  document.getElementById('lessonScroll').scrollTop = 0;
+  lucide.createIcons();
+  buildSidebar();
+}
+
+function updateProgress() {
+  const pct = Math.round((completed.size / LESSONS.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function goTo(idx) {
+  currentLesson = Math.max(0, Math.min(LESSONS.length-1, idx));
+  renderLesson();
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => goTo(currentLesson - 1));
+document.getElementById('nextBtn').addEventListener('click', () => {
+  completed.add(currentLesson);
+  updateProgress();
+  if (currentLesson < LESSONS.length - 1) goTo(currentLesson + 1);
+  else { /* finished */ document.getElementById('nextBtn').textContent = 'Complete! ✓'; }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { completed.add(currentLesson); updateProgress(); goTo(currentLesson+1); }
+  if (e.key === 'ArrowLeft')  goTo(currentLesson-1);
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────
+renderLesson();
+</script>
+</body>
+</html>
