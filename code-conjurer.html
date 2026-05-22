@@ -1378,6 +1378,556 @@ fileInput.addEventListener('change', e => {
   fileInput.value = '';
 });
 
+
+// ═══════════════════════════════════════════════════════════════════════════
+// IEB/CAPS LESSON SYSTEM — Grade 10, 11, 12
+// ═══════════════════════════════════════════════════════════════════════════
+
+const LESSONS = {
+
+// ─── GRADE 10 ───────────────────────────────────────────────────────────────
+10: [
+{
+  unit: "Unit 1 — Introduction to Java",
+  title: "What is Java?",
+  body: `<p>Java is a <strong>general-purpose, object-oriented programming language</strong> created in 1995. Every Java program has the same skeleton:</p>
+<div class="les-code">public class MyProgram {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}</div>
+<ul>
+  <li><strong>public class MyProgram</strong> — every program lives inside a class. The class name must match the filename.</li>
+  <li><strong>public static void main(String[] args)</strong> — the entry point. Java starts here.</li>
+  <li><strong>System.out.println()</strong> — prints a line to the console.</li>
+  <li>Every statement ends with a <strong>semicolon ;</strong></li>
+</ul>
+<div class="les-callout tip">Java is <strong>case-sensitive</strong>. <code>System</code> ≠ <code>system</code>.</div>
+<div class="les-callout exam">The IEB always requires the full class and main method structure. Learn this skeleton by heart.</div>`,
+  code: `public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println("Hello, world!");\n        System.out.println("My first Java program.");\n    }\n}`,
+  challenge: "Modify the program to print your name, grade, and school on three separate lines."
+},
+{
+  unit: "Unit 1 — Introduction to Java",
+  title: "Variables and Data Types",
+  body: `<p>A <strong>variable</strong> is a named memory location. Declare it with a <strong>type</strong> and a <strong>name</strong>.</p>
+<div class="les-code">int age = 16;
+double height = 1.73;
+boolean passed = true;
+char initial = 'T';
+String name = "Thabo";</div>
+<p><strong>Primitive types for IEB:</strong></p>
+<ul>
+  <li><strong>int</strong> — whole numbers: -5, 0, 42</li>
+  <li><strong>double</strong> — decimal numbers: 3.14, -0.5</li>
+  <li><strong>boolean</strong> — true or false only</li>
+  <li><strong>char</strong> — a single character in single quotes: 'A'</li>
+</ul>
+<p><strong>String</strong> is a reference type (a class), not a primitive. It uses double quotes.</p>
+<div class="les-callout warn">Integer division truncates: <code>7 / 2 = 3</code>. To get 3.5: <code>(double) 7 / 2</code></div>
+<div class="les-callout exam">IEB "what is the output" questions heavily test integer division and type conversion. Know the rules cold.</div>`,
+  code: `public class DataTypes {\n    public static void main(String[] args) {\n        int age = 16;\n        double height = 1.73;\n        boolean isStudent = true;\n        char initial = 'T';\n        String name = "Thabo";\n\n        System.out.println("Name:    " + name);\n        System.out.println("Age:     " + age);\n        System.out.println("Height:  " + height);\n        System.out.println("Student: " + isStudent);\n        System.out.println("Initial: " + initial);\n\n        // Integer division\n        System.out.println("7 / 2 = " + (7 / 2));\n        System.out.println("(double)7/2 = " + ((double)7 / 2));\n    }\n}`,
+  challenge: "Declare variables for your first name, age, average mark (double), and whether you passed (boolean). Print all four with labels."
+},
+{
+  unit: "Unit 1 — Introduction to Java",
+  title: "Operators and Expressions",
+  body: `<p><strong>Arithmetic:</strong> <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>%</code> (modulo = remainder after division)</p>
+<div class="les-code">17 % 5 = 2    // remainder of 17 ÷ 5
+17 / 5 = 3    // integer division — truncates decimal</div>
+<p><strong>Comparison operators</strong> return boolean: <code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code></p>
+<p><strong>Logical:</strong> <code>&amp;&amp;</code> (AND) &nbsp; <code>||</code> (OR) &nbsp; <code>!</code> (NOT)</p>
+<p><strong>Shorthand:</strong> <code>x += 5</code> is the same as <code>x = x + 5</code></p>
+<div class="les-callout tip">Modulo is useful for: even check (<code>n%2==0</code>), last digit (<code>n%10</code>), cycling through values.</div>`,
+  code: `public class Operators {\n    public static void main(String[] args) {\n        int a = 17, b = 5;\n        System.out.println("a + b = " + (a + b));\n        System.out.println("a / b = " + (a / b) + "  (integer!)");\n        System.out.println("a % b = " + (a % b) + "  (remainder)");\n        System.out.println("17 is even: " + (17 % 2 == 0));\n        System.out.println("Last digit of 347: " + (347 % 10));\n        int x = 10;\n        x += 5;\n        System.out.println("x after += 5: " + x);\n    }\n}`,
+  challenge: "Read two integers and print: sum, difference, product, integer quotient, remainder, and whether the first is greater than the second."
+},
+{
+  unit: "Unit 2 — Control Structures",
+  title: "if / else if / else",
+  body: `<p>Run code conditionally based on a boolean expression.</p>
+<div class="les-code">if (condition) {
+    // runs if true
+} else if (otherCondition) {
+    // runs if other is true
+} else {
+    // runs if nothing above matched
+}</div>
+<p>IEB-style grade classifier:</p>
+<div class="les-code">if      (mark >= 80) symbol = "A";
+else if (mark >= 70) symbol = "B";
+else if (mark >= 60) symbol = "C";
+else                 symbol = "F";</div>
+<div class="les-callout exam">IEB tests boundary values — what happens at exactly 80? At exactly 70? Always check the &gt;= conditions at the boundary values.</div>`,
+  code: `import java.util.Scanner;\n\npublic class GradeSymbol {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print("Enter mark (0-100): ");\n        int mark = sc.nextInt();\n\n        String symbol;\n        if      (mark >= 80) symbol = "A (Distinction)";\n        else if (mark >= 70) symbol = "B (Merit)";\n        else if (mark >= 60) symbol = "C";\n        else if (mark >= 50) symbol = "D";\n        else if (mark >= 40) symbol = "E";\n        else                 symbol = "F (Fail)";\n\n        System.out.println(mark + "% = " + symbol);\n    }\n}`,
+  challenge: "Write a program that reads a year and determines if it is a leap year. Divisible by 4 = leap year, except century years (÷100) unless also ÷400."
+},
+{
+  unit: "Unit 2 — Control Structures",
+  title: "switch Statement",
+  body: `<p>A <strong>switch</strong> is cleaner than a long if/else chain when testing one variable against exact values.</p>
+<div class="les-code">switch (variable) {
+    case value1: /* code */ break;
+    case value2: /* code */ break;
+    default:     /* fallback */
+}</div>
+<div class="les-callout warn"><strong>Always include break!</strong> Without it, Java falls through to the next case — almost always a bug in IEB context.</div>
+<div class="les-callout exam">IEB tests fall-through: what is the output if a break is missing? Trace through carefully.</div>`,
+  code: `import java.util.Scanner;\n\npublic class DayName {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print("Day number (1-7): ");\n        int day = sc.nextInt();\n        String name;\n        switch (day) {\n            case 1:  name = "Monday";    break;\n            case 2:  name = "Tuesday";   break;\n            case 3:  name = "Wednesday"; break;\n            case 4:  name = "Thursday";  break;\n            case 5:  name = "Friday";    break;\n            case 6:  name = "Saturday";  break;\n            case 7:  name = "Sunday";    break;\n            default: name = "Invalid day";\n        }\n        System.out.println("Day " + day + " is " + name);\n    }\n}`,
+  challenge: "Write a switch that takes a month number (1-12) and prints the number of days in that month (non-leap year)."
+},
+{
+  unit: "Unit 2 — Control Structures",
+  title: "for Loop",
+  body: `<p>Use a <strong>for loop</strong> when you know in advance how many times to repeat.</p>
+<div class="les-code">for (int i = 1; i <= 10; i++) {
+    System.out.println(i);
+}</div>
+<ul>
+  <li><strong>int i = 1</strong> — initialise the counter</li>
+  <li><strong>i &lt;= 10</strong> — loop while this is true</li>
+  <li><strong>i++</strong> — increment after each iteration</li>
+</ul>
+<div class="les-callout tip">Count down with: <code>for (int i = 10; i &gt;= 1; i--)</code></div>
+<div class="les-callout exam">IEB asks you to trace a for loop iteration by iteration — write out the variable value at each step. Practice this on paper.</div>`,
+  code: `public class ForLoop {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 5; i++)\n            System.out.println("i = " + i);\n\n        int sum = 0;\n        for (int i = 1; i <= 10; i++) sum += i;\n        System.out.println("Sum 1-10 = " + sum);\n\n        System.out.println("\\n7 times table:");\n        for (int i = 1; i <= 12; i++)\n            System.out.println("7 x " + i + " = " + (7 * i));\n    }\n}`,
+  challenge: "Print all even numbers from 2 to 50. Then print their sum. Then print all numbers from 1-100 divisible by both 3 and 5."
+},
+{
+  unit: "Unit 2 — Control Structures",
+  title: "while and do-while Loops",
+  body: `<p>Use <strong>while</strong> when you don't know in advance how many iterations are needed.</p>
+<div class="les-code">while (condition) { /* code */ }</div>
+<p><strong>do-while</strong> always runs at least once — condition checked at the end:</p>
+<div class="les-code">do { /* code */ } while (condition);</div>
+<div class="les-callout tip">Use do-while for input validation — keep asking until the user gives a valid answer.</div>
+<div class="les-callout warn">Always ensure the loop variable changes inside the loop — otherwise it runs forever.</div>
+<div class="les-callout exam">IEB distinguishes: for = known count, while = unknown (may not run), do-while = unknown (runs at least once). Know when to use each.</div>`,
+  code: `import java.util.Scanner;\n\npublic class WhileLoop {\n    public static void main(String[] args) {\n        int n = 1;\n        while (n <= 5) { System.out.println("n = " + n); n++; }\n\n        Scanner sc = new Scanner(System.in);\n        int mark;\n        do {\n            System.out.print("Enter mark (0-100): ");\n            mark = sc.nextInt();\n        } while (mark < 0 || mark > 100);\n\n        System.out.println("Valid mark: " + mark);\n    }\n}`,
+  challenge: "Write a number guessing game. Secret = 42. Keep asking until correct. Print 'Too high' or 'Too low'. Count and print the number of attempts."
+},
+{
+  unit: "Unit 3 — Arrays and Strings",
+  title: "1D Arrays",
+  body: `<p>An array stores multiple values of the same type under one name. Indices start at <strong>0</strong>.</p>
+<div class="les-code">int[] scores = {72, 85, 91, 68, 77};
+System.out.println(scores[0]);      // 72
+System.out.println(scores.length);  // 5</div>
+<div class="les-callout warn">Valid indices: 0 to length−1. Accessing <code>scores[5]</code> on a 5-element array = ArrayIndexOutOfBoundsException.</div>
+<div class="les-callout exam">Required patterns: traverse, find min/max, calculate average, count elements meeting a condition. Know all four cold.</div>`,
+  code: `public class Arrays1D {\n    public static void main(String[] args) {\n        int[] scores = {72, 85, 91, 68, 77, 95, 60};\n\n        for (int i = 0; i < scores.length; i++)\n            System.out.println("[" + i + "] = " + scores[i]);\n\n        int min = scores[0], max = scores[0], sum = 0;\n        for (int s : scores) {\n            if (s < min) min = s;\n            if (s > max) max = s;\n            sum += s;\n        }\n        System.out.println("Min: " + min);\n        System.out.println("Max: " + max);\n        System.out.println("Avg: " + (double) sum / scores.length);\n    }\n}`,
+  challenge: "Store 5 temperatures. Print all, find highest/lowest, calculate average, count how many are above average."
+},
+{
+  unit: "Unit 3 — Arrays and Strings",
+  title: "String Methods",
+  body: `<p>Key String methods for IEB — memorise all of these:</p>
+<div class="les-code">String s = "Hello, World!";
+s.length()              // 13
+s.charAt(0)             // 'H'
+s.substring(7)          // "World!"
+s.substring(0, 5)       // "Hello"
+s.toUpperCase()         // "HELLO, WORLD!"
+s.indexOf("World")      // 7
+s.contains("Hello")     // true
+s.replace("l", "L")     // "HeLLo, WorLd!"
+s.trim()                // removes leading/trailing spaces
+s.equals("Hello")       // false (case matters)
+s.equalsIgnoreCase("hello, world!")  // true</div>
+<div class="les-callout warn">NEVER use <code>==</code> to compare Strings — use <code>.equals()</code>. This is one of the most common exam mistakes.</div>
+<div class="les-callout exam">Common tasks: count vowels, reverse a string character by character, check for a palindrome.</div>`,
+  code: `public class StringMethods {\n    public static void main(String[] args) {\n        String s = "Hello, World!";\n        System.out.println("Length:    " + s.length());\n        System.out.println("charAt(7): " + s.charAt(7));\n        System.out.println("sub(7,12): " + s.substring(7, 12));\n        System.out.println("Upper:     " + s.toUpperCase());\n\n        // Count vowels\n        String low = s.toLowerCase();\n        int vowels = 0;\n        for (int i = 0; i < low.length(); i++) {\n            char c = low.charAt(i);\n            if ("aeiou".indexOf(c) >= 0) vowels++;\n        }\n        System.out.println("Vowels:    " + vowels);\n    }\n}`,
+  challenge: "Read a word and check if it is a palindrome (same forwards and backwards). E.g. 'racecar' → true, 'hello' → false."
+},
+{
+  unit: "Unit 4 — Methods",
+  title: "Writing and Calling Methods",
+  body: `<p>Methods are named, reusable blocks of code. Define once, call many times.</p>
+<div class="les-code">public static returnType methodName(parameters) {
+    // code
+    return value;  // omit if void
+}</div>
+<ul>
+  <li><strong>void</strong> — returns nothing</li>
+  <li><strong>parameters</strong> — inputs the method receives</li>
+  <li><strong>return</strong> — sends a value back to the caller</li>
+</ul>
+<div class="les-callout exam">IEB Gr 10: write a method with parameters and a return value, then call it from main. Tested almost every year.</div>`,
+  code: `public class Methods {\n    public static void printHeading(String title) {\n        System.out.println("=== " + title + " ===");\n    }\n    public static int square(int n) { return n * n; }\n    public static boolean isEven(int n) { return n % 2 == 0; }\n    public static double average(int a, int b, int c) {\n        return (double)(a + b + c) / 3;\n    }\n    public static void main(String[] args) {\n        printHeading("Results");\n        System.out.println("square(7)  = " + square(7));\n        System.out.println("isEven(4)  = " + isEven(4));\n        System.out.println("average    = " + average(70, 85, 92));\n    }\n}`,
+  challenge: "Write isPrime(int n) returning true if n is prime. Call it from main to print all prime numbers from 2 to 50."
+}
+],
+
+// ─── GRADE 11 ───────────────────────────────────────────────────────────────
+11: [
+{
+  unit: "Unit 1 — Advanced Arrays",
+  title: "2D Arrays",
+  body: `<p>A 2D array is an array of arrays — like a grid. Indexed by [row][column], both starting at 0.</p>
+<div class="les-code">int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
+System.out.println(matrix[1][2]);  // 6
+
+for (int r = 0; r < matrix.length; r++) {
+    for (int c = 0; c < matrix[r].length; c++) {
+        System.out.print(matrix[r][c] + " ");
+    }
+    System.out.println();
+}</div>
+<div class="les-callout exam">IEB tests: fill with a pattern, print as a table, find the largest element, sum a specific row/column, find the main diagonal sum.</div>`,
+  code: `public class Arrays2D {\n    public static void main(String[] args) {\n        int[][] table = new int[4][4];\n        for (int r = 0; r < 4; r++)\n            for (int c = 0; c < 4; c++)\n                table[r][c] = r * 4 + c + 1;\n\n        System.out.println("Grid:");\n        for (int r = 0; r < 4; r++) {\n            for (int c = 0; c < 4; c++)\n                System.out.print(table[r][c] + "\\t");\n            System.out.println();\n        }\n\n        int diag = 0;\n        for (int i = 0; i < 4; i++) diag += table[i][i];\n        System.out.println("Main diagonal sum: " + diag);\n    }\n}`,
+  challenge: "Fill a 4×4 array with values 1-16 row by row. Print it as a table. Find the main diagonal sum. Find the largest element and its [row][col] position."
+},
+{
+  unit: "Unit 1 — Advanced Arrays",
+  title: "Bubble Sort",
+  body: `<p>Bubble sort repeatedly compares adjacent elements and swaps them if out of order. The largest element bubbles to its correct position each pass.</p>
+<div class="les-code">for (int i = 0; i < n - 1; i++) {
+    for (int j = 0; j < n - i - 1; j++) {
+        if (arr[j] > arr[j + 1]) {
+            int temp  = arr[j];
+            arr[j]   = arr[j + 1];
+            arr[j+1] = temp;
+        }
+    }
+}</div>
+<ul>
+  <li>Outer loop: number of passes (n−1)</li>
+  <li>Inner loop: comparisons per pass, shrinks each time</li>
+  <li><strong>temp</strong> variable is essential for the swap</li>
+</ul>
+<div class="les-callout exam">Most-tested sorting algorithm in IEB. Write it from memory and trace step-by-step for a given array.</div>`,
+  code: `public class BubbleSort {\n    public static void bubbleSort(int[] arr) {\n        int n = arr.length;\n        for (int i = 0; i < n - 1; i++) {\n            for (int j = 0; j < n - i - 1; j++) {\n                if (arr[j] > arr[j + 1]) {\n                    int temp = arr[j];\n                    arr[j]   = arr[j + 1];\n                    arr[j+1] = temp;\n                }\n            }\n        }\n    }\n    public static void main(String[] args) {\n        int[] data = {64, 34, 25, 12, 22, 11, 90};\n        System.out.print("Before: ");\n        for (int x : data) System.out.print(x + " ");\n        bubbleSort(data);\n        System.out.print("\\nAfter:  ");\n        for (int x : data) System.out.print(x + " ");\n    }\n}`,
+  challenge: "Modify to sort in descending order. Add a swap counter and print the total number of swaps made."
+},
+{
+  unit: "Unit 1 — Advanced Arrays",
+  title: "Linear and Binary Search",
+  body: `<p><strong>Linear search</strong> checks every element one by one:</p>
+<div class="les-code">for (int i = 0; i < arr.length; i++)
+    if (arr[i] == target) return i;
+return -1;  // not found</div>
+<p><strong>Binary search</strong> works on a <em>sorted</em> array only — halves the search space each step:</p>
+<div class="les-code">int low = 0, high = arr.length - 1;
+while (low <= high) {
+    int mid = (low + high) / 2;
+    if      (arr[mid] == target) return mid;
+    else if (arr[mid] <  target) low  = mid + 1;
+    else                          high = mid - 1;
+}
+return -1;</div>
+<div class="les-callout exam">IEB binary search: trace the values of low, mid, and high for each iteration. Practice this on paper for a given array and target value.</div>`,
+  code: `public class Searching {\n    public static int linearSearch(int[] arr, int t) {\n        for (int i = 0; i < arr.length; i++)\n            if (arr[i] == t) return i;\n        return -1;\n    }\n    public static int binarySearch(int[] arr, int t) {\n        int low = 0, high = arr.length - 1;\n        while (low <= high) {\n            int mid = (low + high) / 2;\n            if      (arr[mid] == t) return mid;\n            else if (arr[mid] <  t) low  = mid + 1;\n            else                     high = mid - 1;\n        }\n        return -1;\n    }\n    public static void main(String[] args) {\n        int[] sorted = {11, 22, 33, 44, 55, 66, 77, 88, 99};\n        System.out.println("Linear for 55: index " + linearSearch(sorted, 55));\n        System.out.println("Binary for 55: index " + binarySearch(sorted, 55));\n        System.out.println("Binary for 50: index " + binarySearch(sorted, 50));\n    }\n}`,
+  challenge: "Generate 10 random integers (0-100), sort with bubble sort, then binary search for a value entered by the user. Print whether the value was found and at what index."
+},
+{
+  unit: "Unit 2 — Classes and OOP",
+  title: "Classes and Objects",
+  body: `<p>A <strong>class</strong> is a blueprint. An <strong>object</strong> is an instance created from it using <code>new</code>.</p>
+<div class="les-code">public class Student {
+    String name;
+    int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age  = age;
+    }
+
+    public String toString() {
+        return name + ", age " + age;
+    }
+}
+
+Student s = new Student("Amara", 16);
+System.out.println(s.toString());</div>
+<div class="les-callout exam">IEB Gr 11 OOP: write a class with a constructor, instance variables, at least one method, and a toString(). This pattern appears in almost every exam paper.</div>`,
+  code: `public class OOPClasses {\n    static class Student {\n        String name;\n        int age;\n        double mark;\n\n        public Student(String name, int age, double mark) {\n            this.name = name;\n            this.age  = age;\n            this.mark = mark;\n        }\n\n        public String getSymbol() {\n            if (mark >= 80) return "A";\n            if (mark >= 70) return "B";\n            if (mark >= 60) return "C";\n            if (mark >= 50) return "D";\n            return "F";\n        }\n\n        public String toString() {\n            return name + " | " + age + " | " + mark + " | " + getSymbol();\n        }\n    }\n\n    public static void main(String[] args) {\n        Student s1 = new Student("Amara", 16, 82.5);\n        Student s2 = new Student("Diego", 17, 67.0);\n        System.out.println(s1.toString());\n        System.out.println(s2.toString());\n    }\n}`,
+  challenge: "Write a BankAccount class with owner (String) and balance (double) fields. Add deposit(), withdraw() (check for sufficient funds), and toString(). Test from main."
+},
+{
+  unit: "Unit 2 — Classes and OOP",
+  title: "Arrays of Objects",
+  body: `<p>You can store objects in arrays, just like primitive values. This is a very common IEB pattern.</p>
+<div class="les-code">Student[] students = {
+    new Student("Amara", 16, 82),
+    new Student("Diego", 17, 67)
+};
+
+// Find highest mark
+Student top = students[0];
+for (Student s : students)
+    if (s.mark > top.mark) top = s;</div>
+<div class="les-callout exam">Classic IEB: find the object with the highest/lowest field value, count how many objects meet a condition, or sort an array of objects by a field.</div>`,
+  code: `public class ArrayOfObjects {\n    static class Product {\n        String name; double price; int stock;\n        public Product(String name, double price, int stock) {\n            this.name = name; this.price = price; this.stock = stock;\n        }\n        public double totalValue() { return price * stock; }\n        public String toString() {\n            return name + " | R" + price + " | " + stock + " units";\n        }\n    }\n    public static void main(String[] args) {\n        Product[] shop = {\n            new Product("Apple",  2.50, 100),\n            new Product("Bread",  15.00,  50),\n            new Product("Milk",   18.00,  75)\n        };\n        for (Product p : shop) System.out.println(p);\n        Product priciest = shop[0];\n        for (Product p : shop)\n            if (p.price > priciest.price) priciest = p;\n        System.out.println("Most expensive: " + priciest.name);\n        double total = 0;\n        for (Product p : shop) total += p.totalValue();\n        System.out.println("Total value: R" + total);\n    }\n}`,
+  challenge: "Add isLowStock() returning true if stock < 40. Print all low-stock products as a warning message."
+},
+{
+  unit: "Unit 3 — Encapsulation",
+  title: "private Fields and Getters / Setters",
+  body: `<p><strong>Encapsulation</strong> hides a class's data, exposing it only through controlled methods.</p>
+<div class="les-code">private String name;           // hidden from outside
+
+public String getName() {      // getter
+    return name;
+}
+public void setName(String n) { // setter with validation
+    if (n != null) name = n;
+}</div>
+<div class="les-callout tip">Naming: getters → <code>getName()</code>, setters → <code>setName()</code>, boolean getters → <code>isActive()</code>.</div>
+<div class="les-callout exam">IEB: write private fields with public getters/setters. A setter that validates its input (e.g. age must be &gt; 0) is a standard exam question.</div>`,
+  code: `public class Encapsulation {\n    static class BankAccount {\n        private String owner;\n        private double balance;\n\n        public BankAccount(String owner, double balance) {\n            this.owner = owner;\n            setBalance(balance);\n        }\n\n        public String getOwner()   { return owner; }\n        public double getBalance() { return balance; }\n\n        public void setBalance(double b) {\n            if (b >= 0) balance = b;\n            else System.out.println("Balance cannot be negative.");\n        }\n\n        public void deposit(double a)       { if (a > 0) balance += a; }\n        public boolean withdraw(double a)   {\n            if (a > 0 && a <= balance) { balance -= a; return true; }\n            return false;\n        }\n\n        public String toString() { return owner + ": R" + balance; }\n    }\n\n    public static void main(String[] args) {\n        BankAccount acc = new BankAccount("Sipho", 1000);\n        acc.deposit(500);\n        acc.withdraw(200);\n        System.out.println(acc);\n        System.out.println("Overdraft: " + acc.withdraw(2000));\n    }\n}`,
+  challenge: "Write a Temperature class with private celsius. Reject values below -273.15. Add getters returning Celsius, Fahrenheit (×9/5+32), and Kelvin (+273.15)."
+}
+],
+
+// ─── GRADE 12 ───────────────────────────────────────────────────────────────
+12: [
+{
+  unit: "Unit 1 — Advanced OOP",
+  title: "Inheritance",
+  body: `<p>Inheritance allows a child class to extend a parent class, inheriting its fields and methods.</p>
+<div class="les-code">public class Animal {
+    String name;
+    public Animal(String name) { this.name = name; }
+    public void eat() { System.out.println(name + " eats."); }
+}
+
+public class Dog extends Animal {
+    String breed;
+    public Dog(String name, String breed) {
+        super(name);   // call parent constructor first
+        this.breed = breed;
+    }
+    @Override
+    public String toString() {
+        return super.toString() + " | Breed: " + breed;
+    }
+}</div>
+<ul>
+  <li><code>extends</code> — establishes the relationship</li>
+  <li><code>super()</code> — calls the parent constructor (must be first line)</li>
+  <li><code>@Override</code> — replaces the parent's version of a method</li>
+</ul>
+<div class="les-callout exam">IEB: given a parent class, write a subclass. Always call super() first and override toString().</div>`,
+  code: `public class Inheritance {\n    static class Vehicle {\n        protected String brand;\n        protected int year;\n        protected double price;\n\n        public Vehicle(String brand, int year, double price) {\n            this.brand = brand; this.year = year; this.price = price;\n        }\n        public String toString() { return brand + " (" + year + ") R" + price; }\n    }\n\n    static class Car extends Vehicle {\n        private int doors;\n        public Car(String b, int y, double p, int d) { super(b,y,p); doors=d; }\n        @Override public String toString() { return super.toString() + " | " + doors + "-door"; }\n    }\n\n    static class Truck extends Vehicle {\n        private double payload;\n        public Truck(String b, int y, double p, double t) { super(b,y,p); payload=t; }\n        @Override public String toString() { return super.toString() + " | " + payload + "t payload"; }\n    }\n\n    public static void main(String[] args) {\n        Vehicle[] fleet = {\n            new Car("Toyota", 2022, 320000, 4),\n            new Truck("Isuzu", 2021, 580000, 8.5),\n            new Car("BMW",    2023, 750000, 2)\n        };\n        for (Vehicle v : fleet) System.out.println(v);\n    }\n}`,
+  challenge: "Create a Shape parent class with colour and getArea()=0. Write Circle (radius) and Rectangle (width, height) subclasses that override getArea(). Store in Shape[] and print each area."
+},
+{
+  unit: "Unit 1 — Advanced OOP",
+  title: "Polymorphism and @Override",
+  body: `<p>Polymorphism means a parent-type reference can hold a child object, and the correct overridden method is called automatically at runtime.</p>
+<div class="les-code">Animal a = new Dog("Rex", "Labrador");
+a.toString();   // Dog's version called, not Animal's</div>
+<p>This is <strong>dynamic dispatch</strong> — Java decides at runtime which method to call based on the actual object type, not the reference type.</p>
+<div class="les-code">Animal[] animals = { new Dog("Rex","Lab"), new Cat("Whiskers") };
+for (Animal a : animals)
+    System.out.println(a.toString());  // correct version for each</div>
+<div class="les-callout exam">IEB output tracing: if a parent-type array holds child objects, the overridden (child) version of the method is ALWAYS called, never the parent's.</div>`,
+  code: `public class Polymorphism {\n    static class Shape {\n        String colour;\n        public Shape(String c) { colour = c; }\n        public double getArea() { return 0; }\n        public String toString() { return colour + " shape, area = " + getArea(); }\n    }\n    static class Circle extends Shape {\n        double r;\n        public Circle(String c, double r) { super(c); this.r = r; }\n        @Override public double getArea() { return Math.PI * r * r; }\n    }\n    static class Rectangle extends Shape {\n        double w, h;\n        public Rectangle(String c, double w, double h) { super(c); this.w=w; this.h=h; }\n        @Override public double getArea() { return w * h; }\n    }\n    public static void main(String[] args) {\n        Shape[] shapes = {\n            new Circle("red", 5),\n            new Rectangle("blue", 4, 6),\n            new Circle("green", 3)\n        };\n        double total = 0;\n        for (Shape s : shapes) { System.out.println(s); total += s.getArea(); }\n        System.out.println("Total area: " + total);\n    }\n}`,
+  challenge: "Add a Triangle subclass (base, height, area = 0.5×base×height). Then find and print the shape with the largest area from the array."
+},
+{
+  unit: "Unit 2 — Exception Handling",
+  title: "try / catch / finally",
+  body: `<p>Exception handling lets your program deal with errors gracefully instead of crashing.</p>
+<div class="les-code">try {
+    int x = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Error: " + e.getMessage());
+} finally {
+    System.out.println("Always runs.");
+}</div>
+<p><strong>Common IEB exception types:</strong></p>
+<ul>
+  <li><code>ArithmeticException</code> — division by zero</li>
+  <li><code>NumberFormatException</code> — parseInt on non-numeric string</li>
+  <li><code>ArrayIndexOutOfBoundsException</code> — invalid array index</li>
+</ul>
+<div class="les-callout tip">The <code>finally</code> block ALWAYS runs — even after a return statement or a thrown exception.</div>
+<div class="les-callout exam">IEB: write try/catch for user input validation (NumberFormatException), and trace through a try/catch/finally to predict the exact output.</div>`,
+  code: `import java.util.Scanner;\n\npublic class ExceptionHandling {\n    public static int safeDivide(int a, int b) {\n        try {\n            return a / b;\n        } catch (ArithmeticException e) {\n            System.out.println("Cannot divide by zero!");\n            return 0;\n        }\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        System.out.print("Enter a number: ");\n        String input = sc.nextLine();\n        try {\n            int num = Integer.parseInt(input);\n            System.out.println("Double: " + (num * 2));\n            System.out.println("10/" + num + " = " + safeDivide(10, num));\n        } catch (NumberFormatException e) {\n            System.out.println("Not a valid integer!");\n        } finally {\n            System.out.println("Program complete.");\n        }\n    }\n}`,
+  challenge: "Write safeParseDouble(String s) that returns the parsed double or -1.0 on failure. Test with valid and invalid inputs."
+},
+{
+  unit: "Unit 2 — Exception Handling",
+  title: "Recursion",
+  body: `<p>A recursive method calls itself. Every recursive method needs:</p>
+<ul>
+  <li><strong>Base case</strong> — the condition that stops the recursion</li>
+  <li><strong>Recursive case</strong> — the call to itself with a smaller problem</li>
+</ul>
+<div class="les-code">public static int factorial(int n) {
+    if (n <= 1) return 1;          // base case
+    return n * factorial(n - 1);  // recursive case
+}
+// factorial(4) → 4 × 3 × 2 × 1 = 24</div>
+<div class="les-callout warn">Without a base case the method calls itself forever → StackOverflowError. Always define the base case first.</div>
+<div class="les-callout exam">IEB: trace recursive calls showing the call stack, write recursive factorial/Fibonacci/string reversal, convert a loop to recursion.</div>`,
+  code: `public class Recursion {\n    public static long factorial(int n) {\n        if (n <= 1) return 1;\n        return n * factorial(n - 1);\n    }\n    public static int fibonacci(int n) {\n        if (n <= 1) return n;\n        return fibonacci(n-1) + fibonacci(n-2);\n    }\n    public static String reverse(String s) {\n        if (s.length() <= 1) return s;\n        return reverse(s.substring(1)) + s.charAt(0);\n    }\n    public static int digitSum(int n) {\n        if (n < 10) return n;\n        return n % 10 + digitSum(n / 10);\n    }\n    public static void main(String[] args) {\n        System.out.println("6! = " + factorial(6));\n        System.out.println("fib(8) = " + fibonacci(8));\n        System.out.println("reverse = " + reverse("hello"));\n        System.out.println("digitSum(1234) = " + digitSum(1234));\n    }\n}`,
+  challenge: "Write power(int base, int exp) recursively (no Math.pow). Write isPalindrome(String s) recursively."
+},
+{
+  unit: "Unit 3 — Exam Preparation",
+  title: "IEB Exam Patterns and Tips",
+  body: `<p>IEB Gr 12 Paper 1 recurring question types:</p>
+<p><strong>1. Class design (20–30 marks)</strong></p>
+<ul>
+  <li>Parent class: private fields, constructor, getters/setters, methods, toString()</li>
+  <li>Subclass: extends, super(), @Override methods</li>
+  <li>Array of objects: find highest, count conditions, sort by field</li>
+</ul>
+<p><strong>2. Array manipulation (15–20 marks)</strong></p>
+<ul>
+  <li>Fill, traverse, min/max/average, bubble sort, binary search</li>
+</ul>
+<p><strong>3. String manipulation (10–15 marks)</strong></p>
+<ul>
+  <li>Count characters, palindrome check, extract/replace substrings</li>
+</ul>
+<p><strong>4. Output tracing (10 marks)</strong></p>
+<ul>
+  <li>Trace loops, if/else, recursion, inheritance step by step</li>
+</ul>
+<div class="les-callout exam">Time: ~1 minute per mark. Class design takes longest — do not leave it last. Partial marks are awarded — write something for every question.</div>
+<div class="les-callout warn">Most common lost marks: missing semicolons, wrong method signatures, missing super() in subclass, using == instead of .equals() for Strings.</div>`,
+  code: `public class ExamPattern {\n    static class Employee {\n        private String name;\n        private double salary;\n\n        public Employee(String name, double salary) {\n            this.name = name; this.salary = salary;\n        }\n        public String getName()    { return name; }\n        public double getSalary()  { return salary; }\n        public double calculateBonus() { return salary * 0.10; }\n        public String toString() {\n            return name + " | R" + salary + " | Bonus: R" + calculateBonus();\n        }\n    }\n\n    static class Manager extends Employee {\n        private int teamSize;\n        public Manager(String name, double salary, int teamSize) {\n            super(name, salary); this.teamSize = teamSize;\n        }\n        @Override\n        public double calculateBonus() {\n            return super.calculateBonus() + (teamSize * 500);\n        }\n        @Override\n        public String toString() {\n            return super.toString() + " | Team: " + teamSize;\n        }\n    }\n\n    public static void main(String[] args) {\n        Employee[] staff = {\n            new Employee("Amara",  35000),\n            new Manager("Diego",   60000, 5),\n            new Employee("Leila",  42000),\n            new Manager("Sipho",   75000, 8)\n        };\n        double totalBonus = 0;\n        for (Employee e : staff) {\n            System.out.println(e);\n            totalBonus += e.calculateBonus();\n        }\n        System.out.println("Total bonus: R" + totalBonus);\n    }\n}`,
+  challenge: "Add a CommissionEmployee extending Employee. Their bonus = 10% salary + 5% of sales. Add two to the staff array and update the report."
+}
+]
+}; // end LESSONS
+
+// ── Lesson state ─────────────────────────────────────────────────────────────
+let lessonGrade = 10;
+let lessonIndex = 0;
+const completedLessons = { 10: new Set(), 11: new Set(), 12: new Set() };
+
+const lessonOverlay = document.getElementById('lessonOverlay');
+const lessonSidebar = document.getElementById('lessonSidebar');
+const lessonInner   = document.getElementById('lessonContentInner');
+const lesPrev       = document.getElementById('lesPrev');
+const lesNext       = document.getElementById('lesNext');
+const lesProgress   = document.getElementById('lesProgress');
+const lesClose      = document.getElementById('lesClose');
+const openLessonsBtn= document.getElementById('openLessonsBtn');
+const gradePills    = document.querySelectorAll('.grade-pill');
+const lesGradeBtns  = document.querySelectorAll('.les-grade-btn');
+
+function buildSidebar() {
+  const lessons = LESSONS[lessonGrade];
+  let html = '', lastUnit = '';
+  lessons.forEach((les, i) => {
+    if (les.unit !== lastUnit) {
+      html += `<div class="les-unit-header">${les.unit}</div>`;
+      lastUnit = les.unit;
+    }
+    const done   = completedLessons[lessonGrade].has(i) ? '<span class="les-done">✓</span>' : '';
+    const grCls  = lessonGrade === 11 ? 'gr11' : lessonGrade === 12 ? 'gr12' : '';
+    const actCls = i === lessonIndex ? `active ${grCls}` : '';
+    html += `<div class="les-item ${actCls}" data-idx="${i}">
+      <span class="les-num">${i+1}</span>
+      <span class="les-name">${les.title}</span>${done}
+    </div>`;
+  });
+  lessonSidebar.innerHTML = html;
+  lessonSidebar.querySelectorAll('.les-item').forEach(item =>
+    item.addEventListener('click', () => { lessonIndex = parseInt(item.dataset.idx); renderLesson(); })
+  );
+}
+
+function renderLesson() {
+  const lessons = LESSONS[lessonGrade];
+  const les     = lessons[lessonIndex];
+  if (!les) return;
+
+  const grCls = lessonGrade === 11 ? 'gr11' : lessonGrade === 12 ? 'gr12' : 'gr10';
+
+  lessonInner.innerHTML = `
+    <div class="les-topic-badge ${grCls}">Grade ${lessonGrade} · IEB/CAPS IT</div>
+    <div class="les-title">${les.title}</div>
+    <div class="les-body">${les.body}</div>
+    <div class="les-challenge">
+      <h4>🎯 Challenge</h4>
+      <p>${les.challenge}</p>
+    </div>
+    <button class="les-load-btn ${grCls}" id="lesLoadBtn">📥 Load example into editor</button>
+  `;
+
+  document.getElementById('lesLoadBtn').addEventListener('click', () => {
+    codeEditor.value = les.code;
+    updateLineNumbers();
+    updateHighlight();
+    completedLessons[lessonGrade].add(lessonIndex);
+    buildSidebar();
+    lessonOverlay.classList.add('hidden');
+    editorTab.click();
+    clearConsole();
+    conPrint(`Loaded: ${les.title} — press Run!`, 'con-info');
+  });
+
+  lesPrev.style.visibility = lessonIndex === 0 ? 'hidden' : 'visible';
+  const isLast = lessonIndex === lessons.length - 1;
+  lesNext.textContent = isLast ? 'Finish ✓' : 'Next →';
+  lesProgress.textContent = `Lesson ${lessonIndex + 1} of ${lessons.length}`;
+  buildSidebar();
+  lessonInner.scrollTop = 0;
+}
+
+function openLessons(grade) {
+  lessonGrade = grade;
+  lessonOverlay.classList.remove('hidden');
+  lesGradeBtns.forEach(b => b.classList.remove('active'));
+  document.querySelector(`.les-grade-btn[data-grade="${grade}"]`).classList.add('active');
+  renderLesson();
+}
+
+// Grade pill clicks (above console)
+gradePills.forEach(pill => {
+  pill.addEventListener('click', () => {
+    const g = parseInt(pill.dataset.grade);
+    gradePills.forEach(p => p.classList.remove('active-10','active-11','active-12'));
+    pill.classList.add(`active-${g}`);
+    openLessonsBtn.classList.remove('hidden');
+    openLessonsBtn.onclick = () => openLessons(g);
+    openLessons(g);
+  });
+});
+
+// Lesson header grade buttons
+lesGradeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    lessonGrade = parseInt(btn.dataset.grade);
+    lessonIndex = 0;
+    lesGradeBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderLesson();
+  });
+});
+
+lesClose.addEventListener('click', () => lessonOverlay.classList.add('hidden'));
+lessonOverlay.addEventListener('click', e => { if (e.target === lessonOverlay) lessonOverlay.classList.add('hidden'); });
+
+lesPrev.addEventListener('click', () => {
+  if (lessonIndex > 0) { lessonIndex--; renderLesson(); }
+});
+lesNext.addEventListener('click', () => {
+  completedLessons[lessonGrade].add(lessonIndex);
+  const lessons = LESSONS[lessonGrade];
+  if (lessonIndex < lessons.length - 1) {
+    lessonIndex++;
+    renderLesson();
+  } else {
+    lessonOverlay.classList.add('hidden');
+    conPrint(`✓ All Grade ${lessonGrade} lessons complete!`, 'con-info');
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (lessonOverlay.classList.contains('hidden')) return;
+  if (e.key === 'Escape')      lessonOverlay.classList.add('hidden');
+  if (e.key === 'ArrowRight')  lesNext.click();
+  if (e.key === 'ArrowLeft')   lesPrev.click();
+});
+
+
 // ── Init ──────────────────────────────────────────────────────────────────
 updateLineNumbers();
 updateHighlight();
