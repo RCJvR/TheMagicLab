@@ -210,7 +210,7 @@ function parse(tokens) {
     // standard for
     let init = null;
     if (!check(TT.SEMI)) {
-      if (isVarDecl()) init = parseVarDecl(true);
+      if (isVarDecl()) { init = parseVarDecl(true); expect(TT.SEMI); }
       else { init = parseExpr(); expect(TT.SEMI); }
     } else expect(TT.SEMI);
     const cond = check(TT.SEMI) ? null : parseExpr();
@@ -299,7 +299,19 @@ function parse(tokens) {
       let arrExtra = 0;
       while (check(TT.LBRACKET) && peek(1).type === TT.RBRACKET) { pos += 2; arrExtra++; }
       let init = null;
-      if (at(TT.EQ)) init = parseExpr();
+      if (at(TT.EQ)) {
+        // Shorthand array initialiser: int[] x = {1, 2, 3}
+        if (check(TT.LBRACE)) {
+          pos++;
+          const items = [];
+          if (!check(TT.RBRACE)) { do { items.push(parseExpr()); } while (at(TT.COMMA)); }
+          expect(TT.RBRACE);
+          init = { kind: 'NewArray', typeName: typeof type === 'object' ? type.base : type,
+                   dims: [], init: items };
+        } else {
+          init = parseExpr();
+        }
+      }
       decls.push({ name, init, arrExtra });
     } while (at(TT.COMMA));
     if (!noSemi) expect(TT.SEMI);
@@ -453,6 +465,12 @@ function parse(tokens) {
         const params = parseParams();
         const body = parseBlock();
         constructors.push({ params, body, mods });
+        continue;
+      }
+      // nested class
+      if (peek().type === TT.KW && peek().val === 'class') {
+        const nested = parseClass();
+        classes.push(nested);
         continue;
       }
       // method or field
