@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0a0f1e">
-  <title>Java Code Genie</title>
+  <title>Java Genie</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='shine' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23a5b4fc'/%3E%3Cstop offset='1' stop-color='%236ee7b7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23bg)'/%3E%3Cellipse cx='32' cy='40' rx='16' ry='10' fill='%23fbbf24'/%3E%3Cellipse cx='32' cy='38' rx='16' ry='10' fill='%23fcd34d'/%3E%3Cpath d='M48 36 Q56 30 54 24 Q52 20 46 22 Q44 28 48 36Z' fill='%23f59e0b'/%3E%3Cpath d='M16 38 Q8 36 10 44 Q12 50 18 46' fill='none' stroke='%23f59e0b' stroke-width='3.5' stroke-linecap='round'/%3E%3Cpath d='M46 20 Q44 12 38 8 Q34 5 32 10 Q34 14 38 12 Q42 10 46 20Z' fill='url(%23shine)' opacity='0.9'/%3E%3Ccircle cx='40' cy='10' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='50' cy='14' r='1.8' fill='%236ee7b7'/%3E%3Ccircle cx='44' cy='5' r='1.5' fill='%23fcd34d'/%3E%3Ctext x='26' y='43' font-family='monospace' font-size='10' font-weight='bold' fill='%23854d0e' opacity='0.8'%3E%7B%7D%3C/text%3E%3C/svg%3E">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Code Genie">
+  <meta name="apple-mobile-web-app-title" content="Java Genie">
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -276,6 +276,84 @@
     button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(99,102,241,0.60); outline-offset: 2px; }
 
     /* ── Tutorial overlay ─────────────────────────────────────────────────────── */
+    /* ── Challenges overlay ── */
+    #challengesOverlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(6,9,26,0.92); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      animation: tutorialFadeIn 180ms ease;
+    }
+    #challengesBox {
+      background: #0f1628; border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 18px; width: min(780px, 95vw); max-height: 88vh;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55);
+      animation: tutorialScaleIn 220ms ease;
+    }
+    #challengesHeader {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    #challengesHeader h2 {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 16px;
+      background: linear-gradient(125deg, #fff 0%, #fcd34d 60%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    #challengesBody {
+      flex: 1; overflow-y: auto; padding: 16px 20px 20px;
+    }
+    .chal-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .chal-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
+      transition: border-color 150ms;
+    }
+    .chal-card:hover { border-color: rgba(245,158,11,0.35); }
+    .chal-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+      color: rgba(245,158,11,0.70);
+    }
+    .chal-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 13px; color: #e8eaf4;
+    }
+    .chal-lines {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px;
+      background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.22); color: #fbbf24;
+    }
+    .chal-diff {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 4px;
+    }
+    .chal-diff.beginner { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
+    .chal-diff.intermediate { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+    .chal-diff.advanced { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+    .chal-desc { font-size: 12px; line-height: 1.65; color: rgba(221,225,240,0.60); }
+    .chal-clues {
+      background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.15);
+      border-radius: 8px; padding: 9px 11px;
+    }
+    .chal-clues-title {
+      font-size: 10px; font-weight: 700; color: rgba(245,158,11,0.70);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px;
+    }
+    .chal-clues ul {
+      font-size: 11px; line-height: 1.75; color: rgba(221,225,240,0.55);
+      padding-left: 16px; margin: 0;
+    }
+    .chal-clues li { margin-bottom: 1px; }
+    .chal-close {
+      width: 28px; height: 28px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06); color: rgba(221,225,240,0.55);
+      font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 130ms;
+    }
+    .chal-close:hover { background: rgba(255,255,255,0.14); color: #dde1f0; }
+    @media (max-width: 600px) { .chal-grid { grid-template-columns: 1fr; } }
+
     #tutorialOverlay {
       position: fixed; inset: 0; z-index: 100;
       background: rgba(6, 9, 26, 0.96);
@@ -561,10 +639,13 @@
 <div id="appShell">
 
   <header id="appHeader">
-    <h1 class="app-title">Java Code Genie</h1>
+    <h1 class="app-title">Java Genie</h1>
     <div class="header-actions">
       <button id="learnBtn" class="hdr-btn" style="background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.4);color:#a5b4fc;">
         <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn Java
+      </button>
+      <button id="challengesBtn" class="hdr-btn" style="background:rgba(245,158,11,0.18);border-color:rgba(245,158,11,0.40);color:#fcd34d;">
+        <i data-lucide="zap" style="width:13px;height:13px;"></i> Challenges
       </button>
       <button id="installBtn" class="hdr-btn hidden" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.4);color:#6ee7b7;" title="Install as an app on this device">
         <i data-lucide="monitor-smartphone" style="width:13px;height:13px;"></i> Install app
@@ -754,12 +835,259 @@
 
     </div><!-- /rightCol -->
   </div><!-- /mainGrid -->
+  <!-- ══ CHALLENGES OVERLAY ══ -->
+  <div id="challengesOverlay" class="hidden">
+    <div id="challengesBox">
+      <div id="challengesHeader">
+        <h2>⚡ Coding Challenges</h2>
+        <button class="chal-close" id="chalClose">&#x2715;</button>
+      </div>
+      <div id="challengesBody">
+        <p style="font-size:12px;color:rgba(221,225,240,0.45);margin-bottom:14px;line-height:1.6;">
+          Ten challenges, from a single line to a full windmill. No answers here — figure it out, experiment, and use the clues if you get stuck.
+          The <strong style="color:#fbbf24;">expected lines</strong> shows how short an efficient solution should be. If yours is much longer, think about using a loop!
+        </p>
+        <div class="chal-grid">
+
+          <!-- 1 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 1</span>
+              <span class="chal-diff beginner">Beginner</span>
+            </div>
+            <div class="chal-title">Draw a straight line</div>
+            <div>
+              <span class="chal-lines">~3 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a horizontal line 20 units long across the middle of the canvas. The pen starts facing right by default.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>Create a Pen object called <code>draw</code></li>
+                <li>Call <code>draw.move();</code> once per unit — 20 times</li>
+                <li>Use <code>draw.setPosition(x, y);</code> to position the pen</li>
+                <li>No turns needed for a straight line</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 2</span>
+              <span class="chal-diff beginner">Beginner</span>
+            </div>
+            <div class="chal-title">Draw a 6-unit square (no loop)</div>
+            <div>
+              <span class="chal-lines">~28 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a square where each side is exactly 6 units long. Write it out as a pure sequence — no loops.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>A square has 4 equal sides</li>
+                <li>After each side, turn 90° — use <code>draw.turnRight(90);</code></li>
+                <li>One side = 6 × <code>draw.move();</code> then a turn</li>
+                <li>Total: 4 sides × (6 moves + 1 turn) = 28 lines</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 3</span>
+              <span class="chal-diff beginner">Beginner</span>
+            </div>
+            <div class="chal-title">Draw an equilateral triangle</div>
+            <div>
+              <span class="chal-lines">~22 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw an equilateral triangle with each side 8 units long. All three sides are equal and all three angles are equal.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>A triangle has 3 sides</li>
+                <li>The exterior turn angle for a regular polygon = 360° ÷ number of sides</li>
+                <li>360° ÷ 3 = <strong>120°</strong> — turn right 120° after each side</li>
+                <li>Use <code>draw.turnRight(120);</code></li>
+                <li>3 sides × (8 moves + 1 turn) = 27 lines — can you spot a pattern already?</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 4</span>
+              <span class="chal-diff intermediate">Intermediate</span>
+            </div>
+            <div class="chal-title">Draw a Pythagorean right triangle</div>
+            <div>
+              <span class="chal-lines">~35 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a 3-4-5 right triangle scaled up: legs of 15 and 20 units, and a hypotenuse of 25 units. The right angle is at the bottom-left.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>The 3-4-5 triangle: 3² + 4² = 5². Scale: 3→15, 4→20, 5→25</li>
+                <li>Draw: right 20 units, turn left 90°, up 15 units</li>
+                <li>The hypotenuse goes diagonally — use <code>draw.setDirection(degrees);</code></li>
+                <li>The angle from horizontal to the hypotenuse = arctan(15/20) ≈ 37°</li>
+                <li>So the hypotenuse direction ≈ 180° + 37° = 217° (pointing back to start)</li>
+                <li>It needs 25 move() calls along that diagonal</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 5</span>
+              <span class="chal-diff intermediate">Intermediate</span>
+            </div>
+            <div class="chal-title">Draw a 5-unit square using a loop</div>
+            <div>
+              <span class="chal-lines">~10 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a square with 5-unit sides — but this time use a for loop so you only write the side-drawing code once.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>Outer loop runs 4 times (one per side): <code>for(int side = 0; side &lt; 4; side = side + 1)</code></li>
+                <li>Inside: 5 × <code>draw.move();</code> then <code>draw.turnRight(90);</code></li>
+                <li>Or use a nested inner loop for the 5 moves</li>
+                <li>Compare: Challenge 2 = 28 lines. This version = ~10 lines. Same result!</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 6</span>
+              <span class="chal-diff intermediate">Intermediate</span>
+            </div>
+            <div class="chal-title">Draw a coloured square wave</div>
+            <div>
+              <span class="chal-lines">~15 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a square wave pattern that repeats across the canvas. Each cycle: flat right, up, flat right, down — back to baseline. Use different colours for each segment.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>One cycle: right 3, turn up, up 3, turn right, right 3, turn down, down 3, turn right</li>
+                <li>Use a for loop to repeat the cycle: <code>for(int i = 0; i &lt; 5; i = i + 1)</code></li>
+                <li>Change colour before each segment: <code>draw.setColor(r, g, b);</code></li>
+                <li>The net vertical movement must be zero — ups must cancel downs</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 7 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 7</span>
+              <span class="chal-diff intermediate">Intermediate</span>
+            </div>
+            <div class="chal-title">Draw a heartbeat with single loops</div>
+            <div>
+              <span class="chal-lines">~35 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw 3 repeating ECG heartbeat cycles using a single outer for loop. Each beat must return the pen to the exact same baseline height.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>One beat shape: flat → P-wave bump → QRS spike → T-wave → flat</li>
+                <li>The golden rule: total UP moves = total DOWN moves inside one beat</li>
+                <li>Outer loop: <code>for(int beat = 0; beat &lt; 3; beat = beat + 1)</code></li>
+                <li>Inside: write the full beat sequence using <code>setDirection</code> and <code>move()</code></li>
+                <li>Start position: <code>draw.setPosition(3, 28);</code> facing right</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 8 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 8</span>
+              <span class="chal-diff advanced">Advanced</span>
+            </div>
+            <div class="chal-title">Draw a heartbeat with nested loops</div>
+            <div>
+              <span class="chal-lines">~50 lines of code</span>
+            </div>
+            <p class="chal-desc">Rebuild the heartbeat but use inner for loops for every segment and named int variables for each measurement. Changing one variable should update the whole beat.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>Declare variables at the top: <code>int rSpike = 12;</code> <code>int flatLen = 8;</code> etc.</li>
+                <li>Use inner loops: <code>for(int s = 0; s &lt; rSpike; s = s + 1) { draw.move(); }</code></li>
+                <li>Critical: <code>sSpike</code> must equal <code>rSpike</code> to stay on baseline</li>
+                <li>Test it: change <code>rSpike</code> to 16 — does the pattern drift? Fix it by also changing <code>sSpike</code></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 9 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 9</span>
+              <span class="chal-diff advanced">Advanced</span>
+            </div>
+            <div class="chal-title">Draw a house</div>
+            <div>
+              <span class="chal-lines">~40 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a house with walls, a door, and a roof. Use penUp() and penDown() to jump between separate parts without drawing a connecting line.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>Draw the walls first as a rectangle (e.g. 24 wide × 14 tall)</li>
+                <li>Use <code>draw.penUp();</code> to move without drawing, <code>draw.penDown();</code> to resume</li>
+                <li>Use <code>draw.setPosition(x, y);</code> to jump to the door or roof start</li>
+                <li>The roof is a triangle — two diagonal lines meeting at a peak</li>
+                <li>Diagonal direction: use a degree value like <code>draw.setDirection(315);</code> for 45° up-right</li>
+                <li>Break it into 3 parts: walls loop, door loop, roof lines</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 10 -->
+          <div class="chal-card">
+            <div>
+              <span class="chal-num">Challenge 10</span>
+              <span class="chal-diff advanced">Advanced</span>
+            </div>
+            <div class="chal-title">Draw a 4-blade windmill</div>
+            <div>
+              <span class="chal-lines">~45 lines of code</span>
+            </div>
+            <p class="chal-desc">Draw a windmill with 4 blades radiating from the centre. Each blade points in a different direction. Use a loop and setDirection() to rotate between blades.</p>
+            <div class="chal-clues">
+              <div class="chal-clues-title">💡 Clues</div>
+              <ul>
+                <li>4 blades, evenly spaced → each blade is 360° ÷ 4 = 90° apart</li>
+                <li>For each blade: start at centre, move out 10 units, penUp back, rotate 90°</li>
+                <li>Use <code>draw.setDirection(angle);</code> where angle = blade × 90</li>
+                <li>Each blade can be an L-shape or rectangle for a more realistic look</li>
+                <li>Use <code>draw.setPosition(cx, cy);</code> to return to the centre between blades</li>
+                <li>Outer loop: <code>for(int blade = 0; blade &lt; 4; blade = blade + 1)</code></li>
+              </ul>
+            </div>
+          </div>
+
+        </div><!-- /chal-grid -->
+      </div><!-- /challengesBody -->
+    </div><!-- /challengesBox -->
+  </div><!-- /challengesOverlay -->
+
   <!-- ══ TUTORIAL OVERLAY ══ -->
   <div id="tutorialOverlay" class="hidden">
     <div id="tutorialBox">
 
       <div id="tutorialHeader">
-        <h2>&#x1F4DA; Learn Java with Code Genie</h2>
+        <h2>&#x1F4DA; Learn Java with Java Genie</h2>
         <button class="tut-close" id="tutClose">&#x2715;</button>
       </div>
 
@@ -772,7 +1100,7 @@
         <div class="tut-dot" data-slide="5"></div>
         <div class="tut-dot" data-slide="6"></div>
         <div class="tut-dot" data-slide="7"></div>
-        <span id="tutorialStepLabel">Step 1 of 8</span>
+        <span id="tutorialStepLabel">Step 1 of 13</span>
       </div>
 
       <div id="tutorialSlides">
@@ -793,7 +1121,7 @@
             and the computer turns your instructions into something it can run.
           </p>
           <div class="tut-callout info">
-            💡 Every Java program you write in Code Genie is <em>real</em> Java code —
+            💡 Every Java program you write in Java Genie is <em>real</em> Java code —
             the same language used at companies like Google, Amazon, and Netflix every day.
           </div>
           <p>Every Java program follows this basic skeleton:</p>
@@ -880,7 +1208,7 @@
             Objects are created from a <strong>class</strong> — which is like a blueprint or recipe.
             The class defines what the object can store (its <em>properties</em>) and what it can do (its <em>methods</em>).
           </p>
-          <p>In Code Genie, <code>Pen</code> is a class. You create a Pen object like this:</p>
+          <p>In Java Genie, <code>Pen</code> is a class. You create a Pen object like this:</p>
           <div class="tut-code" id="slide2code"></div>
           <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
             <li><code>Pen</code> — the <strong>class</strong> (the blueprint). Notice it starts with a capital letter.</li>
@@ -1110,6 +1438,332 @@ n.setColor(255, 0, 0);  // set pen colour to red (RGB)</div>
           </div>
         </div>
 
+
+        <!-- ── Slide 8: Stairs no loop ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">9</span> Drawing Stairs — Without Loops</h3>
+          <p>
+            A staircase is a great pattern for practising sequences and spotting repetition.
+            Each step has two parts: a <strong>tread</strong> (flat, going right) and a
+            <strong>riser</strong> (vertical, going up).
+          </p>
+          <div class="tut-code">// One stair step:
+draw.move(); draw.move(); draw.move();   // tread — right 3
+draw.move(); draw.move(); draw.move();
+draw.setDirection(Pen.UP);
+draw.move(); draw.move(); draw.move();   // riser — up 3
+draw.move(); draw.move(); draw.move();
+draw.setDirection(Pen.RIGHT);</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn tutorial-load" data-example="stairs_simple">📥 Load stairs (no loop)</button>
+          </div>
+          <p>
+            Load the example and look at the code. You will notice that the same block
+            of lines is copied and pasted <strong>five times</strong> — once for each stair.
+            This is a perfect example of a <em>sequence</em>: code that runs top to bottom,
+            one statement at a time.
+          </p>
+          <div class="tut-callout warn">
+            ⚠ Five stairs takes 75 lines. Ten stairs would take 150 lines.
+            The code works — but writing it by hand is tedious, error-prone,
+            and hard to change. If you want 6 steps instead of 3, you have
+            to change the code in five separate places.
+          </div>
+          <div class="tut-callout tip">
+            Notice the pen name is <code>draw</code> — you can name your Pen object
+            anything you like. <code>draw</code>, <code>n</code>, <code>pen</code>,
+            <code>brush</code> — they all work exactly the same way.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q1: In the stairs example, what is the "tread" of each stair?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">The vertical part going upward</button>
+    <button class="quiz-btn" data-correct="true">The flat horizontal part going right</button>
+    <button class="quiz-btn" data-correct="false">The turn between the tread and riser</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: Why is writing stairs without a loop a problem for larger patterns?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">The pen cannot draw stairs without a loop</button>
+    <button class="quiz-btn" data-correct="false">Java does not allow repeated move() calls</button>
+    <button class="quiz-btn" data-correct="true">The code grows very long and you must change multiple places to adjust it</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What does <code>draw.setDirection(Pen.UP);</code> do?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="true">Points the pen upward so the next move() goes up</button>
+    <button class="quiz-btn" data-correct="false">Moves the pen up one step immediately</button>
+    <button class="quiz-btn" data-correct="false">Lifts the pen off the canvas</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+        </div>
+
+        <!-- ── Slide 9: Stairs with loop ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">10</span> Drawing Stairs — With a Loop</h3>
+          <p>
+            Now we use a <strong>for loop</strong> to remove all that repetition.
+            The key insight is that every stair is <em>identical</em> —
+            so we write the code for <strong>one stair</strong> once, and let the loop repeat it.
+          </p>
+          <div class="tut-code">for(int stair = 0; stair < 8; stair = stair + 1) {
+
+  // Tread: 6 steps right
+  for(int step = 0; step < 6; step = step + 1) {
+    draw.move();
+  }
+
+  // Riser: 6 steps up
+  draw.setDirection(Pen.UP);
+  for(int step = 0; step < 6; step = step + 1) {
+    draw.move();
+  }
+  draw.setDirection(Pen.RIGHT);
+}</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn tutorial-load" data-example="stairs_loop">📥 Load stairs (with loop)</button>
+          </div>
+          <p>Compare this to the previous version:</p>
+          <ul style="font-size:13px;line-height:1.9;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li>Without loop: <strong>75 lines</strong> for 5 stairs</li>
+            <li>With loop: <strong>13 lines</strong> for 8 stairs</li>
+            <li>Want 20 stairs? Just change <code>8</code> to <code>20</code> — one edit</li>
+            <li>Want 4 steps wide? Just change <code>6</code> to <code>4</code> — one edit</li>
+          </ul>
+          <div class="tut-callout info">
+            💡 This uses <strong>nested loops</strong> — a loop inside a loop.
+            The outer loop controls how many stairs are drawn.
+            Each inner loop handles one segment: the tread or the riser.
+          </div>
+          <div class="tut-callout tip">
+            Try changing the outer loop count (<code>8</code>), the step count (<code>6</code>),
+            and the riser count. What happens if the tread and riser use different step counts?
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q1: What does the outer loop control in the stairs-with-loop example?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="true">How many stairs are drawn in total</button>
+    <button class="quiz-btn" data-correct="false">How many steps wide each tread is</button>
+    <button class="quiz-btn" data-correct="false">The colour of each stair</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: If you change <code>stair &lt; 8</code> to <code>stair &lt; 12</code>, what happens?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">Each stair becomes 12 steps wide</button>
+    <button class="quiz-btn" data-correct="false">The pen moves 12 steps on each riser</button>
+    <button class="quiz-btn" data-correct="true">The program draws 12 stairs instead of 8</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What is the key advantage of using a loop for the stairs pattern?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">Loops make the pen move faster</button>
+    <button class="quiz-btn" data-correct="true">You write the stair code once and change one number to adjust the whole pattern</button>
+    <button class="quiz-btn" data-correct="false">Loops allow the pen to draw diagonal lines</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+        </div>
+
+        <!-- ── Slide 10: Heartbeat no loop ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">11</span> Heartbeat — Drawing an ECG Signal</h3>
+          <p>
+            A heartbeat trace (ECG) is a beautiful example of a real-world pattern you can
+            draw with sequences. Each beat has a specific shape that doctors recognise instantly.
+          </p>
+          <p>Let's break down the shape of one beat:</p>
+          <ul style="font-size:13px;line-height:1.9;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><strong>Flat baseline</strong> — the pen moves right along the baseline (heart at rest)</li>
+            <li><strong>P-wave</strong> — a small gentle bump up and back down (atria contracting)</li>
+            <li><strong>Q-dip</strong> — a tiny dip below the baseline</li>
+            <li><strong>R-spike</strong> — the tall dramatic spike upward (ventricles contracting)</li>
+            <li><strong>S-spike</strong> — a sharp plunge back down past the baseline</li>
+            <li><strong>T-wave</strong> — a gentle recovery bump back up to the baseline</li>
+            <li><strong>Flat baseline</strong> — back to rest before the next beat</li>
+          </ul>
+          <div class="tut-code">// The key rule: the pen must return to exactly
+// the same baseline height after every beat.
+// UP moves must perfectly cancel DOWN moves:
+// P-wave: up 3 + down 3 = 0 net
+// Q-R-S:  down 2 + up 12 + down 12 + up 2 = 0 net
+// T-wave: up 3 + down 3 = 0 net</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn tutorial-load" data-example="heartbeat_simple">📥 Load heartbeat (no loop)</button>
+          </div>
+          <div class="tut-callout info">
+            💡 This is a real ECG waveform shape used in medicine. The P-wave, QRS complex,
+            and T-wave are named parts of a real heartbeat that nurses and doctors learn to read.
+          </div>
+          <div class="tut-callout warn">
+            ⚠ Notice that this is just one beat — already quite long written as a sequence.
+            Imagine drawing 10 beats by hand. A loop would help enormously...
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q1: What is the tall dramatic spike in an ECG beat called?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">The T-wave</button>
+    <button class="quiz-btn" data-correct="false">The P-wave</button>
+    <button class="quiz-btn" data-correct="true">The R-spike (part of the QRS complex)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: Why must the UP moves and DOWN moves cancel out perfectly in the heartbeat code?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">Java requires equal up and down moves</button>
+    <button class="quiz-btn" data-correct="true">So the pen returns to the same baseline height, ready to draw the next beat</button>
+    <button class="quiz-btn" data-correct="false">To keep the pen speed constant</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: The Q-dip goes DOWN 2, and the return-to-baseline goes UP 2. The R-spike goes UP 12. How far down must the S-spike go to balance it?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">10 steps down</button>
+    <button class="quiz-btn" data-correct="true">12 steps down</button>
+    <button class="quiz-btn" data-correct="false">14 steps down</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+        </div>
+
+        <!-- ── Slide 11: Heartbeat with loop ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">12</span> Heartbeat — Using a For Loop</h3>
+          <p>
+            A real ECG shows <strong>multiple heartbeats</strong> in a row — all identical, repeating.
+            That is exactly what a for loop is perfect for. We write one beat,
+            and the loop repeats it as many times as we want.
+          </p>
+          <div class="tut-code">for(int beat = 0; beat &lt; 3; beat = beat + 1) {
+
+  // Every beat starts here, at the same baseline height.
+  // The pen draws the full beat shape, returns to baseline,
+  // and the loop runs it all again automatically.
+
+  // ... flat, P-wave, QRS, T-wave, flat ...
+
+}</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn tutorial-load" data-example="heartbeat_loop">📥 Load heartbeat (with loop)</button>
+          </div>
+          <p>Because the pen always returns to the <strong>same baseline</strong> at the end of
+          each beat, the loop works perfectly — each iteration starts exactly where the last one ended.</p>
+          <div class="tut-callout tip">
+            Try changing <code>beat &lt; 3</code> to <code>beat &lt; 5</code> to draw 5 heartbeats.
+            The pattern extends automatically across the canvas.
+          </div>
+          <div class="tut-callout info">
+            💡 This is a key principle of loop-friendly design: <strong>always leave the state
+            exactly as you found it</strong>. When a loop body leaves the pen at the same
+            position and direction it started, you can chain beats together perfectly.
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q1: Why does a for loop work so well for repeating the heartbeat pattern?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">Because loops make the pen move faster</button>
+    <button class="quiz-btn" data-correct="true">Each beat returns the pen to the same baseline so every loop iteration starts in the right place</button>
+    <button class="quiz-btn" data-correct="false">Because loops automatically change the pen colour each beat</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: What change would you make to draw 6 beats instead of 3?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">Copy and paste the entire loop body twice more</button>
+    <button class="quiz-btn" data-correct="true">Change <code>beat &lt; 3</code> to <code>beat &lt; 6</code></button>
+    <button class="quiz-btn" data-correct="false">Add a second for loop after the first</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What important rule makes a repeating pattern "loop-friendly"?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">The loop counter must start at 1, not 0</button>
+    <button class="quiz-btn" data-correct="false">Every loop must use nested loops inside it</button>
+    <button class="quiz-btn" data-correct="true">The pen must return to the same position and direction at the end of each iteration</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+        </div>
+
+        <!-- ── Slide 12: Heartbeat nested loops ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">13</span> Heartbeat — Nested Loops and Variables</h3>
+          <p>
+            The heartbeat loop works well, but the numbers are scattered through the code
+            and it is still quite long. We can make it more professional using
+            <strong>variables</strong> to name each measurement, and
+            <strong>inner loops</strong> for each segment.
+          </p>
+          <div class="tut-code">// Store the shape measurements in named variables.
+// Now the code reads like a description of the shape:
+int flatLen  = 8;   // flat baseline before beat
+int pWave    = 3;   // height of P-wave bump
+int rSpike   = 12;  // height of R spike
+int sSpike   = 12;  // depth of S (must equal rSpike!)
+int tWave    = 3;   // height of T-wave
+
+for(int beat = 0; beat &lt; 3; beat = beat + 1) {
+  // Use the variables in the inner loops:
+  for(int s = 0; s &lt; rSpike; s = s + 1) { draw.move(); }
+}</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn tutorial-load" data-example="heartbeat_nested">📥 Load heartbeat (nested + variables)</button>
+          </div>
+          <p>
+            Now if a doctor asks you to change the spike height from 12 to 16,
+            you change <strong>one variable</strong> — <code>int rSpike = 16;</code> —
+            and both the up-spike and the down-spike update automatically, keeping everything balanced.
+          </p>
+          <div class="tut-callout info">
+            💡 Using variables to store measurements instead of writing raw numbers is called
+            avoiding <strong>magic numbers</strong>. Professional programmers always name
+            their important values — it makes code far easier to read and maintain.
+          </div>
+          <div class="tut-callout tip">
+            🎮 <strong>Challenge:</strong> Change <code>rSpike</code> from 12 to 16.
+            Does the pattern still return to baseline? Why or why not?
+            (Hint: look at what <code>sSpike</code> is set to...)
+          </div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q1: What is the advantage of storing <code>rSpike = 12</code> in a variable instead of writing 12 directly in the code?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">It makes the program run faster</button>
+    <button class="quiz-btn" data-correct="true">You can change the spike height in one place and all related code updates automatically</button>
+    <button class="quiz-btn" data-correct="false">Variables can store larger numbers than raw values</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q2: In the nested heartbeat, if you change <code>rSpike</code> to 16 but leave <code>sSpike</code> at 12, what goes wrong?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">The program throws an error</button>
+    <button class="quiz-btn" data-correct="true">The pen drifts upward each beat because the spike up (16) no longer equals the spike down (12)</button>
+    <button class="quiz-btn" data-correct="false">The loop stops early</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="tutorial-quiz">
+  <p class="quiz-question">🧩 Q3: What do programmers call it when you use a named variable instead of writing a raw number directly in code?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false">A for loop</button>
+    <button class="quiz-btn" data-correct="false">A method call</button>
+    <button class="quiz-btn" data-correct="true">Avoiding magic numbers — using a named constant instead</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+        </div>
+
       </div><!-- /tutorialSlides -->
 
       <div id="tutorialNav">
@@ -1127,7 +1781,7 @@ n.setColor(255, 0, 0);  // set pen colour to red (RGB)</div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════════════
-// Java Code Genie — main script
+// Java Genie — main script
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ── Canvas state (can be changed by n.setGridSize) ───────────────────────────
@@ -1599,6 +2253,293 @@ const examples = {
     }
   }
 }`
+
+
+  // ── stairs_simple ──
+  stairs_simple:
+`public class StairsSimple {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(37, 99, 235);
+    draw.setPosition(4, 40);
+    draw.setDirection(Pen.RIGHT);
+
+    // One stair = 6 steps RIGHT (tread) then 6 steps UP (riser).
+    // We write it out fully for 5 stairs — watch how repetitive it gets!
+
+    // Stair 1
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+
+    // Stair 2
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+
+    // Stair 3
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+
+    // Stair 4
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+
+    // Stair 5
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+
+    // 5 stairs = 75 lines of code. There must be a better way!
+  }
+}`,
+
+  // ── stairs_loop ──
+  stairs_loop:
+`public class StairsLoop {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(99, 102, 241);
+    draw.setPosition(4, 40);
+    draw.setDirection(Pen.RIGHT);
+
+    // Each stair = 6 steps right, then 6 steps up.
+    // A for loop repeats this 8 times automatically.
+    // 8 stairs in 10 lines instead of 120!
+
+    for(int stair = 0; stair < 8; stair = stair + 1) {
+
+      // Tread: move right 6 steps
+      for(int step = 0; step < 6; step = step + 1) {
+        draw.move();
+      }
+
+      // Riser: turn up, move 6 steps, face right again
+      draw.setDirection(Pen.UP);
+      for(int step = 0; step < 6; step = step + 1) {
+        draw.move();
+      }
+      draw.setDirection(Pen.RIGHT);
+    }
+  }
+}`,
+
+  // ── heartbeat_simple ──
+  heartbeat_simple:
+`public class HeartbeatSimple {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(239, 68, 68);
+    draw.setPosition(3, 28);
+    draw.setDirection(Pen.RIGHT);
+
+    // One full ECG heartbeat beat, written out step by step.
+    // The pen always returns to the same baseline height.
+
+    // ── Flat baseline (before beat) ──
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move(); draw.move();
+
+    // ── P-wave (small bump) ──
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+    draw.move(); draw.move();
+    draw.setDirection(Pen.DOWN);
+    draw.move(); draw.move(); draw.move();
+
+    // ── Flat segment before QRS ──
+    draw.setDirection(Pen.RIGHT);
+    draw.move(); draw.move();
+
+    // ── Q: small dip ──
+    draw.setDirection(Pen.DOWN);
+    draw.move(); draw.move();
+
+    // ── R: tall spike UP ──
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move(); draw.move();
+
+    // ── S: spike DOWN past baseline ──
+    draw.setDirection(Pen.DOWN);
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move(); draw.move(); draw.move();
+
+    // ── Return to baseline ──
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move();
+
+    // ── T-wave (gentle recovery bump) ──
+    draw.setDirection(Pen.UP);
+    draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.RIGHT);
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.setDirection(Pen.DOWN);
+    draw.move(); draw.move(); draw.move();
+
+    // ── Flat baseline (after beat) ──
+    draw.setDirection(Pen.RIGHT);
+    draw.move(); draw.move(); draw.move(); draw.move();
+    draw.move(); draw.move();
+  }
+}`,
+
+  // ── heartbeat_loop ──
+  heartbeat_loop:
+`public class HeartbeatLoop {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(239, 68, 68);
+    draw.setPosition(3, 28);
+    draw.setDirection(Pen.RIGHT);
+
+    // One beat = 22 units wide.
+    // We draw 3 beats using a for loop.
+    // The flat lines at the start and end of each beat
+    // are inside the loop body.
+
+    for(int beat = 0; beat < 3; beat = beat + 1) {
+
+      // Flat baseline (before beat)
+      for(int s = 0; s < 8; s = s + 1) { draw.move(); }
+
+      // P-wave (small bump)
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < 3; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < 2; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < 3; s = s + 1) { draw.move(); }
+
+      // Flat before QRS
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < 2; s = s + 1) { draw.move(); }
+
+      // Q dip
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < 2; s = s + 1) { draw.move(); }
+
+      // R spike up
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < 12; s = s + 1) { draw.move(); }
+
+      // S spike down
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < 12; s = s + 1) { draw.move(); }
+
+      // Return to baseline
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < 2; s = s + 1) { draw.move(); }
+
+      // T-wave (recovery bump)
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < 3; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < 4; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < 3; s = s + 1) { draw.move(); }
+
+      // Flat baseline (after beat)
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < 6; s = s + 1) { draw.move(); }
+    }
+  }
+}`,
+
+  // ── heartbeat_nested ──
+  heartbeat_nested:
+`public class HeartbeatNested {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(239, 68, 68);
+    draw.setPosition(3, 28);
+    draw.setDirection(Pen.RIGHT);
+
+    // The QRS complex is the most recognisable part of a heartbeat.
+    // It is also the most repetitive part — spike up, spike down.
+    // We use nested loops:
+    //   Outer loop: repeats the whole beat (3 times)
+    //   Inner loops: handle each segment of the beat
+
+    int flatLen  = 8;  // flat line before the beat
+    int pWave    = 3;  // height of the small P-wave bump
+    int pTop     = 2;  // width of top of P-wave
+    int qDip     = 2;  // depth of Q dip
+    int rSpike   = 12; // height of R spike
+    int sSpike   = 12; // depth of S (R + S must be equal to return to baseline)
+    int sReturn  = 2;  // steps back to baseline after S
+    int tWave    = 3;  // height of T-wave
+    int tTop     = 4;  // width of top of T-wave
+    int tailFlat = 6;  // flat line after the beat
+
+    for(int beat = 0; beat < 3; beat = beat + 1) {
+
+      // Flat baseline before beat
+      for(int s = 0; s < flatLen; s = s + 1) { draw.move(); }
+
+      // P-wave
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < pWave; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < pTop; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < pWave; s = s + 1) { draw.move(); }
+
+      // Flat before QRS
+      draw.setDirection(Pen.RIGHT);
+      draw.move(); draw.move();
+
+      // Q dip
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < qDip; s = s + 1) { draw.move(); }
+
+      // R spike up
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < rSpike; s = s + 1) { draw.move(); }
+
+      // S spike down
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < sSpike; s = s + 1) { draw.move(); }
+
+      // Return to baseline
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < sReturn; s = s + 1) { draw.move(); }
+
+      // T-wave
+      draw.setDirection(Pen.UP);
+      for(int s = 0; s < tWave; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < tTop; s = s + 1) { draw.move(); }
+      draw.setDirection(Pen.DOWN);
+      for(int s = 0; s < tWave; s = s + 1) { draw.move(); }
+
+      // Flat baseline after beat
+      draw.setDirection(Pen.RIGHT);
+      for(int s = 0; s < tailFlat; s = s + 1) { draw.move(); }
+    }
+  }
+}`,
+
 };
 
 // ── DOM refs ─────────────────────────────────────────────────────────────────
@@ -2388,7 +3329,18 @@ fileInput.addEventListener("change", e => {
 (function initTutorial() {
 
   const overlay   = document.getElementById('tutorialOverlay');
-  const learnBtn  = document.getElementById('learnBtn');
+  const learnBtn       = document.getElementById('learnBtn');
+  const challengesBtn  = document.getElementById('challengesBtn');
+  const challengesOverlay = document.getElementById('challengesOverlay');
+  const chalClose      = document.getElementById('chalClose');
+
+  function openChallenges() { challengesOverlay.classList.remove('hidden'); }
+  function closeChallenges() { challengesOverlay.classList.add('hidden'); }
+
+  challengesBtn.addEventListener('click', openChallenges);
+  chalClose.addEventListener('click', closeChallenges);
+  challengesOverlay.addEventListener('click', e => { if (e.target === challengesOverlay) closeChallenges(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeChallenges(); });
   const tutClose  = document.getElementById('tutClose');
   const tutPrev   = document.getElementById('tutPrev');
   const tutNext   = document.getElementById('tutNext');
@@ -2647,7 +3599,7 @@ fileInput.addEventListener("change", e => {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       installBtn.classList.add('hidden');
-      addOutput('✓ App installed! You can now open Code Genie from your home screen.', 'success');
+      addOutput('✓ App installed! You can now open Java Genie from your home screen.', 'success');
     }
     deferredPrompt = null;
   });
