@@ -26,6 +26,17 @@ const KEYWORDS = new Set([
 ]);
 
 function tokenise(src) {
+  // Normalise common Unicode math operators to ASCII equivalents
+  // These can appear when code is copied from lesson explanations or docs
+  src = src
+    .replace(/≤/g, '<=')   // ≤ → <=
+    .replace(/≥/g, '>=')   // ≥ → >=
+    .replace(/≠/g, '!=')   // ≠ → !=
+    .replace(/−/g, '-')    // − → -
+    .replace(/×/g, '*')    // × → *
+    .replace(/÷/g, '/')    // ÷ → /
+    .replace(/–/g, '-')    // – → -
+    .replace(/—/g, '-');   // — → -
   const tokens = [];
   let i = 0, line = 1;
   while (i < src.length) {
