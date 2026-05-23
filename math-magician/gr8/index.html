@@ -407,6 +407,9 @@
   
     .chapter-hdr-soon { opacity: 0.40; cursor: default; }
     .chapter-hdr-soon:hover { color: rgba(245,158,11,0.55) !important; }
+    .chapter-hdr-loading { opacity: 0.60; }
+    .chapter-hdr-loading .chapter-chevron { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -565,7 +568,9 @@ function buildSidebar() {
 
     // Header
     const hdr = document.createElement('div');
-    hdr.className = 'chapter-hdr' + (isComingSoon ? ' chapter-hdr-soon' : '');
+    hdr.className = 'chapter-hdr' +
+      (isComingSoon ? ' chapter-hdr-soon' : '') +
+      (!isComingSoon && !isLoaded && MathMagician._loading[ch] ? ' chapter-hdr-loading' : '');
     hdr.innerHTML = `
       <div class="chapter-hdr-left">
         ${!isComingSoon ? `<svg class="chapter-chevron ${isCollapsed ? 'collapsed' : ''}" viewBox="0 0 16 16" fill="none">
@@ -1060,6 +1065,22 @@ async function init() {
   renderWorkbook();
   selectTopic(0);
   lucide.createIcons();
+
+  // ── Background preload all remaining chapters after a short delay ──
+  // Stagger requests so they don't compete with the initial render
+  const toPreload = CHAPTER_MANIFEST.filter(c => c.file && c.num !== 1);
+  toPreload.forEach((manifest, i) => {
+    setTimeout(() => {
+      if (!MathMagician._loaded.has(manifest.num)) {
+        MathMagician.load(manifest.num).then(() => {
+          rebuildTopics();
+          updateProgress();
+          buildSidebar();
+          buildAnswerKey();
+        }).catch(() => {}); // silent fail — will retry on click
+      }
+    }, 800 + i * 400); // stagger: 800ms, 1200ms, 1600ms, 2000ms...
+  });
 }
 init();
 
