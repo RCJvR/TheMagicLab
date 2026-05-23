@@ -238,12 +238,11 @@
       margin: 0 12px 12px;
       border-radius: 10px; overflow: hidden;
       border: 1px solid rgba(255,255,255,0.09); background: #f8f9ff;
-      /* padding-bottom trick: enforces exact 76:48 aspect ratio */
       width: calc(100% - 24px);
-      height: 0;
-      padding-bottom: calc((100% - 24px) * 48 / 76);
+      aspect-ratio: 76 / 48;
       position: relative;
-      flex-shrink: 0;
+      flex: 0 1 auto;
+      max-height: calc(100% - 54px);
     }
     #drawingSvg {
       position: absolute; top: 0; left: 0;
@@ -345,6 +344,15 @@
       padding-left: 16px; margin: 0;
     }
     .chal-clues li { margin-bottom: 1px; }
+    .chal-actions { margin-top: auto; padding-top: 3px; }
+    .chal-load {
+      width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      border: 1px solid rgba(245,158,11,0.28); border-radius: 8px;
+      background: rgba(245,158,11,0.11); color: #fcd34d;
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700;
+      padding: 7px 10px; cursor: pointer; transition: all 140ms ease;
+    }
+    .chal-load:hover { background: rgba(245,158,11,0.18); border-color: rgba(245,158,11,0.42); }
     .chal-close {
       width: 28px; height: 28px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.06); color: rgba(221,225,240,0.55);
@@ -1899,6 +1907,157 @@ const examples = {
   }
 }`,
 
+  challenge_1_start:
+`public class Challenge1Line {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(37, 99, 235);
+    draw.setPosition(10, 24);
+
+    // Challenge: draw a horizontal line 20 units long.
+    // Hint: the pen already faces right.
+    draw.move();
+  }
+}`,
+
+  challenge_2_start:
+`public class Challenge2SquareNoLoop {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(37, 99, 235);
+    draw.setPosition(30, 30);
+
+    // Challenge: draw a 6-unit square without loops.
+    // Hint: each side needs 6 move() calls, then turnRight(90).
+    draw.move();
+  }
+}`,
+
+  challenge_3_start:
+`public class Challenge3Triangle {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(16, 185, 129);
+    draw.setPosition(30, 32);
+
+    // Challenge: draw an equilateral triangle with 8-unit sides.
+    // Hint: the outside turn angle is 120 degrees.
+    draw.move();
+  }
+}`,
+
+  challenge_4_start:
+`public class Challenge4RightTriangle {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(245, 158, 11);
+    draw.setPosition(22, 34);
+
+    // Challenge: draw a scaled 3-4-5 triangle.
+    // Hint: right 20, up 15, then direction about 217 degrees.
+    draw.move();
+  }
+}`,
+
+  challenge_5_start:
+`public class Challenge5SquareLoop {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(99, 102, 241);
+    draw.setPosition(30, 30);
+
+    // Challenge: draw a 5-unit square using a loop.
+    for(int side = 0; side < 4; side = side + 1) {
+      // Add 5 moves here, then turn right.
+      draw.move();
+    }
+  }
+}`,
+
+  challenge_6_start:
+`public class Challenge6SquareWave {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(37, 99, 235);
+    draw.setPosition(5, 28);
+
+    // Challenge: repeat a square wave pattern across the canvas.
+    for(int cycle = 0; cycle < 5; cycle = cycle + 1) {
+      // right, up, right, down, then face right again.
+      draw.move();
+    }
+  }
+}`,
+
+  challenge_7_start:
+`public class Challenge7HeartbeatLoop {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(239, 68, 68);
+    draw.setPosition(3, 28);
+    draw.setDirection(Pen.RIGHT);
+
+    // Challenge: draw 3 heartbeat cycles with one outer loop.
+    for(int beat = 0; beat < 3; beat = beat + 1) {
+      // Build one complete beat here.
+      // Make sure total UP moves equals total DOWN moves.
+      draw.move();
+    }
+  }
+}`,
+
+  challenge_8_start:
+`public class Challenge8HeartbeatNested {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(239, 68, 68);
+    draw.setPosition(3, 28);
+
+    int flatLen = 8;
+    int spikeHeight = 12;
+
+    // Challenge: use variables and inner loops for every segment.
+    for(int beat = 0; beat < 3; beat = beat + 1) {
+      for(int s = 0; s < flatLen; s = s + 1) {
+        draw.move();
+      }
+      // Add the heartbeat sections here.
+    }
+  }
+}`,
+
+  challenge_9_start:
+`public class Challenge9House {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(37, 99, 235);
+    draw.setPosition(24, 34);
+
+    // Challenge: draw walls, a door, and a roof.
+    // Hint: use penUp(), penDown(), and setPosition() for separate parts.
+    draw.move();
+  }
+}`,
+
+  challenge_10_start:
+`public class Challenge10Windmill {
+  public static void main(String[] args) {
+    Pen draw = new Pen();
+    draw.setColor(99, 102, 241);
+
+    int centreX = 38;
+    int centreY = 24;
+    draw.setPosition(centreX, centreY);
+
+    // Challenge: draw 4 blades, each 90 degrees apart.
+    for(int blade = 0; blade < 4; blade = blade + 1) {
+      draw.setPosition(centreX, centreY);
+      draw.setDirection(blade * 90);
+      draw.move();
+    }
+  }
+}`,
+
   // ── 2. Square: using one for loop ────────────────────────────────────────
   square_loop:
 `public class SquareLoop {
@@ -2252,7 +2411,7 @@ const examples = {
       n.turnRight(90);
     }
   }
-}`
+}`,
 
 
   // ── stairs_simple ──
@@ -2685,6 +2844,12 @@ function toggleLineNumbers() {
 
 codeEditor.addEventListener('input', () => { updateLineNumbers(); updateHighlight(); });
 codeEditor.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key.toLowerCase() === 'r') {
+    e.preventDefault();
+    runCode();
+    return;
+  }
+
   if (e.key === 'Tab') {
     e.preventDefault();
     const start = codeEditor.selectionStart;
@@ -2764,8 +2929,8 @@ function applyGridSize(w, h) {
   START_X  = Math.round(w / 2);
   START_Y  = Math.round(h / 2);
   drawingSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-  // Recalculate padding-bottom to maintain correct aspect ratio
-  canvasOuter.style.paddingBottom = `calc((100% - 24px) * ${h} / ${w})`;
+  canvasOuter.style.aspectRatio = `${w} / ${h}`;
+  canvasOuter.style.paddingBottom = '';
   gridSizeLabel.textContent = `${w} × ${h}  · pen starts at centre`;
   buildGrid(w, h);
 }
@@ -3278,17 +3443,23 @@ function switchTab(active) {
 editorTab.addEventListener("click",    () => switchTab("editor"));
 examplesTab.addEventListener("click",  () => switchTab("examples"));
 referenceTab.addEventListener("click", () => switchTab("reference"));
+
+function loadExampleIntoEditor(key, message = "Example loaded — press Run code.") {
+  if (examples[key] === undefined) return false;
+  codeEditor.value = examples[key];
+  clearOutput(message);
+  switchTab("editor");
+  updateLineNumbers();
+  updateHighlight();
+  codeEditor.focus();
+  return true;
+}
+
 document.querySelectorAll(".exampleLoader").forEach(btn => {
   btn.addEventListener("click", e => {
     e.preventDefault();
     const key = btn.getAttribute("data-example");
-    if (examples[key] !== undefined) {
-      codeEditor.value = examples[key];
-      clearOutput("Example loaded — press Run code.");
-      switchTab("editor");
-      updateLineNumbers();
-      updateHighlight();
-    }
+    loadExampleIntoEditor(key);
   });
 });
 
@@ -3337,9 +3508,44 @@ fileInput.addEventListener("change", e => {
   function openChallenges() { challengesOverlay.classList.remove('hidden'); }
   function closeChallenges() { challengesOverlay.classList.add('hidden'); }
 
+  const challengeExamples = [
+    'challenge_1_start',
+    'challenge_2_start',
+    'challenge_3_start',
+    'challenge_4_start',
+    'challenge_5_start',
+    'challenge_6_start',
+    'challenge_7_start',
+    'challenge_8_start',
+    'challenge_9_start',
+    'challenge_10_start'
+  ];
+
+  challengesOverlay.querySelectorAll('.chal-card').forEach((card, index) => {
+    const key = challengeExamples[index];
+    if (!key || card.querySelector('.chal-load')) return;
+    const actions = document.createElement('div');
+    actions.className = 'chal-actions';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chal-load';
+    btn.dataset.example = key;
+    btn.innerHTML = '<i data-lucide="file-plus-2" style="width:13px;height:13px;"></i> Load starter';
+    actions.appendChild(btn);
+    card.appendChild(actions);
+  });
+
   challengesBtn.addEventListener('click', openChallenges);
   chalClose.addEventListener('click', closeChallenges);
   challengesOverlay.addEventListener('click', e => { if (e.target === challengesOverlay) closeChallenges(); });
+  challengesOverlay.addEventListener('click', e => {
+    const btn = e.target.closest('.chal-load');
+    if (!btn) return;
+    e.preventDefault();
+    if (loadExampleIntoEditor(btn.dataset.example, 'Challenge starter loaded — edit it, then press Run code.')) {
+      closeChallenges();
+    }
+  });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeChallenges(); });
   const tutClose  = document.getElementById('tutClose');
   const tutPrev   = document.getElementById('tutPrev');
@@ -3506,6 +3712,15 @@ fileInput.addEventListener("change", e => {
       btn.style.color = '';
     }, 2000);
   }
+
+  overlay.addEventListener('click', e => {
+    const btn = e.target.closest('.tutorial-load');
+    if (!btn) return;
+    e.preventDefault();
+    if (loadExampleIntoEditor(btn.dataset.example, 'Tutorial example loaded — press Run code.')) {
+      closeTutorial();
+    }
+  });
 
   const tutLoadSquare = document.getElementById('tutLoadSquare');
   if (tutLoadSquare) {
