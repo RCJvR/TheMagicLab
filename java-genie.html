@@ -641,6 +641,87 @@
   color:#a5b4fc;
 }
 
+    /* ══════════════════════════════════════════════════════════════
+       MOBILE LAYOUT  ≤ 700px
+       Switch from locked-viewport two-column to scrollable single-column
+    ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 700px) {
+
+      /* Let the whole page scroll naturally */
+      html, body { height: auto; overflow: auto; }
+
+      #appShell {
+        height: auto;
+        overflow: visible;
+        min-height: 100vh;
+      }
+
+      /* Header: wrap onto two lines if needed, smaller text */
+      #appHeader {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 12px;
+      }
+      h1.app-title { font-size: 18px; }
+      .header-actions { flex-wrap: wrap; gap: 5px; }
+      .hdr-btn { font-size: 10px; padding: 4px 8px; }
+
+      /* Stack columns vertically, no fixed height */
+      #mainGrid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+        padding: 8px 10px 16px;
+        gap: 12px;
+      }
+
+      /* Left column: natural height */
+      #leftCol {
+        overflow: visible;
+        min-height: 0;
+        height: auto;
+      }
+
+      /* Editor panel: tall enough to write comfortably */
+      #editorPanel { height: auto; min-height: 0; }
+
+      .editor-wrap {
+        height: 280px;
+        min-height: 0;
+        flex: none;
+      }
+
+      /* Output panel: shorter on mobile */
+      #outputWindow { height: 110px; }
+
+      /* Right column: natural height */
+      #rightCol {
+        overflow: visible;
+        height: auto;
+        min-height: 0;
+      }
+
+      /* Canvas: use aspect-ratio to size itself, not flex-fill */
+      #canvasPanel {
+        height: auto;
+        flex: none;
+      }
+      .canvas-outer {
+        max-height: none;
+        width: calc(100% - 24px);
+        aspect-ratio: 76 / 48;
+      }
+
+      /* Cheat sheet: allow more height on mobile */
+      .cheat-list { max-height: 200px; }
+
+      /* Tutorial and challenges overlays already use fixed + 95vw — fine on mobile */
+      #tutorialBox { border-radius: 12px; }
+      .chal-grid { grid-template-columns: 1fr; }
+    }
+
 </style>
 </head>
 <body>

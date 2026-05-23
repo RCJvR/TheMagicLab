@@ -377,6 +377,76 @@
 
     .hidden { display: none !important; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* ══════════════════════════════════════════════════════════════
+       MOBILE LAYOUT  ≤ 700px
+    ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 700px) {
+
+      html, body { height: auto; overflow: auto; }
+
+      #appShell {
+        height: auto;
+        overflow: visible;
+        min-height: 100vh;
+      }
+
+      #appHeader {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px 12px;
+      }
+      h1.app-title { font-size: 17px; }
+      .header-actions { flex-wrap: wrap; gap: 4px; }
+      .hdr-btn { font-size: 10px; padding: 4px 8px; }
+      .preview-size-group { display: none; }
+
+      /* Stack editor and preview vertically */
+      #mainGrid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+        padding: 8px 10px 16px;
+        gap: 12px;
+      }
+
+      /* Hide the resize handle — not useful on mobile */
+      #resizeHandle { display: none; }
+
+      #leftCol {
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      /* Editor: fixed comfortable height */
+      .editor-wrap {
+        height: 300px;
+        flex: none;
+      }
+
+      /* Right col / preview: fixed height so iframe is usable */
+      #rightCol {
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      #previewPanel {
+        flex: none;
+        height: auto;
+      }
+
+      .preview-outer {
+        flex: none;
+        height: 360px;
+      }
+
+      /* Status bar: truncate on small screens */
+      #statusBar { font-size: 9px; gap: 10px; padding: 4px 10px; }
+    }
   </style>
 </head>
 <body>
@@ -1455,6 +1525,7 @@ fileInput.addEventListener('change', e => {
 // ── Resize handle ─────────────────────────────────────────────────────────────
 let dragging = false, dragStartX = 0, dragStartW = 0;
 resizeHandle.addEventListener('mousedown', e => {
+  if (window.innerWidth <= 700) return;
   dragging = true; dragStartX = e.clientX;
   dragStartW = parseInt(mainGrid.style.gridTemplateColumns);
   resizeHandle.classList.add('dragging');
