@@ -90,22 +90,71 @@
     .section-label-text {
       font-family: "Syne", sans-serif; font-weight: 700; font-size: 11px;
       letter-spacing: 0.10em; text-transform: uppercase; white-space: nowrap;
+      display: flex; align-items: center; gap: 6px;
     }
-    .section-label-live { color: #6ee7b7; }
+    /* Live label — bright, glowing dot */
+    .section-label-live {
+      color: #6ee7b7;
+    }
+    .section-label-live .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #6ee7b7;
+      box-shadow: 0 0 0 3px rgba(110,231,183,0.20);
+      flex-shrink: 0;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(110,231,183,0.20); }
+      50%       { box-shadow: 0 0 0 5px rgba(110,231,183,0.08); }
+    }
+    /* Coming soon label — dim, no glow */
     .section-label-soon { color: rgba(221,225,240,0.28); }
     .section-label-line {
-      flex: 1; height: 1px; background: rgba(255,255,255,0.07);
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, rgba(110,231,183,0.25) 0%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.04) 100%);
     }
 
-    /* ── Tool cards grid ── */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 18px;
+    /* ── Tool cards row (horizontal scroll) ── */
+    .tools-row-wrap {
       width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 28px;
+      overflow-x: auto;
+      padding: 0 28px 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.14) transparent;
+    }
+    .tools-row-wrap::-webkit-scrollbar { height: 5px; }
+    .tools-row-wrap::-webkit-scrollbar-track { background: transparent; }
+    .tools-row-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+
+    .tools-row {
+      display: flex;
+      flex-direction: row;
+      gap: 18px;
+      width: max-content;
+    }
+
+    /* ── Divider — spotlight boundary ── */
+    .row-divider {
+      width: 1px;
+      align-self: stretch;
+      background: linear-gradient(to bottom, transparent 0%, rgba(110,231,183,0.18) 20%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.04) 80%, transparent 100%);
+      flex-shrink: 0;
+      margin: 0 10px;
+      position: relative;
+    }
+    .row-divider-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+      font-family: "Syne", sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: rgba(245,158,11,0.38);
+      white-space: nowrap;
+      background: #0a0f1e;
+      padding: 4px 2px;
     }
 
     /* ── Base card ── */
@@ -117,6 +166,8 @@
       transition: border-color 200ms, transform 200ms, box-shadow 200ms;
       text-decoration: none; color: inherit;
       position: relative; overflow: hidden;
+      width: 300px;
+      flex-shrink: 0;
     }
     .tool-card::before {
       content: ''; position: absolute; inset: 0;
@@ -171,11 +222,18 @@
     .card-btn:hover { transform: translateY(-1px); }
     .card-btn:active { transform: translateY(0); }
 
-    /* ── Coming soon cards ── */
+    /* ── Coming soon cards — out of spotlight ── */
     .card-soon {
       cursor: default;
-      background: rgba(255,255,255,0.025);
-      border-color: rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.018);
+      border-color: rgba(255,255,255,0.05);
+      opacity: 0.60;
+      filter: saturate(0.5);
+      transition: opacity 220ms, filter 220ms, border-color 220ms;
+    }
+    .card-soon:hover {
+      opacity: 0.80;
+      filter: saturate(0.7);
     }
     .card-soon .card-title   { color: rgba(232,234,244,0.55); }
     .card-soon .card-desc    { color: rgba(221,225,240,0.30); }
@@ -255,7 +313,7 @@
       nav { padding: 12px 18px; }
       .nav-links { display: none; }
       .hero { padding: 40px 18px 28px; }
-      .tools-grid { padding: 0 16px; grid-template-columns: 1fr; }
+      .tools-row-wrap { padding: 0 16px 12px; }
       .section-label { padding: 0 16px; }
       footer { padding: 16px 18px; flex-direction: column; gap: 10px; text-align: center; }
     }
@@ -284,203 +342,195 @@
     <p>Hands-on, browser-based tools designed for students. Write real code and see real results — no setup needed.</p>
   </section>
 
-  <!-- ── LIVE TOOLS ── -->
+  <!-- ── SECTION LABEL ── -->
   <div class="section-label">
     <span class="section-label-text section-label-live">
-      <i data-lucide="zap" style="width:11px;height:11px;display:inline;vertical-align:middle;margin-right:5px;"></i>
+      <span class="live-dot"></span>
       Available now
     </span>
     <div class="section-label-line"></div>
-  </div>
-
-  <div class="tools-grid">
-
-    <!-- Java Genie -->
-    <a href="java-genie.html" class="tool-card card-java">
-      <div class="card-icon">🧞</div>
-      <div class="card-grade">Grade 8 – 9</div>
-      <div class="card-title">Java Genie</div>
-      <p class="card-desc">Learn Java visually with turtle graphics, loops, and interactive tutorials. Write real Java programs from day one and watch them draw on screen.</p>
-      <div class="card-tags">
-        <span class="tag">Java</span>
-        <span class="tag">Turtle graphics</span>
-        <span class="tag">Loops &amp; OOP</span>
-        <span class="tag">Gr 8–9</span>
-      </div>
-      <div class="card-btn btn-java">
-        <i data-lucide="play" style="width:14px;height:14px;"></i>
-        Launch Java Genie
-      </div>
-    </a>
-
-    <!-- Web Wizard -->
-    <a href="html-editor.html" class="tool-card card-web">
-      <div class="card-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <line x1="6" y1="22" x2="16" y2="12" stroke="#67e8f9" stroke-width="2.2" stroke-linecap="round"/>
-          <rect x="14.5" y="9.5" width="5" height="5" rx="1" transform="rotate(45 14.5 9.5)" fill="#67e8f9" stroke="#0891b2" stroke-width="1"/>
-          <circle cx="22" cy="5" r="1.5" fill="#fbbf24"/>
-          <circle cx="26" cy="10" r="1" fill="#a5b4fc"/>
-          <circle cx="19" cy="2" r="1" fill="#6ee7b7"/>
-          <line x1="22" y1="2" x2="22" y2="8" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="19" y1="5" x2="25" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-        </svg>
-      </div>
-      <div class="card-grade">Grade 8 – 9</div>
-      <div class="card-title">Web Wizard</div>
-      <p class="card-desc">Design websites live in your browser using HTML and CSS. See every change instantly in a live preview — no setup, no server required.</p>
-      <div class="card-tags">
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">Live preview</span>
-        <span class="tag">Web design</span>
-      </div>
-      <div class="card-btn btn-web">
-        <i data-lucide="globe" style="width:14px;height:14px;"></i>
-        Open Web Wizard
-      </div>
-    </a>
-
-    <!-- Code Conjurer -->
-    <a href="code-conjurer.html" class="tool-card card-conjurer">
-      <div class="card-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect x="5" y="4" width="16" height="20" rx="3" fill="none" stroke="#fda4af" stroke-width="1.6"/>
-          <rect x="3" y="6" width="4" height="16" rx="2" fill="rgba(253,164,175,0.20)" stroke="#fda4af" stroke-width="1.2"/>
-          <line x1="10" y1="9"  x2="18" y2="9"  stroke="#fda4af" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="10" y1="12" x2="16" y2="12" stroke="#fda4af" stroke-width="1" stroke-linecap="round"/>
-          <line x1="10" y1="15" x2="18" y2="15" stroke="#fda4af" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="10" y1="18" x2="14" y2="18" stroke="#fda4af" stroke-width="1" stroke-linecap="round"/>
-          <circle cx="22" cy="5" r="2" fill="#fbbf24"/>
-          <line x1="22" y1="2" x2="22" y2="8" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <line x1="19" y1="5" x2="25" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-        </svg>
-      </div>
-      <div class="card-grade">Grade 10 – 12</div>
-      <div class="card-title">Code Conjurer</div>
-      <p class="card-desc">Advanced Java programming for IT learners. Classes, arrays, algorithms, exception handling, and OOP — aligned to the IEB/CAPS Gr 10–12 IT curriculum.</p>
-      <div class="card-tags">
-        <span class="tag">Java</span>
-        <span class="tag">OOP</span>
-        <span class="tag">Algorithms</span>
-        <span class="tag">IT Gr 10–12</span>
-      </div>
-      <div class="card-btn btn-conjurer">
-        <i data-lucide="play" style="width:14px;height:14px;"></i>
-        Launch Code Conjurer
-      </div>
-    </a>
-
-  </div>
-
-  <!-- ── COMING SOON ── -->
-  <div class="section-label">
-    <span class="section-label-text section-label-soon">
-      <i data-lucide="clock" style="width:11px;height:11px;display:inline;vertical-align:middle;margin-right:5px;"></i>
+    <span class="section-label-text section-label-soon" style="margin-left:6px;">
+      <i data-lucide="clock" style="width:11px;height:11px;opacity:0.5;"></i>
       Coming soon
     </span>
-    <div class="section-label-line"></div>
   </div>
 
-  <div class="tools-grid" style="padding-bottom: 0;">
+  <!-- ── SINGLE HORIZONTAL ROW ── -->
+  <div class="tools-row-wrap">
+    <div class="tools-row">
 
+      <!-- 1. Java Genie -->
+      <a href="java-genie.html" class="tool-card card-java">
+        <div class="card-icon">🧞</div>
+        <div class="card-grade">Grade 8 – 9</div>
+        <div class="card-title">Java Genie</div>
+        <p class="card-desc">Learn Java visually with turtle graphics, loops, and interactive tutorials. Write real Java programs from day one and watch them draw on screen.</p>
+        <div class="card-tags">
+          <span class="tag">Java</span>
+          <span class="tag">Turtle graphics</span>
+          <span class="tag">Loops &amp; OOP</span>
+          <span class="tag">Gr 8–9</span>
+        </div>
+        <div class="card-btn btn-java">
+          <i data-lucide="play" style="width:14px;height:14px;"></i>
+          Launch Java Genie
+        </div>
+      </a>
 
+      <!-- 2. Web Wizard -->
+      <a href="html-editor.html" class="tool-card card-web">
+        <div class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <line x1="6" y1="22" x2="16" y2="12" stroke="#67e8f9" stroke-width="2.2" stroke-linecap="round"/>
+            <rect x="14.5" y="9.5" width="5" height="5" rx="1" transform="rotate(45 14.5 9.5)" fill="#67e8f9" stroke="#0891b2" stroke-width="1"/>
+            <circle cx="22" cy="5" r="1.5" fill="#fbbf24"/>
+            <circle cx="26" cy="10" r="1" fill="#a5b4fc"/>
+            <circle cx="19" cy="2" r="1" fill="#6ee7b7"/>
+            <line x1="22" y1="2" x2="22" y2="8" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+            <line x1="19" y1="5" x2="25" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="card-grade">Grade 8 – 9</div>
+        <div class="card-title">Web Wizard</div>
+        <p class="card-desc">Design websites live in your browser using HTML and CSS. See every change instantly in a live preview — no setup, no server required.</p>
+        <div class="card-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Live preview</span>
+          <span class="tag">Web design</span>
+        </div>
+        <div class="card-btn btn-web">
+          <i data-lucide="globe" style="width:14px;height:14px;"></i>
+          Open Web Wizard
+        </div>
+      </a>
 
-    <!-- Math Magician -->
-    <div class="tool-card card-soon card-math">
-      <div class="soon-badge">Coming soon</div>
-      <div class="card-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <!-- hat -->
-          <path d="M4 20 L14 4 L24 20 Z" fill="none" stroke="rgba(253,230,138,0.50)" stroke-width="1.6" stroke-linejoin="round"/>
-          <rect x="2" y="20" width="24" height="3" rx="1.5" fill="rgba(253,230,138,0.25)" stroke="rgba(253,230,138,0.40)" stroke-width="1.2"/>
-          <!-- stars on hat -->
-          <circle cx="14" cy="13" r="1.5" fill="rgba(251,191,36,0.60)"/>
-          <circle cx="10" cy="17" r="1"   fill="rgba(251,191,36,0.40)"/>
-          <circle cx="18" cy="17" r="1"   fill="rgba(251,191,36,0.40)"/>
-          <!-- math symbols -->
-          <text x="6"  y="27" font-family="monospace" font-size="5" fill="rgba(253,230,138,0.45)">∑</text>
-          <text x="13" y="27" font-family="monospace" font-size="5" fill="rgba(253,230,138,0.45)">π</text>
-          <text x="19" y="27" font-family="monospace" font-size="5" fill="rgba(253,230,138,0.45)">√</text>
-        </svg>
-      </div>
-      <div class="card-grade">Grade 8 – 12</div>
-      <div class="card-title">Math Magician</div>
-      <p class="card-desc">Interactive mathematics across the full school spectrum. Algebra, geometry, trigonometry, calculus — with visual tools and step-by-step worked examples.</p>
-      <div class="card-tags">
-        <span class="tag">Algebra</span>
-        <span class="tag">Geometry</span>
-        <span class="tag">Trigonometry</span>
-        <span class="tag">Calculus</span>
-      </div>
-      <div class="card-btn btn-soon">
-        <i data-lucide="lock" style="width:13px;height:13px;"></i>
-        In development
-      </div>
-    </div>
+      <!-- 3. Computer Codex -->
+      <a href="computer-codex.html" class="tool-card card-codex">
+        <div class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="5" y="3" width="18" height="22" rx="2.5" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+            <line x1="10" y1="3" x2="10" y2="25" stroke="rgba(203,213,225,0.40)" stroke-width="1.2"/>
+            <rect x="5" y="3" width="5" height="22" rx="2" fill="rgba(100,116,139,0.25)"/>
+            <line x1="13" y1="8"  x2="21" y2="8"  stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="13" y1="11" x2="21" y2="11" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
+            <line x1="13" y1="14" x2="19" y2="14" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="13" y1="17" x2="21" y2="17" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
+            <line x1="13" y1="20" x2="17" y2="20" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
+            <text x="12" y="25" font-family="monospace" font-size="4" fill="#818cf8">01001</text>
+          </svg>
+        </div>
+        <div class="card-grade">Grade 8 – 10</div>
+        <div class="card-title">Computer Codex</div>
+        <p class="card-desc">Digital literacy and computer skills. Navigate Windows, understand file types, master the Office Ribbon, create Word documents, and build Excel spreadsheets with formulas and charts.</p>
+        <div class="card-tags">
+          <span class="tag">Windows OS</span>
+          <span class="tag">Word</span>
+          <span class="tag">Excel</span>
+          <span class="tag">Digital literacy</span>
+        </div>
+        <div class="card-btn btn-codex">
+          <i data-lucide="book-open" style="width:14px;height:14px;"></i>
+          Open Computer Codex
+        </div>
+      </a>
 
-    <!-- Model Mage -->
-    <div class="tool-card card-soon card-model">
-      <div class="soon-badge">Coming soon</div>
-      <div class="card-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <!-- isometric cube -->
-          <path d="M14 4 L24 9.5 L24 19.5 L14 25 L4 19.5 L4 9.5 Z" fill="none" stroke="rgba(153,246,228,0.45)" stroke-width="1.4" stroke-linejoin="round"/>
-          <line x1="14" y1="4"  x2="14" y2="14" stroke="rgba(153,246,228,0.35)" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="14" y1="14" x2="24" y2="9.5" stroke="rgba(153,246,228,0.25)" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="14" y1="14" x2="4"  y2="9.5" stroke="rgba(153,246,228,0.25)" stroke-width="1.2" stroke-linecap="round"/>
-          <!-- dimension ticks -->
-          <line x1="25" y1="9"  x2="27" y2="9"  stroke="rgba(153,246,228,0.45)" stroke-width="1" stroke-linecap="round"/>
-          <line x1="25" y1="20" x2="27" y2="20" stroke="rgba(153,246,228,0.45)" stroke-width="1" stroke-linecap="round"/>
-          <line x1="26" y1="9"  x2="26" y2="20" stroke="rgba(153,246,228,0.35)" stroke-width="0.8"/>
-        </svg>
-      </div>
-      <div class="card-grade">Grade 9 – 12</div>
-      <div class="card-title">Model Mage</div>
-      <p class="card-desc">Browser-based 3D modelling and basic CAD. Learn dimensions, coordinates, and design thinking by building and manipulating 3D shapes directly in your browser.</p>
-      <div class="card-tags">
-        <span class="tag">3D modelling</span>
-        <span class="tag">CAD basics</span>
-        <span class="tag">Geometry</span>
-        <span class="tag">Design</span>
-      </div>
-      <div class="card-btn btn-soon">
-        <i data-lucide="lock" style="width:13px;height:13px;"></i>
-        In development
-      </div>
-    </div>
+      <!-- 4. Code Conjurer -->
+      <a href="code-conjurer.html" class="tool-card card-conjurer">
+        <div class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="5" y="4" width="16" height="20" rx="3" fill="none" stroke="#fda4af" stroke-width="1.6"/>
+            <rect x="3" y="6" width="4" height="16" rx="2" fill="rgba(253,164,175,0.20)" stroke="#fda4af" stroke-width="1.2"/>
+            <line x1="10" y1="9"  x2="18" y2="9"  stroke="#fda4af" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="10" y1="12" x2="16" y2="12" stroke="#fda4af" stroke-width="1" stroke-linecap="round"/>
+            <line x1="10" y1="15" x2="18" y2="15" stroke="#fda4af" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="10" y1="18" x2="14" y2="18" stroke="#fda4af" stroke-width="1" stroke-linecap="round"/>
+            <circle cx="22" cy="5" r="2" fill="#fbbf24"/>
+            <line x1="22" y1="2" x2="22" y2="8" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+            <line x1="19" y1="5" x2="25" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="card-grade">Grade 10 – 12</div>
+        <div class="card-title">Code Conjurer</div>
+        <p class="card-desc">Advanced Java programming for IT learners. Classes, arrays, algorithms, exception handling, and OOP — aligned to the IEB/CAPS Gr 10–12 IT curriculum.</p>
+        <div class="card-tags">
+          <span class="tag">Java</span>
+          <span class="tag">OOP</span>
+          <span class="tag">Algorithms</span>
+          <span class="tag">IT Gr 10–12</span>
+        </div>
+        <div class="card-btn btn-conjurer">
+          <i data-lucide="play" style="width:14px;height:14px;"></i>
+          Launch Code Conjurer
+        </div>
+      </a>
 
-    <!-- Computer Codex -->
-    <a href="computer-codex.html" class="tool-card card-codex">
-      <div class="card-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect x="5" y="3" width="18" height="22" rx="2.5" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
-          <line x1="10" y1="3" x2="10" y2="25" stroke="rgba(203,213,225,0.40)" stroke-width="1.2"/>
-          <rect x="5" y="3" width="5" height="22" rx="2" fill="rgba(100,116,139,0.25)"/>
-          <line x1="13" y1="8"  x2="21" y2="8"  stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="13" y1="11" x2="21" y2="11" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
-          <line x1="13" y1="14" x2="19" y2="14" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="13" y1="17" x2="21" y2="17" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
-          <line x1="13" y1="20" x2="17" y2="20" stroke="#cbd5e1" stroke-width="1" stroke-linecap="round"/>
-          <text x="12" y="25" font-family="monospace" font-size="4" fill="#818cf8">01001</text>
-        </svg>
+      <!-- ── Divider ── -->
+      <div class="row-divider">
+        <span class="row-divider-label">COMING SOON</span>
       </div>
-      <div class="card-grade">Grade 8 – 10</div>
-      <div class="card-title">Computer Codex</div>
-      <p class="card-desc">Digital literacy and computer skills. Navigate Windows, understand file types, master the Office Ribbon, create Word documents, and build Excel spreadsheets with formulas and charts.</p>
-      <div class="card-tags">
-        <span class="tag">Windows OS</span>
-        <span class="tag">Word</span>
-        <span class="tag">Excel</span>
-        <span class="tag">Digital literacy</span>
-      </div>
-      <div class="card-btn btn-codex">
-        <i data-lucide="book-open" style="width:14px;height:14px;"></i>
-        Open Computer Codex
-      </div>
-    </a>
 
-  </div>
+      <!-- 5. Math Magician -->
+      <div class="tool-card card-soon card-math">
+        <div class="soon-badge">Coming soon</div>
+        <div class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M4 20 L14 4 L24 20 Z" fill="none" stroke="rgba(253,230,138,0.50)" stroke-width="1.6" stroke-linejoin="round"/>
+            <rect x="2" y="20" width="24" height="3" rx="1.5" fill="rgba(253,230,138,0.25)" stroke="rgba(253,230,138,0.40)" stroke-width="1.2"/>
+            <circle cx="14" cy="13" r="1.5" fill="rgba(251,191,36,0.60)"/>
+            <circle cx="10" cy="17" r="1"   fill="rgba(251,191,36,0.40)"/>
+            <circle cx="18" cy="17" r="1"   fill="rgba(251,191,36,0.40)"/>
+            <text x="6"  y="27" font-family="monospace" font-size="5" fill="rgba(253,230,138,0.45)">∑</text>
+            <text x="13" y="27" font-family="monospace" font-size="5" fill="rgba(253,230,138,0.45)">π</text>
+            <text x="19" y="27" font-family="monospace" font-size="5" fill="rgba(253,230,138,0.45)">√</text>
+          </svg>
+        </div>
+        <div class="card-grade">Grade 8 – 12</div>
+        <div class="card-title">Math Magician</div>
+        <p class="card-desc">Interactive mathematics across the full school spectrum. Algebra, geometry, trigonometry, calculus — with visual tools and step-by-step worked examples.</p>
+        <div class="card-tags">
+          <span class="tag">Algebra</span>
+          <span class="tag">Geometry</span>
+          <span class="tag">Trigonometry</span>
+          <span class="tag">Calculus</span>
+        </div>
+        <div class="card-btn btn-soon">
+          <i data-lucide="lock" style="width:13px;height:13px;"></i>
+          In development
+        </div>
+      </div>
+
+      <!-- 6. Model Mage -->
+      <div class="tool-card card-soon card-model">
+        <div class="soon-badge">Coming soon</div>
+        <div class="card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 4 L24 9.5 L24 19.5 L14 25 L4 19.5 L4 9.5 Z" fill="none" stroke="rgba(153,246,228,0.45)" stroke-width="1.4" stroke-linejoin="round"/>
+            <line x1="14" y1="4"  x2="14" y2="14" stroke="rgba(153,246,228,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="14" y1="14" x2="24" y2="9.5" stroke="rgba(153,246,228,0.25)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="14" y1="14" x2="4"  y2="9.5" stroke="rgba(153,246,228,0.25)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="25" y1="9"  x2="27" y2="9"  stroke="rgba(153,246,228,0.45)" stroke-width="1" stroke-linecap="round"/>
+            <line x1="25" y1="20" x2="27" y2="20" stroke="rgba(153,246,228,0.45)" stroke-width="1" stroke-linecap="round"/>
+            <line x1="26" y1="9"  x2="26" y2="20" stroke="rgba(153,246,228,0.35)" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div class="card-grade">Grade 9 – 12</div>
+        <div class="card-title">Model Mage</div>
+        <p class="card-desc">Browser-based 3D modelling and basic CAD. Learn dimensions, coordinates, and design thinking by building and manipulating 3D shapes directly in your browser.</p>
+        <div class="card-tags">
+          <span class="tag">3D modelling</span>
+          <span class="tag">CAD basics</span>
+          <span class="tag">Geometry</span>
+          <span class="tag">Design</span>
+        </div>
+        <div class="card-btn btn-soon">
+          <i data-lucide="lock" style="width:13px;height:13px;"></i>
+          In development
+        </div>
+      </div>
+
+    </div><!-- /tools-row -->
+  </div><!-- /tools-row-wrap -->
 
   <!-- Footer -->
   <footer>
