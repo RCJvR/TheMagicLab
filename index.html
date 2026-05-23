@@ -115,10 +115,14 @@
     }
 
     /* ── Tool cards row (horizontal scroll) ── */
+    .tools-row-outer {
+      width: 100%;
+      overflow: visible;
+    }
     .tools-row-wrap {
       width: 100%;
       overflow-x: auto;
-      padding: 0 28px 12px;
+      padding: 0 28px 32px;
       scrollbar-width: thin;
       scrollbar-color: rgba(255,255,255,0.14) transparent;
     }
@@ -131,6 +135,8 @@
       flex-direction: row;
       gap: 18px;
       width: max-content;
+      padding: 12px 0 8px;
+      overflow: visible;
     }
 
     /* ── Divider — spotlight boundary ── */
@@ -163,19 +169,33 @@
       border: 1px solid rgba(255,255,255,0.09);
       border-radius: 20px; padding: 26px;
       display: flex; flex-direction: column;
-      transition: border-color 200ms, transform 200ms, box-shadow 200ms;
+      transition: border-color 240ms ease, transform 240ms ease,
+                  box-shadow 240ms ease, opacity 240ms ease;
       text-decoration: none; color: inherit;
       position: relative; overflow: hidden;
       width: 300px;
       flex-shrink: 0;
+      transform-origin: center top;
     }
     .tool-card::before {
       content: ''; position: absolute; inset: 0;
-      border-radius: 20px; opacity: 0; transition: opacity 200ms;
+      border-radius: 20px; opacity: 0; transition: opacity 240ms;
     }
+
+    /* When any live card in the row is hovered, dim its siblings slightly */
+    .tools-row:has(.tool-card:not(.card-soon):hover) .tool-card:not(:hover) {
+      opacity: 0.65;
+    }
+    /* But don't double-dim the already-dim coming-soon cards */
+    .tools-row:has(.tool-card:not(.card-soon):hover) .card-soon {
+      opacity: 0.38;
+    }
+
     .tool-card:not(.card-soon):hover {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+      transform: scale(1.05);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.40);
+      opacity: 1;
+      z-index: 10;
     }
     .tool-card:not(.card-soon):hover::before { opacity: 1; }
 
@@ -356,6 +376,7 @@
   </div>
 
   <!-- ── SINGLE HORIZONTAL ROW ── -->
+  <div class="tools-row-outer">
   <div class="tools-row-wrap">
     <div class="tools-row">
 
@@ -531,6 +552,7 @@
 
     </div><!-- /tools-row -->
   </div><!-- /tools-row-wrap -->
+  </div><!-- /tools-row-outer -->
 
   <!-- Footer -->
   <footer>
