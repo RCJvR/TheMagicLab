@@ -1,0 +1,1653 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Web Wizard — HTML &amp; CSS Editor</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230891b2'/%3E%3Cline x1='14' y1='52' x2='36' y2='28' stroke='%23e0f2fe' stroke-width='5' stroke-linecap='round'/%3E%3Crect x='33' y='22' width='12' height='12' rx='2' transform='rotate(45 33 22)' fill='%2367e8f9' stroke='%230e7490' stroke-width='2'/%3E%3Ccircle cx='52' cy='12' r='4' fill='%23fbbf24'/%3E%3Ccircle cx='58' cy='24' r='2.5' fill='%23a5b4fc'/%3E%3Ccircle cx='46' cy='6' r='2.5' fill='%236ee7b7'/%3E%3Cline x1='52' y1='6' x2='52' y2='18' stroke='%23fbbf24' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3Cline x1='46' y1='12' x2='58' y2='12' stroke='%23fbbf24' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+
+    body {
+      font-family: "DM Sans", sans-serif; font-size: 13px;
+      background: #0a0f1e; color: #dde1f0;
+      display: flex; flex-direction: column; height: 100%;
+    }
+
+    /* ── Background ── */
+    #appShell {
+      height: 100%; width: 100%;
+      display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 35% at 6% 4%,  rgba(6,182,212,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(124,58,237,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(245,158,11,0.08) 0%, transparent 60%),
+        #0a0f1e;
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+      padding: 8px 16px 7px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .home-btn {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; padding: 5px 10px;
+      border-radius: 7px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.55);
+      text-decoration: none; transition: all 130ms; flex-shrink: 0;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: #dde1f0; }
+
+    h1.app-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(18px, 2vw, 24px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #67e8f9 50%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .header-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+
+    .hdr-btn {
+      display: flex; align-items: center; gap: 5px; padding: 5px 11px;
+      border-radius: 7px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06); font-size: 11px; font-weight: 600;
+      color: #b0b8d8; cursor: pointer; transition: all 130ms; white-space: nowrap;
+    }
+    .hdr-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+
+    .preview-size-group { display: flex; gap: 3px; }
+    .size-btn {
+      padding: 5px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); font-size: 11px; font-weight: 600;
+      color: rgba(221,225,240,0.45); cursor: pointer; transition: all 130ms;
+    }
+    .size-btn.active { background: rgba(6,182,212,0.20); border-color: rgba(6,182,212,0.40); color: #67e8f9; }
+    .size-btn:hover:not(.active) { color: rgba(221,225,240,0.80); }
+
+    /* ── Main grid ── */
+    #mainGrid {
+      flex: 1; display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 10px; padding: 10px 14px 12px;
+      min-height: 0; overflow: hidden;
+    }
+
+    /* ── Panels ── */
+    .panel {
+      background: rgba(255,255,255,0.038);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column; min-height: 0;
+    }
+
+    .panel-hd {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px 7px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .panel-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.04em; color: #b0b8d8;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── Left column: editor tabs ── */
+    #leftCol { display: flex; flex-direction: column; min-height: 0; gap: 0; }
+
+    .tab-group { display: flex; gap: 3px; background: rgba(0,0,0,0.30); border-radius: 7px; padding: 3px; }
+    .tab-btn {
+      font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 5px; border: none; cursor: pointer;
+      transition: all 130ms; color: rgba(221,225,240,0.45); background: transparent;
+    }
+    .tab-btn.active { background: rgba(6,182,212,0.25); color: #67e8f9; }
+    .tab-btn:hover:not(.active) { color: rgba(221,225,240,0.80); }
+
+    .icon-btn {
+      width: 26px; height: 26px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(221,225,240,0.45); transition: all 130ms;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+    .icon-btn.active { background: rgba(6,182,212,0.25); border-color: rgba(6,182,212,0.40); color: #67e8f9; }
+
+    /* ── Code editor ── */
+    .editor-wrap {
+      position: relative; flex: 1; min-height: 0;
+      background: #06091a; display: flex; overflow: hidden;
+    }
+
+    #lineNumbers {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      width: 36px; flex-shrink: 0;
+      background: rgba(0,0,0,0.28); border-right: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.20); text-align: right;
+      padding: 12px 6px 12px 0; overflow: hidden; user-select: none;
+    }
+
+    .code-editor {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 36px; right: 0; bottom: 0;
+      border: none; background: transparent; color: transparent;
+      caret-color: #e2e8ff; resize: none; padding: 12px 12px 12px 10px;
+      outline: none; overflow-y: auto; z-index: 2;
+      white-space: pre; overflow-wrap: normal;
+    }
+    .code-editor::selection { background: rgba(6,182,212,0.30); }
+
+    .highlight-layer {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 21px;
+      position: absolute; top: 0; left: 36px; right: 0; bottom: 0;
+      padding: 12px 12px 12px 10px; pointer-events: none;
+      overflow: hidden; white-space: pre; overflow-wrap: normal;
+      z-index: 1; color: #e2e8ff;
+    }
+
+    /* HTML syntax colours */
+    .hl-tag   { color: #67e8f9; }   /* <div> tags */
+    .hl-attr  { color: #a5b4fc; }   /* attributes */
+    .hl-val   { color: #86efac; }   /* attribute values */
+    .hl-cmt   { color: #4b5563; font-style: italic; }
+    .hl-ent   { color: #fbbf24; }   /* &amp; entities */
+    /* CSS syntax */
+    .hl-sel   { color: #67e8f9; }   /* selectors */
+    .hl-prop  { color: #a5b4fc; }   /* properties */
+    .hl-unit  { color: #fb923c; }   /* values/units */
+    .hl-cssv  { color: #86efac; }   /* string values */
+
+    /* ── Actions row ── */
+    .actions-row {
+      flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr;
+      gap: 7px; padding: 8px 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .act-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 7px 12px; border-radius: 9px; border: none;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 150ms ease;
+    }
+    .act-btn:hover  { transform: translateY(-1px); }
+    .act-btn:active { transform: translateY(0); }
+
+    .btn-run {
+      background: linear-gradient(135deg, #0891b2, #7c3aed);
+      color: #fff; box-shadow: 0 3px 14px rgba(6,182,212,0.25);
+    }
+    .btn-run:hover { box-shadow: 0 5px 18px rgba(6,182,212,0.40); }
+
+    .btn-reset {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8;
+    }
+    .btn-reset:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Examples panel ── */
+    #examplesPanel { flex: 1; min-height: 0; overflow-y: auto; background: #06091a; }
+    .ex-item {
+      display: block; width: 100%; text-align: left; padding: 8px 12px;
+      border: none; border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: none; cursor: pointer; transition: background 110ms; color: inherit;
+    }
+    .ex-item:last-child { border-bottom: none; }
+    .ex-item:hover { background: rgba(6,182,212,0.10); }
+    .ex-item h4 { font-size: 12px; font-weight: 600; color: #c7cfe8; margin-bottom: 2px; }
+    .ex-item p  { font-size: 11px; color: rgba(221,225,240,0.38); }
+
+    .diff { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; text-transform: uppercase; }
+    .diff-b { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .diff-i { background: rgba(245,158,11,0.15); color: #fcd34d; }
+
+    /* ── Right column: preview ── */
+    #rightCol { display: flex; flex-direction: column; min-height: 0; }
+    #previewPanel { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+    .preview-outer {
+      flex: 1; min-height: 0;
+      margin: 0 12px 12px;
+      border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: #ffffff;
+      display: flex; flex-direction: column;
+    }
+
+    /* Browser chrome bar */
+    .browser-bar {
+      flex-shrink: 0;
+      background: #1e293b; padding: 6px 10px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .browser-dots { display: flex; gap: 5px; }
+    .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red  { background: #ef4444; }
+    .dot-yel  { background: #f59e0b; }
+    .dot-grn  { background: #22c55e; }
+    .browser-url {
+      flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 5px; padding: 3px 10px;
+      font-family: "JetBrains Mono", monospace; font-size: 10px; color: rgba(255,255,255,0.40);
+    }
+
+    #previewFrame {
+      flex: 1; width: 100%; border: none; background: #fff;
+      display: block;
+    }
+
+    /* ── Resize handle between panels ── */
+    #resizeHandle {
+      width: 6px; cursor: col-resize; background: transparent;
+      flex-shrink: 0; position: relative; z-index: 10;
+      transition: background 150ms;
+    }
+    #resizeHandle:hover, #resizeHandle.dragging { background: rgba(6,182,212,0.30); }
+
+    /* ── Status bar ── */
+    #statusBar {
+      flex-shrink: 0; display: flex; align-items: center; gap: 16px;
+      padding: 4px 16px; background: rgba(0,0,0,0.25);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-family: "JetBrains Mono", monospace; font-size: 10px;
+      color: rgba(221,225,240,0.35);
+    }
+    #statusBar span { display: flex; align-items: center; gap: 5px; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+
+    /* ── Scrollbars ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+
+    button:focus-visible, textarea:focus-visible { outline: 2px solid rgba(6,182,212,0.60); outline-offset: 2px; }
+
+    /* ── Tutorial overlay ── */
+    #webTutorialOverlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(6, 9, 26, 0.96);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px; overflow-y: auto;
+    }
+    #webTutorialBox {
+      width: 100%; max-width: 760px;
+      background: #0f1629; border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 18px; overflow: hidden; align-self: flex-start; margin: auto;
+    }
+    #webTutHdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    #webTutHdr h2 {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 17px;
+      background: linear-gradient(125deg, #fff 0%, #67e8f9 50%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .wt-close {
+      width: 30px; height: 30px; border-radius: 7px; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; font-size: 16px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    #webTutProgress {
+      display: flex; align-items: center; gap: 6px; padding: 10px 20px 0;
+    }
+    .wt-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); cursor: pointer; transition: all 180ms;
+    }
+    .wt-dot.active { background: #06b6d4; transform: scale(1.3); }
+    .wt-dot.done   { background: #34d399; }
+    #webTutStepLabel { margin-left: auto; font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.35); }
+    .wt-slide { display: none; padding: 18px 22px; }
+    .wt-slide.active { display: block; }
+    .wt-slide h3 {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 14px; color: #67e8f9;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .wt-slide h3 .sn {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(6,182,212,0.20); border: 1px solid rgba(6,182,212,0.40);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; color: #67e8f9;
+    }
+    .wt-slide p { font-size: 13px; line-height: 1.65; color: rgba(221,225,240,0.75); margin-bottom: 11px; }
+    .wt-slide p strong { color: #e2e8ff; }
+    .wt-slide p em { color: #6ee7b7; font-style: normal; font-weight: 600; }
+    .wt-code {
+      font-family: "JetBrains Mono", monospace; font-size: 12px; line-height: 20px;
+      background: #06091a; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 9px; padding: 12px 14px; margin-bottom: 12px;
+      overflow-x: auto; white-space: pre;
+    }
+    .wt-slide code {
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      background: rgba(6,182,212,0.12); border: 1px solid rgba(6,182,212,0.20);
+      border-radius: 4px; padding: 1px 5px; color: #67e8f9;
+    }
+    .wt-callout {
+      border-radius: 8px; padding: 9px 13px; margin-bottom: 12px;
+      font-size: 12px; line-height: 1.6;
+    }
+    .wt-callout.tip  { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.22); color: #6ee7b7; }
+    .wt-callout.info { background: rgba(6,182,212,0.10); border: 1px solid rgba(6,182,212,0.22); color: #67e8f9; }
+    .wt-callout.warn { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.22); color: #fcd34d; }
+    .wt-action { display: flex; gap: 8px; margin-bottom: 10px; }
+    .wt-load-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      background: rgba(6,182,212,0.18); border: 1px solid rgba(6,182,212,0.35); color: #67e8f9;
+      transition: all 140ms;
+    }
+    .wt-load-btn:hover { background: rgba(6,182,212,0.28); }
+    .wt-quiz { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 9px; padding: 12px 14px; margin-bottom: 10px; }
+    .wt-quiz p { font-size: 12px; font-weight: 600; color: #c7cfe8; margin-bottom: 8px; }
+    .wt-quiz-opts { display: flex; flex-direction: column; gap: 5px; }
+    .wt-quiz-btn {
+      text-align: left; padding: 7px 12px; border-radius: 7px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(221,225,240,0.70); font-size: 12px; cursor: pointer; transition: all 120ms;
+    }
+    .wt-quiz-btn:hover { background: rgba(255,255,255,0.10); }
+    .wt-quiz-btn.correct { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.40); color: #6ee7b7; }
+    .wt-quiz-btn.wrong   { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+    .wt-feedback { font-size: 11px; margin-top: 6px; min-height: 16px; }
+    .wt-feedback.correct { color: #6ee7b7; }
+    .wt-feedback.wrong   { color: #fca5a5; }
+    #webTutNav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 20px; border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .wt-nav-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      transition: all 140ms;
+    }
+    #webTutPrev { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #b0b8d8; }
+    #webTutNext { background: linear-gradient(135deg,#0891b2,#7c3aed); color: #fff; }
+    #webTutFinish { background: linear-gradient(135deg,#059669,#10b981); color: #fff; }
+
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* ══════════════════════════════════════════════════════════════
+       MOBILE LAYOUT  ≤ 700px
+    ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 700px) {
+
+      html, body { height: auto; overflow: auto; }
+
+      #appShell {
+        height: auto;
+        overflow: visible;
+        min-height: 100vh;
+      }
+
+      #appHeader {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px 12px;
+      }
+      h1.app-title { font-size: 17px; }
+      .header-actions { flex-wrap: wrap; gap: 4px; }
+      .hdr-btn { font-size: 10px; padding: 4px 8px; }
+      .preview-size-group { display: none; }
+
+      /* Stack editor and preview vertically */
+      #mainGrid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+        padding: 8px 10px 16px;
+        gap: 12px;
+      }
+
+      /* Hide the resize handle — not useful on mobile */
+      #resizeHandle { display: none; }
+
+      #leftCol {
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      /* Editor: fixed comfortable height */
+      .editor-wrap {
+        height: 300px;
+        flex: none;
+      }
+
+      /* Right col / preview: fixed height so iframe is usable */
+      #rightCol {
+        min-height: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      #previewPanel {
+        flex: none;
+        height: auto;
+      }
+
+      .preview-outer {
+        flex: none;
+        height: 360px;
+      }
+
+      /* Status bar: truncate on small screens */
+      #statusBar { font-size: 9px; gap: 10px; padding: 4px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div id="appShell">
+
+  <!-- Header -->
+  <header id="appHeader">
+    <a href="index.html" class="home-btn">
+      <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="6" y1="22" x2="16" y2="12" stroke="#67e8f9" stroke-width="2.2" stroke-linecap="round"/>
+        <rect x="14.5" y="9.5" width="5" height="5" rx="1" transform="rotate(45 14.5 9.5)" fill="#67e8f9" stroke="#0891b2" stroke-width="1"/>
+        <circle cx="22" cy="5" r="1.5" fill="#fbbf24"/>
+        <circle cx="26" cy="10" r="1" fill="#a5b4fc"/>
+        <circle cx="19" cy="2" r="1" fill="#6ee7b7"/>
+        <line x1="22" y1="2" x2="22" y2="8" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+        <line x1="19" y1="5" x2="25" y2="5" stroke="#fbbf24" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+      <h1 class="app-title">Web Wizard</h1>
+    </div>
+
+    <div class="header-actions">
+      <!-- Preview size -->
+      <div class="preview-size-group">
+        <button class="size-btn active" data-size="desktop" title="Desktop preview"><i data-lucide="monitor" style="width:12px;height:12px;"></i></button>
+        <button class="size-btn" data-size="tablet"  title="Tablet preview"><i data-lucide="tablet" style="width:12px;height:12px;"></i></button>
+        <button class="size-btn" data-size="mobile"  title="Mobile preview"><i data-lucide="smartphone" style="width:12px;height:12px;"></i></button>
+      </div>
+      <button id="learnWebBtn" class="hdr-btn" style="background:rgba(6,182,212,0.18);border-color:rgba(6,182,212,0.40);color:#67e8f9;">
+        <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn HTML
+      </button>
+      <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
+      <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
+      <input type="file" id="fileInput" accept=".html,.htm,.css,.txt" class="hidden">
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div id="mainGrid" style="grid-template-columns: 420px 4px 1fr;">
+
+    <!-- Left: editor -->
+    <div id="leftCol" class="panel">
+      <div class="panel-hd">
+        <h2 class="panel-title">
+          <i data-lucide="code-2" style="width:14px;height:14px;color:#67e8f9;"></i>
+          <span>Code editor</span>
+        </h2>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <div class="tab-group">
+            <button id="editorTab"   class="tab-btn active">Editor</button>
+            <button id="examplesTab" class="tab-btn">Examples</button>
+          </div>
+          <button id="lineNumbersToggle" class="icon-btn active" title="Toggle line numbers">
+            <i data-lucide="list" style="width:13px;height:13px;"></i>
+          </button>
+          <button id="autoRunToggle" class="icon-btn active" title="Auto-update preview">
+            <i data-lucide="zap" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-wrap" id="editorWrap">
+        <label for="codeEditor" class="sr-only">HTML and CSS code editor</label>
+        <div id="lineNumbers"></div>
+        <div id="highlightLayer" class="highlight-layer" aria-hidden="true"></div>
+        <textarea id="codeEditor" class="code-editor" spellcheck="false" autocorrect="off" autocapitalize="off"><!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+
+    h1 {
+      color: #4f46e5;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #64748b;
+      font-size: 1rem;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 10px 24px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Hello, World!</h1>
+    <p>Edit the code on the left to change this page.</p>
+    <button class="btn">Click me!</button>
+  </div>
+</body>
+</html></textarea>
+      </div>
+
+      <div id="examplesPanel" class="hidden">
+        <button class="ex-item exampleLoader" data-example="hello_world">
+          <h4>Hello World <span class="diff diff-b">beginner</span></h4>
+          <p>a simple centred card with a heading and button</p>
+        </button>
+        <button class="ex-item exampleLoader" data-example="colour_boxes">
+          <h4>Colour boxes <span class="diff diff-b">beginner</span></h4>
+          <p>coloured div elements using background-color</p>
+        </button>
+        <button class="ex-item exampleLoader" data-example="flexbox_nav">
+          <h4>Navigation bar <span class="diff diff-i">intermediate</span></h4>
+          <p>a horizontal navbar using flexbox</p>
+        </button>
+        <button class="ex-item exampleLoader" data-example="grid_cards">
+          <h4>Card grid <span class="diff diff-i">intermediate</span></h4>
+          <p>a responsive 3-column card layout using CSS Grid</p>
+        </button>
+        <button class="ex-item exampleLoader" data-example="css_animation">
+          <h4>CSS animation <span class="diff diff-i">intermediate</span></h4>
+          <p>a bouncing ball using @keyframes</p>
+        </button>
+        <button class="ex-item exampleLoader" data-example="form_layout">
+          <h4>Contact form <span class="diff diff-i">intermediate</span></h4>
+          <p>a styled HTML form with inputs and a submit button</p>
+        </button>
+      </div>
+
+      <div class="actions-row">
+        <button id="runButton" class="act-btn btn-run">
+          <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Refresh preview
+        </button>
+        <button id="resetButton" class="act-btn btn-reset">
+          <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Resize handle -->
+    <div id="resizeHandle"></div>
+
+    <!-- Right: preview -->
+    <div id="rightCol">
+      <div class="panel" id="previewPanel">
+        <div class="panel-hd">
+          <h2 class="panel-title">
+            <i data-lucide="monitor" style="width:14px;height:14px;color:#67e8f9;"></i>
+            Live preview
+          </h2>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.35);" id="previewSizeLabel">Desktop</div>
+        </div>
+        <div class="preview-outer" id="previewOuter">
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <div class="browser-dot dot-red"></div>
+              <div class="browser-dot dot-yel"></div>
+              <div class="browser-dot dot-grn"></div>
+            </div>
+            <div class="browser-url">preview</div>
+          </div>
+          <iframe id="previewFrame" title="Live HTML preview" sandbox="allow-scripts"></iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Status bar -->
+  <div id="statusBar">
+    <span><div class="status-dot"></div> Ready</span>
+    <span id="lineColReadout">Ln 1, Col 1</span>
+    <span id="charCount">0 chars</span>
+    <span style="margin-left:auto;color:rgba(221,225,240,0.20);">Web Wizard</span>
+  </div>
+
+</div>
+
+  <!-- Web Wizard Tutorial Overlay -->
+  <div id="webTutorialOverlay" class="hidden">
+    <div id="webTutorialBox">
+      <div id="webTutHdr">
+        <h2>🪄 Learn HTML &amp; CSS</h2>
+        <button class="wt-close" id="webTutClose">&#x2715;</button>
+      </div>
+      <div id="webTutProgress">
+        <div class="wt-dot active" data-slide="0"></div>
+        <div class="wt-dot" data-slide="1"></div>
+        <div class="wt-dot" data-slide="2"></div>
+        <div class="wt-dot" data-slide="3"></div>
+        <div class="wt-dot" data-slide="4"></div>
+        <div class="wt-dot" data-slide="5"></div>
+        <div class="wt-dot" data-slide="6"></div>
+        <span id="webTutStepLabel">Lesson 1 of 7</span>
+      </div>
+
+      <div id="webTutSlides">
+
+        <!-- Slide 0: What is HTML? -->
+        <div class="wt-slide active">
+          <h3><span class="sn">1</span> What is HTML?</h3>
+          <p><strong>HTML</strong> (HyperText Markup Language) is the language that gives a webpage its <em>structure</em>. Every website you have ever visited is built on HTML.</p>
+          <p>HTML uses <strong>tags</strong> to mark up content. A tag is a keyword wrapped in angle brackets:</p>
+          <div class="wt-code">&lt;h1&gt;This is a heading&lt;/h1&gt;
+&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;button&gt;Click me&lt;/button&gt;</div>
+          <p>Most tags come in pairs — an <em>opening tag</em> <code>&lt;p&gt;</code> and a <em>closing tag</em> <code>&lt;/p&gt;</code>. The closing tag has a forward slash.</p>
+          <div class="wt-action">
+            <button class="wt-load-btn" data-example="tags">&#x1F4E5; Load HTML tags example</button>
+          </div>
+          <div class="wt-callout tip">Every HTML file starts with <code>&lt;!DOCTYPE html&gt;</code>, then <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags. The body is where your visible content goes.</div>
+        </div>
+
+        <!-- Slide 1: HTML Structure -->
+        <div class="wt-slide">
+          <h3><span class="sn">2</span> The Structure of a Web Page</h3>
+          <p>Every HTML page follows the same basic skeleton:</p>
+          <div class="wt-code">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello World&lt;/h1&gt;
+    &lt;p&gt;My first web page.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</div>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:18px;margin-bottom:12px;">
+            <li><code>&lt;head&gt;</code> — invisible settings: page title, fonts, styles</li>
+            <li><code>&lt;body&gt;</code> — everything the visitor actually sees</li>
+            <li><code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code> — headings, largest to smallest</li>
+            <li><code>&lt;p&gt;</code> — a paragraph of text</li>
+          </ul>
+          <div class="wt-quiz">
+            <p>🧩 Which tag holds everything the visitor can see?</p>
+            <div class="wt-quiz-opts">
+              <button class="wt-quiz-btn" data-correct="false">&lt;head&gt;</button>
+              <button class="wt-quiz-btn" data-correct="true">&lt;body&gt;</button>
+              <button class="wt-quiz-btn" data-correct="false">&lt;html&gt;</button>
+            </div>
+            <div class="wt-feedback"></div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Intro to CSS -->
+        <div class="wt-slide">
+          <h3><span class="sn">3</span> Adding Style with CSS</h3>
+          <p><strong>CSS</strong> (Cascading Style Sheets) controls how HTML looks — colours, sizes, fonts, spacing, and layout.</p>
+          <p>You write CSS inside a <code>&lt;style&gt;</code> tag in the <code>&lt;head&gt;</code>. Each rule selects an element and sets properties:</p>
+          <div class="wt-code">h1 {
+  color: #4f46e5;
+  font-size: 2rem;
+}
+
+p {
+  color: #64748b;
+  font-size: 1rem;
+}</div>
+          <p>The part before the <code>{ }</code> is the <em>selector</em> (which element to style). Inside the braces are <em>property: value</em> pairs.</p>
+          <div class="wt-action">
+            <button class="wt-load-btn" data-example="css">&#x1F4E5; Load CSS example</button>
+          </div>
+          <div class="wt-callout tip">Try changing <code>color: #4f46e5</code> to any hex colour code — like <code>#ef4444</code> for red or <code>#10b981</code> for green.</div>
+        </div>
+
+        <!-- Slide 3: Classes -->
+        <div class="wt-slide">
+          <h3><span class="sn">4</span> Using Classes</h3>
+          <p>A <strong>class</strong> is a name you give to an element so you can style it with CSS. You add a class with the <code>class</code> attribute:</p>
+          <div class="wt-code">&lt;!-- HTML --&gt;
+&lt;div class="card"&gt;
+  &lt;h2&gt;My Card&lt;/h2&gt;
+  &lt;p&gt;Some content here.&lt;/p&gt;
+&lt;/div&gt;
+
+/* CSS */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}</div>
+          <p>The dot in <code>.card</code> means "select anything with class card". You can use the same class on multiple elements.</p>
+          <div class="wt-action">
+            <button class="wt-load-btn" data-example="card">&#x1F4E5; Load card example</button>
+          </div>
+          <div class="wt-quiz">
+            <p>🧩 How do you select a class called "box" in CSS?</p>
+            <div class="wt-quiz-opts">
+              <button class="wt-quiz-btn" data-correct="false">box { }</button>
+              <button class="wt-quiz-btn" data-correct="false">#box { }</button>
+              <button class="wt-quiz-btn" data-correct="true">.box { }</button>
+            </div>
+            <div class="wt-feedback"></div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Layout with Flexbox -->
+        <div class="wt-slide">
+          <h3><span class="sn">5</span> Layout with Flexbox</h3>
+          <p><strong>Flexbox</strong> is a CSS layout tool that makes it easy to arrange elements in a row or column and control their alignment.</p>
+          <div class="wt-code">.container {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}</div>
+          <ul style="font-size:13px;line-height:1.8;color:rgba(221,225,240,0.75);padding-left:18px;margin-bottom:12px;">
+            <li><code>display: flex</code> — turns on flexbox for that element</li>
+            <li><code>gap</code> — space between child elements</li>
+            <li><code>justify-content</code> — aligns items along the main axis</li>
+            <li><code>align-items</code> — aligns items along the cross axis</li>
+          </ul>
+          <div class="wt-action">
+            <button class="wt-load-btn" data-example="flexbox_nav">&#x1F4E5; Load flexbox example</button>
+          </div>
+          <div class="wt-callout tip">Flexbox is how most modern websites create navigation bars, card rows, and centred layouts. It is one of the most useful CSS tools to learn.</div>
+        </div>
+
+        <!-- Slide 5: Colours -->
+        <div class="wt-slide">
+          <h3><span class="sn">6</span> Colours in CSS</h3>
+          <p>CSS supports several ways to write colours:</p>
+          <div class="wt-code">/* Named colour */
+color: red;
+
+/* Hex code */
+color: #ef4444;
+
+/* RGB */
+color: rgb(239, 68, 68);
+
+/* With transparency (alpha) */
+color: rgba(239, 68, 68, 0.5);</div>
+          <p>Hex codes are the most common. They are a <code>#</code> followed by 6 characters using digits 0–9 and letters A–F. You can pick any colour from a site like <strong>coolors.co</strong> and copy its hex code.</p>
+          <div class="wt-action">
+            <button class="wt-load-btn" data-example="colour_boxes">&#x1F4E5; Load colour boxes example</button>
+          </div>
+          <div class="wt-callout info">The alpha value in <code>rgba()</code> goes from 0 (invisible) to 1 (fully opaque). Use it for transparent backgrounds and overlays.</div>
+        </div>
+
+        <!-- Slide 6: Try it yourself -->
+        <div class="wt-slide">
+          <h3><span class="sn">7</span> Now Build Something!</h3>
+          <p>You have learned the core building blocks of web design:</p>
+          <ul style="font-size:13px;line-height:2;color:rgba(221,225,240,0.75);padding-left:18px;margin-bottom:14px;">
+            <li>✅ <strong>HTML tags</strong> — give pages their structure</li>
+            <li>✅ <strong>Page skeleton</strong> — DOCTYPE, html, head, body</li>
+            <li>✅ <strong>CSS rules</strong> — selector + property: value</li>
+            <li>✅ <strong>Classes</strong> — reusable styles with a dot selector</li>
+            <li>✅ <strong>Flexbox</strong> — arranging elements in rows and columns</li>
+            <li>✅ <strong>Colours</strong> — named, hex, rgb, rgba</li>
+          </ul>
+          <div class="wt-callout tip">🎨 <strong>Challenge:</strong> load the card example, then try changing the background colour, adding a second card, or changing the heading font size. Every change is instant!</div>
+          <div class="wt-action">
+            <button class="wt-load-btn" id="webTutFinishLoad" data-example="card">&#x1F3A8; Load card &amp; start building</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="webTutNav">
+        <button class="wt-nav-btn" id="webTutPrev">&#x2190; Back</button>
+        <button class="wt-nav-btn" id="webTutNext">Next &#x2192;</button>
+        <button class="wt-nav-btn hidden" id="webTutFinish">&#x2713; Close &amp; Build</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ── Examples ─────────────────────────────────────────────────────────────────
+const examples = {
+
+  hello_world: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    h1 { color: #4f46e5; font-size: 2rem; margin-bottom: 8px; }
+    p  { color: #64748b; font-size: 1rem; }
+    .btn {
+      margin-top: 20px;
+      padding: 10px 24px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn:hover { background: #4338ca; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Hello, World!</h1>
+    <p>Edit the code on the left to change this page.</p>
+    <button class="btn">Click me!</button>
+  </div>
+</body>
+</html>`,
+
+  colour_boxes: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 32px;
+      background: #f8fafc;
+    }
+    h1 { margin-bottom: 24px; color: #1e293b; }
+    .boxes {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .box {
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Colour Boxes</h1>
+  <div class="boxes">
+    <div class="box" style="background: #ef4444;">Red</div>
+    <div class="box" style="background: #f97316;">Orange</div>
+    <div class="box" style="background: #eab308;">Yellow</div>
+    <div class="box" style="background: #22c55e;">Green</div>
+    <div class="box" style="background: #3b82f6;">Blue</div>
+    <div class="box" style="background: #8b5cf6;">Purple</div>
+  </div>
+</body>
+</html>`,
+
+  flexbox_nav: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f1f5f9; }
+    nav {
+      background: #1e293b;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+    .logo {
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .hero {
+      padding: 80px 32px;
+      text-align: center;
+    }
+    h1 { font-size: 2.5rem; color: #1e293b; margin-bottom: 16px; }
+    p  { color: #64748b; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">My Website</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="hero">
+    <h1>Welcome to my site</h1>
+    <p>Built with HTML and CSS flexbox.</p>
+  </div>
+</body>
+</html>`,
+
+  grid_cards: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f8fafc; padding: 32px; }
+    h1 { margin-bottom: 24px; color: #1e293b; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    .card h2 { font-size: 1.1rem; color: #1e293b; margin-bottom: 8px; }
+    .card p  { font-size: 0.9rem; color: #64748b; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <h1>Our Features</h1>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h2>Fast</h2>
+      <p>Loads instantly and runs smoothly on any device.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎨</div>
+      <h2>Beautiful</h2>
+      <p>Clean, modern design that looks great everywhere.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔒</div>
+      <h2>Secure</h2>
+      <p>Built with security best practices from the ground up.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <h2>Responsive</h2>
+      <p>Works perfectly on phones, tablets, and desktops.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <h2>Powerful</h2>
+      <p>Packed with features that help you get things done.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <h2>Global</h2>
+      <p>Available in multiple languages for users worldwide.</p>
+    </div>
+  </div>
+</body>
+</html>`,
+
+  css_animation: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      gap: 40px;
+    }
+    h1 { color: white; font-size: 1.5rem; }
+    .ground {
+      width: 200px;
+      height: 4px;
+      background: #475569;
+      border-radius: 2px;
+    }
+    .ball {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #10b981);
+      animation: bounce 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate;
+      box-shadow: 0 0 20px rgba(99,102,241,0.5);
+    }
+    @keyframes bounce {
+      from { transform: translateY(0px); }
+      to   { transform: translateY(-120px); }
+    }
+    .label { color: #94a3b8; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>CSS Animation</h1>
+  <div class="ball"></div>
+  <div class="ground"></div>
+  <p class="label">Animated with @keyframes + cubic-bezier easing</p>
+</body>
+</html>`,
+
+  tags: `<!DOCTYPE html>
+<html>
+<head>
+  <title>HTML Tags</title>
+</head>
+<body style="font-family: sans-serif; padding: 32px; background: #f8fafc;">
+  <h1>This is an h1 heading</h1>
+  <h2>This is an h2 heading</h2>
+  <h3>This is an h3 heading</h3>
+  <p>This is a paragraph tag. It holds a block of text.</p>
+  <p>Here is a <strong>bold word</strong> and an <em>italic word</em>.</p>
+  <ul>
+    <li>Unordered list item one</li>
+    <li>Unordered list item two</li>
+    <li>Unordered list item three</li>
+  </ul>
+  <a href="#">This is a link tag</a>
+</body>
+</html>`,
+
+  css: `<!DOCTYPE html>
+<html>
+<head>
+  <title>CSS Basics</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f4ff;
+      padding: 32px;
+    }
+    h1 {
+      color: #4f46e5;
+      font-size: 2rem;
+    }
+    p {
+      color: #64748b;
+      line-height: 1.6;
+    }
+    .highlight {
+      background: #fef3c7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #92400e;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS adds style to HTML</h1>
+  <p>This paragraph uses the <span class="highlight">highlight class</span> for the span.</p>
+  <div class="card">
+    <h2>I am a card</h2>
+    <p>Styled with a CSS class called .card</p>
+  </div>
+</body>
+</html>`,
+
+  card: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    h1 { color: #4f46e5; font-size: 2rem; margin-bottom: 8px; }
+    p  { color: #64748b; font-size: 1rem; }
+    .btn {
+      margin-top: 20px;
+      padding: 10px 24px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn:hover { background: #4338ca; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Hello, World!</h1>
+    <p>Edit the code on the left to change this page.</p>
+    <button class="btn">Click me!</button>
+  </div>
+</body>
+</html>`,
+
+  form_layout: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      background: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .form-card {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+    h2 { color: #1e293b; margin-bottom: 6px; }
+    .subtitle { color: #64748b; font-size: 0.9rem; margin-bottom: 28px; }
+    .field { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus { border-color: #6366f1; }
+    textarea { resize: vertical; min-height: 100px; }
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .submit-btn:hover { background: #4f46e5; }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h2>Contact Us</h2>
+    <p class="subtitle">Fill in the form and we will get back to you.</p>
+    <div class="field">
+      <label for="name">Your name</label>
+      <input type="text" id="name" placeholder="e.g. Jane Smith">
+    </div>
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="email" id="email" placeholder="jane@example.com">
+    </div>
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" placeholder="Type your message here..."></textarea>
+    </div>
+    <button class="submit-btn">Send message</button>
+  </div>
+</body>
+</html>`,
+};
+
+// ── DOM refs ──────────────────────────────────────────────────────────────────
+const codeEditor        = document.getElementById('codeEditor');
+const highlightLayer    = document.getElementById('highlightLayer');
+const lineNumbers       = document.getElementById('lineNumbers');
+const lineNumbersToggle = document.getElementById('lineNumbersToggle');
+const autoRunToggle     = document.getElementById('autoRunToggle');
+const editorTab         = document.getElementById('editorTab');
+const examplesTab       = document.getElementById('examplesTab');
+const editorWrap        = document.getElementById('editorWrap');
+const examplesPanel     = document.getElementById('examplesPanel');
+const runButton         = document.getElementById('runButton');
+const resetButton       = document.getElementById('resetButton');
+const previewFrame      = document.getElementById('previewFrame');
+const previewOuter      = document.getElementById('previewOuter');
+const previewSizeLabel  = document.getElementById('previewSizeLabel');
+const lineColReadout    = document.getElementById('lineColReadout');
+const charCount         = document.getElementById('charCount');
+const saveBtn           = document.getElementById('saveBtn');
+const loadBtn           = document.getElementById('loadBtn');
+const fileInput         = document.getElementById('fileInput');
+const mainGrid          = document.getElementById('mainGrid');
+const resizeHandle      = document.getElementById('resizeHandle');
+
+// ── Syntax highlighting (HTML/CSS aware) ──────────────────────────────────────
+function highlight(code) {
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const TOKENS = [
+    { re: /^<!--[\s\S]*?-->/, cls: 'hl-cmt' },
+    { re: /^<\/[a-zA-Z][a-zA-Z0-9]*>/, cls: 'hl-tag' },
+    { re: /^<[a-zA-Z][a-zA-Z0-9]*(\s[^>]*)?>/, cls: null, html: true },
+    { re: /^&[a-zA-Z]+;/, cls: 'hl-ent' },
+    { re: /^[\s\S]/, cls: null },
+  ];
+
+  // CSS token rules (used inside <style> blocks)
+  const CSS_TOKENS = [
+    { re: /^\/\*[\s\S]*?\*\//, cls: 'hl-cmt' },
+    { re: /^[^{};:\/]+(?=\s*\{)/, cls: 'hl-sel' },
+    { re: /^[a-zA-Z-]+(?=\s*:)/, cls: 'hl-prop' },
+    { re: /^:\s*[^;{}]+/, cls: 'hl-unit' },
+    { re: /^[\s\S]/, cls: null },
+  ];
+
+  // Detect CSS region
+  const styleMatch = code.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+  let cssStart = -1, cssEnd = -1;
+  if (styleMatch) {
+    cssStart = code.indexOf(styleMatch[1]);
+    cssEnd   = cssStart + styleMatch[1].length;
+  }
+
+  let out = '', pos = 0;
+  while (pos < code.length) {
+    const slice = code.slice(pos);
+    const inCSS = (pos >= cssStart && pos < cssEnd);
+    const tokens = inCSS ? CSS_TOKENS : TOKENS;
+    let matched = false;
+    for (const tok of tokens) {
+      const m = slice.match(tok.re);
+      if (!m) continue;
+      const raw = m[0]; pos += raw.length; matched = true;
+      if (tok.html) {
+        // colour tag name + attribute names + values separately
+        let h = raw.replace(/^(<\/?)([a-zA-Z][a-zA-Z0-9]*)/, (_, p, t) =>
+          `${esc(p)}<span class="hl-tag">${esc(t)}</span>`
+        );
+        h = h.replace(/\s([a-zA-Z:_-]+)=/g, (_, a) =>
+          ` <span class="hl-attr">${esc(a)}</span>=`
+        );
+        h = h.replace(/=(["'])([^"']*)\1/g, (_, q, v) =>
+          `=${esc(q)}<span class="hl-val">${esc(v)}</span>${esc(q)}`
+        );
+        out += h;
+      } else if (tok.cls) {
+        out += `<span class="${tok.cls}">${esc(raw)}</span>`;
+      } else {
+        out += esc(raw);
+      }
+      break;
+    }
+    if (!matched) { out += esc(code[pos]); pos++; }
+  }
+  return out;
+}
+
+function updateHighlight() {
+  highlightLayer.innerHTML = highlight(codeEditor.value);
+  highlightLayer.scrollTop  = codeEditor.scrollTop;
+  highlightLayer.scrollLeft = codeEditor.scrollLeft;
+}
+
+// ── Line numbers ──────────────────────────────────────────────────────────────
+let lineNumbersVisible = true;
+function updateLineNumbers() {
+  const lines = codeEditor.value.split('\n').length;
+  lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i+1).join('<br>');
+}
+
+function toggleLineNumbers() {
+  lineNumbersVisible = !lineNumbersVisible;
+  lineNumbers.style.display = lineNumbersVisible ? '' : 'none';
+  const left = lineNumbersVisible ? '36px' : '0';
+  highlightLayer.style.left = left;
+  codeEditor.style.left = left;
+  lineNumbersToggle.classList.toggle('active', lineNumbersVisible);
+}
+lineNumbersToggle.addEventListener('click', toggleLineNumbers);
+
+// ── Tab key → 2 spaces ───────────────────────────────────────────────────────
+codeEditor.addEventListener('keydown', e => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const s = codeEditor.selectionStart, en = codeEditor.selectionEnd;
+    codeEditor.value = codeEditor.value.substring(0,s) + '  ' + codeEditor.value.substring(en);
+    codeEditor.selectionStart = codeEditor.selectionEnd = s + 2;
+    updateLineNumbers(); updateHighlight();
+  }
+});
+
+codeEditor.addEventListener('input', () => {
+  updateLineNumbers(); updateHighlight();
+  charCount.textContent = codeEditor.value.length + ' chars';
+  if (autoRun) scheduleRun();
+});
+
+codeEditor.addEventListener('scroll', () => {
+  lineNumbers.scrollTop     = codeEditor.scrollTop;
+  highlightLayer.scrollTop  = codeEditor.scrollTop;
+  highlightLayer.scrollLeft = codeEditor.scrollLeft;
+});
+
+codeEditor.addEventListener('click',  updateCursor);
+codeEditor.addEventListener('keyup',  updateCursor);
+function updateCursor() {
+  const val = codeEditor.value;
+  const pos = codeEditor.selectionStart;
+  const lines = val.substring(0, pos).split('\n');
+  lineColReadout.textContent = `Ln ${lines.length}, Col ${lines[lines.length-1].length + 1}`;
+}
+
+// ── Auto-run ─────────────────────────────────────────────────────────────────
+let autoRun = true;
+let runTimer = null;
+
+autoRunToggle.addEventListener('click', () => {
+  autoRun = !autoRun;
+  autoRunToggle.classList.toggle('active', autoRun);
+  autoRunToggle.title = autoRun ? 'Auto-update on (click to disable)' : 'Auto-update off (click to enable)';
+});
+
+function scheduleRun() {
+  clearTimeout(runTimer);
+  runTimer = setTimeout(refreshPreview, 600);
+}
+
+// ── Preview ───────────────────────────────────────────────────────────────────
+function refreshPreview() {
+  const code = codeEditor.value;
+  const blob = new Blob([code], {type: 'text/html'});
+  const url  = URL.createObjectURL(blob);
+  previewFrame.onload = () => URL.revokeObjectURL(url);
+  previewFrame.src = url;
+}
+
+runButton.addEventListener('click', refreshPreview);
+resetButton.addEventListener('click', () => {
+  codeEditor.value = examples.hello_world;
+  updateLineNumbers(); updateHighlight();
+  refreshPreview();
+});
+
+// ── Preview size buttons ──────────────────────────────────────────────────────
+const sizeBtns = document.querySelectorAll('.size-btn');
+const sizeMap = {
+  desktop: { width: '100%',  label: 'Desktop' },
+  tablet:  { width: '768px', label: 'Tablet (768px)' },
+  mobile:  { width: '375px', label: 'Mobile (375px)' },
+};
+
+sizeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    sizeBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cfg = sizeMap[btn.dataset.size];
+    previewFrame.style.width    = cfg.width;
+    previewFrame.style.maxWidth = cfg.width;
+    previewSizeLabel.textContent = cfg.label;
+  });
+});
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+editorTab.addEventListener('click', () => {
+  editorWrap.classList.remove('hidden');
+  examplesPanel.classList.add('hidden');
+  editorTab.classList.add('active');
+  examplesTab.classList.remove('active');
+});
+examplesTab.addEventListener('click', () => {
+  editorWrap.classList.add('hidden');
+  examplesPanel.classList.remove('hidden');
+  examplesTab.classList.add('active');
+  editorTab.classList.remove('active');
+});
+
+document.querySelectorAll('.exampleLoader').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.getAttribute('data-example');
+    if (examples[key]) {
+      codeEditor.value = examples[key];
+      updateLineNumbers(); updateHighlight();
+      refreshPreview();
+      editorTab.click();
+    }
+  });
+});
+
+// ── Save / Load ───────────────────────────────────────────────────────────────
+saveBtn.addEventListener('click', () => {
+  const blob = new Blob([codeEditor.value], {type: 'text/html'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'my-page.html'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+loadBtn.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    codeEditor.value = ev.target.result;
+    updateLineNumbers(); updateHighlight(); refreshPreview();
+    editorTab.click();
+  };
+  reader.readAsText(file);
+  fileInput.value = '';
+});
+
+// ── Resize handle ─────────────────────────────────────────────────────────────
+let dragging = false, dragStartX = 0, dragStartW = 0;
+resizeHandle.addEventListener('mousedown', e => {
+  if (window.innerWidth <= 700) return;
+  dragging = true; dragStartX = e.clientX;
+  dragStartW = parseInt(mainGrid.style.gridTemplateColumns);
+  resizeHandle.classList.add('dragging');
+  document.body.style.cursor = 'col-resize';
+  document.body.style.userSelect = 'none';
+});
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const delta   = e.clientX - dragStartX;
+  const newW    = Math.max(280, Math.min(800, dragStartW + delta));
+  mainGrid.style.gridTemplateColumns = `${newW}px 4px 1fr`;
+});
+document.addEventListener('mouseup', () => {
+  if (!dragging) return;
+  dragging = false;
+  resizeHandle.classList.remove('dragging');
+  document.body.style.cursor = '';
+  document.body.style.userSelect = '';
+});
+
+
+// ── Web Wizard Tutorial ───────────────────────────────────────────────────────
+(function() {
+  const overlay    = document.getElementById('webTutorialOverlay');
+  const learnBtn   = document.getElementById('learnWebBtn');
+  const closeBtn   = document.getElementById('webTutClose');
+  const prevBtn    = document.getElementById('webTutPrev');
+  const nextBtn    = document.getElementById('webTutNext');
+  const finishBtn  = document.getElementById('webTutFinish');
+  const slides     = Array.from(document.querySelectorAll('.wt-slide'));
+  const dots       = Array.from(document.querySelectorAll('.wt-dot'));
+  const stepLabel  = document.getElementById('webTutStepLabel');
+  const total      = slides.length;
+  let cur = 0, resumeAt = null;
+
+  function goTo(i) {
+    i = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s,n) => s.classList.toggle('active', n === i));
+    dots.forEach((d,n) => {
+      d.classList.toggle('active', n === i);
+      d.classList.toggle('done', n < i);
+    });
+    cur = i; resumeAt = i;
+    stepLabel.textContent = `Lesson ${cur + 1} of ${total}`;
+    prevBtn.style.visibility = cur === 0 ? 'hidden' : 'visible';
+    const last = cur === total - 1;
+    nextBtn.classList.toggle('hidden', last);
+    finishBtn.classList.toggle('hidden', !last);
+  }
+
+  function open() {
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    goTo(resumeAt !== null ? resumeAt : 0);
+  }
+  function close() {
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (cur === total - 1) resumeAt = null;
+  }
+
+  learnBtn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  prevBtn.addEventListener('click', () => goTo(cur - 1));
+  nextBtn.addEventListener('click', () => goTo(cur + 1));
+  dots.forEach((d,i) => d.addEventListener('click', () => goTo(i)));
+
+  finishBtn.addEventListener('click', () => {
+    close();
+    editorTab.click();
+  });
+
+  // Load example buttons inside slides
+  overlay.addEventListener('click', e => {
+    const lb = e.target.closest('.wt-load-btn');
+    if (lb && lb.dataset.example) {
+      const key = lb.dataset.example;
+      if (examples[key]) {
+        codeEditor.value = examples[key];
+        updateLineNumbers(); updateHighlight(); refreshPreview();
+        lb.textContent = '✓ Loaded!';
+        lb.style.color = '#6ee7b7';
+        setTimeout(() => {
+          lb.innerHTML = '&#x1F4E5; ' + lb.textContent.replace('✓ Loaded!','Load example');
+          lb.style.color = '';
+        }, 1500);
+      }
+      if (lb.id === 'webTutFinishLoad') close();
+    }
+    // Quiz handling
+    const qb = e.target.closest('.wt-quiz-btn');
+    if (qb) {
+      const quiz = qb.closest('.wt-quiz');
+      const fb = quiz.querySelector('.wt-feedback');
+      quiz.querySelectorAll('.wt-quiz-btn').forEach(b => b.classList.remove('correct','wrong'));
+      if (qb.dataset.correct === 'true') {
+        qb.classList.add('correct');
+        if (fb) { fb.textContent = '✅ Correct!'; fb.className = 'wt-feedback correct'; }
+      } else {
+        qb.classList.add('wrong');
+        if (fb) { fb.textContent = '❌ Not quite — try again!'; fb.className = 'wt-feedback wrong'; }
+      }
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (overlay.classList.contains('hidden')) return;
+    if (e.key === 'ArrowRight') goTo(cur + 1);
+    if (e.key === 'ArrowLeft')  goTo(cur - 1);
+    if (e.key === 'Escape') close();
+  });
+
+  prevBtn.style.visibility = 'hidden';
+})();
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+updateLineNumbers();
+updateHighlight();
+charCount.textContent = codeEditor.value.length + ' chars';
+refreshPreview();
+lucide.createIcons();
+</script>
+</body>
+</html>

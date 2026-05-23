@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Magician — Select Grade</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Ctext x='50%25' y='54%25' font-size='38' text-anchor='middle' dominant-baseline='middle'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; font-family: "DM Sans", sans-serif; background: #0a0f1e; color: #dde1f0; }
+    body {
+      background:
+        radial-gradient(ellipse 55% 35% at 6%  4%,  rgba(245,158,11,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96% 6%,  rgba(234,179,8,0.08)  0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 50% 98%, rgba(99,102,241,0.07) 0%, transparent 60%),
+        #0a0f1e;
+    }
+    header { display: flex; align-items: center; gap: 10px; padding: 14px 28px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .home-btn { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.55); text-decoration: none; transition: all 130ms; }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: #dde1f0; }
+    .app-icon { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #d97706, #f59e0b); display: flex; align-items: center; justify-content: center; font-size: 17px; }
+    h1.app-title { font-family: "Syne", sans-serif; font-weight: 800; font-size: 22px; background: linear-gradient(125deg, #fff 0%, #fcd34d 55%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero { text-align: center; padding: 56px 28px 36px; max-width: 640px; margin: 0 auto; }
+    .hero-eyebrow { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,158,11,0.60); margin-bottom: 14px; }
+    .hero h2 { font-family: "Syne", sans-serif; font-weight: 800; font-size: clamp(26px,4vw,38px); background: linear-gradient(125deg, #fff 0%, #fcd34d 55%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.15; margin-bottom: 14px; }
+    .hero p { font-size: 14px; color: rgba(221,225,240,0.50); line-height: 1.75; max-width: 440px; margin: 0 auto; }
+    .grade-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; padding: 8px 28px 60px; max-width: 900px; margin: 0 auto; }
+    .grade-card { width: 155px; border-radius: 18px; padding: 24px 18px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: inherit; transition: all 200ms ease; cursor: pointer; position: relative; overflow: hidden; transform-origin: center top; }
+    .grade-card.live:hover { transform: scale(1.05); border-color: rgba(245,158,11,0.45); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
+    .grade-card.soon { opacity: 0.45; filter: saturate(0.4); cursor: default; }
+    .grade-num { font-family: "Syne", sans-serif; font-weight: 800; font-size: 38px; line-height: 1; background: linear-gradient(135deg, #fcd34d, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .grade-label { font-size: 11px; font-weight: 600; color: rgba(221,225,240,0.50); letter-spacing: 0.04em; text-transform: uppercase; }
+    .grade-chapters { font-family: "JetBrains Mono", monospace; font-size: 10px; color: rgba(221,225,240,0.28); letter-spacing: 0.04em; }
+    .grade-btn { width: 100%; padding: 8px 0; border-radius: 8px; border: none; margin-top: 4px; font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 140ms; text-align: center; }
+    .grade-btn.live { background: linear-gradient(135deg, #b45309, #f59e0b); color: #fff; box-shadow: 0 4px 14px rgba(180,83,9,0.28); }
+    .grade-btn.soon { background: rgba(255,255,255,0.06); color: rgba(221,225,240,0.30); cursor: default; }
+    .soon-chip { position: absolute; top: 10px; right: 10px; font-size: 8px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 7px; border-radius: 99px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.10); color: rgba(221,225,240,0.28); }
+    .symbols { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; padding: 0 28px 20px; opacity: 0.10; font-family: "JetBrains Mono", monospace; font-size: 22px; color: #fcd34d; user-select: none; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="../index.html" class="home-btn"><i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home</a>
+    <div class="app-icon">✨</div>
+    <h1 class="app-title">Math Magician</h1>
+  </header>
+  <div class="hero">
+    <div class="hero-eyebrow">IEB / CAPS curriculum</div>
+    <h2>Choose your grade</h2>
+    <p>Interactive lessons, guided practice, and workbook exercises aligned to the South African mathematics curriculum.</p>
+  </div>
+  <div class="symbols"><span>∑</span><span>π</span><span>√</span><span>∞</span><span>∫</span><span>±</span><span>≠</span><span>≤</span><span>≥</span><span>∝</span></div>
+  <div class="grade-grid">
+    <a href="gr8/index.html" class="grade-card live">
+      <div class="grade-num">8</div>
+      <div class="grade-label">Grade</div>
+      <div class="grade-chapters">17 chapters</div>
+      <div class="grade-btn live">Start learning</div>
+    </a>
+    <div class="grade-card soon"><div class="soon-chip">Soon</div><div class="grade-num">9</div><div class="grade-label">Grade</div><div class="grade-chapters">17 chapters</div><div class="grade-btn soon">Coming soon</div></div>
+    <div class="grade-card soon"><div class="soon-chip">Soon</div><div class="grade-num">10</div><div class="grade-label">Grade</div><div class="grade-chapters">16 chapters</div><div class="grade-btn soon">Coming soon</div></div>
+    <div class="grade-card soon"><div class="soon-chip">Soon</div><div class="grade-num">11</div><div class="grade-label">Grade</div><div class="grade-chapters">15 chapters</div><div class="grade-btn soon">Coming soon</div></div>
+    <div class="grade-card soon"><div class="soon-chip">Soon</div><div class="grade-num">12</div><div class="grade-label">Grade</div><div class="grade-chapters">14 chapters</div><div class="grade-btn soon">Coming soon</div></div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
