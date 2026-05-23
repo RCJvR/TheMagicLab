@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>Math Magician — Gr 8 Mathematics</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23b45309'/%3E%3Ctext x='50%25' y='54%25' font-size='38' text-anchor='middle' dominant-baseline='middle'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    body { font-family: "DM Sans", sans-serif; font-size: 13px; background: #0a0f1e; color: #dde1f0; }
+
+    #appShell {
+      height: 100%; width: 100%;
+      display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 35% at 6%  4%, rgba(245,158,11,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 30% at 96%  6%, rgba(234,179,8,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(99,102,241,0.08) 0%, transparent 60%),
+        #0a0f1e;
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px 7px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
+      padding: 5px 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.55);
+      text-decoration: none; transition: all 130ms; flex-shrink: 0;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: #dde1f0; }
+    .app-icon {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    h1.app-title {
+      font-family: "Syne", sans-serif; font-weight: 800;
+      font-size: clamp(16px, 1.8vw, 22px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #fcd34d 55%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grade-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 99px;
+      background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.30); color: #fcd34d;
+    }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    #progressText { font-size: 11px; color: rgba(221,225,240,0.35); }
+    #progressBar {
+      width: 120px; height: 5px; border-radius: 99px;
+      background: rgba(255,255,255,0.08); overflow: hidden;
+    }
+    #progressFill {
+      height: 100%; border-radius: 99px; width: 0%;
+      background: linear-gradient(90deg, #f59e0b, #fcd34d);
+      transition: width 400ms ease;
+    }
+
+    /* ── Main layout ── */
+    #mainLayout { flex: 1; display: flex; min-height: 0; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 268px; flex-shrink: 0;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; overflow: hidden;
+      background: rgba(0,0,0,0.22);
+    }
+    #sidebarHeader {
+      flex-shrink: 0; padding: 12px 14px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .sidebar-chapter {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 11px;
+      letter-spacing: 0.06em; text-transform: uppercase; color: #fbbf24;
+      display: flex; align-items: center; gap: 6px; margin-bottom: 2px;
+    }
+    .sidebar-subtitle { font-size: 10px; color: rgba(221,225,240,0.30); letter-spacing: 0.04em; }
+    #sidebarList { flex: 1; overflow-y: auto; padding-bottom: 12px; }
+    .topic-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; cursor: pointer; transition: background 110ms;
+      border-left: 2px solid transparent; user-select: none;
+    }
+    .topic-item:hover { background: rgba(245,158,11,0.07); }
+    .topic-item.active {
+      background: rgba(245,158,11,0.12); border-left-color: #f59e0b;
+    }
+    .topic-item.completed { opacity: 0.70; }
+    .topic-num {
+      font-family: "JetBrains Mono", monospace; font-size: 10px;
+      color: rgba(221,225,240,0.25); width: 18px; flex-shrink: 0; text-align: right;
+    }
+    .topic-name { font-size: 12px; font-weight: 500; color: rgba(221,225,240,0.65); line-height: 1.3; flex: 1; }
+    .topic-item.active .topic-name { color: #fcd34d; font-weight: 600; }
+    .topic-tick { font-size: 11px; color: #6ee7b7; flex-shrink: 0; }
+
+    /* ── Content area ── */
+    #contentArea { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+
+    /* ── Tab bar ── */
+    #tabBar {
+      flex-shrink: 0; display: flex; align-items: center; gap: 3px;
+      padding: 8px 16px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .tab-btn {
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 600;
+      padding: 6px 14px 8px; border-radius: 8px 8px 0 0; border: none; cursor: pointer;
+      transition: all 130ms; color: rgba(221,225,240,0.40); background: transparent;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active { color: #fcd34d; border-bottom-color: #f59e0b; background: rgba(245,158,11,0.08); }
+    .tab-btn:hover:not(.active) { color: rgba(221,225,240,0.75); }
+
+    /* ── Panels ── */
+    .content-panel { flex: 1; min-height: 0; overflow-y: auto; padding: 24px 28px 32px; }
+    .content-panel.hidden { display: none; }
+
+    /* ── Lesson panel ── */
+    .lesson-heading {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 22px;
+      background: linear-gradient(125deg, #fff 0%, #fcd34d 60%, #fb923c 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 6px;
+    }
+    .lesson-subheading {
+      font-size: 12px; color: rgba(221,225,240,0.38); letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 22px;
+    }
+    .lesson-body { font-size: 14px; line-height: 1.8; color: rgba(221,225,240,0.78); max-width: 680px; }
+    .lesson-body p { margin-bottom: 14px; }
+    .lesson-body strong { color: #fcd34d; font-weight: 600; }
+    .lesson-body em { color: #6ee7b7; font-style: normal; font-weight: 500; }
+
+    .def-box {
+      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22);
+      border-radius: 12px; padding: 14px 18px; margin: 16px 0;
+    }
+    .def-box-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #fbbf24; margin-bottom: 8px;
+    }
+    .def-box p { margin: 0; font-size: 13.5px; color: rgba(221,225,240,0.80); line-height: 1.7; }
+
+    .example-box {
+      background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.22);
+      border-radius: 12px; padding: 14px 18px; margin: 16px 0;
+    }
+    .example-box-title {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.08em; color: #a5b4fc; margin-bottom: 10px;
+    }
+    .example-step {
+      display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px;
+      font-size: 13px; color: rgba(221,225,240,0.78); line-height: 1.65;
+    }
+    .example-step:last-child { margin-bottom: 0; }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+      background: rgba(99,102,241,0.25); border: 1px solid rgba(99,102,241,0.40);
+      font-size: 10px; font-weight: 700; color: #a5b4fc;
+    }
+    .math {
+      font-family: "JetBrains Mono", monospace; font-size: 13px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 6px; padding: 2px 8px; color: #fcd34d; display: inline;
+    }
+    .math-block {
+      font-family: "JetBrains Mono", monospace; font-size: 13px;
+      background: rgba(0,0,0,0.30); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 12px 16px; margin: 12px 0;
+      color: #fcd34d; display: block; line-height: 1.9;
+    }
+    .tip-box {
+      background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.22);
+      border-radius: 12px; padding: 12px 16px; margin: 14px 0;
+      font-size: 13px; color: #6ee7b7; line-height: 1.65;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .tip-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+
+    .lesson-next-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 28px; padding: 11px 24px; border-radius: 11px; border: none;
+      background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff;
+      font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all 150ms; box-shadow: 0 4px 16px rgba(217,119,6,0.30);
+    }
+    .lesson-next-btn:hover { box-shadow: 0 6px 22px rgba(217,119,6,0.45); transform: translateY(-1px); }
+
+    /* ── Practice panel ── */
+    #practicePanel { padding: 24px 28px 32px; }
+    .question-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .q-counter {
+      font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 600;
+      padding: 3px 10px; border-radius: 99px;
+      background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #fbbf24;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .q-topic-tag {
+      font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 99px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);
+      color: rgba(221,225,240,0.40); letter-spacing: 0.04em;
+    }
+    .question-text {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 17px;
+      color: #e8eaf4; line-height: 1.5; margin-bottom: 22px; max-width: 620px;
+    }
+    .question-text .math { font-size: 15px; }
+
+    /* Multiple choice */
+    .mc-options { display: flex; flex-direction: column; gap: 10px; max-width: 520px; }
+    .mc-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 18px; border-radius: 12px; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04);
+      transition: all 140ms; user-select: none;
+    }
+    .mc-option:hover:not(.disabled) { border-color: rgba(245,158,11,0.35); background: rgba(245,158,11,0.08); }
+    .mc-option.selected { border-color: rgba(245,158,11,0.55); background: rgba(245,158,11,0.12); }
+    .mc-option.correct  { border-color: rgba(16,185,129,0.60); background: rgba(16,185,129,0.12); }
+    .mc-option.wrong    { border-color: rgba(239,68,68,0.50);  background: rgba(239,68,68,0.10); }
+    .mc-option.disabled { cursor: default; }
+    .mc-letter {
+      font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+      width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.07); color: rgba(221,225,240,0.50);
+      border: 1px solid rgba(255,255,255,0.10); transition: all 140ms;
+    }
+    .mc-option.selected .mc-letter { background: rgba(245,158,11,0.25); color: #fcd34d; border-color: rgba(245,158,11,0.45); }
+    .mc-option.correct  .mc-letter { background: rgba(16,185,129,0.25); color: #6ee7b7; border-color: rgba(16,185,129,0.50); }
+    .mc-option.wrong    .mc-letter { background: rgba(239,68,68,0.20);  color: #fca5a5; border-color: rgba(239,68,68,0.45); }
+    .mc-text { font-size: 14px; color: rgba(221,225,240,0.75); line-height: 1.4; }
+
+    /* Input question */
+    .input-row { display: flex; gap: 10px; align-items: center; max-width: 360px; margin-bottom: 16px; }
+    .answer-input {
+      flex: 1; padding: 11px 16px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      color: #fcd34d; font-family: "JetBrains Mono", monospace; font-size: 15px;
+      outline: none; transition: border-color 140ms;
+    }
+    .answer-input:focus { border-color: rgba(245,158,11,0.45); }
+    .answer-input.correct { border-color: rgba(16,185,129,0.55); color: #6ee7b7; }
+    .answer-input.wrong   { border-color: rgba(239,68,68,0.50);  color: #fca5a5; }
+    .submit-btn {
+      padding: 11px 20px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all 140ms; white-space: nowrap;
+    }
+    .submit-btn:hover { box-shadow: 0 4px 14px rgba(217,119,6,0.40); transform: translateY(-1px); }
+    .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* Feedback area */
+    #feedbackArea {
+      margin-top: 18px; max-width: 600px;
+      border-radius: 12px; padding: 14px 18px;
+      font-size: 13px; line-height: 1.7; display: none;
+    }
+    #feedbackArea.correct { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.28); color: #6ee7b7; }
+    #feedbackArea.wrong   { background: rgba(239,68,68,0.09);  border: 1px solid rgba(239,68,68,0.28);  color: rgba(221,225,240,0.80); }
+    #feedbackArea.loading { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.20); color: rgba(221,225,240,0.55); }
+    .feedback-label {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 12px;
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    #feedbackArea.correct .feedback-label { color: #6ee7b7; }
+    #feedbackArea.wrong   .feedback-label { color: #fca5a5; }
+    #feedbackArea.loading .feedback-label { color: #fbbf24; }
+
+    /* Next question button */
+    #nextQBtn {
+      display: none; margin-top: 18px;
+      padding: 10px 22px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff;
+      font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all 140ms; align-items: center; gap: 7px;
+    }
+    #nextQBtn.show { display: inline-flex; }
+    #nextQBtn:hover { box-shadow: 0 4px 14px rgba(217,119,6,0.40); transform: translateY(-1px); }
+
+    /* Score bar at top of practice -->
+    .score-row {
+      display: flex; gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
+    }
+    .score-pill {
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      padding: 5px 14px; border-radius: 99px;
+      border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05);
+      color: rgba(221,225,240,0.50);
+    }
+    .score-pill span { font-weight: 700; color: #fcd34d; }
+
+    /* Empty/complete states */
+    .complete-banner {
+      text-align: center; padding: 48px 24px;
+    }
+    .complete-banner h2 {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 24px;
+      background: linear-gradient(125deg, #fff 0%, #fcd34d 60%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 10px;
+    }
+    .complete-banner p { font-size: 14px; color: rgba(221,225,240,0.50); margin-bottom: 24px; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+
+    /* Mobile */
+    @media (max-width: 700px) {
+      html, body { height: auto; overflow: auto; }
+      #appShell { height: auto; overflow: visible; min-height: 100vh; }
+      #mainLayout { flex-direction: column; overflow: visible; height: auto; }
+      #sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); max-height: 220px; }
+      #contentArea { overflow: visible; height: auto; }
+      .content-panel { padding: 16px; }
+      #practicePanel { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div id="appShell">
+  <header id="appHeader">
+    <a href="index.html" class="home-btn">
+      <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home
+    </a>
+    <div class="app-icon">✨</div>
+    <h1 class="app-title">Math Magician</h1>
+    <span class="grade-badge">Grade 8</span>
+    <div class="header-right">
+      <span id="progressText">0 / 9 topics</span>
+      <div id="progressBar"><div id="progressFill"></div></div>
+    </div>
+  </header>
+
+  <div id="mainLayout">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div id="sidebarHeader">
+        <div class="sidebar-chapter">
+          <i data-lucide="book-open" style="width:12px;height:12px;"></i>
+          Chapter 1
+        </div>
+        <div class="sidebar-subtitle">Whole numbers, ratios, rates &amp; finance</div>
+      </div>
+      <div id="sidebarList"></div>
+    </nav>
+
+    <!-- Content -->
+    <div id="contentArea">
+      <div id="tabBar">
+        <button class="tab-btn active" id="lessonTabBtn">
+          <i data-lucide="book-open" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i>Lesson
+        </button>
+        <button class="tab-btn" id="practiceTabBtn">
+          <i data-lucide="pencil" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i>Practice
+        </button>
+      </div>
+      <div class="content-panel" id="lessonPanel"></div>
+      <div class="content-panel hidden" id="practicePanel"></div>
+    </div>
+  </div>
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CURRICULUM DATA — Chapter 1: Whole Numbers, Ratios, Rates & Finance
+// ═══════════════════════════════════════════════════════════════
+
+const TOPICS = [
+  {
+    id: 0,
+    name: "The four operations",
+    fullName: "The four operations on whole numbers",
+    lesson: {
+      heading: "The four operations on whole numbers",
+      sub: "Chapter 1 · Topic 1",
+      body: `
+        <p>The <strong>four operations</strong> are the building blocks of all mathematics: <em>addition</em>, <em>subtraction</em>, <em>multiplication</em>, and <em>division</em>.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Definitions</div>
+          <p>
+            <strong>Addition (+)</strong> — combining two or more quantities.<br>
+            <strong>Subtraction (−)</strong> — finding the difference between quantities.<br>
+            <strong>Multiplication (×)</strong> — repeated addition of equal groups.<br>
+            <strong>Division (÷)</strong> — splitting into equal groups, the inverse of multiplication.
+          </p>
+        </div>
+        <p>When a calculation contains more than one operation, we follow the <strong>order of operations (BODMAS)</strong>:</p>
+        <div class="math-block">B — Brackets first
+O — Orders (powers/roots)
+D — Division  } left to right
+M — Multiplication }
+A — Addition  } left to right
+S — Subtraction }</div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked example</div>
+          <div class="example-step"><span class="step-num">1</span><span>Calculate: <span class="math">3 + 4 × 2 − (6 ÷ 3)</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Brackets first: <span class="math">6 ÷ 3 = 2</span> → expression becomes <span class="math">3 + 4 × 2 − 2</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>Multiplication next: <span class="math">4 × 2 = 8</span> → expression becomes <span class="math">3 + 8 − 2</span></span></div>
+          <div class="example-step"><span class="step-num">4</span><span>Left to right: <span class="math">3 + 8 = 11</span>, then <span class="math">11 − 2 = 9</span></span></div>
+          <div class="example-step"><span class="step-num">5</span><span><strong>Answer: 9</strong></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Always write out each step. In exams, method marks are awarded even if your final answer is wrong.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Calculate: <span class='math'>5 + 3 × 4</span>", options: ["32", "17", "20", "27"], answer: 1, topic: "BODMAS" },
+      { type: "mc", text: "What is <span class='math'>(12 + 8) ÷ 4 − 2</span>?", options: ["3", "5", "7", "1"], answer: 0, topic: "BODMAS" },
+      { type: "input", text: "Calculate: <span class='math'>3 × (4 + 6) − 5 × 2</span>", answer: "20", topic: "BODMAS" },
+      { type: "mc", text: "Which operation is performed first in <span class='math'>8 ÷ 2 + 3 × 4</span>?", options: ["Addition", "Division and multiplication (left to right)", "Multiplication", "Subtraction"], answer: 1, topic: "BODMAS" },
+      { type: "input", text: "Calculate: <span class='math'>100 − 4² + (3 × 5)</span>", answer: "99", topic: "BODMAS" },
+    ]
+  },
+  {
+    id: 1,
+    name: "Properties of whole numbers",
+    fullName: "The properties of whole numbers",
+    lesson: {
+      heading: "Properties of whole numbers",
+      sub: "Chapter 1 · Topic 2",
+      body: `
+        <p>Whole numbers have special <strong>properties</strong> that make calculations easier and help us understand number relationships.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Key Properties</div>
+          <p>
+            <strong>Commutative:</strong> order doesn't matter for + and ×<br>
+            <span class="math">a + b = b + a</span> &nbsp;&nbsp; <span class="math">a × b = b × a</span><br><br>
+            <strong>Associative:</strong> grouping doesn't matter for + and ×<br>
+            <span class="math">(a + b) + c = a + (b + c)</span><br><br>
+            <strong>Distributive:</strong> multiplication spreads over addition<br>
+            <span class="math">a × (b + c) = a×b + a×c</span><br><br>
+            <strong>Identity elements:</strong> <span class="math">a + 0 = a</span> &nbsp;&nbsp; <span class="math">a × 1 = a</span><br><br>
+            <strong>Zero property:</strong> <span class="math">a × 0 = 0</span>
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked example — distributive property</div>
+          <div class="example-step"><span class="step-num">1</span><span>Calculate <span class="math">7 × 53</span> using the distributive property.</span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Split 53: <span class="math">7 × (50 + 3)</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span><span class="math">= 7×50 + 7×3 = 350 + 21 = 371</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>The distributive property is the foundation of mental mathematics and later algebra. Mastering it now saves enormous time.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Which property is shown: <span class='math'>4 × (3 + 7) = 4×3 + 4×7</span>?", options: ["Commutative", "Associative", "Distributive", "Identity"], answer: 2, topic: "Properties" },
+      { type: "mc", text: "What is the identity element for multiplication?", options: ["0", "1", "−1", "10"], answer: 1, topic: "Properties" },
+      { type: "input", text: "Use the distributive property to calculate <span class='math'>6 × 48</span>", answer: "288", topic: "Properties" },
+      { type: "mc", text: "Which equation shows the commutative property of addition?", options: ["(2+3)+4 = 2+(3+4)", "5+0 = 5", "3+7 = 7+3", "3×(2+1) = 6+3"], answer: 2, topic: "Properties" },
+      { type: "input", text: "If <span class='math'>a × 0 = ?</span> for any whole number a, what is the answer?", answer: "0", topic: "Properties" },
+    ]
+  },
+  {
+    id: 2,
+    name: "Calculation techniques",
+    fullName: "Calculation techniques",
+    lesson: {
+      heading: "Calculation techniques",
+      sub: "Chapter 1 · Topic 3",
+      body: `
+        <p>Smart calculation techniques let you work faster and with fewer errors, especially without a calculator.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Key Techniques</div>
+          <p>
+            <strong>Rounding:</strong> approximate a number to a given place value.<br>
+            <strong>Estimation:</strong> use rounded numbers to check if an answer is reasonable.<br>
+            <strong>Breaking up numbers:</strong> use the distributive/associative property.<br>
+            <strong>Compensation:</strong> round up, then subtract the extra.
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Compensation method</div>
+          <div class="example-step"><span class="step-num">1</span><span>Calculate <span class="math">258 + 99</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Round 99 to 100: <span class="math">258 + 100 = 358</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>We added 1 too many, so subtract: <span class="math">358 − 1 = 357</span></span></div>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Rounding to estimate</div>
+          <div class="example-step"><span class="step-num">1</span><span>Estimate <span class="math">487 × 23</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Round: <span class="math">500 × 20 = 10 000</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>Actual answer (11 201) is close — estimate confirms no big error.</span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Always estimate before calculating. If your answer is far from your estimate, you've likely made an error.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Round 3 478 to the nearest hundred.", options: ["3 400", "3 500", "3 000", "3 480"], answer: 1, topic: "Rounding" },
+      { type: "input", text: "Use compensation to calculate <span class='math'>346 + 199</span>", answer: "545", topic: "Compensation" },
+      { type: "mc", text: "Estimate <span class='math'>612 × 48</span> by rounding each number to the nearest ten.", options: ["24 000", "30 000", "29 376", "25 000"], answer: 1, topic: "Estimation" },
+      { type: "input", text: "Round 7 849 to the nearest thousand.", answer: "8000", topic: "Rounding" },
+      { type: "mc", text: "Which calculation uses the compensation method correctly for <span class='math'>157 + 98</span>?", options: ["160 + 100 − 5", "157 + 100 − 2", "155 + 100", "157 + 98"], answer: 1, topic: "Compensation" },
+    ]
+  },
+  {
+    id: 3,
+    name: "Simplifying calculations",
+    fullName: "Methods of simplifying calculations",
+    lesson: {
+      heading: "Methods of simplifying calculations",
+      sub: "Chapter 1 · Topic 4",
+      body: `
+        <p>Some calculations look complex but can be simplified using <strong>smart number choices</strong> and known relationships.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Simplification strategies</div>
+          <p>
+            <strong>Factoring out:</strong> identify common factors to simplify.<br>
+            <strong>Cancellation:</strong> in fractions, cancel common factors top and bottom.<br>
+            <strong>Rearranging:</strong> change order to make calculation easier (commutative/associative).<br>
+            <strong>Splitting:</strong> break complex numbers into convenient parts.
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked example</div>
+          <div class="example-step"><span class="step-num">1</span><span>Calculate <span class="math">25 × 48 × 4</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Rearrange: <span class="math">25 × 4 × 48 = 100 × 48</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span><span class="math">= 4 800</span></span></div>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Simplifying a fraction</div>
+          <div class="example-step"><span class="step-num">1</span><span>Simplify <span class="math">36 ÷ 48</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>HCF of 36 and 48 is 12: <span class="math">36÷12 = 3</span>, <span class="math">48÷12 = 4</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>Result: <span class="math">3/4</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Look for pairs that multiply to a round number like 100, 1000, or a multiple of 10. These make mental calculation easy.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Simplify <span class='math'>25 × 32 × 4</span> by rearranging smartly.", options: ["3 200", "3 600", "2 800", "3 000"], answer: 0, topic: "Simplifying" },
+      { type: "input", text: "What is the simplified form of <span class='math'>72 ÷ 96</span>? Give as a fraction (e.g. 3/4)", answer: "3/4", topic: "Simplifying" },
+      { type: "mc", text: "What useful pair do you spot in <span class='math'>125 × 48 × 8</span>?", options: ["125 × 8 = 1000", "48 × 8 = 384", "125 × 48 = easy", "None"], answer: 0, topic: "Simplifying" },
+      { type: "input", text: "Calculate <span class='math'>125 × 8 × 7</span> using a smart grouping.", answer: "7000", topic: "Simplifying" },
+    ]
+  },
+  {
+    id: 4,
+    name: "Factors and multiples",
+    fullName: "Factors and multiples of whole numbers",
+    lesson: {
+      heading: "Factors and multiples of whole numbers",
+      sub: "Chapter 1 · Topic 5",
+      body: `
+        <p><strong>Factors</strong> and <strong>multiples</strong> are fundamental to working with fractions, LCM, HCF, and simplifying expressions.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Definitions</div>
+          <p>
+            <strong>Factor:</strong> a number that divides exactly into another (no remainder).<br>
+            <em>Factors of 12: 1, 2, 3, 4, 6, 12</em><br><br>
+            <strong>Multiple:</strong> the result of multiplying a number by a positive integer.<br>
+            <em>Multiples of 5: 5, 10, 15, 20, 25 …</em><br><br>
+            <strong>Prime number:</strong> a number with exactly 2 factors (1 and itself).<br>
+            <em>Primes: 2, 3, 5, 7, 11, 13, 17 …</em><br><br>
+            <strong>HCF</strong> (Highest Common Factor) — largest factor shared by two numbers.<br>
+            <strong>LCM</strong> (Lowest Common Multiple) — smallest multiple shared by two numbers.
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Finding HCF and LCM of 12 and 18</div>
+          <div class="example-step"><span class="step-num">1</span><span>Prime factorisation: <span class="math">12 = 2² × 3</span> &nbsp; <span class="math">18 = 2 × 3²</span></span></div>
+          <div class="example-step"><span class="step-num">2</span><span>HCF: lowest power of each shared prime: <span class="math">2¹ × 3¹ = 6</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>LCM: highest power of each prime: <span class="math">2² × 3² = 36</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Prime factorisation is the fastest method for both HCF and LCM. Always start by building the factor tree.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "What is the HCF of 24 and 36?", options: ["6", "12", "4", "9"], answer: 1, topic: "HCF/LCM" },
+      { type: "input", text: "What is the LCM of 8 and 12?", answer: "24", topic: "HCF/LCM" },
+      { type: "mc", text: "Which of the following is a prime number?", options: ["51", "57", "59", "55"], answer: 2, topic: "Primes" },
+      { type: "mc", text: "How many factors does 28 have?", options: ["4", "5", "6", "7"], answer: 2, topic: "Factors" },
+      { type: "input", text: "Write the prime factorisation of 60 (e.g. 2x2x3x5)", answer: "2x2x3x5", topic: "Prime factors" },
+    ]
+  },
+  {
+    id: 5,
+    name: "Ratios",
+    fullName: "Ratios",
+    lesson: {
+      heading: "Ratios",
+      sub: "Chapter 1 · Topic 6",
+      body: `
+        <p>A <strong>ratio</strong> compares two or more quantities of the same kind. Ratios appear in maps, recipes, finance, and science.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Ratio rules</div>
+          <p>
+            Written as <span class="math">a : b</span> or <span class="math">a/b</span>.<br>
+            Always <strong>simplify</strong> by dividing both parts by their HCF.<br>
+            <span class="math">12 : 18</span> → HCF = 6 → <span class="math">2 : 3</span><br><br>
+            <strong>Equivalent ratios</strong> are formed by multiplying or dividing both parts by the same number.<br>
+            <span class="math">2 : 3 = 4 : 6 = 10 : 15</span>
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Dividing in a ratio</div>
+          <div class="example-step"><span class="step-num">1</span><span>Share R 240 in the ratio 3 : 5.</span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Total parts: <span class="math">3 + 5 = 8</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>One part: <span class="math">240 ÷ 8 = R30</span></span></div>
+          <div class="example-step"><span class="step-num">4</span><span>Shares: <span class="math">3 × 30 = R90</span> and <span class="math">5 × 30 = R150</span></span></div>
+          <div class="example-step"><span class="step-num">5</span><span>Check: <span class="math">R90 + R150 = R240 ✓</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Always check that your parts add up to the original total. This one step catches almost all ratio errors.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Simplify the ratio <span class='math'>36 : 48</span>", options: ["6 : 8", "3 : 4", "9 : 12", "4 : 3"], answer: 1, topic: "Ratios" },
+      { type: "input", text: "Share R 350 in the ratio 2 : 5. What is the smaller share? (R)", answer: "100", topic: "Ratios" },
+      { type: "mc", text: "Which ratio is equivalent to <span class='math'>4 : 6</span>?", options: ["8 : 10", "6 : 9", "2 : 4", "12 : 15"], answer: 1, topic: "Ratios" },
+      { type: "input", text: "The ratio of boys to girls in a class is 3 : 4. If there are 21 boys, how many girls are there?", answer: "28", topic: "Ratios" },
+      { type: "mc", text: "Share 180 in the ratio 1 : 2 : 3. What is the largest share?", options: ["30", "60", "90", "120"], answer: 2, topic: "Ratios" },
+    ]
+  },
+  {
+    id: 6,
+    name: "Rates",
+    fullName: "Rates",
+    lesson: {
+      heading: "Rates",
+      sub: "Chapter 1 · Topic 7",
+      body: `
+        <p>A <strong>rate</strong> compares two quantities of <em>different</em> kinds. Rates always have units — like km/h, R/kg, or litres/minute.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Rate vs Ratio</div>
+          <p>
+            <strong>Ratio:</strong> same units (e.g. boys : girls)<br>
+            <strong>Rate:</strong> different units (e.g. km per hour)<br><br>
+            A <strong>unit rate</strong> has 1 in the denominator: <em>R12,50 per kg</em><br><br>
+            To find a unit rate: divide the first quantity by the second.
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked examples</div>
+          <div class="example-step"><span class="step-num">1</span><span>A car travels 360 km in 4 hours. Find the speed in km/h.</span></div>
+          <div class="example-step"><span class="step-num">2</span><span><span class="math">Speed = 360 ÷ 4 = 90 km/h</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>You pay R84 for 6 kg of apples. Unit price?</span></div>
+          <div class="example-step"><span class="step-num">4</span><span><span class="math">R84 ÷ 6 = R14 per kg</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>Always write the units in your answer. <em>"90"</em> is incomplete — <em>"90 km/h"</em> is correct.</span></div>
+      `
+    },
+    questions: [
+      { type: "input", text: "A tap fills 120 litres in 8 minutes. What is the rate in litres per minute?", answer: "15", topic: "Rates" },
+      { type: "mc", text: "A car travels 450 km in 5 hours. What is its average speed?", options: ["80 km/h", "90 km/h", "95 km/h", "100 km/h"], answer: 1, topic: "Rates" },
+      { type: "input", text: "You earn R 630 for 9 hours of work. What is your hourly rate? (R)", answer: "70", topic: "Rates" },
+      { type: "mc", text: "Which is the better buy: 2 kg of rice for R34 or 5 kg for R80?", options: ["2 kg bag (R17/kg)", "5 kg bag (R16/kg)", "They are the same", "Cannot determine"], answer: 1, topic: "Rates" },
+      { type: "input", text: "A printer prints 240 pages in 6 minutes. How many pages per minute?", answer: "40", topic: "Rates" },
+    ]
+  },
+  {
+    id: 7,
+    name: "Financial contexts",
+    fullName: "Solving problems in financial contexts",
+    lesson: {
+      heading: "Solving problems in financial contexts",
+      sub: "Chapter 1 · Topic 8",
+      body: `
+        <p>Mathematics is used every day in personal finance. Key concepts include profit/loss, percentage, discount, VAT, and simple interest.</p>
+        <div class="def-box">
+          <div class="def-box-title">📖 Key Financial Concepts</div>
+          <p>
+            <strong>Profit/Loss:</strong> <span class="math">Profit = Selling price − Cost price</span><br>
+            <strong>Percentage profit:</strong> <span class="math">(Profit ÷ Cost price) × 100</span><br><br>
+            <strong>Discount:</strong> reduction off the original price.<br>
+            <span class="math">Discount amount = % × Original price</span><br><br>
+            <strong>VAT (15% in SA):</strong> tax added to prices.<br>
+            <span class="math">Price incl. VAT = Price × 1.15</span><br><br>
+            <strong>Simple Interest:</strong> <span class="math">I = P × r × t</span><br>
+            where P = principal, r = rate (as decimal), t = time in years.
+          </p>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Worked example — VAT and discount</div>
+          <div class="example-step"><span class="step-num">1</span><span>A jacket costs R 600. It has a 20% discount, then 15% VAT is added. Final price?</span></div>
+          <div class="example-step"><span class="step-num">2</span><span>Discount: <span class="math">20% × R600 = R120</span>. Sale price: <span class="math">R600 − R120 = R480</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>VAT: <span class="math">R480 × 1.15 = R552</span></span></div>
+        </div>
+        <div class="example-box">
+          <div class="example-box-title">✏️ Simple interest</div>
+          <div class="example-step"><span class="step-num">1</span><span>Invest R 2 000 at 8% p.a. simple interest for 3 years.</span></div>
+          <div class="example-step"><span class="step-num">2</span><span><span class="math">I = 2000 × 0.08 × 3 = R480</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>Total: <span class="math">R2000 + R480 = R2480</span></span></div>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>In South Africa, VAT is currently 15%. Always check exam questions specify the rate — it has changed before.</span></div>
+      `
+    },
+    questions: [
+      { type: "input", text: "A shop buys a shirt for R80 and sells it for R120. What is the percentage profit? (%)", answer: "50", topic: "Finance" },
+      { type: "mc", text: "A R 500 phone has a 30% discount. What is the sale price?", options: ["R 150", "R 300", "R 350", "R 450"], answer: 2, topic: "Finance" },
+      { type: "input", text: "Calculate VAT (15%) on a R 200 item. What is the VAT-inclusive price? (R)", answer: "230", topic: "Finance" },
+      { type: "mc", text: "Simple interest on R 1 500 at 10% p.a. for 2 years is:", options: ["R 150", "R 300", "R 330", "R 3 000"], answer: 1, topic: "Finance" },
+      { type: "input", text: "You invest R 4 000 at 6% simple interest per year. How much interest after 5 years? (R)", answer: "1200", topic: "Finance" },
+    ]
+  },
+  {
+    id: 8,
+    name: "Exam focus",
+    fullName: "Examination focus exercise",
+    lesson: {
+      heading: "Examination focus exercise",
+      sub: "Chapter 1 · Review",
+      body: `
+        <p>This topic brings together everything from Chapter 1. In an examination you need to:</p>
+        <div class="def-box">
+          <div class="def-box-title">📋 Examination technique</div>
+          <p>
+            ✅ <strong>Read the question twice</strong> before writing anything.<br>
+            ✅ <strong>Show all working</strong> — method marks are awarded.<br>
+            ✅ <strong>Include units</strong> in all rate, finance, and measurement answers.<br>
+            ✅ <strong>Check your answer</strong> by substituting back or estimating.<br>
+            ✅ <strong>Never leave blanks</strong> — an attempt earns more than nothing.
+          </p>
+        </div>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>The practice questions here are exam-style. Work through them exactly as you would in an exam — step by step, showing all working.</span></div>
+        <div class="example-box">
+          <div class="example-box-title">📝 Common exam mistakes to avoid</div>
+          <div class="example-step"><span class="step-num">✗</span><span>Ignoring BODMAS and working purely left-to-right.</span></div>
+          <div class="example-step"><span class="step-num">✗</span><span>Forgetting to simplify ratios or leaving them as equivalent forms.</span></div>
+          <div class="example-step"><span class="step-num">✗</span><span>Applying VAT before discount instead of discount first.</span></div>
+          <div class="example-step"><span class="step-num">✗</span><span>Using percentage as a decimal incorrectly (8% = 0.08, not 8).</span></div>
+        </div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Calculate <span class='math'>5² + (18 ÷ 3) × 4 − 7</span>", options: ["42", "24", "60", "18"], answer: 0, topic: "Mixed" },
+      { type: "input", text: "The HCF of two numbers is 6 and their LCM is 72. One number is 24. What is the other number?", answer: "18", topic: "HCF/LCM" },
+      { type: "mc", text: "Share R 480 in the ratio 3 : 2 : 1. What is the largest share?", options: ["R 80", "R 240", "R 160", "R 120"], answer: 1, topic: "Ratios" },
+      { type: "input", text: "A car uses 8 litres of petrol per 100 km. Petrol costs R 22,50/litre. What does it cost to travel 350 km? (R)", answer: "630", topic: "Rates/Finance" },
+      { type: "mc", text: "Invest R 5 000 at 7% simple interest p.a. for 4 years. Total amount at the end?", options: ["R 6 400", "R 6 200", "R 6 500", "R 6 400"], answer: 1, topic: "Finance" },
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let currentTopicId = 0;
+let currentTab = 'lesson';   // 'lesson' | 'practice'
+let qIndex = 0;
+let answered = false;
+let score = { correct: 0, total: 0 };
+let topicScores = {};        // topicId → { correct, total }
+let completed = new Set();   // topicIds where all questions done
+
+// ═══════════════════════════════════════════════════════════════
+// DOM REFS
+// ═══════════════════════════════════════════════════════════════
+const sidebarList   = document.getElementById('sidebarList');
+const lessonPanel   = document.getElementById('lessonPanel');
+const practicePanel = document.getElementById('practicePanel');
+const lessonTabBtn  = document.getElementById('lessonTabBtn');
+const practiceTabBtn= document.getElementById('practiceTabBtn');
+const progressText  = document.getElementById('progressText');
+const progressFill  = document.getElementById('progressFill');
+
+// ═══════════════════════════════════════════════════════════════
+// SIDEBAR
+// ═══════════════════════════════════════════════════════════════
+function buildSidebar() {
+  sidebarList.innerHTML = '';
+  TOPICS.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'topic-item' + (t.id === currentTopicId ? ' active' : '') + (completed.has(t.id) ? ' completed' : '');
+    div.innerHTML = `
+      <span class="topic-num">${t.id + 1}</span>
+      <span class="topic-name">${t.name}</span>
+      ${completed.has(t.id) ? '<span class="topic-tick">✓</span>' : ''}
+    `;
+    div.addEventListener('click', () => selectTopic(t.id));
+    sidebarList.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════════════════════
+function updateProgress() {
+  const done = completed.size;
+  const total = TOPICS.length;
+  progressText.textContent = `${done} / ${total} topics`;
+  progressFill.style.width = `${(done / total) * 100}%`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOPIC SELECTION
+// ═══════════════════════════════════════════════════════════════
+function selectTopic(id) {
+  currentTopicId = id;
+  qIndex = 0;
+  answered = false;
+  topicScores[id] = topicScores[id] || { correct: 0, total: 0 };
+  buildSidebar();
+  renderLesson();
+  switchTab('lesson');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  currentTab = tab;
+  lessonTabBtn.classList.toggle('active', tab === 'lesson');
+  practiceTabBtn.classList.toggle('active', tab === 'practice');
+  lessonPanel.classList.toggle('hidden', tab !== 'lesson');
+  practicePanel.classList.toggle('hidden', tab !== 'practice');
+  if (tab === 'practice') renderQuestion();
+}
+
+lessonTabBtn.addEventListener('click', () => switchTab('lesson'));
+practiceTabBtn.addEventListener('click', () => { qIndex = 0; answered = false; switchTab('practice'); });
+
+// ═══════════════════════════════════════════════════════════════
+// LESSON RENDERER
+// ═══════════════════════════════════════════════════════════════
+function renderLesson() {
+  const t = TOPICS[currentTopicId];
+  const l = t.lesson;
+  lessonPanel.innerHTML = `
+    <div class="lesson-heading">${l.heading}</div>
+    <div class="lesson-subheading">${l.sub}</div>
+    <div class="lesson-body">${l.body}</div>
+    <button class="lesson-next-btn" id="goToPractice">
+      <i data-lucide="pencil" style="width:14px;height:14px;"></i>
+      Start practice questions
+    </button>
+  `;
+  document.getElementById('goToPractice').addEventListener('click', () => {
+    qIndex = 0; answered = false; switchTab('practice');
+  });
+  lucide.createIcons();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// QUESTION RENDERER
+// ═══════════════════════════════════════════════════════════════
+function renderQuestion() {
+  const t = TOPICS[currentTopicId];
+  const ts = topicScores[currentTopicId] || { correct: 0, total: 0 };
+
+  if (qIndex >= t.questions.length) {
+    completed.add(currentTopicId);
+    buildSidebar();
+    updateProgress();
+    const pct = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
+    const nextId = currentTopicId + 1;
+    practicePanel.innerHTML = `
+      <div class="complete-banner">
+        <h2>Topic complete! 🎉</h2>
+        <p>You scored <strong style="color:#fcd34d">${ts.correct} / ${ts.total}</strong> (${pct}%) on <em>${t.name}</em>.</p>
+        ${nextId < TOPICS.length
+          ? `<button class="lesson-next-btn" id="nextTopicBtn">
+              <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+              Next topic: ${TOPICS[nextId].name}
+             </button>`
+          : `<p style="color:#6ee7b7;font-size:15px;font-weight:600;">🏆 You've completed all of Chapter 1!</p>`}
+      </div>`;
+    if (nextId < TOPICS.length) {
+      document.getElementById('nextTopicBtn').addEventListener('click', () => selectTopic(nextId));
+    }
+    lucide.createIcons();
+    return;
+  }
+
+  const q = t.questions[qIndex];
+  const ts2 = topicScores[currentTopicId] || { correct: 0, total: 0 };
+
+  let questionHTML = '';
+
+  if (q.type === 'mc') {
+    const letters = ['A','B','C','D'];
+    const opts = q.options.map((o, i) => `
+      <div class="mc-option" data-idx="${i}">
+        <span class="mc-letter">${letters[i]}</span>
+        <span class="mc-text">${o}</span>
+      </div>`).join('');
+    questionHTML = `<div class="mc-options" id="mcOptions">${opts}</div>`;
+  } else {
+    questionHTML = `
+      <div class="input-row">
+        <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer…" autocomplete="off">
+        <button class="submit-btn" id="submitBtn">Check</button>
+      </div>`;
+  }
+
+  practicePanel.innerHTML = `
+    <div class="score-row">
+      <span class="score-pill">Q <span>${qIndex + 1}</span> of <span>${t.questions.length}</span></span>
+      <span class="score-pill">Score <span>${ts2.correct}/${ts2.total}</span></span>
+      <span class="q-topic-tag">${q.topic}</span>
+    </div>
+    <div class="question-text">${q.text}</div>
+    ${questionHTML}
+    <div id="feedbackArea">
+      <div class="feedback-label" id="feedbackLabel"></div>
+      <div id="feedbackText"></div>
+    </div>
+    <button id="nextQBtn">Next question <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></button>
+  `;
+  lucide.createIcons();
+
+  const feedbackArea = document.getElementById('feedbackArea');
+  const feedbackLabel = document.getElementById('feedbackLabel');
+  const feedbackText = document.getElementById('feedbackText');
+  const nextQBtn = document.getElementById('nextQBtn');
+
+  nextQBtn.addEventListener('click', () => {
+    qIndex++;
+    answered = false;
+    renderQuestion();
+  });
+
+  function showFeedback(correct, explanation) {
+    feedbackArea.style.display = 'block';
+    if (correct) {
+      feedbackArea.className = 'correct';
+      feedbackLabel.textContent = '✓ Correct!';
+      feedbackText.textContent = explanation || 'Well done!';
+    } else {
+      feedbackArea.className = 'wrong';
+      feedbackLabel.textContent = '✗ Not quite';
+      feedbackText.innerHTML = explanation || 'Have another look at the lesson and try the next question.';
+    }
+    nextQBtn.classList.add('show');
+  }
+
+  function checkAnswer(userAnswer, correct) {
+    if (answered) return;
+    answered = true;
+    topicScores[currentTopicId] = topicScores[currentTopicId] || { correct: 0, total: 0 };
+    topicScores[currentTopicId].total++;
+
+    const isCorrect = String(userAnswer).trim().toLowerCase() === String(correct).trim().toLowerCase() ||
+                      String(userAnswer).trim() === String(correct).trim();
+
+    if (isCorrect) {
+      topicScores[currentTopicId].correct++;
+      showFeedback(true);
+    } else {
+      // Call AI for explanation
+      fetchAIFeedback(q, userAnswer, correct, showFeedback);
+    }
+  }
+
+  if (q.type === 'mc') {
+    document.querySelectorAll('.mc-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (answered) return;
+        const idx = parseInt(opt.dataset.idx);
+        document.querySelectorAll('.mc-option').forEach(o => o.classList.add('disabled'));
+        opt.classList.add('selected');
+        const isCorrect = idx === q.answer;
+        document.querySelectorAll('.mc-option')[q.answer].classList.add('correct');
+        if (!isCorrect) opt.classList.add('wrong');
+        checkAnswer(idx, q.answer);
+      });
+    });
+  } else {
+    const input = document.getElementById('answerInput');
+    const btn = document.getElementById('submitBtn');
+    const submit = () => {
+      if (answered) return;
+      const val = input.value.trim();
+      if (!val) return;
+      input.disabled = true;
+      btn.disabled = true;
+      const isCorrect = val.toLowerCase() === String(q.answer).toLowerCase();
+      input.classList.add(isCorrect ? 'correct' : 'wrong');
+      checkAnswer(val, q.answer);
+    };
+    btn.addEventListener('click', submit);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AI FEEDBACK (Anthropic API — wrong answers only)
+// ═══════════════════════════════════════════════════════════════
+async function fetchAIFeedback(q, userAnswer, correctAnswer, callback) {
+  const feedbackArea = document.getElementById('feedbackArea');
+  const feedbackLabel = document.getElementById('feedbackLabel');
+  const feedbackText  = document.getElementById('feedbackText');
+
+  feedbackArea.style.display = 'block';
+  feedbackArea.className = 'loading';
+  feedbackLabel.textContent = '⏳ Getting explanation…';
+  feedbackText.textContent = '';
+
+  const topic  = TOPICS[currentTopicId];
+  const prompt = `You are a friendly, encouraging Grade 8 maths tutor (IEB/CAPS curriculum, South Africa).
+A student answered a question incorrectly. Give a SHORT, clear explanation (max 3 sentences) of:
+1. Why their answer is wrong.
+2. The correct method to get the right answer.
+Be encouraging and specific. Do not just state the answer — explain the method.
+
+Question: ${q.text.replace(/<[^>]+>/g, '')}
+Topic: ${q.topic} (${topic.name})
+Student answered: ${userAnswer}
+Correct answer: ${correctAnswer}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(c => c.text || '').join('') || 'Check the lesson for a worked example.';
+    callback(false, text);
+  } catch {
+    callback(false, `The correct answer is <strong>${correctAnswer}</strong>. Review the worked example in the lesson.`);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+TOPICS.forEach(t => { topicScores[t.id] = { correct: 0, total: 0 }; });
+buildSidebar();
+updateProgress();
+selectTopic(0);
+lucide.createIcons();
+
+</script>
+</body>
+</html>
