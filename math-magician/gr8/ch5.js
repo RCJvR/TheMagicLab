@@ -315,7 +315,7 @@ y  |  2   5   8  11  14</div>
         ]
       },
       {
-        name: "Formulae and real-world contexts",
+        name: "Formulae, equivalent forms and real-world contexts",
         questions: [
           {
             num: "3",
@@ -324,18 +324,17 @@ y  |  2   5   8  11  14</div>
               { label: "a)", text: "Write a formula for the total cost C in terms of hours h.", marks: 2 },
               { label: "b)", text: "Calculate the cost for a 3-hour job.", marks: 2 },
               { label: "c)", text: "How many hours did the plumber work if the bill was R 680?", marks: 3 },
-              { label: "d)", text: "A second plumber charges R 150 + R 130/hour. For what number of hours are the charges equal?", marks: 4 },
+              { label: "d)", text: "A second plumber charges R 150 + R 130/hour. For how many hours are the charges equal?", marks: 4 },
             ]
           },
           {
             num: "4",
-            text: "The table below shows a relationship between x and y:",
+            text: "The table below shows a relationship between x and y: x: 1, 2, 3, 4, 5 → y: 4, 7, 10, 13, 16",
             parts: [
-              { label: "", text: "x: 1, 2, 3, 4, 5 → y: 4, 7, 10, 13, 16", marks: 0 },
               { label: "a)", text: "Write the rule as a symbolic formula.", marks: 3 },
-              { label: "b)", text: "Write an equivalent form in factored form.", marks: 2 },
-              { label: "c)", text: "Make x the subject of the formula.", marks: 3 },
-              { label: "d)", text: "Find x when y = 100.", marks: 2 },
+              { label: "b)", text: "Write an equivalent form by making x the subject.", marks: 3 },
+              { label: "c)", text: "Find x when y = 100.", marks: 2 },
+              { label: "d)", text: "A different table has rule y = 2(x + 3). Write an equivalent expanded form and evaluate y when x = 7.", marks: 3 },
             ]
           },
         ]
@@ -348,25 +347,25 @@ y  |  2   5   8  11  14</div>
       {
         name: "Flow diagrams and tables",
         answers: [
-          { num: "Q1a", ans: "y: 1, 5, 9, 13, 17", note: "Substitute each x into y = 4x − 3" },
+          { num: "Q1a", ans: "y: 1, 5, 9, 13, 17", note: "Substitute each x into y=4x−3" },
           { num: "Q1b", ans: "Multiply the input by 4, then subtract 3", note: "" },
-          { num: "Q1c", ans: "x = 8", note: "4x − 3 = 29 → 4x = 32 → x = 8" },
+          { num: "Q1c", ans: "x = 8", note: "4x−3=29 → 4x=32 → x=8" },
           { num: "Q2a", ans: "y: −5, 1, 7, 13, 25", note: "(x×3)−5 for each input" },
           { num: "Q2b", ans: "y = 3x − 5", note: "" },
-          { num: "Q2c", ans: "x = 9", note: "3x − 5 = 22 → 3x = 27 → x = 9" },
+          { num: "Q2c", ans: "x = 9", note: "3x−5=22 → 3x=27 → x=9" },
         ]
       },
       {
-        name: "Formulae and real-world contexts",
+        name: "Formulae, equivalent forms and real-world contexts",
         answers: [
           { num: "Q3a", ans: "C = 120h + 200", note: "" },
-          { num: "Q3b", ans: "R 560", note: "120(3) + 200 = 360 + 200 = 560" },
-          { num: "Q3c", ans: "4 hours", note: "120h + 200 = 680 → 120h = 480 → h = 4" },
-          { num: "Q3d", ans: "5 hours", note: "120h+200 = 130h+150 → 50 = 10h → h = 5" },
-          { num: "Q4a", ans: "y = 3x + 1", note: "d=3, when x=1 y=4: 3(1)+c=4 → c=1" },
-          { num: "Q4b", ans: "y = 3(x + ⅓) or check: no clean factored form — accept y = 3x + 1", note: "" },
-          { num: "Q4c", ans: "x = (y − 1) ÷ 3", note: "y − 1 = 3x → x = (y−1)/3" },
-          { num: "Q4d", ans: "x = 33", note: "(100−1)÷3 = 99÷3 = 33" },
+          { num: "Q3b", ans: "R 560", note: "120(3)+200=560" },
+          { num: "Q3c", ans: "4 hours", note: "120h+200=680 → h=4" },
+          { num: "Q3d", ans: "5 hours", note: "120h+200=130h+150 → 50=10h → h=5" },
+          { num: "Q4a", ans: "y = 3x + 1", note: "d=3; at x=1, y=4: c=1" },
+          { num: "Q4b", ans: "x = (y − 1) ÷ 3", note: "y−1=3x → x=(y−1)/3" },
+          { num: "Q4c", ans: "x = 33", note: "(100−1)÷3=99÷3=33" },
+          { num: "Q4d", ans: "y = 2x + 6; y = 20 when x = 7", note: "2(x+3)=2x+6; 2(7)+6=20" },
         ]
       },
     ]

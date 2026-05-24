@@ -320,10 +320,98 @@ MathMagician.registerChapter(6, {
   ],
   workbook: {
     chapter: 6, chapterName: "Algebraic Expressions",
-    topics: []
+    topics: [
+      {
+        name: "Algebraic language and like terms",
+        questions: [
+          {
+            num: "1",
+            text: "Identify and simplify the following:",
+            parts: [
+              { label: "a)", text: "List the terms in: <span class='math'>3x² − 5xy + 2y − 7</span>", marks: 2 },
+              { label: "b)", text: "State the coefficient of xy.", marks: 1 },
+              { label: "c)", text: "Simplify: <span class='math'>4a + 3b − 2a + 5b − b</span>", marks: 3 },
+              { label: "d)", text: "Simplify: <span class='math'>3x² + 2x − x² + 4x − 5</span>", marks: 3 },
+            ]
+          },
+        ]
+      },
+      {
+        name: "Multiplying and dividing expressions",
+        questions: [
+          {
+            num: "2",
+            text: "Expand and simplify:",
+            parts: [
+              { label: "a)", text: "<span class='math'>3(2x − 4)</span>", marks: 2 },
+              { label: "b)", text: "<span class='math'>−2(x + 5) + 3(2x − 1)</span>", marks: 3 },
+              { label: "c)", text: "<span class='math'>(x + 3)(x + 4)</span>", marks: 3 },
+              { label: "d)", text: "<span class='math'>(2x − 1)(x + 5)</span>", marks: 3 },
+            ]
+          },
+          {
+            num: "3",
+            text: "Simplify:",
+            parts: [
+              { label: "a)", text: "<span class='math'>12x³ ÷ 4x</span>", marks: 2 },
+              { label: "b)", text: "<span class='math'>(6x² + 9x) ÷ 3x</span>", marks: 3 },
+              { label: "c)", text: "<span class='math'>√(9x⁴)</span>", marks: 2 },
+              { label: "d)", text: "<span class='math'>∛(8x⁶)</span>", marks: 2 },
+            ]
+          },
+        ]
+      },
+      {
+        name: "Substitution",
+        questions: [
+          {
+            num: "4",
+            text: "Given <span class='math'>a = 3</span> and <span class='math'>b = −2</span>, evaluate:",
+            parts: [
+              { label: "a)", text: "<span class='math'>a² − b²</span>", marks: 2 },
+              { label: "b)", text: "<span class='math'>2a² + 3b − 1</span>", marks: 3 },
+              { label: "c)", text: "<span class='math'>√(a² + b²)</span> (leave in surd form)", marks: 2 },
+              { label: "d)", text: "<span class='math'>(a + b)² − (a − b)²</span>", marks: 3 },
+            ]
+          },
+        ]
+      },
+    ]
   },
   answerKey: {
     chapter: 6, chapterName: "Chapter 6 — Algebraic Expressions",
-    topics: []
+    topics: [
+      {
+        name: "Algebraic language and like terms",
+        answers: [
+          { num: "Q1a", ans: "3x², −5xy, 2y, −7 (4 terms)", note: "" },
+          { num: "Q1b", ans: "−5", note: "Coefficient includes the sign" },
+          { num: "Q1c", ans: "2a + 7b", note: "4a−2a=2a; 3b+5b−b=7b" },
+          { num: "Q1d", ans: "2x² + 6x − 5", note: "3x²−x²=2x²; 2x+4x=6x; constant −5" },
+        ]
+      },
+      {
+        name: "Multiplying and dividing expressions",
+        answers: [
+          { num: "Q2a", ans: "6x − 12", note: "3×2x=6x; 3×(−4)=−12" },
+          { num: "Q2b", ans: "4x − 13", note: "−2x−10+6x−3=4x−13" },
+          { num: "Q2c", ans: "x² + 7x + 12", note: "FOIL: x²+4x+3x+12" },
+          { num: "Q2d", ans: "2x² + 9x − 5", note: "FOIL: 2x²+10x−x−5" },
+          { num: "Q3a", ans: "3x²", note: "12÷4=3; x³÷x=x²" },
+          { num: "Q3b", ans: "2x + 3", note: "6x²÷3x=2x; 9x÷3x=3" },
+          { num: "Q3c", ans: "3x²", note: "√9=3; √(x⁴)=x²" },
+          { num: "Q3d", ans: "2x²", note: "∛8=2; ∛(x⁶)=x²" },
+        ]
+      },
+      {
+        name: "Substitution",
+        answers: [
+          { num: "Q4a", ans: "5", note: "3²−(−2)²=9−4=5" },
+          { num: "Q4b", ans: "11", note: "2(9)+3(−2)−1=18−6−1=11" },
+          { num: "Q4c", ans: "√13", note: "√(9+4)=√13" },
+          { num: "Q4d", ans: "−24", note: "(a+b)²−(a−b)²=4ab=4(3)(−2)=−24" },
+        ]
+      },
+    ]
   }
 });

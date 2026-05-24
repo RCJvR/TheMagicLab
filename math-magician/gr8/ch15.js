@@ -251,17 +251,37 @@ MathMagician.registerChapter(15, {
   workbook: {
     chapter: 15, chapterName: "Surface Area and Volume",
     topics: [
-      { name: "Surface area and volume",
+      {
+        name: "Surface area of prisms",
         questions: [
-          { num: "1", text: "For each solid, calculate (i) surface area and (ii) volume:", parts: [
-            { label: "a)", text: "Cube with side 7 cm.", marks: 4 },
-            { label: "b)", text: "Rectangular prism: l = 15 cm, b = 8 cm, h = 6 cm.", marks: 5 },
-            { label: "c)", text: "Triangular prism: right-angled triangle with legs 5 cm and 12 cm; prism length 10 cm.", marks: 6 },
+          { num: "1", text: "Calculate the surface area of each solid:", parts: [
+            { label: "a)", text: "Cube with side 7 cm.", marks: 2 },
+            { label: "b)", text: "Rectangular prism: l = 15 cm, b = 8 cm, h = 6 cm.", marks: 3 },
+            { label: "c)", text: "Triangular prism with a right-angled triangle cross-section (legs 5 cm and 12 cm) and prism length 10 cm.", marks: 5 },
           ]},
-          { num: "2", text: "", parts: [
-            { label: "a)", text: "A cube has SA = 216 cm². Find its volume.", marks: 3 },
+        ]
+      },
+      {
+        name: "Volume of prisms",
+        questions: [
+          { num: "2", text: "Calculate the volume of each solid:", parts: [
+            { label: "a)", text: "Cube with side 7 cm.", marks: 1 },
+            { label: "b)", text: "Rectangular prism: l = 15 cm, b = 8 cm, h = 6 cm.", marks: 2 },
+            { label: "c)", text: "Triangular prism: right-angled triangle with legs 5 cm and 12 cm; length 10 cm.", marks: 3 },
+          ]},
+          { num: "3", text: "Solve:", parts: [
+            { label: "a)", text: "A cube has surface area 216 cm². Find its volume.", marks: 3 },
             { label: "b)", text: "A rectangular prism has volume 1 440 cm³, breadth 8 cm, height 6 cm. Find its length.", marks: 3 },
-            { label: "c)", text: "A cube's side length is multiplied by 4. By what factor does its volume increase? Show working.", marks: 3 },
+          ]},
+        ]
+      },
+      {
+        name: "Effect of scale factors",
+        questions: [
+          { num: "4", text: "Scale factor investigations:", parts: [
+            { label: "a)", text: "A cube's side is multiplied by 4. By what factor does its volume increase? Show working.", marks: 3 },
+            { label: "b)", text: "A prism has surface area 80 cm². All dimensions are doubled. Find the new surface area.", marks: 3 },
+            { label: "c)", text: "A solid's volume is 54 cm³. Its dimensions are multiplied by ⅓. Find the new volume.", marks: 3 },
           ]},
         ]
       },
@@ -270,14 +290,32 @@ MathMagician.registerChapter(15, {
   answerKey: {
     chapter: 15, chapterName: "Chapter 15 — Surface Area and Volume",
     topics: [
-      { name: "Surface area and volume", answers: [
-        { num: "Q1a", ans: "SA = 294 cm²; V = 343 cm³", note: "SA=6×49=294; V=7³=343" },
-        { num: "Q1b", ans: "SA = 516 cm²; V = 720 cm³", note: "SA=2(15×8+15×6+8×6)=2(120+90+48)=2×258=516; V=15×8×6=720" },
-        { num: "Q1c", ans: "SA = 300 cm²; V = 300 cm³", note: "Hyp=13; SA=2(½×5×12)+(5+12+13)×10=60+300=360? Check: 2×30+30×10=60+300=360; V=30×10=300" },
-        { num: "Q2a", ans: "V = 216 cm³", note: "SA=6s²=216→s²=36→s=6; V=6³=216" },
-        { num: "Q2b", ans: "l = 30 cm", note: "1440=l×8×6=48l→l=30" },
-        { num: "Q2c", ans: "k=4; volume increases by factor 4³=64", note: "New V=old V × 64" },
-      ]},
+      {
+        name: "Surface area of prisms",
+        answers: [
+          { num: "Q1a", ans: "SA = 294 cm²", note: "6×7²=6×49=294" },
+          { num: "Q1b", ans: "SA = 516 cm²", note: "2(15×8+15×6+8×6)=2(120+90+48)=516" },
+          { num: "Q1c", ans: "SA = 360 cm²", note: "Hyp=13; SA=2(½×5×12)+(5+12+13)×10=60+300=360" },
+        ]
+      },
+      {
+        name: "Volume of prisms",
+        answers: [
+          { num: "Q2a", ans: "V = 343 cm³", note: "7³=343" },
+          { num: "Q2b", ans: "V = 720 cm³", note: "15×8×6=720" },
+          { num: "Q2c", ans: "V = 300 cm³", note: "A=½×5×12=30; V=30×10=300" },
+          { num: "Q3a", ans: "V = 216 cm³", note: "6s²=216→s=6; 6³=216" },
+          { num: "Q3b", ans: "l = 30 cm", note: "1440=l×8×6→l=1440÷48=30" },
+        ]
+      },
+      {
+        name: "Effect of scale factors",
+        answers: [
+          { num: "Q4a", ans: "Volume increases by factor 64", note: "k=4; new V = 4³ × old V = 64 × old V" },
+          { num: "Q4b", ans: "New SA = 320 cm²", note: "k=2; SA scales by k²=4; 80×4=320" },
+          { num: "Q4c", ans: "New V = 2 cm³", note: "k=⅓; V scales by k³=(⅓)³=1/27; 54÷27=2" },
+        ]
+      },
     ]
   }
 });

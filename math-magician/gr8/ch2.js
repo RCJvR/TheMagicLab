@@ -66,7 +66,53 @@ MathMagician.registerChapter(2, {
           <div class="example-step"><span class="step-num">3</span><span>Answer: <span class="math">−8, −5, −1, 0, 2, 3</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Students often think −8 > −1 because 8 > 1. Remember: the more negative a number, the smaller it is.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Integer Number Line</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter up to 6 integers to place and order them on a number line.</p>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <input id="nlInput" type="text" value="-8, 3, -2, 7, 0, -5" style="flex:1;min-width:200px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 12px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;">
+              <button id="nlPlot" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Plot</button>
+            </div>
+            <svg id="nlSvg" viewBox="0 0 460 60" style="width:100%;max-width:460px;"></svg>
+            <div id="nlOrder" style="font-family:JetBrains Mono,monospace;font-size:12px;margin-top:8px;color:rgba(221,225,240,0.60);"></div>
+          </div>
+          <script>
+          (function(){
+            function plot(){
+              const nums=document.getElementById('nlInput').value.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n)).slice(0,8);
+              if(!nums.length)return;
+              const min=Math.min(...nums,-1),max=Math.max(...nums,1);
+              const pad=(max-min)*0.15||2;
+              const lo=Math.floor(min-pad),hi=Math.ceil(max+pad);
+              const svg=document.getElementById('nlSvg');
+              const W=460,cy=38,ax=30,bx=430;
+              function px(v){return ax+(v-lo)/(hi-lo)*(bx-ax);}
+              let h='<line x1="'+ax+'" y1="'+cy+'" x2="'+bx+'" y2="'+cy+'" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>';
+              h+='<polygon points="'+bx+','+cy+' '+(bx-6)+','+(cy-4)+' '+(bx-6)+','+(cy+4)+'" fill="rgba(255,255,255,0.15)"/>';
+              for(let v=lo;v<=hi;v++){
+                const x=px(v);
+                h+='<line x1="'+x+'" y1="'+(cy-4)+'" x2="'+x+'" y2="'+(cy+4)+'" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>';
+                if(v%2===0||hi-lo<=12)h+='<text x="'+x+'" y="'+(cy+16)+'" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.25)" font-family="JetBrains Mono,monospace">'+v+'</text>';
+              }
+              const colors=['#f59e0b','#6366f1','#10b981','#ec4899','#06b6d4','#a78bfa','#f87171','#34d399'];
+              nums.forEach((v,i)=>{
+                const x=px(v);
+                h+='<circle cx="'+x+'" cy="'+cy+'" r="7" fill="'+colors[i%colors.length]+'" opacity="0.9"/>';
+                h+='<text x="'+x+'" y="'+(cy-12)+'" text-anchor="middle" font-size="9" fill="'+colors[i%colors.length]+'" font-family="JetBrains Mono,monospace" font-weight="700">'+v+'</text>';
+              });
+              svg.innerHTML=h;
+              const sorted=[...nums].sort((a,b)=>a-b);
+              document.getElementById('nlOrder').innerHTML=
+                '<span style="color:rgba(221,225,240,0.40);">Ascending: </span>'+sorted.join(' &lt; ')+
+                ' <span style="color:rgba(221,225,240,0.25);margin-left:12px;">Descending: </span>'+[...sorted].reverse().join(' &gt; ');
+            }
+            document.getElementById('nlPlot').addEventListener('click',plot);
+            document.getElementById('nlInput').addEventListener('keydown',e=>{if(e.key==='Enter')plot();});
+            plot();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "Which statement is correct?", options: ["−6 > −2", "−3 > 1", "−1 > −8", "0 < −5"], answer: 2, topic: "Integers" },
@@ -181,7 +227,43 @@ MathMagician.registerChapter(2, {
           <div class="example-step"><span class="step-num">4</span><span><strong>Rule:</strong> odd number of negatives → negative result; even → positive.</span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Count the number of negative signs. Odd count = negative answer. Even count = positive answer.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Integer Sign Rules Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">See the sign rules in action for × and ÷. Change the values and watch the result.</p>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+              <input id="srA" type="number" value="-4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <select id="srOp" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;">
+                <option value="mul">×</option>
+                <option value="div">÷</option>
+              </select>
+              <input id="srB" type="number" value="-3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;">
+            </div>
+            <div id="srOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a=parseFloat(document.getElementById('srA').value)||0;
+              const b=parseFloat(document.getElementById('srB').value)||1;
+              const op=document.getElementById('srOp').value;
+              const res=op==='mul'?a*b:a/b;
+              const signA=a>=0?'positive':'negative';
+              const signB=b>=0?'positive':'negative';
+              const signR=res>=0?'positive':'negative';
+              const rule=signA===signB?'Same signs → Positive result':'Different signs → Negative result';
+              const el=document.getElementById('srOut');
+              el.innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Calculation: </span><span style="color:#fcd34d;">'+a+' '+(op==='mul'?'×':'÷')+' '+b+' = <strong style="font-size:16px;color:'+(res>=0?'#6ee7b7':'#fca5a5')+';">'+res+'</strong></span></div>',
+                '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Sign rule: </span><span style="color:#fbbf24;">'+rule+'</span></div>',
+                '<div style="font-size:10px;opacity:0.45;margin-top:2px;">('+signA+') '+(op==='mul'?'×':'÷')+' ('+signB+') = ('+signR+')</div>',
+              ].join('');
+            }
+            ['srA','srB','srOp'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+            update();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "What is <span class='math'>(−6) × (−7)</span>?", options: ["−42", "42", "−13", "13"], answer: 1, topic: "Integers" },
@@ -289,7 +371,36 @@ MathMagician.registerChapter(2, {
           <div class="example-step"><span class="step-num">3</span><span>√ of a negative number is <strong>not real</strong> — you cannot square root a negative.</span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Watch the difference between <span class="math">−4²</span> and <span class="math">(−4)²</span>. The first is <span class="math">−16</span>; the second is <span class="math">+16</span>.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Squares, Cubes & Roots Calculator</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+              <input id="scInput" type="number" value="9" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:18px;font-family:JetBrains Mono,monospace;text-align:center;">
+            </div>
+            <div id="scOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2.2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const n=parseFloat(document.getElementById('scInput').value);
+              if(isNaN(n)){document.getElementById('scOut').innerHTML='';return;}
+              const sq=n*n, cu=n*n*n;
+              const sqrtVal=Math.sqrt(Math.abs(n));
+              const cbrtVal=Math.cbrt(n);
+              const isSqrt=Number.isInteger(sqrtVal)&&n>=0;
+              const isCbrt=Number.isInteger(cbrtVal);
+              document.getElementById('scOut').innerHTML=[
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">Square ('+n+'²):</span><span style="color:#fcd34d;">'+sq+'</span></div>',
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">Cube ('+n+'³):</span><span style="color:#fcd34d;">'+cu+'</span></div>',
+                n>=0?'<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">√'+n+':</span><span style="color:'+(isSqrt?'#6ee7b7':'rgba(221,225,240,0.60)')+'">'+sqrtVal.toFixed(4)+(isSqrt?' ✓ perfect square':'')+'</span></div>':'',
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">∛'+n+':</span><span style="color:'+(isCbrt?'#6ee7b7':'rgba(221,225,240,0.60)')+'">'+cbrtVal.toFixed(4)+(isCbrt?' ✓ perfect cube':'')+'</span></div>',
+              ].filter(Boolean).join('');
+            }
+            document.getElementById('scInput').addEventListener('input',update);
+            update();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "input", text: "Calculate: <span class='math'>(−3)²</span>", answer: "9", topic: "Powers & roots" },
@@ -325,7 +436,48 @@ MathMagician.registerChapter(2, {
           <div class="example-step"><span class="step-num">5</span><span>Addition: <span class="math">17 + (−2) = 15</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Write out every step. Mixed-operations questions are where most marks are lost — and most are won — in exams.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — BODMAS Step Evaluator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Type an expression and see the order of operations applied step by step.</p>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <input id="bodInput" type="text" value="3 + 2 * (8 - 5) ** 2" style="flex:1;min-width:200px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 12px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;">
+              <button id="bodCalc" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Evaluate</button>
+            </div>
+            <div id="bodOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function evaluate(){
+              const expr=document.getElementById('bodInput').value.trim();
+              const el=document.getElementById('bodOut');
+              try{
+                // Safety: only allow numbers and operators
+                if(!/^[0-9+\-*/.^() **]+$/.test(expr.replace(/\s/g,'').replace(/\*\*/g,''))){
+                  el.innerHTML='<span style="color:#fca5a5;">Only numbers and + − * / ( ) ** allowed.</span>';return;
+                }
+                const result=Function('"use strict";return ('+expr+')')();
+                const steps=[
+                  {label:'B — Brackets first',color:'#f59e0b'},
+                  {label:'O — Orders (powers/roots)',color:'#a78bfa'},
+                  {label:'D/M — Division & Multiplication (left to right)',color:'#06b6d4'},
+                  {label:'A/S — Addition & Subtraction (left to right)',color:'#6ee7b7'},
+                ];
+                el.innerHTML=
+                  '<div style="color:rgba(221,225,240,0.40);font-size:11px;margin-bottom:6px;">BODMAS order of priority:</div>'+
+                  steps.map(s=>'<div style="color:'+s.color+';font-size:11px;">→ '+s.label+'</div>').join('')+
+                  '<div style="margin-top:10px;"><span style="color:rgba(221,225,240,0.45);">Result: </span><span style="color:#6ee7b7;font-size:16px;font-weight:700;">'+result+'</span></div>'+
+                  '<div style="font-size:10px;opacity:0.4;margin-top:2px;">Expression: '+expr+'</div>';
+              }catch(e){
+                el.innerHTML='<span style="color:#fca5a5;">Invalid expression. Use numbers, +, −, *, /, **, ( )</span>';
+              }
+            }
+            document.getElementById('bodCalc').addEventListener('click',evaluate);
+            document.getElementById('bodInput').addEventListener('keydown',e=>{if(e.key==='Enter')evaluate();});
+            evaluate();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "input", text: "Calculate: <span class='math'>(−2)³ + (−3) × (−4)</span>", answer: "4", topic: "Mixed ops" },

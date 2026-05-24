@@ -307,10 +307,92 @@ MathMagician.registerChapter(7, {
   ],
   workbook: {
     chapter: 7, chapterName: "Algebraic Equations",
-    topics: []
+    topics: [
+      {
+        name: "Solving using inverses",
+        questions: [
+          {
+            num: "1",
+            text: "Solve the following equations. Show all steps.",
+            parts: [
+              { label: "a)", text: "<span class='math'>3x + 7 = 22</span>", marks: 2 },
+              { label: "b)", text: "<span class='math'>5x − 3 = 2x + 9</span>", marks: 3 },
+              { label: "c)", text: "<span class='math'>2(x + 4) = 14</span>", marks: 3 },
+              { label: "d)", text: "<span class='math'>4(2x − 3) = 3(x + 2)</span>", marks: 4 },
+            ]
+          },
+        ]
+      },
+      {
+        name: "Variables on both sides",
+        questions: [
+          {
+            num: "2",
+            text: "Solve and verify your answer:",
+            parts: [
+              { label: "a)", text: "<span class='math'>7x − 4 = 3x + 12</span>", marks: 3 },
+              { label: "b)", text: "<span class='math'>5(x − 2) = 2(x + 4)</span>", marks: 4 },
+              { label: "c)", text: "<span class='math'>3(2x + 1) − 2(x − 3) = 25</span>", marks: 4 },
+            ]
+          },
+        ]
+      },
+      {
+        name: "Word problems and formulae",
+        questions: [
+          {
+            num: "3",
+            text: "Set up and solve an equation for each problem:",
+            parts: [
+              { label: "a)", text: "The sum of three consecutive integers is 72. Find the integers.", marks: 4 },
+              { label: "b)", text: "A rectangle's length is 5 cm more than its width. Its perimeter is 62 cm. Find the dimensions.", marks: 4 },
+              { label: "c)", text: "Two friends share R 340 so that one receives R 60 more than the other. How much does each receive?", marks: 3 },
+            ]
+          },
+          {
+            num: "4",
+            text: "The formula for converting Celsius to Fahrenheit is <span class='math'>F = 1.8C + 32</span>.",
+            parts: [
+              { label: "a)", text: "Find F when C = 25.", marks: 2 },
+              { label: "b)", text: "Make C the subject of the formula.", marks: 3 },
+              { label: "c)", text: "Find C when F = 212.", marks: 2 },
+            ]
+          },
+        ]
+      },
+    ]
   },
   answerKey: {
     chapter: 7, chapterName: "Chapter 7 — Algebraic Equations",
-    topics: []
+    topics: [
+      {
+        name: "Solving using inverses",
+        answers: [
+          { num: "Q1a", ans: "x = 5", note: "3x=15 → x=5" },
+          { num: "Q1b", ans: "x = 4", note: "3x=12 → x=4" },
+          { num: "Q1c", ans: "x = 3", note: "2x+8=14 → 2x=6 → x=3" },
+          { num: "Q1d", ans: "x = 18/5 = 3.6", note: "8x−12=3x+6 → 5x=18 → x=3.6" },
+        ]
+      },
+      {
+        name: "Variables on both sides",
+        answers: [
+          { num: "Q2a", ans: "x = 4", note: "4x=16 → x=4; check: 7(4)−4=24=3(4)+12 ✓" },
+          { num: "Q2b", ans: "x = 6", note: "5x−10=2x+8 → 3x=18 → x=6" },
+          { num: "Q2c", ans: "x = 4", note: "6x+3−2x+6=25 → 4x+9=25 → 4x=16 → x=4" },
+        ]
+      },
+      {
+        name: "Word problems and formulae",
+        answers: [
+          { num: "Q3a", ans: "23, 24, 25", note: "x+(x+1)+(x+2)=72 → 3x+3=72 → x=23" },
+          { num: "Q3b", ans: "Width = 13 cm, Length = 18 cm", note: "2(w+w+5)=62 → 4w+10=62 → w=13; l=18" },
+          { num: "Q3c", ans: "R 140 and R 200", note: "x+(x+60)=340 → 2x=280 → x=140" },
+          { num: "Q4a", ans: "F = 77°", note: "1.8(25)+32=45+32=77" },
+          { num: "Q4b", ans: "C = (F − 32) ÷ 1.8", note: "F−32=1.8C → C=(F−32)/1.8" },
+          { num: "Q4c", ans: "C = 100°", note: "(212−32)/1.8=180/1.8=100" },
+        ]
+      },
+    ]
   }
 });

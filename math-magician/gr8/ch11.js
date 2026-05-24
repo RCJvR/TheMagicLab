@@ -424,19 +424,33 @@ MathMagician.registerChapter(11, {
   workbook: {
     chapter: 11, chapterName: "Common Fractions",
     topics: [
-      { name: "Operations with fractions",
+      {
+        name: "Operations with fractions",
         questions: [
           { num: "1", text: "Calculate, showing all working:", parts: [
-            { label: "a)", text: "3/4 + 2/3 − 1/6", marks: 3 },
-            { label: "b)", text: "2⅔ × 1⅛", marks: 3 },
-            { label: "c)", text: "3¼ ÷ 1⅓", marks: 3 },
-            { label: "d)", text: "(2/3)² + √(9/16)", marks: 3 },
+            { label: "a)", text: "<span class='math'>3/4 + 2/3 − 1/6</span>", marks: 3 },
+            { label: "b)", text: "<span class='math'>2⅔ × 1⅛</span>", marks: 3 },
+            { label: "c)", text: "<span class='math'>3¼ ÷ 1⅓</span>", marks: 3 },
+            { label: "d)", text: "<span class='math'>(2/3)² + √(9/16)</span>", marks: 3 },
           ]},
         ]
       },
-      { name: "Percentages",
+      {
+        name: "Squares, cubes and roots of fractions",
         questions: [
-          { num: "2", text: "Percentage calculations:", parts: [
+          { num: "2", text: "Simplify without a calculator:", parts: [
+            { label: "a)", text: "<span class='math'>(3/5)²</span>", marks: 1 },
+            { label: "b)", text: "<span class='math'>√(4/25)</span>", marks: 1 },
+            { label: "c)", text: "<span class='math'>(2/3)³</span>", marks: 2 },
+            { label: "d)", text: "<span class='math'>∛(27/64)</span>", marks: 2 },
+            { label: "e)", text: "<span class='math'>√(16/9) + (1/2)²</span>", marks: 3 },
+          ]},
+        ]
+      },
+      {
+        name: "Percentages and percentage change",
+        questions: [
+          { num: "3", text: "Percentage calculations:", parts: [
             { label: "a)", text: "Find 35% of R2 400.", marks: 2 },
             { label: "b)", text: "Express 480 ml as a percentage of 2 litres.", marks: 3 },
             { label: "c)", text: "A price increased from R320 to R384. Calculate the percentage increase.", marks: 3 },
@@ -449,18 +463,34 @@ MathMagician.registerChapter(11, {
   answerKey: {
     chapter: 11, chapterName: "Chapter 11 — Common Fractions",
     topics: [
-      { name: "Operations with fractions", answers: [
-        { num: "Q1a", ans: "3/4", note: "LCD=12: 9/12+8/12−2/12=15/12=5/4? Check: 9+8−2=15; 15/12=5/4=1¼ — recheck: 3/4+2/3=17/12; 17/12−1/6=17/12−2/12=15/12=5/4" },
-        { num: "Q1b", ans: "3", note: "8/3 × 9/8 = 72/24 = 3" },
-        { num: "Q1c", ans: "2 7/16", note: "13/4 ÷ 4/3 = 13/4 × 3/4 = 39/16 = 2 7/16" },
-        { num: "Q1d", ans: "43/48", note: "4/9 + 3/4; LCD=36: 16/36+27/36=43/36? No: (2/3)²=4/9; √(9/16)=3/4; LCD=36: 16/36+27/36=43/36=1 7/36" },
-      ]},
-      { name: "Percentages", answers: [
-        { num: "Q2a", ans: "R840", note: "35/100 × 2400 = 840" },
-        { num: "Q2b", ans: "24%", note: "2 litres = 2000 ml; 480/2000 × 100 = 24%" },
-        { num: "Q2c", ans: "20%", note: "(384−320)/320 × 100 = 64/320 × 100 = 20%" },
-        { num: "Q2d", ans: "500", note: "440 = original × 0.88; original = 440/0.88 = 500" },
-      ]},
+      {
+        name: "Operations with fractions",
+        answers: [
+          { num: "Q1a", ans: "5/4 = 1¼", note: "LCD=12: 9/12+8/12−2/12=15/12=5/4" },
+          { num: "Q1b", ans: "3", note: "8/3 × 9/8 = 72/24 = 3" },
+          { num: "Q1c", ans: "2 7/16", note: "13/4 ÷ 4/3 = 13/4 × 3/4 = 39/16 = 2 7/16" },
+          { num: "Q1d", ans: "1 7/36", note: "(2/3)²=4/9; √(9/16)=3/4; LCD=36: 16/36+27/36=43/36=1 7/36" },
+        ]
+      },
+      {
+        name: "Squares, cubes and roots of fractions",
+        answers: [
+          { num: "Q2a", ans: "9/25", note: "3²/5²" },
+          { num: "Q2b", ans: "2/5", note: "√4/√25" },
+          { num: "Q2c", ans: "8/27", note: "2³/3³" },
+          { num: "Q2d", ans: "3/4", note: "∛27/∛64=3/4" },
+          { num: "Q2e", ans: "4/3 + 1/4 = 19/12 = 1 7/12", note: "√(16/9)=4/3; (1/2)²=1/4; LCD=12: 16/12+3/12=19/12" },
+        ]
+      },
+      {
+        name: "Percentages and percentage change",
+        answers: [
+          { num: "Q3a", ans: "R 840", note: "35/100 × 2400 = 840" },
+          { num: "Q3b", ans: "24%", note: "2 litres=2000 ml; 480/2000×100=24%" },
+          { num: "Q3c", ans: "20%", note: "(384−320)/320×100=64/320×100=20%" },
+          { num: "Q3d", ans: "500", note: "440=original×0.88; 440÷0.88=500" },
+        ]
+      },
     ]
   }
 });

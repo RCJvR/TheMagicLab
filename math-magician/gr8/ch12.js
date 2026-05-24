@@ -249,18 +249,30 @@ MathMagician.registerChapter(12, {
   workbook: {
     chapter: 12, chapterName: "Decimal Fractions",
     topics: [
-      { name: "Decimal operations",
+      {
+        name: "Adding, subtracting, multiplying and dividing decimals",
         questions: [
-          { num: "1", text: "Calculate (show all working):", parts: [
-            { label: "a)", text: "34.07 + 8.9 − 12.456", marks: 3 },
-            { label: "b)", text: "2.4 × 0.35", marks: 2 },
-            { label: "c)", text: "17.28 ÷ 0.08", marks: 3 },
-            { label: "d)", text: "(0.4)³ + √0.09", marks: 3 },
+          { num: "1", text: "Calculate, showing all working:", parts: [
+            { label: "a)", text: "<span class='math'>34.07 + 8.9 − 12.456</span>", marks: 3 },
+            { label: "b)", text: "<span class='math'>2.4 × 0.35</span>", marks: 2 },
+            { label: "c)", text: "<span class='math'>17.28 ÷ 0.08</span>", marks: 3 },
+            { label: "d)", text: "A car travels 245.6 km on 32.4 litres of fuel. Find fuel consumption in km/litre (2 d.p.).", marks: 3 },
           ]},
-          { num: "2", text: "", parts: [
-            { label: "a)", text: "Round 3.08765 to 3 decimal places.", marks: 1 },
-            { label: "b)", text: "Between which two consecutive integers does √52 lie? Do not use a calculator.", marks: 2 },
-            { label: "c)", text: "A car travels 245.6 km on 32.4 litres of fuel. Calculate fuel consumption in km/litre, rounded to 2 decimal places.", marks: 3 },
+        ]
+      },
+      {
+        name: "Squares, cubes, roots and rounding",
+        questions: [
+          { num: "2", text: "Without a calculator:", parts: [
+            { label: "a)", text: "Calculate <span class='math'>(0.4)³ + √0.09</span>", marks: 3 },
+            { label: "b)", text: "Round 3.08765 to 3 decimal places.", marks: 1 },
+            { label: "c)", text: "Between which two consecutive integers does <span class='math'>√52</span> lie?", marks: 2 },
+            { label: "d)", text: "Estimate <span class='math'>√98</span> to one decimal place without a calculator.", marks: 2 },
+          ]},
+          { num: "3", text: "Use a calculator to evaluate (round to 2 d.p. where necessary):", parts: [
+            { label: "a)", text: "<span class='math'>√182</span>", marks: 1 },
+            { label: "b)", text: "<span class='math'>∛512</span>", marks: 1 },
+            { label: "c)", text: "<span class='math'>(1.2)⁴</span>", marks: 2 },
           ]},
         ]
       },
@@ -269,15 +281,27 @@ MathMagician.registerChapter(12, {
   answerKey: {
     chapter: 12, chapterName: "Chapter 12 — Decimal Fractions",
     topics: [
-      { name: "Decimal operations", answers: [
-        { num: "Q1a", ans: "30.514", note: "34.07 + 8.9 = 42.97; 42.97 − 12.456 = 30.514" },
-        { num: "Q1b", ans: "0.84", note: "24 × 35 = 840; 1+2=3 d.p. → 0.840 = 0.84" },
-        { num: "Q1c", ans: "216", note: "Multiply both by 100: 1728 ÷ 8 = 216" },
-        { num: "Q1d", ans: "0.364", note: "(0.4)³=0.064; √0.09=0.3; 0.064+0.3=0.364" },
-        { num: "Q2a", ans: "3.088", note: "4th d.p. is 6 ≥ 5, round up: 3.088" },
-        { num: "Q2b", ans: "7 and 8", note: "7²=49, 8²=64; 49 < 52 < 64" },
-        { num: "Q2c", ans: "7.58 km/litre", note: "245.6 ÷ 32.4 ≈ 7.58" },
-      ]},
+      {
+        name: "Adding, subtracting, multiplying and dividing decimals",
+        answers: [
+          { num: "Q1a", ans: "30.514", note: "34.07+8.9=42.97; 42.97−12.456=30.514" },
+          { num: "Q1b", ans: "0.84", note: "24×35=840; 1+2=3 d.p. → 0.840=0.84" },
+          { num: "Q1c", ans: "216", note: "Multiply both by 100: 1728÷8=216" },
+          { num: "Q1d", ans: "7.58 km/litre", note: "245.6÷32.4≈7.58" },
+        ]
+      },
+      {
+        name: "Squares, cubes, roots and rounding",
+        answers: [
+          { num: "Q2a", ans: "0.364", note: "(0.4)³=0.064; √0.09=0.3; total=0.364" },
+          { num: "Q2b", ans: "3.088", note: "4th d.p. is 6 ≥ 5, round up" },
+          { num: "Q2c", ans: "7 and 8", note: "7²=49 < 52 < 64=8²" },
+          { num: "Q2d", ans: "≈ 9.9", note: "9.9²=98.01 ≈ 98" },
+          { num: "Q3a", ans: "≈ 13.49", note: "√182 ≈ 13.4907" },
+          { num: "Q3b", ans: "8", note: "∛512=8 exactly (8³=512)" },
+          { num: "Q3c", ans: "≈ 2.07", note: "1.2⁴=1.2²×1.2²=1.44×1.44=2.0736" },
+        ]
+      },
     ]
   }
 });

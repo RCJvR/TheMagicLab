@@ -194,17 +194,28 @@ MathMagician.registerChapter(13, {
   workbook: {
     chapter: 13, chapterName: "Theorem of Pythagoras",
     topics: [
-      { name: "Pythagoras — finding sides and applications",
+      {
+        name: "Pythagoras in right-angled triangles",
         questions: [
-          { num: "1", text: "In each right-angled triangle, find the unknown side (leave surds where necessary):", parts: [
-            { label: "a)", text: "a = 8, b = 15, find c.", marks: 2 },
+          { num: "1", text: "In each right-angled triangle, find the unknown side. Leave surds where necessary.", parts: [
+            { label: "a)", text: "a = 8, b = 15, find c (hypotenuse).", marks: 2 },
             { label: "b)", text: "c = 20, b = 16, find a.", marks: 2 },
             { label: "c)", text: "a = 7, b = 7, find c.", marks: 2 },
+            { label: "d)", text: "Determine whether a triangle with sides 9, 40, 41 is right-angled. Show working.", marks: 3 },
           ]},
+        ]
+      },
+      {
+        name: "Applications of Pythagoras",
+        questions: [
           { num: "2", text: "Application problems:", parts: [
-            { label: "a)", text: "A television screen is 48 cm wide and 36 cm tall. Find the length of its diagonal.", marks: 3 },
-            { label: "b)", text: "An isosceles triangle has base 20 cm and equal sides of 26 cm. Calculate the area of the triangle.", marks: 5 },
-            { label: "c)", text: "P = (−1, 2) and Q = (5, 10). Find PQ.", marks: 3 },
+            { label: "a)", text: "A television screen is 48 cm wide and 36 cm tall. Find the diagonal length.", marks: 3 },
+            { label: "b)", text: "An isosceles triangle has base 20 cm and equal sides of 26 cm. Calculate the area.", marks: 5 },
+            { label: "c)", text: "P = (−1, 2) and Q = (5, 10). Find the length PQ.", marks: 3 },
+          ]},
+          { num: "3", text: "A ladder 5 m long leans against a wall. Its foot is 2 m from the base of the wall.", parts: [
+            { label: "a)", text: "How high up the wall does the ladder reach? (1 d.p.)", marks: 3 },
+            { label: "b)", text: "The foot is moved to 1 m from the wall. How much higher does it now reach?", marks: 3 },
           ]},
         ]
       },
@@ -213,14 +224,25 @@ MathMagician.registerChapter(13, {
   answerKey: {
     chapter: 13, chapterName: "Chapter 13 — Theorem of Pythagoras",
     topics: [
-      { name: "Pythagoras — finding sides and applications", answers: [
-        { num: "Q1a", ans: "c = 17", note: "c²=64+225=289; c=17" },
-        { num: "Q1b", ans: "a = 12", note: "a²=400−256=144; a=12" },
-        { num: "Q1c", ans: "c = 7√2 ≈ 9.90", note: "c²=49+49=98; c=√98=7√2" },
-        { num: "Q2a", ans: "60 cm", note: "d²=48²+36²=2304+1296=3600; d=60" },
-        { num: "Q2b", ans: "Area = 240 cm²", note: "h²=26²−10²=676−100=576; h=24; A=½×20×24=240 cm²" },
-        { num: "Q2c", ans: "PQ = 10", note: "PQ=√((5+1)²+(10−2)²)=√(36+64)=√100=10" },
-      ]},
+      {
+        name: "Pythagoras in right-angled triangles",
+        answers: [
+          { num: "Q1a", ans: "c = 17", note: "c²=64+225=289 → c=17" },
+          { num: "Q1b", ans: "a = 12", note: "a²=400−256=144 → a=12" },
+          { num: "Q1c", ans: "c = 7√2 ≈ 9.9", note: "c²=98 → c=√98=7√2" },
+          { num: "Q1d", ans: "Yes, right-angled", note: "9²+40²=81+1600=1681=41² ✓" },
+        ]
+      },
+      {
+        name: "Applications of Pythagoras",
+        answers: [
+          { num: "Q2a", ans: "60 cm", note: "d²=48²+36²=2304+1296=3600 → d=60" },
+          { num: "Q2b", ans: "240 cm²", note: "h²=26²−10²=576 → h=24; A=½×20×24=240" },
+          { num: "Q2c", ans: "PQ = 10", note: "√(6²+8²)=√(36+64)=√100=10" },
+          { num: "Q3a", ans: "≈ 4.6 m", note: "h²=5²−2²=25−4=21 → h=√21≈4.6" },
+          { num: "Q3b", ans: "≈ 0.3 m higher", note: "h²=5²−1²=24 → h=√24≈4.9; 4.9−4.6=0.3" },
+        ]
+      },
     ]
   }
 });

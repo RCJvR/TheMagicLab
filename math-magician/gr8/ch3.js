@@ -41,7 +41,41 @@ MathMagician.registerChapter(3, {
           <div class="example-step"><span class="step-num">4</span><span>Evaluate <span class="math">(−2)⁵</span> → <span class="math">−32</span> (odd power, negative)</span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Note the difference: <span class="math">−3⁴ = −(3⁴) = −81</span> but <span class="math">(−3)⁴ = 81</span>. The bracket changes everything.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Exponent Calculator</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+              <input id="expCalcBase" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:18px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="color:#a5b4fc;font-family:Syne,sans-serif;font-size:20px;font-weight:800;">^</span>
+              <input id="expCalcExp" type="number" value="4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:18px;font-family:JetBrains Mono,monospace;text-align:center;">
+            </div>
+            <div id="expCalcOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const base=parseFloat(document.getElementById('expCalcBase').value);
+              const exp=parseFloat(document.getElementById('expCalcExp').value);
+              if(isNaN(base)||isNaN(exp)){return;}
+              const result=Math.pow(base,exp);
+              // Build expanded form (for small exponents)
+              let expanded='';
+              if(Number.isInteger(exp)&&Math.abs(exp)<=6&&exp>0){
+                expanded=Array(exp).fill(base).join(' × ')+' = ';
+              }
+              document.getElementById('expCalcOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Expression:</span><span style="color:#a5b4fc;">'+base+'<sup>'+exp+'</sup></span></div>',
+                expanded?'<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Expanded:</span><span style="color:rgba(221,225,240,0.55);font-size:12px;">'+expanded+'</span></div>':'',
+                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Result:</span><span style="color:#6ee7b7;font-size:16px;font-weight:700;">'+result+'</span></div>',
+                exp===0?'<div style="font-size:10px;opacity:0.45;">Any non-zero base to the power 0 = 1</div>':'',
+                exp<0?'<div style="font-size:10px;opacity:0.45;">Negative exponent: 1 / '+base+'^'+Math.abs(exp)+' = '+result.toFixed(6)+'</div>':'',
+              ].filter(Boolean).join('');
+            }
+            ['expCalcBase','expCalcExp'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+            update();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "input", text: "Write <span class='math'>5 × 5 × 5 × 5</span> in exponential form (e.g. 5^4)", answer: "5^4", topic: "Exponents" },
@@ -97,7 +131,74 @@ MathMagician.registerChapter(3, {
           <div class="example-step"><span class="step-num">4</span><span>Simplify <span class="math">x⁵ × x³ ÷ x⁴</span> → <span class="math">x⁵⁺³⁻⁴ = x⁴</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>The laws only apply when the <strong>bases are the same</strong>. You cannot simplify <span class="math">2³ × 3²</span> using Law 1.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Exponent Laws Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Pick a law, enter values, and see the rule applied.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Law</label>
+                <select id="expLaw" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="mul">aᵐ × aⁿ = aᵐ⁺ⁿ</option>
+                  <option value="div">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</option>
+                  <option value="pow">(aᵐ)ⁿ = aᵐⁿ</option>
+                  <option value="zero">a⁰ = 1</option>
+                  <option value="neg">a⁻ⁿ = 1/aⁿ</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Base (a)</label>
+                <input id="expBase" type="number" value="2" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;" id="expL1">m</label>
+                <input id="expM" type="number" value="3" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;" id="expNBox">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;" id="expL2">n</label>
+                <input id="expN" type="number" value="4" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+            </div>
+            <div id="expOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2.2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const law=document.getElementById('expLaw').value;
+              const a=parseFloat(document.getElementById('expBase').value)||2;
+              const m=parseFloat(document.getElementById('expM').value)||0;
+              const n=parseFloat(document.getElementById('expN').value)||0;
+              const nbox=document.getElementById('expNBox');
+              const l2=document.getElementById('expL2');
+              let lines=[];
+              nbox.style.display='flex';
+              if(law==='mul'){
+                lines=['<div><span style="color:#a5b4fc;">Rule: </span>aᵐ × aⁿ = aᵐ⁺ⁿ</div>',
+                  '<div>'+a+'³ × '+a+'⁴ = '+a+'^('+(m)+'+'+(n)+') = '+a+'^'+(m+n)+' = <strong style="color:#6ee7b7;">'+(Math.pow(a,m+n))+'</strong></div>'];
+              } else if(law==='div'){
+                lines=['<div><span style="color:#a5b4fc;">Rule: </span>aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div>',
+                  '<div>'+a+'^'+m+' ÷ '+a+'^'+n+' = '+a+'^('+(m)+'-'+(n)+') = '+a+'^'+(m-n)+' = <strong style="color:#6ee7b7;">'+(Math.pow(a,m-n).toFixed(4))+'</strong></div>'];
+              } else if(law==='pow'){
+                lines=['<div><span style="color:#a5b4fc;">Rule: </span>(aᵐ)ⁿ = aᵐⁿ</div>',
+                  '<div>('+a+'^'+m+')^'+n+' = '+a+'^('+(m)+'×'+(n)+') = '+a+'^'+(m*n)+' = <strong style="color:#6ee7b7;">'+(Math.pow(a,m*n))+'</strong></div>'];
+              } else if(law==='zero'){
+                nbox.style.display='none';
+                lines=['<div><span style="color:#a5b4fc;">Rule: </span>Any non-zero base to the power 0 = 1</div>',
+                  '<div>'+a+'^0 = <strong style="color:#6ee7b7;">1</strong></div>',
+                  '<div style="font-size:10px;opacity:0.45;">Works for any a ≠ 0</div>'];
+              } else if(law==='neg'){
+                nbox.style.display='none';
+                const val=Math.pow(a,-m);
+                lines=['<div><span style="color:#a5b4fc;">Rule: </span>a⁻ⁿ = 1/aⁿ</div>',
+                  '<div>'+a+'^(−'+m+') = 1/'+a+'^'+m+' = 1/'+Math.pow(a,m)+' = <strong style="color:#6ee7b7;">'+val.toFixed(6)+'</strong></div>'];
+              }
+              document.getElementById('expOut').innerHTML=lines.join('');
+            }
+            ['expLaw','expBase','expM','expN'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+            update();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "Simplify <span class='math'>4³ × 4⁵</span>", options: ["4¹⁵", "4⁸", "16⁸", "4²"], answer: 1, topic: "Laws of exponents" },
@@ -188,7 +289,40 @@ MathMagician.registerChapter(3, {
           <div class="example-step"><span class="step-num">2</span><span>Move decimal 5 places right: <span class="math">630 000</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>The power of 10 tells you how many places to move the decimal. Positive → right (bigger). Negative → left (smaller).</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Scientific Notation Converter</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <input id="sciInput" type="text" value="0.000045" placeholder="Enter a number…" style="flex:1;min-width:180px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 12px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;">
+              <button id="sciConv" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Convert</button>
+            </div>
+            <div id="sciOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2.2;"></div>
+          </div>
+          <script>
+          (function(){
+            function convert(){
+              const raw=document.getElementById('sciInput').value.trim();
+              const n=parseFloat(raw);
+              const el=document.getElementById('sciOut');
+              if(isNaN(n)){el.innerHTML='<span style="color:#fca5a5;">Enter a valid number.</span>';return;}
+              const sci=n.toExponential();
+              const parts=sci.split('e');
+              const coeff=parseFloat(parts[0]).toFixed(4).replace(/\.?0+$/,'');
+              const exp=parseInt(parts[1]);
+              const isLarge=exp>=0;
+              el.innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Standard form:</span><span style="color:#fcd34d;">'+n.toLocaleString('fullwide',{maximumFractionDigits:20})+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Scientific notation:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+coeff+' × 10<sup>'+exp+'</sup></span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Type:</span><span style="color:#a5b4fc;">'+(isLarge?'Large number (positive exponent)':'Small number (negative exponent)')+'</span></div>',
+                '<div style="font-size:10px;opacity:0.45;margin-top:2px;">The decimal point moved '+Math.abs(exp)+' place'+(Math.abs(exp)!==1?'s':'')+' to the '+(isLarge?'left':'right')+'</div>',
+              ].join('');
+            }
+            document.getElementById('sciConv').addEventListener('click',convert);
+            document.getElementById('sciInput').addEventListener('keydown',e=>{if(e.key==='Enter')convert();});
+            convert();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "Write <span class='math'>56 000</span> in scientific notation.", options: ["5.6 × 10³", "56 × 10³", "5.6 × 10⁴", "0.56 × 10⁵"], answer: 2, topic: "Scientific notation" },

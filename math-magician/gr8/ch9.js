@@ -46,6 +46,55 @@ MathMagician.registerChapter(9, {
             </p>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always state the reason for every angle calculation in geometry. e.g. "angles on a straight line" or "vertically opposite angles". Reasons earn marks in exams.</span></div>
+        
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Angle Classifier</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter an angle to classify it, find its complement and supplement.</p>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+              <input id="angVal" type="number" value="65" min="0" max="360" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:22px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="font-size:16px;color:#a5b4fc;font-family:JetBrains Mono,monospace;">°</span>
+              <svg id="angSvg" viewBox="0 0 120 80" style="width:120px;height:80px;flex-shrink:0;"></svg>
+            </div>
+            <div id="angOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const deg=parseFloat(document.getElementById('angVal').value)||0;
+              const rad=deg*Math.PI/180;
+              // SVG arc
+              const svg=document.getElementById('angSvg');
+              const cx=15,cy=65,r=50;
+              const ex=cx+r*Math.cos(-rad),ey=cy+r*Math.sin(-rad);
+              const large=deg>180?1:0;
+              const arcD=deg>=360?
+                'M '+cx+' '+cy+' m -'+r+' 0 a '+r+' '+r+' 0 1 1 0.001 0':
+                'M '+cx+' '+cy+' L '+(cx+r)+' '+cy+' A '+r+' '+r+' 0 '+large+' 0 '+ex.toFixed(1)+' '+ey.toFixed(1)+' Z';
+              let colour=deg<=90?'rgba(99,102,241,0.40)':deg<=180?'rgba(245,158,11,0.40)':'rgba(239,68,68,0.30)';
+              svg.innerHTML=
+                '<path d="'+arcD+'" fill="'+colour+'"/>'+
+                '<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r)+'" y2="'+cy+'" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>'+
+                (deg<360?'<line x1="'+cx+'" y1="'+cy+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>':'')+
+                '<text x="'+(cx+r*0.55*Math.cos(-rad/2)).toFixed(0)+'" y="'+(cy+r*0.55*Math.sin(-rad/2)-2).toFixed(0)+'" fill="#fcd34d" font-size="10" font-family="JetBrains Mono,monospace" text-anchor="middle">'+deg+'°</text>';
+              let type='';
+              if(deg===0)type='Zero angle';
+              else if(deg<90)type='Acute';
+              else if(deg===90)type='Right angle';
+              else if(deg<180)type='Obtuse';
+              else if(deg===180)type='Straight angle';
+              else if(deg<360)type='Reflex';
+              else type='Revolution (full turn)';
+              const comp=90-deg,supp=180-deg;
+              document.getElementById('angOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">Type:</span><span style="color:#fbbf24;">'+type+'</span></div>',
+                deg<=90?'<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">Complement:</span><span style="color:#6ee7b7;">'+comp+'°</span> <span style="color:rgba(221,225,240,0.30);font-size:10px;">(90°−'+deg+'°)</span></div>':'',
+                deg<=180?'<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">Supplement:</span><span style="color:#6ee7b7;">'+supp+'°</span> <span style="color:rgba(221,225,240,0.30);font-size:10px;">(180°−'+deg+'°)</span></div>':'',
+              ].filter(Boolean).join('');
+            }
+            document.getElementById('angVal').addEventListener('input',update);
+            update();
+          })();
+          </script>
         `
       },
       questions: [
@@ -96,6 +145,62 @@ MathMagician.registerChapter(9, {
             <div class="example-step"><span class="step-num">3</span><span><span class="math">x = 360° − 195° = 165°</span></span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>In every geometry answer, write the numerical calculation AND the reason in brackets, e.g. "x = 180° − 65° = 115° (angles on a str. line)".</span></div>
+        
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Straight-Line & Intersecting Angle Solver</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Scenario</label>
+                <select id="angRelType" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="straight">Angles on a straight line</option>
+                  <option value="point">Angles around a point</option>
+                  <option value="vert">Vertically opposite angles</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Known angle(s) — comma-separated</label>
+                <input id="angRelVals" type="text" value="72, 43" style="min-width:160px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 10px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;">
+              </div>
+              <button id="angRelSolve" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
+            </div>
+            <div id="angRelOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function solve(){
+              const type=document.getElementById('angRelType').value;
+              const vals=document.getElementById('angRelVals').value.split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n));
+              const el=document.getElementById('angRelOut');
+              const sum=vals.reduce((a,b)=>a+b,0);
+              let html='';
+              if(type==='straight'){
+                const x=180-sum;
+                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Rule: angles on a straight line sum to 180°</div>'+
+                  '<div>Sum of known angles: <span style="color:#fbbf24;">'+sum+'°</span></div>'+
+                  (x>=0?'<div>Unknown angle x = 180° − '+sum+'° = <span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+x+'°</span></div>':
+                  '<span style="color:#fca5a5;">Angles already exceed 180°</span>');
+              } else if(type==='point'){
+                const x=360-sum;
+                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Rule: angles around a point sum to 360°</div>'+
+                  '<div>Sum of known angles: <span style="color:#fbbf24;">'+sum+'°</span></div>'+
+                  (x>=0?'<div>Unknown angle x = 360° − '+sum+'° = <span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+x+'°</span></div>':
+                  '<span style="color:#fca5a5;">Angles already exceed 360°</span>');
+              } else {
+                const v=vals[0]||0;
+                const opp=v, adj=180-v;
+                html='<div style="color:rgba(221,225,240,0.45);font-size:11px;">Rule: vertically opposite angles are equal</div>'+
+                  '<div>Given angle: <span style="color:#fbbf24;">'+v+'°</span></div>'+
+                  '<div>Vertically opposite angle = <span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+opp+'°</span></div>'+
+                  '<div>Adjacent angles = <span style="color:#6ee7b7;">'+adj+'°</span> each <span style="color:rgba(221,225,240,0.30);font-size:10px;">(straight line)</span></div>';
+              }
+              el.innerHTML=html;
+            }
+            document.getElementById('angRelSolve').addEventListener('click',solve);
+            document.getElementById('angRelType').addEventListener('change',solve);
+            document.getElementById('angRelVals').addEventListener('keydown',e=>{if(e.key==='Enter')solve();});
+            solve();
+          })();
+          </script>
         `
       },
       questions: [
@@ -151,6 +256,41 @@ MathMagician.registerChapter(9, {
             </p>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Remember the shapes: <strong>F</strong> = corresponding (equal), <strong>Z</strong> = alternate (equal), <strong>C</strong> or <strong>U</strong> = co-interior (supplementary). Spotting the shape in the diagram is the fastest way to identify the relationship.</span></div>
+        
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Parallel Lines Angle Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter one angle formed by a transversal crossing parallel lines to find all 8 angles.</p>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+              <input id="parAng" type="number" value="65" min="1" max="179" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:20px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;">°</span>
+              <span style="font-size:11px;color:rgba(221,225,240,0.35);">(∠1 — above line 1, left of transversal)</span>
+            </div>
+            <div id="parOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a1=parseFloat(document.getElementById('parAng').value)||65;
+              const a2=180-a1;
+              const el=document.getElementById('parOut');
+              el.innerHTML=[
+                '<div style="color:rgba(245,158,11,0.60);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">At line 1 (top intersection):</div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠1:</span><span style="color:#fcd34d;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(given)</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠2:</span><span style="color:#a5b4fc;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(str. line: 180°−∠1)</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠3:</span><span style="color:#a5b4fc;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(vert. opp. to ∠1)</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠4:</span><span style="color:#a5b4fc;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(vert. opp. to ∠2)</span></div>',
+                '<div style="color:rgba(16,185,129,0.60);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin:6px 0 4px;">At line 2 (bottom intersection):</div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠5:</span><span style="color:#6ee7b7;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(corr. to ∠1 — F-shape)</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠6:</span><span style="color:#6ee7b7;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(corr. to ∠2)</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠7:</span><span style="color:#6ee7b7;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(alt. int. to ∠2 — Z-shape, or vert. opp. ∠5)</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠8:</span><span style="color:#6ee7b7;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(vert. opp. ∠6)</span></div>',
+                '<div style="margin-top:6px;font-size:10px;color:#fbbf24;">Co-interior: ∠2 + ∠5 = '+a2+' + '+a1+' = '+(a2+a1)+'° ✓</div>',
+              ].join('');
+            }
+            document.getElementById('parAng').addEventListener('input',update);
+            update();
+          })();
+          </script>
         `
       },
       questions: [

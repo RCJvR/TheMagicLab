@@ -47,6 +47,34 @@ MathMagician.registerChapter(8, {
             <div class="example-step"><span class="step-num">3</span><span>If <span class="math">∠PQR = 35°</span>, then the complement of Q̂ = <span class="math">90° − 35° = 55°</span>.</span></div>
             <div class="example-step"><span class="step-num">4</span><span>The supplement of Q̂ = <span class="math">180° − 35° = 145°</span>.</span></div>
           </div>
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Complement &amp; Supplement Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:12px;">Enter any angle and instantly see its complement (90° −) and supplement (180° −).</p>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+              <span style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Angle =</span>
+              <input id="csAngle" type="number" value="38" min="0" max="180" style="width:72px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 10px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="font-size:13px;color:#a5b4fc;font-family:JetBrains Mono,monospace;">°</span>
+            </div>
+            <div id="csOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2.2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a=parseFloat(document.getElementById('csAngle').value);
+              const el=document.getElementById('csOut');
+              if(isNaN(a)||a<0||a>180){el.innerHTML='<span style="color:#fca5a5;">Enter an angle between 0° and 180°</span>';return;}
+              const comp=90-a;
+              const supp=180-a;
+              let html='';
+              html+='<div><span style="color:rgba(221,225,240,0.45);">Complement  </span><span style="color:#6ee7b7;">90° − '+a+'° = <strong>'+comp+'°</strong></span>'+(comp<0?' <span style="color:#fca5a5;font-size:11px;">(no complement — angle &gt; 90°)</span>':'')+'</div>';
+              html+='<div><span style="color:rgba(221,225,240,0.45);">Supplement  </span><span style="color:#fcd34d;">180° − '+a+'° = <strong>'+supp+'°</strong></span></div>';
+              html+='<div style="margin-top:6px;font-size:11px;opacity:0.4;">'+a+'° is '+(a<90?'acute':(a===90?'a right angle':(a<180?'obtuse':'a straight angle')))+'</div>';
+              el.innerHTML=html;
+            }
+            document.getElementById('csAngle').addEventListener('input',update);
+            update();
+          })();
+          </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>In construction questions, marks are awarded for correct labelling. Always name points with capital letters and use the correct angle notation in your answers.</span></div>
         `
       },

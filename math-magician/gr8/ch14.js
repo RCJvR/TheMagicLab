@@ -227,17 +227,29 @@ MathMagician.registerChapter(14, {
   workbook: {
     chapter: 14, chapterName: "Area and Perimeter",
     topics: [
-      { name: "Perimeter and area calculations",
+      {
+        name: "Perimeter of 2D shapes",
         questions: [
-          { num: "1", text: "Calculate perimeter and area for each shape:", parts: [
-            { label: "a)", text: "Rectangle: l = 15 cm, b = 8 cm.", marks: 3 },
-            { label: "b)", text: "Circle: r = 9 cm. (Use π = 3.142)", marks: 4 },
-            { label: "c)", text: "Trapezium: parallel sides 7 cm and 13 cm, height 8 cm, slant sides each 10 cm.", marks: 4 },
+          { num: "1", text: "Calculate the perimeter of each shape:", parts: [
+            { label: "a)", text: "Rectangle: l = 15 cm, b = 8 cm.", marks: 2 },
+            { label: "b)", text: "Circle with r = 9 cm. (Use π = 3.142)", marks: 2 },
+            { label: "c)", text: "Trapezium with parallel sides 7 cm and 13 cm, and slant sides each 10 cm.", marks: 2 },
+            { label: "d)", text: "A square has perimeter 52 cm. Find its side length and area.", marks: 3 },
           ]},
-          { num: "2", text: "Problem solving:", parts: [
-            { label: "a)", text: "A circular lawn of radius 7 m is surrounded by a 2 m wide path. Find the area of the path only.", marks: 5 },
-            { label: "b)", text: "A parallelogram has area 156 cm² and base 13 cm. Its perpendicular height equals 3 times the base of a triangle whose area is 45 cm² and base 6 cm. Verify that these are consistent.", marks: 5 },
-            { label: "c)", text: "Convert: (i) 4.2 m² to cm²; (ii) 85 000 mm² to m².", marks: 3 },
+        ]
+      },
+      {
+        name: "Areas and unit conversions",
+        questions: [
+          { num: "2", text: "Calculate the area of each shape:", parts: [
+            { label: "a)", text: "Circle with r = 9 cm.", marks: 2 },
+            { label: "b)", text: "Trapezium with parallel sides 7 cm and 13 cm, height 8 cm.", marks: 3 },
+            { label: "c)", text: "A circular lawn of radius 7 m has a 2 m wide path around it. Find the area of the path only.", marks: 5 },
+          ]},
+          { num: "3", text: "Convert:", parts: [
+            { label: "a)", text: "4.2 m² to cm²", marks: 1 },
+            { label: "b)", text: "85 000 mm² to m²", marks: 2 },
+            { label: "c)", text: "A room is 6.4 m × 4.5 m. Find the floor area in m² and in cm².", marks: 3 },
           ]},
         ]
       },
@@ -246,14 +258,26 @@ MathMagician.registerChapter(14, {
   answerKey: {
     chapter: 14, chapterName: "Chapter 14 — Area and Perimeter",
     topics: [
-      { name: "Perimeter and area calculations", answers: [
-        { num: "Q1a", ans: "P = 46 cm; A = 120 cm²", note: "P=2(15+8)=46; A=15×8=120" },
-        { num: "Q1b", ans: "C = 56.56 cm; A = 254.47 cm²", note: "C=2×3.142×9=56.556; A=3.142×81=254.502" },
-        { num: "Q1c", ans: "P = 40 cm; A = 80 cm²", note: "P=7+13+10+10=40; A=½(7+13)×8=80" },
-        { num: "Q2a", ans: "Area of path = 175.93 m²", note: "Outer r=9: A=3.142×81=254.50; Inner r=7: A=3.142×49=153.96; Path=254.50−153.96=100.54 (Note: check with exact π: π(9²−7²)=π×32≈100.53 m²)" },
-        { num: "Q2b", ans: "Triangle height = 15 cm; parallelogram height = 45 cm ≠ 12 cm — NOT consistent", note: "Triangle: h=2×45/6=15; 3×15=45; Para height check: A=b×h→156=13×h→h=12≠45" },
-        { num: "Q2c", ans: "(i) 42 000 cm²; (ii) 0.000085 m²", note: "4.2×10000=42000; 85000÷(1000²)=0.000085" },
-      ]},
+      {
+        name: "Perimeter of 2D shapes",
+        answers: [
+          { num: "Q1a", ans: "P = 46 cm", note: "2(15+8)=46" },
+          { num: "Q1b", ans: "C ≈ 56.56 cm", note: "2×3.142×9=56.556" },
+          { num: "Q1c", ans: "P = 40 cm", note: "7+13+10+10=40" },
+          { num: "Q1d", ans: "Side = 13 cm; Area = 169 cm²", note: "52÷4=13; 13²=169" },
+        ]
+      },
+      {
+        name: "Areas and unit conversions",
+        answers: [
+          { num: "Q2a", ans: "A ≈ 254.50 cm²", note: "3.142×81=254.502" },
+          { num: "Q2b", ans: "A = 80 cm²", note: "½(7+13)×8=80" },
+          { num: "Q2c", ans: "≈ 100.53 m²", note: "π(9²−7²)=π×32≈100.53" },
+          { num: "Q3a", ans: "42 000 cm²", note: "4.2×10 000=42 000" },
+          { num: "Q3b", ans: "0.000085 m²", note: "85 000÷1 000 000=0.000085" },
+          { num: "Q3c", ans: "28.8 m² = 288 000 cm²", note: "6.4×4.5=28.8; ×10 000=288 000" },
+        ]
+      },
     ]
   }
 });

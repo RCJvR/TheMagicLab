@@ -36,7 +36,50 @@ MathMagician.registerChapter(4, {
           <div class="example-step"><span class="step-num">5</span><span>Find T₂₀: <span class="math">4(20) + 1 = 81</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Always verify your general term by substituting n = 1, 2, and 3. If all three match, your formula is correct.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Arithmetic Sequence Builder</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter the first term and common difference to generate the sequence and general term.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">First term (a)</label>
+                <input id="arA" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Common diff (d)</label>
+                <input id="arD" type="number" value="4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Find term n =</label>
+                <input id="arN" type="number" value="10" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+            </div>
+            <div id="arOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a=parseFloat(document.getElementById('arA').value)||0;
+              const d=parseFloat(document.getElementById('arD').value)||0;
+              const n=parseInt(document.getElementById('arN').value)||10;
+              // First 8 terms
+              const terms=Array.from({length:8},(_,i)=>a+i*d);
+              const tn=a+(n-1)*d;
+              // General term formula
+              const c=a-d; // Tn = dn + c
+              const formulaStr=(d===0?a:(d>0?d+'n'+(c>0?' + '+c:c<0?' − '+Math.abs(c):''):(d<0?d+'n'+(c>0?' + '+c:c<0?' − '+Math.abs(c):''):'')));
+              document.getElementById('arOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">First 8 terms:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', …</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">General term:</span><span style="color:#fbbf24;">Tₙ = '+formulaStr+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">T<sub>'+n+'</sub>:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+tn+'</span></div>',
+                '<div style="font-size:10px;opacity:0.45;">Derived from: Tₙ = a + (n−1)d = '+a+' + (n−1)('+d+')</div>',
+              ].join('');
+            }
+            ['arA','arD','arN'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+            update();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "What is the common difference of: <span class='math'>2, 8, 14, 20, …</span>?", options: ["4", "6", "8", "10"], answer: 1, topic: "Patterns" },
@@ -81,7 +124,67 @@ MathMagician.registerChapter(4, {
           <div class="example-step"><span class="step-num">3</span><span>Describe the pattern in words AND as a formula.</span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>If terms are increasing by addition → arithmetic. If by multiplication → geometric. Check by dividing consecutive terms.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Geometric Sequence Builder</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter the first term and common ratio. Enter a sequence to identify its type and rule.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">First term (a)</label>
+                <input id="grA" type="number" value="2" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Common ratio (r)</label>
+                <input id="grR" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Find term n =</label>
+                <input id="grN" type="number" value="6" min="1" max="12" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+            </div>
+            <div style="margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;">
+              <span style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Or identify a sequence:</span>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <input id="grSeq" type="text" value="4, 12, 36, 108" placeholder="e.g. 5, 10, 20, 40" style="flex:1;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px 10px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;">
+                <button id="grIdent" style="padding:6px 12px;border-radius:7px;border:none;background:rgba(99,102,241,0.25);color:#a5b4fc;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">Identify</button>
+              </div>
+            </div>
+            <div id="grOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function build(){
+              const a=parseFloat(document.getElementById('grA').value)||1;
+              const r=parseFloat(document.getElementById('grR').value)||2;
+              const n=parseInt(document.getElementById('grN').value)||6;
+              const terms=Array.from({length:6},(_,i)=>+(a*Math.pow(r,i)).toFixed(6));
+              const tn=+(a*Math.pow(r,n-1)).toFixed(6);
+              document.getElementById('grOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">First 6 terms:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', …</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">Common ratio:</span><span style="color:#fbbf24;">r = '+r+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:140px;display:inline-block;">T<sub>'+n+'</sub>:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+tn+'</span></div>',
+                '<div style="font-size:10px;opacity:0.45;">Tₙ = a × rⁿ⁻¹ = '+a+' × '+r+'^'+(n-1)+'</div>',
+              ].join('');
+            }
+            function identify(){
+              const nums=document.getElementById('grSeq').value.split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n));
+              if(nums.length<3){document.getElementById('grOut').innerHTML='<span style="color:#fca5a5;">Enter at least 3 terms.</span>';return;}
+              const diffs=nums.slice(1).map((v,i)=>v-nums[i]);
+              const ratios=nums.slice(1).map((v,i)=>nums[i]!==0?+(v/nums[i]).toFixed(6):null);
+              const isArith=diffs.every(d=>Math.abs(d-diffs[0])<0.001);
+              const isGeom=ratios.every(r=>r!==null&&Math.abs(r-ratios[0])<0.001);
+              let html='';
+              if(isArith){html='<div><span style="color:#6ee7b7;">✓ Arithmetic sequence</span> — d = '+diffs[0]+'</div><div>Next term: <span style="color:#fcd34d;">'+(nums[nums.length-1]+diffs[0])+'</span></div>';}
+              else if(isGeom){html='<div><span style="color:#6ee7b7;">✓ Geometric sequence</span> — r = '+ratios[0]+'</div><div>Next term: <span style="color:#fcd34d;">'+(+(nums[nums.length-1]*ratios[0]).toFixed(6))+'</span></div>';}
+              else{html='<div><span style="color:#fbbf24;">Neither arithmetic nor geometric</span></div><div style="font-size:11px;opacity:0.55;">Differences: '+diffs.join(', ')+'</div><div style="font-size:11px;opacity:0.55;">Ratios: '+ratios.join(', ')+'</div>';}
+              document.getElementById('grOut').innerHTML=html;
+            }
+            ['grA','grR','grN'].forEach(id=>document.getElementById(id).addEventListener('input',build));
+            document.getElementById('grIdent').addEventListener('click',identify);
+            build();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "What is the common ratio of: <span class='math'>5, 15, 45, 135, …</span>?", options: ["5", "10", "3", "15"], answer: 2, topic: "Patterns" },

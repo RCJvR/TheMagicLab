@@ -313,7 +313,7 @@ MathMagician.registerChapter(10, {
     chapter: 10, chapterName: "Geometry of 2D Shapes",
     topics: [
       {
-        name: "Triangles",
+        name: "Geometry of triangles",
         questions: [
           { num: "1", text: "In △PQR, ∠P = (3x − 5)°, ∠Q = (2x + 10)°, ∠R = (x + 15)°.", parts: [
             { label: "a)", text: "Set up an equation using the angle sum of a triangle.", marks: 1 },
@@ -327,16 +327,31 @@ MathMagician.registerChapter(10, {
         ]
       },
       {
-        name: "Quadrilaterals, congruence and similarity",
+        name: "Geometry of quadrilaterals",
         questions: [
           { num: "3", text: "ABCD is a parallelogram with ∠A = (4x + 5)° and ∠B = (2x + 15)°.", parts: [
             { label: "a)", text: "Explain why ∠A + ∠B = 180°.", marks: 1 },
             { label: "b)", text: "Solve for x and find both angles.", marks: 3 },
           ]},
-          { num: "4", text: "△ABC ∼ △PQR. AB = 6 cm, BC = 9 cm, AC = 12 cm, PQ = 10 cm.", parts: [
+          { num: "4", text: "PQRS is a rhombus with ∠P = 68°.", parts: [
+            { label: "a)", text: "Find ∠Q, giving a reason.", marks: 2 },
+            { label: "b)", text: "Find ∠R, giving a reason.", marks: 2 },
+            { label: "c)", text: "The diagonal PR bisects ∠P. Find ∠APQ where A is the intersection of the diagonals.", marks: 2 },
+          ]},
+        ]
+      },
+      {
+        name: "Congruent and similar shapes",
+        questions: [
+          { num: "5", text: "State the congruency condition (SSS, SAS, ASA, or RHS) for each pair:", parts: [
+            { label: "a)", text: "Two triangles with all three sides equal.", marks: 1 },
+            { label: "b)", text: "Two right-angled triangles with equal hypotenuses and one equal leg.", marks: 1 },
+            { label: "c)", text: "Two triangles with two equal sides and the included angle equal.", marks: 1 },
+          ]},
+          { num: "6", text: "△ABC ∼ △PQR. AB = 6 cm, BC = 9 cm, AC = 12 cm, PQ = 10 cm.", parts: [
             { label: "a)", text: "Find the scale factor.", marks: 1 },
             { label: "b)", text: "Find QR and PR.", marks: 3 },
-            { label: "c)", text: "If area of △ABC = 24 cm², find area of △PQR.", marks: 2 },
+            { label: "c)", text: "If area of △ABC = 24 cm², find the area of △PQR.", marks: 2 },
           ]},
         ]
       },
@@ -345,20 +360,37 @@ MathMagician.registerChapter(10, {
   answerKey: {
     chapter: 10, chapterName: "Chapter 10 — Geometry of 2D Shapes",
     topics: [
-      { name: "Triangles", answers: [
-        { num: "Q1a", ans: "(3x−5)+(2x+10)+(x+15) = 180", note: "Sum of angles in a triangle" },
-        { num: "Q1b", ans: "x = 26.67° ≈ 26°40'", note: "6x + 20 = 180 → 6x = 160 → x = 26.7" },
-        { num: "Q1c", ans: "∠P = 75°, ∠Q = 63.3°, ∠R = 41.7°", note: "Substitute x ≈ 26.7 into each expression" },
-        { num: "Q2a", ans: "∠B = 63°", note: "Ext. angle = sum of non-adjacent int. angles: 128° − 65° = 63°" },
-        { num: "Q2b", ans: "Scalene (all angles different: 65°, 63°, 52°)", note: "∠C = 180° − 128° = 52°; all three angles differ" },
-      ]},
-      { name: "Quadrilaterals, congruence and similarity", answers: [
-        { num: "Q3a", ans: "AB ∥ DC (opp. sides of ∥gram), so ∠A and ∠B are co-interior angles, summing to 180°", note: "" },
-        { num: "Q3b", ans: "x = 26.67; ∠A = 111.7°, ∠B = 68.3°", note: "4x+5+2x+15=180 → 6x=160 → x=26.7" },
-        { num: "Q4a", ans: "k = 10/6 = 5/3 ≈ 1.667", note: "PQ/AB = 10/6" },
-        { num: "Q4b", ans: "QR = 15 cm; PR = 20 cm", note: "QR=9×(5/3)=15; PR=12×(5/3)=20" },
-        { num: "Q4c", ans: "Area △PQR = 66.7 cm²", note: "Area ratio = k² = 25/9; 24×25/9 ≈ 66.7 cm²" },
-      ]},
+      {
+        name: "Geometry of triangles",
+        answers: [
+          { num: "Q1a", ans: "(3x−5)+(2x+10)+(x+15) = 180", note: "Angle sum of a triangle = 180°" },
+          { num: "Q1b", ans: "x = 26⅔ ≈ 26.7", note: "6x+20=180 → 6x=160 → x=26.7" },
+          { num: "Q1c", ans: "∠P ≈ 75°, ∠Q ≈ 63.3°, ∠R ≈ 41.7°", note: "Substitute x≈26.7 into each expression" },
+          { num: "Q2a", ans: "∠B = 63°", note: "Exterior angle = sum of non-adjacent interior angles: 128°−65°=63°" },
+          { num: "Q2b", ans: "Scalene triangle", note: "∠C=180°−128°=52°; all three angles differ (65°, 63°, 52°)" },
+        ]
+      },
+      {
+        name: "Geometry of quadrilaterals",
+        answers: [
+          { num: "Q3a", ans: "AB ∥ DC in a parallelogram, so ∠A and ∠B are co-interior angles → sum = 180°", note: "" },
+          { num: "Q3b", ans: "x = 26⅔; ∠A ≈ 111.7°, ∠B ≈ 68.3°", note: "4x+5+2x+15=180 → 6x=160 → x=26.7" },
+          { num: "Q4a", ans: "∠Q = 112°", note: "Co-interior angles in rhombus: ∠P+∠Q=180°; 68°+∠Q=180°" },
+          { num: "Q4b", ans: "∠R = 68°", note: "Opposite angles of a rhombus are equal: ∠R=∠P=68°" },
+          { num: "Q4c", ans: "∠APQ = 34°", note: "Diagonal bisects ∠P: 68°÷2=34°; triangle at intersection has 90° (diagonals ⊥)" },
+        ]
+      },
+      {
+        name: "Congruent and similar shapes",
+        answers: [
+          { num: "Q5a", ans: "SSS", note: "Side-Side-Side" },
+          { num: "Q5b", ans: "RHS", note: "Right angle-Hypotenuse-Side" },
+          { num: "Q5c", ans: "SAS", note: "Side-Angle-Side (included angle)" },
+          { num: "Q6a", ans: "k = 5/3 ≈ 1.667", note: "PQ/AB = 10/6 = 5/3" },
+          { num: "Q6b", ans: "QR = 15 cm; PR = 20 cm", note: "QR=9×(5/3)=15; PR=12×(5/3)=20" },
+          { num: "Q6c", ans: "Area △PQR ≈ 66.7 cm²", note: "Area ratio=k²=25/9; 24×25/9≈66.7" },
+        ]
+      },
     ]
   }
 });

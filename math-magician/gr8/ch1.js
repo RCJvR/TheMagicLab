@@ -37,7 +37,71 @@ S — Subtraction }</div>
           <div class="example-step"><span class="step-num">5</span><span><strong>Answer: 9</strong></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Always write out each step. In exams, method marks are awarded even if your final answer is wrong.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Arithmetic Drill</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Pick an operation and a difficulty, then answer as many as you can!</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
+              <select id="drillOp" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                <option value="add">+ Addition</option>
+                <option value="sub">− Subtraction</option>
+                <option value="mul">× Multiplication</option>
+                <option value="div">÷ Division</option>
+              </select>
+              <select id="drillDiff" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                <option value="easy">Easy (1–10)</option>
+                <option value="med" selected>Medium (1–20)</option>
+                <option value="hard">Hard (1–100)</option>
+              </select>
+              <button id="drillNew" style="padding:6px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">New question</button>
+            </div>
+            <div id="drillQ" style="font-family:JetBrains Mono,monospace;font-size:20px;color:#fcd34d;margin-bottom:12px;"></div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <input id="drillAns" type="number" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 10px;border-radius:7px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <button id="drillCheck" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Check</button>
+              <span id="drillScore" style="font-family:JetBrains Mono,monospace;font-size:11px;color:rgba(221,225,240,0.45);"></span>
+            </div>
+            <div id="drillFb" style="margin-top:8px;font-family:JetBrains Mono,monospace;font-size:13px;"></div>
+          </div>
+          <script>
+          (function(){
+            let a,b,ans,score=0,total=0;
+            function rnd(max){return Math.floor(Math.random()*max)+1;}
+            function newQ(){
+              const op=document.getElementById('drillOp').value;
+              const diff=document.getElementById('drillDiff').value;
+              const max=diff==='easy'?10:diff==='med'?20:100;
+              a=rnd(max); b=rnd(max);
+              if(op==='sub'&&b>a){[a,b]=[b,a];}
+              if(op==='div'){b=rnd(diff==='easy'?5:diff==='med'?10:12);a=b*rnd(diff==='easy'?5:diff==='med'?10:12);}
+              const ops={add:'+',sub:'−',mul:'×',div:'÷'};
+              ans=op==='add'?a+b:op==='sub'?a-b:op==='mul'?a*b:a/b;
+              document.getElementById('drillQ').textContent=a+' '+ops[op]+' '+b+' = ?';
+              document.getElementById('drillAns').value='';
+              document.getElementById('drillFb').textContent='';
+              document.getElementById('drillAns').focus();
+            }
+            function check(){
+              const v=parseFloat(document.getElementById('drillAns').value);
+              if(isNaN(v))return;
+              total++;
+              const ok=Math.abs(v-ans)<0.001;
+              if(ok)score++;
+              document.getElementById('drillFb').innerHTML=ok
+                ?'<span style="color:#6ee7b7;">✓ Correct!</span>'
+                :'<span style="color:#fca5a5;">✗ Answer was '+ans+'</span>';
+              document.getElementById('drillScore').textContent='Score: '+score+'/'+total;
+              setTimeout(newQ,900);
+            }
+            document.getElementById('drillNew').addEventListener('click',newQ);
+            document.getElementById('drillCheck').addEventListener('click',check);
+            document.getElementById('drillAns').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+            document.getElementById('drillOp').addEventListener('change',newQ);
+            document.getElementById('drillDiff').addEventListener('change',newQ);
+            newQ();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "Calculate: <span class='math'>5 + 3 × 4</span>", options: ["32", "17", "20", "27"], answer: 1, topic: "BODMAS" },
@@ -196,7 +260,41 @@ S — Subtraction }</div>
           <div class="example-step"><span class="step-num">3</span><span>LCM: highest power of each prime: <span class="math">2² × 3² = 36</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Prime factorisation is the fastest method for both HCF and LCM. Always start by building the factor tree.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Factors, Multiples, HCF & LCM</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <input id="fmA" type="number" value="12" min="1" max="999" style="width:72px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <input id="fmB" type="number" value="18" min="1" max="999" style="width:72px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <button id="fmCalc" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="fmOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function gcd(a,b){return b===0?a:gcd(b,a%b);}
+            function factors(n){const f=[];for(let i=1;i<=n;i++)if(n%i===0)f.push(i);return f;}
+            function calc(){
+              const a=parseInt(document.getElementById('fmA').value)||1;
+              const b=parseInt(document.getElementById('fmB').value)||1;
+              const g=gcd(a,b);
+              const l=a*b/g;
+              const fa=factors(a); const fb=factors(b);
+              const common=fa.filter(x=>fb.includes(x));
+              document.getElementById('fmOut').innerHTML=[
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">Factors of '+a+':</span><span style="color:#a5b4fc;">'+fa.join(', ')+'</span></div>',
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">Factors of '+b+':</span><span style="color:#a5b4fc;">'+fb.join(', ')+'</span></div>',
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">Common factors:</span><span style="color:#fbbf24;">'+common.join(', ')+'</span></div>',
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">HCF:</span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">'+g+'</span></div>',
+                '<div><span style="color:rgba(245,158,11,0.70);width:160px;display:inline-block;">LCM:</span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">'+l+'</span></div>',
+              ].join('');
+            }
+            document.getElementById('fmCalc').addEventListener('click',calc);
+            ['fmA','fmB'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+            calc();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "What is the HCF of 24 and 36?", options: ["6", "12", "4", "9"], answer: 1, topic: "HCF/LCM" },
@@ -234,7 +332,41 @@ S — Subtraction }</div>
           <div class="example-step"><span class="step-num">5</span><span>Check: <span class="math">R90 + R150 = R240 ✓</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Always check that your parts add up to the original total. This one step catches almost all ratio errors.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Ratio Simplifier & Divider</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <input id="ratA" type="number" value="15" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;">:</span>
+              <input id="ratB" type="number" value="25" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="color:rgba(221,225,240,0.40);font-size:11px;">Total amount:</span>
+              <input id="ratTotal" type="number" value="200" min="1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <button id="ratCalc" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Simplify & Share</button>
+            </div>
+            <div id="ratOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2.1;"></div>
+          </div>
+          <script>
+          (function(){
+            function gcd(a,b){return b===0?a:gcd(b,a%b);}
+            function calc(){
+              const a=parseInt(document.getElementById('ratA').value)||1;
+              const b=parseInt(document.getElementById('ratB').value)||1;
+              const t=parseInt(document.getElementById('ratTotal').value)||0;
+              const g=gcd(a,b);
+              const sa=a/g, sb=b/g;
+              const shareA=t*a/(a+b), shareB=t*b/(a+b);
+              document.getElementById('ratOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Original ratio:</span><span style="color:#a5b4fc;">'+a+' : '+b+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Simplified:</span><span style="color:#fcd34d;font-size:14px;font-weight:700;">'+sa+' : '+sb+'</span></div>',
+                t?'<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Share of '+t+':</span><span style="color:#6ee7b7;">'+shareA.toFixed(2)+' and '+shareB.toFixed(2)+'</span></div>':'',
+                '<div style="font-size:10px;opacity:0.4;margin-top:4px;">HCF used: '+g+'</div>',
+              ].join('');
+            }
+            document.getElementById('ratCalc').addEventListener('click',calc);
+            calc();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "mc", text: "Simplify the ratio <span class='math'>36 : 48</span>", options: ["6 : 8", "3 : 4", "9 : 12", "4 : 3"], answer: 1, topic: "Ratios" },
@@ -270,7 +402,49 @@ S — Subtraction }</div>
           <div class="example-step"><span class="step-num">4</span><span><span class="math">R84 ÷ 6 = R14 per kg</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>Always write the units in your answer. <em>"90"</em> is incomplete — <em>"90 km/h"</em> is correct.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Rate Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter any two values to find the third. Leave one blank.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Distance / Amount</label>
+                <input id="rateD" type="number" placeholder="e.g. 150" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Time / Quantity</label>
+                <input id="rateT" type="number" placeholder="e.g. 3" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Rate (per unit)</label>
+                <input id="rateR" type="number" placeholder="e.g. 50" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <button id="rateCalc" style="padding:8px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="rateOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function calc(){
+              const d=parseFloat(document.getElementById('rateD').value);
+              const t=parseFloat(document.getElementById('rateT').value);
+              const r=parseFloat(document.getElementById('rateR').value);
+              const el=document.getElementById('rateOut');
+              const blanks=[isNaN(d),isNaN(t),isNaN(r)].filter(Boolean).length;
+              if(blanks>1){el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>';return;}
+              let result,label,formula;
+              if(isNaN(d)){result=r*t;label='Distance / Amount = Rate × Time';formula=r+' × '+t+' = <strong>'+result.toFixed(2)+'</strong>';
+                document.getElementById('rateD').value=result.toFixed(2);}
+              else if(isNaN(t)){result=d/r;label='Time / Quantity = Amount ÷ Rate';formula=d+' ÷ '+r+' = <strong>'+result.toFixed(2)+'</strong>';
+                document.getElementById('rateT').value=result.toFixed(2);}
+              else{result=d/t;label='Rate = Amount ÷ Time';formula=d+' ÷ '+t+' = <strong>'+result.toFixed(2)+'</strong>';
+                document.getElementById('rateR').value=result.toFixed(2);}
+              el.innerHTML='<div style="color:rgba(221,225,240,0.45);font-size:11px;margin-bottom:4px;">'+label+'</div><div style="color:#6ee7b7;font-size:14px;">'+formula+'</div>';
+            }
+            document.getElementById('rateCalc').addEventListener('click',calc);
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "input", text: "A tap fills 120 litres in 8 minutes. What is the rate in litres per minute?", answer: "15", topic: "Rates" },
@@ -315,7 +489,92 @@ S — Subtraction }</div>
           <div class="example-step"><span class="step-num">3</span><span>Total: <span class="math">R2000 + R480 = R2480</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>In South Africa, VAT is currently 15%. Always check exam questions specify the rate — it has changed before.</span></div>
-      `
+      
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Financial Calculator</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Mode</label>
+                <select id="finMode" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="profit">Profit / Loss</option>
+                  <option value="discount">Discount</option>
+                  <option value="vat">VAT (15%)</option>
+                  <option value="pct">% of amount</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;" id="finL1">Cost price (R)</label>
+                <input id="finV1" type="number" value="80" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;" id="finL2">Selling price (R)</label>
+                <input id="finV2" type="number" value="120" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <button id="finCalc" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="finOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            const modes={
+              profit:{l1:'Cost price (R)',l2:'Selling price (R)',d1:80,d2:120},
+              discount:{l1:'Original price (R)',l2:'Discount %',d1:500,d2:20},
+              vat:{l1:'Price excl. VAT (R)',l2:'(VAT = 15% fixed)',d1:200,d2:15},
+              pct:{l1:'Amount (R)',l2:'Percentage %',d1:300,d2:35},
+            };
+            function setMode(){
+              const m=document.getElementById('finMode').value;
+              const cfg=modes[m];
+              document.getElementById('finL1').textContent=cfg.l1;
+              document.getElementById('finL2').textContent=cfg.l2;
+              document.getElementById('finV1').value=cfg.d1;
+              document.getElementById('finV2').value=cfg.d2;
+              if(m==='vat') document.getElementById('finV2').disabled=true;
+              else document.getElementById('finV2').disabled=false;
+              calc();
+            }
+            function calc(){
+              const m=document.getElementById('finMode').value;
+              const v1=parseFloat(document.getElementById('finV1').value)||0;
+              const v2=parseFloat(document.getElementById('finV2').value)||0;
+              const el=document.getElementById('finOut');
+              let lines=[];
+              if(m==='profit'){
+                const diff=v2-v1, pct=(diff/v1*100);
+                lines=[
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">'+(diff>=0?'Profit':'Loss')+':</span><span style="color:'+(diff>=0?'#6ee7b7':'#fca5a5')+';">R '+Math.abs(diff).toFixed(2)+'</span></div>',
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">% '+(diff>=0?'profit':'loss')+':</span><span style="color:#fcd34d;">'+Math.abs(pct).toFixed(2)+'%</span></div>',
+                  '<div style="font-size:10px;opacity:0.4;">Formula: (SP−CP)/CP × 100</div>',
+                ];
+              } else if(m==='discount'){
+                const disc=v1*v2/100, final=v1-disc;
+                lines=[
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">Discount amount:</span><span style="color:#fca5a5;">R '+disc.toFixed(2)+'</span></div>',
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">Price after discount:</span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">R '+final.toFixed(2)+'</span></div>',
+                ];
+              } else if(m==='vat'){
+                const vat=v1*0.15, incl=v1+vat;
+                lines=[
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">VAT (15%):</span><span style="color:#fca5a5;">R '+vat.toFixed(2)+'</span></div>',
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">Price incl. VAT:</span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">R '+incl.toFixed(2)+'</span></div>',
+                ];
+              } else {
+                const res=v1*v2/100;
+                lines=[
+                  '<div><span style="color:rgba(221,225,240,0.45);width:180px;display:inline-block;">'+v2+'% of R'+v1+':</span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">R '+res.toFixed(2)+'</span></div>',
+                  '<div style="font-size:10px;opacity:0.4;">'+v2+'/100 × '+v1+' = '+res.toFixed(2)+'</div>',
+                ];
+              }
+              el.innerHTML=lines.join('');
+            }
+            document.getElementById('finMode').addEventListener('change',setMode);
+            document.getElementById('finCalc').addEventListener('click',calc);
+            document.getElementById('finV1').addEventListener('input',calc);
+            document.getElementById('finV2').addEventListener('input',calc);
+            setMode();
+          })();
+          </script>
+        `
     },
     questions: [
       { type: "input", text: "A shop buys a shirt for R80 and sells it for R120. What is the percentage profit? (%)", answer: "50", topic: "Finance" },
