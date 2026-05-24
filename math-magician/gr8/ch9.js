@@ -45,6 +45,35 @@ MathMagician.registerChapter(9, {
               Read the scale from 0° along the direction of the first arm.
             </p>
           </div>
+
+          <div style="overflow-x:auto;margin:14px 0;">
+            <svg viewBox="0 0 520 115" style="width:100%;max-width:520px;border-radius:8px;background:rgba(10,15,30,0.50);">
+              <text x="52" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">ACUTE</text>
+              <line x1="42" y1="80" x2="97" y2="80" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="42" y1="80" x2="69.5" y2="40.7" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M42,80 L62.0,80.0 A20,20 0 0,0 53.5,63.6 Z" fill="rgba(99,102,241,0.25)" stroke="#6366f1" stroke-width="1"/>
+              <text x="70.4" y="68.2" text-anchor="middle" font-size="8.5" fill="#6366f1" font-family="JetBrains Mono,monospace">55°</text>
+              <text x="156" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">RIGHT</text>
+              <line x1="146" y1="80" x2="201" y2="80" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="146" y1="80" x2="146" y2="30" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <rect x="146" y="68" width="12" height="12" fill="none" stroke="#6ee7b7" stroke-width="1.2"/>
+              <text x="164" y="77" font-size="8.5" fill="#6ee7b7" font-family="JetBrains Mono,monospace">90°</text>
+              <text x="260" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">OBTUSE</text>
+              <line x1="250" y1="80" x2="305" y2="80" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="250" y1="80" x2="219.1" y2="43.2" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M250,80 L270.0,80.0 A20,20 0 0,0 237.1,64.7 Z" fill="rgba(245,158,11,0.22)" stroke="#fbbf24" stroke-width="1"/>
+              <text x="263.5" y="54.0" text-anchor="middle" font-size="8.5" fill="#fbbf24" font-family="JetBrains Mono,monospace">130°</text>
+              <text x="364" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">STRAIGHT</text>
+              <line x1="312" y1="80" x2="409" y2="80" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M354,80 L374,80 A20,20 0 0,0 334,80 Z" fill="rgba(16,185,129,0.15)" stroke="#6ee7b7" stroke-width="1"/>
+              <text x="354" y="55" text-anchor="middle" font-size="8.5" fill="#6ee7b7" font-family="JetBrains Mono,monospace">180°</text>
+              <text x="468" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">REFLEX</text>
+              <line x1="458" y1="80" x2="513" y2="80" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="458" y1="80" x2="441.6" y2="125.1" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M458,80 L480.0,80.0 A22,22 0 1,0 450.5,100.7 Z" fill="rgba(239,68,68,0.18)" stroke="#fca5a5" stroke-width="1"/>
+              <text x="438.5" y="55.1" text-anchor="middle" font-size="8.5" fill="#fca5a5" font-family="JetBrains Mono,monospace">250°</text>
+            </svg>
+          </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always state the reason for every angle calculation in geometry. e.g. "angles on a straight line" or "vertically opposite angles". Reasons earn marks in exams.</span></div>
         
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
@@ -92,6 +121,7 @@ MathMagician.registerChapter(9, {
               ].filter(Boolean).join('');
             }
             document.getElementById('angVal').addEventListener('input',update);
+            updateButtons();
             update();
           })();
           </script>
@@ -143,6 +173,39 @@ MathMagician.registerChapter(9, {
             <div class="example-step"><span class="step-num">1</span><span>Three angles around a point: 110°, 85°, and x.</span></div>
             <div class="example-step"><span class="step-num">2</span><span><span class="math">110° + 85° + x = 360°</span> <em>(angles around a point)</em></span></div>
             <div class="example-step"><span class="step-num">3</span><span><span class="math">x = 360° − 195° = 165°</span></span></div>
+          </div>
+
+          <div style="overflow-x:auto;margin:14px 0;">
+            <svg viewBox="0 0 400 130" style="width:100%;max-width:400px;border-radius:8px;background:rgba(10,15,30,0.50);">
+              <text x="70"  y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">STRAIGHT LINE</text>
+              <text x="230" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">VERT. OPPOSITE</text>
+              <text x="348" y="13" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">AROUND POINT</text>
+              <line x1="10" y1="80" x2="130" y2="80" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="70" y1="80" x2="93.2" y2="30.2" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M70,80 L88.0,80.0 A18,18 0 0,0 77.6,63.7 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
+              <text x="96.1" y="66.3" text-anchor="middle" font-size="8.5" fill="#a5b4fc" font-family="JetBrains Mono,monospace">a</text>
+              <path d="M70,80 L52.0,80.0 A18,18 0 0,1 77.6,63.7 Z" fill="rgba(245,158,11,0.25)" stroke="#fbbf24" stroke-width="1"/>
+              <text x="53.3" y="56.9" text-anchor="middle" font-size="8.5" fill="#fbbf24" font-family="JetBrains Mono,monospace">b</text>
+              <text x="70" y="112" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.45)" font-family="DM Sans,sans-serif">a + b = 180°</text>
+              <line x1="230" y1="70" x2="276.0" y2="31.4" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="230" y1="70" x2="184.0" y2="108.6" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="230" y1="70" x2="191.4" y2="24.0" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="230" y1="70" x2="268.6" y2="116.0" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M230,70 L218.4,56.2 A18,18 0 0,0 243.8,58.4 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
+              <text x="232.7" y="42.1" text-anchor="middle" font-size="8.5" fill="#a5b4fc" font-family="JetBrains Mono,monospace">a</text>
+              <path d="M230,70 L241.6,83.8 A18,18 0 0,0 216.2,81.6 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
+              <text x="227.3" y="103.9" text-anchor="middle" font-size="8.5" fill="#a5b4fc" font-family="JetBrains Mono,monospace">a</text>
+              <text x="230" y="118" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.45)" font-family="DM Sans,sans-serif">equal (vert. opp.)</text>
+              <line x1="293" y1="68" x2="403" y2="68" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <line x1="348" y1="18" x2="348" y2="113" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
+              <path d="M348,68 L364.0,68.0 A16,16 0 0,0 348.0,52.0 Z" fill="rgba(99,102,241,0.28)" stroke="#6366f1" stroke-width="1"/>
+              <path d="M348,68 L348.0,52.0 A16,16 0 0,0 332.0,68.0 Z" fill="rgba(245,158,11,0.22)" stroke="#fbbf24" stroke-width="1"/>
+              <path d="M348,68 L332.0,68.0 A16,16 0 0,0 348.0,84.0 Z" fill="rgba(16,185,129,0.22)" stroke="#6ee7b7" stroke-width="1"/>
+              <path d="M348,68 L348.0,84.0 A16,16 0 0,0 364.0,68.0 Z" fill="rgba(236,72,153,0.22)" stroke="#f9a8d4" stroke-width="1"/>
+              <text x="370" y="63" font-size="8.5" fill="#6366f1" font-family="JetBrains Mono,monospace">90°</text>
+              <text x="370" y="84" font-size="8.5" fill="#f9a8d4" font-family="JetBrains Mono,monospace">90°</text>
+              <text x="348" y="118" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.45)" font-family="DM Sans,sans-serif">sum = 360°</text>
+            </svg>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>In every geometry answer, write the numerical calculation AND the reason in brackets, e.g. "x = 180° − 65° = 115° (angles on a str. line)".</span></div>
         
@@ -258,36 +321,213 @@ MathMagician.registerChapter(9, {
           <div class="tip-box"><span class="tip-icon">💡</span><span>Remember the shapes: <strong>F</strong> = corresponding (equal), <strong>Z</strong> = alternate (equal), <strong>C</strong> or <strong>U</strong> = co-interior (supplementary). Spotting the shape in the diagram is the fastest way to identify the relationship.</span></div>
         
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
-            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Parallel Lines Angle Calculator</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter one angle formed by a transversal crossing parallel lines to find all 8 angles.</p>
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
-              <input id="parAng" type="number" value="65" min="1" max="179" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:20px;font-family:JetBrains Mono,monospace;text-align:center;">
-              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;">°</span>
-              <span style="font-size:11px;color:rgba(221,225,240,0.35);">(∠1 — above line 1, left of transversal)</span>
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Parallel Lines Angle Diagram</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Drag the slider or type ∠1 to see all 8 angles update live on the diagram.</p>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+              <input id="parAng" type="range" min="10" max="170" value="65" style="flex:1;min-width:140px;accent-color:#6366f1;">
+              <input id="parAngNum" type="number" value="65" min="10" max="170" style="width:64px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;font-size:14px;">°</span>
             </div>
-            <div id="parOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;"></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+              <span style="font-size:10px;color:rgba(221,225,240,0.40);align-self:center;">Highlight:</span>
+              <button class="par-hl" data-hl="all"   style="padding:3px 9px;border-radius:5px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:rgba(221,225,240,0.60);font-size:10px;font-family:DM Sans,sans-serif;cursor:pointer;font-weight:700;">All</button>
+              <button class="par-hl" data-hl="corr"  style="padding:3px 9px;border-radius:5px;border:1px solid rgba(245,158,11,0.35);background:rgba(245,158,11,0.08);color:#fbbf24;font-size:10px;font-family:DM Sans,sans-serif;cursor:pointer;font-weight:700;">F — Corresponding</button>
+              <button class="par-hl" data-hl="alt"   style="padding:3px 9px;border-radius:5px;border:1px solid rgba(99,102,241,0.35);background:rgba(99,102,241,0.08);color:#a5b4fc;font-size:10px;font-family:DM Sans,sans-serif;cursor:pointer;font-weight:700;">Z — Alternate</button>
+              <button class="par-hl" data-hl="coint" style="padding:3px 9px;border-radius:5px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.08);color:#6ee7b7;font-size:10px;font-family:DM Sans,sans-serif;cursor:pointer;font-weight:700;">C — Co-interior</button>
+              <button class="par-hl" data-hl="vert"  style="padding:3px 9px;border-radius:5px;border:1px solid rgba(236,72,153,0.35);background:rgba(236,72,153,0.08);color:#f9a8d4;font-size:10px;font-family:DM Sans,sans-serif;cursor:pointer;font-weight:700;">X — Vert. opp.</button>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;">
+              <svg id="parSvg" viewBox="0 0 280 260" style="width:280px;max-width:100%;flex-shrink:0;border-radius:10px;background:rgba(10,15,30,0.60);"></svg>
+              <div id="parOut" style="font-family:JetBrains Mono,monospace;font-size:11.5px;line-height:2.1;flex:1;min-width:180px;"></div>
+            </div>
           </div>
           <script>
           (function(){
-            function update(){
-              const a1=parseFloat(document.getElementById('parAng').value)||65;
-              const a2=180-a1;
-              const el=document.getElementById('parOut');
-              el.innerHTML=[
-                '<div style="color:rgba(245,158,11,0.60);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">At line 1 (top intersection):</div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠1:</span><span style="color:#fcd34d;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(given)</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠2:</span><span style="color:#a5b4fc;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(str. line: 180°−∠1)</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠3:</span><span style="color:#a5b4fc;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(vert. opp. to ∠1)</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠4:</span><span style="color:#a5b4fc;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(vert. opp. to ∠2)</span></div>',
-                '<div style="color:rgba(16,185,129,0.60);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin:6px 0 4px;">At line 2 (bottom intersection):</div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠5:</span><span style="color:#6ee7b7;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(corr. to ∠1 — F-shape)</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠6:</span><span style="color:#6ee7b7;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(corr. to ∠2)</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠7:</span><span style="color:#6ee7b7;">'+a1+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(alt. int. to ∠2 — Z-shape, or vert. opp. ∠5)</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:50px;display:inline-block;">∠8:</span><span style="color:#6ee7b7;">'+a2+'°</span> <span style="color:rgba(221,225,240,0.25);font-size:10px;">(vert. opp. ∠6)</span></div>',
-                '<div style="margin-top:6px;font-size:10px;color:#fbbf24;">Co-interior: ∠2 + ∠5 = '+a2+' + '+a1+' = '+(a2+a1)+'° ✓</div>',
-              ].join('');
+
+            // Colours
+            var CLR = {
+              given: '#fcd34d', str: '#94a3b8', vert: '#f9a8d4',
+              corr:  '#fbbf24', alt: '#a5b4fc', coint:'#6ee7b7',
+              dim:   'rgba(255,255,255,0.06)'
+            };
+            var ANG_REL  = {1:'given',2:'str',3:'alt',4:'str',5:'corr',6:'coint',7:'vert',8:'str'};
+            var HL_GROUPS= {all:[1,2,3,4,5,6,7,8],corr:[1,5],alt:[3,5],coint:[3,6],vert:[1,3,5,7]};
+            var HL_CLR   = {all:null,corr:'#fbbf24',alt:'#a5b4fc',coint:'#6ee7b7',vert:'#f9a8d4'};
+            var highlight = 'all';
+            var LY1=80, LY2=180;
+
+            function computeGeom(a1){
+              var IX1=130, svgDown=180-a1, rad=svgDown*Math.PI/180;
+              var dy=LY2-LY1, tanV=Math.tan(rad);
+              var dx=(Math.abs(tanV)>0.001)?dy/tanV:0, IX2=IX1+dx;
+              var ext=65, extX=ext*Math.cos(rad), extY=ext*Math.sin(rad);
+              return {IX1:IX1,IX2:IX2,svgDown:svgDown,
+                      TXa:IX1-extX,TYa:LY1-extY,TXb:IX2+extX,TYb:LY2+extY};
             }
-            document.getElementById('parAng').addEventListener('input',update);
+
+            function arcPath(cx,cy,r,startDeg,sweepDeg){
+              var s=startDeg*Math.PI/180, e=(startDeg+sweepDeg)*Math.PI/180;
+              var x1=cx+r*Math.cos(s),y1=cy+r*Math.sin(s);
+              var x2=cx+r*Math.cos(e),y2=cy+r*Math.sin(e);
+              return 'M '+cx+' '+cy+' L '+x1.toFixed(1)+' '+y1.toFixed(1)+
+                     ' A '+r+' '+r+' 0 '+(sweepDeg>180?1:0)+' 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+' Z';
+            }
+
+            function drawIntersection(cx,cy,nums,a1,a2,svgDown,hlSet){
+              var sectors=[
+                {n:nums[0],start:180+svgDown,sweep:180-svgDown,val:a1}, // above-right
+                {n:nums[1],start:180,        sweep:svgDown,    val:a2}, // above-left
+                {n:nums[2],start:svgDown,    sweep:180-svgDown,val:a1}, // below-left
+                {n:nums[3],start:0,          sweep:svgDown,    val:a2}, // below-right
+              ];
+              var R=24, hlGrpCol=HL_CLR[highlight]||null, out='';
+              sectors.forEach(function(sec){
+                var n=sec.n, active=hlSet.has(n);
+                // In 'all' mode: each angle gets its own ANG_REL colour
+                // In highlight mode: active angles get the group colour, inactive get dim
+                var col, textCol;
+                if(highlight==='all'){
+                  col     = 'rgba(255,255,255,0.07)';   // no fill in All mode
+                  textCol = 'rgba(221,225,240,0.65)';   // labels still visible
+                } else {
+                  col      = active ? hlGrpCol  : CLR.dim;
+                  textCol  = active ? hlGrpCol  : 'rgba(255,255,255,0.18)';
+                }
+                var norm=((sec.start%360)+360)%360;
+                out+='<path d="'+arcPath(cx,cy,R,norm,sec.sweep)+'" fill="'+col+'" opacity="1" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>';
+                var midDeg=norm+sec.sweep/2;
+                var lx=cx+(R+13)*Math.cos(midDeg*Math.PI/180);
+                var ly=cy+(R+13)*Math.sin(midDeg*Math.PI/180);
+                out+='<text x="'+lx.toFixed(1)+'" y="'+(ly+3.5).toFixed(1)+'" text-anchor="middle" font-size="9" font-family="JetBrains Mono,monospace" fill="'+textCol+'" font-weight="700">∠'+n+'</text>';
+                var vx=cx+(R*0.52)*Math.cos(midDeg*Math.PI/180);
+                var vy=cy+(R*0.52)*Math.sin(midDeg*Math.PI/180);
+                var valOpacity=highlight==='all'?'rgba(221,225,240,0.55)':(active?'rgba(255,255,255,0.80)':'rgba(255,255,255,0.22)');
+                out+='<text x="'+vx.toFixed(1)+'" y="'+(vy+3).toFixed(1)+'" text-anchor="middle" font-size="7" font-family="JetBrains Mono,monospace" fill="'+valOpacity+'">'+sec.val+'°</text>';
+              });
+              return out;
+            }
+
+            function drawSVG(a1){
+              var g=computeGeom(a1), a2=180-a1;
+              var svg=document.getElementById('parSvg');
+              var hlSet=new Set(HL_GROUPS[highlight]||[1,2,3,4,5,6,7,8]);
+              var W=280, h='';
+
+              // Parallel lines
+              h+='<line x1="10" y1="'+LY1+'" x2="'+(W-10)+'" y2="'+LY1+'" stroke="#f59e0b" stroke-width="2"/>';
+              h+='<line x1="10" y1="'+LY2+'" x2="'+(W-10)+'" y2="'+LY2+'" stroke="#f59e0b" stroke-width="2"/>';
+              // Parallel tick marks
+              var mx=W-55;
+              function ptick(x,y){
+                return '<line x1="'+(x-3)+'" y1="'+(y-7)+'" x2="'+(x+3)+'" y2="'+(y+7)+'" stroke="#f59e0b" stroke-width="1.5"/>'+
+                       '<line x1="'+(x+3)+'" y1="'+(y-7)+'" x2="'+(x+9)+'" y2="'+(y+7)+'" stroke="#f59e0b" stroke-width="1.5"/>';
+              }
+              h+=ptick(mx,LY1)+ptick(mx,LY2);
+              // Labels
+              h+='<text x="14" y="'+(LY1-6)+'" font-size="11" fill="#f59e0b" font-family="Syne,sans-serif" font-weight="700">A</text>';
+              h+='<text x="'+(W-16)+'" y="'+(LY1-6)+'" font-size="11" fill="#f59e0b" font-family="Syne,sans-serif" font-weight="700">B</text>';
+              h+='<text x="14" y="'+(LY2-6)+'" font-size="11" fill="#f59e0b" font-family="Syne,sans-serif" font-weight="700">C</text>';
+              h+='<text x="'+(W-16)+'" y="'+(LY2-6)+'" font-size="11" fill="#f59e0b" font-family="Syne,sans-serif" font-weight="700">D</text>';
+              // Transversal
+              h+='<line x1="'+g.TXa.toFixed(1)+'" y1="'+g.TYa.toFixed(1)+'" x2="'+g.TXb.toFixed(1)+'" y2="'+g.TYb.toFixed(1)+'" stroke="rgba(165,180,252,0.80)" stroke-width="2"/>';
+              // Intersections
+              h+=drawIntersection(g.IX1,LY1,[1,2,3,4],a1,a2,g.svgDown,hlSet);
+              h+=drawIntersection(g.IX2,LY2,[5,6,7,8],a1,a2,g.svgDown,hlSet);
+              // Dots and labels
+              h+='<circle cx="'+g.IX1.toFixed(1)+'" cy="'+LY1+'" r="3.5" fill="white" opacity="0.85"/>';
+              h+='<circle cx="'+g.IX2.toFixed(1)+'" cy="'+LY2+'" r="3.5" fill="white" opacity="0.85"/>';
+              h+='<text x="'+(g.IX1-16).toFixed(1)+'" y="'+(LY1+4)+'" font-size="10" fill="rgba(165,180,252,0.90)" font-family="Syne,sans-serif" font-weight="700">P</text>';
+              h+='<text x="'+(g.IX2-16).toFixed(1)+'" y="'+(LY2+4)+'" font-size="10" fill="rgba(165,180,252,0.90)" font-family="Syne,sans-serif" font-weight="700">Q</text>';
+              svg.innerHTML=h;
+            }
+
+            function summaryLine(a1,a2){
+              if(highlight==='all')    return '<span style="color:rgba(221,225,240,0.35);">Select a highlight above to see the relationship rule.</span>';
+              if(highlight==='corr')  return '<span style="color:'+CLR.corr+';">∠1 = ∠5 = '+a1+'° ✓ Corresponding angles are equal (F-shape)</span>';
+              if(highlight==='alt')   return '<span style="color:'+CLR.alt+';">∠3 = ∠5 = '+a1+'° ✓ Alternate interior angles are equal (Z-shape)</span>';
+              if(highlight==='coint') return '<span style="color:'+CLR.coint+';">∠3 + ∠6 = '+a1+' + '+a2+' = 180° ✓ Co-interior angles are supplementary (C-shape)</span>';
+              if(highlight==='vert')  return '<span style="color:'+CLR.vert+';">∠1 = ∠3 = '+a1+'° ✓ Vertically opposite angles are equal</span>';
+              return '';
+            }
+
+            function updateText(a1){
+              var a2=180-a1, el=document.getElementById('parOut');
+              function row(n,val,col,rule){
+                return '<div><span style="color:rgba(221,225,240,0.40);width:30px;display:inline-block;">∠'+n+':</span>'+
+                  '<span style="color:'+col+';font-weight:700;margin-right:6px;">'+val+'°</span>'+
+                  '<span style="color:rgba(221,225,240,0.28);font-size:10px;">'+rule+'</span></div>';
+              }
+              el.innerHTML=
+                '<div style="color:#f59e0b;font-size:9px;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">At P — line AB</div>'+
+                row(1,a1,CLR.given,'given')+
+                row(2,a2,CLR.str,  'str. line −∠1')+
+                row(3,a1,CLR.alt,  'vert. opp. ∠1')+
+                row(4,a2,CLR.str,  'vert. opp. ∠2')+
+                '<div style="color:rgba(165,180,252,0.70);font-size:9px;text-transform:uppercase;letter-spacing:0.07em;margin:7px 0 4px;">At Q — line CD</div>'+
+                row(5,a1,CLR.corr, 'corr. ∠1 (F) / alt. int. ∠3 (Z)')+
+                row(6,a2,CLR.coint,'corr. ∠2 / co-int. ∠3 (C)')+
+                row(7,a1,CLR.vert, 'vert. opp. ∠5')+
+                row(8,a2,CLR.str,  'vert. opp. ∠6')+
+                '<div style="margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.07);font-size:10px;">'+summaryLine(a1,a2)+'</div>';
+            }
+
+            // Button styles stored per-mode for active/inactive
+            var BTN_ACTIVE = {
+              all:  'border:2px solid rgba(255,255,255,0.60);background:rgba(255,255,255,0.20);color:#fff;',
+              corr: 'border:2px solid #fbbf24;background:rgba(245,158,11,0.28);color:#fbbf24;',
+              alt:  'border:2px solid #a5b4fc;background:rgba(99,102,241,0.28);color:#a5b4fc;',
+              coint:'border:2px solid #6ee7b7;background:rgba(16,185,129,0.28);color:#6ee7b7;',
+              vert: 'border:2px solid #f9a8d4;background:rgba(236,72,153,0.28);color:#f9a8d4;',
+            };
+            var BTN_INACTIVE = {
+              all:  'border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:rgba(221,225,240,0.60);',
+              corr: 'border:1px solid rgba(245,158,11,0.35);background:rgba(245,158,11,0.08);color:#fbbf24;',
+              alt:  'border:1px solid rgba(99,102,241,0.35);background:rgba(99,102,241,0.08);color:#a5b4fc;',
+              coint:'border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.08);color:#6ee7b7;',
+              vert: 'border:1px solid rgba(236,72,153,0.35);background:rgba(236,72,153,0.08);color:#f9a8d4;',
+            };
+
+            function updateButtons(){
+              // Scope to the parAng element's closest .def-box to avoid cross-widget contamination
+              var box=document.getElementById('parAng').closest('.def-box');
+              if(!box) return;
+              box.querySelectorAll('.par-hl').forEach(function(btn){
+                var hl=btn.dataset.hl;
+                btn.style.cssText=(hl===highlight?BTN_ACTIVE:BTN_INACTIVE)[hl]||'';
+                btn.style.fontWeight=hl===highlight?'800':'700';
+                btn.style.boxShadow=hl===highlight?'0 0 10px -2px '+HL_CLR[hl]||'rgba(255,255,255,0.20)':'none';
+              });
+            }
+
+            function update(){
+              var a1=parseInt(document.getElementById('parAng').value)||65;
+              document.getElementById('parAngNum').value=a1;
+              drawSVG(a1);
+              updateText(a1);
+            }
+
+            document.getElementById('parAng').addEventListener('input',function(){
+              document.getElementById('parAngNum').value=this.value;
+              update();
+            });
+            document.getElementById('parAngNum').addEventListener('input',function(){
+              var v=parseInt(this.value)||65;
+              v=Math.max(10,Math.min(170,v));
+              document.getElementById('parAng').value=v;
+              update();
+            });
+            document.getElementById('parAngNum').addEventListener('keydown',function(e){
+              if(e.key==='Enter') update();
+            });
+            document.getElementById('parAng').closest('.def-box').addEventListener('click',function(e){
+              var btn=e.target.closest('.par-hl');
+              if(!btn) return;
+              highlight=btn.dataset.hl;
+              updateButtons();
+              update();
+            });
+
+            updateButtons();
             update();
           })();
           </script>

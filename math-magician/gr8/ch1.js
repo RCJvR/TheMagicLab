@@ -405,43 +405,142 @@ S — Subtraction }</div>
       
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Rate Calculator</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter any two values to find the third. Leave one blank.</p>
-            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Select units, enter any two values, leave one blank — the third is calculated automatically.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px;">
+
+              <!-- Distance -->
               <div style="display:flex;flex-direction:column;gap:4px;">
-                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Distance / Amount</label>
-                <input id="rateD" type="number" placeholder="e.g. 150" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Distance</label>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <input id="rateD" type="number" placeholder="—" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+                  <select id="rateDUnit" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 6px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                    <option value="km">km</option>
+                    <option value="m">m</option>
+                    <option value="cm">cm</option>
+                    <option value="mm">mm</option>
+                    <option value="mi">mi</option>
+                  </select>
+                </div>
               </div>
+
+              <!-- Time -->
               <div style="display:flex;flex-direction:column;gap:4px;">
-                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Time / Quantity</label>
-                <input id="rateT" type="number" placeholder="e.g. 3" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Time</label>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <input id="rateT" type="number" placeholder="—" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+                  <select id="rateTUnit" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 6px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                    <option value="h">h</option>
+                    <option value="min">min</option>
+                    <option value="s">s</option>
+                  </select>
+                </div>
               </div>
+
+              <!-- Speed -->
               <div style="display:flex;flex-direction:column;gap:4px;">
-                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Rate (per unit)</label>
-                <input id="rateR" type="number" placeholder="e.g. 50" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Speed (rate)</label>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <input id="rateR" type="number" placeholder="—" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+                  <span id="rateRUnit" style="font-size:11px;color:#a5b4fc;font-family:JetBrains Mono,monospace;white-space:nowrap;min-width:36px;">km/h</span>
+                </div>
               </div>
-              <button id="rateCalc" style="padding:8px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+
+              <button id="rateCalc" style="padding:8px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;align-self:flex-end;">Calculate</button>
             </div>
-            <div id="rateOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+            <div id="rateOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
           <script>
           (function(){
-            function calc(){
-              const d=parseFloat(document.getElementById('rateD').value);
-              const t=parseFloat(document.getElementById('rateT').value);
-              const r=parseFloat(document.getElementById('rateR').value);
-              const el=document.getElementById('rateOut');
-              const blanks=[isNaN(d),isNaN(t),isNaN(r)].filter(Boolean).length;
-              if(blanks>1){el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>';return;}
-              let result,label,formula;
-              if(isNaN(d)){result=r*t;label='Distance / Amount = Rate × Time';formula=r+' × '+t+' = <strong>'+result.toFixed(2)+'</strong>';
-                document.getElementById('rateD').value=result.toFixed(2);}
-              else if(isNaN(t)){result=d/r;label='Time / Quantity = Amount ÷ Rate';formula=d+' ÷ '+r+' = <strong>'+result.toFixed(2)+'</strong>';
-                document.getElementById('rateT').value=result.toFixed(2);}
-              else{result=d/t;label='Rate = Amount ÷ Time';formula=d+' ÷ '+t+' = <strong>'+result.toFixed(2)+'</strong>';
-                document.getElementById('rateR').value=result.toFixed(2);}
-              el.innerHTML='<div style="color:rgba(221,225,240,0.45);font-size:11px;margin-bottom:4px;">'+label+'</div><div style="color:#6ee7b7;font-size:14px;">'+formula+'</div>';
+            // Conversion factors TO metres and seconds (base SI units)
+            const toM   = { km:1000, m:1, cm:0.01, mm:0.001, mi:1609.344 };
+            const toS   = { h:3600,  min:60, s:1 };
+
+            function fmt(n){
+              // Format nicely: avoid unnecessary decimals for whole numbers
+              if(n === Math.round(n)) return String(n);
+              // up to 4 sig figs
+              return parseFloat(n.toPrecision(4)).toString();
             }
-            document.getElementById('rateCalc').addEventListener('click',calc);
+
+            function updateRateUnit(){
+              const du = document.getElementById('rateDUnit').value;
+              const tu = document.getElementById('rateTUnit').value;
+              document.getElementById('rateRUnit').textContent = du+'/'+tu;
+            }
+
+            function calc(){
+              const dRaw = parseFloat(document.getElementById('rateD').value);
+              const tRaw = parseFloat(document.getElementById('rateT').value);
+              const rRaw = parseFloat(document.getElementById('rateR').value);
+              const du   = document.getElementById('rateDUnit').value;
+              const tu   = document.getElementById('rateTUnit').value;
+              const el   = document.getElementById('rateOut');
+
+              const dBlank = isNaN(dRaw);
+              const tBlank = isNaN(tRaw);
+              const rBlank = isNaN(rRaw);
+              const blanks = [dBlank, tBlank, rBlank].filter(Boolean).length;
+              if(blanks > 1){ el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>'; return; }
+              if(blanks === 0){ el.innerHTML='<span style="color:#fca5a5;">Leave one field blank for it to be calculated.</span>'; return; }
+
+              // Convert inputs to base units (metres, seconds)
+              const dBase = dBlank ? null : dRaw * toM[du];
+              const tBase = tBlank ? null : tRaw * toS[tu];
+              // Rate in base units is always m/s; user rate is in du/tu
+              const rBase = rBlank ? null : rRaw * (toM[du] / toS[tu]);
+
+              let resultBase, resultDisplay, steps = [];
+
+              if(dBlank){
+                // d = r × t
+                resultBase   = rBase * tBase;
+                resultDisplay = resultBase / toM[du];
+                steps = [
+                  'Formula: Distance = Speed × Time',
+                  'Convert: '+rRaw+' '+du+'/'+tu+' = '+(fmt(rBase))+' m/s',
+                  'Convert: '+tRaw+' '+tu+' = '+(fmt(tBase))+' s',
+                  'Distance = '+fmt(rBase)+' × '+fmt(tBase)+' = '+fmt(resultBase)+' m',
+                  '→ Convert back: '+fmt(resultBase)+' m = <strong style="color:#6ee7b7;">'+fmt(resultDisplay)+' '+du+'</strong>',
+                ];
+                document.getElementById('rateD').value = fmt(resultDisplay);
+              } else if(tBlank){
+                // t = d / r
+                resultBase   = dBase / rBase;
+                resultDisplay = resultBase / toS[tu];
+                steps = [
+                  'Formula: Time = Distance ÷ Speed',
+                  'Convert: '+dRaw+' '+du+' = '+fmt(dBase)+' m',
+                  'Convert: '+rRaw+' '+du+'/'+tu+' = '+fmt(rBase)+' m/s',
+                  'Time = '+fmt(dBase)+' ÷ '+fmt(rBase)+' = '+fmt(resultBase)+' s',
+                  '→ Convert back: '+fmt(resultBase)+' s = <strong style="color:#6ee7b7;">'+fmt(resultDisplay)+' '+tu+'</strong>',
+                ];
+                document.getElementById('rateT').value = fmt(resultDisplay);
+              } else {
+                // r = d / t
+                resultBase   = dBase / tBase;
+                resultDisplay = resultBase / (toM[du] / toS[tu]);
+                steps = [
+                  'Formula: Speed = Distance ÷ Time',
+                  'Convert: '+dRaw+' '+du+' = '+fmt(dBase)+' m',
+                  'Convert: '+tRaw+' '+tu+' = '+fmt(tBase)+' s',
+                  'Speed = '+fmt(dBase)+' ÷ '+fmt(tBase)+' = '+fmt(resultBase)+' m/s',
+                  '→ Convert back: '+fmt(resultBase)+' m/s = <strong style="color:#6ee7b7;">'+fmt(resultDisplay)+' '+du+'/'+tu+'</strong>',
+                ];
+                document.getElementById('rateR').value = fmt(resultDisplay);
+              }
+
+              el.innerHTML = steps.map((s,i) =>
+                '<div style="color:'+(i===steps.length-1?'#6ee7b7':i===0?'#fbbf24':'rgba(221,225,240,0.55)')+'">'+s+'</div>'
+              ).join('');
+            }
+
+            document.getElementById('rateCalc').addEventListener('click', calc);
+            document.getElementById('rateDUnit').addEventListener('change', function(){ updateRateUnit(); calc(); });
+            document.getElementById('rateTUnit').addEventListener('change', function(){ updateRateUnit(); calc(); });
+            ['rateD','rateT','rateR'].forEach(id =>
+              document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') calc(); })
+            );
+            updateRateUnit();
           })();
           </script>
         `

@@ -75,7 +75,47 @@ MathMagician.registerChapter(10, {
             solve();
           })();
           </script>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Always state the reason: <em>"sum of angles in a triangle"</em> or <em>"exterior angle of a triangle"</em>. Reasons earn marks.</span></div>
+          
+          <div style="overflow-x:auto;margin:14px 0;">
+            <svg viewBox="0 0 520 140" style="width:100%;max-width:520px;border-radius:8px;background:rgba(10,15,30,0.50);">
+              <!-- Equilateral -->
+              <text x="52" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">EQUILATERAL</text>
+              <polygon points="52,115 18,115 35,55" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="1.5"/>
+              <text x="35" y="48" text-anchor="middle" font-size="8" fill="#a5b4fc" font-family="JetBrains Mono,monospace">60°</text>
+              <text x="52" y="122" text-anchor="middle" font-size="8" fill="#a5b4fc" font-family="JetBrains Mono,monospace">60°</text>
+              <text x="14" y="122" text-anchor="middle" font-size="8" fill="#a5b4fc" font-family="JetBrains Mono,monospace">60°</text>
+              <text x="35" y="132" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.35)" font-family="DM Sans,sans-serif">3 equal sides</text>
+              <!-- Isosceles -->
+              <text x="140" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">ISOSCELES</text>
+              <polygon points="140,55 112,115 168,115" fill="rgba(245,158,11,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="140" y="50" text-anchor="middle" font-size="8" fill="#fbbf24" font-family="JetBrains Mono,monospace">apex</text>
+              <text x="115" y="122" text-anchor="middle" font-size="8" fill="#fcd34d" font-family="JetBrains Mono,monospace">base∠</text>
+              <text x="165" y="122" text-anchor="middle" font-size="8" fill="#fcd34d" font-family="JetBrains Mono,monospace">base∠</text>
+              <text x="140" y="132" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.35)" font-family="DM Sans,sans-serif">2 equal sides</text>
+              <!-- Scalene -->
+              <text x="244" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">SCALENE</text>
+              <polygon points="218,115 248,58 278,115" fill="rgba(16,185,129,0.08)" stroke="#6ee7b7" stroke-width="1.5"/>
+              <text x="248" y="53" text-anchor="middle" font-size="8" fill="#6ee7b7" font-family="JetBrains Mono,monospace">a</text>
+              <text x="218" y="122" text-anchor="middle" font-size="8" fill="#6ee7b7" font-family="JetBrains Mono,monospace">b</text>
+              <text x="278" y="122" text-anchor="middle" font-size="8" fill="#6ee7b7" font-family="JetBrains Mono,monospace">c</text>
+              <text x="248" y="132" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.35)" font-family="DM Sans,sans-serif">no equal sides</text>
+              <!-- Right-angled -->
+              <text x="362" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">RIGHT-ANGLED</text>
+              <polygon points="322,115 322,55 402,115" fill="rgba(236,72,153,0.08)" stroke="#f9a8d4" stroke-width="1.5"/>
+              <rect x="322" y="101" width="14" height="14" fill="none" stroke="#f9a8d4" stroke-width="1.2"/>
+              <text x="316" y="50" font-size="8" fill="#f9a8d4" font-family="JetBrains Mono,monospace">90°</text>
+              <text x="365" y="112" font-size="8" fill="#f9a8d4" font-family="JetBrains Mono,monospace">hypotenuse</text>
+              <text x="362" y="132" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.35)" font-family="DM Sans,sans-serif">one 90° angle</text>
+              <!-- Obtuse -->
+              <text x="464" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">OBTUSE</text>
+              <polygon points="428,115 466,68 500,115" fill="rgba(168,85,247,0.10)" stroke="#a78bfa" stroke-width="1.5"/>
+              <path d="M428,115 m22,0 a22,22 0 0,0 -11,-20" fill="rgba(168,85,247,0.20)" stroke="none"/>
+              <text x="458" y="64" text-anchor="middle" font-size="8" fill="#a78bfa" font-family="JetBrains Mono,monospace">apex</text>
+              <text x="437" y="112" font-size="8" fill="#a78bfa" font-family="JetBrains Mono,monospace">&gt;90°</text>
+              <text x="464" y="132" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.35)" font-family="DM Sans,sans-serif">one &gt;90° angle</text>
+            </svg>
+          </div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>Always state the reason: <em>"sum of angles in a triangle"</em> or <em>"exterior angle of a triangle"</em>. Reasons earn marks.</span></div>
         `
       },
       questions: [
@@ -113,7 +153,38 @@ MathMagician.registerChapter(10, {
             <div class="example-step"><span class="step-num">1</span><span>A parallelogram has one angle of 65°. Adjacent angle = <span class="math">180° − 65° = 115°</span> <em>(co-int. ∠s, // lines)</em>. Opposite angles: 65° and 115°.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>Trapezium: angles are 3x, 2x, 90°, 90°. Solve: <span class="math">3x + 2x + 180° = 360° → 5x = 180° → x = 36°</span>.</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In a parallelogram: co-interior angles (same side) are supplementary (add to 180°), and opposite angles are equal. These are the two key angle facts.</span></div>
+          
+          <div style="overflow-x:auto;margin:14px 0;">
+            <svg viewBox="0 0 530 140" style="width:100%;max-width:530px;border-radius:8px;background:rgba(10,15,30,0.50);">
+              <!-- Square -->
+              <text x="44" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">SQUARE</text>
+              <rect x="18" y="25" width="52" height="52" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="1.5"/>
+              <rect x="18" y="25" width="9" height="9" fill="none" stroke="#6ee7b7" stroke-width="1"/>
+              <text x="44" y="92" text-anchor="middle" font-size="7.5" fill="rgba(221,225,240,0.40)" font-family="DM Sans,sans-serif">4 equal sides, 4×90°</text>
+              <!-- Rectangle -->
+              <text x="136" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">RECTANGLE</text>
+              <rect x="96" y="32" width="80" height="45" fill="rgba(245,158,11,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+              <rect x="96" y="32" width="9" height="9" fill="none" stroke="#6ee7b7" stroke-width="1"/>
+              <text x="136" y="92" text-anchor="middle" font-size="7.5" fill="rgba(221,225,240,0.40)" font-family="DM Sans,sans-serif">opp. sides equal, 4×90°</text>
+              <!-- Parallelogram -->
+              <text x="242" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">PARALLELOGRAM</text>
+              <polygon points="200,77 216,32 284,32 268,77" fill="rgba(16,185,129,0.10)" stroke="#6ee7b7" stroke-width="1.5"/>
+              <text x="242" y="92" text-anchor="middle" font-size="7.5" fill="rgba(221,225,240,0.40)" font-family="DM Sans,sans-serif">opp. sides ∥ and equal</text>
+              <!-- Rhombus -->
+              <text x="356" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">RHOMBUS</text>
+              <polygon points="356,28 384,55 356,82 328,55" fill="rgba(236,72,153,0.10)" stroke="#f9a8d4" stroke-width="1.5"/>
+              <line x1="356" y1="28" x2="356" y2="82" stroke="rgba(249,168,212,0.30)" stroke-width="0.8" stroke-dasharray="3,3"/>
+              <line x1="328" y1="55" x2="384" y2="55" stroke="rgba(249,168,212,0.30)" stroke-width="0.8" stroke-dasharray="3,3"/>
+              <text x="356" y="95" text-anchor="middle" font-size="7.5" fill="rgba(221,225,240,0.40)" font-family="DM Sans,sans-serif">4 equal sides, diags ⊥</text>
+              <!-- Trapezium -->
+              <text x="468" y="14" text-anchor="middle" font-size="9" fill="rgba(245,158,11,0.70)" font-family="Syne,sans-serif" font-weight="700">TRAPEZIUM</text>
+              <polygon points="440,77 452,32 484,32 510,77" fill="rgba(168,85,247,0.10)" stroke="#a78bfa" stroke-width="1.5"/>
+              <text x="468" y="28" text-anchor="middle" font-size="8" fill="#a78bfa" font-family="JetBrains Mono,monospace">∥</text>
+              <text x="475" y="84" text-anchor="middle" font-size="8" fill="#a78bfa" font-family="JetBrains Mono,monospace">∥</text>
+              <text x="468" y="95" text-anchor="middle" font-size="7.5" fill="rgba(221,225,240,0.40)" font-family="DM Sans,sans-serif">one pair ∥ sides</text>
+            </svg>
+          </div>
+<div class="tip-box"><span class="tip-icon">💡</span><span>In a parallelogram: co-interior angles (same side) are supplementary (add to 180°), and opposite angles are equal. These are the two key angle facts.</span></div>
         `
       },
       questions: [
@@ -192,7 +263,164 @@ MathMagician.registerChapter(10, {
             <div class="example-step"><span class="step-num">1</span><span>△ABC: AB=5, BC=7, AC=6. △DEF: DE=5, EF=7, DF=6. Congruent? Yes — SSS.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>△PQR: PQ=8, ∠Q=50°, QR=6. △XYZ: XY=8, ∠Y=50°, YZ=6. Congruent? Yes — SAS.</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>AAA is NOT a congruence condition — it only proves similarity, not congruence. The triangles could be different sizes.</span></div>
+          
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Congruence Condition Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Select a congruence condition to see a diagram and what is known.</p>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+              <button class="cong-btn" data-c="SSS" style="padding:5px 12px;border-radius:6px;border:1px solid rgba(99,102,241,0.40);background:rgba(99,102,241,0.15);color:#a5b4fc;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">SSS</button>
+              <button class="cong-btn" data-c="SAS" style="padding:5px 12px;border-radius:6px;border:1px solid rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);color:#fbbf24;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">SAS</button>
+              <button class="cong-btn" data-c="AAS" style="padding:5px 12px;border-radius:6px;border:1px solid rgba(16,185,129,0.30);background:rgba(16,185,129,0.08);color:#6ee7b7;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">AAS</button>
+              <button class="cong-btn" data-c="RHS" style="padding:5px 12px;border-radius:6px;border:1px solid rgba(236,72,153,0.30);background:rgba(236,72,153,0.08);color:#f9a8d4;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;cursor:pointer;">RHS</button>
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;">
+              <svg id="congSvg" viewBox="0 0 300 120" style="width:300px;max-width:100%;border-radius:8px;background:rgba(10,15,30,0.60);flex-shrink:0;"></svg>
+              <div id="congDesc" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;flex:1;min-width:160px;"></div>
+            </div>
+          </div>
+          <script>
+          (function(){
+            const COND = {
+              SSS: {
+                title: 'Side-Side-Side',
+                color: '#a5b4fc',
+                rule:  'All 3 sides of one triangle equal all 3 sides of the other.',
+                marks: ['side','side','side'],
+                desc: ['AB = DE (side)', 'BC = EF (side)', 'AC = DF (side)'],
+                draw: function(svg){
+                  var h='';
+                  // Two triangles side by side
+                  h+=tri(20,100,80,20,140,100,'rgba(99,102,241,0.20)','#6366f1');
+                  h+=tri(160,100,220,20,280,100,'rgba(99,102,241,0.20)','#6366f1');
+                  // Side tick marks - double ticks on all sides
+                  h+=ticks(20,100,140,100,2,'#a5b4fc')+ticks(20,100,80,20,2,'#a5b4fc')+ticks(140,100,80,20,2,'#a5b4fc');
+                  h+=ticks(160,100,280,100,2,'#a5b4fc')+ticks(160,100,220,20,2,'#a5b4fc')+ticks(280,100,220,20,2,'#a5b4fc');
+                  h+=labels(20,100,'A',80,20,'B',140,100,'C');
+                  h+=labels(160,100,'D',220,20,'E',280,100,'F');
+                  return h;
+                }
+              },
+              SAS: {
+                title: 'Side-Angle-Side',
+                color: '#fbbf24',
+                rule:  'Two sides and the included angle (between them) are equal.',
+                marks: ['side','angle','side'],
+                desc: ['AB = DE (side)', '∠B = ∠E (included angle)', 'BC = EF (side)'],
+                draw: function(svg){
+                  var h='';
+                  h+=tri(20,100,80,20,140,100,'rgba(245,158,11,0.12)','#fbbf24');
+                  h+=tri(160,100,220,20,280,100,'rgba(245,158,11,0.12)','#fbbf24');
+                  h+=ticks(20,100,80,20,1,'#fcd34d')+ticks(80,20,140,100,2,'#fcd34d');
+                  h+=ticks(160,100,220,20,1,'#fcd34d')+ticks(220,20,280,100,2,'#fcd34d');
+                  h+=arcMark(80,20,20,100,140,100,'rgba(245,158,11,0.30)','#fbbf24');
+                  h+=arcMark(220,20,160,100,280,100,'rgba(245,158,11,0.30)','#fbbf24');
+                  h+=labels(20,100,'A',80,20,'B',140,100,'C');
+                  h+=labels(160,100,'D',220,20,'E',280,100,'F');
+                  return h;
+                }
+              },
+              AAS: {
+                title: 'Angle-Angle-Side',
+                color: '#6ee7b7',
+                rule:  'Two angles and a non-included side are equal.',
+                marks: ['angle','angle','side'],
+                desc: ['∠A = ∠D (angle)', '∠B = ∠E (angle)', 'BC = EF (non-included side)'],
+                draw: function(svg){
+                  var h='';
+                  h+=tri(20,100,80,20,140,100,'rgba(16,185,129,0.10)','#6ee7b7');
+                  h+=tri(160,100,220,20,280,100,'rgba(16,185,129,0.10)','#6ee7b7');
+                  h+=ticks(80,20,140,100,2,'#6ee7b7');
+                  h+=ticks(220,20,280,100,2,'#6ee7b7');
+                  h+=arcMark(20,100,80,20,140,100,'rgba(16,185,129,0.25)','#6ee7b7');
+                  h+=arcMark(80,20,20,100,140,100,'rgba(16,185,129,0.25)','#6ee7b7');
+                  h+=arcMark(160,100,220,20,280,100,'rgba(16,185,129,0.25)','#6ee7b7');
+                  h+=arcMark(220,20,160,100,280,100,'rgba(16,185,129,0.25)','#6ee7b7');
+                  h+=labels(20,100,'A',80,20,'B',140,100,'C');
+                  h+=labels(160,100,'D',220,20,'E',280,100,'F');
+                  return h;
+                }
+              },
+              RHS: {
+                title: 'Right angle-Hypotenuse-Side',
+                color: '#f9a8d4',
+                rule:  'Right angle, hypotenuse and one other side are equal. (Right-angled triangles only)',
+                marks: ['right','hyp','side'],
+                desc: ['∠C = ∠F = 90° (right angle)', 'AB = DE (hypotenuse)', 'BC = EF (side)'],
+                draw: function(svg){
+                  var h='';
+                  h+=tri(20,100,20,20,140,100,'rgba(236,72,153,0.10)','#f9a8d4');
+                  h+=tri(160,100,160,20,280,100,'rgba(236,72,153,0.10)','#f9a8d4');
+                  h+='<rect x="20" y="86" width="14" height="14" fill="none" stroke="#f9a8d4" stroke-width="1.2"/>';
+                  h+='<rect x="160" y="86" width="14" height="14" fill="none" stroke="#f9a8d4" stroke-width="1.2"/>';
+                  // Hypotenuse ticks (the diagonal = hyp)
+                  h+=ticks(20,20,140,100,1,'#f9a8d4');
+                  h+=ticks(160,20,280,100,1,'#f9a8d4');
+                  // Other side
+                  h+=ticks(20,100,140,100,2,'#f9a8d4');
+                  h+=ticks(160,100,280,100,2,'#f9a8d4');
+                  h+=labels(20,20,'A',140,100,'B',20,100,'C');
+                  h+=labels(160,20,'D',280,100,'E',160,100,'F');
+                  return h;
+                }
+              }
+            };
+
+            function tri(x1,y1,x2,y2,x3,y3,fill,stroke){
+              return '<polygon points="'+x1+','+y1+' '+x2+','+y2+' '+x3+','+y3+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.5" stroke-linejoin="round"/>';
+            }
+            function labels(x1,y1,l1,x2,y2,l2,x3,y3,l3){
+              function lbl(x,y,t){
+                var ox= (x<50?-10: x>250?10:0), oy=(y<30?-8:y>90?12:0);
+                return '<text x="'+(x+ox)+'" y="'+(y+oy)+'" text-anchor="middle" font-size="10" fill="rgba(221,225,240,0.60)" font-family="Syne,sans-serif" font-weight="700">'+t+'</text>';
+              }
+              return lbl(x1,y1,l1)+lbl(x2,y2,l2)+lbl(x3,y3,l3);
+            }
+            function ticks(x1,y1,x2,y2,n,col){
+              var mx=(x1+x2)/2, my=(y1+y2)/2;
+              var dx=x2-x1,dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy);
+              var px=-dy/len*5, py=dx/len*5;
+              var s='';
+              var gap=4;
+              for(var i=0;i<n;i++){
+                var off=(i-(n-1)/2)*gap;
+                var tx=mx+dx/len*off, ty=my+dy/len*off;
+                s+='<line x1="'+(tx-px).toFixed(1)+'" y1="'+(ty-py).toFixed(1)+'" x2="'+(tx+px).toFixed(1)+'" y2="'+(ty+py).toFixed(1)+'" stroke="'+col+'" stroke-width="1.5"/>';
+              }
+              return s;
+            }
+            function arcMark(vx,vy,ax,ay,bx,by,fill,stroke){
+              // Draw a small arc at vertex vx,vy between arms going to ax,ay and bx,by
+              var r=14;
+              var a1=Math.atan2(ay-vy,ax-vx), a2=Math.atan2(by-vy,bx-vx);
+              var sx=vx+r*Math.cos(a1), sy=vy+r*Math.sin(a1);
+              var ex=vx+r*Math.cos(a2), ey=vy+r*Math.sin(a2);
+              // Determine sweep direction (use small arc)
+              var da = a2-a1; if(da<0) da+=2*Math.PI; if(da>Math.PI) da-=2*Math.PI;
+              var sweep = da>0?1:0;
+              return '<path d="M '+vx+' '+vy+' L '+sx.toFixed(1)+' '+sy.toFixed(1)+' A '+r+' '+r+' 0 0 '+sweep+' '+ex.toFixed(1)+' '+ey.toFixed(1)+' Z" fill="'+fill+'" stroke="'+stroke+'" stroke-width="0.8"/>';
+            }
+
+            var current = 'SSS';
+            function render(key){
+              current = key;
+              var c = COND[key];
+              var svg = document.getElementById('congSvg');
+              svg.innerHTML = c.draw();
+              var el = document.getElementById('congDesc');
+              el.innerHTML =
+                '<div style="color:'+c.color+';font-weight:700;font-family:Syne,sans-serif;margin-bottom:4px;">'+key+' — '+c.title+'</div>'+
+                c.desc.map(function(d){ return '<div style="color:rgba(221,225,240,0.70);">✓ '+d+'</div>'; }).join('')+
+                '<div style="margin-top:8px;font-size:10.5px;color:rgba(221,225,240,0.40);">'+c.rule+'</div>';
+            }
+
+            document.getElementById('congSvg').closest('.def-box').addEventListener('click', function(e){
+              var btn = e.target.closest('.cong-btn');
+              if(btn){ render(btn.dataset.c); }
+            });
+            render('SSS');
+          })();
+          </script>
+<div class="tip-box"><span class="tip-icon">💡</span><span>AAA is NOT a congruence condition — it only proves similarity, not congruence. The triangles could be different sizes.</span></div>
         `
       },
       questions: [
@@ -231,38 +459,129 @@ MathMagician.registerChapter(10, {
             <div class="example-step"><span class="step-num">2</span><span>Scale factor: <span class="math">k = 9/6 = 1.5</span></span></div>
             <div class="example-step"><span class="step-num">3</span><span><span class="math">EF = BC × k = 8 × 1.5 = 12</span></span></div>
           </div>
+          
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
-            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Similar Triangles Calculator</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter three sides of the first triangle and one side of the second to find the others.</p>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px;">
-              <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;">AB</label><input id="simAB" type="number" value="6" style="width:58px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px 8px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;">BC</label><input id="simBC" type="number" value="8" style="width:58px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px 8px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;">AC</label><input id="simAC" type="number" value="10" style="width:58px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px 8px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <span style="color:#a5b4fc;font-size:18px;padding-bottom:4px;">∼</span>
-              <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;">DE</label><input id="simDE" type="number" value="9" style="width:58px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px 8px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <button id="simBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Find EF &amp; DF</button>
+            <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Similar Shapes Scale Factor</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Adjust the scale factor and see both triangles drawn to scale. Enter any two sides to find the third.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:3px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;letter-spacing:0.06em;">Scale factor k</label>
+                <input id="simK" type="number" value="2" min="0.1" max="5" step="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;letter-spacing:0.06em;">Side a (small △)</label>
+                <input id="simA" type="number" value="3" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;letter-spacing:0.06em;">Side b (small △)</label>
+                <input id="simB" type="number" value="4" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.40);text-transform:uppercase;letter-spacing:0.06em;">Side c (small △)</label>
+                <input id="simC" type="number" value="5" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
             </div>
-            <div id="simOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;color:rgba(221,225,240,0.80);"></div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;">
+              <svg id="simSvg" viewBox="0 0 300 140" style="width:300px;max-width:100%;border-radius:8px;background:rgba(10,15,30,0.60);flex-shrink:0;"></svg>
+              <div id="simOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2.1;flex:1;min-width:160px;"></div>
+            </div>
           </div>
           <script>
           (function(){
-            function calc(){
-              const ab=parseFloat(document.getElementById('simAB').value);
-              const bc=parseFloat(document.getElementById('simBC').value);
-              const ac=parseFloat(document.getElementById('simAC').value);
-              const de=parseFloat(document.getElementById('simDE').value);
-              const el=document.getElementById('simOut');
-              if([ab,bc,ac,de].some(isNaN)||ab===0){el.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
-              const k=(de/ab).toFixed(3);
-              const ef=(bc*de/ab).toFixed(2);
-              const df=(ac*de/ab).toFixed(2);
-              el.innerHTML='<div><span style="opacity:0.5;">Scale factor k = '+de+' ÷ '+ab+' = </span><span style="color:#fbbf24;">'+k+'</span></div>'+
-                '<div><span style="opacity:0.5;">EF = BC × k = '+bc+' × '+k+' = </span><span style="color:#6ee7b7;font-size:14px;">'+ef+'</span></div>'+
-                '<div><span style="opacity:0.5;">DF = AC × k = '+ac+' × '+k+' = </span><span style="color:#6ee7b7;font-size:14px;">'+df+'</span></div>'+
-                '<div style="margin-top:4px;opacity:0.4;">Area ratio = k² = '+(parseFloat(k)*parseFloat(k)).toFixed(2)+'</div>';
+            function fmt(n){ return parseFloat(n.toPrecision(4)).toString(); }
+
+            function drawSim(a,b,c,k){
+              var svg = document.getElementById('simSvg');
+              // Draw a right triangle (a,b,c where c=hyp) or approximate triangle using law of cosines
+              // Use a 3-4-5 style placement: put right angle at bottom-left
+              // Scale both triangles to fit in viewBox 300x140
+              // Small triangle: base=a, height=b (right triangle approximation)
+              var maxSide = Math.max(a,b,c);
+              var scale1 = 50 / maxSide;  // small triangle max dimension ~50px
+              var scale2 = scale1 * k;
+              // Cap scale2 so large triangle fits
+              if(b*scale2 > 100) scale2 = 100/b;
+              if(a*scale2 > 130) scale2 = 130/a;
+
+              // Small triangle coords (right-angle at bottom-left)
+              var s1x=15, s1y=125;
+              var s1 = {
+                A: [s1x, s1y],
+                B: [s1x + a*scale1, s1y],
+                C: [s1x, s1y - b*scale1]
+              };
+              // Large triangle (same shape, scaled by k)
+              var s2x=155, s2y=130;
+              var s2 = {
+                A: [s2x, s2y],
+                B: [s2x + a*scale2, s2y],
+                C: [s2x, s2y - b*scale2]
+              };
+
+              function pt(p){ return p[0].toFixed(1)+','+p[1].toFixed(1); }
+              function line(p1,p2,col,sw,dash){
+                return '<line x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)+'" stroke="'+col+'" stroke-width="'+(sw||1.5)+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';
+              }
+              function poly(pts,fill,stroke){
+                return '<polygon points="'+pts.map(pt).join(' ')+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.5" stroke-linejoin="round"/>';
+              }
+              function txt2(x,y,t,col,size){
+                return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle" font-size="'+(size||9)+'" fill="'+(col||'rgba(221,225,240,0.60)')+'" font-family="JetBrains Mono,monospace">'+t+'</text>';
+              }
+
+              var h = '';
+              // Small triangle
+              h += poly([s1.A,s1.B,s1.C],'rgba(99,102,241,0.15)','#6366f1');
+              h += '<rect x="'+s1.A[0]+'" y="'+(s1.A[1]-10)+'" width="10" height="10" fill="none" stroke="#6366f1" stroke-width="1"/>';
+              // Side labels small
+              h += txt2((s1.A[0]+s1.B[0])/2, s1.A[1]+12, fmt(a), '#a5b4fc', 8.5);
+              h += txt2(s1.A[0]-10, (s1.A[1]+s1.C[1])/2, fmt(b), '#a5b4fc', 8.5);
+              h += txt2((s1.B[0]+s1.C[0])/2+8, (s1.B[1]+s1.C[1])/2, fmt(c), '#a5b4fc', 8.5);
+              h += txt2((s1.A[0]+s1.B[0]+s1.C[0])/3, s1.A[1]-b*scale1*0.5, '△ABC', '#6366f1', 9);
+
+              // Large triangle
+              h += poly([s2.A,s2.B,s2.C],'rgba(245,158,11,0.12)','#fbbf24');
+              h += '<rect x="'+s2.A[0]+'" y="'+(s2.A[1]-10)+'" width="10" height="10" fill="none" stroke="#fbbf24" stroke-width="1"/>';
+              // Side labels large
+              h += txt2((s2.A[0]+s2.B[0])/2, s2.A[1]+12, fmt(a*k), '#fcd34d', 8.5);
+              h += txt2(s2.A[0]-14, (s2.A[1]+s2.C[1])/2, fmt(b*k), '#fcd34d', 8.5);
+              h += txt2((s2.B[0]+s2.C[0])/2+10, (s2.B[1]+s2.C[1])/2, fmt(c*k), '#fcd34d', 8.5);
+              h += txt2((s2.A[0]+s2.B[0]+s2.C[0])/3+5, s2.A[1]-b*scale2*0.5, '△DEF', '#fbbf24', 9);
+
+              // Scale factor arrow
+              var midY = 20;
+              h += '<text x="150" y="18" text-anchor="middle" font-size="9" fill="rgba(110,231,183,0.70)" font-family="Syne,sans-serif" font-weight="700">k = '+fmt(k)+'</text>';
+
+              svg.innerHTML = h;
             }
-            document.getElementById('simBtn').addEventListener('click',calc);
-            calc();
+
+            function update(){
+              var k = parseFloat(document.getElementById('simK').value)||2;
+              var a = parseFloat(document.getElementById('simA').value)||3;
+              var b = parseFloat(document.getElementById('simB').value)||4;
+              var c = parseFloat(document.getElementById('simC').value)||5;
+              if(k<=0||a<=0||b<=0||c<=0) return;
+
+              drawSim(a,b,c,k);
+
+              var el = document.getElementById('simOut');
+              var areaRatio = k*k;
+              el.innerHTML = [
+                '<div style="color:#6ee7b7;font-weight:700;font-family:Syne,sans-serif;margin-bottom:4px;">Scale factor k = '+fmt(k)+'</div>',
+                '<div><span style="color:rgba(221,225,240,0.40);width:100px;display:inline-block;">△ABC sides:</span><span style="color:#a5b4fc;">'+fmt(a)+', '+fmt(b)+', '+fmt(c)+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.40);width:100px;display:inline-block;">△DEF sides:</span><span style="color:#fcd34d;">'+fmt(a*k)+', '+fmt(b*k)+', '+fmt(c*k)+'</span></div>',
+                '<div style="margin-top:6px;"><span style="color:rgba(221,225,240,0.40);width:100px;display:inline-block;">Perim ratio:</span><span style="color:#6ee7b7;">'+fmt(k)+' : 1</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.40);width:100px;display:inline-block;">Area ratio:</span><span style="color:#6ee7b7;">'+fmt(areaRatio)+' : 1 (k²)</span></div>',
+                '<div style="margin-top:6px;font-size:10px;color:rgba(221,225,240,0.35);">All angles stay the same in similar shapes.</div>',
+              ].join('');
+            }
+
+            ['simK','simA','simB','simC'].forEach(function(id){
+              var el = document.getElementById(id);
+              el.addEventListener('input', update);
+              el.addEventListener('keydown', function(e){ if(e.key==='Enter') update(); });
+            });
+            update();
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>To prove triangles are similar, show that two pairs of angles are equal (AA) — the third pair is automatically equal because angle sums are both 180°.</span></div>

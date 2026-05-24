@@ -140,29 +140,53 @@ MathMagician.registerChapter(7, {
           </div>
           <script>
           (function(){
+            function gcd(a,b){ a=Math.abs(a);b=Math.abs(b); return b===0?a:gcd(b,a%b); }
+            function fmtNum(n){
+              if(Number.isInteger(n)) return String(n);
+              // Try to show as fraction if denominator is small
+              for(let d=2;d<=100;d++){
+                const num=Math.round(n*d);
+                if(Math.abs(num/d-n)<1e-9){
+                  const g=gcd(Math.abs(num),d);
+                  return (num/g)+'/'+(d/g);
+                }
+              }
+              return n.toFixed(4);
+            }
             function solve() {
               const a = parseFloat(document.getElementById('eqA').value);
               const b = parseFloat(document.getElementById('eqB').value);
               const c = parseFloat(document.getElementById('eqC').value);
-              const steps = document.getElementById('eqSteps');
-              if(isNaN(a)||isNaN(b)||isNaN(c)||a===0){
-                steps.innerHTML='<span style="color:#fca5a5;">Please enter valid numbers (a cannot be 0)</span>';
-                return;
+              const el = document.getElementById('eqSteps');
+              if(isNaN(a)||isNaN(b)||isNaN(c)){
+                el.innerHTML='<span style="color:#fca5a5;">Please enter valid numbers.</span>'; return;
+              }
+              if(a===0){
+                el.innerHTML='<span style="color:#fca5a5;">Coefficient a cannot be 0 — that's not a linear equation.</span>'; return;
               }
               const x = (c - b) / a;
-              const sign = b >= 0 ? '+' : '−';
               const absB = Math.abs(b);
-              let html = '';
-              html += '<span style="color:#fbbf24;">Equation: ' + a + 'x ' + sign + ' ' + absB + ' = ' + c + '</span>\n';
+              // Build equation string correctly for any sign of b
+              const eqStr = a+'x ' + (b>=0 ? '+ '+b : '− '+absB) + ' = '+c;
+              let rows = [];
+              rows.push('<div><span style="color:#fbbf24;">Equation: '+eqStr+'</span></div>');
               if(b !== 0) {
-                const op = b > 0 ? 'Subtract ' + b : 'Add ' + absB;
-                html += '<span style="opacity:0.6;">Step 1: ' + op + ' from both sides</span>\n';
-                html += '<span style="color:#a5b4fc;">' + a + 'x = ' + (c - b) + '</span>\n';
+                const verb = b > 0 ? 'Subtract '+b+' from' : 'Add '+absB+' to';
+                rows.push('<div style="opacity:0.6;font-size:11px;">Step 1: '+verb+' both sides</div>');
+                rows.push('<div style="color:#a5b4fc;">'+a+'x = '+c+' '+(b>0?'− '+b:'+ '+absB)+'</div>');
+                rows.push('<div style="color:#a5b4fc;">'+a+'x = '+(c-b)+'</div>');
+                rows.push('<div style="opacity:0.6;font-size:11px;margin-top:2px;">Step 2: Divide both sides by '+a+'</div>');
+                rows.push('<div style="color:#a5b4fc;">x = '+(c-b)+' ÷ '+a+'</div>');
+              } else {
+                rows.push('<div style="opacity:0.6;font-size:11px;">Step 1: Divide both sides by '+a+'</div>');
+                rows.push('<div style="color:#a5b4fc;">x = '+c+' ÷ '+a+'</div>');
               }
-              html += '<span style="opacity:0.6;">Step ' + (b!==0?2:1) + ': Divide both sides by ' + a + '</span>\n';
-              html += '<span style="color:#6ee7b7;font-size:14px;">x = ' + (Number.isInteger(x) ? x : x.toFixed(3)) + '</span>\n';
-              html += '<span style="opacity:0.5;">Check: ' + a + '(' + (Number.isInteger(x)?x:x.toFixed(3)) + ') ' + sign + ' ' + absB + ' = ' + (a*x + (b>=0?b:-absB)).toFixed(Number.isInteger(c)?0:2) + ' ✓</span>';
-              steps.innerHTML = html.split('\n').map(l=>'<div>'+l+'</div>').join('');
+              rows.push('<div style="color:#6ee7b7;font-size:15px;font-weight:700;margin-top:4px;">x = '+fmtNum(x)+'</div>');
+              // Verification
+              const check = a*x + b;
+              const checkStr = fmtNum(check);
+              rows.push('<div style="opacity:0.45;font-size:11px;margin-top:6px;">Check: '+a+'('+fmtNum(x)+') '+(b>=0?'+ '+b:'− '+absB)+' = '+checkStr+(Math.abs(check-c)<0.0001?' = '+c+' ✓':' ✗ (rounding)')+'</div>');
+              el.innerHTML = rows.join('');
             }
             document.getElementById('eqSolveBtn').addEventListener('click', solve);
             ['eqA','eqB','eqC'].forEach(id => document.getElementById(id).addEventListener('keydown', e => e.key==='Enter' && solve()));

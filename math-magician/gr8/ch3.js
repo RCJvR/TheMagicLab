@@ -44,32 +44,58 @@ MathMagician.registerChapter(3, {
       
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Exponent Calculator</div>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
-              <input id="expCalcBase" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:18px;font-family:JetBrains Mono,monospace;text-align:center;">
-              <span style="color:#a5b4fc;font-family:Syne,sans-serif;font-size:20px;font-weight:800;">^</span>
-              <input id="expCalcExp" type="number" value="4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:18px;font-family:JetBrains Mono,monospace;text-align:center;">
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:12px;">Enter a base and exponent to see the expression, expanded form, and result.</p>
+            <div style="display:flex;gap:4px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;">
+              <div style="display:flex;flex-direction:column;gap:4px;align-items:center;">
+                <label style="font-size:10px;color:rgba(245,158,11,0.60);text-transform:uppercase;letter-spacing:0.06em;">Base</label>
+                <input id="expCalcBase" type="number" value="3" style="width:72px;background:#1e1b4b;border:2px solid rgba(245,158,11,0.50);color:#fcd34d;padding:8px;border-radius:8px;font-size:22px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;align-items:center;padding-bottom:2px;">
+                <label style="font-size:10px;color:rgba(165,180,252,0.60);text-transform:uppercase;letter-spacing:0.06em;">Exponent</label>
+                <input id="expCalcExp" type="number" value="4" style="width:60px;background:#1e1b4b;border:2px solid rgba(99,102,241,0.50);color:#a5b4fc;padding:6px;border-radius:8px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;vertical-align:top;">
+              </div>
+              <div style="padding-bottom:10px;font-size:28px;color:rgba(221,225,240,0.20);font-family:JetBrains Mono,monospace;line-height:1;padding-left:4px;">→</div>
+              <div id="expCalcDisplay" style="padding-bottom:8px;font-size:28px;font-family:JetBrains Mono,monospace;color:#fcd34d;line-height:1;"></div>
             </div>
-            <div id="expCalcOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+            <div id="expCalcOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2.2;"></div>
           </div>
           <script>
           (function(){
+            function sup(n){ return String(n).split('').map(c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[c]||c).join(''); }
+            function fmt(n){ return Number.isInteger(n)?String(n):parseFloat(n.toPrecision(8)).toString(); }
             function update(){
               const base=parseFloat(document.getElementById('expCalcBase').value);
               const exp=parseFloat(document.getElementById('expCalcExp').value);
-              if(isNaN(base)||isNaN(exp)){return;}
+              if(isNaN(base)||isNaN(exp)) return;
               const result=Math.pow(base,exp);
-              // Build expanded form (for small exponents)
-              let expanded='';
-              if(Number.isInteger(exp)&&Math.abs(exp)<=6&&exp>0){
-                expanded=Array(exp).fill(base).join(' × ')+' = ';
+              // Live display: base in gold, exponent superscript in purple
+              document.getElementById('expCalcDisplay').innerHTML=
+                '<span style="color:#fcd34d;">'+base+'</span>'+
+                '<span style="font-size:16px;color:#a5b4fc;vertical-align:super;margin-left:1px;">'+exp+'</span>';
+              // Expanded form — show up to 10 factors; beyond that show grouping
+              let expandedHTML='';
+              if(Number.isInteger(exp)&&exp>0){
+                if(exp<=10){
+                  const factors=Array(exp).fill('<span style="color:#fcd34d;">'+base+'</span>').join('<span style="color:rgba(221,225,240,0.40);"> × </span>');
+                  expandedHTML=factors+' <span style="color:rgba(221,225,240,0.40)">=</span> <span style="color:#6ee7b7;">'+fmt(result)+'</span>';
+                } else {
+                  // Show first 3 ... last 1 with count
+                  const f='<span style="color:#fcd34d;">'+base+'</span>';
+                  const x='<span style="color:rgba(221,225,240,0.40);"> × </span>';
+                  expandedHTML=f+x+f+x+f+'<span style="color:rgba(221,225,240,0.30);"> × … ('+exp+' factors total)</span> <span style="color:rgba(221,225,240,0.40)">=</span> <span style="color:#6ee7b7;">'+fmt(result)+'</span>';
+                }
               }
-              document.getElementById('expCalcOut').innerHTML=[
-                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Expression:</span><span style="color:#a5b4fc;">'+base+'<sup>'+exp+'</sup></span></div>',
-                expanded?'<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Expanded:</span><span style="color:rgba(221,225,240,0.55);font-size:12px;">'+expanded+'</span></div>':'',
-                '<div><span style="color:rgba(221,225,240,0.45);width:130px;display:inline-block;">Result:</span><span style="color:#6ee7b7;font-size:16px;font-weight:700;">'+result+'</span></div>',
-                exp===0?'<div style="font-size:10px;opacity:0.45;">Any non-zero base to the power 0 = 1</div>':'',
-                exp<0?'<div style="font-size:10px;opacity:0.45;">Negative exponent: 1 / '+base+'^'+Math.abs(exp)+' = '+result.toFixed(6)+'</div>':'',
-              ].filter(Boolean).join('');
+              const rows=[
+                '<div style="display:flex;gap:0;align-items:baseline;margin-bottom:2px;"><span style="color:rgba(221,225,240,0.40);width:130px;flex-shrink:0;">Expression:</span><span>'+
+                  '<span style="color:#fcd34d;font-size:15px;">'+base+'</span>'+
+                  '<span style="font-size:11px;color:#a5b4fc;vertical-align:super;margin-left:1px;">'+exp+'</span>'+
+                '</span></div>',
+                expandedHTML?'<div style="display:flex;gap:0;align-items:baseline;flex-wrap:wrap;margin-bottom:2px;"><span style="color:rgba(221,225,240,0.40);width:130px;flex-shrink:0;">Expanded:</span><span style="font-size:12px;line-height:1.8;">'+expandedHTML+'</span></div>':'',
+                '<div style="display:flex;gap:0;align-items:baseline;margin-bottom:2px;"><span style="color:rgba(221,225,240,0.40);width:130px;flex-shrink:0;">Result:</span><span style="color:#6ee7b7;font-size:18px;font-weight:700;">'+fmt(result)+'</span></div>',
+                exp===0?'<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:2px;">Any non-zero base raised to the power 0 equals 1.</div>':'',
+                exp<0?'<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:2px;">Negative exponent: '+base+sup(-exp)+' = 1 ÷ '+fmt(Math.pow(base,-exp))+' = '+fmt(result)+'</div>':'',
+              ];
+              document.getElementById('expCalcOut').innerHTML=rows.filter(Boolean).join('');
             }
             ['expCalcBase','expCalcExp'].forEach(id=>document.getElementById(id).addEventListener('input',update));
             update();

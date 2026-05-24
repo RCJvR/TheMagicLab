@@ -439,41 +439,173 @@ MathMagician.registerChapter(2, {
       
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — BODMAS Step Evaluator</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Type an expression and see the order of operations applied step by step.</p>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Type an expression — each BODMAS step is shown in order. Try the examples or enter your own.</p>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
               <input id="bodInput" type="text" value="3 + 2 * (8 - 5) ** 2" style="flex:1;min-width:200px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px 12px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;">
               <button id="bodCalc" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Evaluate</button>
             </div>
-            <div id="bodOut" style="font-family:JetBrains Mono,monospace;font-size:13px;line-height:2;"></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+              <button class="bod-eg" data-v="3 + 2 * (8 - 5) ** 2" style="padding:3px 9px;border-radius:5px;border:1px solid rgba(99,102,241,0.30);background:rgba(99,102,241,0.08);color:rgba(165,180,252,0.70);font-size:10px;font-family:JetBrains Mono,monospace;cursor:pointer;">3 + 2 * (8 - 5) ** 2</button>
+              <button class="bod-eg" data-v="(4 + 6) / 2 - 1" style="padding:3px 9px;border-radius:5px;border:1px solid rgba(99,102,241,0.30);background:rgba(99,102,241,0.08);color:rgba(165,180,252,0.70);font-size:10px;font-family:JetBrains Mono,monospace;cursor:pointer;">(4 + 6) / 2 - 1</button>
+              <button class="bod-eg" data-v="2 ** 3 + 4 * 5 - 6 / 2" style="padding:3px 9px;border-radius:5px;border:1px solid rgba(99,102,241,0.30);background:rgba(99,102,241,0.08);color:rgba(165,180,252,0.70);font-size:10px;font-family:JetBrains Mono,monospace;cursor:pointer;">2**3 + 4*5 - 6/2</button>
+              <button class="bod-eg" data-v="100 / (2 + 3) ** 2" style="padding:3px 9px;border-radius:5px;border:1px solid rgba(99,102,241,0.30);background:rgba(99,102,241,0.08);color:rgba(165,180,252,0.70);font-size:10px;font-family:JetBrains Mono,monospace;cursor:pointer;">100 / (2 + 3) ** 2</button>
+            </div>
+            <div id="bodOut" style="font-size:12.5px;line-height:1.9;"></div>
           </div>
           <script>
           (function(){
-            function evaluate(){
-              const expr=document.getElementById('bodInput').value.trim();
-              const el=document.getElementById('bodOut');
-              try{
-                // Safety: only allow numbers and operators
-                if(!/^[0-9+\-*/.^() **]+$/.test(expr.replace(/\s/g,'').replace(/\*\*/g,''))){
-                  el.innerHTML='<span style="color:#fca5a5;">Only numbers and + − * / ( ) ** allowed.</span>';return;
+            function fmt(n){ return Number.isInteger(n)?String(n):parseFloat(n.toPrecision(6)).toString(); }
+
+            // ── Tokeniser ──────────────────────────────────────────────────
+            function tokenise(str){
+              const tok=[];
+              let i=0;
+              while(i<str.length){
+                if(/\s/.test(str[i])){i++;continue;}
+                if(/[0-9.]/.test(str[i])){
+                  let n='';
+                  while(i<str.length&&/[0-9.]/.test(str[i]))n+=str[i++];
+                  tok.push({t:'NUM',v:parseFloat(n)});continue;
                 }
-                const result=Function('"use strict";return ('+expr+')')();
-                const steps=[
-                  {label:'B — Brackets first',color:'#f59e0b'},
-                  {label:'O — Orders (powers/roots)',color:'#a78bfa'},
-                  {label:'D/M — Division & Multiplication (left to right)',color:'#06b6d4'},
-                  {label:'A/S — Addition & Subtraction (left to right)',color:'#6ee7b7'},
-                ];
-                el.innerHTML=
-                  '<div style="color:rgba(221,225,240,0.40);font-size:11px;margin-bottom:6px;">BODMAS order of priority:</div>'+
-                  steps.map(s=>'<div style="color:'+s.color+';font-size:11px;">→ '+s.label+'</div>').join('')+
-                  '<div style="margin-top:10px;"><span style="color:rgba(221,225,240,0.45);">Result: </span><span style="color:#6ee7b7;font-size:16px;font-weight:700;">'+result+'</span></div>'+
-                  '<div style="font-size:10px;opacity:0.4;margin-top:2px;">Expression: '+expr+'</div>';
-              }catch(e){
-                el.innerHTML='<span style="color:#fca5a5;">Invalid expression. Use numbers, +, −, *, /, **, ( )</span>';
+                if(str[i]==='*'&&str[i+1]==='*'){tok.push({t:'POW'});i+=2;continue;}
+                if(str[i]==='*'){tok.push({t:'MUL'});i++;continue;}
+                if(str[i]==='/'){tok.push({t:'DIV'});i++;continue;}
+                if(str[i]==='+'){tok.push({t:'ADD'});i++;continue;}
+                if(str[i]==='-'){tok.push({t:'SUB'});i++;continue;}
+                if(str[i]==='('){tok.push({t:'LP'});i++;continue;}
+                if(str[i]===')'){tok.push({t:'RP'});i++;continue;}
+                if(str[i]==='^'){tok.push({t:'POW'});i++;continue;}
+                throw new Error('Unknown character: "'+str[i]+'"');
+              }
+              return tok;
+            }
+
+            // ── Parser (recursive descent) ─────────────────────────────────
+            function parse(tokens){
+              let p=0;
+              const peek=()=>tokens[p];
+              const eat=()=>tokens[p++];
+              const expect=t=>{const k=eat();if(!k||k.t!==t)throw new Error('Expected '+t);return k;};
+
+              function expr(){return addSub();}
+              function addSub(){
+                let l=mulDiv();
+                while(peek()&&(peek().t==='ADD'||peek().t==='SUB')){
+                  const op=eat().t;l={t:'bin',op,l,r:mulDiv()};
+                }return l;
+              }
+              function mulDiv(){
+                let l=pow();
+                while(peek()&&(peek().t==='MUL'||peek().t==='DIV')){
+                  const op=eat().t;l={t:'bin',op,l,r:pow()};
+                }return l;
+              }
+              function pow(){
+                let b=unary();
+                if(peek()&&peek().t==='POW'){eat();return{t:'bin',op:'POW',l:b,r:pow()};}
+                return b;
+              }
+              function unary(){
+                if(peek()&&peek().t==='SUB'){eat();return{t:'neg',a:unary()};}
+                return atom();
+              }
+              function atom(){
+                const k=peek();
+                if(!k)throw new Error('Unexpected end of expression');
+                if(k.t==='NUM'){eat();return{t:'num',v:k.v};}
+                if(k.t==='LP'){
+                  eat();const inner=expr();expect('RP');return{t:'par',inner};
+                }
+                throw new Error('Unexpected token: '+k.t);
+              }
+              const ast=expr();
+              if(p<tokens.length)throw new Error('Unexpected text after expression');
+              return ast;
+            }
+
+            // ── Pretty-printer ─────────────────────────────────────────────
+            function pretty(n){
+              if(n.t==='num') return n.v<0?'('+n.v+')':String(n.v);
+              if(n.t==='neg') return '-'+pretty(n.a);
+              if(n.t==='par') return '('+pretty(n.inner)+')';
+              if(n.t==='bin'){
+                const sym={ADD:'+',SUB:'−',MUL:'×',DIV:'÷',POW:'**'};
+                return pretty(n.l)+' '+sym[n.op]+' '+pretty(n.r);
               }
             }
+
+            // ── Evaluator (collects steps) ─────────────────────────────────
+            function ev(node,steps){
+              if(node.t==='num')  return node.v;
+              if(node.t==='neg')  return -ev(node.a,steps);
+              if(node.t==='par'){
+                const before=pretty(node.inner);
+                const val=ev(node.inner,steps);
+                if(before!==String(val))
+                  steps.push({lbl:'B',desc:'Brackets: ( '+before+' )  =  '+fmt(val),col:'#f59e0b'});
+                return val;
+              }
+              if(node.t==='bin'){
+                const l=ev(node.l,steps);
+                const r=ev(node.r,steps);
+                let res,lbl,desc,col;
+                if(node.op==='POW'){res=Math.pow(l,r);lbl='O';col='#a78bfa';
+                  desc='Orders (power): '+fmt(l)+' ** '+fmt(r)+'  =  '+fmt(res);}
+                else if(node.op==='MUL'){res=l*r;lbl='M';col='#06b6d4';
+                  desc='Multiplication: '+fmt(l)+' × '+fmt(r)+'  =  '+fmt(res);}
+                else if(node.op==='DIV'){
+                  if(r===0)throw new Error('Division by zero');
+                  res=l/r;lbl='D';col='#06b6d4';
+                  desc='Division: '+fmt(l)+' ÷ '+fmt(r)+'  =  '+fmt(res);}
+                else if(node.op==='ADD'){res=l+r;lbl='A';col='#6ee7b7';
+                  desc='Addition: '+fmt(l)+' + '+fmt(r)+'  =  '+fmt(res);}
+                else if(node.op==='SUB'){res=l-r;lbl='S';col='#6ee7b7';
+                  desc='Subtraction: '+fmt(l)+' − '+fmt(r)+'  =  '+fmt(res);}
+                steps.push({lbl,desc,col});
+                return res;
+              }
+            }
+
+            // ── Main evaluate function ──────────────────────────────────────
+            function evaluate(){
+              const raw=document.getElementById('bodInput').value.trim();
+              const el=document.getElementById('bodOut');
+              if(!raw){el.innerHTML='';return;}
+              // Normalise friendly symbols to JS operators
+              const expr=raw.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/\^/g,'**');
+              try{
+                const steps=[];
+                const result=ev(parse(tokenise(expr)),steps);
+                let html='<div style="color:rgba(221,225,240,0.38);font-size:11px;margin-bottom:10px;">'+
+                  'Expression: <span style="color:#fcd34d;">'+raw+'</span></div>';
+                if(steps.length===0){
+                  html+='<div style="color:rgba(221,225,240,0.50);">Single value — nothing to simplify.</div>';
+                } else {
+                  steps.forEach(s=>{
+                    html+='<div style="display:flex;gap:10px;align-items:baseline;margin-bottom:3px;">'
+                      +'<span style="font-family:Syne,sans-serif;font-weight:800;font-size:11px;color:'+s.col
+                      +';width:14px;flex-shrink:0;text-align:center;">'+s.lbl+'</span>'
+                      +'<span style="color:rgba(221,225,240,0.78);font-family:JetBrains Mono,monospace;font-size:12px;">'+s.desc+'</span>'
+                      +'</div>';
+                  });
+                }
+                html+='<div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);">'
+                  +'<span style="color:rgba(221,225,240,0.45);">Answer: </span>'
+                  +'<span style="color:#6ee7b7;font-size:17px;font-weight:700;font-family:JetBrains Mono,monospace;">'+fmt(result)+'</span>'
+                  +'</div>';
+                el.innerHTML=html;
+              }catch(e){
+                el.innerHTML='<span style="color:#fca5a5;">⚠ '+e.message+'. Use: numbers, + − * / ** ( )</span>';
+              }
+            }
+
             document.getElementById('bodCalc').addEventListener('click',evaluate);
             document.getElementById('bodInput').addEventListener('keydown',e=>{if(e.key==='Enter')evaluate();});
+            // Use event delegation on the parent so it works after innerHTML injection
+            document.getElementById('bodInput').closest('.def-box').addEventListener('click',function(e){
+              const btn=e.target.closest('.bod-eg');
+              if(btn){ document.getElementById('bodInput').value=btn.dataset.v; evaluate(); }
+            });
             evaluate();
           })();
           </script>
