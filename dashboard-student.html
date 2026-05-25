@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0f1e">
+  <title>My Progress — The Magic Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: #0a0f1e; color: #dde1f0;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 8%  5%,  rgba(99,102,241,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 95%  8%,  rgba(16,185,129,0.10) 0%, transparent 55%);
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 48px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-logo {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 20px;
+      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      text-decoration: none;
+    }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    /* ── Page header ── */
+    .page-header {
+      padding: 40px 48px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #a5b4fc; margin-bottom: 10px;
+    }
+    .page-title {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 32px;
+      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 6px;
+    }
+    .page-sub { font-size: 14px; color: rgba(221,225,240,0.45); }
+
+    /* ── Main layout ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 36px 48px 60px; }
+
+    /* ── Summary bar ── */
+    .summary-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 20px 22px;
+    }
+    .stat-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: rgba(221,225,240,0.35); margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 28px;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-sub { font-size: 11px; color: rgba(221,225,240,0.35); margin-top: 4px; }
+
+    /* ── Section heading ── */
+    .section-heading {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 14px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: rgba(221,225,240,0.40); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-heading::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* ── Tool progress cards ── */
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin-bottom: 40px; }
+
+    .tool-prog-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 22px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .tpc-header { display: flex; align-items: center; gap: 12px; }
+    .tpc-icon { font-size: 22px; }
+    .tpc-name {
+      font-family: "Syne", sans-serif; font-weight: 700; font-size: 16px; color: #e8eaf4;
+    }
+    .tpc-last {
+      font-size: 11px; color: rgba(221,225,240,0.35); margin-left: auto; white-space: nowrap;
+    }
+
+    /* Progress bar */
+    .prog-bar-wrap {
+      background: rgba(255,255,255,0.07); border-radius: 99px; height: 6px; overflow: hidden;
+    }
+    .prog-bar-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #4f46e5, #10b981);
+      transition: width 600ms ease;
+    }
+
+    /* Mini stats row */
+    .tpc-stats { display: flex; gap: 16px; }
+    .tpc-stat { display: flex; flex-direction: column; gap: 2px; }
+    .tpc-stat-val {
+      font-family: "JetBrains Mono", monospace; font-size: 16px; font-weight: 600; color: #e8eaf4;
+    }
+    .tpc-stat-lbl { font-size: 10px; color: rgba(221,225,240,0.35); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .tpc-launch {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.65);
+      text-decoration: none; font-size: 12px; font-weight: 600;
+      transition: all 140ms; align-self: flex-start;
+    }
+    .tpc-launch:hover { background: rgba(255,255,255,0.10); color: #e8eaf4; }
+
+    /* ── Activity feed ── */
+    .feed { display: flex; flex-direction: column; gap: 6px; }
+    .feed-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .feed-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .feed-text { font-size: 13px; color: rgba(221,225,240,0.75); flex: 1; }
+    .feed-time { font-family: "JetBrains Mono", monospace; font-size: 10px; color: rgba(221,225,240,0.30); }
+
+    /* ── Not-logged-in state ── */
+    #guest-state {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 80px 24px; text-align: center;
+    }
+    #guest-state h2 {
+      font-family: "Syne", sans-serif; font-weight: 800; font-size: 26px;
+      color: #e8eaf4; margin-bottom: 10px;
+    }
+    #guest-state p { font-size: 14px; color: rgba(221,225,240,0.45); max-width: 380px; line-height: 1.65; margin-bottom: 24px; }
+    .cta-btn {
+      padding: 12px 28px; border-radius: 12px; border: none;
+      background: linear-gradient(135deg, #4f46e5, #10b981);
+      color: #fff; font-family: "DM Sans", sans-serif;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(79,70,229,0.30);
+      transition: all 160ms;
+    }
+    .cta-btn:hover { box-shadow: 0 6px 24px rgba(79,70,229,0.45); transform: translateY(-1px); }
+
+    /* ── Class code section ── */
+    .class-panel {
+      background: rgba(99,102,241,0.06);
+      border: 1px solid rgba(99,102,241,0.18);
+      border-radius: 16px; padding: 22px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .class-panel-text { flex: 1; }
+    .class-panel-title { font-family: "Syne", sans-serif; font-weight: 700; font-size: 14px; color: #c7d2fe; margin-bottom: 4px; }
+    .class-panel-sub { font-size: 12px; color: rgba(199,210,254,0.55); }
+    .class-input-row { display: flex; gap: 8px; }
+    .class-input {
+      padding: 8px 12px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(99,102,241,0.30); border-radius: 8px;
+      color: #e8eaf4; font-family: "JetBrains Mono", monospace;
+      font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
+      outline: none; width: 120px;
+    }
+    .class-join-btn {
+      padding: 8px 16px; border-radius: 8px; border: none;
+      background: rgba(99,102,241,0.25); color: #c7d2fe;
+      font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all 140ms;
+    }
+    .class-join-btn:hover { background: rgba(99,102,241,0.40); }
+
+    #dashboard-state { display: none; }
+
+    @media (max-width: 640px) {
+      nav { padding: 12px 18px; }
+      .page-header { padding: 28px 18px 20px; }
+      main { padding: 24px 18px 48px; }
+      .summary-bar { grid-template-columns: repeat(2, 1fr); }
+      .page-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+    <div class="nav-right">
+      <a href="index.html" style="font-size:12px;color:rgba(221,225,240,0.45);text-decoration:none;">← All Tools</a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-eyebrow">📊 Learning Dashboard</div>
+    <div class="page-title" id="dash-greeting">My Progress</div>
+    <p class="page-sub" id="dash-sub">Sign in to see your progress across all tools.</p>
+  </div>
+
+  <main>
+
+    <!-- Guest state -->
+    <div id="guest-state">
+      <div style="font-size:56px;margin-bottom:16px;">🔮</div>
+      <h2>Track your learning journey</h2>
+      <p>Sign in or create a free account to save your progress across Java Genie, Web Wizard, Code Conjurer, Math Magician, and Computer Codex.</p>
+      <button class="cta-btn" onclick="window.MagicLabModal?.open('signup')">Create Free Account</button>
+    </div>
+
+    <!-- Dashboard state (hidden until logged in) -->
+    <div id="dashboard-state">
+
+      <!-- Summary stats -->
+      <div class="summary-bar" id="summary-bar">
+        <div class="stat-card">
+          <div class="stat-label">Tools Active</div>
+          <div class="stat-value" id="stat-tools">—</div>
+          <div class="stat-sub">of 5 tools</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Topics Done</div>
+          <div class="stat-value" id="stat-topics">—</div>
+          <div class="stat-sub">lessons completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Quiz Accuracy</div>
+          <div class="stat-value" id="stat-accuracy">—</div>
+          <div class="stat-sub">correct answers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Code Runs</div>
+          <div class="stat-value" id="stat-runs">—</div>
+          <div class="stat-sub">programs executed</div>
+        </div>
+      </div>
+
+      <!-- Join a class (students only) -->
+      <div class="class-panel" id="class-panel" style="display:none;">
+        <div class="class-panel-text">
+          <div class="class-panel-title">Join a class</div>
+          <div class="class-panel-sub">Enter the invite code your teacher gave you</div>
+        </div>
+        <div class="class-input-row">
+          <input class="class-input" id="class-code-input" placeholder="ABC12345" maxlength="8">
+          <button class="class-join-btn" id="class-join-btn">Join</button>
+        </div>
+        <div id="class-join-msg" style="font-size:12px;color:#6ee7b7;display:none;width:100%;margin-top:4px;"></div>
+      </div>
+
+      <!-- Tool progress cards -->
+      <div class="section-heading">Progress by tool</div>
+      <div class="tool-grid" id="tool-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Recent activity -->
+      <div class="section-heading">Recent activity</div>
+      <div class="feed" id="activity-feed">
+        <!-- Populated by JS -->
+      </div>
+
+    </div><!-- /dashboard-state -->
+  </main>
+
+  <!-- Auth scripts -->
+  <script src="auth.js"></script>
+  <script src="progress.js"></script>
+  <script src="auth-modal.js"></script>
+
+  <script>
+    // ── Tool metadata ────────────────────────────────────────
+    const TOOL_META = {
+      'java-genie':     { icon: '🧞', name: 'Java Genie',       url: 'java-genie.html',       color: '#4f46e5' },
+      'web-wizard':     { icon: '🧙', name: 'Web Wizard',       url: 'web-wizard.html',       color: '#0891b2' },
+      'code-conjurer':  { icon: '📖', name: 'Code Conjurer',    url: 'code-conjurer.html',    color: '#be123c' },
+      'math-magician':  { icon: '✨', name: 'Math Magician',    url: 'math-magician/index.html', color: '#b45309' },
+      'computer-codex': { icon: '💻', name: 'Computer Codex',   url: 'computer-codex.html',   color: '#475569' },
+    };
+
+    // ── Wait for both auth + progress to be ready ────────────
+    let authReady = false, progressReady = false;
+
+    document.addEventListener('magiclab:auth:ready', () => {
+      authReady = true;
+      if (progressReady) _tryLoad();
+    });
+    document.addEventListener('magiclab:progress:ready', () => {
+      progressReady = true;
+      if (authReady) _tryLoad();
+    });
+
+    async function _tryLoad() {
+      if (!window.MagicLabAuth?.isLoggedIn()) return; // guest state already showing
+      const profile = window.MagicLabAuth.getProfile();
+
+      // Update header
+      document.getElementById('dash-greeting').textContent =
+        `Hi, ${profile.display_name || 'there'} 👋`;
+      document.getElementById('dash-sub').textContent =
+        `Grade ${profile.grade || '—'} · ${profile.role} · ${profile.package} plan`;
+
+      // Show dashboard, hide guest
+      document.getElementById('guest-state').style.display = 'none';
+      document.getElementById('dashboard-state').style.display = '';
+
+      // Show class join panel for students
+      if (profile.role === 'student') {
+        document.getElementById('class-panel').style.display = 'flex';
+      }
+
+      // Load data in parallel
+      const [allProgress, recentEvents] = await Promise.all([
+        window.MagicLabProgress.getAllProgress(),
+        window.MagicLabProgress.getRecentEvents(15)
+      ]);
+
+      _renderSummary(allProgress);
+      _renderToolCards(allProgress);
+      _renderFeed(recentEvents);
+    }
+
+    // ── Render helpers ───────────────────────────────────────
+
+    function _renderSummary(progress) {
+      const tools    = progress.length;
+      const topics   = progress.reduce((s, r) => s + (r.topics_complete || 0), 0);
+      const correct  = progress.reduce((s, r) => s + (r.quiz_correct   || 0), 0);
+      const total    = progress.reduce((s, r) => s + (r.quiz_total     || 0), 0);
+      const runs     = progress.reduce((s, r) => s + (r.code_runs      || 0), 0);
+      const accuracy = total > 0 ? Math.round((correct / total) * 100) + '%' : '—';
+
+      document.getElementById('stat-tools').textContent    = tools;
+      document.getElementById('stat-topics').textContent   = topics;
+      document.getElementById('stat-accuracy').textContent = accuracy;
+      document.getElementById('stat-runs').textContent     = runs;
+    }
+
+    function _renderToolCards(progress) {
+      const grid = document.getElementById('tool-grid');
+      const progressMap = Object.fromEntries(progress.map(r => [r.tool, r]));
+
+      // Show all 5 tools, even those with no data yet
+      const tools = Object.keys(TOOL_META);
+      grid.innerHTML = tools.map(toolId => {
+        const meta = TOOL_META[toolId];
+        const row  = progressMap[toolId] || {};
+        const done = row.topics_complete || 0;
+        const total_topics = 20; // rough estimate — adjust per tool
+        const pct  = Math.min(100, Math.round((done / total_topics) * 100));
+        const qAcc = row.quiz_total > 0 ? Math.round((row.quiz_correct / row.quiz_total) * 100) : null;
+        const lastActive = row.last_active
+          ? new Date(row.last_active).toLocaleDateString('en-ZA', { month: 'short', day: 'numeric' })
+          : null;
+
+        return `
+          <div class="tool-prog-card">
+            <div class="tpc-header">
+              <span class="tpc-icon">${meta.icon}</span>
+              <span class="tpc-name">${meta.name}</span>
+              ${lastActive ? `<span class="tpc-last">${lastActive}</span>` : ''}
+            </div>
+            <div class="prog-bar-wrap">
+              <div class="prog-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${meta.color},#10b981)"></div>
+            </div>
+            <div class="tpc-stats">
+              <div class="tpc-stat">
+                <span class="tpc-stat-val">${done}</span>
+                <span class="tpc-stat-lbl">Lessons</span>
+              </div>
+              ${qAcc !== null ? `
+              <div class="tpc-stat">
+                <span class="tpc-stat-val">${qAcc}%</span>
+                <span class="tpc-stat-lbl">Quiz acc.</span>
+              </div>` : ''}
+              ${row.code_runs ? `
+              <div class="tpc-stat">
+                <span class="tpc-stat-val">${row.code_runs}</span>
+                <span class="tpc-stat-lbl">Code runs</span>
+              </div>` : ''}
+            </div>
+            <a href="${meta.url}" class="tpc-launch">
+              ${done > 0 ? 'Continue →' : 'Start →'}
+            </a>
+          </div>`;
+      }).join('');
+    }
+
+    function _renderFeed(events) {
+      const feed = document.getElementById('activity-feed');
+      if (!events.length) {
+        feed.innerHTML = '<p style="font-size:13px;color:rgba(221,225,240,0.30);padding:12px 0;">No activity yet — head to a tool to get started!</p>';
+        return;
+      }
+
+      const eventMeta = {
+        'lesson_complete': { color: '#6ee7b7', label: 'Completed lesson' },
+        'quiz_correct':    { color: '#6ee7b7', label: 'Quiz correct' },
+        'quiz_wrong':      { color: '#f87171', label: 'Quiz incorrect' },
+        'code_run':        { color: '#a5b4fc', label: 'Ran code' },
+        'example_loaded':  { color: '#fbbf24', label: 'Loaded example' },
+        'challenge_loaded':{ color: '#fbbf24', label: 'Loaded challenge' },
+        'topic_started':   { color: '#67e8f9', label: 'Started topic' },
+      };
+
+      feed.innerHTML = events.map(ev => {
+        const em = eventMeta[ev.event_type] || { color: '#94a3b8', label: ev.event_type };
+        const toolMeta = TOOL_META[ev.tool] || {};
+        const time = new Date(ev.created_at).toLocaleString('en-ZA', {
+          month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+        const topic = ev.topic ? ` — ${ev.topic}` : '';
+
+        return `
+          <div class="feed-item">
+            <div class="feed-dot" style="background:${em.color}"></div>
+            <span class="feed-text">
+              ${toolMeta.icon || ''} <strong>${toolMeta.name || ev.tool}</strong>:
+              ${em.label}${topic}
+            </span>
+            <span class="feed-time">${time}</span>
+          </div>`;
+      }).join('');
+    }
+
+    // ── Class join ───────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      const joinBtn = document.getElementById('class-join-btn');
+      if (joinBtn) {
+        joinBtn.addEventListener('click', async () => {
+          const code = document.getElementById('class-code-input').value.trim();
+          if (!code) return;
+          joinBtn.disabled = true; joinBtn.textContent = 'Joining…';
+          const { data, error } = await window.MagicLabAuth.joinClass(code);
+          joinBtn.disabled = false; joinBtn.textContent = 'Join';
+          const msg = document.getElementById('class-join-msg');
+          msg.style.display = 'block';
+          if (error) {
+            msg.style.color = '#f87171';
+            msg.textContent = error.message;
+          } else {
+            msg.style.color = '#6ee7b7';
+            msg.textContent = `✓ Joined ${data.name}!`;
+          }
+        });
+      }
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
