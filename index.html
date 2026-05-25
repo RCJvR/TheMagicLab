@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <script type="module" src="supabase.js"></script>
+  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; width: 100%; }
@@ -571,5 +571,22 @@
   </footer>
 
   <script>lucide.createIcons();</script>
+  <form id="login-form">
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <button type="submit">Login</button>
+</form>
+
+<script type="module">
+  import { signIn } from './supabase.js'
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    await signIn(email, password)
+  })
+</script>
+<script type="module" src="supabase.js"></script>
 </body>
 </html>
