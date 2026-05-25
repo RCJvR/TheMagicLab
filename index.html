@@ -1,5 +1,4 @@
 <!doctype html>
-<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -12,7 +11,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; width: 100%; }
@@ -344,47 +346,7 @@
       .section-label { padding: 0 16px; }
       footer { padding: 16px 18px; flex-direction: column; gap: 10px; text-align: center; }
     }
-  
-    .copyright-footer {
-      position: fixed;
-      right: 12px;
-      bottom: 8px;
-      z-index: 9999;
-      padding: 4px 10px;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 999px;
-      background: rgba(10,15,30,0.78);
-      color: rgba(221,225,240,0.68);
-      font-size: 11px;
-      font-weight: 600;
-      line-height: 1.35;
-      text-align: right;
-      pointer-events: none;
-      backdrop-filter: blur(10px);
-    }
-
-    @media (max-width: 640px) {
-      .copyright-footer {
-        right: 8px;
-        bottom: 6px;
-        max-width: calc(100% - 16px);
-        font-size: 10px;
-      }
-    }
-
-    .copyright-line {
-      order: 3;
-      margin-left: auto;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 640px) {
-      .copyright-line {
-        white-space: normal;
-      }
-    }
-</style>
+  </style>
 </head>
 <body>
 
@@ -396,6 +358,8 @@
       <a href="web-wizard.html" class="nav-link">Web Wizard</a>
       <a href="code-conjurer.html" class="nav-link">Code Conjurer</a>
       <a href="computer-codex.html" class="nav-link">Computer Codex</a>
+      <a href="dashboard-student.html" class="nav-link" style="color:#a5b4fc;border-color:rgba(99,102,241,0.30);">📊 My Progress</a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
     </div>
   </nav>
 
@@ -602,8 +566,7 @@
 
   <!-- Footer -->
   <footer>
-    <span class="copyright-line">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</span>
-    <span class="footer-text">⚗️ The Magic Lab — STEM Learning Tools</span>
+    <span class="footer-text">⚗️ The Magic Lab — STEM Learning Tools &nbsp;·&nbsp; © 2025 The Magic Lab. All rights reserved.</span>
     <div class="footer-links">
       <a href="java-genie.html"    class="footer-link">Java Genie</a>
       <a href="web-wizard.html"  class="footer-link">Web Wizard</a>
@@ -613,22 +576,5 @@
   </footer>
 
   <script>lucide.createIcons();</script>
-  <form id="login-form">
-  <input type="email" id="email" placeholder="Email" required>
-  <input type="password" id="password" placeholder="Password" required>
-  <button type="submit">Login</button>
-</form>
-
-<script type="module">
-  import { signIn } from './supabase.js'
-
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const email = document.getElementById('email').value
-    const password = document.getElementById('password').value
-    await signIn(email, password)
-  })
-</script>
-<script type="module" src="supabase.js"></script>
 </body>
 </html>
