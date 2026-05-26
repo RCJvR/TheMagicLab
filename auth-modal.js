@@ -156,13 +156,29 @@
 
     btn.disabled = true; btn.textContent = 'Signing in…';
     const { error } = await window.MagicLabAuth.signIn(email, password);
-    btn.disabled = false; btn.textContent = 'Sign In';
 
     if (error) {
+      btn.disabled = false; btn.textContent = 'Sign In';
       _showErr(signinErr(), _friendlyError(error.message));
     } else {
       _showOk(signinOk(), '✓ Signed in! Loading your progress…');
-      setTimeout(() => closeModal(), 1200);
+      // Wait for onAuthStateChange + profile fetch to settle before closing.
+      // A fixed setTimeout races against the async profile fetch and loses.
+      // Instead we wait for magiclab:auth:ready to fire with a valid profile.
+      const _onReady = (e) => {
+        if (!e.detail?.profile) return; // ignore spurious fires with null profile
+        document.removeEventListener('magiclab:auth:ready', _onReady);
+        _renderNavAuth(e.detail.profile);
+        closeModal();
+      };
+      document.addEventListener('magiclab:auth:ready', _onReady);
+      // Safety fallback: close after 5s regardless, so the modal never gets stuck
+      setTimeout(() => {
+        document.removeEventListener('magiclab:auth:ready', _onReady);
+        const profile = window.MagicLabAuth?.getProfile();
+        if (profile) _renderNavAuth(profile);
+        closeModal();
+      }, 5000);
     }
   });
 
@@ -189,7 +205,22 @@
     if (error) {
       _showErr(signupErr(), _friendlyError(error.message));
     } else {
-      _showOk(signupOk(), '✓ Account created! Check your email to confirm, then sign in.');
+      // With email confirmation off, signup immediately creates a session.
+      // Wait for the profile to be ready then close, same as sign-in.
+      _showOk(signupOk(), '✓ Account created! Signing you in…');
+      const _onReady = (e) => {
+        if (!e.detail?.profile) return;
+        document.removeEventListener('magiclab:auth:ready', _onReady);
+        _renderNavAuth(e.detail.profile);
+        closeModal();
+      };
+      document.addEventListener('magiclab:auth:ready', _onReady);
+      setTimeout(() => {
+        document.removeEventListener('magiclab:auth:ready', _onReady);
+        const profile = window.MagicLabAuth?.getProfile();
+        if (profile) _renderNavAuth(profile);
+        closeModal();
+      }, 5000);
     }
   });
 
@@ -214,33 +245,52 @@
     }
   });
 
-  // ── 11. Wire up nav button after auth is ready ────────────
+  // ── 11. Nav rendering ─────────────────────────────────────
+  // Listen for auth state changes and re-render the nav chip.
+  // We use MagicLabAuth.onAuthChange rather than the DOM event so we
+  // always get the final settled state after profile fetch completes.
   document.addEventListener('magiclab:auth:ready', ({ detail: { profile } }) => {
-    _renderNavAuth(profile);
+    // Only re-render if the modal is closed — if it's open we're mid-login
+    // and the sign-in handler above will call _renderNavAuth itself once done.
+    if (!overlay().classList.contains('ml-open')) {
+      _renderNavAuth(profile);
+    }
   });
 
   // Re-render whenever auth state changes
   document.addEventListener('DOMContentLoaded', () => {
-    // Also patch any existing nav auth buttons on the page
     const existing = document.querySelectorAll('[data-ml-auth]');
     existing.forEach(el => _wireAuthTrigger(el));
   });
 
   function _renderNavAuth(profile) {
+    // Use a stable wrapper approach instead of outerHTML replacement.
+    // outerHTML destroys the element reference, making subsequent
+    // querySelectorAll calls find a different node each time.
     const targets = document.querySelectorAll('[data-ml-auth]');
     targets.forEach(target => {
       if (profile) {
         const initials = profile.display_name
           ? profile.display_name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase()
           : profile.email[0].toUpperCase();
-
-        target.outerHTML = `
-          <div class="ml-user-chip" data-ml-auth>
-            <div class="ml-user-avatar">${initials}</div>
-            <span>${profile.display_name || profile.email.split('@')[0]}</span>
-            <button class="ml-signout-btn" onclick="MagicLabAuth.signOut().then(()=>location.reload())">Sign out</button>
-          </div>`;
+        // Replace content in-place rather than swapping the element itself
+        target.className = 'ml-user-chip';
+        target.onclick = null;
+        target.innerHTML = `
+          <div class="ml-user-avatar">${initials}</div>
+          <span>${profile.display_name || profile.email.split('@')[0]}</span>
+          <button class="ml-signout-btn" id="ml-signout-btn">Sign out</button>`;
+        // Wire sign-out separately so it doesn't rely on inline onclick
+        const soBtn = target.querySelector('#ml-signout-btn');
+        if (soBtn) {
+          soBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            await window.MagicLabAuth.signOut();
+            location.reload();
+          });
+        }
       } else {
+        target.className = 'ml-auth-btn';
         target.innerHTML = '🔐 Sign In';
         target.onclick = () => openModal('signin');
       }
