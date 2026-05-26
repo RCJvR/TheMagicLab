@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="auth-modal.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -510,6 +514,8 @@
       </button>
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
       <input type="file" id="fileInput" accept=".html,.htm,.css,.txt" class="hidden">
     </div>
   </header>
@@ -1476,7 +1482,16 @@ function refreshPreview() {
   previewFrame.src = url;
 }
 
-runButton.addEventListener('click', refreshPreview);
+runButton.addEventListener('click', () => {
+  refreshPreview();
+  // Track manual code run
+  if (window.MagicLabProgress) {
+    MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'code_run', {
+      grade: 8,
+      metadata: { chars: codeEditor.value.length, lines: codeEditor.value.split('\n').length }
+    });
+  }
+});
 resetButton.addEventListener('click', () => {
   codeEditor.value = examples.hello_world;
   updateLineNumbers(); updateHighlight();
@@ -1524,6 +1539,14 @@ document.querySelectorAll('.exampleLoader').forEach(btn => {
       updateLineNumbers(); updateHighlight();
       refreshPreview();
       editorTab.click();
+      // Track example loaded
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'example_loaded', {
+          grade: 8,
+          topic: key,
+          metadata: { key }
+        });
+      }
     }
   });
 });
@@ -1602,6 +1625,16 @@ document.addEventListener('mouseup', () => {
     const last = cur === total - 1;
     nextBtn.classList.toggle('hidden', last);
     finishBtn.classList.toggle('hidden', !last);
+    // Track topic started
+    if (window.MagicLabProgress) {
+      const slideEl = slides[i];
+      const slideTitle = slideEl?.querySelector('h2,h3')?.textContent?.trim() || `Lesson ${i + 1}`;
+      MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'topic_started', {
+        grade: 8,
+        topic: slideTitle,
+        metadata: { slide: i + 1, total }
+      });
+    }
   }
 
   function open() {
@@ -1641,6 +1674,14 @@ document.addEventListener('mouseup', () => {
           lb.innerHTML = '&#x1F4E5; ' + lb.textContent.replace('✓ Loaded!','Load example');
           lb.style.color = '';
         }, 1500);
+        // Track tutorial example loaded
+        if (window.MagicLabProgress) {
+          MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'example_loaded', {
+            grade: 8,
+            topic: key,
+            metadata: { key, source: 'tutorial', slide: cur + 1 }
+          });
+        }
       }
       if (lb.id === 'webTutFinishLoad') close();
     }
@@ -1653,9 +1694,27 @@ document.addEventListener('mouseup', () => {
       if (qb.dataset.correct === 'true') {
         qb.classList.add('correct');
         if (fb) { fb.textContent = '✅ Correct!'; fb.className = 'wt-feedback correct'; }
+        // Track quiz correct
+        if (window.MagicLabProgress) {
+          const slideTitle = slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Lesson ${cur + 1}`;
+          MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'quiz_correct', {
+            grade: 8, score: 1,
+            topic: slideTitle,
+            metadata: { slide: cur + 1, question: quiz.querySelector('p')?.textContent?.trim() }
+          });
+        }
       } else {
         qb.classList.add('wrong');
         if (fb) { fb.textContent = '❌ Not quite — try again!'; fb.className = 'wt-feedback wrong'; }
+        // Track quiz wrong
+        if (window.MagicLabProgress) {
+          const slideTitle = slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Lesson ${cur + 1}`;
+          MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'quiz_wrong', {
+            grade: 8, score: 0,
+            topic: slideTitle,
+            metadata: { slide: cur + 1, question: quiz.querySelector('p')?.textContent?.trim() }
+          });
+        }
       }
     }
   });

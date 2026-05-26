@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -461,6 +465,8 @@
     <div class="header-actions">
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
       <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
     </div>
   </header>
@@ -918,6 +924,10 @@ doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -1342,6 +1352,8 @@ doctype html>
     <div class="header-actions">
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
       <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
     </div>
   </header>
@@ -2195,6 +2207,16 @@ async function runCode() {
     // Try to get main scope vars — best effort
     updateInspector(interp._lastEnv);
 
+    // Track code run
+    if (window.MagicLabProgress) {
+      const les = LESSONS[lessonGrade]?.[lessonIndex];
+      MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'code_run', {
+        grade: lessonGrade,
+        topic: les?.title || null,
+        metadata: { lines: codeEditor.value.split('\n').filter(l => l.trim()).length }
+      });
+    }
+
   } catch (e) {
     if (printBuf) { conPrint(printBuf); printBuf = ''; }
     inputRow.classList.add('hidden'); inputResolve = null;
@@ -2257,6 +2279,14 @@ document.querySelectorAll('.exampleLoader').forEach(btn => {
       editorTab.click();
       clearConsole();
       conPrint('Example loaded — press Run.', 'con-info');
+      // Track example loaded
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'example_loaded', {
+          grade: lessonGrade,
+          topic: key,
+          metadata: { key }
+        });
+      }
     }
   });
 });
@@ -2738,7 +2768,19 @@ function buildSidebar() {
   });
   lessonSidebar.innerHTML = html;
   lessonSidebar.querySelectorAll('.les-item').forEach(item =>
-    item.addEventListener('click', () => { lessonIndex = parseInt(item.dataset.idx); renderLesson(); })
+    item.addEventListener('click', () => {
+      lessonIndex = parseInt(item.dataset.idx);
+      renderLesson();
+      // Track topic started
+      if (window.MagicLabProgress) {
+        const les = LESSONS[lessonGrade]?.[lessonIndex];
+        if (les) MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'topic_started', {
+          grade: lessonGrade,
+          topic: les.title,
+          metadata: { unit: les.unit, lessonIndex }
+        });
+      }
+    })
   );
 }
 
@@ -2770,6 +2812,14 @@ function renderLesson() {
     editorTab.click();
     clearConsole();
     conPrint(`Loaded: ${les.title} — press Run!`, 'con-info');
+    // Track lesson example loaded into editor
+    if (window.MagicLabProgress) {
+      MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'example_loaded', {
+        grade: lessonGrade,
+        topic: les.title,
+        metadata: { unit: les.unit, lessonIndex, source: 'lesson' }
+      });
+    }
   });
 
   lesPrev.style.visibility = lessonIndex === 0 ? 'hidden' : 'visible';
@@ -2808,6 +2858,15 @@ lesGradeBtns.forEach(btn => {
     lesGradeBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     renderLesson();
+    // Track first topic of new grade as started
+    if (window.MagicLabProgress) {
+      const les = LESSONS[lessonGrade]?.[0];
+      if (les) MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'topic_started', {
+        grade: lessonGrade,
+        topic: les.title,
+        metadata: { unit: les.unit, lessonIndex: 0 }
+      });
+    }
   });
 });
 
@@ -2820,6 +2879,15 @@ lesPrev.addEventListener('click', () => {
 lesNext.addEventListener('click', () => {
   completedLessons[lessonGrade].add(lessonIndex);
   const lessons = LESSONS[lessonGrade];
+  // Track lesson complete
+  if (window.MagicLabProgress) {
+    const les = lessons[lessonIndex];
+    if (les) MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'lesson_complete', {
+      grade: lessonGrade,
+      topic: les.title,
+      metadata: { unit: les.unit, lessonIndex }
+    });
+  }
   if (lessonIndex < lessons.length - 1) {
     lessonIndex++;
     renderLesson();

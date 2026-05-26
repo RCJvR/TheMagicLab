@@ -11,6 +11,10 @@
   <meta name="apple-mobile-web-app-title" content="Java Genie">
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="auth-modal.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <script src="/_sdk/data_sdk.js"></script>
@@ -772,6 +776,8 @@
       </button>
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload" style="width:13px;height:13px;"></i> Load</button>
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
       <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
     </div>
   </header>
@@ -3232,7 +3238,13 @@ function clearOutput(msg) {
 }
 
 function resetTurtle(clearPaths = true) {
-  if (clearPaths) pathLayer.innerHTML = "";
+  if (clearPaths) {
+    pathLayer.innerHTML = "";
+    // Reset path-batch state so the next drawLine starts fresh
+    _activePath = null;
+    _activePen  = null;
+    _activeD    = '';
+  }
   turtle = makeTurtle();
   updateTurtleVisual();
 }
@@ -3245,14 +3257,42 @@ function updateTurtleVisual() {
   penReadout.style.color = turtle.penDown ? "rgba(110,231,183,0.85)" : "rgba(252,211,77,0.85)";
 }
 
+// ── Path-batching renderer ────────────────────────────────────────────────────
+// Instead of one <line> element per step (which tanks desktop perf as the DOM
+// grows), we maintain one <path> per unique stroke style and keep appending
+// "L x y" segments to its `d` attribute.  Switching colour/width starts a new
+// path element but the total node count stays tiny regardless of step count.
+let _activePath   = null;   // current <path> element
+let _activePen    = null;   // "r,g,b,w" key for the active path
+let _activeD      = '';     // accumulated `d` string for the active path
+
+function _flushPath() {
+  if (_activePath && _activeD) {
+    _activePath.setAttribute('d', _activeD);
+  }
+}
+
 function drawLine(x1, y1, x2, y2, r, g, b, w) {
-  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  line.setAttribute("x1", x1); line.setAttribute("y1", y1);
-  line.setAttribute("x2", x2); line.setAttribute("y2", y2);
-  line.setAttribute("stroke", `rgb(${r},${g},${b})`);
-  line.setAttribute("stroke-width", String(w));
-  line.setAttribute("stroke-linecap", "round");
-  pathLayer.appendChild(line);
+  const key = `${r},${g},${b},${w}`;
+  if (key !== _activePen) {
+    // Commit the previous path and start a fresh one
+    _flushPath();
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('stroke', `rgb(${r},${g},${b})`);
+    p.setAttribute('stroke-width', String(w));
+    p.setAttribute('stroke-linecap', 'round');
+    p.setAttribute('fill', 'none');
+    pathLayer.appendChild(p);
+    _activePath = p;
+    _activePen  = key;
+    _activeD    = `M ${x1} ${y1} L ${x2} ${y2}`;
+  } else {
+    _activeD += ` L ${x2} ${y2}`;
+  }
+  // Batch DOM writes: only flush to the attribute every N segments or when
+  // we're about to yield to the browser (handled in executeCommands).
+  // For correctness during stop/reset we also flush lazily here every 50 segs.
+  if ((_activeD.match(/L/g) || []).length % 50 === 0) _flushPath();
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -3680,37 +3720,67 @@ async function executeCommands(commands) {
   runButton.disabled = true;
   stopButton.classList.remove("hidden");
 
-  const msPerAction = () => Math.max(0, 1000 / globalSpeed);
-  // Batch move() commands at high speed for performance
-  const SILENT_THRESHOLD = 20; // don't log every single move() when speed is high
+  // At high speeds we batch multiple steps per animation frame rather than
+  // firing a setTimeout for every single step.  This keeps the browser's
+  // paint cycle in control and prevents setTimeout queue pile-up.
+  // At low speeds (≤ 20 actions/sec) we keep the original step-by-step feel.
+  const HIGH_SPEED_THRESHOLD = 20; // actions/sec above which we switch to rAF batching
+  let lastVisualUpdate = 0;        // timestamp of last turtle readout update
+
+  // Helper: yield to the browser via rAF (one frame).
+  function rafYield() {
+    return new Promise(resolve => requestAnimationFrame(resolve));
+  }
 
   for (let i = 0; i < commands.length; i++) {
-    if (stopRequested) { addOutput("Stopped.", "warning"); break; }
+    if (stopRequested) { _flushPath(); addOutput("Stopped.", "warning"); break; }
     const cmd = commands[i];
 
     if (cmd.type === "move") {
-      // Batch consecutive moves silently at high speed
+      // Consume all consecutive move() commands in one block.
+      const speed = globalSpeed;
+      const useRaf = speed > HIGH_SPEED_THRESHOLD;
+
+      // How many steps to process per animation frame at this speed
+      // (target ~60fps; each frame ≈ 16ms → steps = speed/60 * … )
+      // At speed=100 we do ~10 steps/frame; at speed=21 ~1 step/frame.
+      const stepsPerFrame = useRaf ? Math.max(1, Math.round(speed / 60)) : 1;
+      let frameStepCount = 0;
+
       while (i < commands.length && commands[i].type === "move") {
-        const rad  = turtle.direction * Math.PI / 180;
-        const prevX = turtle.x;
-        const prevY = turtle.y;
-        // 1. Update turtle position first
+        if (stopRequested) break;
+        const rad   = turtle.direction * Math.PI / 180;
+        const prevX = turtle.x, prevY = turtle.y;
         turtle.x = prevX + Math.cos(rad);
         turtle.y = prevY + Math.sin(rad);
-        // 2. Draw line from previous to new position (tip now matches turtle)
         if (turtle.penDown) {
-          drawLine(prevX, prevY, turtle.x, turtle.y, turtle.colorR, turtle.colorG, turtle.colorB, turtle.lineWidth);
+          drawLine(prevX, prevY, turtle.x, turtle.y,
+                   turtle.colorR, turtle.colorG, turtle.colorB, turtle.lineWidth);
         }
-        // 3. Render turtle at its new position — always in sync with line tip
         i++;
-        const delay = msPerAction();
-        if (delay > 0) {
+        frameStepCount++;
+
+        if (useRaf) {
+          if (frameStepCount >= stepsPerFrame) {
+            // Flush the path and yield one frame
+            _flushPath();
+            const ts = await rafYield();
+            // Throttle turtle readout to ~30fps to avoid layout thrashing
+            if (ts - lastVisualUpdate > 32) {
+              updateTurtleVisual();
+              lastVisualUpdate = ts;
+            }
+            frameStepCount = 0;
+          }
+        } else {
+          // Slow-speed mode: one step per setTimeout tick (original feel)
+          _flushPath();
           updateTurtleVisual();
-          await sleep(delay);
+          await sleep(1000 / speed);
         }
-        if (stopRequested) break;
       }
-      i--; // back up one since outer loop will increment
+      i--; // back up — outer loop will increment
+      _flushPath();
       updateTurtleVisual();
       if (turtle.x < 0 || turtle.x > CANVAS_W || turtle.y < 0 || turtle.y > CANVAS_H) {
         addOutput("Hint: pen moved outside the board.", "warning");
@@ -3720,31 +3790,42 @@ async function executeCommands(commands) {
 
     // Non-move commands: log and execute
     addOutput(`▶ ${escapeHtml(cmd.source)}`, "command");
+    const delay = globalSpeed > HIGH_SPEED_THRESHOLD ? 0 : Math.max(0, 1000 / globalSpeed);
 
     if (cmd.type === "turn") {
       turtle.direction += cmd.value;
       updateTurtleVisual();
-      await sleep(msPerAction());
+      if (delay > 0) await sleep(delay); else await rafYield();
     }
     if (cmd.type === "direction") {
       turtle.direction = cmd.value;
       updateTurtleVisual();
-      await sleep(msPerAction());
+      if (delay > 0) await sleep(delay); else await rafYield();
     }
-    if (cmd.type === "color")     { turtle.colorR = cmd.r; turtle.colorG = cmd.g; turtle.colorB = cmd.b; }
-    if (cmd.type === "linewidth") { turtle.lineWidth = cmd.value; }
+    if (cmd.type === "color")     { turtle.colorR = cmd.r; turtle.colorG = cmd.g; turtle.colorB = cmd.b;
+                                    // New colour = new path segment
+                                    _flushPath(); _activePath = null; _activePen = null; _activeD = ''; }
+    if (cmd.type === "linewidth") { turtle.lineWidth = cmd.value;
+                                    _flushPath(); _activePath = null; _activePen = null; _activeD = ''; }
     if (cmd.type === "position")  {
+      // penUp movement breaks the current path
+      _flushPath(); _activePath = null; _activePen = null; _activeD = '';
       turtle.x = cmd.x; turtle.y = cmd.y;
       updateTurtleVisual();
-      await sleep(msPerAction());
+      if (delay > 0) await sleep(delay); else await rafYield();
     }
-    if (cmd.type === "pen")  { turtle.penDown = cmd.value; updateTurtleVisual(); }
+    if (cmd.type === "pen")  {
+      turtle.penDown = cmd.value;
+      if (!cmd.value) { _flushPath(); _activePath = null; _activePen = null; _activeD = ''; }
+      updateTurtleVisual();
+    }
     if (cmd.type === "gridsize") {
       applyGridSize(cmd.w, cmd.h);
       resetTurtle(true);
     }
   }
 
+  _flushPath();
   if (!stopRequested) addOutput("✓ Great work! Code finished.", "success");
   isRunning = false;
   runButton.disabled = false;
@@ -3764,6 +3845,13 @@ function runCode() {
     return;
   }
   clearOutput("No errors. Running…");
+  // Track code run
+  if (window.MagicLabProgress) {
+    MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'code_run', {
+      grade: 8,
+      metadata: { lines: codeEditor.value.split('\n').filter(l => l.trim()).length }
+    });
+  }
   executeCommands(parsed.commands);
 }
 
@@ -3800,6 +3888,14 @@ function loadExampleIntoEditor(key, message = "Example loaded — press Run code
   updateLineNumbers();
   updateHighlight();
   codeEditor.focus();
+  // Track example loaded
+  if (window.MagicLabProgress) {
+    MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'example_loaded', {
+      grade: 8,
+      topic: key,
+      metadata: { key }
+    });
+  }
   return true;
 }
 
@@ -3890,6 +3986,14 @@ fileInput.addEventListener("change", e => {
     if (!btn) return;
     e.preventDefault();
     if (loadExampleIntoEditor(btn.dataset.example, 'Challenge starter loaded — edit it, then press Run code.')) {
+      // Track challenge loaded
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'challenge_loaded', {
+          grade: 8,
+          topic: btn.dataset.example,
+          metadata: { key: btn.dataset.example }
+        });
+      }
       closeChallenges();
     }
   });
@@ -4147,6 +4251,16 @@ fileInput.addEventListener("change", e => {
     tutNext.classList.toggle('hidden', isLast);
     if (tutTryBtn) tutTryBtn.classList.toggle('hidden', !isLast);
     loadSlideCode(cur);
+    // Track tutorial slide as topic_started
+    if (window.MagicLabProgress) {
+      const slideEl = slides[index];
+      const slideTitle = slideEl?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${index + 1}`;
+      MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'topic_started', {
+        grade: 8,
+        topic: slideTitle,
+        metadata: { slide: index + 1, total }
+      });
+    }
   }
 
   // ── Open / close ────────────────────────────────────────────────────────
@@ -4268,10 +4382,26 @@ fileInput.addEventListener("change", e => {
         btn.classList.add('quiz-correct');
         btn.style.outline = '2px solid #34d399';
         if (feedback) { feedback.textContent = '✅ Correct!'; feedback.className = 'quiz-feedback quiz-correct'; }
+        // Track correct
+        if (window.MagicLabProgress) {
+          MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'quiz_correct', {
+            grade: 8, score: 1,
+            topic: slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${cur + 1}`,
+            metadata: { slide: cur + 1, question: quiz.querySelector('p,h4')?.textContent?.trim() }
+          });
+        }
       } else {
         btn.classList.add('quiz-wrong');
         btn.style.outline = '2px solid #ef4444';
         if (feedback) { feedback.textContent = '❌ Not quite — try again!'; feedback.className = 'quiz-feedback quiz-wrong'; }
+        // Track wrong
+        if (window.MagicLabProgress) {
+          MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'quiz_wrong', {
+            grade: 8, score: 0,
+            topic: slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${cur + 1}`,
+            metadata: { slide: cur + 1, question: quiz.querySelector('p,h4')?.textContent?.trim() }
+          });
+        }
       }
       return;
     }
@@ -4285,9 +4415,25 @@ fileInput.addEventListener("change", e => {
       if (opt.dataset.correct === 'true') {
         opt.classList.add('correct');
         if (feedback) { feedback.textContent = '✅ Correct! The outer loop draws the 4 sides.'; feedback.style.color = '#6ee7b7'; }
+        // Track correct
+        if (window.MagicLabProgress) {
+          MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'quiz_correct', {
+            grade: 8, score: 1,
+            topic: slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${cur + 1}`,
+            metadata: { slide: cur + 1, type: 'quiz-option' }
+          });
+        }
       } else {
         opt.classList.add('wrong');
         if (feedback) { feedback.textContent = '❌ Not quite. Think about what the outer loop controls.'; feedback.style.color = '#fca5a5'; }
+        // Track wrong
+        if (window.MagicLabProgress) {
+          MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'quiz_wrong', {
+            grade: 8, score: 0,
+            topic: slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${cur + 1}`,
+            metadata: { slide: cur + 1, type: 'quiz-option' }
+          });
+        }
       }
     }
   });
