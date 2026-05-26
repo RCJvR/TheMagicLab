@@ -302,19 +302,29 @@
     };
 
     // ── Wait for both auth + progress to be ready ────────────
+    // These two events can fire in either order depending on how quickly
+    // Supabase restores the session, so we try to load whenever either fires
+    // and bail out early if the other half isn't ready yet.
     let authReady = false, progressReady = false;
 
     document.addEventListener('magiclab:auth:ready', () => {
       authReady = true;
-      if (progressReady) _tryLoad();
+      _tryLoad();
     });
     document.addEventListener('magiclab:progress:ready', () => {
       progressReady = true;
-      if (authReady) _tryLoad();
+      _tryLoad();
     });
 
     async function _tryLoad() {
-      if (!window.MagicLabAuth?.isLoggedIn()) return; // guest state already showing
+      // Wait until both SDKs are initialised
+      if (!authReady || !progressReady) return;
+      // Guest: make sure guest state is visible and dashboard is hidden
+      if (!window.MagicLabAuth?.isLoggedIn()) {
+        document.getElementById('guest-state').style.display = '';
+        document.getElementById('dashboard-state').style.display = 'none';
+        return;
+      }
       const profile = window.MagicLabAuth.getProfile();
 
       // Update header
@@ -347,10 +357,10 @@
 
     function _renderSummary(progress) {
       const tools    = progress.length;
-      const topics   = progress.reduce((s, r) => s + (r.topics_complete || 0), 0);
-      const correct  = progress.reduce((s, r) => s + (r.quiz_correct   || 0), 0);
-      const total    = progress.reduce((s, r) => s + (r.quiz_total     || 0), 0);
-      const runs     = progress.reduce((s, r) => s + (r.code_runs      || 0), 0);
+      const topics   = progress.reduce((s, r) => s + (r.topics_complete ?? r.lessons_complete ?? 0), 0);
+      const correct  = progress.reduce((s, r) => s + (r.quiz_correct   ?? 0), 0);
+      const total    = progress.reduce((s, r) => s + (r.quiz_total     ?? 0), 0);
+      const runs     = progress.reduce((s, r) => s + (r.code_runs      ?? 0), 0);
       const accuracy = total > 0 ? Math.round((correct / total) * 100) + '%' : '—';
 
       document.getElementById('stat-tools').textContent    = tools;
@@ -361,6 +371,9 @@
 
     function _renderToolCards(progress) {
       const grid = document.getElementById('tool-grid');
+
+      // getAllProgress() returns tool_progress view rows.
+      // Guard against field name variants gracefully.
       const progressMap = Object.fromEntries(progress.map(r => [r.tool, r]));
 
       // Show all 5 tools, even those with no data yet
@@ -368,10 +381,14 @@
       grid.innerHTML = tools.map(toolId => {
         const meta = TOOL_META[toolId];
         const row  = progressMap[toolId] || {};
-        const done = row.topics_complete || 0;
-        const total_topics = 20; // rough estimate — adjust per tool
-        const pct  = Math.min(100, Math.round((done / total_topics) * 100));
-        const qAcc = row.quiz_total > 0 ? Math.round((row.quiz_correct / row.quiz_total) * 100) : null;
+        // Support both field name variants
+        const done       = row.topics_complete ?? row.lessons_complete ?? 0;
+        const total_topics = 20; // rough estimate per tool
+        const pct        = Math.min(100, Math.round((done / total_topics) * 100));
+        const qCorrect   = row.quiz_correct ?? 0;
+        const qTotal     = row.quiz_total   ?? 0;
+        const qAcc       = qTotal > 0 ? Math.round((qCorrect / qTotal) * 100) : null;
+        const codeRuns   = row.code_runs ?? 0;
         const lastActive = row.last_active
           ? new Date(row.last_active).toLocaleDateString('en-ZA', { month: 'short', day: 'numeric' })
           : null;
@@ -396,9 +413,9 @@
                 <span class="tpc-stat-val">${qAcc}%</span>
                 <span class="tpc-stat-lbl">Quiz acc.</span>
               </div>` : ''}
-              ${row.code_runs ? `
+              ${codeRuns ? `
               <div class="tpc-stat">
-                <span class="tpc-stat-val">${row.code_runs}</span>
+                <span class="tpc-stat-val">${codeRuns}</span>
                 <span class="tpc-stat-lbl">Code runs</span>
               </div>` : ''}
             </div>
