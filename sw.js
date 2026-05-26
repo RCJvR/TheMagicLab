@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v8'; // bumped from v7 → forces cache refresh
+const CACHE_NAME = 'magic-lab-v9'; // bumped from v8 → forces cache refresh
 
 const urlsToCache = [
   '/',
