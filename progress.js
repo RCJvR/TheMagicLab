@@ -56,24 +56,32 @@ window.ML_TOOLS = TOOLS;
  *   });
  */
 async function track(tool, eventType, options = {}) {
-  // Silently do nothing if not logged in — don't break tool UX
+  // Silently do nothing if not logged in
   if (!window.MagicLabAuth?.isLoggedIn()) return;
 
   const supabase = window.MagicLabAuth._supabase();
   const profile  = window.MagicLabAuth.getProfile();
+  const session  = window.MagicLabAuth.getSession();
+
+  // Fall back to session user ID if profile fetch failed (e.g. RLS issue)
+  const userId = profile?.id ?? session?.user?.id;
+  if (!userId) {
+    console.warn('[MagicLab] Cannot track — no user ID available');
+    return;
+  }
 
   try {
-    await supabase.from('progress_events').insert({
-      user_id:    profile.id,
+    const { error } = await supabase.from('progress_events').insert({
+      user_id:    userId,
       tool,
       event_type: eventType,
       topic:      options.topic    ?? null,
-      grade:      options.grade    ?? profile.grade ?? null,
+      grade:      options.grade    ?? profile?.grade ?? null,
       score:      options.score    ?? null,
       metadata:   options.metadata ?? {}
     });
+    if (error) console.warn('[MagicLab] Progress insert error:', error.message);
   } catch (e) {
-    // Never crash the tool — just log quietly
     console.warn('[MagicLab] Progress tracking failed:', e.message);
   }
 }
