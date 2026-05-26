@@ -198,6 +198,22 @@
   overlay().addEventListener('click', (e) => { if (e.target === overlay()) closeModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
+  // ── 10b. Enter key submits the active form ─────────────────
+  // Attached to document (not overlay) so the element is guaranteed to exist.
+  // Guard with ml-open so it only fires when the modal is actually visible.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    if (!overlay().classList.contains('ml-open')) return;
+    if (e.target.tagName === 'BUTTON') return;
+    if (e.target.tagName === 'TEXTAREA') return;
+    e.preventDefault();
+    if (_activeTab === 'signin') {
+      document.getElementById('ml-btn-signin').click();
+    } else {
+      document.getElementById('ml-btn-signup').click();
+    }
+  });
+
   // ── 11. Wire up nav button after auth is ready ────────────
   document.addEventListener('magiclab:auth:ready', ({ detail: { profile } }) => {
     _renderNavAuth(profile);
