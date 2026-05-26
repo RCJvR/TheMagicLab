@@ -65,15 +65,42 @@ async function _initAuth() {
 async function _handleSession(session) {
   _session = session;
   if (session?.user) {
-    const { data } = await _supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', session.user.id)
-      .single();
-    _profile = data;
+    try {
+      const { data, error } = await _supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.warn('[MagicLab] Profile fetch error:', error.message);
+        _profile = _fallbackProfile(session.user);
+      } else if (!data) {
+        // No row yet — insert one on the fly then use the fallback
+        const fb = _fallbackProfile(session.user);
+        await _supabase.from('profiles').insert(fb);
+        _profile = fb;
+      } else {
+        _profile = data;
+      }
+    } catch (e) {
+      console.warn('[MagicLab] Profile fetch exception:', e.message);
+      _profile = _fallbackProfile(session.user);
+    }
   } else {
     _profile = null;
   }
+}
+
+function _fallbackProfile(user) {
+  return {
+    id:           user.id,
+    email:        user.email,
+    display_name: user.user_metadata?.display_name || user.email.split('@')[0],
+    role:         user.user_metadata?.role || 'student',
+    grade:        null,
+    package:      'free'
+  };
 }
 
 // ── Public API ───────────────────────────────────────────────
