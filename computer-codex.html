@@ -3749,6 +3749,25 @@ function toggleQuiz(btn) {
 
 // ── Init ──────────────────────────────────────────────────────────────────
 renderLesson();
+
+// ── Restore completed lessons from Supabase on page load ──────────────────
+// getLessonHistory returns a Set of topic title strings previously saved via
+// lesson_complete events. We map them back to lesson indices to restore ticks.
+async function _restoreProgress() {
+  if (!window.MagicLabProgress) return;
+  const history = await MagicLabProgress.getLessonHistory(ML_TOOLS.COMPUTER_CODEX);
+  if (!history.size) return;
+  LESSONS.forEach((les, i) => {
+    if (history.has(les.title)) completed.add(i);
+  });
+  buildSidebar();
+  updateProgress();
+}
+
+// magiclab:progress:ready fires once auth + progress SDK are both initialised
+document.addEventListener('magiclab:progress:ready', _restoreProgress);
+// Also handle the case where the SDK was already ready before this ran
+if (window.MagicLabProgress) _restoreProgress();
 </script>
   <footer class="copyright-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
