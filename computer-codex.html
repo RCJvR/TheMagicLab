@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../auth-modal.css">
+  <script defer src="../auth.js"></script>
+  <script defer src="../progress.js"></script>
+  <script defer src="../auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -442,6 +446,8 @@
     <span class="grade-badge">Grade 8 – 10</span>
     <div class="header-right">
       <span class="progress-text" id="headerProgress">Lesson 1 of 20</span>
+      <a href="../dashboard-student.html" class="home-btn" style="color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:12px;height:12px;"></i></a>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
     </div>
   </header>
 
@@ -2525,6 +2531,830 @@ const LESSONS = [
 </div>`
 }
 
+
+,
+
+// ─── UNIT 6: COMPUTATIONAL THINKING ──────────────────────────────────────────
+
+{
+  unit: "Unit 6 — Computational Thinking",
+  title: "What is Computational Thinking?",
+  subtitle: "The four pillars of thinking like a computer scientist",
+  content: `
+<p><strong>Computational Thinking</strong> is a problem-solving approach used by programmers and computer scientists to break down complex problems so that a computer — or a human — can solve them step by step. It is not about using a computer; it is about <em>thinking</em> in a structured, logical way.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">The Four Pillars of Computational Thinking</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div style="background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:14px;">
+      <div style="font-size:22px;margin-bottom:6px;">🔍</div>
+      <div style="font-size:13px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">Decomposition</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Breaking a big problem into smaller, manageable sub-problems.</div>
+    </div>
+    <div style="background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px;">
+      <div style="font-size:22px;margin-bottom:6px;">🔎</div>
+      <div style="font-size:13px;font-weight:700;color:#6ee7b7;margin-bottom:4px;">Pattern Recognition</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Finding similarities and trends within or across problems.</div>
+    </div>
+    <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:14px;">
+      <div style="font-size:22px;margin-bottom:6px;">🧩</div>
+      <div style="font-size:13px;font-weight:700;color:#fcd34d;margin-bottom:4px;">Abstraction</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Focusing only on the important details and ignoring irrelevant information.</div>
+    </div>
+    <div style="background:rgba(236,72,153,0.10);border:1px solid rgba(236,72,153,0.25);border-radius:10px;padding:14px;">
+      <div style="font-size:22px;margin-bottom:6px;">📋</div>
+      <div style="font-size:13px;font-weight:700;color:#f9a8d4;margin-bottom:4px;">Algorithm Design</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Creating a step-by-step set of instructions to solve the problem.</div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="lightbulb" style="width:14px;height:14px;"></i> A Real-Life Example: Making a Sandwich</h3>
+<p>Even something as simple as making a sandwich requires computational thinking:</p>
+<ul>
+  <li><strong>Decomposition:</strong> Get bread → get filling → spread → assemble → cut</li>
+  <li><strong>Pattern Recognition:</strong> You have made a sandwich before — the process is the same each time</li>
+  <li><strong>Abstraction:</strong> You do not think about how bread is made — just that you need it</li>
+  <li><strong>Algorithm Design:</strong> You follow steps in a specific order to produce the result</li>
+</ul>
+
+<div class="callout tip"><strong>Key insight:</strong> Computational thinking is a skill used in programming, mathematics, science, engineering — and everyday life. It helps you approach any complex problem systematically.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: What is Computational Thinking?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Knowing how to type fast on a computer</button>
+    <button class="quiz-opt" data-correct="true">A problem-solving approach that breaks down complex problems into steps a computer or human can solve</button>
+    <button class="quiz-opt" data-correct="false">Using a calculator to solve maths problems</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Which pillar involves breaking a big problem into smaller parts?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Abstraction</button>
+    <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="true">Decomposition</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Abstraction means:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Writing a list of steps to solve a problem</button>
+    <button class="quiz-opt" data-correct="true">Focusing only on relevant details and ignoring unnecessary information</button>
+    <button class="quiz-opt" data-correct="false">Finding patterns across similar problems</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You notice that calculating VAT always uses the same formula. Which pillar is this?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="true">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="false">Algorithm Design</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Algorithm Design produces:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A random guess at the answer</button>
+    <button class="quiz-opt" data-correct="true">A clear, step-by-step set of instructions to solve a problem</button>
+    <button class="quiz-opt" data-correct="false">A diagram showing computer hardware</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — Computational Thinking",
+  title: "Decomposition",
+  subtitle: "Breaking big problems into smaller, solvable pieces",
+  content: `
+<p><strong>Decomposition</strong> is the process of breaking a large, complex problem into smaller sub-problems that are easier to understand and solve. Once each sub-problem is solved, the solutions are combined to solve the original problem.</p>
+
+<h3><i data-lucide="scissors" style="width:14px;height:14px;"></i> Why Decompose?</h3>
+<ul>
+  <li>Large problems are overwhelming — smaller ones are manageable</li>
+  <li>Different people or programs can work on different sub-problems simultaneously</li>
+  <li>It is easier to find and fix errors in small pieces</li>
+  <li>Sub-solutions can often be reused in other projects</li>
+</ul>
+
+<div class="visual-box">
+  <div class="visual-box-title">Example: Build a School Website</div>
+  <div style="text-align:center;font-size:13px;color:#a5b4fc;font-weight:700;margin-bottom:10px;">🏫 Build a School Website</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+    <div style="background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.20);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:16px;margin-bottom:4px;">🎨</div>
+      <div style="font-size:11px;font-weight:700;color:#c7d2fe;">Design the layout</div>
+    </div>
+    <div style="background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.20);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:16px;margin-bottom:4px;">📝</div>
+      <div style="font-size:11px;font-weight:700;color:#6ee7b7;">Write the content</div>
+    </div>
+    <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.20);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:16px;margin-bottom:4px;">🔗</div>
+      <div style="font-size:11px;font-weight:700;color:#fcd34d;">Set up navigation</div>
+    </div>
+    <div style="background:rgba(236,72,153,0.10);border:1px solid rgba(236,72,153,0.20);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:16px;margin-bottom:4px;">📸</div>
+      <div style="font-size:11px;font-weight:700;color:#f9a8d4;">Add images</div>
+    </div>
+    <div style="background:rgba(139,92,246,0.10);border:1px solid rgba(139,92,246,0.20);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:16px;margin-bottom:4px;">📬</div>
+      <div style="font-size:11px;font-weight:700;color:#c4b5fd;">Contact form</div>
+    </div>
+    <div style="background:rgba(20,184,166,0.10);border:1px solid rgba(20,184,166,0.20);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:16px;margin-bottom:4px;">🧪</div>
+      <div style="font-size:11px;font-weight:700;color:#5eead4;">Test everything</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout tip"><strong>Rule of thumb:</strong> If you can describe what a piece of code does in one clear sentence, it is well decomposed. If you need several sentences, break it down further.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: What is decomposition?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Writing code in a programming language</button>
+    <button class="quiz-opt" data-correct="true">Breaking a complex problem into smaller, manageable sub-problems</button>
+    <button class="quiz-opt" data-correct="false">Drawing a diagram of a solution</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Which of these is a benefit of decomposition?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Problems take longer to solve</button>
+    <button class="quiz-opt" data-correct="true">Errors are easier to find and fix in smaller pieces</button>
+    <button class="quiz-opt" data-correct="false">You need more people to solve the problem</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: In programming, decomposition leads to writing:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">One very long program with all the code in one place</button>
+    <button class="quiz-opt" data-correct="true">Small, reusable functions that each solve one sub-problem</button>
+    <button class="quiz-opt" data-correct="false">Comments explaining what the code does</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: You need to organise a school sports day. Which is an example of decomposition?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Asking the principal to handle everything</button>
+    <button class="quiz-opt" data-correct="true">Splitting the task into: venues, schedules, teams, catering, and results tracking</button>
+    <button class="quiz-opt" data-correct="false">Writing the results down after the event</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Sub-solutions created through decomposition can often be:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Deleted once the problem is solved</button>
+    <button class="quiz-opt" data-correct="true">Reused in other projects</button>
+    <button class="quiz-opt" data-correct="false">Combined into a single large problem again</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — Computational Thinking",
+  title: "Pattern Recognition and Abstraction",
+  subtitle: "Finding similarities and filtering what matters",
+  content: `
+<h3><i data-lucide="search" style="width:14px;height:14px;"></i> Pattern Recognition</h3>
+<p><strong>Pattern Recognition</strong> is identifying similarities, trends, or repeating structures within a problem — or between problems you have already solved. Recognising a pattern means you can reuse a known solution rather than starting from scratch.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Examples of Pattern Recognition</div>
+  <table style="width:100%;font-size:12px;border-collapse:collapse;">
+    <tr style="background:rgba(255,255,255,0.06);">
+      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Situation</th>
+      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Pattern Identified</th>
+    </tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Calculating price for different quantities</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Always: price = quantity × unit cost</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Sorting a list of names, numbers, or dates</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Same comparison and swap logic every time</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Validating user input (email, phone, ID)</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Always: check format then length then characters</td></tr>
+    <tr><td style="padding:8px;">Drawing shapes with turtle graphics</td><td style="padding:8px;">A square, hexagon, and octagon all use the same loop-and-turn pattern</td></tr>
+  </table>
+</div>
+
+<h3><i data-lucide="filter" style="width:14px;height:14px;"></i> Abstraction</h3>
+<p><strong>Abstraction</strong> is the process of focusing only on the essential details needed to solve a problem, while hiding or ignoring irrelevant information. It reduces complexity by creating a simpler representation of reality.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Abstraction in Real Life</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:12px;font-weight:700;color:#fcd34d;margin-bottom:6px;">🗺️ A Map</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.60);">A map is an abstraction of the real world. It shows roads and landmarks but omits trees, individual buildings, and people.</div>
+    </div>
+    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:12px;font-weight:700;color:#6ee7b7;margin-bottom:6px;">🚗 Driving a Car</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.60);">You use a steering wheel and pedals — you do not need to understand the engine internals to drive.</div>
+    </div>
+    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:12px;font-weight:700;color:#a5b4fc;margin-bottom:6px;">📱 A Smartphone App</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.60);">You tap a button to call someone. You do not need to know about radio frequencies or cell towers.</div>
+    </div>
+    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
+      <div style="font-size:12px;font-weight:700;color:#f9a8d4;margin-bottom:6px;">💻 A Function in Code</div>
+      <div style="font-size:11px;color:rgba(221,225,240,0.60);">You call Math.sqrt(16) and get 4. You do not need to know the algorithm used to compute it.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout tip"><strong>Abstraction vs Decomposition:</strong> Decomposition splits a problem into parts. Abstraction simplifies each part by hiding unnecessary detail. Both work together.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 6 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: Pattern recognition helps you:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Break a problem into smaller parts</button>
+    <button class="quiz-opt" data-correct="true">Identify similarities so you can reuse known solutions</button>
+    <button class="quiz-opt" data-correct="false">Hide irrelevant information from the user</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: You are writing code to draw a triangle, square, and pentagon. Which pillar helps you see they all use the same loop-and-turn pattern?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="true">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="false">Abstraction</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Abstraction involves:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Writing step-by-step instructions</button>
+    <button class="quiz-opt" data-correct="true">Focusing on essential details and ignoring irrelevant information</button>
+    <button class="quiz-opt" data-correct="false">Finding repeating patterns in data</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: A map is a good example of abstraction because:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It shows every single detail of the real world</button>
+    <button class="quiz-opt" data-correct="true">It shows only the information needed for navigation and leaves out unnecessary detail</button>
+    <button class="quiz-opt" data-correct="false">It is drawn on paper instead of on a computer</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: When you use Math.sqrt() without knowing how it works internally, you are using:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="true">Abstraction</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which best describes the relationship between abstraction and decomposition?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">They are opposites — use one or the other, never both</button>
+    <button class="quiz-opt" data-correct="true">They work together — decomposition splits problems, abstraction simplifies each part</button>
+    <button class="quiz-opt" data-correct="false">Abstraction always comes before decomposition</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+// ─── UNIT 7: PSEUDO CODE ──────────────────────────────────────────────────────
+
+{
+  unit: "Unit 7 — Pseudo Code",
+  title: "What is Pseudo Code?",
+  subtitle: "Planning solutions in plain English before you code",
+  content: `
+<p><strong>Pseudo code</strong> is a way of writing out the logic of a program in plain, structured English — without using any specific programming language syntax. It is a planning tool used by programmers to think through a solution before writing actual code.</p>
+
+<h3><i data-lucide="pencil" style="width:14px;height:14px;"></i> Why Use Pseudo Code?</h3>
+<ul>
+  <li>Forces you to think through the logic before worrying about syntax</li>
+  <li>Easy for anyone — including non-programmers — to read and review</li>
+  <li>Helps identify logical errors early, before any code is written</li>
+  <li>Works for any programming language — the logic translates directly</li>
+  <li>Required in IEB/CAPS examinations as a planning step</li>
+</ul>
+
+<div class="visual-box">
+  <div class="visual-box-title">Pseudo Code Keywords and Conventions</div>
+  <table style="width:100%;font-size:12px;border-collapse:collapse;">
+    <tr style="background:rgba(255,255,255,0.06);">
+      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Keyword</th>
+      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Meaning</th>
+      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Example</th>
+    </tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>INPUT</code></td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Receive data from user</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>INPUT age</code></td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>OUTPUT / PRINT</code></td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Display something</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>OUTPUT "Hello"</code></td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>SET / ASSIGN</code></td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Store a value</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>SET total = price * qty</code></td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>IF / ELSE / ENDIF</code></td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Decision / branching</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>IF age &gt;= 18 THEN</code></td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>WHILE / ENDWHILE</code></td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Loop while condition is true</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>WHILE count &lt; 10</code></td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>FOR / ENDFOR</code></td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Count-controlled loop</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);"><code>FOR i = 1 TO 10</code></td></tr>
+    <tr><td style="padding:8px;"><code>BEGIN / END</code></td><td style="padding:8px;">Start and end of program</td><td style="padding:8px;"><code>BEGIN ... END</code></td></tr>
+  </table>
+</div>
+
+<div class="callout tip"><strong>Indentation matters:</strong> Indent code inside IF blocks and loops — just like in real programming. This makes the structure clear at a glance.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: What is pseudo code?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A simplified version of Java used in schools</button>
+    <button class="quiz-opt" data-correct="true">A plain English description of a program's logic, not tied to any specific language</button>
+    <button class="quiz-opt" data-correct="false">Code that contains deliberate errors for students to fix</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Which keyword is used to receive data from a user in pseudo code?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">OUTPUT</button>
+    <button class="quiz-opt" data-correct="true">INPUT</button>
+    <button class="quiz-opt" data-correct="false">SET</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What does the WHILE keyword create?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A decision that runs once</button>
+    <button class="quiz-opt" data-correct="true">A loop that repeats as long as a condition is true</button>
+    <button class="quiz-opt" data-correct="false">A variable that stores a value</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: Why is pseudo code useful before writing real code?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It runs faster than real code</button>
+    <button class="quiz-opt" data-correct="true">It lets you plan logic and catch errors without worrying about syntax</button>
+    <button class="quiz-opt" data-correct="false">It automatically generates Java code</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: In pseudo code, indentation is used to:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Make the file smaller</button>
+    <button class="quiz-opt" data-correct="true">Show which statements are inside loops or IF blocks, making structure clear</button>
+    <button class="quiz-opt" data-correct="false">Indicate comments</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 7 — Pseudo Code",
+  title: "Pseudo Code — Practical Examples",
+  subtitle: "Sequences, decisions, and loops with worked examples",
+  content: `
+<p>The best way to learn pseudo code is through examples. Below are three practical problems — each demonstrating a different structure.</p>
+
+<h3><i data-lucide="arrow-right" style="width:14px;height:14px;"></i> Example 1: Sequence — Calculate Total Price</h3>
+<p>A sequence executes steps in order, one after another, with no branching or looping.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Calculate Total Price with VAT</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#e2e8f0;line-height:1.8;margin:0;white-space:pre-wrap;">BEGIN
+  INPUT price
+  INPUT quantity
+  SET subtotal = price * quantity
+  SET vat = subtotal * 0.15
+  SET total = subtotal + vat
+  OUTPUT "Subtotal: R" + subtotal
+  OUTPUT "VAT (15%): R" + vat
+  OUTPUT "Total: R" + total
+END</pre>
+</div>
+
+<h3><i data-lucide="git-branch" style="width:14px;height:14px;"></i> Example 2: Decision — Grade Calculator</h3>
+<p>An IF / ELSE structure makes a decision based on a condition and branches accordingly.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Assign a Grade Symbol</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#e2e8f0;line-height:1.8;margin:0;white-space:pre-wrap;">BEGIN
+  INPUT mark
+  IF mark >= 80 THEN
+      OUTPUT "Distinction (Level 7)"
+  ELSE IF mark >= 70 THEN
+      OUTPUT "Merit (Level 6)"
+  ELSE IF mark >= 60 THEN
+      OUTPUT "Substantial Achievement (Level 5)"
+  ELSE IF mark >= 50 THEN
+      OUTPUT "Adequate Achievement (Level 4)"
+  ELSE IF mark >= 30 THEN
+      OUTPUT "Elementary Achievement (Level 3)"
+  ELSE
+      OUTPUT "Not Achieved (Level 1-2)"
+  ENDIF
+END</pre>
+</div>
+
+<h3><i data-lucide="repeat" style="width:14px;height:14px;"></i> Example 3: Loop — Find the Highest Score</h3>
+<p>A WHILE loop repeats a block of steps until a condition is no longer true.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Find the Highest Score in a Class</div>
+  <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#e2e8f0;line-height:1.8;margin:0;white-space:pre-wrap;">BEGIN
+  SET highest = 0
+  SET count = 0
+  INPUT numberOfStudents
+  WHILE count < numberOfStudents
+      INPUT score
+      IF score > highest THEN
+          SET highest = score
+      ENDIF
+      SET count = count + 1
+  ENDWHILE
+  OUTPUT "Highest score: " + highest
+END</pre>
+</div>
+
+<div class="callout warn"><strong>Common exam mistake:</strong> Forgetting ENDIF after an IF block, or ENDWHILE after a WHILE loop. Always close every structure you open.</div>
+<div class="callout tip"><strong>Tip:</strong> Each example above translates directly into Java. Try rewriting Example 1 in Java Genie or Code Conjurer after this lesson!</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 6 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: A sequence in pseudo code means:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Steps that repeat until a condition is met</button>
+    <button class="quiz-opt" data-correct="true">Steps that execute in order, one after another</button>
+    <button class="quiz-opt" data-correct="false">A decision that branches in two directions</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: In the grade calculator example, what structure is used?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">WHILE loop</button>
+    <button class="quiz-opt" data-correct="false">FOR loop</button>
+    <button class="quiz-opt" data-correct="true">IF / ELSE IF / ENDIF</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: In the highest score example, what does SET highest = 0 do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Resets the loop counter</button>
+    <button class="quiz-opt" data-correct="true">Initialises the variable to a starting value before the loop begins</button>
+    <button class="quiz-opt" data-correct="false">Outputs the highest score</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: What keyword must always close a WHILE block?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">END</button>
+    <button class="quiz-opt" data-correct="true">ENDWHILE</button>
+    <button class="quiz-opt" data-correct="false">ENDIF</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: In the VAT example, which line calculates the VAT amount?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">SET subtotal = price * quantity</button>
+    <button class="quiz-opt" data-correct="true">SET vat = subtotal * 0.15</button>
+    <button class="quiz-opt" data-correct="false">SET total = subtotal + vat</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Pseudo code examples translate directly into:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Flow diagrams only — not actual code</button>
+    <button class="quiz-opt" data-correct="true">Real programming code in any language such as Java, Python, or JavaScript</button>
+    <button class="quiz-opt" data-correct="false">HTML and CSS for websites only</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+// ─── UNIT 8: FLOW DIAGRAMS ────────────────────────────────────────────────────
+
+{
+  unit: "Unit 8 — Flow Diagrams",
+  title: "What is a Flow Diagram?",
+  subtitle: "Visualising algorithms with standard symbols",
+  content: `
+<p>A <strong>flow diagram</strong> (also called a flowchart) is a visual representation of an algorithm or process. It uses standardised shapes connected by arrows to show the sequence of steps, decisions, and outcomes in a program or procedure.</p>
+
+<h3><i data-lucide="shapes" style="width:14px;height:14px;"></i> Standard Flow Diagram Symbols</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">IEB/CAPS Standard Flowchart Symbols</div>
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:90px;flex-shrink:0;text-align:center;">
+        <div style="width:80px;height:36px;border-radius:18px;background:rgba(99,102,241,0.15);border:2px solid #a5b4fc;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#a5b4fc;margin:0 auto;">START/END</div>
+      </div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.75);"><strong style="color:#c7d2fe;">Oval / Rounded Rectangle</strong> — Marks the beginning (START) or end (END/STOP) of a program.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:90px;flex-shrink:0;text-align:center;">
+        <div style="width:80px;height:36px;background:rgba(16,185,129,0.15);border:2px solid #6ee7b7;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#6ee7b7;margin:0 auto;">PROCESS</div>
+      </div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.75);"><strong style="color:#6ee7b7;">Rectangle</strong> — A processing step: calculation, assignment, or action. E.g. SET total = price * qty.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:90px;flex-shrink:0;text-align:center;">
+        <div style="width:80px;height:38px;background:rgba(245,158,11,0.15);border:2px solid #fcd34d;transform:skewX(-10deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fcd34d;margin:0 auto;"><span style="transform:skewX(10deg);">INPUT/OUTPUT</span></div>
+      </div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.75);"><strong style="color:#fcd34d;">Parallelogram</strong> — Input from user or output to screen. E.g. INPUT age, OUTPUT result.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:90px;flex-shrink:0;text-align:center;">
+        <svg viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg" style="width:90px;height:60px;display:block;margin:0 auto;">
+          <polygon points="45,4 86,30 45,56 4,30" fill="rgba(236,72,153,0.15)" stroke="#f9a8d4" stroke-width="2"/>
+          <text x="45" y="27" text-anchor="middle" font-size="9" font-weight="700" fill="#f9a8d4" font-family="DM Sans,sans-serif">YES /</text>
+          <text x="45" y="40" text-anchor="middle" font-size="9" font-weight="700" fill="#f9a8d4" font-family="DM Sans,sans-serif">NO?</text>
+        </svg>
+      </div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.75);"><strong style="color:#f9a8d4;">Diamond</strong> — A decision point with two exits: YES and NO. E.g. Is score >= 50?</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:90px;flex-shrink:0;text-align:center;font-size:22px;color:#94a3b8;">→</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.75);"><strong style="color:#e2e8f0;">Arrow / Flow Line</strong> — Shows the direction of flow from one step to the next.</div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="info" style="width:14px;height:14px;"></i> Rules for Drawing Flow Diagrams</h3>
+<ul>
+  <li>Every diagram must have exactly <strong>one START</strong> and at least <strong>one END</strong></li>
+  <li>Arrows must show direction — never leave a shape without an outgoing arrow</li>
+  <li>Decision diamonds always have <strong>exactly two exits</strong>: YES and NO</li>
+  <li>Flow generally goes <strong>top to bottom</strong> and <strong>left to right</strong></li>
+  <li>Loops are shown by an arrow looping <strong>back up</strong> to an earlier step</li>
+</ul>
+
+<div class="callout tip"><strong>Exam tip:</strong> In IEB/CAPS papers you may be asked to draw OR trace a flow diagram. Tracing means following the arrows with given values and writing down the output.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 6 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: Which shape represents the START or END of a flow diagram?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Rectangle</button>
+    <button class="quiz-opt" data-correct="true">Oval or rounded rectangle</button>
+    <button class="quiz-opt" data-correct="false">Diamond</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: A diamond shape in a flow diagram represents:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A calculation or process step</button>
+    <button class="quiz-opt" data-correct="false">Input or output</button>
+    <button class="quiz-opt" data-correct="true">A decision with YES and NO exits</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Which shape is used for INPUT and OUTPUT?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Rectangle</button>
+    <button class="quiz-opt" data-correct="true">Parallelogram</button>
+    <button class="quiz-opt" data-correct="false">Oval</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: How many exits must a decision diamond always have?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">One</button>
+    <button class="quiz-opt" data-correct="true">Two — YES and NO</button>
+    <button class="quiz-opt" data-correct="false">Three — YES, NO, and MAYBE</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: In a flow diagram, a loop is shown by:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Drawing a circle around the repeated steps</button>
+    <button class="quiz-opt" data-correct="true">An arrow that loops back up to an earlier step</button>
+    <button class="quiz-opt" data-correct="false">Using a second START symbol</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Tracing a flow diagram means:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Copying the diagram onto a new page</button>
+    <button class="quiz-opt" data-correct="true">Following the arrows with given input values and recording the output</button>
+    <button class="quiz-opt" data-correct="false">Drawing the diagram neatly in pencil</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 8 — Flow Diagrams",
+  title: "Flow Diagram Examples and Builder",
+  subtitle: "Trace a real diagram, then build your own",
+  content: `
+<p>Below is a worked flow diagram example you can trace. Then use the <strong>interactive builder</strong> to create your own flow diagrams and download them as images.</p>
+
+<h3><i data-lucide="git-branch" style="width:14px;height:14px;"></i> Example: Even or Odd Number</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">Flow Diagram — Is a Number Even or Odd?</div>
+  <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;display:block;margin:0 auto;font-family:'DM Sans',sans-serif;">
+    <defs>
+      <marker id="fdarr" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M0,0 L10,4 L0,8 Z" fill="#64748b"/>
+      </marker>
+    </defs>
+
+    <!-- START oval -->
+    <ellipse cx="240" cy="30" rx="58" ry="20" fill="rgba(99,102,241,0.20)" stroke="#a5b4fc" stroke-width="1.5"/>
+    <text x="240" y="30" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="#c7d2fe">START</text>
+
+    <!-- Arrow down to INPUT -->
+    <line x1="240" y1="50" x2="240" y2="73" stroke="#64748b" stroke-width="1.5" marker-end="url(#fdarr)"/>
+
+    <!-- INPUT parallelogram: centred at (240,90), w=160 h=32, skew=16 -->
+    <polygon points="152,74 312,74 296,106 136,106" fill="rgba(245,158,11,0.15)" stroke="#fcd34d" stroke-width="1.5"/>
+    <text x="224" y="90" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#fcd34d">INPUT number</text>
+
+    <!-- Arrow down to decision -->
+    <line x1="240" y1="106" x2="240" y2="131" stroke="#64748b" stroke-width="1.5" marker-end="url(#fdarr)"/>
+
+    <!-- DECISION diamond: centred at (240,176), half-w=100 half-h=45 -->
+    <polygon points="240,132 340,176 240,220 140,176" fill="rgba(236,72,153,0.15)" stroke="#f9a8d4" stroke-width="1.5"/>
+    <text x="240" y="170" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#f9a8d4">number MOD 2</text>
+    <text x="240" y="185" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#f9a8d4">= 0?</text>
+
+    <!-- YES: single L-path left then down, one arrowhead at end -->
+    <polyline points="140,176 80,176 80,253" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#fdarr)"/>
+    <text x="109" y="168" text-anchor="middle" font-size="11" font-weight="700" fill="#6ee7b7">YES</text>
+
+    <!-- NO: single L-path right then down, one arrowhead at end -->
+    <polyline points="340,176 400,176 400,253" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#fdarr)"/>
+    <text x="371" y="168" text-anchor="middle" font-size="11" font-weight="700" fill="#f87171">NO</text>
+
+    <!-- OUTPUT "Even" parallelogram: centred at (80,275), w=130 h=34, skew=13 -->
+    <polygon points="27,258 143,258 130,292 14,292" fill="rgba(16,185,129,0.15)" stroke="#6ee7b7" stroke-width="1.5"/>
+    <text x="78" y="272" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#6ee7b7">OUTPUT</text>
+    <text x="78" y="284" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#6ee7b7">"Even"</text>
+
+    <!-- OUTPUT "Odd" parallelogram: centred at (400,275), w=130 h=34, skew=13 -->
+    <polygon points="347,258 463,258 450,292 334,292" fill="rgba(239,68,68,0.15)" stroke="#f87171" stroke-width="1.5"/>
+    <text x="398" y="272" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#f87171">OUTPUT</text>
+    <text x="398" y="284" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#f87171">"Odd"</text>
+
+    <!-- Merge left: down to y=388, right to x=240 (no arrowhead — just joins) -->
+    <line x1="80" y1="292" x2="80" y2="388" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="80" y1="388" x2="240" y2="388" stroke="#64748b" stroke-width="1.5"/>
+
+    <!-- Merge right: down to y=388, left to x=240 (no arrowhead — just joins) -->
+    <line x1="400" y1="292" x2="400" y2="388" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="400" y1="388" x2="240" y2="388" stroke="#64748b" stroke-width="1.5"/>
+
+    <!-- Single arrow down from merge junction to END -->
+    <line x1="240" y1="388" x2="240" y2="427" stroke="#64748b" stroke-width="1.5" marker-end="url(#fdarr)"/>
+
+    <!-- END oval -->
+    <ellipse cx="240" cy="450" rx="58" ry="20" fill="rgba(99,102,241,0.20)" stroke="#a5b4fc" stroke-width="1.5"/>
+    <text x="240" y="450" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="#c7d2fe">END</text>
+  </svg>
+  <p style="font-size:11px;color:rgba(221,225,240,0.40);text-align:center;margin-top:8px;">Trace with 7: 7 MOD 2 = 0? NO → OUTPUT "Odd"</p>
+</div>
+
+<h3><i data-lucide="wrench" style="width:14px;height:14px;"></i> Interactive Flow Diagram Builder</h3>
+<p>Add shapes using the buttons below. Drag shapes to reposition them. Click a shape to select it, then edit its label. Download your finished diagram as a PNG image.</p>
+
+<div id="fd-builder" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.10);border-radius:14px;padding:16px;margin-top:10px;">
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+    <button onclick="fdAddShape('start')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(99,102,241,0.35);background:rgba(99,102,241,0.12);color:#a5b4fc;font-size:11px;font-weight:700;cursor:pointer;">+ Start / End</button>
+    <button onclick="fdAddShape('process')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.12);color:#6ee7b7;font-size:11px;font-weight:700;cursor:pointer;">+ Process</button>
+    <button onclick="fdAddShape('io')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(245,158,11,0.35);background:rgba(245,158,11,0.12);color:#fcd34d;font-size:11px;font-weight:700;cursor:pointer;">+ Input / Output</button>
+    <button onclick="fdAddShape('decision')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(236,72,153,0.35);background:rgba(236,72,153,0.12);color:#f9a8d4;font-size:11px;font-weight:700;cursor:pointer;">+ Decision</button>
+    <button onclick="fdClear()" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(221,225,240,0.50);font-size:11px;font-weight:700;cursor:pointer;">🗑 Clear</button>
+    <button id="fd-arrow-btn" onclick="fdToggleArrowMode()" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(148,163,184,0.30);background:rgba(148,163,184,0.10);color:#94a3b8;font-size:11px;font-weight:700;cursor:pointer;">→ Add Arrow</button>
+    <button onclick="fdDownload()" style="padding:6px 12px;border-radius:7px;border:none;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;font-size:11px;font-weight:700;cursor:pointer;margin-left:auto;">⬇ Download PNG</button>
+  </div>
+  <canvas id="fd-canvas" width="660" height="400" style="width:100%;border-radius:10px;background:#0a0f1e;border:1px solid rgba(255,255,255,0.08);cursor:crosshair;touch-action:none;"></canvas>
+  <p style="font-size:11px;color:rgba(221,225,240,0.30);margin-top:8px;text-align:center;">Click a shape button to add it. Drag to reposition. Click a shape to select and edit its label.</p>
+  <div id="fd-label-row" style="display:none;margin-top:10px;gap:8px;align-items:center;">
+    <input id="fd-label-input" type="text" placeholder="Edit label..." style="flex:1;padding:8px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#e8eaf4;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;">
+    <button onclick="fdApplyLabel()" style="padding:8px 14px;border-radius:8px;border:none;background:rgba(99,102,241,0.25);color:#c7d2fe;font-size:12px;font-weight:700;cursor:pointer;">Apply</button>
+    <button onclick="fdDeleteSelected()" style="padding:8px 14px;border-radius:8px;border:none;background:rgba(239,68,68,0.18);color:#fca5a5;font-size:12px;font-weight:700;cursor:pointer;">Delete</button>
+  </div>
+</div>
+
+<div id="fd-init-hook"></div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: In the Even/Odd flow diagram, what happens if the input is 4?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">OUTPUT "Odd" because 4 is not 2</button>
+    <button class="quiz-opt" data-correct="true">OUTPUT "Even" because 4 MOD 2 = 0</button>
+    <button class="quiz-opt" data-correct="false">The diagram loops back and asks for input again</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What does MOD mean in a flow diagram condition?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Multiply or divide</button>
+    <button class="quiz-opt" data-correct="true">The remainder after division</button>
+    <button class="quiz-opt" data-correct="false">A modern update to an old program</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: In the builder, which shape represents a calculation like SET total = price * qty?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Start / End</button>
+    <button class="quiz-opt" data-correct="true">Process (rectangle)</button>
+    <button class="quiz-opt" data-correct="false">Decision (diamond)</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: When tracing a flow diagram, what does the tracer do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Redraws the diagram neatly</button>
+    <button class="quiz-opt" data-correct="true">Follows the arrows step by step with given values and records the output</button>
+    <button class="quiz-opt" data-correct="false">Writes pseudo code from the diagram</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Every flow diagram must have:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">At least three decision diamonds</button>
+    <button class="quiz-opt" data-correct="true">Exactly one START and at least one END</button>
+    <button class="quiz-opt" data-correct="false">An INPUT and OUTPUT on every path</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+}
+
+
 ]; // end LESSONS
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -2583,9 +3413,29 @@ function renderLesson() {
         completed.add(currentLesson);
         updateProgress();
         buildSidebar();
+        // Track correct answer
+        if (window.MagicLabProgress) {
+          const les = LESSONS[currentLesson];
+          MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'quiz_correct', {
+            topic: les.title,
+            grade: 8,
+            score: 1,
+            metadata: { unit: les.unit, question: box.querySelector('.quiz-q')?.textContent?.trim() }
+          });
+        }
       } else {
         btn.classList.add('wrong');
         fb.textContent = '❌ Not quite — try again!'; fb.className = 'quiz-feedback wrong';
+        // Track wrong answer
+        if (window.MagicLabProgress) {
+          const les = LESSONS[currentLesson];
+          MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'quiz_wrong', {
+            topic: les.title,
+            grade: 8,
+            score: 0,
+            metadata: { unit: les.unit, question: box.querySelector('.quiz-q')?.textContent?.trim() }
+          });
+        }
       }
     });
   });
@@ -2597,6 +3447,240 @@ function renderLesson() {
   document.getElementById('headerProgress').textContent = `Lesson ${currentLesson+1} of ${total}`;
 
   document.getElementById('lessonScroll').scrollTop = 0;
+  
+
+// ── Flow Diagram Builder (Unit 8) ────────────────────────────────────────────
+function initFlowDiagramBuilder() {
+  const canvas = document.getElementById('fd-canvas');
+  if (!canvas || canvas._fdInit) return;
+  canvas._fdInit = true;
+
+  // HiDPI crisp rendering
+  const dpr = window.devicePixelRatio || 1;
+  const CSS_W = 660, CSS_H = 400;
+  canvas.width  = CSS_W * dpr;
+  canvas.height = CSS_H * dpr;
+  canvas.style.width  = CSS_W + 'px';
+  canvas.style.height = CSS_H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const labelRow   = document.getElementById('fd-label-row');
+  const labelInput = document.getElementById('fd-label-input');
+
+  let shapes = [], arrows = [], selected = null;
+  let dragging = null, dragOffX = 0, dragOffY = 0;
+  let arrowMode = null, arrowFrom = null;
+
+  const W = 130, H = 42;
+  const COLORS = {
+    start:    { fill:'rgba(99,102,241,0.25)', stroke:'#a5b4fc', text:'#c7d2fe' },
+    process:  { fill:'rgba(16,185,129,0.20)', stroke:'#6ee7b7', text:'#6ee7b7' },
+    io:       { fill:'rgba(245,158,11,0.20)', stroke:'#fcd34d', text:'#fcd34d' },
+    decision: { fill:'rgba(236,72,153,0.20)', stroke:'#f9a8d4', text:'#f9a8d4' }
+  };
+  function defaultLabel(t) {
+    return {start:'START',process:'Process',io:'INPUT / OUTPUT',decision:'Condition?'}[t];
+  }
+
+  // Edge point calculation for arrow connections
+  function edgePoint(s, dx, dy) {
+    const len = Math.sqrt(dx*dx + dy*dy) || 1;
+    const nx = dx/len, ny = dy/len;
+    if (s.type === 'start') {
+      const a = W/2, b = H/2;
+      const t = 1 / Math.sqrt((nx*nx)/(a*a) + (ny*ny)/(b*b));
+      return { x: s.x + nx*t, y: s.y + ny*t };
+    } else if (s.type === 'decision') {
+      const hw = W*0.6, hh = H*0.8;
+      const t = (hw*hh) / (Math.abs(nx)*hh + Math.abs(ny)*hw);
+      return { x: s.x + nx*t, y: s.y + ny*t };
+    } else {
+      // Rectangle and parallelogram — use bounding box
+      const scaleX = (W/2) / (Math.abs(nx) || 0.001);
+      const scaleY = (H/2) / (Math.abs(ny) || 0.001);
+      const t = Math.min(scaleX, scaleY);
+      return { x: s.x + nx*t, y: s.y + ny*t };
+    }
+  }
+
+  // Draw arrowhead at (x,y) pointing in direction angle
+  function arrowhead(x, y, angle) {
+    const sz = 9;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-sz, -sz*0.4);
+    ctx.lineTo(-sz*0.65, 0);
+    ctx.lineTo(-sz, sz*0.4);
+    ctx.closePath();
+    ctx.fillStyle = '#94a3b8';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawArrow(arr) {
+    const fs = shapes.find(s => s.id === arr.from);
+    const ts = shapes.find(s => s.id === arr.to);
+    if (!fs || !ts) return;
+    const dx = ts.x - fs.x, dy = ts.y - fs.y;
+    const sp = edgePoint(fs,  dx,  dy);
+    const ep = edgePoint(ts, -dx, -dy);
+    const angle = Math.atan2(ep.y - sp.y, ep.x - sp.x);
+    ctx.save();
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(sp.x, sp.y); ctx.lineTo(ep.x, ep.y); ctx.stroke();
+    arrowhead(ep.x, ep.y, angle);
+    if (arr.label) {
+      ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 10px DM Sans,sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(arr.label, (sp.x+ep.x)/2, (sp.y+ep.y)/2 - 9);
+    }
+    ctx.restore();
+  }
+
+  function drawShape(s) {
+    const c = COLORS[s.type], sel = selected === s;
+    ctx.save();
+    ctx.strokeStyle = sel ? '#ffffff' : c.stroke;
+    ctx.lineWidth   = sel ? 2.5 : 1.5;
+    ctx.fillStyle   = c.fill;
+    // 0.5 offset for crisp lines
+    ctx.translate(0.5, 0.5);
+
+    if (s.type === 'start') {
+      ctx.beginPath();
+      ctx.ellipse(s.x, s.y, W/2, H/2, 0, 0, Math.PI*2);
+      ctx.fill(); ctx.stroke();
+    } else if (s.type === 'process') {
+      const r = 6, x = s.x-W/2, y = s.y-H/2;
+      ctx.beginPath();
+      ctx.moveTo(x+r, y); ctx.lineTo(x+W-r, y); ctx.arcTo(x+W, y, x+W, y+r, r);
+      ctx.lineTo(x+W, y+H-r); ctx.arcTo(x+W, y+H, x+W-r, y+H, r);
+      ctx.lineTo(x+r, y+H); ctx.arcTo(x, y+H, x, y+H-r, r);
+      ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else if (s.type === 'io') {
+      const sk = 14;
+      ctx.beginPath();
+      ctx.moveTo(s.x-W/2+sk, s.y-H/2); ctx.lineTo(s.x+W/2+sk, s.y-H/2);
+      ctx.lineTo(s.x+W/2, s.y+H/2);    ctx.lineTo(s.x-W/2, s.y+H/2);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else if (s.type === 'decision') {
+      const hw = W*0.6, hh = H*0.8;
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y-hh); ctx.lineTo(s.x+hw, s.y);
+      ctx.lineTo(s.x, s.y+hh); ctx.lineTo(s.x-hw, s.y);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    }
+
+    // Label
+    ctx.translate(-0.5, -0.5);
+    ctx.fillStyle = sel ? '#ffffff' : c.text;
+    ctx.font = 'bold 11px DM Sans,sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const words = s.label.split(' '); let line = '', lines = [];
+    for (const w of words) {
+      const t = line + (line?' ':'') + w;
+      if (ctx.measureText(t).width > W-20 && line) { lines.push(line); line = w; }
+      else line = t;
+    }
+    lines.push(line);
+    const lh = 15, sy2 = s.y - (lines.length-1)*lh/2;
+    lines.forEach((l, i) => ctx.fillText(l, s.x, sy2 + i*lh));
+
+    if (sel) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 1;
+      ctx.setLineDash([4,3]);
+      ctx.strokeRect(s.x-W/2-6, s.y-H/2-6, W+12, H+12);
+      ctx.setLineDash([]);
+    }
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, CSS_W, CSS_H);
+    ctx.fillStyle = 'rgba(255,255,255,0.04)';
+    for (let x=20; x<CSS_W; x+=30)
+      for (let y=20; y<CSS_H; y+=30)
+        ctx.fillRect(Math.round(x), Math.round(y), 1, 1);
+    arrows.forEach(drawArrow);
+    shapes.forEach(drawShape);
+    if (arrowMode) {
+      ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 12px DM Sans,sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(
+        arrowMode === 'picking-from' ? 'Click shape to start arrow FROM' : 'Click shape to draw arrow TO',
+        CSS_W/2, 18
+      );
+    }
+  }
+
+  function hitTest(s, mx, my) {
+    if (s.type === 'decision') return Math.abs(mx-s.x)/(W*0.6) + Math.abs(my-s.y)/(H*0.8) < 1;
+    return mx > s.x-W/2-10 && mx < s.x+W/2+24 && my > s.y-H/2-6 && my < s.y+H/2+6;
+  }
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX-r.left)*(CSS_W/r.width), y: (src.clientY-r.top)*(CSS_H/r.height) };
+  }
+
+  function onDown(e) {
+    e.preventDefault();
+    const {x,y} = getPos(e);
+    if (arrowMode) {
+      for (let i=shapes.length-1; i>=0; i--) {
+        if (hitTest(shapes[i],x,y)) {
+          if (arrowMode === 'picking-from') { arrowFrom = shapes[i].id; arrowMode = 'picking-to'; }
+          else if (shapes[i].id !== arrowFrom) {
+            arrows.push({from:arrowFrom, to:shapes[i].id, label:''});
+            arrowMode = null; arrowFrom = null;
+            const b = document.getElementById('fd-arrow-btn');
+            if (b) b.textContent = '→ Add Arrow';
+          }
+          draw(); return;
+        }
+      }
+      arrowMode = null; arrowFrom = null;
+      const b = document.getElementById('fd-arrow-btn'); if (b) b.textContent = '→ Add Arrow';
+      draw(); return;
+    }
+    dragging = null;
+    for (let i=shapes.length-1; i>=0; i--) {
+      if (hitTest(shapes[i],x,y)) {
+        dragging = shapes[i]; dragOffX = x-shapes[i].x; dragOffY = y-shapes[i].y;
+        selected = shapes[i]; labelInput.value = selected.label;
+        labelRow.style.display = 'flex'; draw(); return;
+      }
+    }
+    selected = null; labelRow.style.display = 'none'; draw();
+  }
+  function onMove(e) {
+    if (!dragging) return; e.preventDefault();
+    const {x,y} = getPos(e);
+    dragging.x = Math.max(W/2+10, Math.min(CSS_W-W/2-10, x-dragOffX));
+    dragging.y = Math.max(H/2+10, Math.min(CSS_H-H/2-10, y-dragOffY));
+    draw();
+  }
+  function onUp() { dragging = null; }
+
+  canvas.addEventListener('mousedown',onDown); canvas.addEventListener('mousemove',onMove); canvas.addEventListener('mouseup',onUp);
+  canvas.addEventListener('touchstart',onDown,{passive:false}); canvas.addEventListener('touchmove',onMove,{passive:false}); canvas.addEventListener('touchend',onUp);
+  document.addEventListener('keydown', function(e) { if ((e.key === 'Delete' || e.key === 'Backspace') && selected && document.activeElement !== labelInput) { e.preventDefault(); window.fdDeleteSelected(); } });
+
+  window.fdAddShape = function(type) { shapes.push({id:Date.now(),type,x:80+Math.random()*500,y:60+Math.random()*280,label:defaultLabel(type)}); draw(); };
+  window.fdClear = function() { shapes=[]; arrows=[]; selected=null; arrowMode=null; arrowFrom=null; labelRow.style.display='none'; const b=document.getElementById('fd-arrow-btn'); if(b)b.textContent='→ Add Arrow'; draw(); };
+  window.fdApplyLabel = function() { if(selected){selected.label=labelInput.value; draw();} };
+  labelInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); window.fdApplyLabel(); } });
+  window.fdDeleteSelected = function() { if(!selected)return; arrows=arrows.filter(a=>a.from!==selected.id&&a.to!==selected.id); shapes=shapes.filter(s=>s!==selected); selected=null; labelRow.style.display='none'; draw(); };
+  window.fdToggleArrowMode = function() { arrowMode=arrowMode?null:'picking-from'; arrowFrom=null; const b=document.getElementById('fd-arrow-btn'); if(b)b.textContent=arrowMode?'✕ Cancel':'→ Add Arrow'; draw(); };
+  window.fdDownload = function() { const a=document.createElement('a'); a.download='my-flow-diagram.png'; a.href=canvas.toDataURL('image/png'); a.click(); };
+  draw();
+}
+
+  initFlowDiagramBuilder();
   lucide.createIcons();
   buildSidebar();
 }
@@ -2610,18 +3694,49 @@ function updateProgress() {
 function goTo(idx) {
   currentLesson = Math.max(0, Math.min(LESSONS.length-1, idx));
   renderLesson();
+  // Track topic started
+  if (window.MagicLabProgress) {
+    const les = LESSONS[currentLesson];
+    MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'topic_started', {
+      topic: les.title,
+      grade: 8,
+      metadata: { unit: les.unit }
+    });
+  }
 }
 
 document.getElementById('prevBtn').addEventListener('click', () => goTo(currentLesson - 1));
 document.getElementById('nextBtn').addEventListener('click', () => {
   completed.add(currentLesson);
   updateProgress();
+  // Track lesson complete
+  if (window.MagicLabProgress) {
+    const les = LESSONS[currentLesson];
+    MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
+      topic: les.title,
+      grade: 8,
+      metadata: { unit: les.unit, lesson_index: currentLesson }
+    });
+  }
   if (currentLesson < LESSONS.length - 1) goTo(currentLesson + 1);
   else { /* finished */ document.getElementById('nextBtn').textContent = 'Complete! ✓'; }
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') { completed.add(currentLesson); updateProgress(); goTo(currentLesson+1); }
+  if (e.key === 'ArrowRight') {
+    completed.add(currentLesson);
+    updateProgress();
+    // Track lesson complete via keyboard
+    if (window.MagicLabProgress) {
+      const les = LESSONS[currentLesson];
+      MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
+        topic: les.title,
+        grade: 8,
+        metadata: { unit: les.unit, via: 'keyboard' }
+      });
+    }
+    goTo(currentLesson+1);
+  }
   if (e.key === 'ArrowLeft')  goTo(currentLesson-1);
 });
 
