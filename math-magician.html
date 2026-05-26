@@ -1212,6 +1212,15 @@ function selectTopic(id) {
   buildSidebar();
   renderLesson();
   switchTab('lesson');
+  // Track topic started
+  if (window.MagicLabProgress) {
+    const t = TOPICS[id];
+    MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'topic_started', {
+      topic: t.name,
+      grade: 8,
+      metadata: { chapter: t.chapter || 1, topicId: id }
+    });
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1246,6 +1255,15 @@ function renderLesson() {
   `;
   document.getElementById('goToPractice').addEventListener('click', () => {
     qIndex = 0; answered = false; switchTab('practice');
+    // Track lesson read complete
+    if (window.MagicLabProgress) {
+      const t = TOPICS[currentTopicId];
+      MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
+        topic: t.name,
+        grade: 8,
+        metadata: { chapter: t.chapter || 1, topicId: currentTopicId }
+      });
+    }
   });
   lucide.createIcons();
 }
@@ -1262,6 +1280,15 @@ function renderQuestion() {
     buildSidebar();
     updateProgress();
     const pct = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
+    // Track topic practice complete
+    if (window.MagicLabProgress) {
+      MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
+        topic: t.name,
+        grade: 8,
+        score: ts.correct,
+        metadata: { chapter: t.chapter || 1, topicId: currentTopicId, total: ts.total, pct }
+      });
+    }
     const nextId = currentTopicId + 1;
     practicePanel.innerHTML = `
       <div class="complete-banner">
@@ -1355,9 +1382,27 @@ function renderQuestion() {
     if (isCorrect) {
       topicScores[currentTopicId].correct++;
       showFeedback(true);
+      // Track correct answer
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_correct', {
+          topic: t.name,
+          grade: 8,
+          score: 1,
+          metadata: { chapter: t.chapter || 1, topicId: currentTopicId, question: q.text, qIndex }
+        });
+      }
     } else {
       // Call AI for explanation
       fetchAIFeedback(q, userAnswer, correct, showFeedback);
+      // Track wrong answer
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_wrong', {
+          topic: t.name,
+          grade: 8,
+          score: 0,
+          metadata: { chapter: t.chapter || 1, topicId: currentTopicId, question: q.text, qIndex }
+        });
+      }
     }
   }
 
@@ -1443,6 +1488,23 @@ buildSidebar();
 updateProgress();
 selectTopic(0);
 lucide.createIcons();
+
+// ── Restore completed topics from Supabase ─────────────────────
+// Math Magician tracks completion by topic ID (t.id).
+// getLessonHistory returns topic title strings, so we match by title.
+async function _restoreProgress() {
+  if (!window.MagicLabProgress) return;
+  const history = await MagicLabProgress.getLessonHistory(ML_TOOLS.MATH_MAGICIAN);
+  if (!history.size) return;
+  TOPICS.forEach(t => {
+    if (history.has(t.title)) completed.add(t.id);
+  });
+  buildSidebar();
+  updateProgress();
+}
+
+document.addEventListener('magiclab:progress:ready', _restoreProgress);
+if (window.MagicLabProgress) _restoreProgress();
 
 </script>
   <footer class="copyright-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>

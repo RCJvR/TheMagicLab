@@ -2909,6 +2909,26 @@ document.addEventListener('keydown', e => {
 updateLineNumbers();
 updateHighlight();
 lucide.createIcons();
+
+// ── Restore completed lessons from Supabase ────────────────────────────────
+// Code Conjurer has lessons per grade (10, 11, 12).
+// We restore all grades at once so tick marks are correct regardless of
+// which grade the student switches to.
+async function _restoreProgress() {
+  if (!window.MagicLabProgress) return;
+  const history = await MagicLabProgress.getLessonHistory(ML_TOOLS.CODE_CONJURER);
+  if (!history.size) return;
+  [10, 11, 12].forEach(grade => {
+    const lessons = LESSONS[grade] || [];
+    lessons.forEach((les, i) => {
+      if (history.has(les.title)) completedLessons[grade].add(i);
+    });
+  });
+  buildSidebar();
+}
+
+document.addEventListener('magiclab:progress:ready', _restoreProgress);
+if (window.MagicLabProgress) _restoreProgress();
 </script>
   <footer class="copyright-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
