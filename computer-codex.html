@@ -85,10 +85,28 @@
       color: rgba(221,225,240,0.30);
     }
     #sidebarList { flex: 1; overflow-y: auto; padding-bottom: 12px; }
+    /* ── Collapsible unit headers ── */
+    .unit-group { }
     .unit-header {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
-      padding: 12px 14px 4px; color: rgba(221,225,240,0.25);
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 14px 5px; cursor: pointer;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      user-select: none; transition: background 120ms;
     }
+    .unit-header:hover { background: rgba(255,255,255,0.03); }
+    .unit-header-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(221,225,240,0.30); flex: 1; line-height: 1.4;
+    }
+    .unit-header-count {
+      font-family: "JetBrains Mono", monospace; font-size: 9px;
+      color: rgba(221,225,240,0.20); flex-shrink: 0;
+    }
+    .unit-caret {
+      font-size: 10px; color: rgba(221,225,240,0.35); flex-shrink: 0;
+      transition: transform 200ms ease; display: inline-block;
+    }
+    .unit-group.collapsed .unit-lessons { display: none; }
     .lesson-item {
       display: flex; align-items: center; gap: 9px;
       padding: 7px 14px; cursor: pointer; transition: background 110ms;
@@ -445,7 +463,7 @@
     <h1 class="app-title">Computer Codex</h1>
     <span class="grade-badge">Grade 8 – 10</span>
     <div class="header-right">
-      <span class="progress-text" id="headerProgress">Lesson 1 of 20</span>
+      <span class="progress-text" id="headerProgress">Lesson 1 of 25</span>
       <a href="../dashboard-student.html" class="home-btn" style="color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:12px;height:12px;"></i></a>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
     </div>
@@ -478,7 +496,7 @@
       </div>
       <div id="bottomNav">
         <button class="nav-btn" id="prevBtn">&#x2190; Previous</button>
-        <span id="lessonCounter">1 / 20</span>
+        <span id="lessonCounter">1 / 25</span>
         <button class="nav-btn" id="nextBtn">Next &#x2192;</button>
       </div>
     </div>
@@ -3355,6 +3373,635 @@ END</pre>
 }
 
 
+,
+
+// ─── UNIT 9: ARTIFICIAL INTELLIGENCE & MACHINE LEARNING ───────────────────
+
+{
+  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  title: "What is Artificial Intelligence?",
+  subtitle: "From rule-based programs to thinking machines",
+  content: `
+<p><strong>Artificial Intelligence (AI)</strong> is the branch of computer science focused on building systems that can perform tasks that normally require human intelligence — things like understanding language, recognising faces, playing games, or making decisions.</p>
+<p>AI is not magic. At its core, it is <em>mathematics and data</em> working together at enormous scale.</p>
+
+<div class="callout info"><strong>Key idea:</strong> Traditional programs follow exact instructions a programmer wrote. AI programs <em>learn</em> patterns from examples and use those patterns to handle new situations.</div>
+
+<h3><i data-lucide="git-branch" style="width:14px;height:14px;"></i> A Brief History of AI</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">AI Timeline</div>
+  <div style="display:flex;flex-direction:column;gap:0;">
+    ${[
+      ["1950s","Alan Turing proposes the Turing Test — can a machine fool a human into thinking it is human?","#6366f1"],
+      ["1960s–70s","Early rule-based 'expert systems' — programs that follow thousands of hand-written IF/THEN rules","#8b5cf6"],
+      ["1980s–90s","Machine Learning research grows: computers learn from data instead of hard-coded rules","#06b6d4"],
+      ["2006","Deep Learning breakthrough: neural networks with many layers finally train successfully","#10b981"],
+      ["2012","AlexNet wins image recognition contest by a huge margin — deep learning goes mainstream","#f59e0b"],
+      ["2017","Google publishes the Transformer paper — the architecture behind modern AI language models","#ef4444"],
+      ["2022","ChatGPT launches — generative AI reaches hundreds of millions of users worldwide","#ec4899"],
+      ["2024–now","Multimodal AI: models that see, hear, read, and generate images, audio and code","#a855f7"],
+    ].map(([yr,desc,col])=>`
+    <div style="display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+      <div style="min-width:64px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:${col};padding-top:2px;">${yr}</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.70);line-height:1.5;">${desc}</div>
+    </div>`).join('')}
+  </div>
+</div>
+
+<h3><i data-lucide="layers" style="width:14px;height:14px;"></i> Three Types of AI You Should Know</h3>
+<ul>
+  <li><strong>Narrow AI (Weak AI)</strong> — does ONE task extremely well. Examples: spam filters, face unlock, recommendation engines, chess engines. This is all AI that exists today.</li>
+  <li><strong>General AI (AGI)</strong> — a hypothetical system that can do any intellectual task a human can. Does not exist yet.</li>
+  <li><strong>Superintelligence</strong> — a hypothetical AI far smarter than all humans combined. Theoretical only.</li>
+</ul>
+
+<div class="callout tip"><strong>Remember:</strong> Every AI tool you use today — ChatGPT, Google search, TikTok's feed, Spotify recommendations — is Narrow AI. It is exceptional at its specific job but cannot do anything outside of it.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: What makes AI different from traditional programs?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">AI uses faster processors</button>
+    <button class="quiz-opt" data-correct="true">AI learns patterns from data instead of following fixed rules</button>
+    <button class="quiz-opt" data-correct="false">AI is written in a special programming language</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: Which type of AI exists today?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Narrow AI</button>
+    <button class="quiz-opt" data-correct="false">General AI (AGI)</button>
+    <button class="quiz-opt" data-correct="false">Superintelligence</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: The 2017 "Transformer" paper was important because:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It was the first time computers could play chess</button>
+    <button class="quiz-opt" data-correct="true">It introduced the architecture used by modern AI language models</button>
+    <button class="quiz-opt" data-correct="false">It created the first robot that could walk</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: Alan Turing's contribution to AI was:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Inventing the first computer chip</button>
+    <button class="quiz-opt" data-correct="true">Proposing the Turing Test — whether a machine can fool a human</button>
+    <button class="quiz-opt" data-correct="false">Writing the first AI chatbot program</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: A spam filter in your email is an example of:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Narrow AI</button>
+    <button class="quiz-opt" data-correct="false">General AI</button>
+    <button class="quiz-opt" data-correct="false">Superintelligence</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  title: "How Machine Learning Works",
+  subtitle: "Teaching computers with data instead of rules",
+  content: `
+<p><strong>Machine Learning (ML)</strong> is the core technique behind modern AI. Instead of a programmer writing every rule, the computer studies thousands (or millions) of examples and figures out the patterns itself.</p>
+
+<h3><i data-lucide="cpu" style="width:14px;height:14px;"></i> The Three Steps of Machine Learning</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">How a Model Is Trained</div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.22);">
+      <div style="font-size:24px;flex-shrink:0;">📦</div>
+      <div><div style="font-size:12px;font-weight:700;color:#a5b4fc;">Step 1 — Collect Data</div><div style="font-size:11px;color:rgba(221,225,240,0.60);margin-top:2px;">Gather thousands of labelled examples. E.g. photos labelled "cat" or "not cat".</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.22);">
+      <div style="font-size:24px;flex-shrink:0;">⚙️</div>
+      <div><div style="font-size:12px;font-weight:700;color:#6ee7b7;">Step 2 — Train the Model</div><div style="font-size:11px;color:rgba(221,225,240,0.60);margin-top:2px;">Feed the data into a neural network. It adjusts millions of numbers (weights) to reduce its prediction errors.</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.22);">
+      <div style="font-size:24px;flex-shrink:0;">🎯</div>
+      <div><div style="font-size:12px;font-weight:700;color:#fcd34d;">Step 3 — Use (Inference)</div><div style="font-size:11px;color:rgba(221,225,240,0.60);margin-top:2px;">Show the trained model a new photo it has never seen. It uses what it learned to predict: "cat" or "not cat".</div></div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="network" style="width:14px;height:14px;"></i> What is a Neural Network?</h3>
+<p>A <strong>neural network</strong> is a mathematical structure loosely inspired by the human brain. It is organised in <em>layers</em>:</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Neural Network — Simplified</div>
+  <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;display:block;margin:0 auto;font-family:'DM Sans',sans-serif;">
+    <!-- Input layer -->
+    ${[40,80,120,160].map((y,i)=>`<circle cx="60" cy="${y}" r="14" fill="rgba(99,102,241,0.25)" stroke="#818cf8" stroke-width="1.5"/><text x="60" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="#a5b4fc">x${i+1}</text>`).join('')}
+    <!-- Hidden layer 1 -->
+    ${[30,75,120,165].map((y,i)=>`<circle cx="180" cy="${y}" r="14" fill="rgba(16,185,129,0.20)" stroke="#34d399" stroke-width="1.5"/><text x="180" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="7" fill="#6ee7b7">h1.${i+1}</text>`).join('')}
+    <!-- Hidden layer 2 -->
+    ${[55,100,145].map((y,i)=>`<circle cx="300" cy="${y}" r="14" fill="rgba(245,158,11,0.20)" stroke="#fbbf24" stroke-width="1.5"/><text x="300" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="7" fill="#fcd34d">h2.${i+1}</text>`).join('')}
+    <!-- Output layer -->
+    ${[80,120].map((y,lab)=>`<circle cx="420" cy="${y}" r="14" fill="rgba(236,72,153,0.20)" stroke="#f472b6" stroke-width="1.5"/><text x="420" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="7" fill="#f9a8d4">${lab===0?'Cat':'Other'}</text>`).join('')}
+    <!-- Connections input→h1 -->
+    ${[40,80,120,160].flatMap(y1=>[30,75,120,165].map(y2=>`<line x1="74" y1="${y1}" x2="166" y2="${y2}" stroke="rgba(129,140,248,0.15)" stroke-width="0.8"/>`)).join('')}
+    <!-- Connections h1→h2 -->
+    ${[30,75,120,165].flatMap(y1=>[55,100,145].map(y2=>`<line x1="194" y1="${y1}" x2="286" y2="${y2}" stroke="rgba(52,211,153,0.15)" stroke-width="0.8"/>`)).join('')}
+    <!-- Connections h2→output -->
+    ${[55,100,145].flatMap(y1=>[80,120].map(y2=>`<line x1="314" y1="${y1}" x2="406" y2="${y2}" stroke="rgba(251,191,36,0.15)" stroke-width="0.8"/>`)).join('')}
+    <!-- Labels -->
+    <text x="60" y="185" text-anchor="middle" font-size="9" fill="rgba(221,225,240,0.35)">Input</text>
+    <text x="180" y="185" text-anchor="middle" font-size="9" fill="rgba(221,225,240,0.35)">Hidden 1</text>
+    <text x="300" y="185" text-anchor="middle" font-size="9" fill="rgba(221,225,240,0.35)">Hidden 2</text>
+    <text x="420" y="185" text-anchor="middle" font-size="9" fill="rgba(221,225,240,0.35)">Output</text>
+  </svg>
+  <p style="font-size:11px;color:rgba(221,225,240,0.35);text-align:center;margin-top:6px;">Each circle is a neuron. Each line is a connection with a learnable weight.</p>
+</div>
+
+<p>During training, the network sees an image, makes a guess, checks how wrong it was, and adjusts its weights slightly to be less wrong next time. This process repeats millions of times — the model gets better with practice, just like a student does.</p>
+
+<h3><i data-lucide="sliders" style="width:14px;height:14px;"></i> Types of Machine Learning</h3>
+<ul>
+  <li><strong>Supervised Learning</strong> — learn from labelled examples. You show the model thousands of spam emails labelled "spam" and legitimate emails labelled "not spam" so it can classify new ones.</li>
+  <li><strong>Unsupervised Learning</strong> — find patterns without labels. The model groups similar things together (clustering) without being told the categories in advance.</li>
+  <li><strong>Reinforcement Learning</strong> — learn by trial and reward. Used to train game-playing AI like AlphaGo — the model earns points for good moves and loses points for bad ones.</li>
+</ul>
+
+<div class="callout warn"><strong>Important:</strong> A model is only as good as the data it was trained on. Biased, incomplete, or incorrect data produces a biased, unreliable model — even if the mathematics is perfect.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: In Machine Learning, what does "training" mean?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A programmer writes thousands of rules for the computer</button>
+    <button class="quiz-opt" data-correct="true">The model adjusts its internal numbers to reduce errors on many examples</button>
+    <button class="quiz-opt" data-correct="false">The computer downloads a pre-built solution from the internet</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: What is a neural network inspired by?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The structure of the internet</button>
+    <button class="quiz-opt" data-correct="true">The structure of the human brain</button>
+    <button class="quiz-opt" data-correct="false">The layout of a spreadsheet</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Supervised Learning requires:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Labelled training examples</button>
+    <button class="quiz-opt" data-correct="false">Unlabelled data only</button>
+    <button class="quiz-opt" data-correct="false">A reward system for good decisions</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: AlphaGo (the game-playing AI) was trained using:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Supervised Learning with labelled moves</button>
+    <button class="quiz-opt" data-correct="false">Unsupervised clustering</button>
+    <button class="quiz-opt" data-correct="true">Reinforcement Learning — rewards for good moves, penalties for bad</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: What happens if training data is biased?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">The model ignores the bias and learns fairly</button>
+    <button class="quiz-opt" data-correct="true">The model learns and repeats those biases in its predictions</button>
+    <button class="quiz-opt" data-correct="false">The training automatically stops and asks for better data</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  title: "Large Language Models & GPT",
+  subtitle: "How ChatGPT and similar AI systems actually work",
+  content: `
+<p>You've heard of ChatGPT, Claude, Gemini, and Copilot. These are all <strong>Large Language Models (LLMs)</strong> — a specific type of AI trained on vast amounts of text to understand and generate human language.</p>
+
+<h3><i data-lucide="file-text" style="width:14px;height:14px;"></i> What Does "Language Model" Mean?</h3>
+<p>A language model is a system that predicts text. At its simplest: given a sequence of words, what word is most likely to come next?</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Token Prediction — The Core Idea</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;padding:6px 0;">
+    <div style="margin-bottom:10px;color:rgba(221,225,240,0.55);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Input prompt:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;">
+      ${["The","capital","of","South","Africa","is"].map(w=>`<span style="padding:3px 8px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.30);border-radius:5px;color:#a5b4fc;font-size:11px;">${w}</span>`).join('')}
+      <span style="padding:3px 8px;background:rgba(16,185,129,0.25);border:2px solid rgba(16,185,129,0.50);border-radius:5px;color:#6ee7b7;font-size:11px;font-weight:700;">???</span>
+    </div>
+    <div style="margin-bottom:10px;color:rgba(221,225,240,0.55);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;">Model's top predictions:</div>
+    ${[["Pretoria / Tshwane","94%","#6ee7b7"],["Johannesburg","3%","#fbbf24"],["Cape Town","2%","#f87171"],["Other","1%","#94a3b8"]].map(([w,p,c])=>`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
+      <div style="font-size:11px;color:${c};min-width:160px;">${w}</div>
+      <div style="flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:99px;overflow:hidden;"><div style="height:100%;width:${p};background:${c};border-radius:99px;"></div></div>
+      <div style="font-size:10px;color:rgba(221,225,240,0.40);min-width:30px;text-align:right;">${p}</div>
+    </div>`).join('')}
+  </div>
+</div>
+
+<p>LLMs do this prediction billions of times in sequence to produce an entire paragraph or conversation. They don't "know" facts the way humans do — they predict statistically likely text based on patterns in their training data.</p>
+
+<h3><i data-lucide="zap" style="width:14px;height:14px;"></i> The Transformer Architecture</h3>
+<p>The breakthrough that made LLMs possible was the <strong>Transformer</strong>, introduced by Google researchers in a 2017 paper titled <em>"Attention Is All You Need."</em></p>
+<p>The key innovation was <strong>attention</strong> — a mechanism that lets the model focus on the most relevant parts of the input when generating each word, similar to how your eyes scan a sentence for the most important words.</p>
+
+<div class="callout info"><strong>Example:</strong> When generating the word after "The South African rand is the currency of ___", the attention mechanism focuses heavily on "South African" and "currency" — not just the previous word — so it correctly predicts "South Africa".</div>
+
+<h3><i data-lucide="database" style="width:14px;height:14px;"></i> What is GPT?</h3>
+<p><strong>GPT</strong> stands for <em>Generative Pre-trained Transformer</em>. Each word tells you something:</p>
+<ul>
+  <li><strong>Generative</strong> — it generates (creates) new text</li>
+  <li><strong>Pre-trained</strong> — it was trained on a massive dataset before being customised for chat</li>
+  <li><strong>Transformer</strong> — it uses the Transformer architecture described above</li>
+</ul>
+
+<div class="visual-box">
+  <div class="visual-box-title">Scale: How Big Are These Models?</div>
+  <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;">
+    ${[
+      ["GPT-2 (2019)","1.5 billion","parameters","rgba(148,163,184,0.20)","#94a3b8","22%"],
+      ["GPT-3 (2020)","175 billion","parameters","rgba(99,102,241,0.20)","#818cf8","45%"],
+      ["GPT-4 (2023)","~1 trillion","(estimated)","rgba(16,185,129,0.20)","#34d399","80%"],
+      ["Your brain","~100 trillion","synapses","rgba(245,158,11,0.20)","#fbbf24","100%"],
+    ].map(([name,val,unit,bg,col,w])=>`
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="min-width:130px;color:rgba(221,225,240,0.70);font-size:11px;">${name}</div>
+      <div style="flex:1;height:14px;background:rgba(255,255,255,0.04);border-radius:5px;overflow:hidden;">
+        <div style="height:100%;width:${w};background:${bg};border:1px solid ${col};border-radius:5px;display:flex;align-items:center;padding-left:6px;">
+          <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:${col};white-space:nowrap;">${val} ${unit}</span>
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>
+
+<h3><i data-lucide="message-square" style="width:14px;height:14px;"></i> From LLM to ChatBot: RLHF</h3>
+<p>A raw LLM is trained to predict text — it might produce harmful or unhelpful responses. To make it a useful assistant, companies use <strong>RLHF</strong> — Reinforcement Learning from Human Feedback:</p>
+<ol>
+  <li>Human raters compare different AI responses and rank the best ones</li>
+  <li>A reward model learns what humans prefer</li>
+  <li>The LLM is fine-tuned using reinforcement learning to produce responses the reward model scores highly</li>
+</ol>
+<p>This is what turns a raw text-predictor into a helpful, safe, and conversational assistant like ChatGPT or Claude.</p>
+
+<div class="callout tip"><strong>Fun fact:</strong> "Claude" (the AI made by Anthropic) and "ChatGPT" (by OpenAI) and "Gemini" (by Google) all use variants of this approach. They are competitors, each with their own training data, architecture choices, and safety techniques.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 6 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: What does an LLM fundamentally do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Searches the internet for answers</button>
+    <button class="quiz-opt" data-correct="true">Predicts likely next tokens (words) based on patterns in training data</button>
+    <button class="quiz-opt" data-correct="false">Stores a database of every fact ever written</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: The 2017 paper "Attention Is All You Need" introduced:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Neural networks for the first time</button>
+    <button class="quiz-opt" data-correct="true">The Transformer architecture used by modern LLMs</button>
+    <button class="quiz-opt" data-correct="false">The first AI that could beat a human at chess</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: What does GPT stand for?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">General Purpose Technology</button>
+    <button class="quiz-opt" data-correct="true">Generative Pre-trained Transformer</button>
+    <button class="quiz-opt" data-correct="false">Guided Pattern Trainer</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: What does RLHF do?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It makes the model faster at generating text</button>
+    <button class="quiz-opt" data-correct="true">It fine-tunes the model to produce responses humans prefer, making it safer and more helpful</button>
+    <button class="quiz-opt" data-correct="false">It gives the model access to real-time internet data</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: When an LLM says something false but confident, this is called:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A database error</button>
+    <button class="quiz-opt" data-correct="true">A hallucination</button>
+    <button class="quiz-opt" data-correct="false">A timeout</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: LLMs "know" facts because they:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Have a live connection to Wikipedia</button>
+    <button class="quiz-opt" data-correct="false">Store every fact in a lookup table</button>
+    <button class="quiz-opt" data-correct="true">Learned statistical patterns from huge amounts of text during training</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  title: "Generative AI — Images, Audio &amp; Beyond",
+  subtitle: "How AI creates new content from scratch",
+  content: `
+<p><strong>Generative AI</strong> refers to AI systems that can create new content — text, images, audio, video, and code — rather than just classifying or analysing existing content.</p>
+<p>The rise of generative AI from 2022 onward changed the world. Suddenly, anyone with internet access could generate realistic images, write essays, compose music, or produce code by typing a description.</p>
+
+<h3><i data-lucide="image" style="width:14px;height:14px;"></i> How AI Image Generation Works</h3>
+<p>Tools like DALL·E, Midjourney, and Stable Diffusion use a technique called <strong>diffusion</strong>:</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Diffusion Model — Simplified</div>
+  <div style="display:flex;align-items:center;gap:8px;overflow-x:auto;padding:4px 0;">
+    ${[
+      ["📷","Real image","rgba(99,102,241,0.20)","#818cf8"],
+      ["→","","",""],
+      ["🌫️","Add noise gradually","rgba(100,116,139,0.15)","#94a3b8"],
+      ["→","","",""],
+      ["🔲","Pure noise","rgba(100,116,139,0.10)","#64748b"],
+      ["→","","",""],
+      ["⚙️","Learn to de-noise (training)","rgba(245,158,11,0.15)","#fbbf24"],
+      ["→","","",""],
+      ["✨","Generate from noise + text prompt","rgba(16,185,129,0.18)","#34d399"],
+    ].map(([icon,label,bg,col])=> label ? `
+      <div style="flex-shrink:0;text-align:center;min-width:90px;padding:8px;background:${bg};border-radius:9px;">
+        <div style="font-size:20px;">${icon}</div>
+        <div style="font-size:10px;color:${col};margin-top:3px;line-height:1.3;">${label}</div>
+      </div>` : `<div style="font-size:18px;color:rgba(221,225,240,0.25);flex-shrink:0;">${icon}</div>`
+    ).join('')}
+  </div>
+</div>
+
+<h3><i data-lucide="music" style="width:14px;height:14px;"></i> AI Audio and Music</h3>
+<p>Text-to-speech models (like ElevenLabs or Google's WaveNet) can generate realistic human voices from text. Music generators like Suno or Udio can compose full songs in any genre from a short description. These all use variations of the same deep learning principles.</p>
+
+<h3><i data-lucide="code" style="width:14px;height:14px;"></i> AI Code Generation</h3>
+<p>Models like GitHub Copilot and Claude are trained on billions of lines of code. They can autocomplete functions, explain errors, write entire programs, and review pull requests. This is already changing how professional software developers work.</p>
+
+<h3><i data-lucide="alert-triangle" style="width:14px;height:14px;"></i> The Risks of Generative AI</h3>
+<ul>
+  <li><strong>Deepfakes</strong> — AI-generated fake videos of real people saying things they never said</li>
+  <li><strong>Misinformation</strong> — convincingly written false articles generated at scale</li>
+  <li><strong>Copyright questions</strong> — models trained on artists' work can generate images in their style without permission</li>
+  <li><strong>Job displacement</strong> — tasks previously done by humans (writing, design, translation) can now be partially automated</li>
+  <li><strong>Hallucinations</strong> — AI confidently stating false facts in medical, legal, or scientific contexts</li>
+</ul>
+
+<div class="callout warn"><strong>Critical thinking required:</strong> Not everything you see, hear, or read online is real. AI-generated content has become nearly indistinguishable from human-created content. Always verify important information with trusted sources.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: What is "generative AI"?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">AI that only classifies or labels existing content</button>
+    <button class="quiz-opt" data-correct="true">AI that creates new content such as text, images, music, or code</button>
+    <button class="quiz-opt" data-correct="false">AI built specifically for robotics</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: DALL·E and Stable Diffusion use which technique to generate images?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Reinforcement Learning</button>
+    <button class="quiz-opt" data-correct="true">Diffusion — learning to remove noise from images</button>
+    <button class="quiz-opt" data-correct="false">Decision trees</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: A "deepfake" is:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">A very detailed real photograph</button>
+    <button class="quiz-opt" data-correct="true">AI-generated fake video or audio of a real person saying something they never said</button>
+    <button class="quiz-opt" data-correct="false">A password used to access AI systems</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: GitHub Copilot helps developers by:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Running their code on a supercomputer</button>
+    <button class="quiz-opt" data-correct="true">Suggesting and generating code based on patterns from billions of lines of training code</button>
+    <button class="quiz-opt" data-correct="false">Checking code against copyright law automatically</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Why should you always verify AI-generated information?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Because AI charges money for wrong answers</button>
+    <button class="quiz-opt" data-correct="true">Because AI can "hallucinate" — confidently stating things that are false</button>
+    <button class="quiz-opt" data-correct="false">Because AI is always out of date by exactly one year</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 9 — Artificial Intelligence &amp; Machine Learning",
+  title: "Using AI Ethically",
+  subtitle: "Responsible, fair, and honest use of AI tools",
+  content: `
+<p>AI tools are powerful — and with great power comes great responsibility. This lesson will help you understand how to use AI ethically: honestly, fairly, critically, and safely.</p>
+
+<div class="callout warn"><strong>Why this matters:</strong> In South Africa's schools and workplaces, how you use AI affects your learning, your integrity, and the people around you. The habits you build now will shape your future.</div>
+
+<h3><i data-lucide="shield" style="width:14px;height:14px;"></i> The 5 Principles of Ethical AI Use</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">Ethical AI Use — Interactive Scenarios</div>
+  <div style="display:flex;flex-direction:column;gap:10px;" id="ethics-scenarios">
+
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.22);">
+      <div style="font-size:11px;font-weight:700;color:#a5b4fc;margin-bottom:6px;">🔍 PRINCIPLE 1 — HONESTY</div>
+      <p style="font-size:12px;color:rgba(221,225,240,0.70);margin:0 0 10px;">If you use AI to help write an essay, you must declare it. Submitting AI-generated work as your own without disclosure is academic dishonesty — the same as plagiarism.</p>
+      <div style="font-size:11px;font-weight:700;color:rgba(221,225,240,0.45);margin-bottom:6px;">⚡ Scenario: Your teacher asks you to write a paragraph about climate change. You use ChatGPT to write the whole thing and submit it with your name. Is this acceptable?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="ethicsAnswer(this,'wrong')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.10);color:#6ee7b7;font-size:11px;font-weight:600;cursor:pointer;">✓ Yes, it saved time</button>
+        <button onclick="ethicsAnswer(this,'correct')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.10);color:#fca5a5;font-size:11px;font-weight:600;cursor:pointer;">✗ No — you must disclose AI use</button>
+      </div>
+      <div class="ethics-feedback" style="margin-top:8px;font-size:11px;display:none;"></div>
+    </div>
+
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.20);">
+      <div style="font-size:11px;font-weight:700;color:#6ee7b7;margin-bottom:6px;">🧠 PRINCIPLE 2 — CRITICAL THINKING</div>
+      <p style="font-size:12px;color:rgba(221,225,240,0.70);margin:0 0 10px;">AI can and does make mistakes. Always verify important information from AI with trusted sources — textbooks, scientific journals, official government websites.</p>
+      <div style="font-size:11px;font-weight:700;color:rgba(221,225,240,0.45);margin-bottom:6px;">⚡ Scenario: You ask an AI for the date of the Battle of Blood River. It gives you a confident answer. What should you do?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="ethicsAnswer(this,'correct')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.10);color:#6ee7b7;font-size:11px;font-weight:600;cursor:pointer;">✓ Verify it in your textbook or a trusted source</button>
+        <button onclick="ethicsAnswer(this,'wrong')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.10);color:#fca5a5;font-size:11px;font-weight:600;cursor:pointer;">✗ Use it immediately — AI is always accurate</button>
+      </div>
+      <div class="ethics-feedback" style="margin-top:8px;font-size:11px;display:none;"></div>
+    </div>
+
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);">
+      <div style="font-size:11px;font-weight:700;color:#fcd34d;margin-bottom:6px;">⚖️ PRINCIPLE 3 — FAIRNESS &amp; BIAS</div>
+      <p style="font-size:12px;color:rgba(221,225,240,0.70);margin:0 0 10px;">AI models can inherit biases from their training data. Be aware that AI outputs may reflect stereotypes or underrepresent certain groups — especially in areas like hiring, lending, or facial recognition.</p>
+      <div style="font-size:11px;font-weight:700;color:rgba(221,225,240,0.45);margin-bottom:6px;">⚡ Scenario: A bank uses an AI model to decide who gets a loan. The model was trained mostly on data from wealthy suburbs. Is this fair to everyone?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="ethicsAnswer(this,'wrong')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.10);color:#6ee7b7;font-size:11px;font-weight:600;cursor:pointer;">✓ Yes — it's just a computer, so it's objective</button>
+        <button onclick="ethicsAnswer(this,'correct')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.10);color:#fca5a5;font-size:11px;font-weight:600;cursor:pointer;">✗ No — biased training data produces biased outcomes</button>
+      </div>
+      <div class="ethics-feedback" style="margin-top:8px;font-size:11px;display:none;"></div>
+    </div>
+
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.20);">
+      <div style="font-size:11px;font-weight:700;color:#f9a8d4;margin-bottom:6px;">🔒 PRINCIPLE 4 — PRIVACY</div>
+      <p style="font-size:12px;color:rgba(221,225,240,0.70);margin:0 0 10px;">Never share personal information — your own or someone else's — with AI tools. Inputs to public AI systems may be stored, logged, or used in future training.</p>
+      <div style="font-size:11px;font-weight:700;color:rgba(221,225,240,0.45);margin-bottom:6px;">⚡ Scenario: You paste your ID number and address into ChatGPT to ask it to fill in a form. Is this safe?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="ethicsAnswer(this,'wrong')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.10);color:#6ee7b7;font-size:11px;font-weight:600;cursor:pointer;">✓ Yes — AI tools are private and secure</button>
+        <button onclick="ethicsAnswer(this,'correct')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.10);color:#fca5a5;font-size:11px;font-weight:600;cursor:pointer;">✗ No — never share personal info with public AI tools</button>
+      </div>
+      <div class="ethics-feedback" style="margin-top:8px;font-size:11px;display:none;"></div>
+    </div>
+
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.20);">
+      <div style="font-size:11px;font-weight:700;color:#67e8f9;margin-bottom:6px;">🌱 PRINCIPLE 5 — LEARNING &amp; GROWTH</div>
+      <p style="font-size:12px;color:rgba(221,225,240,0.70);margin:0 0 10px;">Use AI as a learning partner, not a replacement for your own thinking. Let it explain concepts, give feedback, or check your work — but do the thinking yourself first. The goal is for YOU to grow.</p>
+      <div style="font-size:11px;font-weight:700;color:rgba(221,225,240,0.45);margin-bottom:6px;">⚡ Scenario: You're stuck on a maths problem. Which is the better use of AI?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="ethicsAnswer(this,'wrong')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.10);color:#fca5a5;font-size:11px;font-weight:600;cursor:pointer;">✗ Ask AI to solve it and copy the answer</button>
+        <button onclick="ethicsAnswer(this,'correct')" style="padding:6px 12px;border-radius:7px;border:1px solid rgba(16,185,129,0.35);background:rgba(16,185,129,0.10);color:#6ee7b7;font-size:11px;font-weight:600;cursor:pointer;">✓ Ask AI to explain the method, then solve it yourself</button>
+      </div>
+      <div class="ethics-feedback" style="margin-top:8px;font-size:11px;display:none;"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function ethicsAnswer(btn, type) {
+  const box = btn.parentElement;
+  const fb = box.nextElementSibling;
+  fb.style.display = 'block';
+  if (type === 'correct') {
+    btn.style.outline = '2px solid #6ee7b7';
+    fb.style.color = '#6ee7b7';
+    fb.textContent = '✅ Correct! Well reasoned.';
+  } else {
+    btn.style.outline = '2px solid #f87171';
+    fb.style.color = '#f87171';
+    fb.textContent = '❌ Think again — consider the consequences.';
+  }
+}
+<\/script>
+
+<h3><i data-lucide="book-open" style="width:14px;height:14px;"></i> South African Context</h3>
+<ul>
+  <li>The <strong>POPIA Act</strong> (Protection of Personal Information Act) governs how personal data — including AI-generated data — must be handled in South Africa</li>
+  <li>South Africa's <strong>AI Policy Framework</strong> (2024) aims to promote responsible AI development that benefits all citizens</li>
+  <li>Schools and universities are developing AI academic integrity policies — always check your institution's rules</li>
+</ul>
+
+<div class="callout tip"><strong>The golden rule:</strong> Use AI to become a better, more informed, more capable version of yourself — not to skip the learning that makes you that person.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Final Ethics Quiz — 6 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: Using AI to write your entire essay without disclosure is:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Acceptable — AI is just a tool</button>
+    <button class="quiz-opt" data-correct="true">Academic dishonesty — equivalent to plagiarism</button>
+    <button class="quiz-opt" data-correct="false">Fine as long as you fix spelling errors first</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: An AI hiring system trained mostly on data from one demographic group may:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Be fairer than humans because it uses maths</button>
+    <button class="quiz-opt" data-correct="true">Discriminate unfairly against underrepresented groups</button>
+    <button class="quiz-opt" data-correct="false">Automatically correct for bias using AI</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: Why should you never share your ID number with a public AI chatbot?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Because AI cannot process numbers</button>
+    <button class="quiz-opt" data-correct="true">Because inputs may be stored or used in ways that risk your privacy</button>
+    <button class="quiz-opt" data-correct="false">Because AI will automatically post it online</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: POPIA (South Africa) relates to AI by:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Making all AI tools free for students</button>
+    <button class="quiz-opt" data-correct="true">Governing how personal data — including data used in AI — must be handled</button>
+    <button class="quiz-opt" data-correct="false">Banning AI use in schools</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: The best way to use AI for learning is:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Have it do all tasks so you can focus on other things</button>
+    <button class="quiz-opt" data-correct="true">Use it to explain, give feedback, and check work — while you do the core thinking yourself</button>
+    <button class="quiz-opt" data-correct="false">Only use it for tasks teachers cannot check</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: If an AI confidently gives you a historical date for your History assignment, you should:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Trust it — AI is always accurate for factual questions</button>
+    <button class="quiz-opt" data-correct="true">Verify it using your textbook or a trusted source before using it</button>
+    <button class="quiz-opt" data-correct="false">Ask the AI three more times until it gives the same answer</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+}
+
 ]; // end LESSONS
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -3364,25 +4011,81 @@ END</pre>
 let currentLesson = 0;
 const completed = new Set();
 
-// ── Build sidebar ──────────────────────────────────────────────────────────
+// ── Build sidebar — collapsible unit groups ────────────────────────────────
+// ── Sidebar collapse state — keyed by group index (stable, no string issues) ──
+// Pre-compute unit groups once (stable across renders)
+const _unitGroups = (() => {
+  const groups = [];
+  LESSONS.forEach((les, i) => {
+    if (!groups.length || groups[groups.length - 1].unit !== les.unit) {
+      groups.push({ unit: les.unit, lessons: [] });
+    }
+    groups[groups.length - 1].lessons.push(i);
+  });
+  return groups;
+})();
+
+// All groups start collapsed; the one containing lesson 0 is auto-expanded on first buildSidebar
+const _collapsedGroups = new Set(_unitGroups.map((_, gi) => gi));
+
 function buildSidebar() {
   const list = document.getElementById('sidebarList');
-  let html = '', lastUnit = '';
-  LESSONS.forEach((les, i) => {
-    if (les.unit !== lastUnit) {
-      html += `<div class="unit-header">${les.unit}</div>`;
-      lastUnit = les.unit;
-    }
-    const done = completed.has(i) ? '<span class="lesson-done">✓</span>' : '';
-    const active = i === currentLesson ? 'active' : '';
-    html += `<div class="lesson-item ${active}" data-idx="${i}">
-      <span class="lesson-num">${i+1}</span>
-      <span class="lesson-name">${les.title}</span>${done}
-    </div>`;
-  });
-  list.innerHTML = html;
-  list.querySelectorAll('.lesson-item').forEach(el => {
-    el.addEventListener('click', () => goTo(parseInt(el.dataset.idx)));
+  list.innerHTML = '';
+
+  _unitGroups.forEach((group, gi) => {
+    const isCollapsed = _collapsedGroups.has(gi);
+    const doneCount   = group.lessons.filter(i => completed.has(i)).length;
+
+    // ── Group wrapper ──
+    const groupEl = document.createElement('div');
+    groupEl.className = 'unit-group' + (isCollapsed ? ' collapsed' : '');
+
+    // ── Clickable header ──
+    const hdr = document.createElement('div');
+    hdr.className = 'unit-header';
+    hdr.innerHTML =
+      `<span class="unit-header-label">${group.unit}</span>` +
+      `<span class="unit-header-count">${doneCount}/${group.lessons.length}</span>` +
+      `<span class="unit-caret" style="transform:${isCollapsed ? 'rotate(-90deg)' : ''}">▾</span>`;
+
+    // Toggle collapse directly on the element — no full rebuild needed
+    hdr.addEventListener('click', function () {
+      if (_collapsedGroups.has(gi)) {
+        _collapsedGroups.delete(gi);
+      } else {
+        _collapsedGroups.add(gi);
+      }
+      groupEl.classList.toggle('collapsed');
+      // Update caret and count (count unchanged but keeps it live)
+      const caret = hdr.querySelector('.unit-caret');
+      if (caret) caret.style.transform = _collapsedGroups.has(gi) ? 'rotate(-90deg)' : '';
+    });
+
+    groupEl.appendChild(hdr);
+
+    // ── Lesson items ──
+    const lessonsEl = document.createElement('div');
+    lessonsEl.className = 'unit-lessons';
+
+    group.lessons.forEach(i => {
+      const les    = LESSONS[i];
+      const isActive = i === currentLesson;
+      const isDone   = completed.has(i);
+
+      const item = document.createElement('div');
+      item.className = 'lesson-item' + (isActive ? ' active' : '');
+      item.dataset.idx = i;
+      item.innerHTML =
+        `<span class="lesson-num">${i + 1}</span>` +
+        `<span class="lesson-name">${les.title}</span>` +
+        (isDone ? '<span class="lesson-done">✓</span>' : '');
+
+      item.addEventListener('click', function () { goTo(i); });
+      lessonsEl.appendChild(item);
+    });
+
+    groupEl.appendChild(lessonsEl);
+    list.appendChild(groupEl);
   });
 }
 
@@ -3412,7 +4115,7 @@ function renderLesson() {
         fb.textContent = '✅ Correct!'; fb.className = 'quiz-feedback correct';
         completed.add(currentLesson);
         updateProgress();
-        buildSidebar();
+        updateSidebarActive();
         // Track correct answer
         if (window.MagicLabProgress) {
           const les = LESSONS[currentLesson];
@@ -3691,9 +4394,46 @@ function updateProgress() {
   document.getElementById('progressPct').textContent = pct + '%';
 }
 
+// Update active highlight, done ticks, and count badges — no full rebuild
+function updateSidebarActive() {
+  const list = document.getElementById('sidebarList');
+  if (!list) return;
+
+  // Update lesson items
+  list.querySelectorAll('.lesson-item').forEach(el => {
+    const idx = parseInt(el.dataset.idx);
+    el.classList.toggle('active', idx === currentLesson);
+    let tick = el.querySelector('.lesson-done');
+    if (completed.has(idx) && !tick) {
+      const t = document.createElement('span');
+      t.className = 'lesson-done'; t.textContent = '✓';
+      el.appendChild(t);
+    }
+  });
+
+  // Update count badges on unit headers
+  const groupEls = list.querySelectorAll('.unit-group');
+  _unitGroups.forEach((group, gi) => {
+    const groupEl = groupEls[gi];
+    if (!groupEl) return;
+    const doneCount = group.lessons.filter(i => completed.has(i)).length;
+    const badge = groupEl.querySelector('.unit-header-count');
+    if (badge) badge.textContent = `${doneCount}/${group.lessons.length}`;
+
+    // Auto-expand the unit containing the active lesson if it's collapsed
+    if (group.lessons.includes(currentLesson) && _collapsedGroups.has(gi)) {
+      _collapsedGroups.delete(gi);
+      groupEl.classList.remove('collapsed');
+      const caret = groupEl.querySelector('.unit-caret');
+      if (caret) caret.style.transform = '';
+    }
+  });
+}
+
 function goTo(idx) {
   currentLesson = Math.max(0, Math.min(LESSONS.length-1, idx));
   renderLesson();
+  updateSidebarActive();
   // Track topic started
   if (window.MagicLabProgress) {
     const les = LESSONS[currentLesson];
@@ -3760,7 +4500,7 @@ async function _restoreProgress() {
   LESSONS.forEach((les, i) => {
     if (history.has(les.title)) completed.add(i);
   });
-  buildSidebar();
+  updateSidebarActive();
   updateProgress();
 }
 
