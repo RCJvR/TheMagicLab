@@ -418,48 +418,51 @@
     };
 
     // ── Readiness guard ──────────────────────────────────────
-    // auth.js, progress.js and xp.js all fire custom events when ready.
-    // Because the scripts load synchronously (no defer on these tags),
-    // their events may have already fired before this inline script runs.
-    // So we listen for future events AND check current state immediately.
+    // auth.js injects Supabase via a dynamic <script> tag, so
+    // window.MagicLabAuth is not available synchronously — we must
+    // wait for the 'magiclab:auth:ready' event. progress:ready fires
+    // immediately after auth:ready. xp.js is optional.
 
-    let _loadCalled = false;
-    function _once() {
-      if (_loadCalled) return;
-      // Check all three are available (window globals set when each module inits)
+    let _loaded = false;
+    async function _once() {
+      if (_loaded) return;
       if (!window.MagicLabAuth || !window.MagicLabProgress) return;
-      _loadCalled = true;
-      _tryLoad();
+      _loaded = true;
+      await _tryLoad();
     }
 
     document.addEventListener('magiclab:auth:ready',     _once);
     document.addEventListener('magiclab:progress:ready', _once);
     document.addEventListener('magiclab:xp:ready',       _once);
 
-    // Also attempt immediately in case all scripts already ran
-    _once();
-    // And as a final fallback after a short tick
-    setTimeout(_once, 100);
-    setTimeout(_once, 800);
+    // Poll as a safety net — handles any timing edge case
+    const _poll = setInterval(() => {
+      if (window.MagicLabAuth && window.MagicLabProgress) {
+        clearInterval(_poll);
+        _once();
+      }
+    }, 200);
 
     async function _tryLoad() {
-      // Guard: need auth and progress at minimum; xp is optional
-      if (!window.MagicLabAuth || !window.MagicLabProgress) return;
+      const guestEl  = document.getElementById('guest-state');
+      const dashEl   = document.getElementById('dashboard-state');
+
       if (!window.MagicLabAuth.isLoggedIn()) {
-        document.getElementById('guest-state').style.display = '';
-        document.getElementById('dashboard-state').style.display = 'none';
+        guestEl.style.display  = '';
+        dashEl.style.display   = 'none';
         return;
       }
 
-      document.getElementById('guest-state').style.display = 'none';
-      document.getElementById('dashboard-state').style.display = '';
+      // Show dashboard immediately — don't wait for data
+      guestEl.style.display = 'none';
+      dashEl.style.display  = '';
 
       const profile = window.MagicLabAuth.getProfile();
 
-      // Player hero
+      // Player hero — render with profile data right away
       const initials = profile.display_name
-        ? profile.display_name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()
-        : (profile.email||'?')[0].toUpperCase();
+        ? profile.display_name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+        : (profile.email || '?')[0].toUpperCase();
       document.getElementById('player-avatar').textContent = initials;
       document.getElementById('player-name').textContent   = profile.display_name || profile.email?.split('@')[0] || 'Student';
       document.getElementById('player-meta').textContent   = [
@@ -472,21 +475,25 @@
         document.getElementById('class-panel').style.display = 'flex';
       }
 
-      // Load all data in parallel
-      const [stats, allProgress, recentEvents, badgeData, activityDates] = await Promise.all([
-        window.MagicLabXP ? window.MagicLabXP.getPlayerStats() : Promise.resolve(null),
-        window.MagicLabProgress.getAllProgress(),
-        window.MagicLabProgress.getRecentEvents(20),
-        window.MagicLabXP ? window.MagicLabXP.getBadges() : Promise.resolve({ earned: [], all: [] }),
-        _getActivityDates(),
-      ]);
+      // Load all data — each section renders as its data arrives
+      try {
+        const [stats, allProgress, recentEvents, badgeData, activityDates] = await Promise.all([
+          window.MagicLabXP ? window.MagicLabXP.getPlayerStats().catch(() => null) : Promise.resolve(null),
+          window.MagicLabProgress.getAllProgress().catch(() => []),
+          window.MagicLabProgress.getRecentEvents(20).catch(() => []),
+          window.MagicLabXP ? window.MagicLabXP.getBadges().catch(() => ({ earned: [], all: [] })) : Promise.resolve({ earned: [], all: [] }),
+          _getActivityDates(),
+        ]);
 
-      _renderHero(stats);
-      _renderStats(stats, allProgress, badgeData);
-      _renderStreak(stats, activityDates);
-      _renderTools(allProgress);
-      _renderBadges(badgeData);
-      _renderFeed(recentEvents);
+        _renderHero(stats);
+        _renderStats(stats, allProgress, badgeData);
+        _renderStreak(stats, activityDates);
+        _renderTools(allProgress);
+        _renderBadges(badgeData);
+        _renderFeed(recentEvents);
+      } catch (e) {
+        console.warn('[MagicLab] Dashboard load error:', e);
+      }
     }
 
     function _renderHero(stats) {
