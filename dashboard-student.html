@@ -417,18 +417,35 @@
       'computer-codex': { icon:'💻', name:'Computer Codex',   url:'computer-codex.html',       color:'#3d5068', bg:'rgba(61,80,104,0.18)',   total:25 },
     };
 
-    let _authReady = false, _progressReady = false, _xpReady = false;
+    // ── Readiness guard ──────────────────────────────────────
+    // auth.js, progress.js and xp.js all fire custom events when ready.
+    // Because the scripts load synchronously (no defer on these tags),
+    // their events may have already fired before this inline script runs.
+    // So we listen for future events AND check current state immediately.
 
-    document.addEventListener('magiclab:auth:ready',     () => { _authReady     = true; _tryLoad(); });
-    document.addEventListener('magiclab:progress:ready', () => { _progressReady = true; _tryLoad(); });
-    document.addEventListener('magiclab:xp:ready',       () => { _xpReady       = true; _tryLoad(); });
+    let _loadCalled = false;
+    function _once() {
+      if (_loadCalled) return;
+      // Check all three are available (window globals set when each module inits)
+      if (!window.MagicLabAuth || !window.MagicLabProgress) return;
+      _loadCalled = true;
+      _tryLoad();
+    }
 
-    // Fallback: if xp.js isn't deployed yet, load after a short wait
-    setTimeout(() => { if (!_xpReady) { _xpReady = true; _tryLoad(); } }, 2000);
+    document.addEventListener('magiclab:auth:ready',     _once);
+    document.addEventListener('magiclab:progress:ready', _once);
+    document.addEventListener('magiclab:xp:ready',       _once);
+
+    // Also attempt immediately in case all scripts already ran
+    _once();
+    // And as a final fallback after a short tick
+    setTimeout(_once, 100);
+    setTimeout(_once, 800);
 
     async function _tryLoad() {
-      if (!_authReady || !_progressReady || !_xpReady) return;
-      if (!window.MagicLabAuth?.isLoggedIn()) {
+      // Guard: need auth and progress at minimum; xp is optional
+      if (!window.MagicLabAuth || !window.MagicLabProgress) return;
+      if (!window.MagicLabAuth.isLoggedIn()) {
         document.getElementById('guest-state').style.display = '';
         document.getElementById('dashboard-state').style.display = 'none';
         return;
