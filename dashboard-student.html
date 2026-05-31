@@ -3,205 +3,290 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0f1e">
-  <title>My Progress — The Magic Lab</title>
+  <meta name="theme-color" content="#080c1a">
+  <title>My Profile — The Magic Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <style>
+    :root {
+      --bg:#080c1a; --bg2:#0d1226;
+      --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
+      --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
+      --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
+      --accent-1:#7c6dfa; --accent-2:#11d98f; --accent-3:#f5a623;
+      --font-display:"Cabinet Grotesk",sans-serif;
+      --font-mono:"JetBrains Mono",monospace;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; }
-
     body {
-      font-family: "Cabinet Grotesk", sans-serif;
-      background: #080c1a; color: #dde1f0;
-      min-height: 100vh;
+      font-family: var(--font-display); font-size: 15px;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; -webkit-font-smoothing: antialiased;
       background-image:
-        radial-gradient(ellipse 60% 40% at 8%  5%,  rgba(99,102,241,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 95%  8%,  rgba(16,185,129,0.10) 0%, transparent 55%);
+        radial-gradient(ellipse 60% 40% at 5%  3%,  rgba(124,109,250,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 96% 6%,  rgba(17,217,143,0.10)  0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 50% 98%, rgba(245,166,35,0.07)  0%, transparent 55%);
     }
 
     /* ── Nav ── */
     nav {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 52px; border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
     }
     .nav-logo {
-      font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.03em;
-      background: linear-gradient(125deg, #fff 0%, #a5b4fc 55%, #6ee7b7 100%);
+      font-family: var(--font-display); font-weight: 900; font-size: 22px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(120deg, #fff 0%, #c4baff 50%, #6ee7b7 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       text-decoration: none;
     }
-    .nav-right { display: flex; align-items: center; gap: 10px; }
-
-    /* ── Page header ── */
-    .page-header {
-      padding: 40px 48px 28px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-pill {
+      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 99px;
+      border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+      text-decoration: none; transition: all 140ms; cursor: pointer;
+      font-family: var(--font-display);
     }
-    .page-eyebrow {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: #a5b4fc; margin-bottom: 10px;
-    }
-    .page-title {
-      font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 36px; letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 6px;
-    }
-    .page-sub { font-size: 14px; color: rgba(221,225,240,0.45); }
+    .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); }
 
-    /* ── Main layout ── */
-    main { max-width: 1100px; margin: 0 auto; padding: 36px 48px 60px; }
+    /* ── Layout ── */
+    main { max-width: 1080px; margin: 0 auto; padding: 44px 52px 80px; }
 
-    /* ── Summary bar ── */
-    .summary-bar {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-      margin-bottom: 40px;
+    /* ── Guest state ── */
+    #guest-state {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 100px 24px; text-align: center;
+    }
+    #guest-state h2 {
+      font-weight: 900; font-size: 28px; letter-spacing: -0.03em;
+      color: var(--text); margin: 20px 0 12px;
+    }
+    #guest-state p { font-size: 15px; color: var(--muted); max-width: 380px; line-height: 1.7; margin-bottom: 28px; }
+    .cta-btn {
+      padding: 13px 30px; border-radius: 14px; border: none;
+      background: linear-gradient(135deg, #5b50d6, #0fa874);
+      color: #fff; font-family: var(--font-display);
+      font-size: 15px; font-weight: 700; letter-spacing: -0.01em; cursor: pointer;
+      box-shadow: 0 4px 18px rgba(91,80,214,0.32); transition: all 160ms;
+    }
+    .cta-btn:hover { box-shadow: 0 6px 26px rgba(91,80,214,0.48); transform: translateY(-1px); }
+
+    /* ── Player hero ── */
+    #dashboard-state { display: none; }
+    .player-hero {
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 28px; align-items: center;
+      padding: 32px 36px; border-radius: 22px;
+      background: var(--surface); border: 1px solid var(--border);
+      margin-bottom: 36px; position: relative; overflow: hidden;
+    }
+    .player-hero::before {
+      content: ''; position: absolute; inset: 0; border-radius: 22px; pointer-events: none;
+      background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(124,109,250,0.10), transparent 70%);
+    }
+    .player-avatar {
+      width: 72px; height: 72px; border-radius: 20px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 900; color: #fff;
+      font-family: var(--font-display); letter-spacing: -0.02em;
+      position: relative; z-index: 1;
+    }
+    .player-info { position: relative; z-index: 1; }
+    .player-name {
+      font-weight: 900; font-size: 26px; letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .player-meta {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .player-level-block { text-align: right; position: relative; z-index: 1; min-width: 190px; }
+    .level-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 14px; border-radius: 99px;
+      background: rgba(124,109,250,0.15); border: 1px solid rgba(124,109,250,0.30);
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+      color: #c4baff; margin-bottom: 10px; letter-spacing: 0.04em;
+    }
+    .level-num { font-size: 16px; font-weight: 700; }
+    .xp-row {
+      font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 8px;
+    }
+    .xp-row strong { color: var(--accent-1); font-weight: 600; }
+    .xp-bar-outer {
+      height: 6px; background: rgba(255,255,255,0.08); border-radius: 99px;
+      overflow: hidden; width: 190px;
+    }
+    .xp-bar-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      transition: width 700ms cubic-bezier(0.34,1.1,0.64,1);
+    }
+    .xp-next-label {
+      font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+      margin-top: 5px; opacity: 0.7;
+    }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 14px; margin-bottom: 36px;
     }
     .stat-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--surface); border: 1px solid var(--border);
       border-radius: 16px; padding: 20px 22px;
     }
     .stat-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
-      color: rgba(221,225,240,0.35); margin-bottom: 8px;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
     }
     .stat-value {
-      font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 28px;
-      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      font-weight: 900; font-size: 30px; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 0%, #c4baff 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .stat-sub { font-size: 11px; color: rgba(221,225,240,0.35); margin-top: 4px; }
+    .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-    /* ── Section heading ── */
-    .section-heading {
-      font-family: "Cabinet Grotesk", sans-serif; font-weight: 700; font-size: 14px;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: rgba(221,225,240,0.40); margin-bottom: 16px;
-      display: flex; align-items: center; gap: 8px;
+    /* ── Section header ── */
+    .section-hdr {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 14px;
     }
-    .section-heading::after {
-      content: ''; flex: 1; height: 1px;
-      background: rgba(255,255,255,0.07);
+    .section-hdr::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
+
+    /* ── Streak + heatmap ── */
+    .streak-row { display: flex; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
+    .streak-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 28px;
+      display: flex; align-items: center; gap: 18px; flex-shrink: 0;
     }
+    .streak-flame { font-size: 36px; line-height: 1; }
+    .streak-number {
+      font-weight: 900; font-size: 40px; letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #f5a623, #ef4444);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .streak-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .streak-best { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 6px; opacity: 0.7; }
+    .heatmap-card {
+      flex: 1; min-width: 280px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px 22px;
+    }
+    .heatmap-title {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 12px;
+    }
+    #heatmap-grid { display: flex; flex-direction: column; gap: 3px; }
+    .hm-row { display: flex; gap: 3px; }
+    .hm-cell {
+      width: 13px; height: 13px; border-radius: 3px;
+      background: rgba(255,255,255,0.06); flex-shrink: 0;
+    }
+    .hm-cell.active { background: rgba(124,109,250,0.60); }
+    .hm-cell.today  { outline: 1.5px solid rgba(124,109,250,0.80); }
 
-    /* ── Tool progress cards ── */
-    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin-bottom: 40px; }
-
-    .tool-prog-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; padding: 22px;
+    /* ── Tool progress ── */
+    .tool-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px; margin-bottom: 36px;
+    }
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 22px;
       display: flex; flex-direction: column; gap: 14px;
     }
-    .tpc-header { display: flex; align-items: center; gap: 12px; }
-    .tpc-icon { font-size: 22px; }
-    .tpc-name {
-      font-family: "Cabinet Grotesk", sans-serif; font-weight: 700; font-size: 16px; color: #e8eaf4;
+    .tc-header { display: flex; align-items: center; gap: 12px; }
+    .tc-icon-wrap {
+      width: 44px; height: 44px; border-radius: 13px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
     }
-    .tpc-last {
-      font-size: 11px; color: rgba(221,225,240,0.35); margin-left: auto; white-space: nowrap;
-    }
-
-    /* Progress bar */
-    .prog-bar-wrap {
-      background: rgba(255,255,255,0.07); border-radius: 99px; height: 6px; overflow: hidden;
-    }
-    .prog-bar-fill {
-      height: 100%; border-radius: 99px;
-      background: linear-gradient(90deg, #4f46e5, #10b981);
-      transition: width 600ms ease;
-    }
-
-    /* Mini stats row */
-    .tpc-stats { display: flex; gap: 16px; }
-    .tpc-stat { display: flex; flex-direction: column; gap: 2px; }
-    .tpc-stat-val {
-      font-family: "JetBrains Mono", monospace; font-size: 16px; font-weight: 600; color: #e8eaf4;
-    }
-    .tpc-stat-lbl { font-size: 10px; color: rgba(221,225,240,0.35); text-transform: uppercase; letter-spacing: 0.05em; }
-
-    .tpc-launch {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 16px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05); color: rgba(221,225,240,0.65);
-      text-decoration: none; font-size: 12px; font-weight: 600;
+    .tc-name { font-weight: 800; font-size: 16px; letter-spacing: -0.02em; color: var(--text); }
+    .tc-last { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-left: auto; }
+    .tc-bar-outer { height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+    .tc-bar-fill { height: 100%; border-radius: 99px; transition: width 600ms ease; }
+    .tc-stats { display: flex; gap: 18px; }
+    .tc-stat-val { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--text); }
+    .tc-stat-lbl { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1px; }
+    .tc-launch {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: 11px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text2);
+      text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
       transition: all 140ms; align-self: flex-start;
     }
-    .tpc-launch:hover { background: rgba(255,255,255,0.10); color: #e8eaf4; }
+    .tc-launch:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+
+    /* ── Badges ── */
+    .badges-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px; margin-bottom: 36px;
+    }
+    .badge-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 14px; text-align: center;
+      transition: border-color 200ms;
+    }
+    .badge-card.earned { border-color: rgba(245,166,35,0.35); background: rgba(245,166,35,0.06); }
+    .badge-card.locked { opacity: 0.30; filter: saturate(0.2); }
+    .badge-icon { font-size: 28px; margin-bottom: 8px; display: block; line-height: 1; }
+    .badge-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; letter-spacing: -0.01em; }
+    .badge-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+    .badge-date { font-family: var(--font-mono); font-size: 10px; color: var(--accent-3); margin-top: 5px; }
 
     /* ── Activity feed ── */
-    .feed { display: flex; flex-direction: column; gap: 6px; }
+    .feed { display: flex; flex-direction: column; gap: 6px; margin-bottom: 36px; }
     .feed-item {
       display: flex; align-items: center; gap: 12px;
-      padding: 10px 14px; border-radius: 10px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      padding: 11px 16px; border-radius: 12px;
+      background: var(--surface2); border: 1px solid var(--border2);
     }
-    .feed-dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    }
-    .feed-text { font-size: 13px; color: rgba(221,225,240,0.75); flex: 1; }
-    .feed-time { font-family: "JetBrains Mono", monospace; font-size: 10px; color: rgba(221,225,240,0.30); }
+    .feed-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .feed-text { font-size: 14px; color: var(--text2); flex: 1; line-height: 1.4; }
+    .feed-xp { font-family: var(--font-mono); font-size: 11px; color: var(--accent-1); flex-shrink: 0; }
+    .feed-time { font-family: var(--font-mono); font-size: 10px; color: var(--muted); flex-shrink: 0; }
 
-    /* ── Not-logged-in state ── */
-    #guest-state {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 80px 24px; text-align: center;
-    }
-    #guest-state h2 {
-      font-family: "Cabinet Grotesk", sans-serif; font-weight: 800; font-size: 26px;
-      color: #e8eaf4; margin-bottom: 10px;
-    }
-    #guest-state p { font-size: 14px; color: rgba(221,225,240,0.45); max-width: 380px; line-height: 1.65; margin-bottom: 24px; }
-    .cta-btn {
-      padding: 12px 28px; border-radius: 12px; border: none;
-      background: linear-gradient(135deg, #4f46e5, #10b981);
-      color: #fff; font-family: "Cabinet Grotesk", sans-serif;
-      font-size: 14px; font-weight: 700; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(79,70,229,0.30);
-      transition: all 160ms;
-    }
-    .cta-btn:hover { box-shadow: 0 6px 24px rgba(79,70,229,0.45); transform: translateY(-1px); }
-
-    /* ── Class code section ── */
+    /* ── Class panel ── */
     .class-panel {
-      background: rgba(99,102,241,0.06);
-      border: 1px solid rgba(99,102,241,0.18);
-      border-radius: 16px; padding: 22px;
-      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-      margin-bottom: 40px;
+      background: rgba(124,109,250,0.06); border: 1px solid rgba(124,109,250,0.18);
+      border-radius: 16px; padding: 22px 26px;
+      display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      margin-bottom: 36px;
     }
     .class-panel-text { flex: 1; }
-    .class-panel-title { font-family: "Cabinet Grotesk", sans-serif; font-weight: 700; font-size: 14px; color: #c7d2fe; margin-bottom: 4px; }
-    .class-panel-sub { font-size: 12px; color: rgba(199,210,254,0.55); }
+    .class-panel-title { font-weight: 700; font-size: 14px; color: #c4baff; margin-bottom: 3px; }
+    .class-panel-sub { font-size: 13px; color: rgba(196,186,255,0.50); }
     .class-input-row { display: flex; gap: 8px; }
     .class-input {
-      padding: 8px 12px; background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(99,102,241,0.30); border-radius: 8px;
-      color: #e8eaf4; font-family: "JetBrains Mono", monospace;
+      padding: 9px 14px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(124,109,250,0.30); border-radius: 10px;
+      color: var(--text); font-family: var(--font-mono);
       font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
-      outline: none; width: 120px;
+      outline: none; width: 130px;
     }
     .class-join-btn {
-      padding: 8px 16px; border-radius: 8px; border: none;
-      background: rgba(99,102,241,0.25); color: #c7d2fe;
-      font-family: "Cabinet Grotesk", sans-serif; font-size: 13px; font-weight: 700;
+      padding: 9px 18px; border-radius: 10px; border: none;
+      background: rgba(124,109,250,0.25); color: #c4baff;
+      font-family: var(--font-display); font-size: 13px; font-weight: 700;
       cursor: pointer; transition: all 140ms;
     }
-    .class-join-btn:hover { background: rgba(99,102,241,0.40); }
+    .class-join-btn:hover { background: rgba(124,109,250,0.40); }
 
-    #dashboard-state { display: none; }
-
-    @media (max-width: 640px) {
-      nav { padding: 12px 18px; }
-      .page-header { padding: 28px 18px 20px; }
-      main { padding: 24px 18px 48px; }
-      .summary-bar { grid-template-columns: repeat(2, 1fr); }
-      .page-title { font-size: 24px; }
+    @media (max-width: 720px) {
+      nav { padding: 14px 20px; }
+      main { padding: 28px 20px 60px; }
+      .player-hero { grid-template-columns: auto 1fr; gap: 16px; }
+      .player-level-block { display: none; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -210,55 +295,87 @@
   <nav>
     <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
     <div class="nav-right">
-      <a href="index.html" style="font-size:12px;color:rgba(221,225,240,0.45);text-decoration:none;">← All Tools</a>
-      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+      <a href="index.html" class="nav-pill">← All Tools</a>
+      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
     </div>
   </nav>
 
-  <div class="page-header">
-    <div class="page-eyebrow">📊 Learning Dashboard</div>
-    <div class="page-title" id="dash-greeting">My Progress</div>
-    <p class="page-sub" id="dash-sub">Sign in to see your progress across all tools.</p>
-  </div>
-
   <main>
 
-    <!-- Guest state -->
+    <!-- Guest -->
     <div id="guest-state">
-      <div style="font-size:56px;margin-bottom:16px;">🔮</div>
-      <h2>Track your learning journey</h2>
-      <p>Sign in or create a free account to save your progress across Java Genie, Web Wizard, Code Conjurer, Math Magician, and Computer Codex.</p>
+      <div style="font-size:64px;">🔮</div>
+      <h2>Your learning profile</h2>
+      <p>Sign in to track XP, streaks, badges, and your progress across every tool.</p>
       <button class="cta-btn" onclick="window.MagicLabModal?.open('signup')">Create Free Account</button>
     </div>
 
-    <!-- Dashboard state (hidden until logged in) -->
+    <!-- Dashboard -->
     <div id="dashboard-state">
 
-      <!-- Summary stats -->
-      <div class="summary-bar" id="summary-bar">
-        <div class="stat-card">
-          <div class="stat-label">Tools Active</div>
-          <div class="stat-value" id="stat-tools">—</div>
-          <div class="stat-sub">of 5 tools</div>
+      <!-- Player hero card -->
+      <div class="player-hero">
+        <div class="player-avatar" id="player-avatar">?</div>
+        <div class="player-info">
+          <div class="player-name" id="player-name">Loading…</div>
+          <div class="player-meta" id="player-meta"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Topics Done</div>
-          <div class="stat-value" id="stat-topics">—</div>
-          <div class="stat-sub">lessons completed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Quiz Accuracy</div>
-          <div class="stat-value" id="stat-accuracy">—</div>
-          <div class="stat-sub">correct answers</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Code Runs</div>
-          <div class="stat-value" id="stat-runs">—</div>
-          <div class="stat-sub">programs executed</div>
+        <div class="player-level-block">
+          <div class="level-badge">
+            <span>Level</span>
+            <span class="level-num" id="level-num">—</span>
+            <span id="level-name" style="color:var(--text2);">—</span>
+          </div>
+          <div class="xp-row"><strong id="xp-total">—</strong> XP total</div>
+          <div class="xp-bar-outer">
+            <div class="xp-bar-fill" id="xp-bar" style="width:0%"></div>
+          </div>
+          <div class="xp-next-label" id="xp-next-label"></div>
         </div>
       </div>
 
-      <!-- Join a class (students only) -->
+      <!-- Stats -->
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-label">Total XP</div>
+          <div class="stat-value" id="stat-xp">—</div>
+          <div class="stat-sub" id="stat-level-name">Level 1</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Streak</div>
+          <div class="stat-value" id="stat-streak">—</div>
+          <div class="stat-sub">days in a row</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Lessons Done</div>
+          <div class="stat-value" id="stat-lessons">—</div>
+          <div class="stat-sub">across all tools</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Badges</div>
+          <div class="stat-value" id="stat-badges">—</div>
+          <div class="stat-sub" id="stat-badges-sub">of 27 total</div>
+        </div>
+      </div>
+
+      <!-- Streak + heatmap -->
+      <div class="section-hdr">Streak</div>
+      <div class="streak-row">
+        <div class="streak-card">
+          <div class="streak-flame">🔥</div>
+          <div>
+            <div class="streak-number" id="streak-number">0</div>
+            <div class="streak-label">day streak</div>
+            <div class="streak-best" id="streak-best">Longest: 0 days</div>
+          </div>
+        </div>
+        <div class="heatmap-card">
+          <div class="heatmap-title">Activity — last 10 weeks</div>
+          <div id="heatmap-grid"></div>
+        </div>
+      </div>
+
+      <!-- Class join (students only) -->
       <div class="class-panel" id="class-panel" style="display:none;">
         <div class="class-panel-text">
           <div class="class-panel-title">Join a class</div>
@@ -271,157 +388,225 @@
         <div id="class-join-msg" style="font-size:12px;color:#6ee7b7;display:none;width:100%;margin-top:4px;"></div>
       </div>
 
-      <!-- Tool progress cards -->
-      <div class="section-heading">Progress by tool</div>
-      <div class="tool-grid" id="tool-grid">
-        <!-- Populated by JS -->
-      </div>
+      <!-- Tool progress -->
+      <div class="section-hdr">Progress by tool</div>
+      <div class="tool-grid" id="tool-grid"></div>
 
-      <!-- Recent activity -->
-      <div class="section-heading">Recent activity</div>
-      <div class="feed" id="activity-feed">
-        <!-- Populated by JS -->
-      </div>
+      <!-- Badges -->
+      <div class="section-hdr">Badges <span style="font-size:11px;opacity:0.5;margin-left:4px;" id="badges-count-label"></span></div>
+      <div class="badges-grid" id="badges-grid"></div>
 
-    </div><!-- /dashboard-state -->
+      <!-- Activity feed -->
+      <div class="section-hdr">Recent activity</div>
+      <div class="feed" id="activity-feed"></div>
+
+    </div>
   </main>
 
-  <!-- Auth scripts -->
   <script src="auth.js"></script>
   <script src="progress.js"></script>
+  <script src="xp.js"></script>
   <script src="auth-modal.js"></script>
 
   <script>
-    // ── Tool metadata ────────────────────────────────────────
     const TOOL_META = {
-      'java-genie':     { icon: '🧞', name: 'Java Genie',       url: 'java-genie.html',       color: '#4f46e5' },
-      'web-wizard':     { icon: '🧙', name: 'Web Wizard',       url: 'web-wizard.html',       color: '#0891b2' },
-      'code-conjurer':  { icon: '📖', name: 'Code Conjurer',    url: 'code-conjurer.html',    color: '#be123c' },
-      'math-magician':  { icon: '✨', name: 'Math Magician',    url: 'math-magician/index.html', color: '#b45309' },
-      'computer-codex': { icon: '💻', name: 'Computer Codex',   url: 'computer-codex.html',   color: '#475569' },
+      'java-genie':     { icon:'🧞', name:'Java Genie',       url:'java-genie.html',           color:'#5b50d6', bg:'rgba(91,80,214,0.18)',  total:12 },
+      'web-wizard':     { icon:'🌐', name:'Web Wizard',       url:'web-wizard.html',           color:'#0776a0', bg:'rgba(7,118,160,0.18)',   total:10 },
+      'code-conjurer':  { icon:'📜', name:'Code Conjurer',    url:'code-conjurer.html',        color:'#b31540', bg:'rgba(179,21,64,0.18)',   total:18 },
+      'math-magician':  { icon:'🔢', name:'Math Magician',    url:'math-magician/index.html',  color:'#d4920e', bg:'rgba(212,146,14,0.18)',  total:19 },
+      'computer-codex': { icon:'💻', name:'Computer Codex',   url:'computer-codex.html',       color:'#3d5068', bg:'rgba(61,80,104,0.18)',   total:25 },
     };
 
-    // ── Wait for both auth + progress to be ready ────────────
-    // These two events can fire in either order depending on how quickly
-    // Supabase restores the session, so we try to load whenever either fires
-    // and bail out early if the other half isn't ready yet.
-    let authReady = false, progressReady = false;
+    let _authReady = false, _progressReady = false, _xpReady = false;
 
-    document.addEventListener('magiclab:auth:ready', () => {
-      authReady = true;
-      _tryLoad();
-    });
-    document.addEventListener('magiclab:progress:ready', () => {
-      progressReady = true;
-      _tryLoad();
-    });
+    document.addEventListener('magiclab:auth:ready',     () => { _authReady     = true; _tryLoad(); });
+    document.addEventListener('magiclab:progress:ready', () => { _progressReady = true; _tryLoad(); });
+    document.addEventListener('magiclab:xp:ready',       () => { _xpReady       = true; _tryLoad(); });
+
+    // Fallback: if xp.js isn't deployed yet, load after a short wait
+    setTimeout(() => { if (!_xpReady) { _xpReady = true; _tryLoad(); } }, 2000);
 
     async function _tryLoad() {
-      // Wait until both SDKs are initialised
-      if (!authReady || !progressReady) return;
-      // Guest: make sure guest state is visible and dashboard is hidden
+      if (!_authReady || !_progressReady || !_xpReady) return;
       if (!window.MagicLabAuth?.isLoggedIn()) {
         document.getElementById('guest-state').style.display = '';
         document.getElementById('dashboard-state').style.display = 'none';
         return;
       }
-      const profile = window.MagicLabAuth.getProfile();
 
-      // Update header
-      document.getElementById('dash-greeting').textContent =
-        `Hi, ${profile.display_name || 'there'} 👋`;
-      document.getElementById('dash-sub').textContent =
-        `Grade ${profile.grade || '—'} · ${profile.role} · ${profile.package} plan`;
-
-      // Show dashboard, hide guest
       document.getElementById('guest-state').style.display = 'none';
       document.getElementById('dashboard-state').style.display = '';
 
-      // Show class join panel for students
+      const profile = window.MagicLabAuth.getProfile();
+
+      // Player hero
+      const initials = profile.display_name
+        ? profile.display_name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()
+        : (profile.email||'?')[0].toUpperCase();
+      document.getElementById('player-avatar').textContent = initials;
+      document.getElementById('player-name').textContent   = profile.display_name || profile.email?.split('@')[0] || 'Student';
+      document.getElementById('player-meta').textContent   = [
+        profile.grade   ? `Gr ${profile.grade}` : '',
+        profile.role    || '',
+        profile.package ? profile.package + ' plan' : '',
+      ].filter(Boolean).join(' · ');
+
       if (profile.role === 'student') {
         document.getElementById('class-panel').style.display = 'flex';
       }
 
-      // Load data in parallel
-      const [allProgress, recentEvents] = await Promise.all([
+      // Load all data in parallel
+      const [stats, allProgress, recentEvents, badgeData, activityDates] = await Promise.all([
+        window.MagicLabXP ? window.MagicLabXP.getPlayerStats() : Promise.resolve(null),
         window.MagicLabProgress.getAllProgress(),
-        window.MagicLabProgress.getRecentEvents(15)
+        window.MagicLabProgress.getRecentEvents(20),
+        window.MagicLabXP ? window.MagicLabXP.getBadges() : Promise.resolve({ earned: [], all: [] }),
+        _getActivityDates(),
       ]);
 
-      _renderSummary(allProgress);
-      _renderToolCards(allProgress);
+      _renderHero(stats);
+      _renderStats(stats, allProgress, badgeData);
+      _renderStreak(stats, activityDates);
+      _renderTools(allProgress);
+      _renderBadges(badgeData);
       _renderFeed(recentEvents);
     }
 
-    // ── Render helpers ───────────────────────────────────────
-
-    function _renderSummary(progress) {
-      const tools    = progress.length;
-      const topics   = progress.reduce((s, r) => s + (r.topics_complete ?? r.lessons_complete ?? 0), 0);
-      const correct  = progress.reduce((s, r) => s + (r.quiz_correct   ?? 0), 0);
-      const total    = progress.reduce((s, r) => s + (r.quiz_total     ?? 0), 0);
-      const runs     = progress.reduce((s, r) => s + (r.code_runs      ?? 0), 0);
-      const accuracy = total > 0 ? Math.round((correct / total) * 100) + '%' : '—';
-
-      document.getElementById('stat-tools').textContent    = tools;
-      document.getElementById('stat-topics').textContent   = topics;
-      document.getElementById('stat-accuracy').textContent = accuracy;
-      document.getElementById('stat-runs').textContent     = runs;
+    function _renderHero(stats) {
+      if (!stats) {
+        // No XP data yet — show zeros
+        document.getElementById('level-num').textContent  = '1';
+        document.getElementById('level-name').textContent = 'Apprentice';
+        document.getElementById('xp-total').textContent   = '0';
+        document.getElementById('xp-bar').style.width     = '0%';
+        document.getElementById('xp-next-label').textContent = '150 XP to Coder';
+        return;
+      }
+      const li = stats.level;
+      document.getElementById('level-num').textContent   = li.level;
+      document.getElementById('level-name').textContent  = li.name;
+      document.getElementById('xp-total').textContent    = stats.xp.toLocaleString();
+      document.getElementById('xp-bar').style.width      = Math.round(li.progress * 100) + '%';
+      document.getElementById('xp-next-label').textContent = li.nextXP
+        ? `${li.xpToNext.toLocaleString()} XP to ${li.nextName}`
+        : 'Maximum level reached!';
     }
 
-    function _renderToolCards(progress) {
+    function _renderStats(stats, progress, badgeData) {
+      const totalLessons = progress.reduce((s,r) => s + (r.topics_complete || r.lessons_complete || 0), 0);
+      document.getElementById('stat-xp').textContent       = stats ? stats.xp.toLocaleString() : '0';
+      document.getElementById('stat-level-name').textContent = stats ? `Level ${stats.level.level} — ${stats.level.name}` : 'Level 1 — Apprentice';
+      document.getElementById('stat-streak').textContent   = stats ? stats.streak_current : '0';
+      document.getElementById('stat-lessons').textContent  = totalLessons;
+      document.getElementById('stat-badges').textContent   = badgeData.earned.length;
+      document.getElementById('stat-badges-sub').textContent = `of ${badgeData.all.length || 27} total`;
+    }
+
+    function _renderStreak(stats, activeDates) {
+      const cur  = stats?.streak_current || 0;
+      const best = stats?.streak_longest  || 0;
+      document.getElementById('streak-number').textContent = cur;
+      document.getElementById('streak-best').textContent   = `Longest: ${best} day${best !== 1 ? 's' : ''}`;
+
+      const grid   = document.getElementById('heatmap-grid');
+      const today  = new Date();
+      const days   = 70;
+      const cells  = [];
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        cells.push(d.toISOString().slice(0, 10));
+      }
+      const rows = [];
+      for (let i = 0; i < cells.length; i += 7) rows.push(cells.slice(i, i + 7));
+      const todayStr = today.toISOString().slice(0, 10);
+
+      grid.innerHTML = rows.map(row =>
+        `<div class="hm-row">${row.map(d => {
+          const cls = activeDates.has(d) ? 'hm-cell active' : 'hm-cell';
+          return `<div class="${cls}${d === todayStr ? ' today' : ''}" title="${d}"></div>`;
+        }).join('')}</div>`
+      ).join('');
+    }
+
+    async function _getActivityDates() {
+      if (!window.MagicLabAuth?.isLoggedIn()) return new Set();
+      const supabase = window.MagicLabAuth._supabase();
+      const profile  = window.MagicLabAuth.getProfile();
+      const session  = window.MagicLabAuth.getSession();
+      const userId   = profile?.id ?? session?.user?.id;
+      if (!userId) return new Set();
+      try {
+        const since = new Date();
+        since.setDate(since.getDate() - 70);
+        const { data } = await supabase
+          .from('daily_activity')
+          .select('date')
+          .eq('user_id', userId)
+          .gte('date', since.toISOString().slice(0, 10));
+        return new Set((data || []).map(r => r.date));
+      } catch(e) {
+        // daily_activity table may not exist yet — return empty, don't crash
+        return new Set();
+      }
+    }
+
+    function _renderTools(progress) {
       const grid = document.getElementById('tool-grid');
-
-      // getAllProgress() returns tool_progress view rows.
-      // Guard against field name variants gracefully.
-      const progressMap = Object.fromEntries(progress.map(r => [r.tool, r]));
-
-      // Show all 5 tools, even those with no data yet
-      const tools = Object.keys(TOOL_META);
-      grid.innerHTML = tools.map(toolId => {
+      const map  = Object.fromEntries(progress.map(r => [r.tool, r]));
+      grid.innerHTML = Object.keys(TOOL_META).map(toolId => {
         const meta = TOOL_META[toolId];
-        const row  = progressMap[toolId] || {};
-        // Support both field name variants
-        const done       = row.topics_complete ?? row.lessons_complete ?? 0;
-        const total_topics = 20; // rough estimate per tool
-        const pct        = Math.min(100, Math.round((done / total_topics) * 100));
-        const qCorrect   = row.quiz_correct ?? 0;
-        const qTotal     = row.quiz_total   ?? 0;
-        const qAcc       = qTotal > 0 ? Math.round((qCorrect / qTotal) * 100) : null;
-        const codeRuns   = row.code_runs ?? 0;
-        const lastActive = row.last_active
+        const row  = map[toolId] || {};
+        const done = row.topics_complete || row.lessons_complete || 0;
+        const pct  = Math.min(100, Math.round((done / meta.total) * 100));
+        const qCorr = row.quiz_correct || 0;
+        const qTot  = row.quiz_total   || 0;
+        const qAcc  = qTot > 0 ? Math.round((qCorr / qTot) * 100) : null;
+        const runs  = row.code_runs    || 0;
+        const last  = row.last_active
           ? new Date(row.last_active).toLocaleDateString('en-ZA', { month: 'short', day: 'numeric' })
           : null;
-
         return `
-          <div class="tool-prog-card">
-            <div class="tpc-header">
-              <span class="tpc-icon">${meta.icon}</span>
-              <span class="tpc-name">${meta.name}</span>
-              ${lastActive ? `<span class="tpc-last">${lastActive}</span>` : ''}
+          <div class="tool-card">
+            <div class="tc-header">
+              <div class="tc-icon-wrap" style="background:${meta.bg};">${meta.icon}</div>
+              <span class="tc-name">${meta.name}</span>
+              ${last ? `<span class="tc-last">${last}</span>` : ''}
             </div>
-            <div class="prog-bar-wrap">
-              <div class="prog-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${meta.color},#10b981)"></div>
+            <div class="tc-bar-outer">
+              <div class="tc-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${meta.color},var(--accent-2))"></div>
             </div>
-            <div class="tpc-stats">
-              <div class="tpc-stat">
-                <span class="tpc-stat-val">${done}</span>
-                <span class="tpc-stat-lbl">Lessons</span>
-              </div>
-              ${qAcc !== null ? `
-              <div class="tpc-stat">
-                <span class="tpc-stat-val">${qAcc}%</span>
-                <span class="tpc-stat-lbl">Quiz acc.</span>
-              </div>` : ''}
-              ${codeRuns ? `
-              <div class="tpc-stat">
-                <span class="tpc-stat-val">${codeRuns}</span>
-                <span class="tpc-stat-lbl">Code runs</span>
-              </div>` : ''}
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${done} / ${meta.total} lessons${pct > 0 ? ` · ${pct}%` : ''}</div>
+            <div class="tc-stats">
+              <div><div class="tc-stat-val">${done}</div><div class="tc-stat-lbl">Lessons</div></div>
+              ${qAcc !== null ? `<div><div class="tc-stat-val">${qAcc}%</div><div class="tc-stat-lbl">Quiz</div></div>` : ''}
+              ${runs ? `<div><div class="tc-stat-val">${runs}</div><div class="tc-stat-lbl">Runs</div></div>` : ''}
             </div>
-            <a href="${meta.url}" class="tpc-launch">
-              ${done > 0 ? 'Continue →' : 'Start →'}
-            </a>
+            <a href="${meta.url}" class="tc-launch">${done > 0 ? 'Continue →' : 'Start →'}</a>
+          </div>`;
+      }).join('');
+    }
+
+    function _renderBadges({ earned, all }) {
+      if (!all || !all.length) {
+        document.getElementById('badges-grid').innerHTML =
+          '<p style="font-size:13px;color:var(--muted);grid-column:1/-1;">Deploy xp.js to enable badges.</p>';
+        return;
+      }
+      const earnedIds = new Set(earned.map(b => b.id));
+      const earnedMap = Object.fromEntries(earned.map(b => [b.id, b.earned_at]));
+      document.getElementById('badges-count-label').textContent = `${earned.length} / ${all.length}`;
+      document.getElementById('badges-grid').innerHTML = all.map(badge => {
+        const isEarned = earnedIds.has(badge.id);
+        const dt = isEarned && earnedMap[badge.id]
+          ? new Date(earnedMap[badge.id]).toLocaleDateString('en-ZA', { month: 'short', day: 'numeric', year: '2-digit' })
+          : null;
+        return `
+          <div class="badge-card ${isEarned ? 'earned' : 'locked'}">
+            <span class="badge-icon">${badge.icon}</span>
+            <div class="badge-name">${badge.name}</div>
+            <div class="badge-desc">${badge.desc}</div>
+            ${dt ? `<div class="badge-date">${dt}</div>` : ''}
           </div>`;
       }).join('');
     }
@@ -429,64 +614,56 @@
     function _renderFeed(events) {
       const feed = document.getElementById('activity-feed');
       if (!events.length) {
-        feed.innerHTML = '<p style="font-size:13px;color:rgba(221,225,240,0.30);padding:12px 0;">No activity yet — head to a tool to get started!</p>';
+        feed.innerHTML = '<p style="font-size:14px;color:var(--muted);padding:12px 0;">No activity yet — head to a tool to get started!</p>';
         return;
       }
-
-      const eventMeta = {
-        'lesson_complete': { color: '#6ee7b7', label: 'Completed lesson' },
-        'quiz_correct':    { color: '#6ee7b7', label: 'Quiz correct' },
+      const meta = {
+        'lesson_complete': { color: '#11d98f', label: 'Completed lesson' },
+        'xp_earned':       { color: '#7c6dfa', label: 'XP earned' },
+        'quiz_correct':    { color: '#11d98f', label: 'Quiz correct' },
         'quiz_wrong':      { color: '#f87171', label: 'Quiz incorrect' },
-        'code_run':        { color: '#a5b4fc', label: 'Ran code' },
-        'example_loaded':  { color: '#fbbf24', label: 'Loaded example' },
-        'challenge_loaded':{ color: '#fbbf24', label: 'Loaded challenge' },
+        'quiz_perfect':    { color: '#f5a623', label: 'Perfect quiz' },
+        'code_run':        { color: '#c4baff', label: 'Ran code' },
         'topic_started':   { color: '#67e8f9', label: 'Started topic' },
+        'example_loaded':  { color: '#fbbf24', label: 'Loaded example' },
       };
-
       feed.innerHTML = events.map(ev => {
-        const em = eventMeta[ev.event_type] || { color: '#94a3b8', label: ev.event_type };
-        const toolMeta = TOOL_META[ev.tool] || {};
+        const em   = meta[ev.event_type] || { color: '#94a3b8', label: ev.event_type };
+        const tool = TOOL_META[ev.tool]  || {};
         const time = new Date(ev.created_at).toLocaleString('en-ZA', {
           month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
         });
-        const topic = ev.topic ? ` — ${ev.topic}` : '';
-
+        const xpPart = ev.score && ev.event_type === 'xp_earned'
+          ? `<span class="feed-xp">+${ev.score} XP</span>` : '';
+        const topic = ev.topic && ev.event_type !== 'xp_earned' ? ` — ${ev.topic}` : '';
         return `
           <div class="feed-item">
             <div class="feed-dot" style="background:${em.color}"></div>
             <span class="feed-text">
-              ${toolMeta.icon || ''} <strong>${toolMeta.name || ev.tool}</strong>:
-              ${em.label}${topic}
+              ${tool.icon || ''} <strong>${tool.name || ev.tool}</strong>: ${em.label}${topic}
             </span>
+            ${xpPart}
             <span class="feed-time">${time}</span>
           </div>`;
       }).join('');
     }
 
-    // ── Class join ───────────────────────────────────────────
+    // Class join
     document.addEventListener('DOMContentLoaded', () => {
-      const joinBtn = document.getElementById('class-join-btn');
-      if (joinBtn) {
-        joinBtn.addEventListener('click', async () => {
-          const code = document.getElementById('class-code-input').value.trim();
-          if (!code) return;
-          joinBtn.disabled = true; joinBtn.textContent = 'Joining…';
-          const { data, error } = await window.MagicLabAuth.joinClass(code);
-          joinBtn.disabled = false; joinBtn.textContent = 'Join';
-          const msg = document.getElementById('class-join-msg');
-          msg.style.display = 'block';
-          if (error) {
-            msg.style.color = '#f87171';
-            msg.textContent = error.message;
-          } else {
-            msg.style.color = '#6ee7b7';
-            msg.textContent = `✓ Joined ${data.name}!`;
-          }
-        });
-      }
+      document.getElementById('class-join-btn')?.addEventListener('click', async () => {
+        const btn  = document.getElementById('class-join-btn');
+        const code = document.getElementById('class-code-input').value.trim();
+        if (!code) return;
+        btn.disabled = true; btn.textContent = 'Joining…';
+        const { data, error } = await window.MagicLabAuth.joinClass(code);
+        btn.disabled = false; btn.textContent = 'Join';
+        const msg = document.getElementById('class-join-msg');
+        msg.style.display = 'block';
+        if (error) { msg.style.color = '#f87171'; msg.textContent = error.message; }
+        else       { msg.style.color = '#6ee7b7'; msg.textContent = `✓ Joined ${data.name}!`; }
+      });
+      lucide.createIcons();
     });
-
-    lucide.createIcons();
   </script>
 </body>
 </html>
