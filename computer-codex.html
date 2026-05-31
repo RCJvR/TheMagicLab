@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
+  <script defer src="xp.js"></script>
   <script defer src="auth-modal.js"></script>
   <style>
     :root {
@@ -4376,10 +4377,17 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   updateProgress();
   // Track lesson complete
   if (window.MagicLabProgress) {
-    const les = LESSONS[currentLesson];
+    const les  = LESSONS[currentLesson];
+    const isLast = currentLesson === LESSONS.length - 1;
+    // Unit complete? Check if every lesson in this unit is now done
+    const unitLessons = LESSONS.map((l, i) => ({ unit: l.unit, i })).filter(l => l.unit === les.unit).map(l => l.i);
+    const unitDone    = unitLessons.every(i => completed.has(i));
     MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
       topic: les.title,
       grade: 8,
+      unit: les.unit,
+      unitComplete: unitDone,
+      toolComplete: isLast,
       metadata: { unit: les.unit, lesson_index: currentLesson }
     });
   }
@@ -4393,10 +4401,16 @@ document.addEventListener('keydown', e => {
     updateProgress();
     // Track lesson complete via keyboard
     if (window.MagicLabProgress) {
-      const les = LESSONS[currentLesson];
+      const les     = LESSONS[currentLesson];
+      const isLast  = currentLesson === LESSONS.length - 1;
+      const unitLessons = LESSONS.map((l, i) => ({ unit: l.unit, i })).filter(l => l.unit === les.unit).map(l => l.i);
+      const unitDone    = unitLessons.every(i => completed.has(i));
       MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
         topic: les.title,
         grade: 8,
+        unit: les.unit,
+        unitComplete: unitDone,
+        toolComplete: isLast,
         metadata: { unit: les.unit, via: 'keyboard' }
       });
     }

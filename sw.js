@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v5'; // bumped from v4 → forces cache refresh
+const CACHE_NAME = 'magic-lab-v6'; // bumped from v5 → forces cache refresh on gamification deploy
 
 const urlsToCache = [
   '/',
@@ -26,10 +26,13 @@ const urlsToCache = [
   '/auth-modal.css',
   '/dashboard-student.html',
 
+  // ── Phase 2: Gamification ──────────────────────────────────
+  '/xp.js',
+
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
   'https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js',
-  'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap'
+  'https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap'
 ];
 
 self.addEventListener('install', event => {
@@ -37,7 +40,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache).catch(() => {
         // If CDN resources fail, at minimum cache the core app
-        return cache.addAll(['/', '/index.html', '/auth.js', '/progress.js', '/auth-modal.js', '/auth-modal.css']);
+        return cache.addAll(['/', '/index.html', '/auth.js', '/progress.js', '/xp.js', '/auth-modal.js', '/auth-modal.css']);
       });
     })
   );

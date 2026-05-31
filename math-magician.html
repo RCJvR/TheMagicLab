@@ -1257,10 +1257,15 @@ function renderLesson() {
     qIndex = 0; answered = false; switchTab('practice');
     // Track lesson read complete
     if (window.MagicLabProgress) {
-      const t = TOPICS[currentTopicId];
+      const chapterTopics = TOPICS.map((tp, i) => ({ ch: tp.chapter || 1, i })).filter(tp => tp.ch === (t.chapter || 1)).map(tp => tp.i);
+      const chapterDone   = chapterTopics.every(i => completed.has(i));
+      const allDone       = TOPICS.every((_, i) => completed.has(i));
       MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
         topic: t.name,
         grade: 8,
+        unit: `Chapter ${t.chapter || 1}`,
+        unitComplete: chapterDone,
+        toolComplete: allDone,
         metadata: { chapter: t.chapter || 1, topicId: currentTopicId }
       });
     }
@@ -1282,10 +1287,16 @@ function renderQuestion() {
     const pct = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
     // Track topic practice complete
     if (window.MagicLabProgress) {
+      const chapterTopics = TOPICS.map((tp, i) => ({ ch: tp.chapter || 1, i })).filter(tp => tp.ch === (t.chapter || 1)).map(tp => tp.i);
+      const chapterDone   = chapterTopics.every(i => completed.has(i));
+      const allDone       = TOPICS.every((_, i) => completed.has(i));
       MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
         topic: t.name,
         grade: 8,
         score: ts.correct,
+        unit: `Chapter ${t.chapter || 1}`,
+        unitComplete: chapterDone,
+        toolComplete: allDone,
         metadata: { chapter: t.chapter || 1, topicId: currentTopicId, total: ts.total, pct }
       });
     }
@@ -1388,7 +1399,7 @@ function renderQuestion() {
           topic: t.name,
           grade: 8,
           score: 1,
-          metadata: { chapter: t.chapter || 1, topicId: currentTopicId, question: q.text, qIndex }
+          metadata: { chapter: t.chapter || 1, topicId: currentTopicId, firstTry: true, question: q.text, qIndex }
         });
       }
     } else {
@@ -1507,6 +1518,10 @@ document.addEventListener('magiclab:progress:ready', _restoreProgress);
 if (window.MagicLabProgress) _restoreProgress();
 
 </script>
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="xp.js"></script>
+  <script defer src="auth-modal.js"></script>
   <footer class="copyright-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 </body>
 </html>

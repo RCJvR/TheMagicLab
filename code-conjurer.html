@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
+  <script defer src="xp.js"></script>
   <script defer src="auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -927,6 +928,7 @@ doctype html>
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
+  <script defer src="xp.js"></script>
   <script defer src="auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2881,10 +2883,21 @@ lesNext.addEventListener('click', () => {
   const lessons = LESSONS[lessonGrade];
   // Track lesson complete
   if (window.MagicLabProgress) {
-    const les = lessons[lessonIndex];
+    const les     = lessons[lessonIndex];
+    const isLast  = lessonIndex === lessons.length - 1;
+    // Unit complete? All lessons in this unit done
+    const unitLessons = lessons.map((l, i) => ({ unit: l.unit, i })).filter(l => l.unit === les?.unit).map(l => l.i);
+    const unitDone    = unitLessons.every(i => completedLessons[lessonGrade].has(i));
+    // Tool complete? All grades fully done
+    const allGradesDone = [10, 11, 12].every(g =>
+      (LESSONS[g] || []).every((_, i) => completedLessons[g]?.has(i))
+    );
     if (les) MagicLabProgress.track(ML_TOOLS.CODE_CONJURER, 'lesson_complete', {
       grade: lessonGrade,
       topic: les.title,
+      unit: les.unit,
+      unitComplete: unitDone,
+      toolComplete: allGradesDone,
       metadata: { unit: les.unit, lessonIndex }
     });
   }
