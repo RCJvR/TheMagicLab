@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy (POPIA) — The Magic Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#080c1a; --bg2:#0d1226;
+      --surface:rgba(255,255,255,0.048); --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
+      --text:#e4e8f8; --text2:rgba(210,218,245,0.70); --muted:rgba(210,218,245,0.38);
+      --accent:#11d98f; --indigo:#7c6dfa; --amber:#f5a623;
+      --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); font-size: 16px; line-height: 1.7;
+      background: var(--bg); color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(ellipse 60% 35% at 5% 3%, rgba(17,217,143,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 30% at 96% 6%, rgba(124,109,250,0.07) 0%, transparent 55%);
+    }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(8,12,26,0.92); backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-weight: 900; font-size: 20px; letter-spacing: -0.03em; text-decoration: none;
+      background: linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-back {
+      font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none;
+      padding: 7px 16px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); transition: all 140ms;
+    }
+    .nav-back:hover { color: var(--text); background: rgba(255,255,255,0.09); }
+
+    .page-wrap { max-width: 780px; margin: 0 auto; padding: 56px 40px 100px; }
+
+    .page-header { margin-bottom: 48px; }
+    .page-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px; display: block;
+    }
+    .page-title {
+      font-weight: 900; font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.03em; line-height: 1.1; color: #fff; margin-bottom: 14px;
+    }
+    .page-subtitle { font-size: 15px; color: var(--text2); line-height: 1.7; max-width: 640px; }
+    .page-meta {
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px;
+    }
+
+    .toc {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 22px 26px; margin-bottom: 48px;
+    }
+    .toc-title {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+    }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .toc-list a {
+      font-size: 14px; color: var(--text2); text-decoration: none;
+      display: flex; align-items: center; gap: 8px; transition: color 130ms;
+    }
+    .toc-list a:hover { color: #6ee7b7; }
+    .toc-num { font-family: var(--mono); font-size: 10px; color: var(--muted); min-width: 22px; }
+
+    .doc-section { margin-bottom: 44px; }
+
+    h2 {
+      font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
+      color: #fff; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px; padding-top: 8px;
+    }
+    h2 .sec-num {
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      color: var(--accent); background: rgba(17,217,143,0.10);
+      border: 1px solid rgba(17,217,143,0.25);
+      padding: 2px 9px; border-radius: 99px; flex-shrink: 0;
+    }
+    h3 { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; color: rgba(210,218,245,0.90); margin: 20px 0 8px; }
+    p { font-size: 15px; color: var(--text2); margin-bottom: 14px; line-height: 1.8; }
+    p strong { color: var(--text); font-weight: 700; }
+    ul, ol { padding-left: 22px; margin-bottom: 16px; }
+    li { font-size: 15px; color: var(--text2); margin-bottom: 7px; line-height: 1.7; }
+    li strong { color: var(--text); }
+
+    .callout {
+      border-radius: 12px; padding: 14px 18px; margin: 20px 0;
+      font-size: 14px; line-height: 1.7;
+    }
+    .callout-info  { background: rgba(124,109,250,0.10); border: 1px solid rgba(124,109,250,0.22); color: #c4baff; }
+    .callout-warn  { background: rgba(245,166,35,0.10);  border: 1px solid rgba(245,166,35,0.25);  color: #fcd34d; }
+    .callout-green { background: rgba(17,217,143,0.09);  border: 1px solid rgba(17,217,143,0.22);  color: #6ee7b7; }
+    .callout strong { font-weight: 700; }
+
+    /* Data table */
+    .data-table { width: 100%; border-collapse: collapse; margin: 16px 0 20px; font-size: 13px; }
+    .data-table th {
+      text-align: left; padding: 9px 14px;
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border2); background: rgba(255,255,255,0.02);
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--text2); vertical-align: top; line-height: 1.6;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table td:first-child { font-weight: 600; color: var(--text); min-width: 160px; }
+
+    /* Rights grid */
+    .rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 20px; }
+    .right-card {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 11px; padding: 14px 16px;
+    }
+    .right-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .right-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    .contact-box {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 22px 26px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .contact-row { display: flex; gap: 12px; align-items: baseline; }
+    .contact-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+      min-width: 120px; flex-shrink: 0;
+    }
+    .contact-val { font-size: 14px; color: var(--text2); }
+    .contact-val a { color: #6ee7b7; text-decoration: none; }
+    .contact-val a:hover { text-decoration: underline; }
+
+    footer {
+      border-top: 1px solid var(--border2); padding: 24px 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-link { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 130ms; }
+    .footer-link:hover { color: var(--text2); }
+
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .page-wrap { padding: 36px 20px 72px; }
+      .rights-grid { grid-template-columns: 1fr; }
+      .data-table td:first-child { min-width: 120px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+  <a href="index.html" class="nav-back">← Back to platform</a>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <span class="page-tag">Legal · Privacy</span>
+    <h1 class="page-title">Privacy Policy</h1>
+    <p class="page-subtitle">This policy explains what personal information The Magic Lab collects, why we collect it, how we use it, and what your rights are under the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
+    <div class="page-meta">
+      <span>Effective: 1 June 2026</span>
+      <span>Last updated: 1 June 2026</span>
+      <span>Governed by: POPIA (South Africa)</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#p1"><span class="toc-num">01</span>Who We Are (Responsible Party)</a></li>
+      <li><a href="#p2"><span class="toc-num">02</span>What Information We Collect</a></li>
+      <li><a href="#p3"><span class="toc-num">03</span>How We Use Your Information</a></li>
+      <li><a href="#p4"><span class="toc-num">04</span>Lawful Basis for Processing</a></li>
+      <li><a href="#p5"><span class="toc-num">05</span>Children's Privacy</a></li>
+      <li><a href="#p6"><span class="toc-num">06</span>How We Store and Protect Your Data</a></li>
+      <li><a href="#p7"><span class="toc-num">07</span>Third-Party Services</a></li>
+      <li><a href="#p8"><span class="toc-num">08</span>Sharing of Information</a></li>
+      <li><a href="#p9"><span class="toc-num">09</span>Retention of Information</a></li>
+      <li><a href="#p10"><span class="toc-num">10</span>Your Rights Under POPIA</a></li>
+      <li><a href="#p11"><span class="toc-num">11</span>Cookies and Local Storage</a></li>
+      <li><a href="#p12"><span class="toc-num">12</span>Changes to This Policy</a></li>
+      <li><a href="#p13"><span class="toc-num">13</span>How to Contact Us</a></li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <div class="doc-section" id="p1">
+    <h2><span class="sec-num">01</span> Who We Are (Responsible Party)</h2>
+    <p>Under POPIA, the <strong>Responsible Party</strong> is the person who determines the purpose and means of processing personal information. For The Magic Lab, that is:</p>
+    <div class="contact-box">
+      <div class="contact-row"><span class="contact-label">Responsible Party</span><span class="contact-val">Ruhan Janse van Rensburg</span></div>
+      <div class="contact-row"><span class="contact-label">Platform</span><span class="contact-val"><a href="https://themagiclab.co.za">themagiclab.co.za</a></span></div>
+      <div class="contact-row"><span class="contact-label">Email</span><span class="contact-val"><a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a></span></div>
+      <div class="contact-row"><span class="contact-label">Country</span><span class="contact-val">Republic of South Africa</span></div>
+    </div>
+    <div class="callout callout-green" style="margin-top:20px;"><strong>Information Officer:</strong> Ruhan Janse van Rensburg is the designated Information Officer for The Magic Lab, responsible for compliance with POPIA. You may direct all privacy-related queries to the email address above.</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="doc-section" id="p2">
+    <h2><span class="sec-num">02</span> What Information We Collect</h2>
+    <p>We collect the minimum information necessary to provide you with a personalised learning experience. Here is exactly what we collect and why:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Information</th>
+          <th>When collected</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Email address</td>
+          <td>When you register</td>
+          <td>Account login and communication</td>
+        </tr>
+        <tr>
+          <td>Display name</td>
+          <td>When you register</td>
+          <td>To personalise your experience</td>
+        </tr>
+        <tr>
+          <td>Password (hashed)</td>
+          <td>When you register</td>
+          <td>Account security — stored as a one-way hash, never in plain text</td>
+        </tr>
+        <tr>
+          <td>School grade (optional)</td>
+          <td>When you register</td>
+          <td>To show curriculum-appropriate content</td>
+        </tr>
+        <tr>
+          <td>Role (student / teacher)</td>
+          <td>When you register</td>
+          <td>To show the correct dashboard and features</td>
+        </tr>
+        <tr>
+          <td>Lesson progress</td>
+          <td>As you use tools</td>
+          <td>To track which lessons you have completed</td>
+        </tr>
+        <tr>
+          <td>Quiz results</td>
+          <td>As you answer questions</td>
+          <td>To track accuracy, award XP, and provide feedback</td>
+        </tr>
+        <tr>
+          <td>XP and badge data</td>
+          <td>As you earn them</td>
+          <td>To power the gamification and dashboard</td>
+        </tr>
+        <tr>
+          <td>Daily activity dates</td>
+          <td>Each day you use the platform</td>
+          <td>To calculate your learning streak</td>
+        </tr>
+        <tr>
+          <td>AI Tutor messages</td>
+          <td>When you use the AI Tutor</td>
+          <td>Sent to Anthropic's API to generate a response — see Section 7</td>
+        </tr>
+        <tr>
+          <td>Code runs</td>
+          <td>When you run code</td>
+          <td>To track engagement and award XP — code is not permanently stored</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>We do <strong>not</strong> collect: ID numbers, home addresses, phone numbers, financial information, biometric data, health information, or any special personal information as defined in section 26 of POPIA.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="doc-section" id="p3">
+    <h2><span class="sec-num">03</span> How We Use Your Information</h2>
+    <p>We use your personal information only for the following purposes:</p>
+    <ul>
+      <li><strong>Providing the service:</strong> Authenticating your account, showing your progress, enabling tool features, and displaying your achievements</li>
+      <li><strong>Personalisation:</strong> Showing grade-appropriate content, resuming where you left off, and tracking your learning history</li>
+      <li><strong>Gamification:</strong> Calculating and displaying XP, levels, badges, and streaks</li>
+      <li><strong>Communication:</strong> Sending important service-related emails (e.g. password reset). We do not send marketing emails without your consent</li>
+      <li><strong>Platform improvement:</strong> Understanding how the platform is used in aggregate — without identifying individual users — to improve content and features</li>
+      <li><strong>Safety and security:</strong> Detecting and preventing misuse, fraud, or unauthorised access</li>
+    </ul>
+    <p>We do not use your information for advertising, do not sell your data, and do not share it with third parties for their own marketing purposes.</p>
+  </div>
+
+  <!-- 4 -->
+  <div class="doc-section" id="p4">
+    <h2><span class="sec-num">04</span> Lawful Basis for Processing</h2>
+    <p>Under POPIA, we must have a lawful basis for processing your personal information. We rely on the following:</p>
+    <ul>
+      <li><strong>Contractual necessity:</strong> Processing your account information, lesson progress, and quiz data is necessary to provide you with the service you signed up for</li>
+      <li><strong>Consent:</strong> Where you are under 18, we rely on the consent of your parent, guardian, or school (where the school has entered into an agreement on behalf of its learners)</li>
+      <li><strong>Legitimate interest:</strong> We process aggregate usage data to improve the platform — this does not identify individual users</li>
+      <li><strong>Legal obligation:</strong> We may process information where required by South African law</li>
+    </ul>
+  </div>
+
+  <!-- 5 -->
+  <div class="doc-section" id="p5">
+    <h2><span class="sec-num">05</span> Children's Privacy</h2>
+    <p>The Magic Lab is designed for school learners, many of whom are under the age of 18. We take the privacy of young users seriously and apply the following protections:</p>
+    <ul>
+      <li>We collect the <strong>minimum information necessary</strong> for learners to use the platform</li>
+      <li>We do <strong>not</strong> collect location data, phone numbers, or photographs from any user</li>
+      <li>We do <strong>not</strong> display advertising to any user</li>
+      <li>Learner progress data is only visible to the learner themselves and, where a school licence is in place, to the learner's teacher</li>
+      <li>AI Tutor conversations are not stored on our servers beyond the active session</li>
+    </ul>
+    <div class="callout callout-warn"><strong>Under 13:</strong> If a child under the age of 13 registers, we require the prior written consent of a parent or legal guardian in terms of section 35 of POPIA and the Children's Act 38 of 2005. Schools registering learners on behalf of their students take responsibility for obtaining appropriate consent.</div>
+  </div>
+
+  <!-- 6 -->
+  <div class="doc-section" id="p6">
+    <h2><span class="sec-num">06</span> How We Store and Protect Your Data</h2>
+    <p>Your personal information is stored using <strong>Supabase</strong>, a cloud database platform with servers located in the European Union (AWS Frankfurt region). All data is:</p>
+    <ul>
+      <li>Encrypted in transit using TLS/HTTPS</li>
+      <li>Encrypted at rest using AES-256 encryption</li>
+      <li>Accessible only through authenticated API requests with Row Level Security (RLS) enforced — meaning each user can only access their own data</li>
+      <li>Password data is hashed using bcrypt and never stored in plain text</li>
+    </ul>
+    <p>We apply the principle of least privilege — only the minimum access required to operate the platform is granted to any system or person.</p>
+    <div class="callout callout-info"><strong>Data location note:</strong> Although Supabase servers are currently in the EU, your data is processed under South African law and this Privacy Policy. The EU hosting location means your data also benefits from GDPR-standard infrastructure protections.</div>
+  </div>
+
+  <!-- 7 -->
+  <div class="doc-section" id="p7">
+    <h2><span class="sec-num">07</span> Third-Party Services</h2>
+    <p>We use a small number of trusted third-party services to operate the Platform. These are:</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Service</th><th>Purpose</th><th>Data shared</th><th>Privacy Policy</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Supabase</td>
+          <td>Database, authentication, and storage</td>
+          <td>All user account and progress data</td>
+          <td><a href="https://supabase.com/privacy" style="color:#6ee7b7;" target="_blank">supabase.com/privacy</a></td>
+        </tr>
+        <tr>
+          <td>Anthropic (Claude API)</td>
+          <td>AI Tutor responses</td>
+          <td>Your AI Tutor messages (not your name or account details)</td>
+          <td><a href="https://www.anthropic.com/privacy" style="color:#6ee7b7;" target="_blank">anthropic.com/privacy</a></td>
+        </tr>
+        <tr>
+          <td>Google Fonts</td>
+          <td>Typography</td>
+          <td>Your IP address (standard CDN request)</td>
+          <td><a href="https://policies.google.com/privacy" style="color:#6ee7b7;" target="_blank">Google Privacy Policy</a></td>
+        </tr>
+        <tr>
+          <td>jsDelivr CDN</td>
+          <td>JavaScript libraries (Lucide icons)</td>
+          <td>Your IP address (standard CDN request)</td>
+          <td><a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" style="color:#6ee7b7;" target="_blank">jsDelivr Privacy Policy</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>We do not use Google Analytics, Facebook Pixel, advertising networks, or any other tracking services. The platform contains no advertisements.</p>
+    <div class="callout callout-warn"><strong>AI Tutor note:</strong> When you use the AI Tutor, your messages are sent to Anthropic's API to generate a response. Do not include personal information — such as your full name, ID number, address, or passwords — in AI Tutor messages. Anthropic processes these messages according to their own privacy policy.</div>
+  </div>
+
+  <!-- 8 -->
+  <div class="doc-section" id="p8">
+    <h2><span class="sec-num">08</span> Sharing of Information</h2>
+    <p>We do <strong>not</strong> sell, rent, or trade your personal information. We share your information only in the following limited circumstances:</p>
+    <ul>
+      <li><strong>With your school:</strong> If your school has a licence agreement with us, your teacher may be able to view your lesson progress, XP, and quiz performance for the purpose of supporting your learning. You will be informed of this arrangement at registration.</li>
+      <li><strong>With service providers:</strong> We share necessary data with Supabase and Anthropic as described in Section 7, solely to operate the Platform.</li>
+      <li><strong>For legal compliance:</strong> We may disclose information where required by South African law, court order, or to protect the rights, property, or safety of users or the public.</li>
+      <li><strong>With your consent:</strong> For any other purpose, we will ask for your explicit consent first.</li>
+    </ul>
+  </div>
+
+  <!-- 9 -->
+  <div class="doc-section" id="p9">
+    <h2><span class="sec-num">09</span> Retention of Information</h2>
+    <p>We retain your personal information for as long as your account is active or as needed to provide you with the service. Specifically:</p>
+    <ul>
+      <li><strong>Account data</strong> (email, display name, grade, role): retained until you delete your account</li>
+      <li><strong>Learning progress and XP</strong>: retained until you delete your account — this is the core value of having an account</li>
+      <li><strong>Daily activity data</strong>: retained for 2 years, then deleted automatically</li>
+      <li><strong>AI Tutor conversations</strong>: not stored by us beyond the active browser session; Anthropic's own retention applies to API calls</li>
+    </ul>
+    <p>When you delete your account, we will delete or anonymise your personal information within 30 days, except where we are required to retain it for legal or regulatory reasons.</p>
+  </div>
+
+  <!-- 10 -->
+  <div class="doc-section" id="p10">
+    <h2><span class="sec-num">10</span> Your Rights Under POPIA</h2>
+    <p>As a data subject under POPIA, you have the following rights regarding your personal information:</p>
+    <div class="rights-grid">
+      <div class="right-card">
+        <div class="right-title">Right of Access</div>
+        <div class="right-desc">You can request a copy of the personal information we hold about you at any time.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Right to Correction</div>
+        <div class="right-desc">You can request that we correct inaccurate or incomplete personal information about you.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Right to Deletion</div>
+        <div class="right-desc">You can request that we delete your personal information. We will do so within 30 days unless we have a legal reason to retain it.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Right to Object</div>
+        <div class="right-desc">You can object to the processing of your personal information in certain circumstances, including for direct marketing.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Right to Withdraw Consent</div>
+        <div class="right-desc">Where processing is based on consent, you may withdraw it at any time without affecting the lawfulness of prior processing.</div>
+      </div>
+      <div class="right-card">
+        <div class="right-title">Right to Complain</div>
+        <div class="right-desc">You have the right to lodge a complaint with the Information Regulator of South Africa if you believe we have violated your rights.</div>
+      </div>
+    </div>
+    <p>To exercise any of these rights, contact us at <a href="mailto:ruhan@themagiclab.co.za" style="color:#6ee7b7;">ruhan@themagiclab.co.za</a>. We will respond within 30 days.</p>
+    <h3>Information Regulator</h3>
+    <p>If you are not satisfied with our response to a privacy complaint, you may contact the Information Regulator of South Africa:</p>
+    <div class="contact-box">
+      <div class="contact-row"><span class="contact-label">Body</span><span class="contact-val">Information Regulator (South Africa)</span></div>
+      <div class="contact-row"><span class="contact-label">Website</span><span class="contact-val"><a href="https://www.inforegulator.org.za" target="_blank">inforegulator.org.za</a></span></div>
+      <div class="contact-row"><span class="contact-label">Email</span><span class="contact-val"><a href="mailto:inforeg@justice.gov.za">inforeg@justice.gov.za</a></span></div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="doc-section" id="p11">
+    <h2><span class="sec-num">11</span> Cookies and Local Storage</h2>
+    <p>The Magic Lab uses browser <strong>local storage</strong> (not tracking cookies) for the following limited purposes:</p>
+    <ul>
+      <li>Remembering whether you have seen the welcome screen for each tool (<code style="font-family:var(--mono);font-size:12px;color:#c4baff;">ml_welcome_seen_*</code>)</li>
+      <li>Supabase authentication tokens, which allow you to stay logged in between sessions</li>
+    </ul>
+    <p>We do <strong>not</strong> use advertising cookies, analytics cookies, or third-party tracking cookies. No cookie consent banner is displayed because we do not use non-essential cookies.</p>
+    <p>You can clear your browser's local storage at any time through your browser settings. This will log you out and reset your tool welcome screens.</p>
+  </div>
+
+  <!-- 12 -->
+  <div class="doc-section" id="p12">
+    <h2><span class="sec-num">12</span> Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time to reflect changes in our practices, the services we offer, or legal requirements. When we make material changes, we will update the "Last updated" date at the top of this page and, where appropriate, notify registered users by email.</p>
+    <p>We encourage you to review this policy periodically. Your continued use of the Platform after changes are posted constitutes your acceptance of the updated policy.</p>
+  </div>
+
+  <!-- 13 -->
+  <div class="doc-section" id="p13">
+    <h2><span class="sec-num">13</span> How to Contact Us</h2>
+    <p>For any questions, requests, or concerns about this Privacy Policy or the handling of your personal information, please contact our Information Officer:</p>
+    <div class="contact-box">
+      <div class="contact-row"><span class="contact-label">Information Officer</span><span class="contact-val">Ruhan Janse van Rensburg</span></div>
+      <div class="contact-row"><span class="contact-label">Email</span><span class="contact-val"><a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a></span></div>
+      <div class="contact-row"><span class="contact-label">Platform</span><span class="contact-val"><a href="https://themagiclab.co.za">themagiclab.co.za</a></span></div>
+      <div class="contact-row"><span class="contact-label">Response time</span><span class="contact-val">Within 30 days of receiving your request</span></div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<footer>
+  <span class="footer-copy">© 2026 Ruhan Janse van Rensburg. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="index.html"   class="footer-link">Platform</a>
+    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+    <a href="terms.html"   class="footer-link">Terms of Use</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Use — The Magic Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#080c1a; --bg2:#0d1226;
+      --surface:rgba(255,255,255,0.048); --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
+      --text:#e4e8f8; --text2:rgba(210,218,245,0.70); --muted:rgba(210,218,245,0.38);
+      --accent:#7c6dfa; --emerald:#11d98f; --amber:#f5a623;
+      --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font); font-size: 16px; line-height: 1.7;
+      background: var(--bg); color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(ellipse 60% 35% at 5% 3%, rgba(124,109,250,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 30% at 96% 6%, rgba(17,217,143,0.07) 0%, transparent 55%);
+    }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(8,12,26,0.92); backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-weight: 900; font-size: 20px; letter-spacing: -0.03em; text-decoration: none;
+      background: linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-back {
+      font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none;
+      padding: 7px 16px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); transition: all 140ms;
+    }
+    .nav-back:hover { color: var(--text); background: rgba(255,255,255,0.09); }
+
+    .page-wrap {
+      max-width: 780px; margin: 0 auto; padding: 56px 40px 100px;
+    }
+
+    .page-header { margin-bottom: 48px; }
+    .page-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px; display: block;
+    }
+    .page-title {
+      font-weight: 900; font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.03em; line-height: 1.1; color: #fff;
+      margin-bottom: 14px;
+    }
+    .page-meta {
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      display: flex; gap: 18px; flex-wrap: wrap;
+    }
+
+    /* Table of contents */
+    .toc {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 22px 26px; margin-bottom: 48px;
+    }
+    .toc-title {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+    }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .toc-list a {
+      font-size: 14px; color: var(--text2); text-decoration: none;
+      display: flex; align-items: center; gap: 8px; transition: color 130ms;
+    }
+    .toc-list a:hover { color: #c4baff; }
+    .toc-num {
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      min-width: 22px;
+    }
+
+    /* Content */
+    .doc-section { margin-bottom: 44px; }
+    .doc-section:first-child { margin-top: 0; }
+
+    h2 {
+      font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
+      color: #fff; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+      padding-top: 8px;
+    }
+    h2 .sec-num {
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      color: var(--accent); background: rgba(124,109,250,0.12);
+      border: 1px solid rgba(124,109,250,0.25);
+      padding: 2px 9px; border-radius: 99px; flex-shrink: 0;
+    }
+
+    h3 {
+      font-weight: 700; font-size: 15px; letter-spacing: -0.01em;
+      color: rgba(210,218,245,0.90); margin: 20px 0 8px;
+    }
+
+    p { font-size: 15px; color: var(--text2); margin-bottom: 14px; line-height: 1.8; }
+    p strong { color: var(--text); font-weight: 700; }
+
+    ul, ol {
+      padding-left: 22px; margin-bottom: 16px;
+    }
+    li { font-size: 15px; color: var(--text2); margin-bottom: 7px; line-height: 1.7; }
+    li strong { color: var(--text); }
+
+    .callout {
+      border-radius: 12px; padding: 14px 18px; margin: 20px 0;
+      font-size: 14px; line-height: 1.7;
+    }
+    .callout-info { background: rgba(124,109,250,0.10); border: 1px solid rgba(124,109,250,0.22); color: #c4baff; }
+    .callout-warn { background: rgba(245,166,35,0.10); border: 1px solid rgba(245,166,35,0.25); color: #fcd34d; }
+    .callout-green { background: rgba(17,217,143,0.09); border: 1px solid rgba(17,217,143,0.22); color: #6ee7b7; }
+    .callout strong { font-weight: 700; }
+
+    .divider {
+      border: none; border-top: 1px solid var(--border2); margin: 40px 0;
+    }
+
+    .contact-box {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 22px 26px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .contact-row { display: flex; gap: 12px; align-items: baseline; }
+    .contact-label {
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+      min-width: 80px; flex-shrink: 0;
+    }
+    .contact-val { font-size: 14px; color: var(--text2); }
+    .contact-val a { color: #c4baff; text-decoration: none; }
+    .contact-val a:hover { text-decoration: underline; }
+
+    footer {
+      border-top: 1px solid var(--border2); padding: 24px 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-link { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 130ms; }
+    .footer-link:hover { color: var(--text2); }
+
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .page-wrap { padding: 36px 20px 72px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+  <a href="index.html" class="nav-back">← Back to platform</a>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <span class="page-tag">Legal</span>
+    <h1 class="page-title">Terms of Use</h1>
+    <div class="page-meta">
+      <span>Effective: 1 June 2026</span>
+      <span>Last updated: 1 June 2026</span>
+      <span>Version 1.0</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span>About The Magic Lab</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span>Acceptance of Terms</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span>Who May Use the Platform</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span>Your Account</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span>Acceptable Use</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span>Intellectual Property</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span>AI Features</a></li>
+      <li><a href="#s8"><span class="toc-num">08</span>Academic Integrity</a></li>
+      <li><a href="#s9"><span class="toc-num">09</span>Disclaimer of Warranties</a></li>
+      <li><a href="#s10"><span class="toc-num">10</span>Limitation of Liability</a></li>
+      <li><a href="#s11"><span class="toc-num">11</span>Changes to These Terms</a></li>
+      <li><a href="#s12"><span class="toc-num">12</span>Governing Law</a></li>
+      <li><a href="#s13"><span class="toc-num">13</span>Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <div class="doc-section" id="s1">
+    <h2><span class="sec-num">01</span> About The Magic Lab</h2>
+    <p>The Magic Lab (<strong>"the Platform"</strong>, <strong>"we"</strong>, <strong>"us"</strong>) is a browser-based STEM learning platform developed and operated by <strong>Ruhan Janse van Rensburg</strong>, a South African individual operating under the domain <a href="https://themagiclab.co.za" style="color:#c4baff;">themagiclab.co.za</a>. The Platform provides interactive learning tools for mathematics, computer science, information technology, and digital literacy, aligned to the South African CAPS and IEB school curricula for Grades 8 to 12.</p>
+    <p>The Platform includes, but is not limited to: Java Genie, Web Wizard, Computer Codex, Code Conjurer, Math Magician, an AI-powered tutoring assistant, a gamified progress and achievement system, and a student profile dashboard.</p>
+  </div>
+
+  <!-- 2 -->
+  <div class="doc-section" id="s2">
+    <h2><span class="sec-num">02</span> Acceptance of Terms</h2>
+    <p>By accessing or using the Platform in any way — including browsing, creating an account, or using any learning tool — you confirm that you have read, understood, and agree to be bound by these Terms of Use and our <a href="privacy.html" style="color:#c4baff;">Privacy Policy</a>.</p>
+    <p>If you are under the age of 18, you confirm that your parent or legal guardian has read and agreed to these Terms on your behalf, or that your school has agreed to them as part of a school licence arrangement.</p>
+    <div class="callout callout-info"><strong>Simple version:</strong> Using the platform means you agree to these rules. If you're a learner under 18, a parent or teacher needs to be aware of and comfortable with these terms.</div>
+  </div>
+
+  <!-- 3 -->
+  <div class="doc-section" id="s3">
+    <h2><span class="sec-num">03</span> Who May Use the Platform</h2>
+    <p>The Platform is designed for South African school learners in Grades 8 to 12, their teachers, and school administrators. Use by other individuals is permitted but the Platform is not specifically designed for or marketed to children under the age of 13 without explicit parental consent.</p>
+    <p>Schools wishing to use the Platform for institutional purposes must enter into a separate written agreement with us. Contact us at the address below to arrange this.</p>
+  </div>
+
+  <!-- 4 -->
+  <div class="doc-section" id="s4">
+    <h2><span class="sec-num">04</span> Your Account</h2>
+    <h3>4.1 Registration</h3>
+    <p>Certain features of the Platform require you to create a free account. When registering, you agree to provide accurate, current, and complete information and to keep your account details up to date.</p>
+    <h3>4.2 Account security</h3>
+    <p>You are responsible for maintaining the confidentiality of your password and for all activity that occurs under your account. You agree to notify us immediately at <a href="mailto:ruhan@themagiclab.co.za" style="color:#c4baff;">ruhan@themagiclab.co.za</a> if you become aware of any unauthorised use of your account.</p>
+    <h3>4.3 One account per person</h3>
+    <p>Each person should maintain only one account. Creating multiple accounts to gain additional XP, badges, or other benefits is not permitted and may result in account suspension.</p>
+    <h3>4.4 Account termination</h3>
+    <p>We reserve the right to suspend or terminate accounts that violate these Terms, without prior notice. You may delete your account at any time by contacting us.</p>
+  </div>
+
+  <!-- 5 -->
+  <div class="doc-section" id="s5">
+    <h2><span class="sec-num">05</span> Acceptable Use</h2>
+    <p>You agree to use the Platform only for its intended educational purposes and in a manner consistent with all applicable South African laws and regulations. You agree <strong>not</strong> to:</p>
+    <ul>
+      <li>Attempt to gain unauthorised access to any part of the Platform, its servers, or databases</li>
+      <li>Reverse engineer, decompile, disassemble, or attempt to extract the source code of any part of the Platform</li>
+      <li>Scrape, crawl, or systematically copy content from the Platform without our written permission</li>
+      <li>Use the Platform to harass, bully, or harm other users</li>
+      <li>Upload, transmit, or distribute any malicious code, viruses, or harmful content</li>
+      <li>Use automated tools, bots, or scripts to interact with the Platform in any way</li>
+      <li>Misrepresent your identity, grade, or school affiliation</li>
+      <li>Use the AI Tutor to generate content intended to deceive teachers or to commit academic fraud</li>
+      <li>Attempt to manipulate the XP or badge system through exploits or artificial means</li>
+    </ul>
+    <p>We reserve the right to investigate suspected violations and to suspend or terminate access without notice.</p>
+  </div>
+
+  <!-- 6 -->
+  <div class="doc-section" id="s6">
+    <h2><span class="sec-num">06</span> Intellectual Property</h2>
+    <h3>6.1 Our content</h3>
+    <p>All content on the Platform — including but not limited to lesson text, code, quiz questions, interactive challenges, illustrations, UI design, the gamification system, XP and badge structures, tool names, and the "The Magic Lab" name and logo — is the original work of Ruhan Janse van Rensburg and is protected by the Copyright Act 98 of 1978 (South Africa) and international copyright conventions.</p>
+    <p>You may not copy, reproduce, distribute, publish, display, modify, or create derivative works from any part of our content without our express written permission.</p>
+    <h3>6.2 Your content</h3>
+    <p>Any code you write in the Platform's coding tools remains your own. We do not claim ownership over programs you create. However, by using the Platform you grant us a limited, non-exclusive licence to store and display your code for the purposes of operating the Platform (e.g. saving your progress).</p>
+    <h3>6.3 Feedback</h3>
+    <p>If you submit feedback, suggestions, or ideas to us, you agree that we may use them freely without obligation or compensation to you.</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="doc-section" id="s7">
+    <h2><span class="sec-num">07</span> AI Features</h2>
+    <p>The Platform includes an AI-powered tutoring assistant (the <strong>"AI Tutor"</strong>) powered by Anthropic's Claude API, and AI-generated feedback features within certain learning tools.</p>
+    <div class="callout callout-warn"><strong>Important:</strong> AI-generated responses may occasionally be inaccurate, incomplete, or out of date. Always verify important information — especially for academic work — using your textbook, teacher, or other trusted sources. We are not responsible for errors in AI-generated content.</div>
+    <p>By using the AI Tutor, you agree:</p>
+    <ul>
+      <li>Not to submit personal information, passwords, ID numbers, or sensitive data to the AI Tutor</li>
+      <li>Not to attempt to bypass safety guidelines or use the AI Tutor for purposes outside its educational scope</li>
+      <li>That conversations with the AI Tutor may be processed by Anthropic's servers subject to Anthropic's own privacy policy</li>
+      <li>That the AI Tutor is a learning aid, not a substitute for your own thinking and understanding</li>
+    </ul>
+  </div>
+
+  <!-- 8 -->
+  <div class="doc-section" id="s8">
+    <h2><span class="sec-num">08</span> Academic Integrity</h2>
+    <p>The Magic Lab is designed to support genuine learning. Using AI tools or any other resource to complete assessments, assignments, or examinations dishonestly is a violation of your school's academic integrity policy and is not a permitted use of this Platform.</p>
+    <p>Submitting AI-generated work as your own original work without disclosure — whether from our AI Tutor or any other source — constitutes academic dishonesty. We encourage honest, transparent use of all tools.</p>
+    <div class="callout callout-green"><strong>The right way to use AI:</strong> Ask the AI Tutor to explain a concept, check your thinking, or give feedback on your work. Then do the work yourself. That's how real learning happens.</div>
+  </div>
+
+  <!-- 9 -->
+  <div class="doc-section" id="s9">
+    <h2><span class="sec-num">09</span> Disclaimer of Warranties</h2>
+    <p>The Platform is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranty of any kind. To the fullest extent permitted by South African law, we disclaim all warranties, express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+    <p>We do not warrant that the Platform will be uninterrupted, error-free, or free of viruses or other harmful components. We do not warrant that the content is always accurate, complete, or current.</p>
+    <p>The Platform is a developing product. Features may change, be removed, or be unavailable at times. We will endeavour to provide reasonable notice of significant changes.</p>
+  </div>
+
+  <!-- 10 -->
+  <div class="doc-section" id="s10">
+    <h2><span class="sec-num">10</span> Limitation of Liability</h2>
+    <p>To the fullest extent permitted by applicable law, Ruhan Janse van Rensburg shall not be liable for any indirect, incidental, special, consequential, or punitive damages — including but not limited to loss of data, loss of profits, or loss of educational opportunity — arising from your use of or inability to use the Platform.</p>
+    <p>Our total liability to you for any claim arising from these Terms or your use of the Platform shall not exceed the amount you paid us in the twelve months preceding the claim, or R500, whichever is greater.</p>
+    <p>Nothing in these Terms excludes or limits liability that cannot lawfully be excluded under the Consumer Protection Act 68 of 2008 or any other applicable South African legislation.</p>
+  </div>
+
+  <!-- 11 -->
+  <div class="doc-section" id="s11">
+    <h2><span class="sec-num">11</span> Changes to These Terms</h2>
+    <p>We may update these Terms from time to time. When we do, we will update the "Last updated" date at the top of this page. For material changes, we will notify registered users by email or by a prominent notice on the Platform.</p>
+    <p>Your continued use of the Platform after changes are posted constitutes your acceptance of the updated Terms. If you do not agree to the updated Terms, you should stop using the Platform.</p>
+  </div>
+
+  <!-- 12 -->
+  <div class="doc-section" id="s12">
+    <h2><span class="sec-num">12</span> Governing Law</h2>
+    <p>These Terms are governed by and construed in accordance with the laws of the Republic of South Africa. Any disputes arising from these Terms or your use of the Platform shall be subject to the jurisdiction of the South African courts.</p>
+  </div>
+
+  <!-- 13 -->
+  <div class="doc-section" id="s13">
+    <h2><span class="sec-num">13</span> Contact</h2>
+    <p>If you have any questions about these Terms, please contact us:</p>
+    <div class="contact-box">
+      <div class="contact-row">
+        <span class="contact-label">Operator</span>
+        <span class="contact-val">Ruhan Janse van Rensburg</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Platform</span>
+        <span class="contact-val"><a href="https://themagiclab.co.za">themagiclab.co.za</a></span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Email</span>
+        <span class="contact-val"><a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a></span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">Country</span>
+        <span class="contact-val">South Africa</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<footer>
+  <span class="footer-copy">© 2026 Ruhan Janse van Rensburg. All rights reserved.</span>
+  <div class="footer-links">
+    <a href="index.html"   class="footer-link">Platform</a>
+    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+    <a href="terms.html"   class="footer-link">Terms of Use</a>
+  </div>
+</footer>
+
+</body>
+</html>
