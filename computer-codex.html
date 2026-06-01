@@ -14,6 +14,7 @@
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
   <script defer src="xp.js"></script>
+  <script defer src="quiz-engine.js"></script>
   <script defer src="auth-modal.js"></script>
   <style>
     :root {
@@ -1082,7 +1083,11 @@ const LESSONS = [
   <div class="quiz-feedback"></div>
 </div>
   </div>
-</div>`
+</div>
+
+<div data-iq-challenge='{"type":"arrange","prompt":"Arrange these file types from most common document to most common media file:","blocks":[".docx — Word document",".xlsx — Excel spreadsheet",".pdf — Portable Document",".mp3 — Audio file",".mp4 — Video file"],"explanation":"Documents first (docx, xlsx, pdf), then media (mp3 audio, mp4 video)."}'></div>
+
+<div data-iq-challenge='{"type":"spot-bug","prompt":"A student renamed their Word document by changing the extension. Which line contains the mistake in their thinking?","lines":["1. I have a file called Report.docx","2. I want to send it as a PDF","3. I right-clicked and renamed it to Report.pdf","4. The file is now a proper PDF document","5. I emailed it to my teacher"],"bugLine":2,"explanation":"Renaming a file extension does NOT convert it. You must use File → Save As → PDF. Just renaming tricks the icon but the content stays in Word format and may not open correctly."}'></div>`
 },
 
 // ─── UNIT 3: OFFICE RIBBON ────────────────────────────────────────────────
@@ -3925,11 +3930,12 @@ function ethicsAnswer(btn, type) {
   <div class="quiz-feedback"></div>
 </div>
   </div>
-</div>`
+</div>
+
+<div data-iq-challenge='{"type":"fill-blank","prompt":"Complete the statement about AI ethics:","code":"Submitting AI-generated work as your own without\ndisclosure is the same as ___.\nAlways ___ important AI outputs before using them.\nNever share your ___ with a public AI chatbot.","blanks":[{"placeholder":"plagiarism","answer":"plagiarism","id":"b1"},{"placeholder":"verify","answer":"verify","id":"b2"},{"placeholder":"personal information","answer":"personal information","id":"b3"}],"wordBank":["plagiarism","verify","personal information","download","agree","delete"],"explanation":"Honesty, critical thinking, and privacy are three of the five ethical AI principles."}'></div>`
 }
 
 ]; // end LESSONS
-
 // ═══════════════════════════════════════════════════════════════════════════
 // APP LOGIC
 // ═══════════════════════════════════════════════════════════════════════════
@@ -4311,6 +4317,25 @@ function initFlowDiagramBuilder() {
 
   initFlowDiagramBuilder();
   lucide.createIcons();
+
+  // Wire interactive challenges embedded in lesson HTML
+  if (window.MagicLabQuiz) {
+    const les = LESSONS[currentLesson];
+    MagicLabQuiz.wire(
+      document.getElementById('lessonContent'),
+      ML_TOOLS.COMPUTER_CODEX,
+      les.title
+    );
+  } else {
+    document.addEventListener('magiclab:quiz:ready', () => {
+      const les = LESSONS[currentLesson];
+      MagicLabQuiz.wire(
+        document.getElementById('lessonContent'),
+        ML_TOOLS.COMPUTER_CODEX,
+        les.title
+      );
+    }, { once: true });
+  }
   buildSidebar();
 }
 
@@ -4377,17 +4402,10 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   updateProgress();
   // Track lesson complete
   if (window.MagicLabProgress) {
-    const les  = LESSONS[currentLesson];
-    const isLast = currentLesson === LESSONS.length - 1;
-    // Unit complete? Check if every lesson in this unit is now done
-    const unitLessons = LESSONS.map((l, i) => ({ unit: l.unit, i })).filter(l => l.unit === les.unit).map(l => l.i);
-    const unitDone    = unitLessons.every(i => completed.has(i));
+    const les = LESSONS[currentLesson];
     MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
       topic: les.title,
       grade: 8,
-      unit: les.unit,
-      unitComplete: unitDone,
-      toolComplete: isLast,
       metadata: { unit: les.unit, lesson_index: currentLesson }
     });
   }
@@ -4401,16 +4419,10 @@ document.addEventListener('keydown', e => {
     updateProgress();
     // Track lesson complete via keyboard
     if (window.MagicLabProgress) {
-      const les     = LESSONS[currentLesson];
-      const isLast  = currentLesson === LESSONS.length - 1;
-      const unitLessons = LESSONS.map((l, i) => ({ unit: l.unit, i })).filter(l => l.unit === les.unit).map(l => l.i);
-      const unitDone    = unitLessons.every(i => completed.has(i));
+      const les = LESSONS[currentLesson];
       MagicLabProgress.track(ML_TOOLS.COMPUTER_CODEX, 'lesson_complete', {
         topic: les.title,
         grade: 8,
-        unit: les.unit,
-        unitComplete: unitDone,
-        toolComplete: isLast,
         metadata: { unit: les.unit, via: 'keyboard' }
       });
     }

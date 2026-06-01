@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v6'; // bumped from v5 → forces cache refresh on gamification deploy
+const CACHE_NAME = 'magic-lab-v7'; // bumped from v4 → forces cache refresh
 
 const urlsToCache = [
   '/',
@@ -24,10 +24,9 @@ const urlsToCache = [
   '/progress.js',
   '/auth-modal.js',
   '/auth-modal.css',
-  '/dashboard-student.html',
-
-  // ── Phase 2: Gamification ──────────────────────────────────
   '/xp.js',
+  '/quiz-engine.js',
+  '/dashboard-student.html',
 
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
@@ -40,7 +39,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache).catch(() => {
         // If CDN resources fail, at minimum cache the core app
-        return cache.addAll(['/', '/index.html', '/auth.js', '/progress.js', '/xp.js', '/auth-modal.js', '/auth-modal.css']);
+        return cache.addAll(['/', '/index.html', '/auth.js', '/progress.js', '/xp.js', '/quiz-engine.js', '/auth-modal.js', '/auth-modal.css']);
       });
     })
   );
