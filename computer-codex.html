@@ -14,7 +14,6 @@
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
   <script defer src="auth-modal.js"></script>
-  <script defer src="tool-welcome.js"></script>
   <style>
     :root {
       --bg: #080c1a; --bg2: #0d1226;
@@ -389,9 +388,8 @@
     <h1 class="app-title">Computer Codex</h1>
     <span class="grade-badge">Grade 8 – 10</span>
     <div class="header-right">
-      <span class="progress-text" id="headerProgress">Lesson 1 of 25</span>
+      <span class="progress-text" id="headerProgress">Lesson 1 of 27</span>
       <a href="../dashboard-student.html" class="home-btn" style="color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:12px;height:12px;"></i></a>
-      <button onclick="window.MagicLabWelcome?.show('computer-codex')" class="home-btn" title="About this tool" style="font-size:13px;padding:5px 9px;">?</button>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
     </div>
   </header>
@@ -423,7 +421,7 @@
       </div>
       <div id="bottomNav">
         <button class="nav-btn" id="prevBtn">&#x2190; Previous</button>
-        <span id="lessonCounter">1 / 25</span>
+        <span id="lessonCounter">1 / 27</span>
         <button class="nav-btn" id="nextBtn">Next &#x2192;</button>
       </div>
     </div>
@@ -2488,54 +2486,51 @@ const LESSONS = [
   content: `
 <p><strong>Computational Thinking</strong> is a problem-solving approach used by programmers and computer scientists to break down complex problems so that a computer — or a human — can solve them step by step. It is not about using a computer; it is about <em>thinking</em> in a structured, logical way.</p>
 
+<p>Computational Thinking is built on four pillars. Each lesson in this unit covers one pillar in depth. Together, they form a complete framework for solving any kind of problem — from writing a program to planning a school event.</p>
+
 <div class="visual-box">
   <div class="visual-box-title">The Four Pillars of Computational Thinking</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-    <div style="background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:14px;">
-      <div style="font-size:22px;margin-bottom:6px;">🔍</div>
-      <div style="font-size:13px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">Decomposition</div>
-      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Breaking a big problem into smaller, manageable sub-problems.</div>
+    <div style="background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:16px;">
+      <div style="font-size:24px;margin-bottom:6px;">🔍</div>
+      <div style="font-size:14px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">1. Decomposition</div>
+      <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.5;">Breaking a big problem into smaller, manageable sub-problems that are easier to solve one at a time.</div>
     </div>
-    <div style="background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px;">
-      <div style="font-size:22px;margin-bottom:6px;">🔎</div>
-      <div style="font-size:13px;font-weight:700;color:#6ee7b7;margin-bottom:4px;">Pattern Recognition</div>
-      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Finding similarities and trends within or across problems.</div>
+    <div style="background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:16px;">
+      <div style="font-size:24px;margin-bottom:6px;">🔎</div>
+      <div style="font-size:14px;font-weight:700;color:#6ee7b7;margin-bottom:4px;">2. Pattern Recognition</div>
+      <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.5;">Finding similarities, trends, and repeated structures within or across problems to speed up solving.</div>
     </div>
-    <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:14px;">
-      <div style="font-size:22px;margin-bottom:6px;">🧩</div>
-      <div style="font-size:13px;font-weight:700;color:#fcd34d;margin-bottom:4px;">Abstraction</div>
-      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Focusing only on the important details and ignoring irrelevant information.</div>
+    <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:16px;">
+      <div style="font-size:24px;margin-bottom:6px;">🧩</div>
+      <div style="font-size:14px;font-weight:700;color:#fcd34d;margin-bottom:4px;">3. Abstraction</div>
+      <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.5;">Focusing only on the important details and deliberately ignoring anything that is not relevant to the solution.</div>
     </div>
-    <div style="background:rgba(236,72,153,0.10);border:1px solid rgba(236,72,153,0.25);border-radius:10px;padding:14px;">
-      <div style="font-size:22px;margin-bottom:6px;">📋</div>
-      <div style="font-size:13px;font-weight:700;color:#f9a8d4;margin-bottom:4px;">Algorithm Design</div>
-      <div style="font-size:12px;color:rgba(221,225,240,0.65);">Creating a step-by-step set of instructions to solve the problem.</div>
+    <div style="background:rgba(236,72,153,0.10);border:1px solid rgba(236,72,153,0.25);border-radius:10px;padding:16px;">
+      <div style="font-size:24px;margin-bottom:6px;">📋</div>
+      <div style="font-size:14px;font-weight:700;color:#f9a8d4;margin-bottom:4px;">4. Algorithm Design</div>
+      <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.5;">Creating a precise, ordered set of instructions that reliably solves the problem every time it is followed.</div>
     </div>
   </div>
 </div>
 
-<h3><i data-lucide="lightbulb" style="width:14px;height:14px;"></i> A Real-Life Example: Making a Sandwich</h3>
-<p>Even something as simple as making a sandwich requires computational thinking:</p>
-<ul>
-  <li><strong>Decomposition:</strong> Get bread → get filling → spread → assemble → cut</li>
-  <li><strong>Pattern Recognition:</strong> You have made a sandwich before — the process is the same each time</li>
-  <li><strong>Abstraction:</strong> You do not think about how bread is made — just that you need it</li>
-  <li><strong>Algorithm Design:</strong> You follow steps in a specific order to produce the result</li>
-</ul>
+<h3><i data-lucide="help-circle" style="width:14px;height:14px;"></i> Why does Computational Thinking matter?</h3>
+<p>You do not need a computer to use Computational Thinking. Engineers use it to design bridges. Doctors use it to diagnose illness. Chefs use it to plan a menu. Programmers use it before writing a single line of code.</p>
+<p>In this course, you will use Computational Thinking to plan solutions before you write pseudo code, draw flow diagrams, or code in Java. The four pillars always come first.</p>
 
-<div class="callout tip"><strong>Key insight:</strong> Computational thinking is a skill used in programming, mathematics, science, engineering — and everyday life. It helps you approach any complex problem systematically.</div>
+<div class="callout tip"><strong>Remember:</strong> The four pillars are not steps to follow in order — they work together. A real problem usually requires all four, applied repeatedly as you think the solution through.</div>
 
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz(this)">
-    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    🧩 Practice Quiz — 5 questions
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q1: What is Computational Thinking?</div>
+  <div class="quiz-q">🧩 Q1: Computational Thinking is best described as:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Knowing how to type fast on a computer</button>
-    <button class="quiz-opt" data-correct="true">A problem-solving approach that breaks down complex problems into steps a computer or human can solve</button>
+    <button class="quiz-opt" data-correct="false">Typing code into a computer quickly</button>
+    <button class="quiz-opt" data-correct="true">A structured, logical approach to solving problems</button>
     <button class="quiz-opt" data-correct="false">Using a calculator to solve maths problems</button>
   </div>
   <div class="quiz-feedback"></div>
@@ -2543,36 +2538,36 @@ const LESSONS = [
 <div class="quiz-box">
   <div class="quiz-q">🧩 Q2: Which pillar involves breaking a big problem into smaller parts?</div>
   <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Decomposition</button>
     <button class="quiz-opt" data-correct="false">Abstraction</button>
     <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
-    <button class="quiz-opt" data-correct="true">Decomposition</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q3: Abstraction means:</div>
+  <div class="quiz-q">🧩 Q3: Which pillar involves ignoring unimportant details?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Writing a list of steps to solve a problem</button>
-    <button class="quiz-opt" data-correct="true">Focusing only on relevant details and ignoring unnecessary information</button>
-    <button class="quiz-opt" data-correct="false">Finding patterns across similar problems</button>
-  </div>
-  <div class="quiz-feedback"></div>
-</div>
-<div class="quiz-box">
-  <div class="quiz-q">🧩 Q4: You notice that calculating VAT always uses the same formula. Which pillar is this?</div>
-  <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Decomposition</button>
-    <button class="quiz-opt" data-correct="true">Pattern Recognition</button>
     <button class="quiz-opt" data-correct="false">Algorithm Design</button>
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="true">Abstraction</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q5: Algorithm Design produces:</div>
+  <div class="quiz-q">🧩 Q4: A doctor who uses a standard checklist to diagnose a patient is using which pillar?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">A random guess at the answer</button>
-    <button class="quiz-opt" data-correct="true">A clear, step-by-step set of instructions to solve a problem</button>
-    <button class="quiz-opt" data-correct="false">A diagram showing computer hardware</button>
+    <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="true">Algorithm Design</button>
+    <button class="quiz-opt" data-correct="false">Abstraction</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Do you need a computer to apply Computational Thinking?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Yes — it only applies when coding</button>
+    <button class="quiz-opt" data-correct="true">No — it is a thinking approach used in any field</button>
+    <button class="quiz-opt" data-correct="false">Only when using Python or Java</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2585,97 +2580,111 @@ const LESSONS = [
   title: "Decomposition",
   subtitle: "Breaking big problems into smaller, solvable pieces",
   content: `
-<p><strong>Decomposition</strong> is the process of breaking a large, complex problem into smaller sub-problems that are easier to understand and solve. Once each sub-problem is solved, the solutions are combined to solve the original problem.</p>
+<p><strong>Decomposition</strong> is the process of breaking a complex problem or task into smaller, more manageable sub-problems. Each sub-problem is easier to understand, easier to solve, and easier to test than the original.</p>
 
-<h3><i data-lucide="scissors" style="width:14px;height:14px;"></i> Why Decompose?</h3>
+<div class="callout info"><strong>Key idea:</strong> You cannot eat an entire pizza in one bite — but you can eat it one slice at a time. Decomposition is cutting the pizza.</div>
+
+<h3><i data-lucide="scissors" style="width:14px;height:14px;"></i> Why decompose?</h3>
 <ul>
-  <li>Large problems are overwhelming — smaller ones are manageable</li>
-  <li>Different people or programs can work on different sub-problems simultaneously</li>
-  <li>It is easier to find and fix errors in small pieces</li>
-  <li>Sub-solutions can often be reused in other projects</li>
+  <li>Large problems feel overwhelming — smaller problems feel manageable</li>
+  <li>Different people (or different parts of a program) can work on different sub-problems at the same time</li>
+  <li>If one sub-problem fails, you only need to fix that part — not redo everything</li>
+  <li>Testing becomes easier because you can check each piece independently</li>
 </ul>
 
+<h3><i data-lucide="git-branch" style="width:14px;height:14px;"></i> Example 1 — Building a school website</h3>
+
 <div class="visual-box">
-  <div class="visual-box-title">Example: Build a School Website</div>
-  <div style="text-align:center;font-size:13px;color:#a5b4fc;font-weight:700;margin-bottom:10px;">🏫 Build a School Website</div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-    <div style="background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.20);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:16px;margin-bottom:4px;">🎨</div>
-      <div style="font-size:11px;font-weight:700;color:#c7d2fe;">Design the layout</div>
-    </div>
-    <div style="background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.20);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:16px;margin-bottom:4px;">📝</div>
-      <div style="font-size:11px;font-weight:700;color:#6ee7b7;">Write the content</div>
-    </div>
-    <div style="background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.20);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:16px;margin-bottom:4px;">🔗</div>
-      <div style="font-size:11px;font-weight:700;color:#fcd34d;">Set up navigation</div>
-    </div>
-    <div style="background:rgba(236,72,153,0.10);border:1px solid rgba(236,72,153,0.20);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:16px;margin-bottom:4px;">📸</div>
-      <div style="font-size:11px;font-weight:700;color:#f9a8d4;">Add images</div>
-    </div>
-    <div style="background:rgba(139,92,246,0.10);border:1px solid rgba(139,92,246,0.20);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:16px;margin-bottom:4px;">📬</div>
-      <div style="font-size:11px;font-weight:700;color:#c4b5fd;">Contact form</div>
-    </div>
-    <div style="background:rgba(20,184,166,0.10);border:1px solid rgba(20,184,166,0.20);border-radius:8px;padding:10px;text-align:center;">
-      <div style="font-size:16px;margin-bottom:4px;">🧪</div>
-      <div style="font-size:11px;font-weight:700;color:#5eead4;">Test everything</div>
+  <div class="visual-box-title">Decomposing "Build a school website"</div>
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <div style="padding:10px 14px;background:rgba(99,102,241,0.14);border:1px solid rgba(99,102,241,0.28);border-radius:10px;font-size:13px;font-weight:700;color:#a5b4fc;">🏫 Build a school website</div>
+    <div style="padding-left:20px;display:flex;flex-direction:column;gap:5px;">
+      <div style="padding:9px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.75);">📄 Design the homepage layout</div>
+      <div style="padding:9px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.75);">📋 Write the About Us content</div>
+      <div style="padding:9px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.75);">📬 Create the Contact page with a form</div>
+      <div style="padding:9px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.75);">🎨 Choose colours and fonts (CSS)</div>
+      <div style="padding:9px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.75);">📱 Make the site work on mobile screens</div>
+      <div style="padding:9px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.75);">🧪 Test each page for errors</div>
     </div>
   </div>
 </div>
 
-<div class="callout tip"><strong>Rule of thumb:</strong> If you can describe what a piece of code does in one clear sentence, it is well decomposed. If you need several sentences, break it down further.</div>
+<h3><i data-lucide="coffee" style="width:14px;height:14px;"></i> Example 2 — Making a cup of coffee</h3>
+<p>Even everyday tasks can be decomposed. "Make a cup of coffee" breaks into: boil water → measure coffee → pour water → wait → add milk/sugar → stir → serve. Each step is a sub-problem with a clear start and end.</p>
+
+<h3><i data-lucide="code" style="width:14px;height:14px;"></i> Decomposition in programming</h3>
+<p>In Java, decomposition maps directly to <strong>methods</strong>. Instead of writing one enormous block of code, you decompose the program into methods — each method solves one sub-problem.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Decomposing a Java grade calculator</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:rgba(221,225,240,0.70);">
+    <div style="color:#f9a8d4;font-weight:700;">// Main problem: Calculate and display a learner's grade</div>
+    <div style="padding-left:16px;color:rgba(221,225,240,0.55);">→ getMarksFromUser()      // sub-problem 1</div>
+    <div style="padding-left:16px;color:rgba(221,225,240,0.55);">→ calculateAverage()      // sub-problem 2</div>
+    <div style="padding-left:16px;color:rgba(221,225,240,0.55);">→ convertToGrade()        // sub-problem 3</div>
+    <div style="padding-left:16px;color:rgba(221,225,240,0.55);">→ displayResult()         // sub-problem 4</div>
+  </div>
+</div>
+
+<div class="callout tip"><strong>Exam tip:</strong> In CAPS/IEB examinations, decomposition questions often ask you to list the sub-problems of a given task. Use bullet points, be specific, and make sure each sub-problem has a single, clear purpose.</div>
 
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz(this)">
-    🧩 Practice Quiz — 5 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    🧩 Practice Quiz — 6 questions
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q1: What is decomposition?</div>
+  <div class="quiz-q">🧩 Q1: Decomposition means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Writing code in a programming language</button>
+    <button class="quiz-opt" data-correct="false">Writing code without planning first</button>
     <button class="quiz-opt" data-correct="true">Breaking a complex problem into smaller, manageable sub-problems</button>
-    <button class="quiz-opt" data-correct="false">Drawing a diagram of a solution</button>
+    <button class="quiz-opt" data-correct="false">Deleting parts of a program that don't work</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q2: Which of these is a benefit of decomposition?</div>
+  <div class="quiz-q">🧩 Q2: Which of these is a good decomposition of "Plan a school sports day"?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Problems take longer to solve</button>
-    <button class="quiz-opt" data-correct="true">Errors are easier to find and fix in smaller pieces</button>
-    <button class="quiz-opt" data-correct="false">You need more people to solve the problem</button>
+    <button class="quiz-opt" data-correct="false">Think about sports, plan it, do it</button>
+    <button class="quiz-opt" data-correct="true">Book venue → choose events → invite participants → arrange equipment → set schedule → plan catering</button>
+    <button class="quiz-opt" data-correct="false">Just start and figure it out as you go</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q3: In programming, decomposition leads to writing:</div>
+  <div class="quiz-q">🧩 Q3: In Java, decomposition is most closely related to:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">One very long program with all the code in one place</button>
-    <button class="quiz-opt" data-correct="true">Small, reusable functions that each solve one sub-problem</button>
-    <button class="quiz-opt" data-correct="false">Comments explaining what the code does</button>
+    <button class="quiz-opt" data-correct="false">Variables</button>
+    <button class="quiz-opt" data-correct="false">Loops</button>
+    <button class="quiz-opt" data-correct="true">Methods</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q4: You need to organise a school sports day. Which is an example of decomposition?</div>
+  <div class="quiz-q">🧩 Q4: One advantage of decomposition is:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Asking the principal to handle everything</button>
-    <button class="quiz-opt" data-correct="true">Splitting the task into: venues, schedules, teams, catering, and results tracking</button>
-    <button class="quiz-opt" data-correct="false">Writing the results down after the event</button>
+    <button class="quiz-opt" data-correct="false">It makes programs run faster</button>
+    <button class="quiz-opt" data-correct="true">Different people can work on different sub-problems at the same time</button>
+    <button class="quiz-opt" data-correct="false">It removes the need for testing</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q5: Sub-solutions created through decomposition can often be:</div>
+  <div class="quiz-q">🧩 Q5: A well-decomposed sub-problem should:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Deleted once the problem is solved</button>
-    <button class="quiz-opt" data-correct="true">Reused in other projects</button>
-    <button class="quiz-opt" data-correct="false">Combined into a single large problem again</button>
+    <button class="quiz-opt" data-correct="false">Solve the entire original problem on its own</button>
+    <button class="quiz-opt" data-correct="true">Have a single, clear purpose with a defined start and end</button>
+    <button class="quiz-opt" data-correct="false">Always be written in Java</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: "Make breakfast" is decomposed into: boil eggs, make toast, pour juice, set the table. This is an example of:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Decomposition applied to an everyday task</button>
+    <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="false">Abstraction</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
@@ -2685,110 +2694,537 @@ const LESSONS = [
 
 {
   unit: "Unit 6 — Computational Thinking",
-  title: "Pattern Recognition and Abstraction",
-  subtitle: "Finding similarities and filtering what matters",
+  title: "Pattern Recognition",
+  subtitle: "Finding similarities and repeated structures to solve problems faster",
   content: `
-<h3><i data-lucide="search" style="width:14px;height:14px;"></i> Pattern Recognition</h3>
-<p><strong>Pattern Recognition</strong> is identifying similarities, trends, or repeating structures within a problem — or between problems you have already solved. Recognising a pattern means you can reuse a known solution rather than starting from scratch.</p>
+<p><strong>Pattern Recognition</strong> is the ability to notice similarities, trends, and repeated structures within a problem — or across different problems. When you recognise a pattern, you can reuse a solution that already worked instead of starting from scratch.</p>
+
+<div class="callout info"><strong>Key idea:</strong> If you've solved a similar problem before, pattern recognition lets you apply that solution again — saving time and reducing errors.</div>
+
+<h3><i data-lucide="repeat" style="width:14px;height:14px;"></i> Patterns in everyday life</h3>
+<ul>
+  <li><strong>Weather:</strong> It rains every afternoon in summer in Cape Town → you learn to carry an umbrella after 2pm</li>
+  <li><strong>Sport:</strong> A rugby team always kicks to the left when under pressure → the opposing team positions their defence accordingly</li>
+  <li><strong>School:</strong> You notice you always score lower on tests taken after late nights → you change your study schedule</li>
+</ul>
+
+<h3><i data-lucide="code" style="width:14px;height:14px;"></i> Patterns in programming</h3>
+<p>In code, patterns appear constantly. Once you recognise them, you reuse the same structure instead of reinventing it each time.</p>
 
 <div class="visual-box">
-  <div class="visual-box-title">Examples of Pattern Recognition</div>
-  <table style="width:100%;font-size:12px;border-collapse:collapse;">
-    <tr style="background:rgba(255,255,255,0.06);">
-      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Situation</th>
-      <th style="padding:8px;text-align:left;color:#a5b4fc;border-bottom:1px solid rgba(255,255,255,0.10);">Pattern Identified</th>
-    </tr>
-    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Calculating price for different quantities</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Always: price = quantity × unit cost</td></tr>
-    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Sorting a list of names, numbers, or dates</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Same comparison and swap logic every time</td></tr>
-    <tr><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Validating user input (email, phone, ID)</td><td style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.06);">Always: check format then length then characters</td></tr>
-    <tr><td style="padding:8px;">Drawing shapes with turtle graphics</td><td style="padding:8px;">A square, hexagon, and octagon all use the same loop-and-turn pattern</td></tr>
-  </table>
-</div>
-
-<h3><i data-lucide="filter" style="width:14px;height:14px;"></i> Abstraction</h3>
-<p><strong>Abstraction</strong> is the process of focusing only on the essential details needed to solve a problem, while hiding or ignoring irrelevant information. It reduces complexity by creating a simpler representation of reality.</p>
-
-<div class="visual-box">
-  <div class="visual-box-title">Abstraction in Real Life</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
-      <div style="font-size:12px;font-weight:700;color:#fcd34d;margin-bottom:6px;">🗺️ A Map</div>
-      <div style="font-size:11px;color:rgba(221,225,240,0.60);">A map is an abstraction of the real world. It shows roads and landmarks but omits trees, individual buildings, and people.</div>
-    </div>
-    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
-      <div style="font-size:12px;font-weight:700;color:#6ee7b7;margin-bottom:6px;">🚗 Driving a Car</div>
-      <div style="font-size:11px;color:rgba(221,225,240,0.60);">You use a steering wheel and pedals — you do not need to understand the engine internals to drive.</div>
-    </div>
-    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
-      <div style="font-size:12px;font-weight:700;color:#a5b4fc;margin-bottom:6px;">📱 A Smartphone App</div>
-      <div style="font-size:11px;color:rgba(221,225,240,0.60);">You tap a button to call someone. You do not need to know about radio frequencies or cell towers.</div>
-    </div>
-    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid rgba(255,255,255,0.08);">
-      <div style="font-size:12px;font-weight:700;color:#f9a8d4;margin-bottom:6px;">💻 A Function in Code</div>
-      <div style="font-size:11px;color:rgba(221,225,240,0.60);">You call Math.sqrt(16) and get 4. You do not need to know the algorithm used to compute it.</div>
-    </div>
+  <div class="visual-box-title">Recognising the "input → process → output" pattern</div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="font-size:13px;color:rgba(221,225,240,0.55);margin-bottom:4px;">This pattern appears in almost every program you will ever write:</div>
+    ${["Calculator: get two numbers → add them → display result",
+       "Grade checker: get mark → compare to 50% → display pass/fail",
+       "ATM: get PIN → verify → show balance",
+       "Weather app: get location → fetch data → display forecast"].map(ex =>
+      `<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);border-radius:8px;font-size:13px;color:rgba(221,225,240,0.70);">
+        <span style="color:#6ee7b7;font-size:16px;">→</span> ${ex}
+      </div>`).join('')}
   </div>
 </div>
 
-<div class="callout tip"><strong>Abstraction vs Decomposition:</strong> Decomposition splits a problem into parts. Abstraction simplifies each part by hiding unnecessary detail. Both work together.</div>
+<h3><i data-lucide="layers" style="width:14px;height:14px;"></i> Patterns enable reuse</h3>
+<p>When you recognise that drawing a square and drawing a triangle both follow the pattern <em>"move forward, turn, repeat"</em>, you realise you can write one general method and reuse it for any polygon — just changing the number of sides and the angle.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Pattern: All regular polygons use the same loop structure</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:rgba(221,225,240,0.70);">
+    <div><span style="color:#c4baff;">for</span> (<span style="color:#c4baff;">int</span> i = 0; i &lt; <span style="color:#fbbf24;">sides</span>; i++) {</div>
+    <div style="padding-left:20px;"><span style="color:#6ee7b7;">forward</span>(<span style="color:#fbbf24;">length</span>);</div>
+    <div style="padding-left:20px;"><span style="color:#6ee7b7;">turn</span>(360 / <span style="color:#fbbf24;">sides</span>);</div>
+    <div>}</div>
+    <div style="margin-top:8px;color:rgba(221,225,240,0.35);">// Works for triangle (3), square (4), pentagon (5), hexagon (6)...</div>
+  </div>
+</div>
+
+<div class="callout tip"><strong>Exam tip:</strong> Pattern recognition questions often show you two or three examples and ask you to identify what they have in common, or to complete the next example in the sequence. Always look for what is the same before looking at what is different.</div>
 
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz(this)">
-    🧩 Practice Quiz — 6 questions <span style="opacity:0.55;font-weight:400;margin-left:4px;">(optional)</span>
+    🧩 Practice Quiz — 5 questions
     <span class="toggle-icon">▾</span>
   </button>
   <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q1: Pattern recognition helps you:</div>
+  <div class="quiz-q">🧩 Q1: Pattern Recognition in Computational Thinking means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Break a problem into smaller parts</button>
-    <button class="quiz-opt" data-correct="true">Identify similarities so you can reuse known solutions</button>
-    <button class="quiz-opt" data-correct="false">Hide irrelevant information from the user</button>
+    <button class="quiz-opt" data-correct="false">Drawing patterns with turtle graphics</button>
+    <button class="quiz-opt" data-correct="true">Noticing similarities and repeated structures within or across problems</button>
+    <button class="quiz-opt" data-correct="false">Following instructions in a specific order</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q2: You are writing code to draw a triangle, square, and pentagon. Which pillar helps you see they all use the same loop-and-turn pattern?</div>
+  <div class="quiz-q">🧩 Q2: A programmer notices that getting input, processing it, and displaying output appears in every program they write. This is an example of:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Decomposition</button>
     <button class="quiz-opt" data-correct="true">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="false">Algorithm Design</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: The sequence 2, 4, 8, 16, 32 — what is the next number?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">48</button>
+    <button class="quiz-opt" data-correct="true">64</button>
+    <button class="quiz-opt" data-correct="false">34</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: Why is pattern recognition useful in programming?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It makes programs look more attractive</button>
+    <button class="quiz-opt" data-correct="true">It allows you to reuse solutions that already worked, saving time</button>
+    <button class="quiz-opt" data-correct="false">It automatically fixes bugs in your code</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: A square, triangle, and hexagon all use the same "move forward, turn, repeat" loop. Recognising this is:</div>
+  <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Abstraction</button>
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="true">Pattern Recognition</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — Computational Thinking",
+  title: "Abstraction",
+  subtitle: "Focusing on what matters and filtering out what doesn't",
+  content: `
+<p><strong>Abstraction</strong> is the process of identifying and focusing on the <em>essential</em> features of a problem while deliberately ignoring details that are not relevant to the solution. It is about managing complexity by hiding unnecessary information.</p>
+
+<div class="callout info"><strong>Key idea:</strong> A map of South Africa shows roads, cities, and borders — but not every tree, rock, or building. The map-maker <em>abstracted</em> away the irrelevant details so the map is useful.</div>
+
+<h3><i data-lucide="filter" style="width:14px;height:14px;"></i> What to keep and what to remove</h3>
+<p>When solving a problem, abstraction asks: <strong>"What information do I actually need?"</strong> Everything else is set aside.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Abstraction in action — designing a student database</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div style="padding:14px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.20);border-radius:10px;">
+      <div style="font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:8px;">❌ Information we DON'T need</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.55);line-height:1.8;">
+        Learner's favourite colour<br>
+        Parent's job title<br>
+        Distance from school<br>
+        Shoe size<br>
+        Eye colour
+      </div>
+    </div>
+    <div style="padding:14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.20);border-radius:10px;">
+      <div style="font-size:12px;font-weight:700;color:#6ee7b7;margin-bottom:8px;">✅ Information we DO need</div>
+      <div style="font-size:12px;color:rgba(221,225,240,0.55);line-height:1.8;">
+        Learner ID number<br>
+        Full name<br>
+        Grade<br>
+        Subject marks<br>
+        Contact details
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="box" style="width:14px;height:14px;"></i> Abstraction layers in technology</h3>
+<p>Technology is built on layers of abstraction. You don't need to know how a transistor works to write a Java program. You don't need to understand TCP/IP to browse a website. Each layer hides the complexity below it.</p>
+
+<div class="visual-box">
+  <div class="visual-box-title">Abstraction layers — from hardware to user</div>
+  <div style="display:flex;flex-direction:column;gap:4px;">
+    ${[
+      ["You (the user)","Click a button on a website","#f9a8d4","rgba(236,72,153,0.12)"],
+      ["Web browser","Interprets HTML and CSS","#c4baff","rgba(124,109,250,0.10)"],
+      ["Operating System","Manages files, memory, network","#6ee7b7","rgba(16,185,129,0.10)"],
+      ["Hardware","CPU, RAM, storage executing instructions","#fbbf24","rgba(245,158,11,0.10)"],
+    ].map(([layer,desc,col,bg]) =>
+      `<div style="padding:10px 14px;background:${bg};border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <span style="font-size:13px;font-weight:700;color:${col};min-width:160px;">${layer}</span>
+        <span style="font-size:12px;color:rgba(221,225,240,0.55);">${desc}</span>
+      </div>`).join('')}
+  </div>
+  <div style="font-size:11px;color:rgba(221,225,240,0.30);margin-top:8px;">Each layer abstracts away the complexity of the layer below it.</div>
+</div>
+
+<h3><i data-lucide="code" style="width:14px;height:14px;"></i> Abstraction in Java</h3>
+<p>When you call <code>System.out.println("Hello")</code>, you don't need to know how Java converts those characters to pixels on screen. The method abstracts away all of that complexity — you just need to know what it does, not how it does it.</p>
+
+<div class="callout tip"><strong>Exam tip:</strong> Abstraction questions often give you a scenario and ask you to identify which details are relevant and which should be ignored. Always justify your choices by linking them to the goal of the problem.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 6 questions
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q3: Abstraction involves:</div>
+  <div class="quiz-q">🧩 Q1: Abstraction in Computational Thinking means:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">Writing step-by-step instructions</button>
+    <button class="quiz-opt" data-correct="false">Drawing abstract art using code</button>
     <button class="quiz-opt" data-correct="true">Focusing on essential details and ignoring irrelevant information</button>
-    <button class="quiz-opt" data-correct="false">Finding repeating patterns in data</button>
+    <button class="quiz-opt" data-correct="false">Breaking a problem into smaller parts</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q4: A map is a good example of abstraction because:</div>
+  <div class="quiz-q">🧩 Q2: A programmer building a library app needs to store book information. Which of these details should be ABSTRACTED AWAY (ignored)?</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">It shows every single detail of the real world</button>
-    <button class="quiz-opt" data-correct="true">It shows only the information needed for navigation and leaves out unnecessary detail</button>
-    <button class="quiz-opt" data-correct="false">It is drawn on paper instead of on a computer</button>
+    <button class="quiz-opt" data-correct="false">Book title and author</button>
+    <button class="quiz-opt" data-correct="false">ISBN number and publication year</button>
+    <button class="quiz-opt" data-correct="true">The weight of the book and the colour of its cover</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q5: When you use Math.sqrt() without knowing how it works internally, you are using:</div>
+  <div class="quiz-q">🧩 Q3: A road map does not show every tree and building. This is an example of:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Abstraction — only relevant details are shown</button>
+    <button class="quiz-opt" data-correct="false">Decomposition — the map is broken into sections</button>
+    <button class="quiz-opt" data-correct="false">Pattern Recognition — roads follow similar routes</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: When you call System.out.println() in Java without knowing how it converts text to pixels, you are benefiting from:</div>
   <div class="quiz-opts">
     <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="true">Abstraction</button>
+    <button class="quiz-opt" data-correct="false">Algorithm Design</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Technology uses layers of abstraction so that:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Programs run faster</button>
+    <button class="quiz-opt" data-correct="true">Each layer hides the complexity of the layer below it, making systems easier to use and build</button>
+    <button class="quiz-opt" data-correct="false">Code is easier to copy</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which of the following best describes the purpose of abstraction?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">To make a problem more complicated</button>
+    <button class="quiz-opt" data-correct="false">To find patterns in data</button>
+    <button class="quiz-opt" data-correct="true">To manage complexity by focusing only on what is essential</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — Computational Thinking",
+  title: "Algorithm Design",
+  subtitle: "Creating precise step-by-step instructions to solve any problem",
+  content: `
+<p>An <strong>algorithm</strong> is a precise, ordered set of instructions that describes exactly how to solve a problem or complete a task. Algorithms must be unambiguous (no room for guessing), finite (they must end), and effective (each step must be achievable).</p>
+
+<div class="callout info"><strong>Key idea:</strong> A recipe is an algorithm. A set of driving directions is an algorithm. Any step-by-step process that reliably produces a correct result is an algorithm.</div>
+
+<h3><i data-lucide="list-ordered" style="width:14px;height:14px;"></i> Properties of a good algorithm</h3>
+<ul>
+  <li><strong>Unambiguous</strong> — every step has exactly one meaning and cannot be interpreted differently</li>
+  <li><strong>Ordered</strong> — steps must be followed in the correct sequence</li>
+  <li><strong>Finite</strong> — the algorithm must eventually stop (no infinite loops)</li>
+  <li><strong>Effective</strong> — every step must be simple enough to actually carry out</li>
+  <li><strong>Correct</strong> — it must produce the right output for all valid inputs</li>
+</ul>
+
+<h3><i data-lucide="map" style="width:14px;height:14px;"></i> Example 1 — Algorithm to find the largest number</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">Finding the largest of three numbers</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:rgba(221,225,240,0.70);">
+    <div>1. Read number A, number B, number C</div>
+    <div>2. Set largest = A</div>
+    <div>3. IF B &gt; largest THEN set largest = B</div>
+    <div>4. IF C &gt; largest THEN set largest = C</div>
+    <div>5. Display largest</div>
+    <div>6. STOP</div>
+  </div>
+</div>
+
+<h3><i data-lucide="map" style="width:14px;height:14px;"></i> Example 2 — Algorithm to make tea</h3>
+<div class="visual-box">
+  <div class="visual-box-title">Making a cup of tea (precise enough for a computer)</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:rgba(221,225,240,0.70);">
+    <div>1. Fill kettle with 250ml water</div>
+    <div>2. Switch kettle ON</div>
+    <div>3. WHILE water temperature &lt; 100°C, WAIT</div>
+    <div>4. Place teabag in cup</div>
+    <div>5. Pour boiling water into cup</div>
+    <div>6. Wait 3 minutes</div>
+    <div>7. Remove teabag</div>
+    <div>8. IF user wants milk THEN add 20ml milk</div>
+    <div>9. IF user wants sugar THEN add 1 teaspoon sugar and stir</div>
+    <div>10. STOP</div>
+  </div>
+</div>
+
+<h3><i data-lucide="arrow-right-left" style="width:14px;height:14px;"></i> Algorithms use three control structures</h3>
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+  <div style="padding:12px 16px;background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.22);border-radius:10px;">
+    <div style="font-size:13px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">📋 Sequence</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);">Steps are executed one after another in order. Most instructions in an algorithm are sequential.</div>
+  </div>
+  <div style="padding:12px 16px;background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.22);border-radius:10px;">
+    <div style="font-size:13px;font-weight:700;color:#6ee7b7;margin-bottom:4px;">🔀 Selection (IF/ELSE)</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);">The algorithm makes a decision. Different steps run depending on whether a condition is true or false.</div>
+  </div>
+  <div style="padding:12px 16px;background:rgba(245,158,11,0.10);border:1px solid rgba(245,158,11,0.22);border-radius:10px;">
+    <div style="font-size:13px;font-weight:700;color:#fcd34d;margin-bottom:4px;">🔄 Iteration (loops)</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);">A set of steps repeats until a condition is met. Used whenever the same action must happen multiple times.</div>
+  </div>
+</div>
+
+<div class="callout tip"><strong>Exam tip:</strong> When asked to write an algorithm, use plain English (not Java syntax). Number your steps. Use IF/THEN/ELSE for decisions and WHILE/FOR for repetition. Make every step precise enough that a person who knows nothing about the problem could follow it correctly.</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Practice Quiz — 6 questions
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: An algorithm must be:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Written in Java or Python</button>
+    <button class="quiz-opt" data-correct="true">Unambiguous, ordered, finite, effective, and correct</button>
+    <button class="quiz-opt" data-correct="false">At least 10 steps long</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: "Turn left at the robot, then right at the school" is an algorithm that has a problem. What is it?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">It is too long</button>
+    <button class="quiz-opt" data-correct="true">It is ambiguous — "the robot" and "the school" are not uniquely identified</button>
+    <button class="quiz-opt" data-correct="false">It does not use proper programming language</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: IF mark >= 50 THEN print "Pass" ELSE print "Fail" — this is an example of:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Iteration</button>
+    <button class="quiz-opt" data-correct="true">Selection</button>
+    <button class="quiz-opt" data-correct="false">Sequence</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q4: WHILE count < 10, add 1 to count — this is an example of:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Selection</button>
+    <button class="quiz-opt" data-correct="false">Sequence</button>
+    <button class="quiz-opt" data-correct="true">Iteration</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: An algorithm that never stops running has a problem with which property?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Unambiguous</button>
+    <button class="quiz-opt" data-correct="true">Finite</button>
+    <button class="quiz-opt" data-correct="false">Ordered</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: Which of these is the most precise algorithmic instruction?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Add some sugar</button>
+    <button class="quiz-opt" data-correct="false">Make it a bit warmer</button>
+    <button class="quiz-opt" data-correct="true">Add exactly 5ml of sugar and stir for 10 seconds</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+  </div>
+</div>`
+},
+
+{
+  unit: "Unit 6 — Computational Thinking",
+  title: "Practical Examples",
+  subtitle: "Applying all four pillars together to solve real problems",
+  content: `
+<p>The four pillars of Computational Thinking — Decomposition, Pattern Recognition, Abstraction, and Algorithm Design — are most powerful when used together. This lesson walks through two complete real-world problems and applies all four pillars to each one.</p>
+
+<div class="callout info"><strong>The process:</strong> When you face a new problem, work through the pillars in order: Decompose it → Recognise patterns → Abstract away irrelevant details → Design an algorithm.</div>
+
+<h3><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> Worked Example 1 — Online shopping checkout</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">Problem: Build an online checkout system</div>
+
+  <div style="margin-bottom:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Step 1 — Decomposition</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.7;">Break the checkout into sub-problems:
+      <ul style="margin-top:6px;padding-left:18px;">
+        <li>Display the cart with all items and prices</li>
+        <li>Calculate the subtotal</li>
+        <li>Apply any discount codes</li>
+        <li>Calculate VAT (15%)</li>
+        <li>Calculate delivery cost</li>
+        <li>Calculate the total</li>
+        <li>Process payment</li>
+        <li>Send confirmation email</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Step 2 — Pattern Recognition</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.7;">Notice that "calculate subtotal", "apply discount", "calculate VAT", and "calculate delivery" all follow the same pattern: <em>take a value → apply a calculation → return a new value</em>. Each can be a separate method using the same pattern.</div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Step 3 — Abstraction</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.7;">For the checkout calculation, we don't need: the customer's physical address, their browsing history, the colour of the website, or which device they're using. We only need: item names, quantities, prices, discount code (if any), and delivery option.</div>
+  </div>
+
+  <div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Step 4 — Algorithm for calculateTotal()</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:rgba(221,225,240,0.70);">
+      <div>1. Set subtotal = sum of (price × quantity) for each item</div>
+      <div>2. IF discount code is valid THEN subtract discount from subtotal</div>
+      <div>3. Set VAT = subtotal × 0.15</div>
+      <div>4. IF order value > R500 THEN delivery = 0 ELSE delivery = R80</div>
+      <div>5. Set total = subtotal + VAT + delivery</div>
+      <div>6. Return total</div>
+    </div>
+  </div>
+</div>
+
+<h3><i data-lucide="graduation-cap" style="width:14px;height:14px;"></i> Worked Example 2 — School report generator</h3>
+
+<div class="visual-box">
+  <div class="visual-box-title">Problem: Generate a learner's end-of-term report</div>
+
+  <div style="margin-bottom:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Decomposition</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.7;">
+      Get learner details → Get marks for each subject → Calculate average → Determine symbol → Generate comment → Print report
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Pattern Recognition</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.7;">
+      Every subject follows the same pattern: get mark → validate (0–100) → store. This can be a single reusable method called once per subject.
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Abstraction</div>
+    <div style="font-size:13px;color:rgba(221,225,240,0.65);line-height:1.7;">
+      Needed: learner name, grade, subject marks. <br>
+      Not needed: learner's address, school logo dimensions, printer settings, font choice.
+    </div>
+  </div>
+
+  <div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(221,225,240,0.35);margin-bottom:8px;">Algorithm — determineSymbol(mark)</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:rgba(221,225,240,0.70);">
+      <div>1. IF mark >= 80 THEN symbol = "A"</div>
+      <div>2. ELSE IF mark >= 70 THEN symbol = "B"</div>
+      <div>3. ELSE IF mark >= 60 THEN symbol = "C"</div>
+      <div>4. ELSE IF mark >= 50 THEN symbol = "D"</div>
+      <div>5. ELSE symbol = "F"</div>
+      <div>6. Return symbol</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout tip"><strong>Exam tip:</strong> In Paper 1 theory questions, you may be given a scenario and asked to apply one or more pillars. Always name the pillar you are applying and explain how you applied it — don't just give the answer without the reasoning.</div>
+
+<div data-iq-challenge='{"type":"arrange","prompt":"Arrange the four Computational Thinking pillars in the order they are typically applied when approaching a new problem:","blocks":["1. Decomposition — break the problem into sub-problems","2. Pattern Recognition — find similarities and reusable structures","3. Abstraction — identify and remove irrelevant details","4. Algorithm Design — write precise step-by-step instructions"],"explanation":"While the pillars work together and can be revisited, this order reflects the typical workflow: understand and break down the problem first, then look for patterns, filter to what matters, and finally write the algorithm."}'></div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz(this)">
+    🧩 Unit Review Quiz — 8 questions
+    <span class="toggle-icon">▾</span>
+  </button>
+  <div class="quiz-inner">
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q1: A developer breaks a banking app into: login, check balance, transfer money, and logout modules. This is:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Decomposition</button>
+    <button class="quiz-opt" data-correct="false">Abstraction</button>
     <button class="quiz-opt" data-correct="false">Pattern Recognition</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q2: A programmer notices every screen in their app follows: load data → display → handle user input. This is:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="true">Pattern Recognition</button>
+    <button class="quiz-opt" data-correct="false">Algorithm Design</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q3: A weather app only stores temperature, rainfall, and wind speed — not the colour of the sky or the smell after rain. This is:</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Algorithm Design</button>
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
     <button class="quiz-opt" data-correct="true">Abstraction</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
 <div class="quiz-box">
-  <div class="quiz-q">🧩 Q6: Which best describes the relationship between abstraction and decomposition?</div>
+  <div class="quiz-q">🧩 Q4: "1. Read number. 2. IF number > 0 THEN print Positive ELSE print Negative. 3. STOP." — this is an example of:</div>
   <div class="quiz-opts">
-    <button class="quiz-opt" data-correct="false">They are opposites — use one or the other, never both</button>
-    <button class="quiz-opt" data-correct="true">They work together — decomposition splits problems, abstraction simplifies each part</button>
-    <button class="quiz-opt" data-correct="false">Abstraction always comes before decomposition</button>
+    <button class="quiz-opt" data-correct="false">Decomposition</button>
+    <button class="quiz-opt" data-correct="false">Abstraction</button>
+    <button class="quiz-opt" data-correct="true">Algorithm Design</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q5: Which pillar would you apply first when starting to solve a large, complex problem?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Decomposition — break it into smaller parts first</button>
+    <button class="quiz-opt" data-correct="false">Algorithm Design — write the solution immediately</button>
+    <button class="quiz-opt" data-correct="false">Abstraction — remove details before understanding the problem</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q6: An algorithm that says "add some water" rather than "add exactly 200ml of water" violates which property?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="true">Unambiguous</button>
+    <button class="quiz-opt" data-correct="false">Finite</button>
+    <button class="quiz-opt" data-correct="false">Ordered</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q7: Computational Thinking can ONLY be applied to computer programming problems.</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">True</button>
+    <button class="quiz-opt" data-correct="true">False — it applies to any complex problem in any field</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-box">
+  <div class="quiz-q">🧩 Q8: In the school report example, which details were abstracted away?</div>
+  <div class="quiz-opts">
+    <button class="quiz-opt" data-correct="false">Learner name and subject marks</button>
+    <button class="quiz-opt" data-correct="true">Learner's home address, school logo dimensions, and printer settings</button>
+    <button class="quiz-opt" data-correct="false">The grading symbol system</button>
   </div>
   <div class="quiz-feedback"></div>
 </div>
