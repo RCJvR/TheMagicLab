@@ -13,9 +13,8 @@
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
-  <script defer src="xp.js"></script>
-  <script defer src="quiz-engine.js"></script>
   <script defer src="auth-modal.js"></script>
+  <script defer src="tool-welcome.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -469,6 +468,7 @@
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
       <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+      <button onclick="window.MagicLabWelcome?.show('code-conjurer')" class="hdr-btn" title="About Code Conjurer">?</button>
       <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
     </div>
   </header>
@@ -929,9 +929,8 @@ doctype html>
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
-  <script defer src="xp.js"></script>
-  <script defer src="quiz-engine.js"></script>
   <script defer src="auth-modal.js"></script>
+  <script defer src="tool-welcome.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -2434,32 +2433,7 @@ else                 symbol = "F";</div>
 <div class="les-callout tip">Count down with: <code>for (int i = 10; i &gt;= 1; i--)</code></div>
 <div class="les-callout exam">IEB asks you to trace a for loop iteration by iteration — write out the variable value at each step. Practice this on paper.</div>`,
   code: `public class ForLoop {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 5; i++)\n            System.out.println("i = " + i);\n\n        int sum = 0;\n        for (int i = 1; i <= 10; i++) sum += i;\n        System.out.println("Sum 1-10 = " + sum);\n\n        System.out.println("\\n7 times table:");\n        for (int i = 1; i <= 12; i++)\n            System.out.println("7 x " + i + " = " + (7 * i));\n    }\n}`,
-  challenge: "Print all even numbers from 2 to 50. Then print their sum. Then print all numbers from 1-100 divisible by both 3 and 5.",
-  quiz: [
-    {
-      type: 'predict',
-      prompt: 'What does this code print?',
-      code: 'for (int i = 1; i <= 4; i++) {\n    System.out.println(i * 2);\n}',
-      answer: '2\n4\n6\n8',
-      hint: 'i goes 1, 2, 3, 4 — multiply each by 2',
-      explanation: 'i × 2 gives 2, 4, 6, 8 on separate lines.'
-    },
-    {
-      type: 'spot-bug',
-      prompt: 'This loop should print 1 to 5 but has a bug. Find it.',
-      lines: [
-        'public class Count {',
-        '    public static void main(String[] args) {',
-        '        for (int i = 1; i <= 5; i--) {',
-        '            System.out.println(i);',
-        '        }',
-        '    }',
-        '}'
-      ],
-      bugLine: 2,
-      explanation: 'i-- decrements i instead of incrementing it — this creates an infinite loop. It should be i++.'
-    }
-  ]
+  challenge: "Print all even numbers from 2 to 50. Then print their sum. Then print all numbers from 1-100 divisible by both 3 and 5."
 },
 {
   unit: "Unit 2 — Control Structures",
@@ -2829,31 +2803,7 @@ function renderLesson() {
       <p>${les.challenge}</p>
     </div>
     <button class="les-load-btn ${grCls}" id="lesLoadBtn">📥 Load example into editor</button>
-    ${les.quiz ? `<div id="les-quiz-section"></div>` : ''}
   `;
-
-  // Render interactive quiz challenges
-  if (les.quiz && window.MagicLabQuiz) {
-    const quizSection = document.getElementById('les-quiz-section');
-    if (quizSection) {
-      les.quiz.forEach(q => {
-        const wrapper = document.createElement('div');
-        quizSection.appendChild(wrapper);
-        MagicLabQuiz.render(wrapper, q, ML_TOOLS.CODE_CONJURER, les.title);
-      });
-    }
-  } else if (les.quiz) {
-    document.addEventListener('magiclab:quiz:ready', () => {
-      const quizSection = document.getElementById('les-quiz-section');
-      if (quizSection) {
-        les.quiz.forEach(q => {
-          const wrapper = document.createElement('div');
-          quizSection.appendChild(wrapper);
-          MagicLabQuiz.render(wrapper, q, ML_TOOLS.CODE_CONJURER, les.title);
-        });
-      }
-    }, { once: true });
-  }
 
   document.getElementById('lesLoadBtn').addEventListener('click', () => {
     codeEditor.value = les.code;
@@ -2881,15 +2831,6 @@ function renderLesson() {
   lesProgress.textContent = `Lesson ${lessonIndex + 1} of ${lessons.length}`;
   buildSidebar();
   lessonInner.scrollTop = 0;
-
-  // Wire interactive challenges
-  const _wireQuiz = () => {
-    if (window.MagicLabQuiz) {
-      MagicLabQuiz.wire(lessonInner, ML_TOOLS.CODE_CONJURER, les.title);
-    }
-  };
-  if (window.MagicLabQuiz) _wireQuiz();
-  else document.addEventListener('magiclab:quiz:ready', _wireQuiz, { once: true });
 }
 
 function openLessons(grade) {

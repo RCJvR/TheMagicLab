@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v7'; // bumped from v4 → forces cache refresh
+const CACHE_NAME = 'magic-lab-v8'; // bumped from v4 → forces cache refresh
 
 const urlsToCache = [
   '/',
@@ -26,6 +26,7 @@ const urlsToCache = [
   '/auth-modal.css',
   '/xp.js',
   '/quiz-engine.js',
+  '/tool-welcome.js',
   '/dashboard-student.html',
 
   // CDN resources
@@ -39,7 +40,8 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache).catch(() => {
         // If CDN resources fail, at minimum cache the core app
-        return cache.addAll(['/', '/index.html', '/auth.js', '/progress.js', '/xp.js', '/quiz-engine.js', '/auth-modal.js', '/auth-modal.css']);
+        return cache.addAll(['/', '/index.html', '/auth.js', '/progress.js', '/xp.js', '/quiz-engine.js',
+  '/tool-welcome.js', '/auth-modal.js', '/auth-modal.css']);
       });
     })
   );

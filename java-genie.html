@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
-  <script defer src="xp.js"></script>
   <script defer src="auth-modal.js"></script>
+  <script defer src="tool-welcome.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="/_sdk/data_sdk.js"></script>
@@ -787,6 +787,7 @@
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload" style="width:13px;height:13px;"></i> Load</button>
       <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+      <button onclick="window.MagicLabWelcome?.show('java-genie')" class="hdr-btn" title="About Java Genie">?</button>
       <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
     </div>
   </header>
@@ -4282,20 +4283,7 @@ fileInput.addEventListener("change", e => {
   function closeTutorial() {
     overlay.classList.add('hidden');
     document.body.style.overflow = '';
-    if (cur === total - 1) {
-      resumeAt = null; // finished → restart next time
-      // Track tutorial complete as lesson_complete + tool_complete check
-      if (window.MagicLabProgress) {
-        const slideTitle = slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || 'Java Genie Tutorial';
-        MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'lesson_complete', {
-          grade: 8,
-          topic: slideTitle,
-          unitComplete: true,
-          toolComplete: true,
-          metadata: { slide: cur + 1, total }
-        });
-      }
-    }
+    if (cur === total - 1) resumeAt = null; // finished → restart next time
   }
 
   // ── Wire up buttons (once only) ─────────────────────────────────────────
@@ -4406,13 +4394,11 @@ fileInput.addEventListener("change", e => {
         if (feedback) { feedback.textContent = '✅ Correct!'; feedback.className = 'quiz-feedback quiz-correct'; }
         // Track correct
         if (window.MagicLabProgress) {
-          const alreadyAnswered = quiz.dataset.answered === 'true';
           MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'quiz_correct', {
             grade: 8, score: 1,
             topic: slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${cur + 1}`,
-            metadata: { slide: cur + 1, firstTry: !alreadyAnswered, question: quiz.querySelector('p,h4')?.textContent?.trim() }
+            metadata: { slide: cur + 1, question: quiz.querySelector('p,h4')?.textContent?.trim() }
           });
-          quiz.dataset.answered = 'true';
         }
       } else {
         btn.classList.add('quiz-wrong');
@@ -4441,13 +4427,11 @@ fileInput.addEventListener("change", e => {
         if (feedback) { feedback.textContent = '✅ Correct! The outer loop draws the 4 sides.'; feedback.style.color = '#6ee7b7'; }
         // Track correct
         if (window.MagicLabProgress) {
-          const alreadyAnswered = quiz.dataset.answered === 'true';
           MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'quiz_correct', {
             grade: 8, score: 1,
             topic: slides[cur]?.querySelector('h2,h3')?.textContent?.trim() || `Tutorial Step ${cur + 1}`,
-            metadata: { slide: cur + 1, firstTry: !alreadyAnswered, type: 'quiz-option' }
+            metadata: { slide: cur + 1, type: 'quiz-option' }
           });
-          quiz.dataset.answered = 'true';
         }
       } else {
         opt.classList.add('wrong');
