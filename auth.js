@@ -52,6 +52,12 @@ async function _initAuth() {
     hasAccess,
     updateProfile,
     joinClass,
+    // ── Teacher functions ──
+    createClass,
+    getMyClasses,
+    getClassStudents,
+    getClassProgress,
+    removeStudentFromClass,
     onAuthChange:  (fn) => _listeners.push(fn),
     _supabase:     () => _supabase   // for progress.js to use
   };
@@ -202,4 +208,108 @@ async function joinClass(inviteCode) {
 
   if (joinErr && joinErr.code !== '23505') return { error: joinErr }; // 23505 = already member
   return { data: cls };
+}
+
+// ── Teacher API ──────────────────────────────────────────────
+
+/**
+ * Create a new class (teachers only).
+ * @param {string} name
+ * @param {number|null} grade
+ * @param {string|null} subject
+ */
+async function createClass(name, grade = null, subject = null) {
+  if (!_session) return { error: { message: 'Not logged in' } };
+  if (_profile?.role !== 'teacher') return { error: { message: 'Only teachers can create classes' } };
+
+  // Generate invite code
+  const { data: codeData } = await _supabase.rpc('generate_invite_code');
+  const inviteCode = codeData || Math.random().toString(36).slice(2,10).toUpperCase();
+
+  const { data, error } = await _supabase
+    .from('classes')
+    .insert({
+      teacher_id:  _session.user.id,
+      name,
+      grade,
+      subject,
+      invite_code: inviteCode,
+      active:      true
+    })
+    .select()
+    .single();
+
+  return { data, error };
+}
+
+/**
+ * Get all classes owned by the current teacher.
+ */
+async function getMyClasses() {
+  if (!_session) return [];
+  const { data } = await _supabase
+    .from('classes')
+    .select('*')
+    .eq('teacher_id', _session.user.id)
+    .order('created_at', { ascending: false });
+  return data ?? [];
+}
+
+/**
+ * Get all students in a class with their profiles.
+ * @param {string} classId
+ */
+async function getClassStudents(classId) {
+  if (!_session) return [];
+  const { data } = await _supabase
+    .from('class_members')
+    .select('joined_at, profiles:student_id(id, display_name, email, grade, xp, streak_current)')
+    .eq('class_id', classId);
+  return (data ?? []).map(r => ({ ...r.profiles, joined_at: r.joined_at }));
+}
+
+/**
+ * Get tool progress for all students in a class.
+ * Returns array of { student_id, display_name, tool, topics_complete, quiz_correct, quiz_total, code_runs, last_active }
+ * @param {string} classId
+ */
+async function getClassProgress(classId) {
+  if (!_session) return [];
+
+  // Get student IDs first
+  const { data: members } = await _supabase
+    .from('class_members')
+    .select('student_id, profiles:student_id(display_name)')
+    .eq('class_id', classId);
+
+  if (!members?.length) return [];
+
+  const studentIds = members.map(m => m.student_id);
+  const nameMap    = Object.fromEntries(members.map(m => [m.student_id, m.profiles?.display_name || 'Student']));
+
+  // Get tool_progress for all students
+  const { data: progress } = await _supabase
+    .from('tool_progress')
+    .select('*')
+    .in('user_id', studentIds);
+
+  return (progress ?? []).map(row => ({
+    ...row,
+    display_name: nameMap[row.user_id] || 'Student'
+  }));
+}
+
+/**
+ * Remove a student from a class.
+ * @param {string} classId
+ * @param {string} studentId
+ */
+async function removeStudentFromClass(classId, studentId) {
+  if (!_session) return { error: { message: 'Not logged in' } };
+  const { error } = await _supabase
+    .from('class_members')
+    .delete()
+    .eq('class_id', classId)
+    .eq('student_id', studentId);
+  return { error };
 }

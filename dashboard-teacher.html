@@ -1,0 +1,1539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard — The Magic Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <style>
+    :root {
+      --bg:#080c1a; --bg2:#0d1226;
+      --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
+      --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
+      --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
+      --accent-1:#7c6dfa; --accent-2:#11d98f; --accent-3:#f5a623;
+      --teacher:#06b6d4; /* teal — distinct from student indigo */
+      --font:"Cabinet Grotesk",sans-serif;
+      --mono:"JetBrains Mono",monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{min-height:100%;}
+    body{
+      font-family:var(--font);font-size:15px;
+      background:var(--bg);color:var(--text);
+      min-height:100vh;-webkit-font-smoothing:antialiased;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 5% 3%,  rgba(6,182,212,0.12) 0%,transparent 60%),
+        radial-gradient(ellipse 50% 35% at 96% 6%, rgba(124,109,250,0.08) 0%,transparent 55%),
+        radial-gradient(ellipse 40% 30% at 50% 98%,rgba(245,166,35,0.06) 0%,transparent 55%);
+    }
+
+    /* ── Nav ── */
+    nav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 52px;border-bottom:1px solid var(--border);
+      background:rgba(8,12,26,0.85);backdrop-filter:blur(12px);
+      position:sticky;top:0;z-index:50;
+    }
+    .nav-logo{
+      font-weight:900;font-size:20px;letter-spacing:-0.03em;text-decoration:none;
+      background:linear-gradient(120deg,#fff 0%,#67e8f9 50%,#6ee7b7 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav-right{display:flex;align-items:center;gap:8px;}
+    .nav-pill{
+      font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;
+      border:1px solid var(--border);background:var(--surface);color:var(--muted);
+      text-decoration:none;transition:all 140ms;cursor:pointer;font-family:var(--font);
+    }
+    .nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+    .nav-teacher-badge{
+      font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;
+      text-transform:uppercase;padding:4px 12px;border-radius:99px;
+      background:rgba(6,182,212,0.14);border:1px solid rgba(6,182,212,0.30);
+      color:#67e8f9;
+    }
+
+    /* ── Layout ── */
+    main{max-width:1140px;margin:0 auto;padding:40px 52px 80px;}
+
+    /* ── Guest / Not Teacher ── */
+    .state-screen{
+      display:flex;flex-direction:column;align-items:center;
+      padding:100px 24px;text-align:center;
+    }
+    .state-screen h2{font-weight:900;font-size:26px;letter-spacing:-0.03em;color:var(--text);margin:20px 0 12px;}
+    .state-screen p{font-size:15px;color:var(--muted);max-width:380px;line-height:1.7;margin-bottom:28px;}
+    .cta-btn{
+      padding:13px 30px;border-radius:14px;border:none;
+      background:linear-gradient(135deg,#0776a0,#0fa874);
+      color:#fff;font-family:var(--font);font-size:15px;font-weight:700;
+      letter-spacing:-0.01em;cursor:pointer;
+      box-shadow:0 4px 18px rgba(6,182,212,0.28);transition:all 160ms;
+    }
+    .cta-btn:hover{box-shadow:0 6px 26px rgba(6,182,212,0.44);transform:translateY(-1px);}
+
+    /* ── Tab nav ── */
+    #teacher-dash{display:none;}
+    .tab-bar{
+      display:flex;gap:4px;
+      background:rgba(0,0,0,0.30);border-radius:12px;padding:4px;
+      margin-bottom:36px;width:fit-content;
+    }
+    .tab-btn{
+      padding:9px 22px;border-radius:9px;border:none;cursor:pointer;
+      font-family:var(--font);font-size:14px;font-weight:700;letter-spacing:-0.01em;
+      color:var(--muted);background:transparent;transition:all 150ms;
+    }
+    .tab-btn.active{
+      background:rgba(6,182,212,0.18);border:1px solid rgba(6,182,212,0.32);
+      color:#67e8f9;
+    }
+    .tab-btn:hover:not(.active){color:var(--text2);}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;}
+
+    /* ── Page header ── */
+    .page-header{margin-bottom:32px;}
+    .page-header h1{
+      font-weight:900;font-size:clamp(24px,3vw,34px);
+      letter-spacing:-0.03em;color:#fff;margin-bottom:6px;
+    }
+    .page-header p{font-size:15px;color:var(--muted);line-height:1.6;}
+
+    /* ── Section header ── */
+    .section-hdr{
+      font-family:var(--mono);font-size:11px;font-weight:600;
+      letter-spacing:0.12em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:16px;
+      display:flex;align-items:center;gap:14px;
+    }
+    .section-hdr::after{content:'';flex:1;height:1px;background:var(--border2);}
+
+    /* ── Stat strip ── */
+    .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+    .stat-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;padding:18px 20px;
+    }
+    .stat-label{
+      font-family:var(--mono);font-size:10px;font-weight:600;
+      letter-spacing:0.09em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:8px;
+    }
+    .stat-value{
+      font-weight:900;font-size:28px;letter-spacing:-0.03em;
+      background:linear-gradient(135deg,#fff 0%,#67e8f9 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .stat-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+
+    /* ── Class cards ── */
+    .class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px;}
+    .class-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:18px;padding:22px;cursor:pointer;
+      transition:all 200ms;position:relative;overflow:hidden;
+    }
+    .class-card::before{
+      content:'';position:absolute;inset:0;border-radius:18px;
+      background:radial-gradient(ellipse at 0% 0%,rgba(6,182,212,0.08),transparent 60%);
+      opacity:0;transition:opacity 200ms;pointer-events:none;
+    }
+    .class-card:hover{border-color:rgba(6,182,212,0.35);transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,0.30);}
+    .class-card:hover::before{opacity:1;}
+    .class-card.selected{border-color:rgba(6,182,212,0.50);background:rgba(6,182,212,0.08);}
+    .class-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+    .class-icon{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(6,182,212,0.14);border:1px solid rgba(6,182,212,0.25);}
+    .class-invite{
+      font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.12em;
+      padding:4px 10px;border-radius:8px;
+      background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);
+      color:#f5a623;cursor:pointer;transition:all 130ms;user-select:none;
+    }
+    .class-invite:hover{background:rgba(245,166,35,0.22);}
+    .class-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;color:#fff;margin-bottom:4px;}
+    .class-meta{font-family:var(--mono);font-size:11px;color:var(--muted);}
+    .class-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border2);}
+    .class-stat-val{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text);}
+    .class-stat-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:1px;}
+
+    /* ── Create class button ── */
+    .create-class-btn{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      background:var(--surface2);border:1.5px dashed rgba(6,182,212,0.30);
+      border-radius:18px;padding:22px;cursor:pointer;
+      font-size:14px;font-weight:700;color:rgba(6,182,212,0.60);
+      transition:all 180ms;min-height:140px;
+    }
+    .create-class-btn:hover{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.50);color:#67e8f9;}
+
+    /* ── Student table ── */
+    .class-detail{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:18px;overflow:hidden;margin-bottom:32px;
+    }
+    .class-detail-header{
+      padding:18px 22px;border-bottom:1px solid var(--border2);
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    }
+    .class-detail-title{font-weight:800;font-size:18px;letter-spacing:-0.02em;color:#fff;}
+    .class-detail-meta{font-family:var(--mono);font-size:11px;color:var(--muted);}
+    .back-btn{
+      display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
+      color:var(--muted);background:none;border:1px solid var(--border2);
+      border-radius:99px;padding:5px 14px;cursor:pointer;transition:all 130ms;
+      font-family:var(--font);
+    }
+    .back-btn:hover{color:var(--text);background:var(--surface);}
+
+    .student-table{width:100%;border-collapse:collapse;}
+    .student-table th{
+      text-align:left;padding:10px 18px;
+      font-family:var(--mono);font-size:10px;font-weight:600;
+      letter-spacing:0.08em;text-transform:uppercase;
+      color:var(--muted);border-bottom:1px solid var(--border2);
+      background:rgba(0,0,0,0.20);
+    }
+    .student-table td{
+      padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.04);
+      font-size:13px;color:var(--text2);vertical-align:middle;
+    }
+    .student-table tr:last-child td{border-bottom:none;}
+    .student-table tr:hover td{background:rgba(255,255,255,0.02);}
+    .student-name{font-weight:700;color:var(--text);}
+    .student-avatar{
+      width:28px;height:28px;border-radius:8px;flex-shrink:0;
+      background:linear-gradient(135deg,#4338ca,#059669);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:800;color:#fff;margin-right:8px;vertical-align:middle;
+    }
+    .progress-mini{
+      height:4px;background:rgba(255,255,255,0.08);border-radius:99px;
+      overflow:hidden;width:80px;display:inline-block;vertical-align:middle;
+    }
+    .progress-mini-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teacher),var(--accent-2));}
+    .xp-pill{
+      font-family:var(--mono);font-size:10px;font-weight:600;
+      padding:2px 8px;border-radius:99px;
+      background:rgba(124,109,250,0.12);border:1px solid rgba(124,109,250,0.25);
+      color:#c4baff;
+    }
+    .streak-pill{
+      font-family:var(--mono);font-size:10px;font-weight:600;
+      color:#f5a623;
+    }
+    .tool-dots{display:flex;gap:4px;}
+    .tool-dot{
+      width:22px;height:22px;border-radius:6px;display:flex;
+      align-items:center;justify-content:center;font-size:11px;
+    }
+    .tool-dot.active{background:rgba(17,217,143,0.15);border:1px solid rgba(17,217,143,0.30);}
+    .tool-dot.inactive{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);opacity:0.35;}
+    .remove-btn{
+      background:none;border:none;cursor:pointer;
+      color:rgba(248,113,113,0.40);font-size:14px;transition:color 130ms;padding:2px 6px;
+    }
+    .remove-btn:hover{color:#f87171;}
+
+    /* ── Empty state ── */
+    .empty-state{
+      padding:52px 24px;text-align:center;
+    }
+    .empty-state-icon{font-size:40px;margin-bottom:14px;display:block;}
+    .empty-state h3{font-weight:800;font-size:18px;letter-spacing:-0.02em;color:var(--text);margin-bottom:8px;}
+    .empty-state p{font-size:14px;color:var(--muted);line-height:1.65;max-width:340px;margin:0 auto;}
+
+    /* ── Modal: create class ── */
+    .modal-overlay{
+      position:fixed;inset:0;z-index:200;
+      background:rgba(4,6,18,0.85);backdrop-filter:blur(10px);
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      opacity:0;pointer-events:none;transition:opacity 200ms;
+    }
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .modal-box{
+      background:#0d1226;border:1px solid rgba(255,255,255,0.10);
+      border-radius:22px;padding:32px;width:100%;max-width:420px;
+      box-shadow:0 32px 80px rgba(0,0,0,0.60);
+      transform:translateY(12px);transition:transform 200ms;
+    }
+    .modal-overlay.open .modal-box{transform:translateY(0);}
+    .modal-title{font-weight:900;font-size:20px;letter-spacing:-0.03em;color:#fff;margin-bottom:6px;}
+    .modal-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+    .form-field{margin-bottom:16px;}
+    .form-label{
+      display:block;font-family:var(--mono);font-size:10px;font-weight:600;
+      letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+    }
+    .form-input{
+      width:100%;padding:10px 14px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+      border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;
+      outline:none;transition:border-color 150ms;
+    }
+    .form-input:focus{border-color:rgba(6,182,212,0.50);}
+    .form-input::placeholder{color:var(--muted);}
+    .grade-row{display:flex;gap:6px;flex-wrap:wrap;}
+    .grade-chip{
+      padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.04);color:var(--muted);
+      font-size:13px;font-weight:600;cursor:pointer;transition:all 140ms;
+      font-family:var(--font);
+    }
+    .grade-chip.selected{background:rgba(6,182,212,0.14);border-color:rgba(6,182,212,0.40);color:#67e8f9;}
+    .modal-actions{display:flex;gap:8px;margin-top:22px;}
+    .btn-primary{
+      flex:1;padding:12px;border-radius:12px;border:none;cursor:pointer;
+      background:linear-gradient(135deg,#0776a0,#0fa874);color:#fff;
+      font-family:var(--font);font-size:14px;font-weight:700;
+      box-shadow:0 3px 14px rgba(6,182,212,0.28);transition:all 150ms;
+    }
+    .btn-primary:hover{box-shadow:0 5px 20px rgba(6,182,212,0.42);transform:translateY(-1px);}
+    .btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+    .btn-ghost{
+      padding:12px 20px;border-radius:12px;border:1px solid var(--border);
+      background:var(--surface);color:var(--text2);cursor:pointer;
+      font-family:var(--font);font-size:14px;font-weight:600;transition:all 140ms;
+    }
+    .btn-ghost:hover{background:rgba(255,255,255,0.09);}
+    .msg{margin-top:10px;font-size:13px;font-weight:500;}
+    .msg.ok{color:#6ee7b7;}.msg.err{color:#fca5a5;}
+
+    /* ══════════════════════════════════════════
+       TEACHER TRAINING SECTION
+    ══════════════════════════════════════════ */
+    .training-intro{
+      background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.16);
+      border-radius:16px;padding:22px 26px;margin-bottom:32px;
+      display:flex;align-items:flex-start;gap:18px;
+    }
+    .training-intro-icon{font-size:32px;flex-shrink:0;}
+    .training-intro-text{}
+    .training-intro-title{font-weight:800;font-size:17px;letter-spacing:-0.02em;color:#67e8f9;margin-bottom:6px;}
+    .training-intro-body{font-size:14px;color:rgba(103,232,249,0.65);line-height:1.7;}
+
+    /* Tool selector */
+    .training-tool-tabs{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
+    .training-tool-tab{
+      display:flex;align-items:center;gap:9px;padding:11px 20px;
+      border-radius:14px;border:1px solid var(--border);background:var(--surface);
+      cursor:pointer;transition:all 150ms;font-family:var(--font);
+    }
+    .training-tool-tab:hover{border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.06);}
+    .training-tool-tab.active{
+      border-color:rgba(6,182,212,0.45);background:rgba(6,182,212,0.12);
+    }
+    .training-tool-tab-icon{font-size:20px;}
+    .training-tool-tab-info{}
+    .training-tool-tab-name{font-size:14px;font-weight:700;color:var(--text);display:block;letter-spacing:-0.01em;}
+    .training-tool-tab-prog{font-family:var(--mono);font-size:10px;color:var(--muted);display:block;margin-top:1px;}
+    .training-tool-tab.active .training-tool-tab-name{color:#67e8f9;}
+
+    /* Module grid */
+    .module-grid{display:flex;flex-direction:column;gap:10px;}
+    .module-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:14px;padding:0;overflow:hidden;transition:border-color 150ms;
+    }
+    .module-card:hover{border-color:rgba(6,182,212,0.25);}
+    .module-header{
+      display:flex;align-items:center;gap:14px;padding:16px 20px;
+      cursor:pointer;user-select:none;
+    }
+    .module-num{
+      font-family:var(--mono);font-size:12px;font-weight:600;
+      width:28px;height:28px;border-radius:8px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.06);color:var(--muted);
+    }
+    .module-card.done .module-num{background:rgba(17,217,143,0.14);color:#6ee7b7;}
+    .module-title{font-weight:700;font-size:15px;letter-spacing:-0.01em;color:var(--text);flex:1;}
+    .module-badge{
+      font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.08em;
+      text-transform:uppercase;padding:3px 9px;border-radius:99px;flex-shrink:0;
+    }
+    .module-badge-beginner{background:rgba(17,217,143,0.10);border:1px solid rgba(17,217,143,0.22);color:#6ee7b7;}
+    .module-badge-intermediate{background:rgba(245,166,35,0.10);border:1px solid rgba(245,166,35,0.22);color:#fcd34d;}
+    .module-badge-advanced{background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.22);color:#fca5a5;}
+    .module-chevron{font-size:12px;color:var(--muted);transition:transform 200ms;flex-shrink:0;}
+    .module-card.open .module-chevron{transform:rotate(180deg);}
+    .module-card.done .module-chevron{color:#6ee7b7;}
+
+    /* Module content */
+    .module-body{
+      display:none;padding:0 20px 20px;border-top:1px solid var(--border2);
+    }
+    .module-card.open .module-body{display:block;}
+    .module-section{margin-top:16px;}
+    .module-section-title{
+      font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.09em;
+      text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+      display:flex;align-items:center;gap:10px;
+    }
+    .module-section-title::after{content:'';flex:1;height:1px;background:var(--border2);}
+
+    /* Concept blocks */
+    .concept-block{
+      background:var(--surface2);border:1px solid var(--border2);
+      border-radius:10px;padding:14px 16px;margin-bottom:10px;
+      font-size:14px;color:var(--text2);line-height:1.75;
+    }
+    .concept-block h4{
+      font-size:13px;font-weight:700;color:var(--text);margin-bottom:7px;
+      display:flex;align-items:center;gap:7px;
+    }
+    .concept-block p{margin-bottom:8px;}
+    .concept-block p:last-child{margin-bottom:0;}
+    .concept-block ul{padding-left:18px;}
+    .concept-block li{margin-bottom:5px;}
+    .concept-block code{
+      font-family:var(--mono);font-size:12px;
+      background:rgba(0,0,0,0.35);border-radius:5px;padding:1px 6px;
+      color:#c4baff;
+    }
+
+    /* Code example */
+    .code-example{
+      background:rgba(0,0,0,0.40);border-radius:10px;padding:14px 16px;
+      font-family:var(--mono);font-size:12px;line-height:1.85;
+      color:rgba(210,218,245,0.70);margin:10px 0;overflow-x:auto;
+    }
+    .code-example .kw{color:#c4baff;font-weight:600;}
+    .code-example .str{color:#86efac;}
+    .code-example .num{color:#fbbf24;}
+    .code-example .cmt{color:#4b5563;font-style:italic;}
+    .code-example .fn{color:#67e8f9;}
+
+    /* Teaching tips */
+    .teaching-tip{
+      background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.20);
+      border-radius:10px;padding:12px 16px;margin:10px 0;
+      font-size:13px;color:#fcd34d;line-height:1.65;
+    }
+    .teaching-tip strong{font-weight:700;}
+
+    /* Common mistakes */
+    .mistake-block{
+      background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.18);
+      border-radius:10px;padding:12px 16px;margin:10px 0;
+      font-size:13px;color:#fca5a5;line-height:1.65;
+    }
+    .mistake-block strong{font-weight:700;}
+
+    /* Complete button */
+    .module-complete-btn{
+      display:flex;align-items:center;gap:7px;
+      padding:10px 20px;border-radius:10px;border:none;cursor:pointer;
+      font-family:var(--font);font-size:13px;font-weight:700;
+      background:rgba(17,217,143,0.14);border:1px solid rgba(17,217,143,0.28);
+      color:#6ee7b7;transition:all 140ms;margin-top:16px;
+    }
+    .module-complete-btn:hover{background:rgba(17,217,143,0.24);}
+    .module-complete-btn.done{
+      background:rgba(17,217,143,0.08);color:rgba(110,231,183,0.50);cursor:default;
+    }
+
+    /* Training progress bar */
+    .training-progress-wrap{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:14px;padding:18px 22px;margin-bottom:28px;
+      display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+    }
+    .training-progress-label{font-family:var(--mono);font-size:11px;color:var(--muted);flex-shrink:0;}
+    .training-progress-bar{flex:1;min-width:120px;height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
+    .training-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#06b6d4,#11d98f);transition:width 600ms ease;}
+    .training-progress-count{font-family:var(--mono);font-size:12px;font-weight:600;color:#67e8f9;flex-shrink:0;}
+
+    @media(max-width:900px){
+      nav{padding:14px 20px;}
+      main{padding:28px 20px 60px;}
+      .stats-strip{grid-template-columns:repeat(2,1fr);}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+  <div class="nav-right">
+    <span class="nav-teacher-badge">Teacher</span>
+    <a href="index.html" class="nav-pill">← All Tools</a>
+    <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── Guest state ── -->
+  <div id="guest-state" class="state-screen">
+    <div style="font-size:56px;">🎓</div>
+    <h2>Teacher Dashboard</h2>
+    <p>Sign in with a teacher account to manage your classes and access professional training.</p>
+    <button class="cta-btn" onclick="window.MagicLabModal?.open('signup')">Sign In / Register</button>
+  </div>
+
+  <!-- ── Not a teacher ── -->
+  <div id="student-state" class="state-screen" style="display:none;">
+    <div style="font-size:56px;">🔒</div>
+    <h2>Teachers only</h2>
+    <p>This dashboard is for teacher accounts. Looking for your student progress? Head to My Progress.</p>
+    <a href="dashboard-student.html" class="cta-btn" style="display:inline-block;text-decoration:none;text-align:center;">Go to My Progress</a>
+  </div>
+
+  <!-- ── Teacher dashboard ── -->
+  <div id="teacher-dash">
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('classes', this)">🏫 My Classes</button>
+      <button class="tab-btn" onclick="switchTab('training', this)">📚 Teacher Training</button>
+    </div>
+
+    <!-- ═══ TAB: CLASSES ═══ -->
+    <div class="tab-panel active" id="tab-classes">
+
+      <div class="page-header">
+        <h1 id="teacher-greeting">Welcome back</h1>
+        <p>Track your learners' progress across every Magic Lab tool.</p>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-label">Classes</div>
+          <div class="stat-value" id="stat-classes">—</div>
+          <div class="stat-sub">active classes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Learners</div>
+          <div class="stat-value" id="stat-students">—</div>
+          <div class="stat-sub">across all classes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Lessons Completed</div>
+          <div class="stat-value" id="stat-lessons">—</div>
+          <div class="stat-sub">by your learners</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active This Week</div>
+          <div class="stat-value" id="stat-active">—</div>
+          <div class="stat-sub">learners with activity</div>
+        </div>
+      </div>
+
+      <!-- Class list -->
+      <div class="section-hdr" id="classes-hdr">Your classes</div>
+      <div class="class-grid" id="class-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Class detail view (hidden until a class is clicked) -->
+      <div id="class-detail-wrap" style="display:none;">
+        <div class="class-detail">
+          <div class="class-detail-header">
+            <div>
+              <div class="class-detail-title" id="detail-class-name">Class</div>
+              <div class="class-detail-meta" id="detail-class-meta"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div id="detail-invite-display" style="font-family:var(--mono);font-size:12px;color:#f5a623;background:rgba(245,166,35,0.10);border:1px solid rgba(245,166,35,0.25);padding:5px 12px;border-radius:8px;cursor:pointer;" title="Click to copy"></div>
+              <button class="back-btn" onclick="closeClassDetail()">← All classes</button>
+            </div>
+          </div>
+          <div id="student-table-wrap">
+            <div class="empty-state">
+              <span class="empty-state-icon">⏳</span>
+              <h3>Loading learners…</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tab-classes -->
+
+
+    <!-- ═══ TAB: TRAINING ═══ -->
+    <div class="tab-panel" id="tab-training">
+
+      <div class="page-header">
+        <h1>Teacher Training</h1>
+        <p>Build your confidence and content knowledge — so you can teach STEM with authority, not anxiety.</p>
+      </div>
+
+      <div class="training-intro">
+        <div class="training-intro-icon">💡</div>
+        <div class="training-intro-text">
+          <div class="training-intro-title">You don't need to be an expert. You need to be one lesson ahead.</div>
+          <div class="training-intro-body">These modules are designed for teachers who've been assigned STEM subjects without specialist training. Each module explains the concept, how to teach it, what trips learners up, and what a good lesson looks like in practice. Start with Java Genie or Web Wizard — whichever you're teaching first.</div>
+        </div>
+      </div>
+
+      <!-- Tool tabs -->
+      <div class="training-tool-tabs" id="training-tool-tabs">
+        <div class="training-tool-tab active" onclick="switchTrainingTool('java-genie', this)">
+          <span class="training-tool-tab-icon">🧞</span>
+          <div class="training-tool-tab-info">
+            <span class="training-tool-tab-name">Java Genie</span>
+            <span class="training-tool-tab-prog" id="jg-prog">0 / 6 modules</span>
+          </div>
+        </div>
+        <div class="training-tool-tab" onclick="switchTrainingTool('web-wizard', this)">
+          <span class="training-tool-tab-icon">🌐</span>
+          <div class="training-tool-tab-info">
+            <span class="training-tool-tab-name">Web Wizard</span>
+            <span class="training-tool-tab-prog" id="ww-prog">0 / 5 modules</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="training-progress-wrap">
+        <span class="training-progress-label">Your training progress</span>
+        <div class="training-progress-bar"><div class="training-progress-fill" id="training-prog-fill" style="width:0%"></div></div>
+        <span class="training-progress-count" id="training-prog-label">0 / 6 complete</span>
+      </div>
+
+      <!-- Module list -->
+      <div class="module-grid" id="module-grid">
+        <!-- Populated by JS -->
+      </div>
+
+    </div><!-- /tab-training -->
+
+  </div><!-- /teacher-dash -->
+
+  <!-- Create class modal -->
+  <div class="modal-overlay" id="createClassModal">
+    <div class="modal-box">
+      <div class="modal-title">Create a new class</div>
+      <div class="modal-sub">Your learners will join using the invite code you'll receive.</div>
+      <div class="form-field">
+        <label class="form-label">Class name</label>
+        <input class="form-input" id="cc-name" placeholder="e.g. Grade 9A IT, Period 3">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Grade</label>
+        <div class="grade-row" id="cc-grade-row">
+          <button class="grade-chip" data-grade="8" onclick="selectGrade(this)">Gr 8</button>
+          <button class="grade-chip" data-grade="9" onclick="selectGrade(this)">Gr 9</button>
+          <button class="grade-chip" data-grade="10" onclick="selectGrade(this)">Gr 10</button>
+          <button class="grade-chip" data-grade="11" onclick="selectGrade(this)">Gr 11</button>
+          <button class="grade-chip" data-grade="12" onclick="selectGrade(this)">Gr 12</button>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Subject (optional)</label>
+        <input class="form-input" id="cc-subject" placeholder="e.g. Information Technology, Mathematics">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeCreateModal()">Cancel</button>
+        <button class="btn-primary" id="cc-submit" onclick="submitCreateClass()">Create Class</button>
+      </div>
+      <div id="cc-msg" class="msg"></div>
+    </div>
+  </div>
+
+</main>
+
+<script src="auth.js"></script>
+<script src="progress.js"></script>
+<script src="xp.js"></script>
+<script src="auth-modal.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// TRAINING CONTENT
+// ══════════════════════════════════════════════════════════
+
+const TRAINING_MODULES = {
+  'java-genie': [
+    {
+      id: 'jg-1',
+      title: 'What is Java and why do we teach it?',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>☕ What is Java?</h4>
+            <p>Java is a <strong>general-purpose programming language</strong> first released in 1995. It's one of the most widely-used languages in the world — powering Android apps, banking systems, and enterprise software. The South African CAPS and IEB IT curricula specify Java for Grades 10–12, and Java Genie introduces it visually for Grades 8–9.</p>
+            <p>The key idea: Java code is written by humans in text form, then <strong>compiled</strong> (translated) into bytecode that a computer can run. Your learners don't need to know how that works — they just need to know that their code does something.</p>
+          </div>
+          <div class="concept-block">
+            <h4>🐢 Why Turtle Graphics?</h4>
+            <p>Turtle graphics is a drawing method where a "turtle" (a cursor) moves around a screen following your instructions. It's used because:</p>
+            <ul>
+              <li><strong>Immediate feedback</strong> — learners type code and instantly see a shape drawn</li>
+              <li><strong>Visual motivation</strong> — it's more exciting than printing text to a console</li>
+              <li><strong>Teaches core concepts</strong> — movement uses variables, repetition uses loops, patterns use methods</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Start with a demo, not instructions.</strong> Open Java Genie, run the first example, and let learners watch the turtle draw. Ask: "What do you think the code is doing?" before explaining anything. Curiosity first.</div>
+          <div class="teaching-tip"><strong>💡 Teach the mental model.</strong> Tell learners: "The turtle starts in the middle, facing right. Every command you give it moves or turns it. You're giving it directions like a GPS."</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ "My code doesn't do anything."</strong> They probably forgot to click Run, or have a syntax error. Java is case-sensitive — <code>Forward(100)</code> ≠ <code>forward(100)</code>. Check capitals first.</div>
+          <div class="mistake-block"><strong>❌ Confusion between degrees and distance.</strong> <code>turn(90)</code> turns 90 degrees — it doesn't move. <code>forward(100)</code> moves 100 pixels. Learners mix these up constantly in the first session.</div>
+        </div>
+      `
+    },
+    {
+      id: 'jg-2',
+      title: 'Variables and data types',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>📦 What is a variable?</h4>
+            <p>A variable is a <strong>named box that stores a value</strong>. In Java, every variable has a <strong>type</strong> that tells it what kind of value it can hold. The most common types learners will use:</p>
+            <ul>
+              <li><code>int</code> — whole numbers (e.g. <code>int sides = 4;</code>)</li>
+              <li><code>double</code> — decimal numbers (e.g. <code>double length = 98.5;</code>)</li>
+              <li><code>String</code> — text (e.g. <code>String name = "Java";</code>)</li>
+              <li><code>boolean</code> — true or false (e.g. <code>boolean isRed = true;</code>)</li>
+            </ul>
+          </div>
+          <div class="concept-block">
+            <h4>📝 Declaration syntax</h4>
+            <p>Java requires you to declare the type before the name. The format is always: <code>type name = value;</code></p>
+          </div>
+          <div class="code-example">
+<span class="kw">int</span> size = <span class="num">100</span>;          <span class="cmt">// declares an integer called size</span>
+<span class="fn">forward</span>(size);        <span class="cmt">// uses the variable</span>
+size = size + <span class="num">50</span>;      <span class="cmt">// updates the variable</span>
+<span class="fn">forward</span>(size);        <span class="cmt">// now moves 150</span>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Use a physical analogy.</strong> Hold up a box and say: "This box is called <em>size</em>. Right now it holds the number 100. I can look inside the box, I can change what's in it, but I can't change its label." The label = variable name. The contents = value.</div>
+          <div class="teaching-tip"><strong>💡 Change variables, watch shapes change.</strong> Write a square using a variable for the side length, then ask learners to change just that one number. They'll see the square grow or shrink and instantly understand why variables are useful.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ Forgetting the semicolon.</strong> Java requires <code>;</code> at the end of most lines. This causes syntax errors that look confusing. Teach learners to check for missing semicolons first when they get an error.</div>
+          <div class="mistake-block"><strong>❌ Using a variable before declaring it.</strong> <code>forward(size);</code> before <code>int size = 100;</code> will fail. Java reads top to bottom.</div>
+          <div class="mistake-block"><strong>❌ Assigning the wrong type.</strong> <code>int name = "Java";</code> will error — text belongs in a <code>String</code>. Teach learners to match the type to what they're storing.</div>
+        </div>
+      `
+    },
+    {
+      id: 'jg-3',
+      title: 'Loops — for and while',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>🔄 Why loops?</h4>
+            <p>A loop lets you <strong>repeat a block of code</strong> without writing it out multiple times. Without loops, drawing a square requires four <code>forward</code> and four <code>turn</code> calls. With a loop, it's two lines inside a repeat.</p>
+          </div>
+          <div class="concept-block">
+            <h4>The for loop</h4>
+            <p>Used when you know <strong>how many times</strong> to repeat. Structure: <code>for (start; condition; step)</code></p>
+          </div>
+          <div class="code-example">
+<span class="cmt">// Draw a square using a for loop</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">4</span>; i++) {
+    <span class="fn">forward</span>(<span class="num">100</span>);
+    <span class="fn">turn</span>(<span class="num">90</span>);
+}
+          </div>
+          <div class="concept-block">
+            <h4>The while loop</h4>
+            <p>Used when you repeat <strong>until a condition becomes false</strong>. Useful when you don't know the count in advance.</p>
+          </div>
+          <div class="code-example">
+<span class="kw">int</span> count = <span class="num">0</span>;
+<span class="kw">while</span> (count &lt; <span class="num">8</span>) {
+    <span class="fn">forward</span>(<span class="num">80</span>);
+    <span class="fn">turn</span>(<span class="num">45</span>);
+    count = count + <span class="num">1</span>;
+}
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Act it out physically.</strong> Tell a learner: "Stand up. Take 1 step forward and turn 90 degrees. Repeat that until you've done it 4 times." They just ran a for loop. Then say: "Now let's write that in code."</div>
+          <div class="teaching-tip"><strong>💡 Change the number, watch what happens.</strong> Ask learners to change <code>4</code> to <code>6</code> in the loop condition. A hexagon appears. Change it to <code>3</code> — triangle. This shows the power of loops immediately.</div>
+          <div class="teaching-tip"><strong>💡 Teach the for loop first.</strong> Most turtle graphics challenges use a known count. Introduce while loops only once learners are comfortable with for loops.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ The infinite loop.</strong> Forgetting <code>i++</code> (or writing <code>i--</code>) means the loop condition never becomes false and the program freezes. Java Genie has a stop button for exactly this. Tell learners about it before they hit it.</div>
+          <div class="mistake-block"><strong>❌ Off-by-one errors.</strong> <code>i &lt; 4</code> runs 4 times (0,1,2,3). <code>i &lt;= 4</code> runs 5 times. This confuses learners. Tip: start counting from 0 and use <code>&lt;</code> not <code>&lt;=</code> as the default.</div>
+          <div class="mistake-block"><strong>❌ Missing curly braces.</strong> <code>{ }</code> define what's inside the loop. Without them, only the very next line repeats. Teach learners to always use braces even for a single line.</div>
+        </div>
+      `
+    },
+    {
+      id: 'jg-4',
+      title: 'Methods — writing reusable code',
+      level: 'intermediate',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>🔧 What is a method?</h4>
+            <p>A method is a <strong>named block of code that does one specific thing</strong>. Once written, you can call it by name as many times as you like. This avoids repeating the same code and makes programs easier to read.</p>
+            <p>In Java Genie, think of methods as teaching the turtle a new trick: you define it once, then call it whenever you want the trick performed.</p>
+          </div>
+          <div class="code-example">
+<span class="cmt">// Define a method to draw a square</span>
+<span class="kw">static void</span> <span class="fn">drawSquare</span>(<span class="kw">int</span> size) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">4</span>; i++) {
+        <span class="fn">forward</span>(size);
+        <span class="fn">turn</span>(<span class="num">90</span>);
+    }
+}
+
+<span class="cmt">// Call it three times with different sizes</span>
+<span class="fn">drawSquare</span>(<span class="num">50</span>);
+<span class="fn">drawSquare</span>(<span class="num">100</span>);
+<span class="fn">drawSquare</span>(<span class="num">150</span>);
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Use the cooking analogy.</strong> A method is like a recipe. "To make toast: put bread in toaster, wait, remove bread, butter it." You don't re-explain the toast recipe every time — you just say "make toast." Methods work the same way.</div>
+          <div class="teaching-tip"><strong>💡 Show the duplication problem first.</strong> Have learners copy-paste their square code 3 times to draw 3 squares. Then show them how one method with a parameter makes it 3 short lines instead of 12. The motivation becomes obvious.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ Calling a method before defining it.</strong> Unlike variables, method order matters less in Java — but within the context of Java Genie, keep definitions at the top for clarity.</div>
+          <div class="mistake-block"><strong>❌ Forgetting parameters vs arguments.</strong> The <em>parameter</em> is the placeholder in the definition (<code>int size</code>). The <em>argument</em> is the actual value when calling (<code>100</code>). Learners often confuse these terms.</div>
+          <div class="mistake-block"><strong>❌ <code>void</code> vs return types.</strong> At this level keep everything <code>void</code> (the method does something but gives nothing back). Return types come in Grade 10+.</div>
+        </div>
+      `
+    },
+    {
+      id: 'jg-5',
+      title: 'Structuring a lesson with Java Genie',
+      level: 'intermediate',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">A suggested 60-minute lesson structure</div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 0–10: Hook</h4>
+            <p>Open Java Genie on the projector. Run one of the examples (the spiral or star pattern works well). Ask: "Who can guess what the code does before I show them?" Take 2–3 guesses. Then reveal and run it.</p>
+          </div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 10–25: Teach the concept</h4>
+            <p>Introduce the new concept (e.g. loops). Explain it, write a simple example on the board or live in Java Genie. Run it. Ask learners to predict what will change if you modify one number.</p>
+          </div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 25–50: Learner practice</h4>
+            <p>Give a specific challenge: "Draw a hexagon using a for loop." Walk the room. Help stuck learners with questions, not answers: "What does <code>i &lt; 4</code> control?" not "Change it to 6."</p>
+          </div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 50–60: Share and reflect</h4>
+            <p>Ask 2–3 learners to share their screens. Ask the class: "What did they do the same as you? What did they do differently?" Close with: "What was the hardest part today?"</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Differentiation strategies</div>
+          <div class="teaching-tip"><strong>💡 For learners who finish early:</strong> "Now make it spiral outward" or "Add colour" or "Can you draw the South African flag using only turtle graphics?" Extension tasks keep fast finishers engaged without leaving others behind.</div>
+          <div class="teaching-tip"><strong>💡 For learners who are stuck:</strong> Pair them with a learner who's just finished, not your strongest programmer. Explaining it once is often better than having the concept explained to them.</div>
+          <div class="teaching-tip"><strong>💡 For learners with no home internet:</strong> The service worker caches Java Genie for offline use — learners can continue at home even without data once they've loaded it once on Wi-Fi.</div>
+        </div>
+      `
+    },
+    {
+      id: 'jg-6',
+      title: 'Assessment ideas and rubrics',
+      level: 'advanced',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">Assessment approaches for Java Genie work</div>
+          <div class="concept-block">
+            <h4>📋 Practical assessment — draw a shape</h4>
+            <p>Give learners a specification: "Draw a regular pentagon with side length 120 pixels, using a for loop and a variable for the side length." Assess on:</p>
+            <ul>
+              <li>Correct use of a variable (/3)</li>
+              <li>Correct for loop structure (/3)</li>
+              <li>Output matches specification (/4)</li>
+            </ul>
+          </div>
+          <div class="concept-block">
+            <h4>📋 Code reading assessment</h4>
+            <p>Show learners a piece of code and ask them to predict the output, identify any errors, or describe in plain language what the code does. This tests understanding without requiring them to write from scratch — good for lower-ability learners or time-constrained assessments.</p>
+          </div>
+          <div class="concept-block">
+            <h4>📋 Using the Magic Lab progress data</h4>
+            <p>The teacher dashboard shows you each learner's lesson completions, quiz scores, and code runs. You can use this as a participation grade or to identify learners who need extra support before a formal assessment.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">What NOT to assess at this level</div>
+          <div class="mistake-block"><strong>❌ Don't penalise unconventional solutions.</strong> If a learner draws a square using four separate <code>forward</code>/<code>turn</code> calls instead of a loop — it works. Award marks for the output, then teach the loop approach as "a smarter way to do the same thing."</div>
+          <div class="mistake-block"><strong>❌ Don't require perfect syntax under time pressure.</strong> Syntax errors happen to professional developers. A learner who understands the concept but typed <code>Forwrd</code> instead of <code>forward</code> deserves partial credit.</div>
+        </div>
+      `
+    },
+  ],
+
+  'web-wizard': [
+    {
+      id: 'ww-1',
+      title: 'What is HTML and how does the web work?',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>🌐 What is HTML?</h4>
+            <p><strong>HTML (HyperText Markup Language)</strong> is the language that defines the <em>structure and content</em> of a web page. Every website you visit is built on HTML. It tells the browser: "here is a heading, here is a paragraph, here is an image."</p>
+            <p>HTML is <strong>not</strong> a programming language — it doesn't do logic or calculations. It describes what should appear on screen using <strong>tags</strong>.</p>
+          </div>
+          <div class="concept-block">
+            <h4>🏷️ What is a tag?</h4>
+            <p>A tag is a label in angle brackets that marks up content. Most tags come in pairs — an opening tag and a closing tag (with a <code>/</code>).</p>
+          </div>
+          <div class="code-example">
+&lt;<span class="kw">h1</span>&gt;This is a heading&lt;/<span class="kw">h1</span>&gt;
+&lt;<span class="kw">p</span>&gt;This is a paragraph.&lt;/<span class="kw">p</span>&gt;
+&lt;<span class="kw">strong</span>&gt;This text is bold&lt;/<span class="kw">strong</span>&gt;
+          </div>
+          <div class="concept-block">
+            <h4>🏗️ The basic HTML structure</h4>
+            <p>Every valid HTML page has the same skeleton. Learners don't need to memorise this — Web Wizard provides it automatically — but they should understand what each part does.</p>
+          </div>
+          <div class="code-example">
+&lt;!<span class="kw">DOCTYPE</span> html&gt;          <span class="cmt">&lt;!-- tells the browser this is HTML5 --&gt;</span>
+&lt;<span class="kw">html</span>&gt;
+  &lt;<span class="kw">head</span>&gt;               <span class="cmt">&lt;!-- invisible settings and title --&gt;</span>
+    &lt;<span class="kw">title</span>&gt;My Page&lt;/<span class="kw">title</span>&gt;
+  &lt;/<span class="kw">head</span>&gt;
+  &lt;<span class="kw">body</span>&gt;               <span class="cmt">&lt;!-- everything visible goes here --&gt;</span>
+    &lt;<span class="kw">h1</span>&gt;Hello World&lt;/<span class="kw">h1</span>&gt;
+  &lt;/<span class="kw">body</span>&gt;
+&lt;/<span class="kw">html</span>&gt;
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Open a website and right-click → View Source.</strong> Show learners the raw HTML of a real website. It looks overwhelming, but finding the <code>&lt;h1&gt;</code> tag and matching it to the visible heading on screen makes it click immediately.</div>
+          <div class="teaching-tip"><strong>💡 Live preview is the best teacher.</strong> Web Wizard's split-screen editor shows changes instantly. Tell learners: "Type something in the editor and watch the right side. That's your website."</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ Forgetting to close tags.</strong> <code>&lt;p&gt;Hello</code> without <code>&lt;/p&gt;</code> often causes everything after it to be styled strangely. Teach learners to type both tags before filling in the content.</div>
+          <div class="mistake-block"><strong>❌ Putting content in the &lt;head&gt;.</strong> Learners write their text inside <code>&lt;head&gt;</code> and wonder why it doesn't appear. Everything visible belongs in <code>&lt;body&gt;</code>.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ww-2',
+      title: 'CSS — styling your page',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>🎨 What is CSS?</h4>
+            <p><strong>CSS (Cascading Style Sheets)</strong> controls how HTML elements <em>look</em> — colour, size, font, spacing, position. HTML is the skeleton; CSS is the skin, clothes, and makeup.</p>
+            <p>CSS rules have two parts: a <strong>selector</strong> (what to style) and <strong>declarations</strong> (how to style it).</p>
+          </div>
+          <div class="code-example">
+<span class="kw">h1</span> {
+    <span class="str">color</span>: <span class="num">darkblue</span>;
+    <span class="str">font-size</span>: <span class="num">32px</span>;
+    <span class="str">text-align</span>: <span class="num">center</span>;
+}
+
+<span class="kw">p</span> {
+    <span class="str">color</span>: <span class="num">#555555</span>;
+    <span class="str">line-height</span>: <span class="num">1.6</span>;
+}
+
+<span class="kw">body</span> {
+    <span class="str">background-color</span>: <span class="num">#f5f5f5</span>;
+    <span class="str">font-family</span>: <span class="num">Arial, sans-serif</span>;
+}
+          </div>
+          <div class="concept-block">
+            <h4>Colours in CSS</h4>
+            <p>CSS accepts colours in three formats learners will encounter:</p>
+            <ul>
+              <li><strong>Names:</strong> <code>red</code>, <code>blue</code>, <code>darkgreen</code></li>
+              <li><strong>Hex codes:</strong> <code>#ff0000</code> (red), <code>#0000ff</code> (blue)</li>
+              <li><strong>RGB:</strong> <code>rgb(255, 0, 0)</code> (red)</li>
+            </ul>
+            <p>Hex codes look scary but learners just need to know they're a way to describe any colour. Google's colour picker generates hex codes — use it freely.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Change one property at a time.</strong> Don't show a full CSS stylesheet to start. Change just <code>color</code> on a heading, watch it change in the preview, then add <code>font-size</code>. Incremental changes build understanding faster than showing the full picture.</div>
+          <div class="teaching-tip"><strong>💡 Let them make it ugly.</strong> Give learners 5 minutes to make their page as ugly as possible using CSS. Bright green text on a yellow background. Comic Sans at 60px. This removes fear and teaches the properties through play.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ Missing colons and semicolons.</strong> CSS syntax is <code>property: value;</code> — the colon is required, the semicolon ends the declaration. Missing either breaks all styles below it.</div>
+          <div class="mistake-block"><strong>❌ American vs British spelling.</strong> CSS uses American English — <code>color</code> not <code>colour</code>. South African learners make this mistake constantly. Worth noting explicitly.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ww-3',
+      title: 'Links, images and page structure',
+      level: 'intermediate',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>🔗 Links</h4>
+            <p>The <code>&lt;a&gt;</code> (anchor) tag creates a clickable link. The destination goes in the <code>href</code> attribute.</p>
+          </div>
+          <div class="code-example">
+&lt;<span class="kw">a</span> <span class="str">href</span>=<span class="num">"https://themagiclab.co.za"</span>&gt;Visit The Magic Lab&lt;/<span class="kw">a</span>&gt;
+          </div>
+          <div class="concept-block">
+            <h4>🖼️ Images</h4>
+            <p>The <code>&lt;img&gt;</code> tag embeds an image. It is <em>self-closing</em> (no closing tag). The <code>src</code> attribute is the image URL, and <code>alt</code> provides a text description for accessibility.</p>
+          </div>
+          <div class="code-example">
+&lt;<span class="kw">img</span> <span class="str">src</span>=<span class="num">"photo.jpg"</span> <span class="str">alt</span>=<span class="num">"A photo"</span> <span class="str">width</span>=<span class="num">"300"</span>&gt;
+          </div>
+          <div class="concept-block">
+            <h4>🧱 Page structure with div and semantic tags</h4>
+            <p>Real web pages use <strong>containers</strong> to group content. <code>&lt;div&gt;</code> is the general-purpose container. Newer semantic tags describe the meaning of sections:</p>
+            <ul>
+              <li><code>&lt;header&gt;</code> — the top section (logo, nav)</li>
+              <li><code>&lt;main&gt;</code> — the primary content</li>
+              <li><code>&lt;footer&gt;</code> — the bottom section</li>
+              <li><code>&lt;section&gt;</code> — a distinct part of the page</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Build a simple personal profile page.</strong> A photo, a heading with their name, a paragraph about themselves, and a link to their favourite website. Learners engage more with content about themselves than abstract examples.</div>
+          <div class="teaching-tip"><strong>💡 Use free image URLs.</strong> Sites like <code>unsplash.com</code> provide free, direct-link images. No downloading or uploading required — learners can use a URL directly in <code>src</code>.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ Broken image paths.</strong> <code>src="myphoto.jpg"</code> only works if the image is in the same folder as the HTML file. For Web Wizard, use full URLs (https://...) to avoid this entirely.</div>
+          <div class="mistake-block"><strong>❌ Nesting tags incorrectly.</strong> <code>&lt;b&gt;&lt;i&gt;text&lt;/b&gt;&lt;/i&gt;</code> is wrong — you must close the most recently opened tag first: <code>&lt;b&gt;&lt;i&gt;text&lt;/i&gt;&lt;/b&gt;</code>.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ww-4',
+      title: 'Structuring a lesson with Web Wizard',
+      level: 'intermediate',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">A suggested 60-minute lesson structure</div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 0–8: Show a real website's code</h4>
+            <p>Navigate to any simple website, right-click → View Page Source. Find the <code>&lt;h1&gt;</code> tag together. Ask: "Where does this text appear on the page?" This grounds the lesson in something real.</p>
+          </div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 8–20: Live demonstration in Web Wizard</h4>
+            <p>Open Web Wizard on the projector. Use the HTML tab to type a basic page structure, narrating as you go. Switch to the CSS tab and add one style at a time. Ask predictions: "What will happen if I change this number?"</p>
+          </div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 20–50: Learner project time</h4>
+            <p>Set a clear deliverable: "By the end of the lesson your page must have: a heading with your name, a paragraph about yourself, at least 3 CSS styles, and one image or link." Specific requirements reduce "I don't know what to do."</p>
+          </div>
+          <div class="concept-block">
+            <h4>⏱ Minutes 50–60: Gallery walk (digital)</h4>
+            <p>Ask 3 learners to share their screen for 90 seconds each. The class must identify: one thing the presenter did that they didn't think of. This creates peer learning without embarrassment.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Managing different skill levels</div>
+          <div class="teaching-tip"><strong>💡 Give extension tasks in advance.</strong> Write "If you finish early: add a navigation menu, add a second page, make the page mobile-friendly" on the board before the lesson starts. Fast finishers don't need to wait for permission.</div>
+          <div class="teaching-tip"><strong>💡 Pair programming works well for HTML/CSS.</strong> Two learners on one computer — one types, one directs. Switch every 10 minutes. This reduces the gap between strong and weak learners faster than individual work.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ww-5',
+      title: 'Assessment and portfolio ideas',
+      level: 'advanced',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">Assessment approaches for Web Wizard work</div>
+          <div class="concept-block">
+            <h4>📋 Practical task: build a page to spec</h4>
+            <p>Give learners a written specification like a brief from a "client" (e.g. a school tuck shop wants a simple website). Assess the submission against specific requirements:</p>
+            <ul>
+              <li>Correct use of at least 5 different HTML tags (/5)</li>
+              <li>Minimum 3 CSS rules applied correctly (/3)</li>
+              <li>Page loads without errors (/2)</li>
+              <li>Content matches the brief (/5)</li>
+              <li>Code is readable and organised (/5)</li>
+            </ul>
+          </div>
+          <div class="concept-block">
+            <h4>📋 Portfolio approach</h4>
+            <p>Rather than a single assessment, ask learners to build one page per week across a term. By week 8 they have 8 progressively more complex pages. The final mark is based on the portfolio as a whole — rewarding growth, not just a single performance.</p>
+          </div>
+          <div class="concept-block">
+            <h4>📋 Peer review</h4>
+            <p>Have learners review each other's code using a simple checklist: "Does it have a title? Does it use headings correctly? Is the CSS in a separate section?" Peer review builds reading comprehension of code — an undervalued skill.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Saving and submitting work</div>
+          <div class="teaching-tip"><strong>💡 Web Wizard has a download button.</strong> Learners can download their HTML file and submit it via email or Google Classroom. The file opens in any browser for marking — no special software needed.</div>
+          <div class="teaching-tip"><strong>💡 Screenshots are valid evidence.</strong> For learners who lose their work, a screenshot of the rendered preview is acceptable evidence for most assessment rubrics. Encourage learners to screenshot at the end of every lesson.</div>
+        </div>
+      `
+    },
+  ]
+};
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let _classes          = [];
+let _selectedClassId  = null;
+let _selectedGrade    = null;
+let _currentTrainTool = 'java-genie';
+let _completedModules = new Set();
+let _loaded           = false;
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+let _once = false;
+function _tryLoad() {
+  if (_once) return;
+  if (!window.MagicLabAuth || !window.MagicLabProgress) return;
+  _once = true;
+  _initDashboard();
+}
+document.addEventListener('magiclab:auth:ready', _tryLoad);
+document.addEventListener('magiclab:progress:ready', _tryLoad);
+const _poll = setInterval(() => {
+  if (window.MagicLabAuth && window.MagicLabProgress) { clearInterval(_poll); _tryLoad(); }
+}, 200);
+
+async function _initDashboard() {
+  const guestEl   = document.getElementById('guest-state');
+  const studentEl = document.getElementById('student-state');
+  const teacherEl = document.getElementById('teacher-dash');
+
+  if (!window.MagicLabAuth.isLoggedIn()) {
+    guestEl.style.display = 'flex'; return;
+  }
+  if (!window.MagicLabAuth.isTeacher()) {
+    guestEl.style.display  = 'none';
+    studentEl.style.display = 'flex'; return;
+  }
+
+  guestEl.style.display   = 'none';
+  studentEl.style.display = 'none';
+  teacherEl.style.display = '';
+
+  const profile = window.MagicLabAuth.getProfile();
+  document.getElementById('teacher-greeting').textContent =
+    `Welcome back, ${profile.display_name || profile.email?.split('@')[0] || 'Teacher'}`;
+
+  await Promise.all([_loadClasses(), _loadTrainingProgress()]);
+}
+
+// ══════════════════════════════════════════════════════════
+// CLASSES TAB
+// ══════════════════════════════════════════════════════════
+async function _loadClasses() {
+  _classes = await window.MagicLabAuth.getMyClasses();
+  _renderClassGrid();
+  await _updateStats();
+}
+
+function _renderClassGrid() {
+  const grid = document.getElementById('class-grid');
+  grid.innerHTML = '';
+
+  _classes.forEach(cls => {
+    const card = document.createElement('div');
+    card.className = 'class-card';
+    card.innerHTML = `
+      <div class="class-card-header">
+        <div class="class-icon">🏫</div>
+        <div class="class-invite" title="Click to copy invite code"
+          onclick="copyInvite('${cls.invite_code}', this)">
+          ${cls.invite_code}
+        </div>
+      </div>
+      <div class="class-name">${cls.name}</div>
+      <div class="class-meta">${cls.grade ? `Grade ${cls.grade}` : ''}${cls.subject ? ` · ${cls.subject}` : ''} · Created ${_fmtDate(cls.created_at)}</div>
+      <div class="class-stats">
+        <div><div class="class-stat-val" id="cls-count-${cls.id}">—</div><div class="class-stat-lbl">Learners</div></div>
+        <div><div class="class-stat-val" id="cls-lessons-${cls.id}">—</div><div class="class-stat-lbl">Lessons done</div></div>
+        <div><div class="class-stat-val" id="cls-active-${cls.id}">—</div><div class="class-stat-lbl">Active this week</div></div>
+      </div>
+    `;
+    card.addEventListener('click', e => {
+      if (e.target.classList.contains('class-invite')) return;
+      openClassDetail(cls);
+    });
+    grid.appendChild(card);
+    _loadClassQuickStats(cls.id);
+  });
+
+  // Create class button
+  const btn = document.createElement('div');
+  btn.className = 'create-class-btn';
+  btn.innerHTML = `<span style="font-size:22px;">+</span> Create new class`;
+  btn.onclick = () => openCreateModal();
+  grid.appendChild(btn);
+}
+
+async function _loadClassQuickStats(classId) {
+  const students = await window.MagicLabAuth.getClassStudents(classId);
+  const progress = await window.MagicLabAuth.getClassProgress(classId);
+  const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const activeIds  = new Set(
+    progress.filter(r => r.last_active && new Date(r.last_active) > oneWeekAgo).map(r => r.user_id)
+  );
+  const totalLessons = progress.reduce((s, r) => s + (r.topics_complete || 0), 0);
+
+  const countEl   = document.getElementById(`cls-count-${classId}`);
+  const lessonsEl = document.getElementById(`cls-lessons-${classId}`);
+  const activeEl  = document.getElementById(`cls-active-${classId}`);
+  if (countEl)   countEl.textContent   = students.length;
+  if (lessonsEl) lessonsEl.textContent = totalLessons;
+  if (activeEl)  activeEl.textContent  = activeIds.size;
+}
+
+async function _updateStats() {
+  let totalStudents = 0, totalLessons = 0, activeCount = 0;
+  const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  for (const cls of _classes) {
+    const students = await window.MagicLabAuth.getClassStudents(cls.id);
+    const progress = await window.MagicLabAuth.getClassProgress(cls.id);
+    totalStudents += students.length;
+    totalLessons  += progress.reduce((s,r) => s + (r.topics_complete||0), 0);
+    const activeIds = new Set(progress.filter(r => r.last_active && new Date(r.last_active) > oneWeekAgo).map(r => r.user_id));
+    activeCount += activeIds.size;
+  }
+  document.getElementById('stat-classes').textContent  = _classes.length;
+  document.getElementById('stat-students').textContent = totalStudents;
+  document.getElementById('stat-lessons').textContent  = totalLessons;
+  document.getElementById('stat-active').textContent   = activeCount;
+}
+
+async function openClassDetail(cls) {
+  _selectedClassId = cls.id;
+  document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
+
+  document.getElementById('class-detail-wrap').style.display = '';
+  document.getElementById('detail-class-name').textContent = cls.name;
+  document.getElementById('detail-class-meta').textContent =
+    `${cls.grade ? `Grade ${cls.grade}` : ''}${cls.subject ? ` · ${cls.subject}` : ''} · Invite: ${cls.invite_code}`;
+
+  const inviteEl = document.getElementById('detail-invite-display');
+  inviteEl.textContent = `📋 ${cls.invite_code}`;
+  inviteEl.onclick = () => copyInvite(cls.invite_code, inviteEl);
+
+  document.getElementById('student-table-wrap').innerHTML = `
+    <div class="empty-state"><span class="empty-state-icon">⏳</span><h3>Loading learners…</h3></div>`;
+
+  const [students, progress] = await Promise.all([
+    window.MagicLabAuth.getClassStudents(cls.id),
+    window.MagicLabAuth.getClassProgress(cls.id)
+  ]);
+
+  _renderStudentTable(students, progress, cls.id);
+}
+
+const TOOL_META = {
+  'java-genie':    { icon:'🧞', name:'Java', total:12 },
+  'web-wizard':    { icon:'🌐', name:'Web',  total:10 },
+  'code-conjurer': { icon:'📜', name:'Code', total:18 },
+  'math-magician': { icon:'🔢', name:'Math', total:19 },
+  'computer-codex':{ icon:'💻', name:'Codex',total:25 },
+};
+
+function _renderStudentTable(students, progress, classId) {
+  if (!students.length) {
+    document.getElementById('student-table-wrap').innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">👩‍🎓</span>
+        <h3>No learners yet</h3>
+        <p>Share the invite code with your class. Learners join from their student dashboard.</p>
+      </div>`;
+    return;
+  }
+
+  // Build progress map: studentId → { toolId → row }
+  const progMap = {};
+  progress.forEach(r => {
+    if (!progMap[r.user_id]) progMap[r.user_id] = {};
+    progMap[r.user_id][r.tool] = r;
+  });
+
+  const tools = Object.keys(TOOL_META);
+
+  document.getElementById('student-table-wrap').innerHTML = `
+    <div style="overflow-x:auto;">
+    <table class="student-table">
+      <thead>
+        <tr>
+          <th>Learner</th>
+          <th>XP / Level</th>
+          <th>Streak</th>
+          ${tools.map(t => `<th title="${TOOL_META[t].name}">${TOOL_META[t].icon}</th>`).join('')}
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${students.map(s => {
+          const xp   = s.xp || 0;
+          const lvl  = _getLevelNum(xp);
+          const prog = progMap[s.id] || {};
+          return `
+            <tr>
+              <td>
+                <span class="student-avatar">${(s.display_name||s.email||'?')[0].toUpperCase()}</span>
+                <span class="student-name">${s.display_name || s.email?.split('@')[0] || 'Student'}</span>
+                ${s.grade ? `<span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:6px;">Gr ${s.grade}</span>` : ''}
+              </td>
+              <td>
+                <span class="xp-pill">Lv ${lvl} · ${xp.toLocaleString()} XP</span>
+              </td>
+              <td>
+                <span class="streak-pill">${s.streak_current > 0 ? `🔥 ${s.streak_current}` : '—'}</span>
+              </td>
+              ${tools.map(toolId => {
+                const r    = prog[toolId];
+                const done = r?.topics_complete || 0;
+                const tot  = TOOL_META[toolId].total;
+                const pct  = Math.min(100, Math.round((done/tot)*100));
+                return `<td>
+                  ${done > 0 ? `
+                    <div class="progress-mini"><div class="progress-mini-fill" style="width:${pct}%"></div></div>
+                    <span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:5px;">${done}/${tot}</span>
+                  ` : `<span style="color:var(--border2);font-size:12px;">—</span>`}
+                </td>`;
+              }).join('')}
+              <td>
+                <button class="remove-btn" title="Remove from class"
+                  onclick="confirmRemove('${classId}','${s.id}','${(s.display_name||'').replace(/'/g,'\\\'')}')"
+                >✕</button>
+              </td>
+            </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    </div>`;
+}
+
+function closeClassDetail() {
+  document.getElementById('class-detail-wrap').style.display = 'none';
+  _selectedClassId = null;
+  document.querySelectorAll('.class-card').forEach(c => c.classList.remove('selected'));
+}
+
+function confirmRemove(classId, studentId, name) {
+  if (!confirm(`Remove ${name || 'this learner'} from the class?`)) return;
+  window.MagicLabAuth.removeStudentFromClass(classId, studentId).then(() => {
+    openClassDetail(_classes.find(c => c.id === classId));
+  });
+}
+
+function copyInvite(code, el) {
+  navigator.clipboard?.writeText(code).catch(() => {});
+  const orig = el.textContent;
+  el.textContent = '✓ Copied!';
+  setTimeout(() => el.textContent = orig, 1500);
+}
+
+function _getLevelNum(xp) {
+  const LEVELS = [0,150,400,800,1500,2500,4000,6500,10000,15000,22000,30000,40000,50000,65000];
+  for (let i = LEVELS.length-1; i >= 0; i--) { if (xp >= LEVELS[i]) return i+1; }
+  return 1;
+}
+
+// ── Create class modal ──
+let _ccSelectedGrade = null;
+function openCreateModal() {
+  document.getElementById('createClassModal').classList.add('open');
+  document.getElementById('cc-name').focus();
+  document.getElementById('cc-msg').textContent = '';
+}
+function closeCreateModal() {
+  document.getElementById('createClassModal').classList.remove('open');
+  document.getElementById('cc-name').value = '';
+  document.getElementById('cc-subject').value = '';
+  document.querySelectorAll('.grade-chip').forEach(c => c.classList.remove('selected'));
+  _ccSelectedGrade = null;
+}
+function selectGrade(btn) {
+  document.querySelectorAll('.grade-chip').forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  _ccSelectedGrade = parseInt(btn.dataset.grade);
+}
+async function submitCreateClass() {
+  const name    = document.getElementById('cc-name').value.trim();
+  const subject = document.getElementById('cc-subject').value.trim();
+  const btn     = document.getElementById('cc-submit');
+  const msg     = document.getElementById('cc-msg');
+
+  if (!name) { msg.textContent = 'Please enter a class name.'; msg.className = 'msg err'; return; }
+
+  btn.disabled = true; btn.textContent = 'Creating…';
+  const { data, error } = await window.MagicLabAuth.createClass(name, _ccSelectedGrade, subject || null);
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = 'msg err';
+    btn.disabled = false; btn.textContent = 'Create Class';
+    return;
+  }
+
+  msg.className = 'msg ok';
+  msg.textContent = `✓ Class created! Invite code: ${data.invite_code}`;
+  btn.textContent = 'Done ✓';
+  await _loadClasses();
+  setTimeout(closeCreateModal, 1400);
+}
+
+document.getElementById('createClassModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('createClassModal')) closeCreateModal();
+});
+
+// ══════════════════════════════════════════════════════════
+// TRAINING TAB
+// ══════════════════════════════════════════════════════════
+async function _loadTrainingProgress() {
+  if (!window.MagicLabAuth.isLoggedIn()) return;
+  const supabase = window.MagicLabAuth._supabase();
+  const profile  = window.MagicLabAuth.getProfile();
+  const session  = window.MagicLabAuth.getSession();
+  const userId   = profile?.id ?? session?.user?.id;
+  if (!userId) return;
+
+  try {
+    const { data } = await supabase
+      .from('teacher_training_progress')
+      .select('module_id')
+      .eq('teacher_id', userId)
+      .eq('completed', true);
+    _completedModules = new Set((data||[]).map(r => r.module_id));
+  } catch(e) {
+    // table may not exist yet — silently fail
+    _completedModules = new Set();
+  }
+  _renderTrainingModules();
+  _updateTrainingProgress();
+}
+
+function switchTrainingTool(toolId, tabEl) {
+  _currentTrainTool = toolId;
+  document.querySelectorAll('.training-tool-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  _renderTrainingModules();
+  _updateTrainingProgress();
+}
+
+function _renderTrainingModules() {
+  const grid    = document.getElementById('module-grid');
+  const modules = TRAINING_MODULES[_currentTrainTool] || [];
+  grid.innerHTML = '';
+  modules.forEach((mod, i) => {
+    const done = _completedModules.has(mod.id);
+    const div  = document.createElement('div');
+    div.className = `module-card${done ? ' done' : ''}`;
+    div.id = `mod-${mod.id}`;
+    div.innerHTML = `
+      <div class="module-header" onclick="toggleModule('${mod.id}')">
+        <div class="module-num">${i+1}</div>
+        <div class="module-title">${mod.title}</div>
+        <span class="module-badge module-badge-${mod.level}">${mod.level}</span>
+        <span class="module-chevron">▾</span>
+      </div>
+      <div class="module-body">
+        ${mod.content}
+        <button class="module-complete-btn ${done?'done':''}" id="btn-${mod.id}"
+          onclick="markModuleComplete('${mod.id}', '${_currentTrainTool}')">
+          ${done ? '✓ Completed' : '✓ Mark as complete'}
+        </button>
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function toggleModule(modId) {
+  const card = document.getElementById(`mod-${modId}`);
+  card.classList.toggle('open');
+}
+
+async function markModuleComplete(modId, tool) {
+  if (_completedModules.has(modId)) return;
+  _completedModules.add(modId);
+
+  const supabase = window.MagicLabAuth._supabase();
+  const profile  = window.MagicLabAuth.getProfile();
+  const session  = window.MagicLabAuth.getSession();
+  const userId   = profile?.id ?? session?.user?.id;
+
+  try {
+    await supabase.from('teacher_training_progress').upsert({
+      teacher_id:   userId,
+      module_id:    modId,
+      tool:         tool,
+      completed:    true,
+      completed_at: new Date().toISOString()
+    }, { onConflict: 'teacher_id,module_id' });
+  } catch(e) { console.warn('[MagicLab] Training progress save failed:', e.message); }
+
+  // Update UI
+  const card = document.getElementById(`mod-${modId}`);
+  if (card) card.classList.add('done');
+  const btn = document.getElementById(`btn-${modId}`);
+  if (btn) { btn.textContent = '✓ Completed'; btn.classList.add('done'); }
+  _updateTrainingProgress();
+}
+
+function _updateTrainingProgress() {
+  const modules  = TRAINING_MODULES[_currentTrainTool] || [];
+  const total    = modules.length;
+  const done     = modules.filter(m => _completedModules.has(m.id)).length;
+  const pct      = total > 0 ? Math.round((done/total)*100) : 0;
+  document.getElementById('training-prog-fill').style.width  = pct + '%';
+  document.getElementById('training-prog-label').textContent = `${done} / ${total} complete`;
+
+  // Update tool tab progress labels
+  const jgMods = TRAINING_MODULES['java-genie']||[];
+  const wwMods = TRAINING_MODULES['web-wizard']||[];
+  document.getElementById('jg-prog').textContent =
+    `${jgMods.filter(m=>_completedModules.has(m.id)).length} / ${jgMods.length} modules`;
+  document.getElementById('ww-prog').textContent =
+    `${wwMods.filter(m=>_completedModules.has(m.id)).length} / ${wwMods.length} modules`;
+}
+
+// ══════════════════════════════════════════════════════════
+// SHARED UI
+// ══════════════════════════════════════════════════════════
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function _fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-ZA', { day:'numeric', month:'short', year:'numeric' });
+}
+</script>
+
+</body>
+</html>
