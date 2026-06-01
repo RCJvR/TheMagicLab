@@ -55,11 +55,13 @@
     /* ── Layout ── */
     main { max-width: 1080px; margin: 0 auto; padding: 44px 52px 80px; }
 
-    /* ── Guest state ── */
-    #guest-state {
-      display: flex; flex-direction: column; align-items: center;
-      padding: 100px 24px; text-align: center;
+    @media (max-width: 600px) {
+      main { padding: 24px 16px 60px; }
     }
+
+    /* ── Guest state ── */
+    #dashboard-state { display: none; }
+    #guest-state { display: flex; flex-direction: column; align-items: center; padding: 100px 24px; text-align: center; }
     #guest-state h2 {
       font-weight: 900; font-size: 28px; letter-spacing: -0.03em;
       color: var(--text); margin: 20px 0 12px;
@@ -455,14 +457,14 @@
       }
 
       if (!window.MagicLabAuth.isLoggedIn()) {
-        guestEl.style.display = '';
-        dashEl.style.display  = 'none';
+        guestEl.style.display = 'flex';
+        dashEl.style.display = 'none';
         return;
       }
 
       // Show dashboard shell immediately
       guestEl.style.display = 'none';
-      dashEl.style.display  = '';
+      dashEl.style.display = 'block';
       console.log('[Dashboard] Dashboard shown, loading data…');
 
       const profile = window.MagicLabAuth.getProfile();
