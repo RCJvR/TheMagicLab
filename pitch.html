@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Magic Lab — Reimagining STEM Education in South Africa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#08091a;
+  --ink2:#13152e;
+  --paper:#f0ede6;
+  --paper2:#e8e4db;
+  --cream:#faf8f3;
+  --text:#1a1c30;
+  --text2:#4a4c62;
+  --muted:#8a8ca8;
+  --indigo:#4338ca;
+  --violet:#7c3aed;
+  --emerald:#059669;
+  --amber:#d97706;
+  --rose:#be123c;
+  --cyan:#0891b2;
+  --accent:#5b21b6;
+  --fs:Sora,sans-serif;
+  --fd:"Fraunces",serif;
+  --fm:"JetBrains Mono",monospace;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fs);background:var(--cream);color:var(--text);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* ── Scroll-reveal ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.visible{opacity:1;transform:none;}
+.delay-1{transition-delay:0.1s;}.delay-2{transition-delay:0.2s;}.delay-3{transition-delay:0.3s;}.delay-4{transition-delay:0.4s;}.delay-5{transition-delay:0.5s;}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 56px;
+  background:rgba(240,237,230,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(26,28,48,0.08);
+  transition:all 200ms;
+}
+.nav-brand{
+  font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:-0.02em;
+  color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;
+}
+.nav-brand span{
+  background:linear-gradient(135deg,var(--indigo),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-link{
+  font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;
+  color:var(--text2);text-decoration:none;transition:all 130ms;
+  border:1px solid transparent;
+}
+.nav-link:hover{background:rgba(26,28,48,0.07);color:var(--text);}
+.nav-cta{
+  background:var(--ink);color:#fff;border-radius:99px;
+  padding:8px 20px;font-size:13px;font-weight:700;text-decoration:none;
+  transition:all 150ms;border:1px solid var(--ink);
+}
+.nav-cta:hover{background:var(--accent);border-color:var(--accent);}
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;
+}
+
+/* Animated background grid */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(67,56,202,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(67,56,202,0.06) 1px,transparent 1px);
+  background-size:52px 52px;
+  animation:gridShift 20s linear infinite;
+  pointer-events:none;
+}
+@keyframes gridShift{from{transform:translateY(0);}to{transform:translateY(52px);}}
+
+/* Gradient orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;animation:orbFloat 8s ease-in-out infinite alternate;}
+.orb-1{width:500px;height:500px;top:-100px;left:-150px;background:radial-gradient(ellipse,rgba(99,58,237,0.18),transparent 70%);animation-delay:0s;}
+.orb-2{width:400px;height:400px;top:-50px;right:-100px;background:radial-gradient(ellipse,rgba(5,150,105,0.14),transparent 70%);animation-delay:-3s;}
+.orb-3{width:350px;height:350px;bottom:-80px;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(217,119,6,0.10),transparent 70%);animation-delay:-6s;}
+@keyframes orbFloat{from{transform:scale(1) translateY(0);}to{transform:scale(1.08) translateY(-20px);}}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(67,56,202,0.08);border:1px solid rgba(67,56,202,0.20);
+  border-radius:99px;padding:6px 18px;
+  font-family:var(--fm);font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  color:var(--indigo);margin-bottom:28px;position:relative;z-index:1;
+}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--indigo);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.hero-h1{
+  font-family:var(--fd);font-weight:900;
+  font-size:clamp(48px,7.5vw,96px);
+  line-height:1.0;letter-spacing:-0.03em;
+  color:var(--ink);position:relative;z-index:1;
+  max-width:900px;
+}
+.hero-h1 em{
+  font-style:italic;font-weight:300;
+  color:transparent;
+  background:linear-gradient(120deg,var(--indigo) 0%,var(--violet) 50%,var(--emerald) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero-sub{
+  font-size:clamp(16px,1.8vw,20px);color:var(--text2);max-width:580px;
+  line-height:1.75;margin:24px auto 0;position:relative;z-index:1;font-weight:400;
+}
+
+.hero-actions{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;
+  margin-top:44px;position:relative;z-index:1;
+}
+.btn-primary{
+  background:var(--ink);color:#fff;padding:14px 32px;border-radius:14px;
+  font-size:15px;font-weight:700;text-decoration:none;border:none;cursor:pointer;
+  transition:all 180ms;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em;
+  box-shadow:0 8px 24px rgba(8,9,26,0.25);
+}
+.btn-primary:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,33,182,0.30);}
+.btn-outline{
+  background:transparent;color:var(--ink);padding:13px 28px;border-radius:14px;
+  font-size:15px;font-weight:600;text-decoration:none;border:1.5px solid rgba(26,28,48,0.25);
+  transition:all 150ms;display:flex;align-items:center;gap:8px;
+}
+.btn-outline:hover{background:rgba(26,28,48,0.06);border-color:rgba(26,28,48,0.40);}
+
+.hero-proof{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;
+  margin-top:52px;position:relative;z-index:1;
+}
+.proof-stat{text-align:center;}
+.proof-num{font-family:var(--fd);font-weight:900;font-size:32px;letter-spacing:-0.03em;color:var(--ink);}
+.proof-label{font-size:12px;color:var(--muted);font-weight:500;margin-top:2px;}
+.proof-divider{width:1px;height:40px;background:rgba(26,28,48,0.12);}
+
+/* ═══════════════════════════════
+   SECTION COMMON
+═══════════════════════════════ */
+.section{padding:96px 56px;}
+.section-dark{background:var(--ink);color:#e8eaf8;}
+.section-ink2{background:var(--ink2);color:#e8eaf8;}
+.section-paper{background:var(--paper);}
+.section-paper2{background:var(--paper2);}
+
+.section-tag{
+  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:10px;margin-bottom:16px;
+}
+.section-tag-line{flex:1;height:1px;background:rgba(26,28,48,0.12);}
+.section-dark .section-tag,.section-ink2 .section-tag{color:rgba(232,234,248,0.40);}
+.section-dark .section-tag-line,.section-ink2 .section-tag-line{background:rgba(232,234,248,0.10);}
+
+.section-h2{
+  font-family:var(--fd);font-weight:900;font-size:clamp(32px,4vw,54px);
+  letter-spacing:-0.03em;line-height:1.1;color:var(--ink);max-width:700px;
+}
+.section-dark .section-h2,.section-ink2 .section-h2{color:#fff;}
+
+.section-lead{
+  font-size:clamp(15px,1.5vw,18px);color:var(--text2);max-width:600px;
+  line-height:1.75;margin-top:14px;font-weight:400;
+}
+.section-dark .section-lead,.section-ink2 .section-lead{color:rgba(232,234,248,0.60);}
+
+/* ═══════════════════════════════
+   PROBLEM SECTION
+═══════════════════════════════ */
+.problem-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+  max-width:1100px;margin:60px auto 0;
+}
+.problem-stats{display:flex;flex-direction:column;gap:20px;}
+.problem-stat{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(232,234,248,0.10);
+  border-radius:16px;padding:24px 26px;
+  display:flex;align-items:flex-start;gap:16px;
+}
+.problem-stat-num{
+  font-family:var(--fd);font-weight:900;font-size:42px;letter-spacing:-0.04em;
+  line-height:1;flex-shrink:0;
+}
+.problem-stat-num.red{color:#f87171;}
+.problem-stat-num.amber{color:#fbbf24;}
+.problem-stat-num.violet{color:#c4baff;}
+.problem-stat-text{padding-top:4px;}
+.problem-stat-label{font-size:15px;font-weight:600;color:#e8eaf8;margin-bottom:4px;}
+.problem-stat-sub{font-size:13px;color:rgba(232,234,248,0.50);line-height:1.5;}
+
+.problem-callout{
+  background:rgba(99,58,237,0.12);border:1px solid rgba(99,58,237,0.25);
+  border-radius:20px;padding:32px;
+}
+.problem-callout-q{
+  font-family:var(--fd);font-weight:700;font-style:italic;
+  font-size:clamp(20px,2vw,26px);color:#c4baff;line-height:1.4;margin-bottom:16px;
+}
+.problem-callout-a{font-size:15px;color:rgba(232,234,248,0.65);line-height:1.7;}
+
+/* ═══════════════════════════════
+   SOLUTION / TOOLS SECTION
+═══════════════════════════════ */
+.tools-intro{max-width:700px;margin:0 auto 60px;text-align:center;}
+.tools-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;max-width:1100px;margin:0 auto;
+}
+.tool-card{
+  background:var(--cream);border:1px solid rgba(26,28,48,0.10);
+  border-radius:20px;padding:28px;position:relative;overflow:hidden;
+  transition:transform 250ms cubic-bezier(0.34,1.3,0.64,1),box-shadow 250ms,border-color 250ms;
+}
+.tool-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(26,28,48,0.12);border-color:rgba(26,28,48,0.18);}
+.tool-card::before{content:'';position:absolute;inset:0;border-radius:20px;opacity:0;transition:opacity 250ms;pointer-events:none;}
+.tool-card:hover::before{opacity:1;}
+
+/* Tool colour themes */
+.tc-indigo::before{background:radial-gradient(ellipse at 0% 0%,rgba(67,56,202,0.07),transparent 60%);}
+.tc-indigo:hover{border-color:rgba(67,56,202,0.30);}
+.tc-cyan::before{background:radial-gradient(ellipse at 0% 0%,rgba(8,145,178,0.07),transparent 60%);}
+.tc-cyan:hover{border-color:rgba(8,145,178,0.30);}
+.tc-slate::before{background:radial-gradient(ellipse at 0% 0%,rgba(71,85,105,0.07),transparent 60%);}
+.tc-slate:hover{border-color:rgba(71,85,105,0.30);}
+.tc-rose::before{background:radial-gradient(ellipse at 0% 0%,rgba(190,18,60,0.07),transparent 60%);}
+.tc-rose:hover{border-color:rgba(190,18,60,0.30);}
+.tc-amber::before{background:radial-gradient(ellipse at 0% 0%,rgba(217,119,6,0.07),transparent 60%);}
+.tc-amber:hover{border-color:rgba(217,119,6,0.30);}
+
+.tc-icon{
+  width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:16px;position:relative;z-index:1;
+}
+.tc-grade{font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;position:relative;z-index:1;}
+.tc-name{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:10px;position:relative;z-index:1;}
+.tc-desc{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:18px;position:relative;z-index:1;}
+.tc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;position:relative;z-index:1;}
+.tc-tag{
+  font-family:var(--fm);font-size:10px;padding:3px 9px;border-radius:6px;
+  background:rgba(26,28,48,0.06);border:1px solid rgba(26,28,48,0.09);
+  color:var(--text2);
+}
+.tc-link{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;
+  text-decoration:none;padding:8px 16px;border-radius:10px;border:1.5px solid rgba(26,28,48,0.15);
+  color:var(--ink);transition:all 140ms;position:relative;z-index:1;
+}
+.tc-link:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+/* ═══════════════════════════════
+   FEATURES BENTO GRID
+═══════════════════════════════ */
+.bento{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:auto;
+  gap:16px;max-width:1100px;margin:60px auto 0;
+}
+.bento-cell{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(232,234,248,0.10);
+  border-radius:20px;padding:28px;overflow:hidden;position:relative;
+}
+.bento-cell:nth-child(1){grid-column:span 5;}
+.bento-cell:nth-child(2){grid-column:span 7;}
+.bento-cell:nth-child(3){grid-column:span 4;}
+.bento-cell:nth-child(4){grid-column:span 4;}
+.bento-cell:nth-child(5){grid-column:span 4;}
+.bento-cell:nth-child(6){grid-column:span 7;}
+.bento-cell:nth-child(7){grid-column:span 5;}
+
+.bento-icon{font-size:28px;margin-bottom:14px;display:block;}
+.bento-h3{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:-0.02em;color:#fff;margin-bottom:8px;}
+.bento-p{font-size:13px;color:rgba(232,234,248,0.55);line-height:1.65;}
+.bento-highlight{color:rgba(196,186,255,0.90);font-weight:600;}
+
+/* Mini XP bar in bento */
+.bento-xp-demo{margin-top:16px;}
+.bento-level-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.bento-level-name{font-family:var(--fm);font-size:11px;color:rgba(232,234,248,0.50);}
+.bento-level-val{font-family:var(--fm);font-size:11px;color:#c4baff;font-weight:600;}
+.bento-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
+.bento-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#7c3aed,#059669);transition:width 1.2s cubic-bezier(0.34,1.1,0.64,1);}
+
+/* Streak dots in bento */
+.bento-streak-row{display:flex;gap:4px;margin-top:12px;flex-wrap:wrap;}
+.bento-dot{width:20px;height:20px;border-radius:5px;background:rgba(255,255,255,0.06);}
+.bento-dot.active{background:rgba(124,109,250,0.70);}
+.bento-dot.today{background:#7c3aed;box-shadow:0 0 8px rgba(124,109,250,0.50);}
+
+/* Badge shelf in bento */
+.bento-badges{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.bento-badge{
+  width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);
+}
+.bento-badge.locked{opacity:0.22;filter:saturate(0.2);}
+
+/* Interactive quiz demo in bento */
+.bento-quiz{margin-top:14px;}
+.bento-q{font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:10px;}
+.bento-opts{display:flex;flex-direction:column;gap:6px;}
+.bento-opt{
+  padding:8px 12px;border-radius:8px;font-size:12px;
+  border:1px solid rgba(232,234,248,0.10);background:rgba(255,255,255,0.04);
+  color:rgba(232,234,248,0.60);cursor:pointer;transition:all 130ms;text-align:left;
+}
+.bento-opt:hover{background:rgba(124,109,250,0.18);border-color:rgba(124,109,250,0.35);color:#c4baff;}
+.bento-opt.correct{background:rgba(5,150,105,0.15);border-color:rgba(5,150,105,0.40);color:#6ee7b7;}
+.bento-opt.wrong{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.35);color:#fca5a5;}
+
+/* Code block in bento */
+.bento-code{
+  background:rgba(0,0,0,0.40);border-radius:10px;padding:12px 14px;
+  font-family:var(--fm);font-size:11px;line-height:1.8;color:rgba(232,234,248,0.70);
+  margin-top:12px;overflow:hidden;position:relative;
+}
+.bento-code .kw{color:#c4baff;font-weight:600;}
+.bento-code .str{color:#86efac;}
+.bento-code .num{color:#fbbf24;}
+.bento-code .cmt{color:#4b5563;font-style:italic;}
+
+/* AI tutor demo in bento */
+.bento-chat{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.bento-msg{display:flex;gap:8px;align-items:flex-start;}
+.bento-msg-icon{width:24px;height:24px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.bento-msg.ai .bento-msg-icon{background:linear-gradient(135deg,#4f46e5,#10b981);}
+.bento-msg.user .bento-msg-icon{background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.12);}
+.bento-bubble{font-size:11px;line-height:1.5;padding:7px 10px;border-radius:9px;}
+.bento-msg.ai .bento-bubble{background:rgba(255,255,255,0.06);color:rgba(232,234,248,0.75);}
+.bento-msg.user .bento-bubble{background:rgba(99,58,237,0.20);color:rgba(196,186,255,0.90);}
+
+/* ═══════════════════════════════
+   CURRICULUM SECTION
+═══════════════════════════════ */
+.curriculum-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+  max-width:1100px;margin:52px auto 0;
+}
+.curriculum-col{display:flex;flex-direction:column;gap:8px;}
+.curriculum-header{
+  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  color:var(--muted);padding-bottom:8px;border-bottom:1px solid rgba(26,28,48,0.10);margin-bottom:4px;
+}
+.curriculum-item{
+  background:var(--cream);border:1px solid rgba(26,28,48,0.08);border-radius:9px;
+  padding:9px 12px;font-size:12px;font-weight:500;color:var(--text2);
+  transition:all 140ms;
+}
+.curriculum-item:hover{background:white;border-color:rgba(26,28,48,0.15);color:var(--text);}
+.curriculum-item.done{border-color:rgba(5,150,105,0.30);background:rgba(5,150,105,0.05);color:var(--emerald);}
+.curriculum-item.done::before{content:"✓ ";opacity:0.8;}
+.curriculum-item.soon{opacity:0.45;font-style:italic;}
+
+/* ═══════════════════════════════
+   GAMIFICATION SHOWCASE
+═══════════════════════════════ */
+.gamif-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+  max-width:1100px;margin:60px auto 0;
+}
+.gamif-text{}
+.gamif-levels{display:flex;flex-direction:column;gap:8px;}
+.gamif-level{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border-radius:12px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(232,234,248,0.08);
+  transition:all 200ms;
+}
+.gamif-level.current{
+  background:rgba(124,109,250,0.14);border-color:rgba(124,109,250,0.30);
+  box-shadow:0 0 0 4px rgba(124,109,250,0.08);
+}
+.gamif-level-num{
+  font-family:var(--fm);font-size:10px;font-weight:600;
+  width:32px;text-align:center;color:rgba(232,234,248,0.35);
+}
+.gamif-level.current .gamif-level-num{color:#c4baff;}
+.gamif-level-name{font-size:13px;font-weight:600;color:rgba(232,234,248,0.60);flex:1;}
+.gamif-level.current .gamif-level-name{color:#e8eaf8;}
+.gamif-level-xp{font-family:var(--fm);font-size:10px;color:rgba(232,234,248,0.30);}
+.gamif-level.current .gamif-level-xp{color:rgba(196,186,255,0.65);}
+.gamif-level-bar{width:60px;height:3px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
+.gamif-level-fill{height:100%;background:linear-gradient(90deg,var(--indigo),var(--emerald));border-radius:99px;}
+
+/* ═══════════════════════════════
+   TESTIMONIAL / VISION
+═══════════════════════════════ */
+.vision-wrap{max-width:800px;margin:0 auto;text-align:center;}
+.vision-quote{
+  font-family:var(--fd);font-weight:300;font-style:italic;
+  font-size:clamp(22px,2.5vw,34px);line-height:1.5;
+  color:#fff;letter-spacing:-0.01em;margin-bottom:28px;
+}
+.vision-quote strong{font-weight:700;font-style:normal;color:#c4baff;}
+.vision-author{font-family:var(--fm);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(232,234,248,0.35);}
+
+/* ═══════════════════════════════
+   ROADMAP
+═══════════════════════════════ */
+.roadmap{max-width:900px;margin:60px auto 0;display:flex;flex-direction:column;gap:0;}
+.roadmap-item{
+  display:grid;grid-template-columns:120px 1fr;gap:32px;
+  padding:24px 0;border-bottom:1px solid rgba(26,28,48,0.08);
+  align-items:start;
+}
+.roadmap-item:last-child{border-bottom:none;}
+.roadmap-phase{
+  font-family:var(--fm);font-size:10px;font-weight:600;letter-spacing:0.10em;
+  text-transform:uppercase;padding-top:3px;
+}
+.roadmap-phase.done{color:var(--emerald);}
+.roadmap-phase.active{color:var(--indigo);}
+.roadmap-phase.next{color:var(--amber);}
+.roadmap-phase.future{color:var(--muted);}
+.roadmap-content{}
+.roadmap-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em;}
+.roadmap-desc{font-size:14px;color:var(--text2);line-height:1.6;}
+.roadmap-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.roadmap-tag{
+  font-family:var(--fm);font-size:10px;padding:3px 9px;border-radius:6px;
+  background:rgba(26,28,48,0.06);color:var(--text2);
+}
+.roadmap-tag.done-tag{background:rgba(5,150,105,0.10);color:var(--emerald);}
+.roadmap-tag.active-tag{background:rgba(67,56,202,0.10);color:var(--indigo);}
+
+/* ═══════════════════════════════
+   PRICING / PLANS
+═══════════════════════════════ */
+.plans-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  max-width:920px;margin:60px auto 0;
+}
+.plan-card{
+  background:var(--cream);border:1.5px solid rgba(26,28,48,0.10);
+  border-radius:22px;padding:32px;position:relative;overflow:hidden;
+}
+.plan-card.featured{
+  background:var(--ink);color:#e8eaf8;border-color:var(--indigo);
+  box-shadow:0 20px 60px rgba(8,9,26,0.25);
+}
+.plan-badge{
+  position:absolute;top:16px;right:16px;
+  font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  padding:3px 10px;border-radius:99px;
+  background:rgba(67,56,202,0.15);border:1px solid rgba(67,56,202,0.30);color:#c4baff;
+}
+.plan-name{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:6px;}
+.plan-card.featured .plan-name{color:#fff;}
+.plan-price{
+  font-family:var(--fd);font-weight:900;font-size:clamp(30px,3vw,42px);letter-spacing:-0.04em;
+  color:var(--ink);margin:16px 0 6px;line-height:1;
+}
+.plan-card.featured .plan-price{color:#fff;}
+.plan-period{font-size:13px;color:var(--muted);font-weight:400;}
+.plan-card.featured .plan-period{color:rgba(232,234,248,0.50);}
+.plan-desc{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6;}
+.plan-card.featured .plan-desc{color:rgba(232,234,248,0.55);}
+.plan-features{display:flex;flex-direction:column;gap:9px;margin-bottom:28px;}
+.plan-feature{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--text2);}
+.plan-card.featured .plan-feature{color:rgba(232,234,248,0.70);}
+.plan-feature-check{
+  width:18px;height:18px;border-radius:5px;flex-shrink:0;
+  background:rgba(5,150,105,0.15);display:flex;align-items:center;justify-content:center;
+  font-size:10px;color:var(--emerald);
+}
+.plan-cta{
+  display:block;text-align:center;padding:12px 20px;border-radius:12px;
+  font-size:14px;font-weight:700;text-decoration:none;transition:all 150ms;letter-spacing:-0.01em;
+}
+.plan-cta-outline{border:1.5px solid rgba(26,28,48,0.20);color:var(--ink);}
+.plan-cta-outline:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+.plan-cta-solid{background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;box-shadow:0 4px 18px rgba(67,56,202,0.30);}
+.plan-cta-solid:hover{box-shadow:0 6px 26px rgba(67,56,202,0.45);transform:translateY(-1px);}
+.plan-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;}
+
+/* ═══════════════════════════════
+   CTA SECTION
+═══════════════════════════════ */
+.cta-wrap{text-align:center;max-width:700px;margin:0 auto;}
+.cta-h2{font-family:var(--fd);font-weight:900;font-size:clamp(32px,4vw,54px);letter-spacing:-0.03em;line-height:1.1;color:#fff;}
+.cta-sub{font-size:17px;color:rgba(232,234,248,0.55);margin:16px 0 40px;line-height:1.7;}
+.cta-contact{
+  font-size:14px;color:rgba(232,234,248,0.40);margin-top:24px;
+}
+.cta-contact a{color:rgba(196,186,255,0.70);text-decoration:none;transition:color 130ms;}
+.cta-contact a:hover{color:#c4baff;}
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer{
+  background:var(--ink2);padding:32px 56px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  border-top:1px solid rgba(232,234,248,0.06);
+}
+.footer-brand{font-family:var(--fd);font-weight:700;font-size:17px;color:rgba(232,234,248,0.60);}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-link{font-size:12px;color:rgba(232,234,248,0.30);text-decoration:none;transition:color 130ms;}
+.footer-link:hover{color:rgba(232,234,248,0.70);}
+.footer-copy{font-size:12px;color:rgba(232,234,248,0.20);}
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media(max-width:900px){
+  nav{padding:14px 24px;}
+  .nav-links .nav-link:not(.nav-cta){display:none;}
+  .section{padding:64px 24px;}
+  .problem-grid,.gamif-grid{grid-template-columns:1fr;}
+  .bento{grid-template-columns:1fr 1fr;}
+  .bento-cell:nth-child(n){grid-column:span 1;}
+  .bento-cell:nth-child(2){grid-column:span 2;}
+  .curriculum-grid{grid-template-columns:repeat(2,1fr);}
+  .plans-grid{grid-template-columns:1fr;}
+  footer{padding:24px;}
+}
+@media(max-width:600px){
+  .hero{padding:100px 20px 60px;}
+  .hero-h1{font-size:clamp(38px,10vw,56px);}
+  .hero-proof{gap:16px;}
+  .proof-divider{display:none;}
+  .bento{grid-template-columns:1fr;}
+  .bento-cell:nth-child(n){grid-column:span 1;}
+  .curriculum-grid{grid-template-columns:1fr;}
+  .plans-grid{grid-template-columns:1fr;}
+  .roadmap-item{grid-template-columns:1fr;gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#" class="nav-brand">⚗️ <span>The Magic Lab</span></a>
+  <div class="nav-links">
+    <a href="#tools"       class="nav-link">Tools</a>
+    <a href="#features"    class="nav-link">Features</a>
+    <a href="#curriculum"  class="nav-link">Curriculum</a>
+    <a href="#roadmap"     class="nav-link">Roadmap</a>
+    <a href="#pricing"     class="nav-link">Pricing</a>
+    <a href="index.html"   class="nav-cta">Launch Platform →</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="reveal">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>South African EdTech — Built for CAPS &amp; IEB</div>
+  </div>
+  <h1 class="hero-h1 reveal delay-1">
+    STEM education<br>that <em>actually works</em>
+  </h1>
+  <p class="hero-sub reveal delay-2">
+    Five browser-based learning tools, gamified progress tracking, an AI tutor, and interactive quizzes — all aligned to the South African school curriculum. No app downloads. No setup. Just learning.
+  </p>
+  <div class="hero-actions reveal delay-3">
+    <a href="index.html" class="btn-primary">
+      <span>Open the Platform</span> →
+    </a>
+    <a href="#tools" class="btn-outline">See what's inside</a>
+  </div>
+  <div class="hero-proof reveal delay-4">
+    <div class="proof-stat"><div class="proof-num">5</div><div class="proof-label">Learning tools live</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="proof-num">Gr 8–12</div><div class="proof-label">Full curriculum span</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="proof-num">15</div><div class="proof-label">XP levels to earn</div></div>
+    <div class="proof-divider"></div>
+    <div class="proof-stat"><div class="proof-num">27</div><div class="proof-label">Badges to unlock</div></div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM ═══ -->
+<section class="section section-dark" id="problem">
+  <div class="section-tag reveal">
+    <span>The problem</span>
+    <div class="section-tag-line"></div>
+  </div>
+  <h2 class="section-h2 reveal delay-1">South African students deserve better tools</h2>
+  <p class="section-lead reveal delay-2">Existing IT and mathematics education resources are outdated, expensive, or built for other countries. Students paste code from YouTube. Teachers battle with software installations. No one measures what's actually learned.</p>
+
+  <div class="problem-grid">
+    <div class="problem-stats reveal-left">
+      <div class="problem-stat">
+        <div class="problem-stat-num red">67%</div>
+        <div class="problem-stat-text">
+          <div class="problem-stat-label">Fail mathematics</div>
+          <div class="problem-stat-sub">In 2023, only 33% of Grade 12 learners achieved 50%+ in Mathematics nationally</div>
+        </div>
+      </div>
+      <div class="problem-stat">
+        <div class="problem-stat-num amber">0</div>
+        <div class="problem-stat-text">
+          <div class="problem-stat-label">Dedicated coding tools</div>
+          <div class="problem-stat-sub">No browser-based Java or HTML/CSS learning tool exists that is aligned to CAPS or IEB IT</div>
+        </div>
+      </div>
+      <div class="problem-stat">
+        <div class="problem-stat-num violet">R0</div>
+        <div class="problem-stat-text">
+          <div class="problem-stat-label">Accessible entry price</div>
+          <div class="problem-stat-sub">Quality EdTech typically costs R800–R3000/year per student — out of reach for most South African families</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-callout reveal-right">
+      <div class="problem-callout-q">"My learners have to install Java on 30 different computers before we can even start the first lesson."</div>
+      <div class="problem-callout-a">The Magic Lab runs entirely in the browser. Zero installation. Zero IT tickets. Students open a link and they're coding in 10 seconds — on a school Chromebook, a phone, or a family laptop.</div>
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(232,234,248,0.10);">
+        <div class="problem-callout-q" style="font-size:18px;">"I have no idea if my students actually understand the work or just copy-paste."</div>
+        <div class="problem-callout-a">Every lesson, quiz, code run, and interactive challenge is tracked per student. Teachers see exactly where understanding breaks down — in real time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TOOLS ═══ -->
+<section class="section section-paper" id="tools">
+  <div class="section-tag reveal"><span>The platform</span><div class="section-tag-line"></div></div>
+  <div class="tools-intro">
+    <h2 class="section-h2 reveal delay-1" style="margin:0 auto;">Five tools. One platform. One login.</h2>
+    <p class="section-lead reveal delay-2" style="margin:14px auto 0;">Every tool is purpose-built for the South African curriculum. Students use the same account, XP, and badge shelf across all of them.</p>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card tc-indigo reveal delay-1">
+      <div class="tc-icon" style="background:rgba(67,56,202,0.12);border:1px solid rgba(67,56,202,0.20);">🧞</div>
+      <div class="tc-grade">Grade 8 – 9</div>
+      <div class="tc-name">Java Genie</div>
+      <div class="tc-desc">Turtle graphics, loops, and methods — students write real Java from lesson one and watch programs draw on screen. Aligned to CAPS Gr 8–9 IT.</div>
+      <div class="tc-tags">
+        <span class="tc-tag">Java SE</span><span class="tc-tag">Turtle Graphics</span><span class="tc-tag">OOP Intro</span><span class="tc-tag">Methods</span>
+      </div>
+      <a href="java-genie.html" class="tc-link">Try it →</a>
+    </div>
+
+    <div class="tool-card tc-cyan reveal delay-2">
+      <div class="tc-icon" style="background:rgba(8,145,178,0.12);border:1px solid rgba(8,145,178,0.20);">🌐</div>
+      <div class="tc-grade">Grade 8 – 9</div>
+      <div class="tc-name">Web Wizard</div>
+      <div class="tc-desc">Live HTML and CSS editor with instant preview. Students see their website change as they type. Step-by-step tutorial built into the tool.</div>
+      <div class="tc-tags">
+        <span class="tc-tag">HTML5</span><span class="tc-tag">CSS3</span><span class="tc-tag">Live Preview</span><span class="tc-tag">Web Design</span>
+      </div>
+      <a href="web-wizard.html" class="tc-link">Try it →</a>
+    </div>
+
+    <div class="tool-card tc-slate reveal delay-3">
+      <div class="tc-icon" style="background:rgba(71,85,105,0.12);border:1px solid rgba(71,85,105,0.20);">💻</div>
+      <div class="tc-grade">Grade 8 – 10</div>
+      <div class="tc-name">Computer Codex</div>
+      <div class="tc-desc">Digital literacy from Windows basics to Excel formulas and AI ethics. 25 structured lessons across 9 units with interactive quizzes. Includes a full AI/ML unit.</div>
+      <div class="tc-tags">
+        <span class="tc-tag">Windows OS</span><span class="tc-tag">Microsoft Office</span><span class="tc-tag">AI &amp; Ethics</span><span class="tc-tag">25 Lessons</span>
+      </div>
+      <a href="computer-codex.html" class="tc-link">Try it →</a>
+    </div>
+
+    <div class="tool-card tc-rose reveal delay-1">
+      <div class="tc-icon" style="background:rgba(190,18,60,0.12);border:1px solid rgba(190,18,60,0.20);">📜</div>
+      <div class="tc-grade">Grade 10 – 12</div>
+      <div class="tc-name">Code Conjurer</div>
+      <div class="tc-desc">Full IEB/CAPS IT for Grades 10–12. OOP, arrays, algorithms, exception handling, sorting. Built-in Java interpreter with instant output. Exam-aligned.</div>
+      <div class="tc-tags">
+        <span class="tc-tag">Java OOP</span><span class="tc-tag">Algorithms</span><span class="tc-tag">IEB Aligned</span><span class="tc-tag">IDE Built-in</span>
+      </div>
+      <a href="code-conjurer.html" class="tc-link">Try it →</a>
+    </div>
+
+    <div class="tool-card tc-amber reveal delay-2">
+      <div class="tc-icon" style="background:rgba(217,119,6,0.12);border:1px solid rgba(217,119,6,0.20);">🔢</div>
+      <div class="tc-grade">Grade 8 – 12</div>
+      <div class="tc-name">Math Magician</div>
+      <div class="tc-desc">Algebra, geometry, trigonometry, and statistics across all school grades. Practice questions, worked examples, and AI-powered feedback on wrong answers.</div>
+      <div class="tc-tags">
+        <span class="tc-tag">CAPS Maths</span><span class="tc-tag">AI Feedback</span><span class="tc-tag">All Grades</span><span class="tc-tag">Gr 8 Live</span>
+      </div>
+      <a href="math-magician/index.html" class="tc-link">Try it →</a>
+    </div>
+
+    <div class="tool-card reveal delay-3" style="background:rgba(26,28,48,0.03);border-style:dashed;opacity:0.65;">
+      <div class="tc-icon" style="background:rgba(20,184,166,0.10);border:1px dashed rgba(20,184,166,0.25);">🔮</div>
+      <div class="tc-grade" style="color:#9ca3af;">Grade 9 – 12</div>
+      <div class="tc-name" style="color:#9ca3af;">Model Mage</div>
+      <div class="tc-desc" style="color:#9ca3af;">Browser-based 3D modelling and CAD fundamentals. In development.</div>
+      <div class="tc-tags"><span class="tc-tag">3D Modelling</span><span class="tc-tag">CAD</span><span class="tc-tag">In Development</span></div>
+      <span style="font-family:var(--fm);font-size:11px;color:#9ca3af;font-weight:600;">Coming 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES BENTO ═══ -->
+<section class="section section-dark" id="features">
+  <div class="section-tag reveal"><span>Platform features</span><div class="section-tag-line"></div></div>
+  <h2 class="section-h2 reveal delay-1">Not just content — a complete learning system</h2>
+  <p class="section-lead reveal delay-2">The platform tracks, rewards, challenges, and tutors. Every feature is purpose-built for school-aged learners in South Africa.</p>
+
+  <div class="bento reveal delay-2">
+
+    <!-- Cell 1: Gamification -->
+    <div class="bento-cell">
+      <span class="bento-icon">🏆</span>
+      <div class="bento-h3">Gamified XP &amp; Levels</div>
+      <div class="bento-p">Students earn XP for every lesson, quiz, and code run. <span class="bento-highlight">15 levels from Apprentice to Grand Master</span> — designed to span a full 5-year school career.</div>
+      <div class="bento-xp-demo">
+        <div class="bento-level-row"><span class="bento-level-name">Level 4 — Builder</span><span class="bento-level-val">620 / 800 XP</span></div>
+        <div class="bento-bar"><div class="bento-bar-fill" id="xpBarDemo" style="width:0%"></div></div>
+        <div style="margin-top:8px;font-family:var(--fm);font-size:10px;color:rgba(232,234,248,0.30);">180 XP to Level 5 — Wizard</div>
+      </div>
+    </div>
+
+    <!-- Cell 2: AI Tutor -->
+    <div class="bento-cell">
+      <span class="bento-icon">🧙</span>
+      <div class="bento-h3">Built-in AI Tutor</div>
+      <div class="bento-p">An AI tutor trained on The Magic Lab's curriculum answers questions about Java, HTML/CSS, maths, and AI — in plain language, at the right level.</div>
+      <div class="bento-chat">
+        <div class="bento-msg user">
+          <div class="bento-msg-icon">🎓</div>
+          <div class="bento-bubble">Why does my for loop run forever?</div>
+        </div>
+        <div class="bento-msg ai">
+          <div class="bento-msg-icon">🧙</div>
+          <div class="bento-bubble">Infinite loops usually happen when the condition never becomes false. Check that your loop variable is actually changing — e.g. i++ instead of i--!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cell 3: Streak -->
+    <div class="bento-cell">
+      <span class="bento-icon">🔥</span>
+      <div class="bento-h3">Daily Streaks</div>
+      <div class="bento-p">Students build daily habits. One lesson per day maintains a streak. <span class="bento-highlight">Weekly grace period</span> prevents discouragement.</div>
+      <div class="bento-streak-row" id="streakDots"></div>
+    </div>
+
+    <!-- Cell 4: Badges -->
+    <div class="bento-cell">
+      <span class="bento-icon">🎖️</span>
+      <div class="bento-h3">27 Badges</div>
+      <div class="bento-p">Achievements for milestones, streaks, quiz mastery, tool completion, and exploration across the platform.</div>
+      <div class="bento-badges">
+        <div class="bento-badge">🌱</div>
+        <div class="bento-badge">🔥</div>
+        <div class="bento-badge">🎯</div>
+        <div class="bento-badge">🧞</div>
+        <div class="bento-badge">💻</div>
+        <div class="bento-badge">👑</div>
+        <div class="bento-badge locked">🌍</div>
+        <div class="bento-badge locked">⚡</div>
+        <div class="bento-badge locked">💎</div>
+      </div>
+    </div>
+
+    <!-- Cell 5: Interactive quizzes -->
+    <div class="bento-cell">
+      <span class="bento-icon">🧩</span>
+      <div class="bento-h3">4 Interactive Challenge Types</div>
+      <div class="bento-p">Beyond multiple choice: fill-in-the-blank, spot-the-bug, arrange-the-blocks, predict-the-output.</div>
+      <div class="bento-quiz">
+        <div class="bento-q">🐛 Spot the bug — click the broken line:</div>
+        <div class="bento-opts">
+          <div class="bento-opt" onclick="this.classList.add('wrong')">for (int i = 1; i &lt;= 5; i++) {</div>
+          <div class="bento-opt correct" onclick="">    System.out.println(i * i)</div>
+          <div class="bento-opt" onclick="this.classList.add('wrong')">}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cell 6: Progress dashboard -->
+    <div class="bento-cell">
+      <span class="bento-icon">📊</span>
+      <div class="bento-h3">Student Progress Dashboard</div>
+      <div class="bento-p">Every student has a <span class="bento-highlight">player profile</span> showing XP totals, level progress, a 10-week activity heatmap, per-tool progress bars, earned badges, and a live activity feed.</div>
+      <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:9px;padding:10px 12px;">
+          <div style="font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(232,234,248,0.30);margin-bottom:4px;">Total XP</div>
+          <div style="font-family:var(--fd);font-size:24px;font-weight:900;color:#c4baff;letter-spacing:-0.03em;">1,240</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:9px;padding:10px 12px;">
+          <div style="font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(232,234,248,0.30);margin-bottom:4px;">Streak</div>
+          <div style="font-family:var(--fd);font-size:24px;font-weight:900;color:#fb923c;letter-spacing:-0.03em;">14 🔥</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cell 7: Code runs in browser -->
+    <div class="bento-cell">
+      <span class="bento-icon">▶️</span>
+      <div class="bento-h3">Java Runs in the Browser</div>
+      <div class="bento-p">A custom Java interpreter executes student code instantly — no JVM install, no terminal, no IT support needed.</div>
+      <div class="bento-code">
+<span class="kw">public class</span> Hello {<br>
+  <span class="kw">public static void</span> main(String[] args) {<br>
+    System.out.println(<span class="str">"Hello, South Africa!"</span>);<br>
+  }<br>
+} <span class="cmt">// → Hello, South Africa!</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CURRICULUM ═══ -->
+<section class="section section-paper2" id="curriculum">
+  <div class="section-tag reveal"><span>Curriculum coverage</span><div class="section-tag-line"></div></div>
+  <h2 class="section-h2 reveal delay-1">Built for CAPS and IEB — not retrofitted</h2>
+  <p class="section-lead reveal delay-2">The Magic Lab was designed from the ground up around the South African curriculum. Every lesson maps to a specific grade and topic. Content gaps close as new grades are added.</p>
+
+  <div class="curriculum-grid reveal delay-2">
+    <div class="curriculum-col">
+      <div class="curriculum-header">Java / IT</div>
+      <div class="curriculum-item done">Gr 8 — Intro to Java</div>
+      <div class="curriculum-item done">Gr 9 — Loops &amp; Methods</div>
+      <div class="curriculum-item done">Gr 10 — OOP Basics</div>
+      <div class="curriculum-item done">Gr 11 — Arrays &amp; Sorting</div>
+      <div class="curriculum-item done">Gr 12 — File I/O &amp; Exceptions</div>
+    </div>
+    <div class="curriculum-col">
+      <div class="curriculum-header">Web Design</div>
+      <div class="curriculum-item done">Gr 8 — HTML Structure</div>
+      <div class="curriculum-item done">Gr 9 — CSS Styling</div>
+      <div class="curriculum-item soon">Gr 10 — JavaScript</div>
+      <div class="curriculum-item soon">Gr 11 — Responsive Design</div>
+      <div class="curriculum-item soon">Gr 12 — Frameworks Intro</div>
+    </div>
+    <div class="curriculum-col">
+      <div class="curriculum-header">Computer Literacy</div>
+      <div class="curriculum-item done">Windows OS</div>
+      <div class="curriculum-item done">File Management</div>
+      <div class="curriculum-item done">Microsoft Word &amp; Excel</div>
+      <div class="curriculum-item done">Computational Thinking</div>
+      <div class="curriculum-item done">AI &amp; Ethics (NEW)</div>
+    </div>
+    <div class="curriculum-col">
+      <div class="curriculum-header">Mathematics</div>
+      <div class="curriculum-item done">Gr 8 — Number Systems</div>
+      <div class="curriculum-item done">Gr 8 — Algebra</div>
+      <div class="curriculum-item soon">Gr 9 — Geometry</div>
+      <div class="curriculum-item soon">Gr 10 — Trigonometry</div>
+      <div class="curriculum-item soon">Gr 11–12 — Statistics</div>
+    </div>
+    <div class="curriculum-col">
+      <div class="curriculum-header">Gamification</div>
+      <div class="curriculum-item done">XP &amp; 15 Level system</div>
+      <div class="curriculum-item done">27 Badge achievements</div>
+      <div class="curriculum-item done">Daily streak tracking</div>
+      <div class="curriculum-item done">Player dashboard</div>
+      <div class="curriculum-item soon">Class leaderboards</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+      <span style="width:12px;height:12px;border-radius:3px;background:rgba(5,150,105,0.15);border:1px solid rgba(5,150,105,0.30);display:inline-block;"></span>
+      Live now
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+      <span style="width:12px;height:12px;border-radius:3px;background:rgba(26,28,48,0.06);display:inline-block;opacity:0.5;"></span>
+      In development
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GAMIFICATION ═══ -->
+<section class="section section-dark">
+  <div class="section-tag reveal"><span>Why students come back</span><div class="section-tag-line"></div></div>
+  <h2 class="section-h2 reveal delay-1">A 5-year progression system</h2>
+  <p class="section-lead reveal delay-2">The XP ceiling of 65,000 is calibrated so that Grand Master requires genuine dedication across all five school years. Early levels are achievable in weeks — keeping new students motivated from day one.</p>
+
+  <div class="gamif-grid">
+    <div class="gamif-text reveal-left">
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:32px;">
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;">
+          <div style="font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:6px;">XP is earned, never lost</div>
+          <div style="font-size:13px;color:rgba(232,234,248,0.45);line-height:1.6;">Every lesson, correct quiz answer, code run, and perfect score adds permanent XP. Rebalancing only ever adjusts thresholds upward — students never lose earned progress.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;">
+          <div style="font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:6px;">Encouragement, not punishment</div>
+          <div style="font-size:13px;color:rgba(232,234,248,0.45);line-height:1.6;">A missed streak shows "Your streak paused — restart today!" rather than punishment. One automatic grace period per week prevents weekend discouragement.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(232,234,248,0.08);border-radius:14px;padding:18px 20px;">
+          <div style="font-size:13px;font-weight:600;color:rgba(232,234,248,0.80);margin-bottom:6px;">Pilot-friendly design</div>
+          <div style="font-size:13px;color:rgba(232,234,248,0.45);line-height:1.6;">Level thresholds and XP rates live in a single config object. After a pilot, rebalancing is a one-line change per threshold — no database migrations, no student data changes.</div>
+        </div>
+      </div>
+    </div>
+    <div class="gamif-levels reveal-right">
+      <div style="font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:0.10em;color:rgba(232,234,248,0.35);margin-bottom:12px;">15 Level progression</div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 1</div><div class="gamif-level-name">Apprentice</div><div class="gamif-level-xp">0 XP</div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 2</div><div class="gamif-level-name">Coder</div><div class="gamif-level-xp">150 XP</div><div class="gamif-level-bar"><div class="gamif-level-fill" style="width:14%"></div></div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 3</div><div class="gamif-level-name">Maker</div><div class="gamif-level-xp">400 XP</div><div class="gamif-level-bar"><div class="gamif-level-fill" style="width:22%"></div></div></div>
+      <div class="gamif-level current"><div class="gamif-level-num">Lv 4</div><div class="gamif-level-name">Builder</div><div class="gamif-level-xp">800 XP</div><div class="gamif-level-bar"><div class="gamif-level-fill" style="width:36%"></div></div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 5</div><div class="gamif-level-name">Wizard</div><div class="gamif-level-xp">1,500 XP</div><div class="gamif-level-bar"><div class="gamif-level-fill" style="width:52%"></div></div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 6</div><div class="gamif-level-name">Architect</div><div class="gamif-level-xp">2,500 XP</div><div class="gamif-level-bar"><div class="gamif-level-fill" style="width:65%"></div></div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 7</div><div class="gamif-level-name">Conjurer</div><div class="gamif-level-xp">4,000 XP</div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 8</div><div class="gamif-level-name">Sorcerer</div><div class="gamif-level-xp">6,500 XP</div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 9</div><div class="gamif-level-name">Alchemist</div><div class="gamif-level-xp">10,000 XP</div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 10</div><div class="gamif-level-name">Enchanter</div><div class="gamif-level-xp">15,000 XP</div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv …</div><div class="gamif-level-name">…</div><div class="gamif-level-xp">…</div></div>
+      <div class="gamif-level "><div class="gamif-level-num">Lv 15</div><div class="gamif-level-name">Grand Master</div><div class="gamif-level-xp">65,000 XP</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VISION ═══ -->
+<section class="section section-ink2">
+  <div class="vision-wrap reveal">
+    <div class="vision-quote">
+      "Every South African student, regardless of school fees or geography, should have access to <strong>world-class STEM education</strong> that meets them exactly where they are."
+    </div>
+    <div class="vision-author">— Ruhan Janse van Rensburg, Founder</div>
+  </div>
+</section>
+
+<!-- ═══ ROADMAP ═══ -->
+<section class="section" id="roadmap">
+  <div class="section-tag reveal"><span>What's been built &amp; what's next</span><div class="section-tag-line"></div></div>
+  <h2 class="section-h2 reveal delay-1">Roadmap</h2>
+
+  <div class="roadmap reveal delay-2">
+    <div class="roadmap-item">
+      <div class="roadmap-phase done">✓ Phase 1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Platform Foundation</div>
+        <div class="roadmap-desc">Core tools launched, authentication with Supabase, student profiles, lesson progress tracking, service worker for offline use.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag done-tag">5 tools live</span>
+          <span class="roadmap-tag done-tag">Auth system</span>
+          <span class="roadmap-tag done-tag">Progress tracking</span>
+          <span class="roadmap-tag done-tag">PWA support</span>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-phase done">✓ Phase 2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">UI Overhaul &amp; AI Layer</div>
+        <div class="roadmap-desc">Full visual rework to premium design system. AI Tutor integrated. AI/ML unit added to Computer Codex. Interactive challenge engine (4 question types).</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag done-tag">New design system</span>
+          <span class="roadmap-tag done-tag">AI Tutor</span>
+          <span class="roadmap-tag done-tag">AI/ML curriculum</span>
+          <span class="roadmap-tag done-tag">Interactive quizzes</span>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-phase done">✓ Phase 3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Gamification Engine</div>
+        <div class="roadmap-desc">XP system, 15-level progression, 27 badges, daily streaks, activity heatmap, and the fully rebuilt student player profile dashboard.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag done-tag">XP &amp; Levels</span>
+          <span class="roadmap-tag done-tag">27 Badges</span>
+          <span class="roadmap-tag done-tag">Streaks</span>
+          <span class="roadmap-tag done-tag">Player Dashboard</span>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-phase active">► Now</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Content Expansion &amp; Pilot Preparation</div>
+        <div class="roadmap-desc">Expanding Math Magician to Grades 9–12. Adding interactive challenges across all tool lessons. Teacher dashboard and class management. Preparing for school pilot.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag active-tag">Math Gr 9–12</span>
+          <span class="roadmap-tag active-tag">More challenges</span>
+          <span class="roadmap-tag active-tag">Teacher dashboard</span>
+          <span class="roadmap-tag active-tag">Pilot prep</span>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-phase next">→ Next</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">School Pilot &amp; Teacher Tools</div>
+        <div class="roadmap-desc">Pilot with 2–3 Cape Town schools. Class leaderboards. Assignment-setting for teachers. Parent progress reports. Feedback-driven rebalancing of XP system.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">School pilot</span>
+          <span class="roadmap-tag">Class management</span>
+          <span class="roadmap-tag">Assignments</span>
+          <span class="roadmap-tag">Reports</span>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-phase future">2027</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Scale &amp; New Subjects</div>
+        <div class="roadmap-desc">Physical Science and Life Sciences tools. Afrikaans language support. Model Mage 3D tool. Mobile app. Provincial school partnerships.</div>
+        <div class="roadmap-tags">
+          <span class="roadmap-tag">Physical Science</span>
+          <span class="roadmap-tag">Life Sciences</span>
+          <span class="roadmap-tag">Mobile app</span>
+          <span class="roadmap-tag">Afrikaans</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="section section-paper2" id="pricing">
+  <div class="section-tag reveal"><span>Pricing</span><div class="section-tag-line"></div></div>
+  <h2 class="section-h2 reveal delay-1">Accessible at every level</h2>
+  <p class="section-lead reveal delay-2">Free for individual students. Affordable for schools. Designed so cost is never the reason a student can't access quality STEM education.</p>
+
+  <div class="plans-grid">
+    <div class="plan-card reveal delay-1">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">R0<span class="plan-period"> / forever</span></div>
+      <div class="plan-desc">For individual students exploring on their own.</div>
+      <div class="plan-features">
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>All 5 learning tools</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>XP, levels &amp; badges</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>AI Tutor access</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>Progress dashboard</div>
+      </div>
+      <a href="index.html" class="plan-cta plan-cta-outline">Get started free</a>
+    </div>
+
+    <div class="plan-card featured reveal delay-2">
+      <div class="plan-badge">Most popular</div>
+      <div class="plan-name">School</div>
+      <div class="plan-price">R<span id="schoolPrice">45</span><span class="plan-period"> / learner / month</span></div>
+      <div class="plan-desc">For schools wanting curriculum-aligned coverage with teacher oversight.</div>
+      <div class="plan-features">
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Everything in Free</div>
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Teacher dashboard</div>
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Class management</div>
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Progress reports</div>
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Assignment setting</div>
+        <div class="plan-feature"><div class="plan-feature-check" style="background:rgba(196,186,255,0.15);color:#c4baff;">✓</div>Priority support</div>
+      </div>
+      <a href="#contact" class="plan-cta plan-cta-solid">Contact for pricing</a>
+      <div class="plan-note" style="color:rgba(232,234,248,0.30);">Volume discounts for 50+ learners</div>
+    </div>
+
+    <div class="plan-card reveal delay-3">
+      <div class="plan-name">District</div>
+      <div class="plan-price">Custom</div>
+      <div class="plan-desc">For education departments or groups of schools looking for broad deployment.</div>
+      <div class="plan-features">
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>Everything in School</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>District analytics</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>Custom branding</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>Curriculum customisation</div>
+        <div class="plan-feature"><div class="plan-feature-check">✓</div>Dedicated support</div>
+      </div>
+      <a href="#contact" class="plan-cta plan-cta-outline">Let's talk</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="section section-dark" id="contact">
+  <div class="cta-wrap reveal">
+    <h2 class="cta-h2">Ready to bring The Magic Lab to your school?</h2>
+    <p class="cta-sub">Whether you're a teacher curious about a trial, a principal considering a pilot, or an investor looking at EdTech — let's have a conversation.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="index.html" class="btn-primary" style="font-size:16px;padding:16px 36px;">Open the Platform →</a>
+      <a href="mailto:ruhan@themagiclab.co.za" class="btn-outline" style="color:#e8eaf8;border-color:rgba(232,234,248,0.25);">✉️ Get in touch</a>
+    </div>
+    <div class="cta-contact">
+      <a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a>
+      &nbsp;·&nbsp;
+      <a href="https://themagiclab.co.za">themagiclab.co.za</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">⚗️ The Magic Lab</div>
+  <div class="footer-links">
+    <a href="index.html"             class="footer-link">Platform</a>
+    <a href="java-genie.html"        class="footer-link">Java Genie</a>
+    <a href="web-wizard.html"        class="footer-link">Web Wizard</a>
+    <a href="computer-codex.html"    class="footer-link">Computer Codex</a>
+    <a href="code-conjurer.html"     class="footer-link">Code Conjurer</a>
+    <a href="math-magician/index.html" class="footer-link">Math Magician</a>
+    <a href="dashboard-student.html" class="footer-link">My Progress</a>
+  </div>
+  <div class="footer-copy">© 2026 Ruhan Janse van Rensburg</div>
+</footer>
+
+<script>
+// ── Scroll reveal ──
+const revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+// ── Animated XP bar ──
+const xpBar = document.getElementById('xpBarDemo');
+setTimeout(() => { if (xpBar) xpBar.style.width = '78%'; }, 800);
+
+// ── Streak dots ──
+const streakContainer = document.getElementById('streakDots');
+if (streakContainer) {
+  const today = 18; // position in the row
+  for (let i = 0; i < 28; i++) {
+    const d = document.createElement('div');
+    d.className = 'bento-dot' + (i < today ? ' active' : '') + (i === today - 1 ? ' today' : '');
+    streakContainer.appendChild(d);
+  }
+}
+
+// ── Nav scroll effect ──
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 10 ? '0 4px 24px rgba(8,9,26,0.10)' : 'none';
+});
+
+// ── Gamification level bars animate on scroll ──
+const levelFills = document.querySelectorAll('.gamif-level-fill');
+const levelObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.transition = 'width 1s ease';
+      levelObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+levelFills.forEach(el => levelObserver.observe(el));
+
+// ── Smooth anchor scrolling ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
