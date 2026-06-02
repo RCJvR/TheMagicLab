@@ -93,7 +93,6 @@ MathMagician.registerChapter(3, {
                 expandedHTML?'<div style="display:flex;gap:0;align-items:baseline;flex-wrap:wrap;margin-bottom:2px;"><span style="color:rgba(221,225,240,0.40);width:130px;flex-shrink:0;">Expanded:</span><span style="font-size:12px;line-height:1.8;">'+expandedHTML+'</span></div>':'',
                 '<div style="display:flex;gap:0;align-items:baseline;margin-bottom:2px;"><span style="color:rgba(221,225,240,0.40);width:130px;flex-shrink:0;">Result:</span><span style="color:#6ee7b7;font-size:18px;font-weight:700;">'+fmt(result)+'</span></div>',
                 exp===0?'<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:2px;">Any non-zero base raised to the power 0 equals 1.</div>':'',
-                exp<0?'<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:2px;">Negative exponent: '+base+sup(-exp)+' = 1 ÷ '+fmt(Math.pow(base,-exp))+' = '+fmt(result)+'</div>':'',
               ];
               document.getElementById('expCalcOut').innerHTML=rows.filter(Boolean).join('');
             }
@@ -157,6 +156,7 @@ MathMagician.registerChapter(3, {
           <div class="example-step"><span class="step-num">4</span><span>Simplify <span class="math">x⁵ × x³ ÷ x⁴</span> → <span class="math">x⁵⁺³⁻⁴ = x⁴</span></span></div>
         </div>
         <div class="tip-box"><span class="tip-icon">💡</span><span>The laws only apply when the <strong>bases are the same</strong>. You cannot simplify <span class="math">2³ × 3²</span> using Law 1.</span></div>
+        <div class="tip-box" style="border-color:rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);"><span class="tip-icon">📚</span><span><strong>Grade 9 extension:</strong> Negative exponents (e.g. <span class="math">a⁻ⁿ = 1/aⁿ</span>) are covered in Grade 9. You do not need these for your Grade 8 exam.</span></div>
       
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Exponent Laws Explorer</div>
@@ -169,7 +169,7 @@ MathMagician.registerChapter(3, {
                   <option value="div">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</option>
                   <option value="pow">(aᵐ)ⁿ = aᵐⁿ</option>
                   <option value="zero">a⁰ = 1</option>
-                  <option value="neg">a⁻ⁿ = 1/aⁿ</option>
+                  <!-- Negative exponents (a⁻ⁿ) are Grade 9 content — not shown here -->
                 </select>
               </div>
               <div style="display:flex;flex-direction:column;gap:4px;">
@@ -212,12 +212,7 @@ MathMagician.registerChapter(3, {
                 lines=['<div><span style="color:#a5b4fc;">Rule: </span>Any non-zero base to the power 0 = 1</div>',
                   '<div>'+a+'^0 = <strong style="color:#6ee7b7;">1</strong></div>',
                   '<div style="font-size:10px;opacity:0.45;">Works for any a ≠ 0</div>'];
-              } else if(law==='neg'){
-                nbox.style.display='none';
-                const val=Math.pow(a,-m);
-                lines=['<div><span style="color:#a5b4fc;">Rule: </span>a⁻ⁿ = 1/aⁿ</div>',
-                  '<div>'+a+'^(−'+m+') = 1/'+a+'^'+m+' = 1/'+Math.pow(a,m)+' = <strong style="color:#6ee7b7;">'+val.toFixed(6)+'</strong></div>'];
-              }
+}
               document.getElementById('expOut').innerHTML=lines.join('');
             }
             ['expLaw','expBase','expM','expN'].forEach(id=>document.getElementById(id).addEventListener('input',update));
@@ -443,7 +438,7 @@ MathMagician.registerChapter(3, {
           { num: "Q1a", ans: "3⁵", note: "4+6=10, then 10−5=5" },
           { num: "Q1b", ans: "2⁴ = 16", note: "(2³)⁴ = 2¹²; 2¹²÷2⁸ = 2⁴ = 16" },
           { num: "Q1c", ans: "x²", note: "x⁵⁺³ = x⁸; (x²)³ = x⁶; x⁸÷x⁶ = x²" },
-          { num: "Q1d", ans: "3⁻¹ = 1/3", note: "3²×3⁰ = 3²×1 = 3²; 3²÷3³ = 3⁻¹" },
+          { num: "Q1d", ans: "3⁻¹ (= 1/3 in Grade 9)", note: "3²÷3³ = 3²⁻³ = 3⁻¹. Note: negative exponents are formally introduced in Grade 9. At Grade 8 level, the answer '3⁻¹' is acceptable, or express as 1/3." },
         ]
       },
       {

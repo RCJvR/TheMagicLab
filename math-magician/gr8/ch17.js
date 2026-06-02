@@ -251,6 +251,88 @@ MathMagician.registerChapter(17, {
       ]
     },
     {
+      id: 98,
+      chapter: 17,
+      name: "Tree diagrams",
+      fullName: "Tree diagrams for compound events",
+      lesson: {
+        heading: "Tree diagrams for compound events",
+        sub: "Chapter 17 · Topic 3",
+        body: `
+          <p>A <strong>tree diagram</strong> is a visual tool for listing all possible outcomes of a <strong>compound event</strong> — an experiment with two or more stages. Each branch represents one possible outcome at each stage.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 How to draw a tree diagram</div>
+            <p>
+              1. Start at a point on the left.<br>
+              2. Draw a branch for each outcome of the <strong>first stage</strong>.<br>
+              3. From each branch, draw branches for each outcome of the <strong>second stage</strong>.<br>
+              4. Each complete path from left to right = one outcome in the sample space.<br>
+              5. Count all complete paths to find the <strong>total number of outcomes</strong>.<br><br>
+              <strong>Counting rule:</strong> total outcomes = (outcomes in stage 1) × (outcomes in stage 2)
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example 1 — Flipping two coins</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2.2;color:rgba(221,225,240,0.70);margin:10px 0;">
+<span style="color:#a5b4fc;">Coin 1</span>     <span style="color:#6ee7b7;">Coin 2</span>     <span style="color:#fbbf24;">Outcome</span>
+              ┌── H ──── <span style="color:#fbbf24;">HH</span>
+H ────┤
+              └── T ──── <span style="color:#fbbf24;">HT</span>
+      │
+              ┌── H ──── <span style="color:#fbbf24;">TH</span>
+T ────┤
+              └── T ──── <span style="color:#fbbf24;">TT</span>
+            </div>
+            <div class="example-step"><span class="step-num">1</span><span>Sample space: {HH, HT, TH, TT} → <strong>4 outcomes</strong></span></div>
+            <div class="example-step"><span class="step-num">2</span><span>P(both heads) = 1/4</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>P(at least one head) = 3/4 (HH, HT, TH all have at least one H)</span></div>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example 2 — Spinner (R/B/G) then coin</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;color:rgba(221,225,240,0.70);margin:10px 0;">
+<span style="color:#a5b4fc;">Spinner</span>    <span style="color:#6ee7b7;">Coin</span>    <span style="color:#fbbf24;">Outcome</span>
+            ┌── H ── <span style="color:#fbbf24;">RH</span>
+R ──────┤
+            └── T ── <span style="color:#fbbf24;">RT</span>
+     │
+            ┌── H ── <span style="color:#fbbf24;">BH</span>
+B ──────┤
+            └── T ── <span style="color:#fbbf24;">BT</span>
+     │
+            ┌── H ── <span style="color:#fbbf24;">GH</span>
+G ──────┤
+            └── T ── <span style="color:#fbbf24;">GT</span>
+            </div>
+            <div class="example-step"><span class="step-num">1</span><span>Total outcomes: 3 × 2 = <strong>6 outcomes</strong></span></div>
+            <div class="example-step"><span class="step-num">2</span><span>P(Red and Heads) = 1/6</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>P(Blue or Green) = 4/6 = 2/3</span></div>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 When to use a tree diagram vs a two-way table</div>
+            <p>
+              <strong>Tree diagram:</strong> best when events have different numbers of outcomes, or when you need to list outcomes clearly.<br><br>
+              <strong>Two-way table:</strong> best when both events have the same type of outcomes (e.g. rolling two dice).<br><br>
+              Both methods give the same sample space — choose whichever is clearer for the question.
+            </p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always <strong>list</strong> the sample space from your tree diagram — don't just count the branches. Listing lets you find probabilities of specific events accurately.</span></div>
+        `
+      },
+      questions: [
+        { type: "input", text: "A coin is flipped and a spinner with 4 equal sections (1, 2, 3, 4) is spun. How many outcomes are in the sample space?", answer: "8", topic: "Tree diagrams" },
+        { type: "mc", text: "Two coins are flipped. Using a tree diagram, P(exactly one head) =", options: ["1/4", "1/2", "3/4", "1/3"], answer: 1, topic: "Tree diagrams" },
+        { type: "mc", text: "A bag has 2 balls: red (R) and blue (B). A ball is drawn, replaced, then drawn again. How many outcomes are in the sample space?", options: ["2", "3", "4", "6"], answer: 2, topic: "Tree diagrams" },
+        { type: "input", text: "A spinner has 3 sections: red, blue, green. It is spun twice. How many outcomes are in the sample space?", answer: "9", topic: "Tree diagrams" },
+        { type: "mc", text: "Two coins are flipped. What is P(at least one tail)?", options: ["1/4", "1/2", "3/4", "1"], answer: 2, topic: "Tree diagrams" },
+        { type: "mc", text: "A tree diagram for flipping a coin and rolling a die has how many end branches?", options: ["6", "8", "12", "2"], answer: 2, topic: "Tree diagrams" },
+      ]
+    },
+    {
       id: 99,
       chapter: 17,
       name: "Ch 17 Exam focus",

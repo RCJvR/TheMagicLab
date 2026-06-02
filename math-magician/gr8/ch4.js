@@ -197,6 +197,148 @@ MathMagician.registerChapter(4, {
   {
     id: 26,
     chapter: 4,
+    name: "Visual geometric patterns",
+    fullName: "Visual and geometric patterns",
+    lesson: {
+      heading: "Visual and geometric patterns",
+      sub: "Chapter 4 · Topic 3",
+      body: `
+        <p>CAPS requires you to work with <strong>geometric patterns</strong> — patterns built from objects like toothpicks, dots, or tiles. You must be able to count, describe, tabulate, and find a general rule for these patterns.</p>
+
+        <div class="def-box">
+          <div class="def-box-title">📖 Key terms</div>
+          <p>
+            <strong>Figure number (n):</strong> which position in the pattern (1st, 2nd, 3rd…).<br>
+            <strong>Term (Tₙ):</strong> the number of objects in the nth figure.<br>
+            <strong>Relationship:</strong> the rule connecting n to Tₙ.<br><br>
+            Most visual patterns at Grade 8 level are <strong>arithmetic</strong> — each figure adds the same number of objects.
+          </p>
+        </div>
+
+        <div class="example-box">
+          <div class="example-box-title">✏️ Example 1 — Matchstick squares</div>
+          <div style="display:flex;gap:20px;align-items:flex-end;margin:12px 0 8px;flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <svg width="40" height="40" viewBox="0 0 40 40"><rect x="5" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Figure 1<br>4 sticks</div>
+            </div>
+            <div style="text-align:center;">
+              <svg width="75" height="40" viewBox="0 0 75 40"><rect x="5" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/><rect x="35" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Figure 2<br>7 sticks</div>
+            </div>
+            <div style="text-align:center;">
+              <svg width="110" height="40" viewBox="0 0 110 40"><rect x="5" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/><rect x="35" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/><rect x="65" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Figure 3<br>10 sticks</div>
+            </div>
+            <div style="text-align:center;">
+              <svg width="145" height="40" viewBox="0 0 145 40"><rect x="5" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/><rect x="35" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/><rect x="65" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/><rect x="95" y="5" width="30" height="30" fill="none" stroke="#fbbf24" stroke-width="3"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Figure 4<br>13 sticks</div>
+            </div>
+          </div>
+          <div class="example-step"><span class="step-num">1</span><span>Count and tabulate:</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;margin:8px 0 12px;color:rgba(221,225,240,0.70);">
+            n (figure):  1  |  2  |  3  |  4<br>
+            Tₙ (sticks): 4  |  7  |  10 |  13
+          </div>
+          <div class="example-step"><span class="step-num">2</span><span>Find the common difference: <span class="math">d = 7 − 4 = 3</span> (arithmetic — add 3 each time)</span></div>
+          <div class="example-step"><span class="step-num">3</span><span>General term: <span class="math">Tₙ = a + (n−1)d = 4 + (n−1)(3) = 3n + 1</span></span></div>
+          <div class="example-step"><span class="step-num">4</span><span>Verify: T₁ = 3(1)+1 = 4 ✓ &nbsp; T₃ = 3(3)+1 = 10 ✓</span></div>
+          <div class="example-step"><span class="step-num">5</span><span>How many sticks for Figure 20? <span class="math">T₂₀ = 3(20)+1 = 61</span></span></div>
+        </div>
+
+        <div class="example-box">
+          <div class="example-box-title">✏️ Example 2 — Dot triangles</div>
+          <div style="display:flex;gap:24px;align-items:flex-end;margin:12px 0 8px;flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="5" fill="#a5b4fc"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Fig 1<br>1 dot</div>
+            </div>
+            <div style="text-align:center;">
+              <svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="10" r="5" fill="#a5b4fc"/><circle cx="15" cy="35" r="5" fill="#a5b4fc"/><circle cx="35" cy="35" r="5" fill="#a5b4fc"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Fig 2<br>3 dots</div>
+            </div>
+            <div style="text-align:center;">
+              <svg width="75" height="65" viewBox="0 0 75 65"><circle cx="37" cy="5" r="5" fill="#a5b4fc"/><circle cx="22" cy="30" r="5" fill="#a5b4fc"/><circle cx="52" cy="30" r="5" fill="#a5b4fc"/><circle cx="7" cy="56" r="5" fill="#a5b4fc"/><circle cx="37" cy="56" r="5" fill="#a5b4fc"/><circle cx="67" cy="56" r="5" fill="#a5b4fc"/></svg>
+              <div style="font-size:11px;color:rgba(221,225,240,0.45);margin-top:4px;">Fig 3<br>6 dots</div>
+            </div>
+          </div>
+          <div class="example-step"><span class="step-num">1</span><span>Sequence: 1, 3, 6, 10, … (differences: 2, 3, 4 — not constant → not arithmetic)</span></div>
+          <div class="example-step"><span class="step-num">2</span><span>This is a <strong>triangular number</strong> pattern: <span class="math">Tₙ = n(n+1)/2</span></span></div>
+          <div class="example-step"><span class="step-num">3</span><span>T₅ = 5(6)/2 = 15. Verify by drawing figure 5.</span></div>
+        </div>
+
+        <div class="def-box">
+          <div class="def-box-title">📖 How to approach any visual pattern in an exam</div>
+          <p>
+            <strong>Step 1:</strong> Count carefully and make a table (n vs Tₙ).<br>
+            <strong>Step 2:</strong> Find the differences between consecutive terms.<br>
+            <strong>Step 3:</strong> If differences are constant → arithmetic → use <span class="math">Tₙ = a + (n−1)d</span>.<br>
+            <strong>Step 4:</strong> Verify your formula with at least 2 known terms.<br>
+            <strong>Step 5:</strong> Answer the question (find a specific term, or find n given Tₙ).
+          </p>
+        </div>
+
+        <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+          <div class="def-box-title" style="color:#a5b4fc;">🎮 Try it — Matchstick Pattern Builder</div>
+          <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:12px;">Choose a pattern, build the table, and find the rule.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:flex-end;">
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Pattern</label>
+              <select id="vpPat" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                <option value="sq">Matchstick squares (Tₙ = 3n+1)</option>
+                <option value="tri">Matchstick triangles (Tₙ = 2n+1)</option>
+                <option value="L">L-shapes (Tₙ = 2n+1)</option>
+                <option value="plus">Plus signs (Tₙ = 4n)</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Find T<sub>n</sub> for n =</label>
+              <input id="vpN" type="number" value="10" min="1" max="50" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+            </div>
+          </div>
+          <div id="vpOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+        </div>
+        <script>
+        (function(){
+          const pats = {
+            sq:   { name:'Matchstick squares',   fn: n=>3*n+1,  a:4, d:3, formula:'3n + 1' },
+            tri:  { name:'Matchstick triangles',  fn: n=>2*n+1,  a:3, d:2, formula:'2n + 1' },
+            L:    { name:'L-shapes',              fn: n=>2*n+1,  a:3, d:2, formula:'2n + 1' },
+            plus: { name:'Plus signs',            fn: n=>4*n,    a:4, d:4, formula:'4n' },
+          };
+          function update(){
+            const key=document.getElementById('vpPat').value;
+            const n=parseInt(document.getElementById('vpN').value)||10;
+            const p=pats[key];
+            const terms=Array.from({length:6},(_,i)=>p.fn(i+1));
+            const tn=p.fn(n);
+            document.getElementById('vpOut').innerHTML=[
+              '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Pattern:</span><span style="color:#a5b4fc;">'+p.name+'</span></div>',
+              '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">First 6 terms:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', …</span></div>',
+              '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">Common diff (d):</span><span style="color:#fbbf24;">'+p.d+'</span></div>',
+              '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">General term:</span><span style="color:#fbbf24;">Tₙ = '+p.formula+'</span></div>',
+              '<div><span style="color:rgba(221,225,240,0.45);width:160px;display:inline-block;">T<sub>'+n+'</sub>:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+tn+'</span></div>',
+            ].join('');
+          }
+          ['vpPat','vpN'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+          update();
+        })();
+        </script>
+        <div class="tip-box"><span class="tip-icon">💡</span><span>In exams, visual pattern questions always include a diagram. Always make a table first — it makes finding the rule much easier.</span></div>
+      `
+    },
+    questions: [
+      { type: "mc", text: "Matchstick squares: 4, 7, 10, 13, … What is the general term?", options: ["Tₙ = 3n", "Tₙ = 3n + 1", "Tₙ = 4n − 1", "Tₙ = n + 3"], answer: 1, topic: "Visual patterns" },
+      { type: "input", text: "A pattern of matchstick triangles gives: 3, 5, 7, 9, … How many matchsticks in the 15th figure?", answer: "31", topic: "Visual patterns" },
+      { type: "mc", text: "The table shows: n = 1 → 5; n = 2 → 9; n = 3 → 13. What is the general term?", options: ["Tₙ = 4n + 1", "Tₙ = 5n", "Tₙ = 4n − 1", "Tₙ = n + 4"], answer: 0, topic: "Visual patterns" },
+      { type: "input", text: "A dot pattern has rule Tₙ = 3n + 2. How many dots in figure 8?", answer: "26", topic: "Visual patterns" },
+      { type: "mc", text: "Which term of the matchstick squares pattern (Tₙ = 3n + 1) equals 31?", options: ["n = 9", "n = 10", "n = 11", "n = 12"], answer: 1, topic: "Visual patterns" },
+      { type: "input", text: "Tiles are arranged in an L-shape. Figure 1 has 3 tiles, figure 2 has 5, figure 3 has 7. How many tiles in figure 12?", answer: "25", topic: "Visual patterns" },
+    ]
+  },
+  {
+    id: 26,
+    chapter: 4,
     name: "Ch 4 Exam focus",
     fullName: "Examination focus exercise",
     lesson: {

@@ -191,9 +191,9 @@ MathMagician.registerChapter(9, {
               <line x1="230" y1="70" x2="184.0" y2="108.6" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
               <line x1="230" y1="70" x2="191.4" y2="24.0" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
               <line x1="230" y1="70" x2="268.6" y2="116.0" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>
-              <path d="M230,70 L218.4,56.2 A18,18 0 0,0 243.8,58.4 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
+              <path d="M230,70 L218.4,56.2 A18,18 0 0,1 243.8,58.4 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
               <text x="232.7" y="42.1" text-anchor="middle" font-size="8.5" fill="#a5b4fc" font-family="JetBrains Mono,monospace">a</text>
-              <path d="M230,70 L241.6,83.8 A18,18 0 0,0 216.2,81.6 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
+              <path d="M230,70 L241.6,83.8 A18,18 0 0,1 216.2,81.6 Z" fill="rgba(99,102,241,0.30)" stroke="#6366f1" stroke-width="1"/>
               <text x="227.3" y="103.9" text-anchor="middle" font-size="8.5" fill="#a5b4fc" font-family="JetBrains Mono,monospace">a</text>
               <text x="230" y="118" text-anchor="middle" font-size="8" fill="rgba(221,225,240,0.45)" font-family="DM Sans,sans-serif">equal (vert. opp.)</text>
               <line x1="293" y1="68" x2="403" y2="68" stroke="rgba(255,255,255,0.40)" stroke-width="1.5"/>

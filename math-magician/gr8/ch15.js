@@ -197,15 +197,16 @@ MathMagician.registerChapter(15, {
             <p>
               If all dimensions are multiplied by scale factor <strong>k</strong>:<br><br>
               <strong>Linear dimensions</strong> (length, breadth, height): multiplied by <span class="math">k</span><br>
-              <strong>Surface area:</strong> multiplied by <span class="math">k²</span><br>
-              <strong>Volume:</strong> multiplied by <span class="math">k³</span><br><br>
+              <strong>Surface area:</strong> increases more than the length<br>
+              <strong>Volume:</strong> increases even more than the surface area<br><br>              <em>Investigate by calculating before and after — see the example below.</em><br><br>
               <strong>Example:</strong> A cube of side 2 cm is scaled by k = 3 (new side = 6 cm).<br>
               Original: SA = 24 cm², V = 8 cm³<br>
               New: SA = 24 × 9 = 216 cm², V = 8 × 27 = 216 cm³<br>
               Check: 6³ = 216 ✓, 6×SA of unit cube: 6×36=216 ✓
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Scale factor rules: length → ×k; area → ×k²; volume → ×k³. This is why doubling a shape's dimensions makes it 4× the surface area but 8× the volume.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When you double all dimensions, surface area multiplies by 4 and volume multiplies by 8. Use the investigation approach: calculate both the original and scaled shapes and compare the results.</span></div>
+        <div class="tip-box" style="border-color:rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);"><span class="tip-icon">📚</span><span><strong>Grade 9:</strong> The formal rule (SA scales by k², Volume by k³) is generalised in Grade 9. At Grade 8 you need to be able to investigate and describe what happens — not state the algebraic rule.</span></div>
         `
       },
       questions: [
@@ -213,7 +214,7 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "A rectangular prism has SA = 94 cm². If all dimensions are tripled, find the new SA.", answer: "846", topic: "Scale" },
         { type: "mc", text: "A shape has volume 40 cm³. Its dimensions are halved. What is the new volume?", options: ["20 cm³", "10 cm³", "5 cm³", "80 cm³"], answer: 2, topic: "Scale" },
         { type: "input", text: "A cube has volume 27 cm³. Its side is doubled. Find the new volume.", answer: "216", topic: "Scale" },
-        { type: "mc", text: "If scale factor = 4, surface area is multiplied by:", options: ["4", "8", "16", "64"], answer: 2, topic: "Scale" },
+        { type: "mc", text: "A cube has side 3 cm. Its dimensions are doubled to 6 cm. By what factor does the surface area increase?", options: ["2", "4", "6", "8"], answer: 1, topic: "Scale" },
       ]
     },
     {
@@ -233,7 +234,7 @@ MathMagician.registerChapter(15, {
               ✅ Rectangular prism: SA = 2(lb+lh+bh); V = lbh<br>
               ✅ Triangular prism: SA = 2(△area) + perim×L; V = △area × L<br>
               ✅ 1 cm³ = 1 ml; 1 000 cm³ = 1 litre<br>
-              ✅ Scale factor k: SA × k²; Volume × k³
+              ✅ Doubling dimensions: SA multiplies by 4, Volume multiplies by 8 (investigate, don't memorise the algebraic rule in Gr 8)
             </p>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Don't confuse surface area (2D, square units) with volume (3D, cubic units). If you're asked for SA but calculate V, the answer will have wrong units — and lose all marks.</span></div>
@@ -312,8 +313,8 @@ MathMagician.registerChapter(15, {
         name: "Effect of scale factors",
         answers: [
           { num: "Q4a", ans: "Volume increases by factor 64", note: "k=4; new V = 4³ × old V = 64 × old V" },
-          { num: "Q4b", ans: "New SA = 320 cm²", note: "k=2; SA scales by k²=4; 80×4=320" },
-          { num: "Q4c", ans: "New V = 2 cm³", note: "k=⅓; V scales by k³=(⅓)³=1/27; 54÷27=2" },
+          { num: "Q4b", ans: "New SA = 320 cm²", note: "Original SA=80 cm²; double dimensions: 6×(2×2)²... or: calculate SA of new shape directly. 80×4=320 (SA quadruples when dimensions double)" },
+          { num: "Q4c", ans: "New V = 2 cm³", note: "Dimensions divided by 3; calculate new volume directly: if original 3cm cube, new side=1cm, V=1³=1... or 54÷27=2 (divide by 27 when all dims ÷3)" },
         ]
       },
     ]

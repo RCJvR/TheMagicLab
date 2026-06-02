@@ -197,6 +197,58 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
+      id: 37,
+      chapter: 6,
+      name: "Dividing expressions",
+      fullName: "Division of algebraic expressions by a monomial",
+      lesson: {
+        heading: "Dividing algebraic expressions by a monomial",
+        sub: "Chapter 6 · Topic 5",
+        body: `
+          <p>Dividing an algebraic expression by a monomial means dividing <strong>every term</strong> in the expression by the monomial. Apply the division rules for coefficients and the laws of exponents to the variables.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Rules for division</div>
+            <p>
+              <strong>Coefficients:</strong> divide the numbers as normal.<br>
+              <strong>Variables:</strong> subtract the exponents (same base: <span class="math">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</span>).<br>
+              <strong>Every term</strong> in the numerator is divided separately by the monomial.<br><br>
+              <span class="math">(ax^m + bx^n) ÷ cx^p = (a÷c)x^(m-p) + (b÷c)x^(n-p)</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example 1 — Monomial ÷ monomial</div>
+            <div class="example-step"><span class="step-num">1</span><span>Simplify: <span class="math">12x⁵ ÷ 4x²</span></span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Coefficients: <span class="math">12 ÷ 4 = 3</span></span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Variables: <span class="math">x⁵ ÷ x² = x⁵⁻² = x³</span></span></div>
+            <div class="example-step"><span class="step-num">4</span><span><strong>Answer: <span class="math">3x³</span></strong></span></div>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example 2 — Polynomial ÷ monomial</div>
+            <div class="example-step"><span class="step-num">1</span><span>Simplify: <span class="math">(6x³ + 9x²) ÷ 3x</span></span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Divide each term separately: <span class="math">(6x³ ÷ 3x) + (9x² ÷ 3x)</span></span></div>
+            <div class="example-step"><span class="step-num">3</span><span>First term: <span class="math">6÷3=2</span>, <span class="math">x³÷x=x²</span> → <span class="math">2x²</span></span></div>
+            <div class="example-step"><span class="step-num">4</span><span>Second term: <span class="math">9÷3=3</span>, <span class="math">x²÷x=x</span> → <span class="math">3x</span></span></div>
+            <div class="example-step"><span class="step-num">5</span><span><strong>Answer: <span class="math">2x² + 3x</span></strong></span></div>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example 3 — With negative terms</div>
+            <div class="example-step"><span class="step-num">1</span><span>Simplify: <span class="math">(8a³ − 12a² + 4a) ÷ 4a</span></span></div>
+            <div class="example-step"><span class="step-num">2</span><span><span class="math">(8a³÷4a) − (12a²÷4a) + (4a÷4a)</span></span></div>
+            <div class="example-step"><span class="step-num">3</span><span><span class="math">2a² − 3a + 1</span></span></div>
+          </div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Divide <strong>every</strong> term in the bracket by the monomial — a common error is forgetting to divide the last term or the constant.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Simplify: <span class='math'>15x⁴ ÷ 5x</span>", options: ["3x³", "3x⁴", "10x³", "3x"], answer: 0, topic: "Division" },
+        { type: "input", text: "Simplify: <span class='math'>20a⁵ ÷ 4a²</span>. Give the coefficient only.", answer: "5", topic: "Division" },
+        { type: "mc", text: "Simplify: <span class='math'>(6x² + 9x) ÷ 3x</span>", options: ["2x + 9", "2x + 3", "6x + 3", "2x² + 3"], answer: 1, topic: "Division" },
+        { type: "input", text: "Simplify: <span class='math'>(12y³ − 8y² + 4y) ÷ 4y</span>. What is the constant term?", answer: "1", topic: "Division" },
+        { type: "mc", text: "Simplify: <span class='math'>18x³y² ÷ 6xy</span>", options: ["3x²y", "3x²y²", "12x²y", "3xy"], answer: 0, topic: "Division" },
+        { type: "input", text: "Simplify: <span class='math'>(10a³b − 15a²b²) ÷ 5ab</span>. What is the coefficient of the second term?", answer: "-3", topic: "Division" },
+      ]
+    },
+    {
       id: 36,
       chapter: 6,
       name: "Substitution",
@@ -303,6 +355,7 @@ MathMagician.registerChapter(6, {
               ✅ Subtracting a bracket: change sign of every term inside<br>
               ✅ Multiply: coefficients × coefficients, add exponents<br>
               ✅ Distribute: a(b + c) = ab + ac<br>
+              ✅ Divide: (ax^m + bx^n) ÷ cx^p — divide every term by the monomial<br>
               ✅ Substitution: replace variable with value, use brackets for negatives
             </p>
           </div>

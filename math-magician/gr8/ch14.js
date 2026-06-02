@@ -19,9 +19,7 @@ MathMagician.registerChapter(14, {
               <strong>Square:</strong> <span class="math">P = 4s</span><br>
               <strong>Rectangle:</strong> <span class="math">P = 2(l + b)</span><br>
               <strong>Triangle:</strong> <span class="math">P = a + b + c</span> (sum of all sides)<br>
-              <strong>Circle (circumference):</strong> <span class="math">C = 2πr = πd</span><br>
-              <strong>Semicircle:</strong> <span class="math">P = πr + 2r</span> (curved part + diameter)<br><br>
-              Use <span class="math">π ≈ 3.142</span> unless told otherwise.
+<span style="color:#fbbf24;font-weight:600;">📚 Note:</span> Circles (circumference and area) are <strong>Grade 9</strong> content. They are not required for your Grade 8 exam. Focus on the shapes above.
             </p>
           </div>
           <div class="example-box">
@@ -31,13 +29,14 @@ MathMagician.registerChapter(14, {
             <div class="example-step"><span class="step-num">3</span><span>Semicircle r = 10: <span class="math">P = π(10) + 2(10) = 31.42 + 20 = 51.42 cm</span></span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>For composite shapes (shapes made of multiple parts), find the perimeter of the outer boundary only — don't include any internal lines.</span></div>
+        <div class="tip-box" style="border-color:rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);"><span class="tip-icon">📚</span><span><strong>Grade 9 preview:</strong> In Grade 9 you will learn the circumference of a circle (<span class="math">C = 2πr</span>) and the area of a circle (<span class="math">A = πr²</span>). These are not required for Grade 8.</span></div>
         `
       },
       questions: [
         { type: "input", text: "Find the perimeter of a rectangle with length 12 cm and breadth 7 cm.", answer: "38", topic: "Perimeter" },
-        { type: "mc", text: "A circle has radius 5 cm. Find its circumference (use π = 3.142).", options: ["15.71 cm", "31.42 cm", "78.55 cm", "25 cm"], answer: 1, topic: "Perimeter" },
+        { type: "mc", text: "A parallelogram has base 14 cm and the perpendicular height is 6 cm. Find the area.", options: ["40 cm²", "84 cm²", "42 cm²", "20 cm²"], answer: 1, topic: "Area" },
         { type: "input", text: "A square has perimeter 52 cm. Find its side length.", answer: "13", topic: "Perimeter" },
-        { type: "mc", text: "A semicircle has diameter 12 cm. Find the total perimeter (use π = 3.142).", options: ["30.85 cm", "18.85 cm", "37.70 cm", "24 cm"], answer: 0, topic: "Perimeter" },
+        { type: "mc", text: "A trapezium has parallel sides 8 cm and 12 cm, and a height of 5 cm. What is its area?", options: ["50 cm²", "100 cm²", "40 cm²", "48 cm²"], answer: 0, topic: "Area" },
         { type: "input", text: "A triangle has sides 13 cm, 14 cm, and 15 cm. Find the perimeter.", answer: "42", topic: "Perimeter" },
       ]
     },
@@ -59,8 +58,7 @@ MathMagician.registerChapter(14, {
               <strong>Triangle:</strong> <span class="math">A = ½ × base × height</span> (perpendicular height!)<br>
               <strong>Parallelogram:</strong> <span class="math">A = base × perpendicular height</span><br>
               <strong>Trapezium:</strong> <span class="math">A = ½(a + b) × h</span> where a and b are parallel sides<br>
-              <strong>Circle:</strong> <span class="math">A = πr²</span><br>
-              <strong>Semicircle:</strong> <span class="math">A = ½πr²</span>
+<span style="color:#fbbf24;font-weight:600;">📚 Grade 9 extension:</span> Circle area (A = πr²) and circumference are covered in Grade 9.
             </p>
           </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
@@ -72,7 +70,6 @@ MathMagician.registerChapter(14, {
                 <option value="tri">Triangle</option>
                 <option value="para">Parallelogram</option>
                 <option value="trap">Trapezium</option>
-                <option value="circ">Circle</option>
               </select></div>
               <div id="areaInputs" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;"></div>
               <button id="areaBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
