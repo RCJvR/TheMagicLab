@@ -11,6 +11,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../../auth-modal.css">
+  <script defer src="../../auth.js"></script>
+  <script defer src="../../progress.js"></script>
+  <script defer src="../../auth-modal.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -500,6 +504,7 @@
     <div class="header-right">
       <span id="progressText">Loading…</span>
       <div id="progressBar"><div id="progressFill"></div></div>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
     </div>
   </header>
 
@@ -859,6 +864,14 @@ function renderQuestion() {
     completed.add(currentTopicId);
     buildSidebar();
     updateProgress();
+    // Track topic complete
+    if (window.MagicLabProgress) {
+      const t = TOPICS[currentTopicId];
+      MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
+        topic: t?.name, grade: 8,
+        metadata: { topicId: currentTopicId }
+      });
+    }
     const pct = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
     const nextId = currentTopicId + 1;
     practicePanel.innerHTML = `
@@ -953,9 +966,25 @@ function renderQuestion() {
     if (isCorrect) {
       topicScores[currentTopicId].correct++;
       showFeedback(true);
+      // Track correct answer
+      if (window.MagicLabProgress) {
+        const t = TOPICS[currentTopicId];
+        MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_correct', {
+          topic: t?.name, grade: 8, score: 1,
+          metadata: { question: q.text?.replace(/<[^>]+>/g,'')?.substring(0,100) }
+        });
+      }
     } else {
       // Call AI for explanation
       fetchAIFeedback(q, userAnswer, correct, showFeedback);
+      // Track wrong answer
+      if (window.MagicLabProgress) {
+        const t = TOPICS[currentTopicId];
+        MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_wrong', {
+          topic: t?.name, grade: 8, score: 0,
+          metadata: { question: q.text?.replace(/<[^>]+>/g,'')?.substring(0,100) }
+        });
+      }
     }
   }
 
@@ -1321,6 +1350,21 @@ async function init() {
 }
 init();
 
+// ── Restore completed topics from Supabase ─────────────────────────────────
+// Runs once progress SDK is ready. Matches saved topic titles back to IDs.
+async function _restoreProgress() {
+  if (!window.MagicLabProgress) return;
+  const history = await MagicLabProgress.getLessonHistory(ML_TOOLS.MATH_MAGICIAN);
+  if (!history.size) return;
+  TOPICS.forEach(t => {
+    if (history.has(t.name || t.title || t.id)) completed.add(t.id);
+  });
+  buildSidebar();
+  updateProgress();
+}
+
+document.addEventListener('magiclab:progress:ready', _restoreProgress);
+if (window.MagicLabProgress) _restoreProgress();
 
 </script>
 </body>
