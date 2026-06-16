@@ -31,6 +31,54 @@ MathMagician.registerChapter(9, {
             <div class="example-step"><span class="step-num">3</span><span>4(x + 1) = 2(2x − 3): 4x + 4 = 4x − 6 → 4 = −6 (no solution — contradiction)</span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always check your answer by substituting it back into the ORIGINAL equation. One number check can save your mark.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Linear Equation Solver</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Solve equations of the form ax + b = cx + d step by step. Enter the four coefficients.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">a (LHS x-coef)</label><input id="leA" type="number" value="5" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">b (LHS const)</label><input id="leB" type="number" value="-3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;padding-bottom:8px;">=</span>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">c (RHS x-coef)</label><input id="leC" type="number" value="2" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">d (RHS const)</label><input id="leD" type="number" value="9" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="leBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
+            </div>
+            <div id="leOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function fmt(n){return n<0?'('+n+')':String(n);}
+            function solve(){
+              var a=parseFloat(document.getElementById('leA').value)||0;
+              var b=parseFloat(document.getElementById('leB').value)||0;
+              var c=parseFloat(document.getElementById('leC').value)||0;
+              var d=parseFloat(document.getElementById('leD').value)||0;
+              var bStr=b>=0?' + '+b:' − '+Math.abs(b);
+              var dStr=d>=0?' + '+d:' − '+Math.abs(d);
+              var lhs=a+'x'+bStr,rhs=c+'x'+dStr;
+              var xCoef=a-c,constVal=d-b;
+              var steps=[
+                'Equation: <span style="color:#fbbf24;">'+lhs+' = '+rhs+'</span>',
+                'Move x-terms left: <span style="color:#a5b4fc;">'+(a-c)+'x = '+d+' − ('+b+') = '+constVal+'</span>',
+              ];
+              var out=document.getElementById('leOut');
+              if(xCoef===0){
+                if(constVal===0){steps.push('<span style="color:#6ee7b7;">∞ solutions — identity (true for all x)</span>');}
+                else{steps.push('<span style="color:#fca5a5;">❌ No solution — contradiction</span>');}
+              } else {
+                var x=constVal/xCoef;
+                steps.push('Divide both sides by '+(a-c)+': x = '+constVal+' ÷ '+(a-c)+' = <span style="color:#6ee7b7;font-size:16px;font-weight:700;">'+x+'</span>');
+                var check=a*x+b,check2=c*x+d;
+                steps.push('Check: '+a+'('+x+')+'+b+' = '+check+' and '+c+'('+x+')+'+d+' = '+check2+(Math.abs(check-check2)<1e-9?' ✓':'<span style="color:#fca5a5;"> ✗</span>'));
+              }
+              out.innerHTML=steps.map(function(s){return '<div>'+s+'</div>';}).join('');
+            }
+            document.getElementById('leBtn').addEventListener('click',solve);
+            ['leA','leB','leC','leD'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
+            solve();
+          })();
+          </script>
+        One number check can save your mark.</span></div>
         `
       },
       questions: [
@@ -68,7 +116,41 @@ MathMagician.registerChapter(9, {
             <div class="example-step"><span class="step-num">2</span><span>x² = 25 → x² − 25 = 0 → (x + 5)(x − 5) = 0 → x = ±5</span></div>
             <div class="example-step"><span class="step-num">3</span><span>2x² + 5x = 3 → 2x² + 5x − 3 = 0 → (2x − 1)(x + 3) = 0 → x = 1/2 or x = −3</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>NEVER divide both sides by x to solve x² = 3x. You lose the solution x = 0. Always set equal to 0 and factorise.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>NEVER divide both sides by x to solve x² = 3x. You lose the solution x = 0. 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Quadratic Equation Solver</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Solve ax&#178; + bx + c = 0. See the discriminant, nature of roots, and solutions.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">a</label><input id="qsa5" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">b</label><input id="qsb5" type="number" value="-5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">c</label><input id="qsc5" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="qsBtn5" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
+            </div>
+            <div id="qsOut5" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function solve(){
+              const a=parseFloat(document.getElementById('qsa5').value)||1;
+              const b=parseFloat(document.getElementById('qsb5').value)||0;
+              const c=parseFloat(document.getElementById('qsc5').value)||0;
+              const d=b*b-4*a*c;const f=function(v){return Math.round(v*10000)/10000;};
+              let nature,roots;
+              if(d>0){nature='Two real unequal roots';const sq=Math.sqrt(d);roots='x = '+f((-b+sq)/(2*a))+' or x = '+f((-b-sq)/(2*a));}
+              else if(d===0){nature='Equal real roots';roots='x = '+f(-b/(2*a));}
+              else{nature='No real roots';roots='\u0394 < 0';}
+              document.getElementById('qsOut5').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:150px;display:inline-block;">\u0394 = '+b+'\xb2\u22124('+a+')('+c+'):</span><span style="color:#a5b4fc;">'+d+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:150px;display:inline-block;">Nature:</span><span style="color:#fbbf24;">'+nature+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:150px;display:inline-block;">Solution:</span><span style="color:#6ee7b7;font-weight:700;">'+roots+'</span></div>',
+              ].join('');
+            }
+            document.getElementById('qsBtn5').addEventListener('click',solve);
+            ['qsa','qsb','qsc'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
+            solve();
+          })();
+          </script>
+        Always set equal to 0 and factorise.</span></div>
         `
       },
       questions: [

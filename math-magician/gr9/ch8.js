@@ -28,7 +28,43 @@ MathMagician.registerChapter(8, {
             <div class="example-step"><span class="step-num">2</span><span>Grouping: 3ax + 3ay + bx + by = 3a(x + y) + b(x + y) = (3a + b)(x + y)</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Always check for HCF first before applying other methods.</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>ALWAYS look for a common factor first. It simplifies all other methods that follow.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always take out the HCF first before applying any other factorisation method.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; HCF & Grouping Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter up to four coefficients. Find their HCF and see how a common factor is extracted.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 1</label><input id="hcf1" type="number" value="12" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 2</label><input id="hcf2" type="number" value="8" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 3 (opt)</label><input id="hcf3" type="number" placeholder="—" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 4 (opt)</label><input id="hcf4" type="number" placeholder="—" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="hcfBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Find HCF</button>
+            </div>
+            <div id="hcfOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a;}
+            function primeFactors(n){n=Math.abs(n);var factors=[];for(var p=2;p*p<=n;p++){while(n%p===0){factors.push(p);n/=p;}}if(n>1)factors.push(n);return factors;}
+            function calc(){
+              var vals=[1,2,3,4].map(function(i){return parseInt(document.getElementById('hcf'+i).value);}).filter(function(v){return!isNaN(v)&&v!==0;});
+              if(vals.length<2){document.getElementById('hcfOut').innerHTML='<span style="color:#fca5a5;">Enter at least 2 non-zero terms.</span>';return;}
+              var h=vals.reduce(gcd);
+              var factored=vals.map(function(v){return v+' = '+h+(v/h!==1?' × '+(v/h):'');});
+              var divided=vals.map(function(v){return (v/h);});
+              document.getElementById('hcfOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Terms: </span><span style="color:#a5b4fc;">'+vals.join(', ')+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">HCF: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+h+'</span></div>',
+                '<div style="font-size:11px;color:rgba(221,225,240,0.40);">'+factored.join(' &nbsp;|&nbsp; ')+'</div>',
+                '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Factored form: </span><span style="color:#fbbf24;font-weight:700;">'+h+'('+divided.join(' + ')+')</span></div>',
+                '<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:4px;">Prime factors of HCF ('+h+'): '+primeFactors(h).join(' × ')+'</div>',
+              ].join('');
+            }
+            document.getElementById('hcfBtn').addEventListener('click',calc);
+            calc();
+          })();
+          </script>
+        ALWAYS look for a common factor first. It simplifies all other methods that follow.</span></div>
         `
       },
       questions: [
@@ -66,7 +102,42 @@ MathMagician.registerChapter(8, {
             <div class="example-step"><span class="step-num">3</span><span>x² − 5x − 14: need pq = −14, p+q = −5 → p = −7, q = 2 → (x − 7)(x + 2)</span></div>
             <div class="example-step"><span class="step-num">4</span><span>2x² − 8 = 2(x² − 4) = 2(x + 2)(x − 2) (HCF first!)</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>For trinomials, always check: p + q = b (middle term coefficient) AND p × q = c (constant). Both conditions must hold.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For trinomials, always check: p + q = b (middle term coefficient) AND p × q = c (constant). 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Quadratic Factoriser</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a, b, c for ax&#178; + bx + c. See the discriminant, roots, and factorised form.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">a</label><input id="faca4" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">b</label><input id="facb4" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">c</label><input id="facc4" type="number" value="-3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="facBtn4" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Factorise</button>
+            </div>
+            <div id="facOut4" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function solve(){
+              const a=parseInt(document.getElementById('faca4').value)||1;
+              const b=parseInt(document.getElementById('facb4').value)||0;
+              const c=parseInt(document.getElementById('facc4').value)||0;
+              const d=b*b-4*a*c;
+              const bStr=b===0?'':b>0?' + '+b+'x':' \u2212 '+Math.abs(b)+'x';
+              const cStr=c===0?'':c>0?' + '+c:' \u2212 '+Math.abs(c);
+              let lines=['<div><span style="color:rgba(221,225,240,0.45);">Expression: </span><span style="color:#fbbf24;">'+(a===1?'':a)+'x\xb2'+bStr+cStr+'</span></div>','<div><span style="color:rgba(221,225,240,0.45);">\u0394 = '+b+'\xb2\u22124('+a+')('+c+') = </span><span style="color:#a5b4fc;">'+d+'</span></div>'];
+              if(d<0){lines.push('<div style="color:#fca5a5;">\u0394 &lt; 0 \u2192 no real roots</div>');}
+              else{const sq=Math.sqrt(d),isRat=Number.isInteger(sq);const x1=(-b+sq)/(2*a),x2=(-b-sq)/(2*a);
+                if(isRat){lines.push('<div><span style="color:rgba(221,225,240,0.45);">Roots: </span><span style="color:#6ee7b7;">x = '+x1+(x1!==x2?' or x = '+x2:'  (equal)')+'</span></div>');
+                  const f=x=>(x>=0?'\u2212 '+x:'+ '+Math.abs(x));
+                  lines.push('<div><span style="color:rgba(221,225,240,0.45);">Factorised: </span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">'+(x1===x2?(a!==1?a:'')+'(x '+f(x1)+')\xb2':'(x '+f(x1)+')('+(a!==1?a:'')+'x '+f(x2)+')')+'</span></div>');}
+                else{lines.push('<div style="color:#fbbf24;">Irrational roots \u2014 use x = ('+(-b)+' \xb1 \u221a'+d+') / '+(2*a)+'</div>');}}
+              document.getElementById('facOut4').innerHTML=lines.join('');
+            }
+            document.getElementById('facBtn4').addEventListener('click',solve);
+            ['faca','facb','facc'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solve();}));
+            solve();
+          })();
+          </script>
+        Both conditions must hold.</span></div>
         `
       },
       questions: [

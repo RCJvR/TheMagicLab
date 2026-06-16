@@ -30,43 +30,62 @@ MathMagician.registerChapter(7, {
             <div class="example-step"><span class="step-num">4</span><span>(5x − 2)(5x + 2) = 25x² − 4</span></div>
             <div class="example-step"><span class="step-num">5</span><span>Simplify: (x + 2)² − (x − 1)(x + 3) = x² + 4x + 4 − (x² + 2x − 3) = 2x + 7</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Always expand fully before collecting like terms. Trying to shortcut leads to sign errors.</span></div>
-        `
-      },
-      questions: [
-        { type: "mc", text: "Expand: 2x(3x − 4)", options: ["6x² − 8x", "6x² − 4", "6x − 8x", "6x² + 8x"], answer: 0, topic: "Algebra" },
-        { type: "mc", text: "Expand: (x + 5)(x − 2)", options: ["x² + 3x − 10", "x² − 3x + 10", "x² + 3x + 10", "x² − 10"], answer: 0, topic: "Algebra" },
-        { type: "input", text: "Expand (3x − 2)². Give the constant term.", answer: "4", topic: "Algebra" },
-        { type: "mc", text: "Expand (4x − 1)(4x + 1):", options: ["16x² + 1", "16x² − 1", "16x² − 8x + 1", "4x² − 1"], answer: 1, topic: "Algebra" },
-        { type: "input", text: "Simplify: (x + 3)² − (x + 1)(x + 5). Give the constant term.", answer: "4", topic: "Algebra" },
-      ]
-    },
-    {
-      id: 14,
-      chapter: 7,
-      name: "Algebraic fractions",
-      fullName: "Simplification of algebraic fractions",
-      lesson: {
-        heading: "Algebraic fractions",
-        sub: "Chapter 7 · Topic 2",
-        body: `
-          <p>Algebraic fractions are simplified by factorising the numerator and/or denominator, then cancelling common factors.</p>
-          <div class="def-box">
-            <div class="def-box-title">📖 Rules for algebraic fractions</div>
-            <p>
-              <strong>Simplify:</strong> factorise, then cancel common factors.<br>
-              <strong>Multiply:</strong> multiply numerators, multiply denominators, simplify.<br>
-              <strong>Divide:</strong> multiply by reciprocal of divisor.<br>
-              <strong>Add/Subtract:</strong> find LCD, convert all fractions, then combine numerators.
-            </p>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always state restrictions (values of x that make the denominator zero) when simplifying algebraic fractions.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Algebraic Fraction Evaluator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a value of x to evaluate a rational expression. Explore how the numerator and denominator change, and spot undefined values.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Expression</label>
+                <select id="afExpr" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;">
+                  <option value="1">(x&#178; &#8722; 9) / (x + 3)</option>
+                  <option value="2">(x&#178; &#8722; 4) / (x &#8722; 2)</option>
+                  <option value="3">(2x&#178; + x) / x</option>
+                  <option value="4">(x&#178; + 5x + 6) / (x + 2)</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);">x value</label>
+                <input id="afX" type="number" value="4" step="any" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;">
+              </div>
+              <button id="afBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Evaluate</button>
+            </div>
+            <div id="afOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
-          <div class="example-box">
-            <div class="example-box-title">✏️ Worked examples</div>
-            <div class="example-step"><span class="step-num">1</span><span>6x²y ÷ (2xy²) = (6x²y)/(2xy²) = 3x/y</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>(x² − 9)/(x + 3) = (x+3)(x−3)/(x+3) = x − 3 (x ≠ −3)</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>3/(2x) + 5/(4x) → LCD = 4x → 6/(4x) + 5/(4x) = 11/(4x)</span></div>
-          </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Always state restrictions: values of x that make the denominator zero are excluded from the domain.</span></div>
+          <script>
+          (function(){
+            var exprs={
+              '1':{label:'(x² − 9) / (x + 3)',num:function(x){return x*x-9;},den:function(x){return x+3;},simplified:'x − 3',restrict:'x ≠ −3'},
+              '2':{label:'(x² − 4) / (x − 2)',num:function(x){return x*x-4;},den:function(x){return x-2;},simplified:'x + 2',restrict:'x ≠ 2'},
+              '3':{label:'(2x² + x) / x',num:function(x){return 2*x*x+x;},den:function(x){return x;},simplified:'2x + 1',restrict:'x ≠ 0'},
+              '4':{label:'(x² + 5x + 6) / (x + 2)',num:function(x){return x*x+5*x+6;},den:function(x){return x+2;},simplified:'x + 3',restrict:'x ≠ −2'},
+            };
+            function evalF(){
+              var key=document.getElementById('afExpr').value;
+              var x=parseFloat(document.getElementById('afX').value);
+              var e=exprs[key],out=document.getElementById('afOut');
+              if(isNaN(x)){out.innerHTML='<span style="color:#fca5a5;">Enter a valid x value.</span>';return;}
+              var n=e.num(x),d=e.den(x);
+              if(Math.abs(d)<1e-10){
+                out.innerHTML='<div style="color:#fca5a5;">❌ x = '+x+' makes denominator = 0 → UNDEFINED</div><div style="color:rgba(221,225,240,0.45);font-size:11px;">Restriction: '+e.restrict+'</div>';
+                return;
+              }
+              var res=n/d;
+              out.innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Numerator (x='+x+'): </span><span style="color:#a5b4fc;">'+n+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Denominator (x='+x+'): </span><span style="color:#a5b4fc;">'+d+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Result: </span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+res+'</span></div>',
+                '<div style="font-size:11px;color:rgba(221,225,240,0.40);margin-top:4px;">Simplified form: <span style="color:#fbbf24;">'+e.simplified+'</span> &nbsp;|&nbsp; Restriction: <span style="color:#fca5a5;">'+e.restrict+'</span></div>',
+              ].join('');
+            }
+            document.getElementById('afBtn').addEventListener('click',evalF);
+            document.getElementById('afExpr').addEventListener('change',evalF);
+            document.getElementById('afX').addEventListener('keydown',function(e){if(e.key==='Enter')evalF();});
+            evalF();
+          })();
+          </script>
+        values of x that make the denominator zero are excluded from the domain.</span></div>
         `
       },
       questions: [

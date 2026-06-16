@@ -30,6 +30,28 @@ MathMagician.registerChapter(3, {
             <div class="example-step"><span class="step-num">4</span><span>4 − 1 3/5 = 4 − 8/5 = 20/5 − 8/5 = 12/5 = 2 2/5</span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always simplify before multiplying — cancel common factors between any numerator and any denominator to keep numbers small.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Fraction Operations Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter two fractions and choose an operation. See the step-by-step result in simplest form.</p>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;align-items:center;"><input id="fn1" type="number" value="3" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px 7px 0 0;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"><div style="width:55px;height:2px;background:rgba(99,102,241,0.60);"></div><input id="fd1" type="number" value="4" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:0 0 7px 7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <select id="fop" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:8px 10px;border-radius:7px;font-size:18px;font-family:JetBrains Mono,monospace;"><option value="+">+</option><option value="-">&minus;</option><option value="*">&times;</option><option value="/">&divide;</option></select>
+              <div style="display:flex;flex-direction:column;gap:4px;align-items:center;"><input id="fn2" type="number" value="5" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px 7px 0 0;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"><div style="width:55px;height:2px;background:rgba(99,102,241,0.60);"></div><input id="fd2" type="number" value="6" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:0 0 7px 7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="fCalc" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="fOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a;}
+            function simplify(n,d){if(d===0)return{n:NaN,d:1};var g=gcd(Math.abs(n),Math.abs(d));var sign=d<0?-1:1;return{n:sign*n/g,d:sign*d/g};}
+            function fmt(n,d){if(isNaN(n))return '<span style="color:#fca5a5;">undefined</span>';if(d===1)return '<span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+n+'</span>';var whole=Math.floor(Math.abs(n)/d),rem=Math.abs(n)%d,sign=n<0?'&minus;':'';return whole>0?'<span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+sign+whole+' '+rem+'/'+d+'</span>':'<span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+n+'/'+d+'</span>';}
+            function calc(){var n1=parseInt(document.getElementById('fn1').value)||0,d1=parseInt(document.getElementById('fd1').value)||1;var n2=parseInt(document.getElementById('fn2').value)||0,d2=parseInt(document.getElementById('fd2').value)||1;var op=document.getElementById('fop').value;var rn,rd,step;if(op==='+'){rn=n1*d2+n2*d1;rd=d1*d2;step=n1+'/'+d1+' + '+n2+'/'+d2+' = '+(n1*d2)+'/'+(d1*d2)+' + '+(n2*d1)+'/'+(d1*d2)+' = '+rn+'/'+rd;}else if(op==='-'){rn=n1*d2-n2*d1;rd=d1*d2;step=n1+'/'+d1+' − '+n2+'/'+d2+' = '+(n1*d2)+'/'+(d1*d2)+' − '+(n2*d1)+'/'+(d1*d2)+' = '+rn+'/'+rd;}else if(op==='*'){rn=n1*n2;rd=d1*d2;step=n1+'/'+d1+' × '+n2+'/'+d2+' = '+(n1*n2)+'/'+(d1*d2);}else{if(n2===0){document.getElementById('fOut').innerHTML='<span style="color:#fca5a5;">Cannot divide by zero fraction.</span>';return;}rn=n1*d2;rd=d1*n2;step=n1+'/'+d1+' ÷ '+n2+'/'+d2+' = '+n1+'/'+d1+' × '+d2+'/'+n2+' = '+(n1*d2)+'/'+(d1*n2);}var r=simplify(rn,rd);document.getElementById('fOut').innerHTML=['<div style="color:rgba(221,225,240,0.45);font-size:11px;">'+step+'</div>','<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Result: </span>'+fmt(r.n,r.d)+'</div>'].join('');}
+            document.getElementById('fCalc').addEventListener('click',calc);document.getElementById('fop').addEventListener('change',calc);calc();
+          })();
+          </script>
+        `
         `
       },
       questions: [
@@ -68,6 +90,30 @@ MathMagician.registerChapter(3, {
             <div class="example-step"><span class="step-num">4</span><span>0,36 × 100 = 36% and 36% ÷ 100 = 0,36</span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>When converting a recurring decimal, the number of 9s in the denominator equals the length of the recurring block.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Fraction &#8596; Decimal Converter</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Convert a fraction to a decimal, or a terminating decimal to a fraction. Includes percentage conversion.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Mode</label><select id="convMode" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;"><option value="f2d">Fraction &#8594; Decimal</option><option value="d2f">Decimal &#8594; Fraction</option><option value="pct">Decimal &#8596; %</option></select></div>
+              <div id="convF" style="display:flex;flex-direction:column;gap:4px;align-items:center;"><input id="convN" type="number" value="7" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px 7px 0 0;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"><div style="width:60px;height:2px;background:rgba(99,102,241,0.60);"></div><input id="convD" type="number" value="8" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:0 0 7px 7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div id="convDec" style="display:none;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Value</label><input id="convVal" type="text" value="0.625" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="convBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Convert</button>
+            </div>
+            <div id="convOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a;}
+            var modeEl=document.getElementById('convMode');
+            function setMode(){var m=modeEl.value;document.getElementById('convF').style.display=(m==='f2d')?'flex':'none';document.getElementById('convDec').style.display=(m!=='f2d')?'flex':'none';}
+            modeEl.addEventListener('change',function(){setMode();convert();});
+            function convert(){var m=modeEl.value,out=document.getElementById('convOut');if(m==='f2d'){var n=parseInt(document.getElementById('convN').value)||0,d=parseInt(document.getElementById('convD').value)||1;if(d===0){out.innerHTML='<span style="color:#fca5a5;">Denominator cannot be 0.</span>';return;}var dec=(n/d).toFixed(10).replace(/0+$/,'').replace(/\.$/,'');out.innerHTML='<div><span style="color:rgba(221,225,240,0.45);">'+n+' ÷ '+d+' = </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+dec+'</span></div>';}else if(m==='d2f'){var v=parseFloat(document.getElementById('convVal').value);if(isNaN(v)){out.innerHTML='<span style="color:#fca5a5;">Enter a valid decimal.</span>';return;}var s=String(v),dec_part=(s.split('.')[1]||''),places=dec_part.length;var denom=Math.pow(10,places),numer=Math.round(v*denom);var g=gcd(Math.abs(numer),denom);out.innerHTML='<div><span style="color:rgba(221,225,240,0.45);">Step 1: </span>'+v+' = '+numer+'/'+denom+'</div><div><span style="color:rgba(221,225,240,0.45);">GCF = '+g+' → simplified: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+(numer/g)+'/'+(denom/g)+'</span></div>';}else{var v=parseFloat(document.getElementById('convVal').value);if(isNaN(v)){out.innerHTML='<span style="color:#fca5a5;">Enter a value.</span>';return;}var pct=v<=1?v*100:v,dec2=v>1?v/100:v;out.innerHTML='<div><span style="color:rgba(221,225,240,0.45);">As decimal: </span><span style="color:#6ee7b7;font-weight:700;">'+dec2+'</span></div><div><span style="color:rgba(221,225,240,0.45);">As percentage: </span><span style="color:#fbbf24;font-weight:700;">'+pct+'%</span></div>';}}
+            document.getElementById('convBtn').addEventListener('click',convert);setMode();convert();
+          })();
+          </script>
+        `
+        the length of the recurring block.</span></div>
         `
       },
       questions: [

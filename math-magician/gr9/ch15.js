@@ -32,7 +32,60 @@ MathMagician.registerChapter(15, {
             <div class="example-step"><span class="step-num">1</span><span>r = 4 cm, h = 10 cm</span></div>
             <div class="example-step"><span class="step-num">2</span><span>SA = 2π(4)² + 2π(4)(10) = 32π + 80π = 112π ≈ 351,86 cm²</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Draw the net of the solid first. Count each face and calculate its area separately before adding together.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Surface area is the total area of all faces of a 3D shape — think of it as the amount of wrapping paper needed to cover it.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Surface Area Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Select a 3D solid and enter its dimensions. See the formula, each face's area, and the total surface area.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Solid</label>
+                <select id="saShape" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="cube">Cube</option>
+                  <option value="rect">Rectangular prism</option>
+                  <option value="tri">Triangular prism</option>
+                  <option value="cyl">Cylinder</option>
+                </select>
+              </div>
+              <div id="saInputs" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+              <button id="saBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="saOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            var solids={
+              cube:{labels:['Side (s)'],defaults:[5],formula:'SA = 6s²',
+                calc:function(v){var s=v[0];return {total:6*s*s,faces:['6 squares: 6 × '+s+'² = '+6*s*s]};} },
+              rect:{labels:['Length (l)','Width (w)','Height (h)'],defaults:[8,5,4],formula:'SA = 2(lw + lh + wh)',
+                calc:function(v){var l=v[0],w=v[1],h=v[2];var lw=l*w,lh=l*h,wh=w*h;return{total:2*(lw+lh+wh),faces:['2 × lw = 2×'+lw+' = '+2*lw,'2 × lh = 2×'+lh+' = '+2*lh,'2 × wh = 2×'+wh+' = '+2*wh]};} },
+              tri:{labels:['Base (b)','Height of tri (h)','Length (l)','Slant sides (s1, s2)','s2'],defaults:[6,4,10,5,5],formula:'SA = bh + l(b + s1 + s2)',
+                calc:function(v){var b=v[0],h=v[1],l=v[2],s1=v[3],s2=v[4];var bases=b*h,rect1=l*b,rect2=l*s1,rect3=l*s2;return{total:bases+rect1+rect2+rect3,faces:['2 triangular faces: '+b+'×'+h+' = '+bases,'Rectangular base: '+l+'×'+b+' = '+rect1,'Side face 1: '+l+'×'+s1+' = '+rect2,'Side face 2: '+l+'×'+s2+' = '+rect3]};} },
+              cyl:{labels:['Radius (r)','Height (h)'],defaults:[4,10],formula:'SA = 2πr² + 2πrh',
+                calc:function(v){var r=v[0],h=v[1];var circles=2*Math.PI*r*r,lateral=2*Math.PI*r*h;return{total:circles+lateral,faces:['2 circles: 2π('+r+')² = '+circles.toFixed(3),'Curved surface: 2π('+r+')('+h+') = '+lateral.toFixed(3)]};} },
+            };
+            function setShape(){
+              var key=document.getElementById('saShape').value;var s=solids[key];
+              document.getElementById('saInputs').innerHTML=s.labels.map(function(lbl,i){
+                return '<div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">'+lbl+'</label><input class="saVal" type="number" value="'+s.defaults[i]+'" style="width:62px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>';
+              }).join('');
+            }
+            function calc(){
+              var key=document.getElementById('saShape').value;var s=solids[key];
+              var vals=Array.from(document.querySelectorAll('.saVal')).map(function(el){return parseFloat(el.value)||0;});
+              var res=s.calc(vals);
+              document.getElementById('saOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Formula: </span><span style="color:#fbbf24;">'+s.formula+'</span></div>',
+                res.faces.map(function(f){return '<div style="color:rgba(221,225,240,0.50);font-size:11px;">→ '+f+'</div>';}).join(''),
+                '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Total SA: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+(typeof res.total==='number'&&res.total%1!==0?res.total.toFixed(3):res.total)+'</span> <span style="color:rgba(221,225,240,0.35);">units²</span></div>',
+              ].join('');
+            }
+            document.getElementById('saShape').addEventListener('change',function(){setShape();calc();});
+            document.getElementById('saBtn').addEventListener('click',calc);
+            setShape();calc();
+          })();
+          </script>
+        Draw the net of the solid first. Count each face and calculate its area separately before adding together.</span></div>
         `
       },
       questions: [
@@ -72,7 +125,46 @@ MathMagician.registerChapter(15, {
             <div class="example-step"><span class="step-num">2</span><span>Cone r = 6, h = 8: V = ⅓π(36)(8) = 96π ≈ 301,59 cm³</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Sphere r = 3: V = 4/3π(27) = 36π ≈ 113,10 cm³</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Pyramid/cone volume = ⅓ × (volume of the corresponding prism/cylinder). A useful check!</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Pyramid/cone volume = ⅓ × (
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; 3D Volume & Surface Area</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Select a solid, enter dimensions, and get V and SA instantly.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <select id="volShape4" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                <option value="cub">Rectangular prism</option>
+                <option value="cyl">Cylinder</option>
+                <option value="cone">Cone</option>
+                <option value="sph">Sphere</option>
+              </select>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" id="volL14">l</label><input id="volV14" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" id="volL24">w</label><input id="volV24" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);" id="volL34">h</label><input id="volV34" type="number" value="4" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="volBtn4" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="volOut4" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            var PI=Math.PI;function f(v){return Math.round(v*100)/100;}
+            var cfg={cub:{l1:'l',l2:'w',l3:'h'},cyl:{l1:'r',l2:'h',l3:''},cone:{l1:'r',l2:'h',l3:''},sph:{l1:'r',l2:'',l3:''}};
+            function setL(){var s=document.getElementById('volShape4').value;var c=cfg[s];document.getElementById('volL14').textContent=c.l1;document.getElementById('volL24').textContent=c.l2;document.getElementById('volL34').textContent=c.l3;document.getElementById('volV24').disabled=(s==='sph');document.getElementById('volV34').disabled=(s!=='cub');}
+            function calc(){
+              var s=document.getElementById('volShape4').value;
+              var v1=parseFloat(document.getElementById('volV14').value)||0,v2=parseFloat(document.getElementById('volV24').value)||0,v3=parseFloat(document.getElementById('volV34').value)||0;
+              var V,SA;
+              if(s==='cub'){V=v1*v2*v3;SA=2*(v1*v2+v1*v3+v2*v3);}
+              else if(s==='cyl'){V=PI*v1*v1*v2;SA=2*PI*v1*(v1+v2);}
+              else if(s==='cone'){V=PI*v1*v1*v2/3;var sl=Math.sqrt(v1*v1+v2*v2);SA=PI*v1*(v1+sl);}
+              else{V=4/3*PI*v1*v1*v1;SA=4*PI*v1*v1;}
+              document.getElementById('volOut4').innerHTML='<div><span style="color:rgba(221,225,240,0.45);width:80px;display:inline-block;">Volume:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+f(V)+' units\xb3</span></div><div><span style="color:rgba(221,225,240,0.45);width:80px;display:inline-block;">Surf. Area:</span><span style="color:#a5b4fc;">'+f(SA)+' units\xb2</span></div>';
+            }
+            document.getElementById('volShape4').addEventListener('change',function(){setL();calc();});
+            document.getElementById('volBtn4').addEventListener('click',calc);
+            ['volV1','volV2','volV3'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
+            setL();calc();
+          })();
+          </script>
+        volume of the corresponding prism/cylinder). A useful check!</span></div>
         `
       },
       questions: [

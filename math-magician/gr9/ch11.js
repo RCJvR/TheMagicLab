@@ -35,7 +35,54 @@ MathMagician.registerChapter(11, {
               <strong>Kite:</strong> two pairs of adjacent equal sides; one diagonal bisects the other at 90°.
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Every square is a rectangle AND a rhombus. But not every rectangle is a square.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In any triangle, the exterior angle equals the sum of the two non-adjacent interior angles.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Triangle &amp; Quadrilateral Angle Solver</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter known angles. The unknown angle is found using angle-sum rules.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;">Shape</label>
+                <select id="shapeType" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="tri">Triangle (sum = 180°)</option>
+                  <option value="quad">Quadrilateral (sum = 360°)</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">&ang;1 (°)</label><input id="ang1" type="number" value="65" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">&ang;2 (°)</label><input id="ang2" type="number" value="75" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div id="ang3div" style="display:none;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">&ang;3 (°)</label><input id="ang3" type="number" value="110" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="angBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Find unknown</button>
+            </div>
+            <div id="angOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function setShape(){
+              var isQ=document.getElementById('shapeType').value==='quad';
+              document.getElementById('ang3div').style.display=isQ?'flex':'none';
+            }
+            document.getElementById('shapeType').addEventListener('change',function(){setShape();solve();});
+            function solve(){
+              var isQ=document.getElementById('shapeType').value==='quad';
+              var total=isQ?360:180;
+              var a1=parseFloat(document.getElementById('ang1').value)||0;
+              var a2=parseFloat(document.getElementById('ang2').value)||0;
+              var a3=isQ?(parseFloat(document.getElementById('ang3').value)||0):0;
+              var known=a1+a2+a3,unknown=total-known;
+              var out=document.getElementById('angOut');
+              if(unknown<=0){out.innerHTML='<span style="color:#fca5a5;">Known angles already equal or exceed '+total+'°. Check values.</span>';return;}
+              out.innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Angle sum rule: </span><span style="color:#a5b4fc;">'+total+'°</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Sum of known angles: </span><span style="color:#fbbf24;">'+a1+'° + '+a2+'°'+(isQ?' + '+a3+'°':'')+' = '+known+'°</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Unknown angle x: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+unknown+'°</span></div>',
+                '<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:2px;">'+total+'° − '+known+'° = '+unknown+'°</div>',
+              ].join('');
+            }
+            document.getElementById('angBtn').addEventListener('click',solve);
+            setShape();solve();
+          })();
+          </script>
+        Every square is a rectangle AND a rhombus. But not every rectangle is a square.</span></div>
         `
       },
       questions: [
@@ -74,7 +121,42 @@ MathMagician.registerChapter(11, {
               <strong>Scale factor k:</strong> if sides of △ABC are k times sides of △DEF, then areas are in ratio k²
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In similarity problems, always match corresponding vertices in the same order. △ABC ||| △DEF means A↔D, B↔E, C↔F.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In similarity problems, always 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Distance, Midpoint & Gradient</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter two points. Distance, midpoint, gradient and line equation are calculated.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">x&#8321;</label><input id="agX1" type="number" value="1" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">y&#8321;</label><input id="agY1" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">x&#8322;</label><input id="agX2" type="number" value="5" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">y&#8322;</label><input id="agY2" type="number" value="6" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="agBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="agOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function f(v){return Math.round(v*10000)/10000;}
+            function calc(){
+              var x1=parseFloat(document.getElementById('agX1').value)||0,y1=parseFloat(document.getElementById('agY1').value)||0;
+              var x2=parseFloat(document.getElementById('agX2').value)||0,y2=parseFloat(document.getElementById('agY2').value)||0;
+              var dx=x2-x1,dy=y2-y1,dist=Math.sqrt(dx*dx+dy*dy);
+              var mx=(x1+x2)/2,my=(y1+y2)/2;
+              var m=dx===0?null:dy/dx,c=m===null?null:y1-m*x1;
+              var line=m===null?'x='+x1:m===0?'y='+f(c):'y='+f(m)+'x'+(c>0?'+'+f(c):c<0?'\u2212'+f(Math.abs(c)):'');
+              document.getElementById('agOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Distance:</span><span style="color:#fbbf24;">'+f(dist)+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Midpoint M:</span><span style="color:#a5b4fc;">('+f(mx)+' ; '+f(my)+')</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Gradient m:</span><span style="color:#a5b4fc;">'+(m===null?'undefined':f(m))+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:120px;display:inline-block;">Line:</span><span style="color:#6ee7b7;font-weight:700;">'+line+'</span></div>',
+              ].join('');
+            }
+            document.getElementById('agBtn').addEventListener('click',calc);
+            ['agX1','agY1','agX2','agY2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
+            calc();
+          })();
+          </script>
+        match corresponding vertices in the same order. △ABC ||| △DEF means A↔D, B↔E, C↔F.</span></div>
         `
       },
       questions: [

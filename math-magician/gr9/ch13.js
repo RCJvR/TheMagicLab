@@ -30,7 +30,37 @@ MathMagician.registerChapter(13, {
             <div class="example-step"><span class="step-num">3</span><span>a = 7, b = 11: c = √(49 + 121) = √170 ≈ 13,04</span></div>
             <div class="example-step"><span class="step-num">4</span><span>Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25) — memorise these!</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Always identify the hypotenuse first — it's always opposite the right angle and always the longest side.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always identify the hypotenuse first — it's 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Pythagoras Solver</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Leave one field blank. Enter any two sides and the third is calculated.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side a</label><input id="pyA" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side b</label><input id="pyB" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Hypotenuse c</label><input id="pyC" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="pyBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
+            </div>
+            <div id="pyOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function f(v){return Math.round(v*10000)/10000;}
+            function solve(){
+              var a=parseFloat(document.getElementById('pyA').value),b=parseFloat(document.getElementById('pyB').value),c=parseFloat(document.getElementById('pyC').value);
+              var blanks=[isNaN(a),isNaN(b),isNaN(c)].filter(Boolean).length;
+              var el=document.getElementById('pyOut');
+              if(blanks!==1){el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>';return;}
+              var res,step1,step2;
+              if(isNaN(c)){res=Math.sqrt(a*a+b*b);step1='c\xb2 = '+a+'\xb2 + '+b+'\xb2 = '+(a*a+b*b);step2='c = \u221a'+(a*a+b*b)+' = '+f(res);document.getElementById('pyC').value=f(res);}
+              else if(isNaN(b)){res=Math.sqrt(c*c-a*a);step1='b\xb2 = '+c+'\xb2 \u2212 '+a+'\xb2 = '+(c*c-a*a);step2='b = \u221a'+(c*c-a*a)+' = '+f(res);document.getElementById('pyB').value=f(res);}
+              else{res=Math.sqrt(c*c-b*b);step1='a\xb2 = '+c+'\xb2 \u2212 '+b+'\xb2 = '+(c*c-b*b);step2='a = \u221a'+(c*c-b*b)+' = '+f(res);document.getElementById('pyA').value=f(res);}
+              el.innerHTML='<div style="color:rgba(221,225,240,0.60);">'+step1+'</div><div><strong style="color:#6ee7b7;">'+step2+'</strong></div>';
+            }
+            document.getElementById('pyBtn').addEventListener('click',solve);
+            ['pyA','pyB','pyC'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
+          })();
+          </script>
+        always opposite the right angle and always the longest side.</span></div>
         `
       },
       questions: [
@@ -66,7 +96,37 @@ MathMagician.registerChapter(13, {
             <div class="example-step"><span class="step-num">2</span><span>Isosceles triangle: base = 16 cm, equal sides = 10 cm. Height: h = √(10² − 8²) = √(100 − 64) = √36 = 6 cm</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Distance: A(1;2) to B(4;6): d = √(9+16) = √25 = 5 units</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In isosceles triangle problems, the altitude from the apex bisects the base, creating two identical right triangles.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In isosceles triangle problems, 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Pythagoras Solver</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Leave one field blank. Enter any two sides and the third is calculated.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side a</label><input id="pyA2" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side b</label><input id="pyB2" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Hypotenuse c</label><input id="pyC2" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="pyBtn2" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
+            </div>
+            <div id="pyOut2" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function f(v){return Math.round(v*10000)/10000;}
+            function solve(){
+              var a=parseFloat(document.getElementById('pyA2').value),b=parseFloat(document.getElementById('pyB2').value),c=parseFloat(document.getElementById('pyC2').value);
+              var blanks=[isNaN(a),isNaN(b),isNaN(c)].filter(Boolean).length;
+              var el=document.getElementById('pyOut2');
+              if(blanks!==1){el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>';return;}
+              var res,step1,step2;
+              if(isNaN(c)){res=Math.sqrt(a*a+b*b);step1='c\xb2 = '+a+'\xb2 + '+b+'\xb2 = '+(a*a+b*b);step2='c = \u221a'+(a*a+b*b)+' = '+f(res);document.getElementById('pyC2').value=f(res);}
+              else if(isNaN(b)){res=Math.sqrt(c*c-a*a);step1='b\xb2 = '+c+'\xb2 \u2212 '+a+'\xb2 = '+(c*c-a*a);step2='b = \u221a'+(c*c-a*a)+' = '+f(res);document.getElementById('pyB2').value=f(res);}
+              else{res=Math.sqrt(c*c-b*b);step1='a\xb2 = '+c+'\xb2 \u2212 '+b+'\xb2 = '+(c*c-b*b);step2='a = \u221a'+(c*c-b*b)+' = '+f(res);document.getElementById('pyA2').value=f(res);}
+              el.innerHTML='<div style="color:rgba(221,225,240,0.60);">'+step1+'</div><div><strong style="color:#6ee7b7;">'+step2+'</strong></div>';
+            }
+            document.getElementById('pyBtn2').addEventListener('click',solve);
+            ['pyA','pyB','pyC'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
+          })();
+          </script>
+        the altitude from the apex bisects the base, creating two identical right triangles.</span></div>
         `
       },
       questions: [

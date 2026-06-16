@@ -29,7 +29,48 @@ MathMagician.registerChapter(6, {
             <div class="example-step"><span class="step-num">2</span><span>Given f(x) = 2x + 5: find x if f(x) = 17 → 2x + 5 = 17 → x = 6</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Table of values for y = x²: x: −2,−1,0,1,2 → y: 4,1,0,1,4</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>f(x) is NOT f × x. It means "the function f evaluated at x". Think of f as a machine that processes x.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>f(x) is NOT f &times; x. It means "the function f evaluated at x".</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Function Notation & Table of Values</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a linear function f(x) = mx + c. Generate a table of values, find f(x) for any input, and solve for x given f(x).</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">m (gradient)</label><input id="fnM" type="number" value="3" step="any" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">c (y-intercept)</label><input id="fnC" type="number" value="-1" step="any" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Evaluate f(x): x=</label><input id="fnX" type="number" value="4" step="any" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Solve: f(x)=</label><input id="fnY" type="number" value="11" step="any" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+            </div>
+            <div id="fnTable" style="overflow-x:auto;margin-bottom:10px;"></div>
+            <div id="fnOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              var m=parseFloat(document.getElementById('fnM').value)||0;
+              var c=parseFloat(document.getElementById('fnC').value)||0;
+              var xVal=parseFloat(document.getElementById('fnX').value);
+              var yVal=parseFloat(document.getElementById('fnY').value);
+              var f=function(x){return m*x+c;};
+              var xs=[-3,-2,-1,0,1,2,3];
+              var mStr=(m===1?'':m===-1?'−':String(m));
+              var cStr=c===0?'':(c>0?' + '+c:' − '+Math.abs(c));
+              var funcStr='f(x) = '+mStr+'x'+cStr;
+              // Table
+              var th=xs.map(function(x){return '<th style="padding:4px 10px;color:#fbbf24;font-size:11px;">'+x+'</th>';}).join('');
+              var td=xs.map(function(x){return '<td style="padding:4px 10px;color:#6ee7b7;font-size:11px;">'+f(x)+'</td>';}).join('');
+              document.getElementById('fnTable').innerHTML='<table style="border-collapse:collapse;font-family:JetBrains Mono,monospace;font-size:11px;"><tr><th style="padding:4px 10px;color:rgba(221,225,240,0.45);">x</th>'+th+'</tr><tr><th style="padding:4px 10px;color:rgba(221,225,240,0.45);">f(x)</th>'+td+'</tr></table>';
+              var lines=[];
+              lines.push('<div><span style="color:rgba(221,225,240,0.45);">Function: </span><span style="color:#fbbf24;font-weight:700;">'+funcStr+'</span></div>');
+              if(!isNaN(xVal)){lines.push('<div><span style="color:rgba(221,225,240,0.45);">f('+xVal+') = '+m+'('+xVal+')+'+c+' = </span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+f(xVal)+'</span></div>');}
+              if(!isNaN(yVal)&&m!==0){var sol=(yVal-c)/m;lines.push('<div><span style="color:rgba(221,225,240,0.45);">f(x)='+yVal+' → '+m+'x'+cStr+' = '+yVal+' → x = </span><span style="color:#a5b4fc;font-size:15px;font-weight:700;">'+sol+'</span></div>');}
+              else if(m===0&&!isNaN(yVal)){lines.push('<div style="color:#fca5a5;">m = 0: constant function, cannot solve for x unless f(x) = '+c+'.</div>');}
+              document.getElementById('fnOut').innerHTML=lines.join('');
+            }
+            ['fnM','fnC','fnX','fnY'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
+            update();
+          })();
+          </script>
+        Think of f as a machine that processes x.</span></div>
         `
       },
       questions: [
@@ -65,7 +106,55 @@ MathMagician.registerChapter(6, {
             <div class="example-step"><span class="step-num">2</span><span>y = x²: vertex (0;0), opens upward, axis of symmetry x = 0</span></div>
             <div class="example-step"><span class="step-num">3</span><span>y = 6/x: passes through (1;6), (2;3), (3;2), (6;1) and (−1;−6), (−2;−3)</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>To sketch any function, always make a table of values first. Use at least 5 points for accuracy.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>To sketch any function, always make a table of values first. 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Parabola Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Adjust a, p, q in y = a(x&#8722;p)&#178; + q. Vertex, intercepts and range update live.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">a</label><input id="pra2" type="number" value="-1" step="0.5" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">p</label><input id="prp2" type="number" value="2" step="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">q</label><input id="prq2" type="number" value="4" step="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+            </div>
+            <canvas id="parCanvas2" width="300" height="180" style="width:100%;max-width:300px;border-radius:8px;background:#0f0e1a;display:block;margin-bottom:10px;"></canvas>
+            <div id="prOut2" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:1.9;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              const a=parseFloat(document.getElementById('pra2').value)||1;
+              const p=parseFloat(document.getElementById('prp2').value)||0;
+              const q=parseFloat(document.getElementById('prq2').value)||0;
+              var f=function(x){return a*(x-p)*(x-p)+q;};
+              var cv=document.getElementById('parCanvas2'),ctx=cv.getContext('2d');
+              var W=cv.width,H=cv.height,cx=W/2,cy=H/2,sx=25,sy=18;
+              ctx.clearRect(0,0,W,H);
+              ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineWidth=1;
+              ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+              ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+              ctx.strokeStyle='#6366f1';ctx.lineWidth=2;ctx.beginPath();
+              var first=true;
+              for(var px=0;px<W;px++){var xv=(px-cx)/sx,yv=f(xv),py=cy-yv*sy;if(py<-5||py>H+5){first=true;continue;}if(first){ctx.moveTo(px,py);}else{ctx.lineTo(px,py);}first=false;}
+              ctx.stroke();
+              var x2p=function(x){return cx+x*sx;},y2p=function(y){return cy-y*sy;};
+              ctx.fillStyle='#fcd34d';ctx.beginPath();ctx.arc(x2p(p),y2p(q),4,0,2*Math.PI);ctx.fill();
+              var yi=f(0);ctx.fillStyle='#6ee7b7';ctx.beginPath();ctx.arc(x2p(0),y2p(yi),3,0,2*Math.PI);ctx.fill();
+              var disc=-q/a;var xInts=[];
+              if(disc>0){var sq=Math.sqrt(disc);xInts=[p+sq,p-sq];}else if(disc===0){xInts=[p];}
+              xInts.forEach(function(xi){ctx.fillStyle='#f59e0b';ctx.beginPath();ctx.arc(x2p(xi),y2p(0),3,0,2*Math.PI);ctx.fill();});
+              var r=function(v){return Math.round(v*100)/100;};
+              document.getElementById('prOut2').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);width:110px;display:inline-block;">Vertex:</span><span style="color:#fcd34d;">('+p+', '+q+') '+(a>0?'\u2191 Min':'\u2193 Max')+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:110px;display:inline-block;">Axis:</span><span style="color:#a5b4fc;">x = '+p+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:110px;display:inline-block;">y-intercept:</span><span style="color:#6ee7b7;">(0, '+r(yi)+')</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:110px;display:inline-block;">x-intercept(s):</span><span style="color:#f59e0b;">'+(xInts.length?xInts.map(r).join(', '):'None')+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);width:110px;display:inline-block;">Range:</span><span style="color:#a5b4fc;">'+(a>0?'y \u2265 '+q:'y \u2264 '+q)+'</span></div>',
+              ].join('');
+            }
+            ['pra','prp','prq'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
+            update();
+          })();
+          </script>
+        Use at least 5 points for accuracy.</span></div>
         `
       },
       questions: [

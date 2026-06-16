@@ -33,7 +33,81 @@ MathMagician.registerChapter(16, {
               <strong>y = −x:</strong> (x; y) → (−y; −x)
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>Label image points with prime notation: A → A' (A prime). This distinguishes object from image.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>A translation does NOT change the size or shape — only the position. All points move the same distance in the same direction.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Translation &amp; Reflection Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a point, choose a transformation, and see the image coordinates. The Cartesian plane updates live.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <label style="font-size:10px;color:rgba(221,225,240,0.45);">Transformation</label>
+                <select id="tfType" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="trans">Translate by (a; b)</option>
+                  <option value="refX">Reflect in x-axis</option>
+                  <option value="refY">Reflect in y-axis</option>
+                  <option value="refYX">Reflect in y = x</option>
+                  <option value="refYnX">Reflect in y = &minus;x</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Point x</label><input id="tfX" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Point y</label><input id="tfY" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div id="tfABdiv" style="display:flex;gap:8px;">
+                <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">a</label><input id="tfA" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+                <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">b</label><input id="tfB" type="number" value="-1" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              </div>
+            </div>
+            <svg id="tfSvg" viewBox="0 0 240 240" style="width:240px;height:240px;border-radius:8px;background:rgba(10,15,30,0.60);margin-bottom:10px;"></svg>
+            <div id="tfOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function setType(){var t=document.getElementById('tfType').value;document.getElementById('tfABdiv').style.display=(t==='trans')?'flex':'none';}
+            document.getElementById('tfType').addEventListener('change',function(){setType();transform();});
+            function transform(){
+              var t=document.getElementById('tfType').value;
+              var x=parseFloat(document.getElementById('tfX').value)||0;
+              var y=parseFloat(document.getElementById('tfY').value)||0;
+              var a=parseFloat(document.getElementById('tfA').value)||0;
+              var b=parseFloat(document.getElementById('tfB').value)||0;
+              var ix,iy,rule,label;
+              if(t==='trans'){ix=x+a;iy=y+b;rule='(x; y) → (x+'+a+'; y+'+b+')';label='Translation by ('+a+'; '+b+')';}
+              else if(t==='refX'){ix=x;iy=-y;rule='(x; y) → (x; −y)';label='Reflection in x-axis';}
+              else if(t==='refY'){ix=-x;iy=y;rule='(x; y) → (−x; y)';label='Reflection in y-axis';}
+              else if(t==='refYX'){ix=y;iy=x;rule='(x; y) → (y; x)';label='Reflection in y = x';}
+              else{ix=-y;iy=-x;rule='(x; y) → (−y; −x)';label='Reflection in y = −x';}
+              // Draw grid
+              var W=240,cx=120,cy=120,scale=20;
+              var grid='';
+              for(var v=-5;v<=5;v++){
+                var gx=cx+v*scale,gy=cy-v*scale;
+                grid+='<line x1="'+gx+'" y1="0" x2="'+gx+'" y2="'+W+'" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';
+                grid+='<line x1="0" y1="'+gy+'" x2="'+W+'" y2="'+gy+'" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>';
+              }
+              grid+='<line x1="0" y1="'+cy+'" x2="'+W+'" y2="'+cy+'" stroke="rgba(255,255,255,0.20)" stroke-width="1.2"/>';
+              grid+='<line x1="'+cx+'" y1="0" x2="'+cx+'" y2="'+W+'" stroke="rgba(255,255,255,0.20)" stroke-width="1.2"/>';
+              var px=cx+x*scale,py=cy-y*scale;
+              var px2=cx+ix*scale,py2=cy-iy*scale;
+              grid+='<line x1="'+px+'" y1="'+py+'" x2="'+px2+'" y2="'+py2+'" stroke="rgba(245,158,11,0.40)" stroke-width="1" stroke-dasharray="4,3"/>';
+              grid+='<circle cx="'+px+'" cy="'+py+'" r="6" fill="#fbbf24"/>';
+              grid+='<text x="'+(px+8)+'" y="'+(py-6)+'" font-size="9" fill="#fbbf24" font-family="JetBrains Mono,monospace">P('+x+';'+y+')</text>';
+              grid+='<circle cx="'+px2+'" cy="'+py2+'" r="6" fill="#6ee7b7"/>';
+              grid+='<text x="'+(px2+8)+'" y="'+(py2-6)+'" font-size="9" fill="#6ee7b7" font-family="JetBrains Mono,monospace">P'('+ix+';'+iy+')</text>';
+              document.getElementById('tfSvg').innerHTML=grid;
+              document.getElementById('tfOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Transformation: </span><span style="color:#fbbf24;">'+label+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Rule: </span><span style="color:#a5b4fc;">'+rule+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Original: </span><span style="color:#fbbf24;font-weight:700;">P('+x+'; '+y+')</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Image: </span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">P'('+ix+'; '+iy+')</span></div>',
+              ].join('');
+            }
+            ['tfType','tfX','tfY','tfA','tfB'].forEach(function(id){
+              var el=document.getElementById(id);
+              el.addEventListener('input',transform);el.addEventListener('change',transform);
+            });
+            setType();transform();
+          })();
+          </script>
+        distinguishes object from image.</span></div>
         `
       },
       questions: [
@@ -74,7 +148,50 @@ MathMagician.registerChapter(16, {
               <strong>Effect on perimeter:</strong> multiplied by k
             </p>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>For enlargement by factor k from the origin: each point moves along its line through the origin, k times further away.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For enlargement by factor k from the origin: 
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Transformation Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter a point and pick a transformation. See the image and the rule used.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">x</label><input id="txX2" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">y</label><input id="txY2" type="number" value="4" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Transformation</label>
+                <select id="txType2" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:7px 10px;border-radius:7px;font-size:12px;font-family:DM Sans,sans-serif;">
+                  <option value="refX">Reflect x-axis</option>
+                  <option value="refY">Reflect y-axis</option>
+                  <option value="refYX">Reflect y = x</option>
+                  <option value="refYNX">Reflect y = \u2212x</option>
+                  <option value="rot90a">Rotate 90\xb0 anti-CW</option>
+                  <option value="rot90c">Rotate 90\xb0 CW</option>
+                  <option value="rot180">Rotate 180\xb0</option>
+                  <option value="enlarge">Enlarge (scale k)</option>
+                </select>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">k</label><input id="txK2" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="txBtn2" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Transform</button>
+            </div>
+            <div id="txOut2" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            var rules={refX:'(x;y)\u2192(x;\u2212y)',refY:'(x;y)\u2192(\u2212x;y)',refYX:'(x;y)\u2192(y;x)',refYNX:'(x;y)\u2192(\u2212y;\u2212x)',rot90a:'(x;y)\u2192(\u2212y;x)',rot90c:'(x;y)\u2192(y;\u2212x)',rot180:'(x;y)\u2192(\u2212x;\u2212y)',enlarge:'(x;y)\u2192(kx;ky)'};
+            function tx(){
+              var x=parseFloat(document.getElementById('txX2').value)||0,y=parseFloat(document.getElementById('txY2').value)||0;
+              var t=document.getElementById('txType2').value,k=parseFloat(document.getElementById('txK2').value)||1;
+              var ix,iy;
+              if(t==='refX'){ix=x;iy=-y;}else if(t==='refY'){ix=-x;iy=y;}else if(t==='refYX'){ix=y;iy=x;}else if(t==='refYNX'){ix=-y;iy=-x;}else if(t==='rot90a'){ix=-y;iy=x;}else if(t==='rot90c'){ix=y;iy=-x;}else if(t==='rot180'){ix=-x;iy=-y;}else{ix=k*x;iy=k*y;}
+              document.getElementById('txOut2').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Object:</span><span style="color:#a5b4fc;"> ('+x+' ; '+y+')</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Rule:</span><span style="color:#fbbf24;"> '+rules[t].replace('k',k)+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">Image:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;"> ('+ix+' ; '+iy+')</span></div>',
+              ].join('');
+            }
+            document.getElementById('txBtn2').addEventListener('click',tx);
+            ['txX','txY','txK'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')tx();});});
+            tx();
+          })();
+          </script>
+        each point moves along its line through the origin, k times further away.</span></div>
         `
       },
       questions: [

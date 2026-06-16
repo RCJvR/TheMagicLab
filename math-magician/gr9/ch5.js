@@ -30,44 +30,58 @@ MathMagician.registerChapter(5, {
             <div class="example-step"><span class="step-num">4</span><span>Is 50 a term? 3n + 2 = 50 → n = 16. Yes, T₁₆ = 50.</span></div>
             <div class="example-step"><span class="step-num">5</span><span>Is 51 a term? 3n + 2 = 51 → n = 16,33. No (not a natural number).</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>If solving for n gives a non-integer, the number is NOT a term in the sequence.</span></div>
-        `
-      },
-      questions: [
-        { type: "mc", text: "Find the general term for: 4, 7, 10, 13, …", options: ["Tₙ = 3n + 1", "Tₙ = n + 3", "Tₙ = 4n", "Tₙ = 3n − 1"], answer: 0, topic: "Patterns" },
-        { type: "input", text: "For the sequence 2, 5, 8, 11, … find T₁₅.", answer: "44", topic: "Patterns" },
-        { type: "mc", text: "Which term of 6, 10, 14, 18, … equals 54?", options: ["T₁₀", "T₁₂", "T₁₃", "T₁₄"], answer: 1, topic: "Patterns" },
-        { type: "input", text: "The general term of a sequence is Tₙ = 5n − 3. Find T₈.", answer: "37", topic: "Patterns" },
-        { type: "mc", text: "Is 100 a term in the sequence with Tₙ = 3n + 1?", options: ["Yes, T₃₃", "Yes, T₃₄", "No", "Yes, T₃₂"], answer: 2, topic: "Patterns" },
-      ]
-    },
-    {
-      id: 10,
-      chapter: 5,
-      name: "Geometric patterns",
-      fullName: "Geometric patterns and diagrams",
-      lesson: {
-        heading: "Geometric patterns",
-        sub: "Chapter 5 · Topic 2",
-        body: `
-          <p><strong>Geometric patterns</strong> involve shapes arranged in a sequence. We count elements (dots, matches, tiles) and find formulas.</p>
-          <div class="def-box">
-            <div class="def-box-title">📖 Strategy for geometric patterns</div>
-            <p>
-              <strong>Step 1:</strong> Draw or examine the pattern carefully.<br>
-              <strong>Step 2:</strong> Count the number of elements (dots, lines, squares) for each position.<br>
-              <strong>Step 3:</strong> List as a numeric sequence and find the general term.<br>
-              <strong>Step 4:</strong> Verify by substituting back into your formula.
-            </p>
-          </div>
-          <div class="example-box">
-            <div class="example-box-title">✏️ Matchstick houses</div>
-            <div class="example-step"><span class="step-num">1</span><span>1 house: 6 matches; 2 houses: 11 matches; 3 houses: 16 matches</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Sequence: 6, 11, 16, … → d = 5, a = 6</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>Tₙ = 6 + (n−1)(5) = 5n + 1</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>T₁₀ = 51 matches for 10 houses</span></div>
-          </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>In many matchstick patterns, each new shape adds d matches. Look for what is added each time, not just the total.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Geometric Pattern Builder</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Set the starting count and how many elements are added per step. See the visual pattern and formula grow.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Start (a)</label><input id="gpA" type="number" value="4" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Add per step (d)</label><input id="gpD" type="number" value="3" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Show positions</label><input id="gpSteps" type="number" value="5" min="1" max="8" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+            </div>
+            <svg id="gpSvg" viewBox="0 0 340 60" style="width:100%;max-width:340px;border-radius:8px;background:rgba(10,15,30,0.55);margin-bottom:10px;"></svg>
+            <div id="gpOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function update(){
+              var a=parseInt(document.getElementById('gpA').value)||1;
+              var d=parseInt(document.getElementById('gpD').value)||1;
+              var steps=Math.min(parseInt(document.getElementById('gpSteps').value)||5,8);
+              var terms=Array.from({length:steps},function(_,i){return a+i*d;});
+              var svg=document.getElementById('gpSvg');
+              var cols=steps,colW=340/cols,dotR=3,dotsPerRow=6;
+              var svgH=60;svg.setAttribute('viewBox','0 0 340 '+svgH);
+              var cells='';
+              terms.forEach(function(count,idx){
+                var cx=idx*colW+colW/2;
+                // Draw dots to represent the count (max shown = 20 visually)
+                var shown=Math.min(count,20);
+                var rows=Math.ceil(shown/dotsPerRow);
+                for(var i=0;i<shown;i++){
+                  var col=i%dotsPerRow,row=Math.floor(i/dotsPerRow);
+                  var dx=cx-(Math.min(shown,dotsPerRow)-1)*5/2+col*5;
+                  var dy=svgH-10-row*8;
+                  cells+='<circle cx="'+dx+'" cy="'+dy+'" r="'+dotR+'" fill="#6366f1" opacity="0.85"/>';
+                }
+                cells+='<text x="'+cx+'" y="12" text-anchor="middle" font-size="8" fill="rgba(245,158,11,0.80)" font-family="Syne,sans-serif" font-weight="700">n='+(idx+1)+'</text>';
+                cells+='<text x="'+cx+'" y="22" text-anchor="middle" font-size="7" fill="rgba(221,225,240,0.50)" font-family="JetBrains Mono,monospace">'+count+'</text>';
+              });
+              svg.innerHTML=cells;
+              var c=a-d;
+              var genStr=(d===0?String(a):(d===1?'n':(d>0?d+'n':'−'+Math.abs(d)+'n')))+(c>0?' + '+c:c<0?' − '+Math.abs(c):'');
+              document.getElementById('gpOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">Sequence:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', …</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">General term Tₙ:</span><span style="color:#fbbf24;font-weight:700;">'+genStr+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">T<sub>20</sub>:</span><span style="color:#6ee7b7;font-weight:700;">'+(a+19*d)+'</span></div>',
+              ].join('');
+            }
+            ['gpA','gpD','gpSteps'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
+            update();
+          })();
+          </script>
+        what is added each time, not just the total.</span></div>
         `
       },
       questions: [

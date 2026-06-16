@@ -31,45 +31,78 @@ MathMagician.registerChapter(10, {
             <div class="example-step"><span class="step-num">1</span><span>A perpendicular bisector cuts a line segment at 90° through its midpoint.</span></div>
             <div class="example-step"><span class="step-num">2</span><span>An angle bisector divides an angle into two equal parts.</span></div>
             <div class="example-step"><span class="step-num">3</span><span>The perpendicular bisectors of the sides of a triangle meet at the circumcentre.</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>The angle bisectors of a triangle meet at the incentre.</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Triangle Angle Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Enter two angles of a triangle. Find the third, classify the triangle by angles and sides.</p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">&ang;A (°)</label><input id="triA" type="number" value="60" min="1" max="178" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">&ang;B (°)</label><input id="triB" type="number" value="70" min="1" max="178" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="triBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            </div>
+            <div id="triOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In exam questions, always leave your construction arcs visible — they show your method and earn marks.</span></div>
-        `
-      },
-      questions: [
-        { type: "mc", text: "A perpendicular bisector of a line segment:", options: ["Bisects the angles of the segment", "Cuts the line at 90° at its midpoint", "Passes through any point on the segment", "Is parallel to the segment"], answer: 1, topic: "Constructions" },
-        { type: "mc", text: "How many equal parts does an angle bisector create?", options: ["3", "4", "2", "1"], answer: 2, topic: "Constructions" },
-        { type: "mc", text: "Which tool is NOT used in geometric constructions?", options: ["Compass", "Straight edge", "Protractor", "Pencil"], answer: 2, topic: "Constructions" },
-        { type: "mc", text: "The perpendicular bisectors of a triangle's sides all meet at the:", options: ["Incentre", "Centroid", "Circumcentre", "Orthocentre"], answer: 2, topic: "Constructions" },
-        { type: "mc", text: "To construct a 60° angle, you would:", options: ["Bisect a 120° angle", "Construct an equilateral triangle", "Bisect a right angle", "Use a protractor only"], answer: 1, topic: "Constructions" },
-      ]
-    },
-    {
-      id: 20,
-      chapter: 10,
-      name: "Constructing triangles and polygons",
-      fullName: "Constructing triangles and regular polygons",
-      lesson: {
-        heading: "Constructing triangles and polygons",
-        sub: "Chapter 10 · Topic 2",
-        body: `
-          <p>Triangles can be constructed given certain measurements. Regular polygons can be inscribed in circles.</p>
-          <div class="def-box">
-            <div class="def-box-title">📖 Triangle construction conditions</div>
-            <p>
-              <strong>SSS:</strong> three sides given — draw base, arc from each end at given lengths, join to intersection.<br>
-              <strong>SAS:</strong> two sides and included angle — draw base, construct angle, mark second side.<br>
-              <strong>ASA:</strong> two angles and included side — draw base, construct angles at each end.<br>
-              <strong>RHS:</strong> right angle, hypotenuse and one side.
-            </p>
+          <script>
+          (function(){
+            function calc(){
+              var a=parseFloat(document.getElementById('triA').value)||0;
+              var b=parseFloat(document.getElementById('triB').value)||0;
+              var c=180-a-b;
+              if(c<=0||a<=0||b<=0){document.getElementById('triOut').innerHTML='<span style="color:#fca5a5;">Invalid angles — must be positive and sum to 180°.</span>';return;}
+              var max=Math.max(a,b,c);
+              var aType=max===90?'Right-angled':max>90?'Obtuse':'Acute';
+              var sType=a===b&&b===c?'Equilateral':a===b||b===c||a===c?'Isosceles':'Scalene';
+              document.getElementById('triOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:160px;display:inline-block;">Third angle &ang;C:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+c+'°</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:160px;display:inline-block;">Angle type:</span><span style="color:#fbbf24;">'+aType+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:160px;display:inline-block;">Side type:</span><span style="color:#fbbf24;">'+sType+'</span></div>',
+                '<div style="font-size:10px;color:rgba(221,225,240,0.35);">'+a+'° + '+b+'° + '+c+'° = 180° &#10003;</div>',
+              ].join('');
+            }
+            document.getElementById('triBtn').addEventListener('click',calc);
+            ['triA','triB'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
+            calc();
+          })();
+          </script>
+        The angle bisectors of a triangle meet at the incentre.</span></div>
           </div>
-          <div class="example-box">
-            <div class="example-box-title">✏️ Regular polygons in a circle</div>
-            <div class="example-step"><span class="step-num">1</span><span>Equilateral triangle: central angle = 360°/3 = 120°; or set compass to radius and mark off 6 points (every alternate point gives triangle).</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Square: central angle = 360°/4 = 90°; draw two perpendicular diameters.</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>Regular hexagon: central angle = 60°; set compass equal to radius and step around the circle.</span></div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For SSS constructions, if the sum of the two shorter sides &le; longest side, no triangle is possible — the sides won't meet.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Regular Polygon Angle Calculator</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Choose the number of sides. See interior and exterior angles, angle sum, and a live diagram.</p>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+              <input id="polyN" type="range" min="3" max="12" value="6" style="width:150px;accent-color:#6366f1;">
+              <input id="polyNNum" type="number" min="3" max="12" value="6" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:16px;font-family:JetBrains Mono,monospace;text-align:center;">
+              <span style="color:#a5b4fc;font-family:JetBrains Mono,monospace;font-size:13px;">sides</span>
+            </div>
+            <svg id="polySvg" viewBox="0 0 200 160" style="width:200px;height:160px;border-radius:8px;background:rgba(10,15,30,0.55);margin-bottom:10px;"></svg>
+            <div id="polyOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>For SSS constructions, if the sum of the two shorter sides ≤ longest side, no triangle is possible (triangle inequality).</span></div>
+          <script>
+          (function(){
+            var names={3:'Triangle',4:'Square',5:'Pentagon',6:'Hexagon',7:'Heptagon',8:'Octagon',9:'Nonagon',10:'Decagon',11:'Hendecagon',12:'Dodecagon'};
+            function update(){
+              var n=Math.max(3,Math.min(12,parseInt(document.getElementById('polyN').value)||6));
+              document.getElementById('polyN').value=n;document.getElementById('polyNNum').value=n;
+              var interior=(n-2)*180/n,exterior=360/n,sum=(n-2)*180;
+              var svg=document.getElementById('polySvg');
+              var cx=100,cy=80,r=60;
+              var pts=Array.from({length:n},function(_,i){var a=2*Math.PI*i/n-Math.PI/2;return [(cx+r*Math.cos(a)).toFixed(1),(cy+r*Math.sin(a)).toFixed(1)];});
+              svg.innerHTML='<polygon points="'+pts.map(function(p){return p.join(',');}).join(' ')+'" fill="rgba(99,102,241,0.18)" stroke="#6366f1" stroke-width="1.8"/>'+pts.map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="#fbbf24"/>';}).join('');
+              document.getElementById('polyOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:180px;display:inline-block;">Shape:</span><span style="color:#fbbf24;font-weight:700;">'+(names[n]||n+'-gon')+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:180px;display:inline-block;">Interior angle sum:</span><span style="color:#a5b4fc;"><strong>'+sum+'°</strong></span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:180px;display:inline-block;">Each interior angle:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+interior.toFixed(2)+'°</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:180px;display:inline-block;">Each exterior angle:</span><span style="color:#6ee7b7;">'+exterior.toFixed(2)+'°</span></div>',
+              ].join('');
+            }
+            document.getElementById('polyN').addEventListener('input',update);
+            document.getElementById('polyNNum').addEventListener('input',function(){document.getElementById('polyN').value=this.value;update();});
+            update();
+          })();
+          </script>
+        triangle inequality).</span></div>
         `
       },
       questions: [
