@@ -110,6 +110,175 @@ MathMagician.registerChapter(6, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Vertex form <span class="math">y = a(x−p)² + q</span> gives you everything at a glance: vertex (p, q), axis of symmetry x = p, and the direction of opening from a.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Function Grapher — Linear · Quadratic · Hyperbolic</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Choose a function type, adjust the parameters, and watch the graph update.</p>
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+              <button id="g10c6gmP" class="g10c6gm" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:rgba(99,102,241,0.30);color:#a5b4fc;">Parabola</button>
+              <button id="g10c6gmH" class="g10c6gm" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:rgba(221,225,240,0.50);">Hyperbola</button>
+              <button id="g10c6gmL" class="g10c6gm" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:rgba(221,225,240,0.50);">Linear</button>
+            </div>
+            <div id="g10c6ginp" style="margin-bottom:10px;"></div>
+            <canvas id="g10c6gcv" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g10c6gcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              let mode='para';
+              let xMn=-8,xMx=8,yMn=-8,yMx=8;
+              const px=x=>(x-xMn)/(xMx-xMn)*W;
+              const py=y=>H-(y-yMn)/(yMx-yMn)*H;
+              const fmt=n=>{const r=Math.round(n*100)/100;return r%1===0?r+'':r+'';}
+
+              function drawGrid(){
+                ctx.clearRect(0,0,W,H);
+                for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){
+                  ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=x===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
+                }
+                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                }
+                ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='11px monospace';
+                const ax0=Math.max(20,Math.min(px(0)-4,W-20));
+                const ay0=Math.max(14,Math.min(py(0)+14,H-4));
+                ctx.textAlign='center';
+                for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                ctx.textAlign='right';
+                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+              }
+
+              function curve(fn,color,skipJump){
+                ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';
+                ctx.beginPath();let on=false,pv=null;
+                const N=W*2;
+                for(let i=0;i<=N;i++){
+                  const x=xMn+(i/N)*(xMx-xMn);
+                  const y=fn(x);
+                  if(!isFinite(y)||y<yMn-40||y>yMx+40){on=false;pv=null;continue;}
+                  if(skipJump&&pv!==null&&Math.abs(y-pv)>(yMx-yMn)*0.5){on=false;}
+                  if(!on){ctx.moveTo(px(x),py(y));on=true;}else ctx.lineTo(px(x),py(y));
+                  pv=y;
+                }
+                ctx.stroke();
+              }
+
+              function dot(x,y,color){
+                if(x<xMn-0.5||x>xMx+0.5||y<yMn-0.5||y>yMx+0.5)return;
+                ctx.fillStyle=color;ctx.beginPath();ctx.arc(px(x),py(y),5,0,Math.PI*2);ctx.fill();
+                ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+              }
+
+              function lbl(x,y,text,color,dx,dy){
+                dx=dx==null?8:dx;dy=dy==null?-13:dy;
+                if(x<xMn-1||x>xMx+1)return;
+                ctx.fillStyle=color;ctx.font='bold 10px monospace';ctx.textAlign='left';
+                ctx.fillText(text,px(x)+dx,py(y)+dy);
+              }
+
+              function dashV(x,color){
+                ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1;ctx.setLineDash([5,4]);
+                ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();ctx.restore();
+              }
+              function dashH(y,color){
+                ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1;ctx.setLineDash([5,4]);
+                ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();ctx.restore();
+              }
+
+              function drawPara(){
+                const a=parseFloat(document.getElementById('g10c6ga2').value);
+                const p=parseFloat(document.getElementById('g10c6gp2').value);
+                const q=parseFloat(document.getElementById('g10c6gq2').value);
+                if([a,p,q].some(isNaN)||a===0)return;
+                const span=Math.max(6,Math.abs(q)+4);
+                xMn=p-7;xMx=p+7;
+                if(a>0){yMn=q-1.5;yMx=q+span;}else{yMn=q-span;yMx=q+1.5;}
+                xMn=Math.min(xMn,-2);xMx=Math.max(xMx,2);
+                yMn=Math.min(yMn,-3);yMx=Math.max(yMx,3);
+                drawGrid();
+                dashV(p,'rgba(252,211,77,0.30)');
+                curve(x=>a*(x-p)*(x-p)+q,'#6ee7b7',false);
+                dot(p,q,'#fcd34d');lbl(p,q,'V('+fmt(p)+', '+fmt(q)+')','#fcd34d');
+                const yi=a*p*p+q;
+                dot(0,yi,'#a5b4fc');lbl(0,yi,'(0, '+fmt(yi)+')','#a5b4fc');
+                const disc=-q/a;
+                if(disc>0){
+                  const sq=Math.sqrt(disc);
+                  [p+sq,p-sq].forEach(xi=>{dot(xi,0,'#6ee7b7');lbl(xi,0,'('+fmt(xi)+', 0)','#6ee7b7',4,-14);});
+                } else if(disc===0){
+                  dot(p,0,'#6ee7b7');lbl(p,0,'('+fmt(p)+', 0)','#6ee7b7',4,-14);
+                }
+              }
+
+              function drawHyp(){
+                const a=parseFloat(document.getElementById('g10c6gha2').value);
+                const p=parseFloat(document.getElementById('g10c6ghp2').value);
+                const q=parseFloat(document.getElementById('g10c6ghq2').value);
+                if([a,p,q].some(isNaN)||a===0)return;
+                xMn=-9;xMx=9;yMn=-9;yMx=9;
+                drawGrid();
+                dashV(-p,'rgba(252,165,165,0.45)');
+                dashH(q,'rgba(252,165,165,0.45)');
+                ctx.fillStyle='#fca5a5';ctx.font='bold 10px monospace';
+                ctx.textAlign='left';ctx.fillText('x='+fmt(-p),px(-p)+4,13);
+                ctx.textAlign='right';ctx.fillText('y='+fmt(q),W-3,py(q)-5);
+                curve(x=>a/(x+p)+q,'#6ee7b7',true);
+                if(Math.abs(p)>0.01){const yi=a/p+q;if(Math.abs(yi)<9){dot(0,yi,'#a5b4fc');lbl(0,yi,'(0, '+fmt(yi)+')','#a5b4fc');}}
+                if(Math.abs(q)>0.01){const xi=-p-a/q;if(Math.abs(xi)<9){dot(xi,0,'#fcd34d');lbl(xi,0,'('+fmt(xi)+', 0)','#fcd34d',4,-14);}}
+              }
+
+              function drawLin(){
+                const m=parseFloat(document.getElementById('g10c6glm').value);
+                const c=parseFloat(document.getElementById('g10c6glc').value);
+                if([m,c].some(isNaN))return;
+                xMn=-8;xMx=8;yMn=-8;yMx=8;
+                drawGrid();
+                curve(x=>m*x+c,'#6ee7b7',false);
+                if(Math.abs(c)<=8){dot(0,c,'#a5b4fc');lbl(0,c,'(0, '+fmt(c)+')','#a5b4fc');}
+                if(Math.abs(m)>0.01){const xi=-c/m;if(Math.abs(xi)<=8){dot(xi,0,'#fcd34d');lbl(xi,0,'('+fmt(xi)+', 0)','#fcd34d',4,-14);}}
+              }
+
+              const inp=document.getElementById('g10c6ginp');
+              const IS='width:64px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;';
+              const LS='font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;';
+              const BS='background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;align-self:flex-end;';
+              function fld(id,l,v){return '<div><div style="'+LS+'">'+l+'</div><input id="'+id+'" type="number" value="'+v+'" step="0.5" style="'+IS+'"></div>';}
+
+              function renderInp(){
+                let h='<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+                if(mode==='para') h+=fld('g10c6ga2','a','-1')+fld('g10c6gp2','p','-1')+fld('g10c6gq2','q','4');
+                else if(mode==='hyp') h+=fld('g10c6gha2','a','2')+fld('g10c6ghp2','p','0')+fld('g10c6ghq2','q','0');
+                else h+=fld('g10c6glm','m (slope)','2')+fld('g10c6glc','c','−1'.replace('−','-'));
+                h+='<button id="g10c6gBtn" style="'+BS+'">Plot</button></div>';
+                if(mode==='para') h+='<div style="font-size:11px;color:rgba(221,225,240,0.38);margin-top:5px;">y = a(x − p)² + q &nbsp;|&nbsp; vertex: (p, q) &nbsp;|&nbsp; axis: x = p</div>';
+                if(mode==='hyp') h+='<div style="font-size:11px;color:rgba(221,225,240,0.38);margin-top:5px;">y = a/(x+p) + q &nbsp;|&nbsp; vertical asymptote: x = −p &nbsp;|&nbsp; horizontal: y = q</div>';
+                inp.innerHTML=h;
+                document.getElementById('g10c6gBtn').addEventListener('click',plot);
+                inp.querySelectorAll('input').forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')plot();}));
+              }
+
+              function plot(){if(mode==='para')drawPara();else if(mode==='hyp')drawHyp();else drawLin();}
+
+              ['g10c6gmP','g10c6gmH','g10c6gmL'].forEach((id,i)=>{
+                document.getElementById(id).addEventListener('click',function(){
+                  mode=['para','hyp','lin'][i];
+                  document.querySelectorAll('.g10c6gm').forEach(b=>{b.style.background='transparent';b.style.color='rgba(221,225,240,0.50)';});
+                  this.style.background='rgba(99,102,241,0.30)';this.style.color='#a5b4fc';
+                  renderInp();plot();
+                });
+              });
+              renderInp();plot();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -260,6 +429,210 @@ MathMagician.registerChapter(6, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span><strong>a</strong> controls height (amplitude), <strong>q</strong> shifts the whole graph up or down. A negative <strong>a</strong> reflects the graph — the max and min positions swap.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Function Grapher — Exponential · Trigonometric</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Visualise exponential growth/decay and trig waves — adjust parameters to see the graph change.</p>
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+              <button id="g10c6gm2E" class="g10c6gm2" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:rgba(99,102,241,0.30);color:#a5b4fc;">Exponential</button>
+              <button id="g10c6gm2T" class="g10c6gm2" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:rgba(221,225,240,0.50);">Trig (sin/cos/tan)</button>
+            </div>
+            <div id="g10c6ginp2" style="margin-bottom:10px;"></div>
+            <canvas id="g10c6gcv2" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g10c6gcv2');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              let mode='exp';
+              let xMn,xMx,yMn,yMx;
+              const px=x=>(x-xMn)/(xMx-xMn)*W;
+              const py=y=>H-(y-yMn)/(yMx-yMn)*H;
+              const fmt=n=>{const r=Math.round(n*100)/100;return r+'';}
+              const toRad=d=>d*Math.PI/180;
+
+              function drawGrid(xLabels){
+                ctx.clearRect(0,0,W,H);
+                if(xLabels){
+                  // degree-based grid for trig
+                  [0,90,180,270,360].forEach(d=>{
+                    ctx.strokeStyle=d===0||d===360?'rgba(99,102,241,0.14)':'rgba(99,102,241,0.14)';
+                    ctx.lineWidth=1;
+                    ctx.beginPath();ctx.moveTo(px(d),0);ctx.lineTo(px(d),H);ctx.stroke();
+                  });
+                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                    ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                    ctx.lineWidth=y===0?1.5:1;
+                    ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                  }
+                  // x labels in degrees
+                  ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='11px monospace';
+                  const ay0=Math.max(14,Math.min(py(0)+14,H-4));
+                  ctx.textAlign='center';
+                  [0,90,180,270,360].forEach(d=>ctx.fillText(d+'°',px(d),ay0));
+                  // y labels
+                  ctx.textAlign='right';
+                  const ax0=Math.max(26,Math.min(px(0)-4,W-20));
+                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+                } else {
+                  for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){
+                    ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                    ctx.lineWidth=x===0?1.5:1;
+                    ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
+                  }
+                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                    ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                    ctx.lineWidth=y===0?1.5:1;
+                    ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                  }
+                  ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='11px monospace';
+                  const ax0=Math.max(20,Math.min(px(0)-4,W-20));
+                  const ay0=Math.max(14,Math.min(py(0)+14,H-4));
+                  ctx.textAlign='center';
+                  for(let x=Math.ceil(xMn);x<=Math.floor(xMx);x++){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                  ctx.textAlign='right';
+                  for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+                }
+              }
+
+              function curve(fn,color,skipJump){
+                ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';
+                ctx.beginPath();let on=false,pv=null;
+                const N=W*2;
+                for(let i=0;i<=N;i++){
+                  const x=xMn+(i/N)*(xMx-xMn);
+                  const y=fn(x);
+                  if(!isFinite(y)||y<yMn-50||y>yMx+50){on=false;pv=null;continue;}
+                  if(skipJump&&pv!==null&&Math.abs(y-pv)>(yMx-yMn)*0.5){on=false;}
+                  if(!on){ctx.moveTo(px(x),py(y));on=true;}else ctx.lineTo(px(x),py(y));
+                  pv=y;
+                }
+                ctx.stroke();
+              }
+
+              function dot(x,y,color){
+                if(x<xMn-0.5||x>xMx+0.5||y<yMn-0.5||y>yMx+0.5)return;
+                ctx.fillStyle=color;ctx.beginPath();ctx.arc(px(x),py(y),5,0,Math.PI*2);ctx.fill();
+                ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+              }
+
+              function lbl(x,y,text,color,dx,dy){
+                dx=dx==null?8:dx;dy=dy==null?-13:dy;
+                ctx.fillStyle=color;ctx.font='bold 10px monospace';ctx.textAlign='left';
+                ctx.fillText(text,px(x)+dx,py(y)+dy);
+              }
+
+              function dashH(y,color){
+                ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1;ctx.setLineDash([5,4]);
+                ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();ctx.restore();
+              }
+
+              function drawExp(){
+                const a=parseFloat(document.getElementById('g10c6gea').value);
+                const b=parseFloat(document.getElementById('g10c6geb').value);
+                const q=parseFloat(document.getElementById('g10c6geq').value);
+                if([a,b,q].some(isNaN)||b<=0||b===1||a===0)return;
+                xMn=-6;xMx=6;
+                // estimate y range
+                const yVals=[-6,-3,0,3,6].map(x=>a*Math.pow(b,x)+q).filter(isFinite);
+                yMn=Math.min(q-1,...yVals)-1;yMx=Math.max(...yVals)+1;
+                yMn=Math.min(yMn,-2);yMx=Math.max(yMx,2);
+                drawGrid(false);
+                dashH(q,'rgba(252,165,165,0.45)');
+                ctx.fillStyle='#fca5a5';ctx.font='bold 10px monospace';ctx.textAlign='right';
+                ctx.fillText('y='+fmt(q),W-3,py(q)-5);
+                curve(x=>a*Math.pow(b,x)+q,'#6ee7b7',false);
+                // y-intercept (x=0)
+                const yi=a+q;
+                dot(0,yi,'#fcd34d');lbl(0,yi,'(0, '+fmt(yi)+')','#fcd34d');
+                // show growth/decay label
+                const gd=b>1?'Growth (b='+fmt(b)+'>1)':'Decay (0<b='+fmt(b)+'<1)';
+                ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='11px monospace';ctx.textAlign='left';
+                ctx.fillText(gd,6,14);
+              }
+
+              function drawTrig(){
+                const fn=document.getElementById('g10c6gtfn3').value;
+                const a=parseFloat(document.getElementById('g10c6gta3').value);
+                const q=parseFloat(document.getElementById('g10c6gtq3').value);
+                if([a,q].some(isNaN))return;
+                const amp=Math.abs(a);
+                xMn=0;xMx=360;
+                if(fn==='tan'){yMn=-6;yMx=6;}
+                else{yMn=Math.min(-amp+q-0.5,-3);yMx=Math.max(amp+q+0.5,3);}
+                drawGrid(true);
+                const fmap={sin:d=>a*Math.sin(toRad(d))+q, cos:d=>a*Math.cos(toRad(d))+q, tan:d=>a*Math.tan(toRad(d))+q};
+                curve(fmap[fn],'#6ee7b7',fn==='tan');
+                // key points for sin & cos
+                if(fn!=='tan'){
+                  const maxD=fn==='sin'?(a>0?90:270):(a>0?0:180);
+                  const minD=fn==='sin'?(a>0?270:90):(a>0?180:360);
+                  const maxY=a>0?amp+q:-amp+q;
+                  const minY=a>0?-amp+q:amp+q;
+                  dot(maxD,maxY,'#6ee7b7');lbl(maxD,maxY,'max '+fmt(maxY),'#6ee7b7',6,-6);
+                  dot(minD,minY,'#fca5a5');lbl(minD,minY,'min '+fmt(minY),'#fca5a5',6,14);
+                  // y-intercept
+                  const yi0=fmap[fn](0);
+                  dot(0,yi0,'#fcd34d');lbl(0,yi0,'(0°, '+fmt(yi0)+')','#fcd34d',6,-6);
+                  // zero crossings (approx for sin/cos shifted)
+                  if(Math.abs(q)<amp){
+                    const base=fn==='sin'?Math.asin(-q/a)*180/Math.PI:Math.acos(-q/a)*180/Math.PI;
+                    [base, 180-base, 360+base].forEach(d=>{
+                      if(d>=0&&d<=360){dot(d,0,'rgba(165,180,252,0.7)');lbl(d,0,Math.round(d)+'°','rgba(165,180,252,0.7)',4,-12);}
+                    });
+                  }
+                }
+                // period label
+                const period=fn==='tan'?'Period: 180°':'Period: 360°';
+                ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='11px monospace';ctx.textAlign='left';
+                ctx.fillText('Range: ['+fmt(q-amp)+', '+fmt(q+amp)+']   '+period,6,14);
+              }
+
+              const inp=document.getElementById('g10c6ginp2');
+              const IS='background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;';
+              const LS='font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;';
+              const BS='background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;align-self:flex-end;';
+              function fld(id,l,v,w){return '<div><div style="'+LS+'">'+l+'</div><input id="'+id+'" type="number" value="'+v+'" step="0.5" style="width:'+(w||64)+'px;'+IS+'"></div>';}
+              function sel(id,l,opts){
+                let s='<div><div style="'+LS+'">'+l+'</div><select id="'+id+'" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;">';
+                opts.forEach(o=>s+='<option value="'+o+'">'+o+'</option>');
+                return s+'</select></div>';
+              }
+
+              function renderInp(){
+                let h='<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+                if(mode==='exp'){
+                  h+=fld('g10c6gea','a','3',60)+fld('g10c6geb','b (base)','2',64)+fld('g10c6geq','q','−1'.replace('−','-'),60);
+                  h+='<button id="g10c6gBtn2" style="'+BS+'">Plot</button></div>';
+                  h+='<div style="font-size:11px;color:rgba(221,225,240,0.38);margin-top:5px;">y = a·bˣ + q &nbsp;|&nbsp; asymptote: y = q &nbsp;|&nbsp; b > 0, b ≠ 1</div>';
+                } else {
+                  h+=sel('g10c6gtfn3','function',['sin','cos','tan'])+fld('g10c6gta3','a','2',60)+fld('g10c6gtq3','q','−1'.replace('−','-'),60);
+                  h+='<button id="g10c6gBtn2" style="'+BS+'">Plot</button></div>';
+                  h+='<div style="font-size:11px;color:rgba(221,225,240,0.38);margin-top:5px;">y = a·f(x) + q &nbsp;|&nbsp; x ∈ [0°; 360°]</div>';
+                }
+                inp.innerHTML=h;
+                document.getElementById('g10c6gBtn2').addEventListener('click',plot);
+                inp.querySelectorAll('input,select').forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')plot();}));
+                if(mode==='trig') document.getElementById('g10c6gtfn3').addEventListener('change',plot);
+              }
+
+              function plot(){if(mode==='exp')drawExp();else drawTrig();}
+
+              ['g10c6gm2E','g10c6gm2T'].forEach((id,i)=>{
+                document.getElementById(id).addEventListener('click',function(){
+                  mode=['exp','trig'][i];
+                  document.querySelectorAll('.g10c6gm2').forEach(b=>{b.style.background='transparent';b.style.color='rgba(221,225,240,0.50)';});
+                  this.style.background='rgba(99,102,241,0.30)';this.style.color='#a5b4fc';
+                  renderInp();plot();
+                });
+              });
+              renderInp();plot();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [

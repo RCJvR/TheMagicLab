@@ -80,6 +80,118 @@ MathMagician.registerChapter(8, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Both formulas use the same two differences Δx and Δy. Distance uses the Pythagorean theorem (Δx² + Δy²); midpoint averages them ((x₁+x₂)/2).</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Coordinate Plane — Distance & Midpoint Visualiser</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two points to see A, B, the segment, the midpoint M, and the right-angle distance triangle on the plane.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">x₁</div><input id="g10c8vx1" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">y₁</div><input id="g10c8vy1" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div style="padding-bottom:8px;color:rgba(221,225,240,0.35);">→</div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">x₂</div><input id="g10c8vx2" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">y₂</div><input id="g10c8vy2" type="number" value="-1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <button id="g10c8vBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;align-self:flex-end;">Plot</button>
+            </div>
+            <canvas id="g10c8gcv" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g10c8gcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              const fmt=n=>(Math.round(n*100)/100)+'';
+
+              function draw(){
+                const x1=parseFloat(document.getElementById('g10c8vx1').value);
+                const y1=parseFloat(document.getElementById('g10c8vy1').value);
+                const x2=parseFloat(document.getElementById('g10c8vx2').value);
+                const y2=parseFloat(document.getElementById('g10c8vy2').value);
+                if([x1,y1,x2,y2].some(isNaN))return;
+                const mx=(x1+x2)/2,my=(y1+y2)/2;
+                const pad=2.5;
+                let xMn=Math.min(x1,x2,0)-pad,xMx=Math.max(x1,x2,0)+pad;
+                let yMn=Math.min(y1,y2,0)-pad,yMx=Math.max(y1,y2,0)+pad;
+                // enforce aspect ratio
+                const xSp=xMx-xMn,ySp=yMx-yMn,asp=W/H;
+                if(xSp/ySp>asp){const c=(yMx+yMn)/2;yMn=c-xSp/asp/2;yMx=c+xSp/asp/2;}
+                else{const c=(xMx+xMn)/2;xMn=c-ySp*asp/2;xMx=c+ySp*asp/2;}
+                const px=x=>(x-xMn)/(xMx-xMn)*W;
+                const py=y=>H-(y-yMn)/(yMx-yMn)*H;
+
+                ctx.clearRect(0,0,W,H);
+                // grid
+                const step=Math.max(1,Math.ceil((xMx-xMn)/10));
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){
+                  ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=x===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
+                }
+                for(let y=Math.ceil(yMn/step)*step;y<=yMx;y+=step){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                }
+                // axis labels
+                ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='10px monospace';
+                const ay0=Math.max(12,Math.min(py(0)+13,H-4));
+                const ax0=Math.max(18,Math.min(px(0)-4,W-18));
+                ctx.textAlign='center';
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                ctx.textAlign='right';
+                for(let y=Math.ceil(yMn/step)*step;y<=yMx;y+=step){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+
+                // right-angle triangle (dashed)
+                ctx.save();ctx.strokeStyle='rgba(99,102,241,0.35)';ctx.lineWidth=1;ctx.setLineDash([4,3]);
+                ctx.beginPath();ctx.moveTo(px(x1),py(y1));ctx.lineTo(px(x2),py(y1));ctx.lineTo(px(x2),py(y2));ctx.stroke();
+                ctx.restore();
+                // right-angle mark
+                const rs=8,rx=px(x2),ry=py(y1);
+                const sx=x2>x1?-1:1,sy=y2>y1?1:-1;
+                ctx.strokeStyle='rgba(99,102,241,0.40)';ctx.lineWidth=1;
+                ctx.beginPath();ctx.moveTo(rx+sx*rs,ry);ctx.lineTo(rx+sx*rs,ry+sy*rs);ctx.lineTo(rx,ry+sy*rs);ctx.stroke();
+
+                // Δx and Δy labels
+                ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='bold 10px monospace';
+                ctx.textAlign='center';ctx.fillText('Δx='+(x2-x1),px((x1+x2)/2),py(y1)+(y2>y1?14:-5));
+                ctx.textAlign=x2>x1?'left':'right';
+                const xOff=x2>x1?-28:4;
+                ctx.fillText('Δy='+(y2-y1),px(x2)+xOff,py((y1+y2)/2)+4);
+
+                // segment AB
+                ctx.strokeStyle='#6ee7b7';ctx.lineWidth=2.5;
+                ctx.beginPath();ctx.moveTo(px(x1),py(y1));ctx.lineTo(px(x2),py(y2));ctx.stroke();
+
+                // distance label on segment
+                const d=Math.sqrt((x2-x1)**2+(y2-y1)**2);
+                const ang=Math.atan2(py(y2)-py(y1),px(x2)-px(x1));
+                const smx=(px(x1)+px(x2))/2,smy=(py(y1)+py(y2))/2;
+                ctx.save();ctx.translate(smx,smy);ctx.rotate(ang);
+                ctx.fillStyle='#6ee7b7';ctx.font='bold 10px monospace';ctx.textAlign='center';
+                ctx.fillText('AB ≈ '+fmt(d),0,-9);ctx.restore();
+
+                // midpoint M
+                ctx.fillStyle='#fcd34d';ctx.beginPath();ctx.arc(px(mx),py(my),5.5,0,Math.PI*2);ctx.fill();
+                ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                ctx.fillStyle='#fcd34d';ctx.font='bold 11px monospace';ctx.textAlign='left';
+                ctx.fillText('M('+fmt(mx)+', '+fmt(my)+')',px(mx)+8,py(my)-8);
+
+                // points A, B
+                [[x1,y1,'A','#a5b4fc'],[x2,y2,'B','#fca5a5']].forEach(([x,y,l,c])=>{
+                  ctx.fillStyle=c;ctx.beginPath();ctx.arc(px(x),py(y),6,0,Math.PI*2);ctx.fill();
+                  ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                  ctx.fillStyle=c;ctx.font='bold 11px monospace';ctx.textAlign='left';
+                  ctx.fillText(l+'('+x+', '+y+')',px(x)+9,py(y)-9);
+                });
+              }
+
+              document.getElementById('g10c8vBtn').addEventListener('click',draw);
+              ['g10c8vx1','g10c8vy1','g10c8vx2','g10c8vy2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')draw();}));
+              draw();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -205,6 +317,145 @@ MathMagician.registerChapter(8, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Perpendicular gradients are negative reciprocals: if m = 2, then m⊥ = −½. The product is always −1: <span class="math">m × m⊥ = −1</span>.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Line Grapher — Gradient · Parallel · Perpendicular</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two points to plot the line through A and B — optionally add a parallel and perpendicular line.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">x₁</div><input id="g10c8gvx1" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">y₁</div><input id="g10c8gvy1" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div style="padding-bottom:8px;color:rgba(221,225,240,0.35);">→</div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">x₂</div><input id="g10c8gvx2" type="number" value="4" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">y₂</div><input id="g10c8gvy2" type="number" value="8" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <button id="g10c8gvBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;align-self:flex-end;">Plot</button>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;font-size:13px;">
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;color:rgba(221,225,240,0.70);"><input type="checkbox" id="g10c8gvParallel" style="accent-color:#a5b4fc;"> <span style="color:#a5b4fc;">Show parallel line (through origin)</span></label>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;color:rgba(221,225,240,0.70);"><input type="checkbox" id="g10c8gvPerp"> <span style="color:#fcd34d;">Show perpendicular line (through A)</span></label>
+            </div>
+            <canvas id="g10c8gcv2" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g10c8gcv2');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              const fmt=n=>{const r=Math.round(n*100)/100;return r+'';}
+
+              function draw(){
+                const x1=parseFloat(document.getElementById('g10c8gvx1').value);
+                const y1=parseFloat(document.getElementById('g10c8gvy1').value);
+                const x2=parseFloat(document.getElementById('g10c8gvx2').value);
+                const y2=parseFloat(document.getElementById('g10c8gvy2').value);
+                if([x1,y1,x2,y2].some(isNaN))return;
+                const showParallel=document.getElementById('g10c8gvParallel').checked;
+                const showPerp=document.getElementById('g10c8gvPerp').checked;
+
+                const xMn=-10,xMx=10,yMn=-10,yMx=10;
+                const px=x=>(x-xMn)/(xMx-xMn)*W;
+                const py=y=>H-(y-yMn)/(yMx-yMn)*H;
+
+                ctx.clearRect(0,0,W,H);
+                // grid
+                for(let x=-10;x<=10;x++){
+                  ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=x===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
+                }
+                for(let y=-10;y<=10;y++){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                }
+                ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='10px monospace';
+                const ay0=Math.max(12,Math.min(py(0)+13,H-4));
+                const ax0=Math.max(18,Math.min(px(0)-4,W-18));
+                ctx.textAlign='center';
+                for(let x=-9;x<=9;x+=2){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                ctx.textAlign='right';
+                for(let y=-8;y<=8;y+=2){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+
+                function lineFn(m,b){ return x=>m*x+b; }
+
+                if(x1===x2){
+                  // vertical line
+                  ctx.strokeStyle='#6ee7b7';ctx.lineWidth=2.5;
+                  ctx.beginPath();ctx.moveTo(px(x1),0);ctx.lineTo(px(x1),H);ctx.stroke();
+                  ctx.fillStyle='#6ee7b7';ctx.font='bold 11px monospace';ctx.textAlign='left';
+                  ctx.fillText('x = '+x1,px(x1)+6,20);
+                } else {
+                  const m=(y2-y1)/(x2-x1);
+                  const c=y1-m*x1;
+                  const mPerp=-1/m;
+                  const cPerp=y1-mPerp*x1;
+
+                  function plotLine(fn,color,label,lx,lxDir){
+                    ctx.strokeStyle=color;ctx.lineWidth=2.5;
+                    ctx.beginPath();let on=false;
+                    for(let i=0;i<=W*2;i++){
+                      const x=xMn+(i/(W*2))*(xMx-xMn);
+                      const y=fn(x);
+                      if(!isFinite(y)||y<yMn-5||y>yMx+5){on=false;continue;}
+                      if(!on){ctx.moveTo(px(x),py(y));on=true;}else ctx.lineTo(px(x),py(y));
+                    }
+                    ctx.stroke();
+                    if(label){
+                      const ly=fn(lx);
+                      if(ly>yMn&&ly<yMx){
+                        ctx.fillStyle=color;ctx.font='bold 10px monospace';
+                        ctx.textAlign=lxDir||'left';
+                        ctx.fillText(label,px(lx)+(lxDir==='right'?-4:4),py(ly)-8);
+                      }
+                    }
+                  }
+
+                  const mStr=fmt(m),cStr=c>=0?'+ '+fmt(c):'− '+fmt(Math.abs(c));
+                  plotLine(lineFn(m,c),'#6ee7b7','y='+mStr+'x '+cStr,x2+1);
+
+                  // gradient triangle
+                  const tx=2,ty=m*tx+c;
+                  if(tx>=xMn&&tx<=xMx&&ty>=yMn&&ty<=yMx){
+                    ctx.save();ctx.strokeStyle='rgba(110,231,183,0.40)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+                    ctx.beginPath();ctx.moveTo(px(tx),py(ty));ctx.lineTo(px(tx+1),py(ty));ctx.lineTo(px(tx+1),py(ty+m));ctx.stroke();
+                    ctx.restore();
+                    ctx.fillStyle='rgba(110,231,183,0.60)';ctx.font='bold 10px monospace';ctx.textAlign='center';
+                    ctx.fillText('m='+mStr,px(tx+0.5),py(ty)+(m>0?14:-5));
+                  }
+
+                  if(showParallel){
+                    plotLine(lineFn(m,0),'rgba(165,180,252,0.70)','parallel (c=0)',xMx-2,'right');
+                  }
+                  if(showPerp&&Math.abs(m)>0.001){
+                    plotLine(lineFn(mPerp,cPerp),'rgba(252,211,77,0.80)','m⊥='+fmt(mPerp),x1+1);
+                  }
+
+                  // intercepts
+                  function dot(x,y,color){
+                    if(x<xMn||x>xMx||y<yMn||y>yMx)return;
+                    ctx.fillStyle=color;ctx.beginPath();ctx.arc(px(x),py(y),5,0,Math.PI*2);ctx.fill();
+                    ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                  }
+                  dot(0,c,'#6ee7b7');
+                  if(Math.abs(m)>0.001){dot(-c/m,0,'#6ee7b7');}
+                  [[x1,y1,'A','#a5b4fc'],[x2,y2,'B','#fca5a5']].forEach(([x,y,l,cl])=>{
+                    ctx.fillStyle=cl;ctx.beginPath();ctx.arc(px(x),py(y),6,0,Math.PI*2);ctx.fill();
+                    ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                    ctx.fillStyle=cl;ctx.font='bold 11px monospace';ctx.textAlign='left';
+                    ctx.fillText(l+'('+x+','+y+')',px(x)+8,py(y)-8);
+                  });
+                }
+              }
+
+              document.getElementById('g10c8gvBtn').addEventListener('click',draw);
+              document.getElementById('g10c8gvParallel').addEventListener('change',draw);
+              document.getElementById('g10c8gvPerp').addEventListener('change',draw);
+              ['g10c8gvx1','g10c8gvy1','g10c8gvx2','g10c8gvy2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')draw();}));
+              draw();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
