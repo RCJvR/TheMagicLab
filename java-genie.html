@@ -3408,9 +3408,13 @@ function expandLoops(code) {
     const forIdx = result.search(/\bfor\s*\(/);
     if (forIdx === -1) break;
 
+    // Track which line this for-loop is on inside the processed code.
+    // Combined with mainBodyLineOffset in parseCommands this maps back to the editor.
+    const lineInResult = result.substring(0, forIdx).split('\n').length;
+
     let pos = forIdx + 3;
     while (pos < result.length && /\s/.test(result[pos])) pos++;
-    if (result[pos] !== '(') return { ok: false, error: 'For loop: expected ( after for' };
+    if (result[pos] !== '(') return { ok: false, error: 'For loop: expected ( after for', line: lineInResult };
 
     let parenDepth = 1;
     const condStart = pos + 1;
@@ -3420,7 +3424,7 @@ function expandLoops(code) {
       else if (result[pos] === ')') parenDepth--;
       if (parenDepth > 0) pos++;
     }
-    if (parenDepth !== 0) return { ok: false, error: 'For loop: mismatched parentheses' };
+    if (parenDepth !== 0) return { ok: false, error: 'For loop: mismatched parentheses', line: lineInResult };
     const condEnd = pos;
     // Resolve any named variables in the condition before matching
     const condition = resolveVars(result.substring(condStart, condEnd));
@@ -3441,7 +3445,7 @@ function expandLoops(code) {
         loopErr = 'For loop: missing increment. Write: for(int i = 0; i < 4; i++)';
       else if ((condition.match(/\b(\w+)\b/g) || []).filter(w => w !== 'int').length < 2)
         loopErr = 'For loop: the variable name must match in all three parts. E.g. for(int i = 0; i < 4; i++)';
-      return { ok: false, error: loopErr };
+      return { ok: false, error: loopErr, line: lineInResult };
     }
 
     const varName  = m[1];
@@ -3449,14 +3453,14 @@ function expandLoops(code) {
     const endVal   = parseInt(m[3], 10);
     const count    = Math.max(0, endVal - startVal);
 
-    if (count > 2000) return { ok: false, error: `Loop runs ${count} times — max is 2000. Use a smaller count.` };
+    if (count > 2000) return { ok: false, error: `Loop runs ${count} times — max is 2000. Use a smaller count.`, line: lineInResult };
 
     pos = condEnd + 1;
     while (pos < result.length && /\s/.test(result[pos])) pos++;
-    if (result[pos] !== '{') return { ok: false, error: 'For loop: expected { after condition' };
+    if (result[pos] !== '{') return { ok: false, error: 'For loop: expected { after condition', line: lineInResult };
 
     const bodyEnd = findMatchingBrace(result, pos);
-    if (bodyEnd === -1) return { ok: false, error: 'For loop: mismatched braces' };
+    if (bodyEnd === -1) return { ok: false, error: 'For loop: mismatched braces', line: lineInResult };
 
     const body = result.substring(pos + 1, bodyEnd).trim();
     const expanded = [];
@@ -3494,6 +3498,70 @@ function expandLoops(code) {
   return { ok: true, code: result };
 }
 
+// ── Brace balance validator ───────────────────────────────────────────────────
+// Checks that every {, (, [ has a matching closing bracket.
+// Skips string literals and comments so quoted braces don't count.
+// Returns { ok: true } or { ok: false, line, text }.
+function validateBraces(code) {
+  const stack = [];
+  const lines = code.split('\n');
+  const matching    = { '{': '}', '(': ')', '[': ']' };
+  const opener4closer = { '}': '{', ')': '(', ']': '[' };
+  let inStr = false, inLineCmt = false, inBlockCmt = false;
+
+  for (let li = 0; li < lines.length; li++) {
+    const ln = lines[li];
+    inLineCmt = false;
+    for (let ci = 0; ci < ln.length; ci++) {
+      const ch = ln[ci], nx = ln[ci + 1];
+      if (inBlockCmt)  { if (ch === '*' && nx === '/') { inBlockCmt = false; ci++; } continue; }
+      if (inLineCmt)   { continue; }
+      if (inStr)       { if (ch === '\\') { ci++; continue; } if (ch === '"') inStr = false; continue; }
+      if (ch === '/' && nx === '*') { inBlockCmt = true;  ci++; continue; }
+      if (ch === '/' && nx === '/') { inLineCmt  = true;  continue; }
+      if (ch === '"')  { inStr = true; continue; }
+      if (matching[ch]) {
+        stack.push({ ch, line: li + 1 });
+      } else if (opener4closer[ch]) {
+        if (stack.length === 0) {
+          return { ok: false, line: li + 1,
+            text: `Extra '${ch}' on line ${li + 1} — there is no matching opening '${opener4closer[ch]}'. Remove this extra closing bracket.` };
+        }
+        const top = stack[stack.length - 1];
+        if (matching[top.ch] !== ch) {
+          return { ok: false, line: li + 1,
+            text: `Bracket mismatch on line ${li + 1}: '${top.ch}' was opened on line ${top.line} but '${ch}' appears here. These must match.` };
+        }
+        stack.pop();
+      }
+    }
+  }
+
+  if (stack.length > 0) {
+    const curlies = stack.filter(s => s.ch === '{');
+    if (curlies.length > 0) {
+      const n        = curlies.length;
+      // innermost = most recently opened unclosed block
+      const innermost = curlies[curlies.length - 1];
+      const lineText  = lines[innermost.line - 1].trim();
+      const hint = /\bfor\s*\(/.test(lineText)             ? ' (a for-loop body)'
+                 : /\bvoid\s+main|public\s+class/.test(lineText) ? ' (the method or class body)'
+                 : '';
+      return {
+        ok: false, line: innermost.line,
+        text: `Missing ${n} closing '}'${n > 1 ? ' braces' : ' brace'}. ` +
+              `The innermost unclosed '{' is on line ${innermost.line}${hint}. ` +
+              `In Java every opening '{' must have a matching closing '}' — check your for-loops, main method, and class.`
+      };
+    }
+    const last = stack[stack.length - 1];
+    return { ok: false, line: last.line,
+      text: `Unclosed '${last.ch}' from line ${last.line}. Every opening bracket must have a matching closing bracket.` };
+  }
+
+  return { ok: true };
+}
+
 // ── parseCommands (items 9, 16 fixed) ────────────────────────────────────────
 function parseCommands(rawCode) {
   // Item 9: require class + main wrapper
@@ -3508,6 +3576,12 @@ function parseCommands(rawCode) {
       '  and close with two closing braces: }}\n' +
       'This teaches real Java program structure!'
     }]};
+  }
+
+  // Validate brace balance — teaches that every { needs a matching }
+  const braceCheck = validateBraces(rawCode);
+  if (!braceCheck.ok) {
+    return { ok: false, errors: [{ line: braceCheck.line, text: braceCheck.text }] };
   }
 
   // Build a line-number lookup from trimmed statement text → editor line number.
@@ -3546,6 +3620,12 @@ function parseCommands(rawCode) {
   }
   let extractedCode = body.substring(0, i).trim();
 
+  // Calculate how many editor lines appear before the main method body.
+  // Used to convert expandLoops' internal line numbers to editor line numbers.
+  // (mainMatch[1] starts right after main's opening '{', which is greedy to EOF)
+  const mainBodyStartPos   = rawCode.length - mainMatch[1].length;
+  const mainBodyLineOffset = rawCode.substring(0, mainBodyStartPos).split('\n').length;
+
   // Resolve Pen.UP etc. before comment strip
   extractedCode = extractedCode
     .replace(/Pen\.UP/g,    '270')
@@ -3559,7 +3639,12 @@ function parseCommands(rawCode) {
 
   // Expand loops
   const expanded = expandLoops(noComments);
-  if (!expanded.ok) return { ok: false, errors: [{ line: 1, text: expanded.error }] };
+  if (!expanded.ok) {
+    // Map the for-loop's line within the processed code back to the editor line.
+    // mainBodyLineOffset = lines before main body; expanded.line = line within that body.
+    const forEditorLine = expanded.line != null ? (mainBodyLineOffset + expanded.line) : 1;
+    return { ok: false, errors: [{ line: forEditorLine, text: expanded.error }] };
+  }
 
   // Tokenise into semicolon-terminated statements
   const rawLines = expanded.code.split('\n');
