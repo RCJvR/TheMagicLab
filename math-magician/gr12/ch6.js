@@ -4,7 +4,7 @@
 MathMagician.registerChapter(6, {
   topics: [
     {
-      id: 0,
+      id: 600,
       chapter: 6,
       name: "Limits, first principles & rules",
       fullName: "Limits, differentiation from first principles, and rules of differentiation",
@@ -48,6 +48,53 @@ MathMagician.registerChapter(6, {
             <strong>(b)</strong> y = 2/x + √x = 2x⁻¹ + x^(½) → dy/dx = −2x⁻² + ½x^(−½)<br>
             <strong>(c)</strong> g(x) = (x + 1)(x − 3) = x² − 2x − 3 → g'(x) = 2x − 2</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Polynomial Derivative Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Differentiate f(x) = ax³+bx²+cx+d and evaluate f'(x) at a point.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a (x³)</div><input id="g12c6a" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (x²)</div><input id="g12c6b" type="number" value="-5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c (x)</div><input id="g12c6c" type="number" value="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">d (const)</div><input id="g12c6d" type="number" value="7" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Eval at x=</div><input id="g12c6x0" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c6Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Differentiate</button>
+            </div>
+            <div id="g12c6Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function t(coef,exp){if(coef===0)return'';const sign=coef>0?'+':'';return sign+(exp>0?coef+'x'+(exp>1?'<sup>'+exp+'</sup>':''):''+coef);}
+              function calc(){
+                const a=gv('g12c6a'),b=gv('g12c6b'),c=gv('g12c6c'),d=gv('g12c6d'),x0=gv('g12c6x0');
+                const out=document.getElementById('g12c6Out');
+                if([a,b,c,d,x0].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter all values.</span>';return;}
+                // f(x) = ax³+bx²+cx+d
+                // f'(x) = 3ax²+2bx+c
+                const da=3*a,db=2*b,dc=c;
+                const fx0=a*x0*x0*x0+b*x0*x0+c*x0+d;
+                const fpx0=da*x0*x0+db*x0+dc;
+                const fppx0=6*a*x0+2*b;
+                // tangent: y − f(x0) = f'(x0)(x − x0)
+                const yint=fx0-fpx0*x0;
+                let pstr='f(x) = ';
+                if(a!==0) pstr+=a+'x³';
+                if(b!==0) pstr+=(b>0&&a!==0?'+':'')+b+'x²';
+                if(c!==0) pstr+=(c>0&&(a!==0||b!==0)?'+':'')+c+'x';
+                if(d!==0) pstr+=(d>0&&(a!==0||b!==0||c!==0)?'+':'')+d;
+                let html='<span style="color:rgba(221,225,240,0.50);">'+pstr+'</span><br>';
+                html+='<span style="color:#fcd34d;">f\'(x) = '+da+'x² + '+db+'x + '+dc+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">f\'\'(x) = '+(6*a)+'x + '+(2*b)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">f('+x0+') = '+fx0+'</span>   <span style="color:#6ee7b7;">f\'('+x0+') = '+fpx0+'</span>   <span style="color:rgba(221,225,240,0.50);">f\'\'('+x0+') = '+fppx0+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Tangent at ('+x0+', '+fx0+'): y = '+fpx0+'x + '+yint+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c6a','g12c6b','g12c6c','g12c6d','g12c6x0'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c6Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -59,7 +106,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 1,
+      id: 601,
       chapter: 6,
       name: "Tangents, curve sketching & optimisation",
       fullName: "Tangent lines, second derivative, cubic curve sketching, and optimisation",
@@ -106,6 +153,52 @@ MathMagician.registerChapter(6, {
               3. Confirm max/min via second derivative or sign of f'<br>
               4. State answer in context with units
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Cubic Stationary Points & Inflection Finder</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter f(x) = ax³+bx²+cx+d — find turning points, their nature, and point of inflection.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g12c6t2a" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g12c6t2b" type="number" value="-3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div><input id="g12c6t2c" type="number" value="-9" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">d</div><input id="g12c6t2d" type="number" value="27" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c6t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Analyse</button>
+            </div>
+            <div id="g12c6t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const a=gv('g12c6t2a'),b=gv('g12c6t2b'),c=gv('g12c6t2c'),d=gv('g12c6t2d');
+                const out=document.getElementById('g12c6t2Out');
+                if([a,b,c,d].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter cubic (a ≠ 0).</span>';return;}
+                const f=x=>a*x*x*x+b*x*x+c*x+d;
+                // f'(x) = 3ax²+2bx+c → set to 0
+                const disc=4*b*b-4*3*a*c;
+                let html='<span style="color:rgba(221,225,240,0.50);">f\'(x) = '+3*a+'x² + '+2*b+'x + '+c+'</span><br>';
+                if(disc<0){html+='<span style="color:#fca5a5;">Δ < 0 → no real stationary points.</span>';}
+                else{
+                  const x1=(-2*b+Math.sqrt(disc))/(2*3*a),x2=(-2*b-Math.sqrt(disc))/(2*3*a);
+                  const pts=[x1,x2].sort((a,b)=>a-b);
+                  pts.forEach(x=>{
+                    const fx=f(x);
+                    const fpp=6*a*x+2*b;
+                    const nature=fpp>0?'minimum':'maximum';
+                    html+='<span style="color:#fcd34d;">Stationary point at x = '+f4(x)+': f(x) = '+f4(fx)+'  →  '+nature+' (f\'\'= '+f4(fpp)+')</span><br>';
+                  });
+                }
+                const xi=-b/(3*a),fxi=f(xi);
+                html+='<span style="color:#6ee7b7;">Point of inflection (f\'\'=0): x = '+f4(xi)+', y = '+f4(fxi)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">y-intercept: (0, '+d+')   End behaviour: a='+a+(a>0?' → falls left, rises right':' → rises left, falls right')+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c6t2a','g12c6t2b','g12c6t2c','g12c6t2d'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c6t2Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },

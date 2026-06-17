@@ -4,7 +4,7 @@
 MathMagician.registerChapter(9, {
   topics: [
     {
-      id: 0,
+      id: 900,
       chapter: 9,
       name: "Depreciation & timelines",
       fullName: "Simple and compound depreciation, and using timelines",
@@ -42,6 +42,42 @@ MathMagician.registerChapter(9, {
               • Comparing future values<br><br>
               Always move money to the <em>same point in time</em> before comparing.
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Depreciation Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Compare straight-line and reducing-balance depreciation side by side.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Principal P (R)</div><input id="g11c9p" type="number" value="250000" min="1" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate i (%)</div><input id="g11c9i" type="number" value="15" min="0.01" max="100" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years n</div><input id="g11c9n" type="number" value="5" min="1" max="50" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c9Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Compare</button>
+            </div>
+            <div id="g11c9Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const P=gv('g11c9p'),i=gv('g11c9i')/100,n=gv('g11c9n');
+                const out=document.getElementById('g11c9Out');
+                if([P,i,n].some(isNaN)||P<=0||i<=0||n<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const sl=P*(1-i*n);
+                const rb=P*Math.pow(1-i,n);
+                const yrSL=sl>0?n:Math.floor(1/i);
+                let html='<span style="color:rgba(221,225,240,0.50);">Straight-line: A = P(1 − in) = '+R(P)+'(1 − '+i+'×'+n+')</span><br>';
+                if(sl<=0) html+='<span style="color:#fca5a5;">Straight-line: value reached 0 (fully depreciated) — asset zero-valued before year '+n+'.</span><br>';
+                else html+='<span style="color:#fcd34d;">Straight-line A = '+R(sl)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Reducing-balance: A = P(1−i)ⁿ = '+R(P)+'('+((1-i).toFixed(4))+')^'+n+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Reducing-balance A = '+R(rb)+'</span>';
+                if(sl>0) html+='<br><span style="color:rgba(221,225,240,0.50);">Reducing-balance is higher by '+R(rb-sl)+' (same rate, RB always gives more book value)</span>';
+                out.innerHTML=html;
+              }
+              ['g11c9p','g11c9i','g11c9n'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c9Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },
@@ -83,7 +119,7 @@ MathMagician.registerChapter(9, {
       ]
     },
     {
-      id: 1,
+      id: 901,
       chapter: 9,
       name: "Nominal & effective interest rates",
       fullName: "Nominal interest rates, effective interest rates, and compounding periods",
@@ -120,6 +156,63 @@ MathMagician.registerChapter(9, {
             <div class="example-box-title">✏️ Example: Nominal to effective</div>
             <p>12% p.a. compounded monthly:<br>
             <span class="math">i_eff = (1 + 0.12/12)¹² − 1 = (1.01)¹² − 1 ≈ 0.1268 = 12.68% p.a.</span></p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Nominal / Effective Rate & Compounding Calculator</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button id="g11c9t2conv" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.50);cursor:pointer;font-size:13px;font-weight:600;background:rgba(99,102,241,0.30);color:#a5b4fc;">Nom → Effective</button>
+              <button id="g11c9t2acc" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">A = P(1+i/n)^(nt)</button>
+            </div>
+            <div id="g11c9t2convP" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Nominal rate (%)</div><input id="g11c9t2nom" type="number" value="12" min="0.01" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Periods/year</div><select id="g11c9t2n" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="1">1 (Annual)</option><option value="2">2 (Semi-ann.)</option><option value="4">4 (Quarterly)</option><option value="12" selected>12 (Monthly)</option><option value="365">365 (Daily)</option></select></div>
+              <button id="g11c9t2convBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Convert</button>
+            </div>
+            <div id="g11c9t2accP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P (R)</div><input id="g11c9t2p" type="number" value="5000" min="1" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Nominal % p.a.</div><input id="g11c9t2ar" type="number" value="8" min="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Periods/year</div><select id="g11c9t2an" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="1">1 (Annual)</option><option value="2">2 (Semi-ann.)</option><option value="4" selected>4 (Quarterly)</option><option value="12">12 (Monthly)</option><option value="365">365 (Daily)</option></select></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years t</div><input id="g11c9t2t" type="number" value="3" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c9t2accBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate A</button>
+            </div>
+            <div id="g11c9t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              const convBtn=document.getElementById('g11c9t2conv'),accBtn=document.getElementById('g11c9t2acc');
+              const convP=document.getElementById('g11c9t2convP'),accP=document.getElementById('g11c9t2accP');
+              const out=document.getElementById('g11c9t2Out');
+              function setMode(m){
+                if(m==='conv'){convP.style.display='flex';accP.style.display='none';convBtn.style.background='rgba(99,102,241,0.30)';convBtn.style.color='#a5b4fc';convBtn.style.borderColor='rgba(99,102,241,0.50)';accBtn.style.background='transparent';accBtn.style.color='rgba(221,225,240,0.50)';accBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                else{accP.style.display='flex';convP.style.display='none';accBtn.style.background='rgba(99,102,241,0.30)';accBtn.style.color='#a5b4fc';accBtn.style.borderColor='rgba(99,102,241,0.50)';convBtn.style.background='transparent';convBtn.style.color='rgba(221,225,240,0.50)';convBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                out.innerHTML='';
+              }
+              convBtn.addEventListener('click',()=>setMode('conv'));
+              accBtn.addEventListener('click',()=>setMode('acc'));
+              document.getElementById('g11c9t2convBtn').addEventListener('click',()=>{
+                const nom=gv('g11c9t2nom')/100,n=parseInt(document.getElementById('g11c9t2n').value);
+                if(isNaN(nom)||nom<=0){out.innerHTML='<span style="color:#fca5a5;">Enter a valid nominal rate.</span>';return;}
+                const eff=Math.pow(1+nom/n,n)-1;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">i_nom = '+( nom*100).toFixed(2)+'% compounded '+n+'×/year</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">i_eff = (1 + '+nom.toFixed(6)+'/'+n+')^'+n+' − 1</span><br>'+
+                  '<span style="color:#6ee7b7;">Effective annual rate = '+(eff*100).toFixed(4)+'% p.a.</span>';
+              });
+              document.getElementById('g11c9t2accBtn').addEventListener('click',()=>{
+                const P=gv('g11c9t2p'),r=gv('g11c9t2ar')/100,n=parseInt(document.getElementById('g11c9t2an').value),t=gv('g11c9t2t');
+                if([P,r,t].some(isNaN)||P<=0||r<=0||t<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid positive values.</span>';return;}
+                const A=P*Math.pow(1+r/n,n*t);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">A = '+R(P)+'(1 + '+(r*100).toFixed(2)+'%/'+n+')^('+n+'×'+t+')</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">= '+R(P)+'('+((1+r/n).toFixed(6))+')^'+(n*t)+'</span><br>'+
+                  '<span style="color:#6ee7b7;">A = '+R(A)+'</span>   <span style="color:#fcd34d;">Interest earned = '+R(A-P)+'</span>';
+              });
+              ['g11c9t2nom'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g11c9t2convBtn').click();});});
+              ['g11c9t2p','g11c9t2ar','g11c9t2t'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g11c9t2accBtn').click();});});
+              setMode('conv');
+              document.getElementById('g11c9t2convBtn').click();
+            })();
+            </script>
           </div>
         `
       },

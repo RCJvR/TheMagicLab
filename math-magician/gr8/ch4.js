@@ -4,7 +4,7 @@
 MathMagician.registerChapter(4, {
   topics: [
 {
-    id: 24,
+    id: 401,
     chapter: 4,
     name: "Numeric number patterns",
     fullName: "Numeric number patterns",
@@ -90,7 +90,7 @@ MathMagician.registerChapter(4, {
     ]
   },
   {
-    id: 25,
+    id: 402,
     chapter: 4,
     name: "Geometric number patterns",
     fullName: "Geometric number patterns",
@@ -195,7 +195,7 @@ MathMagician.registerChapter(4, {
     ]
   },
   {
-    id: 26,
+    id: 403,
     chapter: 4,
     name: "Visual geometric patterns",
     fullName: "Visual and geometric patterns",
@@ -337,7 +337,7 @@ MathMagician.registerChapter(4, {
     ]
   },
   {
-    id: 26,
+    id: 404,
     chapter: 4,
     name: "Ch 4 Exam focus",
     fullName: "Examination focus exercise",

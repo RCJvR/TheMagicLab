@@ -4,7 +4,7 @@
 MathMagician.registerChapter(1, {
   topics: [
     {
-      id: 0,
+      id: 100,
       chapter: 1,
       name: "Real numbers & surds",
       fullName: "The real number system, rational & irrational numbers, surds",
@@ -47,6 +47,55 @@ MathMagician.registerChapter(1, {
             <div class="def-box-title">💡 Estimating surds</div>
             <p>To estimate <span class="math">√20</span>: note that <span class="math">4² = 16</span> and <span class="math">5² = 25</span>, so <span class="math">4 &lt; √20 &lt; 5</span>. Since 20 is closer to 16+4=20... try <span class="math">4.4² = 19.36</span> and <span class="math">4.5² = 20.25</span>, so <span class="math">√20 ≈ 4.47</span>.</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Surd Simplifier</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a positive integer — classify and simplify its square root.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">√n — enter n</div>
+                <input id="g10c1surd" type="number" min="1" max="10000" placeholder="e.g. 72"
+                  style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c1surdBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Simplify
+              </button>
+            </div>
+            <div id="g10c1surdOut" style="font-size:14px;line-height:2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function largestPSF(n){
+                let best=1;
+                for(let i=2;i*i<=n;i++){ if(n%(i*i)===0) best=i*i; }
+                return best;
+              }
+              function run(){
+                const n=parseInt(document.getElementById('g10c1surd').value);
+                const out=document.getElementById('g10c1surdOut');
+                if(!n||n<1||isNaN(n)){out.innerHTML='<span style="color:#fca5a5;">Enter a positive integer.</span>';return;}
+                const sq=Math.round(Math.sqrt(n));
+                if(sq*sq===n){
+                  out.innerHTML='<span style="color:#6ee7b7;">√'+n+' = '+sq+'</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);">✓ Rational — perfect square, not a surd.</span>';
+                } else {
+                  const psf=largestPSF(n);
+                  const k=Math.round(Math.sqrt(psf));
+                  const m=n/psf;
+                  const simplified=k===1?'√'+n:k+'√'+m;
+                  out.innerHTML='<span style="color:#fca5a5;">Irrational (surd)</span><br>'
+                    +'<span style="color:#fcd34d;">√'+n+(psf>1?' = √('+psf+'×'+m+')':'')+' = '+simplified+'</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);">Decimal ≈ '+(Math.sqrt(n)).toFixed(4)+'</span><br>'
+                    +(psf>1?'<span style="color:rgba(221,225,240,0.40);font-size:12px;">Largest perfect square factor: '+psf+' = '+k+'²</span>':'');
+                }
+              }
+              document.getElementById('g10c1surdBtn').addEventListener('click',run);
+              document.getElementById('g10c1surd').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>A surd in simplified form has <strong>no perfect square factors</strong> under the root. Always check: can I pull out 4, 9, 16, 25, 36…?</span></div>
         `
       },
       questions: [
@@ -87,7 +136,7 @@ MathMagician.registerChapter(1, {
       ]
     },
     {
-      id: 1,
+      id: 101,
       chapter: 1,
       name: "Products & factorisation",
       fullName: "Algebraic products, factorisation, and simplification of fractions",
@@ -136,6 +185,114 @@ MathMagician.registerChapter(1, {
             <strong>Warning:</strong> you can only cancel <em>factors</em>, never terms.<br>
             Example: <span class="math">(x² − 9)/(x + 3) = (x+3)(x−3)/(x+3) = x − 3</span>, where <span class="math">x ≠ −3</span></p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Quadratic Factoriser</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter integer values for <strong>a</strong>, <strong>b</strong>, <strong>c</strong> in ax² + bx + c.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a (≠ 0)</div>
+                <input id="g10c1fa" type="number" value="1"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div>
+                <input id="g10c1fb" type="number" value="-5"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div>
+                <input id="g10c1fc" type="number" value="6"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c1fBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Factorise
+              </button>
+            </div>
+            <div id="g10c1fOut" style="font-size:14px;line-height:2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gcd(a,b){a=Math.abs(a);b=Math.abs(b);return b===0?a:gcd(b,a%b);}
+              function fmtExpr(a,b,c){
+                let s=(a===1?'x²':a===-1?'−x²':a+'x²');
+                if(b>0)s+='+'+b+'x'; else if(b<0)s+=b+'x';
+                if(c>0)s+='+'+c; else if(c<0)s+=c;
+                return s;
+              }
+              function fmtFactor(m,n){
+                // (mx + n)
+                let xs=(m===1?'x':m===-1?'−x':m+'x');
+                let cs=n>0?' + '+n:n<0?' − '+Math.abs(n):'';
+                return '('+xs+cs+')';
+              }
+              function findFactors(a,b,c){
+                // Find integers m,n,p,q: (mx+n)(px+q) with mp=a, nq=c, mq+np=b
+                const lim=Math.max(50,Math.abs(c));
+                for(let m=1;m<=Math.abs(a);m++){
+                  if(a%m!==0)continue;
+                  const p=a/m;
+                  for(let n=-lim;n<=lim;n++){
+                    if(n===0)continue;
+                    if(c%n!==0)continue;
+                    const q=c/n;
+                    if(m*q+n*p===b) return [m,n,p,q];
+                  }
+                  const mn=-m;
+                  const pn=-p;
+                  for(let n=-lim;n<=lim;n++){
+                    if(n===0)continue;
+                    if(c%n!==0)continue;
+                    const q=c/n;
+                    if(mn*q+n*pn===b) return [mn,n,pn,q];
+                  }
+                }
+                return null;
+              }
+              function run(){
+                const a=parseInt(document.getElementById('g10c1fa').value);
+                const b=parseInt(document.getElementById('g10c1fb').value);
+                const c=parseInt(document.getElementById('g10c1fc').value);
+                const out=document.getElementById('g10c1fOut');
+                if(isNaN(a)||isNaN(b)||isNaN(c)){out.innerHTML='<span style="color:#fca5a5;">Enter integers for a, b and c.</span>';return;}
+                if(a===0){out.innerHTML='<span style="color:#fca5a5;">a cannot be 0 — that is not a quadratic.</span>';return;}
+                const expr=fmtExpr(a,b,c);
+                const disc=b*b-4*a*c;
+                const discSqrt=Math.sqrt(Math.abs(disc));
+                const isPerf=disc>=0&&Math.round(discSqrt)**2===disc;
+                let html='<span style="color:rgba(221,225,240,0.50);">Expression: </span><span style="color:#fcd34d;">'+expr+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Δ = b²−4ac = ('+b+')²−4('+a+')('+c+') = '+disc+'</span><br>';
+                if(disc<0){
+                  html+='<span style="color:#fca5a5;">Δ &lt; 0 — no real factors</span>';
+                } else if(!isPerf){
+                  const r1=(-b+Math.sqrt(disc))/(2*a), r2=(-b-Math.sqrt(disc))/(2*a);
+                  html+='<span style="color:#fca5a5;">Δ not a perfect square — cannot factorise over ℤ</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Irrational roots ≈ '+r1.toFixed(3)+' and '+r2.toFixed(3)+'</span>';
+                } else {
+                  const f=findFactors(a,b,c);
+                  if(f){
+                    const [m,n,p,q]=f;
+                    const h=gcd(gcd(Math.abs(m),Math.abs(n)),gcd(Math.abs(p),Math.abs(q)));
+                    let factored=fmtFactor(m,n)+fmtFactor(p,q);
+                    html+='<span style="color:#6ee7b7;">Factored form: </span><span style="color:#fcd34d;">'+factored+'</span>';
+                    if(disc===0) html+='<span style="color:rgba(221,225,240,0.50);"> — perfect square trinomial</span>';
+                  } else {
+                    const r1=(-b+Math.sqrt(disc))/(2*a), r2=(-b-Math.sqrt(disc))/(2*a);
+                    html+='<span style="color:#6ee7b7;">Roots: </span><span style="color:#fcd34d;">x = '+r1.toFixed(4)+' or x = '+r2.toFixed(4)+'</span>';
+                  }
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c1fBtn').addEventListener('click',run);
+              ['g10c1fa','g10c1fb','g10c1fc'].forEach(id=>{
+                document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              });
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The discriminant Δ = b² − 4ac tells you everything: <strong>Δ &gt; 0</strong> (two real factors), <strong>Δ = 0</strong> (perfect square), <strong>Δ &lt; 0</strong> (no real factors).</span></div>
         `
       },
       questions: [

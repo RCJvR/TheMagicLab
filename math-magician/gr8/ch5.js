@@ -4,7 +4,7 @@
 MathMagician.registerChapter(5, {
   topics: [
     {
-      id: 27,
+      id: 501,
       chapter: 5,
       name: "Input, output & flow diagrams",
       fullName: "Input, output values and flow diagrams",
@@ -133,7 +133,7 @@ MathMagician.registerChapter(5, {
       ]
     },
     {
-      id: 28,
+      id: 502,
       chapter: 5,
       name: "Tables of values",
       fullName: "Representing relationships using tables",
@@ -174,7 +174,7 @@ y  |  1   3   5   7   9</div>
       ]
     },
     {
-      id: 29,
+      id: 503,
       chapter: 5,
       name: "Word & symbolic formulae",
       fullName: "Word formulae and symbolic formulae",
@@ -221,7 +221,7 @@ y  |  2   5   8  11  14</div>
       ]
     },
     {
-      id: 30,
+      id: 504,
       chapter: 5,
       name: "Equivalent forms",
       fullName: "Equivalent forms of relationships",
@@ -259,7 +259,7 @@ y  |  2   5   8  11  14</div>
       ]
     },
     {
-      id: 31,
+      id: 505,
       chapter: 5,
       name: "Ch 5 Exam focus",
       fullName: "Examination focus exercise",

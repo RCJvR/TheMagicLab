@@ -4,7 +4,7 @@
 MathMagician.registerChapter(16, {
   topics: [
     {
-      id: 91,
+      id: 1601,
       chapter: 16,
       name: "Collecting and organising data",
       fullName: "Collecting and organising data",
@@ -83,7 +83,7 @@ MathMagician.registerChapter(16, {
       ]
     },
     {
-      id: 92,
+      id: 1602,
       chapter: 16,
       name: "Measures of central tendency",
       fullName: "Measures of central tendency",
@@ -157,7 +157,7 @@ MathMagician.registerChapter(16, {
       ]
     },
     {
-      id: 93,
+      id: 1603,
       chapter: 16,
       name: "Representing data",
       fullName: "Representing data — graphs and charts",
@@ -236,7 +236,7 @@ MathMagician.registerChapter(16, {
       ]
     },
     {
-      id: 94,
+      id: 1604,
       chapter: 16,
       name: "Interpreting data",
       fullName: "Interpreting and analysing data",
@@ -306,7 +306,7 @@ MathMagician.registerChapter(16, {
       ]
     },
     {
-      id: 95,
+      id: 1605,
       chapter: 16,
       name: "Ch 16 Exam focus",
       fullName: "Examination focus exercise",

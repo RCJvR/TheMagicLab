@@ -4,7 +4,7 @@
 MathMagician.registerChapter(8, {
   topics: [
     {
-      id: 44,
+      id: 801,
       chapter: 8,
       name: "Notation and terminology",
       fullName: "Revision of notation, terminology, and the naming of angles",
@@ -87,7 +87,7 @@ MathMagician.registerChapter(8, {
       ]
     },
     {
-      id: 45,
+      id: 802,
       chapter: 8,
       name: "Perpendicular lines",
       fullName: "Constructing perpendicular lines",
@@ -132,7 +132,7 @@ MathMagician.registerChapter(8, {
       ]
     },
     {
-      id: 46,
+      id: 803,
       chapter: 8,
       name: "Constructing angles",
       fullName: "Constructing angles",
@@ -176,7 +176,7 @@ MathMagician.registerChapter(8, {
       ]
     },
     {
-      id: 47,
+      id: 804,
       chapter: 8,
       name: "Constructing triangles",
       fullName: "Constructing triangles",
@@ -221,7 +221,7 @@ MathMagician.registerChapter(8, {
       ]
     },
     {
-      id: 48,
+      id: 805,
       chapter: 8,
       name: "Constructing quadrilaterals",
       fullName: "Constructing quadrilaterals",
@@ -269,7 +269,7 @@ MathMagician.registerChapter(8, {
       ]
     },
     {
-      id: 49,
+      id: 806,
       chapter: 8,
       name: "Ch 8 Exam focus",
       fullName: "Examination focus exercise",

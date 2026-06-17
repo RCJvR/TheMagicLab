@@ -4,7 +4,7 @@
 MathMagician.registerChapter(10, {
   topics: [
     {
-      id: 0,
+      id: 1000,
       chapter: 10,
       name: "Independent & dependent events",
       fullName: "Independent events, dependent events, and the product rule",
@@ -42,6 +42,46 @@ MathMagician.registerChapter(10, {
             P(BR) = 2/5 × 3/4 = 6/20 = 3/10<br>
             P(BB) = 2/5 × 1/4 = 2/20 = 1/10<br>
             Check: sum = 1 ✓</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Independence Test & Conditional Probability</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter P(A), P(B), and P(A∩B) — test independence and compute conditional probabilities.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A)</div><input id="g11c10pa" type="number" value="0.4" min="0" max="1" step="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(B)</div><input id="g11c10pb" type="number" value="0.3" min="0" max="1" step="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A∩B)</div><input id="g11c10pab" type="number" value="0.12" min="0" max="1" step="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c10Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Test</button>
+            </div>
+            <div id="g11c10Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function p4(n){return n.toFixed(4);}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const pa=gv('g11c10pa'),pb=gv('g11c10pb'),pab=gv('g11c10pab');
+                const out=document.getElementById('g11c10Out');
+                if([pa,pb,pab].some(isNaN)||pa<0||pb<0||pab<0||pa>1||pb>1||pab>1){out.innerHTML='<span style="color:#fca5a5;">All values must be between 0 and 1.</span>';return;}
+                if(pab>pa||pab>pb){out.innerHTML='<span style="color:#fca5a5;">P(A∩B) cannot exceed P(A) or P(B).</span>';return;}
+                const prod=pa*pb;
+                const indep=Math.abs(prod-pab)<0.0001;
+                const pAgivenB=pb>0?pab/pb:null;
+                const pBgivenA=pa>0?pab/pa:null;
+                const pAunionB=pa+pb-pab;
+                let html='<span style="color:rgba(221,225,240,0.50);">P(A) × P(B) = '+p4(pa)+' × '+p4(pb)+' = '+p4(prod)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A∩B) = '+p4(pab)+'</span><br>';
+                if(indep) html+='<span style="color:#6ee7b7;">✅ A and B are INDEPENDENT — P(A∩B) = P(A)×P(B)</span><br>';
+                else html+='<span style="color:#fca5a5;">❌ A and B are DEPENDENT — P(A∩B) ≠ P(A)×P(B)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A∪B) = P(A)+P(B)−P(A∩B) = '+p4(pAunionB)+'</span><br>';
+                if(pAgivenB!==null) html+='<span style="color:#fcd34d;">P(A|B) = P(A∩B)/P(B) = '+p4(pAgivenB)+'</span>   ';
+                if(pBgivenA!==null) html+='<span style="color:#fcd34d;">P(B|A) = P(A∩B)/P(A) = '+p4(pBgivenA)+'</span>';
+                out.innerHTML=html;
+              }
+              ['g11c10pa','g11c10pb','g11c10pab'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c10Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },
@@ -84,7 +124,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 1,
+      id: 1001,
       chapter: 10,
       name: "Venn diagrams, tree diagrams & contingency tables",
       fullName: "Advanced Venn diagrams, tree diagrams, and contingency tables",
@@ -125,6 +165,56 @@ MathMagician.registerChapter(10, {
             | Total | 60 | 90 | 150 |<br><br>
             P(Sport) = 80/150; P(Music) = 60/150<br>
             P(Sport)×P(Music) = 0.213 ≠ P(Sport∩Music) = 30/150 = 0.2 → NOT independent</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Contingency Table Independence Checker</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the four inner cell counts — the calculator fills the totals and tests independence.</p>
+            <div style="display:grid;grid-template-columns:auto auto auto auto;gap:6px;margin-bottom:10px;align-items:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;"></div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">B</div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">B'</div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">Total</div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">A</div>
+              <input id="g11c10t2ab" type="number" value="30" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c10t2ab2" type="number" value="50" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c10t2ra" type="text" value="" readonly style="width:60px;background:#0f0d1a;border:1px solid rgba(99,102,241,0.15);color:#6ee7b7;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">A'</div>
+              <input id="g11c10t2a2b" type="number" value="30" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c10t2a2b2" type="number" value="40" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c10t2ra2" type="text" value="" readonly style="width:60px;background:#0f0d1a;border:1px solid rgba(99,102,241,0.15);color:#6ee7b7;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">Total</div>
+              <input id="g11c10t2cb" type="text" value="" readonly style="width:60px;background:#0f0d1a;border:1px solid rgba(99,102,241,0.15);color:#6ee7b7;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c10t2cb2" type="text" value="" readonly style="width:60px;background:#0f0d1a;border:1px solid rgba(99,102,241,0.15);color:#6ee7b7;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c10t2tot" type="text" value="" readonly style="width:60px;background:#0f0d1a;border:1px solid rgba(99,102,241,0.15);color:#a5b4fc;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+            </div>
+            <button id="g11c10t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Test Independence</button>
+            <div id="g11c10t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function sv(id,v){document.getElementById(id).value=v;}
+              function calc(){
+                const ab=gv('g11c10t2ab'),ab2=gv('g11c10t2ab2'),a2b=gv('g11c10t2a2b'),a2b2=gv('g11c10t2a2b2');
+                const out=document.getElementById('g11c10t2Out');
+                if([ab,ab2,a2b,a2b2].some(isNaN)||[ab,ab2,a2b,a2b2].some(x=>x<0)){out.innerHTML='<span style="color:#fca5a5;">Enter non-negative counts.</span>';return;}
+                const rA=ab+ab2,rA2=a2b+a2b2,cB=ab+a2b,cB2=ab2+a2b2,tot=rA+rA2;
+                sv('g11c10t2ra',rA);sv('g11c10t2ra2',rA2);sv('g11c10t2cb',cB);sv('g11c10t2cb2',cB2);sv('g11c10t2tot',tot);
+                if(tot===0){out.innerHTML='<span style="color:#fca5a5;">Total cannot be 0.</span>';return;}
+                const pA=rA/tot,pB=cB/tot,pAB=ab/tot,expected=pA*pB;
+                const indep=Math.abs(pAB-expected)<0.0001;
+                let html='<span style="color:rgba(221,225,240,0.50);">n = '+tot+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A) = '+rA+'/'+tot+' = '+(pA).toFixed(4)+'</span>   <span style="color:rgba(221,225,240,0.50);">P(B) = '+cB+'/'+tot+' = '+(pB).toFixed(4)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A∩B) = '+ab+'/'+tot+' = '+(pAB).toFixed(4)+'</span>   <span style="color:rgba(221,225,240,0.50);">P(A)×P(B) = '+(expected).toFixed(4)+'</span><br>';
+                if(indep) html+='<span style="color:#6ee7b7;">✅ A and B are INDEPENDENT</span>';
+                else html+='<span style="color:#fca5a5;">❌ A and B are NOT independent (P(A∩B) ≠ P(A)×P(B))</span>';
+                out.innerHTML=html;
+              }
+              ['g11c10t2ab','g11c10t2ab2','g11c10t2a2b','g11c10t2a2b2'].forEach(id=>{document.getElementById(id).addEventListener('input',calc);document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c10t2Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },

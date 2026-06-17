@@ -553,9 +553,9 @@ const CHAPTER_MANIFEST = [
   { num:  1, name: "Whole Numbers, Ratios, Rates & Finance", topics:  9, file: "ch1.js"  },
   { num:  2, name: "Integers",                               topics: 10, file: "ch2.js"  },
   { num:  3, name: "Exponents",                              topics:  5, file: "ch3.js"  },
-  { num:  4, name: "Numeric and Geometric Patterns",         topics:  3, file: "ch4.js"  },
+  { num:  4, name: "Numeric and Geometric Patterns",         topics:  4, file: "ch4.js"  },
   { num:  5, name: "Functions and Relationships",            topics:  5, file: "ch5.js"  },
-  { num:  6, name: "Algebraic Expressions",                  topics:  6, file: "ch6.js"  },
+  { num:  6, name: "Algebraic Expressions",                  topics:  7, file: "ch6.js"  },
   { num:  7, name: "Algebraic Equations",                    topics:  6, file: "ch7.js"  },
   { num:  8, name: "Constructions",                          topics:  6, file: "ch8.js"  },
   { num:  9, name: "Geometry of Straight Lines",             topics:  4, file: "ch9.js"  },
@@ -566,7 +566,7 @@ const CHAPTER_MANIFEST = [
   { num: 14, name: "Area and Perimeter",                     topics:  5, file: "ch14.js" },
   { num: 15, name: "Surface Area and Volume",                topics:  6, file: "ch15.js" },
   { num: 16, name: "Data Handling",                          topics:  5, file: "ch16.js" },
-  { num: 17, name: "Probability",                            topics:  4, file: "ch17.js" },
+  { num: 17, name: "Probability",                            topics:  5, file: "ch17.js" },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -829,7 +829,7 @@ practiceTabBtn.addEventListener('click', () => { qIndex = 0; answered = false; s
 // LESSON RENDERER
 // ═══════════════════════════════════════════════════════════════
 function renderLesson() {
-  const t = TOPICS[currentTopicId];
+  const t = TOPICS.find(t => t.id === currentTopicId);
   const l = t.lesson;
   lessonPanel.innerHTML = `
     <div class="lesson-heading">${l.heading}</div>
@@ -857,7 +857,7 @@ function renderLesson() {
 // QUESTION RENDERER
 // ═══════════════════════════════════════════════════════════════
 function renderQuestion() {
-  const t = TOPICS[currentTopicId];
+  const t = TOPICS.find(t => t.id === currentTopicId);
   const ts = topicScores[currentTopicId] || { correct: 0, total: 0 };
 
   if (qIndex >= t.questions.length) {
@@ -866,7 +866,7 @@ function renderQuestion() {
     updateProgress();
     // Track topic complete
     if (window.MagicLabProgress) {
-      const t = TOPICS[currentTopicId];
+      const t = TOPICS.find(t => t.id === currentTopicId);
       MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
         topic: t?.name, grade: 8,
         metadata: { topicId: currentTopicId }
@@ -968,7 +968,7 @@ function renderQuestion() {
       showFeedback(true);
       // Track correct answer
       if (window.MagicLabProgress) {
-        const t = TOPICS[currentTopicId];
+        const t = TOPICS.find(t => t.id === currentTopicId);
         MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_correct', {
           topic: t?.name, grade: 8, score: 1,
           metadata: { question: q.text?.replace(/<[^>]+>/g,'')?.substring(0,100) }
@@ -979,7 +979,7 @@ function renderQuestion() {
       fetchAIFeedback(q, userAnswer, correct, showFeedback);
       // Track wrong answer
       if (window.MagicLabProgress) {
-        const t = TOPICS[currentTopicId];
+        const t = TOPICS.find(t => t.id === currentTopicId);
         MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_wrong', {
           topic: t?.name, grade: 8, score: 0,
           metadata: { question: q.text?.replace(/<[^>]+>/g,'')?.substring(0,100) }
@@ -1032,7 +1032,7 @@ async function fetchAIFeedback(q, userAnswer, correctAnswer, callback) {
   feedbackLabel.textContent = '⏳ Getting explanation…';
   feedbackText.textContent = '';
 
-  const topic  = TOPICS[currentTopicId];
+  const topic  = TOPICS.find(t => t.id === currentTopicId);
   const prompt = `You are a friendly, encouraging Grade 8 maths tutor (IEB/CAPS curriculum, South Africa).
 A student answered a question incorrectly. Give a SHORT, clear explanation (max 3 sentences) of:
 1. Why their answer is wrong.

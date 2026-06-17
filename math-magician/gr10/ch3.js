@@ -4,7 +4,7 @@
 MathMagician.registerChapter(3, {
   topics: [
     {
-      id: 0,
+      id: 300,
       chapter: 3,
       name: "Linear sequences",
       fullName: "Describing and generalising linear (arithmetic) sequences",
@@ -45,6 +45,64 @@ MathMagician.registerChapter(3, {
               If <span class="math">Tₘ</span> and <span class="math">Tₙ</span> are known: <span class="math">d = (Tₙ − Tₘ)/(n − m)</span>
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Arithmetic Sequence Explorer</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the first term and common difference — explore the sequence and its general term.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">First term (a)</div>
+                <input id="g10c3a" type="number" value="3"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Common diff (d)</div>
+                <input id="g10c3d" type="number" value="4"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Find Tₙ for n =</div>
+                <input id="g10c3n" type="number" value="10" min="1"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c3Btn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Generate
+              </button>
+            </div>
+            <div id="g10c3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function run(){
+                const a=parseFloat(document.getElementById('g10c3a').value);
+                const d=parseFloat(document.getElementById('g10c3d').value);
+                const n=parseInt(document.getElementById('g10c3n').value);
+                const out=document.getElementById('g10c3Out');
+                if(isNaN(a)||isNaN(d)||isNaN(n)||n<1){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (n ≥ 1).</span>';return;}
+                // First 8 terms
+                const terms=[];
+                for(let i=1;i<=8;i++) terms.push(a+(i-1)*d);
+                // General term: Tn = a + (n-1)d = dn + (a-d)
+                const c=a-d; // constant term
+                let formula='Tₙ = ';
+                if(d===0) formula+=a;
+                else if(d===1) formula+=(c===0?'n':c>0?'n + '+c:'n − '+Math.abs(c));
+                else if(d===-1) formula+=(c===0?'−n':c>0?'−n + '+c:'−n − '+Math.abs(c));
+                else formula+=d+'n'+(c===0?'':c>0?' + '+c:' − '+Math.abs(c));
+                const Tn=a+(n-1)*d;
+                let html='<span style="color:rgba(221,225,240,0.50);">First 8 terms: </span><span style="color:#fcd34d;">'+terms.join(', ')+'…</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">General term: </span><span style="color:#fcd34d;">'+formula+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">T<sub>'+n+'</sub> = '+a+' + ('+(n-1)+')×('+d+') = </span><span style="color:#6ee7b7;">'+Tn+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c3Btn').addEventListener('click',run);
+              ['g10c3a','g10c3d','g10c3n'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>A quick shortcut: write <span class="math">Tₙ = dn + (a − d)</span>. The coefficient of n is always d, and the constant is the "zeroth term" (one step before T₁).</span></div>
         `
       },
       questions: [
@@ -84,7 +142,7 @@ MathMagician.registerChapter(3, {
       ]
     },
     {
-      id: 1,
+      id: 301,
       chapter: 3,
       name: "Patterns in context",
       fullName: "Number patterns in tables, graphs, and real-world contexts",
@@ -127,6 +185,74 @@ MathMagician.registerChapter(3, {
               The y-intercept equals <span class="math">a − d</span> (the "zeroth term").
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Pattern Finder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the first three terms of a sequence — find the formula and predict any term.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">T₁</div>
+                <input id="g10c3pt1" type="number" value="4"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">T₂</div>
+                <input id="g10c3pt2" type="number" value="7"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">T₃</div>
+                <input id="g10c3pt3" type="number" value="10"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Find term n</div>
+                <input id="g10c3pn" type="number" value="20" min="1"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c3pBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Analyse
+              </button>
+            </div>
+            <div id="g10c3pOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function run(){
+                const t1=parseFloat(document.getElementById('g10c3pt1').value);
+                const t2=parseFloat(document.getElementById('g10c3pt2').value);
+                const t3=parseFloat(document.getElementById('g10c3pt3').value);
+                const n=parseInt(document.getElementById('g10c3pn').value);
+                const out=document.getElementById('g10c3pOut');
+                if([t1,t2,t3,n].some(isNaN)||n<1){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                const d1=t2-t1, d2=t3-t2;
+                if(Math.abs(d1-d2)>0.0001){
+                  out.innerHTML='<span style="color:#fca5a5;">Differences not constant (d₁='+d1+', d₂='+d2+') — not a linear sequence.</span>';
+                  return;
+                }
+                const d=d1;
+                const a=t1;
+                const c=a-d;
+                let formula='Tₙ = ';
+                if(d===0) formula+=a;
+                else if(d===1) formula+=(c===0?'n':c>0?'n + '+c:'n − '+Math.abs(c));
+                else if(d===-1) formula+=(c===0?'−n':c>0?'−n + '+c:'−n − '+Math.abs(c));
+                else formula+=d+'n'+(c===0?'':c>0?' + '+c:' − '+Math.abs(c));
+                const Tn=a+(n-1)*d;
+                let html='<span style="color:rgba(221,225,240,0.50);">Differences: T₂−T₁ = '+d1+', T₃−T₂ = '+d2+' → </span><span style="color:#6ee7b7;">Linear sequence ✓</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Common difference: </span><span style="color:#fcd34d;">d = '+d+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">General term: </span><span style="color:#fcd34d;">'+formula+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">T<sub>'+n+'</sub> = '+d+'('+n+') + ('+c+') = </span><span style="color:#6ee7b7;">'+Tn+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c3pBtn').addEventListener('click',run);
+              ['g10c3pt1','g10c3pt2','g10c3pt3','g10c3pn'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>If the differences between consecutive terms are <em>not</em> all equal, the sequence is not linear — check for a quadratic or geometric pattern instead.</span></div>
         `
       },
       questions: [

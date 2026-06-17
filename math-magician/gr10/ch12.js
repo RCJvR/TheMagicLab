@@ -4,7 +4,7 @@
 MathMagician.registerChapter(12, {
   topics: [
     {
-      id: 0,
+      id: 1200,
       chapter: 12,
       name: "Proofs & conjectures",
       fullName: "Formal proofs in Euclidean geometry — circle geometry introduction",
@@ -48,6 +48,64 @@ MathMagician.registerChapter(12, {
             ∠FEC = ∠DCE = 35° (alternate angles, EF ∥ CD)<br>
             ∠BEC = ∠BEF + ∠FEC = 55° + 35° = 90° ✓</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Angle Relationship Explorer</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a known angle and select its relationship — find the related angle with the correct geometric reason.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Known angle (°)</div>
+                <input id="g10c12ang" type="number" value="55" min="1" max="179"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Relationship</div>
+                <select id="g10c12rel" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="supp">Supplementary (straight line)</option>
+                  <option value="vert">Vertically opposite</option>
+                  <option value="comp">Complementary (right angle)</option>
+                  <option value="alt">Alternate (Z-angle, parallel lines)</option>
+                  <option value="corr">Corresponding (F-angle, parallel lines)</option>
+                  <option value="coint">Co-interior (parallel lines)</option>
+                  <option value="ext">Exterior angle of triangle</option>
+                </select>
+              </div>
+              <div id="g10c12extPanel" style="display:none;">
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">2nd interior angle (°)</div>
+                <input id="g10c12ang2" type="number" value="35" min="1" max="178"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c12Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find angle</button>
+            </div>
+            <div id="g10c12Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const rel=document.getElementById('g10c12rel');
+              const extP=document.getElementById('g10c12extPanel');
+              rel.addEventListener('change',()=>{extP.style.display=rel.value==='ext'?'':'none'; calc();});
+              function calc(){
+                const a=parseFloat(document.getElementById('g10c12ang').value);
+                const r=rel.value;
+                const out=document.getElementById('g10c12Out');
+                if(isNaN(a)||a<=0||a>=180){out.innerHTML='<span style="color:#fca5a5;">Enter an angle between 1° and 179°.</span>';return;}
+                let result,reason;
+                if(r==='supp'){result=180-a;reason='Supplementary angles sum to 180° (angles on a straight line)';}
+                else if(r==='vert'){result=a;reason='Vertically opposite angles are equal';}
+                else if(r==='comp'){if(a>=90){out.innerHTML='<span style="color:#fca5a5;">Complementary requires angle < 90°.</span>';return;}result=90-a;reason='Complementary angles sum to 90°';}
+                else if(r==='alt'){result=a;reason='Alternate angles are equal (AB ∥ CD, transversal)';}
+                else if(r==='corr'){result=a;reason='Corresponding angles are equal (AB ∥ CD, transversal)';}
+                else if(r==='coint'){result=180-a;reason='Co-interior angles are supplementary — they sum to 180° (AB ∥ CD)';}
+                else{const a2=parseFloat(document.getElementById('g10c12ang2').value);if(isNaN(a2)||a2<=0||a+a2>=180){out.innerHTML='<span style="color:#fca5a5;">Both angles must sum to less than 180°.</span>';return;}result=a+a2;reason='Exterior angle = sum of two non-adjacent interior angles';}
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Related angle = </span><span style="color:#6ee7b7;">'+result+'°</span><br><span style="color:rgba(221,225,240,0.50);">Reason: </span><span style="color:#fcd34d;">'+reason+'</span>';
+              }
+              document.getElementById('g10c12Btn').addEventListener('click',calc);
+              ['g10c12ang','g10c12ang2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In every proof step, write the geometric reason in brackets — e.g., <em>(alternate angles, AB ∥ CD)</em>. State both the theorem and the condition that makes it apply.</span></div>
         `
       },
       questions: [
@@ -89,7 +147,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 1,
+      id: 1201,
       chapter: 12,
       name: "Proving parallelogram properties",
       fullName: "Proving properties of quadrilaterals using deductive reasoning",
@@ -130,6 +188,42 @@ MathMagician.registerChapter(12, {
             ∴ PS = QR and PS ∥ QR (from congruent triangles)<br>
             ∴ PQRS is a parallelogram (both pairs of opposite sides equal and parallel)</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Parallelogram Angle Finder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter one angle in a parallelogram — find all four angles and state the reasons.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Angle A (°)</div>
+                <input id="g10c12t2ang" type="number" value="65" min="1" max="179"
+                  style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c12t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find all angles</button>
+            </div>
+            <div id="g10c12t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function calc(){
+                const A=parseFloat(document.getElementById('g10c12t2ang').value);
+                const out=document.getElementById('g10c12t2Out');
+                if(isNaN(A)||A<=0||A>=180){out.innerHTML='<span style="color:#fca5a5;">Enter an angle between 1° and 179°.</span>';return;}
+                const B=180-A;
+                let html='<span style="color:rgba(221,225,240,0.50);">In parallelogram ABCD:</span><br>';
+                html+='<span style="color:#fcd34d;">∠A = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (given)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠C = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (opposite angles of a parallelogram are equal)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠B = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (co-interior angles, AB∥DC → ∠A + ∠B = 180°)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠D = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (opposite angles of a parallelogram are equal)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Check: '+A+' + '+B+' + '+A+' + '+B+' = '+(2*A+2*B)+'° ✓</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c12t2Btn').addEventListener('click',calc);
+              document.getElementById('g10c12t2ang').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Memorise the <strong>five conditions</strong> for a parallelogram — in exam proofs, you only need to prove ONE of them, so choose the one the given information leads to most directly.</span></div>
         `
       },
       questions: [

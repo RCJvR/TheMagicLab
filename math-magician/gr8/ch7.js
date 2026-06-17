@@ -4,7 +4,7 @@
 MathMagician.registerChapter(7, {
   topics: [
     {
-      id: 38,
+      id: 701,
       chapter: 7,
       name: "What is an equation?",
       fullName: "Setting up and understanding equations",
@@ -52,7 +52,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 39,
+      id: 702,
       chapter: 7,
       name: "Solving by inspection",
       fullName: "Solving equations by inspection",
@@ -90,7 +90,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 40,
+      id: 703,
       chapter: 7,
       name: "Solving using inverses",
       fullName: "Solving equations using additive and multiplicative inverses",
@@ -206,7 +206,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 41,
+      id: 704,
       chapter: 7,
       name: "Variables on both sides",
       fullName: "Equations with variables on both sides",
@@ -249,7 +249,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 42,
+      id: 705,
       chapter: 7,
       name: "Word problems",
       fullName: "Solving word problems using equations",
@@ -296,7 +296,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 43,
+      id: 706,
       chapter: 7,
       name: "Ch 7 Exam focus",
       fullName: "Examination focus exercise",

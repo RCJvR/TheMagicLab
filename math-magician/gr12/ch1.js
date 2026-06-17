@@ -4,7 +4,7 @@
 MathMagician.registerChapter(1, {
   topics: [
     {
-      id: 0,
+      id: 100,
       chapter: 1,
       name: "Arithmetic & geometric sequences",
       fullName: "Arithmetic sequences, geometric sequences, and their general terms",
@@ -47,6 +47,64 @@ MathMagician.registerChapter(1, {
               Geometric: <span class="math">rⁿ⁻ᵐ = Tₙ/Tₘ → r = (Tₙ/Tₘ)^(1/(n−m))</span>
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Sequence Term Calculator</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button id="g12c1arith" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.50);cursor:pointer;font-size:13px;font-weight:600;background:rgba(99,102,241,0.30);color:#a5b4fc;">Arithmetic</button>
+              <button id="g12c1geom" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">Geometric</button>
+            </div>
+            <div id="g12c1arithP" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">First term a</div><input id="g12c1aa" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Common diff d</div><input id="g12c1ad" type="number" value="4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Find Tₙ (n=)</div><input id="g12c1an" type="number" value="10" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1aBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c1geomP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">First term a</div><input id="g12c1ga" type="number" value="2" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Common ratio r</div><input id="g12c1gr" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Find Tₙ (n=)</div><input id="g12c1gn" type="number" value="7" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1gBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c1Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(6));}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              const arithBtn=document.getElementById('g12c1arith'),geomBtn=document.getElementById('g12c1geom');
+              const arithP=document.getElementById('g12c1arithP'),geomP=document.getElementById('g12c1geomP');
+              const out=document.getElementById('g12c1Out');
+              function setMode(m){
+                if(m==='arith'){arithP.style.display='flex';geomP.style.display='none';arithBtn.style.background='rgba(99,102,241,0.30)';arithBtn.style.color='#a5b4fc';arithBtn.style.borderColor='rgba(99,102,241,0.50)';geomBtn.style.background='transparent';geomBtn.style.color='rgba(221,225,240,0.50)';geomBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                else{geomP.style.display='flex';arithP.style.display='none';geomBtn.style.background='rgba(99,102,241,0.30)';geomBtn.style.color='#a5b4fc';geomBtn.style.borderColor='rgba(99,102,241,0.50)';arithBtn.style.background='transparent';arithBtn.style.color='rgba(221,225,240,0.50)';arithBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                out.innerHTML='';
+              }
+              arithBtn.addEventListener('click',()=>setMode('arith'));
+              geomBtn.addEventListener('click',()=>setMode('geom'));
+              document.getElementById('g12c1aBtn').addEventListener('click',()=>{
+                const a=gv('g12c1aa'),d=gv('g12c1ad'),n=gv('g12c1an');
+                if([a,d,n].some(isNaN)||n<1){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                const tn=a+(n-1)*d;
+                const terms=Array.from({length:Math.min(n,8)},(_,i)=>a+i*d);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Tₙ = a + (n−1)d = '+a+' + ('+n+'−1)('+d+')</span><br>'+
+                  '<span style="color:#6ee7b7;">T'+n+' = '+f(tn)+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">First '+Math.min(n,8)+' terms: '+terms.map(f).join(', ')+(n>8?' …':'')+'</span>';
+              });
+              document.getElementById('g12c1gBtn').addEventListener('click',()=>{
+                const a=gv('g12c1ga'),r=gv('g12c1gr'),n=gv('g12c1gn');
+                if([a,r,n].some(isNaN)||n<1||r===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (r ≠ 0).</span>';return;}
+                const tn=a*Math.pow(r,n-1);
+                const terms=Array.from({length:Math.min(n,8)},(_,i)=>a*Math.pow(r,i));
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Tₙ = a·rⁿ⁻¹ = '+a+'·('+r+')^('+n+'−1)</span><br>'+
+                  '<span style="color:#6ee7b7;">T'+n+' = '+f(tn)+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">First '+Math.min(n,8)+' terms: '+terms.map(f).join(', ')+(n>8?' …':'')+'</span>';
+              });
+              ['g12c1aa','g12c1ad','g12c1an'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g12c1aBtn').click();});});
+              ['g12c1ga','g12c1gr','g12c1gn'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g12c1gBtn').click();});});
+              document.getElementById('g12c1aBtn').click();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -58,7 +116,7 @@ MathMagician.registerChapter(1, {
       ]
     },
     {
-      id: 1,
+      id: 101,
       chapter: 1,
       name: "Series — arithmetic, geometric & infinite",
       fullName: "Arithmetic series, geometric series, sigma notation, and infinite geometric series",
@@ -104,6 +162,77 @@ MathMagician.registerChapter(1, {
             <p><strong>Arithmetic S₁₀:</strong> a = 3, d = 4 → S₁₀ = 10/2 · (6 + 36) = 5 · 42 = 210</p>
             <p><strong>Geometric S₆:</strong> a = 2, r = 3 → S₆ = 2(3⁶−1)/(3−1) = 2(728)/2 = 728</p>
             <p><strong>Infinite:</strong> a = 8, r = ½ → S∞ = 8/(1 − ½) = 16</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Series Sum Calculator</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button id="g12c1sarith" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.50);cursor:pointer;font-size:13px;font-weight:600;background:rgba(99,102,241,0.30);color:#a5b4fc;">Arithmetic Sₙ</button>
+              <button id="g12c1sgeom" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">Geometric Sₙ</button>
+              <button id="g12c1sinf" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">Infinite S∞</button>
+            </div>
+            <div id="g12c1sarithP" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g12c1saa" type="number" value="3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">d</div><input id="g12c1sad" type="number" value="4" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n terms</div><input id="g12c1san" type="number" value="10" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1saBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c1sgeomP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g12c1sga" type="number" value="2" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">r</div><input id="g12c1sgr" type="number" value="3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n terms</div><input id="g12c1sgn" type="number" value="6" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1sgBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c1sinfP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g12c1sia" type="number" value="8" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">r (|r|&lt;1)</div><input id="g12c1sir" type="number" value="0.5" step="0.01" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1siBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c1sOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4));}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              const btns={arith:document.getElementById('g12c1sarith'),geom:document.getElementById('g12c1sgeom'),inf:document.getElementById('g12c1sinf')};
+              const panels={arith:document.getElementById('g12c1sarithP'),geom:document.getElementById('g12c1sgeomP'),inf:document.getElementById('g12c1sinfP')};
+              const out=document.getElementById('g12c1sOut');
+              function setMode(m){
+                Object.keys(panels).forEach(k=>{panels[k].style.display=k===m?'flex':'none';btns[k].style.background=k===m?'rgba(99,102,241,0.30)':'transparent';btns[k].style.color=k===m?'#a5b4fc':'rgba(221,225,240,0.50)';btns[k].style.borderColor=k===m?'rgba(99,102,241,0.50)':'rgba(99,102,241,0.20)';});
+                out.innerHTML='';
+              }
+              Object.keys(btns).forEach(k=>btns[k].addEventListener('click',()=>setMode(k)));
+              document.getElementById('g12c1saBtn').addEventListener('click',()=>{
+                const a=gv('g12c1saa'),d=gv('g12c1sad'),n=gv('g12c1san');
+                if([a,d,n].some(isNaN)||n<1){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                const sn=n/2*(2*a+(n-1)*d);
+                const tn=a+(n-1)*d;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Sₙ = n/2·(2a+(n−1)d) = '+n+'/2·('+2*a+'+'+(n-1)+'×'+d+')</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">T'+n+' (last term) = '+f(tn)+'</span><br>'+
+                  '<span style="color:#6ee7b7;">S'+n+' = '+f(sn)+'</span>';
+              });
+              document.getElementById('g12c1sgBtn').addEventListener('click',()=>{
+                const a=gv('g12c1sga'),r=gv('g12c1sgr'),n=gv('g12c1sgn');
+                if([a,r,n].some(isNaN)||n<1||r===1||r===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (r ≠ 0, r ≠ 1).</span>';return;}
+                const sn=a*(Math.pow(r,n)-1)/(r-1);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Sₙ = a(rⁿ−1)/(r−1) = '+a+'·(('+r+')^'+n+'−1)/('+r+'−1)</span><br>'+
+                  '<span style="color:#6ee7b7;">S'+n+' = '+f(sn)+'</span>';
+              });
+              document.getElementById('g12c1siBtn').addEventListener('click',()=>{
+                const a=gv('g12c1sia'),r=gv('g12c1sir');
+                if([a,r].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                if(Math.abs(r)>=1){out.innerHTML='<span style="color:#fca5a5;">|r| must be less than 1 for the series to converge.</span>';return;}
+                const sinf=a/(1-r);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">|r| = '+Math.abs(r)+' < 1 → series converges</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">S∞ = a/(1−r) = '+a+'/(1−'+r+')</span><br>'+
+                  '<span style="color:#6ee7b7;">S∞ = '+f(sinf)+'</span>';
+              });
+              ['g12c1saa','g12c1sad','g12c1san'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g12c1saBtn').click();});});
+              ['g12c1sga','g12c1sgr','g12c1sgn'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g12c1sgBtn').click();});});
+              ['g12c1sia','g12c1sir'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g12c1siBtn').click();});});
+              setMode('arith');
+              document.getElementById('g12c1saBtn').click();
+            })();
+            </script>
           </div>
         `
       },

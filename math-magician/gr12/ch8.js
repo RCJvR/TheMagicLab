@@ -4,7 +4,7 @@
 MathMagician.registerChapter(8, {
   topics: [
     {
-      id: 0,
+      id: 800,
       chapter: 8,
       name: "Proportion, polygons & triangle theorems",
       fullName: "Ratio and proportion, polygons, and the basic proportionality theorem",
@@ -48,6 +48,53 @@ MathMagician.registerChapter(8, {
               Ratio of volumes of similar solids = (ratio of sides)³
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 BPT & Proportion Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">In △ABC with DE ∥ BC: AD/DB = AE/EC. Enter any three — find the fourth. Also see area ratio.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">AD</div><input id="g12c8AD" type="number" value="3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">DB</div><input id="g12c8DB" type="number" value="5" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">AE</div><input id="g12c8AE" type="number" value="6" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">EC (blank=find)</div><input id="g12c8EC" type="text" placeholder="?" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c8Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g12c8Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const AD=gv('g12c8AD'),DB=gv('g12c8DB'),AE=gv('g12c8AE');
+                const ECraw=document.getElementById('g12c8EC').value.trim();
+                const EC=ECraw===''||ECraw==='?'?null:parseFloat(ECraw);
+                const out=document.getElementById('g12c8Out');
+                let html='';
+                if(AD&&DB&&AE&&!EC){
+                  const ec=AE*DB/AD;
+                  document.getElementById('g12c8EC').value=f4(ec);
+                  html='<span style="color:rgba(221,225,240,0.50);">AD/DB = AE/EC → EC = AE×DB/AD</span><br>'+
+                    '<span style="color:rgba(221,225,240,0.50);">EC = '+AE+'×'+DB+'/'+AD+'</span><br>'+
+                    '<span style="color:#6ee7b7;">EC = '+f4(ec)+'</span>';
+                  const ratio=AD/DB,ratioArea=ratio*ratio;
+                  html+='<br><span style="color:rgba(221,225,240,0.50);">Similarity ratio △ADE:△ABC = AD/AB = '+AD+'/'+(AD+DB)+' = '+f4(AD/(AD+DB))+'</span>';
+                  html+='<br><span style="color:#fcd34d;">Area ratio △ADE:△ABC = ('+f4(AD/(AD+DB))+')² = '+f4((AD/(AD+DB))*(AD/(AD+DB)))+'</span>';
+                } else if(AD&&DB&&AE&&EC){
+                  const lhs=AD/DB,rhs=AE/EC;
+                  const isParallel=Math.abs(lhs-rhs)<0.0001;
+                  html='<span style="color:rgba(221,225,240,0.50);">AD/DB = '+f4(lhs)+'   AE/EC = '+f4(rhs)+'</span><br>';
+                  html+=isParallel?'<span style="color:#6ee7b7;">✅ DE ∥ BC (ratios equal — converse BPT)</span>':'<span style="color:#fca5a5;">❌ DE is NOT parallel to BC</span>';
+                } else {
+                  out.innerHTML='<span style="color:#fca5a5;">Enter AD, DB, AE and leave EC blank to find it, or enter all four to test parallelism.</span>';return;
+                }
+                out.innerHTML=html;
+              }
+              ['g12c8AD','g12c8DB','g12c8AE','g12c8EC'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c8Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -59,7 +106,7 @@ MathMagician.registerChapter(8, {
       ]
     },
     {
-      id: 1,
+      id: 801,
       chapter: 8,
       name: "Similarity & Pythagorean theorem proofs",
       fullName: "Similarity of triangles and the proof of the Pythagorean theorem",
@@ -103,6 +150,39 @@ MathMagician.registerChapter(8, {
               Once similarity is proved, corresponding sides are proportional.<br>
               Always write: <span class="math">AB/DE = BC/EF = AC/DF</span> (in the same ORDER as the similarity statement)
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Similarity & Area Ratio Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter corresponding sides AB and DE — find the similarity ratio, area ratio, and any missing side.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">AB (△1 side)</div><input id="g12c8t2ab" type="number" value="6" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">DE (△2 side)</div><input id="g12c8t2de" type="number" value="9" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Known side (△1)</div><input id="g12c8t2s1" type="number" value="4" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c8t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c8t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const AB=gv('g12c8t2ab'),DE=gv('g12c8t2de'),s1=gv('g12c8t2s1');
+                const out=document.getElementById('g12c8t2Out');
+                if([AB,DE].some(isNaN)||AB<=0||DE<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive AB and DE.</span>';return;}
+                const k=DE/AB;
+                const s2=s1*k;
+                let html='<span style="color:rgba(221,225,240,0.50);">Similarity ratio: AB/DE = '+AB+'/'+DE+' = 1:'+f4(k)+'</span><br>';
+                html+='<span style="color:#fcd34d;">Area ratio △1 : △2 = 1 : '+f4(k*k)+'   (ratio of sides)²</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Volume ratio (if 3D): 1 : '+f4(k*k*k)+'   (ratio of sides)³</span>';
+                if(!isNaN(s1)&&s1>0) html+='<br><span style="color:#6ee7b7;">Corresponding side in △2: '+f4(s2)+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c8t2ab','g12c8t2de','g12c8t2s1'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c8t2Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },

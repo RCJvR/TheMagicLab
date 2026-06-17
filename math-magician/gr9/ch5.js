@@ -1,4 +1,4 @@
-// Math Magician — Grade 9, Chapter 5 data
+// Math Magician � Grade 9, Chapter 5 data
 // Numeric and Geometric Patterns
 
 MathMagician.registerChapter(5, {
@@ -7,30 +7,30 @@ MathMagician.registerChapter(5, {
       id: 9,
       chapter: 5,
       name: "Numeric patterns",
-      fullName: "Numeric patterns — sequences and general term",
+      fullName: "Numeric patterns � sequences and general term",
       lesson: {
         heading: "Numeric patterns and the general term",
-        sub: "Chapter 5 · Topic 1",
+        sub: "Chapter 5 � Topic 1",
         body: `
-          <p>A <strong>sequence</strong> is an ordered list of numbers. In Grade 9 we find the <strong>general term (Tₙ)</strong> — a formula giving any term from its position number n.</p>
+          <p>A <strong>sequence</strong> is an ordered list of numbers. In Grade 9 we find the <strong>general term (T?)</strong> � a formula giving any term from its position number n.</p>
           <div class="def-box">
-            <div class="def-box-title">📖 Arithmetic sequence</div>
+            <div class="def-box-title">?? Arithmetic sequence</div>
             <p>
               Each term is obtained by adding a constant <strong>common difference (d)</strong>.<br>
-              <span class="math">Tₙ = a + (n−1)d</span> where a = first term, d = common difference.<br><br>
-              <strong>Finding d:</strong> d = T₂ − T₁ = T₃ − T₂<br>
-              <strong>Finding the term:</strong> substitute n into Tₙ formula.
+              <span class="math">T? = a + (n-1)d</span> where a = first term, d = common difference.<br><br>
+              <strong>Finding d:</strong> d = T2 - T1 = T3 - T2<br>
+              <strong>Finding the term:</strong> substitute n into T? formula.
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">✏️ Worked example</div>
-            <div class="example-step"><span class="step-num">1</span><span>Sequence: 5, 8, 11, 14, … → d = 3, a = 5</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Tₙ = 5 + (n−1)(3) = 5 + 3n − 3 = 3n + 2</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>T₁₀ = 3(10) + 2 = 32. Check: 5, 8, 11, 14, 17, 20, 23, 26, 29, 32 ✓</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>Is 50 a term? 3n + 2 = 50 → n = 16. Yes, T₁₆ = 50.</span></div>
-            <div class="example-step"><span class="step-num">5</span><span>Is 51 a term? 3n + 2 = 51 → n = 16,33. No (not a natural number).</span></div>
+            <div class="example-box-title">?? Worked example</div>
+            <div class="example-step"><span class="step-num">1</span><span>Sequence: 5, 8, 11, 14, � ? d = 3, a = 5</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>T? = 5 + (n-1)(3) = 5 + 3n - 3 = 3n + 2</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>T10 = 3(10) + 2 = 32. Check: 5, 8, 11, 14, 17, 20, 23, 26, 29, 32 ?</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>Is 50 a term? 3n + 2 = 50 ? n = 16. Yes, T16 = 50.</span></div>
+            <div class="example-step"><span class="step-num">5</span><span>Is 51 a term? 3n + 2 = 51 ? n = 16,33. No (not a natural number).</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>In many matchstick patterns, each new shape adds d matches. Look for what is added each time, not just the total.</span></div>
+          <div class="tip-box"><span class="tip-icon">??</span><span>In many matchstick patterns, each new shape adds d matches. Look for what is added each time, not just the total.</span></div>
 
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Geometric Pattern Builder</div>
@@ -70,10 +70,10 @@ MathMagician.registerChapter(5, {
               });
               svg.innerHTML=cells;
               var c=a-d;
-              var genStr=(d===0?String(a):(d===1?'n':(d>0?d+'n':'−'+Math.abs(d)+'n')))+(c>0?' + '+c:c<0?' − '+Math.abs(c):'');
+              var genStr=(d===0?String(a):(d===1?'n':(d>0?d+'n':'-'+Math.abs(d)+'n')))+(c>0?' + '+c:c<0?' - '+Math.abs(c):'');
               document.getElementById('gpOut').innerHTML=[
-                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">Sequence:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', …</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">General term Tₙ:</span><span style="color:#fbbf24;font-weight:700;">'+genStr+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">Sequence:</span><span style="color:#a5b4fc;">'+terms.join(', ')+', �</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">General term T?:</span><span style="color:#fbbf24;font-weight:700;">'+genStr+'</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);min-width:140px;display:inline-block;">T<sub>20</sub>:</span><span style="color:#6ee7b7;font-weight:700;">'+(a+19*d)+'</span></div>',
               ].join('');
             }
@@ -85,11 +85,11 @@ MathMagician.registerChapter(5, {
         `
       },
       questions: [
-        { type: "mc", text: "Triangles are made with matchsticks: 1 triangle = 3, 2 = 5, 3 = 7. The general term is:", options: ["Tₙ = 3n", "Tₙ = 2n + 1", "Tₙ = n + 2", "Tₙ = 2n − 1"], answer: 1, topic: "Patterns" },
-        { type: "input", text: "Using the triangle matchstick pattern Tₙ = 2n + 1, how many matches for 20 triangles?", answer: "41", topic: "Patterns" },
+        { type: "mc", text: "Triangles are made with matchsticks: 1 triangle = 3, 2 = 5, 3 = 7. The general term is:", options: ["T? = 3n", "T? = 2n + 1", "T? = n + 2", "T? = 2n - 1"], answer: 1, topic: "Patterns" },
+        { type: "input", text: "Using the triangle matchstick pattern T? = 2n + 1, how many matches for 20 triangles?", answer: "41", topic: "Patterns" },
         { type: "mc", text: "A pattern of squares uses tiles: 1 square = 1, 2 in a row = 4, 3 = 9. This is:", options: ["Arithmetic", "Geometric (multiplication)", "Square numbers", "Fibonacci"], answer: 2, topic: "Patterns" },
-        { type: "input", text: "For a dot pattern where Tₙ = n² + 1, find T₆.", answer: "37", topic: "Patterns" },
-        { type: "mc", text: "Pattern positions show 4, 9, 16, 25 dots. What is T₁₀?", options: ["100", "101", "121", "36"], answer: 2, topic: "Patterns" },
+        { type: "input", text: "For a dot pattern where T? = n� + 1, find T6.", answer: "37", topic: "Patterns" },
+        { type: "mc", text: "Pattern positions show 4, 9, 16, 25 dots. What is T10?", options: ["100", "101", "121", "36"], answer: 2, topic: "Patterns" },
       ]
     },
   ],
@@ -101,20 +101,20 @@ MathMagician.registerChapter(5, {
         questions: [
           {
             num: "1",
-            text: "Consider the sequence: 3, 7, 11, 15, …",
+            text: "Consider the sequence: 3, 7, 11, 15, �",
             parts: [
               { label: "a)", text: "Write down the next two terms.", marks: 2 },
-              { label: "b)", text: "Determine the general term Tₙ.", marks: 3 },
+              { label: "b)", text: "Determine the general term T?.", marks: 3 },
               { label: "c)", text: "Calculate the 25th term.", marks: 2 },
               { label: "d)", text: "Determine whether 99 is a term. Show all working.", marks: 3 },
             ]
           },
           {
             num: "2",
-            text: "The general term of a sequence is Tₙ = 2n² − 1.",
+            text: "The general term of a sequence is T? = 2n� - 1.",
             parts: [
               { label: "a)", text: "Write down the first 4 terms.", marks: 2 },
-              { label: "b)", text: "Find the value of n for which Tₙ = 31.", marks: 3 },
+              { label: "b)", text: "Find the value of n for which T? = 31.", marks: 3 },
             ]
           },
         ]
@@ -136,25 +136,25 @@ MathMagician.registerChapter(5, {
     ]
   },
   answerKey: {
-    chapter: 5, chapterName: "Chapter 5 — Numeric and Geometric Patterns",
+    chapter: 5, chapterName: "Chapter 5 � Numeric and Geometric Patterns",
     topics: [
       {
         name: "Numeric Patterns",
         answers: [
           { num: "Q1a", ans: "19 and 23", note: "d = 4" },
-          { num: "Q1b", ans: "Tₙ = 4n − 1", note: "a = 3, d = 4: Tₙ = 3 + (n−1)(4) = 4n − 1" },
-          { num: "Q1c", ans: "99", note: "T₂₅ = 4(25) − 1 = 99" },
-          { num: "Q1d", ans: "Yes, T₂₅ = 99", note: "4n − 1 = 99 → n = 25, which is a natural number" },
-          { num: "Q2a", ans: "1, 7, 17, 31", note: "2(1)²−1=1; 2(4)−1=7; 2(9)−1=17; 2(16)−1=31" },
-          { num: "Q2b", ans: "n = 4", note: "2n²−1=31 → 2n²=32 → n²=16 → n=4" },
+          { num: "Q1b", ans: "T? = 4n - 1", note: "a = 3, d = 4: T? = 3 + (n-1)(4) = 4n - 1" },
+          { num: "Q1c", ans: "99", note: "T25 = 4(25) - 1 = 99" },
+          { num: "Q1d", ans: "Yes, T25 = 99", note: "4n - 1 = 99 ? n = 25, which is a natural number" },
+          { num: "Q2a", ans: "1, 7, 17, 31", note: "2(1)�-1=1; 2(4)-1=7; 2(9)-1=17; 2(16)-1=31" },
+          { num: "Q2b", ans: "n = 4", note: "2n�-1=31 ? 2n�=32 ? n�=16 ? n=4" },
         ]
       },
       {
         name: "Geometric Patterns",
         answers: [
-          { num: "Q3a", ans: "Tₙ = 4n + 1", note: "a = 5, d = 4; Tₙ = 5 + (n−1)4 = 4n + 1" },
-          { num: "Q3b", ans: "61 matchsticks", note: "T₁₅ = 4(15) + 1 = 61" },
-          { num: "Q3c", ans: "Yes — 20 pentagons: 4n+1 = 81 → n = 20", note: "n = 20, a natural number" },
+          { num: "Q3a", ans: "T? = 4n + 1", note: "a = 5, d = 4; T? = 5 + (n-1)4 = 4n + 1" },
+          { num: "Q3b", ans: "61 matchsticks", note: "T15 = 4(15) + 1 = 61" },
+          { num: "Q3c", ans: "Yes � 20 pentagons: 4n+1 = 81 ? n = 20", note: "n = 20, a natural number" },
         ]
       },
     ]

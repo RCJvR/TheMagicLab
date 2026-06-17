@@ -4,7 +4,7 @@
 MathMagician.registerChapter(7, {
   topics: [
     {
-      id: 0,
+      id: 700,
       chapter: 7,
       name: "Equation of a circle",
       fullName: "Standard and general form of a circle, centre and radius",
@@ -44,6 +44,49 @@ MathMagician.registerChapter(7, {
               Centre: (3, −2), radius: 4
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Circle Equation Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter x²+y²+Dx+Ey+F=0 — complete the square to find centre, radius, and check a point.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">D (coeff x)</div><input id="g12c7D" type="number" value="-6" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">E (coeff y)</div><input id="g12c7E" type="number" value="4" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">F (const)</div><input id="g12c7F" type="number" value="-3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Test point x</div><input id="g12c7px" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Test point y</div><input id="g12c7py" type="number" value="-1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c7Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Analyse</button>
+            </div>
+            <div id="g12c7Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const D=gv('g12c7D'),E=gv('g12c7E'),F=gv('g12c7F'),px=gv('g12c7px'),py=gv('g12c7py');
+                const out=document.getElementById('g12c7Out');
+                if([D,E,F].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter D, E, F.</span>';return;}
+                const a=-D/2,b=-E/2;
+                const r2=a*a+b*b-F;
+                if(r2<=0){out.innerHTML='<span style="color:#fca5a5;">Not a valid circle (r² = '+f4(r2)+' ≤ 0).</span>';return;}
+                const r=Math.sqrt(r2);
+                let html='<span style="color:rgba(221,225,240,0.50);">x²+y²+('+D+')x+('+E+')y+('+F+') = 0</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">(x+('+D+'/2))²−'+(D/2)*(D/2)+' + (y+('+E+'/2))²−'+(E/2)*(E/2)+' + '+F+' = 0</span><br>';
+                html+='<span style="color:#fcd34d;">(x−'+f4(a)+')² + (y−'+f4(b)+')² = '+f4(r2)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Centre: ('+f4(a)+'; '+f4(b)+')   Radius: '+f4(r)+'</span>';
+                if(!isNaN(px)&&!isNaN(py)){
+                  const dist2=(px-a)*(px-a)+(py-b)*(py-b);
+                  const pos=dist2<r2-1e-9?'INSIDE':dist2>r2+1e-9?'OUTSIDE':'ON';
+                  html+='<br><span style="color:rgba(221,225,240,0.50);">Point ('+px+';'+py+'): dist² = '+f4(dist2)+', r² = '+f4(r2)+'</span>';
+                  html+='<br><span style="color:'+(pos==='ON'?'#6ee7b7':pos==='INSIDE'?'#fcd34d':'rgba(221,225,240,0.60)')+';">Point is '+pos+' the circle</span>';
+                }
+                out.innerHTML=html;
+              }
+              ['g12c7D','g12c7E','g12c7F','g12c7px','g12c7py'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c7Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -55,7 +98,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 1,
+      id: 701,
       chapter: 7,
       name: "Tangent to a circle",
       fullName: "Equation of a tangent to a circle at a given point",
@@ -100,6 +143,47 @@ MathMagician.registerChapter(7, {
               If Δ > 0: two intersection points (secant).<br>
               If Δ &lt; 0: no intersection.
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Tangent to Circle Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter circle centre (a;b), radius r, and the point of tangency P(x₁;y₁) — find the tangent line.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Centre a</div><input id="g12c7t2a" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Centre b</div><input id="g12c7t2b" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Point x₁</div><input id="g12c7t2x1" type="number" value="4" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Point y₁</div><input id="g12c7t2y1" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c7t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find Tangent</button>
+            </div>
+            <div id="g12c7t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const a=gv('g12c7t2a'),b=gv('g12c7t2b'),x1=gv('g12c7t2x1'),y1=gv('g12c7t2y1');
+                const out=document.getElementById('g12c7t2Out');
+                if([a,b,x1,y1].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter all values.</span>';return;}
+                const dx=x1-a,dy=y1-b;
+                if(dx===0&&dy===0){out.innerHTML='<span style="color:#fca5a5;">Point equals centre — not on the circle.</span>';return;}
+                if(dx===0){
+                  // vertical radius → horizontal tangent
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Radius is vertical → tangent is horizontal</span><br><span style="color:#6ee7b7;">Tangent: y = '+y1+'</span>';return;
+                }
+                const mr=dy/dx;
+                const mt=-1/mr;
+                const yint=y1-mt*x1;
+                let html='<span style="color:rgba(221,225,240,0.50);">m_radius = ('+y1+'−'+b+')/('+x1+'−'+a+') = '+f4(mr)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">m_tangent = −1/m_r = '+f4(mt)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">y − '+y1+' = '+f4(mt)+'(x − '+x1+')</span><br>';
+                html+='<span style="color:#6ee7b7;">Tangent: y = '+f4(mt)+'x + '+f4(yint)+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c7t2a','g12c7t2b','g12c7t2x1','g12c7t2y1'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c7t2Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },

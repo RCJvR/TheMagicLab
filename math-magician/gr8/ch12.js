@@ -4,7 +4,7 @@
 MathMagician.registerChapter(12, {
   topics: [
     {
-      id: 70,
+      id: 1201,
       chapter: 12,
       name: "The decimal system",
       fullName: "Revision of the decimal system",
@@ -37,7 +37,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 71,
+      id: 1202,
       chapter: 12,
       name: "Adding and subtracting decimals",
       fullName: "Addition and subtraction with decimals",
@@ -72,7 +72,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 72,
+      id: 1203,
       chapter: 12,
       name: "Multiplying and dividing decimals",
       fullName: "Multiplication and division with decimals",
@@ -141,7 +141,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 73,
+      id: 1204,
       chapter: 12,
       name: "Squares, cubes and roots of decimals",
       fullName: "Squares, cubes, square roots, and cube roots of decimals",
@@ -174,7 +174,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 74,
+      id: 1205,
       chapter: 12,
       name: "Rounding and estimating",
       fullName: "Rounding off and estimating with decimals",
@@ -213,7 +213,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 75,
+      id: 1206,
       chapter: 12,
       name: "Ch 12 Exam focus",
       fullName: "Examination focus exercise",

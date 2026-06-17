@@ -4,7 +4,7 @@
 MathMagician.registerChapter(2, {
   topics: [
     {
-      id: 0,
+      id: 200,
       chapter: 2,
       name: "Completing the square, formula & nature of roots",
       fullName: "Completing the square, quadratic formula, and nature of roots",
@@ -48,6 +48,51 @@ MathMagician.registerChapter(2, {
             <span class="math">Δ = 36 − 36 = 0</span><br>
             → Two equal real roots (x = 3).</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Discriminant &amp; Roots Classifier</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a, b, c for ax² + bx + c = 0 — get Δ, the nature of roots, and the roots themselves.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c2a" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c2b" type="number" value="-3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div><input id="g11c2c" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Classify</button>
+            </div>
+            <div id="g11c2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function isPerfectSq(n){if(n<0)return false;const s=Math.round(Math.sqrt(n));return s*s===n;}
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const a=parseFloat(document.getElementById('g11c2a').value);
+                const b=parseFloat(document.getElementById('g11c2b').value);
+                const c=parseFloat(document.getElementById('g11c2c').value);
+                const out=document.getElementById('g11c2Out');
+                if([a,b,c].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                const D=b*b-4*a*c;
+                let nature;
+                if(D<0) nature='Non-real roots (no real solution)';
+                else if(D===0) nature='Two equal real roots (repeated root)';
+                else if(isPerfectSq(D)) nature='Two rational, unequal real roots';
+                else nature='Two irrational, unequal real roots';
+                let html='<span style="color:rgba(221,225,240,0.50);">Δ = b² − 4ac = ('+b+')² − 4('+a+')('+c+') = '+b*b+' − '+(4*a*c)+' = </span><span style="color:#fcd34d;">'+D+'</span><br>';
+                html+='<span style="color:#6ee7b7;">'+nature+'</span><br>';
+                if(D>=0){
+                  const sq=Math.sqrt(D);
+                  const x1=(-b+sq)/(2*a),x2=(-b-sq)/(2*a);
+                  html+='<span style="color:rgba(221,225,240,0.50);">x = (−'+b+' ± √'+D+') / '+(2*a)+'</span><br>';
+                  html+='<span style="color:#6ee7b7;">x₁ = '+f(x1)+'</span>  <span style="color:#6ee7b7;">x₂ = '+f(x2)+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c2Btn').addEventListener('click',calc);
+              ['g11c2a','g11c2b','g11c2c'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Δ classifies roots <em>without solving</em>. In exam questions asking "for what value of k" — set up Δ equal to the required condition (= 0 for equal roots, ≥ 0 for real roots) and solve for k.</span></div>
         `
       },
       questions: [
@@ -88,7 +133,7 @@ MathMagician.registerChapter(2, {
       ]
     },
     {
-      id: 1,
+      id: 201,
       chapter: 2,
       name: "Quadratic inequalities & simultaneous equations",
       fullName: "Quadratic inequalities and simultaneous (linear-quadratic) equations",
@@ -134,6 +179,79 @@ MathMagician.registerChapter(2, {
             <p>Substitute: <span class="math">x + 1 = x² − 3 → x² − x − 4 = 0</span><br>
             <span class="math">x = (1 ± √17)/2</span></p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Quadratic Inequality Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a, b, c for ax² + bx + c — select the inequality sign — get the solution set.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c2t2a" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c2t2b" type="number" value="-1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div><input id="g11c2t2c" type="number" value="-6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Sign</div>
+                <select id="g11c2t2sign" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="lt">&lt; 0</option>
+                  <option value="le">≤ 0</option>
+                  <option value="gt">&gt; 0</option>
+                  <option value="ge">≥ 0</option>
+                </select>
+              </div>
+              <button id="g11c2t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g11c2t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const a=parseFloat(document.getElementById('g11c2t2a').value);
+                const b=parseFloat(document.getElementById('g11c2t2b').value);
+                const c=parseFloat(document.getElementById('g11c2t2c').value);
+                const sign=document.getElementById('g11c2t2sign').value;
+                const out=document.getElementById('g11c2t2Out');
+                if([a,b,c].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                const D=b*b-4*a*c;
+                const strict=sign==='lt'||sign==='gt';
+                const lookingBelow=sign==='lt'||sign==='le';
+                let html='<span style="color:rgba(221,225,240,0.50);">Δ = '+D+'</span><br>';
+                if(D<0){
+                  // no real roots — parabola entirely above or below x-axis
+                  const aboveAxis=a>0;
+                  if((aboveAxis&&lookingBelow)||(!aboveAxis&&!lookingBelow)){html+='<span style="color:#6ee7b7;">No solution (expression is always '+(aboveAxis?'positive':'negative')+')</span>';}
+                  else{html+='<span style="color:#6ee7b7;">Solution: x ∈ ℝ (all real numbers; expression always satisfies condition)</span>';}
+                  out.innerHTML=html; return;
+                }
+                if(D===0){
+                  const r=-b/(2*a);
+                  html+='<span style="color:rgba(221,225,240,0.50);">Double root: x = '+f(r)+'</span><br>';
+                  if(strict){html+='<span style="color:#6ee7b7;">'+((a>0&&lookingBelow)||(a<0&&!lookingBelow)?'No solution (strict inequality, double root)':'Solution: x ∈ ℝ, x ≠ '+f(r))+'</span>';}
+                  else{html+='<span style="color:#6ee7b7;">Solution: x = '+f(r)+(lookingBelow?' only':' (all x)')+'</span>';}
+                  out.innerHTML=html; return;
+                }
+                const sq=Math.sqrt(D);
+                const x1=(-b-sq)/(2*a),x2=(-b+sq)/(2*a);
+                const lo=Math.min(x1,x2),hi=Math.max(x1,x2);
+                const loBrk=strict?'(':'[', hiBrk=strict?')':']';
+                html+='<span style="color:rgba(221,225,240,0.50);">Roots: x = '+f(lo)+' and x = '+f(hi)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Parabola opens '+(a>0?'upward (positive outside roots)':'downward (positive between roots)')+'</span><br>';
+                let sol;
+                const between=loBrk+f(lo)+' ; '+f(hi)+hiBrk;
+                const outside='x < '+f(lo)+' or x > '+f(hi);
+                if(a>0){sol=lookingBelow?between:outside;}
+                else{sol=lookingBelow?outside:between;}
+                if(!strict&&a>0&&!lookingBelow){sol='x ≤ '+f(lo)+' or x ≥ '+f(hi);}
+                else if(!strict&&a<0&&lookingBelow){sol='x ≤ '+f(lo)+' or x ≥ '+f(hi);}
+                else if(!strict&&a>0&&lookingBelow){sol='['+f(lo)+' ; '+f(hi)+']';}
+                else if(!strict&&a<0&&!lookingBelow){sol='['+f(lo)+' ; '+f(hi)+']';}
+                html+='<span style="color:#6ee7b7;">Solution: '+sol+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c2t2Btn').addEventListener('click',calc);
+              ['g11c2t2a','g11c2t2b','g11c2t2c'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For a > 0: the parabola dips <em>below</em> the x-axis <em>between</em> the roots. So ax²+bx+c &lt; 0 → between the roots, and &gt; 0 → outside the roots.</span></div>
         `
       },
       questions: [

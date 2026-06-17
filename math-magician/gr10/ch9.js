@@ -4,7 +4,7 @@
 MathMagician.registerChapter(9, {
   topics: [
     {
-      id: 0,
+      id: 900,
       chapter: 9,
       name: "Simple & compound interest",
       fullName: "Simple interest, compound interest, and growth calculations",
@@ -43,6 +43,43 @@ MathMagician.registerChapter(9, {
               <span class="math">i = (A/P)^(1/n) − 1</span> (interest rate)
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Interest Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Compare <strong>simple</strong> vs <strong>compound</strong> interest — enter P, rate, and years.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Principal (R)</div><input id="g10c9p" type="number" value="5000" style="width:95px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate (%)</div><input id="g10c9i" type="number" value="8" step="0.1" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years</div><input id="g10c9n" type="number" value="3" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c9Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c9Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function rand(n){return 'R '+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+              function run(){
+                const P=parseFloat(document.getElementById('g10c9p').value);
+                const i=parseFloat(document.getElementById('g10c9i').value)/100;
+                const n=parseFloat(document.getElementById('g10c9n').value);
+                const out=document.getElementById('g10c9Out');
+                if([P,i,n].some(isNaN)||P<=0||i<=0||n<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const As=P*(1+i*n);
+                const Ac=P*Math.pow(1+i,n);
+                const diff=Ac-As;
+                let html='<span style="color:rgba(221,225,240,0.50);">Simple: A = P(1 + in) = '+P+'(1 + '+i+'×'+n+') = </span><span style="color:#fcd34d;">'+rand(As)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Compound: A = P(1+i)ⁿ = '+P+'(1+'+i+')^'+n+' = </span><span style="color:#6ee7b7;">'+rand(Ac)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Interest earned (compound): </span><span style="color:#fcd34d;">'+rand(Ac-P)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Compound earns </span><span style="color:#6ee7b7;">'+rand(diff)+' more</span><span style="color:rgba(221,225,240,0.50);"> than simple over '+n+' year'+(n!==1?'s':'')+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c9Btn').addEventListener('click',run);
+              ['g10c9p','g10c9i','g10c9n'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Compound interest always beats simple interest (for the same P, i, n > 1). The longer the period, the bigger the gap — this is the power of exponential growth.</span></div>
         `
       },
       questions: [
@@ -82,7 +119,7 @@ MathMagician.registerChapter(9, {
       ]
     },
     {
-      id: 1,
+      id: 901,
       chapter: 9,
       name: "Exchange rates & hire purchase",
       fullName: "Foreign exchange rates and hire purchase (HP) agreements",
@@ -124,6 +161,105 @@ MathMagician.registerChapter(9, {
             Total = R10 530<br>
             Monthly = R10 530 ÷ 24 = R438.75</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 HP &amp; Currency Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Switch between <strong>Hire Purchase</strong> and <strong>Currency Conversion</strong>.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+              <button id="g10c9t2hp" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:13px;">Hire Purchase</button>
+              <button id="g10c9t2cx" style="background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;">Currency</button>
+            </div>
+            <div id="g10c9t2hpPanel">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Cash price (R)</div><input id="g10c9t2price" type="number" value="9000" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Deposit (R)</div><input id="g10c9t2dep" type="number" value="900" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate (% p.a.)</div><input id="g10c9t2rate" type="number" value="15" step="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years</div><input id="g10c9t2yrs" type="number" value="2" min="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <button id="g10c9t2hpBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+              </div>
+            </div>
+            <div id="g10c9t2cxPanel" style="display:none;">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Amount</div><input id="g10c9t2amt" type="number" value="5300" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Direction</div>
+                  <select id="g10c9t2dir" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                    <option value="to_foreign">Rand → Foreign</option>
+                    <option value="to_rand">Foreign → Rand</option>
+                  </select></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Exchange rate (R per 1 unit)</div><input id="g10c9t2exr" type="number" value="21.20" step="0.01" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <button id="g10c9t2cxBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Convert</button>
+              </div>
+            </div>
+            <div id="g10c9t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R '+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+              function calcHP(){
+                const price=parseFloat(document.getElementById('g10c9t2price').value);
+                const dep=parseFloat(document.getElementById('g10c9t2dep').value);
+                const rate=parseFloat(document.getElementById('g10c9t2rate').value)/100;
+                const yrs=parseFloat(document.getElementById('g10c9t2yrs').value);
+                const out=document.getElementById('g10c9t2Out');
+                if([price,dep,rate,yrs].some(isNaN)||price<=0||dep<0||dep>=price||rate<=0||yrs<=0){out.innerHTML='<span style="color:#fca5a5;">Check values — deposit must be less than price.</span>';return;}
+                const loan=price-dep;
+                const interest=loan*rate*yrs;
+                const total=loan+interest;
+                const monthly=total/(yrs*12);
+                let html='<span style="color:rgba(221,225,240,0.50);">Loan = price − deposit = '+R(price)+' − '+R(dep)+' = </span><span style="color:#fcd34d;">'+R(loan)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Total interest = '+R(loan)+' × '+rate+' × '+yrs+' = </span><span style="color:#fcd34d;">'+R(interest)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Total repayment = '+R(loan)+' + '+R(interest)+' = </span><span style="color:#fcd34d;">'+R(total)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Monthly instalment = '+R(total)+' ÷ '+(yrs*12)+' = '+R(monthly)+'</span>';
+                out.innerHTML=html;
+              }
+              function calcCX(){
+                const amt=parseFloat(document.getElementById('g10c9t2amt').value);
+                const dir=document.getElementById('g10c9t2dir').value;
+                const exr=parseFloat(document.getElementById('g10c9t2exr').value);
+                const out=document.getElementById('g10c9t2Out');
+                if(isNaN(amt)||isNaN(exr)||amt<=0||exr<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                if(dir==='to_foreign'){
+                  const res=amt/exr;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">'+R(amt)+' ÷ '+exr+' (rate) = </span><span style="color:#6ee7b7;">'+res.toFixed(2)+' foreign currency units</span>';
+                } else {
+                  const res=amt*exr;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">'+amt.toFixed(2)+' × '+exr+' (rate) = </span><span style="color:#6ee7b7;">'+R(res)+'</span>';
+                }
+              }
+              let mode='hp';
+              document.getElementById('g10c9t2hp').addEventListener('click',()=>{
+                mode='hp';
+                document.getElementById('g10c9t2hpPanel').style.display='';
+                document.getElementById('g10c9t2cxPanel').style.display='none';
+                document.getElementById('g10c9t2hp').style.background='linear-gradient(135deg,#4338ca,#6366f1)';
+                document.getElementById('g10c9t2hp').style.color='#fff';
+                document.getElementById('g10c9t2hp').style.border='none';
+                document.getElementById('g10c9t2cx').style.background='rgba(99,102,241,0.15)';
+                document.getElementById('g10c9t2cx').style.color='#a5b4fc';
+                document.getElementById('g10c9t2cx').style.border='1px solid rgba(99,102,241,0.30)';
+                document.getElementById('g10c9t2Out').innerHTML=''; calcHP();
+              });
+              document.getElementById('g10c9t2cx').addEventListener('click',()=>{
+                mode='cx';
+                document.getElementById('g10c9t2hpPanel').style.display='none';
+                document.getElementById('g10c9t2cxPanel').style.display='';
+                document.getElementById('g10c9t2cx').style.background='linear-gradient(135deg,#4338ca,#6366f1)';
+                document.getElementById('g10c9t2cx').style.color='#fff';
+                document.getElementById('g10c9t2cx').style.border='none';
+                document.getElementById('g10c9t2hp').style.background='rgba(99,102,241,0.15)';
+                document.getElementById('g10c9t2hp').style.color='#a5b4fc';
+                document.getElementById('g10c9t2hp').style.border='1px solid rgba(99,102,241,0.30)';
+                document.getElementById('g10c9t2Out').innerHTML=''; calcCX();
+              });
+              document.getElementById('g10c9t2hpBtn').addEventListener('click',calcHP);
+              document.getElementById('g10c9t2cxBtn').addEventListener('click',calcCX);
+              ['g10c9t2price','g10c9t2dep','g10c9t2rate','g10c9t2yrs'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calcHP();}));
+              ['g10c9t2amt','g10c9t2exr'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calcCX();}));
+              calcHP();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>HP interest is calculated on the <strong>full original loan</strong> — not on the reducing balance. This makes HP significantly more expensive than a reducing-balance loan at the same rate.</span></div>
         `
       },
       questions: [

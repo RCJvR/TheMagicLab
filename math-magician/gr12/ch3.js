@@ -4,7 +4,7 @@
 MathMagician.registerChapter(3, {
   topics: [
     {
-      id: 0,
+      id: 300,
       chapter: 3,
       name: "Future value annuities",
       fullName: "Annuities, future value, and sinking funds",
@@ -41,6 +41,60 @@ MathMagician.registerChapter(3, {
               Used for <strong>sinking funds</strong>: saving to replace an asset.
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Future Value Annuity Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">F = x·[(1+i)ⁿ−1]/i — find F (accumulated savings) or x (required payment).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button id="g12c3fvF" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.50);cursor:pointer;font-size:13px;font-weight:600;background:rgba(99,102,241,0.30);color:#a5b4fc;">Find F</button>
+              <button id="g12c3fvX" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">Find x (payment)</button>
+            </div>
+            <div id="g12c3fvFP" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Payment x (R)</div><input id="g12c3x" type="number" value="2000" min="1" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Nom. rate %/yr</div><input id="g12c3r" type="number" value="9" min="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Periods/yr</div><select id="g12c3np" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="1">1 (Annual)</option><option value="2">2 (Semi-ann.)</option><option value="4">4 (Quarterly)</option><option value="12" selected>12 (Monthly)</option></select></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years</div><input id="g12c3t" type="number" value="20" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c3fvFBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate F</button>
+            </div>
+            <div id="g12c3fvXP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Target F (R)</div><input id="g12c3F" type="number" value="500000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Nom. rate %/yr</div><input id="g12c3r2" type="number" value="8" min="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Periods/yr</div><select id="g12c3np2" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="1" selected>1 (Annual)</option><option value="2">2 (Semi-ann.)</option><option value="4">4 (Quarterly)</option><option value="12">12 (Monthly)</option></select></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years</div><input id="g12c3t2" type="number" value="6" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c3fvXBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find x</button>
+            </div>
+            <div id="g12c3fvOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function gi(id){return parseInt(document.getElementById(id).value);}
+              const out=document.getElementById('g12c3fvOut');
+              const fBtn=document.getElementById('g12c3fvF'),xBtn=document.getElementById('g12c3fvX');
+              const fP=document.getElementById('g12c3fvFP'),xP=document.getElementById('g12c3fvXP');
+              function setMode(m){fP.style.display=m==='F'?'flex':'none';xP.style.display=m==='X'?'flex':'none';fBtn.style.background=m==='F'?'rgba(99,102,241,0.30)':'transparent';fBtn.style.color=m==='F'?'#a5b4fc':'rgba(221,225,240,0.50)';fBtn.style.borderColor=m==='F'?'rgba(99,102,241,0.50)':'rgba(99,102,241,0.20)';xBtn.style.background=m==='X'?'rgba(99,102,241,0.30)':'transparent';xBtn.style.color=m==='X'?'#a5b4fc':'rgba(221,225,240,0.50)';xBtn.style.borderColor=m==='X'?'rgba(99,102,241,0.50)':'rgba(99,102,241,0.20)';out.innerHTML='';}
+              fBtn.addEventListener('click',()=>setMode('F')); xBtn.addEventListener('click',()=>setMode('X'));
+              document.getElementById('g12c3fvFBtn').addEventListener('click',()=>{
+                const x=gv('g12c3x'),r=gv('g12c3r')/100,np=gi('g12c3np'),t=gv('g12c3t');
+                if([x,r,t].some(isNaN)||x<=0||r<=0||t<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const i=r/np,n=np*t,F=x*(Math.pow(1+i,n)-1)/i;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">i = '+r*100+'%/'+np+' = '+(i*100).toFixed(4)+'% per period; n = '+np+'×'+t+' = '+n+' periods</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">F = '+R(x)+'·[(1.'+( i.toFixed(6))+'..'^n+'−1]/i</span><br>'+
+                  '<span style="color:#6ee7b7;">F = '+R(F)+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">Total contributed: '+R(x*n)+'   Interest earned: '+R(F-x*n)+'</span>';
+              });
+              document.getElementById('g12c3fvXBtn').addEventListener('click',()=>{
+                const F=gv('g12c3F'),r=gv('g12c3r2')/100,np=gi('g12c3np2'),t=gv('g12c3t2');
+                if([F,r,t].some(isNaN)||F<=0||r<=0||t<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const i=r/np,n=np*t,x=F*i/(Math.pow(1+i,n)-1);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">x = F·i/[(1+i)ⁿ−1]; i = '+(i*100).toFixed(4)+'%; n = '+n+' periods</span><br>'+
+                  '<span style="color:#6ee7b7;">Payment x = '+R(x)+' per period</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">Total contributed: '+R(x*n)+'</span>';
+              });
+              setMode('F'); document.getElementById('g12c3fvFBtn').click();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -52,7 +106,7 @@ MathMagician.registerChapter(3, {
       ]
     },
     {
-      id: 1,
+      id: 301,
       chapter: 3,
       name: "Present value annuities & loan repayments",
       fullName: "Present value annuities, loan repayments, and outstanding balances",
@@ -85,6 +139,42 @@ MathMagician.registerChapter(3, {
               <span class="math">Balance_k = x · [1 − (1+i)⁻⁽ⁿ⁻ᵏ⁾] / i</span><br><br>
               Or: calculate using the future value method — carry the original loan forward and subtract the future value of payments made.
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Loan Repayment Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">P = x·[1−(1+i)⁻ⁿ]/i — find monthly payment, then outstanding balance after k payments.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Loan P (R)</div><input id="g12c3lP" type="number" value="1440000" min="1" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Nom. rate %/yr</div><input id="g12c3lr" type="number" value="10.5" min="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Term (years)</div><input id="g12c3lt" type="number" value="25" min="1" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">After k payments</div><input id="g12c3lk" type="number" value="60" min="0" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c3lBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g12c3lOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              const out=document.getElementById('g12c3lOut');
+              document.getElementById('g12c3lBtn').addEventListener('click',()=>{
+                const P=gv('g12c3lP'),r=gv('g12c3lr')/100,t=gv('g12c3lt'),k=gv('g12c3lk');
+                if([P,r,t].some(isNaN)||P<=0||r<=0||t<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid loan details.</span>';return;}
+                const i=r/12,n=12*t;
+                const x=P*i/(1-Math.pow(1+i,-n));
+                const remaining=n-k;
+                const balance=remaining>0?x*(1-Math.pow(1+i,-remaining))/i:0;
+                const totalPaid=x*n,totalInt=totalPaid-P;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">i = '+(i*100).toFixed(4)+'% per month; n = '+n+' months</span><br>'+
+                  '<span style="color:#6ee7b7;">Monthly payment x = '+R(x)+'</span><br>'+
+                  (k>0&&k<n?'<span style="color:#fcd34d;">Balance after '+k+' payments ('+remaining+' remaining): '+R(balance)+'</span><br>':'')+
+                  '<span style="color:rgba(221,225,240,0.50);">Total repaid over full term: '+R(totalPaid)+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">Total interest paid: '+R(totalInt)+'</span>';
+              });
+              ['g12c3lP','g12c3lr','g12c3lt','g12c3lk'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('g12c3lBtn').click();});});
+              document.getElementById('g12c3lBtn').click();
+            })();
+            </script>
           </div>
         `
       },

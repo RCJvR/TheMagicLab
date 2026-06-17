@@ -4,7 +4,7 @@
 MathMagician.registerChapter(15, {
   topics: [
     {
-      id: 85,
+      id: 1501,
       chapter: 15,
       name: "Surface area of cubes and prisms",
       fullName: "The surface area of cubes and rectangular prisms",
@@ -41,7 +41,7 @@ MathMagician.registerChapter(15, {
       ]
     },
     {
-      id: 86,
+      id: 1502,
       chapter: 15,
       name: "Surface area of triangular prisms",
       fullName: "The surface area of triangular prisms",
@@ -78,7 +78,7 @@ MathMagician.registerChapter(15, {
       ]
     },
     {
-      id: 87,
+      id: 1503,
       chapter: 15,
       name: "Volume of cubes and prisms",
       fullName: "The volume and capacity of cubes and rectangular prisms",
@@ -147,7 +147,7 @@ MathMagician.registerChapter(15, {
       ]
     },
     {
-      id: 88,
+      id: 1504,
       chapter: 15,
       name: "Volume of triangular prisms",
       fullName: "The volume and capacity of triangular prisms",
@@ -183,7 +183,7 @@ MathMagician.registerChapter(15, {
       ]
     },
     {
-      id: 89,
+      id: 1505,
       chapter: 15,
       name: "Effect of scale factors",
       fullName: "The effect of scale factors on surface area and volume",
@@ -218,7 +218,7 @@ MathMagician.registerChapter(15, {
       ]
     },
     {
-      id: 90,
+      id: 1506,
       chapter: 15,
       name: "Ch 15 Exam focus",
       fullName: "Examination focus exercise",

@@ -4,7 +4,7 @@
 MathMagician.registerChapter(7, {
   topics: [
     {
-      id: 0,
+      id: 700,
       chapter: 7,
       name: "Surface area of complex solids",
       fullName: "Surface area of pyramids, cones, spheres, and combinations",
@@ -43,6 +43,79 @@ MathMagician.registerChapter(7, {
               (The joined face is hidden from both shapes)
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Combination Solid SA Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Select a combination — enter dimensions — get the total external surface area.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Combination</div>
+                <select id="g11c7combo" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="cylhem">Cylinder + Hemisphere on top</option>
+                  <option value="cylcone">Cylinder + Cone on top</option>
+                  <option value="cubesphere">Cube − inscribed sphere removed</option>
+                </select>
+              </div>
+              <div id="g11c7inputs" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;"></div>
+              <button id="g11c7Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate SA</button>
+            </div>
+            <div id="g11c7Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const π=Math.PI;
+              function f(n){return n.toFixed(2);}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
+              function build(){
+                const c=document.getElementById('g11c7combo').value;
+                const d=document.getElementById('g11c7inputs');
+                if(c==='cylhem') d.innerHTML=inp('g11c7r','Radius r','4')+inp('g11c7h','Cyl. height h','10');
+                else if(c==='cylcone') d.innerHTML=inp('g11c7r','Radius r','5')+inp('g11c7h','Cyl. height h','8')+inp('g11c7ch','Cone height','3');
+                else d.innerHTML=inp('g11c7s','Cube side a','10');
+                ['g11c7r','g11c7h','g11c7ch','g11c7s'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              }
+              function calc(){
+                const c=document.getElementById('g11c7combo').value;
+                const out=document.getElementById('g11c7Out');
+                let html='';
+                if(c==='cylhem'){
+                  const r=gv('g11c7r'),h=gv('g11c7h');
+                  if(isNaN(r)||isNaN(h)||r<=0||h<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                  const bottom=π*r*r,curved=2*π*r*h,hemi=2*π*r*r;
+                  const total=bottom+curved+hemi;
+                  html='<span style="color:rgba(221,225,240,0.50);">Bottom circle: πr² = '+f(bottom)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Curved cylinder: 2πrh = '+f(curved)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Hemisphere (curved only): 2πr² = '+f(hemi)+'</span><br>';
+                  html+='<span style="color:#6ee7b7;">Total SA = '+f(total)+' units²</span>';
+                } else if(c==='cylcone'){
+                  const r=gv('g11c7r'),h=gv('g11c7h'),ch=gv('g11c7ch');
+                  if([r,h,ch].some(isNaN)||[r,h,ch].some(x=>x<=0)){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                  const l=Math.sqrt(r*r+ch*ch);
+                  const bottom=π*r*r,curved=2*π*r*h,coneSA=π*r*l;
+                  const total=bottom+curved+coneSA;
+                  html='<span style="color:rgba(221,225,240,0.50);">Slant height l = √('+r+'²+'+ch+'²) = '+f(l)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Bottom: πr² = '+f(bottom)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Cylinder curved: 2πrh = '+f(curved)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Cone lateral: πrl = '+f(coneSA)+'</span><br>';
+                  html+='<span style="color:#6ee7b7;">Total SA = '+f(total)+' units²</span>';
+                } else {
+                  const s=gv('g11c7s');
+                  if(isNaN(s)||s<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive side length.</span>';return;}
+                  const cubeSA=6*s*s;
+                  html='<span style="color:rgba(221,225,240,0.50);">Cube SA = 6a² = '+f(cubeSA)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">(Note: removing a sphere from inside doesn\'t change external SA)</span><br>';
+                  html+='<span style="color:#6ee7b7;">External SA = '+f(cubeSA)+' units²</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c7combo').addEventListener('change',()=>{build();calc();});
+              document.getElementById('g11c7Btn').addEventListener('click',calc);
+              build(); calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When two solids share a face, subtract that circular area <strong>twice</strong> (once from each solid's SA). The shared face is internal and not part of the external surface.</span></div>
         `
       },
       questions: [
@@ -83,7 +156,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 1,
+      id: 701,
       chapter: 7,
       name: "Volume & the effect of scale factor k",
       fullName: "Volume of solids and the effect of multiplying dimensions by k",
@@ -128,6 +201,66 @@ MathMagician.registerChapter(7, {
               If only r is doubled: new V = π(2r)²h = 4πr²h = 4V → quadruples.<br>
               <em>Be specific</em> about which dimension changes!
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Volume & Scale Factor Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Calculate volume, then see how scale factor k affects SA and V.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Shape</div>
+                <select id="g11c7t2shape" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sphere">Sphere</option>
+                  <option value="cylinder">Cylinder</option>
+                  <option value="cone">Cone</option>
+                  <option value="cube">Cube</option>
+                </select>
+              </div>
+              <div id="g11c7t2inputs" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;"></div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Scale factor k</div>
+                <input id="g11c7t2k" type="number" value="2" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g11c7t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c7t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const π=Math.PI;
+              function f(n){return n.toFixed(3);}
+              function inp(id,label,val){return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div><input id="'+id+'" type="number" value="'+val+'" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';}
+              function gv(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
+              function build(){
+                const s=document.getElementById('g11c7t2shape').value;
+                const d=document.getElementById('g11c7t2inputs');
+                if(s==='sphere') d.innerHTML=inp('g11c7t2r','Radius r','5');
+                else if(s==='cylinder') d.innerHTML=inp('g11c7t2r','Radius r','4')+inp('g11c7t2h','Height h','8');
+                else if(s==='cone') d.innerHTML=inp('g11c7t2r','Radius r','3')+inp('g11c7t2h','Height h','4');
+                else d.innerHTML=inp('g11c7t2a','Side a','6');
+                ['g11c7t2r','g11c7t2h','g11c7t2a','g11c7t2k'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              }
+              function calc(){
+                const s=document.getElementById('g11c7t2shape').value;
+                const k=gv('g11c7t2k');
+                const out=document.getElementById('g11c7t2Out');
+                if(isNaN(k)||k<=0){out.innerHTML='<span style="color:#fca5a5;">Enter a positive scale factor.</span>';return;}
+                let V,sa,label;
+                if(s==='sphere'){const r=gv('g11c7t2r');if(isNaN(r)||r<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive radius.</span>';return;}V=(4/3)*π*r*r*r;sa=4*π*r*r;label='r='+r;}
+                else if(s==='cylinder'){const r=gv('g11c7t2r'),h=gv('g11c7t2h');if([r,h].some(isNaN)||[r,h].some(x=>x<=0)){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}V=π*r*r*h;sa=2*π*r*(r+h);label='r='+r+', h='+h;}
+                else if(s==='cone'){const r=gv('g11c7t2r'),h=gv('g11c7t2h');if([r,h].some(isNaN)||[r,h].some(x=>x<=0)){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}const l=Math.sqrt(r*r+h*h);V=(1/3)*π*r*r*h;sa=π*r*(r+l);label='r='+r+', h='+h;}
+                else{const a=gv('g11c7t2a');if(isNaN(a)||a<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive side.</span>';return;}V=a*a*a;sa=6*a*a;label='a='+a;}
+                const newV=V*k*k*k,newSA=sa*k*k;
+                let html='<span style="color:rgba(221,225,240,0.50);">Original ('+s+', '+label+')</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Volume V = '+f(V)+'</span>   <span style="color:rgba(221,225,240,0.50);">Surface Area = '+f(sa)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Scale factor k = '+k+' → SA × k² = × '+f(k*k)+'   V × k³ = × '+f(k*k*k)+'</span><br>';
+                html+='<span style="color:#fcd34d;">New SA = '+f(newSA)+'</span>   <span style="color:#6ee7b7;">New V = '+f(newV)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c7t2shape').addEventListener('change',()=>{build();calc();});
+              document.getElementById('g11c7t2Btn').addEventListener('click',calc);
+              build(); calc();
+            })();
+            </script>
           </div>
         `
       },

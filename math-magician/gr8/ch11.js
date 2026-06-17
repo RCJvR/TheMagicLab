@@ -4,7 +4,7 @@
 MathMagician.registerChapter(11, {
   topics: [
     {
-      id: 60,
+      id: 1101,
       chapter: 11,
       name: "Revision of fractions",
       fullName: "Revision of basic concepts involving fractions",
@@ -76,7 +76,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 61,
+      id: 1102,
       chapter: 11,
       name: "Adding and subtracting fractions",
       fullName: "Addition and subtraction of fractions",
@@ -114,7 +114,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 62,
+      id: 1103,
       chapter: 11,
       name: "Multiplying fractions",
       fullName: "Multiplication of fractions",
@@ -153,7 +153,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 63,
+      id: 1104,
       chapter: 11,
       name: "Dividing fractions",
       fullName: "Division of fractions",
@@ -190,7 +190,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 64,
+      id: 1105,
       chapter: 11,
       name: "Squares, cubes, roots",
       fullName: "Squares, square roots, cubes, and cube roots",
@@ -225,7 +225,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 65,
+      id: 1106,
       chapter: 11,
       name: "Mixed calculations",
       fullName: "Mixed calculations involving fractions",
@@ -260,7 +260,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 66,
+      id: 1107,
       chapter: 11,
       name: "Numbers as fractions",
       fullName: "Numbers as fractions of numbers",
@@ -294,7 +294,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 67,
+      id: 1108,
       chapter: 11,
       name: "Fractions and percentages",
       fullName: "Calculations involving fractions and percentages",
@@ -326,7 +326,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 68,
+      id: 1109,
       chapter: 11,
       name: "Percentage increase and decrease",
       fullName: "Percentage increase and decrease",
@@ -388,7 +388,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 69,
+      id: 1110,
       chapter: 11,
       name: "Ch 11 Exam focus",
       fullName: "Examination focus exercise",

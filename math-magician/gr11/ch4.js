@@ -4,7 +4,7 @@
 MathMagician.registerChapter(4, {
   topics: [
     {
-      id: 0,
+      id: 400,
       chapter: 4,
       name: "Equation of a line & inclination",
       fullName: "Equation of a line and the angle of inclination",
@@ -41,6 +41,46 @@ MathMagician.registerChapter(4, {
             <p>Line y = 2x + 3: m = 2, so tan θ = 2 → θ = tan⁻¹(2) ≈ 63.4°<br>
             Line y = −x + 1: m = −1, so tan θ = −1 → reference angle 45° → θ = 135°</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Line &amp; Inclination Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Find the angle of inclination from a gradient, or a gradient from an angle. Then get the line equation through a point.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Gradient m</div><input id="g11c4m" type="number" value="2" step="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Point x₁</div><input id="g11c4x1" type="number" value="0" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Point y₁</div><input id="g11c4y1" type="number" value="3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const m=parseFloat(document.getElementById('g11c4m').value);
+                const x1=parseFloat(document.getElementById('g11c4x1').value);
+                const y1=parseFloat(document.getElementById('g11c4y1').value);
+                const out=document.getElementById('g11c4Out');
+                if([m,x1,y1].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                const rawTheta=Math.atan(m)*180/Math.PI;
+                const theta=rawTheta<0?rawTheta+180:rawTheta;
+                const c=y1-m*x1;
+                const mPar=m;const mPerp=-1/m;
+                let html='<span style="color:rgba(221,225,240,0.50);">tan θ = m = '+f(m)+' → θ = tan⁻¹('+f(m)+')'+(rawTheta<0?' + 180°':'')+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Angle of inclination θ = '+f(theta)+'°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Line through ('+x1+'; '+y1+'): y − '+y1+' = '+f(m)+'(x − '+x1+')</span><br>';
+                html+='<span style="color:#fcd34d;">y = '+f(m)+'x + '+f(c)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Parallel gradient: </span><span style="color:#6ee7b7;">m∥ = '+f(mPar)+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Perpendicular gradient: </span><span style="color:#6ee7b7;">m⊥ = '+f(mPerp)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c4Btn').addEventListener('click',calc);
+              ['g11c4m','g11c4x1','g11c4y1'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When m < 0, tan⁻¹ gives a negative angle — add 180° to get the correct inclination in [0°; 180°). A negative gradient always gives an obtuse inclination angle.</span></div>
         `
       },
       questions: [
@@ -82,7 +122,7 @@ MathMagician.registerChapter(4, {
       ]
     },
     {
-      id: 1,
+      id: 401,
       chapter: 4,
       name: "Parallel, perpendicular & complex problems",
       fullName: "Parallel lines, perpendicular lines, and multi-step analytical geometry problems",
@@ -118,6 +158,72 @@ MathMagician.registerChapter(4, {
               <strong>Perpendicular bisector:</strong> through midpoint, perpendicular to segment
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Triangle Line Construction Tool</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two points — get the median, altitude (from a third vertex), or perpendicular bisector.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+              <button id="g11c4t2perp" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:13px;">Perp. Bisector</button>
+              <button id="g11c4t2alt" style="background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;">Altitude</button>
+              <button id="g11c4t2med" style="background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;">Median</button>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P₁ (x₁;y₁)</div><input id="g11c4t2x1" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"> <input id="g11c4t2y1" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;margin-left:4px;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P₂ (x₂;y₂)</div><input id="g11c4t2x2" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"> <input id="g11c4t2y2" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;margin-left:4px;"></div>
+              <div id="g11c4t2vPanel" style="display:none;"><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Vertex V (x;y)</div><input id="g11c4t2vx" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"> <input id="g11c4t2vy" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;margin-left:4px;"></div>
+              <button id="g11c4t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c4t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              let mode='perp';
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function setMode(m){
+                mode=m;
+                ['perp','alt','med'].forEach(id=>{
+                  const b=document.getElementById('g11c4t2'+id);
+                  b.style.cssText=id===m?'background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:13px;':'background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;';
+                });
+                document.getElementById('g11c4t2vPanel').style.display=m==='alt'?'':'none';
+                document.getElementById('g11c4t2Out').innerHTML='';
+              }
+              ['perp','alt','med'].forEach(id=>document.getElementById('g11c4t2'+id).addEventListener('click',()=>setMode(id)));
+              document.getElementById('g11c4t2Btn').addEventListener('click',()=>{
+                const x1=parseFloat(document.getElementById('g11c4t2x1').value),y1=parseFloat(document.getElementById('g11c4t2y1').value);
+                const x2=parseFloat(document.getElementById('g11c4t2x2').value),y2=parseFloat(document.getElementById('g11c4t2y2').value);
+                const out=document.getElementById('g11c4t2Out');
+                if([x1,y1,x2,y2].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter valid coordinates.</span>';return;}
+                const mx=(x1+x2)/2,my=(y1+y2)/2;
+                const mSeg=x2===x1?Infinity:(y2-y1)/(x2-x1);
+                let html='';
+                if(mode==='perp'){
+                  const mPerp=mSeg===0?Infinity:-1/mSeg;
+                  html='<span style="color:rgba(221,225,240,0.50);">Midpoint M = ('+f(mx)+'; '+f(my)+')</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Gradient of segment = '+f(mSeg)+'</span><br>';
+                  if(mPerp===Infinity){html+='<span style="color:#6ee7b7;">Perp. bisector: x = '+f(mx)+' (vertical line)</span>';}
+                  else{const c=my-mPerp*mx;html+='<span style="color:#6ee7b7;">Perp. bisector: y = '+f(mPerp)+'x + '+f(c)+'</span>';}
+                } else if(mode==='alt'){
+                  const vx=parseFloat(document.getElementById('g11c4t2vx').value),vy=parseFloat(document.getElementById('g11c4t2vy').value);
+                  if(isNaN(vx)||isNaN(vy)){out.innerHTML='<span style="color:#fca5a5;">Enter vertex coordinates.</span>';return;}
+                  const mAlt=mSeg===0?Infinity:-1/mSeg;
+                  html='<span style="color:rgba(221,225,240,0.50);">Gradient of side P₁P₂ = '+f(mSeg)+'</span><br>';
+                  if(mAlt===Infinity){html+='<span style="color:#6ee7b7;">Altitude from V: x = '+f(vx)+' (vertical)</span>';}
+                  else{const c=vy-mAlt*vx;html+='<span style="color:#6ee7b7;">Altitude from V('+vx+';'+vy+'): y = '+f(mAlt)+'x + '+f(c)+'</span>';}
+                } else {
+                  html='<span style="color:rgba(221,225,240,0.50);">Midpoint M of P₁P₂ = ('+f(mx)+'; '+f(my)+')</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">The median goes from a vertex to M. Enter a vertex below to get the line:</span><br>';
+                  const vx=parseFloat(document.getElementById('g11c4t2vx').value)||0,vy=parseFloat(document.getElementById('g11c4t2vy').value)||0;
+                  const mMed=mx===vx?Infinity:(my-vy)/(mx-vx);
+                  if(mMed===Infinity){html+='<span style="color:#6ee7b7;">Median: x = '+f(vx)+'</span>';}
+                  else{const c=my-mMed*mx;html+='<span style="color:#6ee7b7;">Median: y = '+f(mMed)+'x + '+f(c)+'</span>';}
+                }
+                out.innerHTML=html;
+              });
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The altitude from vertex V to side P₁P₂ has gradient −1/m(P₁P₂) and passes through V. The perpendicular bisector has the same gradient but passes through the <em>midpoint</em> of P₁P₂.</span></div>
         `
       },
       questions: [

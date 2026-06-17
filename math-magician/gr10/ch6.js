@@ -4,7 +4,7 @@
 MathMagician.registerChapter(6, {
   topics: [
     {
-      id: 0,
+      id: 600,
       chapter: 6,
       name: "Linear, quadratic & hyperbolic functions",
       fullName: "Linear, quadratic, and hyperbolic functions — sketching and properties",
@@ -49,6 +49,67 @@ MathMagician.registerChapter(6, {
             x-intercepts: −(x+1)² + 4 = 0 → (x+1)² = 4 → x = 1 or x = −3<br>
             Range: (−∞; 4]</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Parabola Properties</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a, p, q for <strong>y = a(x − p)² + q</strong> — all key properties instantly.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div>
+                <input id="g10c6a" type="number" value="-1" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">p</div>
+                <input id="g10c6p" type="number" value="-1" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div>
+                <input id="g10c6q" type="number" value="4" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c6Btn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Analyse
+              </button>
+            </div>
+            <div id="g10c6Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fmt(n){return Number.isInteger(n)?''+n:n.toFixed(2).replace(/\.?0+$/,'');}
+              function run(){
+                const a=parseFloat(document.getElementById('g10c6a').value);
+                const p=parseFloat(document.getElementById('g10c6p').value);
+                const q=parseFloat(document.getElementById('g10c6q').value);
+                const out=document.getElementById('g10c6Out');
+                if([a,p,q].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                const yint=a*(-p)*(-p)+q; // x=0: a(0-p)²+q
+                // x-intercepts: a(x-p)²+q=0 → (x-p)²=-q/a
+                const disc=-q/a;
+                let xintStr;
+                if(disc<0) xintStr='None (parabola does not cross x-axis)';
+                else if(disc===0) xintStr='x = '+fmt(p)+' (touches x-axis)';
+                else { const sq=Math.sqrt(disc); xintStr='x = '+fmt(p+sq)+' and x = '+fmt(p-sq); }
+                const opens=a>0?'upward (minimum)':'downward (maximum)';
+                const range=a>0?'y ≥ '+fmt(q):'y ≤ '+fmt(q);
+                let html='<span style="color:rgba(221,225,240,0.50);">Equation: </span><span style="color:#fcd34d;">y = '+fmt(a)+'(x − ('+fmt(p)+'))² + '+fmt(q)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Opens: </span><span style="color:#fcd34d;">'+opens+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Vertex: </span><span style="color:#6ee7b7;">('+fmt(p)+' ; '+fmt(q)+')</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Axis of symmetry: </span><span style="color:#fcd34d;">x = '+fmt(p)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">y-intercept: </span><span style="color:#fcd34d;">y = '+fmt(yint)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">x-intercept(s): </span><span style="color:#fcd34d;">'+xintStr+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Range: </span><span style="color:#6ee7b7;">'+range+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c6Btn').addEventListener('click',run);
+              ['g10c6a','g10c6p','g10c6q'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Vertex form <span class="math">y = a(x−p)² + q</span> gives you everything at a glance: vertex (p, q), axis of symmetry x = p, and the direction of opening from a.</span></div>
         `
       },
       questions: [
@@ -89,7 +150,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 1,
+      id: 601,
       chapter: 6,
       name: "Exponential & trig functions",
       fullName: "Exponential functions, trigonometric functions, and graph interpretation",
@@ -136,6 +197,69 @@ MathMagician.registerChapter(6, {
               From a graph, identify: intercepts, turning points, asymptotes, axes of symmetry, domain, range, and periods. Always state the equation of asymptotes.
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Trig Function Properties</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a and q for <strong>y = a · sin/cos(x) + q</strong> — amplitude, range, max and min.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Function</div>
+                <select id="g10c6tfn"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sin">sin</option>
+                  <option value="cos">cos</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div>
+                <input id="g10c6ta" type="number" value="2" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div>
+                <input id="g10c6tq" type="number" value="-1" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c6tBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Analyse
+              </button>
+            </div>
+            <div id="g10c6tOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fmt(n){return Number.isInteger(n)?''+n:n.toFixed(2).replace(/\.?0+$/,'');}
+              function run(){
+                const fn=document.getElementById('g10c6tfn').value;
+                const a=parseFloat(document.getElementById('g10c6ta').value);
+                const q=parseFloat(document.getElementById('g10c6tq').value);
+                const out=document.getElementById('g10c6tOut');
+                if(isNaN(a)||isNaN(q)){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                const amp=Math.abs(a);
+                const maxY=amp+q, minY=-amp+q;
+                const maxX=fn==='sin'?'90°':'0° and 360°';
+                const minX=fn==='sin'?'270°':'180°';
+                if(a<0){/*flip*/}
+                const actualMaxX=a>0?maxX:minX;
+                const actualMinX=a>0?minX:maxX;
+                let html='<span style="color:rgba(221,225,240,0.50);">Function: </span><span style="color:#fcd34d;">y = '+fmt(a)+'·'+fn+'(x) + '+fmt(q)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Amplitude: </span><span style="color:#fcd34d;">|a| = '+fmt(amp)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Period: </span><span style="color:#fcd34d;">360°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Maximum: </span><span style="color:#6ee7b7;">y = '+fmt(a>0?maxY:minY)+' at x = '+(a>0?maxX:minX)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Minimum: </span><span style="color:#fca5a5;">y = '+fmt(a>0?minY:maxY)+' at x = '+(a>0?minX:maxX)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Range: </span><span style="color:#6ee7b7;">['+fmt(Math.min(maxY,minY))+' ; '+fmt(Math.max(maxY,minY))+']</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Vertical shift: </span><span style="color:#fcd34d;">'+fmt(q)+(q>0?' (shifted up)':q<0?' (shifted down)':' (no shift)')+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c6tBtn').addEventListener('click',run);
+              document.getElementById('g10c6tfn').addEventListener('change',run);
+              ['g10c6ta','g10c6tq'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span><strong>a</strong> controls height (amplitude), <strong>q</strong> shifts the whole graph up or down. A negative <strong>a</strong> reflects the graph — the max and min positions swap.</span></div>
         `
       },
       questions: [

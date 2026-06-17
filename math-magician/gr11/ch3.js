@@ -4,7 +4,7 @@
 MathMagician.registerChapter(3, {
   topics: [
     {
-      id: 0,
+      id: 300,
       chapter: 3,
       name: "Quadratic sequences",
       fullName: "Identifying and finding the general term of quadratic sequences",
@@ -44,6 +44,53 @@ MathMagician.registerChapter(3, {
             <span class="math">Tₙ = n² + 2n</span><br>
             Check: T₃ = 9 + 6 = 15 ✓</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Quadratic Sequence Finder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the first three terms — get the second difference, a, b, c, the general term Tₙ, and the next four terms.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">T₁</div><input id="g11c3t1" type="number" value="3" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">T₂</div><input id="g11c3t2" type="number" value="8" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">T₃</div><input id="g11c3t3" type="number" value="15" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find Tₙ</button>
+            </div>
+            <div id="g11c3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n%1===0?n.toString():parseFloat(n.toFixed(4)).toString();}
+              function sgn(n,first){const s=n<0?'−':first?'':'+';const v=Math.abs(n);return s+(v===1?'':v);}
+              function calc(){
+                const T1=parseFloat(document.getElementById('g11c3t1').value);
+                const T2=parseFloat(document.getElementById('g11c3t2').value);
+                const T3=parseFloat(document.getElementById('g11c3t3').value);
+                const out=document.getElementById('g11c3Out');
+                if([T1,T2,T3].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter three numeric terms.</span>';return;}
+                const d1=T2-T1,d2=T3-T2;
+                const d2nd=d2-d1;
+                if(d2nd===0){out.innerHTML='<span style="color:#fca5a5;">Second difference is 0 — this is a linear (not quadratic) sequence.</span>';return;}
+                const a=d2nd/2;
+                // b from 3a+b = d1
+                const b=d1-3*a;
+                // c from a+b+c = T1
+                const c=T1-a-b;
+                const terms=[T1,T2,T3];
+                for(let n=4;n<=7;n++) terms.push(a*n*n+b*n+c);
+                let html='<span style="color:rgba(221,225,240,0.50);">1st differences: '+(T2-T1)+', '+(T3-T2)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">2nd difference: '+d2nd+' → a = '+d2nd+'/2 = '+f(a)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">b = 1st diff − 3a = '+d1+' − '+f(3*a)+' = '+f(b)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">c = T₁ − a − b = '+T1+' − '+f(a)+' − '+f(b)+' = '+f(c)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Tₙ = '+f(a)+'n²'+sgn(b,false)+'n'+sgn(c,false)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Terms: </span><span style="color:#fcd34d;">'+terms.map((v,i)=>'T'+(i+1)+'='+f(v)).join(', ')+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c3Btn').addEventListener('click',calc);
+              ['g11c3t1','g11c3t2','g11c3t3'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always verify your formula: substitute n = 1, 2, 3 and check they match the given terms. One wrong step in finding b or c will shift every subsequent term.</span></div>
         `
       },
       questions: [
@@ -84,7 +131,7 @@ MathMagician.registerChapter(3, {
       ]
     },
     {
-      id: 1,
+      id: 301,
       chapter: 3,
       name: "Working with quadratic sequences",
       fullName: "Finding terms, term numbers, and using quadratic sequences in context",
@@ -128,6 +175,57 @@ MathMagician.registerChapter(3, {
               Use these three facts to find a, b, c systematically.
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Term Number Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a, b, c for Tₙ = an² + bn + c and a target value — solve for n.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c3t2a" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c3t2b" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div><input id="g11c3t2c" type="number" value="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Target Tₙ = ?</div><input id="g11c3t2target" type="number" value="80" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c3t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve for n</button>
+            </div>
+            <div id="g11c3t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const a=parseFloat(document.getElementById('g11c3t2a').value);
+                const b=parseFloat(document.getElementById('g11c3t2b').value);
+                const c=parseFloat(document.getElementById('g11c3t2c').value);
+                const T=parseFloat(document.getElementById('g11c3t2target').value);
+                const out=document.getElementById('g11c3t2Out');
+                if([a,b,c,T].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                // an² + bn + (c−T) = 0
+                const A=a,B=b,C=c-T;
+                const D=B*B-4*A*C;
+                let html='<span style="color:rgba(221,225,240,0.50);">'+f(a)+'n² + '+f(b)+'n + '+f(c)+' = '+T+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">→ '+f(a)+'n² + '+f(b)+'n + '+f(c-T)+' = 0</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Δ = ('+f(b)+')² − 4('+f(a)+')('+f(c-T)+') = '+f(D)+'</span><br>';
+                if(D<0){out.innerHTML=html+'<span style="color:#fca5a5;">No real solution — this value is not in the sequence.</span>';return;}
+                const sq=Math.sqrt(D);
+                const n1=(-B+sq)/(2*A),n2=(-B-sq)/(2*A);
+                [n1,n2].forEach(n=>{
+                  if(n>0&&Math.abs(n-Math.round(n))<0.0001){
+                    const ni=Math.round(n);
+                    html+='<span style="color:#6ee7b7;">n = '+ni+' ✓ → T₍'+ni+'₎ = '+f(a*ni*ni+b*ni+c)+'</span><br>';
+                  } else if(n>0){
+                    html+='<span style="color:rgba(221,225,240,0.50);">n = '+f(n)+' — not a positive integer, reject</span><br>';
+                  } else {
+                    html+='<span style="color:rgba(221,225,240,0.50);">n = '+f(n)+' — negative, reject</span><br>';
+                  }
+                });
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c3t2Btn').addEventListener('click',calc);
+              ['g11c3t2a','g11c3t2b','g11c3t2c','g11c3t2target'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>n must be a <strong>positive integer</strong>. If the quadratic gives n = 8 and n = −10, automatically reject −10. If neither root is a positive integer, the target value is not in the sequence.</span></div>
         `
       },
       questions: [

@@ -4,7 +4,7 @@
 MathMagician.registerChapter(10, {
   topics: [
     {
-      id: 54,
+      id: 1001,
       chapter: 10,
       name: "Geometry of triangles",
       fullName: "The geometry of triangles",
@@ -127,7 +127,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 55,
+      id: 1002,
       chapter: 10,
       name: "Geometry of quadrilaterals",
       fullName: "The geometry of quadrilaterals",
@@ -196,7 +196,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 56,
+      id: 1003,
       chapter: 10,
       name: "Triangles and quadrilaterals",
       fullName: "Solving problems involving triangles and quadrilaterals",
@@ -234,7 +234,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 57,
+      id: 1004,
       chapter: 10,
       name: "Congruent shapes",
       fullName: "Congruent shapes",
@@ -432,7 +432,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 58,
+      id: 1005,
       chapter: 10,
       name: "Similar shapes",
       fullName: "Similar shapes",
@@ -596,7 +596,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 59,
+      id: 1006,
       chapter: 10,
       name: "Ch 10 Exam focus",
       fullName: "Examination focus exercise",

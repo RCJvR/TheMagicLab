@@ -4,7 +4,7 @@
 MathMagician.registerChapter(17, {
   topics: [
     {
-      id: 96,
+      id: 1701,
       chapter: 17,
       name: "Probability concepts",
       fullName: "Introduction to probability",
@@ -97,7 +97,7 @@ MathMagician.registerChapter(17, {
       ]
     },
     {
-      id: 97,
+      id: 1702,
       chapter: 17,
       name: "Listing outcomes",
       fullName: "Listing outcomes and sample spaces",
@@ -173,7 +173,7 @@ MathMagician.registerChapter(17, {
       ]
     },
     {
-      id: 98,
+      id: 1703,
       chapter: 17,
       name: "Relative frequency",
       fullName: "Relative frequency and experimental probability",
@@ -251,7 +251,7 @@ MathMagician.registerChapter(17, {
       ]
     },
     {
-      id: 98,
+      id: 1704,
       chapter: 17,
       name: "Tree diagrams",
       fullName: "Tree diagrams for compound events",
@@ -275,16 +275,14 @@ MathMagician.registerChapter(17, {
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example 1 — Flipping two coins</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2.2;color:rgba(221,225,240,0.70);margin:10px 0;">
-<span style="color:#a5b4fc;">Coin 1</span>     <span style="color:#6ee7b7;">Coin 2</span>     <span style="color:#fbbf24;">Outcome</span>
-              ┌── H ──── <span style="color:#fbbf24;">HH</span>
-H ────┤
-              └── T ──── <span style="color:#fbbf24;">HT</span>
-      │
-              ┌── H ──── <span style="color:#fbbf24;">TH</span>
-T ────┤
-              └── T ──── <span style="color:#fbbf24;">TT</span>
-            </div>
+            <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;color:rgba(221,225,240,0.70);margin:10px 0;background:transparent;border:none;padding:0;overflow-x:auto;"><span style="color:#a5b4fc;">Coin 1</span>         <span style="color:#6ee7b7;">Coin 2</span>      <span style="color:#fbbf24;">Outcome</span>
+           ┌─── H ──────── <span style="color:#fbbf24;">HH</span>
+H ─────────┤
+           └─── T ──────── <span style="color:#fbbf24;">HT</span>
+
+           ┌─── H ──────── <span style="color:#fbbf24;">TH</span>
+T ─────────┤
+           └─── T ──────── <span style="color:#fbbf24;">TT</span></pre>
             <div class="example-step"><span class="step-num">1</span><span>Sample space: {HH, HT, TH, TT} → <strong>4 outcomes</strong></span></div>
             <div class="example-step"><span class="step-num">2</span><span>P(both heads) = 1/4</span></div>
             <div class="example-step"><span class="step-num">3</span><span>P(at least one head) = 3/4 (HH, HT, TH all have at least one H)</span></div>
@@ -292,20 +290,18 @@ T ────┤
 
           <div class="example-box">
             <div class="example-box-title">✏️ Example 2 — Spinner (R/B/G) then coin</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;color:rgba(221,225,240,0.70);margin:10px 0;">
-<span style="color:#a5b4fc;">Spinner</span>    <span style="color:#6ee7b7;">Coin</span>    <span style="color:#fbbf24;">Outcome</span>
-            ┌── H ── <span style="color:#fbbf24;">RH</span>
-R ──────┤
-            └── T ── <span style="color:#fbbf24;">RT</span>
-     │
-            ┌── H ── <span style="color:#fbbf24;">BH</span>
-B ──────┤
-            └── T ── <span style="color:#fbbf24;">BT</span>
-     │
-            ┌── H ── <span style="color:#fbbf24;">GH</span>
-G ──────┤
-            └── T ── <span style="color:#fbbf24;">GT</span>
-            </div>
+            <pre style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;color:rgba(221,225,240,0.70);margin:10px 0;background:transparent;border:none;padding:0;overflow-x:auto;"><span style="color:#a5b4fc;">Spinner</span>        <span style="color:#6ee7b7;">Coin</span>       <span style="color:#fbbf24;">Outcome</span>
+           ┌─── H ──────── <span style="color:#fbbf24;">RH</span>
+R ─────────┤
+           └─── T ──────── <span style="color:#fbbf24;">RT</span>
+
+           ┌─── H ──────── <span style="color:#fbbf24;">BH</span>
+B ─────────┤
+           └─── T ──────── <span style="color:#fbbf24;">BT</span>
+
+           ┌─── H ──────── <span style="color:#fbbf24;">GH</span>
+G ─────────┤
+           └─── T ──────── <span style="color:#fbbf24;">GT</span></pre>
             <div class="example-step"><span class="step-num">1</span><span>Total outcomes: 3 × 2 = <strong>6 outcomes</strong></span></div>
             <div class="example-step"><span class="step-num">2</span><span>P(Red and Heads) = 1/6</span></div>
             <div class="example-step"><span class="step-num">3</span><span>P(Blue or Green) = 4/6 = 2/3</span></div>
@@ -333,7 +329,7 @@ G ──────┤
       ]
     },
     {
-      id: 99,
+      id: 1705,
       chapter: 17,
       name: "Ch 17 Exam focus",
       fullName: "Examination focus exercise",

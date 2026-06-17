@@ -4,7 +4,7 @@
 MathMagician.registerChapter(14, {
   topics: [
     {
-      id: 0,
+      id: 1400,
       chapter: 14,
       name: "Probability basics & Venn diagrams",
       fullName: "Theoretical probability, relative frequency, and Venn diagrams",
@@ -48,6 +48,52 @@ MathMagician.registerChapter(14, {
             n(S only) = 13; n(T only) = 7; n(both) = 5; n(neither) = 5<br>
             P(S ∪ T) = (13+7+5)/30 = 25/30 = 5/6</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Venn Diagram Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the total sample space and event counts — get all regions and key probabilities.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Total n(S)</div><input id="g10c14ns" type="number" value="30" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(A)</div><input id="g10c14na" type="number" value="18" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(B)</div><input id="g10c14nb" type="number" value="12" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(A∩B)</div><input id="g10c14nab" type="number" value="5" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c14Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c14Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fr(n,d){if(d===0)return'0';const g=gcd(n,d);return n/g+'/'+d/g;}
+              function gcd(a,b){return b===0?a:gcd(b,a%b);}
+              function calc(){
+                const nS=parseInt(document.getElementById('g10c14ns').value);
+                const nA=parseInt(document.getElementById('g10c14na').value);
+                const nB=parseInt(document.getElementById('g10c14nb').value);
+                const nAB=parseInt(document.getElementById('g10c14nab').value);
+                const out=document.getElementById('g10c14Out');
+                if([nS,nA,nB,nAB].some(isNaN)||nS<=0||nA<0||nB<0||nAB<0){out.innerHTML='<span style="color:#fca5a5;">Enter non-negative integers.</span>';return;}
+                if(nAB>nA||nAB>nB||nA>nS||nB>nS){out.innerHTML='<span style="color:#fca5a5;">Check values: n(A∩B) cannot exceed n(A) or n(B); neither can exceed n(S).</span>';return;}
+                const aOnly=nA-nAB,bOnly=nB-nAB,aUnionB=nA+nB-nAB,neither=nS-aUnionB;
+                if(neither<0){out.innerHTML='<span style="color:#fca5a5;">n(A) + n(B) − n(A∩B) exceeds n(S) — check values.</span>';return;}
+                let html='<span style="color:rgba(221,225,240,0.50);">n(A only) = '+nA+'−'+nAB+' = </span><span style="color:#fcd34d;">'+aOnly+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">n(B only) = '+nB+'−'+nAB+' = </span><span style="color:#fcd34d;">'+bOnly+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">n(neither) = </span><span style="color:#fcd34d;">'+neither+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">n(A∪B) = '+nA+'+'+nB+'−'+nAB+' = </span><span style="color:#6ee7b7;">'+aUnionB+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A) = </span><span style="color:#6ee7b7;">'+fr(nA,nS)+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(B) = </span><span style="color:#6ee7b7;">'+fr(nB,nS)+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A∩B) = </span><span style="color:#6ee7b7;">'+fr(nAB,nS)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A∪B) = </span><span style="color:#6ee7b7;">'+fr(aUnionB,nS)+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(neither) = </span><span style="color:#6ee7b7;">'+fr(neither,nS)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Mutually exclusive? </span><span style="color:'+(nAB===0?'#6ee7b7':'#fca5a5')+'">'+(nAB===0?'Yes — n(A∩B) = 0':'No — n(A∩B) = '+nAB)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c14Btn').addEventListener('click',calc);
+              ['g10c14ns','g10c14na','g10c14nb','g10c14nab'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always fill in the Venn diagram from the <strong>inside out</strong> — start with the intersection, then subtract to get each "only" region, then find "neither" last.</span></div>
         `
       },
       questions: [
@@ -89,7 +135,7 @@ MathMagician.registerChapter(14, {
       ]
     },
     {
-      id: 1,
+      id: 1401,
       chapter: 14,
       name: "Mutually exclusive & complementary events",
       fullName: "Mutually exclusive events, complementary events, and probability identities",
@@ -132,6 +178,101 @@ MathMagician.registerChapter(14, {
               <span class="math">P(A') = 1 − P(A)</span>
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Probability Identity Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter known probabilities — solve for the missing one using the addition rule or complement.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+              <button id="g10c14t2add" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:13px;">Addition rule</button>
+              <button id="g10c14t2comp" style="background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;">Complement</button>
+              <button id="g10c14t2atleast" style="background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;">At least one</button>
+            </div>
+            <div id="g10c14t2addPanel">
+              <p style="color:rgba(221,225,240,0.55);font-size:12px;margin-bottom:8px;">Enter any 3 of the 4 values — leave the unknown as blank or 0.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A)</div><input id="g10c14t2pa" type="number" step="0.01" min="0" max="1" value="0.6" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(B)</div><input id="g10c14t2pb" type="number" step="0.01" min="0" max="1" value="0.4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A∩B)</div><input id="g10c14t2pab" type="number" step="0.01" min="0" max="1" value="0.2" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A∪B)</div><input id="g10c14t2paub" type="number" step="0.01" min="0" max="1" placeholder="?" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <button id="g10c14t2addBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+              </div>
+            </div>
+            <div id="g10c14t2compPanel" style="display:none;">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A)</div><input id="g10c14t2pcomp" type="number" step="0.01" min="0" max="1" value="0.35" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <button id="g10c14t2compBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+              </div>
+            </div>
+            <div id="g10c14t2atlPanel" style="display:none;">
+              <p style="color:rgba(221,225,240,0.55);font-size:12px;margin-bottom:8px;">P(at least one success) = 1 − P(none). Enter P(success on one trial) and number of independent trials.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(success)</div><input id="g10c14t2pp" type="number" step="0.01" min="0.01" max="0.99" value="0.35" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Trials (n)</div><input id="g10c14t2pn" type="number" value="2" min="1" max="10" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <button id="g10c14t2atlBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+              </div>
+            </div>
+            <div id="g10c14t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function setMode(m){
+                const modes=['add','comp','atl'];
+                const panels={add:'g10c14t2addPanel',comp:'g10c14t2compPanel',atl:'g10c14t2atlPanel'};
+                const btns={add:'g10c14t2add',comp:'g10c14t2comp',atleast:'g10c14t2atleast'};
+                modes.forEach(x=>{document.getElementById(panels[x]).style.display=x===m?'':'none';});
+                ['add','comp','atleast'].forEach(id=>{
+                  const b=document.getElementById('g10c14t2'+id);
+                  if((id==='atl'?'atl':id)===m){b.style.background='linear-gradient(135deg,#4338ca,#6366f1)';b.style.color='#fff';b.style.border='none';}
+                  else{b.style.background='rgba(99,102,241,0.15)';b.style.color='#a5b4fc';b.style.border='1px solid rgba(99,102,241,0.30)';}
+                });
+                document.getElementById('g10c14t2Out').innerHTML='';
+              }
+              function gv(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;}
+              document.getElementById('g10c14t2add').addEventListener('click',()=>setMode('add'));
+              document.getElementById('g10c14t2comp').addEventListener('click',()=>setMode('comp'));
+              document.getElementById('g10c14t2atleast').addEventListener('click',()=>setMode('atl'));
+              document.getElementById('g10c14t2addBtn').addEventListener('click',()=>{
+                const pa=gv('g10c14t2pa'),pb=gv('g10c14t2pb'),pab=gv('g10c14t2pab'),paub=gv('g10c14t2paub');
+                const out=document.getElementById('g10c14t2Out');
+                const rule='P(A∪B) = P(A) + P(B) − P(A∩B)';
+                const nullCount=[pa,pb,pab,paub].filter(x=>x===null||x===0).length;
+                // detect which to solve: if paub is missing/placeholder
+                const inp=document.getElementById('g10c14t2paub');
+                if(!inp.value||inp.value===''){
+                  if(pa===null||pb===null||pab===null){out.innerHTML='<span style="color:#fca5a5;">Enter P(A), P(B), and P(A∩B) to find P(A∪B).</span>';return;}
+                  const res=pa+pb-pab;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">'+rule+'<br>= '+pa+' + '+pb+' − '+pab+' = </span><span style="color:#6ee7b7;">P(A∪B) = '+f(res)+'</span><br>'+(pab===0?'<span style="color:#fcd34d;">Events are mutually exclusive (P(A∩B)=0)</span>':'');
+                } else if(!document.getElementById('g10c14t2pab').value||pab===null){
+                  if(pa===null||pb===null||paub===null){out.innerHTML='<span style="color:#fca5a5;">Enter P(A), P(B), P(A∪B) to find P(A∩B).</span>';return;}
+                  const res=pa+pb-paub;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">'+rule+' → P(A∩B) = P(A)+P(B)−P(A∪B)<br>= '+pa+'+'+pb+'−'+paub+' = </span><span style="color:#6ee7b7;">P(A∩B) = '+f(res)+'</span>';
+                } else {
+                  if(pa===null||pb===null||pab===null||paub===null){out.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank to solve for it.</span>';return;}
+                  const lhs=paub,rhs=pa+pb-pab;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Checking: '+pa+'+'+pb+'−'+pab+' = </span><span style="color:'+(Math.abs(lhs-rhs)<0.001?'#6ee7b7':'#fca5a5')+'">'+(Math.abs(lhs-rhs)<0.001?'✓ Consistent ('+f(rhs)+')':'✗ Inconsistent: LHS='+f(lhs)+' RHS='+f(rhs))+'</span>';
+                }
+              });
+              document.getElementById('g10c14t2compBtn').addEventListener('click',()=>{
+                const p=gv('g10c14t2pcomp');
+                const out=document.getElementById('g10c14t2Out');
+                if(p===null||p<0||p>1){out.innerHTML='<span style="color:#fca5a5;">Enter a probability between 0 and 1.</span>';return;}
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(A\') = 1 − P(A) = 1 − '+p+' = </span><span style="color:#6ee7b7;">'+f(1-p)+'</span>';
+              });
+              document.getElementById('g10c14t2atlBtn').addEventListener('click',()=>{
+                const p=gv('g10c14t2pp'),n=parseInt(document.getElementById('g10c14t2pn').value);
+                const out=document.getElementById('g10c14t2Out');
+                if(p===null||p<=0||p>=1||isNaN(n)||n<1){out.innerHTML='<span style="color:#fca5a5;">Enter valid success probability (0–1 exclusive) and at least 1 trial.</span>';return;}
+                const pNone=Math.pow(1-p,n);
+                const pAtLeast=1-pNone;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(none) = (1−'+p+')^'+n+' = ('+f(1-p)+')^'+n+' = </span><span style="color:#fcd34d;">'+f(pNone)+'</span><br>'
+                  +'<span style="color:rgba(221,225,240,0.50);">P(at least one) = 1 − '+f(pNone)+' = </span><span style="color:#6ee7b7;">'+f(pAtLeast)+'</span>';
+              });
+              setMode('add');
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For "at least one" problems, always use the complement: P(at least one) = 1 − P(none). It's much faster than adding all the individual cases.</span></div>
         `
       },
       questions: [

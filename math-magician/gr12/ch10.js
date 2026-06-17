@@ -4,7 +4,7 @@
 MathMagician.registerChapter(10, {
   topics: [
     {
-      id: 0,
+      id: 1000,
       chapter: 10,
       name: "Fundamental counting principle & factorial notation",
       fullName: "The fundamental counting principle, factorial notation, and permutations",
@@ -48,6 +48,70 @@ MathMagician.registerChapter(10, {
             <strong>(b)</strong> 3 from 8 in order: ₈P₃ = 8×7×6 = 336<br>
             <strong>(c)</strong> ABCDE with A first: 1 × 4! = 24</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Counting Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Compute factorials, FCP (multiply choices at each step), and permutations ₙPᵣ.</p>
+            <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+              <button id="g12c10mFact" class="g12c10mode" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:rgba(99,102,241,0.30);color:#a5b4fc;">n!</button>
+              <button id="g12c10mFCP" class="g12c10mode" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:rgba(221,225,240,0.50);">FCP</button>
+              <button id="g12c10mPerm" class="g12c10mode" style="padding:5px 13px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none;background:transparent;color:rgba(221,225,240,0.50);">ₙPᵣ</button>
+            </div>
+            <div id="g12c10inp" style="margin-bottom:10px;"></div>
+            <button id="g12c10Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:8px;">Calculate</button>
+            <div id="g12c10Out" style="font-size:13px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              let mode='fact';
+              const inp=document.getElementById('g12c10inp'),out=document.getElementById('g12c10Out');
+              const inStyle='background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:"JetBrains Mono",monospace;text-align:center;width:70px;';
+              const lblStyle='font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;';
+              function fact(n){if(n<0||n>170)return null;let r=1;for(let i=2;i<=n;i++)r*=i;return r;}
+              function render(){
+                out.innerHTML='';
+                if(mode==='fact'){
+                  inp.innerHTML='<div><div style="'+lblStyle+'">n</div><input id="g12c10n" type="number" value="5" min="0" max="20" style="'+inStyle+'"></div>';
+                } else if(mode==='fcp'){
+                  inp.innerHTML='<div><div style="'+lblStyle+'">Choices at each step (comma-separated)</div><input id="g12c10steps" type="text" value="3,4,2" style="width:220px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:\'JetBrains Mono\',monospace;box-sizing:border-box;"></div>';
+                } else {
+                  inp.innerHTML='<div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;"><div><div style="'+lblStyle+'">n</div><input id="g12c10pn" type="number" value="8" min="0" max="20" style="'+inStyle+'"></div><div><div style="'+lblStyle+'">r</div><input id="g12c10pr" type="number" value="3" min="0" max="20" style="'+inStyle+'"></div></div>';
+                }
+                Array.from(inp.querySelectorAll('input')).forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              }
+              function calc(){
+                if(mode==='fact'){
+                  const n=parseInt(document.getElementById('g12c10n').value);
+                  if(isNaN(n)||n<0){out.innerHTML='<span style="color:#fca5a5;">Enter a non-negative integer.</span>';return;}
+                  const v=fact(n);
+                  if(v===null){out.innerHTML='<span style="color:#fca5a5;">n too large (max 20).</span>';return;}
+                  out.innerHTML='<span style="color:#6ee7b7;">'+n+'! = '+v.toLocaleString()+'</span>';
+                } else if(mode==='fcp'){
+                  const steps=document.getElementById('g12c10steps').value.split(',').map(s=>parseInt(s.trim()));
+                  if(steps.some(isNaN)||steps.some(s=>s<1)){out.innerHTML='<span style="color:#fca5a5;">Enter positive integers for each step.</span>';return;}
+                  const product=steps.reduce((a,b)=>a*b,1);
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">'+steps.join(' × ')+' = </span><span style="color:#6ee7b7;">'+product.toLocaleString()+'</span>';
+                } else {
+                  const n=parseInt(document.getElementById('g12c10pn').value),r=parseInt(document.getElementById('g12c10pr').value);
+                  if(isNaN(n)||isNaN(r)||r>n||n<0||r<0){out.innerHTML='<span style="color:#fca5a5;">Need 0 ≤ r ≤ n.</span>';return;}
+                  const fn=fact(n),fnr=fact(n-r);
+                  if(fn===null){out.innerHTML='<span style="color:#fca5a5;">n too large (max 20).</span>';return;}
+                  const v=fn/fnr;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">ₙPᵣ = '+n+'!/('+n+'−'+r+')! = '+n+'!/'+( n-r)+'! = </span><span style="color:#6ee7b7;">'+v.toLocaleString()+'</span>';
+                }
+              }
+              document.getElementById('g12c10Btn').addEventListener('click',calc);
+              ['g12c10mFact','g12c10mFCP','g12c10mPerm'].forEach((id,i)=>{
+                document.getElementById(id).addEventListener('click',function(){
+                  mode=['fact','fcp','perm'][i];
+                  document.querySelectorAll('.g12c10mode').forEach(b=>{b.style.background='transparent';b.style.color='rgba(221,225,240,0.50)';});
+                  this.style.background='rgba(99,102,241,0.30)';this.style.color='#a5b4fc';
+                  render();
+                });
+              });
+              render();calc();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -59,7 +123,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 1,
+      id: 1001,
       chapter: 10,
       name: "Combinations & probability applications",
       fullName: "Combinations, probability using counting, and applications",
@@ -106,6 +170,48 @@ MathMagician.registerChapter(10, {
               Same (unordered selection) → Combination<br>
               Different (ordered arrangement) → Permutation
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Combination & Probability Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Compute ₙCᵣ and optionally P(event) = favourable ÷ total (each calculated via combinations).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n</div><input id="g12c10t2n" type="number" value="10" min="0" max="30" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">r</div><input id="g12c10t2r" type="number" value="3" min="0" max="30" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+            </div>
+            <p style="font-size:12px;color:rgba(221,225,240,0.50);margin:4px 0 6px;">Optional: compute P = ₙCᵣ / total for a probability calculation</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Total n</div><input id="g12c10t2tn" type="number" placeholder="e.g. 10" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Total r (choose)</div><input id="g12c10t2tr" type="number" placeholder="e.g. 3" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+            </div>
+            <button id="g12c10t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:8px;">Calculate</button>
+            <div id="g12c10t2Out" style="font-size:13px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fact(n){if(n===0||n===1)return 1;let r=1;for(let i=2;i<=n;i++)r*=i;return r;}
+              function comb(n,r){if(r<0||r>n)return 0;if(r===0||r===n)return 1;return fact(n)/(fact(r)*fact(n-r));}
+              function calc(){
+                const n=parseInt(document.getElementById('g12c10t2n').value),r=parseInt(document.getElementById('g12c10t2r').value);
+                const out=document.getElementById('g12c10t2Out');
+                if(isNaN(n)||isNaN(r)||r>n||n<0||r<0||n>30){out.innerHTML='<span style="color:#fca5a5;">Need 0 ≤ r ≤ n ≤ 30.</span>';return;}
+                const c=comb(n,r);
+                let html='<span style="color:#6ee7b7;">₍'+n+'₎C₍'+r+'₎ = '+n+'! / ('+r+'! × '+(n-r)+'!) = '+c.toLocaleString()+'</span><br>';
+                const tn=parseInt(document.getElementById('g12c10t2tn').value),tr=parseInt(document.getElementById('g12c10t2tr').value);
+                if(!isNaN(tn)&&!isNaN(tr)&&tn>=0&&tr>=0&&tr<=tn&&tn<=30){
+                  const total=comb(tn,tr);
+                  if(total>0){
+                    const p=c/total;
+                    html+='<span style="color:#fcd34d;">P = '+c.toLocaleString()+' / '+total.toLocaleString()+' = '+p.toFixed(6)+'</span>';
+                    html+='<span style="color:rgba(221,225,240,0.50);"> ≈ '+( p*100).toFixed(2)+'%</span>';
+                  }
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g12c10t2Btn').addEventListener('click',calc);
+              ['g12c10t2n','g12c10t2r','g12c10t2tn','g12c10t2tr'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              calc();
+            })();
+            </script>
           </div>
         `
       },

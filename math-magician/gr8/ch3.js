@@ -4,7 +4,7 @@
 MathMagician.registerChapter(3, {
   topics: [
 {
-    id: 19,
+    id: 301,
     chapter: 3,
     name: "Exponential form",
     fullName: "Comparing and representing numbers in exponential form",
@@ -112,7 +112,7 @@ MathMagician.registerChapter(3, {
     ]
   },
   {
-    id: 20,
+    id: 302,
     chapter: 3,
     name: "Laws of exponents",
     fullName: "The laws of exponents",
@@ -232,7 +232,7 @@ MathMagician.registerChapter(3, {
     ]
   },
   {
-    id: 21,
+    id: 303,
     chapter: 3,
     name: "Mixed operations — exponents",
     fullName: "Mixed operations",
@@ -277,7 +277,7 @@ MathMagician.registerChapter(3, {
     ]
   },
   {
-    id: 22,
+    id: 304,
     chapter: 3,
     name: "Scientific notation",
     fullName: "Scientific notation",
@@ -354,7 +354,7 @@ MathMagician.registerChapter(3, {
     ]
   },
   {
-    id: 23,
+    id: 305,
     chapter: 3,
     name: "Ch 3 Exam focus",
     fullName: "Examination focus exercise",

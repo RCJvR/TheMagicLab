@@ -4,7 +4,7 @@
 MathMagician.registerChapter(2, {
   topics: [
     {
-      id: 0,
+      id: 200,
       chapter: 2,
       name: "Exponent laws",
       fullName: "Revision and application of exponent laws",
@@ -47,6 +47,62 @@ MathMagician.registerChapter(2, {
             <div class="def-box-title">💡 Strategy tip</div>
             <p>Always <strong>convert surds to rational exponents</strong> before applying exponent laws. This avoids errors and keeps working systematic.</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Rational Exponent Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Evaluate <strong>a^(m/n)</strong> step by step — enter the base and fractional exponent.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Base (a)</div>
+                <input id="g10c2base" type="number" value="8"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">m (power)</div>
+                <input id="g10c2m" type="number" value="2"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n (root)</div>
+                <input id="g10c2n" type="number" value="3" min="1"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c2Btn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Evaluate
+              </button>
+            </div>
+            <div id="g10c2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function nthRoot(base, n){ return Math.pow(Math.abs(base), 1/n) * (base < 0 && n%2===1 ? -1 : 1); }
+              function isNice(x){ return Math.abs(x - Math.round(x)) < 0.0001; }
+              function run(){
+                const a=parseFloat(document.getElementById('g10c2base').value);
+                const m=parseFloat(document.getElementById('g10c2m').value);
+                const n=parseFloat(document.getElementById('g10c2n').value);
+                const out=document.getElementById('g10c2Out');
+                if(isNaN(a)||isNaN(m)||isNaN(n)||n===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (n ≠ 0).</span>';return;}
+                if(a < 0 && n % 2 === 0){out.innerHTML='<span style="color:#fca5a5;">Even root of a negative number is not real.</span>';return;}
+                const root = nthRoot(a, n);
+                const result = Math.pow(root, m);
+                const rootNice = isNice(root);
+                const resultNice = isNice(result);
+                let html = '<span style="color:rgba(221,225,240,0.50);">Expression: </span><span style="color:#fcd34d;">'+a+'^('+m+'/'+n+')</span><br>';
+                html += '<span style="color:rgba(221,225,240,0.50);">Step 1 — take the '+n+(n===2?'nd':n===3?'rd':'th')+' root: ⁿ√'+a+' = '+(rootNice?Math.round(root):root.toFixed(4))+'</span><br>';
+                html += '<span style="color:rgba(221,225,240,0.50);">Step 2 — raise to power '+m+': ('+(rootNice?Math.round(root):root.toFixed(4))+')^'+m+' = </span>';
+                html += '<span style="color:#6ee7b7;">'+(resultNice?Math.round(result):result.toFixed(4))+'</span>';
+                if(!resultNice) html += '<br><span style="color:rgba(221,225,240,0.40);font-size:12px;">Result is irrational — decimal shown</span>';
+                out.innerHTML = html;
+              }
+              document.getElementById('g10c2Btn').addEventListener('click', run);
+              ['g10c2base','g10c2m','g10c2n'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always take the root <em>first</em>, then apply the power — smaller numbers are easier to work with. <span class="math">27^(2/3) = (∛27)² = 3² = 9</span> is much easier than <span class="math">∛(27²) = ∛729</span>.</span></div>
         `
       },
       questions: [
@@ -87,7 +143,7 @@ MathMagician.registerChapter(2, {
       ]
     },
     {
-      id: 1,
+      id: 201,
       chapter: 2,
       name: "Exponential equations",
       fullName: "Solving exponential equations",
@@ -136,6 +192,65 @@ MathMagician.registerChapter(2, {
               Note: <span class="math">4 = 2², 8 = 2³, 9 = 3², 27 = 3³, 25 = 5²</span>
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Exponential Equation Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the base and what the expression equals — see how to convert to the same base and solve.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Base b</div>
+                <select id="g10c2eBase"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;">
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+              <div style="padding-bottom:8px;color:rgba(221,225,240,0.60);font-size:18px;font-family:'JetBrains Mono',monospace;">b^x =</div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Result</div>
+                <input id="g10c2eResult" type="number" value="32"
+                  style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c2eBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Solve
+              </button>
+            </div>
+            <div id="g10c2eOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function logBase(b, x){ return Math.log(x) / Math.log(b); }
+              function isNice(x){ return Math.abs(x - Math.round(x)) < 0.0001; }
+              function solve(){
+                const b = parseInt(document.getElementById('g10c2eBase').value);
+                const R = parseFloat(document.getElementById('g10c2eResult').value);
+                const out = document.getElementById('g10c2eOut');
+                if(isNaN(R)||R<=0){out.innerHTML='<span style="color:#fca5a5;">Result must be a positive number.</span>';return;}
+                const x = logBase(b, R);
+                const nice = isNice(x);
+                // Check if R is a power of b
+                let html = '<span style="color:rgba(221,225,240,0.50);">Equation: </span><span style="color:#fcd34d;">'+b+'^x = '+R+'</span><br>';
+                if(nice){
+                  const xi = Math.round(x);
+                  html += '<span style="color:rgba(221,225,240,0.50);">Recognise: '+R+' = '+b+(xi===1?'':xi<0?'^('+xi+')':'^'+xi)+'</span><br>';
+                  html += '<span style="color:rgba(221,225,240,0.50);">Same base → equate exponents:</span><br>';
+                  html += '<span style="color:#6ee7b7;">x = '+xi+'</span>';
+                } else {
+                  html += '<span style="color:#fca5a5;">'+R+' is not a whole-number power of '+b+'</span><br>';
+                  html += '<span style="color:rgba(221,225,240,0.50);">Cannot solve by same-base method. Approximate: x ≈ '+x.toFixed(4)+'</span>';
+                }
+                out.innerHTML = html;
+              }
+              document.getElementById('g10c2eBtn').addEventListener('click', solve);
+              document.getElementById('g10c2eResult').addEventListener('keydown', e=>{if(e.key==='Enter')solve();});
+              solve();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The same-base method only works when you can express both sides as a power of the same base. If not, use logarithms (Grade 12) or inspection.</span></div>
         `
       },
       questions: [

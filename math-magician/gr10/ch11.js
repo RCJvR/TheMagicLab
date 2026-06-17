@@ -4,7 +4,7 @@
 MathMagician.registerChapter(11, {
   topics: [
     {
-      id: 0,
+      id: 1100,
       chapter: 11,
       name: "2D trig problems",
       fullName: "Solving two-dimensional problems using trigonometry",
@@ -41,6 +41,64 @@ MathMagician.registerChapter(11, {
               6. State your answer in context with correct units.
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Right Triangle Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter an angle and one side — find the remaining sides using SOH-CAH-TOA.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Angle θ (°)</div>
+                <input id="g10c11ang" type="number" value="32" min="1" max="89"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Known side</div>
+                <select id="g10c11side"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="adj">Adjacent</option>
+                  <option value="opp">Opposite</option>
+                  <option value="hyp">Hypotenuse</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Length</div>
+                <input id="g10c11len" type="number" value="40" min="0.01"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c11Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g10c11Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(4);}
+              function run(){
+                const ang=parseFloat(document.getElementById('g10c11ang').value);
+                const side=document.getElementById('g10c11side').value;
+                const len=parseFloat(document.getElementById('g10c11len').value);
+                const out=document.getElementById('g10c11Out');
+                if(isNaN(ang)||isNaN(len)||ang<=0||ang>=90||len<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid angle (1°–89°) and positive length.</span>';return;}
+                const rad=ang*Math.PI/180;
+                const sinA=Math.sin(rad),cosA=Math.cos(rad),tanA=Math.tan(rad);
+                let adj,opp,hyp;
+                if(side==='adj'){adj=len;opp=adj*tanA;hyp=adj/cosA;}
+                else if(side==='opp'){opp=len;adj=opp/tanA;hyp=opp/sinA;}
+                else{hyp=len;opp=hyp*sinA;adj=hyp*cosA;}
+                const used=side==='adj'?'tan θ = opp/adj → opp = adj × tan θ\ncos θ = adj/hyp → hyp = adj/cos θ'
+                  :side==='opp'?'tan θ = opp/adj → adj = opp/tan θ\nsin θ = opp/hyp → hyp = opp/sin θ'
+                  :'sin θ = opp/hyp → opp = hyp × sin θ\ncos θ = adj/hyp → adj = hyp × cos θ';
+                let html='<span style="color:rgba(221,225,240,0.50);">θ = '+ang+'°, sin = '+f(sinA)+', cos = '+f(cosA)+', tan = '+f(tanA)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">'+used.replace('\n','<br><span style="color:rgba(221,225,240,0.50);">')+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Adjacent = '+f(adj)+'</span>  <span style="color:#6ee7b7;">Opposite = '+f(opp)+'</span>  <span style="color:#6ee7b7;">Hypotenuse = '+f(hyp)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c11Btn').addEventListener('click',run);
+              ['g10c11ang','g10c11len'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For elevation/depression problems, the angle is always measured from the <strong>horizontal</strong>. The adjacent side is the horizontal distance and the opposite is the vertical height.</span></div>
         `
       },
       questions: [
@@ -82,7 +140,7 @@ MathMagician.registerChapter(11, {
       ]
     },
     {
-      id: 1,
+      id: 1101,
       chapter: 11,
       name: "Multi-triangle problems",
       fullName: "Problems involving two or more triangles",
@@ -108,6 +166,46 @@ MathMagician.registerChapter(11, {
             <div class="def-box-title">💡 Tip: Carrying exact values</div>
             <p>When solving in two stages, keep the intermediate answer <em>unrounded</em> in your calculator, then round only at the final step.</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Two-Triangle Height Finder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Two observers at A (closer) and B (further) see the top of a vertical structure. Enter angles of elevation and the distance AB — find the height.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Angle at A (°)</div><input id="g10c11t2a" type="number" value="55" min="1" max="89" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Angle at B (°)</div><input id="g10c11t2b" type="number" value="35" min="1" max="89" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Distance AB (m)</div><input id="g10c11t2d" type="number" value="20" min="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c11t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g10c11t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(3);}
+              function run(){
+                const angA=parseFloat(document.getElementById('g10c11t2a').value);
+                const angB=parseFloat(document.getElementById('g10c11t2b').value);
+                const AB=parseFloat(document.getElementById('g10c11t2d').value);
+                const out=document.getElementById('g10c11t2Out');
+                if(isNaN(angA)||isNaN(angB)||isNaN(AB)||angA<=angB||angA>=90||angB<=0||AB<=0){
+                  out.innerHTML='<span style="color:#fca5a5;">Angle at A must be greater than angle at B (A is closer). Both must be between 1° and 89°.</span>';return;
+                }
+                const tA=Math.tan(angA*Math.PI/180),tB=Math.tan(angB*Math.PI/180);
+                // h = d·tanA·tanB/(tanA − tanB)
+                const h=AB*tA*tB/(tA-tB);
+                const d=h/tA;
+                let html='<span style="color:rgba(221,225,240,0.50);">From △ACT: h = d·tanA → d = h/tanA</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">From △BCT: h = (d+AB)·tanB</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Solving: h = AB·tanA·tanB/(tanA−tanB) = '+AB+'×'+f(tA)+'×'+f(tB)+'/('+f(tA)+'−'+f(tB)+')</span><br>';
+                html+='<span style="color:#6ee7b7;">Height = '+f(h)+' m</span>  <span style="color:rgba(221,225,240,0.50);">Distance AC = '+f(d)+' m</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c11t2Btn').addEventListener('click',run);
+              ['g10c11t2a','g10c11t2b','g10c11t2d'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The formula h = d·tanA·tanB/(tanA − tanB) comes from setting up both tan equations and eliminating d algebraically — a key exam technique.</span></div>
         `
       },
       questions: [

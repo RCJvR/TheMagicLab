@@ -4,7 +4,7 @@
 MathMagician.registerChapter(2, {
   topics: [
 {
-    id: 9,
+    id: 201,
     chapter: 2,
     name: "Counting in integers",
     fullName: "Revision of counting in integers",
@@ -40,7 +40,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 10,
+    id: 202,
     chapter: 2,
     name: "Ordering integers",
     fullName: "Revision of ordering and comparing integers",
@@ -122,7 +122,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 11,
+    id: 203,
     chapter: 2,
     name: "Addition of integers",
     fullName: "Addition of integers",
@@ -160,7 +160,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 12,
+    id: 204,
     chapter: 2,
     name: "Subtraction of integers",
     fullName: "Subtraction of integers",
@@ -197,7 +197,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 13,
+    id: 205,
     chapter: 2,
     name: "Multiplication of integers",
     fullName: "Multiplication of integers",
@@ -274,7 +274,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 14,
+    id: 206,
     chapter: 2,
     name: "Division of integers",
     fullName: "Division of integers",
@@ -311,7 +311,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 15,
+    id: 207,
     chapter: 2,
     name: "Commutative, associative & distributive",
     fullName: "The commutative, associative, and distributive properties",
@@ -344,7 +344,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 16,
+    id: 208,
     chapter: 2,
     name: "Squares, cubes & roots",
     fullName: "Squares, cubes, square roots, and cube roots",
@@ -411,7 +411,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 17,
+    id: 209,
     chapter: 2,
     name: "Mixed operations with integers",
     fullName: "Calculations involving mixed operations with integers",
@@ -619,7 +619,7 @@ MathMagician.registerChapter(2, {
     ]
   },
   {
-    id: 18,
+    id: 210,
     chapter: 2,
     name: "Ch 2 Exam focus",
     fullName: "Examination focus exercise",

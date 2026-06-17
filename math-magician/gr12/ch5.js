@@ -4,7 +4,7 @@
 MathMagician.registerChapter(5, {
   topics: [
     {
-      id: 0,
+      id: 500,
       chapter: 5,
       name: "Remainder & factor theorems",
       fullName: "Polynomial division, remainder theorem, and factor theorem",
@@ -48,6 +48,41 @@ MathMagician.registerChapter(5, {
               The last number is the remainder.
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Remainder / Factor Theorem Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter coefficients of p(x) = ax³+bx²+cx+d and a value — compute p(a) (the remainder).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a (x³)</div><input id="g12c5a" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (x²)</div><input id="g12c5b" type="number" value="-2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c (x)</div><input id="g12c5c" type="number" value="-5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">d (const)</div><input id="g12c5d" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Divide by (x−k), k=</div><input id="g12c5k" type="number" value="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c5Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Evaluate</button>
+            </div>
+            <div id="g12c5Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const a=gv('g12c5a'),b=gv('g12c5b'),c=gv('g12c5c'),d=gv('g12c5d'),k=gv('g12c5k');
+                const out=document.getElementById('g12c5Out');
+                if([a,b,c,d,k].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter all values.</span>';return;}
+                const rem=a*k*k*k+b*k*k+c*k+d;
+                const pstr=(a!==0?a+'x³':'')+(b>=0&&a!==0?'+':'')+b+'x²'+(c>=0?'+':'')+c+'x'+(d>=0?'+':'')+d;
+                let html='<span style="color:rgba(221,225,240,0.50);">p(x) = '+pstr+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">p('+k+') = '+a+'('+k+')³ + '+b+'('+k+')² + '+c+'('+k+') + '+d+'</span><br>';
+                html+='<span style="color:'+(rem===0?'#6ee7b7':'#fcd34d')+';">p('+k+') = '+rem+'</span><br>';
+                if(rem===0) html+='<span style="color:#6ee7b7;">✅ (x − '+k+') IS a factor of p(x)</span>';
+                else html+='<span style="color:rgba(221,225,240,0.50);">Remainder when dividing by (x − '+k+') = '+rem+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c5a','g12c5b','g12c5c','g12c5d','g12c5k'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c5Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -59,7 +94,7 @@ MathMagician.registerChapter(5, {
       ]
     },
     {
-      id: 1,
+      id: 501,
       chapter: 5,
       name: "Cubic polynomials — sketching & solving",
       fullName: "Solving cubic equations and sketching cubic functions",
@@ -97,6 +132,59 @@ MathMagician.registerChapter(5, {
             Double root → tangent to x-axis at x = 1<br>
             y' = 3x² − 3 = 0 → x = ±1 (turning points at (1, 0) min and (−1, 4) max)<br>
             End: a > 0 → falls left, rises right</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Cubic Root Finder (Factor Theorem)</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter p(x) = ax³+bx²+cx+d — auto-tests rational roots, then shows full factorisation and roots.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a (x³)</div><input id="g12c5t2a" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (x²)</div><input id="g12c5t2b" type="number" value="-2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c (x)</div><input id="g12c5t2c" type="number" value="-5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">d (const)</div><input id="g12c5t2d" type="number" value="6" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c5t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find Roots</button>
+            </div>
+            <div id="g12c5t2Out" style="font-size:13px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const a=gv('g12c5t2a'),b=gv('g12c5t2b'),c=gv('g12c5t2c'),d=gv('g12c5t2d');
+                const out=document.getElementById('g12c5t2Out');
+                if([a,b,c,d].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter cubic coefficients (a ≠ 0).</span>';return;}
+                const p=x=>a*x*x*x+b*x*x+c*x+d;
+                // find rational root: test factors of d/a
+                const absD=Math.abs(d),absA=Math.abs(a);
+                let root1=null;
+                const tests=[];
+                for(let i=1;i<=absD*2+1;i++){for(let j=1;j<=absA+1;j++){[i/j,-i/j].forEach(r=>{if(Math.abs(p(r))<1e-9)tests.push(r);});}}
+                if(tests.length>0) root1=tests[0];
+                else{out.innerHTML='<span style="color:#fca5a5;">No simple rational root found. Try a different cubic.</span>';return;}
+                // synthetic divide ax³+bx²+cx+d by (x−root1)
+                const A=a,B=b+a*root1,C=c+B*root1;
+                // quadratic: Ax²+Bx+C
+                const disc=B*B-4*A*C;
+                let html='<span style="color:rgba(221,225,240,0.50);">Rational root found: x = '+root1+' (tested by factor theorem)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Quotient after dividing by (x−'+root1+'): '+A+'x² + '+B+'x + '+f4(C)+'</span><br>';
+                if(disc<0){
+                  html+='<span style="color:rgba(221,225,240,0.50);">Δ = '+f4(disc)+' < 0 → quadratic has no real roots</span><br>';
+                  html+='<span style="color:#6ee7b7;">Only real root: x = '+root1+'</span>';
+                } else if(disc===0){
+                  const r2=-B/(2*A);
+                  html+='<span style="color:#6ee7b7;">Roots: x = '+root1+' and x = '+f4(r2)+' (double root)</span>';
+                } else {
+                  const r2=(-B+Math.sqrt(disc))/(2*A),r3=(-B-Math.sqrt(disc))/(2*A);
+                  html+='<span style="color:rgba(221,225,240,0.50);">Δ = '+f4(disc)+' → two more roots from quadratic formula</span><br>';
+                  html+='<span style="color:#6ee7b7;">Roots: x = '+f4(root1)+',  x = '+f4(r2)+',  x = '+f4(r3)+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              ['g12c5t2a','g12c5t2b','g12c5t2c','g12c5t2d'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c5t2Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },

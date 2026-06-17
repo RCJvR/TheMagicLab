@@ -4,7 +4,7 @@
 MathMagician.registerChapter(6, {
   topics: [
     {
-      id: 32,
+      id: 601,
       chapter: 6,
       name: "Algebraic language & terms",
       fullName: "Algebraic language, terms and polynomials",
@@ -60,7 +60,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 33,
+      id: 602,
       chapter: 6,
       name: "Like and unlike terms",
       fullName: "Like terms and unlike terms",
@@ -101,7 +101,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 34,
+      id: 603,
       chapter: 6,
       name: "Adding & subtracting expressions",
       fullName: "Addition and subtraction of algebraic expressions",
@@ -147,7 +147,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 35,
+      id: 604,
       chapter: 6,
       name: "Multiplying expressions",
       fullName: "Multiplication of algebraic expressions",
@@ -197,7 +197,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 37,
+      id: 605,
       chapter: 6,
       name: "Dividing expressions",
       fullName: "Division of algebraic expressions by a monomial",
@@ -249,7 +249,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 36,
+      id: 606,
       chapter: 6,
       name: "Substitution",
       fullName: "Substitution into algebraic expressions",
@@ -337,7 +337,7 @@ MathMagician.registerChapter(6, {
       ]
     },
     {
-      id: 37,
+      id: 607,
       chapter: 6,
       name: "Ch 6 Exam focus",
       fullName: "Examination focus exercise",

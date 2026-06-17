@@ -613,6 +613,16 @@ function rebuildTopics() {
   });
 }
 
+// Look up a topic by its actual `id` field — NEVER by array position.
+// Topic ids are not guaranteed to equal their index in the flat TOPICS
+// array (this only holds by coincidence when ids happen to be assigned
+// 0,1,2,3... gaplessly across every loaded chapter). Looking up by id
+// keeps topic selection correct regardless of how a grade's chapter
+// files number their topics.
+function getTopicById(id) {
+  return TOPICS.find(t => t.id === id) || null;
+}
+
 // ── Workbook & answer key pulled from loaded chapters ──────────
 function getAllWorkbook() {
   return Object.keys(MathMagician._registry).sort((a,b)=>a-b)
@@ -829,7 +839,7 @@ practiceTabBtn.addEventListener('click', () => { qIndex = 0; answered = false; s
 // LESSON RENDERER
 // ═══════════════════════════════════════════════════════════════
 function renderLesson() {
-  const t = TOPICS[currentTopicId];
+  const t = getTopicById(currentTopicId);
   const l = t.lesson;
   lessonPanel.innerHTML = `
     <div class="lesson-heading">${l.heading}</div>
@@ -857,7 +867,7 @@ function renderLesson() {
 // QUESTION RENDERER
 // ═══════════════════════════════════════════════════════════════
 function renderQuestion() {
-  const t = TOPICS[currentTopicId];
+  const t = getTopicById(currentTopicId);
   const ts = topicScores[currentTopicId] || { correct: 0, total: 0 };
 
   if (qIndex >= t.questions.length) {
@@ -866,27 +876,33 @@ function renderQuestion() {
     updateProgress();
     // Track topic complete
     if (window.MagicLabProgress) {
-      const t = TOPICS[currentTopicId];
+      const t = getTopicById(currentTopicId);
       MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'lesson_complete', {
         topic: t?.name, grade: 9,
         metadata: { topicId: currentTopicId }
       });
     }
     const pct = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
-    const nextId = currentTopicId + 1;
+    // Find this topic's actual position in the flat array, then advance
+    // by ONE POSITION — not by id+1. Topic ids are not guaranteed to be
+    // sequential/gapless, so "currentTopicId + 1" can land on a topic
+    // belonging to a totally different chapter (or on a non-existent id).
+    const curIdx  = TOPICS.findIndex(t2 => t2.id === currentTopicId);
+    const hasNext = curIdx !== -1 && curIdx + 1 < TOPICS.length;
+    const nextTopic = hasNext ? TOPICS[curIdx + 1] : null;
     practicePanel.innerHTML = `
       <div class="complete-banner">
         <h2>Topic complete! 🎉</h2>
         <p>You scored <strong style="color:#fcd34d">${ts.correct} / ${ts.total}</strong> (${pct}%) on <em>${t.name}</em>.</p>
-        ${nextId < TOPICS.length
+        ${nextTopic
           ? `<button class="lesson-next-btn" id="nextTopicBtn">
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-              Next topic: ${TOPICS[nextId].name}
+              Next topic: ${nextTopic.name}
              </button>`
           : `<p style="color:#6ee7b7;font-size:15px;font-weight:600;">🏆 You've completed all topics!</p>`}
       </div>`;
-    if (nextId < TOPICS.length) {
-      document.getElementById('nextTopicBtn').addEventListener('click', () => selectTopic(nextId));
+    if (nextTopic) {
+      document.getElementById('nextTopicBtn').addEventListener('click', () => selectTopic(nextTopic.id));
     }
     lucide.createIcons();
     return;
@@ -968,7 +984,7 @@ function renderQuestion() {
       showFeedback(true);
       // Track correct answer
       if (window.MagicLabProgress) {
-        const t = TOPICS[currentTopicId];
+        const t = getTopicById(currentTopicId);
         MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_correct', {
           topic: t?.name, grade: 9, score: 1,
           metadata: { question: q.text?.replace(/<[^>]+>/g,'')?.substring(0,100) }
@@ -979,7 +995,7 @@ function renderQuestion() {
       fetchAIFeedback(q, userAnswer, correct, showFeedback);
       // Track wrong answer
       if (window.MagicLabProgress) {
-        const t = TOPICS[currentTopicId];
+        const t = getTopicById(currentTopicId);
         MagicLabProgress.track(ML_TOOLS.MATH_MAGICIAN, 'quiz_wrong', {
           topic: t?.name, grade: 9, score: 0,
           metadata: { question: q.text?.replace(/<[^>]+>/g,'')?.substring(0,100) }
@@ -1032,7 +1048,7 @@ async function fetchAIFeedback(q, userAnswer, correctAnswer, callback) {
   feedbackLabel.textContent = '⏳ Getting explanation…';
   feedbackText.textContent = '';
 
-  const topic  = TOPICS[currentTopicId];
+  const topic  = getTopicById(currentTopicId);
   const prompt = `You are a friendly, encouraging Grade 9 maths tutor (IEB/CAPS curriculum, South Africa).
 A student answered a question incorrectly. Give a SHORT, clear explanation (max 3 sentences) of:
 1. Why their answer is wrong.

@@ -4,7 +4,7 @@
 MathMagician.registerChapter(5, {
   topics: [
     {
-      id: 0,
+      id: 500,
       chapter: 5,
       name: "Trig ratios & special angles",
       fullName: "Defining trigonometric ratios, reciprocal ratios, and special angles",
@@ -50,6 +50,83 @@ MathMagician.registerChapter(5, {
             <span class="math">= (√3/2)(√3/2) + (½)(½)</span><br>
             <span class="math">= 3/4 + 1/4 = 1</span></p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Special Angles Explorer</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Select any special angle and ratio — see the exact value and its derivation.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Angle</div>
+                <select id="g10c5angle"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;">
+                  <option value="0">0°</option>
+                  <option value="30">30°</option>
+                  <option value="45">45°</option>
+                  <option value="60">60°</option>
+                  <option value="90">90°</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Ratio</div>
+                <select id="g10c5ratio"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sin">sin</option>
+                  <option value="cos">cos</option>
+                  <option value="tan">tan</option>
+                </select>
+              </div>
+            </div>
+            <div id="g10c5Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const vals={
+                sin:{'0':'0','30':'½','45':'√2/2','60':'√3/2','90':'1'},
+                cos:{'0':'1','30':'√3/2','45':'√2/2','60':'½','90':'0'},
+                tan:{'0':'0','30':'√3/3','45':'1','60':'√3','90':'undefined'}
+              };
+              const dec={
+                sin:{'0':'0','30':'0.5000','45':'0.7071','60':'0.8660','90':'1'},
+                cos:{'0':'1','30':'0.8660','45':'0.7071','60':'0.5000','90':'0'},
+                tan:{'0':'0','30':'0.5774','45':'1.0000','60':'1.7321','90':'—'}
+              };
+              const explain={
+                '30sin':'From a 30-60-90 triangle: sides 1, √3, 2. Opposite to 30° = 1, hypotenuse = 2.',
+                '30cos':'From a 30-60-90 triangle: adjacent to 30° = √3, hypotenuse = 2.',
+                '30tan':'Opposite/adjacent = 1/√3 = √3/3 (rationalised).',
+                '45sin':'From a 45-45-90 triangle: sides 1, 1, √2. Opposite = 1, hyp = √2.',
+                '45cos':'Adjacent = 1, hypotenuse = √2. Same as sin 45°.',
+                '45tan':'Opposite = adjacent = 1, so tan 45° = 1.',
+                '60sin':'From a 30-60-90 triangle: opposite to 60° = √3, hypotenuse = 2.',
+                '60cos':'Adjacent to 60° = 1, hypotenuse = 2.',
+                '60tan':'Opposite/adjacent = √3/1 = √3.',
+                '0sin':'At 0°, the opposite side has length 0.',
+                '0cos':'At 0°, adjacent = hypotenuse, so ratio = 1.',
+                '0tan':'sin 0°/cos 0° = 0/1 = 0.',
+                '90sin':'At 90°, opposite = hypotenuse, so ratio = 1.',
+                '90cos':'At 90°, adjacent = 0.',
+                '90tan':'sin 90°/cos 90° = 1/0 — undefined.'
+              };
+              function update(){
+                const a=document.getElementById('g10c5angle').value;
+                const r=document.getElementById('g10c5ratio').value;
+                const exact=vals[r][a];
+                const decVal=dec[r][a];
+                const expl=explain[a+r]||'';
+                const undef=exact==='undefined';
+                document.getElementById('g10c5Out').innerHTML=
+                  '<span style="color:rgba(221,225,240,0.50);">'+r+' '+a+'° = </span>'
+                  +'<span style="color:#fcd34d;font-size:16px;">'+exact+'</span>'
+                  +(undef?'':' <span style="color:rgba(221,225,240,0.40);">≈ '+decVal+'</span>')+'<br>'
+                  +(expl?'<span style="color:rgba(221,225,240,0.55);font-size:13px;">'+expl+'</span>':'');
+              }
+              document.getElementById('g10c5angle').addEventListener('change',update);
+              document.getElementById('g10c5ratio').addEventListener('change',update);
+              update();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Draw the 30-60-90 (sides: 1, √3, 2) and 45-45-90 (sides: 1, 1, √2) triangles from memory — all special angle values come from these two triangles.</span></div>
         `
       },
       questions: [
@@ -91,7 +168,7 @@ MathMagician.registerChapter(5, {
       ]
     },
     {
-      id: 1,
+      id: 501,
       chapter: 5,
       name: "Trig equations & Cartesian plane",
       fullName: "Solving trig equations and defining ratios in the Cartesian plane",
@@ -126,6 +203,71 @@ MathMagician.registerChapter(5, {
             <span class="math">θ = 180° + 30° = 210°</span><br>
             <span class="math">θ = 360° − 30° = 330°</span></p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 CAST Rule & Trig Equation Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a trig ratio value — find all solutions for θ ∈ [0°; 360°] using the CAST rule.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Ratio</div>
+                <select id="g10c5cratio"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sin">sin θ</option>
+                  <option value="cos">cos θ</option>
+                  <option value="tan">tan θ</option>
+                </select>
+              </div>
+              <div style="padding-bottom:9px;color:rgba(221,225,240,0.60);font-size:16px;">=</div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Value</div>
+                <input id="g10c5cval" type="number" step="0.001" value="-0.5"
+                  style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c5cBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Solve
+              </button>
+            </div>
+            <div id="g10c5cOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function round1(x){return Math.round(x*10)/10;}
+              function solve(){
+                const r=document.getElementById('g10c5cratio').value;
+                const v=parseFloat(document.getElementById('g10c5cval').value);
+                const out=document.getElementById('g10c5cOut');
+                if(isNaN(v)){out.innerHTML='<span style="color:#fca5a5;">Enter a decimal value.</span>';return;}
+                if((r==='sin'||r==='cos')&&(v<-1||v>1)){out.innerHTML='<span style="color:#fca5a5;">'+r+' θ must be between −1 and 1.</span>';return;}
+                let ref=Math.round(Math.abs(Math.asin(r==='sin'?v:r==='cos'?v:0)*180/Math.PI)*10)/10;
+                if(r==='cos') ref=Math.round(Math.acos(Math.abs(v))*180/Math.PI*10)/10;
+                if(r==='tan') ref=Math.round(Math.atan(Math.abs(v))*180/Math.PI*10)/10;
+                const pos=v>=0;
+                let quads=[], solutions=[];
+                if(r==='sin'){
+                  quads=pos?['Q1','Q2']:['Q3','Q4'];
+                  solutions=pos?[ref, 180-ref]:[180+ref, 360-ref];
+                } else if(r==='cos'){
+                  quads=pos?['Q1','Q4']:['Q2','Q3'];
+                  solutions=pos?[ref, 360-ref]:[180-ref, 180+ref];
+                } else {
+                  quads=pos?['Q1','Q3']:['Q2','Q4'];
+                  solutions=pos?[ref, 180+ref]:[180-ref, 360-ref];
+                }
+                solutions=solutions.map(x=>Math.round(x*10)/10).filter(x=>x>=0&&x<=360);
+                let html='<span style="color:rgba(221,225,240,0.50);">Equation: </span><span style="color:#fcd34d;">'+r+' θ = '+v+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: θ_ref = '+ref+'°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">'+r+' is '+(pos?'positive':'negative')+' in '+quads.join(' and ')+'</span><br>';
+                html+='<span style="color:#6ee7b7;">θ = '+solutions.join('° or ')+'°</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c5cBtn').addEventListener('click',solve);
+              document.getElementById('g10c5cval').addEventListener('keydown',e=>{if(e.key==='Enter')solve();});
+              solve();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span><strong>CAST</strong> — reading anti-clockwise from Q4: Cos, All, Sin, Tan tells you which ratio is positive in each quadrant. The reference angle is always the acute angle from the x-axis.</span></div>
         `
       },
       questions: [

@@ -4,7 +4,7 @@
 MathMagician.registerChapter(9, {
   topics: [
     {
-      id: 50,
+      id: 901,
       chapter: 9,
       name: "Lines and angles",
       fullName: "The geometry of lines and angles",
@@ -136,7 +136,7 @@ MathMagician.registerChapter(9, {
       ]
     },
     {
-      id: 51,
+      id: 902,
       chapter: 9,
       name: "Angle relationships",
       fullName: "Angle properties involving straight lines",
@@ -275,7 +275,7 @@ MathMagician.registerChapter(9, {
       ]
     },
     {
-      id: 52,
+      id: 903,
       chapter: 9,
       name: "Parallel lines and angles",
       fullName: "Parallel lines and angles",
@@ -542,7 +542,7 @@ MathMagician.registerChapter(9, {
       ]
     },
     {
-      id: 53,
+      id: 904,
       chapter: 9,
       name: "Ch 9 Exam focus",
       fullName: "Examination focus exercise",

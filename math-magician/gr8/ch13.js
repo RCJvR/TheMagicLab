@@ -4,7 +4,7 @@
 MathMagician.registerChapter(13, {
   topics: [
     {
-      id: 76,
+      id: 1301,
       chapter: 13,
       name: "Pythagoras in right-angled triangles",
       fullName: "The theorem of Pythagoras in right-angled triangles",
@@ -88,7 +88,7 @@ MathMagician.registerChapter(13, {
       ]
     },
     {
-      id: 77,
+      id: 1302,
       chapter: 13,
       name: "Sides and angles not right-angled",
       fullName: "Sides and angles of triangles that are not right-angled",
@@ -124,7 +124,7 @@ MathMagician.registerChapter(13, {
       ]
     },
     {
-      id: 78,
+      id: 1303,
       chapter: 13,
       name: "Applications of Pythagoras",
       fullName: "Applications of the theorem of Pythagoras",
@@ -159,7 +159,7 @@ MathMagician.registerChapter(13, {
       ]
     },
     {
-      id: 79,
+      id: 1304,
       chapter: 13,
       name: "Ch 13 Exam focus",
       fullName: "Examination focus exercise",

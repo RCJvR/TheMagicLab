@@ -4,7 +4,7 @@
 MathMagician.registerChapter(4, {
   topics: [
     {
-      id: 0,
+      id: 400,
       chapter: 4,
       name: "Compound angle identities",
       fullName: "Compound angle identities and their proofs",
@@ -46,6 +46,45 @@ MathMagician.registerChapter(4, {
             = 2sinx·cos30° = 2sinx·(√3/2) = √3 sinx ≠ sinx<br>
             (This would NOT be true — always verify before assuming!)</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Compound & Double Angle Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter angles α and β — expand sin(α±β), cos(α±β), and double-angle forms.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">α (°)</div><input id="g12c4a" type="number" value="45" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">β (°)</div><input id="g12c4b" type="number" value="30" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Expand</button>
+            </div>
+            <div id="g12c4Out" style="font-size:13px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const π=Math.PI;
+              function d2r(d){return d*π/180;}
+              function f(n){return n.toFixed(6);}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const αd=gv('g12c4a'),βd=gv('g12c4b');
+                const out=document.getElementById('g12c4Out');
+                if(isNaN(αd)||isNaN(βd)){out.innerHTML='<span style="color:#fca5a5;">Enter angles α and β.</span>';return;}
+                const α=d2r(αd),β=d2r(βd);
+                const sinα=Math.sin(α),cosα=Math.cos(α),sinβ=Math.sin(β),cosβ=Math.cos(β);
+                let html='<span style="color:rgba(221,225,240,0.40);">α = '+αd+'°, β = '+βd+'°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">sin(α+β) = sinα·cosβ+cosα·sinβ = '+f(sinα)+'·'+f(cosβ)+'+'+f(cosα)+'·'+f(sinβ)+'</span>';
+                html+='  <span style="color:#6ee7b7;">= '+f(sinα*cosβ+cosα*sinβ)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">sin(α−β) = sinα·cosβ−cosα·sinβ</span>  <span style="color:#6ee7b7;">= '+f(sinα*cosβ-cosα*sinβ)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">cos(α+β) = cosα·cosβ−sinα·sinβ</span>  <span style="color:#6ee7b7;">= '+f(cosα*cosβ-sinα*sinβ)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">cos(α−β) = cosα·cosβ+sinα·sinβ</span>  <span style="color:#6ee7b7;">= '+f(cosα*cosβ+sinα*sinβ)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.40);">— Double angle (using α) —</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">sin(2α) = 2sinα·cosα</span>  <span style="color:#fcd34d;">= '+f(2*sinα*cosα)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">cos(2α) = cos²α−sin²α = 1−2sin²α = 2cos²α−1</span>  <span style="color:#fcd34d;">= '+f(cosα*cosα-sinα*sinα)+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c4a','g12c4b'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c4Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -57,7 +96,7 @@ MathMagician.registerChapter(4, {
       ]
     },
     {
-      id: 1,
+      id: 401,
       chapter: 4,
       name: "Trig equations & 3D applications",
       fullName: "Solving trig equations with compound angles and 3D trigonometry problems",
@@ -91,6 +130,57 @@ MathMagician.registerChapter(4, {
               Problems in 3D require identifying <strong>right triangles within the 3D figure</strong> and applying sine rule, cosine rule, or basic trig ratios step by step.<br><br>
               Key strategy: draw each relevant triangle separately with labelled sides and angles.
             </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 General Solution Finder</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter sin/cos/tan = k → get the general solution and solutions in [0°; 360°].</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Function</div>
+                <select id="g12c4t2fn" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sin">sin</option><option value="cos">cos</option><option value="tan">tan</option>
+                </select>
+              </div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">x = k</div><input id="g12c4t2k" type="number" value="0.5" step="0.01" min="-1" max="1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c4t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g12c4t2Out" style="font-size:13px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(2));}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function gs(id){return document.getElementById(id).value;}
+              function calc(){
+                const fn=gs('g12c4t2fn'),k=gv('g12c4t2k');
+                const out=document.getElementById('g12c4t2Out');
+                if(isNaN(k)){out.innerHTML='<span style="color:#fca5a5;">Enter k.</span>';return;}
+                const d2r=x=>x*Math.PI/180,r2d=x=>x*180/Math.PI;
+                let html='',sols=[];
+                if(fn==='sin'){
+                  if(k<-1||k>1){out.innerHTML='<span style="color:#fca5a5;">sin x = k requires −1 ≤ k ≤ 1.</span>';return;}
+                  const ref=f(r2d(Math.asin(k)));
+                  html='<span style="color:rgba(221,225,240,0.50);">General: x = '+ref+'° + 360°n  OR  x = '+(180-ref)+'° + 360°n</span><br>';
+                  for(let n=-2;n<=2;n++){[ref+360*n,180-ref+360*n].forEach(v=>{if(v>=0&&v<=360)sols.push(f(v));});}
+                } else if(fn==='cos'){
+                  if(k<-1||k>1){out.innerHTML='<span style="color:#fca5a5;">cos x = k requires −1 ≤ k ≤ 1.</span>';return;}
+                  const ref=f(r2d(Math.acos(k)));
+                  html='<span style="color:rgba(221,225,240,0.50);">General: x = ±'+ref+'° + 360°n</span><br>';
+                  for(let n=-2;n<=2;n++){[ref+360*n,-ref+360*n].forEach(v=>{if(v>=0&&v<=360)sols.push(f(v));});}
+                } else {
+                  const ref=f(r2d(Math.atan(k)));
+                  html='<span style="color:rgba(221,225,240,0.50);">General: x = '+ref+'° + 180°n</span><br>';
+                  for(let n=-3;n<=3;n++){const v=ref+180*n;if(v>=0&&v<=360)sols.push(f(v));}
+                }
+                const unique=[...new Set(sols.map(String))].map(Number).sort((a,b)=>a-b);
+                html+='<span style="color:#6ee7b7;">Solutions in [0°; 360°]: x = '+unique.join('°, ')+'°</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g12c4t2k').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              document.getElementById('g12c4t2Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
           </div>
         `
       },

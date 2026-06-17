@@ -4,7 +4,7 @@
 MathMagician.registerChapter(1, {
   topics: [
 {
-    id: 0,
+    id: 101,
     name: "The four operations",
     fullName: "The four operations on whole numbers",
     lesson: {
@@ -112,7 +112,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 1,
+    id: 102,
     name: "Properties of whole numbers",
     fullName: "The properties of whole numbers",
     lesson: {
@@ -151,7 +151,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 2,
+    id: 103,
     name: "Calculation techniques",
     fullName: "Calculation techniques",
     lesson: {
@@ -192,7 +192,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 3,
+    id: 104,
     name: "Simplifying calculations",
     fullName: "Methods of simplifying calculations",
     lesson: {
@@ -232,7 +232,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 4,
+    id: 105,
     name: "Factors and multiples",
     fullName: "Factors and multiples of whole numbers",
     lesson: {
@@ -305,7 +305,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 5,
+    id: 106,
     name: "Ratios",
     fullName: "Ratios",
     lesson: {
@@ -377,7 +377,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 6,
+    id: 107,
     name: "Rates",
     fullName: "Rates",
     lesson: {
@@ -554,7 +554,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 7,
+    id: 108,
     name: "Financial contexts",
     fullName: "Solving problems in financial contexts",
     lesson: {
@@ -684,7 +684,7 @@ S — Subtraction }</div>
     ]
   },
   {
-    id: 8,
+    id: 109,
     name: "Exam focus",
     fullName: "Examination focus exercise",
     lesson: {

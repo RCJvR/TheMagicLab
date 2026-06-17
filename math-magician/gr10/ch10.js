@@ -4,7 +4,7 @@
 MathMagician.registerChapter(10, {
   topics: [
     {
-      id: 0,
+      id: 1000,
       chapter: 10,
       name: "Measures of central tendency",
       fullName: "Collecting data, measures of central tendency, and grouping data",
@@ -37,6 +37,51 @@ MathMagician.registerChapter(10, {
             Median = 9 (4th value of 7)<br>
             Mode = 7</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Mean, Median & Mode Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter comma-separated values — get all measures of central tendency instantly.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div style="flex:1;min-width:200px;">
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Data values (comma separated)</div>
+                <input id="g10c10data" type="text" value="4, 7, 7, 9, 12, 15, 18"
+                  style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <button id="g10c10Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c10Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function run(){
+                const raw=document.getElementById('g10c10data').value;
+                const out=document.getElementById('g10c10Out');
+                const vals=raw.split(',').map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+                if(vals.length<1){out.innerHTML='<span style="color:#fca5a5;">Enter at least one value.</span>';return;}
+                const sorted=[...vals].sort((a,b)=>a-b);
+                const n=vals.length;
+                const mean=vals.reduce((s,x)=>s+x,0)/n;
+                const mid=Math.floor(n/2);
+                const median=n%2===1?sorted[mid]:(sorted[mid-1]+sorted[mid])/2;
+                const freq={};
+                vals.forEach(x=>freq[x]=(freq[x]||0)+1);
+                const maxF=Math.max(...Object.values(freq));
+                const modes=Object.keys(freq).filter(k=>freq[k]===maxF).map(Number).sort((a,b)=>a-b);
+                const modeStr=maxF===1?'None (all values unique)':modes.join(', ');
+                let html='<span style="color:rgba(221,225,240,0.50);">Sorted: </span><span style="color:rgba(221,225,240,0.60);">'+sorted.join(', ')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">n = '+n+' values</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Mean x̄ = sum/n = '+(vals.reduce((s,x)=>s+x,0).toFixed(2))+'/'+n+' = </span><span style="color:#6ee7b7;">'+mean.toFixed(4).replace(/\.?0+$/,'')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Median = </span><span style="color:#6ee7b7;">'+median+(n%2===0?' (avg of '+sorted[mid-1]+' and '+sorted[mid]+')':'')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Mode = </span><span style="color:#6ee7b7;">'+modeStr+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c10Btn').addEventListener('click',run);
+              document.getElementById('g10c10data').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always sort your data first — finding the median and mode from an unsorted list is error-prone. A quick ascending sort takes seconds and prevents mistakes.</span></div>
         `
       },
       questions: [
@@ -77,7 +122,7 @@ MathMagician.registerChapter(10, {
       ]
     },
     {
-      id: 1,
+      id: 1001,
       chapter: 10,
       name: "Dispersion & five-number summary",
       fullName: "Measures of dispersion, five-number summary, and box-and-whisker plots",
@@ -121,6 +166,61 @@ MathMagician.registerChapter(10, {
             <div class="def-box-title">💡 Outliers</div>
             <p>A data point is a suspected outlier if it is more than 1.5 × IQR below Q1 or above Q3.</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Five-Number Summary Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter comma-separated values — get min, Q1, median, Q3, max, IQR, and outlier check.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div style="flex:1;min-width:200px;">
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Data values (comma separated)</div>
+                <input id="g10c10t2data" type="text" value="2, 5, 7, 8, 11, 14, 16, 20"
+                  style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <button id="g10c10t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Analyse</button>
+            </div>
+            <div id="g10c10t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function med(arr){const m=Math.floor(arr.length/2);return arr.length%2===1?arr[m]:(arr[m-1]+arr[m])/2;}
+              function run(){
+                const raw=document.getElementById('g10c10t2data').value;
+                const out=document.getElementById('g10c10t2Out');
+                const vals=raw.split(',').map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+                if(vals.length<4){out.innerHTML='<span style="color:#fca5a5;">Enter at least 4 values for a meaningful five-number summary.</span>';return;}
+                const s=[...vals].sort((a,b)=>a-b);
+                const n=s.length;
+                const mn=s[0],mx=s[n-1];
+                const Q2=med(s);
+                const lower=n%2===1?s.slice(0,Math.floor(n/2)):s.slice(0,n/2);
+                const upper=n%2===1?s.slice(Math.floor(n/2)+1):s.slice(n/2);
+                const Q1=med(lower),Q3=med(upper);
+                const IQR=Q3-Q1;
+                const range=mx-mn;
+                const fenceL=Q1-1.5*IQR,fenceH=Q3+1.5*IQR;
+                const outliers=s.filter(x=>x<fenceL||x>fenceH);
+                let html='<span style="color:rgba(221,225,240,0.50);">Sorted: </span><span style="color:rgba(221,225,240,0.60);">'+s.join(', ')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Min = </span><span style="color:#fcd34d;">'+mn+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Q1 = </span><span style="color:#fcd34d;">'+Q1+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Median Q2 = </span><span style="color:#6ee7b7;">'+Q2+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Q3 = </span><span style="color:#fcd34d;">'+Q3+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Max = </span><span style="color:#fcd34d;">'+mx+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">IQR = Q3 − Q1 = '+Q3+' − '+Q1+' = </span><span style="color:#6ee7b7;">'+IQR+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Range = </span><span style="color:#6ee7b7;">'+range+'</span><br>';
+                if(outliers.length){
+                  html+='<span style="color:#fca5a5;">Suspected outliers (outside ['+fenceL.toFixed(2)+'; '+fenceH.toFixed(2)+']): '+outliers.join(', ')+'</span>';
+                } else {
+                  html+='<span style="color:rgba(221,225,240,0.50);">No outliers (fences: ['+fenceL.toFixed(2)+'; '+fenceH.toFixed(2)+'])</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c10t2Btn').addEventListener('click',run);
+              document.getElementById('g10c10t2data').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>To find Q1 and Q3: split the data at the median (exclude the median itself if n is odd), then find the median of each half.</span></div>
         `
       },
       questions: [

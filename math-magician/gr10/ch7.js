@@ -4,7 +4,7 @@
 MathMagician.registerChapter(7, {
   topics: [
     {
-      id: 0,
+      id: 700,
       chapter: 7,
       name: "Triangles",
       fullName: "Triangle properties, congruence, and similarity",
@@ -47,6 +47,73 @@ MathMagician.registerChapter(7, {
             ∠PQR = ∠PST (given)<br>
             ∴ △PQR ||| △PST (AA)</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Triangle Angle Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter any two angles — find the third. Or enter an exterior angle and one non-adjacent interior angle.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Mode</div>
+                <select id="g10c7mode"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="interior">Interior angles</option>
+                  <option value="exterior">Exterior angle</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;" id="g10c7l1">∠A</div>
+                <input id="g10c7a1" type="number" value="52" min="0" max="180"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;" id="g10c7l2">∠B</div>
+                <input id="g10c7a2" type="number" value="73" min="0" max="180"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c7Btn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Calculate
+              </button>
+            </div>
+            <div id="g10c7Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function updateLabels(){
+                const m=document.getElementById('g10c7mode').value;
+                document.getElementById('g10c7l1').textContent=m==='interior'?'∠A':'Ext. angle';
+                document.getElementById('g10c7l2').textContent=m==='interior'?'∠B':'Non-adj. ∠';
+              }
+              function calc(){
+                const m=document.getElementById('g10c7mode').value;
+                const a=parseFloat(document.getElementById('g10c7a1').value);
+                const b=parseFloat(document.getElementById('g10c7a2').value);
+                const out=document.getElementById('g10c7Out');
+                if(isNaN(a)||isNaN(b)||a<=0||b<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive angle values.</span>';return;}
+                if(m==='interior'){
+                  const c=180-a-b;
+                  if(c<=0){out.innerHTML='<span style="color:#fca5a5;">Invalid: angles must sum to 180°.</span>';return;}
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">∠A + ∠B + ∠C = 180°</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);">'+a+'° + '+b+'° + ∠C = 180°</span><br>'
+                    +'<span style="color:#6ee7b7;">∠C = '+c+'°</span>';
+                } else {
+                  if(b>=a){out.innerHTML='<span style="color:#fca5a5;">Non-adjacent interior angle must be less than the exterior angle.</span>';return;}
+                  const other=a-b;
+                  const third=180-other-b;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Ext. angle = sum of two non-adjacent interior angles</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);">'+a+'° = '+b+'° + 2nd non-adjacent angle</span><br>'
+                    +'<span style="color:#6ee7b7;">2nd non-adjacent angle = '+other+'°</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);">3rd interior angle (adjacent to ext.) = 180°−'+a+'° = '+third+'° ← wait, = </span><span style="color:#fcd34d;">'+(180-a)+'°</span>';
+                }
+              }
+              document.getElementById('g10c7mode').addEventListener('change',()=>{updateLabels();calc();});
+              document.getElementById('g10c7Btn').addEventListener('click',calc);
+              ['g10c7a1','g10c7a2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              updateLabels(); calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>An exterior angle is a shortcut — it equals the sum of the two remote interior angles directly, without needing to find all three interior angles first.</span></div>
         `
       },
       questions: [
@@ -87,7 +154,7 @@ MathMagician.registerChapter(7, {
       ]
     },
     {
-      id: 1,
+      id: 701,
       chapter: 7,
       name: "Quadrilaterals & midpoint theorem",
       fullName: "Quadrilateral properties and the midpoint theorem",
@@ -122,6 +189,79 @@ MathMagician.registerChapter(7, {
             If BC = 14 cm, then MN = 7 cm (half of BC).<br>
             Also, MN ∥ BC.</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Similarity & Midpoint Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Work with the midpoint theorem or similar triangle ratios.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Mode</div>
+                <select id="g10c7bmode"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="midpoint">Midpoint theorem</option>
+                  <option value="similar">Similar triangles</option>
+                </select>
+              </div>
+              <div id="g10c7bInputs" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;"></div>
+              <button id="g10c7bBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Calculate
+              </button>
+            </div>
+            <div id="g10c7bOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function makeInput(id, label, val){
+                return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div>'
+                  +'<input id="'+id+'" type="number" value="'+val+'" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';
+              }
+              function buildInputs(){
+                const m=document.getElementById('g10c7bmode').value;
+                const c=document.getElementById('g10c7bInputs');
+                if(m==='midpoint'){
+                  c.innerHTML=makeInput('g10c7bv1','Known side','18')+makeInput('g10c7bv2','Find (0=BC)','0');
+                } else {
+                  c.innerHTML=makeInput('g10c7bv1','Side 1 (△1)','6')+makeInput('g10c7bv2','Side 1 (△2)','9')+makeInput('g10c7bv3','Side 2 (△1)','8');
+                }
+                ['g10c7bv1','g10c7bv2','g10c7bv3'].forEach(id=>{
+                  const el=document.getElementById(id);
+                  if(el) el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+                });
+              }
+              function calc(){
+                const m=document.getElementById('g10c7bmode').value;
+                const out=document.getElementById('g10c7bOut');
+                if(m==='midpoint'){
+                  const v1=parseFloat(document.getElementById('g10c7bv1').value);
+                  const v2=parseFloat(document.getElementById('g10c7bv2').value);
+                  if(isNaN(v1)||v1<=0){out.innerHTML='<span style="color:#fca5a5;">Enter a valid side length.</span>';return;}
+                  if(v2===0){
+                    out.innerHTML='<span style="color:rgba(221,225,240,0.50);">BC (full side) = '+v1+', so MN = BC ÷ 2 = </span><span style="color:#6ee7b7;">'+v1/2+' units</span><br>'
+                      +'<span style="color:rgba(221,225,240,0.50);font-size:13px;">MN ∥ BC (midpoint theorem)</span>';
+                  } else {
+                    out.innerHTML='<span style="color:rgba(221,225,240,0.50);">MN = '+v1+', so BC = MN × 2 = </span><span style="color:#6ee7b7;">'+v1*2+' units</span><br>'
+                      +'<span style="color:rgba(221,225,240,0.50);font-size:13px;">MN ∥ BC (midpoint theorem)</span>';
+                  }
+                } else {
+                  const s1=parseFloat(document.getElementById('g10c7bv1').value);
+                  const s2=parseFloat(document.getElementById('g10c7bv2').value);
+                  const s3=parseFloat(document.getElementById('g10c7bv3').value);
+                  if([s1,s2,s3].some(isNaN)||[s1,s2,s3].some(x=>x<=0)){out.innerHTML='<span style="color:#fca5a5;">Enter valid side lengths.</span>';return;}
+                  const ratio=s2/s1;
+                  const s4=s3*ratio;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Scale factor k = '+s2+' ÷ '+s1+' = '+ratio.toFixed(4)+'</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);">Corresponding side = '+s3+' × '+ratio.toFixed(4)+' = </span><span style="color:#6ee7b7;">'+s4.toFixed(2)+' units</span><br>'
+                    +'<span style="color:rgba(221,225,240,0.50);font-size:13px;">Area ratio = k² = '+(ratio*ratio).toFixed(4)+'</span>';
+                }
+              }
+              document.getElementById('g10c7bmode').addEventListener('change',()=>{buildInputs();calc();});
+              document.getElementById('g10c7bBtn').addEventListener('click',calc);
+              buildInputs(); calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In similar triangles, sides scale by factor k but areas scale by k². If sides double, the area quadruples.</span></div>
         `
       },
       questions: [

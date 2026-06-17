@@ -4,7 +4,7 @@
 MathMagician.registerChapter(12, {
   topics: [
     {
-      id: 0,
+      id: 1200,
       chapter: 12,
       name: "Setting up linear programming problems",
       fullName: "Constraints, feasible regions, and objective functions",
@@ -44,6 +44,62 @@ MathMagician.registerChapter(12, {
             <p>A bakery makes muffins (x) and cupcakes (y). Each muffin takes 2 min, each cupcake 3 min. Max 120 min. Flour limit: x + y ≤ 50. At least 10 of each.<br><br>
             Constraints: <span class="math">2x + 3y ≤ 120; x + y ≤ 50; x ≥ 10; y ≥ 10</span><br>
             Objective: Maximise profit P = 5x + 8y</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Objective Function Evaluator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter coefficients for P = ax + by, then evaluate at up to 4 corner points.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a (coeff of x)</div><input id="g11c12a" type="number" value="5" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (coeff of y)</div><input id="g11c12b" type="number" value="8" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:auto auto auto;gap:6px;margin-bottom:10px;align-items:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">Point</div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">x</div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">y</div>
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">A</div>
+              <input id="g11c12x1" type="number" value="0" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c12y1" type="number" value="0" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">B</div>
+              <input id="g11c12x2" type="number" value="6" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c12y2" type="number" value="0" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">C</div>
+              <input id="g11c12x3" type="number" value="4" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c12y3" type="number" value="4" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <div style="font-size:12px;color:rgba(221,225,240,0.40);text-align:center;">D</div>
+              <input id="g11c12x4" type="number" value="0" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              <input id="g11c12y4" type="number" value="8" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:6px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;">
+            </div>
+            <button id="g11c12Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Evaluate</button>
+            <div id="g11c12Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const a=gv('g11c12a'),b=gv('g11c12b');
+                const out=document.getElementById('g11c12Out');
+                if(isNaN(a)||isNaN(b)){out.innerHTML='<span style="color:#fca5a5;">Enter coefficients a and b.</span>';return;}
+                const pts=[['A',gv('g11c12x1'),gv('g11c12y1')],['B',gv('g11c12x2'),gv('g11c12y2')],['C',gv('g11c12x3'),gv('g11c12y3')],['D',gv('g11c12x4'),gv('g11c12y4')]];
+                const vals=pts.map(([lbl,x,y])=>[lbl,x,y,a*x+b*y]).filter(([,x,y])=>!isNaN(x)&&!isNaN(y));
+                if(!vals.length){out.innerHTML='<span style="color:#fca5a5;">Enter at least one corner point.</span>';return;}
+                const maxV=Math.max(...vals.map(v=>v[3])),minV=Math.min(...vals.map(v=>v[3]));
+                let html='<span style="color:rgba(221,225,240,0.50);">P = '+a+'x + '+b+'y</span><br>';
+                vals.forEach(([lbl,x,y,p])=>{
+                  const isMax=p===maxV,isMin=p===minV;
+                  html+='<span style="color:rgba(221,225,240,0.50);">'+lbl+'('+x+';'+y+'): P = '+a+'('+x+')+'+b+'('+y+') = '+p+'</span>';
+                  if(isMax&&vals.length>1) html+=' <span style="color:#6ee7b7;">← MAX</span>';
+                  if(isMin&&vals.length>1&&minV!==maxV) html+=' <span style="color:#fca5a5;">← MIN</span>';
+                  html+='<br>';
+                });
+                const maxPt=vals.find(v=>v[3]===maxV),minPt=vals.find(v=>v[3]===minV);
+                if(vals.length>1){html+='<span style="color:#6ee7b7;">Maximum P = '+maxV+' at '+maxPt[0]+'('+maxPt[1]+';'+maxPt[2]+')</span><br>';html+='<span style="color:#fcd34d;">Minimum P = '+minV+' at '+minPt[0]+'('+minPt[1]+';'+minPt[2]+')</span>';}
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c12Btn').addEventListener('click',calc);
+              ['g11c12a','g11c12b','g11c12x1','g11c12y1','g11c12x2','g11c12y2','g11c12x3','g11c12y3','g11c12x4','g11c12y4'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              calc();
+            })();
+            </script>
           </div>
         `
       },
@@ -85,7 +141,7 @@ MathMagician.registerChapter(12, {
       ]
     },
     {
-      id: 1,
+      id: 1201,
       chapter: 12,
       name: "Optimisation — solving LP problems",
       fullName: "Finding maximum and minimum values using the feasible region",
@@ -119,6 +175,77 @@ MathMagician.registerChapter(12, {
             Corner points: (0,0), (6,0), (4,4), (0,8)<br>
             P values: 0, 30, 36, 32<br>
             Maximum P = 36 at (4, 4)</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 LP Optimiser — Find Max / Min</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter corner points (x;y) as pairs, set objective P = ax+by, choose maximise or minimise.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c12t2a" type="number" value="5" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c12t2b" type="number" value="4" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Goal</div>
+                <select id="g11c12t2goal" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="max">Maximise</option><option value="min">Minimise</option></select>
+              </div>
+            </div>
+            <div style="font-size:12px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Corner points (enter pairs: x, y)</div>
+            <div id="g11c12t2pts" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-bottom:10px;"></div>
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <button id="g11c12t2addPt" style="padding:6px 12px;border-radius:6px;border:1px solid rgba(99,102,241,0.40);cursor:pointer;font-size:12px;font-weight:600;background:rgba(99,102,241,0.15);color:#a5b4fc;">+ Add Point</button>
+              <button id="g11c12t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Optimise</button>
+            </div>
+            <div id="g11c12t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const defaultPts=[[0,0],[6,0],[4,4],[0,8]];
+              let pts=[...defaultPts];
+              function render(){
+                const c=document.getElementById('g11c12t2pts');
+                c.innerHTML='';
+                pts.forEach((pt,i)=>{
+                  const div=document.createElement('div');
+                  div.style.cssText='display:flex;gap:4px;align-items:center;';
+                  div.innerHTML='<span style="font-size:12px;color:rgba(221,225,240,0.40);min-width:18px;">'+(String.fromCharCode(65+i))+':</span>'+
+                    '<input type="number" value="'+pt[0]+'" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:5px;border-radius:6px;font-size:13px;font-family:\'JetBrains Mono\',monospace;text-align:center;" placeholder="x">'+
+                    '<input type="number" value="'+pt[1]+'" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:5px;border-radius:6px;font-size:13px;font-family:\'JetBrains Mono\',monospace;text-align:center;" placeholder="y">'+
+                    (pts.length>2?'<button onclick="this.parentNode.remove()" style="background:transparent;border:none;color:rgba(221,225,240,0.30);cursor:pointer;font-size:16px;padding:0 4px;" title="Remove">×</button>':'');
+                  const [xi,yi]=div.querySelectorAll('input');
+                  xi.addEventListener('change',()=>{pts[i][0]=parseFloat(xi.value)||0;});
+                  yi.addEventListener('change',()=>{pts[i][1]=parseFloat(yi.value)||0;});
+                  c.appendChild(div);
+                });
+              }
+              function calc(){
+                const a=parseFloat(document.getElementById('g11c12t2a').value);
+                const b=parseFloat(document.getElementById('g11c12t2b').value);
+                const goal=document.getElementById('g11c12t2goal').value;
+                const out=document.getElementById('g11c12t2Out');
+                const rows=document.getElementById('g11c12t2pts').querySelectorAll('div');
+                const evalPts=[];
+                rows.forEach((row,i)=>{
+                  const [xi,yi]=row.querySelectorAll('input');
+                  const x=parseFloat(xi.value),y=parseFloat(yi.value);
+                  if(!isNaN(x)&&!isNaN(y)) evalPts.push([String.fromCharCode(65+i),x,y,a*x+b*y]);
+                });
+                if(!evalPts.length){out.innerHTML='<span style="color:#fca5a5;">Add at least one point.</span>';return;}
+                if(isNaN(a)||isNaN(b)){out.innerHTML='<span style="color:#fca5a5;">Enter valid coefficients.</span>';return;}
+                const vals=evalPts.map(v=>v[3]);
+                const optV=goal==='max'?Math.max(...vals):Math.min(...vals);
+                const optPt=evalPts.find(v=>v[3]===optV);
+                let html='<span style="color:rgba(221,225,240,0.50);">P = '+a+'x + '+b+'y  ['+(goal==='max'?'MAXIMISE':'MINIMISE')+']</span><br>';
+                evalPts.forEach(([lbl,x,y,p])=>{
+                  html+='<span style="color:rgba(221,225,240,0.70);">'+lbl+'('+x+';'+y+'): P = '+p+'</span>';
+                  if(p===optV) html+=' <span style="color:'+(goal==='max'?'#6ee7b7':'#fca5a5')+';">← '+(goal==='max'?'MAX':'MIN')+'</span>';
+                  html+='<br>';
+                });
+                html+='<span style="color:#6ee7b7;">'+(goal==='max'?'Maximum':'Minimum')+' P = '+optV+' at '+optPt[0]+'('+optPt[1]+';'+optPt[2]+')</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c12t2addPt').addEventListener('click',()=>{pts.push([0,0]);render();});
+              document.getElementById('g11c12t2Btn').addEventListener('click',calc);
+              render(); calc();
+            })();
+            </script>
           </div>
         `
       },

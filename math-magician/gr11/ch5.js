@@ -4,7 +4,7 @@
 MathMagician.registerChapter(5, {
   topics: [
     {
-      id: 0,
+      id: 500,
       chapter: 5,
       name: "Quadratic, hyperbolic & exponential functions",
       fullName: "Advanced quadratic, hyperbolic, and exponential function analysis",
@@ -48,6 +48,75 @@ MathMagician.registerChapter(5, {
             Sub (0; 1): <span class="math">1 = a(4) − 3 → a = 1</span><br>
             <span class="math">y = (x−2)² − 3</span></p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Average Gradient Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a function and two x-values — calculate the average gradient (chord slope) between them.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Function type</div>
+                <select id="g11c5ftype" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="quad">Quadratic: ax²+bx+c</option>
+                  <option value="hyp">Hyperbola: a/(x−p)+q</option>
+                  <option value="exp">Exponential: a·bˣ+q</option>
+                </select>
+              </div>
+              <div id="g11c5quadP" style="display:flex;gap:6px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c5qa" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c5qb" type="number" value="0" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div><input id="g11c5qc" type="number" value="0" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              </div>
+              <div id="g11c5hypP" style="display:none;gap:6px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c5ha" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">p</div><input id="g11c5hp" type="number" value="0" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div><input id="g11c5hq" type="number" value="0" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              </div>
+              <div id="g11c5expP" style="display:none;gap:6px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c5ea" type="number" value="1" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (base)</div><input id="g11c5eb" type="number" value="2" min="0.01" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div><input id="g11c5eq" type="number" value="0" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              </div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">x₁</div><input id="g11c5x1" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">x₂</div><input id="g11c5x2" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c5Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c5Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              document.getElementById('g11c5ftype').addEventListener('change',()=>{
+                const t=document.getElementById('g11c5ftype').value;
+                document.getElementById('g11c5quadP').style.display=t==='quad'?'flex':'none';
+                document.getElementById('g11c5hypP').style.display=t==='hyp'?'flex':'none';
+                document.getElementById('g11c5expP').style.display=t==='exp'?'flex':'none';
+              });
+              function eval_(x){
+                const t=document.getElementById('g11c5ftype').value;
+                if(t==='quad'){const a=gv('g11c5qa'),b=gv('g11c5qb'),c=gv('g11c5qc');return a*x*x+b*x+c;}
+                if(t==='hyp'){const a=gv('g11c5ha'),p=gv('g11c5hp'),q=gv('g11c5hq');return a/(x-p)+q;}
+                const a=gv('g11c5ea'),b=gv('g11c5eb'),q=gv('g11c5eq');return a*Math.pow(b,x)+q;
+              }
+              document.getElementById('g11c5Btn').addEventListener('click',()=>{
+                const x1=gv('g11c5x1'),x2=gv('g11c5x2');
+                const out=document.getElementById('g11c5Out');
+                if(isNaN(x1)||isNaN(x2)||x1===x2){out.innerHTML='<span style="color:#fca5a5;">Enter two different x-values.</span>';return;}
+                try{
+                  const y1=eval_(x1),y2=eval_(x2);
+                  if(!isFinite(y1)||!isFinite(y2)){out.innerHTML='<span style="color:#fca5a5;">One or both x-values are undefined for this function (e.g., asymptote).</span>';return;}
+                  const m=(y2-y1)/(x2-x1);
+                  let html='<span style="color:rgba(221,225,240,0.50);">f('+x1+') = '+f(y1)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">f('+x2+') = '+f(y2)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">m_avg = (f('+x2+') − f('+x1+')) / ('+x2+' − '+x1+') = ('+f(y2)+' − '+f(y1)+') / '+f(x2-x1)+'</span><br>';
+                  html+='<span style="color:#6ee7b7;">Average gradient = '+f(m)+'</span>';
+                  out.innerHTML=html;
+                }catch(e){out.innerHTML='<span style="color:#fca5a5;">Error evaluating function.</span>';}
+              });
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The average gradient is the slope of the <strong>chord</strong> between two points — it approximates the instantaneous rate of change. As x₁ → x₂, it approaches the derivative (Grade 12 calculus).</span></div>
         `
       },
       questions: [
@@ -88,7 +157,7 @@ MathMagician.registerChapter(5, {
       ]
     },
     {
-      id: 1,
+      id: 501,
       chapter: 5,
       name: "Trigonometric functions — period, amplitude & phase shift",
       fullName: "Sine, cosine, and tangent functions with period, amplitude, and phase shift",
@@ -129,6 +198,61 @@ MathMagician.registerChapter(5, {
               No amplitude (unbounded)
             </p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Trig Function Property Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a, b, p, q for y = a·sin/cos(bx + p°) + q — get all key properties.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Type</div>
+                <select id="g11c5t2trig" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option>sin</option><option>cos</option><option>tan</option>
+                </select>
+              </div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c5t2a" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c5t2b" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">p (°)</div><input id="g11c5t2p" type="number" value="-60" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div><input id="g11c5t2q" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c5t2Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Analyse</button>
+            </div>
+            <div id="g11c5t2Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const trig=document.getElementById('g11c5t2trig').value;
+                const a=parseFloat(document.getElementById('g11c5t2a').value);
+                const b=parseFloat(document.getElementById('g11c5t2b').value);
+                const p=parseFloat(document.getElementById('g11c5t2p').value);
+                const q=parseFloat(document.getElementById('g11c5t2q').value);
+                const out=document.getElementById('g11c5t2Out');
+                if([a,b,p,q].some(isNaN)||b===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (b ≠ 0).</span>';return;}
+                const amp=Math.abs(a);
+                const period=trig==='tan'?180/Math.abs(b):360/Math.abs(b);
+                const phaseShift=-p/b;
+                const ps=phaseShift>=0?'right':'left';
+                const isTan=trig==='tan';
+                let html='<span style="color:rgba(221,225,240,0.50);">Function: y = '+a+'·'+trig+'('+b+'x + ('+p+'°)) + '+q+'</span><br>';
+                html+='<span style="color:#fcd34d;">Amplitude: </span><span style="color:#6ee7b7;">'+(isTan?'None (unbounded)':amp)+'</span><br>';
+                html+='<span style="color:#fcd34d;">Period: </span><span style="color:#6ee7b7;">'+f(period)+'°</span><br>';
+                html+='<span style="color:#fcd34d;">Phase shift: </span><span style="color:#6ee7b7;">'+f(Math.abs(phaseShift))+'° '+ps+'</span><br>';
+                html+='<span style="color:#fcd34d;">Vertical shift: </span><span style="color:#6ee7b7;">'+q+'</span><br>';
+                if(!isTan){
+                  const max=q+amp,min=q-amp;
+                  html+='<span style="color:#fcd34d;">Range: </span><span style="color:#6ee7b7;">['+f(min)+'; '+f(max)+']</span><br>';
+                  html+='<span style="color:#fcd34d;">Max: </span><span style="color:#6ee7b7;">'+f(max)+'</span>  <span style="color:#fcd34d;">Min: </span><span style="color:#6ee7b7;">'+f(min)+'</span>';
+                } else {
+                  html+='<span style="color:#fcd34d;">Asymptotes at: </span><span style="color:#6ee7b7;">bx + p = 90° + 180°n → x = (90°−'+p+')/'+b+' + 180°n/'+b+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c5t2Btn').addEventListener('click',calc);
+              ['g11c5t2a','g11c5t2b','g11c5t2p','g11c5t2q'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Phase shift = −p/b. A positive phase shift means the graph moves <strong>right</strong>. For y = sin(2x − 60°): phase shift = −(−60°)/2 = +30° to the right.</span></div>
         `
       },
       questions: [

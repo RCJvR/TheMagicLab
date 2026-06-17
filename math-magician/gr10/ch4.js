@@ -4,7 +4,7 @@
 MathMagician.registerChapter(4, {
   topics: [
     {
-      id: 0,
+      id: 400,
       chapter: 4,
       name: "Linear & quadratic equations",
       fullName: "Solving linear equations, quadratic equations, and simultaneous equations",
@@ -49,6 +49,96 @@ MathMagician.registerChapter(4, {
             Add: <span class="math">3x = 9 → x = 3</span><br>
             Sub into (2): <span class="math">3 − y = 2 → y = 1</span></p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Equation Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Solve a <strong>linear</strong> (ax + b = c) or <strong>quadratic</strong> (ax² + bx + c = 0) equation step by step.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Type</div>
+                <select id="g10c4type"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;">
+                  <option value="linear">Linear: ax + b = c</option>
+                  <option value="quad">Quadratic: ax² + bx + c = 0</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div>
+                <input id="g10c4a" type="number" value="3"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div>
+                <input id="g10c4b" type="number" value="-5"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div>
+                <input id="g10c4c" type="number" value="7"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c4Btn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Solve
+              </button>
+            </div>
+            <div id="g10c4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gcd(a,b){a=Math.abs(a);b=Math.abs(b);return b===0?a:gcd(b,a%b);}
+              function frac(n,d){if(d===0)return'undefined';const g=gcd(Math.abs(n),Math.abs(d));let nn=n/g,dd=d/g;if(dd<0){nn=-nn;dd=-dd;}return dd===1?''+nn:nn+'/'+dd;}
+              function nice(x){return Math.abs(x-Math.round(x))<0.0001;}
+              function run(){
+                const type=document.getElementById('g10c4type').value;
+                const a=parseFloat(document.getElementById('g10c4a').value);
+                const b=parseFloat(document.getElementById('g10c4b').value);
+                const c=parseFloat(document.getElementById('g10c4c').value);
+                const out=document.getElementById('g10c4Out');
+                if([a,b,c].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                let html='';
+                if(type==='linear'){
+                  // ax + b = c → ax = c - b → x = (c-b)/a
+                  const rhs=c-b;
+                  const x=rhs/a;
+                  html='<span style="color:rgba(221,225,240,0.50);">Equation: </span><span style="color:#fcd34d;">'+a+'x '+(b>=0?'+ '+b:'− '+Math.abs(b))+' = '+c+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Step 1 — subtract '+b+' from both sides: '+a+'x = '+(c>=0?c:c)+'−('+b+') = '+rhs+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Step 2 — divide both sides by '+a+':</span><br>';
+                  html+='<span style="color:#6ee7b7;">x = '+frac(rhs,a)+(nice(x)&&!Number.isInteger(x)?' ≈ '+x.toFixed(4):'')+'</span>';
+                } else {
+                  // quadratic ax² + bx + c = 0
+                  const disc=b*b-4*a*c;
+                  html='<span style="color:rgba(221,225,240,0.50);">Equation: </span><span style="color:#fcd34d;">'+a+'x² '+(b>=0?'+ '+b:'− '+Math.abs(b))+'x '+(c>=0?'+ '+c:'− '+Math.abs(c))+' = 0</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">Discriminant Δ = ('+b+')² − 4('+a+')('+c+') = '+disc+'</span><br>';
+                  if(disc<0){
+                    html+='<span style="color:#fca5a5;">Δ &lt; 0 — no real solutions</span>';
+                  } else if(disc===0){
+                    const x=-b/(2*a);
+                    html+='<span style="color:rgba(221,225,240,0.50);">Δ = 0 — one repeated root:</span><br>';
+                    html+='<span style="color:#6ee7b7;">x = '+frac(-b,2*a)+'</span>';
+                  } else {
+                    const sq=Math.sqrt(disc);
+                    const x1=(-b+sq)/(2*a), x2=(-b-sq)/(2*a);
+                    const niceDisc=nice(sq);
+                    html+='<span style="color:rgba(221,225,240,0.50);">x = (−b ± √Δ) / 2a = ('+(b>=0?'−'+b:'+'+Math.abs(b))+' ± √'+disc+') / '+(2*a)+'</span><br>';
+                    if(niceDisc){
+                      html+='<span style="color:#6ee7b7;">x = '+frac(-b+Math.round(sq),2*a)+' or x = '+frac(-b-Math.round(sq),2*a)+'</span>';
+                    } else {
+                      html+='<span style="color:#6ee7b7;">x ≈ '+x1.toFixed(4)+' or x ≈ '+x2.toFixed(4)+'</span><br>';
+                      html+='<span style="color:rgba(221,225,240,0.40);font-size:12px;">Irrational roots — exact form: ('+(-b)+' ± √'+disc+') / '+(2*a)+'</span>';
+                    }
+                  }
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c4Btn').addEventListener('click',run);
+              document.getElementById('g10c4type').addEventListener('change',run);
+              ['g10c4a','g10c4b','g10c4c'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For quadratics, always try factorisation first — it's faster. Only use the formula when you can't spot the factors easily.</span></div>
         `
       },
       questions: [
@@ -88,7 +178,7 @@ MathMagician.registerChapter(4, {
       ]
     },
     {
-      id: 1,
+      id: 401,
       chapter: 4,
       name: "Word problems & inequalities",
       fullName: "Literal equations, word problems, and linear inequalities",
@@ -126,6 +216,78 @@ MathMagician.registerChapter(4, {
             <span class="math">x + (x+5) = 31 → 2x = 26 → x = 13</span><br>
             Numbers: 13 and 18.</p>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Linear Inequality Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Solve <strong>ax + b [inequality] c</strong> — see step-by-step working with sign-flip warning.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div>
+                <input id="g10c4ia" type="number" value="-2"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div style="padding-bottom:9px;color:rgba(221,225,240,0.60);font-size:16px;font-family:'JetBrains Mono',monospace;">x +</div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div>
+                <input id="g10c4ib" type="number" value="3"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Sign</div>
+                <select id="g10c4iop"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;">
+                  <option value="gt">&gt;</option>
+                  <option value="gte">≥</option>
+                  <option value="lt">&lt;</option>
+                  <option value="lte">≤</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div>
+                <input id="g10c4ic" type="number" value="9"
+                  style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c4iBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Solve
+              </button>
+            </div>
+            <div id="g10c4iOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const opMap={gt:'>',gte:'≥',lt:'<',lte:'≤'};
+              function flipOp(op){return{gt:'lt',lt:'gt',gte:'lte',lte:'gte'}[op];}
+              function frac(n,d){const g=(function gg(a,b){a=Math.abs(a);b=Math.abs(b);return b===0?a:gg(b,a%b);})(Math.abs(n),Math.abs(d));let nn=n/g,dd=d/g;if(dd<0){nn=-nn;dd=-dd;}return dd===1?''+nn:nn+'/'+dd;}
+              function solve(){
+                const a=parseFloat(document.getElementById('g10c4ia').value);
+                const b=parseFloat(document.getElementById('g10c4ib').value);
+                const c=parseFloat(document.getElementById('g10c4ic').value);
+                const op=document.getElementById('g10c4iop').value;
+                const out=document.getElementById('g10c4iOut');
+                if([a,b,c].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                const opSym=opMap[op];
+                let html='<span style="color:rgba(221,225,240,0.50);">Inequality: </span><span style="color:#fcd34d;">'+a+'x '+(b>=0?'+ '+b:'− '+Math.abs(b))+' '+opSym+' '+c+'</span><br>';
+                const rhs=c-b;
+                html+='<span style="color:rgba(221,225,240,0.50);">Step 1 — subtract '+b+': '+a+'x '+opSym+' '+rhs+'</span><br>';
+                const flipped=a<0;
+                const finalOp=flipped?flipOp(op):op;
+                const x=rhs/a;
+                if(flipped){
+                  html+='<span style="color:#fca5a5;">Step 2 — divide by '+a+' (negative!) → </span><span style="color:#fbbf24;">sign flips: '+opSym+' becomes '+opMap[finalOp]+'</span><br>';
+                } else {
+                  html+='<span style="color:rgba(221,225,240,0.50);">Step 2 — divide by '+a+':</span><br>';
+                }
+                html+='<span style="color:#6ee7b7;">x '+opMap[finalOp]+' '+frac(rhs,a)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c4iBtn').addEventListener('click',solve);
+              ['g10c4ia','g10c4ib','g10c4ic'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solve();}));
+              solve();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The golden rule of inequalities: <strong>dividing or multiplying by a negative number flips the sign</strong>. Everything else works exactly like a normal equation.</span></div>
         `
       },
       questions: [
