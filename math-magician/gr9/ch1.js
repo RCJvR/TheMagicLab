@@ -98,40 +98,77 @@ MathMagician.registerChapter(1, {
             <div class="example-step"><span class="step-num">2</span><span>If 5 workers take 12 days (inverse proportion), how long for 4 workers? → 5 × 12 = 4 × d → d = 15 days</span></div>
             <div class="example-step"><span class="step-num">3</span><span>Unit rate: 252 km on 18 L → 252 ÷ 18 = 14 km/L</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">💡</span><span>For inverse proportion, the product stays constant: <span class="math">
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For inverse proportion, the product stays constant: <span class="math">x₁y₁ = x₂y₂</span>.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
-            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Simple vs Compound Interest</div>
-            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">See how simple and compound interest compare over time at the same rate.</p>
-            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Principal (R)</label><input id="intP" type="number" value="10000" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Rate % p.a.</label><input id="intR" type="number" value="8" step="0.5" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Years</label><input id="intN" type="number" value="10" min="1" max="30" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <button id="intBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Calculate</button>
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Ratio &amp; Proportion Explorer</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:12px;">Simplify ratios and solve direct or inverse proportion problems.</p>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:180px;">
+                <div style="font-size:10px;color:rgba(221,225,240,0.50);margin-bottom:7px;font-weight:700;letter-spacing:.05em;">SIMPLIFY A RATIO</div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+                  <input id="ratA" type="number" value="12" min="1" style="width:58px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;">
+                  <span style="color:rgba(221,225,240,0.50);font-size:18px;font-weight:700;">:</span>
+                  <input id="ratB" type="number" value="16" min="1" style="width:58px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:JetBrains Mono,monospace;text-align:center;">
+                  <button id="ratBtn" style="padding:7px 12px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Simplify</button>
+                </div>
+                <div id="ratOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:1.9;"></div>
+              </div>
+              <div style="flex:1;min-width:210px;">
+                <div style="font-size:10px;color:rgba(221,225,240,0.50);margin-bottom:7px;font-weight:700;letter-spacing:.05em;">SOLVE A PROPORTION</div>
+                <select id="propType" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#a5b4fc;padding:6px 8px;border-radius:7px;font-size:11px;font-family:DM Sans,sans-serif;margin-bottom:8px;">
+                  <option value="direct">Direct proportion (y = kx)</option>
+                  <option value="inverse">Inverse proportion (xy = k)</option>
+                </select>
+                <div style="display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px;">
+                  <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);">x₁</label><input id="px1" type="number" value="5" style="width:54px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+                  <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);">y₁</label><input id="py1" type="number" value="12" style="width:54px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+                  <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);">x₂</label><input id="px2" type="number" value="8" style="width:54px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:6px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+                  <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-size:10px;color:rgba(221,225,240,0.40);">y₂ = ?</label><div id="py2disp" style="width:54px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.50);color:#6ee7b7;padding:6px;border-radius:7px;font-size:12px;font-family:JetBrains Mono,monospace;text-align:center;min-height:28px;display:flex;align-items:center;justify-content:center;">?</div></div>
+                  <button id="propBtn" style="padding:7px 12px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;align-self:flex-end;">Solve</button>
+                </div>
+                <div id="propOut" style="font-family:JetBrains Mono,monospace;font-size:12px;line-height:1.8;"></div>
+              </div>
             </div>
-            <div id="intOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
           </div>
           <script>
           (function(){
-            function rr(n){return 'R\u202f'+n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,'\u202f');}
-            function calc(){
-              var P=parseFloat(document.getElementById('intP').value)||10000;
-              var rate=parseFloat(document.getElementById('intR').value)/100||0.08;
-              var n=parseInt(document.getElementById('intN').value)||10;
-              var As=P*(1+rate*n),Ac=P*Math.pow(1+rate,n);
-              document.getElementById('intOut').innerHTML=[
-                '<div><span style="color:rgba(221,225,240,0.45);width:200px;display:inline-block;">Simple A = P(1+in):</span><span style="color:#a5b4fc;">'+rr(As)+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:200px;display:inline-block;">Simple interest earned:</span><span style="color:#fbbf24;">'+rr(As-P)+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:200px;display:inline-block;">Compound A = P(1+i)\u207f:</span><span style="color:#6ee7b7;">'+rr(Ac)+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:200px;display:inline-block;">Compound interest earned:</span><span style="color:#6ee7b7;font-weight:700;">'+rr(Ac-P)+'</span></div>',
-                '<div><span style="color:rgba(221,225,240,0.45);width:200px;display:inline-block;">Compound advantage:</span><span style="color:#f59e0b;">+'+rr(Ac-As)+'</span></div>',
+            function gcd(a,b){a=Math.abs(Math.round(a));b=Math.abs(Math.round(b));while(b){var t=b;b=a%b;a=t;}return a;}
+            function fmt(n){return n.toFixed(6).replace(/\.?0+$/,'');}
+            function ratSimp(){
+              var a=parseFloat(document.getElementById('ratA').value);
+              var b=parseFloat(document.getElementById('ratB').value);
+              if(!a||!b||a<=0||b<=0){document.getElementById('ratOut').innerHTML='<span style="color:#f87171;">Enter positive numbers.</span>';return;}
+              var g=gcd(a,b),sa=a/g,sb=b/g;
+              document.getElementById('ratOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Simplified:&nbsp;</span><span style="color:#a5b4fc;font-weight:700;">'+sa+' : '+sb+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">HCF (GCD):&nbsp;</span><span style="color:#fbbf24;">'+g+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">As fraction:&nbsp;</span><span style="color:#6ee7b7;">'+sa+'/'+sb+'</span></div>',
               ].join('');
             }
-            document.getElementById('intBtn').addEventListener('click',calc);
-            ['intP','intR','intN'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            calc();
+            function propSolve(){
+              var type=document.getElementById('propType').value;
+              var x1=parseFloat(document.getElementById('px1').value);
+              var y1=parseFloat(document.getElementById('py1').value);
+              var x2=parseFloat(document.getElementById('px2').value);
+              if(!x1||!y1||!x2){document.getElementById('propOut').innerHTML='<span style="color:#f87171;">Fill in all three values.</span>';return;}
+              var y2,working;
+              if(type==='direct'){
+                y2=y1*x2/x1;
+                working='y₂ = y₁ × x₂ ÷ x₁ = '+y1+' × '+x2+' ÷ '+x1+' = '+fmt(y2);
+              } else {
+                y2=x1*y1/x2;
+                working='y₂ = x₁ × y₁ ÷ x₂ = '+x1+' × '+y1+' ÷ '+x2+' = '+fmt(y2);
+              }
+              document.getElementById('py2disp').textContent=fmt(y2);
+              document.getElementById('propOut').innerHTML='<div><span style="color:rgba(221,225,240,0.45);">Working:&nbsp;</span><span style="color:#a5b4fc;">'+working+'</span></div>';
+            }
+            document.getElementById('ratBtn').addEventListener('click',ratSimp);
+            document.getElementById('propBtn').addEventListener('click',propSolve);
+            ['ratA','ratB'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')ratSimp();});});
+            ['px1','py1','px2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')propSolve();});});
+            ratSimp();propSolve();
           })();
           </script>
-        x₁y₁ = x₂y₂</span>.</span></div>
         `
       },
       questions: [
