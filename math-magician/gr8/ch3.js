@@ -272,7 +272,7 @@ MathMagician.registerChapter(3, {
       { type: "input", text: "Calculate: <span class='math'>2⁴ + 3³ − 5²</span>", answer: "18", topic: "Mixed ops" },
       { type: "mc", text: "What is <span class='math'>(−1)⁷ × 2³ + 3²</span>?", options: ["1", "9", "−8", "17"], answer: 0, topic: "Mixed ops" },
       { type: "input", text: "Calculate: <span class='math'>4² ÷ 2³ × (−1)⁴</span>", answer: "2", topic: "Mixed ops" },
-      { type: "mc", text: "Simplify: <span class='math'>2³ × 2² − (2²)²</span>", options: ["−6", "0", "−3", "32"], answer: 1, topic: "Mixed ops" },
+      { type: "mc", text: "Simplify: <span class='math'>2³ × 2² − (2²)²</span>", options: ["−6", "16", "−3", "32"], answer: 1, topic: "Mixed ops" },
       { type: "input", text: "Calculate: <span class='math'>5² − (−2)³ × 3</span>", answer: "49", topic: "Mixed ops" },
     ]
   },
@@ -383,7 +383,7 @@ MathMagician.registerChapter(3, {
       { type: "input", text: "Calculate: <span class='math'>(−2)⁴ + (−3)³ + 5⁰</span>", answer: "-10", topic: "Mixed" },
       { type: "mc", text: "Write <span class='math'>0.000307</span> in correct scientific notation.", options: ["3.07 × 10⁻³", "3.07 × 10⁻⁴", "30.7 × 10⁻⁵", "0.307 × 10⁻³"], answer: 1, topic: "Scientific notation" },
       { type: "input", text: "Simplify: <span class='math'>x⁶ × x² ÷ (x²)³</span> (give as x^n)", answer: "x^2", topic: "Laws" },
-      { type: "mc", text: "Which is the largest: <span class='math'>2⁸</span>, <span class='math'>3⁵</span>, <span class='math'>4⁴</span>, <span class='math'>5³</span>?", options: ["3⁵ = 243", "4⁴ = 256", "2⁸ = 256", "5³ = 125"], answer: 1, topic: "Mixed" },
+      { type: "mc", text: "Which is the largest: <span class='math'>2⁷</span>, <span class='math'>3⁵</span>, <span class='math'>4⁴</span>, <span class='math'>5³</span>?", options: ["3⁵ = 243", "4⁴ = 256", "2⁷ = 128", "5³ = 125"], answer: 1, topic: "Mixed" },
       { type: "input", text: "The mass of a proton is <span class='math'>1.67 × 10⁻²⁷</span> kg. Write the decimal form (use e notation, e.g. 1.67e-27)", answer: "1.67e-27", topic: "Scientific notation" },
     ]
   }

@@ -19,7 +19,8 @@ MathMagician.registerChapter(14, {
               <strong>Square:</strong> <span class="math">P = 4s</span><br>
               <strong>Rectangle:</strong> <span class="math">P = 2(l + b)</span><br>
               <strong>Triangle:</strong> <span class="math">P = a + b + c</span> (sum of all sides)<br>
-<span style="color:#fbbf24;font-weight:600;">📚 Note:</span> Circles (circumference and area) are <strong>Grade 9</strong> content. They are not required for your Grade 8 exam. Focus on the shapes above.
+              <strong>Circle (circumference):</strong> <span class="math">C = 2πr = πd</span><br>
+              <strong>Semicircle (perimeter):</strong> <span class="math">P = πr + 2r</span>
             </p>
           </div>
           <div class="example-box">
@@ -29,7 +30,6 @@ MathMagician.registerChapter(14, {
             <div class="example-step"><span class="step-num">3</span><span>Semicircle r = 10: <span class="math">P = π(10) + 2(10) = 31.42 + 20 = 51.42 cm</span></span></div>
           </div>
           <div class="tip-box"><span class="tip-icon">💡</span><span>For composite shapes (shapes made of multiple parts), find the perimeter of the outer boundary only — don't include any internal lines.</span></div>
-        <div class="tip-box" style="border-color:rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);"><span class="tip-icon">📚</span><span><strong>Grade 9 preview:</strong> In Grade 9 you will learn the circumference of a circle (<span class="math">C = 2πr</span>) and the area of a circle (<span class="math">A = πr²</span>). These are not required for Grade 8.</span></div>
         `
       },
       questions: [
@@ -58,7 +58,7 @@ MathMagician.registerChapter(14, {
               <strong>Triangle:</strong> <span class="math">A = ½ × base × height</span> (perpendicular height!)<br>
               <strong>Parallelogram:</strong> <span class="math">A = base × perpendicular height</span><br>
               <strong>Trapezium:</strong> <span class="math">A = ½(a + b) × h</span> where a and b are parallel sides<br>
-<span style="color:#fbbf24;font-weight:600;">📚 Grade 9 extension:</span> Circle area (A = πr²) and circumference are covered in Grade 9.
+              <strong>Circle:</strong> <span class="math">A = πr²</span>
             </p>
           </div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">

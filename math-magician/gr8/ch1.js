@@ -717,7 +717,7 @@ S — Subtraction }</div>
       { type: "input", text: "The HCF of two numbers is 6 and their LCM is 72. One number is 24. What is the other number?", answer: "18", topic: "HCF/LCM" },
       { type: "mc", text: "Share R 480 in the ratio 3 : 2 : 1. What is the largest share?", options: ["R 80", "R 240", "R 160", "R 120"], answer: 1, topic: "Ratios" },
       { type: "input", text: "A car uses 8 litres of petrol per 100 km. Petrol costs R 22,50/litre. What does it cost to travel 350 km? (R)", answer: "630", topic: "Rates/Finance" },
-      { type: "mc", text: "Invest R 5 000 at 7% simple interest p.a. for 4 years. Total amount at the end?", options: ["R 6 400", "R 6 200", "R 6 500", "R 6 400"], answer: 1, topic: "Finance" },
+      { type: "mc", text: "Invest R 5 000 at 7% simple interest p.a. for 4 years. Total amount at the end?", options: ["R 6 400", "R 6 200", "R 6 500", "R 5 700"], answer: 0, topic: "Finance" },
     ]
   }
   ],

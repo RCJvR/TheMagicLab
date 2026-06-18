@@ -121,7 +121,6 @@ MathMagician.registerChapter(9, {
               ].filter(Boolean).join('');
             }
             document.getElementById('angVal').addEventListener('input',update);
-            updateButtons();
             update();
           })();
           </script>
@@ -659,7 +658,7 @@ MathMagician.registerChapter(9, {
         name: "Lines, angles and straight-line properties",
         answers: [
           { num: "Q1a", ans: "(2x + 10) + 3x + 40 = 180", note: "Angles on a straight line sum to 180°" },
-          { num: "Q1b", ans: "x = 22°", note: "5x + 50 = 180 → 5x = 130 → x = 26 (check: 5(26)+50=180 ✓)" },
+          { num: "Q1b", ans: "x = 26°", note: "5x + 50 = 180 → 5x = 130 → x = 26 (check: 5(26)+50=180 ✓)" },
           { num: "Q1c", ans: "2(26)+10 = 62°; 3(26) = 78°; 40°", note: "Substitute x = 26 into each expression; verify: 62+78+40 = 180 ✓" },
           { num: "Q2a", ans: "b = 106°", note: "Angles on a straight line: 180° − 74° = 106°" },
           { num: "Q2b", ans: "c = 74°", note: "Vertically opposite angles: c = a = 74°" },

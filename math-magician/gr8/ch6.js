@@ -255,7 +255,7 @@ MathMagician.registerChapter(6, {
       fullName: "Substitution into algebraic expressions",
       lesson: {
         heading: "Substitution",
-        sub: "Chapter 6 · Topic 5",
+        sub: "Chapter 6 · Topic 6",
         body: `
           <p><strong>Substitution</strong> means replacing a variable with a given number and evaluating the expression. It is used to check answers and in real-world formulas.</p>
           <div class="def-box">
@@ -364,7 +364,7 @@ MathMagician.registerChapter(6, {
       },
       questions: [
         { type: "mc", text: "Simplify: <span class='math'>5x² − 3x + 2x² − x + 4</span>", options: ["7x² − 4x + 4", "7x² + 4x + 4", "3x² − 4x + 4", "7x² − 4x"], answer: 0, topic: "Mixed" },
-        { type: "mc", text: "Expand and simplify: <span class='math'>3x(x − 2) − (x² − 4x)</span>", options: ["2x² − 2x", "2x² + 2x", "4x² − 2x", "2x² − 10x"], answer: 1, topic: "Mixed" },
+        { type: "mc", text: "Expand and simplify: <span class='math'>3x(x − 2) − (x² − 4x)</span>", options: ["2x² − 2x", "2x² + 2x", "4x² − 2x", "2x² − 10x"], answer: 0, topic: "Mixed" },
         { type: "input", text: "If a = −1 and b = 3, evaluate <span class='math'>2a² − ab + b²</span>", answer: "14", topic: "Mixed" },
         { type: "mc", text: "Simplify: <span class='math'>(3x² + x − 5) − (x² − 3x + 2)</span>", options: ["2x² − 2x − 3", "2x² + 4x − 7", "4x² + 4x − 7", "2x² + 4x − 3"], answer: 1, topic: "Mixed" },
         { type: "input", text: "Expand: <span class='math'>−4x(2x² − 3x + 1)</span>. What is the coefficient of x²?", answer: "12", topic: "Mixed" },

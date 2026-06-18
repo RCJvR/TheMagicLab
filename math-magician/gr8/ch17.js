@@ -257,7 +257,7 @@ MathMagician.registerChapter(17, {
       fullName: "Tree diagrams for compound events",
       lesson: {
         heading: "Tree diagrams for compound events",
-        sub: "Chapter 17 · Topic 3",
+        sub: "Chapter 17 · Topic 4",
         body: `
           <p>A <strong>tree diagram</strong> is a visual tool for listing all possible outcomes of a <strong>compound event</strong> — an experiment with two or more stages. Each branch represents one possible outcome at each stage.</p>
 
