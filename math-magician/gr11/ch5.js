@@ -117,6 +117,130 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>The average gradient is the slope of the <strong>chord</strong> between two points — it approximates the instantaneous rate of change. As x₁ → x₂, it approaches the derivative (Grade 12 calculus).</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Function Grapher — Quadratic · Hyperbola · Exponential</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Uses the inputs from the calculator above — click <strong>Plot Graph</strong> after entering parameters to see the curve and average-gradient chord.</p>
+            <button id="g11c5gBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Plot Graph</button>
+            <canvas id="g11c5gcv" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g11c5gcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              const fmt=n=>(Math.round(n*100)/100)+'';
+
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+
+              function getFn(){
+                const t=document.getElementById('g11c5ftype').value;
+                if(t==='quad'){const a=gv('g11c5qa'),b=gv('g11c5qb'),c=gv('g11c5qc');return{fn:x=>a*x*x+b*x+c,type:'quad',a,b,c};}
+                if(t==='hyp'){const a=gv('g11c5ha'),p=gv('g11c5hp'),q=gv('g11c5hq');return{fn:x=>a/(x-p)+q,type:'hyp',a,p,q};}
+                const a=gv('g11c5ea'),b=gv('g11c5eb'),q=gv('g11c5eq');
+                return{fn:x=>a*Math.pow(b,x)+q,type:'exp',a,b,q};
+              }
+
+              function draw(){
+                const{fn,type,a,p,q,b:bv,c}=getFn();
+                const x1=gv('g11c5x1'),x2=gv('g11c5x2');
+                // Determine x range
+                let xMn,xMx;
+                if(type==='quad'){const vx=-bv/(2*a)||0;xMn=Math.min(vx,x1,x2)-6;xMx=Math.max(vx,x1,x2)+6;}
+                else if(type==='hyp'){xMn=-9;xMx=9;}
+                else{xMn=Math.min(-6,x1-1);xMx=Math.max(6,x2+1);}
+
+                // Estimate y range by sampling
+                const samples=[];
+                for(let i=0;i<=60;i++){const x=xMn+(i/60)*(xMx-xMn);const y=fn(x);if(isFinite(y))samples.push(y);}
+                let yMn=Math.min(...samples)-2,yMx=Math.max(...samples)+2;
+                if(!isFinite(yMn))yMn=-10;if(!isFinite(yMx))yMx=10;
+                yMn=Math.min(yMn,-2);yMx=Math.max(yMx,2);
+
+                const px=x=>(x-xMn)/(xMx-xMn)*W;
+                const py=y=>H-(y-yMn)/(yMx-yMn)*H;
+
+                ctx.clearRect(0,0,W,H);
+                // grid
+                const xStep=Math.max(1,Math.round((xMx-xMn)/8));
+                for(let x=Math.ceil(xMn/xStep)*xStep;x<=xMx;x+=xStep){
+                  ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=x===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
+                }
+                const yStep=Math.max(1,Math.round((yMx-yMn)/8));
+                for(let y=Math.ceil(yMn/yStep)*yStep;y<=yMx;y+=yStep){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                }
+                // axis labels
+                ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='10px monospace';
+                const ay0=Math.max(12,Math.min(py(0)+13,H-4));
+                const ax0=Math.max(20,Math.min(px(0)-4,W-20));
+                ctx.textAlign='center';
+                for(let x=Math.ceil(xMn/xStep)*xStep;x<=xMx;x+=xStep){if(x!==0)ctx.fillText(x,px(x),ay0);}
+                ctx.textAlign='right';
+                for(let y=Math.ceil(yMn/yStep)*yStep;y<=yMx;y+=yStep){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+
+                // asymptotes
+                if(type==='hyp'){
+                  ctx.save();ctx.strokeStyle='rgba(252,165,165,0.45)';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+                  ctx.beginPath();ctx.moveTo(px(p),0);ctx.lineTo(px(p),H);ctx.stroke();
+                  ctx.beginPath();ctx.moveTo(0,py(q));ctx.lineTo(W,py(q));ctx.stroke();
+                  ctx.restore();
+                  ctx.fillStyle='#fca5a5';ctx.font='bold 10px monospace';ctx.textAlign='left';
+                  ctx.fillText('x='+fmt(p),px(p)+4,13);ctx.textAlign='right';ctx.fillText('y='+fmt(q),W-3,py(q)-5);
+                }
+                if(type==='exp'){
+                  ctx.save();ctx.strokeStyle='rgba(252,165,165,0.40)';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+                  ctx.beginPath();ctx.moveTo(0,py(q));ctx.lineTo(W,py(q));ctx.stroke();ctx.restore();
+                  ctx.fillStyle='#fca5a5';ctx.font='bold 10px monospace';ctx.textAlign='right';ctx.fillText('y='+fmt(q),W-3,py(q)-5);
+                }
+
+                // curve
+                ctx.strokeStyle='#6ee7b7';ctx.lineWidth=2.5;ctx.lineJoin='round';
+                ctx.beginPath();let on=false,pv=null;
+                const N=W*2;
+                for(let i=0;i<=N;i++){
+                  const x=xMn+(i/N)*(xMx-xMn);
+                  const y=fn(x);
+                  if(!isFinite(y)||y<yMn-40||y>yMx+40){on=false;pv=null;continue;}
+                  if(type==='hyp'&&pv!==null&&Math.abs(y-pv)>(yMx-yMn)*0.5){on=false;}
+                  if(!on){ctx.moveTo(px(x),py(y));on=true;}else ctx.lineTo(px(x),py(y));
+                  pv=y;
+                }
+                ctx.stroke();
+
+                // average gradient chord
+                if(!isNaN(x1)&&!isNaN(x2)&&x1!==x2){
+                  const y1v=fn(x1),y2v=fn(x2);
+                  if(isFinite(y1v)&&isFinite(y2v)){
+                    const m=(y2v-y1v)/(x2-x1);
+                    ctx.strokeStyle='rgba(252,211,77,0.80)';ctx.lineWidth=2;ctx.setLineDash([6,4]);
+                    ctx.beginPath();ctx.moveTo(px(x1),py(y1v));ctx.lineTo(px(x2),py(y2v));ctx.stroke();
+                    ctx.setLineDash([]);
+                    // dots
+                    [[x1,y1v,'#a5b4fc'],[x2,y2v,'#fca5a5']].forEach(([x,y,c])=>{
+                      ctx.fillStyle=c;ctx.beginPath();ctx.arc(px(x),py(y),5.5,0,Math.PI*2);ctx.fill();
+                      ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                    });
+                    // slope label on chord
+                    const ang=Math.atan2(py(y2v)-py(y1v),px(x2)-px(x1));
+                    ctx.save();ctx.translate((px(x1)+px(x2))/2,(py(y1v)+py(y2v))/2);ctx.rotate(ang);
+                    ctx.fillStyle='#fcd34d';ctx.font='bold 10px monospace';ctx.textAlign='center';
+                    ctx.fillText('m_avg='+fmt(m),0,-9);ctx.restore();
+                  }
+                }
+              }
+
+              document.getElementById('g11c5gBtn').addEventListener('click',draw);
+              draw();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -253,6 +377,132 @@ MathMagician.registerChapter(5, {
           </div>
 
           <div class="tip-box"><span class="tip-icon">💡</span><span>Phase shift = −p/b. A positive phase shift means the graph moves <strong>right</strong>. For y = sin(2x − 60°): phase shift = −(−60°)/2 = +30° to the right.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Trig Function Grapher — Period · Amplitude · Phase Shift</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Uses parameters from the calculator above — shows the wave with period markers, max/min dots, and phase shift annotation.</p>
+            <button id="g11c5t2gBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Plot Graph</button>
+            <canvas id="g11c5t2gcv" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g11c5t2gcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              const fmt=n=>(Math.round(n*10)/10)+'';
+              const toR=d=>d*Math.PI/180;
+
+              function draw(){
+                const fn=document.getElementById('g11c5t2trig').value;
+                const a=parseFloat(document.getElementById('g11c5t2a').value);
+                const b=parseFloat(document.getElementById('g11c5t2b').value);
+                const p=parseFloat(document.getElementById('g11c5t2p').value);
+                const q=parseFloat(document.getElementById('g11c5t2q').value);
+                if([a,b,p,q].some(isNaN)||b===0)return;
+
+                const period=fn==='tan'?180/Math.abs(b):360/Math.abs(b);
+                const phaseShift=-p/b;
+                const amp=Math.abs(a);
+
+                // x range: show 2 full periods, centred so phase shift is visible
+                const xMn=Math.min(-period/2,phaseShift-period/4);
+                const xMx=xMn+period*2;
+                const yMn=fn==='tan'?-5:Math.min(q-amp-1,-3);
+                const yMx=fn==='tan'?5:Math.max(q+amp+1,3);
+
+                const px=x=>(x-xMn)/(xMx-xMn)*W;
+                const py=y=>H-(y-yMn)/(yMx-yMn)*H;
+
+                ctx.clearRect(0,0,W,H);
+
+                // degree grid — label at multiples of period/4
+                const step=period/4;
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){
+                  const isAxis=Math.abs(x)<0.001;
+                  ctx.strokeStyle=isAxis?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=isAxis?1.5:1;
+                  ctx.beginPath();ctx.moveTo(px(x),0);ctx.lineTo(px(x),H);ctx.stroke();
+                }
+                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,py(y));ctx.lineTo(W,py(y));ctx.stroke();
+                }
+
+                // x axis labels in degrees
+                ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='10px monospace';
+                const ay0=Math.max(12,Math.min(py(0)+13,H-4));
+                const ax0=Math.max(22,Math.min(px(0)-4,W-20));
+                ctx.textAlign='center';
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){
+                  if(Math.abs(x)>0.1)ctx.fillText(Math.round(x)+'°',px(x),ay0);
+                }
+                ctx.textAlign='right';
+                for(let y=Math.ceil(yMn);y<=Math.floor(yMx);y++){if(y!==0)ctx.fillText(y,ax0,py(y)+4);}
+
+                // period markers (vertical dashed at each full period)
+                for(let n=-2;n<=3;n++){
+                  const xm=phaseShift+n*period;
+                  if(xm<xMn||xm>xMx)continue;
+                  ctx.save();ctx.strokeStyle='rgba(165,180,252,0.25)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
+                  ctx.beginPath();ctx.moveTo(px(xm),0);ctx.lineTo(px(xm),H);ctx.stroke();ctx.restore();
+                }
+
+                // asymptote y=q (dashed)
+                if(fn!=='tan'&&Math.abs(q)>0.01){
+                  ctx.save();ctx.strokeStyle='rgba(252,165,165,0.30)';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+                  ctx.beginPath();ctx.moveTo(0,py(q));ctx.lineTo(W,py(q));ctx.stroke();ctx.restore();
+                }
+
+                // curve
+                const trigFns={sin:d=>a*Math.sin(toR(b*d+p))+q,cos:d=>a*Math.cos(toR(b*d+p))+q,tan:d=>a*Math.tan(toR(b*d+p))+q};
+                const curveFn=trigFns[fn];
+                ctx.strokeStyle='#6ee7b7';ctx.lineWidth=2.5;ctx.lineJoin='round';
+                ctx.beginPath();let on=false,pv=null;
+                const N=W*3;
+                for(let i=0;i<=N;i++){
+                  const x=xMn+(i/N)*(xMx-xMn);
+                  const y=curveFn(x);
+                  if(!isFinite(y)||y<yMn-20||y>yMx+20){on=false;pv=null;continue;}
+                  if(fn==='tan'&&pv!==null&&Math.abs(y-pv)>(yMx-yMn)*0.5){on=false;}
+                  if(!on){ctx.moveTo(px(x),py(y));on=true;}else ctx.lineTo(px(x),py(y));
+                  pv=y;
+                }
+                ctx.stroke();
+
+                // max/min dots for sin/cos
+                if(fn!=='tan'){
+                  const maxY=a>0?q+amp:q-amp,minY=a>0?q-amp:q+amp;
+                  // scan for max/min peaks
+                  const peaks=[];
+                  for(let n=-3;n<=5;n++){
+                    let xMax,xMin;
+                    if(fn==='sin'){xMax=(a>0?90:270)/b-p/b+n*period;xMin=(a>0?270:90)/b-p/b+n*period;}
+                    else{xMax=(a>0?0:180)/b-p/b+n*period;xMin=(a>0?180:0)/b-p/b+n*period;}
+                    if(xMax>=xMn&&xMax<=xMx)peaks.push([xMax,maxY,'#6ee7b7','max']);
+                    if(xMin>=xMn&&xMin<=xMx)peaks.push([xMin,minY,'#fca5a5','min']);
+                  }
+                  peaks.forEach(([x,y,c,l])=>{
+                    ctx.fillStyle=c;ctx.beginPath();ctx.arc(px(x),py(y),5,0,Math.PI*2);ctx.fill();
+                    ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                    ctx.fillStyle=c;ctx.font='bold 10px monospace';ctx.textAlign='left';
+                    ctx.fillText(l+' '+fmt(y),px(x)+7,py(y)+(l==='min'?14:-6));
+                  });
+                }
+
+                // annotations (top-left info)
+                const info=['Period: '+fmt(period)+'°','Amplitude: '+(fn==='tan'?'—':fmt(amp)),'Phase shift: '+fmt(Math.abs(phaseShift))+'° '+(phaseShift>=0?'right':'left'),'Range: '+(fn==='tan'?'ℝ':'['+fmt(q-amp)+', '+fmt(q+amp)+']')];
+                ctx.fillStyle='rgba(165,180,252,0.60)';ctx.font='10px monospace';ctx.textAlign='left';
+                info.forEach((t,i)=>ctx.fillText(t,7,14+i*14));
+              }
+
+              document.getElementById('g11c5t2gBtn').addEventListener('click',draw);
+              draw();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [

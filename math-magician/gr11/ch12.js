@@ -101,6 +101,112 @@ MathMagician.registerChapter(12, {
             })();
             </script>
           </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Feasible Region Grapher</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Uses the corner points and objective function from the calculator above — click <strong>Plot</strong> to see the feasible polygon, corner points, and search lines for P.</p>
+            <button id="g11c12gBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Plot Feasible Region</button>
+            <canvas id="g11c12gcv" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g11c12gcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              const fmt=n=>(Math.round(n*100)/100)+'';
+
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+
+              function convexHull(pts){
+                if(pts.length<3)return pts;
+                pts=[...pts].sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+                const cross=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+                const lower=[],upper=[];
+                for(const p of pts){while(lower.length>=2&&cross(lower[lower.length-2],lower[lower.length-1],p)<=0)lower.pop();lower.push(p);}
+                for(const p of [...pts].reverse()){while(upper.length>=2&&cross(upper[upper.length-2],upper[upper.length-1],p)<=0)upper.pop();upper.push(p);}
+                upper.pop();lower.pop();
+                return lower.concat(upper);
+              }
+
+              function draw(){
+                const a=gv('g11c12a'),b=gv('g11c12b');
+                const raw=[['A',gv('g11c12x1'),gv('g11c12y1')],['B',gv('g11c12x2'),gv('g11c12y2')],['C',gv('g11c12x3'),gv('g11c12y3')],['D',gv('g11c12x4'),gv('g11c12y4')]];
+                const pts=raw.filter(([,x,y])=>!isNaN(x)&&!isNaN(y));
+                if(pts.length<2)return;
+
+                const pvals=pts.map(([l,x,y])=>({l,x,y,p:a*x+b*y}));
+                const maxP=Math.max(...pvals.map(v=>v.p)),minP=Math.min(...pvals.map(v=>v.p));
+
+                const allX=pts.map(p=>p[1]),allY=pts.map(p=>p[2]);
+                const pad=Math.max(2,...allX,...allY)*0.15+1;
+                const xMn=Math.min(0,...allX)-pad,xMx=Math.max(...allX)+pad;
+                const yMn=Math.min(0,...allY)-pad,yMx=Math.max(...allY)+pad;
+                const pxC=x=>(x-xMn)/(xMx-xMn)*W;
+                const pyC=y=>H-(y-yMn)/(yMx-yMn)*H;
+
+                ctx.clearRect(0,0,W,H);
+                // grid
+                const step=Math.max(1,Math.round((xMx-xMn)/8));
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){
+                  ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=x===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(pxC(x),0);ctx.lineTo(pxC(x),H);ctx.stroke();
+                }
+                for(let y=Math.ceil(yMn/step)*step;y<=yMx;y+=step){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';
+                  ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,pyC(y));ctx.lineTo(W,pyC(y));ctx.stroke();
+                }
+                ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='10px monospace';
+                const ay0=Math.max(12,Math.min(pyC(0)+13,H-4));
+                const ax0=Math.max(20,Math.min(pxC(0)-4,W-20));
+                ctx.textAlign='center';
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){if(x!==0)ctx.fillText(x,pxC(x),ay0);}
+                ctx.textAlign='right';
+                for(let y=Math.ceil(yMn/step)*step;y<=yMx;y+=step){if(y!==0)ctx.fillText(y,ax0,pyC(y)+4);}
+
+                // feasible region polygon (convex hull of corner points)
+                const hull=convexHull(pts.map(([,x,y])=>[x,y]));
+                ctx.fillStyle='rgba(99,102,241,0.18)';
+                ctx.beginPath();ctx.moveTo(pxC(hull[0][0]),pyC(hull[0][1]));
+                hull.slice(1).forEach(([x,y])=>ctx.lineTo(pxC(x),pyC(y)));
+                ctx.closePath();ctx.fill();
+                ctx.strokeStyle='rgba(165,180,252,0.55)';ctx.lineWidth=1.5;ctx.stroke();
+
+                // objective function search lines through each corner
+                if(!isNaN(a)&&!isNaN(b)){
+                  pvals.forEach(({x,y,p})=>{
+                    const isOpt=p===maxP||p===minP;
+                    ctx.save();ctx.strokeStyle=isOpt?'rgba(252,211,77,0.50)':'rgba(165,180,252,0.22)';
+                    ctx.lineWidth=isOpt?1.5:1;ctx.setLineDash(isOpt?[]:[ 4,4]);
+                    // line P=ax+by=p → y=(p-ax)/b if b≠0, else x=p/a
+                    if(Math.abs(b)>0.001){
+                      const fx=xx=>(p-a*xx)/b;
+                      ctx.beginPath();ctx.moveTo(pxC(xMn),pyC(fx(xMn)));ctx.lineTo(pxC(xMx),pyC(fx(xMx)));ctx.stroke();
+                    }
+                    ctx.restore();
+                  });
+                }
+
+                // corner point dots and labels
+                pvals.forEach(({l,x,y,p})=>{
+                  const isMax=p===maxP&&pvals.length>1,isMin=p===minP&&pvals.length>1&&minP!==maxP;
+                  const color=isMax?'#6ee7b7':isMin?'#fca5a5':'#a5b4fc';
+                  ctx.fillStyle=color;ctx.beginPath();ctx.arc(pxC(x),pyC(y),6,0,Math.PI*2);ctx.fill();
+                  ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                  ctx.fillStyle=color;ctx.font='bold 10px monospace';ctx.textAlign='left';
+                  const tag=isMax?' ★MAX':isMin?' ★MIN':'';
+                  ctx.fillText(l+'('+fmt(x)+','+fmt(y)+') P='+fmt(p)+tag,pxC(x)+8,pyC(y)-8);
+                });
+              }
+
+              document.getElementById('g11c12gBtn').addEventListener('click',draw);
+              draw();
+            })();
+            </script>
+          </div>
         `
       },
       questions: [
@@ -244,6 +350,109 @@ MathMagician.registerChapter(12, {
               document.getElementById('g11c12t2addPt').addEventListener('click',()=>{pts.push([0,0]);render();});
               document.getElementById('g11c12t2Btn').addEventListener('click',calc);
               render(); calc();
+            })();
+            </script>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);margin-top:12px;">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 LP Feasible Region & Search Line Grapher</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Uses the points and objective function from the optimiser above — plots the feasible polygon, search lines, and highlights the optimal corner point.</p>
+            <button id="g11c12t2gBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:6px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Plot Graph</button>
+            <canvas id="g11c12t2gcv" style="width:100%;max-width:520px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);"></canvas>
+            <script>
+            (function(){
+              const cv=document.getElementById('g11c12t2gcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=520,H=320;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              const fmt=n=>(Math.round(n*100)/100)+'';
+
+              function convexHull(pts){
+                if(pts.length<3)return pts;
+                const s=[...pts].sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+                const cross=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+                const lo=[],hi=[];
+                for(const p of s){while(lo.length>=2&&cross(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p);}
+                for(const p of [...s].reverse()){while(hi.length>=2&&cross(hi[hi.length-2],hi[hi.length-1],p)<=0)hi.pop();hi.push(p);}
+                hi.pop();lo.pop();return lo.concat(hi);
+              }
+
+              function draw(){
+                const a=parseFloat(document.getElementById('g11c12t2a').value);
+                const b=parseFloat(document.getElementById('g11c12t2b').value);
+                const goal=document.getElementById('g11c12t2goal').value;
+                const rows=document.getElementById('g11c12t2pts').querySelectorAll('div');
+                const rawPts=[];
+                rows.forEach((row,i)=>{
+                  const [xi,yi]=row.querySelectorAll('input');
+                  const x=parseFloat(xi.value),y=parseFloat(yi.value);
+                  if(!isNaN(x)&&!isNaN(y))rawPts.push({l:String.fromCharCode(65+i),x,y,p:a*x+b*y});
+                });
+                if(rawPts.length<2)return;
+
+                const vals=rawPts.map(v=>v.p);
+                const optV=goal==='max'?Math.max(...vals):Math.min(...vals);
+
+                const allX=rawPts.map(v=>v.x),allY=rawPts.map(v=>v.y);
+                const pad=Math.max(2,...allX,...allY)*0.15+1;
+                const xMn=Math.min(0,...allX)-pad,xMx=Math.max(...allX)+pad;
+                const yMn=Math.min(0,...allY)-pad,yMx=Math.max(...allY)+pad;
+                const pxC=x=>(x-xMn)/(xMx-xMn)*W;
+                const pyC=y=>H-(y-yMn)/(yMx-yMn)*H;
+
+                ctx.clearRect(0,0,W,H);
+                const step=Math.max(1,Math.round((xMx-xMn)/8));
+                for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){
+                  ctx.strokeStyle=x===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';ctx.lineWidth=x===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(pxC(x),0);ctx.lineTo(pxC(x),H);ctx.stroke();
+                }
+                for(let y=Math.ceil(yMn/step)*step;y<=yMx;y+=step){
+                  ctx.strokeStyle=y===0?'rgba(165,180,252,0.50)':'rgba(99,102,241,0.14)';ctx.lineWidth=y===0?1.5:1;
+                  ctx.beginPath();ctx.moveTo(0,pyC(y));ctx.lineTo(W,pyC(y));ctx.stroke();
+                }
+                ctx.fillStyle='rgba(165,180,252,0.50)';ctx.font='10px monospace';
+                const ay0=Math.max(12,Math.min(pyC(0)+13,H-4)),ax0=Math.max(20,Math.min(pxC(0)-4,W-20));
+                ctx.textAlign='center';for(let x=Math.ceil(xMn/step)*step;x<=xMx;x+=step){if(x!==0)ctx.fillText(x,pxC(x),ay0);}
+                ctx.textAlign='right';for(let y=Math.ceil(yMn/step)*step;y<=yMx;y+=step){if(y!==0)ctx.fillText(y,ax0,pyC(y)+4);}
+
+                // feasible polygon
+                const hull=convexHull(rawPts.map(v=>[v.x,v.y]));
+                ctx.fillStyle='rgba(99,102,241,0.18)';
+                ctx.beginPath();ctx.moveTo(pxC(hull[0][0]),pyC(hull[0][1]));
+                hull.slice(1).forEach(([x,y])=>ctx.lineTo(pxC(x),pyC(y)));
+                ctx.closePath();ctx.fill();
+                ctx.strokeStyle='rgba(165,180,252,0.55)';ctx.lineWidth=1.5;ctx.stroke();
+
+                // search lines
+                if(!isNaN(a)&&!isNaN(b)&&Math.abs(b)>0.001){
+                  rawPts.forEach(({p,p:pv})=>{
+                    const isOpt=pv===optV;
+                    ctx.save();ctx.strokeStyle=isOpt?'rgba(252,211,77,0.65)':'rgba(165,180,252,0.20)';
+                    ctx.lineWidth=isOpt?2:1;if(!isOpt)ctx.setLineDash([4,4]);
+                    const fy=xx=>(pv-a*xx)/b;
+                    ctx.beginPath();ctx.moveTo(pxC(xMn),pyC(fy(xMn)));ctx.lineTo(pxC(xMx),pyC(fy(xMx)));ctx.stroke();
+                    ctx.restore();
+                  });
+                }
+
+                // corner dots
+                rawPts.forEach(({l,x,y,p})=>{
+                  const isOpt=p===optV;
+                  const color=isOpt?(goal==='max'?'#6ee7b7':'#fca5a5'):'#a5b4fc';
+                  ctx.fillStyle=color;ctx.beginPath();ctx.arc(pxC(x),pyC(y),6,0,Math.PI*2);ctx.fill();
+                  ctx.strokeStyle='rgba(8,4,24,0.9)';ctx.lineWidth=1.2;ctx.stroke();
+                  ctx.fillStyle=color;ctx.font='bold 10px monospace';ctx.textAlign='left';
+                  ctx.fillText(l+'('+fmt(x)+','+fmt(y)+') P='+fmt(p)+(isOpt?' ★':''),pxC(x)+8,pyC(y)-8);
+                });
+                // legend
+                ctx.fillStyle='rgba(165,180,252,0.60)';ctx.font='10px monospace';ctx.textAlign='left';
+                ctx.fillText((goal==='max'?'Maximise':'Minimise')+' P = '+a+'x + '+b+'y',7,14);
+              }
+
+              document.getElementById('g11c12t2gBtn').addEventListener('click',draw);
+              draw();
             })();
             </script>
           </div>
