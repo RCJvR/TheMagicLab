@@ -4114,6 +4114,74 @@ function validateBraces(code) {
   return { ok: true };
 }
 
+// ── User-defined method inlining ─────────────────────────────────────────────
+// Finds all static methods outside main(), then substitutes their bodies
+// into call sites inside main() with parameter values replaced.
+// This lets students write helper methods without a full interpreter.
+
+function extractUserMethods(rawCode) {
+  const methods = {};
+  const pat = /\bstatic\s+(?:void|int|double|boolean|String)\s+(\w+)\s*\(([^)]*)\)\s*\{/g;
+  let m;
+  while ((m = pat.exec(rawCode)) !== null) {
+    if (m[1] === 'main') continue;
+    const name = m[1];
+    const paramsRaw = m[2].trim();
+    const params = paramsRaw
+      ? paramsRaw.split(',').map(p => {
+          const parts = p.trim().split(/\s+/);
+          return { type: parts[0], paramName: parts[1] };
+        }).filter(p => p.paramName)
+      : [];
+    let depth = 1, i = m.index + m[0].length;
+    while (i < rawCode.length && depth > 0) {
+      if (rawCode[i] === '{') depth++;
+      else if (rawCode[i] === '}') { depth--; if (depth === 0) break; }
+      i++;
+    }
+    methods[name] = { params, body: rawCode.substring(m.index + m[0].length, i).trim() };
+  }
+  return methods;
+}
+
+function inlineMethodCalls(code, methods) {
+  if (!Object.keys(methods).length) return code;
+  for (let pass = 0; pass < 5; pass++) {
+    let changed = false;
+    for (const [name, method] of Object.entries(methods)) {
+      const callPat = new RegExp(`\\b${name}\\s*\\(([^)]*)\\)\\s*;`, 'g');
+      code = code.replace(callPat, (_, argsStr) => {
+        const args = (argsStr || '').split(',').map(a => a.trim());
+        let body = method.body;
+        // Substitute all parameters (both Pen and numeric)
+        method.params.forEach((p, i) => {
+          if (args[i] === undefined) return;
+          body = body.replace(new RegExp(`\\b${p.paramName}\\b`, 'g'), args[i]);
+        });
+        // Fold simple int declarations: int x = a OP b  →  int x = result
+        body = body.replace(
+          /\bint\s+(\w+)\s*=\s*(-?\d+)\s*([+\-*\/])\s*(-?\d+)/g,
+          (_, v, a, op, b) => {
+            const r = op==='+' ? +a + +b : op==='-' ? +a - +b :
+                      op==='*' ? +a * +b : Math.trunc(+a / +b);
+            return `int ${v} = ${r}`;
+          }
+        );
+        // Substitute local int constants so commands see plain numbers
+        const localVars = {};
+        body.replace(/\bint\s+(\w+)\s*=\s*(-?\d+)\s*;/g, (_, v, val) => { localVars[v] = val; });
+        Object.entries(localVars).forEach(([v, val]) => {
+          body = body.replace(new RegExp(`(?<![.\\w])${v}(?![\\w(])`, 'g'), val);
+        });
+        changed = true;
+        return body;
+      });
+    }
+    if (!changed) break;
+  }
+  return code;
+}
+
 // ── parseCommands (items 9, 16 fixed) ────────────────────────────────────────
 function parseCommands(rawCode) {
   // Item 9: require class + main wrapper
@@ -4171,6 +4239,9 @@ function parseCommands(rawCode) {
     i++;
   }
   let extractedCode = body.substring(0, i).trim();
+
+  // Inline user-defined static methods before the rest of the pipeline
+  extractedCode = inlineMethodCalls(extractedCode, extractUserMethods(rawCode));
 
   // Calculate how many editor lines appear before the main method body.
   // Used to convert expandLoops' internal line numbers to editor line numbers.
