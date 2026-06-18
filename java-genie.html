@@ -655,6 +655,123 @@
   color:#a5b4fc;
 }
 
+    /* ── Fill-in-blank quiz ──────────────────────────────────────────────── */
+    .tut-fill-blank {
+      margin-top: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .fill-code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      line-height: 21px;
+      background: #06091a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+    }
+    .fill-slot {
+      display: inline-block;
+      min-width: 64px;
+      height: 20px;
+      border-bottom: 2px solid #6366f1;
+      background: rgba(99,102,241,0.10);
+      border-radius: 4px 4px 0 0;
+      color: #a5b4fc;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 5px;
+      vertical-align: middle;
+      cursor: default;
+      transition: all 150ms;
+    }
+    .fill-slot.filled { color: #6ee7b7; border-color: #34d399; background: rgba(52,211,153,0.10); }
+    .fill-slot.wrong  { color: #fca5a5; border-color: #ef4444; background: rgba(239,68,68,0.10); }
+    .fill-bank { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+    .fill-token {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      padding: 5px 11px;
+      border-radius: 7px;
+      border: 1px solid rgba(99,102,241,0.35);
+      background: rgba(99,102,241,0.14);
+      color: #c7d2fe;
+      cursor: pointer;
+      transition: all 130ms;
+    }
+    .fill-token:hover:not(:disabled) { background: rgba(99,102,241,0.28); transform: translateY(-1px); }
+    .fill-token:disabled { opacity: 0.32; cursor: not-allowed; }
+    .fill-feedback { font-size: 12px; font-weight: 700; min-height: 18px; margin-top: 6px; }
+    .fill-feedback.correct { color: #6ee7b7; }
+    .fill-feedback.wrong   { color: #fca5a5; }
+
+    /* ── Parsons / click-to-order quiz ───────────────────────────────────── */
+    .tut-parsons {
+      margin-top: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .tut-parsons > p { font-size: 12px; color: rgba(221,225,240,0.65); margin-bottom: 10px; }
+    .parsons-bank { display: flex; flex-direction: column; gap: 5px; }
+    .parsons-answer {
+      display: flex; flex-direction: column; gap: 5px;
+      background: rgba(0,0,0,0.20);
+      border: 1px dashed rgba(255,255,255,0.14);
+      border-radius: 8px;
+      padding: 6px;
+      min-height: 36px;
+    }
+    .parsons-tile {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11.5px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(99,102,241,0.30);
+      background: rgba(99,102,241,0.10);
+      color: #c7d2fe;
+      cursor: pointer;
+      text-align: left;
+      transition: all 120ms;
+      white-space: pre;
+    }
+    .parsons-tile:hover { background: rgba(99,102,241,0.22); border-color: rgba(99,102,241,0.50); }
+    .parsons-tile.placed { cursor: default; }
+    .parsons-tile.correct-pos { background: rgba(52,211,153,0.14); border-color: rgba(52,211,153,0.5); color: #6ee7b7; }
+    .parsons-tile.wrong-pos   { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+    .parsons-controls { display: flex; gap: 8px; margin-top: 8px; }
+    .parsons-reset {
+      font-family: var(--font-body); font-size: 11px; font-weight: 700;
+      padding: 5px 11px; border-radius: 7px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: rgba(221,225,240,0.55);
+      cursor: pointer; transition: all 120ms;
+    }
+    .parsons-reset:hover { background: rgba(255,255,255,0.12); color: #dde1f0; }
+    .parsons-check {
+      font-family: var(--font-body); font-size: 11px; font-weight: 700;
+      padding: 5px 11px; border-radius: 7px;
+      border: 1px solid rgba(99,102,241,0.35); background: rgba(99,102,241,0.16); color: #c7d2fe;
+      cursor: pointer; transition: all 120ms;
+    }
+    .parsons-check:hover { background: rgba(99,102,241,0.28); }
+    .parsons-feedback { font-size: 12px; font-weight: 700; min-height: 18px; margin-top: 6px; }
+    .parsons-feedback.correct { color: #6ee7b7; }
+    .parsons-feedback.wrong   { color: #fca5a5; }
+
+    /* ── Error highlight lines (used in debug slides) ─────────────────────── */
+    .err-line {
+      display: block;
+      background: rgba(239,68,68,0.10);
+      border-left: 2px solid #ef4444;
+      margin-left: -14px;
+      padding-left: 12px;
+    }
+
     /* ══════════════════════════════════════════════════════════════
        MOBILE LAYOUT  ≤ 700px
        Switch from locked-viewport two-column to scrollable single-column
@@ -776,6 +893,9 @@
     <div class="header-actions">
       <button id="learnBtn" class="hdr-btn" style="background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.4);color:#a5b4fc;">
         <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn Java
+      </button>
+      <button id="advancedBtn" class="hdr-btn" style="background:rgba(236,72,153,0.18);border-color:rgba(236,72,153,0.40);color:#f9a8d4;">
+        <i data-lucide="layers" style="width:13px;height:13px;"></i> Advanced
       </button>
       <button id="challengesBtn" class="hdr-btn" style="background:rgba(245,158,11,0.18);border-color:rgba(245,158,11,0.40);color:#fcd34d;">
         <i data-lucide="zap" style="width:13px;height:13px;"></i> Challenges
@@ -2087,6 +2207,392 @@ n.move();</div>
     </div><!-- /tutorialBox -->
   </div><!-- /tutorialOverlay -->
 
+
+  <!-- ══ ADVANCED TUTORIAL OVERLAY ══ -->
+  <div id="advancedOverlay" class="hidden" style="position:fixed;inset:0;z-index:100;background:rgba(6,9,26,0.96);display:flex;align-items:stretch;justify-content:center;padding:16px;overflow-y:auto;backdrop-filter:blur(8px);animation:tutorialFadeIn 180ms ease;">
+    <div id="advancedBox" style="width:100%;max-width:780px;display:flex;flex-direction:column;background:#0f1629;border:1px solid rgba(236,72,153,0.25);border-radius:18px;overflow:hidden;align-self:flex-start;margin:auto;animation:tutorialScaleIn 220ms ease;">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;">
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:18px;background:linear-gradient(125deg,#fff 0%,#f9a8d4 55%,#fcd34d 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">✨ Advanced Java</h2>
+        <button class="tut-close" id="advClose">&#x2715;</button>
+      </div>
+
+      <div id="advancedProgress" style="display:flex;align-items:center;gap:6px;padding:10px 20px 0;flex-shrink:0;">
+        <div class="tut-dot" data-adv-slide="0"></div>
+        <div class="tut-dot" data-adv-slide="1"></div>
+        <div class="tut-dot" data-adv-slide="2"></div>
+        <div class="tut-dot" data-adv-slide="3"></div>
+        <div class="tut-dot" data-adv-slide="4"></div>
+        <div class="tut-dot" data-adv-slide="5"></div>
+        <div class="tut-dot" data-adv-slide="6"></div>
+        <div class="tut-dot" data-adv-slide="7"></div>
+        <div class="tut-dot" data-adv-slide="8"></div>
+        <div class="tut-dot" data-adv-slide="9"></div>
+        <span id="advancedStepLabel" style="margin-left:auto;font-size:11px;font-weight:600;color:rgba(221,225,240,0.35);">Step 1 of 10</span>
+      </div>
+
+      <div id="advancedSlides">
+
+        <!-- ── Adv 0: Reading Error Messages ── -->
+        <div class="tut-slide active">
+          <h3><span class="step-num">1</span> Reading Error Messages</h3>
+          <p>When your code has a problem, Java Genie shows an <strong>error message</strong> in the Output panel in red. Learning to read these messages is one of the most important skills a programmer can have — it tells you exactly what went wrong and where.</p>
+          <p>Every error message has three parts:</p>
+          <div class="tut-code"><span style="color:#fca5a5;">[Line 4] Expected ; but got 'n'</span></div>
+          <ul style="font-size:13px;line-height:1.9;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>[Line 4]</code> — the <strong>location</strong>. Go to that line — the bug is there or just before it.</li>
+            <li><code>Expected ;</code> — what <strong>Java needed</strong> to see at that point.</li>
+            <li><code>but got 'n'</code> — what <strong>Java actually found</strong> instead.</li>
+          </ul>
+          <div class="tut-callout tip">💡 Always read the <strong>line number first</strong>. Then look at what Java expected vs what it got. Together these two clues almost always point directly to the bug.</div>
+          <div class="tut-callout info">In Java Genie, the error line is also <strong>highlighted in red</strong> in the editor. Click on the error message in the Output panel to jump straight to the problem line.</div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 In the error <code>[Line 7] Expected } but got EOF</code>, what does "Line 7" tell you?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">The program ran for 7 steps before stopping</button>
+              <button class="quiz-btn" data-correct="true">The error was detected at line 7 of your code</button>
+              <button class="quiz-btn" data-correct="false">You need to add 7 more lines of code</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 What does "EOF" mean in an error message?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">Error Of Function</button>
+              <button class="quiz-btn" data-correct="true">End Of File — Java ran out of code to read while still expecting something</button>
+              <button class="quiz-btn" data-correct="false">Expected Or Failed</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 1: Missing Semicolons ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">2</span> The Missing Semicolon</h3>
+          <p>The <strong>missing semicolon</strong> is the most common Java mistake. Every statement must end with <code>;</code> — Java does not infer where a statement ends the way some other languages do.</p>
+          <div class="tut-code"><span class="err-line">    Pen n = new Pen()   <span style="color:#ef4444; font-style:italic;">← missing ;</span></span>    n.move();</div>
+          <div class="tut-code" style="margin-top:6px;"><span style="color:#fca5a5;">[Line 4] Expected ; but got 'n'</span></div>
+          <div class="tut-callout warn">⚠ The error reports <em>line 4</em> (<code>n.move()</code>), but the mistake is on <em>line 3</em>. Java only notices the problem when it hits the <strong>next</strong> line. Always check the line <strong>above</strong> the error.</div>
+          <div class="tut-callout tip">💡 Quick habit: before pressing Run, scan each statement and ask "does this end with a semicolon?"</div>
+          <p><strong>Interactive:</strong> click the correct token to fix the missing semicolon.</p>
+          <div class="tut-fill-blank" data-answer='[";"]'>
+            <div class="fill-code">Pen n = new Pen()<span class="fill-slot" data-slot="0"></span>
+n.move();</div>
+            <div class="fill-bank">
+              <button class="fill-token">;</button>
+              <button class="fill-token">.</button>
+              <button class="fill-token">)</button>
+              <button class="fill-token">}</button>
+            </div>
+            <button class="parsons-reset fill-reset" style="margin-top:6px;">↩ Reset</button>
+            <div class="fill-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 2: Mismatched Braces ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">3</span> Mismatched Braces { }</h3>
+          <p>Every opening brace <code>{</code> needs a matching closing brace <code>}</code>. Your class, your <code>main</code> method, every loop, and every if statement each need their own pair. Miss one and Java cannot make sense of the structure.</p>
+          <div class="tut-code">public class MyDrawing {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    for(int i = 0; i &lt; 4; i++) {
+      n.move();
+    }
+  }
+<span class="err-line">         <span style="color:#ef4444; font-style:italic;">← closing } for the class is missing</span></span></div>
+          <div class="tut-code" style="margin-top:6px;"><span style="color:#fca5a5;">[Line 8] Expected } but got EOF</span></div>
+          <div class="tut-callout tip">💡 <strong>Count your braces.</strong> In a complete program, the number of <code>{</code> and <code>}</code> must be exactly equal. If you have 4 opening braces, you need exactly 4 closing braces.</div>
+          <div class="tut-callout info">Java Genie highlights the line where it <em>noticed</em> the mismatch, but the missing brace is often much earlier. Check the structure top-down: class → main → loop → each needs a pair.</div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 A program has: class {, main {, for {. How many closing braces does it need?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">2</button>
+              <button class="quiz-btn" data-correct="true">3</button>
+              <button class="quiz-btn" data-correct="false">4</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 The error says line 8, but the missing brace is from line 2. Why?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">Java counts braces in reverse</button>
+              <button class="quiz-btn" data-correct="true">Java only notices the imbalance when it reaches the end of the file — it reports where it ran out of code, not where the brace went missing</button>
+              <button class="quiz-btn" data-correct="false">Line 8 has a typo that caused the problem</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 3: Unknown Variables & Classes ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">4</span> Unknown Variables and Classes</h3>
+          <p>Java needs to know about a variable <strong>before</strong> you use it. It also is <strong>case-sensitive</strong> — <code>Pen</code> and <code>pen</code> are completely different things.</p>
+          <div class="tut-code"><span class="err-line">    n.move();            <span style="color:#ef4444; font-style:italic;">← n doesn't exist yet!</span></span>    Pen n = new Pen();   // declaring n after using it</div>
+          <div class="tut-code" style="margin-top:6px;"><span style="color:#fca5a5;">Unknown method: n</span></div>
+          <div class="tut-code" style="margin-top:6px;"><span class="err-line">    pen n = new pen();   <span style="color:#ef4444; font-style:italic;">← wrong! Must be Pen (capital P)</span></span></div>
+          <div class="tut-callout warn">⚠ <strong>Three rules to remember:</strong><br>
+          1. Always declare a variable <em>before</em> you use it.<br>
+          2. Class names start with a capital: <code>Pen</code>, not <code>pen</code>.<br>
+          3. Variable names start with lowercase: <code>n</code>, not <code>N</code>.</div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 Which is the correct way to declare and use a Pen?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false"><code>n.move(); Pen n = new Pen();</code></button>
+              <button class="quiz-btn" data-correct="true"><code>Pen n = new Pen(); n.move();</code></button>
+              <button class="quiz-btn" data-correct="false"><code>pen n = new pen(); n.move();</code></button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 Is <code>Pen</code> the same as <code>pen</code> in Java?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">Yes — Java ignores capitalisation</button>
+              <button class="quiz-btn" data-correct="true">No — Java is case-sensitive; they are completely different identifiers</button>
+              <button class="quiz-btn" data-correct="false">Only inside methods</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 4: Infinite Loops ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">5</span> Infinite Loops</h3>
+          <p>An <strong>infinite loop</strong> happens when the loop condition <em>never</em> becomes false. Java Genie stops your program after 100 000 steps and shows an error.</p>
+          <div class="tut-code"><span class="err-line">for(int i = 0; i &lt; 10; i--) {   <span style="color:#ef4444; font-style:italic;">← i-- goes DOWN, not up!</span></span>  n.move();
+}</div>
+          <div class="tut-code" style="margin-top:6px;"><span style="color:#fca5a5;">Infinite loop? Exceeded 100000 steps.</span></div>
+          <p>Here <code>i</code> starts at 0 and decreases with each loop. It will always be less than 10, so the condition is always true and the loop never ends.</p>
+          <div class="tut-callout tip">💡 When you see "Exceeded 100000 steps", check:<br>
+          • The <strong>update</strong> part of your for loop — is it going the right direction? (<code>i++</code> not <code>i--</code>)<br>
+          • A <strong>while loop</strong> whose condition never becomes false.<br>
+          • A variable inside the loop that never gets updated.</div>
+          <p><strong>Interactive:</strong> click the correct update expression to fix the loop.</p>
+          <div class="tut-fill-blank" data-answer='["i++"]'>
+            <div class="fill-code">for(int i = 0; i &lt; 10; <span class="fill-slot" data-slot="0"></span>) {
+  n.move();
+}</div>
+            <div class="fill-bank">
+              <button class="fill-token">i++</button>
+              <button class="fill-token">i--</button>
+              <button class="fill-token">i = 0</button>
+              <button class="fill-token">i * 2</button>
+            </div>
+            <button class="parsons-reset fill-reset" style="margin-top:6px;">↩ Reset</button>
+            <div class="fill-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 5: if / else ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">6</span> Making Decisions with if / else</h3>
+          <p>So far your programs always do the same thing. An <strong>if statement</strong> lets your code <em>choose</em> what to do based on a condition — like a fork in the road.</p>
+          <div class="tut-code">int sides = 4;
+
+if (sides == 3) {
+  n.turnRight(120);   // triangle
+} else {
+  n.turnRight(90);    // square (or other)
+}</div>
+          <ul style="font-size:13px;line-height:1.9;color:rgba(221,225,240,0.75);padding-left:20px;margin-bottom:12px;">
+            <li><code>if (condition)</code> — if the condition is <strong>true</strong>, the first block runs.</li>
+            <li><code>else</code> — if the condition is <strong>false</strong>, the second block runs.</li>
+            <li><code>==</code> (double equals) — <strong>compares</strong> two values. Never confuse it with <code>=</code> (assignment)!</li>
+          </ul>
+          <div class="tut-callout warn">⚠ Very common mistake: writing <code>if (sides = 3)</code> instead of <code>if (sides == 3)</code>.<br>Single <code>=</code> assigns a value. Double <code>==</code> compares. Always use <code>==</code> in conditions.</div>
+          <div class="tut-callout info">You can chain multiple conditions with <code>else if</code>:<br><code>if (x == 1) { ... } else if (x == 2) { ... } else { ... }</code></div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 In <code>if (score == 10)</code>, what does <code>==</code> do?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">Assigns the value 10 to score</button>
+              <button class="quiz-btn" data-correct="true">Compares score to check if it equals 10</button>
+              <button class="quiz-btn" data-correct="false">Doubles the value of score</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 When the if condition is false and there is an else block, what happens?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">The if block runs anyway</button>
+              <button class="quiz-btn" data-correct="true">The else block runs instead</button>
+              <button class="quiz-btn" data-correct="false">The program skips both blocks and stops</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 6: if/else in a drawing ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">7</span> if / else in Action</h3>
+          <p>Let's use if/else to draw different shapes based on a variable. Change <code>sides</code> to 3, 5, or 6 and see how one program handles them all.</p>
+          <div class="tut-code">int sides = 4;
+int turn  = 360 / sides;   // auto-calculates turn angle
+
+for(int s = 0; s &lt; sides; s++) {
+  for(int step = 0; step &lt; 15; step++) { n.move(); }
+  n.turnRight(turn);
+}
+
+if (sides == 3) {
+  n.setColor(239, 68, 68);    // red for triangle
+} else if (sides == 4) {
+  n.setColor(37, 99, 235);    // blue for square
+} else {
+  n.setColor(16, 185, 129);   // green for anything else
+}</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn adv-tutorial-load" data-example="shape_chooser">📥 Load shape chooser</button>
+          </div>
+          <div class="tut-callout tip">🎮 Try changing <code>sides</code> to 3 (triangle, red), then 6 (hexagon, green). Notice <code>turn = 360 / sides</code> calculates the right angle automatically — no editing needed!</div>
+          <p><strong>Interactive:</strong> click the lines in the correct order to build the if/else block.</p>
+          <div class="tut-parsons" data-correct-order="0,1,2,3">
+            <p>Arrange the if/else that picks the pen colour:</p>
+            <div class="parsons-bank">
+              <div class="parsons-tile" data-idx="2">} else {</div>
+              <div class="parsons-tile" data-idx="0">if (sides == 3) {</div>
+              <div class="parsons-tile" data-idx="3">}</div>
+              <div class="parsons-tile" data-idx="1">  n.setColor(239, 68, 68);</div>
+            </div>
+            <div style="font-size:11px;color:rgba(221,225,240,0.45);margin:6px 0 3px;">Your answer — click tiles above to add, click placed tiles to remove:</div>
+            <div class="parsons-answer"></div>
+            <div class="parsons-controls">
+              <button class="parsons-reset">↩ Reset</button>
+              <button class="parsons-check">✓ Check order</button>
+            </div>
+            <div class="parsons-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 7: while loop ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">8</span> The while Loop</h3>
+          <p>A <strong>while loop</strong> repeats as long as a condition is true. It is similar to a for loop but works best when you do not know in advance how many times you need to repeat.</p>
+          <div class="tut-code">// for loop: best when you know the exact count
+for(int i = 0; i &lt; 20; i++) {
+  n.move();
+}
+
+// while loop: same result, but written differently
+int i = 0;
+while(i &lt; 20) {
+  n.move();
+  i++;   // ← you must update i yourself!
+}</div>
+          <div class="tut-callout warn">⚠ The most common while loop mistake: <strong>forgetting to update the variable</strong> inside the loop. If <code>i</code> never changes, the condition stays true forever — infinite loop!</div>
+          <div class="tut-callout info">💡 Quick rule:<br>• <strong>for loop</strong> — you know the exact number of repetitions.<br>• <strong>while loop</strong> — you repeat until something changes (e.g. user input, a flag, a calculated condition).</div>
+          <p><strong>Interactive:</strong> fill in the two blanks to complete the while loop that moves 20 steps.</p>
+          <div class="tut-fill-blank" data-answer='["i &lt; 20","i++"]'>
+            <div class="fill-code">int i = 0;
+while(<span class="fill-slot" data-slot="0"></span>) {
+  n.move();
+  <span class="fill-slot" data-slot="1"></span>;
+}</div>
+            <div class="fill-bank">
+              <button class="fill-token">i &lt; 20</button>
+              <button class="fill-token">i++</button>
+              <button class="fill-token">i &gt; 20</button>
+              <button class="fill-token">i--</button>
+            </div>
+            <button class="parsons-reset fill-reset" style="margin-top:6px;">↩ Reset</button>
+            <div class="fill-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 8: Own methods ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">9</span> Writing Your Own Methods</h3>
+          <p>So far you have only called methods that already exist. You can also <strong>write your own methods</strong> — giving a name to a group of instructions so you can reuse them without copying and pasting.</p>
+          <div class="tut-code">public class TwoSquares {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    drawSquare(n);            // call your method
+    n.penUp();
+    n.setPosition(40, 24);
+    n.penDown();
+    n.setColor(239, 68, 68);
+    drawSquare(n);            // call it again — different colour!
+  }
+
+  // Your method lives outside main, inside the class:
+  static void drawSquare(Pen n) {
+    for(int side = 0; side &lt; 4; side++) {
+      for(int step = 0; step &lt; 10; step++) { n.move(); }
+      n.turnRight(90);
+    }
+  }
+}</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn adv-tutorial-load" data-example="two_squares_method">📥 Load two squares example</button>
+          </div>
+          <div class="tut-callout info">💡 <code>static void drawSquare(Pen n)</code> — the method takes a <strong>parameter</strong>: the Pen object to draw with. This lets you reuse it wherever you like.</div>
+          <div class="tut-callout tip">🎮 Try calling <code>drawSquare(n);</code> three times in a row (after repositioning with <code>setPosition</code> each time). Three squares, zero repeated code!</div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 What is the main advantage of writing your own method?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">Methods make the program run faster</button>
+              <button class="quiz-btn" data-correct="true">You write the instructions once and call the method by name anywhere — no copying and pasting</button>
+              <button class="quiz-btn" data-correct="false">You can only call a method once</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+          <div class="tutorial-quiz">
+            <p class="quiz-question">🧩 Where does your own method live in the class?</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">Inside the main method</button>
+              <button class="quiz-btn" data-correct="true">Outside main but still inside the class body</button>
+              <button class="quiz-btn" data-correct="false">Before the class keyword</button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+        </div>
+
+        <!-- ── Adv 9: Methods with parameters ── -->
+        <div class="tut-slide">
+          <h3><span class="step-num">10</span> Methods with Parameters</h3>
+          <p>A method with <strong>parameters</strong> is like a machine with dials — you pass in different values each time you call it and it does different work. This makes your code extremely flexible.</p>
+          <div class="tut-code">// One method that draws ANY regular polygon:
+static void drawPolygon(Pen n, int sides, int stepSize) {
+  int turn = 360 / sides;
+  for(int s = 0; s &lt; sides; s++) {
+    for(int step = 0; step &lt; stepSize; step++) { n.move(); }
+    n.turnRight(turn);
+  }
+}
+
+// In main — call it with different arguments:
+drawPolygon(n, 3, 12);   // triangle, 12-step sides
+drawPolygon(n, 6,  8);   // hexagon,  8-step sides
+drawPolygon(n, 5, 10);   // pentagon, 10-step sides</div>
+          <div class="tut-callout info">💡 <strong>Parameter</strong> = variable in the method definition: <code>int sides</code>.<br><strong>Argument</strong> = the value you pass when calling: <code>3</code> in <code>drawPolygon(n, 3, 12)</code>.</div>
+          <div class="tut-callout tip">🎮 <strong>Challenge:</strong> copy <code>drawPolygon</code> into the editor and call it 4 times with different sides and sizes. How many shapes can you fit on the canvas?</div>
+          <p><strong>Interactive:</strong> click the correct tokens to complete the method call for a square with 15-step sides.</p>
+          <div class="tut-fill-blank" data-answer='["drawPolygon","n, 4, 15"]'>
+            <div class="fill-code">// Draw a square with 15-step sides:
+<span class="fill-slot" data-slot="0"></span>(<span class="fill-slot" data-slot="1"></span>);</div>
+            <div class="fill-bank">
+              <button class="fill-token">drawPolygon</button>
+              <button class="fill-token">n, 4, 15</button>
+              <button class="fill-token">drawSquare</button>
+              <button class="fill-token">n, 3, 12</button>
+            </div>
+            <button class="parsons-reset fill-reset" style="margin-top:6px;">↩ Reset</button>
+            <div class="fill-feedback"></div>
+          </div>
+        </div>
+
+      </div><!-- /advancedSlides -->
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0;">
+        <button class="tut-nav-btn" id="advPrev" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#b0b8d8;">&#x2190; Back</button>
+        <button class="tut-nav-btn" id="advNext" style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 3px 12px rgba(16,185,129,0.25);">Next &#x2192;</button>
+        <button class="tut-nav-btn hidden" id="advTryBtn" style="background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;box-shadow:0 3px 12px rgba(99,102,241,0.3);">
+          <i data-lucide="play" style="width:13px;height:13px;"></i> Close &amp; Code
+        </button>
+      </div>
+
+    </div><!-- /advancedBox -->
+  </div><!-- /advancedOverlay -->
+
 </div><!-- /appShell -->
 
 <script>
@@ -2973,6 +3479,52 @@ const examples = {
       // Flat baseline after beat
       draw.setDirection(Pen.RIGHT);
       for(int s = 0; s < tailFlat; s = s + 1) { draw.move(); }
+    }
+  }
+}`,
+
+  // ── shape_chooser (Advanced tutorial, slide 6) ───────────────────────────
+  shape_chooser:
+`public class ShapeChooser {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    int sides = 4;
+    int turn  = 360 / sides;
+    for(int s = 0; s < sides; s++) {
+      for(int step = 0; step < 15; step++) {
+        n.move();
+      }
+      n.turnRight(turn);
+    }
+    if (sides == 3) {
+      n.setColor(239, 68, 68);
+    } else if (sides == 4) {
+      n.setColor(37, 99, 235);
+    } else {
+      n.setColor(16, 185, 129);
+    }
+  }
+}`,
+
+  // ── two_squares_method (Advanced tutorial, slide 8) ──────────────────────
+  two_squares_method:
+`public class TwoSquares {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    drawSquare(n);
+    n.penUp();
+    n.setPosition(40, 24);
+    n.penDown();
+    n.setColor(239, 68, 68);
+    drawSquare(n);
+  }
+
+  static void drawSquare(Pen n) {
+    for(int side = 0; side < 4; side++) {
+      for(int step = 0; step < 10; step++) {
+        n.move();
+      }
+      n.turnRight(90);
     }
   }
 }`,
@@ -4535,6 +5087,180 @@ fileInput.addEventListener("change", e => {
 
 })();
 
+
+// ── Advanced Tutorial ─────────────────────────────────────────────────────────
+(function initAdvancedTutorial() {
+  const overlay   = document.getElementById('advancedOverlay');
+  const advClose  = document.getElementById('advClose');
+  const advPrev   = document.getElementById('advPrev');
+  const advNext   = document.getElementById('advNext');
+  const advTryBtn = document.getElementById('advTryBtn');
+  const advBtn    = document.getElementById('advancedBtn');
+  const slides    = Array.from(overlay.querySelectorAll('#advancedSlides .tut-slide'));
+  const dots      = Array.from(overlay.querySelectorAll('[data-adv-slide]'));
+  const stepLabel = document.getElementById('advancedStepLabel');
+  const total     = slides.length;
+  let cur = 0;
+  let quizzesReady = false;
+
+  // ── Interactive quiz initialisation (runs once on first open) ──────────────
+  function initQuizzes() {
+    if (quizzesReady) return;
+    quizzesReady = true;
+
+    // Fill-in-blank ────────────────────────────────────────────────────────────
+    overlay.querySelectorAll('.tut-fill-blank').forEach(container => {
+      const slots    = Array.from(container.querySelectorAll('.fill-slot'));
+      const tokens   = Array.from(container.querySelectorAll('.fill-token'));
+      const answers  = JSON.parse(container.dataset.answer);
+      const feedback = container.querySelector('.fill-feedback');
+
+      function reset() {
+        slots.forEach(s => { s.textContent = ''; s.classList.remove('filled', 'wrong'); });
+        tokens.forEach(t => { t.disabled = false; t.style.opacity = ''; });
+        if (feedback) { feedback.textContent = ''; feedback.className = 'fill-feedback'; }
+      }
+
+      tokens.forEach(token => {
+        token.addEventListener('click', () => {
+          if (token.disabled) return;
+          const nextSlot = slots.find(s => !s.classList.contains('filled'));
+          if (!nextSlot) return;
+          nextSlot.textContent = token.textContent;
+          nextSlot.classList.add('filled');
+          token.disabled = true;
+          token.style.opacity = '0.32';
+
+          if (slots.every(s => s.classList.contains('filled'))) {
+            const allOk = slots.every((s, i) => s.textContent.trim() === answers[i].trim());
+            if (feedback) {
+              feedback.textContent = allOk ? '✅ Correct! Well done.' : '❌ Not quite — reset and try again.';
+              feedback.className   = 'fill-feedback ' + (allOk ? 'correct' : 'wrong');
+            }
+            if (!allOk) slots.forEach((s, i) => s.classList.toggle('wrong', s.textContent.trim() !== answers[i].trim()));
+          }
+        });
+      });
+
+      container.querySelectorAll('.fill-reset').forEach(btn => btn.addEventListener('click', reset));
+    });
+
+    // Parsons ──────────────────────────────────────────────────────────────────
+    overlay.querySelectorAll('.tut-parsons').forEach(container => {
+      const bank         = container.querySelector('.parsons-bank');
+      const answerArea   = container.querySelector('.parsons-answer');
+      const correctOrder = container.dataset.correctOrder.split(',').map(s => s.trim());
+      const feedback     = container.querySelector('.parsons-feedback');
+
+      bank.addEventListener('click', e => {
+        const tile = e.target.closest('.parsons-tile');
+        if (!tile || tile.classList.contains('placed')) return;
+        tile.classList.add('placed');
+        answerArea.appendChild(tile);
+      });
+
+      answerArea.addEventListener('click', e => {
+        const tile = e.target.closest('.parsons-tile');
+        if (!tile) return;
+        tile.classList.remove('placed', 'correct-pos', 'wrong-pos');
+        bank.appendChild(tile);
+        if (feedback) { feedback.textContent = ''; feedback.className = 'parsons-feedback'; }
+      });
+
+      container.querySelector('.parsons-reset')?.addEventListener('click', () => {
+        Array.from(answerArea.querySelectorAll('.parsons-tile')).forEach(t => {
+          t.classList.remove('placed', 'correct-pos', 'wrong-pos');
+          bank.appendChild(t);
+        });
+        if (feedback) { feedback.textContent = ''; feedback.className = 'parsons-feedback'; }
+      });
+
+      container.querySelector('.parsons-check')?.addEventListener('click', () => {
+        const placed = Array.from(answerArea.querySelectorAll('.parsons-tile'));
+        if (placed.length !== correctOrder.length) {
+          if (feedback) { feedback.textContent = `⚠ Place all ${correctOrder.length} tiles first.`; feedback.className = 'parsons-feedback wrong'; }
+          return;
+        }
+        let allOk = true;
+        placed.forEach((tile, i) => {
+          const ok = tile.dataset.idx === correctOrder[i];
+          tile.classList.toggle('correct-pos', ok);
+          tile.classList.toggle('wrong-pos', !ok);
+          if (!ok) allOk = false;
+        });
+        if (feedback) {
+          feedback.textContent = allOk ? '✅ Perfect — correct order!' : '❌ Some tiles are out of order — try rearranging them!';
+          feedback.className   = 'parsons-feedback ' + (allOk ? 'correct' : 'wrong');
+        }
+      });
+    });
+
+    // adv-tutorial-load buttons ────────────────────────────────────────────────
+    overlay.querySelectorAll('.adv-tutorial-load').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (loadExampleIntoEditor(btn.dataset.example, 'Example loaded — press Run code.')) closeAdvanced();
+      });
+    });
+
+    // Multiple-choice (quiz-btn) inside advanced overlay ───────────────────────
+    overlay.addEventListener('click', e => {
+      const btn = e.target.closest('.quiz-btn');
+      if (!btn) return;
+      const quiz = btn.closest('.tutorial-quiz');
+      if (!quiz) return;
+      quiz.querySelectorAll('.quiz-btn').forEach(b => { b.classList.remove('quiz-correct','quiz-wrong'); b.style.outline = ''; });
+      const fb = quiz.querySelector('.quiz-feedback');
+      if (btn.dataset.correct === 'true') {
+        btn.classList.add('quiz-correct'); btn.style.outline = '2px solid #34d399';
+        if (fb) { fb.textContent = '✅ Correct!'; fb.className = 'quiz-feedback quiz-correct'; }
+      } else {
+        btn.classList.add('quiz-wrong'); btn.style.outline = '2px solid #ef4444';
+        if (fb) { fb.textContent = '❌ Not quite — try again!'; fb.className = 'quiz-feedback quiz-wrong'; }
+      }
+    });
+  }
+
+  // ── Navigation ─────────────────────────────────────────────────────────────
+  function goTo(index) {
+    index = Math.max(0, Math.min(total - 1, index));
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    dots.forEach((d, i) => { d.classList.toggle('active', i === index); d.classList.toggle('done', i < index); });
+    cur = index;
+    stepLabel.textContent = `Step ${cur + 1} of ${total}`;
+    advPrev.style.visibility = cur === 0 ? 'hidden' : 'visible';
+    const isLast = cur === total - 1;
+    advNext.classList.toggle('hidden', isLast);
+    if (advTryBtn) advTryBtn.classList.toggle('hidden', !isLast);
+  }
+
+  function openAdvanced() {
+    overlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    initQuizzes();
+    goTo(0);
+  }
+
+  function closeAdvanced() {
+    overlay.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  if (advBtn)   advBtn.addEventListener('click', openAdvanced);
+  if (advClose) advClose.addEventListener('click', closeAdvanced);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeAdvanced(); });
+  advNext.addEventListener('click', () => goTo(cur + 1));
+  advPrev.addEventListener('click', () => goTo(cur - 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+  if (advTryBtn) advTryBtn.addEventListener('click', () => { closeAdvanced(); switchTab('editor'); });
+  document.addEventListener('keydown', e => {
+    if (overlay.classList.contains('hidden')) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(cur + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(cur - 1);
+    if (e.key === 'Escape') closeAdvanced();
+  });
+
+  advPrev.style.visibility = 'hidden';
+})();
 
 // ── PWA Install ───────────────────────────────────────────────────────────────
 (function initInstall() {
