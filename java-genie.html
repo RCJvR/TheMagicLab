@@ -2522,7 +2522,7 @@ while(<span class="fill-slot" data-slot="0"></span>) {
   }
 }</div>
           <div class="tut-action-row">
-            <button class="tut-action-btn adv-tutorial-load" data-example="two_squares_method">📥 Load two squares example</button>
+            <button class="tut-action-btn adv-tutorial-load" data-example="two_squares_method">📥 Load polygon example</button>
           </div>
           <div class="tut-callout info">💡 <code>static void drawSquare(Pen n)</code> — the method takes a <strong>parameter</strong>: the Pen object to draw with. This lets you reuse it wherever you like.</div>
           <div class="tut-callout tip">🎮 Try calling <code>drawSquare(n);</code> three times in a row (after repositioning with <code>setPosition</code> each time). Three squares, zero repeated code!</div>
@@ -3508,23 +3508,23 @@ const examples = {
 
   // ── two_squares_method (Advanced tutorial, slide 8) ──────────────────────
   two_squares_method:
-`public class TwoSquares {
+`public class Params {
   public static void main(String[] args) {
     Pen n = new Pen();
-    drawSquare(n);
-    n.penUp();
-    n.setPosition(40, 24);
-    n.penDown();
-    n.setColor(239, 68, 68);
-    drawSquare(n);
+    n.setPosition(10, 10);
+    drawPolygon(n, 3, 12);   // triangle, 12-step sides
+    n.setPosition(30, 10);
+    drawPolygon(n, 6,  8);   // hexagon,  8-step sides
+    n.setPosition(50, 10);
+    drawPolygon(n, 5, 10);   // pentagon, 10-step sides
   }
 
-  static void drawSquare(Pen n) {
-    for(int side = 0; side < 4; side++) {
-      for(int step = 0; step < 10; step++) {
-        n.move();
-      }
-      n.turnRight(90);
+  // One method that draws ANY regular polygon:
+  static void drawPolygon(Pen n, int sides, int stepSize) {
+    int turn = 360 / sides;
+    for(int s = 0; s < sides; s++) {
+      for(int step = 0; step < stepSize; step++) { n.move(); }
+      n.turnRight(turn);
     }
   }
 }`,
