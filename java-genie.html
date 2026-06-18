@@ -2522,7 +2522,7 @@ while(<span class="fill-slot" data-slot="0"></span>) {
   }
 }</div>
           <div class="tut-action-row">
-            <button class="tut-action-btn adv-tutorial-load" data-example="two_squares_method">📥 Load polygon example</button>
+            <button class="tut-action-btn adv-tutorial-load" data-example="two_squares_method">📥 Load two squares example</button>
           </div>
           <div class="tut-callout info">💡 <code>static void drawSquare(Pen n)</code> — the method takes a <strong>parameter</strong>: the Pen object to draw with. This lets you reuse it wherever you like.</div>
           <div class="tut-callout tip">🎮 Try calling <code>drawSquare(n);</code> three times in a row (after repositioning with <code>setPosition</code> each time). Three squares, zero repeated code!</div>
@@ -2564,6 +2564,9 @@ drawPolygon(n, 3, 12);   // triangle, 12-step sides
 drawPolygon(n, 6,  8);   // hexagon,  8-step sides
 drawPolygon(n, 5, 10);   // pentagon, 10-step sides</div>
           <div class="tut-callout info">💡 <strong>Parameter</strong> = variable in the method definition: <code>int sides</code>.<br><strong>Argument</strong> = the value you pass when calling: <code>3</code> in <code>drawPolygon(n, 3, 12)</code>.</div>
+          <div class="tut-action-row">
+            <button class="tut-action-btn adv-tutorial-load" data-example="params_polygon">📥 Load polygon example</button>
+          </div>
           <div class="tut-callout tip">🎮 <strong>Challenge:</strong> copy <code>drawPolygon</code> into the editor and call it 4 times with different sides and sizes. How many shapes can you fit on the canvas?</div>
           <p><strong>Interactive:</strong> click the correct tokens to complete the method call for a square with 15-step sides.</p>
           <div class="tut-fill-blank" data-answer='["drawPolygon","n, 4, 15"]'>
@@ -3506,8 +3509,29 @@ const examples = {
   }
 }`,
 
-  // ── two_squares_method (Advanced tutorial, slide 8) ──────────────────────
+  // ── two_squares_method (Advanced tutorial, slide 9) ──────────────────────
   two_squares_method:
+`public class TwoSquares {
+  public static void main(String[] args) {
+    Pen n = new Pen();
+    drawSquare(n);
+    n.penUp();
+    n.setPosition(40, 24);
+    n.penDown();
+    n.setColor(239, 68, 68);
+    drawSquare(n);
+  }
+
+  static void drawSquare(Pen n) {
+    for(int side = 0; side < 4; side++) {
+      for(int step = 0; step < 10; step++) { n.move(); }
+      n.turnRight(90);
+    }
+  }
+}`,
+
+  // ── params_polygon (Advanced tutorial, slide 10) ──────────────────────────
+  params_polygon:
 `public class Params {
   public static void main(String[] args) {
     Pen n = new Pen();
