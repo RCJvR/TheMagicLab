@@ -400,6 +400,49 @@
     .pb-tips { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
     .pb-tip  { font-size: 12px; color: rgba(252,211,77,0.80); padding: 4px 10px; border-radius: 7px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.18); }
 
+    /* ── Scenario decision tree ── */
+    .scenario-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin: 20px 0 18px; }
+    .scenario-label { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .scenario-text { font-size: 14px; line-height: 1.75; color: var(--text2); margin-bottom: 16px; background: rgba(0,0,0,0.20); border-radius: 10px; padding: 12px 14px; }
+    .scenario-choices { display: flex; flex-direction: column; gap: 8px; }
+    .sc-choice { padding: 11px 16px; border-radius: 10px; border: 1px solid var(--border2); background: var(--surface); color: var(--text2); font-family: var(--font-body); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 140ms; text-align: left; }
+    .sc-choice:hover:not(:disabled) { border-color: rgba(168,85,247,0.38); background: rgba(168,85,247,0.07); color: var(--text); }
+    .sc-choice:disabled { opacity: 0.38; cursor: default; }
+    .scenario-outcome { border-radius: 12px; padding: 16px 18px; margin-top: 14px; }
+    .scenario-outcome.bad-out  { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.22); }
+    .scenario-outcome.good-out { background: rgba(17,217,143,0.08); border: 1px solid rgba(17,217,143,0.22); }
+    .scenario-outcome.warn-out { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.22); }
+    .sc-outcome-icon { font-size: 22px; margin-bottom: 6px; }
+    .sc-outcome-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .sc-outcome-title.bad  { color: #fca5a5; }
+    .sc-outcome-title.good { color: #6ee7b7; }
+    .sc-outcome-title.warn { color: #fcd34d; }
+    .scenario-outcome p { font-size: 13px; line-height: 1.7; color: var(--text2); margin-bottom: 12px; }
+    .sc-retry { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 130ms; }
+    .sc-retry:hover { color: var(--text); }
+
+    /* ── Unit completion toast ── */
+    .unit-toast { position: fixed; top: 20px; right: 20px; z-index: 9100; display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-radius: 16px; background: #0d1226; border: 1px solid rgba(168,85,247,0.35); box-shadow: 0 8px 32px rgba(0,0,0,0.50); transform: translateX(140%); transition: transform 420ms cubic-bezier(0.34,1.3,0.64,1); max-width: 300px; }
+    .unit-toast.show { transform: translateX(0); }
+    .unit-toast-icon { font-size: 26px; flex-shrink: 0; }
+    .unit-toast-title { font-weight: 800; font-size: 14px; color: #fff; }
+    .unit-toast-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Course completion certificate ── */
+    .cert-overlay { position: fixed; inset: 0; z-index: 9200; background: rgba(4,6,18,.94); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 300ms; }
+    .cert-overlay.open { opacity: 1; pointer-events: all; }
+    .cert-modal { width: 100%; max-width: 480px; background: linear-gradient(160deg,#0d1226,#0f0a1e); border: 1px solid rgba(168,85,247,0.35); border-radius: 24px; padding: 44px 36px; text-align: center; box-shadow: 0 40px 100px rgba(168,85,247,0.20); }
+    .cert-sparkle { font-size: 48px; margin-bottom: 16px; animation: cert-spin 4s linear infinite; display: inline-block; }
+    @keyframes cert-spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    .cert-title { font-family: var(--font-display); font-weight: 900; font-size: 28px; letter-spacing: -0.03em; background: linear-gradient(120deg,#fff 0%,#e4bcff 50%,#f9a8d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+    .cert-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .cert-badges { display: flex; justify-content: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+    .cert-badge { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 14px 18px; background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.25); border-radius: 14px; font-size: 28px; }
+    .cert-badge span { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #c084fc; }
+    .cert-body { font-size: 14px; line-height: 1.75; color: var(--text2); margin-bottom: 28px; }
+    .cert-close { padding: 13px 32px; border-radius: 14px; border: none; background: linear-gradient(135deg,#7c22b8,#b5205e); color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 18px rgba(124,34,184,0.35); transition: all 150ms; }
+    .cert-close:hover { box-shadow: 0 6px 28px rgba(124,34,184,0.52); transform: translateY(-1px); }
+
     /* ── Sidebar review button ── */
     .unit-review-btn { display: none; align-items: center; gap: 7px; margin: 4px 16px 10px; padding: 7px 12px; border-radius: 9px; border: 1px solid rgba(168,85,247,0.22); background: rgba(168,85,247,0.07); color: #c084fc; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 130ms; width: calc(100% - 32px); }
     .unit-review-btn:hover { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.38); }
@@ -1362,6 +1405,34 @@ Definition: <span style="color:#a855f7;">[AI fills this in following your exact 
   </ul>
 </div>
 
+<div class="scenario-box">
+  <div class="scenario-label">📚 Decision Scenario — What would you do?</div>
+  <p class="scenario-text">Thabo has a 1 000-word Geography essay due tomorrow on climate change in South Africa. He has textbook notes but is stuck on how to structure his argument. Pick his next move:</p>
+  <div class="scenario-choices" id="sc1choices">
+    <button class="sc-choice" onclick="pickScenario('sc1','A')">A — Ask AI to write the full essay, then submit it as his own work.</button>
+    <button class="sc-choice" onclick="pickScenario('sc1','B')">B — Ask AI to suggest an essay structure, then write each section himself using his notes.</button>
+    <button class="sc-choice" onclick="pickScenario('sc1','C')">C — Ask AI for statistics and paste them directly into the essay without checking.</button>
+  </div>
+  <div class="scenario-outcome" id="sc1-A" style="display:none">
+    <div class="sc-outcome-icon">❌</div>
+    <div class="sc-outcome-title bad">Academic Dishonesty</div>
+    <p>Thabo submits the AI's essay. His teacher asks him to discuss one of his arguments in class — he can't. Even if he's not caught this time, he arrives at the exam without understanding the content. The harm is real regardless of detection.</p>
+    <button class="sc-retry" onclick="resetScenario('sc1')">↩ Try another choice</button>
+  </div>
+  <div class="scenario-outcome" id="sc1-B" style="display:none">
+    <div class="sc-outcome-icon">✅</div>
+    <div class="sc-outcome-title good">Ethical &amp; Effective</div>
+    <p>Thabo prompts: <em>"Help me structure a Geography essay on SA climate change — give me 4 main points."</em> AI gives him a skeleton. He writes each section himself from his notes. His essay reflects his own understanding and he's ready for the exam. This is AI as a tool, not a replacement.</p>
+    <button class="sc-retry" onclick="resetScenario('sc1')">↩ Try another choice</button>
+  </div>
+  <div class="scenario-outcome" id="sc1-C" style="display:none">
+    <div class="sc-outcome-icon">⚠️</div>
+    <div class="sc-outcome-title warn">Hallucination Trap</div>
+    <p>AI tells Thabo: <em>"South Africa's rainfall has declined by 34% since 1990."</em> He pastes it in. His teacher marks it down — the figure is fabricated. The AI invented a plausible-sounding statistic with complete confidence. Always verify AI-provided facts from a trusted source.</p>
+    <button class="sc-retry" onclick="resetScenario('sc1')">↩ Try another choice</button>
+  </div>
+</div>
+
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz('q6')">
     <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
@@ -1639,6 +1710,19 @@ function saveProgress() {
 
 // ── Navigation ───────────────────────────────────────────────────────────────
 
+function _trackLesson(idx) {
+  const unitIdx   = Math.floor(idx / 3);          // 0,1,2
+  const unitNames = ['Unit 1: How AI Works', 'Unit 2: The Art of Prompting', 'Unit 3: AI Ethics in Education'];
+  const unitDone  = [0,1,2].map(o => completed[unitIdx*3+o]).every(Boolean);
+  const toolDone  = completed.every(Boolean);
+  window.MagicLabProgress?.track('ai-oracle', 'lesson_complete', {
+    topic:        LESSONS[idx].title,
+    unit:         unitNames[unitIdx],
+    unitComplete: unitDone,
+    toolComplete: toolDone,
+  });
+}
+
 function goLesson(idx) {
   if (idx < 0 || idx >= LESSONS.length) return;
 
@@ -1646,6 +1730,7 @@ function goLesson(idx) {
   completed[currentLesson] = true;
   updateDone(currentLesson);
   saveProgress();
+  _trackLesson(currentLesson);
   checkUnitCompletion();
 
   currentLesson = idx;
@@ -1688,7 +1773,7 @@ function updateUI() {
     ? '<i data-lucide="check" style="width:14px;height:14px;"></i> Finish'
     : 'Next <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>';
   btn.disabled = false;
-  if (isLast) { btn.onclick = () => { completed[currentLesson] = true; updateDone(currentLesson); saveProgress(); checkUnitCompletion(); updateProgress(); }; }
+  if (isLast) { btn.onclick = () => { completed[currentLesson] = true; updateDone(currentLesson); saveProgress(); _trackLesson(currentLesson); checkUnitCompletion(); updateProgress(); }; }
   else { btn.onclick = nextLesson; }
 
   // Counter
@@ -1832,18 +1917,74 @@ function pickHall(el, feedbackId) {
 
 // ── Unit completion ───────────────────────────────────────────────────────────
 
+// ── Scenario decision tree ────────────────────────────────────────────────────
+
+const SCENARIO_CLASSES = { 'sc1-A': 'bad-out', 'sc1-B': 'good-out', 'sc1-C': 'warn-out' };
+
+function pickScenario(scenarioId, choice) {
+  document.getElementById(`${scenarioId}choices`).querySelectorAll('.sc-choice')
+    .forEach(b => { b.disabled = true; });
+  const el = document.getElementById(`${scenarioId}-${choice}`);
+  if (el) { el.style.display = 'block'; el.className = 'scenario-outcome ' + (SCENARIO_CLASSES[`${scenarioId}-${choice}`] || ''); }
+}
+
+function resetScenario(scenarioId) {
+  document.getElementById(`${scenarioId}choices`).querySelectorAll('.sc-choice')
+    .forEach(b => { b.disabled = false; });
+  ['A','B','C'].forEach(c => { const el = document.getElementById(`${scenarioId}-${c}`); if (el) el.style.display = 'none'; });
+}
+
+// ── Unit completion toast & course certificate ────────────────────────────────
+
+const UNIT_BADGE_DATA = [
+  { icon: '🧠', title: 'Unit 1 Complete!', sub: 'Neural Scholar badge earned · Review cards unlocked' },
+  { icon: '✨', title: 'Unit 2 Complete!', sub: 'Prompt Crafter badge earned · Review cards unlocked' },
+  { icon: '⚖️', title: 'Unit 3 Complete!', sub: 'Ethics Champion badge earned · Review cards unlocked' },
+];
+
+let _toastTimer = null;
+
+function showUnitToast(idx) {
+  const b = UNIT_BADGE_DATA[idx];
+  if (!b) return;
+  document.getElementById('toastIcon').textContent  = b.icon;
+  document.getElementById('toastTitle').textContent = b.title;
+  document.getElementById('toastSub').textContent   = b.sub;
+  const t = document.getElementById('unitToast');
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove('show'), 4200);
+}
+
+function showCertificate() { document.getElementById('certOverlay').classList.add('open'); }
+function closeCert()        { document.getElementById('certOverlay').classList.remove('open'); }
+
 function checkUnitCompletion() {
-  if (completed[0] && completed[1] && completed[2]) {
-    const btn = document.getElementById('review-unit-1');
-    if (btn) btn.style.display = 'flex';
-  }
-  if (completed[3] && completed[4] && completed[5]) {
-    const btn = document.getElementById('review-unit-2');
-    if (btn) btn.style.display = 'flex';
-  }
-  if (completed[6] && completed[7] && completed[8]) {
-    const btn = document.getElementById('review-unit-3');
-    if (btn) btn.style.display = 'flex';
+  const shownKey  = 'ml-ai-oracle-toasts-v1';
+  const shown     = JSON.parse(localStorage.getItem(shownKey) || '[]');
+  const certKey   = 'ml-ai-oracle-cert-shown';
+
+  const units = [
+    { lessons: [0,1,2], btnId: 'review-unit-1', idx: 0 },
+    { lessons: [3,4,5], btnId: 'review-unit-2', idx: 1 },
+    { lessons: [6,7,8], btnId: 'review-unit-3', idx: 2 },
+  ];
+
+  units.forEach(u => {
+    if (u.lessons.every(i => completed[i])) {
+      const btn = document.getElementById(u.btnId);
+      if (btn) btn.style.display = 'flex';
+      if (!shown.includes(u.idx)) {
+        shown.push(u.idx);
+        localStorage.setItem(shownKey, JSON.stringify(shown));
+        setTimeout(() => showUnitToast(u.idx), 400);
+      }
+    }
+  });
+
+  if (completed.every(Boolean) && !localStorage.getItem(certKey)) {
+    localStorage.setItem(certKey, '1');
+    setTimeout(showCertificate, 1400);
   }
 }
 
@@ -2029,5 +2170,31 @@ checkUnitCompletion();
 renderLesson();
 updateUI();
 </script>
+
+<!-- Unit completion toast -->
+<div class="unit-toast" id="unitToast">
+  <span class="unit-toast-icon" id="toastIcon">🏆</span>
+  <div>
+    <div class="unit-toast-title" id="toastTitle">Unit Complete!</div>
+    <div class="unit-toast-sub" id="toastSub">Review flashcards unlocked</div>
+  </div>
+</div>
+
+<!-- Course completion certificate -->
+<div class="cert-overlay" id="certOverlay">
+  <div class="cert-modal">
+    <div class="cert-sparkle">✨</div>
+    <div class="cert-title">AI Oracle Complete!</div>
+    <div class="cert-sub">You've mastered all 9 lessons across 3 units</div>
+    <div class="cert-badges">
+      <div class="cert-badge">🧠<span>Neural Scholar</span></div>
+      <div class="cert-badge">✨<span>Prompt Crafter</span></div>
+      <div class="cert-badge">⚖️<span>Ethics Champion</span></div>
+    </div>
+    <p class="cert-body">You now understand how AI works, how to communicate with it effectively, and how to use it responsibly in your education. These are skills that will serve you throughout your academic and professional life.</p>
+    <button class="cert-close" onclick="closeCert()">Continue Learning</button>
+  </div>
+</div>
+
 </body>
 </html>

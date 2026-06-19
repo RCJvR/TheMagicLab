@@ -589,6 +589,13 @@
             <span class="training-tool-tab-prog" id="ww-prog">0 / 5 modules</span>
           </div>
         </div>
+        <div class="training-tool-tab" onclick="switchTrainingTool('ai-oracle', this)">
+          <span class="training-tool-tab-icon">🔮</span>
+          <div class="training-tool-tab-info">
+            <span class="training-tool-tab-name">AI Oracle</span>
+            <span class="training-tool-tab-prog" id="ao-prog">0 / 4 modules</span>
+          </div>
+        </div>
       </div>
 
       <!-- Progress bar -->
@@ -1093,6 +1100,136 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
       `
     },
+  ],
+
+  'ai-oracle': [
+    {
+      id: 'ao-1',
+      title: 'How AI actually works — what your learners need to understand',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>🧠 The core mental model</h4>
+            <p>AI Oracle teaches learners a three-layer model: <strong>data → pattern recognition → output</strong>. You don't need to understand backpropagation to teach this well. The key idea is that modern AI (specifically large language models like ChatGPT or Claude) learned by reading billions of text examples and adjusting billions of internal numbers called <strong>weights</strong> to minimise prediction errors.</p>
+            <p>The result is a system that is extraordinarily good at producing plausible-sounding text — but that does not understand meaning, does not reason the way humans do, and does not have access to verified facts.</p>
+          </div>
+          <div class="concept-block">
+            <h4>⚡ The weighted sum — what the interactive demo shows</h4>
+            <p>Unit 1 includes a neural network visualiser where learners drag sliders to adjust inputs (x₁, x₂) and weights (w₁, w₂) and watch the neuron fire or stay silent. The maths: <code>output = max(0, x₁×w₁ + x₂×w₂)</code>. The <code>max(0, …)</code> is called ReLU — it means the neuron only activates when the weighted sum is positive. This is a real operation used inside every modern AI system.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Start with the training analogy.</strong> Ask: "How did you learn to recognise a dog?" You saw thousands of examples. No one gave you a formula. AI training works the same way — patterns extracted from enormous amounts of data, not rules programmed by hand.</div>
+          <div class="teaching-tip"><strong>💡 Use the visualiser as a class demo first.</strong> Project the neural network demo and ask learners to predict: "What happens if I set both weights to zero?" (Neuron stays silent — no signal gets through.) Let them discover the behaviour before you explain it.</div>
+          <div class="teaching-tip"><strong>💡 Emphasise what AI doesn't do.</strong> The most important misconception to correct: AI doesn't look things up, doesn't think, and doesn't know when it's wrong. It generates the most statistically likely continuation of the text you gave it.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner misconceptions</div>
+          <div class="mistake-block"><strong>❌ "AI searches the internet."</strong> Most AI assistants (including ChatGPT without plugins) do not browse the web. They generate text from training data with a knowledge cutoff date. Correct this early — it's the root cause of learners trusting AI-generated "facts."</div>
+          <div class="mistake-block"><strong>❌ "AI understands what I'm asking."</strong> It doesn't understand in the human sense. It identifies patterns in your input and produces statistically likely output. This is why poorly worded prompts produce poor output — the model pattern-matches on whatever you give it.</div>
+          <div class="mistake-block"><strong>❌ "If AI said it confidently, it must be true."</strong> Confidence and accuracy are completely independent in language models. This is the hallucination problem. The Spot the Hallucination activity in Lesson 8 is designed specifically to address this.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ao-2',
+      title: 'Teaching the art of prompting',
+      level: 'beginner',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>✍️ The four-part prompt structure</h4>
+            <p>AI Oracle teaches the <strong>Role → Context → Task → Format</strong> framework. Each part serves a distinct purpose:</p>
+            <ul>
+              <li><strong>Role:</strong> tells the AI what persona to adopt (<em>"You are a patient Maths tutor for Grade 9 learners"</em>)</li>
+              <li><strong>Context:</strong> gives the AI the background it needs (<em>"I'm studying for my term test on algebra"</em>)</li>
+              <li><strong>Task:</strong> the specific action verb and request (<em>"Explain how to solve for x in two-step equations"</em>)</li>
+              <li><strong>Format:</strong> how you want the output structured (<em>"Use numbered steps and one worked example"</em>)</li>
+            </ul>
+            <p>The prompt builder in Lesson 5 scores prompts in real time and gives per-field tips — learners see immediately which parts of their prompt are weak.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Show two prompts side by side.</strong> Bad: <em>"Explain photosynthesis."</em> Good: <em>"You are a Life Sciences teacher. I'm a Grade 10 learner who just covered the light reactions. Explain the dark reactions in 4 bullet points using simple language."</em> Ask learners which response they'd expect to be more useful.</div>
+          <div class="teaching-tip"><strong>💡 Prompt writing as a literacy skill.</strong> Frame prompting as a form of writing — like writing a clear email or a well-structured question to a teacher. The clearer and more specific your request, the better the response. Vague questions get vague answers.</div>
+          <div class="teaching-tip"><strong>💡 Let learners run the click-to-order game in pairs.</strong> The ordering game on Lesson 4 has learners physically sequence the four prompt components. Pairs who disagree on the order have a discussion — that argument is the learning.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common learner mistakes</div>
+          <div class="mistake-block"><strong>❌ One-line prompts.</strong> Most learners start with the shortest possible prompt. The prompt builder's star rating helps make the quality gap visible — a one-line prompt scores 0–1 stars, a structured prompt scores 3–4. The score creates intrinsic motivation to improve.</div>
+          <div class="mistake-block"><strong>❌ Treating the first response as final.</strong> Prompting is iterative. Teach learners to follow up: "That's too complex — simplify it for a Grade 9 level" or "Give me one more example." AI Oracle introduces this in Lesson 6 (advanced prompting).</div>
+        </div>
+      `
+    },
+    {
+      id: 'ao-3',
+      title: 'AI ethics in education — the classroom conversation',
+      level: 'intermediate',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">The concept</div>
+          <div class="concept-block">
+            <h4>⚖️ Why this conversation is urgent</h4>
+            <p>Research suggests a significant proportion of secondary school learners have used AI to complete assignments. The question is no longer whether your learners are using AI — it's whether they're using it in ways that support or undermine their learning. The goal of the AI Oracle ethics unit is not to frighten learners into avoiding AI, but to help them develop <strong>principled, self-aware AI use</strong>.</p>
+          </div>
+          <div class="concept-block">
+            <h4>🎯 The spectrum approach</h4>
+            <p>Rather than a binary "allowed / not allowed," the module teaches a spectrum: clearly fine → depends on context → academic dishonesty. This is more honest — the reality is that context determines ethics in most cases. A teacher who has said "use AI freely for this project" and a teacher who has said "no AI" create very different ethical situations for the same action.</p>
+          </div>
+          <div class="concept-block">
+            <h4>📚 The Thabo scenario</h4>
+            <p>Lesson 7 presents a branching scenario: a learner facing an essay deadline with three choices. Each choice leads to a different consequence card — academic dishonesty, ethical tool use, or a hallucination trap. This is designed to make the ethical reasoning concrete and personal, not abstract.</p>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">How to teach it</div>
+          <div class="teaching-tip"><strong>💡 Set your classroom policy before this lesson.</strong> Learners will ask "but what are OUR rules?" Have a clear answer ready. A good starting position: "Using AI to understand a concept = fine. Using AI to produce work you submit as your own = not fine. When in doubt, ask me."</div>
+          <div class="teaching-tip"><strong>💡 Use the scenario as a discussion starter, not just a clicker activity.</strong> After learners have clicked through the Thabo scenario, ask: "Has anything like this happened to you or someone you know?" The discussion that follows is where the real learning happens.</div>
+          <div class="teaching-tip"><strong>💡 Address the "everyone does it" argument directly.</strong> Acknowledge it: "You're right that it's widespread. Here's why it still matters for you personally…" and redirect to the skills argument — exams don't have AI, jobs test what you actually know.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Common classroom situations</div>
+          <div class="mistake-block"><strong>❌ "The AI said it, so it must be right — I can't be blamed."</strong> Authorship of submitted work remains the learner's responsibility. Submitting a hallucinated fact is still an error on the learner's assessment, regardless of the source.</div>
+          <div class="mistake-block"><strong>❌ Learners who've already submitted AI work feeling defensive.</strong> Don't make this a witch-hunt. Frame the lesson as "going forward" — what we now know and how we'll use it better. Shame closes the conversation; curiosity opens it.</div>
+        </div>
+      `
+    },
+    {
+      id: 'ao-4',
+      title: 'Assessing AI literacy — what good looks like',
+      level: 'intermediate',
+      content: `
+        <div class="module-section">
+          <div class="module-section-title">What to assess</div>
+          <div class="concept-block">
+            <h4>📋 Observable evidence of AI literacy</h4>
+            <p>AI literacy is difficult to assess with a traditional test, but there are concrete observable skills you can evaluate:</p>
+            <ul>
+              <li><strong>Prompt quality:</strong> Can the learner write a well-structured, specific prompt? (Use the Role-Context-Task-Format framework as a rubric.)</li>
+              <li><strong>Critical evaluation:</strong> Can the learner identify potential hallucinations, verify claims, and explain <em>why</em> a piece of AI output might be wrong?</li>
+              <li><strong>Ethical reasoning:</strong> Given a scenario, can the learner explain what counts as acceptable AI use and why?</li>
+              <li><strong>Iterative prompting:</strong> Can the learner improve an AI response through follow-up prompts rather than accepting the first output?</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Assessment ideas</div>
+          <div class="teaching-tip"><strong>💡 Prompt portfolio.</strong> Ask learners to collect 3 prompts they've written over the term, annotate each with the Role-Context-Task-Format breakdown, and reflect on what they'd improve. This is authentic, low-cost, and hard to fake.</div>
+          <div class="teaching-tip"><strong>💡 Hallucination hunt.</strong> Give learners an AI-generated paragraph on a topic they've studied (you write it and plant 1–2 errors). Ask them to identify what's wrong and what source they'd use to verify. Marks for process, not just the right answer.</div>
+          <div class="teaching-tip"><strong>💡 Scenario judgement task.</strong> Present 3–4 AI use scenarios (similar to the Thabo scenario in Lesson 7). Ask learners to classify each on the spectrum (clearly fine / depends / dishonest) and justify their classification in 2–3 sentences. This tests reasoning, not recall.</div>
+        </div>
+        <div class="module-section">
+          <div class="module-section-title">Integration with other subjects</div>
+          <div class="teaching-tip"><strong>💡 AI Oracle is cross-curricular.</strong> The skills it teaches — critical evaluation, structured communication, ethical reasoning — are valuable in every subject. Consider running it during Life Orientation, English, or a dedicated digital literacy period rather than treating it as an IT-only topic.</div>
+          <div class="teaching-tip"><strong>💡 Pair with a subject-specific task.</strong> After completing AI Oracle, assign a "use AI responsibly to help you study [topic from your syllabus]" task. Learners apply the module skills immediately in a real context, which dramatically improves retention.</div>
+        </div>
+      `
+    },
   ]
 };
 
@@ -1564,10 +1701,13 @@ function _updateTrainingProgress() {
   // Update tool tab progress labels
   const jgMods = TRAINING_MODULES['java-genie']||[];
   const wwMods = TRAINING_MODULES['web-wizard']||[];
+  const aoMods = TRAINING_MODULES['ai-oracle']||[];
   document.getElementById('jg-prog').textContent =
     `${jgMods.filter(m=>_completedModules.has(m.id)).length} / ${jgMods.length} modules`;
   document.getElementById('ww-prog').textContent =
     `${wwMods.filter(m=>_completedModules.has(m.id)).length} / ${wwMods.length} modules`;
+  document.getElementById('ao-prog').textContent =
+    `${aoMods.filter(m=>_completedModules.has(m.id)).length} / ${aoMods.length} modules`;
 }
 
 // ══════════════════════════════════════════════════════════

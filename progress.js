@@ -22,7 +22,8 @@ const TOOLS = {
   WEB_WIZARD:      'web-wizard',
   CODE_CONJURER:   'code-conjurer',
   MATH_MAGICIAN:   'math-magician',
-  COMPUTER_CODEX:  'computer-codex'
+  COMPUTER_CODEX:  'computer-codex',
+  AI_ORACLE:       'ai-oracle'
 };
 window.ML_TOOLS = TOOLS;
 
