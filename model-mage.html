@@ -40,6 +40,7 @@
             font-family:inherit;transition:background 100ms,color 100ms;}
     .tb-btn:hover{background:var(--surface);color:var(--text);}
     .tb-btn.active{background:rgba(217,119,6,0.18);color:var(--accent2);border-color:rgba(217,119,6,0.4);}
+    .tb-btn.construct-on{background:rgba(59,130,246,0.18);color:var(--blue);border-color:rgba(59,130,246,0.4);}
     .tb-btn svg{width:13px;height:13px;flex-shrink:0;}
     .snap-sel{height:26px;padding:0 7px;border-radius:5px;border:1px solid var(--border);
               background:var(--surface);color:var(--text2);font-size:0.74rem;cursor:pointer;font-family:inherit;}
@@ -55,7 +56,7 @@
                 font-size:0.70rem;font-weight:600;color:var(--text2);}
     .hint-box{position:absolute;bottom:8px;left:8px;background:rgba(10,15,32,0.88);
               border:1px solid var(--border);border-radius:7px;padding:7px 11px;
-              font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:260px;}
+              font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:280px;}
     .hint-box b{color:var(--text);}
 
     /* Length popup */
@@ -80,12 +81,6 @@
             font-size:0.76rem;color:var(--text2);margin-bottom:4px;}
     .pr-val{font-family:'JetBrains Mono',monospace;font-size:0.74rem;font-weight:700;color:var(--accent2);}
     input[type=range]{width:100%;accent-color:var(--accent2);}
-    .btn-extrude{width:100%;height:34px;border-radius:7px;margin-top:10px;
-                 background:linear-gradient(135deg,#d97706,#b45309);border:none;
-                 color:#fff;font-weight:800;font-size:0.82rem;font-family:inherit;
-                 cursor:pointer;transition:opacity 120ms;}
-    .btn-extrude:disabled{opacity:0.32;cursor:not-allowed;}
-    .btn-extrude:not(:disabled):hover{opacity:0.88;}
 
     /* ── Constraint panel ── */
     .cst-panel{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:none;}
@@ -138,7 +133,7 @@
 </header>
 
 <div class="toolbar">
-  <!-- Line | Polyline | Construct | sep | Undo | Clear | sep | Grid snap -->
+  <!-- Drawing tools -->
   <button class="tb-btn active" id="tool-line" title="Single Line segment (L)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="13" x2="13" y2="1"/></svg>
     Line
@@ -147,18 +142,34 @@
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,13 5,4 9,9 13,1"/></svg>
     Polyline
   </button>
-  <button class="tb-btn" id="tool-construct" title="Construction line (X)">
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2.5,2"><line x1="1" y1="13" x2="13" y2="1"/></svg>
-    Construct
-  </button>
   <button class="tb-btn" id="tool-rect" title="Rectangle (R)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="12" height="8" rx="1.5"/></svg>
-    Rectangle
+    Rect
   </button>
   <button class="tb-btn" id="tool-circle" title="Circle (C)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/></svg>
     Circle
   </button>
+  <button class="tb-btn" id="tool-arc" title="Arc — 3-point (A)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12 Q7 1 12 12"/></svg>
+    Arc
+  </button>
+  <button class="tb-btn" id="tool-polygon" title="Polygon (G)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><polygon points="7,1 13,5 11,12 3,12 1,5"/></svg>
+    Polygon
+  </button>
+  <button class="tb-btn" id="tool-spline" title="Spline — Catmull-Rom (S)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 11 C3 2,5 11,7 7 S11 1,13 4"/></svg>
+    Spline
+  </button>
+  <!-- Construction mode toggle -->
+  <button class="tb-btn" id="btn-construct" title="Construction mode — entities are reference-only (X)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2.5,2"><line x1="1" y1="13" x2="13" y2="1"/></svg>
+    Const
+  </button>
+  <!-- Polygon sides picker -->
+  <span class="tb-label" id="poly-sides-lbl" style="display:none">Sides</span>
+  <input type="number" class="snap-sel" id="poly-sides" value="6" min="3" max="64" style="display:none;width:52px">
   <div class="tb-sep"></div>
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
   <button class="tb-btn" id="btn-clear" title="Clear sketch">✕ Clear</button>
@@ -199,9 +210,18 @@
         <div class="pr-lbl">Height <span class="pr-val" id="v-h">40 mm</span></div>
         <input type="range" id="s-h" min="1" max="300" value="40">
       </div>
-      <button class="btn-extrude" id="btn-ext" disabled>
-        ▲ Extrude Profile
-      </button>
+      <div class="pr">
+        <div class="pr-lbl">Fillet <span class="pr-val" id="v-fillet">0 mm</span></div>
+        <input type="range" id="s-fillet" min="0" max="50" value="0" step="0.5">
+      </div>
+      <div class="pr">
+        <div class="pr-lbl">Chamfer <span class="pr-val" id="v-chamfer">0 mm</span></div>
+        <input type="range" id="s-chamfer" min="0" max="20" value="0" step="0.5">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+        <span id="rebuild-status" style="font-size:0.68rem;color:var(--text2)"></span>
+        <button id="btn-rebuild" style="background:none;border:none;color:var(--text2);font-size:0.70rem;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0">↺ Rebuild</button>
+      </div>
     </div>
 
     <!-- Constraint panel — shown on label click -->
@@ -236,7 +256,7 @@
     <div id="vp3d">
       <div class="vp-placeholder" id="vp-ph">
         <div class="vp-ph-icon">⬡</div>
-        <div class="vp-ph-text">Draw a closed profile<br>then press Extrude</div>
+        <div class="vp-ph-text">Draw a closed profile<br>to auto-extrude</div>
       </div>
       <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
       <div class="vp-hint">Left: orbit · Right: pan · Scroll: zoom · 1/3/7: views · F: focus</div>
@@ -279,7 +299,7 @@ self.onmessage = async ({ data }) => {
   if (data.type !== 'build') return;
   if (!ready) { await boot; if (!ready) return; }
   try {
-    const solid = makeSolid(data.profile, data.height);
+    const solid = makeSolid(data.profile, data.height, data.filletR||0, data.chamferR||0);
     const m = solid.mesh({ tolerance:0.04, angularTolerance:10 });
     const v = m.vertices  instanceof Float32Array ? m.vertices  : new Float32Array(m.vertices);
     const n = m.normals   instanceof Float32Array ? m.normals   : new Float32Array(m.normals);
@@ -287,19 +307,39 @@ self.onmessage = async ({ data }) => {
     self.postMessage({ type:'mesh', v, n, t }, [v.buffer, n.buffer, t.buffer]);
   } catch(e) { self.postMessage({ type:'err', msg:e.message }); }
 };
-function makeSolid(p, h) {
+function makeSolid(p, h, filletR, chamferR) {
+  let solid;
   if (p.type === 'circle') {
-    return drawCircle(p.r).sketchOnPlane('XY').extrude(h).translate([p.cx, p.cy, 0]);
-  }
-  if (p.type === 'rect') {
-    return drawRectangle(Math.abs(p.w), Math.abs(p.h)).sketchOnPlane('XY').extrude(h)
+    solid = drawCircle(p.r).sketchOnPlane('XY').extrude(h).translate([p.cx, p.cy, 0]);
+  } else if (p.type === 'rect') {
+    solid = drawRectangle(Math.abs(p.w), Math.abs(p.h)).sketchOnPlane('XY').extrude(h)
       .translate([p.x + p.w/2, p.y + p.h/2, 0]);
+  } else if (p.type === 'arc') {
+    let sk = draw(p.p1).threePointsArc(p.pmid, p.p2).lineTo(p.p1);
+    solid = sk.close().sketchOnPlane('XY').extrude(h);
+  } else if (p.type === 'spline') {
+    const pts = p.points;
+    if (pts.length < 2) throw new Error('Need at least 2 points');
+    let sk = draw(pts[0]).splineTo(pts.slice(1));
+    sk = sk.lineTo(pts[0]);
+    solid = sk.close().sketchOnPlane('XY').extrude(h);
+  } else {
+    const pts = p.points;
+    if (pts.length < 3) throw new Error('Need at least 3 points');
+    let sk = draw(pts[0]);
+    for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
+    solid = sk.close().sketchOnPlane('XY').extrude(h);
   }
-  const pts = p.points;
-  if (pts.length < 3) throw new Error('Need at least 3 points');
-  let sk = draw(pts[0]);
-  for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
-  return sk.close().sketchOnPlane('XY').extrude(h);
+  if (filletR > 0) {
+    const safeR = Math.min(filletR, h*0.45);
+    try { solid = solid.fillet(safeR); } catch(e) {
+      try { solid = solid.fillet(safeR*0.5); } catch(_) {}
+    }
+  } else if (chamferR > 0) {
+    const safeC = Math.min(chamferR, h*0.45);
+    try { solid = solid.chamfer(safeC); } catch(e) {}
+  }
+  return solid;
 }
 `;
 
@@ -316,22 +356,37 @@ worker.onmessage = ({ data }) => {
     if (pendingBuild) { worker.postMessage(pendingBuild); pendingBuild = null; }
   } else if (data.type === 'mesh') {
     applyMesh(data.v, data.n, data.t);
+    setRebuildStatus('done');
   } else if (data.type === 'err') {
     console.warn('[ModelMage]', data.msg);
+    setRebuildStatus('error');
   }
 };
-worker.onerror = e => console.error('[ModelMage] Worker:', e.message);
+worker.onerror = e => { console.error('[ModelMage] Worker:', e.message); setRebuildStatus('error'); };
 
 // ════════════════════════════════════════════════════════════════════
 // SKETCH STATE
 // ════════════════════════════════════════════════════════════════════
 
-let tool       = 'line';  // 'line' | 'polyline' | 'construct' | 'rect' | 'circle'
+let tool       = 'line';  // 'line' | 'polyline' | 'rect' | 'circle' | 'arc' | 'polygon' | 'spline'
 let entities   = [];
 let gridSnap   = 5;
-let linePoints = [];      // used by line, polyline, construct
+let linePoints = [];      // used by line, polyline
 let rectStart  = null;
 let circleCenter = null;
+
+// Arc tool state
+let arcPts = []; // 0,1 or 2 points placed so far
+
+// Polygon tool state
+let polyCenter = null;
+let polySides  = 6;
+
+// Spline tool state
+let splinePts = [];
+
+// Construction mode global toggle
+let constructionMode = false;
 
 // View
 let panX = 0, panY = 0, zoom = 4;
@@ -343,26 +398,40 @@ let ctrlHeld = false, shiftHeld = false;
 
 // Extrude
 let extH = 40;
+let filletR = 0;
+let chamferR = 0;
 let extTimer = null;
 
 // Selection (for constraint panel) — set by label clicks
-let selection = null; // { entityIdx, segIdx } or { entityIdx, isCircle:true } or { entityIdx, isRect, segIdx }
+let selection = null;
 
-// Drag state (feature 5)
-let dragState = null; // { entityIdx, ptIdx } or null
+// Drag state
+let dragState = null; // { entityIdx, ptIdx, isRect, isCircle, isArc(ptKey), isSpline } or null
+let dragStarted = false; // prevents click from firing after a drag
 
-// Label hits (feature 4) — rebuilt each render frame
-let labelHits = []; // [{ lx, ly, entityIdx, segIdx, wlen, p1, p2 }, ...]
+// Label hits — rebuilt each render frame
+let labelHits = [];
 
 // Hover label index (-1 = none)
 let hoverLabelIdx = -1;
 
-// Pending single-segment info for len-popup (feature 1)
-// After placing line/construct endpoint: { entityIdx, segIdx }
+// Pending single-segment info for len-popup
 let pendingLenEdit = null;
 
 // ════════════════════════════════════════════════════════════════════
-// LEN POPUP (feature 1)
+// REBUILD STATUS
+// ════════════════════════════════════════════════════════════════════
+
+function setRebuildStatus(state) {
+  const el = document.getElementById('rebuild-status');
+  if (state === 'building') { el.textContent = 'Building…'; el.style.color = 'var(--text2)'; }
+  else if (state === 'done') { el.textContent = '✓ Done'; el.style.color = 'var(--green)'; }
+  else if (state === 'error') { el.textContent = '⚠ Error'; el.style.color = 'var(--red)'; }
+  else { el.textContent = ''; }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// LEN POPUP
 // ════════════════════════════════════════════════════════════════════
 
 const lenPopup  = document.getElementById('len-popup');
@@ -393,7 +462,7 @@ lenInput.addEventListener('keydown', e => {
     e.preventDefault();
     hideLenPopup();
   }
-  e.stopPropagation(); // don't propagate to tool shortcuts
+  e.stopPropagation();
 });
 
 lenInput.addEventListener('click', e => e.stopPropagation());
@@ -412,18 +481,19 @@ function wtoc(wx,wy) { return [ox()+wx*zoom, oy()-wy*zoom]; }
 function ctow(sx,sy) { return [(sx-ox())/zoom, (oy()-sy)/zoom]; }
 
 function applyAngleSnap(wx, wy) {
-  if (linePoints.length === 0) return [wx, wy];
-  const last = linePoints[linePoints.length-1];
+  const refPts = tool === 'polyline' ? linePoints : (tool === 'line' ? linePoints : []);
+  if (refPts.length === 0) return [wx, wy];
+  const last = refPts[refPts.length-1];
   const dx = wx-last[0], dy = wy-last[1];
   const dist = Math.hypot(dx, dy);
   if (dist < 1e-6) return [wx, wy];
   const rawAngle = Math.atan2(dy, dx);
-  const snapAngle = Math.round(rawAngle / (Math.PI/12)) * (Math.PI/12); // 15° steps
+  const snapAngle = Math.round(rawAngle / (Math.PI/12)) * (Math.PI/12);
   return [last[0] + dist*Math.cos(snapAngle), last[1] + dist*Math.sin(snapAngle)];
 }
 
 function snapPt(wx, wy) {
-  if (ctrlHeld) return [wx, wy]; // Ctrl = freeform
+  if (ctrlHeld) return [wx, wy];
 
   // 1. Point snap — nearest vertex within 14px screen
   const SNAP_PX = 14;
@@ -436,8 +506,8 @@ function snapPt(wx, wy) {
   }
   if (best) return [best[0], best[1]];
 
-  // 2. Shift + polyline/construct = 15° angle snap
-  if (shiftHeld && (tool === 'polyline' || tool === 'construct' || tool === 'line') && linePoints.length > 0)
+  // 2. Shift + line/polyline = 15° angle snap
+  if (shiftHeld && (tool === 'polyline' || tool === 'line') && linePoints.length > 0)
     return applyAngleSnap(wx, wy);
 
   // 3. Grid snap
@@ -455,8 +525,12 @@ function allPoints() {
     else if (e.type === 'rect') {
       pts.push([e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]);
     } else if (e.type === 'circle') pts.push([e.cx,e.cy]);
+    else if (e.type === 'arc') pts.push(e.p1, e.pmid, e.p2);
+    else if (e.type === 'spline') e.points.forEach(p => pts.push(p));
   }
   linePoints.forEach(p => pts.push(p));
+  arcPts.forEach(p => pts.push(p));
+  splinePts.forEach(p => pts.push(p));
   return pts;
 }
 
@@ -468,6 +542,49 @@ function resize() {
   scheduleRender();
 }
 new ResizeObserver(resize).observe(sk);
+
+// ════════════════════════════════════════════════════════════════════
+// ARC GEOMETRY HELPER
+// ════════════════════════════════════════════════════════════════════
+
+function arcGeom(p1, pmid, p2) {
+  const [ax,ay]=p1,[bx,by]=pmid,[cx,cy]=p2;
+  const D = 2*(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by));
+  if (Math.abs(D)<1e-10) return null;
+  const ux=((ax*ax+ay*ay)*(by-cy)+(bx*bx+by*by)*(cy-ay)+(cx*cx+cy*cy)*(ay-by))/D;
+  const uy=((ax*ax+ay*ay)*(cx-bx)+(bx*bx+by*by)*(ax-cx)+(cx*cx+cy*cy)*(bx-ax))/D;
+  const r=Math.hypot(ax-ux,ay-uy);
+  const a1=Math.atan2(ay-uy,ax-ux);
+  const am=Math.atan2(by-uy,bx-ux);
+  const a2=Math.atan2(cy-uy,cx-ux);
+  function norm(a){return((a%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);}
+  const n1=norm(a1),nm=norm(am),n2=norm(a2);
+  let ccw;
+  if (n1<n2) ccw = nm>n1 && nm<n2;
+  else ccw = nm>n1 || nm<n2;
+  return { cx:ux, cy:uy, r, startAngle:a1, endAngle:a2, ccw };
+}
+
+// ════════════════════════════════════════════════════════════════════
+// SPLINE DRAWING HELPER (Catmull-Rom)
+// ════════════════════════════════════════════════════════════════════
+
+function drawSpline(pts, isPreview) {
+  if (pts.length < 2) return;
+  ctx.beginPath();
+  const [sx,sy]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx,sy);
+  for (let i=0; i<pts.length-1; i++) {
+    const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+    const [s1x,s1y]=wtoc(p1[0],p1[1]),[s2x,s2y]=wtoc(p2[0],p2[1]);
+    const [s0x,s0y]=wtoc(p0[0],p0[1]),[s3x,s3y]=wtoc(p3[0],p3[1]);
+    ctx.bezierCurveTo(
+      s1x+(s2x-s0x)/6, s1y+(s2y-s0y)/6,
+      s2x-(s3x-s1x)/6, s2y-(s3y-s1y)/6,
+      s2x, s2y
+    );
+  }
+  ctx.stroke();
+}
 
 // ════════════════════════════════════════════════════════════════════
 // RENDER
@@ -542,11 +659,12 @@ function drawCommitted() {
 function drawEntity(e, preview, entityIdx) {
   const isConstruct = e.construction === true;
 
+  ctx.save();
   if (isConstruct) {
-    ctx.save();
     ctx.globalAlpha = 0.4;
     ctx.setLineDash([6, 4]);
     ctx.strokeStyle = 'rgba(160,190,255,0.85)';
+    ctx.fillStyle = 'rgba(160,190,255,0.05)';
   } else {
     ctx.strokeStyle = preview ? 'rgba(245,158,11,0.85)' : 'rgba(160,190,255,1)';
     ctx.fillStyle   = preview ? 'rgba(245,158,11,0.08)' : 'rgba(160,190,255,0.07)';
@@ -555,7 +673,7 @@ function drawEntity(e, preview, entityIdx) {
 
   if (e.type === 'polyline') {
     const pts = e.points;
-    if (pts.length < 2) { if (isConstruct) ctx.restore(); return; }
+    if (pts.length < 2) { ctx.restore(); return; }
     ctx.beginPath();
     const [sx,sy]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx,sy);
     for (let i=1; i<pts.length; i++) { const [sx2,sy2]=wtoc(pts[i][0],pts[i][1]); ctx.lineTo(sx2,sy2); }
@@ -602,7 +720,30 @@ function drawEntity(e, preview, entityIdx) {
     vertex([e.cx,e.cy]);
   }
 
-  if (isConstruct) { ctx.restore(); ctx.setLineDash([]); }
+  if (e.type === 'arc') {
+    const g = arcGeom(e.p1, e.pmid, e.p2);
+    if (g) {
+      const [scx,scy]=wtoc(g.cx,g.cy);
+      ctx.beginPath();
+      ctx.arc(scx, scy, g.r*zoom, g.startAngle, g.endAngle, !g.ccw);
+      ctx.stroke();
+    }
+    if (!isConstruct) {
+      vertex(e.p1); vertex(e.pmid); vertex(e.p2);
+    }
+  }
+
+  if (e.type === 'spline') {
+    const pts = e.points;
+    if (pts.length >= 2) {
+      drawSpline(pts, preview);
+      if (!isConstruct) {
+        pts.forEach(p => vertex(p));
+      }
+    }
+  }
+
+  ctx.restore();
 }
 
 function drawSelection() {
@@ -643,8 +784,10 @@ function drawSelection() {
 
 function vertex(pt, nearDrag) {
   const [sx,sy]=wtoc(pt[0],pt[1]);
+  ctx.save();
   ctx.fillStyle = nearDrag ? 'rgba(245,158,11,0.9)' : 'rgba(200,220,255,0.9)';
   ctx.beginPath(); ctx.arc(sx,sy,nearDrag ? 5 : 3,0,Math.PI*2); ctx.fill();
+  ctx.restore();
 }
 
 // dimLabel — records hit entry for label click detection
@@ -667,7 +810,6 @@ function dimLabel(p1, p2, entityIdx, segIdx) {
   ctx.fillText(wlen.toFixed(wlen<10?2:1)+' mm', lx, ly);
   ctx.restore();
 
-  // Record hit
   labelHits.push({ lx, ly, entityIdx, segIdx, wlen, p1:[p1[0],p1[1]], p2:[p2[0],p2[1]] });
 }
 
@@ -704,12 +846,11 @@ function drawInProgress() {
     linePoints.forEach(p=>vertex(p));
   }
 
-  // single-line / construct in-progress
-  if ((tool==='line'||tool==='construct') && linePoints.length===1) {
-    ctx.strokeStyle = tool==='construct'
-      ? 'rgba(160,190,255,0.4)' : 'rgba(245,158,11,0.85)';
+  // single-line in-progress
+  if (tool==='line' && linePoints.length===1) {
+    ctx.strokeStyle = constructionMode ? 'rgba(160,190,255,0.4)' : 'rgba(245,158,11,0.85)';
     ctx.lineWidth=1.8;
-    if (tool==='construct') ctx.setLineDash([6,4]);
+    if (constructionMode) ctx.setLineDash([6,4]);
     ctx.beginPath();
     const [sx0,sy0]=wtoc(linePoints[0][0],linePoints[0][1]); ctx.moveTo(sx0,sy0);
     const [msx,msy]=wtoc(mx,my); ctx.lineTo(msx,msy);
@@ -721,12 +862,83 @@ function drawInProgress() {
 
   if (tool==='rect' && rectStart) {
     drawEntity({type:'rect',x:Math.min(rectStart.x,mx),y:Math.min(rectStart.y,my),
-                w:Math.abs(mx-rectStart.x),h:Math.abs(my-rectStart.y)}, true, undefined);
+                w:Math.abs(mx-rectStart.x),h:Math.abs(my-rectStart.y),construction:constructionMode}, true, undefined);
   }
 
   if (tool==='circle' && circleCenter) {
     const r=Math.hypot(mx-circleCenter.x,my-circleCenter.y);
-    drawEntity({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r}, true, undefined);
+    drawEntity({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}, true, undefined);
+  }
+
+  // Arc in-progress
+  if (tool==='arc') {
+    if (arcPts.length===1) {
+      ctx.strokeStyle='rgba(245,158,11,0.85)'; ctx.lineWidth=1.8;
+      ctx.beginPath();
+      const [s0x,s0y]=wtoc(arcPts[0][0],arcPts[0][1]);
+      const [msx,msy]=wtoc(mx,my);
+      ctx.moveTo(s0x,s0y); ctx.lineTo(msx,msy); ctx.stroke();
+      vertex(arcPts[0]);
+    } else if (arcPts.length===2) {
+      const g = arcGeom(arcPts[0], arcPts[1], [mx,my]);
+      if (g) {
+        ctx.save();
+        ctx.strokeStyle='rgba(245,158,11,0.85)';
+        ctx.lineWidth=1.8;
+        ctx.setLineDash([5,4]);
+        const [scx,scy]=wtoc(g.cx,g.cy);
+        ctx.beginPath();
+        ctx.arc(scx, scy, g.r*zoom, g.startAngle, g.endAngle, !g.ccw);
+        ctx.stroke();
+        ctx.restore();
+      }
+      arcPts.forEach(p=>vertex(p));
+    }
+  }
+
+  // Polygon in-progress
+  if (tool==='polygon' && polyCenter) {
+    const r = Math.hypot(mx-polyCenter.x, my-polyCenter.y);
+    if (r > 0.5) {
+      const n = polySides;
+      const baseAngle = Math.atan2(my-polyCenter.y, mx-polyCenter.x);
+      const pts = [];
+      for (let i=0; i<n; i++) {
+        const a = baseAngle + (2*Math.PI*i/n);
+        pts.push([polyCenter.x + r*Math.cos(a), polyCenter.y + r*Math.sin(a)]);
+      }
+      ctx.save();
+      ctx.strokeStyle = constructionMode ? 'rgba(160,190,255,0.4)' : 'rgba(245,158,11,0.85)';
+      if (constructionMode) ctx.setLineDash([6,4]);
+      ctx.lineWidth=1.8;
+      ctx.beginPath();
+      const [sx0,sy0]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx0,sy0);
+      for (let i=1; i<pts.length; i++) { const [sx,sy]=wtoc(pts[i][0],pts[i][1]); ctx.lineTo(sx,sy); }
+      ctx.closePath(); ctx.stroke();
+      ctx.restore();
+
+      // Label sides near center
+      const [cx,cy]=wtoc(polyCenter.x, polyCenter.y);
+      ctx.save();
+      ctx.font='11px JetBrains Mono,monospace';
+      ctx.fillStyle='rgba(245,158,11,0.75)';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(`${n} sides`, cx, cy);
+      ctx.restore();
+    }
+    vertex([polyCenter.x, polyCenter.y]);
+  }
+
+  // Spline in-progress
+  if (tool==='spline' && splinePts.length>0) {
+    const previewPts = [...splinePts, [mx,my]];
+    ctx.save();
+    ctx.strokeStyle = constructionMode ? 'rgba(160,190,255,0.5)' : 'rgba(245,158,11,0.85)';
+    if (constructionMode) ctx.setLineDash([6,4]);
+    ctx.lineWidth=1.8;
+    drawSpline(previewPts, true);
+    ctx.restore();
+    splinePts.forEach(p=>vertex(p));
   }
 }
 
@@ -752,18 +964,18 @@ function drawSnapIndicator() {
 }
 
 // ════════════════════════════════════════════════════════════════════
-// DRAGGABLE POINTS HELPERS (feature 5)
+// DRAGGABLE POINTS HELPERS
 // ════════════════════════════════════════════════════════════════════
 
 function getEntityVertices(e) {
-  if (e.type === 'polyline') return e.points.map((p,i)=>({p,i})).map(({p})=>p);
+  if (e.type === 'polyline') return e.points.map(p=>p);
   if (e.type === 'rect') return [[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
   if (e.type === 'circle') return [[e.cx,e.cy]];
+  if (e.type === 'arc') return [e.p1, e.pmid, e.p2];
+  if (e.type === 'spline') return e.points.map(p=>p);
   return [];
 }
 
-// Find draggable vertex near screen position sx,sy
-// Returns { entityIdx, ptIdx } or null
 function findNearVertex(sx, sy) {
   const DRAG_R = 10;
   for (let ei=entities.length-1; ei>=0; ei--) {
@@ -774,7 +986,6 @@ function findNearVertex(sx, sy) {
         if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi };
       }
     } else if (e.type === 'rect') {
-      // rect has 4 corners mapped to properties
       const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
       for (let pi=0; pi<4; pi++) {
         const [px,py]=wtoc(corners[pi][0], corners[pi][1]);
@@ -783,6 +994,17 @@ function findNearVertex(sx, sy) {
     } else if (e.type === 'circle') {
       const [px,py]=wtoc(e.cx, e.cy);
       if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isCircle:true };
+    } else if (e.type === 'arc') {
+      const arcKs = [['p1',e.p1],['pmid',e.pmid],['p2',e.p2]];
+      for (const [key,pt] of arcKs) {
+        const [px,py]=wtoc(pt[0],pt[1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isArc:true, ptKey:key };
+      }
+    } else if (e.type === 'spline') {
+      for (let pi=0; pi<e.points.length; pi++) {
+        const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi, isSpline:true };
+      }
     }
   }
   return null;
@@ -793,15 +1015,17 @@ function applyDragMove(ds, wx, wy) {
   if (ds.isCircle && e.type==='circle') {
     e.cx = wx; e.cy = wy;
   } else if (ds.isRect && e.type==='rect') {
-    // Move one corner — adjust x,y,w,h accordingly
     const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
     corners[ds.ptIdx] = [wx, wy];
-    // Reconstruct rect from opposite corner
     const opp = corners[(ds.ptIdx+2)%4];
     e.x = Math.min(wx, opp[0]);
     e.y = Math.min(wy, opp[1]);
     e.w = Math.abs(wx - opp[0]);
     e.h = Math.abs(wy - opp[1]);
+  } else if (ds.isArc && e.type==='arc') {
+    e[ds.ptKey] = [wx, wy];
+  } else if (ds.isSpline && e.type==='spline') {
+    e.points[ds.ptIdx] = [wx, wy];
   } else if (e.type==='polyline') {
     e.points[ds.ptIdx] = [wx, wy];
   }
@@ -931,7 +1155,6 @@ function applyParallelToPrev() {
   scheduleRender(); scheduleExtrude(); updateConstraintPanel();
 }
 
-// Wire up constraint buttons
 document.getElementById('btn-cst-len').addEventListener('click', applyLengthConstraint);
 document.getElementById('btn-cst-ang').addEventListener('click', ()=>applyAngleConstraint());
 document.getElementById('btn-cst-rad').addEventListener('click', applyRadiusConstraint);
@@ -959,28 +1182,26 @@ function isNearFirst(wx, wy) {
 
 function getProfile() {
   for (const e of entities) {
-    if (e.construction) continue; // exclude construction lines
+    if (e.construction) continue;
     if (e.type==='polyline'&&e.closed&&e.points.length>=3) return e;
     if (e.type==='rect'&&e.w>0&&e.h>0) return e;
     if (e.type==='circle'&&e.r>0) return e;
+    if (e.type==='arc'&&e.p1&&e.pmid&&e.p2) return e;
+    if (e.type==='spline'&&e.points&&e.points.length>=3) return e;
   }
   return null;
 }
 
-function updateExtrudeBtn() {
-  document.getElementById('btn-ext').disabled = !getProfile();
-}
-
 function scheduleExtrude() {
   clearTimeout(extTimer);
-  updateExtrudeBtn();
   if (getProfile()) extTimer = setTimeout(doExtrude, 300);
 }
 
 function doExtrude() {
   const p=getProfile();
   if (!p) return;
-  const msg={type:'build',profile:p,height:extH};
+  setRebuildStatus('building');
+  const msg={type:'build',profile:p,height:extH,filletR,chamferR};
   if (workerReady) worker.postMessage(msg);
   else pendingBuild=msg;
 }
@@ -991,7 +1212,6 @@ window.doExtrude = doExtrude;
 // LEN POPUP APPLY HELPER
 // ════════════════════════════════════════════════════════════════════
 
-// Apply new length to a committed single-segment polyline endpoint
 function applyLenToEntity(entityIdx, segIdx, newLen) {
   const e = entities[entityIdx];
   if (!e || e.type !== 'polyline') return;
@@ -1007,16 +1227,45 @@ function applyLenToEntity(entityIdx, segIdx, newLen) {
 }
 
 // ════════════════════════════════════════════════════════════════════
+// CONSTRUCTION MODE TOGGLE
+// ════════════════════════════════════════════════════════════════════
+
+function toggleConstructionMode() {
+  constructionMode = !constructionMode;
+  const btn = document.getElementById('btn-construct');
+  btn.classList.toggle('construct-on', constructionMode);
+  scheduleRender();
+}
+
+document.getElementById('btn-construct').addEventListener('click', toggleConstructionMode);
+
+// ════════════════════════════════════════════════════════════════════
+// POLYGON SIDES PICKER
+// ════════════════════════════════════════════════════════════════════
+
+document.getElementById('poly-sides').addEventListener('input', function() {
+  polySides = Math.max(3, Math.min(64, parseInt(this.value)||6));
+  scheduleRender();
+});
+
+// ════════════════════════════════════════════════════════════════════
 // TOOLS
 // ════════════════════════════════════════════════════════════════════
 
 function setTool(t) {
   linePoints=[]; rectStart=null; circleCenter=null;
+  arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
   tool=t;
   document.querySelectorAll('.tb-btn[id^="tool-"]').forEach(b=>b.classList.remove('active'));
   const btn=document.getElementById('tool-'+t);
   if (btn) btn.classList.add('active');
+
+  // Show/hide polygon sides picker
+  const showPoly = (t === 'polygon');
+  document.getElementById('poly-sides-lbl').style.display = showPoly ? '' : 'none';
+  document.getElementById('poly-sides').style.display = showPoly ? '' : 'none';
+
   updateHint();
   scheduleRender();
 }
@@ -1024,26 +1273,31 @@ window.setTool = setTool;
 
 function updateHint() {
   const hints = {
-    line:      '<b>Line tool</b><br>Click start → click end → type exact length<br><b>Ctrl</b>: freeform · Click label to edit',
-    polyline:  '<b>Polyline tool</b><br>Click to add points · Click first point to close (≥3 pts)<br><b>Shift</b>: angle snap 15° · <b>Ctrl</b>: freeform<br>Double-click: end open · Right-click / Esc: cancel',
-    construct: '<b>Construction line</b><br>Dashed reference — not extruded<br>Click start → click end<br><b>Ctrl</b>: freeform',
-    rect:      '<b>Rectangle tool</b><br>Click and drag to draw<br><b>Ctrl</b>: freeform (no snap)',
-    circle:    '<b>Circle tool</b><br>Click: set centre · Click again: set radius<br><b>Ctrl</b>: freeform',
+    line:     '<b>Line tool (L)</b><br>Click start → click end → type exact length<br><b>Ctrl</b>: freeform · Click label to edit',
+    polyline: '<b>Polyline tool (P)</b><br>Click to add points · Click first point to close (≥3 pts)<br><b>Shift</b>: 15° snap · <b>Ctrl</b>: freeform<br>Double-click: end open · Right-click/Esc: cancel',
+    rect:     '<b>Rectangle tool (R)</b><br>Click and drag to draw<br><b>Ctrl</b>: freeform (no snap)',
+    circle:   '<b>Circle tool (C)</b><br>Click: set centre · Click again: set radius<br><b>Ctrl</b>: freeform',
+    arc:      '<b>Arc tool (A)</b><br>Click 1: start · Click 2: through-point · Click 3: end<br>Three-point arc',
+    polygon:  '<b>Polygon tool (G)</b><br>Click 1: set centre · Click 2: set radius/rotation<br>Adjust sides in toolbar',
+    spline:   '<b>Spline tool (S)</b><br>Click to add control points<br>Double-click: end · Right-click/Esc: cancel',
   };
   document.getElementById('hint-box').innerHTML = hints[tool]||'';
 }
 
 function undoLast() {
   hideLenPopup();
+  if (splinePts.length>0) { splinePts.pop(); scheduleRender(); return; }
+  if (arcPts.length>0) { arcPts.pop(); scheduleRender(); return; }
   if (linePoints.length>0) { linePoints.pop(); scheduleRender(); return; }
-  if (entities.length>0) { entities.pop(); selection=null; updateConstraintPanel(); updateExtrudeBtn(); scheduleRender(); }
+  if (entities.length>0) { entities.pop(); selection=null; updateConstraintPanel(); scheduleRender(); }
 }
 window.undoLast = undoLast;
 
 function clearAll() {
   entities=[]; linePoints=[]; rectStart=null; circleCenter=null;
+  arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
-  selection=null; updateConstraintPanel(); updateExtrudeBtn(); scheduleRender();
+  selection=null; updateConstraintPanel(); scheduleRender();
 }
 window.clearAll = clearAll;
 
@@ -1051,14 +1305,16 @@ window.clearAll = clearAll;
 // WIRE UP TOOLBAR BUTTONS
 // ════════════════════════════════════════════════════════════════════
 
-document.getElementById('tool-line').addEventListener('click',      ()=>setTool('line'));
-document.getElementById('tool-polyline').addEventListener('click',  ()=>setTool('polyline'));
-document.getElementById('tool-construct').addEventListener('click', ()=>setTool('construct'));
-document.getElementById('tool-rect').addEventListener('click',      ()=>setTool('rect'));
-document.getElementById('tool-circle').addEventListener('click',    ()=>setTool('circle'));
-document.getElementById('btn-undo').addEventListener('click',       ()=>undoLast());
-document.getElementById('btn-clear').addEventListener('click',      ()=>clearAll());
-document.getElementById('btn-ext').addEventListener('click',        ()=>doExtrude());
+document.getElementById('tool-line').addEventListener('click',    ()=>setTool('line'));
+document.getElementById('tool-polyline').addEventListener('click',()=>setTool('polyline'));
+document.getElementById('tool-rect').addEventListener('click',    ()=>setTool('rect'));
+document.getElementById('tool-circle').addEventListener('click',  ()=>setTool('circle'));
+document.getElementById('tool-arc').addEventListener('click',     ()=>setTool('arc'));
+document.getElementById('tool-polygon').addEventListener('click', ()=>setTool('polygon'));
+document.getElementById('tool-spline').addEventListener('click',  ()=>setTool('spline'));
+document.getElementById('btn-undo').addEventListener('click',     ()=>undoLast());
+document.getElementById('btn-clear').addEventListener('click',    ()=>clearAll());
+document.getElementById('btn-rebuild').addEventListener('click',  ()=>doExtrude());
 
 document.getElementById('snap-sel').addEventListener('change', function() {
   gridSnap = +this.value;
@@ -1069,6 +1325,28 @@ document.getElementById('snap-sel').addEventListener('change', function() {
 document.getElementById('s-h').addEventListener('input', function() {
   extH = +this.value;
   document.getElementById('v-h').textContent = this.value + ' mm';
+  scheduleExtrude();
+});
+
+document.getElementById('s-fillet').addEventListener('input', function() {
+  filletR = +this.value;
+  document.getElementById('v-fillet').textContent = filletR + ' mm';
+  if (filletR > 0) {
+    chamferR = 0;
+    document.getElementById('s-chamfer').value = 0;
+    document.getElementById('v-chamfer').textContent = '0 mm';
+  }
+  scheduleExtrude();
+});
+
+document.getElementById('s-chamfer').addEventListener('input', function() {
+  chamferR = +this.value;
+  document.getElementById('v-chamfer').textContent = chamferR + ' mm';
+  if (chamferR > 0) {
+    filletR = 0;
+    document.getElementById('s-fillet').value = 0;
+    document.getElementById('v-fillet').textContent = '0 mm';
+  }
   scheduleExtrude();
 });
 
@@ -1088,7 +1366,7 @@ sk.addEventListener('mousemove', e => {
   const [wx,wy]=ctow(x,y);
   const [sx,sy]=snapPt(wx,wy);
 
-  // Drag move (feature 5)
+  // Drag move
   if (dragState) {
     applyDragMove(dragState, sx, sy);
     mouse={x:sx,y:sy};
@@ -1103,7 +1381,7 @@ sk.addEventListener('mousemove', e => {
   document.getElementById('st-x').textContent=sx.toFixed(1);
   document.getElementById('st-y').textContent=sy.toFixed(1);
   const snapLabel = ctrlHeld ? 'Freeform'
-    : (shiftHeld&&(tool==='polyline'||tool==='construct'||tool==='line')&&linePoints.length>0
+    : (shiftHeld&&(tool==='polyline'||tool==='line')&&linePoints.length>0
       ? 'Angle snap 15°'
       : (gridSnap>0?`Snap ${gridSnap} mm`:'Snap off'));
   document.getElementById('st-snap').textContent=snapLabel;
@@ -1113,13 +1391,11 @@ sk.addEventListener('mousemove', e => {
     panY=panOrig.y+(y-panStart0.y);
   }
 
-  // Check hover over labels (feature 4) — needs prior render to have labelHits
   const prevHover = hoverLabelIdx;
   hoverLabelIdx = hitLabel(x, y);
   if (hoverLabelIdx >= 0) {
     sk.style.cursor = 'pointer';
   } else {
-    // Check near draggable vertex (feature 5)
     const nearV = findNearVertex(x, y);
     sk.style.cursor = nearV ? 'grab' : 'crosshair';
   }
@@ -1138,14 +1414,16 @@ sk.addEventListener('mousedown', e => {
 
   const {x,y}=evXY(e);
 
-  // Feature 5: check draggable vertex first
+  // Check draggable vertex first
   const nearV = findNearVertex(x, y);
   if (nearV) {
     dragState = nearV;
+    dragStarted = true;
     sk.style.cursor = 'grabbing';
     e.preventDefault();
     return;
   }
+  dragStarted = false;
 
   if (tool==='rect') { rectStart={x:mouse.x,y:mouse.y}; }
   if (tool==='circle'&&!circleCenter) { circleCenter={x:mouse.x,y:mouse.y}; }
@@ -1155,7 +1433,7 @@ sk.addEventListener('mouseup', e => {
   if (e.button===1||isPanning) { isPanning=false; return; }
   if (e.button!==0) return;
 
-  // End drag (feature 5)
+  // End drag
   if (dragState) {
     dragState = null;
     sk.style.cursor = 'crosshair';
@@ -1167,8 +1445,8 @@ sk.addEventListener('mouseup', e => {
     const x=Math.min(rectStart.x,mouse.x), y=Math.min(rectStart.y,mouse.y);
     const w=Math.abs(mouse.x-rectStart.x), h=Math.abs(mouse.y-rectStart.y);
     if (w>0.5&&h>0.5) {
-      entities.push({type:'rect',x,y,w,h});
-      updateExtrudeBtn(); scheduleExtrude();
+      entities.push({type:'rect',x,y,w,h,construction:constructionMode});
+      scheduleExtrude();
     }
     rectStart=null; scheduleRender();
   }
@@ -1177,13 +1455,15 @@ sk.addEventListener('mouseup', e => {
 sk.addEventListener('click', e => {
   if (e.button!==0) return;
 
+  // If a drag just ended, suppress this click
+  if (dragStarted) { dragStarted = false; return; }
+
   const {x,y}=evXY(e);
 
-  // Feature 4: label click check (do before tool logic)
+  // Label click check
   const li = hitLabel(x, y);
   if (li >= 0) {
     const hit = labelHits[li];
-    // Show constraint panel if entity is known
     if (hit.entityIdx >= 0) {
       const ent = entities[hit.entityIdx];
       if (ent) {
@@ -1198,7 +1478,6 @@ sk.addEventListener('click', e => {
         scheduleRender();
       }
     }
-    // Show len-popup at label position
     showLenPopup(hit.lx, hit.ly, hit.wlen, (newLen) => {
       if (hit.entityIdx >= 0) {
         applyLenToEntity(hit.entityIdx, hit.segIdx, newLen);
@@ -1210,59 +1489,81 @@ sk.addEventListener('click', e => {
 
   if (tool==='circle'&&circleCenter) {
     const r=Math.hypot(mouse.x-circleCenter.x,mouse.y-circleCenter.y);
-    if (r>0.5) { entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r}); updateExtrudeBtn(); scheduleExtrude(); }
+    if (r>0.5) { entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}); scheduleExtrude(); }
     circleCenter=null; scheduleRender(); return;
   }
 
-  // Single Line tool (feature 3)
+  // Arc tool — 3 clicks
+  if (tool==='arc') {
+    arcPts.push([mouse.x, mouse.y]);
+    if (arcPts.length===3) {
+      const [p1,pmid,p2] = arcPts;
+      entities.push({type:'arc', p1, pmid, p2, construction:constructionMode});
+      arcPts = [];
+      scheduleExtrude();
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Polygon tool — 2 clicks (center then radius)
+  if (tool==='polygon') {
+    if (!polyCenter) {
+      polyCenter = {x:mouse.x, y:mouse.y};
+    } else {
+      const r = Math.hypot(mouse.x-polyCenter.x, mouse.y-polyCenter.y);
+      if (r > 0.5) {
+        const n = polySides;
+        const baseAngle = Math.atan2(mouse.y-polyCenter.y, mouse.x-polyCenter.x);
+        const pts = [];
+        for (let i=0; i<n; i++) {
+          const a = baseAngle + (2*Math.PI*i/n);
+          pts.push([polyCenter.x + r*Math.cos(a), polyCenter.y + r*Math.sin(a)]);
+        }
+        entities.push({type:'polyline', points:pts, closed:true, construction:constructionMode});
+        scheduleExtrude();
+      }
+      polyCenter = null;
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Spline tool — multi-click
+  if (tool==='spline') {
+    splinePts.push([mouse.x, mouse.y]);
+    scheduleRender();
+    return;
+  }
+
+  // Single Line tool
   if (tool==='line') {
     if (linePoints.length===0) {
       linePoints.push([mouse.x,mouse.y]);
     } else {
-      // commit segment
       const p1 = linePoints[0];
       const p2 = [mouse.x, mouse.y];
       const ei = entities.length;
-      entities.push({type:'polyline', points:[p1,p2], closed:false});
+      entities.push({type:'polyline', points:[p1,p2], closed:false, construction:constructionMode});
       linePoints = [];
-      updateExtrudeBtn(); scheduleExtrude();
-      // Show len-popup (feature 1)
+      scheduleExtrude();
       const [sx2,sy2]=wtoc(p2[0],p2[1]);
       const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
-      showLenPopup(sx2, sy2, wlen, (newLen) => {
-        applyLenToEntity(ei, 0, newLen);
-      });
+      if (!constructionMode) {
+        showLenPopup(sx2, sy2, wlen, (newLen) => {
+          applyLenToEntity(ei, 0, newLen);
+        });
+      }
     }
     scheduleRender();
     return;
   }
 
-  // Construction line tool (feature 2)
-  if (tool==='construct') {
-    if (linePoints.length===0) {
-      linePoints.push([mouse.x,mouse.y]);
-    } else {
-      const p1 = linePoints[0];
-      const p2 = [mouse.x, mouse.y];
-      const ei = entities.length;
-      entities.push({type:'polyline', points:[p1,p2], closed:false, construction:true});
-      linePoints = [];
-      // Show len-popup after placing
-      const [sx2,sy2]=wtoc(p2[0],p2[1]);
-      const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
-      showLenPopup(sx2, sy2, wlen, (newLen) => {
-        applyLenToEntity(ei, 0, newLen);
-      });
-    }
-    scheduleRender();
-    return;
-  }
-
-  // Polyline tool (feature 3)
+  // Polyline tool
   if (tool==='polyline') {
     if (linePoints.length>=3&&isNearFirst(mouse.x,mouse.y)) {
-      entities.push({type:'polyline',points:[...linePoints],closed:true});
-      linePoints=[]; updateExtrudeBtn(); scheduleExtrude();
+      entities.push({type:'polyline',points:[...linePoints],closed:true,construction:constructionMode});
+      linePoints=[]; scheduleExtrude();
     } else {
       linePoints.push([mouse.x,mouse.y]);
     }
@@ -1272,17 +1573,36 @@ sk.addEventListener('click', e => {
 });
 
 sk.addEventListener('dblclick', e => {
+  // End spline on double-click
+  if (tool==='spline' && splinePts.length>=2) {
+    // Remove the duplicate point added by the second click of dblclick
+    if (splinePts.length > 2) splinePts.pop();
+    entities.push({type:'spline', points:[...splinePts], construction:constructionMode});
+    splinePts = [];
+    scheduleExtrude();
+    scheduleRender();
+    return;
+  }
   if (tool==='polyline'&&linePoints.length>=2) {
     linePoints.pop();
-    entities.push({type:'polyline',points:[...linePoints],closed:false});
+    entities.push({type:'polyline',points:[...linePoints],closed:false,construction:constructionMode});
     linePoints=[]; scheduleRender();
   }
 });
 
 sk.addEventListener('contextmenu', e => {
   e.preventDefault();
-  if (tool==='polyline'||tool==='line'||tool==='construct') {
+  if (tool==='polyline'||tool==='line') {
     linePoints=[]; circleCenter=null; scheduleRender();
+  }
+  if (tool==='spline') {
+    splinePts=[]; scheduleRender();
+  }
+  if (tool==='arc') {
+    arcPts=[]; scheduleRender();
+  }
+  if (tool==='polygon') {
+    polyCenter=null; scheduleRender();
   }
 });
 
@@ -1311,14 +1631,18 @@ window.addEventListener('keydown', e => {
     if (e.key==='Escape') {
       hideLenPopup();
       linePoints=[]; rectStart=null; circleCenter=null;
+      arcPts=[]; polyCenter=null; splinePts=[];
       scheduleRender();
     }
     if (e.key==='l'||e.key==='L') setTool('line');
     if (e.key==='p'||e.key==='P') setTool('polyline');
-    if (e.key==='x'||e.key==='X') setTool('construct');
     if (e.key==='r'||e.key==='R') setTool('rect');
     if (e.key==='c'||e.key==='C') setTool('circle');
-    if (e.key==='Delete') { if (entities.length>0){ entities.pop(); updateExtrudeBtn(); scheduleRender(); } }
+    if (e.key==='a'||e.key==='A') setTool('arc');
+    if (e.key==='g'||e.key==='G') setTool('polygon');
+    if (e.key==='s'||e.key==='S') setTool('spline');
+    if (e.key==='x'||e.key==='X') toggleConstructionMode();
+    if (e.key==='Delete') { if (entities.length>0){ entities.pop(); scheduleRender(); } }
 
     // Arrow key pan (2D canvas)
     const PAN=30;
