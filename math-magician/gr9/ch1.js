@@ -128,7 +128,7 @@ MathMagician.registerChapter(1, {
             }
             document.getElementById('intBtn').addEventListener('click',calc);
             ['intP','intR','intN'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            calc();
+
           })();
           </script>
         x1y1 = x2y2</span>.</span></div>
@@ -198,7 +198,7 @@ MathMagician.registerChapter(1, {
             }
             document.getElementById('intBtn2').addEventListener('click',calc);
             ['intP2','intR2','intN2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            calc();
+
           })();
           </script>
         Compound interest grows faster than simple interest. The difference is noticeable over many years.</span></div>

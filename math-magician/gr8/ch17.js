@@ -236,7 +236,7 @@ MathMagician.registerChapter(17, {
               ].join('');
             }
             ['rfSucc','rfTrials','rfTheo'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
-            calc();
+
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>In exams: experimental probability is always an estimate. The more trials, the more reliable the estimate. Never say experimental = theoretical — say "approaches" or "approximates".</span></div>

@@ -92,7 +92,7 @@ MathMagician.registerChapter(9, {
               }
               document.getElementById('g12c9Btn').addEventListener('click',calc);
               ['g12c9xp'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
-              calc();
+
             })();
             </script>
           </div>
@@ -182,7 +182,7 @@ MathMagician.registerChapter(9, {
                 out.innerHTML=html;
               }
               document.getElementById('g12c9t2Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>

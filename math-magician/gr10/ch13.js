@@ -109,9 +109,9 @@ MathMagician.registerChapter(13, {
                 html+='<span style="color:#6ee7b7;">SA = '+f(SA)+' units²</span>';
                 out.innerHTML=html;
               }
-              document.getElementById('g10c13shape').addEventListener('change',()=>{buildInputs();calc();});
+              document.getElementById('g10c13shape').addEventListener('change',()=>{buildInputs();});
               document.getElementById('g10c13Btn').addEventListener('click',calc);
-              buildInputs(); calc();
+              buildInputs();
             })();
             </script>
           </div>
@@ -247,9 +247,9 @@ MathMagician.registerChapter(13, {
                 html+='<span style="color:rgba(221,225,240,0.50);">SA scales by k² = '+f(k*k)+'</span>';
                 out.innerHTML=html;
               }
-              document.getElementById('g10c13t2shape').addEventListener('change',()=>{build();calc();});
+              document.getElementById('g10c13t2shape').addEventListener('change',()=>{build();});
               document.getElementById('g10c13t2Btn').addEventListener('click',calc);
-              build(); calc();
+              build();
             })();
             </script>
           </div>

@@ -291,7 +291,7 @@ S — Subtraction }</div>
             }
             document.getElementById('fmCalc').addEventListener('click',calc);
             ['fmA','fmB'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-            calc();
+
           })();
           </script>
         `
@@ -363,7 +363,7 @@ S — Subtraction }</div>
               ].join('');
             }
             document.getElementById('ratCalc').addEventListener('click',calc);
-            calc();
+
           })();
           </script>
         `
@@ -535,8 +535,8 @@ S — Subtraction }</div>
             }
 
             document.getElementById('rateCalc').addEventListener('click', calc);
-            document.getElementById('rateDUnit').addEventListener('change', function(){ updateRateUnit(); calc(); });
-            document.getElementById('rateTUnit').addEventListener('change', function(){ updateRateUnit(); calc(); });
+            document.getElementById('rateDUnit').addEventListener('change', function(){ updateRateUnit(); });
+            document.getElementById('rateTUnit').addEventListener('change', function(){ updateRateUnit(); });
             ['rateD','rateT','rateR'].forEach(id =>
               document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') calc(); })
             );
@@ -630,7 +630,7 @@ S — Subtraction }</div>
               document.getElementById('finV2').value=cfg.d2;
               if(m==='vat') document.getElementById('finV2').disabled=true;
               else document.getElementById('finV2').disabled=false;
-              calc();
+
             }
             function calc(){
               const m=document.getElementById('finMode').value;

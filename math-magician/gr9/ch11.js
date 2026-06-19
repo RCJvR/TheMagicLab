@@ -153,7 +153,7 @@ MathMagician.registerChapter(11, {
             }
             document.getElementById('agBtn').addEventListener('click',calc);
             ['agX1','agY1','agX2','agY2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            calc();
+
           })();
           </script>
         match corresponding vertices in the same order. ?ABC ||| ?DEF means A?D, B?E, C?F.</span></div>

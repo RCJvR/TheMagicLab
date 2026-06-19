@@ -85,7 +85,7 @@ MathMagician.registerChapter(3, {
               }
               document.getElementById('g11c3Btn').addEventListener('click',calc);
               ['g11c3t1','g11c3t2','g11c3t3'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              calc();
+
             })();
             </script>
           </div>
@@ -220,7 +220,7 @@ MathMagician.registerChapter(3, {
               }
               document.getElementById('g11c3t2Btn').addEventListener('click',calc);
               ['g11c3t2a','g11c3t2b','g11c3t2c','g11c3t2target'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              calc();
+
             })();
             </script>
           </div>

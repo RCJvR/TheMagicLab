@@ -61,7 +61,7 @@ MathMagician.registerChapter(10, {
             }
             document.getElementById('triBtn').addEventListener('click',calc);
             ['triA','triB'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            calc();
+
           })();
           </script>
         The angle bisectors of a triangle meet at the incentre.</span></div>

@@ -142,7 +142,7 @@ MathMagician.registerChapter(16, {
             }
             document.getElementById('mmmCalc').addEventListener('click', calc);
             document.getElementById('mmmInput').addEventListener('keydown', e => e.key==='Enter' && calc());
-            calc();
+
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Always sort data first before finding the median. Finding the middle position of unsorted data gives the wrong answer every time.</span></div>

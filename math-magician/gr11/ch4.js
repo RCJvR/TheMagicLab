@@ -75,7 +75,7 @@ MathMagician.registerChapter(4, {
               }
               document.getElementById('g11c4Btn').addEventListener('click',calc);
               ['g11c4m','g11c4x1','g11c4y1'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              calc();
+
             })();
             </script>
           </div>

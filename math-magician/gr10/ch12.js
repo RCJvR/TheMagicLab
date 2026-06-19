@@ -82,7 +82,7 @@ MathMagician.registerChapter(12, {
             (function(){
               const rel=document.getElementById('g10c12rel');
               const extP=document.getElementById('g10c12extPanel');
-              rel.addEventListener('change',()=>{extP.style.display=rel.value==='ext'?'':'none'; calc();});
+              rel.addEventListener('change',()=>{extP.style.display=rel.value==='ext'?'':'none';});
               function calc(){
                 const a=parseFloat(document.getElementById('g10c12ang').value);
                 const r=rel.value;
@@ -100,7 +100,7 @@ MathMagician.registerChapter(12, {
               }
               document.getElementById('g10c12Btn').addEventListener('click',calc);
               ['g10c12ang','g10c12ang2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              calc();
+
             })();
             </script>
           </div>
@@ -218,7 +218,7 @@ MathMagician.registerChapter(12, {
               }
               document.getElementById('g10c12t2Btn').addEventListener('click',calc);
               document.getElementById('g10c12t2ang').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
-              calc();
+
             })();
             </script>
           </div>

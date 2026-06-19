@@ -132,7 +132,7 @@ MathMagician.registerChapter(15, {
                 '<div><span style="opacity:0.5;">Capacity = </span><span style="color:#6ee7b7;">'+v+' ml = '+(v/1000)+' litres</span></div>';
             }
             document.getElementById('vlBtn').addEventListener('click',calc);
-            calc();
+
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>1 cm³ = 1 ml is the key link between volume and capacity. A cube of side 1 cm holds exactly 1 ml of water.</span></div>

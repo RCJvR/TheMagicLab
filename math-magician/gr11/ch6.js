@@ -127,7 +127,7 @@ MathMagician.registerChapter(6, {
               document.getElementById('g11c6theta').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
               document.getElementById('g11c6func').addEventListener('change',calc);
               document.getElementById('g11c6form').addEventListener('change',calc);
-              calc();
+
             })();
             </script>
           </div>

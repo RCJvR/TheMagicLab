@@ -105,7 +105,7 @@ MathMagician.registerChapter(2, {
             document.getElementById('intCalc').addEventListener('click',calc);
             ['intA','intB'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
             document.getElementById('intOp').addEventListener('change',calc);
-            calc();
+
           })();
           </script>
         `

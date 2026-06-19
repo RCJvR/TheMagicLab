@@ -88,7 +88,7 @@ MathMagician.registerChapter(14, {
               }
               document.getElementById('g10c14Btn').addEventListener('click',calc);
               ['g10c14ns','g10c14na','g10c14nb','g10c14nab'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              calc();
+
             })();
             </script>
           </div>

@@ -108,7 +108,7 @@ MathMagician.registerChapter(10, {
                   render();
                 });
               });
-              render();calc();
+              render();
             })();
             </script>
           </div>
@@ -209,7 +209,7 @@ MathMagician.registerChapter(10, {
               }
               document.getElementById('g12c10t2Btn').addEventListener('click',calc);
               ['g12c10t2n','g12c10t2r','g12c10t2tn','g12c10t2tr'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
-              calc();
+
             })();
             </script>
           </div>

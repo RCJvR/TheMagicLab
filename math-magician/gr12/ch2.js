@@ -78,7 +78,7 @@ MathMagician.registerChapter(2, {
               }
               ['g12c2b','g12c2x'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
               document.getElementById('g12c2Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>

@@ -79,7 +79,7 @@ MathMagician.registerChapter(5, {
               }
               ['g12c5a','g12c5b','g12c5c','g12c5d','g12c5k'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
               document.getElementById('g12c5Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>
@@ -182,7 +182,7 @@ MathMagician.registerChapter(5, {
               }
               ['g12c5t2a','g12c5t2b','g12c5t2c','g12c5t2d'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
               document.getElementById('g12c5t2Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>

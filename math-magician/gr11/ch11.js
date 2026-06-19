@@ -80,7 +80,7 @@ MathMagician.registerChapter(11, {
               }
               document.getElementById('g11c11data').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
               document.getElementById('g11c11Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>
@@ -210,7 +210,7 @@ MathMagician.registerChapter(11, {
               }
               document.getElementById('g11c11t2data').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
               document.getElementById('g11c11t2Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>

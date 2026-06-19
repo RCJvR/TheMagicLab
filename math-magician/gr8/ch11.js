@@ -373,7 +373,7 @@ MathMagician.registerChapter(11, {
                 '<div><span style="opacity:0.5;">New value = '+orig+(type==='inc'?'+':'-')+change.toFixed(2)+' = </span><span style="color:#6ee7b7;font-size:14px;">'+nv.toFixed(2)+'</span></div>';
             }
             document.getElementById('pcBtn').addEventListener('click',calc);
-            calc();
+
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>To find the percentage change: <em>change ÷ original × 100</em>. The original (starting value) is always the denominator — never the new value.</span></div>

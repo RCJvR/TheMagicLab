@@ -102,9 +102,9 @@ MathMagician.registerChapter(14, {
               const area=cfg.calc(vals);
               document.getElementById('areaOut').innerHTML='Area = '+cfg.formula+' = <strong>'+area.toFixed(3).replace(/\.?0+$/,'')+' units²</strong>';
             }
-            document.getElementById('areaShape').addEventListener('change',function(){buildInputs(this.value);calc();});
+            document.getElementById('areaShape').addEventListener('change',function(){buildInputs(this.value);});
             document.getElementById('areaBtn').addEventListener('click',calc);
-            buildInputs('rect');calc();
+            buildInputs('rect');
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>The height in area formulas is always the <strong>perpendicular</strong> height — the shortest distance between the base and opposite side. It is not always a side of the shape.</span></div>

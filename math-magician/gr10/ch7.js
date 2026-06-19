@@ -105,10 +105,10 @@ MathMagician.registerChapter(7, {
                     +'<span style="color:rgba(221,225,240,0.50);">3rd interior angle (adjacent to ext.) = 180°−'+a+'° = '+third+'° ← wait, = </span><span style="color:#fcd34d;">'+(180-a)+'°</span>';
                 }
               }
-              document.getElementById('g10c7mode').addEventListener('change',()=>{updateLabels();calc();});
+              document.getElementById('g10c7mode').addEventListener('change',()=>{updateLabels();});
               document.getElementById('g10c7Btn').addEventListener('click',calc);
               ['g10c7a1','g10c7a2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              updateLabels(); calc();
+              updateLabels();
             })();
             </script>
           </div>
@@ -254,9 +254,9 @@ MathMagician.registerChapter(7, {
                     +'<span style="color:rgba(221,225,240,0.50);font-size:13px;">Area ratio = k² = '+(ratio*ratio).toFixed(4)+'</span>';
                 }
               }
-              document.getElementById('g10c7bmode').addEventListener('change',()=>{buildInputs();calc();});
+              document.getElementById('g10c7bmode').addEventListener('change',()=>{buildInputs();});
               document.getElementById('g10c7bBtn').addEventListener('click',calc);
-              buildInputs(); calc();
+              buildInputs();
             })();
             </script>
           </div>

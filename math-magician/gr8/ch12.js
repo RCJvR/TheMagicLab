@@ -126,7 +126,7 @@ MathMagician.registerChapter(12, {
             }
             document.getElementById('decBtn').addEventListener('click',calc);
             document.getElementById('decOp').addEventListener('change',calc);
-            calc();
+
           })();
           </script>
           <div class="tip-box"><span class="tip-icon">💡</span><span>Count decimal places carefully in multiplication. <span class="math">0.3 × 0.3 = 0.09</span> — not 0.9. The answer has two decimal places because each factor has one.</span></div>

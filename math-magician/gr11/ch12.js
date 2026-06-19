@@ -97,7 +97,7 @@ MathMagician.registerChapter(12, {
               }
               document.getElementById('g11c12Btn').addEventListener('click',calc);
               ['g11c12a','g11c12b','g11c12x1','g11c12y1','g11c12x2','g11c12y2','g11c12x3','g11c12y3','g11c12x4','g11c12y4'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
-              calc();
+
             })();
             </script>
           </div>
@@ -349,7 +349,7 @@ MathMagician.registerChapter(12, {
               }
               document.getElementById('g11c12t2addPt').addEventListener('click',()=>{pts.push([0,0]);render();});
               document.getElementById('g11c12t2Btn').addEventListener('click',calc);
-              render(); calc();
+              render();
             })();
             </script>
           </div>

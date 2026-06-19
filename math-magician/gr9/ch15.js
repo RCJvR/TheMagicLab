@@ -80,9 +80,9 @@ MathMagician.registerChapter(15, {
                 '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Total SA: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+(typeof res.total==='number'&&res.total%1!==0?res.total.toFixed(3):res.total)+'</span> <span style="color:rgba(221,225,240,0.35);">units�</span></div>',
               ].join('');
             }
-            document.getElementById('saShape').addEventListener('change',function(){setShape();calc();});
+            document.getElementById('saShape').addEventListener('change',function(){setShape();});
             document.getElementById('saBtn').addEventListener('click',calc);
-            setShape();calc();
+            setShape();
           })();
           </script>
         Draw the net of the solid first. Count each face and calculate its area separately before adding together.</span></div>
@@ -158,10 +158,10 @@ MathMagician.registerChapter(15, {
               else{V=4/3*PI*v1*v1*v1;SA=4*PI*v1*v1;}
               document.getElementById('volOut4').innerHTML='<div><span style="color:rgba(221,225,240,0.45);width:80px;display:inline-block;">Volume:</span><span style="color:#6ee7b7;font-size:15px;font-weight:700;">'+f(V)+' units\xb3</span></div><div><span style="color:rgba(221,225,240,0.45);width:80px;display:inline-block;">Surf. Area:</span><span style="color:#a5b4fc;">'+f(SA)+' units\xb2</span></div>';
             }
-            document.getElementById('volShape4').addEventListener('change',function(){setL();calc();});
+            document.getElementById('volShape4').addEventListener('change',function(){setL();});
             document.getElementById('volBtn4').addEventListener('click',calc);
             ['volV14','volV24','volV34'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            setL();calc();
+            setL();
           })();
           </script>
         volume of the corresponding prism/cylinder). A useful check!</span></div>

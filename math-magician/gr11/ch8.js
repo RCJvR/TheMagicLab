@@ -121,9 +121,9 @@ MathMagician.registerChapter(8, {
                 }
                 out.innerHTML=html;
               }
-              document.getElementById('g11c8thm').addEventListener('change',()=>{build();calc();});
+              document.getElementById('g11c8thm').addEventListener('change',()=>{build();});
               document.getElementById('g11c8Btn').addEventListener('click',calc);
-              build(); calc();
+              build();
             })();
             </script>
           </div>

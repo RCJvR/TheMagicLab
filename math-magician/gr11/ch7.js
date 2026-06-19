@@ -108,9 +108,9 @@ MathMagician.registerChapter(7, {
                 }
                 out.innerHTML=html;
               }
-              document.getElementById('g11c7combo').addEventListener('change',()=>{build();calc();});
+              document.getElementById('g11c7combo').addEventListener('change',()=>{build();});
               document.getElementById('g11c7Btn').addEventListener('click',calc);
-              build(); calc();
+              build();
             })();
             </script>
           </div>
@@ -256,9 +256,9 @@ MathMagician.registerChapter(7, {
                 html+='<span style="color:#fcd34d;">New SA = '+f(newSA)+'</span>   <span style="color:#6ee7b7;">New V = '+f(newV)+'</span>';
                 out.innerHTML=html;
               }
-              document.getElementById('g11c7t2shape').addEventListener('change',()=>{build();calc();});
+              document.getElementById('g11c7t2shape').addEventListener('change',()=>{build();});
               document.getElementById('g11c7t2Btn').addEventListener('click',calc);
-              build(); calc();
+              build();
             })();
             </script>
           </div>

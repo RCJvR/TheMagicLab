@@ -371,7 +371,7 @@ MathMagician.registerChapter(5, {
               }
               document.getElementById('g11c5t2Btn').addEventListener('click',calc);
               ['g11c5t2a','g11c5t2b','g11c5t2p','g11c5t2q'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
-              calc();
+
             })();
             </script>
           </div>

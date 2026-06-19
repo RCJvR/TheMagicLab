@@ -75,7 +75,7 @@ MathMagician.registerChapter(9, {
               }
               ['g11c9p','g11c9i','g11c9n'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
               document.getElementById('g11c9Btn').addEventListener('click',calc);
-              calc();
+
             })();
             </script>
           </div>

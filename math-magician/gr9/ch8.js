@@ -61,7 +61,7 @@ MathMagician.registerChapter(8, {
               ].join('');
             }
             document.getElementById('hcfBtn').addEventListener('click',calc);
-            calc();
+
           })();
           </script>
         ALWAYS look for a common factor first. It simplifies all other methods that follow.</span></div>

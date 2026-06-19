@@ -79,9 +79,9 @@ MathMagician.registerChapter(14, {
                 '<div><span style="color:rgba(221,225,240,0.45);">'+(isCircle?'Circumference':'Perimeter')+': </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+(isCircle?p.toFixed(4):p)+'</span> <span style="color:rgba(221,225,240,0.35);">units</span></div>',
               ].join('');
             }
-            document.getElementById('periShape').addEventListener('change',function(){setShape();calc();});
+            document.getElementById('periShape').addEventListener('change',function(){setShape();});
             document.getElementById('periBtn').addEventListener('click',calc);
-            setShape();calc();
+            setShape();
           })();
           </script>
         only the outer boundary counts.</span></div>
@@ -160,10 +160,10 @@ MathMagician.registerChapter(14, {
               else{A=v1*v2;line1='A = base\xd7h = '+v1+'\xd7'+v2+' = '+f(A)+' sq units';line2='';}
               document.getElementById('areaOut2').innerHTML='<div style="color:rgba(221,225,240,0.60);">'+line1+'</div>'+(line2?'<div style="color:rgba(221,225,240,0.60);">'+line2+'</div>':'')+'<div><span style="color:#6ee7b7;font-size:15px;font-weight:700;">A = '+f(A)+'</span></div>';
             }
-            document.getElementById('areaShape2').addEventListener('change',function(){setL();calc();});
+            document.getElementById('areaShape2').addEventListener('change',function(){setL();});
             document.getElementById('areaBtn2').addEventListener('click',calc);
             ['areaV12','areaV22','areaV32'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
-            setL();calc();
+            setL();
           })();
           </script>
         not the slant side.</span></div>
