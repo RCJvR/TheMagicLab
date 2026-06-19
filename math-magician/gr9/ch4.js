@@ -151,7 +151,8 @@ MathMagician.registerChapter(4, {
             num: "1",
             text: "Simplify each expression:",
             parts: [
-              { label: "a)", text: "x5 � x� � x4", marks: 2 },
+              { label: "a)", text: "x⁵ × x³ ÷ x⁴", marks: 2 },
+//� x� �
               { label: "b)", text: "(2a�b)4", marks: 3 },
               { label: "c)", text: "3� + 2?� + 4?�", marks: 4 },
               { label: "d)", text: "(x�y?�)� � (x?�y)", marks: 5 },

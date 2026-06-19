@@ -161,8 +161,7 @@ MathMagician.registerChapter(5, {
         {
           type: "input",
           text: "Evaluate: cos 60° ÷ tan 60°",
-          answer: "1/6",
-          altAnswers: ["√3/6"],
+          answer: "√3/6",
           topic: "Trig ratios & special angles"
         }
       ]

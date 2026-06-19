@@ -102,7 +102,7 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Differentiate: y = 5x³ − 2x + 8", options: ["15x² − 2", "5x² − 2x", "15x² − 2x + 8", "15x³ − 2"], answer: 0, topic: "Limits, first principles & rules" },
         { type: "input", text: "f(x) = x⁴ − 3x². Find f'(2).", answer: "20", topic: "Limits, first principles & rules" },
         { type: "mc", text: "dy/dx of y = 4/x²:", options: ["−8/x³", "8x", "−8x³", "4x⁻¹"], answer: 0, topic: "Limits, first principles & rules" },
-        { type: "mc", text: "Differentiate: f(x) = (2x − 1)²", options: ["2(2x−1)", "4(2x−1)", "4x − 2", "Both B and C"], answer: 3, topic: "Limits, first principles & rules" }
+        { type: "mc", text: "Differentiate: f(x) = (2x − 1)²", options: ["2(2x−1)", "4(2x−1)", "4x − 2", "Both B and C"], answer: 1, topic: "Limits, first principles & rules" }
       ]
     },
     {

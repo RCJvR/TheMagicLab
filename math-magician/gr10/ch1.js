@@ -413,7 +413,7 @@ MathMagician.registerChapter(1, {
       5: {
         a: "x−2, x≠−2",
         b: "(x−1), x≠−3/2",
-        c: "(5x−1)/((x−1)(x+1))"
+        c: "(5x+1)/((x−1)(x+1))"
       }
     }
   }

@@ -284,7 +284,7 @@ MathMagician.registerChapter(3, {
           { label: "a", text: "Write the first five terms of the sequence.", marks: 2 },
           { label: "b", text: "Find the second difference.", marks: 1 },
           { label: "c", text: "Determine the general term Tₙ.", marks: 4 },
-          { label: "d", text: "Find the value of n for which Tₙ = 121.", marks: 3 }
+          { label: "d", text: "Find the value of n for which Tₙ = 145.", marks: 3 }
         ]
       },
       {
@@ -307,7 +307,7 @@ MathMagician.registerChapter(3, {
         a: "1, 5, 13, 25, 41",
         b: "Second difference = 4",
         c: "2a=4→a=2; T₁:2+b+c=1; 1st diff(T₁→T₂)=3a+b=4→6+b=4→b=−2; c=1; Tₙ=2n²−2n+1",
-        d: "2n²−2n+1=121→2n²−2n−120=0→n²−n−60=0→(n−8)(n+7.5)... → n=8"
+        d: "2n²−2n+1=145 → 2n²−2n−144=0 → n²−n−72=0 → (n−9)(n+8)=0 → n=9"
       },
       3: {
         a: "H(1)=0,H(2)=1,H(3)=3,H(4)=6,H(5)=10; 1st diffs:1,2,3,4; 2nd diffs:1,1,1 → constant ✓ quadratic",

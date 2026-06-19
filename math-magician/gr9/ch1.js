@@ -197,7 +197,7 @@ MathMagician.registerChapter(1, {
               ].join('');
             }
             document.getElementById('intBtn2').addEventListener('click',calc);
-            ['intP','intR','intN'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
+            ['intP2','intR2','intN2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
             calc();
           })();
           </script>
@@ -313,7 +313,7 @@ MathMagician.registerChapter(1, {
           { num: "Q3a", ans: "R 16 000 : R 12 000 : R 20 000", note: "12 parts total; 1 part = R 4 000" },
           { num: "Q3b", ans: "R 6 000 : R 4 500 : R 7 500", note: "1 part of profit = 18 000�12 = R 1 500" },
           { num: "Q4a", ans: "720 items", note: "direct: 9/6 � 480 = 720" },
-          { num: "Q4b", ans: "9 days (accept 1,5 days if working shown)", note: "inverse: 6 � 1 day = 4 � d; d = 6/4 = 1,5 days for 1 day production. For 480: same total work = 4 � d = 6 � 1, d = 1,5" },
+          { num: "Q4b", ans: "1,5 days", note: "inverse: 6 � 1 day = 4 � d; d = 6/4 = 1,5 days for 1 day production. For 480: same total work = 4 � d = 6 � 1, d = 1,5" },
         ]
       },
       {

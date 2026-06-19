@@ -123,7 +123,7 @@ MathMagician.registerChapter(13, {
               el.innerHTML='<div style="color:rgba(221,225,240,0.60);">'+step1+'</div><div><strong style="color:#6ee7b7;">'+step2+'</strong></div>';
             }
             document.getElementById('pyBtn2').addEventListener('click',solve);
-            ['pyA','pyB','pyC'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
+            ['pyA2','pyB2','pyC2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
           })();
           </script>
         the altitude from the apex bisects the base, creating two identical right triangles.</span></div>

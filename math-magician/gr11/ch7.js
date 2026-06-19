@@ -142,7 +142,7 @@ MathMagician.registerChapter(7, {
         {
           type: "mc",
           text: "A square pyramid has base 6 cm and slant height 5 cm. SA =",
-          options: ["96 cm²", "96 + 36 = wait... 36 + 4(½·6·5)", "96 cm²", "Both A and C"],
+          options: ["96 cm²", "60 cm²", "132 cm²", "72 cm²"],
           answer: 0,
           topic: "Surface area of complex solids"
         },

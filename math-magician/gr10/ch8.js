@@ -198,7 +198,7 @@ MathMagician.registerChapter(8, {
         {
           type: "mc",
           text: "Distance between (−1; 2) and (3; 5):",
-          options: ["5", "√7", "7", "√25 = 5"],
+          options: ["5", "√7", "7", "√50"],
           answer: 0,
           topic: "Distance & midpoint"
         },
@@ -525,7 +525,7 @@ MathMagician.registerChapter(8, {
         text: "ABCD is a quadrilateral with A(0; 0), B(4; 2), C(6; −2), D(2; −4).",
         parts: [
           { label: "a", text: "Show that AB is parallel to DC.", marks: 4 },
-          { label: "b", text: "Show that AB ≠ DC in length.", marks: 3 },
+          { label: "b", text: "Show that AB = DC in length.", marks: 3 },
           { label: "c", text: "What type of quadrilateral is ABCD? Give a reason.", marks: 2 }
         ]
       }
@@ -535,7 +535,7 @@ MathMagician.registerChapter(8, {
         a: "AB = √(36+64) = √100 = 10",
         b: "M = (1; 7)",
         c: "m = (11−3)/(4−(−2)) = 8/6 = 4/3",
-        d: "y = (4/3)x + 11/3"
+        d: "y = (4/3)x + 17/3"
       },
       2: {
         a: "M = (4; 1)",
@@ -545,7 +545,7 @@ MathMagician.registerChapter(8, {
       },
       3: {
         a: "m_AB=(2−0)/(4−0)=1/2; m_DC=(−4−(−2))/(2−6)=−2/−4=1/2 → AB∥DC",
-        b: "AB=√20=2√5; DC=√20=2√5 → equal length!",
+        b: "AB=√20=2√5; DC=√20=2√5 → AB = DC = √20",
         c: "Parallelogram (one pair of ∥ and equal sides) — actually rhombus if all sides equal; check AD and BC"
       }
     }

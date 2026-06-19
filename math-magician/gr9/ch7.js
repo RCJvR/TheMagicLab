@@ -143,7 +143,7 @@ MathMagician.registerChapter(7, {
           { num: "Q1b", ans: "2x� + 7x - 15", note: "FOIL: 2x�+10x-3x-15 = 2x�+7x-15" },
           { num: "Q1c", ans: "9x� + 12x + 4", note: "(3x)�+2(3x)(2)+2� = 9x�+12x+4" },
           { num: "Q1d", ans: "16x� - 1", note: "difference of squares: (4x)�-1� = 16x�-1" },
-          { num: "Q1e", ans: "2x + 20", note: "x�+8x+16 - (x�+4x-12) = 4x+28; recheck: x�+8x+16-x�-4x+12=4x+28. Accept 4x+28." },
+          { num: "Q1e", ans: "4x + 28", note: "x�+8x+16 - (x�+4x-12) = 4x+28; recheck: x�+8x+16-x�-4x+12=4x+28. Accept 4x+28." },
         ]
       },
       {

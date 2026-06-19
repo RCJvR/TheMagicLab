@@ -242,7 +242,7 @@ MathMagician.registerChapter(10, {
         {
           type: "mc",
           text: "A bag has 5 red and 3 blue balls. Two are drawn with replacement. P(one red, one blue) =",
-          options: ["15/32", "15/64", "30/64", "15/56"],
+          options: ["6/64", "15/64", "30/64", "15/56"],
           answer: 2,
           topic: "Venn diagrams, tree diagrams & contingency tables"
         },

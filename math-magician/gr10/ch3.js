@@ -135,7 +135,7 @@ MathMagician.registerChapter(3, {
         {
           type: "mc",
           text: "The 1st term of a linear sequence is 8 and d = −3. What is T₅?",
-          options: ["−4", "−7", "20", "−4"],
+          options: ["−4", "−7", "20", "−1"],
           answer: 0,
           topic: "Linear sequences"
         }

@@ -220,7 +220,7 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Choosing a team of 5 from 12 players (order irrelevant):", options: ["₁₂P₅", "₁₂C₅", "12×5", "12!/5!"], answer: 1, topic: "Combinations & probability applications" },
         { type: "input", text: "From 10 books, choose 3 (order doesn't matter). How many ways?", answer: "120", topic: "Combinations & probability applications" },
         { type: "mc", text: "Deck of 52 cards. P(5-card hand with all hearts):", options: ["₁₃C₅/₅₂C₅", "13/52", "₁₃P₅/₅₂P₅", "5/52"], answer: 0, topic: "Combinations & probability applications" },
-        { type: "mc", text: "From 5 boys and 3 girls, choose 4. P(exactly 2 boys and 2 girls)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Both A and C"], answer: 3, topic: "Combinations & probability applications" }
+        { type: "mc", text: "From 5 boys and 3 girls, choose 4. P(exactly 2 boys and 2 girls)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Both A and C"], answer: 0, topic: "Combinations & probability applications" }
       ]
     }
   ],

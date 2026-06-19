@@ -186,9 +186,9 @@ MathMagician.registerChapter(4, {
       },
       questions: [
         { type: "mc", text: "General solution of tan x = 1:", options: ["x = 45° + 360°n", "x = 45° + 180°n", "x = ±45° + 360°n", "x = 135° + 360°n"], answer: 1, topic: "Trig equations & 3D applications" },
-        { type: "mc", text: "Solve sin(x − 20°) = ½ for x ∈ [0°; 360°]. The solutions are:", options: ["x = 50° and 130°", "x = 50° and 150°", "x = 70° and 130°", "x = 90° and 70°"], answer: 1, topic: "Trig equations & 3D applications" },
+        { type: "mc", text: "Solve sin(x − 20°) = ½ for x ∈ [0°; 360°]. The solutions are:", options: ["x = 50° and 130°", "x = 50° and 170°", "x = 70° and 130°", "x = 90° and 70°"], answer: 1, topic: "Trig equations & 3D applications" },
         { type: "mc", text: "In a 3D problem, the angle of elevation from A to the top T of a vertical tower BT is found using:", options: ["tan(angle) = BT/AB", "The cosine rule in 3D", "Two separate 2D right triangles", "The sine rule directly in 3D"], answer: 0, topic: "Trig equations & 3D applications" },
-        { type: "mc", text: "Solve: 2sin²x − sinx − 1 = 0 for x ∈ [0°; 360°]", options: ["x = 90°, 210°, 330°", "x = 90°, 210°, 270°", "x = 30°, 150°, 270°", "x = 270°, 210°, 330°"], answer: 3, topic: "Trig equations & 3D applications" },
+        { type: "mc", text: "Solve: 2sin²x − sinx − 1 = 0 for x ∈ [0°; 360°]", options: ["x = 90°, 210°, 330°", "x = 90°, 210°, 270°", "x = 30°, 150°, 270°", "x = 270°, 210°, 330°"], answer: 0, topic: "Trig equations & 3D applications" },
         { type: "input", text: "sin(x + 45°) = −1 for x ∈ [0°; 360°]. Find x.", answer: "225", altAnswers: ["225°"], topic: "Trig equations & 3D applications" }
       ]
     }

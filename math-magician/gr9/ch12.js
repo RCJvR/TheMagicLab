@@ -214,7 +214,7 @@ MathMagician.registerChapter(12, {
         name: "Angle Relationships",
         answers: [
           { num: "Q1a", ans: "x = 43,3�; angles: 86,7�, 53,3�, 40� � accept x = 130/3", note: "2x+x+10+40=180 ? 3x=130 ? x=43,3" },
-          { num: "Q1b", ans: "y = 36�", note: "3y+2y+20+y+40+80=360 ? 6y+140=360 ? 6y=220 ? y=36,7. Accept 220/6." },
+          { num: "Q1b", ans: "y = 110/3 ≈ 36,67°", note: "3y+2y+20+y+40+80=360; 6y+140=360; 6y=220; y=110/3≈36,67", /* was: "y = 36�", note: "3y+2y+20+y+40+80=360 ? 6y+140=360 ? 6y=220 ? y=36,7. JUNK_REMOVED_CH12 */},
           { num: "Q1c", ans: "a = 20; both angles = 75�", note: "4a-5=2a+35 ? 2a=40 ? a=20; angle = 4(20)-5=75�" },
         ]
       },

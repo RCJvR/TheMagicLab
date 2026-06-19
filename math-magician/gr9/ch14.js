@@ -162,7 +162,7 @@ MathMagician.registerChapter(14, {
             }
             document.getElementById('areaShape2').addEventListener('change',function(){setL();calc();});
             document.getElementById('areaBtn2').addEventListener('click',calc);
-            ['areaV1','areaV2','areaV3'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
+            ['areaV12','areaV22','areaV32'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
             setL();calc();
           })();
           </script>
@@ -236,7 +236,8 @@ MathMagician.registerChapter(14, {
           { num: "Q2a", ans: "120 cm�", note: "15 � 8 = 120" },
           { num: "Q2b", ans: "84 cm�", note: "�(9+15)�7 = ��24�7 = 84" },
           { num: "Q2c", ans: "115,74 cm�", note: "12�-p�3� = 144-28,26 = 115,74" },
-          { num: "Q3a", ans: "215,12 m�", note: "20�12 - ��p�4� = 240 - 25,12 = 214,88 � 214,88 m�" },
+          { num: "Q3a", ans: "214,88 m²", note: "20×12 − ½×π×4² = 240 − 25,12 = 214,88 m²" },
+          //REMOVED_OLD_Q3a_START{"215,12 m�", note: "20�12 - ��p�4� = 240 - 25,12 = 214,88 � 214,88 m�" },
           { num: "Q3b", ans: "� R 3 223,20", note: "214,88 � 15 = 3 223,20" },
         ]
       },

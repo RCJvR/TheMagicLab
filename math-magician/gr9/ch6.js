@@ -150,7 +150,7 @@ MathMagician.registerChapter(6, {
                 '<div><span style="color:rgba(221,225,240,0.45);width:110px;display:inline-block;">Range:</span><span style="color:#a5b4fc;">'+(a>0?'y \u2265 '+q:'y \u2264 '+q)+'</span></div>',
               ].join('');
             }
-            ['pra','prp','prq'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
+            ['pra2','prp2','prq2'].forEach(function(id){document.getElementById(id).addEventListener('input',update);});
             update();
           })();
           </script>
@@ -214,7 +214,8 @@ MathMagician.registerChapter(6, {
         name: "Functions and Notation",
         answers: [
           { num: "Q1a", ans: "f(0)=2; f(1)=4; f(-2)=16", note: "f(0)=0-0+2=2; f(1)=3-1+2=4; f(-2)=12+2+2=16" },
-          { num: "Q1b", ans: "x = (1�v37)/6 (approximately x � 1,18 or x � -0,85)", note: "3x�-x+2=12 ? 3x�-x-10=0 ? quadratic formula; or accept completing the square" },
+          { num: "Q1b", ans: "x = 2 or x = −5/3", note: "3x²−x−10=0; Δ=1+120=121; x=(1±11)/6; x=2 or x=−5/3" },
+//REMOVED:�v37)/6 (approximately x � 1,18 or x � -0,85)", note: "3x�-x+2=12 ? 3x�-x-10=0 ? quadratic formula; TAIL_REMOVED
         ]
       },
       {

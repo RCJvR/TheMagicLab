@@ -529,7 +529,7 @@ MathMagician.registerChapter(12, {
       2: {
         a: "Evaluate 3x+2y: A=16; B=24; C=21; D=0 → Maximum=24 at B(4;6)",
         b: "Evaluate x+4y: A=32; B=28; C=7; D=0 → Minimum=0 at D(0;0)",
-        c: "Gradient of BC: m=(0−6)/(7−4)=−2; For 2x+ky=20 to be parallel: slope=−2/k=−2 → k=1; check: 2(4)+1(6)=14≠20... use search line parallel to BC: m_BC=−2; objective m=−2/k; so k=1"
+        c: "For parallel gradients: m_BC=−2; objective m=−2/k; −2/k=−2 → k=1"
       }
     }
   }

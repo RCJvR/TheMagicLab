@@ -146,7 +146,7 @@ MathMagician.registerChapter(9, {
               ].join('');
             }
             document.getElementById('qsBtn5').addEventListener('click',solve);
-            ['qsa','qsb','qsc'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
+            ['qsa5','qsb5','qsc5'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
             solve();
           })();
           </script>
@@ -205,8 +205,8 @@ MathMagician.registerChapter(9, {
         answers: [
           { num: "Q1a", ans: "x = 11", note: "4x-12=2x+10 ? 2x=22 ? x=11" },
           { num: "Q1b", ans: "x = 12", note: "LCD 12: 4x+3x=84 ? 7x=84 ? x=12" },
-          { num: "Q1c", ans: "x = 4", note: "10x-5-3x-6=11 ? 7x=22. Accept 22/7 � 3,14 if correct working. Check: 5(2�4-1)-3(4+2)=35-18=17?11. Actually 7x-11=11 ? x=22/7. Check arithmetic." },
-          { num: "Q1d", ans: "x = 7", note: "LCD 15: 5(2x-1)-3(x+2)=30 ? 10x-5-3x-6=30 ? 7x=41 ? x=41/7. Accept if working shown." },
+          { num: "Q1c", ans: "x = 22/7 ≈ 3,14", note: "10x-5-3x-6=11 ? 7x=22. Accept 22/7 � 3,14 if correct working. Check: 5(2�4-1)-3(4+2)=35-18=17?11. Actually 7x-11=11 ? x=22/7. Check arithmetic." },
+          { num: "Q1d", ans: "x = 41/7 ≈ 5,86", note: "LCD 15: 5(2x-1)-3(x+2)=30 ? 10x-5-3x-6=30 ? 7x=41 ? x=41/7. Accept if working shown." },
         ]
       },
       {

@@ -79,7 +79,7 @@ MathMagician.registerChapter(3, {
                 if([x,r,t].some(isNaN)||x<=0||r<=0||t<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
                 const i=r/np,n=np*t,F=x*(Math.pow(1+i,n)-1)/i;
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">i = '+r*100+'%/'+np+' = '+(i*100).toFixed(4)+'% per period; n = '+np+'×'+t+' = '+n+' periods</span><br>'+
-                  '<span style="color:rgba(221,225,240,0.50);">F = '+R(x)+'·[(1.'+( i.toFixed(6))+'..'^n+'−1]/i</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">F = '+R(x)+'·[(1+'+i.toFixed(6)+')^'+n+'−1]/'+i.toFixed(6)+'</span><br>'+
                   '<span style="color:#6ee7b7;">F = '+R(F)+'</span><br>'+
                   '<span style="color:rgba(221,225,240,0.50);">Total contributed: '+R(x*n)+'   Interest earned: '+R(F-x*n)+'</span>';
               });

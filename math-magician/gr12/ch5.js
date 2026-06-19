@@ -86,7 +86,7 @@ MathMagician.registerChapter(5, {
         `
       },
       questions: [
-        { type: "mc", text: "p(x) = x³ − 3x + 2. Find the remainder when divided by (x − 2).", options: ["4", "0", "2", "6"], answer: 1, topic: "Remainder & factor theorems" },
+        { type: "mc", text: "p(x) = x³ − 3x + 2. Find the remainder when divided by (x − 2).", options: ["4", "0", "2", "6"], answer: 0, topic: "Remainder & factor theorems" },
         { type: "mc", text: "If p(3) = 0, then which is a factor of p(x)?", options: ["(x + 3)", "(x − 3)", "(3x − 1)", "(x · 3)"], answer: 1, topic: "Remainder & factor theorems" },
         { type: "input", text: "p(x) = 2x³ − 3x² + x − 4. Find p(2).", answer: "2", topic: "Remainder & factor theorems" },
         { type: "mc", text: "To find a factor of x³ + x² − 4x − 4, test integer factors of:", options: ["1", "4", "−4", "Both B and C"], answer: 3, topic: "Remainder & factor theorems" },

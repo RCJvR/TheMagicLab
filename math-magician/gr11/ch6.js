@@ -301,8 +301,8 @@ MathMagician.registerChapter(6, {
         {
           type: "mc",
           text: "Area of △ABC where a = 7, b = 5, C = 30°:",
-          options: ["8.75", "17.5", "35/4", "Both A and C"],
-          answer: 3,
+          options: ["8.75", "17.5", "9.25", "Both A and C"],
+          answer: 0,
           topic: "Sine rule, cosine rule & area rule"
         },
         {
@@ -315,8 +315,8 @@ MathMagician.registerChapter(6, {
         {
           type: "mc",
           text: "In △ABC, a = 5, b = 7, c = 6. cosA equals:",
-          options: ["(49+36−25)/84", "(25+49−36)/70", "(25+36−49)/60", "(36+49−25)/84"],
-          answer: 2,
+          options: ["(49+36−25)/84", "(25+49−36)/70", "(25+36−49)/60", "(25+49+36)/84"],
+          answer: 0,
           topic: "Sine rule, cosine rule & area rule"
         },
         {

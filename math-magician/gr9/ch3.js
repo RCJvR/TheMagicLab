@@ -52,7 +52,6 @@ MathMagician.registerChapter(3, {
           })();
           </script>
         `
-        `
       },
       questions: [
         { type: "mc", text: "Calculate: 2/3 + 3/4", options: ["5/7", "17/12", "5/12", "6/7"], answer: 1, topic: "Fractions" },
@@ -112,8 +111,6 @@ MathMagician.registerChapter(3, {
             document.getElementById('convBtn').addEventListener('click',convert);setMode();convert();
           })();
           </script>
-        `
-        the length of the recurring block.</span></div>
         `
       },
       questions: [

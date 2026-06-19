@@ -215,7 +215,7 @@ MathMagician.registerChapter(9, {
       ]}
     ],
     answers: {
-      1: { a: "Points plotted correctly", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Use calculator: approx ŷ=30+6.8x", d: "r≈0.999 (very strong positive linear correlation)", e: "ŷ=30+6.8(7)=77.6; interpolation (7 is within range 2–8)" },
+      1: { a: "Points plotted correctly", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Use calculator: ŷ ≈ 33.4 + 6.13x", d: "r≈0.999 (very strong positive linear correlation)", e: "ŷ ≈ 33.4 + 6.13(7) ≈ 33.4 + 42.9 ≈ 76.3; interpolation (7 is within range 2–8)" },
       2: { a: "Moderate to strong positive linear association", b: "Age — older children have both larger feet and higher IQ due to development", c: "Correlation does not imply causation — a third variable (age) drives both" }
     }
   }

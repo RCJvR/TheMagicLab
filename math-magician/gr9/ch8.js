@@ -133,7 +133,7 @@ MathMagician.registerChapter(8, {
               document.getElementById('facOut4').innerHTML=lines.join('');
             }
             document.getElementById('facBtn4').addEventListener('click',solve);
-            ['faca','facb','facc'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solve();}));
+            ['faca4','facb4','facc4'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solve();}));
             solve();
           })();
           </script>
@@ -142,7 +142,7 @@ MathMagician.registerChapter(8, {
       },
       questions: [
         { type: "mc", text: "Factorise: 4x� - 49", options: ["(2x - 7)(2x - 7)", "(2x - 7)(2x + 7)", "(4x - 7)(x + 7)", "(2x + 49)(2x - 1)"], answer: 1, topic: "Factorisation" },
-        { type: "mc", text: "Factorise: x� + 9x + 20", options: ["(x + 4)(x + 5)", "(x + 2)(x + 10)", "(x + 1)(x + 20)", "(x + 5)(x + 4) � same as A"], answer: 0, topic: "Factorisation" },
+        { type: "mc", text: "Factorise: x� + 9x + 20", options: ["(x + 4)(x + 5)", "(x + 2)(x + 10)", "(x + 1)(x + 20)", "(x−4)(x−5)"/*JUNK�*/], answer: 0, topic: "Factorisation" },
         { type: "mc", text: "Factorise: x� - 3x - 18", options: ["(x - 9)(x + 2)", "(x + 3)(x - 6)", "(x - 3)(x + 6)", "(x - 6)(x + 3)"], answer: 3, topic: "Factorisation" },
         { type: "input", text: "Factorise: 3x� - 48. What is the constant in one of the linear factors? (give positive value)", answer: "4", topic: "Factorisation" },
         { type: "mc", text: "Factorise completely: 2x� - 2x - 24", options: ["2(x - 4)(x + 3)", "2(x + 4)(x - 3)", "(2x - 6)(x + 4)", "2(x - 4)(x - 3)"], answer: 0, topic: "Factorisation" },

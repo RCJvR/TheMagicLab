@@ -283,8 +283,8 @@ MathMagician.registerChapter(11, {
     answers: {
       1: {
         a: "Mean=(12+15+18+18+20+22+24+25+28+30+34+42)/12=288/12=24; Median=(22+24)/2=23",
-        b: "Min=12; Q1=18; Median=23; Q3=28; Max=42",
-        c: "IQR=10; Lower fence=18−15=3; Upper fence=28+15=43; 42 is NOT an outlier (42<43)",
+        b: "Min=12; Q1=18; Median=23; Q3=29; Max=42",
+        c: "IQR=11; Lower fence=18−16.5=1.5; Upper fence=29+16.5=45.5; 42 is NOT an outlier (42<45.5)",
         d: "Mean(24)>Median(23) → slight positive skew (tail to the right, pulled by 42)"
       },
       2: {

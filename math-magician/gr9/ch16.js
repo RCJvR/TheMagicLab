@@ -187,7 +187,7 @@ MathMagician.registerChapter(16, {
               ].join('');
             }
             document.getElementById('txBtn2').addEventListener('click',tx);
-            ['txX','txY','txK'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')tx();});});
+            ['txX2','txY2','txK2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')tx();});});
             tx();
           })();
           </script>

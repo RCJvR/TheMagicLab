@@ -239,9 +239,8 @@ MathMagician.registerChapter(11, {
         },
         {
           type: "input",
-          text: "A flagpole stands on a hill. The hill slopes at 10°. The flagpole stands vertically and is 12 m tall. The angle of elevation to the top of the pole from the base of the hill is 35°. Set up but do not solve: which trig ratio relates the height to the distance along the slope?",
+          text: "In a right triangle, which ratio relates the opposite side to the hypotenuse?",
           answer: "sin",
-          altAnswers: ["tan", "cos"],
           topic: "Multi-triangle problems"
         }
       ]

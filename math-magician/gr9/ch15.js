@@ -160,7 +160,7 @@ MathMagician.registerChapter(15, {
             }
             document.getElementById('volShape4').addEventListener('change',function(){setL();calc();});
             document.getElementById('volBtn4').addEventListener('click',calc);
-            ['volV1','volV2','volV3'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
+            ['volV14','volV24','volV34'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')calc();});});
             setL();calc();
           })();
           </script>

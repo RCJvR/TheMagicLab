@@ -279,7 +279,7 @@ MathMagician.registerChapter(9, {
         {
           type: "mc",
           text: "Laptop costs R12 000. Deposit 10%. HP at 18% p.a. for 3 years. Monthly instalment:",
-          options: ["R450", "R445", "R540", "R416"],
+          options: ["R462", "R445", "R540", "R416"],
           answer: 0,
           topic: "Exchange rates & hire purchase"
         },
