@@ -287,6 +287,80 @@
       #lessonScroll { padding: 20px 18px 20px; }
       .compare-grid, .ethics-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Fill-in-the-blank ── */
+    .fitb-wrap { margin: 20px 0 18px; }
+    .fitb-prompt { font-size: 15px; line-height: 1.8; color: var(--text2); margin-bottom: 12px; }
+    .fitb-prompt strong { color: var(--text); }
+    .fitb-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .fitb-input { background: rgba(0,0,0,0.30); border: 1px solid rgba(168,85,247,0.30); border-radius: 8px; padding: 8px 14px; font-family: var(--font-mono); font-size: 14px; color: var(--text); outline: none; width: 200px; transition: border-color 150ms; }
+    .fitb-input:focus { border-color: rgba(168,85,247,0.60); }
+    .fitb-input.correct { border-color: rgba(17,217,143,0.55); background: rgba(17,217,143,0.08); color: #6ee7b7; }
+    .fitb-input.wrong   { border-color: rgba(239,68,68,0.45); background: rgba(239,68,68,0.08); color: #fca5a5; }
+    .fitb-btn { padding: 8px 18px; border-radius: 8px; background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.28); color: #c084fc; font-family: var(--font-body); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 130ms; }
+    .fitb-btn:hover:not(:disabled) { background: rgba(168,85,247,0.26); }
+    .fitb-btn:disabled { opacity: 0.38; cursor: default; }
+    .fitb-feedback { font-size: 13px; margin-top: 8px; min-height: 18px; }
+    .fitb-feedback.correct { color: #6ee7b7; }
+    .fitb-feedback.wrong   { color: #fca5a5; }
+
+    /* ── Click-to-order game ── */
+    .order-game { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin: 20px 0 18px; }
+    .order-game-title { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .order-hint { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+    .order-bank { display: flex; gap: 8px; flex-wrap: wrap; min-height: 52px; margin-bottom: 16px; }
+    .order-chip { padding: 9px 16px; border-radius: 10px; border: 1px solid rgba(168,85,247,0.32); background: rgba(168,85,247,0.12); color: #e4bcff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 130ms; user-select: none; }
+    .order-chip:hover { background: rgba(168,85,247,0.22); border-color: rgba(168,85,247,0.50); }
+    .order-chip.selected { background: rgba(168,85,247,0.32); border-color: #a855f7; box-shadow: 0 0 0 2px rgba(168,85,247,0.28); }
+    .order-chip.placed { opacity: 0.30; pointer-events: none; }
+    .order-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .order-slot { border-radius: 10px; border: 1.5px dashed rgba(255,255,255,0.13); background: rgba(255,255,255,0.03); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 8px; cursor: pointer; transition: all 130ms; min-height: 64px; }
+    .order-slot:hover { border-color: rgba(168,85,247,0.38); background: rgba(168,85,247,0.06); }
+    .order-slot .slot-num { font-family: var(--font-mono); font-size: 10px; color: rgba(210,218,245,0.22); margin-bottom: 4px; }
+    .order-slot .slot-content { font-size: 12px; font-weight: 600; color: #e4bcff; text-align: center; line-height: 1.3; }
+    .order-slot.filled { border-style: solid; border-color: rgba(168,85,247,0.38); background: rgba(168,85,247,0.10); }
+    .order-slot.correct-slot { border-color: rgba(17,217,143,0.55); background: rgba(17,217,143,0.08); }
+    .order-slot.correct-slot .slot-content { color: #6ee7b7; }
+    .order-slot.wrong-slot   { border-color: rgba(239,68,68,0.45); background: rgba(239,68,68,0.08); }
+    .order-slot.wrong-slot   .slot-content { color: #fca5a5; }
+    .order-actions { display: flex; gap: 8px; margin-top: 14px; }
+    .order-check { padding: 9px 20px; border-radius: 9px; border: none; background: linear-gradient(135deg,#7c22b8,#b5205e); color: #fff; font-family: var(--font-body); font-size: 13px; font-weight: 700; cursor: pointer; }
+    .order-check:hover { box-shadow: 0 4px 16px rgba(124,34,184,0.38); }
+    .order-reset { padding: 9px 16px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .order-reset:hover { color: var(--text); }
+    .order-feedback { font-size: 13px; margin-top: 10px; min-height: 18px; }
+    .order-feedback.correct { color: #6ee7b7; }
+    .order-feedback.wrong   { color: #fca5a5; }
+
+    /* ── Flashcard overlay ── */
+    .fc-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(4,6,18,.92); backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 220ms; }
+    .fc-overlay.open { opacity: 1; pointer-events: all; }
+    .fc-modal { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 18px; }
+    .fc-header { display: flex; align-items: center; justify-content: space-between; }
+    .fc-title { font-family: var(--font-display); font-weight: 900; font-size: 18px; color: #fff; }
+    .fc-close { width: 32px; height: 32px; border-radius: 9px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); color: rgba(220,220,240,.55); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 130ms; }
+    .fc-close:hover { color: #fff; background: rgba(255,255,255,.12); }
+    .fc-progress-row { height: 3px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; }
+    .fc-progress-fill { height: 100%; background: linear-gradient(90deg,#a855f7,#ec4899); border-radius: 99px; transition: width 300ms ease; }
+    .fc-card { height: 220px; perspective: 1000px; cursor: pointer; }
+    .fc-card-inner { position: relative; width: 100%; height: 100%; transition: transform 480ms cubic-bezier(0.4,0.2,0.2,1); transform-style: preserve-3d; }
+    .fc-card.flipped .fc-card-inner { transform: rotateY(180deg); }
+    .fc-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; text-align: center; }
+    .fc-front { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.30); }
+    .fc-back  { background: rgba(236,72,153,0.10); border: 1px solid rgba(236,72,153,0.28); transform: rotateY(180deg); }
+    .fc-face-label { font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .fc-face-text { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.5; }
+    .fc-back .fc-face-text { font-size: 14px; font-weight: 500; color: var(--text2); line-height: 1.7; }
+    .fc-hint { font-size: 11px; color: rgba(168,85,247,0.50); margin-top: 12px; }
+    .fc-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .fc-nav-btn { padding: 10px 22px; border-radius: 11px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-family: var(--font-body); font-size: 14px; font-weight: 700; cursor: pointer; transition: all 130ms; }
+    .fc-nav-btn:hover:not(:disabled) { color: var(--text); background: rgba(255,255,255,.09); }
+    .fc-nav-btn:disabled { opacity: 0.28; cursor: default; }
+    .fc-counter { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+    /* ── Sidebar review button ── */
+    .unit-review-btn { display: none; align-items: center; gap: 7px; margin: 4px 16px 10px; padding: 7px 12px; border-radius: 9px; border: 1px solid rgba(168,85,247,0.22); background: rgba(168,85,247,0.07); color: #c084fc; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 130ms; width: calc(100% - 32px); }
+    .unit-review-btn:hover { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.38); }
   </style>
 </head>
 <body>
@@ -340,6 +414,9 @@
               <span class="lesson-done" id="done-2" style="display:none">✓</span>
             </div>
           </div>
+          <button class="unit-review-btn" id="review-unit-1" onclick="openFlashcards('unit-1')">
+            🃏 Unit 1 Review Cards
+          </button>
         </div>
 
         <!-- Unit 2 -->
@@ -366,6 +443,9 @@
               <span class="lesson-done" id="done-5" style="display:none">✓</span>
             </div>
           </div>
+          <button class="unit-review-btn" id="review-unit-2" onclick="openFlashcards('unit-2')">
+            🃏 Unit 2 Review Cards
+          </button>
         </div>
 
         <!-- Unit 3 -->
@@ -392,6 +472,9 @@
               <span class="lesson-done" id="done-8" style="display:none">✓</span>
             </div>
           </div>
+          <button class="unit-review-btn" id="review-unit-3" onclick="openFlashcards('unit-3')">
+            🃏 Unit 3 Review Cards
+          </button>
         </div>
 
       </div>
@@ -424,6 +507,37 @@
       </nav>
     </div>
 
+  </div>
+</div>
+
+<!-- ── Flashcard overlay ── -->
+<div class="fc-overlay" id="fcOverlay">
+  <div class="fc-modal">
+    <div class="fc-header">
+      <div class="fc-title" id="fcTitle">Review Cards</div>
+      <button class="fc-close" onclick="closeFlashcards()">✕</button>
+    </div>
+    <div class="fc-progress-row">
+      <div class="fc-progress-fill" id="fcProgressFill" style="width:20%"></div>
+    </div>
+    <div class="fc-card" id="fcCard" onclick="flipCard()">
+      <div class="fc-card-inner">
+        <div class="fc-face fc-front">
+          <div class="fc-face-label">Question — click to flip</div>
+          <div class="fc-face-text" id="fcFront"></div>
+          <div class="fc-hint">Click card to reveal answer</div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="fc-face-label">Answer</div>
+          <div class="fc-face-text" id="fcBack"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" id="fcPrev" onclick="fcNav(-1)" disabled>← Prev</button>
+      <span class="fc-counter" id="fcCounter">1 / 5</span>
+      <button class="fc-nav-btn" id="fcNext" onclick="fcNav(1)">Next →</button>
+    </div>
   </div>
 </div>
 
@@ -493,6 +607,15 @@ const LESSONS = [
     <li><strong>Banking fraud detection</strong> — your bank's AI flags unusual transactions in milliseconds</li>
     <li><strong>WhatsApp spam filters</strong> — AI classifies messages before you even see them</li>
   </ul>
+</div>
+
+<div class="fitb-wrap">
+  <div class="fitb-prompt">Complete the sentence: The branch of AI that learns patterns from data rather than following hand-coded rules is called <strong>machine _____</strong>.</div>
+  <div class="fitb-row">
+    <input class="fitb-input" id="fitb0" type="text" placeholder="one word..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFitb('fitb0',['learning'],'fitb0-fb','fitb0-btn')">
+    <button class="fitb-btn" id="fitb0-btn" onclick="checkFitb('fitb0',['learning'],'fitb0-fb','fitb0-btn')">Check</button>
+  </div>
+  <div class="fitb-feedback" id="fitb0-fb"></div>
 </div>
 
 <div class="quiz-section">
@@ -629,6 +752,15 @@ const LESSONS = [
     <span class="key-term">epoch</span> — one full pass through the training dataset<br>
     <span class="key-term">overfitting</span> — when a model memorises training data but fails on new data
   </p>
+</div>
+
+<div class="fitb-wrap">
+  <div class="fitb-prompt">Fill in the blank: The learnable numbers on connections between neurons — adjusted during training to reduce the model's error — are called <strong>_____</strong>.</div>
+  <div class="fitb-row">
+    <input class="fitb-input" id="fitb1" type="text" placeholder="one word..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFitb('fitb1',['weights','weight'],'fitb1-fb','fitb1-btn')">
+    <button class="fitb-btn" id="fitb1-btn" onclick="checkFitb('fitb1',['weights','weight'],'fitb1-fb','fitb1-btn')">Check</button>
+  </div>
+  <div class="fitb-feedback" id="fitb1-fb"></div>
 </div>
 
 <div class="quiz-section">
@@ -843,6 +975,28 @@ const LESSONS = [
     <li>Writing a poem or story → higher temperature</li>
     <li>Solving a maths problem → lower temperature</li>
   </ul>
+</div>
+
+<div class="order-game">
+  <div class="order-game-title">🎯 Activity — Put the prompt elements in the right order</div>
+  <p class="order-hint">Click a block to select it (it glows), then click a numbered slot to place it. Which element should come first?</p>
+  <div class="order-bank" id="orderBank">
+    <div class="order-chip" onclick="selectChip(this)" data-label="Format">📐 Format</div>
+    <div class="order-chip" onclick="selectChip(this)" data-label="Context">🗺️ Context</div>
+    <div class="order-chip" onclick="selectChip(this)" data-label="Role">🎭 Role</div>
+    <div class="order-chip" onclick="selectChip(this)" data-label="Task">🎯 Task</div>
+  </div>
+  <div class="order-slots">
+    <div class="order-slot" onclick="placeChip(this,0)"><span class="slot-num">1st</span><span class="slot-content">—</span></div>
+    <div class="order-slot" onclick="placeChip(this,1)"><span class="slot-num">2nd</span><span class="slot-content">—</span></div>
+    <div class="order-slot" onclick="placeChip(this,2)"><span class="slot-num">3rd</span><span class="slot-content">—</span></div>
+    <div class="order-slot" onclick="placeChip(this,3)"><span class="slot-num">4th</span><span class="slot-content">—</span></div>
+  </div>
+  <div class="order-actions">
+    <button class="order-check" onclick="checkOrder()">Check Order</button>
+    <button class="order-reset" onclick="resetOrder()">Reset</button>
+  </div>
+  <div class="order-feedback" id="orderFeedback"></div>
 </div>
 
 <div class="quiz-section">
@@ -1368,7 +1522,19 @@ Definition: <span style="color:#a855f7;">[AI fills this in following your exact 
 // ── State ────────────────────────────────────────────────────────────────────
 
 let currentLesson = 0;
-const completed = new Array(LESSONS.length).fill(false);
+
+function loadProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ml-ai-oracle-v1'));
+    if (Array.isArray(saved) && saved.length === LESSONS.length) return saved;
+  } catch(e) {}
+  return new Array(LESSONS.length).fill(false);
+}
+const completed = loadProgress();
+
+function saveProgress() {
+  localStorage.setItem('ml-ai-oracle-v1', JSON.stringify(completed));
+}
 
 // ── Navigation ───────────────────────────────────────────────────────────────
 
@@ -1378,6 +1544,8 @@ function goLesson(idx) {
   // Mark current as completed
   completed[currentLesson] = true;
   updateDone(currentLesson);
+  saveProgress();
+  checkUnitCompletion();
 
   currentLesson = idx;
   renderLesson();
@@ -1418,7 +1586,7 @@ function updateUI() {
     ? '<i data-lucide="check" style="width:14px;height:14px;"></i> Finish'
     : 'Next <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>';
   btn.disabled = false;
-  if (isLast) { btn.onclick = () => { completed[currentLesson] = true; updateDone(currentLesson); updateProgress(); }; }
+  if (isLast) { btn.onclick = () => { completed[currentLesson] = true; updateDone(currentLesson); saveProgress(); checkUnitCompletion(); updateProgress(); }; }
   else { btn.onclick = nextLesson; }
 
   // Counter
@@ -1500,7 +1668,201 @@ function buildPrompt() {
   scoreText.textContent = labels[filled] || '';
 }
 
+// ── Unit completion ───────────────────────────────────────────────────────────
+
+function checkUnitCompletion() {
+  if (completed[0] && completed[1] && completed[2]) {
+    const btn = document.getElementById('review-unit-1');
+    if (btn) btn.style.display = 'flex';
+  }
+  if (completed[3] && completed[4] && completed[5]) {
+    const btn = document.getElementById('review-unit-2');
+    if (btn) btn.style.display = 'flex';
+  }
+  if (completed[6] && completed[7] && completed[8]) {
+    const btn = document.getElementById('review-unit-3');
+    if (btn) btn.style.display = 'flex';
+  }
+}
+
+// ── Fill-in-the-blank ─────────────────────────────────────────────────────────
+
+function checkFitb(inputId, answers, feedbackId, btnId) {
+  const input = document.getElementById(inputId);
+  const fb    = document.getElementById(feedbackId);
+  const btn   = document.getElementById(btnId);
+  if (!input || !fb) return;
+  const val = input.value.trim().toLowerCase();
+  const correct = answers.some(a => a.toLowerCase() === val);
+  input.classList.add(correct ? 'correct' : 'wrong');
+  fb.textContent = correct
+    ? '✓ Correct! Well done.'
+    : `✗ Not quite — the answer is "${answers[0]}". Re-read the lesson above.`;
+  fb.className = 'fitb-feedback ' + (correct ? 'correct' : 'wrong');
+  input.disabled = true;
+  if (btn) btn.disabled = true;
+}
+
+// ── Click-to-order game ───────────────────────────────────────────────────────
+
+const CORRECT_ORDER = ['Role', 'Context', 'Task', 'Format'];
+let selectedChip = null;
+const slotData = [null, null, null, null];
+
+function selectChip(el) {
+  if (el.classList.contains('placed')) return;
+  const alreadySelected = el.classList.contains('selected');
+  document.querySelectorAll('.order-chip.selected').forEach(c => c.classList.remove('selected'));
+  if (alreadySelected) { selectedChip = null; return; }
+  selectedChip = el;
+  el.classList.add('selected');
+}
+
+function placeChip(slot, idx) {
+  if (!selectedChip) return;
+  // If slot occupied, return old chip to bank
+  if (slotData[idx]) {
+    const prev = document.querySelector(`.order-chip[data-label="${slotData[idx]}"]`);
+    if (prev) prev.classList.remove('placed');
+  }
+  slotData[idx] = selectedChip.dataset.label;
+  slot.querySelector('.slot-content').textContent = selectedChip.textContent;
+  slot.classList.add('filled');
+  slot.classList.remove('correct-slot', 'wrong-slot');
+  selectedChip.classList.remove('selected');
+  selectedChip.classList.add('placed');
+  selectedChip = null;
+  document.getElementById('orderFeedback').textContent = '';
+}
+
+function checkOrder() {
+  const fb = document.getElementById('orderFeedback');
+  if (slotData.some(v => !v)) {
+    fb.textContent = 'Place all 4 elements first.';
+    fb.className = 'order-feedback wrong';
+    return;
+  }
+  const slots = document.querySelectorAll('.order-slot');
+  let allCorrect = true;
+  slots.forEach((s, i) => {
+    s.classList.remove('correct-slot', 'wrong-slot');
+    const ok = slotData[i] === CORRECT_ORDER[i];
+    s.classList.add(ok ? 'correct-slot' : 'wrong-slot');
+    if (!ok) allCorrect = false;
+  });
+  fb.textContent = allCorrect
+    ? '✓ Perfect! Role → Context → Task → Format is the correct order.'
+    : '✗ Not quite. Hint: set the AI\'s persona first, then give background, then the task, then formatting instructions.';
+  fb.className = 'order-feedback ' + (allCorrect ? 'correct' : 'wrong');
+}
+
+function resetOrder() {
+  slotData.fill(null);
+  selectedChip = null;
+  document.querySelectorAll('.order-chip').forEach(c => c.classList.remove('selected', 'placed'));
+  document.querySelectorAll('.order-slot').forEach(s => {
+    s.classList.remove('filled', 'correct-slot', 'wrong-slot');
+    s.querySelector('.slot-content').textContent = '—';
+  });
+  document.getElementById('orderFeedback').textContent = '';
+}
+
+// ── Flashcards ────────────────────────────────────────────────────────────────
+
+const FLASHCARD_DECKS = {
+  'unit-1': {
+    title: 'Unit 1 Review — How AI Works',
+    cards: [
+      { q: 'What is the key difference between traditional software and machine learning?',
+        a: 'Traditional software follows hand-coded rules. Machine learning finds patterns in data without being explicitly programmed with rules.' },
+      { q: 'What is a neural network weight?',
+        a: 'A learnable number on a connection between two neurons. Training adjusts all weights to minimise the model\'s errors.' },
+      { q: 'What is "hallucination" in an LLM?',
+        a: 'When the model confidently generates false or fabricated information — plausible-sounding but entirely wrong.' },
+      { q: 'What is a training cutoff?',
+        a: 'The date after which an LLM has no knowledge of events, because its training data stops there.' },
+      { q: 'Why does biased training data matter?',
+        a: 'The model learns and amplifies the biases present in its training data, leading to unfair or inaccurate outputs for underrepresented groups.' },
+    ]
+  },
+  'unit-2': {
+    title: 'Unit 2 Review — The Art of Prompting',
+    cards: [
+      { q: 'What are the 4 elements of a powerful prompt?',
+        a: 'Role (who the AI should be) · Context (background info) · Task (what you want) · Format (how to structure the response).' },
+      { q: 'What is Chain-of-Thought prompting?',
+        a: 'Asking the AI to think step by step before giving its final answer — especially useful for maths and multi-step logic.' },
+      { q: 'What is few-shot prompting?',
+        a: 'Providing 1–3 example input/output pairs so the AI follows your exact pattern in its response.' },
+      { q: 'What does "temperature" control in an AI model?',
+        a: 'How creative (high) or conservative/predictable (low) the outputs are. Use lower temperature for factual tasks.' },
+      { q: 'What is iterative refinement in prompting?',
+        a: 'Treating the interaction as a conversation — evaluating the first response and following up with corrections to improve it.' },
+    ]
+  },
+  'unit-3': {
+    title: 'Unit 3 Review — AI Ethics in Education',
+    cards: [
+      { q: 'What is always acceptable use of AI in schoolwork?',
+        a: 'Using AI to explain concepts you don\'t understand, quiz yourself, or get feedback on your own writing — then rewriting it yourself.' },
+      { q: 'What does SIFT stand for?',
+        a: 'Stop · Investigate the source · Find better coverage · Trace claims back to their origin.' },
+      { q: 'When is AI least reliable?',
+        a: 'For current events, specific citations, local statistics, calculations, and legal or medical advice. Always verify independently.' },
+      { q: 'What is the ethical way to use AI for essay writing?',
+        a: 'Use it to get feedback on YOUR writing and plan structure — never submit AI-written text as your own work.' },
+      { q: 'Why is AI literacy important for your career?',
+        a: 'The ability to use AI effectively, critically, and ethically is one of the most in-demand skills in the modern workplace.' },
+    ]
+  }
+};
+
+let fcDeck = [];
+let fcIndex = 0;
+
+function openFlashcards(unitId) {
+  const deck = FLASHCARD_DECKS[unitId];
+  if (!deck) return;
+  fcDeck = deck.cards;
+  fcIndex = 0;
+  document.getElementById('fcTitle').textContent = deck.title;
+  document.getElementById('fcOverlay').classList.add('open');
+  renderFcCard();
+}
+
+function closeFlashcards() {
+  document.getElementById('fcOverlay').classList.remove('open');
+  document.getElementById('fcCard').classList.remove('flipped');
+}
+
+function renderFcCard() {
+  const card = fcDeck[fcIndex];
+  document.getElementById('fcFront').textContent = card.q;
+  document.getElementById('fcBack').textContent  = card.a;
+  document.getElementById('fcCard').classList.remove('flipped');
+  document.getElementById('fcCounter').textContent = `${fcIndex + 1} / ${fcDeck.length}`;
+  document.getElementById('fcPrev').disabled = fcIndex === 0;
+  document.getElementById('fcNext').disabled = fcIndex === fcDeck.length - 1;
+  document.getElementById('fcProgressFill').style.width = `${((fcIndex + 1) / fcDeck.length) * 100}%`;
+}
+
+function flipCard() { document.getElementById('fcCard').classList.toggle('flipped'); }
+
+function fcNav(dir) {
+  fcIndex = Math.max(0, Math.min(fcDeck.length - 1, fcIndex + dir));
+  renderFcCard();
+}
+
+// Close flashcards on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFlashcards();
+});
+
 // ── Init ─────────────────────────────────────────────────────────────────────
+
+// Restore saved done-tick visibility and review buttons on load
+completed.forEach((done, i) => { if (done) updateDone(i); });
+checkUnitCompletion();
 
 renderLesson();
 updateUI();
