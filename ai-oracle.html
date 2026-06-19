@@ -358,6 +358,48 @@
     .fc-nav-btn:disabled { opacity: 0.28; cursor: default; }
     .fc-counter { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 
+    /* ── NN Visualiser ── */
+    .nn-viz { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin: 20px 0 18px; }
+    .nn-viz-title { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .nn-viz-diagram { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+    .nn-viz-col { display: flex; flex-direction: column; gap: 14px; }
+    .nn-slider-group { display: flex; flex-direction: column; gap: 4px; }
+    .nn-slider-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; width: 130px; }
+    .nn-slider { width: 130px; accent-color: #a855f7; cursor: pointer; }
+    .nn-viz-arrow { font-size: 22px; color: rgba(255,255,255,0.18); flex-shrink: 0; }
+    .nn-node-big { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; transition: all 350ms; border: 2px solid; }
+    .nn-node-big.idle   { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--muted); }
+    .nn-node-big.active { border-color: #a855f7; background: rgba(168,85,247,0.22); color: #e4bcff; box-shadow: 0 0 18px rgba(168,85,247,0.38); }
+    .nn-node-big.fired  { border-color: #6ee7b7; background: rgba(17,217,143,0.18); color: #6ee7b7; box-shadow: 0 0 22px rgba(17,217,143,0.32); }
+    .nn-viz-calc { background: #0a0d1e; border: 1px solid rgba(168,85,247,0.20); border-radius: 10px; padding: 12px 16px; font-family: var(--font-mono); font-size: 12px; line-height: 2.0; }
+    .nn-calc-line { color: var(--text2); }
+    .nn-calc-sum  { color: #e4bcff; font-weight: 700; }
+    .nn-calc-out  { font-weight: 700; margin-top: 2px; }
+    .nn-calc-out.fired  { color: #6ee7b7; }
+    .nn-calc-out.silent { color: rgba(210,218,245,0.28); }
+
+    /* ── Hallucination game ── */
+    .hall-game { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin: 20px 0 18px; }
+    .hall-game-title { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .hall-hint { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+    .hall-options { display: flex; flex-direction: column; gap: 10px; }
+    .hall-opt { border: 1px solid var(--border2); background: var(--surface); border-radius: 12px; padding: 14px 16px; cursor: pointer; transition: all 140ms; }
+    .hall-opt:hover:not(.locked) { border-color: rgba(168,85,247,0.38); background: rgba(168,85,247,0.06); }
+    .hall-opt-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .hall-opt p { font-size: 14px; line-height: 1.7; color: var(--text2); margin: 0; }
+    .hall-opt.correct { border-color: rgba(17,217,143,0.52); background: rgba(17,217,143,0.09); }
+    .hall-opt.correct .hall-opt-label { color: #6ee7b7; }
+    .hall-opt.wrong   { border-color: rgba(239,68,68,0.48); background: rgba(239,68,68,0.08); }
+    .hall-opt.wrong   .hall-opt-label { color: #fca5a5; }
+    .hall-opt.locked  { pointer-events: none; }
+    .hall-feedback { font-size: 13px; margin-top: 12px; min-height: 18px; line-height: 1.65; }
+    .hall-feedback.correct { color: #6ee7b7; }
+    .hall-feedback.wrong   { color: #fca5a5; }
+
+    /* ── Enhanced prompt grader tips ── */
+    .pb-tips { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+    .pb-tip  { font-size: 12px; color: rgba(252,211,77,0.80); padding: 4px 10px; border-radius: 7px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.18); }
+
     /* ── Sidebar review button ── */
     .unit-review-btn { display: none; align-items: center; gap: 7px; margin: 4px 16px 10px; padding: 7px 12px; border-radius: 9px; border: 1px solid rgba(168,85,247,0.22); background: rgba(168,85,247,0.07); color: #c084fc; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 130ms; width: calc(100% - 32px); }
     .unit-review-btn:hover { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.38); }
@@ -761,6 +803,44 @@ const LESSONS = [
     <button class="fitb-btn" id="fitb1-btn" onclick="checkFitb('fitb1',['weights','weight'],'fitb1-fb','fitb1-btn')">Check</button>
   </div>
   <div class="fitb-feedback" id="fitb1-fb"></div>
+</div>
+
+<div class="nn-viz">
+  <div class="nn-viz-title">🎛️ Interactive — See weights change the output in real time</div>
+  <div class="nn-viz-diagram">
+    <div class="nn-viz-col">
+      <div class="nn-slider-group">
+        <div class="nn-slider-label"><span>Input x₁</span><span id="x1val">5</span></div>
+        <input class="nn-slider" type="range" min="0" max="10" value="5" id="x1" oninput="updateNN()">
+      </div>
+      <div class="nn-slider-group">
+        <div class="nn-slider-label"><span>Input x₂</span><span id="x2val">5</span></div>
+        <input class="nn-slider" type="range" min="0" max="10" value="5" id="x2" oninput="updateNN()">
+      </div>
+    </div>
+    <div class="nn-viz-arrow">→</div>
+    <div class="nn-viz-col">
+      <div class="nn-slider-group">
+        <div class="nn-slider-label"><span>Weight w₁</span><span id="w1val">0.5</span></div>
+        <input class="nn-slider" type="range" min="-20" max="20" value="5" id="w1" oninput="updateNN()">
+      </div>
+      <div class="nn-slider-group">
+        <div class="nn-slider-label"><span>Weight w₂</span><span id="w2val">0.5</span></div>
+        <input class="nn-slider" type="range" min="-20" max="20" value="5" id="w2" oninput="updateNN()">
+      </div>
+    </div>
+    <div class="nn-viz-arrow">→</div>
+    <div class="nn-node-big active" id="nnNeuron">Σ</div>
+    <div class="nn-viz-arrow">→</div>
+    <div class="nn-node-big fired" id="nnOutput">5.0</div>
+  </div>
+  <div class="nn-viz-calc" id="nnCalc">
+    <div class="nn-calc-line">x₁ × w₁ = 5 × 0.5 = <strong style="color:#c084fc">2.50</strong></div>
+    <div class="nn-calc-line">x₂ × w₂ = 5 × 0.5 = <strong style="color:#c084fc">2.50</strong></div>
+    <div class="nn-calc-sum">Weighted sum = 5.00</div>
+    <div class="nn-calc-out fired">After ReLU: max(0, 5.00) = 5.00 — neuron 🟢 FIRES</div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin-top:10px;">💡 Try dragging w₁ to a large negative number — watch the neuron go silent. This is how training teaches a network to ignore irrelevant inputs.</p>
 </div>
 
 <div class="quiz-section">
@@ -1176,6 +1256,7 @@ Definition: <span style="color:#a855f7;">[AI fills this in following your exact 
       <span class="pb-stars" id="pb-stars">☆☆☆☆</span>
       <span id="pb-score-text" style="color:var(--muted);font-size:12px;"></span>
     </div>
+    <div class="pb-tips" id="pb-tips"></div>
   </div>
 
   <h3>🧪 Prompt Challenges</h3>
@@ -1383,6 +1464,26 @@ Definition: <span style="color:#a855f7;">[AI fills this in following your exact 
   </ul>
 </div>
 
+<div class="hall-game">
+  <div class="hall-game-title">🔍 Spot the Hallucination</div>
+  <p class="hall-hint">One of these three AI responses contains a fabricated fact. Read carefully — the false claim sounds just as confident as the true ones. Click the response you think is wrong.</p>
+  <div class="hall-options">
+    <div class="hall-opt" data-correct="false" onclick="pickHall(this,'hallFb')">
+      <div class="hall-opt-label">Response A</div>
+      <p>"South Africa's Constitution was adopted in 1996 and is widely regarded as one of the most progressive in the world. It was the first constitution in the world to explicitly prohibit discrimination on the basis of sexual orientation."</p>
+    </div>
+    <div class="hall-opt" data-correct="false" onclick="pickHall(this,'hallFb')">
+      <div class="hall-opt-label">Response B</div>
+      <p>"The Kruger National Park was established in 1898 as the Sabi Game Reserve and covers approximately 19,485 km². It is home to the Big Five and receives over 1.5 million visitors annually."</p>
+    </div>
+    <div class="hall-opt" data-correct="true" onclick="pickHall(this,'hallFb')">
+      <div class="hall-opt-label">Response C</div>
+      <p>"The Soweto Uprising of 1994 began when students protested against the Afrikaans Medium Decree, which required Afrikaans as a medium of instruction in Black schools. The protests resulted in significant casualties."</p>
+    </div>
+  </div>
+  <div class="hall-feedback" id="hallFb"></div>
+</div>
+
 <div class="quiz-section">
   <button class="quiz-toggle" onclick="toggleQuiz('q7')">
     <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
@@ -1568,6 +1669,7 @@ function renderLesson() {
     ${l.html}
   `;
   lucide.createIcons();
+  updateNN();   // no-ops on lessons without the visualiser
 }
 
 function updateUI() {
@@ -1641,7 +1743,7 @@ function answer(btn, result, feedbackId) {
   }
 }
 
-// ── Prompt builder ───────────────────────────────────────────────────────────
+// ── Prompt builder (smart grader) ────────────────────────────────────────────
 
 function buildPrompt() {
   const role    = document.getElementById('pb-role')?.value.trim()    || '';
@@ -1649,23 +1751,83 @@ function buildPrompt() {
   const task    = document.getElementById('pb-task')?.value.trim()    || '';
   const format  = document.getElementById('pb-format')?.value.trim()  || '';
 
-  const parts = [];
-  if (role)    parts.push(role);
-  if (context) parts.push(context);
-  if (task)    parts.push(task);
-  if (format)  parts.push(format);
-
   const preview = document.getElementById('pb-preview');
   if (!preview) return;
+
+  const parts = [role, context, task, format].filter(Boolean);
   preview.textContent = parts.length ? parts.join('\n\n') : 'Start filling in the fields above and your prompt will appear here...';
 
-  const filled = [role, context, task, format].filter(Boolean).length;
-  const stars   = document.getElementById('pb-stars');
-  const scoreText = document.getElementById('pb-score-text');
-  const filledStars = '★'.repeat(filled) + '☆'.repeat(4 - filled);
-  stars.textContent = filledStars;
-  const labels = ['', 'Getting started...', 'Getting better!', 'Strong prompt!', 'Excellent prompt!'];
-  scoreText.textContent = labels[filled] || '';
+  // Quality checks — content-aware, not just presence
+  const roleOk    = role.length > 10    && /you are|teacher|tutor|expert|coach|mentor|assistant|specialist/i.test(role);
+  const contextOk = context.split(/\s+/).filter(Boolean).length >= 8;
+  const taskOk    = task.length > 10    && /explain|describe|list|show|help|write|create|compare|summaris|summariz|give|define|outline|demonstrat|break down|tell me/i.test(task);
+  const formatOk  = format.length > 5   && /step|bullet|number|table|word|format|bold|section|heading|paragraph|brief|short|long|point|example/i.test(format);
+
+  const score = [roleOk, contextOk, taskOk, formatOk].filter(Boolean).length;
+  document.getElementById('pb-stars').textContent = '★'.repeat(score) + '☆'.repeat(4 - score);
+  const labels = ['', 'Keep going…', 'Getting there!', 'Strong prompt!', '⚡ Excellent!'];
+  document.getElementById('pb-score-text').textContent = labels[score] || '';
+
+  // Per-field tips (only shown when a field has content but fails the quality check)
+  const tips = [];
+  if (role    && !roleOk)    tips.push('🎭 Role: start with "You are a [role]…" and mention the expertise level or subject area.');
+  if (context && !contextOk) tips.push('🗺️ Context: add more detail — who is the learner, what subject, what grade or level?');
+  if (task    && !taskOk)    tips.push('🎯 Task: use a clear action verb — explain, list, compare, demonstrate, summarise…');
+  if (format  && !formatOk)  tips.push('📐 Format: specify structure — numbered steps, bullet points, word limit, examples…');
+  const tipsEl = document.getElementById('pb-tips');
+  if (tipsEl) tipsEl.innerHTML = tips.map(t => `<div class="pb-tip">${t}</div>`).join('');
+}
+
+// ── Neural network visualiser ─────────────────────────────────────────────────
+
+function updateNN() {
+  const x1El = document.getElementById('x1');
+  if (!x1El) return;                          // not on this lesson
+
+  const x1 = +x1El.value;
+  const x2 = +document.getElementById('x2').value;
+  const w1 = +document.getElementById('w1').value / 10;
+  const w2 = +document.getElementById('w2').value / 10;
+
+  document.getElementById('x1val').textContent = x1;
+  document.getElementById('x2val').textContent = x2;
+  document.getElementById('w1val').textContent = w1.toFixed(1);
+  document.getElementById('w2val').textContent = w2.toFixed(1);
+
+  const sum  = x1 * w1 + x2 * w2;
+  const relu = Math.max(0, sum);
+  const fired = relu > 0;
+
+  const neuron = document.getElementById('nnNeuron');
+  const output = document.getElementById('nnOutput');
+  neuron.className = 'nn-node-big ' + (sum !== 0 ? 'active' : 'idle');
+  output.className = 'nn-node-big ' + (fired ? 'fired' : 'idle');
+  output.textContent = fired ? relu.toFixed(1) : '0';
+
+  document.getElementById('nnCalc').innerHTML = `
+    <div class="nn-calc-line">x₁ × w₁ &nbsp;= ${x1} × ${w1.toFixed(1)} = <strong style="color:#c084fc">${(x1*w1).toFixed(2)}</strong></div>
+    <div class="nn-calc-line">x₂ × w₂ &nbsp;= ${x2} × ${w2.toFixed(1)} = <strong style="color:#c084fc">${(x2*w2).toFixed(2)}</strong></div>
+    <div class="nn-calc-sum">Weighted sum = ${sum.toFixed(2)}</div>
+    <div class="nn-calc-out ${fired ? 'fired' : 'silent'}">After ReLU: max(0, ${sum.toFixed(2)}) = ${relu.toFixed(2)} — neuron ${fired ? '🟢 FIRES' : '⚫ stays silent'}</div>
+  `;
+}
+
+// ── Hallucination game ────────────────────────────────────────────────────────
+
+function pickHall(el, feedbackId) {
+  const isHall = el.dataset.correct === 'true';
+  el.closest('.hall-options').querySelectorAll('.hall-opt').forEach(o => o.classList.add('locked'));
+  const fb = document.getElementById(feedbackId);
+  if (isHall) {
+    el.classList.add('correct');
+    fb.textContent = '✓ Correct! Response C is the hallucination — the Soweto Uprising happened in 1976, not 1994. The AI stated the wrong year with complete confidence and no disclaimer.';
+    fb.className = 'hall-feedback correct';
+  } else {
+    el.classList.add('wrong');
+    el.closest('.hall-options').querySelector('[data-correct="true"]').classList.add('correct');
+    fb.textContent = '✗ Not this one. Response C is the hallucination — it says the Soweto Uprising was in 1994, but it happened in 1976. Notice how convincingly wrong AI can sound.';
+    fb.className = 'hall-feedback wrong';
+  }
 }
 
 // ── Unit completion ───────────────────────────────────────────────────────────
