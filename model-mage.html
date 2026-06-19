@@ -58,6 +58,17 @@
               font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:260px;}
     .hint-box b{color:var(--text);}
 
+    /* Length popup */
+    #len-popup{position:absolute;display:none;align-items:center;gap:4px;
+               background:rgba(10,15,32,0.97);border:1px solid rgba(217,119,6,0.6);
+               border-radius:7px;padding:4px 8px;z-index:100;pointer-events:auto;}
+    #len-popup input{width:72px;height:24px;padding:0 6px;border-radius:4px;
+                     border:1px solid rgba(217,119,6,0.4);background:rgba(255,255,255,0.07);
+                     color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.8rem;
+                     outline:none;}
+    #len-popup input:focus{border-color:rgba(217,119,6,0.8);}
+    #len-popup .lp-unit{font-size:0.70rem;color:var(--text2);}
+
     .right-panel{width:360px;flex-shrink:0;display:flex;flex-direction:column;
                  border-left:1px solid var(--border);background:var(--bg2);}
 
@@ -127,9 +138,18 @@
 </header>
 
 <div class="toolbar">
-  <button class="tb-btn active" id="tool-line" title="Line / Polyline (L)">
+  <!-- Line | Polyline | Construct | sep | Undo | Clear | sep | Grid snap -->
+  <button class="tb-btn active" id="tool-line" title="Single Line segment (L)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="13" x2="13" y2="1"/></svg>
     Line
+  </button>
+  <button class="tb-btn" id="tool-polyline" title="Polyline / chained (P)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,13 5,4 9,9 13,1"/></svg>
+    Polyline
+  </button>
+  <button class="tb-btn" id="tool-construct" title="Construction line (X)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2.5,2"><line x1="1" y1="13" x2="13" y2="1"/></svg>
+    Construct
   </button>
   <button class="tb-btn" id="tool-rect" title="Rectangle (R)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="12" height="8" rx="1.5"/></svg>
@@ -138,11 +158,6 @@
   <button class="tb-btn" id="tool-circle" title="Circle (C)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/></svg>
     Circle
-  </button>
-  <div class="tb-sep"></div>
-  <button class="tb-btn" id="tool-select" title="Select / Constrain (V)">
-    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M2 1l10 10-3.5 1-1.5 4L2 1z"/></svg>
-    Select
   </button>
   <div class="tb-sep"></div>
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
@@ -166,9 +181,13 @@
     <div class="sk-overlay">Sketch · XY Plane</div>
     <div class="hint-box" id="hint-box">
       <b>Line tool</b><br>
-      Click to place points · Close to extrude<br>
-      <b>Shift</b>: angle snap 15° · <b>Ctrl</b>: freeform<br>
-      Right-click / Esc: cancel
+      Click start · Click end · type length<br>
+      <b>Ctrl</b>: freeform · Click label to edit
+    </div>
+    <!-- Length popup -->
+    <div id="len-popup">
+      <input type="number" id="len-input" step="0.1" min="0.1">
+      <span class="lp-unit">mm</span>
     </div>
   </div>
 
@@ -180,12 +199,12 @@
         <div class="pr-lbl">Height <span class="pr-val" id="v-h">40 mm</span></div>
         <input type="range" id="s-h" min="1" max="300" value="40">
       </div>
-      <button class="btn-extrude" id="btn-ext" disabled id="btn-ext">
+      <button class="btn-extrude" id="btn-ext" disabled>
         ▲ Extrude Profile
       </button>
     </div>
 
-    <!-- Constraint panel — shown on selection -->
+    <!-- Constraint panel — shown on label click -->
     <div class="cst-panel" id="cst-panel">
       <div class="panel-title">Constrain — <span id="cst-label">Segment</span></div>
       <div class="cst-row" id="cst-len-row">
@@ -307,10 +326,10 @@ worker.onerror = e => console.error('[ModelMage] Worker:', e.message);
 // SKETCH STATE
 // ════════════════════════════════════════════════════════════════════
 
-let tool       = 'line';
+let tool       = 'line';  // 'line' | 'polyline' | 'construct' | 'rect' | 'circle'
 let entities   = [];
 let gridSnap   = 5;
-let linePoints = [];
+let linePoints = [];      // used by line, polyline, construct
 let rectStart  = null;
 let circleCenter = null;
 
@@ -326,8 +345,58 @@ let ctrlHeld = false, shiftHeld = false;
 let extH = 40;
 let extTimer = null;
 
-// Selection (for constraint panel)
-let selection = null; // { entityIdx, segIdx } or { entityIdx, isCircle:true }
+// Selection (for constraint panel) — set by label clicks
+let selection = null; // { entityIdx, segIdx } or { entityIdx, isCircle:true } or { entityIdx, isRect, segIdx }
+
+// Drag state (feature 5)
+let dragState = null; // { entityIdx, ptIdx } or null
+
+// Label hits (feature 4) — rebuilt each render frame
+let labelHits = []; // [{ lx, ly, entityIdx, segIdx, wlen, p1, p2 }, ...]
+
+// Hover label index (-1 = none)
+let hoverLabelIdx = -1;
+
+// Pending single-segment info for len-popup (feature 1)
+// After placing line/construct endpoint: { entityIdx, segIdx }
+let pendingLenEdit = null;
+
+// ════════════════════════════════════════════════════════════════════
+// LEN POPUP (feature 1)
+// ════════════════════════════════════════════════════════════════════
+
+const lenPopup  = document.getElementById('len-popup');
+const lenInput  = document.getElementById('len-input');
+
+function showLenPopup(screenX, screenY, currentLen, onApply) {
+  lenPopup._onApply = onApply;
+  lenInput.value = currentLen.toFixed(currentLen < 10 ? 2 : 1);
+  lenPopup.style.left = (screenX + 10) + 'px';
+  lenPopup.style.top  = (screenY - 16) + 'px';
+  lenPopup.style.display = 'flex';
+  requestAnimationFrame(() => { lenInput.focus(); lenInput.select(); });
+}
+
+function hideLenPopup() {
+  lenPopup.style.display = 'none';
+  lenPopup._onApply = null;
+  pendingLenEdit = null;
+}
+
+lenInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const v = parseFloat(lenInput.value);
+    if (v > 0 && lenPopup._onApply) lenPopup._onApply(v);
+    hideLenPopup();
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    hideLenPopup();
+  }
+  e.stopPropagation(); // don't propagate to tool shortcuts
+});
+
+lenInput.addEventListener('click', e => e.stopPropagation());
 
 // ════════════════════════════════════════════════════════════════════
 // CANVAS
@@ -367,8 +436,9 @@ function snapPt(wx, wy) {
   }
   if (best) return [best[0], best[1]];
 
-  // 2. Shift + line tool = 15° angle snap
-  if (shiftHeld && tool === 'line' && linePoints.length > 0) return applyAngleSnap(wx, wy);
+  // 2. Shift + polyline/construct = 15° angle snap
+  if (shiftHeld && (tool === 'polyline' || tool === 'construct' || tool === 'line') && linePoints.length > 0)
+    return applyAngleSnap(wx, wy);
 
   // 3. Grid snap
   if (gridSnap > 0) return [
@@ -409,6 +479,7 @@ function scheduleRender() {
 }
 
 function render() {
+  labelHits = []; // reset each frame
   const cW=W(), cH=H();
   ctx.clearRect(0,0,cW,cH);
   drawGrid(cW,cH);
@@ -465,26 +536,41 @@ function drawGrid(cW,cH) {
 }
 
 function drawCommitted() {
-  for (const e of entities) drawEntity(e, false);
+  for (let ei=0; ei<entities.length; ei++) drawEntity(entities[ei], false, ei);
 }
 
-function drawEntity(e, preview) {
-  ctx.strokeStyle = preview ? 'rgba(245,158,11,0.85)' : 'rgba(160,190,255,1)';
-  ctx.fillStyle   = preview ? 'rgba(245,158,11,0.08)' : 'rgba(160,190,255,0.07)';
+function drawEntity(e, preview, entityIdx) {
+  const isConstruct = e.construction === true;
+
+  if (isConstruct) {
+    ctx.save();
+    ctx.globalAlpha = 0.4;
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = 'rgba(160,190,255,0.85)';
+  } else {
+    ctx.strokeStyle = preview ? 'rgba(245,158,11,0.85)' : 'rgba(160,190,255,1)';
+    ctx.fillStyle   = preview ? 'rgba(245,158,11,0.08)' : 'rgba(160,190,255,0.07)';
+  }
   ctx.lineWidth = 1.8;
 
   if (e.type === 'polyline') {
     const pts = e.points;
-    if (pts.length < 2) return;
+    if (pts.length < 2) { if (isConstruct) ctx.restore(); return; }
     ctx.beginPath();
     const [sx,sy]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx,sy);
     for (let i=1; i<pts.length; i++) { const [sx2,sy2]=wtoc(pts[i][0],pts[i][1]); ctx.lineTo(sx2,sy2); }
-    if (e.closed) { ctx.closePath(); ctx.fill(); }
+    if (e.closed) {
+      ctx.closePath();
+      if (!isConstruct) ctx.fill();
+    }
     ctx.stroke();
-    for (let i=0; i<pts.length; i++) {
-      const j=(i+1)%pts.length;
-      if (j===0&&!e.closed) continue;
-      dimLabel(pts[i],pts[j]);
+
+    if (!isConstruct) {
+      for (let i=0; i<pts.length; i++) {
+        const j=(i+1)%pts.length;
+        if (j===0&&!e.closed) continue;
+        dimLabel(pts[i], pts[j], entityIdx, i);
+      }
     }
     pts.forEach(p=>vertex(p));
   }
@@ -492,17 +578,31 @@ function drawEntity(e, preview) {
   if (e.type === 'rect') {
     const {x,y,w,h}=e;
     const [sx,sy]=wtoc(x,y+h);
-    ctx.beginPath(); ctx.rect(sx,sy,w*zoom,-h*zoom); ctx.fill(); ctx.stroke();
-    dimLabel([x,y],[x+w,y]); dimLabel([x+w,y],[x+w,y+h]);
+    ctx.beginPath(); ctx.rect(sx,sy,w*zoom,-h*zoom);
+    if (!isConstruct) ctx.fill();
+    ctx.stroke();
+    if (!isConstruct && entityIdx !== undefined) {
+      dimLabel([x,y],[x+w,y], entityIdx, 0);
+      dimLabel([x+w,y],[x+w,y+h], entityIdx, 1);
+    } else if (!isConstruct) {
+      dimLabel([x,y],[x+w,y], -1, 0);
+      dimLabel([x+w,y],[x+w,y+h], -1, 1);
+    }
     [[x,y],[x+w,y],[x+w,y+h],[x,y+h]].forEach(p=>vertex(p));
   }
 
   if (e.type === 'circle') {
     const [sx,sy]=wtoc(e.cx,e.cy);
-    ctx.beginPath(); ctx.arc(sx,sy,e.r*zoom,0,Math.PI*2); ctx.fill(); ctx.stroke();
-    dimLabel([e.cx,e.cy],[e.cx+e.r,e.cy]);
+    ctx.beginPath(); ctx.arc(sx,sy,e.r*zoom,0,Math.PI*2);
+    if (!isConstruct) ctx.fill();
+    ctx.stroke();
+    if (!isConstruct) {
+      dimLabel([e.cx,e.cy],[e.cx+e.r,e.cy], entityIdx !== undefined ? entityIdx : -1, 0);
+    }
     vertex([e.cx,e.cy]);
   }
+
+  if (isConstruct) { ctx.restore(); ctx.setLineDash([]); }
 }
 
 function drawSelection() {
@@ -527,7 +627,6 @@ function drawSelection() {
     const [s1x,s1y]=wtoc(p1[0],p1[1]);
     const [s2x,s2y]=wtoc(p2[0],p2[1]);
     ctx.beginPath(); ctx.moveTo(s1x,s1y); ctx.lineTo(s2x,s2y); ctx.stroke();
-    // Endpoint dots
     ctx.fillStyle='rgba(245,158,11,1)'; ctx.shadowBlur=0;
     [[s1x,s1y],[s2x,s2y]].forEach(([x,y])=>{
       ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
@@ -542,13 +641,14 @@ function drawSelection() {
   ctx.restore();
 }
 
-function vertex(pt) {
+function vertex(pt, nearDrag) {
   const [sx,sy]=wtoc(pt[0],pt[1]);
-  ctx.fillStyle='rgba(200,220,255,0.9)';
-  ctx.beginPath(); ctx.arc(sx,sy,3,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = nearDrag ? 'rgba(245,158,11,0.9)' : 'rgba(200,220,255,0.9)';
+  ctx.beginPath(); ctx.arc(sx,sy,nearDrag ? 5 : 3,0,Math.PI*2); ctx.fill();
 }
 
-function dimLabel(p1,p2) {
+// dimLabel — records hit entry for label click detection
+function dimLabel(p1, p2, entityIdx, segIdx) {
   const [sx1,sy1]=wtoc(p1[0],p1[1]);
   const [sx2,sy2]=wtoc(p2[0],p2[1]);
   const mx=(sx1+sx2)/2, my=(sy1+sy2)/2;
@@ -556,19 +656,35 @@ function dimLabel(p1,p2) {
   const len=Math.hypot(dx,dy);
   if (len<30) return;
   const nx=-dy/len*13, ny=dx/len*13;
+  const lx=mx+nx, ly=my+ny;
   const wlen=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+  const isHovered = hoverLabelIdx >= 0 && labelHits.length === hoverLabelIdx;
+
   ctx.save();
   ctx.font='10px JetBrains Mono,monospace';
-  ctx.fillStyle='rgba(130,170,255,0.75)';
+  ctx.fillStyle = isHovered ? 'rgba(245,158,11,0.95)' : 'rgba(130,170,255,0.75)';
   ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(wlen.toFixed(wlen<10?2:1)+' mm', mx+nx, my+ny);
+  ctx.fillText(wlen.toFixed(wlen<10?2:1)+' mm', lx, ly);
   ctx.restore();
+
+  // Record hit
+  labelHits.push({ lx, ly, entityIdx, segIdx, wlen, p1:[p1[0],p1[1]], p2:[p2[0],p2[1]] });
+}
+
+function hitLabel(sx, sy) {
+  const LABEL_R = 14;
+  for (let i=0; i<labelHits.length; i++) {
+    const h = labelHits[i];
+    if (Math.hypot(sx-h.lx, sy-h.ly) < LABEL_R) return i;
+  }
+  return -1;
 }
 
 function drawInProgress() {
   const mx=mouse.x, my=mouse.y;
 
-  if (tool==='line' && linePoints.length>0) {
+  // polyline in-progress
+  if (tool==='polyline' && linePoints.length>0) {
     ctx.strokeStyle='rgba(245,158,11,0.85)'; ctx.lineWidth=1.8;
     ctx.beginPath();
     const [sx0,sy0]=wtoc(linePoints[0][0],linePoints[0][1]); ctx.moveTo(sx0,sy0);
@@ -584,28 +700,111 @@ function drawInProgress() {
       ctx.beginPath(); ctx.moveTo(msx,msy); ctx.lineTo(fx,fy); ctx.stroke();
       ctx.beginPath(); ctx.arc(fx,fy,9,0,Math.PI*2); ctx.stroke();
     }
-    dimLabel(linePoints[linePoints.length-1],[mx,my]);
+    dimLabel(linePoints[linePoints.length-1],[mx,my], -1, -1);
     linePoints.forEach(p=>vertex(p));
+  }
+
+  // single-line / construct in-progress
+  if ((tool==='line'||tool==='construct') && linePoints.length===1) {
+    ctx.strokeStyle = tool==='construct'
+      ? 'rgba(160,190,255,0.4)' : 'rgba(245,158,11,0.85)';
+    ctx.lineWidth=1.8;
+    if (tool==='construct') ctx.setLineDash([6,4]);
+    ctx.beginPath();
+    const [sx0,sy0]=wtoc(linePoints[0][0],linePoints[0][1]); ctx.moveTo(sx0,sy0);
+    const [msx,msy]=wtoc(mx,my); ctx.lineTo(msx,msy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    dimLabel(linePoints[0],[mx,my], -1, -1);
+    vertex(linePoints[0]);
   }
 
   if (tool==='rect' && rectStart) {
     drawEntity({type:'rect',x:Math.min(rectStart.x,mx),y:Math.min(rectStart.y,my),
-                w:Math.abs(mx-rectStart.x),h:Math.abs(my-rectStart.y)}, true);
+                w:Math.abs(mx-rectStart.x),h:Math.abs(my-rectStart.y)}, true, undefined);
   }
 
   if (tool==='circle' && circleCenter) {
     const r=Math.hypot(mx-circleCenter.x,my-circleCenter.y);
-    drawEntity({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r}, true);
+    drawEntity({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r}, true, undefined);
   }
 }
 
 function drawSnapIndicator() {
-  const [sx,sy]=wtoc(mouse.x,mouse.y);
+  // Draw drag-near highlights
+  const DRAG_R=10;
+  const [csx,csy]=wtoc(mouse.x,mouse.y);
+  for (const e of entities) {
+    const pts = getEntityVertices(e);
+    for (const p of pts) {
+      const [px,py]=wtoc(p[0],p[1]);
+      if (Math.hypot(csx-px,csy-py)<DRAG_R) {
+        vertex(p, true);
+      }
+    }
+  }
+
   ctx.strokeStyle = ctrlHeld ? 'rgba(16,185,129,0.6)' : 'rgba(245,158,11,0.45)';
   ctx.lineWidth=1; ctx.beginPath();
-  ctx.moveTo(sx-8,sy); ctx.lineTo(sx+8,sy);
-  ctx.moveTo(sx,sy-8); ctx.lineTo(sx,sy+8);
+  ctx.moveTo(csx-8,csy); ctx.lineTo(csx+8,csy);
+  ctx.moveTo(csx,csy-8); ctx.lineTo(csx,csy+8);
   ctx.stroke();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// DRAGGABLE POINTS HELPERS (feature 5)
+// ════════════════════════════════════════════════════════════════════
+
+function getEntityVertices(e) {
+  if (e.type === 'polyline') return e.points.map((p,i)=>({p,i})).map(({p})=>p);
+  if (e.type === 'rect') return [[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+  if (e.type === 'circle') return [[e.cx,e.cy]];
+  return [];
+}
+
+// Find draggable vertex near screen position sx,sy
+// Returns { entityIdx, ptIdx } or null
+function findNearVertex(sx, sy) {
+  const DRAG_R = 10;
+  for (let ei=entities.length-1; ei>=0; ei--) {
+    const e = entities[ei];
+    if (e.type === 'polyline') {
+      for (let pi=0; pi<e.points.length; pi++) {
+        const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi };
+      }
+    } else if (e.type === 'rect') {
+      // rect has 4 corners mapped to properties
+      const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+      for (let pi=0; pi<4; pi++) {
+        const [px,py]=wtoc(corners[pi][0], corners[pi][1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi, isRect:true };
+      }
+    } else if (e.type === 'circle') {
+      const [px,py]=wtoc(e.cx, e.cy);
+      if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isCircle:true };
+    }
+  }
+  return null;
+}
+
+function applyDragMove(ds, wx, wy) {
+  const e = entities[ds.entityIdx];
+  if (ds.isCircle && e.type==='circle') {
+    e.cx = wx; e.cy = wy;
+  } else if (ds.isRect && e.type==='rect') {
+    // Move one corner — adjust x,y,w,h accordingly
+    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+    corners[ds.ptIdx] = [wx, wy];
+    // Reconstruct rect from opposite corner
+    const opp = corners[(ds.ptIdx+2)%4];
+    e.x = Math.min(wx, opp[0]);
+    e.y = Math.min(wy, opp[1]);
+    e.w = Math.abs(wx - opp[0]);
+    e.h = Math.abs(wy - opp[1]);
+  } else if (e.type==='polyline') {
+    e.points[ds.ptIdx] = [wx, wy];
+  }
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -619,37 +818,6 @@ function ptSegDist(px,py,x1,y1,x2,y2) {
   return Math.hypot(px-(x1+t*dx),py-(y1+t*dy));
 }
 
-function hitTest(wx, wy) {
-  const TOL=12;
-  const [sx,sy]=wtoc(wx,wy);
-  for (let ei=entities.length-1; ei>=0; ei--) {
-    const e=entities[ei];
-    if (e.type==='circle') {
-      const [ecx,ecy]=wtoc(e.cx,e.cy);
-      const sR=e.r*zoom;
-      if (Math.abs(Math.hypot(sx-ecx,sy-ecy)-sR)<TOL || Math.hypot(sx-ecx,sy-ecy)<TOL)
-        return {entityIdx:ei,segIdx:-1,isCircle:true};
-    }
-    if (e.type==='polyline') {
-      const nSeg=e.closed ? e.points.length : e.points.length-1;
-      for (let si=0; si<nSeg; si++) {
-        const p1=e.points[si], p2=e.points[(si+1)%e.points.length];
-        const [s1x,s1y]=wtoc(p1[0],p1[1]), [s2x,s2y]=wtoc(p2[0],p2[1]);
-        if (ptSegDist(sx,sy,s1x,s1y,s2x,s2y)<TOL) return {entityIdx:ei,segIdx:si};
-      }
-    }
-    if (e.type==='rect') {
-      const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
-      for (let si=0; si<4; si++) {
-        const [s1x,s1y]=wtoc(corners[si][0],corners[si][1]);
-        const [s2x,s2y]=wtoc(corners[(si+1)%4][0],corners[(si+1)%4][1]);
-        if (ptSegDist(sx,sy,s1x,s1y,s2x,s2y)<TOL) return {entityIdx:ei,segIdx:si,isRect:true};
-      }
-    }
-  }
-  return null;
-}
-
 // ════════════════════════════════════════════════════════════════════
 // CONSTRAINT PANEL
 // ════════════════════════════════════════════════════════════════════
@@ -659,6 +827,7 @@ function updateConstraintPanel() {
   if (!selection) { panel.style.display='none'; return; }
   panel.style.display='block';
   const e=entities[selection.entityIdx];
+  if (!e) { panel.style.display='none'; return; }
   const lenRow=document.getElementById('cst-len-row');
   const angRow=document.getElementById('cst-ang-row');
   const radRow=document.getElementById('cst-rad-row');
@@ -762,7 +931,7 @@ function applyParallelToPrev() {
   scheduleRender(); scheduleExtrude(); updateConstraintPanel();
 }
 
-// Wire up constraint buttons (inside module scope to access module vars)
+// Wire up constraint buttons
 document.getElementById('btn-cst-len').addEventListener('click', applyLengthConstraint);
 document.getElementById('btn-cst-ang').addEventListener('click', ()=>applyAngleConstraint());
 document.getElementById('btn-cst-rad').addEventListener('click', applyRadiusConstraint);
@@ -790,6 +959,7 @@ function isNearFirst(wx, wy) {
 
 function getProfile() {
   for (const e of entities) {
+    if (e.construction) continue; // exclude construction lines
     if (e.type==='polyline'&&e.closed&&e.points.length>=3) return e;
     if (e.type==='rect'&&e.w>0&&e.h>0) return e;
     if (e.type==='circle'&&e.r>0) return e;
@@ -803,6 +973,7 @@ function updateExtrudeBtn() {
 
 function scheduleExtrude() {
   clearTimeout(extTimer);
+  updateExtrudeBtn();
   if (getProfile()) extTimer = setTimeout(doExtrude, 300);
 }
 
@@ -814,8 +985,26 @@ function doExtrude() {
   else pendingBuild=msg;
 }
 
-// Expose for HTML buttons
 window.doExtrude = doExtrude;
+
+// ════════════════════════════════════════════════════════════════════
+// LEN POPUP APPLY HELPER
+// ════════════════════════════════════════════════════════════════════
+
+// Apply new length to a committed single-segment polyline endpoint
+function applyLenToEntity(entityIdx, segIdx, newLen) {
+  const e = entities[entityIdx];
+  if (!e || e.type !== 'polyline') return;
+  const p1 = e.points[segIdx];
+  const ni = (segIdx+1) % e.points.length;
+  const p2 = e.points[ni];
+  const dx = p2[0]-p1[0], dy = p2[1]-p1[1];
+  const cur = Math.hypot(dx, dy);
+  if (cur < 1e-10) return;
+  const s = newLen/cur;
+  e.points[ni] = [p1[0]+dx*s, p1[1]+dy*s];
+  scheduleRender(); scheduleExtrude();
+}
 
 // ════════════════════════════════════════════════════════════════════
 // TOOLS
@@ -823,9 +1012,9 @@ window.doExtrude = doExtrude;
 
 function setTool(t) {
   linePoints=[]; rectStart=null; circleCenter=null;
-  if (t!=='select') { selection=null; updateConstraintPanel(); }
+  hideLenPopup();
   tool=t;
-  document.querySelectorAll('.tb-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tb-btn[id^="tool-"]').forEach(b=>b.classList.remove('active'));
   const btn=document.getElementById('tool-'+t);
   if (btn) btn.classList.add('active');
   updateHint();
@@ -835,15 +1024,17 @@ window.setTool = setTool;
 
 function updateHint() {
   const hints = {
-    line:   '<b>Line tool</b><br>Click to place points · Click first to close<br><b>Shift</b>: angle snap 15° · <b>Ctrl</b>: freeform<br>Esc / Right-click: cancel',
-    rect:   '<b>Rectangle tool</b><br>Click and drag to draw<br><b>Ctrl</b>: freeform (no snap)',
-    circle: '<b>Circle tool</b><br>Click: set centre · Click again: set radius<br><b>Ctrl</b>: freeform',
-    select: '<b>Select tool</b><br>Click a segment or edge to constrain<br>Arrow keys: pan · Middle-drag or Alt+drag: pan',
+    line:      '<b>Line tool</b><br>Click start → click end → type exact length<br><b>Ctrl</b>: freeform · Click label to edit',
+    polyline:  '<b>Polyline tool</b><br>Click to add points · Click first point to close (≥3 pts)<br><b>Shift</b>: angle snap 15° · <b>Ctrl</b>: freeform<br>Double-click: end open · Right-click / Esc: cancel',
+    construct: '<b>Construction line</b><br>Dashed reference — not extruded<br>Click start → click end<br><b>Ctrl</b>: freeform',
+    rect:      '<b>Rectangle tool</b><br>Click and drag to draw<br><b>Ctrl</b>: freeform (no snap)',
+    circle:    '<b>Circle tool</b><br>Click: set centre · Click again: set radius<br><b>Ctrl</b>: freeform',
   };
   document.getElementById('hint-box').innerHTML = hints[tool]||'';
 }
 
 function undoLast() {
+  hideLenPopup();
   if (linePoints.length>0) { linePoints.pop(); scheduleRender(); return; }
   if (entities.length>0) { entities.pop(); selection=null; updateConstraintPanel(); updateExtrudeBtn(); scheduleRender(); }
 }
@@ -851,21 +1042,23 @@ window.undoLast = undoLast;
 
 function clearAll() {
   entities=[]; linePoints=[]; rectStart=null; circleCenter=null;
+  hideLenPopup();
   selection=null; updateConstraintPanel(); updateExtrudeBtn(); scheduleRender();
 }
 window.clearAll = clearAll;
 
 // ════════════════════════════════════════════════════════════════════
-// WIRE UP TOOLBAR BUTTONS (all inside module scope)
+// WIRE UP TOOLBAR BUTTONS
 // ════════════════════════════════════════════════════════════════════
 
-document.getElementById('tool-line').addEventListener('click',   ()=>setTool('line'));
-document.getElementById('tool-rect').addEventListener('click',   ()=>setTool('rect'));
-document.getElementById('tool-circle').addEventListener('click', ()=>setTool('circle'));
-document.getElementById('tool-select').addEventListener('click', ()=>setTool('select'));
-document.getElementById('btn-undo').addEventListener('click',    ()=>undoLast());
-document.getElementById('btn-clear').addEventListener('click',   ()=>clearAll());
-document.getElementById('btn-ext').addEventListener('click',     ()=>doExtrude());
+document.getElementById('tool-line').addEventListener('click',      ()=>setTool('line'));
+document.getElementById('tool-polyline').addEventListener('click',  ()=>setTool('polyline'));
+document.getElementById('tool-construct').addEventListener('click', ()=>setTool('construct'));
+document.getElementById('tool-rect').addEventListener('click',      ()=>setTool('rect'));
+document.getElementById('tool-circle').addEventListener('click',    ()=>setTool('circle'));
+document.getElementById('btn-undo').addEventListener('click',       ()=>undoLast());
+document.getElementById('btn-clear').addEventListener('click',      ()=>clearAll());
+document.getElementById('btn-ext').addEventListener('click',        ()=>doExtrude());
 
 document.getElementById('snap-sel').addEventListener('change', function() {
   gridSnap = +this.value;
@@ -894,17 +1087,44 @@ sk.addEventListener('mousemove', e => {
   const {x,y}=evXY(e);
   const [wx,wy]=ctow(x,y);
   const [sx,sy]=snapPt(wx,wy);
+
+  // Drag move (feature 5)
+  if (dragState) {
+    applyDragMove(dragState, sx, sy);
+    mouse={x:sx,y:sy};
+    scheduleRender();
+    document.getElementById('st-x').textContent=sx.toFixed(1);
+    document.getElementById('st-y').textContent=sy.toFixed(1);
+    sk.style.cursor='grabbing';
+    return;
+  }
+
   mouse={x:sx,y:sy};
   document.getElementById('st-x').textContent=sx.toFixed(1);
   document.getElementById('st-y').textContent=sy.toFixed(1);
-  const snapLabel = ctrlHeld ? 'Freeform' : (shiftHeld&&tool==='line'&&linePoints.length>0 ? 'Angle snap 15°' : (gridSnap>0?`Snap ${gridSnap} mm`:'Snap off'));
+  const snapLabel = ctrlHeld ? 'Freeform'
+    : (shiftHeld&&(tool==='polyline'||tool==='construct'||tool==='line')&&linePoints.length>0
+      ? 'Angle snap 15°'
+      : (gridSnap>0?`Snap ${gridSnap} mm`:'Snap off'));
   document.getElementById('st-snap').textContent=snapLabel;
 
   if (isPanning) {
     panX=panOrig.x+(x-panStart0.x);
     panY=panOrig.y+(y-panStart0.y);
   }
-  scheduleRender();
+
+  // Check hover over labels (feature 4) — needs prior render to have labelHits
+  const prevHover = hoverLabelIdx;
+  hoverLabelIdx = hitLabel(x, y);
+  if (hoverLabelIdx >= 0) {
+    sk.style.cursor = 'pointer';
+  } else {
+    // Check near draggable vertex (feature 5)
+    const nearV = findNearVertex(x, y);
+    sk.style.cursor = nearV ? 'grab' : 'crosshair';
+  }
+  if (hoverLabelIdx !== prevHover) scheduleRender();
+  else scheduleRender();
 });
 
 sk.addEventListener('mousedown', e => {
@@ -914,7 +1134,19 @@ sk.addEventListener('mousedown', e => {
     panOrig={x:panX,y:panY};
     e.preventDefault(); return;
   }
-  if (e.button===2 || tool==='select') return;
+  if (e.button!==0) return;
+
+  const {x,y}=evXY(e);
+
+  // Feature 5: check draggable vertex first
+  const nearV = findNearVertex(x, y);
+  if (nearV) {
+    dragState = nearV;
+    sk.style.cursor = 'grabbing';
+    e.preventDefault();
+    return;
+  }
+
   if (tool==='rect') { rectStart={x:mouse.x,y:mouse.y}; }
   if (tool==='circle'&&!circleCenter) { circleCenter={x:mouse.x,y:mouse.y}; }
 });
@@ -922,6 +1154,14 @@ sk.addEventListener('mousedown', e => {
 sk.addEventListener('mouseup', e => {
   if (e.button===1||isPanning) { isPanning=false; return; }
   if (e.button!==0) return;
+
+  // End drag (feature 5)
+  if (dragState) {
+    dragState = null;
+    sk.style.cursor = 'crosshair';
+    scheduleExtrude();
+    return;
+  }
 
   if (tool==='rect'&&rectStart) {
     const x=Math.min(rectStart.x,mouse.x), y=Math.min(rectStart.y,mouse.y);
@@ -937,12 +1177,34 @@ sk.addEventListener('mouseup', e => {
 sk.addEventListener('click', e => {
   if (e.button!==0) return;
 
-  if (tool==='select') {
-    const [wx,wy]=ctow(evXY(e).x,evXY(e).y);
-    const hit=hitTest(wx,wy);
-    selection=hit;
-    updateConstraintPanel();
-    scheduleRender();
+  const {x,y}=evXY(e);
+
+  // Feature 4: label click check (do before tool logic)
+  const li = hitLabel(x, y);
+  if (li >= 0) {
+    const hit = labelHits[li];
+    // Show constraint panel if entity is known
+    if (hit.entityIdx >= 0) {
+      const ent = entities[hit.entityIdx];
+      if (ent) {
+        if (ent.type === 'circle') {
+          selection = { entityIdx: hit.entityIdx, isCircle: true };
+        } else if (ent.type === 'rect') {
+          selection = { entityIdx: hit.entityIdx, isRect: true, segIdx: hit.segIdx };
+        } else {
+          selection = { entityIdx: hit.entityIdx, segIdx: hit.segIdx };
+        }
+        updateConstraintPanel();
+        scheduleRender();
+      }
+    }
+    // Show len-popup at label position
+    showLenPopup(hit.lx, hit.ly, hit.wlen, (newLen) => {
+      if (hit.entityIdx >= 0) {
+        applyLenToEntity(hit.entityIdx, hit.segIdx, newLen);
+        updateConstraintPanel();
+      }
+    });
     return;
   }
 
@@ -952,7 +1214,52 @@ sk.addEventListener('click', e => {
     circleCenter=null; scheduleRender(); return;
   }
 
+  // Single Line tool (feature 3)
   if (tool==='line') {
+    if (linePoints.length===0) {
+      linePoints.push([mouse.x,mouse.y]);
+    } else {
+      // commit segment
+      const p1 = linePoints[0];
+      const p2 = [mouse.x, mouse.y];
+      const ei = entities.length;
+      entities.push({type:'polyline', points:[p1,p2], closed:false});
+      linePoints = [];
+      updateExtrudeBtn(); scheduleExtrude();
+      // Show len-popup (feature 1)
+      const [sx2,sy2]=wtoc(p2[0],p2[1]);
+      const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
+      showLenPopup(sx2, sy2, wlen, (newLen) => {
+        applyLenToEntity(ei, 0, newLen);
+      });
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Construction line tool (feature 2)
+  if (tool==='construct') {
+    if (linePoints.length===0) {
+      linePoints.push([mouse.x,mouse.y]);
+    } else {
+      const p1 = linePoints[0];
+      const p2 = [mouse.x, mouse.y];
+      const ei = entities.length;
+      entities.push({type:'polyline', points:[p1,p2], closed:false, construction:true});
+      linePoints = [];
+      // Show len-popup after placing
+      const [sx2,sy2]=wtoc(p2[0],p2[1]);
+      const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
+      showLenPopup(sx2, sy2, wlen, (newLen) => {
+        applyLenToEntity(ei, 0, newLen);
+      });
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Polyline tool (feature 3)
+  if (tool==='polyline') {
     if (linePoints.length>=3&&isNearFirst(mouse.x,mouse.y)) {
       entities.push({type:'polyline',points:[...linePoints],closed:true});
       linePoints=[]; updateExtrudeBtn(); scheduleExtrude();
@@ -960,11 +1267,12 @@ sk.addEventListener('click', e => {
       linePoints.push([mouse.x,mouse.y]);
     }
     scheduleRender();
+    return;
   }
 });
 
 sk.addEventListener('dblclick', e => {
-  if (tool==='line'&&linePoints.length>=2) {
+  if (tool==='polyline'&&linePoints.length>=2) {
     linePoints.pop();
     entities.push({type:'polyline',points:[...linePoints],closed:false});
     linePoints=[]; scheduleRender();
@@ -973,7 +1281,9 @@ sk.addEventListener('dblclick', e => {
 
 sk.addEventListener('contextmenu', e => {
   e.preventDefault();
-  if (tool==='line') { linePoints=[]; circleCenter=null; scheduleRender(); }
+  if (tool==='polyline'||tool==='line'||tool==='construct') {
+    linePoints=[]; circleCenter=null; scheduleRender();
+  }
 });
 
 sk.addEventListener('wheel', e => {
@@ -998,12 +1308,16 @@ window.addEventListener('keydown', e => {
   const inp = document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'SELECT';
 
   if (!inp) {
-    // 2D sketch shortcuts
-    if (e.key==='Escape')  setTool(tool);
+    if (e.key==='Escape') {
+      hideLenPopup();
+      linePoints=[]; rectStart=null; circleCenter=null;
+      scheduleRender();
+    }
     if (e.key==='l'||e.key==='L') setTool('line');
+    if (e.key==='p'||e.key==='P') setTool('polyline');
+    if (e.key==='x'||e.key==='X') setTool('construct');
     if (e.key==='r'||e.key==='R') setTool('rect');
     if (e.key==='c'||e.key==='C') setTool('circle');
-    if (e.key==='v'||e.key==='V') setTool('select');
     if (e.key==='Delete') { if (entities.length>0){ entities.pop(); updateExtrudeBtn(); scheduleRender(); } }
 
     // Arrow key pan (2D canvas)
@@ -1016,7 +1330,7 @@ window.addEventListener('keydown', e => {
 
   if ((e.ctrlKey||e.metaKey)&&e.key==='z') { e.preventDefault(); undoLast(); }
 
-  // 3D view shortcuts (work regardless of input focus, using number keys)
+  // 3D view shortcuts
   if (!inp) {
     if (e.key==='1') setView({pos:[0,80,350],tgt:[0,30,0]});
     if (e.key==='3') setView({pos:[350,80,0],tgt:[0,30,0]});
@@ -1045,7 +1359,7 @@ camera.position.set(160,120,160);
 const controls=new OrbitControls(camera,renderer.domElement);
 controls.enableDamping=true;
 controls.dampingFactor=0.08;
-controls.screenSpacePanning=true;  // more intuitive pan
+controls.screenSpacePanning=true;
 controls.panSpeed=1.5;
 controls.zoomSpeed=1.2;
 controls.minDistance=5;
@@ -1092,7 +1406,6 @@ function applyMesh(verts,norms,tris) {
   document.getElementById('btn-stl').classList.add('show');
 }
 
-// 3D view helpers
 function setView({pos,tgt}) {
   camera.position.set(...pos);
   controls.target.set(...tgt);
