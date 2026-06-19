@@ -394,7 +394,10 @@ let isPanning = false, panStart0 = {x:0,y:0}, panOrig = {x:0,y:0};
 
 // Mouse / modifier state
 let mouse = { x:0, y:0 };
-let ctrlHeld = false, shiftHeld = false;
+let ctrlHeld = false, shiftHeld = false, spaceHeld = false;
+
+// Object snap (OSNAP) — active when Space is held
+let activeOSnap = null; // { x, y, type: 'mid'|'center'|'quad' } or null
 
 // Extrude
 let extH = 40;
@@ -492,8 +495,80 @@ function applyAngleSnap(wx, wy) {
   return [last[0] + dist*Math.cos(snapAngle), last[1] + dist*Math.sin(snapAngle)];
 }
 
+function getOSnapCandidates() {
+  const cands = [];
+  for (const e of entities) {
+    if (e.construction) continue;
+    if (e.type === 'polyline') {
+      // Edge midpoints
+      const nSeg = e.closed ? e.points.length : e.points.length - 1;
+      for (let i = 0; i < nSeg; i++) {
+        const p1 = e.points[i], p2 = e.points[(i+1) % e.points.length];
+        cands.push({ x:(p1[0]+p2[0])/2, y:(p1[1]+p2[1])/2, type:'mid' });
+      }
+      // Centroid (for closed polygons)
+      if (e.closed && e.points.length >= 3) {
+        const cx = e.points.reduce((s,p)=>s+p[0],0)/e.points.length;
+        const cy = e.points.reduce((s,p)=>s+p[1],0)/e.points.length;
+        cands.push({ x:cx, y:cy, type:'center' });
+      }
+    }
+    if (e.type === 'rect') {
+      // Center
+      cands.push({ x:e.x+e.w/2, y:e.y+e.h/2, type:'center' });
+      // Edge midpoints
+      cands.push({ x:e.x+e.w/2, y:e.y,        type:'mid' });
+      cands.push({ x:e.x+e.w/2, y:e.y+e.h,    type:'mid' });
+      cands.push({ x:e.x,       y:e.y+e.h/2,  type:'mid' });
+      cands.push({ x:e.x+e.w,   y:e.y+e.h/2,  type:'mid' });
+    }
+    if (e.type === 'circle') {
+      cands.push({ x:e.cx,     y:e.cy,     type:'center' });
+      cands.push({ x:e.cx+e.r, y:e.cy,     type:'quad' });
+      cands.push({ x:e.cx-e.r, y:e.cy,     type:'quad' });
+      cands.push({ x:e.cx,     y:e.cy+e.r, type:'quad' });
+      cands.push({ x:e.cx,     y:e.cy-e.r, type:'quad' });
+    }
+    if (e.type === 'arc') {
+      const g = arcGeom(e.p1, e.pmid, e.p2);
+      if (g) {
+        cands.push({ x:g.cx, y:g.cy, type:'center' });
+        // Arc midpoint (angle halfway between start and end going the right way)
+        let midA = (g.startAngle + g.endAngle) / 2;
+        if (!g.ccw && g.endAngle > g.startAngle) midA += Math.PI;
+        cands.push({ x:g.cx+g.r*Math.cos(midA), y:g.cy+g.r*Math.sin(midA), type:'mid' });
+      }
+      // Chord midpoint
+      cands.push({ x:(e.p1[0]+e.p2[0])/2, y:(e.p1[1]+e.p2[1])/2, type:'mid' });
+    }
+    if (e.type === 'spline' && e.points.length >= 2) {
+      // Approx midpoint: midpoint of points array midpoint
+      const mid = Math.floor(e.points.length / 2);
+      cands.push({ x:e.points[mid][0], y:e.points[mid][1], type:'mid' });
+    }
+  }
+  return cands;
+}
+
 function snapPt(wx, wy) {
-  if (ctrlHeld) return [wx, wy];
+  if (ctrlHeld) { activeOSnap = null; return [wx, wy]; }
+
+  // OSNAP (Space held) — check midpoints, centres, quadrants
+  if (spaceHeld) {
+    const cands = getOSnapCandidates();
+    const [rx,ry] = wtoc(wx, wy);
+    let best = null, bestD = 30; // 30px threshold
+    for (const c of cands) {
+      const [cx,cy] = wtoc(c.x, c.y);
+      const d = Math.hypot(cx-rx, cy-ry);
+      if (d < bestD) { bestD = d; best = c; }
+    }
+    if (best) { activeOSnap = best; return [best.x, best.y]; }
+    activeOSnap = null;
+    // Fall through to normal snaps when no candidate nearby
+  } else {
+    activeOSnap = null;
+  }
 
   // 1. Point snap — nearest vertex within 14px screen
   const SNAP_PX = 14;
@@ -956,6 +1031,48 @@ function drawSnapIndicator() {
     }
   }
 
+  // OSNAP marker — shown when Space is held and a snap candidate is locked
+  if (activeOSnap) {
+    const [osx,osy] = wtoc(activeOSnap.x, activeOSnap.y);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(16,185,129,1)';
+    ctx.fillStyle   = 'rgba(16,185,129,0.18)';
+    ctx.lineWidth = 1.8;
+    if (activeOSnap.type === 'mid') {
+      // Triangle pointing up
+      ctx.beginPath();
+      ctx.moveTo(osx,    osy-11);
+      ctx.lineTo(osx+10, osy+6);
+      ctx.lineTo(osx-10, osy+6);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    } else if (activeOSnap.type === 'center') {
+      // Circle with cross
+      ctx.beginPath(); ctx.arc(osx,osy,9,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(osx-5,osy); ctx.lineTo(osx+5,osy);
+      ctx.moveTo(osx,osy-5); ctx.lineTo(osx,osy+5);
+      ctx.stroke();
+    } else if (activeOSnap.type === 'quad') {
+      // Diamond
+      ctx.beginPath();
+      ctx.moveTo(osx,    osy-10);
+      ctx.lineTo(osx+8,  osy);
+      ctx.lineTo(osx,    osy+10);
+      ctx.lineTo(osx-8,  osy);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
+    // Label
+    ctx.fillStyle = 'rgba(16,185,129,0.9)';
+    ctx.font = '9px JetBrains Mono,monospace';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    const labels = { mid:'Mid', center:'Cen', quad:'Quad' };
+    ctx.fillText(labels[activeOSnap.type] || '', osx+14, osy+1);
+    ctx.restore();
+    return; // skip normal crosshair when OSNAP is active
+  }
+
   ctx.strokeStyle = ctrlHeld ? 'rgba(16,185,129,0.6)' : 'rgba(245,158,11,0.45)';
   ctx.lineWidth=1; ctx.beginPath();
   ctx.moveTo(csx-8,csy); ctx.lineTo(csx+8,csy);
@@ -1362,6 +1479,7 @@ function evXY(e) {
 sk.addEventListener('mousemove', e => {
   ctrlHeld  = e.ctrlKey;
   shiftHeld = e.shiftKey;
+  // spaceHeld tracked via keydown/keyup — don't override here
   const {x,y}=evXY(e);
   const [wx,wy]=ctow(x,y);
   const [sx,sy]=snapPt(wx,wy);
@@ -1381,6 +1499,7 @@ sk.addEventListener('mousemove', e => {
   document.getElementById('st-x').textContent=sx.toFixed(1);
   document.getElementById('st-y').textContent=sy.toFixed(1);
   const snapLabel = ctrlHeld ? 'Freeform'
+    : spaceHeld ? (activeOSnap ? `OSNAP · ${activeOSnap.type}` : 'OSNAP · scanning…')
     : (shiftHeld&&(tool==='polyline'||tool==='line')&&linePoints.length>0
       ? 'Angle snap 15°'
       : (gridSnap>0?`Snap ${gridSnap} mm`:'Snap off'));
@@ -1624,8 +1743,15 @@ let vpHovered = false;
 document.getElementById('vp3d').addEventListener('mouseenter', ()=>vpHovered=true);
 document.getElementById('vp3d').addEventListener('mouseleave', ()=>vpHovered=false);
 
+window.addEventListener('keyup', e => {
+  if (e.key === ' ') { spaceHeld = false; activeOSnap = null; scheduleRender(); }
+});
+
 window.addEventListener('keydown', e => {
   const inp = document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'SELECT';
+
+  // Space = OSNAP mode (works even over inputs would be confusing, so skip when input focused)
+  if (e.key === ' ' && !inp) { e.preventDefault(); spaceHeld = true; scheduleRender(); return; }
 
   if (!inp) {
     if (e.key==='Escape') {
