@@ -1,0 +1,1509 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080c1a">
+  <title>AI Oracle — Understand, Prompt & Use AI Ethically</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c3aed'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='rgba(216,180,254,0.6)' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='8' fill='rgba(168,85,247,0.5)' stroke='rgba(216,180,254,0.85)' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='32' r='3.5' fill='%23ec4899'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+  <script defer src="progress.js"></script>
+  <script defer src="auth-modal.js"></script>
+  <style>
+    :root {
+      --bg: #080c1a; --bg2: #0d1226;
+      --surface: rgba(255,255,255,0.048); --surface2: rgba(255,255,255,0.032);
+      --border: rgba(255,255,255,0.085); --border2: rgba(255,255,255,0.055);
+      --text: #e4e8f8; --text2: rgba(210,218,245,0.65); --muted: rgba(210,218,245,0.38);
+      --accent-1: #a855f7; --accent-2: #ec4899; --accent-3: #f5a623;
+      --accent-soft: rgba(168,85,247,0.18);
+      --font-display: "Cabinet Grotesk", sans-serif;
+      --font-body:    "Cabinet Grotesk", sans-serif;
+      --font-mono:    "JetBrains Mono", monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    body {
+      font-family: var(--font-body); font-size: 15px;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; height: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #appShell {
+      height: 100%; display: flex; flex-direction: column; overflow: hidden;
+      background:
+        radial-gradient(ellipse 55% 40% at 5% 3%,  rgba(168,85,247,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 95% 5%,  rgba(236,72,153,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 35% 25% at 50% 98%, rgba(124,109,250,0.08) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    /* ── Header ── */
+    #appHeader {
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; border-bottom: 1px solid var(--border);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+      padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      text-decoration: none; transition: all 140ms; flex-shrink: 0;
+      font-family: var(--font-body);
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
+    .app-icon {
+      width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, #7c22b8, #b5205e);
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    h1.app-title {
+      font-family: var(--font-display); font-weight: 900; letter-spacing: -0.03em;
+      font-size: clamp(17px, 1.8vw, 23px); line-height: 1;
+      background: linear-gradient(125deg, #fff 0%, #e4bcff 45%, #f9a8d4 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grade-badge {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px;
+      background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.28); color: #c084fc;
+    }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+    /* ── Main layout ── */
+    #mainLayout { flex: 1; display: flex; min-height: 0; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 272px; flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; overflow: hidden;
+      background: rgba(0,0,0,0.22);
+    }
+    #sidebarHeader { flex-shrink: 0; padding: 14px 16px 10px; border-bottom: 1px solid var(--border2); }
+    .sidebar-title {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted);
+    }
+    #sidebarList { flex: 1; overflow-y: auto; padding-bottom: 14px; }
+    .unit-group { }
+    .unit-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 16px 6px; cursor: pointer;
+      border-top: 1px solid var(--border2);
+      user-select: none; transition: background 120ms;
+    }
+    .unit-header:hover { background: rgba(255,255,255,0.03); }
+    .unit-header-label {
+      font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(210,218,245,0.28); flex: 1; line-height: 1.4;
+    }
+    .unit-header-count { font-family: var(--font-mono); font-size: 9px; color: rgba(210,218,245,0.20); flex-shrink: 0; }
+    .unit-caret { font-size: 10px; color: rgba(210,218,245,0.28); flex-shrink: 0; transition: transform 200ms ease; display: inline-block; }
+    .unit-group.collapsed .unit-lessons { display: none; }
+    .lesson-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 16px; cursor: pointer; transition: background 110ms;
+      border-left: 2px solid transparent;
+    }
+    .lesson-item:hover { background: rgba(255,255,255,0.04); }
+    .lesson-item.active { background: rgba(168,85,247,0.10); border-left-color: var(--accent-1); }
+    .lesson-num { font-family: var(--font-mono); font-size: 10px; color: rgba(210,218,245,0.22); width: 20px; flex-shrink: 0; }
+    .lesson-name { font-size: 13px; font-weight: 500; color: var(--text2); line-height: 1.35; }
+    .lesson-item.active .lesson-name { color: #e4bcff; font-weight: 700; }
+    .lesson-done { margin-left: auto; font-size: 11px; color: #a855f7; flex-shrink: 0; }
+
+    #progressBar { flex-shrink: 0; padding: 10px 16px; border-top: 1px solid var(--border2); }
+    .progress-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #ec4899); border-radius: 99px; transition: width 400ms ease; }
+
+    /* ── Content area ── */
+    #contentArea { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+    #lessonScroll { flex: 1; overflow-y: auto; padding: 36px 44px 28px; }
+    #lessonScroll::-webkit-scrollbar { width: 5px; }
+    #lessonScroll::-webkit-scrollbar-thumb { background: rgba(168,85,247,0.25); border-radius: 99px; }
+
+    /* ── Lesson content ── */
+    .lesson-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 99px; margin-bottom: 14px;
+      background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.30); color: #c084fc;
+    }
+    .lesson-title {
+      font-family: var(--font-display); font-weight: 900; letter-spacing: -0.03em;
+      font-size: clamp(22px, 2.5vw, 30px);
+      color: #fff; margin-bottom: 8px; line-height: 1.1;
+    }
+    .lesson-subtitle { font-size: 15px; color: var(--muted); margin-bottom: 28px; }
+    .lesson-body p { font-size: 15px; line-height: 1.8; color: var(--text2); margin-bottom: 16px; }
+    .lesson-body p strong { color: var(--text); font-weight: 700; }
+    .lesson-body p em { color: #c084fc; font-style: normal; font-weight: 700; }
+    .lesson-body h3 {
+      font-family: var(--font-display); font-weight: 800; font-size: 16px; letter-spacing: -0.01em;
+      color: #e4bcff; margin: 26px 0 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .lesson-body ul, .lesson-body ol { font-size: 15px; line-height: 1.85; color: var(--text2); padding-left: 22px; margin-bottom: 16px; }
+    .lesson-body li { margin-bottom: 4px; }
+
+    /* Callouts */
+    .callout { border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; font-size: 14px; line-height: 1.7; }
+    .callout.tip  { background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.25); color: #e4bcff; }
+    .callout.info { background: rgba(236,72,153,0.09); border: 1px solid rgba(236,72,153,0.22); color: #f9a8d4; }
+    .callout.warn { background: rgba(245,166,35,0.10); border: 1px solid rgba(245,166,35,0.25); color: #fcd34d; }
+    .callout.good { background: rgba(17,217,143,0.09); border: 1px solid rgba(17,217,143,0.22); color: #6ee7b7; }
+    .callout strong { font-weight: 700; }
+
+    .key-term {
+      display: inline-block; background: rgba(168,85,247,0.14);
+      border: 1px solid rgba(168,85,247,0.28); border-radius: 6px;
+      padding: 2px 8px; font-size: 13px; color: #e4bcff;
+      font-family: var(--font-mono);
+    }
+
+    /* Visual diagram boxes */
+    .visual-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; margin-bottom: 18px; }
+    .visual-box-title { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+    /* Neural network diagram */
+    .nn-diagram { display: flex; align-items: center; justify-content: space-around; gap: 12px; padding: 12px 0; flex-wrap: wrap; }
+    .nn-layer { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .nn-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .nn-node { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+    .nn-node.input  { border-color: rgba(168,85,247,0.50); background: rgba(168,85,247,0.15); color: #c084fc; }
+    .nn-node.hidden { border-color: rgba(236,72,153,0.40); background: rgba(236,72,153,0.12); color: #f9a8d4; }
+    .nn-node.output { border-color: rgba(17,217,143,0.50); background: rgba(17,217,143,0.12); color: #6ee7b7; }
+    .nn-arrow { color: rgba(255,255,255,0.18); font-size: 20px; line-height: 1; }
+
+    /* LLM pipeline */
+    .pipeline { display: flex; align-items: center; gap: 0; margin-bottom: 18px; flex-wrap: wrap; }
+    .pipeline-step { background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px; padding: 10px 14px; text-align: center; flex: 1; min-width: 90px; }
+    .pipeline-step-icon { font-size: 20px; margin-bottom: 4px; }
+    .pipeline-step-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .pipeline-arrow { padding: 0 4px; color: rgba(168,85,247,0.40); font-size: 18px; flex-shrink: 0; }
+
+    /* Prompt anatomy */
+    .prompt-anatomy { background: #0f1220; border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 18px; font-family: var(--font-mono); font-size: 13px; line-height: 1.9; }
+    .pa-role    { color: #c084fc; }
+    .pa-context { color: #67e8f9; }
+    .pa-task    { color: #6ee7b7; }
+    .pa-format  { color: #fcd34d; }
+    .pa-label   { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; margin-left: 6px; vertical-align: middle; }
+    .pa-label.role    { background: rgba(192,132,252,0.15); color: #c084fc; border: 1px solid rgba(192,132,252,0.25); }
+    .pa-label.context { background: rgba(103,232,249,0.12); color: #67e8f9; border: 1px solid rgba(103,232,249,0.22); }
+    .pa-label.task    { background: rgba(110,231,183,0.12); color: #6ee7b7; border: 1px solid rgba(110,231,183,0.22); }
+    .pa-label.format  { background: rgba(252,211,77,0.12); color: #fcd34d; border: 1px solid rgba(252,211,77,0.22); }
+
+    /* Prompt comparison */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+    .compare-card { border-radius: 12px; padding: 14px 16px; }
+    .compare-card.bad  { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.22); }
+    .compare-card.good { background: rgba(17,217,143,0.08); border: 1px solid rgba(17,217,143,0.22); }
+    .compare-label { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .compare-card.bad  .compare-label { color: #fca5a5; }
+    .compare-card.good .compare-label { color: #6ee7b7; }
+    .compare-prompt { font-family: var(--font-mono); font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+    /* Ethics scale */
+    .ethics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+    .ethics-card { border-radius: 12px; padding: 14px 16px; }
+    .ethics-card.ok   { background: rgba(17,217,143,0.08); border: 1px solid rgba(17,217,143,0.22); }
+    .ethics-card.warn { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.22); }
+    .ethics-card.bad  { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.22); }
+    .ethics-icon { font-size: 20px; margin-bottom: 6px; }
+    .ethics-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+    .ethics-card.ok   .ethics-title { color: #6ee7b7; }
+    .ethics-card.warn .ethics-title { color: #fcd34d; }
+    .ethics-card.bad  .ethics-title { color: #fca5a5; }
+    .ethics-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+    /* Interactive prompt builder */
+    .prompt-builder { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 18px; }
+    .pb-label { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .pb-input { width: 100%; background: rgba(0,0,0,0.30); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 12px; font-family: var(--font-mono); font-size: 13px; color: var(--text); outline: none; resize: none; transition: border-color 150ms; }
+    .pb-input:focus { border-color: rgba(168,85,247,0.45); }
+    .pb-preview { background: #0a0d1e; border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 12px 16px; margin-top: 12px; font-family: var(--font-mono); font-size: 13px; color: #e4bcff; line-height: 1.8; min-height: 60px; white-space: pre-wrap; }
+    .pb-score { margin-top: 10px; display: flex; align-items: center; gap: 10px; font-size: 13px; }
+    .pb-score-label { color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+    .pb-stars { color: #a855f7; letter-spacing: 2px; font-size: 16px; }
+
+    /* Quiz */
+    .quiz-section { margin: 22px 0 18px; }
+    .quiz-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 16px; border-radius: 12px; width: 100%;
+      background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.22);
+      color: #e4bcff; font-family: var(--font-body);
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      transition: all 150ms; text-align: left;
+    }
+    .quiz-toggle:hover { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.35); }
+    .quiz-toggle .toggle-icon { margin-left: auto; font-size: 15px; transition: transform 200ms; }
+    .quiz-toggle.open .toggle-icon { transform: rotate(180deg); }
+    .quiz-inner { display: none; padding-top: 14px; }
+    .quiz-inner.open { display: block; }
+    .quiz-box { background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 16px 18px; margin: 0 0 14px; }
+    .quiz-q { font-size: 15px; font-weight: 700; color: #e4bcff; margin-bottom: 12px; }
+    .quiz-opts { display: flex; flex-direction: column; gap: 7px; }
+    .quiz-opt { padding: 10px 14px; border-radius: 9px; background: var(--surface); border: 1px solid var(--border2); color: var(--text2); font-size: 14px; cursor: pointer; transition: all 120ms; text-align: left; font-family: var(--font-body); }
+    .quiz-opt:hover:not(:disabled) { background: rgba(255,255,255,0.09); }
+    .quiz-opt.correct { background: rgba(17,217,143,0.14); border-color: rgba(17,217,143,0.38); color: #6ee7b7; }
+    .quiz-opt.wrong   { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+    .quiz-opt:disabled { cursor: default; }
+    .quiz-feedback { font-size: 13px; margin-top: 9px; min-height: 18px; }
+    .quiz-feedback.correct { color: #6ee7b7; }
+    .quiz-feedback.wrong   { color: #fca5a5; }
+
+    /* Bottom nav */
+    #bottomNav {
+      flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px; border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.22);
+    }
+    .nav-btn {
+      display: flex; align-items: center; gap: 7px; padding: 9px 20px;
+      border-radius: 12px; font-family: var(--font-body); font-size: 14px; font-weight: 700;
+      border: none; cursor: pointer; transition: all 150ms; letter-spacing: -0.01em;
+    }
+    .nav-btn-prev { background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+    .nav-btn-prev:hover:not(:disabled) { background: rgba(255,255,255,0.09); color: var(--text); }
+    .nav-btn-next { background: linear-gradient(135deg, #7c22b8, #b5205e); color: #fff; box-shadow: 0 4px 16px rgba(124,34,184,0.30); }
+    .nav-btn-next:hover:not(:disabled) { box-shadow: 0 6px 24px rgba(124,34,184,0.48); transform: translateY(-1px); }
+    .nav-btn:disabled { opacity: 0.38; cursor: default; transform: none !important; }
+    .lesson-counter { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: center; }
+
+    @media (max-width: 700px) {
+      #sidebar { display: none; }
+      #lessonScroll { padding: 20px 18px 20px; }
+      .compare-grid, .ethics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div id="appShell">
+
+  <!-- Header -->
+  <header id="appHeader">
+    <a href="index.html" class="home-btn">
+      <i data-lucide="arrow-left" style="width:13px;height:13px;"></i>
+      Home
+    </a>
+    <div class="app-icon">🔮</div>
+    <h1 class="app-title">AI Oracle</h1>
+    <span class="grade-badge">Gr 8 – 12</span>
+    <div class="header-right">
+      <span class="progress-text" id="headerProgress">0 / 9 lessons</span>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div id="mainLayout">
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div id="sidebarHeader">
+        <div class="sidebar-title">Course Contents</div>
+      </div>
+      <div id="sidebarList">
+
+        <!-- Unit 1 -->
+        <div class="unit-group" id="unit-1">
+          <div class="unit-header" onclick="toggleUnit('unit-1')">
+            <span class="unit-caret" id="caret-unit-1">▼</span>
+            <span class="unit-header-label">Unit 1 · How AI Works</span>
+            <span class="unit-header-count">3 lessons</span>
+          </div>
+          <div class="unit-lessons">
+            <div class="lesson-item active" onclick="goLesson(0)" id="li-0">
+              <span class="lesson-num">1</span>
+              <span class="lesson-name">What is AI?</span>
+              <span class="lesson-done" id="done-0" style="display:none">✓</span>
+            </div>
+            <div class="lesson-item" onclick="goLesson(1)" id="li-1">
+              <span class="lesson-num">2</span>
+              <span class="lesson-name">Neural Networks &amp; Training</span>
+              <span class="lesson-done" id="done-1" style="display:none">✓</span>
+            </div>
+            <div class="lesson-item" onclick="goLesson(2)" id="li-2">
+              <span class="lesson-num">3</span>
+              <span class="lesson-name">Large Language Models</span>
+              <span class="lesson-done" id="done-2" style="display:none">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit 2 -->
+        <div class="unit-group" id="unit-2">
+          <div class="unit-header" onclick="toggleUnit('unit-2')">
+            <span class="unit-caret" id="caret-unit-2">▼</span>
+            <span class="unit-header-label">Unit 2 · The Art of Prompting</span>
+            <span class="unit-header-count">3 lessons</span>
+          </div>
+          <div class="unit-lessons">
+            <div class="lesson-item" onclick="goLesson(3)" id="li-3">
+              <span class="lesson-num">4</span>
+              <span class="lesson-name">Anatomy of a Good Prompt</span>
+              <span class="lesson-done" id="done-3" style="display:none">✓</span>
+            </div>
+            <div class="lesson-item" onclick="goLesson(4)" id="li-4">
+              <span class="lesson-num">5</span>
+              <span class="lesson-name">Prompt Techniques</span>
+              <span class="lesson-done" id="done-4" style="display:none">✓</span>
+            </div>
+            <div class="lesson-item" onclick="goLesson(5)" id="li-5">
+              <span class="lesson-num">6</span>
+              <span class="lesson-name">Build Your Own Prompt</span>
+              <span class="lesson-done" id="done-5" style="display:none">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit 3 -->
+        <div class="unit-group" id="unit-3">
+          <div class="unit-header" onclick="toggleUnit('unit-3')">
+            <span class="unit-caret" id="caret-unit-3">▼</span>
+            <span class="unit-header-label">Unit 3 · AI Ethics in Education</span>
+            <span class="unit-header-count">3 lessons</span>
+          </div>
+          <div class="unit-lessons">
+            <div class="lesson-item" onclick="goLesson(6)" id="li-6">
+              <span class="lesson-num">7</span>
+              <span class="lesson-name">AI &amp; Academic Integrity</span>
+              <span class="lesson-done" id="done-6" style="display:none">✓</span>
+            </div>
+            <div class="lesson-item" onclick="goLesson(7)" id="li-7">
+              <span class="lesson-num">8</span>
+              <span class="lesson-name">Verify, Question, Think</span>
+              <span class="lesson-done" id="done-7" style="display:none">✓</span>
+            </div>
+            <div class="lesson-item" onclick="goLesson(8)" id="li-8">
+              <span class="lesson-num">9</span>
+              <span class="lesson-name">AI as Your Study Partner</span>
+              <span class="lesson-done" id="done-8" style="display:none">✓</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div id="progressBar">
+        <div class="progress-label">
+          <span>Progress</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <div id="contentArea">
+      <div id="lessonScroll">
+        <div id="lessonContent"></div>
+      </div>
+      <nav id="bottomNav">
+        <button class="nav-btn nav-btn-prev" id="btnPrev" onclick="goLesson(currentLesson-1)" disabled>
+          <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+          Previous
+        </button>
+        <div class="lesson-counter" id="lessonCounter">Lesson 1 of 9</div>
+        <button class="nav-btn nav-btn-next" id="btnNext" onclick="nextLesson()">
+          Next
+          <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </button>
+      </nav>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Lesson data ──────────────────────────────────────────────────────────────
+
+const LESSONS = [
+
+  // ── 0 ── What is AI? ──────────────────────────────────────────────────────
+  {
+    unit: 'Unit 1 · How AI Works',
+    title: 'What is Artificial Intelligence?',
+    subtitle: 'From calculators to thinking machines — understanding the spectrum of AI.',
+    html: `
+<div class="lesson-body">
+  <p>You use AI every day without thinking about it. When you unlock your phone with your face, get a song recommendation, or receive a grammar suggestion, <strong>that's AI at work</strong>. But what actually is it?</p>
+
+  <h3>🧠 Intelligence vs. Programmed Rules</h3>
+  <p>Traditional software follows <em>explicit rules</em> written by programmers: <strong>IF</strong> the user clicks this button, <strong>THEN</strong> show this menu. Every outcome must be pre-defined.</p>
+  <p>Artificial Intelligence takes a different approach. Instead of writing rules, we <strong>show the machine thousands or millions of examples</strong> and let it figure out the rules on its own. This is called <em>machine learning</em>.</p>
+
+  <div class="callout tip">
+    <strong>Key insight:</strong> AI doesn't follow instructions you wrote — it learns patterns from data and uses those patterns to make decisions about new situations it's never seen before.
+  </div>
+
+  <h3>📊 The AI Family Tree</h3>
+  <div class="visual-box">
+    <div class="visual-box-title">Scope of AI concepts</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Each inner circle is a specialisation of the one around it.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.22);border-radius:10px;padding:10px 16px;">
+        <strong style="color:#e4bcff;">🤖 Artificial Intelligence</strong>
+        <span style="color:var(--muted);font-size:13px;"> — machines that appear intelligent</span>
+      </div>
+      <div style="background:rgba(236,72,153,0.09);border:1px solid rgba(236,72,153,0.20);border-radius:10px;padding:10px 16px;margin-left:16px;">
+        <strong style="color:#f9a8d4;">📈 Machine Learning</strong>
+        <span style="color:var(--muted);font-size:13px;"> — AI that learns from data (not hand-coded rules)</span>
+      </div>
+      <div style="background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.22);border-radius:10px;padding:10px 16px;margin-left:32px;">
+        <strong style="color:#c4baff;">🕸️ Deep Learning</strong>
+        <span style="color:var(--muted);font-size:13px;"> — ML using neural networks with many layers</span>
+      </div>
+      <div style="background:rgba(17,217,143,0.08);border:1px solid rgba(17,217,143,0.20);border-radius:10px;padding:10px 16px;margin-left:48px;">
+        <strong style="color:#6ee7b7;">💬 Generative AI</strong>
+        <span style="color:var(--muted);font-size:13px;"> — Deep learning that creates text, images, code, audio</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>⚡ How does AI actually "learn"?</h3>
+  <p>Think of how you learnt to recognise a cat. You didn't read a rulebook — you saw hundreds of cats (and non-cats), got feedback, and your brain built an internal model. AI does the same thing, mathematically:</p>
+  <ol>
+    <li><strong>Training data</strong> — millions of labelled examples (photos tagged "cat" or "not cat")</li>
+    <li><strong>A model</strong> — a mathematical structure (like a neural network) that makes guesses</li>
+    <li><strong>Feedback loop</strong> — when the model guesses wrong, it adjusts its internal numbers slightly</li>
+    <li><strong>Repeat</strong> — do this billions of times and the model becomes accurate</li>
+  </ol>
+
+  <div class="callout warn">
+    <strong>Important:</strong> AI doesn't understand things the way humans do. It finds statistical patterns. A model that identifies cats has no concept of "cat" — it has learned which pixel patterns tend to appear in images labelled "cat."
+  </div>
+
+  <h3>🌍 Real South African examples</h3>
+  <ul>
+    <li><strong>Load-shedding predictions</strong> — models trained on Eskom's historical data predict the schedule</li>
+    <li><strong>Google Translate</strong> — uses AI trained on billions of bilingual text pairs to translate Zulu, Xhosa, Afrikaans</li>
+    <li><strong>Banking fraud detection</strong> — your bank's AI flags unusual transactions in milliseconds</li>
+    <li><strong>WhatsApp spam filters</strong> — AI classifies messages before you even see them</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q0')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q0">
+    <div class="quiz-box">
+      <div class="quiz-q">1. What is the key difference between traditional software and machine learning?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q0a')">Traditional software is faster to run.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q0a')">Traditional software uses hand-coded rules; ML learns patterns from data.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q0a')">Machine learning always produces better results than traditional software.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q0a')">Traditional software requires more data.</button>
+      </div>
+      <div class="quiz-feedback" id="q0a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">2. Which is the most specific term for an AI that generates text and images?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q0b')">Artificial Intelligence</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q0b')">Machine Learning</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q0b')">Deep Learning</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q0b')">Generative AI</button>
+      </div>
+      <div class="quiz-feedback" id="q0b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 1 ── Neural Networks & Training ───────────────────────────────────────
+  {
+    unit: 'Unit 1 · How AI Works',
+    title: 'Neural Networks & Training',
+    subtitle: 'The mathematical machinery that lets computers learn.',
+    html: `
+<div class="lesson-body">
+  <p>A <em>neural network</em> is the fundamental building block of modern AI. It's loosely inspired by the human brain — not a biological copy, but a mathematical structure that can learn to approximate almost any function.</p>
+
+  <h3>🕸️ Structure of a Neural Network</h3>
+  <div class="visual-box">
+    <div class="visual-box-title">A simple 3-layer neural network</div>
+    <div class="nn-diagram">
+      <div class="nn-layer">
+        <div class="nn-label">Input Layer</div>
+        <div class="nn-node input">x₁</div>
+        <div class="nn-node input">x₂</div>
+        <div class="nn-node input">x₃</div>
+      </div>
+      <div class="nn-arrow">→</div>
+      <div class="nn-layer">
+        <div class="nn-label">Hidden Layer 1</div>
+        <div class="nn-node hidden">h</div>
+        <div class="nn-node hidden">h</div>
+        <div class="nn-node hidden">h</div>
+        <div class="nn-node hidden">h</div>
+      </div>
+      <div class="nn-arrow">→</div>
+      <div class="nn-layer">
+        <div class="nn-label">Hidden Layer 2</div>
+        <div class="nn-node hidden">h</div>
+        <div class="nn-node hidden">h</div>
+        <div class="nn-node hidden">h</div>
+      </div>
+      <div class="nn-arrow">→</div>
+      <div class="nn-layer">
+        <div class="nn-label">Output</div>
+        <div class="nn-node output">ŷ</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">Each connection has a <strong style="color:#c084fc;">weight</strong> — a number that amplifies or suppresses the signal. Training adjusts all these weights.</p>
+  </div>
+
+  <h3>⚙️ How a Neuron Works</h3>
+  <p>Each <em>neuron</em> (node) does three things:</p>
+  <ol>
+    <li><strong>Receives</strong> inputs from the previous layer</li>
+    <li><strong>Multiplies</strong> each input by a weight and adds a bias</li>
+    <li><strong>Applies</strong> an activation function and passes the result forward</li>
+  </ol>
+  <div class="callout tip">
+    <strong>Simple analogy:</strong> Imagine voting. Each input is a voter, the weight is how much you trust that voter, and the activation function decides: "is the total strong enough to fire a yes?"
+  </div>
+
+  <h3>📉 Training: Learning from Mistakes</h3>
+  <p>Training happens in a loop called <em>gradient descent</em>:</p>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">📥</div>
+      <div class="pipeline-step-label">Feed data in</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🎲</div>
+      <div class="pipeline-step-label">Model guesses</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">📏</div>
+      <div class="pipeline-step-label">Measure error (loss)</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🔧</div>
+      <div class="pipeline-step-label">Adjust weights</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🔁</div>
+      <div class="pipeline-step-label">Repeat millions of times</div>
+    </div>
+  </div>
+
+  <h3>🗄️ The Role of Data</h3>
+  <p>A neural network is only as good as the data it's trained on. This is critical:</p>
+  <ul>
+    <li><strong>Biased data → biased AI.</strong> If a hiring model is trained mostly on historical (biased) hiring decisions, it will perpetuate those biases.</li>
+    <li><strong>Quantity matters.</strong> Modern large models are trained on hundreds of billions of text examples.</li>
+    <li><strong>Quality matters too.</strong> Noisy, incorrect, or unrepresentative data produces unreliable models.</li>
+  </ul>
+
+  <div class="callout warn">
+    <strong>Data bias in practice:</strong> Early face-recognition AI worked far better on light-skinned faces because training datasets contained mostly light-skinned faces. This is a real harm — the technology was less accurate for people who needed it most.
+  </div>
+
+  <h3>💡 Key vocabulary</h3>
+  <p>
+    <span class="key-term">weight</span> — a learnable number on a connection between neurons<br>
+    <span class="key-term">loss</span> — a measure of how wrong the model's prediction is<br>
+    <span class="key-term">epoch</span> — one full pass through the training dataset<br>
+    <span class="key-term">overfitting</span> — when a model memorises training data but fails on new data
+  </p>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q1')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q1">
+    <div class="quiz-box">
+      <div class="quiz-q">What are the learnable parameters in a neural network called?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q1a')">Neurons</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q1a')">Weights</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q1a')">Epochs</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q1a')">Layers</button>
+      </div>
+      <div class="quiz-feedback" id="q1a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">Why is biased training data a serious problem?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q1b')">It slows down training significantly.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q1b')">It makes the model use more memory.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q1b')">The model will replicate and amplify the bias in its decisions.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q1b')">It only causes problems during testing, not real use.</button>
+      </div>
+      <div class="quiz-feedback" id="q1b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 2 ── Large Language Models ────────────────────────────────────────────
+  {
+    unit: 'Unit 1 · How AI Works',
+    title: 'Large Language Models (LLMs)',
+    subtitle: 'How ChatGPT, Claude, and Gemini actually work under the hood.',
+    html: `
+<div class="lesson-body">
+  <p>When you chat with an AI like ChatGPT or Claude, you're talking to a <em>Large Language Model</em> — a neural network trained specifically on text. Understanding how they work helps you use them better and spot their limitations.</p>
+
+  <h3>📚 Training on Text</h3>
+  <p>LLMs are trained on enormous amounts of text: web pages, books, Wikipedia, code repositories, scientific papers, and more. The training task is deceptively simple:</p>
+  <div class="callout tip">
+    <strong>The training task:</strong> Given the text so far, predict the next word (or "token"). Do this trillions of times and the model learns grammar, facts, reasoning patterns, and much more as a side effect.
+  </div>
+  <p>A model like Claude was trained on <strong>hundreds of billions of tokens</strong>. This is why it can discuss Shakespeare, write Python, explain photosynthesis, and help plan a study schedule — all from the same model.</p>
+
+  <h3>🔢 Tokens, Not Words</h3>
+  <p>LLMs don't process words — they process <em>tokens</em>, which are chunks of text (roughly ¾ of a word on average). The word "unbelievable" might become 3 tokens: <span class="key-term">un</span> <span class="key-term">believ</span> <span class="key-term">able</span>.</p>
+
+  <h3>🎯 How the AI Generates a Response</h3>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">✍️</div>
+      <div class="pipeline-step-label">You type a prompt</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🔢</div>
+      <div class="pipeline-step-label">Text → tokens → numbers</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🕸️</div>
+      <div class="pipeline-step-label">Billions of calculations</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🎲</div>
+      <div class="pipeline-step-label">Sample next token</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-icon">🔁</div>
+      <div class="pipeline-step-label">Repeat until done</div>
+    </div>
+  </div>
+  <p>Notice: the model <strong>samples</strong> the next token — it picks from a probability distribution, not a fixed lookup table. This is why the same prompt can produce different responses.</p>
+
+  <h3>⚠️ What LLMs Cannot Do</h3>
+  <p>This is crucial for using AI safely:</p>
+  <ul>
+    <li><strong>No real-time knowledge</strong> — the model's knowledge is frozen at its training cutoff date. It doesn't browse the internet (unless a tool is connected).</li>
+    <li><strong>No memory between conversations</strong> — every new chat starts fresh.</li>
+    <li><strong>They hallucinate</strong> — LLMs can confidently state facts that are completely wrong. They are pattern-completion machines, not fact databases.</li>
+    <li><strong>No genuine understanding</strong> — the model manipulates statistical patterns in language. It doesn't "know" anything the way you do.</li>
+  </ul>
+
+  <div class="callout warn">
+    <strong>Hallucination example:</strong> Ask an LLM for academic citations and it may invent plausible-looking but fake references — authors, journal names, volume numbers, all fabricated. Always verify citations independently.
+  </div>
+
+  <h3>🏭 The Scale Problem</h3>
+  <p>Training a state-of-the-art LLM requires thousands of specialised GPU chips running for months, consuming electricity equivalent to a small town. This means:</p>
+  <ul>
+    <li>Only a handful of organisations can train frontier models</li>
+    <li>The environmental cost of AI is significant</li>
+    <li>There are real power dynamics in who controls this technology</li>
+  </ul>
+
+  <div class="callout info">
+    <strong>South African context:</strong> Most AI infrastructure runs on overseas servers. This raises questions about data sovereignty — where does your data go when you use a foreign AI service?
+  </div>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q2')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q2">
+    <div class="quiz-box">
+      <div class="quiz-q">What is "hallucination" in the context of LLMs?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q2a')">When the AI generates images instead of text.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q2a')">When the AI confidently states false or fabricated information.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q2a')">When the model runs out of memory during a long conversation.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q2a')">When the AI refuses to answer a question.</button>
+      </div>
+      <div class="quiz-feedback" id="q2a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">An LLM's training cutoff means it…</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q2b')">…cannot answer questions longer than a certain length.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q2b')">…stops generating text after a set number of words.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q2b')">…has no knowledge of events that happened after a certain date.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q2b')">…can only process text in English.</button>
+      </div>
+      <div class="quiz-feedback" id="q2b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 3 ── Anatomy of a Good Prompt ─────────────────────────────────────────
+  {
+    unit: 'Unit 2 · The Art of Prompting',
+    title: 'Anatomy of a Good Prompt',
+    subtitle: 'Break down what makes the difference between a vague question and a powerful prompt.',
+    html: `
+<div class="lesson-body">
+  <p>The ability to communicate clearly with an AI is a skill — and like any skill, it can be learned. A well-constructed prompt is the difference between a frustrating, generic response and exactly what you need.</p>
+
+  <h3>🔬 The Four Elements of a Powerful Prompt</h3>
+  <div class="visual-box">
+    <div class="visual-box-title">Prompt anatomy — colour-coded breakdown</div>
+    <div class="prompt-anatomy">
+<span class="pa-role">You are a patient, knowledgeable maths tutor explaining to a Grade 11 student.</span> <span class="pa-label role">ROLE</span>
+<span class="pa-context">The student is preparing for their IEB maths paper and struggles specifically with exponential equations.</span> <span class="pa-label context">CONTEXT</span>
+<span class="pa-task">Explain how to solve 3^(x+2) = 81, showing every step clearly.</span> <span class="pa-label task">TASK</span>
+<span class="pa-format">Use numbered steps and highlight each law of exponents used in bold.</span> <span class="pa-label format">FORMAT</span>
+    </div>
+  </div>
+
+  <h3>🎭 1. Role — Tell the AI who to be</h3>
+  <p>Starting with <strong>"You are a…"</strong> sets the tone, expertise level, and communication style of the response. Compare:</p>
+  <div class="compare-grid">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ No role</div>
+      <div class="compare-prompt">Explain black holes.</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ With role</div>
+      <div class="compare-prompt">You are a physics teacher explaining to a Grade 9 student who has never heard of black holes. Explain what they are using a simple analogy.</div>
+    </div>
+  </div>
+
+  <h3>🗺️ 2. Context — Give the AI the background</h3>
+  <p>The AI doesn't know your situation. Tell it:</p>
+  <ul>
+    <li>Who you are and your level of knowledge</li>
+    <li>What you've already tried</li>
+    <li>What subject, grade, or curriculum applies</li>
+    <li>Any constraints (word limit, language, audience)</li>
+  </ul>
+
+  <h3>🎯 3. Task — Be specific about what you want</h3>
+  <p>Vague tasks produce vague answers. Be precise:</p>
+  <div class="compare-grid">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ Vague</div>
+      <div class="compare-prompt">Help me with my essay.</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ Specific</div>
+      <div class="compare-prompt">My essay argues that social media harms teenage mental health. Review my introduction paragraph for logical flow and suggest one stronger opening sentence.</div>
+    </div>
+  </div>
+
+  <h3>📐 4. Format — Tell it how to respond</h3>
+  <p>You can specify exactly how you want the output structured:</p>
+  <ul>
+    <li>Numbered steps vs. bullet points vs. paragraphs</li>
+    <li>Word or character limit</li>
+    <li>Include examples / avoid jargon</li>
+    <li>Use a table / use headings / write in Afrikaans</li>
+  </ul>
+
+  <div class="callout tip">
+    <strong>Pro tip:</strong> You don't always need all four elements. A quick factual question needs less scaffolding than a complex learning task. Match the prompt complexity to the task complexity.
+  </div>
+
+  <h3>🌡️ Temperature: Creativity vs. Accuracy</h3>
+  <p>Most AI tools let you control <em>temperature</em> — how creative or conservative the model is. High temperature = more creative, varied, sometimes risky. Low temperature = more predictable, focused, safer for factual tasks.</p>
+  <ul>
+    <li>Writing a poem or story → higher temperature</li>
+    <li>Solving a maths problem → lower temperature</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q3')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q3">
+    <div class="quiz-box">
+      <div class="quiz-q">Which prompt element tells the AI the expertise level and communication style to use?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q3a')">Context</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q3a')">Role</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q3a')">Format</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q3a')">Task</button>
+      </div>
+      <div class="quiz-feedback" id="q3a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">Which is a better prompt for getting help with a maths problem?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q3b')">"Help me with maths."</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q3b')">"You are a patient Grade 10 maths tutor. Explain how to factorise x² - 5x + 6, showing each step."</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q3b')">"What is maths?"</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q3b')">"Solve my problem."</button>
+      </div>
+      <div class="quiz-feedback" id="q3b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 4 ── Prompt Techniques ────────────────────────────────────────────────
+  {
+    unit: 'Unit 2 · The Art of Prompting',
+    title: 'Prompt Techniques',
+    subtitle: 'Advanced strategies that unlock the best results from any AI model.',
+    html: `
+<div class="lesson-body">
+  <p>Beyond the four-element structure, there are specific techniques that dramatically improve AI responses. These are used by professionals working with AI every day.</p>
+
+  <h3>🔗 Chain-of-Thought (CoT) Prompting</h3>
+  <p>Ask the AI to <em>think step by step</em> before giving its final answer. This works especially well for maths, logic, and multi-step problems.</p>
+  <div class="compare-grid">
+    <div class="compare-card bad">
+      <div class="compare-label">❌ Without CoT</div>
+      <div class="compare-prompt">If a train travels 120 km in 1.5 hours, what is its speed?</div>
+    </div>
+    <div class="compare-card good">
+      <div class="compare-label">✅ With CoT</div>
+      <div class="compare-prompt">If a train travels 120 km in 1.5 hours, what is its speed? Think through this step by step, writing out the formula and each calculation.</div>
+    </div>
+  </div>
+
+  <h3>🎯 Few-Shot Prompting</h3>
+  <p>Provide 1–3 examples of the input/output pattern you want, then let the AI continue. This is the fastest way to get consistent formatting.</p>
+  <div class="visual-box">
+    <div class="visual-box-title">Few-shot example — word definitions</div>
+    <div class="prompt-anatomy" style="font-size:12px;">
+Word: ubiquitous
+Definition: Found or appearing everywhere; extremely common.
+
+Word: ephemeral
+Definition: Lasting for a very short time; fleeting.
+
+Word: perspicacious
+Definition: <span style="color:#a855f7;">[AI fills this in following your exact format]</span>
+    </div>
+  </div>
+
+  <h3>🔄 Iterative Refinement</h3>
+  <p>Don't expect perfection on the first try. Treat prompting as a conversation:</p>
+  <ol>
+    <li>Start with your prompt</li>
+    <li>Evaluate the response — what's missing? What's wrong?</li>
+    <li>Follow up: <em>"Make it shorter"</em>, <em>"Add a real-world example"</em>, <em>"Simplify the language for a Grade 9 reader"</em></li>
+    <li>Keep refining until you get what you need</li>
+  </ol>
+  <div class="callout tip">
+    <strong>Think of it as a conversation, not a Google search.</strong> You wouldn't type one sentence into Google and never refine — the same applies here, but even more powerfully.
+  </div>
+
+  <h3>🧩 Breaking Big Tasks into Steps</h3>
+  <p>Instead of asking the AI to write your entire essay in one go, break it down:</p>
+  <ul>
+    <li>"Help me brainstorm 5 arguments for my essay on climate change"</li>
+    <li>"Now help me outline the essay structure using arguments 1, 3, and 5"</li>
+    <li>"Help me write an introduction paragraph using this outline"</li>
+    <li>"Review my conclusion and suggest improvements"</li>
+  </ul>
+  <p>This gives you control at every step and produces much better results than one overwhelming request.</p>
+
+  <h3>📌 Anchoring and Constraints</h3>
+  <p>Give the AI explicit constraints to keep it focused:</p>
+  <ul>
+    <li><strong>"In exactly 3 sentences..."</strong></li>
+    <li><strong>"Without using the word 'important'..."</strong></li>
+    <li><strong>"Only use concepts from the CAPS Grade 11 curriculum..."</strong></li>
+    <li><strong>"Do not suggest anything that requires internet access..."</strong></li>
+  </ul>
+
+  <h3>🤔 Asking for Multiple Options</h3>
+  <p>Instead of accepting the first answer, ask for alternatives:</p>
+  <ul>
+    <li><em>"Give me 3 different ways to introduce this essay"</em></li>
+    <li><em>"Suggest 5 possible thesis statements for this topic"</em></li>
+    <li><em>"What are two approaches to solving this — show me both"</em></li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q4')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q4">
+    <div class="quiz-box">
+      <div class="quiz-q">What does "chain-of-thought" prompting ask the AI to do?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q4a')">Write a chain of sentences without stopping.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q4a')">Think through a problem step by step before giving the final answer.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q4a')">Link multiple prompts together in one message.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q4a')">Generate a list of related topics.</button>
+      </div>
+      <div class="quiz-feedback" id="q4a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">Few-shot prompting involves…</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q4b')">…keeping your prompt as short as possible.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q4b')">…asking multiple AI models the same question.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q4b')">…providing 1–3 example input/output pairs so the AI follows your pattern.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q4b')">…repeating your prompt until you get a good answer.</button>
+      </div>
+      <div class="quiz-feedback" id="q4b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 5 ── Build Your Own Prompt ────────────────────────────────────────────
+  {
+    unit: 'Unit 2 · The Art of Prompting',
+    title: 'Build Your Own Prompt',
+    subtitle: 'Put the theory into practice with an interactive prompt builder.',
+    html: `
+<div class="lesson-body">
+  <p>Now it's time to practise. Use the builder below to construct a prompt using the four elements — Role, Context, Task, and Format. Watch your prompt come together in real time.</p>
+
+  <div class="prompt-builder">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+      <div>
+        <div class="pb-label" style="color:#c084fc;">🎭 Role</div>
+        <textarea class="pb-input" id="pb-role" rows="2" placeholder="You are a knowledgeable Grade 11 chemistry teacher..." oninput="buildPrompt()"></textarea>
+      </div>
+      <div>
+        <div class="pb-label" style="color:#67e8f9;">🗺️ Context</div>
+        <textarea class="pb-input" id="pb-context" rows="2" placeholder="The student understands atomic structure but struggles with balancing equations..." oninput="buildPrompt()"></textarea>
+      </div>
+      <div>
+        <div class="pb-label" style="color:#6ee7b7;">🎯 Task</div>
+        <textarea class="pb-input" id="pb-task" rows="2" placeholder="Explain how to balance the equation: H₂ + O₂ → H₂O, step by step..." oninput="buildPrompt()"></textarea>
+      </div>
+      <div>
+        <div class="pb-label" style="color:#fcd34d;">📐 Format</div>
+        <textarea class="pb-input" id="pb-format" rows="2" placeholder="Use numbered steps. Highlight each rule used in bold. Keep it under 200 words..." oninput="buildPrompt()"></textarea>
+      </div>
+    </div>
+    <div class="pb-label">✨ Your complete prompt</div>
+    <div class="pb-preview" id="pb-preview">Start filling in the fields above and your prompt will appear here...</div>
+    <div class="pb-score">
+      <span class="pb-score-label">Prompt quality:</span>
+      <span class="pb-stars" id="pb-stars">☆☆☆☆</span>
+      <span id="pb-score-text" style="color:var(--muted);font-size:12px;"></span>
+    </div>
+  </div>
+
+  <h3>🧪 Prompt Challenges</h3>
+  <p>Try building prompts for these real study scenarios:</p>
+
+  <div class="visual-box">
+    <div class="visual-box-title">Challenge 1 — Maths study</div>
+    <p style="font-size:14px;color:var(--text2);">You're revising for your Grade 12 maths exam on calculus. You understand basic differentiation but keep making errors with the chain rule. Build a prompt asking for a clear explanation and practice examples.</p>
+  </div>
+
+  <div class="visual-box">
+    <div class="visual-box-title">Challenge 2 — History research</div>
+    <p style="font-size:14px;color:var(--text2);">You need to write a 500-word essay on the causes of the Anglo-Boer War for your Grade 10 History class. Build a prompt to help you brainstorm arguments — without asking the AI to write the essay for you.</p>
+  </div>
+
+  <div class="visual-box">
+    <div class="visual-box-title">Challenge 3 — Science explanation</div>
+    <p style="font-size:14px;color:var(--text2);">Your Grade 9 Life Sciences project is on DNA replication. Build a prompt asking for a clear explanation suitable for a 14-year-old, with a real-world analogy included.</p>
+  </div>
+
+  <div class="callout good">
+    <strong>Remember:</strong> The best prompt for a study task is one that helps <em>you learn</em> — not one that asks AI to do the work for you. Ask it to explain, clarify, test you, or give examples. Don't ask it to write your assignment.
+  </div>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q5')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Reflection Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q5">
+    <div class="quiz-box">
+      <div class="quiz-q">Which prompt best helps you LEARN rather than just get an answer?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q5a')">"Write me a summary of Chapter 5."</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q5a')">"You are my study partner. Ask me 5 questions about Chapter 5 and tell me if my answers are correct."</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q5a')">"Give me the answers to my homework."</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q5a')">"Complete the following exercise for me."</button>
+      </div>
+      <div class="quiz-feedback" id="q5a"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 6 ── AI & Academic Integrity ──────────────────────────────────────────
+  {
+    unit: 'Unit 3 · AI Ethics in Education',
+    title: 'AI & Academic Integrity',
+    subtitle: 'Understanding what\'s allowed, what\'s cheating, and why it matters.',
+    html: `
+<div class="lesson-body">
+  <p>AI tools are genuinely powerful for learning — but using them irresponsibly can undermine your education, your integrity, and in some cases lead to serious consequences. Understanding the line is essential.</p>
+
+  <h3>⚖️ The Spectrum: Allowed → Cheating</h3>
+  <div class="ethics-grid">
+    <div class="ethics-card ok">
+      <div class="ethics-icon">✅</div>
+      <div class="ethics-title">Clearly fine</div>
+      <div class="ethics-desc">Using AI to explain a concept you don't understand. Asking it to quiz you on your notes. Getting feedback on your own writing (then rewriting it yourself).</div>
+    </div>
+    <div class="ethics-card warn">
+      <div class="ethics-icon">⚠️</div>
+      <div class="ethics-title">Depends on context</div>
+      <div class="ethics-desc">Using AI to generate an outline for your essay. Asking it to improve your grammar. Getting code suggestions when coding. <em>Always check your teacher's rules.</em></div>
+    </div>
+    <div class="ethics-card bad">
+      <div class="ethics-icon">❌</div>
+      <div class="ethics-title">Academic dishonesty</div>
+      <div class="ethics-desc">Submitting AI-written text as your own work. Asking AI to complete an exam question and copying the answer. Fabricating AI-generated references.</div>
+    </div>
+  </div>
+
+  <h3>🎓 Why Academic Integrity Matters — Beyond Rules</h3>
+  <p>It's not just about following school rules. Consider what you actually lose when AI does your work:</p>
+  <ul>
+    <li><strong>You lose the learning.</strong> The struggle to figure something out is where understanding happens. Skipping it is skipping your own development.</li>
+    <li><strong>Skills atrophy.</strong> Writing, analysis, problem-solving, and critical thinking are built through practice. Outsourcing them means they don't develop.</li>
+    <li><strong>Exams expose the gap.</strong> Matric and university exams are written without AI. If AI did your work all year, you're unprepared.</li>
+    <li><strong>Professional trust is real.</strong> In careers, your qualifications signal competence. Credentials obtained dishonestly harm others who relied on that signal.</li>
+  </ul>
+
+  <div class="callout warn">
+    <strong>The "everyone does it" trap:</strong> The fact that AI use is widespread doesn't make it ethical or harmless. The consequences — for your skills, your results, and potentially your academic record — are real and personal to you.
+  </div>
+
+  <h3>🏫 School Policies on AI</h3>
+  <p>Different schools, teachers, and subjects have different policies. Some key principles:</p>
+  <ul>
+    <li><strong>When in doubt, ask.</strong> Ask your teacher explicitly: "Is using AI to help me with this allowed, and if so, in what way?"</li>
+    <li><strong>Disclosure matters.</strong> If you used AI assistance and aren't sure it's allowed, declaring it is always better than hiding it.</li>
+    <li><strong>IEB and CAPS policies evolve.</strong> Both the IEB and the Department of Basic Education are developing formal AI guidelines. Follow your school's current guidance.</li>
+  </ul>
+
+  <h3>🔍 AI Detection</h3>
+  <p>Teachers and institutions increasingly use AI detection tools. These aren't perfect, but:</p>
+  <ul>
+    <li>AI-generated text often has statistical patterns that detectors can flag</li>
+    <li>Experienced teachers often recognise AI writing — it has characteristic style, lacks specific personal examples, and sounds "too polished"</li>
+    <li>Even if undetected, the harm to your learning is real</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q6')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q6">
+    <div class="quiz-box">
+      <div class="quiz-q">Which of the following is ALWAYS acceptable use of AI in schoolwork?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q6a')">Submitting an AI-written essay under your own name.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q6a')">Asking AI to explain a concept you're struggling with and then taking notes.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q6a')">Copying AI code into your programming assignment without understanding it.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q6a')">Using AI to write your exam answers.</button>
+      </div>
+      <div class="quiz-feedback" id="q6a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">Why is it harmful to have AI write your assignments even if you don't get caught?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q6b')">AI writing is always easy to detect.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q6b')">It uses too much electricity.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q6b')">You miss the learning experience, and your actual skills don't develop — which matters at exam time and in your career.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q6b')">AI tools cost money so it's unfair to other students.</button>
+      </div>
+      <div class="quiz-feedback" id="q6b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 7 ── Verify, Question, Think ──────────────────────────────────────────
+  {
+    unit: 'Unit 3 · AI Ethics in Education',
+    title: 'Verify, Question, Think',
+    subtitle: 'Why critical thinking is your most important skill when using AI.',
+    html: `
+<div class="lesson-body">
+  <p>AI produces confident, fluent, well-formatted responses. This is both its greatest strength and its biggest danger. Confident-sounding text is not the same as correct text.</p>
+
+  <h3>🚨 The Confidence Problem</h3>
+  <p>LLMs are trained to produce plausible-sounding text. They don't "know" whether what they say is true — they predict what words would logically follow given the context. This means they can be <strong>wrong with complete confidence</strong>.</p>
+
+  <div class="callout warn">
+    <strong>Real hallucination examples:</strong>
+    <ul style="margin-top:8px;">
+      <li>A lawyer submitted AI-generated court filings citing 6 real-sounding cases — all completely fabricated. He faced sanctions.</li>
+      <li>Students have submitted essays citing academic papers that don't exist.</li>
+      <li>AI has invented fake historical events, incorrect dates, and fictional scientific studies.</li>
+    </ul>
+  </div>
+
+  <h3>🔍 The SIFT Method for AI Outputs</h3>
+  <p>Borrow a media literacy tool and apply it to AI:</p>
+  <div class="visual-box">
+    <div class="visual-box-title">SIFT — a verification framework</div>
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:10px 16px;align-items:start;">
+      <div style="font-size:24px;font-weight:900;color:#a855f7;">S</div>
+      <div><strong style="color:#e4bcff;">Stop</strong> — before sharing or using AI output, pause. Don't react on first impression.</div>
+      <div style="font-size:24px;font-weight:900;color:#ec4899;">I</div>
+      <div><strong style="color:#f9a8d4;">Investigate</strong> the source — what did the AI cite? Can you find it independently?</div>
+      <div style="font-size:24px;font-weight:900;color:#6ee7b7;">F</div>
+      <div><strong style="color:#6ee7b7;">Find better coverage</strong> — search for the claim in textbooks, reliable websites, or ask your teacher.</div>
+      <div style="font-size:24px;font-weight:900;color:#fcd34d;">T</div>
+      <div><strong style="color:#fcd34d;">Trace claims</strong> — for specific facts, dates, statistics, or quotes: verify them independently before using them.</div>
+    </div>
+  </div>
+
+  <h3>❓ Questions to Ask About Any AI Response</h3>
+  <ul>
+    <li>Is this a factual claim? Can I verify it in my textbook or a trusted source?</li>
+    <li>Does this match what I already know, or does something feel off?</li>
+    <li>Could the AI be outdated? When was its training cutoff?</li>
+    <li>Is the AI being asked outside its strengths (e.g., very recent events, highly specialised topics)?</li>
+    <li>Are any citations given? Have I checked that they actually exist?</li>
+  </ul>
+
+  <h3>🎯 When AI is Most and Least Reliable</h3>
+  <div class="ethics-grid">
+    <div class="ethics-card ok">
+      <div class="ethics-icon">✅</div>
+      <div class="ethics-title">More reliable</div>
+      <div class="ethics-desc">Explaining established concepts (maths, grammar, science). Formatting and structure. Brainstorming and ideation. Proofreading for language.</div>
+    </div>
+    <div class="ethics-card bad">
+      <div class="ethics-icon">❌</div>
+      <div class="ethics-title">Less reliable</div>
+      <div class="ethics-desc">Current events and recent statistics. Specific citations and references. Legal or medical advice. Calculations (verify with a calculator). Local South African specifics.</div>
+    </div>
+  </div>
+
+  <h3>🧠 Staying the Author of Your Thinking</h3>
+  <p>The goal isn't to distrust AI — it's to remain <strong>the critical thinker in the loop</strong>. AI is a research assistant, not a teacher or a textbook. You must:</p>
+  <ul>
+    <li>Evaluate what it produces</li>
+    <li>Cross-check important claims</li>
+    <li>Bring your own knowledge to assess it</li>
+    <li>Make the final judgement yourself</li>
+  </ul>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q7')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q7">
+    <div class="quiz-box">
+      <div class="quiz-q">Why should you always verify specific facts, dates, or citations from AI?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q7a')">Because AI always gives outdated information.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q7a')">Because AI can hallucinate — generating confident, plausible-sounding but entirely false information.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q7a')">Because AI is not allowed to give factual answers.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q7a')">Because only paid AI tools are accurate.</button>
+      </div>
+      <div class="quiz-feedback" id="q7a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">In the SIFT method, what does the "T" stand for?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q7b')">Trust the source</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q7b')">Test the model</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q7b')">Trace claims back to the original source</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q7b')">Type your question again</button>
+      </div>
+      <div class="quiz-feedback" id="q7b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+  // ── 8 ── AI as Your Study Partner ─────────────────────────────────────────
+  {
+    unit: 'Unit 3 · AI Ethics in Education',
+    title: 'AI as Your Study Partner',
+    subtitle: 'Practical, ethical strategies for using AI to study smarter.',
+    html: `
+<div class="lesson-body">
+  <p>Used well, AI can be one of the most powerful study tools available to you — essentially a patient, knowledgeable tutor available 24/7. The key is using it to <em>amplify your learning</em>, not to replace your effort.</p>
+
+  <h3>✅ Proven Study Strategies with AI</h3>
+
+  <div class="visual-box">
+    <div class="visual-box-title">1. The Socratic Study Partner</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Ask AI to quiz you, not answer for you.</p>
+    <div class="prompt-anatomy" style="font-size:12px;">
+"You are a strict but encouraging tutor. I have just studied photosynthesis (CAPS Grade 10 Life Sciences). Ask me 5 questions about it — one at a time. After each answer I give, tell me if I'm right and what I missed. Don't give me the answers until I've attempted them."
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <div class="visual-box-title">2. The Explainer</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">When you're stuck on a concept, ask for a better explanation than the textbook gives.</p>
+    <div class="prompt-anatomy" style="font-size:12px;">
+"I'm a Grade 11 student. My textbook's explanation of supply and demand curves makes no sense to me. Explain it using the example of concert tickets in South Africa — what happens to price and quantity when a popular artist announces a show?"
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <div class="visual-box-title">3. The Essay Coach (not the essay writer)</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Use AI to review and improve YOUR writing — not to write for you.</p>
+    <div class="prompt-anatomy" style="font-size:12px;">
+"Here is my introduction paragraph: [paste your paragraph]. Give me specific feedback on: (1) Is my thesis clear? (2) Does my opening sentence hook the reader? (3) What is the weakest sentence? Don't rewrite it for me — just tell me what to improve."
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <div class="visual-box-title">4. The Research Starter</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:8px;">Use AI to map a topic and find angles — then do proper research from verified sources.</p>
+    <div class="prompt-anatomy" style="font-size:12px;">
+"I need to write a research essay on water scarcity in South Africa. Give me: (1) 5 key sub-topics I should explore, (2) The names of 3 relevant organisations I should look up, (3) The key debates in this field. I will verify all of this independently."
+    </div>
+  </div>
+
+  <h3>📋 The AI Study Session Checklist</h3>
+  <ul>
+    <li>☐ I used AI to understand, not to produce work for submission</li>
+    <li>☐ I verified any specific facts, dates, or statistics it gave me</li>
+    <li>☐ I could explain everything in the AI's response in my own words</li>
+    <li>☐ Any writing I submit is my own, even if AI helped me improve it</li>
+    <li>☐ I followed my school's AI usage policy</li>
+  </ul>
+
+  <h3>🚀 The Bigger Picture: AI Literacy as a Career Skill</h3>
+  <p>The ability to work effectively with AI is already one of the most in-demand skills in the workforce. You're not just learning this for school — you're learning it for your future. Companies want people who can:</p>
+  <ul>
+    <li>Write clear, effective prompts</li>
+    <li>Evaluate and verify AI output critically</li>
+    <li>Know when to use AI and when not to</li>
+    <li>Understand AI's limitations to avoid costly mistakes</li>
+  </ul>
+
+  <div class="callout tip">
+    <strong>Final thought:</strong> The goal of education has never changed — it's to develop your mind, your skills, and your ability to think. AI is the most powerful tool your generation has ever had access to. Use it to <em>think better</em>, not to <em>think less</em>.
+  </div>
+
+  <div class="callout good">
+    <strong>🎉 Course complete!</strong> You've learned how AI works, how to write effective prompts, and how to use AI ethically in your studies. You are now AI-literate — a skill that will serve you for life.
+  </div>
+</div>
+
+<div class="quiz-section">
+  <button class="quiz-toggle" onclick="toggleQuiz('q8')">
+    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+    Final Knowledge Check
+    <span class="toggle-icon">▼</span>
+  </button>
+  <div class="quiz-inner" id="q8">
+    <div class="quiz-box">
+      <div class="quiz-q">Which prompt best exemplifies using AI as a study partner (not a shortcut)?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q8a')">"Write me a summary of the Anglo-Boer War for my assignment."</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q8a')">"Quiz me on the causes of the Anglo-Boer War one question at a time, and give feedback on my answers."</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q8a')">"Complete this exercise and I'll copy it into my book."</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q8a')">"What grade will I get if I submit this?"</button>
+      </div>
+      <div class="quiz-feedback" id="q8a"></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">AI literacy is important for your career because…</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" onclick="answer(this,'wrong','q8b')">…AI will do all jobs in the future so you don't need other skills.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q8b')">…employers want you to use AI to avoid hiring people.</button>
+        <button class="quiz-opt" onclick="answer(this,'correct','q8b')">…the ability to use AI effectively, critically, and ethically is a highly valued workplace skill.</button>
+        <button class="quiz-opt" onclick="answer(this,'wrong','q8b')">…you can use AI in all exams and assessments.</button>
+      </div>
+      <div class="quiz-feedback" id="q8b"></div>
+    </div>
+  </div>
+</div>
+`
+  },
+
+];
+
+// ── State ────────────────────────────────────────────────────────────────────
+
+let currentLesson = 0;
+const completed = new Array(LESSONS.length).fill(false);
+
+// ── Navigation ───────────────────────────────────────────────────────────────
+
+function goLesson(idx) {
+  if (idx < 0 || idx >= LESSONS.length) return;
+
+  // Mark current as completed
+  completed[currentLesson] = true;
+  updateDone(currentLesson);
+
+  currentLesson = idx;
+  renderLesson();
+  updateUI();
+  document.getElementById('lessonScroll').scrollTop = 0;
+}
+
+function nextLesson() {
+  if (currentLesson < LESSONS.length - 1) {
+    goLesson(currentLesson + 1);
+  }
+}
+
+function renderLesson() {
+  const l = LESSONS[currentLesson];
+  document.getElementById('lessonContent').innerHTML = `
+    <div class="lesson-badge">${l.unit}</div>
+    <h2 class="lesson-title">${l.title}</h2>
+    <p class="lesson-subtitle">${l.subtitle}</p>
+    ${l.html}
+  `;
+  lucide.createIcons();
+}
+
+function updateUI() {
+  const n = LESSONS.length;
+
+  // Sidebar active item
+  document.querySelectorAll('.lesson-item').forEach((el, i) => {
+    el.classList.toggle('active', i === currentLesson);
+  });
+
+  // Buttons
+  document.getElementById('btnPrev').disabled = currentLesson === 0;
+  const isLast = currentLesson === n - 1;
+  const btn = document.getElementById('btnNext');
+  btn.innerHTML = isLast
+    ? '<i data-lucide="check" style="width:14px;height:14px;"></i> Finish'
+    : 'Next <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>';
+  btn.disabled = false;
+  if (isLast) { btn.onclick = () => { completed[currentLesson] = true; updateDone(currentLesson); updateProgress(); }; }
+  else { btn.onclick = nextLesson; }
+
+  // Counter
+  document.getElementById('lessonCounter').textContent = `Lesson ${currentLesson + 1} of ${n}`;
+
+  lucide.createIcons();
+  updateProgress();
+}
+
+function updateDone(idx) {
+  const el = document.getElementById(`done-${idx}`);
+  if (el && completed[idx]) el.style.display = '';
+}
+
+function updateProgress() {
+  const done = completed.filter(Boolean).length;
+  const pct = Math.round((done / LESSONS.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('headerProgress').textContent = `${done} / ${LESSONS.length} lessons`;
+}
+
+// ── Sidebar toggle ───────────────────────────────────────────────────────────
+
+function toggleUnit(id) {
+  const grp = document.getElementById(id);
+  const caret = document.getElementById(`caret-${id}`);
+  grp.classList.toggle('collapsed');
+  caret.style.transform = grp.classList.contains('collapsed') ? 'rotate(-90deg)' : '';
+}
+
+// ── Quiz ─────────────────────────────────────────────────────────────────────
+
+function toggleQuiz(id) {
+  const inner = document.getElementById(id);
+  const btn = inner.previousElementSibling;
+  inner.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+function answer(btn, result, feedbackId) {
+  const box = btn.closest('.quiz-box');
+  box.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  const fb = document.getElementById(feedbackId);
+  if (result === 'correct') {
+    fb.textContent = '✓ Correct! Well done.';
+    fb.className = 'quiz-feedback correct';
+  } else {
+    fb.textContent = '✗ Not quite — try reading the lesson again.';
+    fb.className = 'quiz-feedback wrong';
+  }
+}
+
+// ── Prompt builder ───────────────────────────────────────────────────────────
+
+function buildPrompt() {
+  const role    = document.getElementById('pb-role')?.value.trim()    || '';
+  const context = document.getElementById('pb-context')?.value.trim() || '';
+  const task    = document.getElementById('pb-task')?.value.trim()    || '';
+  const format  = document.getElementById('pb-format')?.value.trim()  || '';
+
+  const parts = [];
+  if (role)    parts.push(role);
+  if (context) parts.push(context);
+  if (task)    parts.push(task);
+  if (format)  parts.push(format);
+
+  const preview = document.getElementById('pb-preview');
+  if (!preview) return;
+  preview.textContent = parts.length ? parts.join('\n\n') : 'Start filling in the fields above and your prompt will appear here...';
+
+  const filled = [role, context, task, format].filter(Boolean).length;
+  const stars   = document.getElementById('pb-stars');
+  const scoreText = document.getElementById('pb-score-text');
+  const filledStars = '★'.repeat(filled) + '☆'.repeat(4 - filled);
+  stars.textContent = filledStars;
+  const labels = ['', 'Getting started...', 'Getting better!', 'Strong prompt!', 'Excellent prompt!'];
+  scoreText.textContent = labels[filled] || '';
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+
+renderLesson();
+updateUI();
+</script>
+</body>
+</html>
