@@ -1,0 +1,639 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Mage — Parametric Design PoC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg:      #080c1a;
+      --bg2:     #0d1226;
+      --surface: rgba(255,255,255,0.048);
+      --surface2:rgba(255,255,255,0.032);
+      --border:  rgba(255,255,255,0.085);
+      --border2: rgba(255,255,255,0.055);
+      --text:    #e4e8f8;
+      --text2:   rgba(210,218,245,0.65);
+      --muted:   rgba(210,218,245,0.38);
+      --amber:   #f59e0b;
+      --amber2:  #d97706;
+      --font:    "Cabinet Grotesk", system-ui, sans-serif;
+      --mono:    "JetBrains Mono", monospace;
+      --sb-w:    272px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* ── Shell ── */
+    #shell { display: flex; flex-direction: column; height: 100%; }
+
+    /* ── Header ── */
+    #hdr {
+      flex-shrink: 0; height: 48px;
+      display: flex; align-items: center; gap: 10px; padding: 0 16px;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+      border-radius: 7px; background: var(--surface); border: 1px solid var(--border);
+      color: var(--text2); font-size: 12px; font-weight: 600; text-decoration: none;
+      transition: all 120ms;
+    }
+    .home-btn:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+    .hdr-icon  { font-size: 18px; }
+    .hdr-name  { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; }
+    .poc-tag {
+      font-family: var(--mono); font-size: 9px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 99px;
+      background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.28); color: #fbbf24;
+    }
+    .hdr-sep { flex: 1; }
+    .hdr-dims {
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      display: flex; gap: 14px;
+    }
+    .hdr-dims span b { color: #fbbf24; font-weight: 600; }
+
+    /* ── Body ── */
+    #body { flex: 1; display: flex; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    #sb {
+      width: var(--sb-w); flex-shrink: 0; overflow-y: auto; overflow-x: hidden;
+      background: var(--bg2); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+    #sb::-webkit-scrollbar { width: 3px; }
+    #sb::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 99px; }
+
+    .sb-sec { padding: 14px 16px; border-bottom: 1px solid var(--border2); }
+    .sec-lbl {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 11px;
+    }
+
+    /* Shape tabs */
+    .shape-tabs { display: flex; gap: 5px; }
+    .shape-tab {
+      flex: 1; padding: 7px 4px; border-radius: 9px;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text2); font-family: var(--font); font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: all 120ms; text-align: center; line-height: 1;
+    }
+    .shape-tab .si { font-size: 18px; display: block; margin-bottom: 4px; }
+    .shape-tab:hover { border-color: rgba(245,158,11,0.30); }
+    .shape-tab.active { border-color: rgba(245,158,11,0.48); background: rgba(245,158,11,0.10); color: #fbbf24; }
+
+    /* Param slider row */
+    .pr { margin-bottom: 13px; }
+    .pr:last-child { margin-bottom: 0; }
+    .pr-lbl {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px;
+    }
+    .pv {
+      font-family: var(--mono); font-size: 10px; font-weight: 600; color: #fbbf24;
+      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.18);
+      border-radius: 5px; padding: 1px 7px; min-width: 46px; text-align: right;
+    }
+    input[type=range] {
+      width: 100%; height: 4px; border-radius: 99px; cursor: pointer;
+      background: rgba(255,255,255,0.12); outline: none;
+      -webkit-appearance: none; appearance: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+      background: var(--amber); border: 2px solid rgba(255,255,255,0.9); cursor: grab;
+    }
+    input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
+
+    /* Toggle */
+    .tog-row {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px;
+    }
+    .tog-lbl { font-size: 13px; font-weight: 600; color: var(--text2); }
+    .tog-sw { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+    .tog-sw input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .tog-tr {
+      position: absolute; inset: 0; border-radius: 99px;
+      background: rgba(255,255,255,0.12); cursor: pointer; transition: background 200ms;
+    }
+    .tog-tr::after {
+      content: ''; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px;
+      border-radius: 50%; background: #fff; transition: transform 200ms;
+    }
+    .tog-sw input:checked + .tog-tr { background: var(--amber); }
+    .tog-sw input:checked + .tog-tr::after { transform: translateX(16px); }
+    .tog-body { display: none; padding-top: 2px; }
+    .tog-body.open { display: block; }
+
+    /* Sub-divider */
+    .sub-div { height: 1px; background: var(--border2); margin: 12px 0; }
+
+    /* Color swatches */
+    .swatches { display: flex; gap: 7px; flex-wrap: wrap; }
+    .swatch {
+      width: 26px; height: 26px; border-radius: 7px; cursor: pointer;
+      border: 2px solid transparent; transition: border-color 120ms; flex-shrink: 0;
+    }
+    .swatch.active { border-color: rgba(255,255,255,0.70); }
+    .swatch:hover { border-color: rgba(255,255,255,0.40); }
+
+    /* Footer */
+    .sb-foot { margin-top: auto; padding: 14px 16px; }
+    .exp-btn {
+      width: 100%; padding: 11px; border-radius: 11px; border: none;
+      background: linear-gradient(135deg, var(--amber), var(--amber2));
+      color: #fff; font-family: var(--font); font-size: 14px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.28);
+      transition: all 150ms; display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .exp-btn:hover { box-shadow: 0 6px 24px rgba(245,158,11,0.44); transform: translateY(-1px); }
+
+    /* ── Viewport ── */
+    #vp {
+      flex: 1; position: relative; background: radial-gradient(ellipse 80% 60% at 50% 40%, #0d1530, #080c1a);
+      overflow: hidden;
+    }
+    #vp canvas { display: block; width: 100% !important; height: 100% !important; }
+
+    /* Loading */
+    #loading {
+      position: absolute; inset: 0; z-index: 20;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+      background: #080c1a;
+    }
+    .spin {
+      width: 38px; height: 38px; border: 3px solid rgba(245,158,11,0.18);
+      border-top-color: var(--amber); border-radius: 50%; animation: rot 0.75s linear infinite;
+    }
+    @keyframes rot { to { transform: rotate(360deg); } }
+    .load-txt { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+    /* Overlay labels */
+    .vp-badge {
+      position: absolute; top: 10px; right: 10px; z-index: 5;
+      font-family: var(--mono); font-size: 9px; color: var(--muted);
+      background: rgba(0,0,0,0.40); border: 1px solid var(--border2);
+      padding: 3px 9px; border-radius: 5px; pointer-events: none;
+    }
+    .vp-hint {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 5;
+      font-family: var(--mono); font-size: 9px; color: var(--muted);
+      background: rgba(0,0,0,0.40); border: 1px solid var(--border2);
+      padding: 3px 10px; border-radius: 5px; pointer-events: none; white-space: nowrap;
+    }
+    .vp-poc-note {
+      position: absolute; top: 10px; left: 10px; z-index: 5;
+      font-family: var(--mono); font-size: 9px; color: rgba(251,191,36,0.50);
+      background: rgba(0,0,0,0.40); border: 1px solid rgba(245,158,11,0.15);
+      padding: 4px 10px; border-radius: 5px; pointer-events: none; max-width: 280px; line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+<div id="shell">
+
+  <!-- Header -->
+  <header id="hdr">
+    <a href="index.html" class="home-btn">← Home</a>
+    <span class="hdr-icon">🧙</span>
+    <span class="hdr-name">Model Mage</span>
+    <span class="poc-tag">Proof of Concept</span>
+    <div class="hdr-sep"></div>
+    <div class="hdr-dims">
+      <span>W <b id="hw">80</b>mm</span>
+      <span>D <b id="hd">60</b>mm</span>
+      <span>H <b id="hh">40</b>mm</span>
+    </div>
+  </header>
+
+  <!-- Body -->
+  <div id="body">
+
+    <!-- ── Sidebar ── -->
+    <aside id="sb">
+
+      <!-- Shape -->
+      <div class="sb-sec">
+        <div class="sec-lbl">Base Shape</div>
+        <div class="shape-tabs">
+          <button class="shape-tab active" onclick="selShape('box',this)">
+            <span class="si">⬜</span>Box
+          </button>
+          <button class="shape-tab" onclick="selShape('l-profile',this)">
+            <span class="si">🔲</span>L Profile
+          </button>
+          <button class="shape-tab" onclick="selShape('t-profile',this)">
+            <span class="si">🔳</span>T Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- Dimensions -->
+      <div class="sb-sec">
+        <div class="sec-lbl">Dimensions</div>
+        <div class="pr">
+          <div class="pr-lbl">Width <span class="pv" id="v-width">80 mm</span></div>
+          <input type="range" id="s-width" min="20" max="200" value="80" oninput="sp('width',this.value)">
+        </div>
+        <div class="pr">
+          <div class="pr-lbl">Depth <span class="pv" id="v-depth">60 mm</span></div>
+          <input type="range" id="s-depth" min="20" max="200" value="60" oninput="sp('depth',this.value)">
+        </div>
+        <div class="pr">
+          <div class="pr-lbl">Height <span class="pv" id="v-height">40 mm</span></div>
+          <input type="range" id="s-height" min="5" max="150" value="40" oninput="sp('height',this.value)">
+        </div>
+        <!-- Wall thickness: L and T profiles only -->
+        <div id="wt-wrap" style="display:none">
+          <div class="sub-div"></div>
+          <div class="pr">
+            <div class="pr-lbl">Wall Thickness <span class="pv" id="v-wallThk">8 mm</span></div>
+            <input type="range" id="s-wallThk" min="3" max="40" value="8" oninput="sp('wallThk',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Hole -->
+      <div class="sb-sec">
+        <div class="tog-row">
+          <span class="tog-lbl">Circular Hole</span>
+          <label class="tog-sw">
+            <input type="checkbox" id="t-hole" onchange="tog('hole',this.checked)">
+            <span class="tog-tr"></span>
+          </label>
+        </div>
+        <div class="tog-body" id="b-hole">
+          <div class="pr">
+            <div class="pr-lbl">Diameter <span class="pv" id="v-holeDia">12 mm</span></div>
+            <input type="range" id="s-holeDia" min="3" max="50" value="12" oninput="sp('holeDia',this.value)">
+          </div>
+          <div class="pr">
+            <div class="pr-lbl">Position X <span class="pv" id="v-holeX">0 mm</span></div>
+            <input type="range" id="s-holeX" min="-40" max="40" value="0" oninput="sp('holeX',this.value)">
+          </div>
+          <div class="pr">
+            <div class="pr-lbl">Position Z <span class="pv" id="v-holeZ">0 mm</span></div>
+            <input type="range" id="s-holeZ" min="-30" max="30" value="0" oninput="sp('holeZ',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Fillet -->
+      <div class="sb-sec">
+        <div class="tog-row">
+          <span class="tog-lbl">Fillet Edges</span>
+          <label class="tog-sw">
+            <input type="checkbox" id="t-fillet" onchange="tog('fillet',this.checked)">
+            <span class="tog-tr"></span>
+          </label>
+        </div>
+        <div class="tog-body" id="b-fillet">
+          <div class="pr">
+            <div class="pr-lbl">Radius <span class="pv" id="v-filletR">3 mm</span></div>
+            <input type="range" id="s-filletR" min="1" max="20" value="3" oninput="sp('filletR',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Material colour -->
+      <div class="sb-sec">
+        <div class="sec-lbl">Material Colour</div>
+        <div class="swatches" id="swatches">
+          <div class="swatch active" style="background:#b0c8e4" data-hex="#b0c8e4" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#e4b0b0" data-hex="#e4b0b0" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#b0e4c0" data-hex="#b0e4c0" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#f0d080" data-hex="#f0d080" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#c0c0c0" data-hex="#c0c0c0" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#e0e0e0" data-hex="#e0e0e0" onclick="setColour(this)"></div>
+        </div>
+      </div>
+
+      <!-- Export -->
+      <div class="sb-foot">
+        <button class="exp-btn" onclick="exportSTL()">⬇&ensp;Export STL</button>
+      </div>
+
+    </aside>
+
+    <!-- ── Viewport ── -->
+    <div id="vp">
+      <div id="loading">
+        <div class="spin"></div>
+        <div class="load-txt">Loading Three.js…</div>
+      </div>
+      <div class="vp-poc-note">PoC · Uses ExtrudeGeometry. Full build: replicad (OpenCascade WASM) for true parametric CAD.</div>
+      <div class="vp-badge">Three.js r162 · WebGL</div>
+      <div class="vp-hint">Drag: orbit &nbsp;·&nbsp; Right-drag / two-finger: pan &nbsp;·&nbsp; Scroll: zoom</div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls }  from 'three/addons/controls/OrbitControls.js';
+import { STLExporter }    from 'three/addons/exporters/STLExporter.js';
+
+// ── Params ────────────────────────────────────────────────────────────────────
+
+const P = {
+  shape:       'box',
+  width:       80,
+  depth:       60,
+  height:      40,
+  wallThk:     8,
+  holeEnabled: false,
+  holeDia:     12,
+  holeX:       0,
+  holeZ:       0,
+  filletEnabled: false,
+  filletR:     3,
+  colour:      '#b0c8e4',
+};
+
+// ── Scene ─────────────────────────────────────────────────────────────────────
+
+const vpEl = document.getElementById('vp');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setSize(vpEl.clientWidth, vpEl.clientHeight);
+renderer.setClearColor(0x080c1a);
+vpEl.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, vpEl.clientWidth / vpEl.clientHeight, 0.1, 3000);
+camera.position.set(160, 130, 160);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance  = 20;
+controls.maxDistance  = 800;
+controls.target.set(0, 20, 0);
+controls.update();
+
+// ── Lighting ──────────────────────────────────────────────────────────────────
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.50));
+
+const sun = new THREE.DirectionalLight(0xfffaf0, 1.4);
+sun.position.set(120, 200, 100);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { near: 1, far: 700, left: -200, right: 200, top: 200, bottom: -200 });
+scene.add(sun);
+
+const fill = new THREE.DirectionalLight(0xa0b8ff, 0.45);
+fill.position.set(-80, 60, -80);
+scene.add(fill);
+
+const rim = new THREE.DirectionalLight(0xffd080, 0.25);
+rim.position.set(0, -30, 120);
+scene.add(rim);
+
+// ── Ground ────────────────────────────────────────────────────────────────────
+
+const gridMaj = new THREE.GridHelper(600, 30, 0x1e2a50, 0x111828);
+const gridMin = new THREE.GridHelper(600, 120, 0x0d1224, 0x0d1224);
+scene.add(gridMaj);
+scene.add(gridMin);
+
+// Shadow plane (invisible)
+const shadowPlane = new THREE.Mesh(
+  new THREE.PlaneGeometry(600, 600),
+  new THREE.ShadowMaterial({ opacity: 0.35 })
+);
+shadowPlane.rotation.x = -Math.PI / 2;
+shadowPlane.position.y = -0.1;
+shadowPlane.receiveShadow = true;
+scene.add(shadowPlane);
+
+// ── Materials ─────────────────────────────────────────────────────────────────
+
+const mat = new THREE.MeshStandardMaterial({
+  color: new THREE.Color(P.colour),
+  roughness: 0.30,
+  metalness: 0.08,
+});
+
+const wireMat = new THREE.MeshBasicMaterial({
+  color: 0xf59e0b,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.055,
+});
+
+// ── Mesh refs ─────────────────────────────────────────────────────────────────
+
+let modelMesh = null;
+let wireMesh  = null;
+
+// ── Geometry builder ──────────────────────────────────────────────────────────
+
+function buildProfile(p) {
+  const W  = p.width  / 2;
+  const D  = p.depth  / 2;
+  const wt = Math.min(p.wallThk, Math.min(p.width, p.depth) * 0.44);
+
+  const s = new THREE.Shape();
+
+  if (p.shape === 'box') {
+    s.moveTo(-W, -D);
+    s.lineTo( W, -D);
+    s.lineTo( W,  D);
+    s.lineTo(-W,  D);
+    s.closePath();
+
+  } else if (p.shape === 'l-profile') {
+    // L: bottom-full flange + left vertical column
+    s.moveTo(-W, -D);
+    s.lineTo( W, -D);
+    s.lineTo( W, -D + wt);
+    s.lineTo(-W + wt, -D + wt);
+    s.lineTo(-W + wt,  D);
+    s.lineTo(-W,  D);
+    s.closePath();
+
+  } else if (p.shape === 't-profile') {
+    // T: bottom flange + central stem
+    const sw = Math.min(wt, W * 0.9);
+    s.moveTo(-sw / 2, -D);
+    s.lineTo( sw / 2, -D);
+    s.lineTo( sw / 2, D - wt);
+    s.lineTo( W,      D - wt);
+    s.lineTo( W,      D);
+    s.lineTo(-W,      D);
+    s.lineTo(-W,      D - wt);
+    s.lineTo(-sw / 2, D - wt);
+    s.closePath();
+  }
+
+  return s;
+}
+
+function addHole(profile, p) {
+  const halfW = p.width  / 2;
+  const halfD = p.depth  / 2;
+  const r     = p.holeDia / 2;
+  // Clamp so hole stays inside the bounding rectangle
+  const cx = Math.max(-halfW + r + 1, Math.min(halfW - r - 1, p.holeX));
+  const cy = Math.max(-halfD + r + 1, Math.min(halfD - r - 1, p.holeZ));
+
+  const hole = new THREE.Path();
+  hole.absarc(cx, cy, r, 0, Math.PI * 2, true); // true = clockwise (hole)
+  profile.holes.push(hole);
+}
+
+function buildGeometry(p) {
+  const profile = buildProfile(p);
+  if (p.holeEnabled && p.holeDia > 2) addHole(profile, p);
+
+  const fr = p.filletEnabled
+    ? Math.min(p.filletR, p.height * 0.38, Math.min(p.width, p.depth) * 0.20)
+    : 0;
+
+  const geo = new THREE.ExtrudeGeometry(profile, {
+    depth:          p.height,
+    bevelEnabled:   fr > 0,
+    bevelThickness: fr,
+    bevelSize:      fr * 0.75,
+    bevelSegments:  fr > 0 ? 6 : 0,
+    curveSegments:  32,
+  });
+
+  // Rotate so extrusion goes up (+Y) and profile lies in XZ
+  geo.rotateX(Math.PI / 2);
+
+  // Ensure bottom sits at Y = 0
+  geo.computeBoundingBox();
+  const minY = geo.boundingBox.min.y;
+  if (minY < -0.001) geo.translate(0, -minY, 0);
+
+  geo.computeVertexNormals();
+  return geo;
+}
+
+// ── Rebuild model ─────────────────────────────────────────────────────────────
+
+function rebuild() {
+  if (modelMesh) { scene.remove(modelMesh); modelMesh.geometry.dispose(); modelMesh = null; }
+  if (wireMesh)  { scene.remove(wireMesh);  wireMesh.geometry.dispose();  wireMesh  = null; }
+
+  const geo = buildGeometry(P);
+
+  modelMesh = new THREE.Mesh(geo, mat);
+  modelMesh.castShadow    = true;
+  modelMesh.receiveShadow = true;
+  scene.add(modelMesh);
+
+  wireMesh = new THREE.Mesh(geo, wireMat);
+  scene.add(wireMesh);
+
+  // Update header
+  document.getElementById('hw').textContent = P.width;
+  document.getElementById('hd').textContent = P.depth;
+  document.getElementById('hh').textContent = P.height;
+}
+
+// ── Param helpers ─────────────────────────────────────────────────────────────
+
+window.sp = function(key, rawVal) {
+  const v = parseFloat(rawVal);
+  P[key] = v;
+  document.getElementById('v-' + key).textContent = v.toFixed(0) + ' mm';
+
+  // Sync hole position slider ranges to current dims
+  if (key === 'width') {
+    const s = document.getElementById('s-holeX');
+    s.min = -Math.floor(v / 2); s.max = Math.floor(v / 2);
+  }
+  if (key === 'depth') {
+    const s = document.getElementById('s-holeZ');
+    s.min = -Math.floor(v / 2); s.max = Math.floor(v / 2);
+  }
+
+  rebuild();
+};
+
+window.selShape = function(shape, el) {
+  P.shape = shape;
+  document.querySelectorAll('.shape-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('wt-wrap').style.display = shape !== 'box' ? 'block' : 'none';
+  rebuild();
+};
+
+window.tog = function(key, on) {
+  P[key + 'Enabled'] = on;
+  document.getElementById('b-' + key).classList.toggle('open', on);
+  rebuild();
+};
+
+window.setColour = function(el) {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  P.colour = el.dataset.hex;
+  mat.color.set(P.colour);
+};
+
+// ── STL export ────────────────────────────────────────────────────────────────
+
+const exporter = new STLExporter();
+
+window.exportSTL = function() {
+  if (!modelMesh) return;
+  const binary = exporter.parse(modelMesh, { binary: true });
+  const blob   = new Blob([binary], { type: 'application/octet-stream' });
+  const a      = Object.assign(document.createElement('a'), {
+    href:     URL.createObjectURL(blob),
+    download: `model-mage_${P.shape}_${P.width}x${P.depth}x${P.height}mm.stl`,
+  });
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+
+new ResizeObserver(() => {
+  const w = vpEl.clientWidth, h = vpEl.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}).observe(vpEl);
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+
+(function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+})();
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+document.getElementById('loading').style.display = 'none';
+rebuild();
+
+</script>
+</body>
+</html>
