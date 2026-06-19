@@ -1,0 +1,710 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Mage — 3D Models</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d97706'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-size='36' fill='white'%3E🧙%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg:      #080c1a;
+      --bg2:     #0d1226;
+      --surface: rgba(255,255,255,0.048);
+      --surface2:rgba(255,255,255,0.032);
+      --border:  rgba(255,255,255,0.085);
+      --border2: rgba(255,255,255,0.055);
+      --text:    #e4e8f8;
+      --text2:   rgba(210,218,245,0.65);
+      --muted:   rgba(210,218,245,0.38);
+      --amber:   #f59e0b;
+      --amber2:  #d97706;
+      --font:    "Cabinet Grotesk", system-ui, sans-serif;
+      --mono:    "JetBrains Mono", monospace;
+      --sb:      278px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: var(--font); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* ── Shell ── */
+    #shell { display: flex; flex-direction: column; height: 100%; }
+
+    /* ── Header ── */
+    #hdr {
+      flex-shrink: 0; height: 48px;
+      display: flex; align-items: center; gap: 10px; padding: 0 16px;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+    }
+    .home-btn {
+      display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+      border-radius: 7px; background: var(--surface); border: 1px solid var(--border);
+      color: var(--text2); font-size: 12px; font-weight: 600; text-decoration: none; transition: all 120ms;
+    }
+    .home-btn:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+    .hdr-icon { font-size: 18px; }
+    .hdr-name { font-weight: 800; font-size: 15px; letter-spacing: -0.02em; }
+    .hdr-sep  { flex: 1; }
+    .hdr-hist {
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      background: rgba(0,0,0,0.30); border: 1px solid var(--border2);
+      padding: 3px 10px; border-radius: 6px; max-width: 420px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .hdr-hist b { color: var(--amber); font-weight: 600; }
+
+    /* ── Body ── */
+    #body { flex: 1; display: flex; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    #sb {
+      width: var(--sb); flex-shrink: 0; display: flex; flex-direction: column;
+      background: var(--bg2); border-right: 1px solid var(--border);
+      overflow-y: auto; overflow-x: hidden;
+    }
+    #sb::-webkit-scrollbar { width: 3px; }
+    #sb::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 99px; }
+
+    .sb-sec { padding: 13px 15px; border-bottom: 1px solid var(--border2); }
+    .sec-lbl {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+
+    /* Shape tabs */
+    .shape-tabs { display: flex; gap: 5px; }
+    .shape-tab {
+      flex: 1; padding: 7px 3px; border-radius: 9px; text-align: center; line-height: 1.1;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text2); font-family: var(--font); font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: all 120ms;
+    }
+    .shape-tab .si { font-size: 17px; display: block; margin-bottom: 3px; }
+    .shape-tab:hover { border-color: rgba(245,158,11,0.30); }
+    .shape-tab.active { border-color: rgba(245,158,11,0.50); background: rgba(245,158,11,0.10); color: #fbbf24; }
+
+    /* Param row */
+    .pr { margin-bottom: 12px; }
+    .pr:last-child { margin-bottom: 0; }
+    .pr-lbl {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 5px;
+    }
+    .pv {
+      font-family: var(--mono); font-size: 10px; font-weight: 600; color: #fbbf24;
+      background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.18);
+      border-radius: 5px; padding: 1px 7px; min-width: 46px; text-align: right;
+    }
+    input[type=range] {
+      width: 100%; height: 4px; border-radius: 99px; cursor: pointer;
+      background: rgba(255,255,255,0.12); outline: none;
+      -webkit-appearance: none; appearance: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+      background: var(--amber); border: 2px solid rgba(255,255,255,0.9); cursor: grab;
+    }
+    input[type=range]:disabled { opacity: 0.35; pointer-events: none; }
+
+    /* Toggle */
+    .tog-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .tog-lbl { font-size: 13px; font-weight: 600; color: var(--text2); }
+    .tog-sw  { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+    .tog-sw input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .tog-tr  { position: absolute; inset: 0; border-radius: 99px; background: rgba(255,255,255,0.12); cursor: pointer; transition: background 180ms; }
+    .tog-tr::after { content: ''; position: absolute; left: 3px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 180ms; }
+    .tog-sw input:checked + .tog-tr { background: var(--amber); }
+    .tog-sw input:checked + .tog-tr::after { transform: translateX(16px); }
+    .tog-body { display: none; }
+    .tog-body.open { display: block; }
+
+    /* Colour swatches */
+    .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+    .swatch { width: 26px; height: 26px; border-radius: 7px; cursor: pointer; border: 2px solid transparent; transition: border-color 120ms; }
+    .swatch.active { border-color: rgba(255,255,255,0.75); }
+    .swatch:hover  { border-color: rgba(255,255,255,0.40); }
+
+    /* Sub-divider */
+    .div { height: 1px; background: var(--border2); margin: 11px 0; }
+
+    /* Footer buttons */
+    .sb-foot { margin-top: auto; padding: 13px 15px; display: flex; flex-direction: column; gap: 8px; }
+    .btn-exp {
+      width: 100%; padding: 11px; border-radius: 11px; border: none;
+      background: linear-gradient(135deg, var(--amber), var(--amber2));
+      color: #fff; font-family: var(--font); font-size: 14px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(245,158,11,0.28);
+      transition: all 150ms; display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .btn-exp:hover:not(:disabled) { box-shadow: 0 6px 24px rgba(245,158,11,0.44); transform: translateY(-1px); }
+    .btn-exp:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+
+    /* ── Viewport ── */
+    #vp {
+      flex: 1; position: relative; overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, #0d1530, #080c1a);
+    }
+    #vp canvas { display: block; width: 100% !important; height: 100% !important; }
+
+    /* Loading overlay */
+    #loading {
+      position: absolute; inset: 0; z-index: 30;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+      background: rgba(8,12,26,0.96); backdrop-filter: blur(8px);
+    }
+    .spin {
+      width: 40px; height: 40px; border: 3px solid rgba(245,158,11,0.18);
+      border-top-color: var(--amber); border-radius: 50%; animation: rot 0.75s linear infinite;
+    }
+    @keyframes rot { to { transform: rotate(360deg); } }
+    .load-title { font-weight: 800; font-size: 17px; letter-spacing: -0.02em; }
+    .load-sub   { font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: center; max-width: 280px; line-height: 1.6; }
+    .load-bar-wrap { width: 220px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+    .load-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--amber), var(--amber2)); border-radius: 99px; transition: width 400ms ease; animation: indeterminate 1.5s ease-in-out infinite; }
+    @keyframes indeterminate { 0%{transform:translateX(-100%)} 100%{transform:translateX(300%)} }
+
+    /* Error overlay */
+    #err-overlay {
+      position: absolute; inset: 0; z-index: 40;
+      display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      background: rgba(8,12,26,0.97); padding: 32px;
+    }
+    .err-icon  { font-size: 40px; }
+    .err-title { font-weight: 800; font-size: 18px; color: #fca5a5; }
+    .err-body  {
+      font-family: var(--mono); font-size: 11px; color: var(--text2); line-height: 1.8;
+      max-width: 440px; text-align: center; white-space: pre-wrap;
+      background: rgba(0,0,0,0.40); border: 1px solid rgba(239,68,68,0.20);
+      border-radius: 10px; padding: 14px 18px;
+    }
+
+    /* Rebuild spinner (small, shown during geometry recompute) */
+    #recompute-badge {
+      position: absolute; top: 10px; right: 10px; z-index: 5;
+      font-family: var(--mono); font-size: 9px; color: #fbbf24;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(245,158,11,0.25);
+      padding: 3px 10px; border-radius: 5px; display: none; align-items: center; gap: 6px;
+    }
+    .mini-spin { width: 9px; height: 9px; border: 1.5px solid rgba(245,158,11,0.30); border-top-color: var(--amber); border-radius: 50%; animation: rot 0.6s linear infinite; }
+
+    .vp-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 5;
+      font-family: var(--mono); font-size: 9px; color: var(--muted);
+      background: rgba(0,0,0,0.40); border: 1px solid var(--border2);
+      padding: 3px 9px; border-radius: 5px; pointer-events: none;
+    }
+    .vp-hint {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 5;
+      font-family: var(--mono); font-size: 9px; color: var(--muted);
+      background: rgba(0,0,0,0.40); border: 1px solid var(--border2);
+      padding: 3px 10px; border-radius: 5px; pointer-events: none; white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<div id="shell">
+
+  <!-- Header -->
+  <header id="hdr">
+    <a href="model-mage.html" class="home-btn">← Model Mage</a>
+    <span class="hdr-icon">🧙</span>
+    <span class="hdr-name">3D Models</span>
+    <div class="hdr-sep"></div>
+    <div class="hdr-hist" id="hist-label">Loading replicad kernel…</div>
+  </header>
+
+  <div id="body">
+
+    <!-- ── Sidebar ── -->
+    <aside id="sb">
+
+      <!-- Shape -->
+      <div class="sb-sec">
+        <div class="sec-lbl">Base Shape</div>
+        <div class="shape-tabs">
+          <button class="shape-tab active" onclick="selShape('box',this)"><span class="si">⬜</span>Box</button>
+          <button class="shape-tab" onclick="selShape('l-profile',this)"><span class="si">🔲</span>L Profile</button>
+          <button class="shape-tab" onclick="selShape('t-profile',this)"><span class="si">🔳</span>T Profile</button>
+        </div>
+      </div>
+
+      <!-- Dimensions -->
+      <div class="sb-sec">
+        <div class="sec-lbl">Dimensions</div>
+        <div class="pr">
+          <div class="pr-lbl">Width <span class="pv" id="v-width">80 mm</span></div>
+          <input type="range" id="s-width" min="20" max="200" value="80" oninput="sp('width',this.value)">
+        </div>
+        <div class="pr">
+          <div class="pr-lbl">Depth <span class="pv" id="v-depth">60 mm</span></div>
+          <input type="range" id="s-depth" min="20" max="200" value="60" oninput="sp('depth',this.value)">
+        </div>
+        <div class="pr">
+          <div class="pr-lbl">Height <span class="pv" id="v-height">40 mm</span></div>
+          <input type="range" id="s-height" min="5" max="150" value="40" oninput="sp('height',this.value)">
+        </div>
+        <div id="wt-row" style="display:none">
+          <div class="div"></div>
+          <div class="pr">
+            <div class="pr-lbl">Wall Thickness <span class="pv" id="v-wallThk">8 mm</span></div>
+            <input type="range" id="s-wallThk" min="3" max="40" value="8" oninput="sp('wallThk',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Hole 1 -->
+      <div class="sb-sec">
+        <div class="tog-row">
+          <span class="tog-lbl">Circular Hole</span>
+          <label class="tog-sw"><input type="checkbox" id="t-hole" onchange="tog('hole',this.checked)"><span class="tog-tr"></span></label>
+        </div>
+        <div class="tog-body" id="b-hole">
+          <div class="pr">
+            <div class="pr-lbl">Diameter <span class="pv" id="v-holeDia">12 mm</span></div>
+            <input type="range" id="s-holeDia" min="3" max="60" value="12" oninput="sp('holeDia',this.value)">
+          </div>
+          <div class="pr">
+            <div class="pr-lbl">Position X <span class="pv" id="v-holeX">0 mm</span></div>
+            <input type="range" id="s-holeX" min="-40" max="40" value="0" oninput="sp('holeX',this.value)">
+          </div>
+          <div class="pr">
+            <div class="pr-lbl">Position Y <span class="pv" id="v-holeY">0 mm</span></div>
+            <input type="range" id="s-holeY" min="-30" max="30" value="0" oninput="sp('holeY',this.value)">
+          </div>
+          <div class="div"></div>
+          <!-- Second hole -->
+          <div class="tog-row">
+            <span class="tog-lbl" style="font-size:12px">Second Hole</span>
+            <label class="tog-sw"><input type="checkbox" id="t-hole2" onchange="tog('hole2',this.checked)"><span class="tog-tr"></span></label>
+          </div>
+          <div class="tog-body" id="b-hole2">
+            <div class="pr">
+              <div class="pr-lbl">Diameter <span class="pv" id="v-hole2Dia">10 mm</span></div>
+              <input type="range" id="s-hole2Dia" min="3" max="60" value="10" oninput="sp('hole2Dia',this.value)">
+            </div>
+            <div class="pr">
+              <div class="pr-lbl">Position X <span class="pv" id="v-hole2X">20 mm</span></div>
+              <input type="range" id="s-hole2X" min="-40" max="40" value="20" oninput="sp('hole2X',this.value)">
+            </div>
+            <div class="pr">
+              <div class="pr-lbl">Position Y <span class="pv" id="v-hole2Y">0 mm</span></div>
+              <input type="range" id="s-hole2Y" min="-30" max="30" value="0" oninput="sp('hole2Y',this.value)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fillet -->
+      <div class="sb-sec">
+        <div class="tog-row">
+          <span class="tog-lbl">Fillet — All Edges</span>
+          <label class="tog-sw"><input type="checkbox" id="t-fillet" onchange="tog('fillet',this.checked)"><span class="tog-tr"></span></label>
+        </div>
+        <div class="tog-body" id="b-fillet">
+          <div class="pr">
+            <div class="pr-lbl">Radius <span class="pv" id="v-filletR">2 mm</span></div>
+            <input type="range" id="s-filletR" min="0.5" max="15" step="0.5" value="2" oninput="sp('filletR',this.value)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Colour -->
+      <div class="sb-sec">
+        <div class="sec-lbl">Material Colour</div>
+        <div class="swatches" id="swatches">
+          <div class="swatch active" style="background:#b0c8e4" data-hex="#b0c8e4" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#e4b0b0" data-hex="#e4b0b0" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#b0e4c0" data-hex="#b0e4c0" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#f0d080" data-hex="#f0d080" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#c8b4e4" data-hex="#c8b4e4" onclick="setColour(this)"></div>
+          <div class="swatch" style="background:#d0d0d0" data-hex="#d0d0d0" onclick="setColour(this)"></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="sb-foot">
+        <button class="btn-exp" id="btn-exp" disabled onclick="exportSTL()">⬇&ensp;Export STL</button>
+      </div>
+
+    </aside>
+
+    <!-- ── Viewport ── -->
+    <div id="vp">
+
+      <!-- Loading -->
+      <div id="loading">
+        <div class="spin"></div>
+        <div class="load-title">Model Mage</div>
+        <div class="load-bar-wrap"><div class="load-bar"></div></div>
+        <div class="load-sub" id="load-msg">Preparing parametric design engine…</div>
+      </div>
+
+      <!-- Error -->
+      <div id="err-overlay">
+        <div class="err-icon">⚠️</div>
+        <div class="err-title">Engine failed to load</div>
+        <div class="err-body" id="err-body"></div>
+      </div>
+
+      <div id="recompute-badge"><div class="mini-spin"></div>Computing…</div>
+      <div class="vp-badge" id="vp-badge">replicad · OpenCascade</div>
+      <div class="vp-hint">Drag: orbit &nbsp;·&nbsp; Right-drag / two-finger: pan &nbsp;·&nbsp; Scroll: zoom</div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLExporter }   from 'three/addons/exporters/STLExporter.js';
+
+// ── Params ────────────────────────────────────────────────────────────────────
+
+const P = {
+  shape:       'box',
+  width:       80,  depth:    60,  height:   40,
+  wallThk:     8,
+  holeEnabled: false, holeDia: 12,  holeX:  0, holeY: 0,
+  hole2Enabled:false, hole2Dia:10,  hole2X:20, hole2Y:0,
+  filletEnabled:false, filletR: 2,
+  colour:      '#b0c8e4',
+};
+
+// ── Worker (inline blob — avoids ES-module-worker browser caching issues) ────
+
+const _workerSrc = `
+import Module from 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/replicad_single.js';
+import { setOC, draw, drawRectangle, drawCircle } from 'https://cdn.jsdelivr.net/npm/replicad@0.23.1/dist/replicad.js';
+
+const OC_BASE = 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/';
+let kernelReady = false;
+
+const bootPromise = (async () => {
+  try {
+    self.postMessage({ type: 'status', message: 'Initialising OpenCascade WASM (4 MB)…' });
+    const oc = await Module({ locateFile: p => OC_BASE + p });
+    setOC(oc);
+    kernelReady = true;
+    self.postMessage({ type: 'ready' });
+  } catch (e) {
+    self.postMessage({ type: 'fatalError', message: 'OpenCascade init failed: ' + e.message });
+  }
+})();
+
+self.onmessage = async function({ data }) {
+  if (data.type !== 'rebuild') return;
+  if (!kernelReady) { await bootPromise; if (!kernelReady) return; }
+  try {
+    const { vertices, normals, triangles } = buildModel(data.params);
+    self.postMessage({ type: 'mesh', vertices, normals, triangles },
+      [vertices.buffer, normals.buffer, triangles.buffer]);
+  } catch(e) {
+    self.postMessage({ type: 'buildError', message: e.message });
+  }
+};
+
+function buildModel(p) {
+  const hw = p.width / 2, hd = p.depth / 2;
+  const wt = Math.max(3, Math.min(p.wallThk, Math.min(p.width, p.depth) * 0.42));
+  let solid;
+
+  if (p.shape === 'box') {
+    solid = drawRectangle(p.width, p.depth).sketchOnPlane('XY').extrude(p.height);
+
+  } else if (p.shape === 'l-profile') {
+    solid = draw([-hw, -hd])
+      .hLine(p.width).vLine(wt).hLine(-(p.width - wt)).vLine(p.depth - wt).hLine(-wt)
+      .close().sketchOnPlane('XY').extrude(p.height);
+
+  } else if (p.shape === 't-profile') {
+    const sw = Math.max(6, Math.min(wt * 1.2, p.width * 0.30)), hsw = sw / 2;
+    solid = draw([-hsw, -hd])
+      .hLine(sw).vLine(p.depth - wt).hLine(hw - hsw).vLine(wt)
+      .hLine(-p.width).vLine(-wt).hLine(hw - hsw).vLine(-(p.depth - wt))
+      .close().sketchOnPlane('XY').extrude(p.height);
+  }
+
+  if (!solid) throw new Error('Shape build failed');
+
+  if (p.holeEnabled && p.holeDia > 2) {
+    const r = p.holeDia / 2;
+    const cx = Math.max(-hw+r+1, Math.min(hw-r-1, p.holeX));
+    const cy = Math.max(-hd+r+1, Math.min(hd-r-1, p.holeY));
+    try { solid = solid.cut(drawCircle(r).sketchOnPlane('XY',-1).extrude(p.height+2).translate([cx,cy,0])); } catch(_) {}
+  }
+
+  if (p.hole2Enabled && p.hole2Dia > 2) {
+    const r = p.hole2Dia / 2;
+    const cx = Math.max(-hw+r+1, Math.min(hw-r-1, p.hole2X));
+    const cy = Math.max(-hd+r+1, Math.min(hd-r-1, p.hole2Y));
+    try { solid = solid.cut(drawCircle(r).sketchOnPlane('XY',-1).extrude(p.height+2).translate([cx,cy,0])); } catch(_) {}
+  }
+
+  if (p.filletEnabled && p.filletR > 0) {
+    const safeR = Math.min(p.filletR, p.height * 0.35, Math.min(p.width, p.depth) * 0.18);
+    try { solid = solid.fillet(safeR); } catch(_) {
+      try { solid = solid.fillet(safeR * 0.5); } catch(__) {}
+    }
+  }
+
+  const mesh = solid.mesh({ tolerance: 0.04, angularTolerance: 10 });
+  const vertices  = mesh.vertices  instanceof Float32Array ? mesh.vertices  : new Float32Array(mesh.vertices);
+  const normals   = mesh.normals   instanceof Float32Array ? mesh.normals   : new Float32Array(mesh.normals);
+  const triangles = mesh.triangles instanceof Uint32Array  ? mesh.triangles : new Uint32Array(mesh.triangles);
+  return { vertices, normals, triangles };
+}
+`;
+const _workerBlob = new Blob([_workerSrc], { type: 'text/javascript' });
+const worker = new Worker(URL.createObjectURL(_workerBlob), { type: 'module' });
+let workerReady = false;
+let rebuildPending = false;
+let rebuildTimer = null;
+
+worker.onerror = (e) => {
+  console.error('[ModelMage] Worker crashed:', e.message, e.filename, e.lineno);
+  showError('Worker crashed: ' + (e.message || 'unknown error'));
+};
+
+worker.onmessage = ({ data }) => {
+  switch (data.type) {
+    case 'status':
+      setLoadMsg(data.message);
+      break;
+
+    case 'ready':
+      workerReady = true;
+      hideLoading();
+      updateHistLabel();
+      rebuild();
+      break;
+
+    case 'mesh':
+      try {
+        applyMesh(data.vertices, data.normals, data.triangles);
+      } catch (e) {
+        console.error('[ModelMage] applyMesh error:', e.message, e.stack);
+      }
+      hideRecompute();
+      updateHistLabel();
+      break;
+
+    case 'buildError':
+      hideRecompute();
+      console.warn('[ModelMage] Build error:', data.message);
+      break;
+
+    case 'fatalError':
+      showError(data.message);
+      break;
+  }
+};
+
+// ── Three.js scene ────────────────────────────────────────────────────────────
+
+const vpEl = document.getElementById('vp');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setSize(vpEl.clientWidth, vpEl.clientHeight);
+renderer.setClearColor(0x080c1a);
+vpEl.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, vpEl.clientWidth / vpEl.clientHeight, 0.1, 3000);
+camera.position.set(160, 130, 160);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance   = 20;
+controls.maxDistance   = 800;
+controls.target.set(0, 20, 0);
+controls.update();
+
+// Lights
+scene.add(new THREE.AmbientLight(0xffffff, 0.50));
+const sun = new THREE.DirectionalLight(0xfffaf0, 1.4);
+sun.position.set(120, 200, 100);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { near:1, far:700, left:-220, right:220, top:220, bottom:-220 });
+scene.add(sun);
+const fillA = new THREE.DirectionalLight(0xa0b8ff, 0.4); fillA.position.set(-80,60,-80); scene.add(fillA);
+const fillB = new THREE.DirectionalLight(0xffd080, 0.25); fillB.position.set(0,-30,120); scene.add(fillB);
+
+// Grid
+scene.add(new THREE.GridHelper(600, 30, 0x1e2a50, 0x111828));
+scene.add(new THREE.GridHelper(600, 120, 0x0d1224, 0x0d1224));
+
+// Shadow floor
+const shadowFloor = new THREE.Mesh(new THREE.PlaneGeometry(600,600), new THREE.ShadowMaterial({ opacity:0.30 }));
+shadowFloor.rotation.x = -Math.PI/2; shadowFloor.position.y = -0.1; shadowFloor.receiveShadow = true;
+scene.add(shadowFloor);
+
+// ── Model group (Z-up replicad → Y-up Three.js) ───────────────────────────────
+// Rotating the group by -90° around X converts replicad's Z axis to Three.js Y.
+
+const modelGroup = new THREE.Group();
+modelGroup.rotation.x = -Math.PI / 2;
+scene.add(modelGroup);
+
+const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(P.colour), roughness: 0.28, metalness: 0.06 });
+const wireMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.05 });
+
+var modelMesh = null;
+var wireMesh  = null;
+var lastGeo   = null;
+
+function applyMesh(verts, norms, tris) {
+  // Dispose old
+  if (modelMesh) { modelGroup.remove(modelMesh); modelGroup.remove(wireMesh); }
+  if (lastGeo) lastGeo.dispose();
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+  geo.setAttribute('normal',   new THREE.BufferAttribute(norms, 3));
+  geo.setIndex(new THREE.BufferAttribute(tris, 1));
+  lastGeo = geo;
+
+  modelMesh = new THREE.Mesh(geo, mat);
+  modelMesh.castShadow = true;
+  modelMesh.receiveShadow = true;
+  modelGroup.add(modelMesh);
+
+  wireMesh = new THREE.Mesh(geo, wireMat);
+  modelGroup.add(wireMesh);
+
+  document.getElementById('btn-exp').disabled = false;
+}
+
+// ── Rebuild ───────────────────────────────────────────────────────────────────
+
+function rebuild() {
+  if (!workerReady) return;
+  clearTimeout(rebuildTimer);
+  rebuildTimer = setTimeout(() => {
+    showRecompute();
+    worker.postMessage({ type: 'rebuild', params: { ...P } });
+  }, 60);
+}
+
+// ── Param helpers ─────────────────────────────────────────────────────────────
+
+window.sp = function(key, rawVal) {
+  const v = parseFloat(rawVal);
+  P[key] = v;
+  document.getElementById('v-' + key).textContent = v.toFixed(key === 'filletR' ? 1 : 0) + ' mm';
+
+  if (key === 'width') { ['s-holeX','s-hole2X'].forEach(id => { const s=document.getElementById(id); if(s){ s.min=-Math.floor(v/2); s.max=Math.floor(v/2); }}); }
+  if (key === 'depth') { ['s-holeY','s-hole2Y'].forEach(id => { const s=document.getElementById(id); if(s){ s.min=-Math.floor(v/2); s.max=Math.floor(v/2); }}); }
+
+  rebuild();
+};
+
+window.selShape = function(shape, el) {
+  P.shape = shape;
+  document.querySelectorAll('.shape-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('wt-row').style.display = shape !== 'box' ? 'block' : 'none';
+  rebuild();
+};
+
+window.tog = function(key, on) {
+  P[key + 'Enabled'] = on;
+  document.getElementById('b-' + key).classList.toggle('open', on);
+  rebuild();
+};
+
+window.setColour = function(el) {
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  P.colour = el.dataset.hex;
+  mat.color.set(P.colour);
+};
+
+// ── History label ─────────────────────────────────────────────────────────────
+
+function updateHistLabel() {
+  const parts = [`<b>${P.shape}</b> ${P.width}×${P.depth}×${P.height} mm`];
+  if (P.holeEnabled)  parts.push(`hole Ø${P.holeDia}`);
+  if (P.hole2Enabled) parts.push(`hole2 Ø${P.hole2Dia}`);
+  if (P.filletEnabled) parts.push(`fillet R${P.filletR}`);
+  document.getElementById('hist-label').innerHTML = parts.join(' → ');
+}
+
+// ── STL Export ────────────────────────────────────────────────────────────────
+
+const exporter = new STLExporter();
+
+window.exportSTL = function() {
+  if (!modelMesh) return;
+  // Export the mesh in world orientation (after rotation)
+  const clone = modelMesh.clone();
+  clone.applyMatrix4(modelGroup.matrixWorld);
+  const bin = exporter.parse(clone, { binary: true });
+  const a   = Object.assign(document.createElement('a'), {
+    href:     URL.createObjectURL(new Blob([bin], { type: 'application/octet-stream' })),
+    download: `model-mage_${P.shape}_${P.width}x${P.depth}x${P.height}mm.stl`,
+  });
+  a.click(); URL.revokeObjectURL(a.href);
+};
+
+// ── UI helpers ────────────────────────────────────────────────────────────────
+
+function setLoadMsg(msg) {
+  document.getElementById('load-msg').textContent = msg;
+}
+
+function hideLoading() {
+  const el = document.getElementById('loading');
+  el.style.transition = 'opacity 400ms';
+  el.style.opacity = '0';
+  setTimeout(() => el.style.display = 'none', 400);
+  document.getElementById('vp-badge').textContent = 'replicad · OpenCascade WASM';
+}
+
+function showError(msg) {
+  document.getElementById('loading').style.display = 'none';
+  const ov = document.getElementById('err-overlay');
+  document.getElementById('err-body').textContent = msg;
+  ov.style.display = 'flex';
+  document.getElementById('hist-label').textContent = 'Engine failed to load';
+}
+
+function showRecompute()  { document.getElementById('recompute-badge').style.display = 'flex'; }
+function hideRecompute()  { document.getElementById('recompute-badge').style.display = 'none'; }
+
+// ── Resize ────────────────────────────────────────────────────────────────────
+
+new ResizeObserver(() => {
+  const w = vpEl.clientWidth, h = vpEl.clientHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}).observe(vpEl);
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+
+(function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+})();
+
+</script>
+</body>
+</html>

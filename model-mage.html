@@ -1,0 +1,947 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Mage — Parametric CAD</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d97706'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-size='36' fill='white'%3E🧙%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"}}</script>
+  <style>
+    :root {
+      --bg:      #080c1a; --bg2: #0d1226;
+      --surface: rgba(255,255,255,0.048);
+      --border:  rgba(255,255,255,0.085);
+      --text:    #e4e8f8; --text2: rgba(210,218,245,0.65);
+      --accent:  #d97706; --accent2: #f59e0b;
+      --blue:    #3b82f6; --green: #10b981; --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Cabinet Grotesk', sans-serif; background: var(--bg); color: var(--text);
+           height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+    /* ── Header ─────────────────────────────────────────────────── */
+    header { height: 46px; flex-shrink: 0; background: var(--bg2);
+             border-bottom: 1px solid var(--border);
+             display: flex; align-items: center; padding: 0 14px; gap: 12px; }
+    .logo  { font-weight: 800; font-size: 1rem; color: var(--accent2);
+             display: flex; align-items: center; gap: 8px; }
+    .hdr-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .nav-link  { background: var(--surface); border: 1px solid var(--border); color: var(--text2);
+                 font-size: 0.76rem; font-weight: 600; padding: 4px 11px; border-radius: 6px;
+                 text-decoration: none; transition: color 120ms, border-color 120ms; }
+    .nav-link:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+    .nav-link.accent { background: rgba(217,119,6,0.15); border-color: rgba(217,119,6,0.4);
+                       color: var(--accent2); }
+
+    /* ── Toolbar ─────────────────────────────────────────────────── */
+    .toolbar { height: 40px; flex-shrink: 0; background: rgba(10,15,32,0.95);
+               border-bottom: 1px solid var(--border);
+               display: flex; align-items: center; padding: 0 8px; gap: 2px; }
+    .tb-sep  { width: 1px; height: 20px; background: var(--border); margin: 0 5px; }
+    .tb-btn  { height: 28px; padding: 0 9px; border-radius: 5px; border: 1px solid transparent;
+               background: none; color: var(--text2); font-size: 0.76rem; font-weight: 600;
+               cursor: pointer; display: flex; align-items: center; gap: 5px;
+               font-family: inherit; transition: background 100ms, color 100ms; }
+    .tb-btn:hover  { background: var(--surface); color: var(--text); }
+    .tb-btn.active { background: rgba(217,119,6,0.18); color: var(--accent2);
+                     border-color: rgba(217,119,6,0.4); }
+    .tb-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .snap-sel { height: 26px; padding: 0 7px; border-radius: 5px; border: 1px solid var(--border);
+                background: var(--surface); color: var(--text2); font-size: 0.74rem;
+                cursor: pointer; font-family: inherit; }
+    .snap-sel:focus { outline: none; }
+    .tb-label { font-size: 0.73rem; color: var(--text2); padding-left: 4px; }
+
+    /* ── Main ────────────────────────────────────────────────────── */
+    .main { flex: 1; display: flex; overflow: hidden; }
+
+    /* ── 2D Sketch canvas ────────────────────────────────────────── */
+    .sketch-panel { flex: 1; position: relative; background: #05081a; overflow: hidden; }
+    #sk { display: block; width: 100%; height: 100%; touch-action: none; }
+    .sk-overlay { position: absolute; top: 8px; left: 8px;
+                  background: rgba(10,15,32,0.88); border: 1px solid var(--border);
+                  border-radius: 7px; padding: 5px 10px;
+                  font-size: 0.70rem; font-weight: 600; color: var(--text2); }
+    .hint-box { position: absolute; bottom: 8px; left: 8px;
+                background: rgba(10,15,32,0.88); border: 1px solid var(--border);
+                border-radius: 7px; padding: 7px 11px;
+                font-size: 0.70rem; color: var(--text2); line-height: 1.7; max-width: 240px; }
+    .hint-box b { color: var(--text); }
+
+    /* ── Right panel ─────────────────────────────────────────────── */
+    .right-panel { width: 360px; flex-shrink: 0; display: flex; flex-direction: column;
+                   border-left: 1px solid var(--border); background: var(--bg2); }
+
+    /* Extrude controls */
+    .ext-panel { padding: 13px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .panel-title { font-size: 0.68rem; font-weight: 700; color: var(--text2);
+                   letter-spacing: .09em; text-transform: uppercase; margin-bottom: 10px; }
+    .pr { margin-bottom: 8px; }
+    .pr-lbl { display: flex; justify-content: space-between; align-items: center;
+              font-size: 0.76rem; color: var(--text2); margin-bottom: 4px; }
+    .pr-val { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+              font-weight: 700; color: var(--accent2); }
+    input[type=range] { width: 100%; accent-color: var(--accent2); }
+    .btn-extrude { width: 100%; height: 34px; border-radius: 7px; margin-top: 10px;
+                   background: linear-gradient(135deg,#d97706,#b45309); border: none;
+                   color: #fff; font-weight: 800; font-size: 0.82rem; font-family: inherit;
+                   cursor: pointer; transition: opacity 120ms; }
+    .btn-extrude:disabled { opacity: 0.32; cursor: not-allowed; }
+    .btn-extrude:not(:disabled):hover { opacity: 0.88; }
+
+    /* 3D Viewport */
+    #vp3d { flex: 1; position: relative; background: #04060f; overflow: hidden; }
+    .vp-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column;
+                      align-items: center; justify-content: center; gap: 8px;
+                      pointer-events: none; }
+    .vp-ph-icon { font-size: 2.2rem; opacity: 0.2; }
+    .vp-ph-text { font-size: 0.74rem; color: var(--text2); opacity: 0.45; text-align: center;
+                  line-height: 1.6; }
+    .vp-badge { position: absolute; top: 8px; left: 8px;
+                background: rgba(4,6,15,0.88); border: 1px solid var(--border);
+                border-radius: 6px; padding: 3px 9px;
+                font-size: 0.68rem; font-weight: 600; color: var(--text2); }
+    .vp-hint { position: absolute; bottom: 4px; left: 8px;
+               font-size: 0.62rem; color: rgba(210,218,245,0.3); }
+    .btn-stl { position: absolute; bottom: 10px; right: 10px; height: 30px; padding: 0 13px;
+               border-radius: 6px; background: rgba(217,119,6,0.9); border: none;
+               color: #fff; font-weight: 700; font-size: 0.73rem; font-family: inherit;
+               cursor: pointer; opacity: 0; pointer-events: none;
+               transition: opacity 200ms; }
+    .btn-stl.show { opacity: 1; pointer-events: auto; }
+
+    /* ── Status bar ──────────────────────────────────────────────── */
+    .statusbar { height: 26px; flex-shrink: 0; background: var(--bg2);
+                 border-top: 1px solid var(--border);
+                 display: flex; align-items: center; padding: 0 12px; gap: 14px;
+                 font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text2); }
+    .statusbar .sep { width: 1px; height: 12px; background: var(--border); }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────────────────────── -->
+<header>
+  <div class="logo">🧙 Model Mage</div>
+  <div class="hdr-right">
+    <a class="nav-link" href="index.html">← Home</a>
+    <a class="nav-link accent" href="model-mage-shapes.html">⬡ 3D Models →</a>
+  </div>
+</header>
+
+<!-- ── Toolbar ───────────────────────────────────────────────────── -->
+<div class="toolbar">
+  <!-- Drawing tools -->
+  <button class="tb-btn active" id="tool-line" onclick="setTool('line')" title="Line / Polyline (L)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="13" x2="13" y2="1"/></svg>
+    Line
+  </button>
+  <button class="tb-btn" id="tool-rect" onclick="setTool('rect')" title="Rectangle (R)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="12" height="8" rx="1.5"/></svg>
+    Rectangle
+  </button>
+  <button class="tb-btn" id="tool-circle" onclick="setTool('circle')" title="Circle (C)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/></svg>
+    Circle
+  </button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="tool-select" onclick="setTool('select')" title="Select / Pan (V)">
+    <svg viewBox="0 0 14 14" fill="currentColor"><path d="M2 1l10 10-3.5 1-1.5 4L2 1z"/></svg>
+    Select
+  </button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" onclick="undoLast()" title="Undo (Ctrl+Z)">↩ Undo</button>
+  <button class="tb-btn" onclick="clearAll()" title="Clear sketch">✕ Clear</button>
+  <div class="tb-sep"></div>
+  <span class="tb-label">Grid snap</span>
+  <select class="snap-sel" id="snap-sel" onchange="gridSnap=+this.value;scheduleRender()">
+    <option value="1">1 mm</option>
+    <option value="2">2 mm</option>
+    <option value="5" selected>5 mm</option>
+    <option value="10">10 mm</option>
+    <option value="25">25 mm</option>
+    <option value="0">Off</option>
+  </select>
+</div>
+
+<!-- ── Main layout ───────────────────────────────────────────────── -->
+<div class="main">
+
+  <!-- 2D Sketch panel -->
+  <div class="sketch-panel">
+    <canvas id="sk"></canvas>
+    <div class="sk-overlay">Sketch · XY Plane</div>
+    <div class="hint-box" id="hint-box">
+      <b>Line tool active</b><br>
+      Click to place points<br>
+      Click first point to close<br>
+      Right-click / Esc to cancel
+    </div>
+  </div>
+
+  <!-- Right: Extrude + 3D viewport -->
+  <div class="right-panel">
+
+    <!-- Extrude controls -->
+    <div class="ext-panel">
+      <div class="panel-title">Extrude</div>
+      <div class="pr">
+        <div class="pr-lbl">Height <span class="pr-val" id="v-h">40 mm</span></div>
+        <input type="range" id="s-h" min="1" max="300" value="40"
+               oninput="extH=+this.value;document.getElementById('v-h').textContent=this.value+' mm';scheduleExtrude()">
+      </div>
+      <button class="btn-extrude" id="btn-ext" disabled onclick="doExtrude()">
+        ▲ Extrude Profile
+      </button>
+    </div>
+
+    <!-- 3D viewport -->
+    <div id="vp3d">
+      <div class="vp-placeholder" id="vp-ph">
+        <div class="vp-ph-icon">⬡</div>
+        <div class="vp-ph-text">Draw a closed profile<br>then press Extrude</div>
+      </div>
+      <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
+      <div class="vp-hint">Drag · Right-drag: pan · Scroll: zoom</div>
+      <button class="btn-stl" id="btn-stl" onclick="exportSTL()">↓ STL</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Status bar ────────────────────────────────────────────────── -->
+<div class="statusbar">
+  <span>X <b id="st-x">0.0</b> mm</span>
+  <span>Y <b id="st-y">0.0</b> mm</span>
+  <div class="sep"></div>
+  <span id="st-snap">Snap 5 mm</span>
+  <div class="sep"></div>
+  <span id="st-info">Ready — select a drawing tool</span>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLExporter }   from 'three/addons/exporters/STLExporter.js';
+
+// ════════════════════════════════════════════════════════════════════
+// WORKER — replicad + OpenCascade WASM
+// ════════════════════════════════════════════════════════════════════
+
+const _wSrc = `
+import Module from 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/replicad_single.js';
+import { setOC, draw, drawRectangle, drawCircle } from 'https://cdn.jsdelivr.net/npm/replicad@0.23.1/dist/replicad.js';
+
+const OC_BASE = 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/';
+let ready = false;
+const boot = (async () => {
+  self.postMessage({ type: 'status', msg: 'Loading OpenCascade WASM…' });
+  const oc = await Module({ locateFile: p => OC_BASE + p });
+  setOC(oc); ready = true;
+  self.postMessage({ type: 'ready' });
+})();
+
+self.onmessage = async ({ data }) => {
+  if (data.type !== 'build') return;
+  if (!ready) { await boot; if (!ready) return; }
+  try {
+    const solid = makeSolid(data.profile, data.height);
+    const m = solid.mesh({ tolerance: 0.04, angularTolerance: 10 });
+    const v = m.vertices  instanceof Float32Array ? m.vertices  : new Float32Array(m.vertices);
+    const n = m.normals   instanceof Float32Array ? m.normals   : new Float32Array(m.normals);
+    const t = m.triangles instanceof Uint32Array  ? m.triangles : new Uint32Array(m.triangles);
+    self.postMessage({ type: 'mesh', v, n, t }, [v.buffer, n.buffer, t.buffer]);
+  } catch(e) {
+    self.postMessage({ type: 'err', msg: e.message });
+  }
+};
+
+function makeSolid(p, h) {
+  if (p.type === 'circle') {
+    return drawCircle(p.r).sketchOnPlane('XY').extrude(h)
+      .translate([p.cx, p.cy, 0]);
+  }
+  if (p.type === 'rect') {
+    const [x,y,w,hh] = [p.x, p.y, p.w, p.h];
+    return drawRectangle(Math.abs(w), Math.abs(hh)).sketchOnPlane('XY').extrude(h)
+      .translate([x + w/2, y + hh/2, 0]);
+  }
+  // polyline
+  const pts = p.points;
+  if (pts.length < 3) throw new Error('Need at least 3 points');
+  let sk = draw(pts[0]);
+  for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
+  return sk.close().sketchOnPlane('XY').extrude(h);
+}
+`;
+
+const worker = new Worker(
+  URL.createObjectURL(new Blob([_wSrc], { type: 'text/javascript' })),
+  { type: 'module' }
+);
+let workerReady = false;
+let pendingBuild = null;
+
+worker.onmessage = ({ data }) => {
+  switch (data.type) {
+    case 'ready':
+      workerReady = true;
+      if (pendingBuild) { worker.postMessage(pendingBuild); pendingBuild = null; }
+      break;
+    case 'mesh':
+      applyMesh(data.v, data.n, data.t);
+      break;
+    case 'err':
+      console.warn('[ModelMage]', data.msg);
+      break;
+  }
+};
+worker.onerror = e => console.error('[ModelMage] Worker:', e.message);
+
+// ════════════════════════════════════════════════════════════════════
+// SKETCH STATE
+// ════════════════════════════════════════════════════════════════════
+
+let tool      = 'line';
+let entities  = [];          // committed drawing entities
+let gridSnap  = 5;           // mm, 0 = off
+
+// In-progress state (tool-specific)
+let linePoints   = [];       // polyline points in progress
+let rectStart    = null;     // {x,y} world for rect drag
+let circleCenter = null;     // {x,y} for circle first click
+
+// View
+let panX = 0, panY = 0, zoom = 4; // zoom = screen px / mm
+let isPanning = false, panStart0 = {x:0,y:0}, panOrig = {x:0,y:0};
+
+// Mouse
+let mouse = { x: 0, y: 0 };    // snapped world coords
+let rawMouse = { x: 0, y: 0 }; // screen px
+
+// Extrude
+let extH = 40;
+let extTimer = null;
+
+// ════════════════════════════════════════════════════════════════════
+// CANVAS SETUP
+// ════════════════════════════════════════════════════════════════════
+
+const sk  = document.getElementById('sk');
+const ctx = sk.getContext('2d');
+
+function W() { return sk.offsetWidth;  }
+function H() { return sk.offsetHeight; }
+// Screen coords of world origin (0,0)
+function ox() { return W() / 2 + panX; }
+function oy() { return H() / 2 + panY; }
+
+function wtoc(wx, wy) { return [ox() + wx * zoom, oy() - wy * zoom]; }
+function ctow(sx, sy) { return [(sx - ox()) / zoom, (oy() - sy) / zoom]; }
+
+function snapPt(wx, wy) {
+  // 1. Point snap — nearest existing vertex within 14 screen px
+  const SNAP_PX = 14;
+  let best = null, bestD = SNAP_PX;
+  for (const pt of allPoints()) {
+    const [sx, sy] = wtoc(pt[0], pt[1]);
+    const [rx, ry] = wtoc(wx, wy);
+    const d = Math.hypot(sx - rx, sy - ry);
+    if (d < bestD) { bestD = d; best = pt; }
+  }
+  if (best) return [best[0], best[1]];
+  // 2. Grid snap
+  if (gridSnap > 0) return [
+    Math.round(wx / gridSnap) * gridSnap,
+    Math.round(wy / gridSnap) * gridSnap,
+  ];
+  return [wx, wy];
+}
+
+function allPoints() {
+  const pts = [];
+  for (const e of entities) {
+    if (e.type === 'polyline') e.points.forEach(p => pts.push(p));
+    else if (e.type === 'rect') {
+      pts.push([e.x, e.y], [e.x+e.w, e.y], [e.x+e.w, e.y+e.h], [e.x, e.y+e.h]);
+    }
+    else if (e.type === 'circle') pts.push([e.cx, e.cy]);
+  }
+  linePoints.forEach(p => pts.push(p));
+  return pts;
+}
+
+function resize() {
+  const dpr = devicePixelRatio;
+  sk.width  = sk.offsetWidth  * dpr;
+  sk.height = sk.offsetHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  scheduleRender();
+}
+new ResizeObserver(resize).observe(sk);
+
+// ════════════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════════════
+
+let rafId = null;
+function scheduleRender() {
+  if (!rafId) rafId = requestAnimationFrame(() => { rafId = null; render(); });
+}
+
+function render() {
+  const cW = W(), cH = H();
+  ctx.clearRect(0, 0, cW, cH);
+  drawGrid(cW, cH);
+  drawCommitted();
+  drawInProgress();
+  drawSnapIndicator();
+}
+
+function drawGrid(cW, cH) {
+  const minor = gridSnap > 0 ? gridSnap : 5;
+  const major = minor * 5;
+
+  // World bounds
+  const [wx0] = ctow(0, 0);
+  const [wx1] = ctow(cW, 0);
+  const [, wy0] = ctow(0, cH);
+  const [, wy1] = ctow(0, 0);
+
+  // Minor lines
+  ctx.strokeStyle = 'rgba(20,30,65,0.95)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  const gx0 = Math.floor(wx0 / minor) * minor;
+  const gy0 = Math.floor(wy0 / minor) * minor;
+  for (let gx = gx0; gx <= wx1 + minor; gx += minor) {
+    if (Math.abs(gx % major) < 0.01 || gx === 0) continue;
+    const [sx] = wtoc(gx, 0);
+    ctx.moveTo(sx, 0); ctx.lineTo(sx, cH);
+  }
+  for (let gy = gy0; gy <= wy1 + minor; gy += minor) {
+    if (Math.abs(gy % major) < 0.01 || gy === 0) continue;
+    const [, sy] = wtoc(0, gy);
+    ctx.moveTo(0, sy); ctx.lineTo(cW, sy);
+  }
+  ctx.stroke();
+
+  // Major lines
+  ctx.strokeStyle = 'rgba(35,55,115,0.95)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  const gmx0 = Math.floor(wx0 / major) * major;
+  const gmy0 = Math.floor(wy0 / major) * major;
+  for (let gx = gmx0; gx <= wx1 + major; gx += major) {
+    if (gx === 0) continue;
+    const [sx] = wtoc(gx, 0);
+    ctx.moveTo(sx, 0); ctx.lineTo(sx, cH);
+  }
+  for (let gy = gmy0; gy <= wy1 + major; gy += major) {
+    if (gy === 0) continue;
+    const [, sy] = wtoc(0, gy);
+    ctx.moveTo(0, sy); ctx.lineTo(cW, sy);
+  }
+  ctx.stroke();
+
+  // Axes
+  ctx.strokeStyle = 'rgba(80,110,210,0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  const [axX] = wtoc(0, 0);
+  ctx.moveTo(axX, 0); ctx.lineTo(axX, cH);
+  const [, axY] = wtoc(0, 0);
+  ctx.moveTo(0, axY); ctx.lineTo(cW, axY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Origin dot + label
+  const [ox2, oy2] = wtoc(0, 0);
+  ctx.fillStyle = 'rgba(120,150,255,0.85)';
+  ctx.beginPath(); ctx.arc(ox2, oy2, 3.5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'rgba(120,150,255,0.5)';
+  ctx.font = '10px JetBrains Mono, monospace';
+  ctx.fillText('0', ox2 + 5, oy2 - 5);
+
+  // Grid scale label
+  if (zoom >= 2) {
+    ctx.fillStyle = 'rgba(100,130,200,0.4)';
+    ctx.font = '10px JetBrains Mono, monospace';
+    ctx.fillText(`${major} mm`, 6, cH - 6);
+  }
+}
+
+function drawCommitted() {
+  for (const e of entities) drawEntity(e, false);
+}
+
+function drawEntity(e, preview) {
+  const alpha = preview ? 0.6 : 1;
+  ctx.strokeStyle = preview ? `rgba(245,158,11,${alpha})` : `rgba(160,190,255,${alpha})`;
+  ctx.fillStyle   = preview ? `rgba(245,158,11,0.08)`     : `rgba(160,190,255,0.07)`;
+  ctx.lineWidth   = 1.8;
+
+  if (e.type === 'polyline') {
+    const pts = e.points;
+    if (pts.length < 2) return;
+    ctx.beginPath();
+    const [sx, sy] = wtoc(pts[0][0], pts[0][1]);
+    ctx.moveTo(sx, sy);
+    for (let i = 1; i < pts.length; i++) {
+      const [sx2, sy2] = wtoc(pts[i][0], pts[i][1]);
+      ctx.lineTo(sx2, sy2);
+    }
+    if (e.closed) { ctx.closePath(); ctx.fill(); }
+    ctx.stroke();
+    // Dimension labels + vertices
+    for (let i = 0; i < pts.length; i++) {
+      const j = (i + 1) % pts.length;
+      if (j === 0 && !e.closed) continue;
+      dimLabel(pts[i], pts[j]);
+    }
+    pts.forEach(p => vertex(p));
+  }
+
+  if (e.type === 'rect') {
+    const { x, y, w, h } = e;
+    const [sx, sy] = wtoc(x, y + h);
+    ctx.beginPath();
+    ctx.rect(sx, sy, w * zoom, -h * zoom);
+    ctx.fill(); ctx.stroke();
+    dimLabel([x,y],[x+w,y]);
+    dimLabel([x+w,y],[x+w,y+h]);
+    [[x,y],[x+w,y],[x+w,y+h],[x,y+h]].forEach(p => vertex(p));
+  }
+
+  if (e.type === 'circle') {
+    const [sx, sy] = wtoc(e.cx, e.cy);
+    ctx.beginPath();
+    ctx.arc(sx, sy, e.r * zoom, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+    // radius label
+    const [sx2, sy2] = wtoc(e.cx + e.r, e.cy);
+    dimLabel([e.cx, e.cy], [e.cx + e.r, e.cy]);
+    vertex([e.cx, e.cy]);
+  }
+}
+
+function vertex(pt) {
+  const [sx, sy] = wtoc(pt[0], pt[1]);
+  ctx.fillStyle = 'rgba(200,220,255,0.9)';
+  ctx.beginPath(); ctx.arc(sx, sy, 3, 0, Math.PI*2); ctx.fill();
+}
+
+function dimLabel(p1, p2) {
+  const [sx1, sy1] = wtoc(p1[0], p1[1]);
+  const [sx2, sy2] = wtoc(p2[0], p2[1]);
+  const mx = (sx1 + sx2) / 2, my = (sy1 + sy2) / 2;
+  const dx = sx2 - sx1, dy = sy2 - sy1;
+  const len = Math.hypot(dx, dy);
+  if (len < 30) return;
+  // perpendicular offset (always push label to readable side)
+  const nx = -dy / len * 13, ny = dx / len * 13;
+  const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
+  ctx.save();
+  ctx.font = '10px JetBrains Mono, monospace';
+  ctx.fillStyle = 'rgba(130,170,255,0.75)';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(wlen.toFixed(wlen < 10 ? 2 : 1) + ' mm', mx + nx, my + ny);
+  ctx.restore();
+}
+
+function drawInProgress() {
+  const mx = mouse.x, my = mouse.y;
+
+  if (tool === 'line' && linePoints.length > 0) {
+    // Draw committed points of this stroke
+    const all = [...linePoints, [mx, my]];
+    ctx.strokeStyle = 'rgba(245,158,11,0.85)';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    const [sx0, sy0] = wtoc(linePoints[0][0], linePoints[0][1]);
+    ctx.moveTo(sx0, sy0);
+    for (let i = 1; i < all.length; i++) {
+      const [sx, sy] = wtoc(all[i][0], all[i][1]);
+      ctx.lineTo(sx, sy);
+    }
+    ctx.stroke();
+
+    // Closing preview
+    if (linePoints.length >= 3 && isNearFirst(mx, my)) {
+      ctx.strokeStyle = 'rgba(16,185,129,0.9)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      const [sx, sy] = wtoc(linePoints[0][0], linePoints[0][1]);
+      const [mx2, my2] = wtoc(mx, my);
+      ctx.moveTo(mx2, my2); ctx.lineTo(sx, sy);
+      ctx.stroke();
+      // Close indicator circle
+      ctx.strokeStyle = 'rgba(16,185,129,0.8)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(sx, sy, 9, 0, Math.PI*2);
+      ctx.stroke();
+    }
+
+    // Live dim label for current segment
+    if (linePoints.length >= 1) {
+      dimLabel(linePoints[linePoints.length-1], [mx, my]);
+    }
+
+    linePoints.forEach(p => vertex(p));
+  }
+
+  if (tool === 'rect' && rectStart) {
+    drawEntity({ type: 'rect', x: Math.min(rectStart.x, mx), y: Math.min(rectStart.y, my),
+                  w: Math.abs(mx - rectStart.x), h: Math.abs(my - rectStart.y) }, true);
+  }
+
+  if (tool === 'circle' && circleCenter) {
+    const r = Math.hypot(mx - circleCenter.x, my - circleCenter.y);
+    drawEntity({ type: 'circle', cx: circleCenter.x, cy: circleCenter.y, r }, true);
+  }
+}
+
+function drawSnapIndicator() {
+  const [sx, sy] = wtoc(mouse.x, mouse.y);
+  // Crosshair
+  ctx.strokeStyle = 'rgba(245,158,11,0.45)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(sx - 8, sy); ctx.lineTo(sx + 8, sy);
+  ctx.moveTo(sx, sy - 8); ctx.lineTo(sx, sy + 8);
+  ctx.stroke();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// CLOSE DETECTION
+// ════════════════════════════════════════════════════════════════════
+
+function isNearFirst(wx, wy) {
+  if (linePoints.length < 3) return false;
+  const [sx1, sy1] = wtoc(linePoints[0][0], linePoints[0][1]);
+  const [sx2, sy2] = wtoc(wx, wy);
+  return Math.hypot(sx1 - sx2, sy1 - sy2) < 14;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// CLOSED PROFILE DETECTION
+// ════════════════════════════════════════════════════════════════════
+
+function getProfile() {
+  for (const e of entities) {
+    if (e.type === 'polyline' && e.closed && e.points.length >= 3) return e;
+    if (e.type === 'rect' && e.w > 0 && e.h > 0) return e;
+    if (e.type === 'circle' && e.r > 0) return e;
+  }
+  return null;
+}
+
+function updateExtrudeBtn() {
+  const btn = document.getElementById('btn-ext');
+  btn.disabled = !getProfile();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// TOOLS
+// ════════════════════════════════════════════════════════════════════
+
+window.setTool = function(t) {
+  // Cancel in-progress
+  linePoints = []; rectStart = null; circleCenter = null;
+  tool = t;
+  document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('tool-' + t);
+  if (btn) btn.classList.add('active');
+  updateHint();
+  scheduleRender();
+};
+
+function updateHint() {
+  const h = document.getElementById('hint-box');
+  const hints = {
+    line:   '<b>Line tool</b><br>Click to place points<br>Click first point to close<br>Right-click or Esc to cancel',
+    rect:   '<b>Rectangle tool</b><br>Click and drag to draw<br>Release to commit',
+    circle: '<b>Circle tool</b><br>Click to set centre<br>Click again to set radius',
+    select: '<b>Select tool</b><br>Click entity to select<br>Delete to remove<br>Middle-drag to pan',
+  };
+  h.innerHTML = hints[tool] || '';
+}
+
+window.undoLast = function() {
+  if (linePoints.length > 0) { linePoints.pop(); scheduleRender(); return; }
+  if (entities.length > 0) { entities.pop(); updateExtrudeBtn(); scheduleRender(); }
+};
+
+window.clearAll = function() {
+  entities = []; linePoints = []; rectStart = null; circleCenter = null;
+  updateExtrudeBtn(); scheduleRender();
+};
+
+// ════════════════════════════════════════════════════════════════════
+// MOUSE EVENTS
+// ════════════════════════════════════════════════════════════════════
+
+function evXY(e) {
+  const r = sk.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+
+sk.addEventListener('mousemove', e => {
+  const { x, y } = evXY(e);
+  rawMouse = { x, y };
+  const [wx, wy] = ctow(x, y);
+  const [sx, sy] = snapPt(wx, wy);
+  mouse = { x: sx, y: sy };
+  document.getElementById('st-x').textContent = sx.toFixed(1);
+  document.getElementById('st-y').textContent = sy.toFixed(1);
+
+  if (isPanning) {
+    panX = panOrig.x + (x - panStart0.x);
+    panY = panOrig.y + (y - panStart0.y);
+  }
+
+  scheduleRender();
+});
+
+sk.addEventListener('mousedown', e => {
+  if (e.button === 1 || (e.button === 0 && e.altKey)) {
+    isPanning = true;
+    panStart0 = { x: e.offsetX, y: e.offsetY };
+    panOrig   = { x: panX, y: panY };
+    e.preventDefault(); return;
+  }
+  if (e.button === 2 || tool === 'select') return;
+
+  if (tool === 'rect') { rectStart = { x: mouse.x, y: mouse.y }; }
+  if (tool === 'circle' && !circleCenter) { circleCenter = { x: mouse.x, y: mouse.y }; }
+});
+
+sk.addEventListener('mouseup', e => {
+  if (e.button === 1 || isPanning) { isPanning = false; return; }
+  if (e.button !== 0 || tool === 'select') return;
+
+  if (tool === 'rect' && rectStart) {
+    const x = Math.min(rectStart.x, mouse.x), y = Math.min(rectStart.y, mouse.y);
+    const w = Math.abs(mouse.x - rectStart.x), h = Math.abs(mouse.y - rectStart.y);
+    if (w > 0.5 && h > 0.5) {
+      entities.push({ type: 'rect', x, y, w, h });
+      updateExtrudeBtn();
+      scheduleExtrude();
+    }
+    rectStart = null;
+    scheduleRender();
+  }
+});
+
+sk.addEventListener('click', e => {
+  if (e.button !== 0 || tool !== 'line' && tool !== 'circle') return;
+
+  if (tool === 'circle' && circleCenter) {
+    const r = Math.hypot(mouse.x - circleCenter.x, mouse.y - circleCenter.y);
+    if (r > 0.5) {
+      entities.push({ type: 'circle', cx: circleCenter.x, cy: circleCenter.y, r });
+      updateExtrudeBtn();
+      scheduleExtrude();
+    }
+    circleCenter = null;
+    scheduleRender();
+    return;
+  }
+
+  if (tool === 'line') {
+    if (linePoints.length >= 3 && isNearFirst(mouse.x, mouse.y)) {
+      // Close polygon
+      entities.push({ type: 'polyline', points: [...linePoints], closed: true });
+      linePoints = [];
+      updateExtrudeBtn();
+      scheduleExtrude();
+    } else {
+      linePoints.push([mouse.x, mouse.y]);
+    }
+    scheduleRender();
+  }
+});
+
+sk.addEventListener('dblclick', e => {
+  // Double-click ends open polyline
+  if (tool === 'line' && linePoints.length >= 2) {
+    linePoints.pop(); // remove duplicate point from click
+    entities.push({ type: 'polyline', points: [...linePoints], closed: false });
+    linePoints = [];
+    scheduleRender();
+  }
+});
+
+sk.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  if (tool === 'line') {
+    linePoints = []; circleCenter = null;
+    scheduleRender();
+  }
+});
+
+sk.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY > 0 ? 0.85 : 1.18;
+  const { x, y } = evXY(e);
+  // Zoom towards mouse position
+  panX = x + (panX - x) * factor;
+  panY = y + (panY - y) * factor;
+  zoom *= factor;
+  zoom = Math.max(0.2, Math.min(zoom, 80));
+  scheduleRender();
+}, { passive: false });
+
+// Keyboard
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { setTool(tool); } // cancel in-progress
+  if (e.key === 'l' || e.key === 'L') setTool('line');
+  if (e.key === 'r' || e.key === 'R') setTool('rect');
+  if (e.key === 'c' || e.key === 'C') setTool('circle');
+  if (e.key === 'v' || e.key === 'V') setTool('select');
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undoLast(); }
+  if (e.key === 'Delete') {
+    if (entities.length > 0) { entities.pop(); updateExtrudeBtn(); scheduleRender(); }
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════
+// EXTRUDE
+// ════════════════════════════════════════════════════════════════════
+
+function scheduleExtrude() {
+  clearTimeout(extTimer);
+  const p = getProfile();
+  if (p) extTimer = setTimeout(() => doExtrude(), 300);
+}
+
+window.doExtrude = function() {
+  const p = getProfile();
+  if (!p) return;
+  const msg = { type: 'build', profile: p, height: extH };
+  if (workerReady) worker.postMessage(msg);
+  else pendingBuild = msg;
+};
+
+// ════════════════════════════════════════════════════════════════════
+// THREE.JS — 3D VIEWPORT
+// ════════════════════════════════════════════════════════════════════
+
+const vpEl = document.getElementById('vp3d');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setClearColor(0x04060f);
+vpEl.appendChild(renderer.domElement);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 5000);
+camera.position.set(160, 120, 160);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 5;
+controls.maxDistance = 2000;
+controls.target.set(0, 20, 0);
+controls.update();
+
+// Lights
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const sun = new THREE.DirectionalLight(0xfffaf0, 1.4);
+sun.position.set(120, 200, 100);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { near:1, far:700, left:-220, right:220, top:220, bottom:-220 });
+scene.add(sun);
+const fillA = new THREE.DirectionalLight(0xa0b8ff, 0.4); fillA.position.set(-80, 60, -80); scene.add(fillA);
+const fillB = new THREE.DirectionalLight(0xffd080, 0.25); fillB.position.set(0, -30, 120); scene.add(fillB);
+
+// Grid
+scene.add(new THREE.GridHelper(600, 30, 0x1e2a50, 0x111828));
+
+// Model group — Z-up (replicad) → Y-up (Three.js)
+const modelGroup = new THREE.Group();
+modelGroup.rotation.x = -Math.PI / 2;
+scene.add(modelGroup);
+
+const mat    = new THREE.MeshStandardMaterial({ color: 0xb0c8e4, roughness: 0.28, metalness: 0.06 });
+const wireMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.05 });
+var modelMesh = null;
+var wireMesh  = null;
+var lastGeo   = null;
+
+function applyMesh(verts, norms, tris) {
+  if (modelMesh) { modelGroup.remove(modelMesh); modelGroup.remove(wireMesh); }
+  if (lastGeo) lastGeo.dispose();
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+  geo.setAttribute('normal',   new THREE.BufferAttribute(norms, 3));
+  geo.setIndex(new THREE.BufferAttribute(tris, 1));
+  lastGeo = geo;
+
+  modelMesh = new THREE.Mesh(geo, mat);
+  modelMesh.castShadow = true;
+  modelGroup.add(modelMesh);
+
+  wireMesh = new THREE.Mesh(geo, wireMat);
+  modelGroup.add(wireMesh);
+
+  // Show 3D viewport UI
+  document.getElementById('vp-ph').style.display = 'none';
+  document.getElementById('vp-badge').style.display = '';
+  document.getElementById('btn-stl').classList.add('show');
+}
+
+// Resize 3D viewport
+function resize3D() {
+  const W2 = vpEl.clientWidth, H2 = vpEl.clientHeight;
+  renderer.setSize(W2, H2);
+  camera.aspect = W2 / H2;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize3D).observe(vpEl);
+
+// Render loop
+(function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+})();
+
+// ════════════════════════════════════════════════════════════════════
+// STL EXPORT
+// ════════════════════════════════════════════════════════════════════
+
+const exporter = new STLExporter();
+window.exportSTL = function() {
+  if (!modelMesh) return;
+  const clone = modelMesh.clone();
+  clone.applyMatrix4(modelGroup.matrixWorld);
+  const bin = exporter.parse(clone, { binary: true });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([bin], { type: 'application/octet-stream' })),
+    download: `model-mage-sketch_h${extH}mm.stl`,
+  });
+  a.click(); URL.revokeObjectURL(a.href);
+};
+
+// ════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════
+
+updateHint();
+scheduleRender();
+
+</script>
+</body>
+</html>
