@@ -1018,15 +1018,18 @@ function drawInProgress() {
 }
 
 function drawSnapIndicator() {
-  // Draw drag-near highlights
-  const DRAG_R=10;
-  const [csx,csy]=wtoc(mouse.x,mouse.y);
-  for (const e of entities) {
-    const pts = getEntityVertices(e);
-    for (const p of pts) {
-      const [px,py]=wtoc(p[0],p[1]);
-      if (Math.hypot(csx-px,csy-py)<DRAG_R) {
-        vertex(p, true);
+  // Draw drag-near highlights — suppressed while any drawing action is in progress
+  const drawing = linePoints.length > 0 || arcPts.length > 0 || splinePts.length > 0 || circleCenter || rectStart || polyCenter;
+  if (!drawing) {
+    const DRAG_R=10;
+    const [csx,csy]=wtoc(mouse.x,mouse.y);
+    for (const e of entities) {
+      const pts = getEntityVertices(e);
+      for (const p of pts) {
+        const [px,py]=wtoc(p[0],p[1]);
+        if (Math.hypot(csx-px,csy-py)<DRAG_R) {
+          vertex(p, true);
+        }
       }
     }
   }
@@ -1512,8 +1515,11 @@ sk.addEventListener('mousemove', e => {
 
   const prevHover = hoverLabelIdx;
   hoverLabelIdx = hitLabel(x, y);
+  const drawing = linePoints.length > 0 || arcPts.length > 0 || splinePts.length > 0 || circleCenter || rectStart || polyCenter;
   if (hoverLabelIdx >= 0) {
     sk.style.cursor = 'pointer';
+  } else if (drawing) {
+    sk.style.cursor = 'crosshair';
   } else {
     const nearV = findNearVertex(x, y);
     sk.style.cursor = nearV ? 'grab' : 'crosshair';
@@ -1533,8 +1539,9 @@ sk.addEventListener('mousedown', e => {
 
   const {x,y}=evXY(e);
 
-  // Check draggable vertex first
-  const nearV = findNearVertex(x, y);
+  // Check draggable vertex — but not while a drawing action is in progress
+  const _drawing = linePoints.length > 0 || arcPts.length > 0 || splinePts.length > 0 || circleCenter || rectStart || polyCenter;
+  const nearV = _drawing ? null : findNearVertex(x, y);
   if (nearV) {
     dragState = nearV;
     dragStarted = true;
