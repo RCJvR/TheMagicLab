@@ -59,6 +59,19 @@
               font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:280px;}
     .hint-box b{color:var(--text);}
 
+    /* ── 3D mode ── */
+    .main.mode-3d .sketch-panel{flex:0;width:0;min-width:0;overflow:hidden;}
+    .main.mode-3d .right-panel{flex:1;width:auto;min-width:0;}
+    /* compact horizontal control strip */
+    .main.mode-3d .ext-panel{display:flex;flex-direction:row;align-items:center;
+      gap:18px;padding:7px 14px;border-bottom:1px solid var(--border);}
+    .main.mode-3d .ext-panel .panel-title{display:none;}
+    .main.mode-3d .ext-panel .pr{flex:1;margin:0;display:flex;align-items:center;gap:8px;}
+    .main.mode-3d .ext-panel .pr-lbl{margin:0;white-space:nowrap;font-size:0.70rem;}
+    .main.mode-3d .ext-panel .pr-val{font-size:0.70rem;}
+    .main.mode-3d .ext-panel input[type=range]{margin:0;}
+    .main.mode-3d .ext-panel > div:last-child{flex-shrink:0;}
+
     /* Length popup */
     #len-popup{position:absolute;display:none;align-items:center;gap:4px;
                background:rgba(10,15,32,0.97);border:1px solid rgba(217,119,6,0.6);
@@ -70,7 +83,7 @@
     #len-popup input:focus{border-color:rgba(217,119,6,0.8);}
     #len-popup .lp-unit{font-size:0.70rem;color:var(--text2);}
 
-    .right-panel{width:360px;flex-shrink:0;display:flex;flex-direction:column;
+    .right-panel{width:300px;flex-shrink:0;display:flex;flex-direction:column;
                  border-left:1px solid var(--border);background:var(--bg2);}
 
     .ext-panel{padding:13px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
@@ -181,6 +194,9 @@
   <div class="tb-sep"></div>
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
   <button class="tb-btn" id="btn-clear" title="Clear sketch">✕ Clear</button>
+  <div class="tb-sep"></div>
+  <div style="margin-left:auto"></div>
+  <button class="tb-btn" id="btn-mode-3d" title="Switch to 3D view">⬡ View 3D</button>
   <div class="tb-sep"></div>
   <span class="tb-label">Grid snap</span>
   <select class="snap-sel" id="snap-sel">
@@ -1932,6 +1948,10 @@ function applyMesh(verts,norms,tris) {
   document.getElementById('vp-ph').style.display='none';
   document.getElementById('vp-badge').style.display='';
   document.getElementById('btn-stl').classList.add('show');
+  // Auto-switch to 3D view on first successful build
+  if (!document.querySelector('.main').classList.contains('mode-3d')) {
+    setMode3d(true);
+  }
 }
 
 function setView({pos,tgt}) {
@@ -1987,6 +2007,44 @@ document.getElementById('btn-stl').addEventListener('click', ()=>{
 });
 
 // ════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════
+// VIEW MODE TOGGLE (Sketch ↔ 3D)
+// ════════════════════════════════════════════════════════════════════
+
+function setMode3d(on) {
+  const main   = document.querySelector('.main');
+  const sketch = document.querySelector('.sketch-panel');
+  const right  = document.querySelector('.right-panel');
+  const ext    = document.querySelector('.ext-panel');
+  const btn    = document.getElementById('btn-mode-3d');
+
+  main.classList.toggle('mode-3d', on);
+  btn.textContent = on ? '✎ Edit Sketch' : '⬡ View 3D';
+  btn.title       = on ? 'Back to 2D sketch' : 'Switch to 3D view';
+
+  if (on) {
+    sketch.style.display = 'none';
+    right.style.cssText = 'flex:1; width:auto; min-width:0;';
+  } else {
+    sketch.style.display = '';
+    right.style.cssText = '';
+  }
+
+  setTimeout(() => {
+    const vp = document.getElementById('vp3d');
+    renderer.setSize(vp.clientWidth, vp.clientHeight);
+    camera.aspect = vp.clientWidth / vp.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.render(scene, camera);
+    if (!on) resize();
+  }, 310);
+}
+
+document.getElementById('btn-mode-3d').addEventListener('click', () => {
+  const is3d = document.querySelector('.main').classList.contains('mode-3d');
+  setMode3d(!is3d);
+});
+
 // SAVE / LOAD SKETCH
 // ════════════════════════════════════════════════════════════════════
 
