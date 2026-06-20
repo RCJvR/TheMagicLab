@@ -132,6 +132,28 @@
     .edge-mode-btn{height:22px;padding:0 8px;border:none;background:none;
       color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;}
     .edge-mode-btn.active{background:rgba(217,119,6,0.2);color:var(--accent2);}
+    .feat-panel{width:200px;flex-shrink:0;border-right:1px solid var(--border);
+      background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
+    .feat-panel-title{font-size:0.68rem;font-weight:700;color:var(--text2);
+      letter-spacing:.09em;text-transform:uppercase;padding:10px 12px 6px;
+      border-bottom:1px solid var(--border);flex-shrink:0;}
+    .feat-list{flex:1;overflow-y:auto;padding:4px 0;}
+    .feat-node{display:flex;align-items:center;gap:7px;padding:5px 12px;
+      cursor:pointer;font-size:0.73rem;color:var(--text2);
+      border-left:2px solid transparent;user-select:none;}
+    .feat-node:hover{background:var(--surface);color:var(--text);}
+    .feat-node.active{background:rgba(217,119,6,0.12);border-left-color:var(--accent);color:var(--accent2);}
+    .feat-node.extrude-node{padding-left:26px;}
+    .feat-node-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .feat-node-op{font-size:0.60rem;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0;}
+    .feat-node-op.op-new {background:rgba(16,185,129,0.2);color:var(--green);}
+    .feat-node-op.op-fuse{background:rgba(59,130,246,0.2);color:var(--blue);}
+    .feat-node-op.op-cut {background:rgba(239,68,68,0.2);color:var(--red);}
+    .feat-add-sketch{margin:6px 10px 8px;padding:5px 0;border-radius:5px;
+      border:1px dashed var(--border);background:none;color:var(--text2);
+      font-size:0.72rem;font-weight:600;cursor:pointer;font-family:inherit;width:calc(100% - 20px);}
+    .feat-add-sketch:hover{border-color:var(--accent);color:var(--accent2);}
+    .main.mode-3d .feat-panel{display:none;}
     .statusbar{height:26px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);
                display:flex;align-items:center;padding:0 12px;gap:14px;
                font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text2);}
@@ -142,8 +164,13 @@
 
 <header>
   <div class="logo">🧙 Model Mage</div>
-  <button class="tb-btn" id="btn-save" title="Save sketch (.json)" style="margin-left:10px">💾 Save</button>
-  <button class="tb-btn" id="btn-load" title="Load sketch (.json)">📂 Load</button>
+  <input type="text" id="filename-input" value="sketch"
+    style="margin-left:10px;height:26px;padding:0 8px;border-radius:5px;border:1px solid var(--border);
+    background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;
+    font-size:0.74rem;width:120px;" title="Filename (without extension)">
+  <span style="font-size:0.72rem;color:var(--text2);margin-right:4px">.json</span>
+  <button class="tb-btn" id="btn-save" title="Save sketch">💾 Save</button>
+  <button class="tb-btn" id="btn-load" title="Load sketch">📂 Load</button>
   <input type="file" id="file-load" accept=".json,application/json" style="display:none">
   <div class="hdr-right">
     <a class="nav-link" href="index.html">← Home</a>
@@ -213,6 +240,12 @@
 </div>
 
 <div class="main">
+
+  <div class="feat-panel" id="feat-panel">
+    <div class="feat-panel-title">Feature Tree</div>
+    <div class="feat-list" id="feat-list"></div>
+    <button class="feat-add-sketch" id="btn-add-sketch">+ Sketch</button>
+  </div>
 
   <div class="sketch-panel">
     <canvas id="sk"></canvas>
@@ -290,6 +323,7 @@
       <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
       <div class="vp-hint">Left: orbit · Right: pan · Scroll: zoom · 1/3/7: views · F: focus</div>
       <div style="position:absolute;bottom:8px;right:8px;display:flex;gap:5px;">
+        <button class="btn-stl" id="btn-face-sketch" style="position:static">✏ Sketch Face</button>
         <button class="btn-stl" id="btn-stl" style="position:static">↓ Export STL</button>
         <button class="btn-stl" id="btn-load-stl" style="position:static">↑ Import STL</button>
         <button class="btn-stl" id="btn-clear-stl" style="position:static;display:none">✕ Clear STL</button>
@@ -331,9 +365,24 @@ const boot = (async () => {
 })();
 self.onmessage = async ({ data }) => {
   if (data.type !== 'build') return;
-  if (!ready) { await boot; if (!ready) return; }
+  if (!ready) { await boot; }
   try {
-    const solid = makeSolid(data.profile, data.height, data.filletR||0, data.chamferR||0);
+    const profileList = data.profiles
+      ?? [{ profile:data.profile, height:data.height, operation:'new',
+            filletR:data.filletR||0, chamferR:data.chamferR||0,
+            planeName:'XY', planeOffset:0 }];
+    let solid = null;
+    for (const item of profileList) {
+      const s = makeSolid(item.profile, item.height, item.filletR||0, item.chamferR||0,
+                          item.planeName||'XY', item.planeOffset||0);
+      if (!solid || item.operation === 'new') {
+        solid = solid ? solid.fuse(s) : s;
+      } else if (item.operation === 'fuse') {
+        solid = solid.fuse(s);
+      } else if (item.operation === 'cut') {
+        solid = solid.cut(s);
+      }
+    }
     const m = solid.mesh({ tolerance:0.04, angularTolerance:10 });
     const v = m.vertices  instanceof Float32Array ? m.vertices  : new Float32Array(m.vertices);
     const n = m.normals   instanceof Float32Array ? m.normals   : new Float32Array(m.normals);
@@ -341,28 +390,28 @@ self.onmessage = async ({ data }) => {
     self.postMessage({ type:'mesh', v, n, t }, [v.buffer, n.buffer, t.buffer]);
   } catch(e) { self.postMessage({ type:'err', msg:e.message }); }
 };
-function makeSolid(p, h, filletR, chamferR) {
+function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
   let solid;
   if (p.type === 'circle') {
-    solid = drawCircle(p.r).sketchOnPlane('XY').extrude(h).translate([p.cx, p.cy, 0]);
+    solid = drawCircle(p.r).sketchOnPlane(planeName, planeOffset).extrude(h).translate([p.cx, p.cy, 0]);
   } else if (p.type === 'rect') {
-    solid = drawRectangle(Math.abs(p.w), Math.abs(p.h)).sketchOnPlane('XY').extrude(h)
+    solid = drawRectangle(Math.abs(p.w), Math.abs(p.h)).sketchOnPlane(planeName, planeOffset).extrude(h)
       .translate([p.x + p.w/2, p.y + p.h/2, 0]);
   } else if (p.type === 'arc') {
     let sk = draw(p.p1).threePointsArc(p.pmid, p.p2).lineTo(p.p1);
-    solid = sk.close().sketchOnPlane('XY').extrude(h);
+    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   } else if (p.type === 'spline') {
     const pts = p.points;
     if (pts.length < 2) throw new Error('Need at least 2 points');
     let sk = draw(pts[0]).splineTo(pts.slice(1));
     sk = sk.lineTo(pts[0]);
-    solid = sk.close().sketchOnPlane('XY').extrude(h);
+    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   } else {
     const pts = p.points;
     if (pts.length < 3) throw new Error('Need at least 3 points');
     let sk = draw(pts[0]);
     for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
-    solid = sk.close().sketchOnPlane('XY').extrude(h);
+    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   }
   if (filletR > 0) {
     const safeR = Math.min(filletR, h*0.45);
@@ -403,7 +452,7 @@ worker.onerror = e => { console.error('[ModelMage] Worker:', e.message); setRebu
 // ════════════════════════════════════════════════════════════════════
 
 let tool       = 'line';  // 'line' | 'polyline' | 'rect' | 'circle' | 'arc' | 'polygon' | 'spline'
-let entities   = [];
+let entities   = []; // legacy ref — use ents()
 let gridSnap   = 5;
 let linePoints = [];      // used by line, polyline
 let rectStart  = null;
@@ -438,6 +487,14 @@ let extH = 40;
 let filletR = 0;
 let chamferR = 0;
 let extTimer = null;
+
+// ── Feature tree ─────────────────────────────────────────────────
+let featureTree = [];
+let activeSketchId = null;
+let nextFeatId = 1;
+function newId(p) { return `${p}-${nextFeatId++}`; }
+function activeSketch() { return featureTree.find(f => f.id === activeSketchId); }
+function ents() { return activeSketch()?.entities ?? []; }
 
 // Selection (for constraint panel) — set by label clicks
 let selection = null;
@@ -531,7 +588,7 @@ function applyAngleSnap(wx, wy) {
 
 function getOSnapCandidates() {
   const cands = [];
-  for (const e of entities) {
+  for (const e of ents()) {
     if (e.construction) continue;
     if (e.type === 'polyline') {
       // Edge midpoints
@@ -629,7 +686,7 @@ function snapPt(wx, wy) {
 
 function allPoints() {
   const pts = [];
-  for (const e of entities) {
+  for (const e of ents()) {
     if (e.type === 'polyline') e.points.forEach(p => pts.push(p));
     else if (e.type === 'rect') {
       pts.push([e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]);
@@ -762,7 +819,7 @@ function drawGrid(cW,cH) {
 }
 
 function drawCommitted() {
-  for (let ei=0; ei<entities.length; ei++) drawEntity(entities[ei], false, ei);
+  for (let ei=0; ei<ents().length; ei++) drawEntity(ents()[ei], false, ei);
 }
 
 function drawEntity(e, preview, entityIdx) {
@@ -858,7 +915,7 @@ function drawEntity(e, preview, entityIdx) {
 function drawSelection() {
   if (!selection) return;
   const ei = selection.entityIdx;
-  const e  = entities[ei];
+  const e  = ents()[ei];
   if (!e) return;
 
   ctx.save();
@@ -1057,7 +1114,7 @@ function drawSnapIndicator() {
   // Edit tool: drag-near highlights
   if (tool === 'edit') {
     const DRAG_R=10;
-    for (const e of entities) {
+    for (const e of ents()) {
       const pts = getEntityVertices(e);
       for (const p of pts) {
         const [px,py]=wtoc(p[0],p[1]);
@@ -1156,8 +1213,8 @@ function getEntityVertices(e) {
 
 function findNearVertex(sx, sy) {
   const DRAG_R = 10;
-  for (let ei=entities.length-1; ei>=0; ei--) {
-    const e = entities[ei];
+  for (let ei=ents().length-1; ei>=0; ei--) {
+    const e = ents()[ei];
     if (e.type === 'polyline') {
       for (let pi=0; pi<e.points.length; pi++) {
         const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
@@ -1189,7 +1246,7 @@ function findNearVertex(sx, sy) {
 }
 
 function applyDragMove(ds, wx, wy) {
-  const e = entities[ds.entityIdx];
+  const e = ents()[ds.entityIdx];
   if (ds.isCircle && e.type==='circle') {
     e.cx = wx; e.cy = wy;
   } else if (ds.isRect && e.type==='rect') {
@@ -1228,7 +1285,7 @@ function updateConstraintPanel() {
   const panel=document.getElementById('cst-panel');
   if (!selection) { panel.style.display='none'; return; }
   panel.style.display='block';
-  const e=entities[selection.entityIdx];
+  const e=ents()[selection.entityIdx];
   if (!e) { panel.style.display='none'; return; }
   const lenRow=document.getElementById('cst-len-row');
   const angRow=document.getElementById('cst-ang-row');
@@ -1274,7 +1331,7 @@ function applyLengthConstraint() {
   if (!selection) return;
   const newLen=parseFloat(document.getElementById('cst-len').value);
   if (!newLen||newLen<=0) return;
-  const e=entities[selection.entityIdx];
+  const e=ents()[selection.entityIdx];
   if (e.type==='polyline') {
     const si=selection.segIdx;
     const p1=e.points[si];
@@ -1297,7 +1354,7 @@ function applyAngleConstraint(forceDeg) {
   const deg = forceDeg !== undefined ? forceDeg : parseFloat(document.getElementById('cst-ang').value);
   if (isNaN(deg)) return;
   const rad=deg*Math.PI/180;
-  const e=entities[selection.entityIdx];
+  const e=ents()[selection.entityIdx];
   if (e.type==='polyline') {
     const si=selection.segIdx;
     const p1=e.points[si];
@@ -1313,13 +1370,13 @@ function applyRadiusConstraint() {
   if (!selection||!selection.isCircle) return;
   const r=parseFloat(document.getElementById('cst-rad').value);
   if (!r||r<=0) return;
-  entities[selection.entityIdx].r=r;
+  ents()[selection.entityIdx].r=r;
   scheduleRender(); scheduleExtrude(); updateConstraintPanel();
 }
 
 function applyParallelToPrev() {
   if (!selection) return;
-  const e=entities[selection.entityIdx];
+  const e=ents()[selection.entityIdx];
   if (e.type!=='polyline') return;
   const si=selection.segIdx;
   if (si<=0) return;
@@ -1386,33 +1443,111 @@ function stitchSegments(segs) {
   return null;
 }
 
-function getProfile() {
-  const openSegs = [];
-  for (const e of entities) {
-    if (e.construction) continue;
-    if (e.type==='polyline'&&e.closed&&e.points.length>=3) return e;
-    if (e.type==='rect'&&e.w>0&&e.h>0) return e;
-    if (e.type==='circle'&&e.r>0) return e;
-    if (e.type==='arc'&&e.p1&&e.pmid&&e.p2) return e;
-    if (e.type==='spline'&&e.points&&e.points.length>=3) return e;
-    if (e.type==='polyline'&&!e.closed&&e.points.length>=2) openSegs.push(e);
+function getAllProfiles(sketch) {
+  if (!sketch) return [];
+  const es = sketch.entities.filter(e => !e.construction);
+  const profiles = [];
+  const usedIdx = new Set();
+
+  for (let i = 0; i < es.length; i++) {
+    const e = es[i];
+    if (e.type==='polyline'&&e.closed&&e.points.length>=3)    { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='rect'&&e.w>0&&e.h>0)                   { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='circle'&&e.r>0)                        { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='arc'&&e.p1&&e.pmid&&e.p2)              { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='spline'&&e.points&&e.points.length>=3) { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
   }
-  if (openSegs.length >= 3) return stitchSegments(openSegs);
-  return null;
+
+  const EPS = 0.6;
+  const openSegs = es.map((e,i)=>({e,i}))
+    .filter(({e,i})=>e.type==='polyline'&&!e.closed&&e.points.length>=2&&!usedIdx.has(i));
+
+  if (openSegs.length >= 3) {
+    function endpts(s){ const p=s.e.points; return [p[0],p[p.length-1]]; }
+    function connects(a,b){
+      const[a0,a1]=endpts(a),[b0,b1]=endpts(b);
+      return Math.hypot(a1[0]-b0[0],a1[1]-b0[1])<EPS||Math.hypot(a1[0]-b1[0],a1[1]-b1[1])<EPS
+          || Math.hypot(a0[0]-b0[0],a0[1]-b0[1])<EPS||Math.hypot(a0[0]-b1[0],a0[1]-b1[1])<EPS;
+    }
+    const visited=new Set();
+    for (let i=0;i<openSegs.length;i++){
+      if(visited.has(i)) continue;
+      const comp=[i],queue=[i]; visited.add(i);
+      while(queue.length){
+        const cur=queue.shift();
+        for(let j=0;j<openSegs.length;j++){
+          if(!visited.has(j)&&connects(openSegs[cur],openSegs[j])){ visited.add(j); comp.push(j); queue.push(j); }
+        }
+      }
+      if(comp.length>=3){
+        const stitched=stitchSegments(comp.map(k=>openSegs[k].e));
+        if(stitched) profiles.push({profile:stitched,srcIdx:-1});
+      }
+    }
+  }
+  return profiles;
+}
+
+function getProfile() {
+  return getAllProfiles(activeSketch())[0]?.profile ?? null;
+}
+
+function planeFromSketch(sketch) {
+  if (!sketch || typeof sketch.plane==='string')
+    return {planeName: sketch?.plane||'XY', planeOffset:0};
+  const map={Z:'XY',Y:'XZ',X:'YZ'};
+  return {planeName:map[sketch.plane.axis]||'XY', planeOffset:sketch.plane.offset};
+}
+
+function syncExtrudeNodes() {
+  const sk = activeSketch();
+  if (!sk) return;
+  const profs = getAllProfiles(sk);
+  const existing = featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
+  for (let i = existing.length; i < profs.length; i++) {
+    featureTree.push({
+      id:newId('ex'), type:'extrude',
+      name: i===0?'Extrude 1':`Extrude ${i+1}`,
+      sketchId:activeSketchId, profileIdx:i,
+      operation: i===0?'new':'fuse',
+      height:extH, filletR, chamferR
+    });
+  }
+  if (existing.length > profs.length) {
+    const keep=new Set(profs.map((_,i)=>i));
+    featureTree=featureTree.filter(f=>
+      f.type!=='extrude'||f.sketchId!==activeSketchId||keep.has(f.profileIdx));
+  }
+  renderFeatureTree();
+}
+
+function collectExtrudePayload() {
+  const sk = activeSketch();
+  if (!sk) return [];
+  syncExtrudeNodes();
+  const profs = getAllProfiles(sk);
+  if (!profs.length) return [];
+  const {planeName,planeOffset} = planeFromSketch(sk);
+  const extNodes = featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
+  return profs.map(({profile},idx)=>{
+    const node=extNodes.find(n=>n.profileIdx===idx)??{operation:'new',height:extH,filletR,chamferR};
+    return {profile, height:node.height, operation:node.operation,
+            filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset};
+  });
 }
 
 function scheduleExtrude() {
   clearTimeout(extTimer);
-  if (getProfile()) extTimer = setTimeout(doExtrude, 300);
+  if (getAllProfiles(activeSketch()).length) extTimer = setTimeout(doExtrude, 300);
 }
 
 function doExtrude() {
-  const p=getProfile();
-  if (!p) return;
+  const profiles = collectExtrudePayload();
+  if (!profiles.length) return;
   setRebuildStatus('building');
-  const msg={type:'build',profile:p,height:extH,filletR,chamferR};
+  const msg = {type:'build', profiles};
   if (workerReady) worker.postMessage(msg);
-  else pendingBuild=msg;
+  else pendingBuild = msg;
 }
 
 window.doExtrude = doExtrude;
@@ -1422,7 +1557,7 @@ window.doExtrude = doExtrude;
 // ════════════════════════════════════════════════════════════════════
 
 function applyLenToEntity(entityIdx, segIdx, newLen) {
-  const e = entities[entityIdx];
+  const e = ents()[entityIdx];
   if (!e || e.type !== 'polyline') return;
   const p1 = e.points[segIdx];
   const ni = (segIdx+1) % e.points.length;
@@ -1499,15 +1634,16 @@ function undoLast() {
   if (splinePts.length>0) { splinePts.pop(); scheduleRender(); return; }
   if (arcPts.length>0) { arcPts.pop(); scheduleRender(); return; }
   if (linePoints.length>0) { linePoints.pop(); scheduleRender(); return; }
-  if (entities.length>0) { entities.pop(); selection=null; updateConstraintPanel(); scheduleRender(); }
+  if (ents().length>0) { ents().pop(); selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree(); }
 }
 window.undoLast = undoLast;
 
 function clearAll() {
-  entities=[]; linePoints=[]; rectStart=null; circleCenter=null;
+  if(activeSketch()) activeSketch().entities = [];
+  linePoints=[]; rectStart=null; circleCenter=null;
   arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
-  selection=null; updateConstraintPanel(); scheduleRender();
+  selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree();
 }
 window.clearAll = clearAll;
 
@@ -1536,6 +1672,8 @@ document.getElementById('snap-sel').addEventListener('change', function() {
 document.getElementById('s-h').addEventListener('input', function() {
   extH = +this.value;
   document.getElementById('v-h').textContent = this.value + ' mm';
+  const _eid=document.querySelector('.ext-panel')?.dataset?.activeExtrudeId;
+  const _en=featureTree.find(f=>f.id===_eid); if(_en){_en.height=extH;renderFeatureTree();}
   scheduleExtrude();
 });
 
@@ -1564,6 +1702,8 @@ document.getElementById('s-edge').addEventListener('input', function() {
   document.getElementById('v-edge').textContent = v + ' mm';
   if (edgeMode === 'fillet') { filletR = v; chamferR = 0; }
   else { chamferR = v; filletR = 0; }
+  const _eid2=document.querySelector('.ext-panel')?.dataset?.activeExtrudeId;
+  const _en2=featureTree.find(f=>f.id===_eid2); if(_en2){_en2.filletR=filletR;_en2.chamferR=chamferR;renderFeatureTree();}
   scheduleExtrude();
 });
 
@@ -1667,7 +1807,7 @@ sk.addEventListener('mouseup', e => {
     const x=Math.min(rectStart.x,mouse.x), y=Math.min(rectStart.y,mouse.y);
     const w=Math.abs(mouse.x-rectStart.x), h=Math.abs(mouse.y-rectStart.y);
     if (w>0.5&&h>0.5) {
-      entities.push({type:'rect',x,y,w,h,construction:constructionMode});
+      activeSketch().entities.push({type:'rect',x,y,w,h,construction:constructionMode});
       scheduleExtrude();
     }
     rectStart=null; scheduleRender();
@@ -1687,7 +1827,7 @@ sk.addEventListener('click', e => {
   if (li >= 0) {
     const hit = labelHits[li];
     if (hit.entityIdx >= 0) {
-      const ent = entities[hit.entityIdx];
+      const ent = ents()[hit.entityIdx];
       if (ent) {
         if (ent.type === 'circle') {
           selection = { entityIdx: hit.entityIdx, isCircle: true };
@@ -1711,7 +1851,7 @@ sk.addEventListener('click', e => {
 
   if (tool==='circle'&&circleCenter) {
     const r=Math.hypot(mouse.x-circleCenter.x,mouse.y-circleCenter.y);
-    if (r>0.5) { entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}); scheduleExtrude(); }
+    if (r>0.5) { activeSketch().entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}); scheduleExtrude(); }
     circleCenter=null; scheduleRender(); return;
   }
 
@@ -1720,7 +1860,7 @@ sk.addEventListener('click', e => {
     arcPts.push([mouse.x, mouse.y]);
     if (arcPts.length===3) {
       const [p1,pmid,p2] = arcPts;
-      entities.push({type:'arc', p1, pmid, p2, construction:constructionMode});
+      activeSketch().entities.push({type:'arc', p1, pmid, p2, construction:constructionMode});
       arcPts = [];
       scheduleExtrude();
     }
@@ -1742,7 +1882,7 @@ sk.addEventListener('click', e => {
           const a = baseAngle + (2*Math.PI*i/n);
           pts.push([polyCenter.x + r*Math.cos(a), polyCenter.y + r*Math.sin(a)]);
         }
-        entities.push({type:'polyline', points:pts, closed:true, construction:constructionMode});
+        activeSketch().entities.push({type:'polyline', points:pts, closed:true, construction:constructionMode});
         scheduleExtrude();
       }
       polyCenter = null;
@@ -1765,8 +1905,8 @@ sk.addEventListener('click', e => {
     } else {
       const p1 = linePoints[0];
       const p2 = [mouse.x, mouse.y];
-      const ei = entities.length;
-      entities.push({type:'polyline', points:[p1,p2], closed:false, construction:constructionMode});
+      const ei = ents().length;
+      activeSketch().entities.push({type:'polyline', points:[p1,p2], closed:false, construction:constructionMode});
       linePoints = [];
       scheduleExtrude();
       const [sx2,sy2]=wtoc(p2[0],p2[1]);
@@ -1784,7 +1924,7 @@ sk.addEventListener('click', e => {
   // Polyline tool
   if (tool==='polyline') {
     if (linePoints.length>=3&&isNearFirst(mouse.x,mouse.y)) {
-      entities.push({type:'polyline',points:[...linePoints],closed:true,construction:constructionMode});
+      activeSketch().entities.push({type:'polyline',points:[...linePoints],closed:true,construction:constructionMode});
       linePoints=[]; scheduleExtrude();
     } else {
       linePoints.push([mouse.x,mouse.y]);
@@ -1799,7 +1939,7 @@ sk.addEventListener('dblclick', e => {
   if (tool==='spline' && splinePts.length>=2) {
     // Remove the duplicate point added by the second click of dblclick
     if (splinePts.length > 2) splinePts.pop();
-    entities.push({type:'spline', points:[...splinePts], construction:constructionMode});
+    activeSketch().entities.push({type:'spline', points:[...splinePts], construction:constructionMode});
     splinePts = [];
     scheduleExtrude();
     scheduleRender();
@@ -1807,7 +1947,7 @@ sk.addEventListener('dblclick', e => {
   }
   if (tool==='polyline'&&linePoints.length>=2) {
     linePoints.pop();
-    entities.push({type:'polyline',points:[...linePoints],closed:false,construction:constructionMode});
+    activeSketch().entities.push({type:'polyline',points:[...linePoints],closed:false,construction:constructionMode});
     linePoints=[]; scheduleRender();
   }
 });
@@ -1859,6 +1999,11 @@ window.addEventListener('keydown', e => {
   if (e.key === ' ' && !inp) { e.preventDefault(); spaceHeld = true; scheduleRender(); return; }
 
   if (!inp) {
+    if (e.key==='Escape' && facesketchMode) {
+      facesketchMode=false; renderer.domElement.style.cursor='';
+      document.getElementById('st-info').textContent='Face sketch cancelled';
+      return;
+    }
     if (e.key==='Escape') {
       hideLenPopup();
       linePoints=[]; rectStart=null; circleCenter=null;
@@ -1874,7 +2019,7 @@ window.addEventListener('keydown', e => {
     if (e.key==='s'||e.key==='S') setTool('spline');
     if (e.key==='e'||e.key==='E') setTool('edit');
     if (e.key==='x'||e.key==='X') toggleConstructionMode();
-    if (e.key==='Delete') { if (entities.length>0){ entities.pop(); scheduleRender(); } }
+    if (e.key==='Delete') { if (ents().length>0){ ents().pop(); scheduleRender(); } }
 
     // Arrow key pan (2D canvas)
     const PAN=30;
@@ -2002,6 +2147,80 @@ new ResizeObserver(resize3D).observe(vpEl);
 })();
 
 // ════════════════════════════════════════════════════════════════════
+// FACE SKETCHING
+// ════════════════════════════════════════════════════════════════════
+
+let facesketchMode = false;
+let _faceMouseDownPos = null;
+
+function enterFaceSketchMode() {
+  if (!modelMesh) { setRebuildStatus('Build a model first'); return; }
+  facesketchMode = true;
+  renderer.domElement.style.cursor = 'crosshair';
+  document.getElementById('st-info').textContent = 'Click a flat face to start a sketch · Esc to cancel';
+}
+
+function detectAxisPlane(normal, hitPoint) {
+  const TOL = Math.cos(Math.PI / 36);
+  const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
+  const localPt = hitPoint.clone().applyMatrix4(invMat);
+  const checks=[
+    {axis:'Z',dir:new THREE.Vector3(0,0,1),flip:false},
+    {axis:'Z',dir:new THREE.Vector3(0,0,-1),flip:true},
+    {axis:'Y',dir:new THREE.Vector3(0,1,0),flip:false},
+    {axis:'Y',dir:new THREE.Vector3(0,-1,0),flip:true},
+    {axis:'X',dir:new THREE.Vector3(1,0,0),flip:false},
+    {axis:'X',dir:new THREE.Vector3(-1,0,0),flip:true},
+  ];
+  for (const {axis,dir,flip} of checks) {
+    if (normal.dot(dir) >= TOL) {
+      const offset = axis==='Z'?localPt.z : axis==='Y'?localPt.y : localPt.x;
+      return {axis, offset:parseFloat(offset.toFixed(2)), flip};
+    }
+  }
+  return null;
+}
+
+function createFaceSketch(plane) {
+  facesketchMode = false;
+  renderer.domElement.style.cursor = '';
+  const skId = newId('sk');
+  const n = featureTree.filter(f=>f.type==='sketch').length + 1;
+  featureTree.push({id:skId, type:'sketch', name:`Sketch ${n}`, plane, entities:[]});
+  activeSketchId = skId;
+  const pl = `${plane.axis} +${plane.offset.toFixed(1)}`;
+  document.querySelector('.sk-overlay').textContent = `Sketch ${n} · ${pl} Plane`;
+  setMode3d(false);
+  renderFeatureTree();
+  scheduleRender();
+}
+
+renderer.domElement.addEventListener('mousedown', e => { _faceMouseDownPos=[e.clientX,e.clientY]; });
+renderer.domElement.addEventListener('click', e => {
+  if (!facesketchMode||!modelMesh) return;
+  if (_faceMouseDownPos) {
+    if (Math.hypot(e.clientX-_faceMouseDownPos[0],e.clientY-_faceMouseDownPos[1])>4) return;
+  }
+  const rect=renderer.domElement.getBoundingClientRect();
+  const ndc=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,
+                              -((e.clientY-rect.top)/rect.height)*2+1);
+  const raycaster=new THREE.Raycaster();
+  raycaster.setFromCamera(ndc,camera);
+  const hits=raycaster.intersectObject(modelMesh);
+  if (!hits.length) return;
+  const hit=hits[0];
+  const faceNormal=hit.face.normal.clone().transformDirection(modelGroup.matrixWorld).normalize();
+  const plane=detectAxisPlane(faceNormal,hit.point);
+  if (!plane) {
+    document.getElementById('st-info').textContent='Not axis-aligned — try a flat face';
+    facesketchMode=false; renderer.domElement.style.cursor=''; return;
+  }
+  createFaceSketch(plane);
+});
+
+document.getElementById('btn-face-sketch').addEventListener('click', enterFaceSketchMode);
+
+// ════════════════════════════════════════════════════════════════════
 // STL EXPORT
 // ════════════════════════════════════════════════════════════════════
 
@@ -2057,14 +2276,104 @@ document.getElementById('btn-mode-3d').addEventListener('click', () => {
   setMode3d(!is3d);
 });
 
+// ════════════════════════════════════════════════════════════════════
+// FEATURE TREE
+// ════════════════════════════════════════════════════════════════════
+
+function initFeatureTree() {
+  nextFeatId = 1;
+  const skId = newId('sk');
+  featureTree = [{id:skId, type:'sketch', name:'Sketch 1', plane:'XY', entities:[]}];
+  activeSketchId = skId;
+}
+
+function migrateV1(legacyEntities) {
+  nextFeatId = 1;
+  const skId = newId('sk');
+  const sk = {id:skId, type:'sketch', name:'Sketch 1', plane:'XY', entities:legacyEntities};
+  featureTree = [sk];
+  activeSketchId = skId;
+  const profs = getAllProfiles(sk);
+  profs.forEach((_,idx)=>{
+    featureTree.push({
+      id:newId('ex'), type:'extrude',
+      name:idx===0?'Extrude 1':`Extrude ${idx+1}`,
+      sketchId:skId, profileIdx:idx,
+      operation:idx===0?'new':'fuse',
+      height:extH, filletR, chamferR
+    });
+  });
+}
+
+function renderFeatureTree() {
+  const list = document.getElementById('feat-list');
+  if (!list) return;
+  list.innerHTML = '';
+  for (const node of featureTree) {
+    const div = document.createElement('div');
+    div.className = 'feat-node' + (node.type==='extrude'?' extrude-node':'');
+    if (node.type==='sketch' && node.id===activeSketchId) div.classList.add('active');
+    const icon = node.type==='sketch' ? '✏' : '⬡';
+    let sub='', badge='';
+    if (node.type==='extrude') {
+      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">h${node.height}mm`
+        +(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:'')+`</span>`;
+      badge=`<span class="feat-node-op op-${node.operation}">${node.operation.toUpperCase()}</span>`;
+    } else {
+      const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
+      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">${pl}</span>`;
+    }
+    div.innerHTML=`<span style="flex-shrink:0">${icon}</span><span class="feat-node-name">${node.name}${sub}</span>${badge}`;
+    div.addEventListener('click',()=>selectFeatureNode(node));
+    list.appendChild(div);
+  }
+}
+
+function selectFeatureNode(node) {
+  if (node.type==='sketch') {
+    activeSketchId = node.id;
+    setMode3d(false);
+    const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis} +${node.plane.offset.toFixed(1)}`;
+    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl} Plane`;
+    scheduleRender();
+  } else if (node.type==='extrude') {
+    const ep=document.querySelector('.ext-panel');
+    ep.dataset.activeExtrudeId=node.id;
+    document.getElementById('s-h').value=node.height;
+    document.getElementById('v-h').textContent=node.height+' mm';
+    extH=node.height;
+    const v=node.filletR>0?node.filletR:node.chamferR;
+    edgeMode=node.filletR>0?'fillet':'chamfer';
+    document.getElementById(edgeMode==='fillet'?'btn-fillet-mode':'btn-chamfer-mode').classList.add('active');
+    document.getElementById(edgeMode==='fillet'?'btn-chamfer-mode':'btn-fillet-mode').classList.remove('active');
+    document.getElementById('s-edge').value=v;
+    document.getElementById('v-edge').textContent=v+' mm';
+    filletR=node.filletR; chamferR=node.chamferR;
+    scheduleExtrude();
+  }
+  renderFeatureTree();
+}
+
+document.getElementById('btn-add-sketch').addEventListener('click', ()=>{
+  const skId=newId('sk');
+  const n=featureTree.filter(f=>f.type==='sketch').length+1;
+  featureTree.push({id:skId,type:'sketch',name:`Sketch ${n}`,plane:'XY',entities:[]});
+  activeSketchId=skId;
+  document.querySelector('.sk-overlay').textContent=`Sketch ${n} · XY Plane`;
+  setMode3d(false);
+  renderFeatureTree();
+  scheduleRender();
+});
+
 // SAVE / LOAD SKETCH
 // ════════════════════════════════════════════════════════════════════
 
 document.getElementById('btn-save').addEventListener('click', () => {
-  const data = JSON.stringify({ version: 1, entities }, null, 2);
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([data], {type: 'application/json'})),
-    download: 'sketch.json',
+  const name=(document.getElementById('filename-input')?.value||'sketch').trim()||'sketch';
+  const data=JSON.stringify({version:2,filename:name,featureTree,entities:ents()},null,2);
+  const a=Object.assign(document.createElement('a'),{
+    href:URL.createObjectURL(new Blob([data],{type:'application/json'})),
+    download:name.replace(/[^\w\-_.]/g,'_')+'.json',
   });
   a.click(); URL.revokeObjectURL(a.href);
 });
@@ -2074,20 +2383,23 @@ document.getElementById('btn-load').addEventListener('click', () => {
 });
 
 document.getElementById('file-load').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
     try {
-      const data = JSON.parse(ev.target.result);
-      if (!Array.isArray(data.entities)) throw new Error('Invalid .mage file');
-      entities = data.entities;
-      scheduleRender();
-      scheduleExtrude();
-    } catch { alert('Could not read sketch file.'); }
+      const data=JSON.parse(ev.target.result);
+      if (data.version===2&&Array.isArray(data.featureTree)) {
+        featureTree=data.featureTree;
+        nextFeatId=Math.max(...featureTree.map(f=>parseInt(f.id.split('-')[1])||0),0)+1;
+        activeSketchId=featureTree.find(f=>f.type==='sketch')?.id??null;
+        const fi=document.getElementById('filename-input'); if(fi&&data.filename) fi.value=data.filename;
+      } else if (Array.isArray(data.entities)) {
+        migrateV1(data.entities);
+      } else throw new Error('Invalid file');
+      renderFeatureTree(); scheduleRender(); scheduleExtrude();
+    } catch(err){ alert('Could not read sketch file: '+err.message); }
   };
-  reader.readAsText(file);
-  e.target.value = '';
+  reader.readAsText(file); e.target.value='';
 });
 
 // ════════════════════════════════════════════════════════════════════
@@ -2161,6 +2473,8 @@ document.getElementById('btn-clear-stl').addEventListener('click', () => {
 // ════════════════════════════════════════════════════════════════════
 
 updateHint();
+initFeatureTree();
+renderFeatureTree();
 scheduleRender();
 
 </script>
