@@ -162,6 +162,11 @@
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 11 C3 2,5 11,7 7 S11 1,13 4"/></svg>
     Spline
   </button>
+  <!-- Edit Points tool -->
+  <button class="tb-btn" id="tool-edit" title="Edit Points — drag vertices (E)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="11" r="2"/><circle cx="11" cy="3" r="2"/><line x1="4.4" y1="9.6" x2="9.6" y2="4.4"/><circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg>
+    Edit
+  </button>
   <!-- Construction mode toggle -->
   <button class="tb-btn" id="btn-construct" title="Construction mode — entities are reference-only (X)">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2.5,2"><line x1="1" y1="13" x2="13" y2="1"/></svg>
@@ -1018,9 +1023,8 @@ function drawInProgress() {
 }
 
 function drawSnapIndicator() {
-  // Draw drag-near highlights — suppressed while any drawing action is in progress
-  const drawing = linePoints.length > 0 || arcPts.length > 0 || splinePts.length > 0 || circleCenter || rectStart || polyCenter;
-  if (!drawing) {
+  // Draw drag-near highlights — only in Edit tool
+  if (tool === 'edit') {
     const DRAG_R=10;
     const [csx,csy]=wtoc(mouse.x,mouse.y);
     for (const e of entities) {
@@ -1400,6 +1404,7 @@ function updateHint() {
     arc:      '<b>Arc tool (A)</b><br>Click 1: start · Click 2: through-point · Click 3: end<br>Three-point arc',
     polygon:  '<b>Polygon tool (G)</b><br>Click 1: set centre · Click 2: set radius/rotation<br>Adjust sides in toolbar',
     spline:   '<b>Spline tool (S)</b><br>Click to add control points<br>Double-click: end · Right-click/Esc: cancel',
+    edit:     '<b>Edit Points (E)</b><br>Hover a vertex → drag to reposition<br>Click label to constrain · Esc: back to Line',
   };
   document.getElementById('hint-box').innerHTML = hints[tool]||'';
 }
@@ -1432,6 +1437,7 @@ document.getElementById('tool-circle').addEventListener('click',  ()=>setTool('c
 document.getElementById('tool-arc').addEventListener('click',     ()=>setTool('arc'));
 document.getElementById('tool-polygon').addEventListener('click', ()=>setTool('polygon'));
 document.getElementById('tool-spline').addEventListener('click',  ()=>setTool('spline'));
+document.getElementById('tool-edit').addEventListener('click',    ()=>setTool('edit'));
 document.getElementById('btn-undo').addEventListener('click',     ()=>undoLast());
 document.getElementById('btn-clear').addEventListener('click',    ()=>clearAll());
 document.getElementById('btn-rebuild').addEventListener('click',  ()=>doExtrude());
@@ -1515,14 +1521,13 @@ sk.addEventListener('mousemove', e => {
 
   const prevHover = hoverLabelIdx;
   hoverLabelIdx = hitLabel(x, y);
-  const drawing = linePoints.length > 0 || arcPts.length > 0 || splinePts.length > 0 || circleCenter || rectStart || polyCenter;
   if (hoverLabelIdx >= 0) {
     sk.style.cursor = 'pointer';
-  } else if (drawing) {
-    sk.style.cursor = 'crosshair';
-  } else {
+  } else if (tool === 'edit') {
     const nearV = findNearVertex(x, y);
-    sk.style.cursor = nearV ? 'grab' : 'crosshair';
+    sk.style.cursor = nearV ? 'grab' : 'default';
+  } else {
+    sk.style.cursor = 'crosshair';
   }
   if (hoverLabelIdx !== prevHover) scheduleRender();
   else scheduleRender();
@@ -1539,9 +1544,8 @@ sk.addEventListener('mousedown', e => {
 
   const {x,y}=evXY(e);
 
-  // Check draggable vertex — but not while a drawing action is in progress
-  const _drawing = linePoints.length > 0 || arcPts.length > 0 || splinePts.length > 0 || circleCenter || rectStart || polyCenter;
-  const nearV = _drawing ? null : findNearVertex(x, y);
+  // Drag only active in Edit tool
+  const nearV = tool === 'edit' ? findNearVertex(x, y) : null;
   if (nearV) {
     dragState = nearV;
     dragStarted = true;
@@ -1774,6 +1778,7 @@ window.addEventListener('keydown', e => {
     if (e.key==='a'||e.key==='A') setTool('arc');
     if (e.key==='g'||e.key==='G') setTool('polygon');
     if (e.key==='s'||e.key==='S') setTool('spline');
+    if (e.key==='e'||e.key==='E') setTool('edit');
     if (e.key==='x'||e.key==='X') toggleConstructionMode();
     if (e.key==='Delete') { if (entities.length>0){ entities.pop(); scheduleRender(); } }
 
