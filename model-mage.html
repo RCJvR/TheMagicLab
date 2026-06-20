@@ -1030,11 +1030,21 @@ function drawInProgress() {
   if (tool==='rect' && rectStart) {
     drawEntity({type:'rect',x:Math.min(rectStart.x,mx),y:Math.min(rectStart.y,my),
                 w:Math.abs(mx-rectStart.x),h:Math.abs(my-rectStart.y),construction:constructionMode}, true, undefined);
+    // anchor dot at first corner
+    const [ax,ay]=wtoc(rectStart.x,rectStart.y);
+    ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.arc(ax,ay,4,0,Math.PI*2); ctx.fill();
+    // W×H dimension labels
+    dimLabel(rectStart,[mx,my],-1,-1);
   }
 
   if (tool==='circle' && circleCenter) {
     const r=Math.hypot(mx-circleCenter.x,my-circleCenter.y);
     drawEntity({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}, true, undefined);
+    // anchor dot at center
+    const [cx2,cy2]=wtoc(circleCenter.x,circleCenter.y);
+    ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.arc(cx2,cy2,4,0,Math.PI*2); ctx.fill();
+    // radius label
+    if (r>0.5) dimLabel([circleCenter.x,circleCenter.y],[mx,my],-1,-1);
   }
 
   // Arc in-progress
@@ -1803,8 +1813,7 @@ sk.addEventListener('mousedown', e => {
   }
   dragStarted = false;
 
-  if (tool==='rect') { rectStart={x:mouse.x,y:mouse.y}; }
-  if (tool==='circle'&&!circleCenter) { circleCenter={x:mouse.x,y:mouse.y}; }
+  // rect and circle use two-click (set anchor on click, not mousedown)
 });
 
 sk.addEventListener('mouseup', e => {
@@ -1819,15 +1828,7 @@ sk.addEventListener('mouseup', e => {
     return;
   }
 
-  if (tool==='rect'&&rectStart) {
-    const x=Math.min(rectStart.x,mouse.x), y=Math.min(rectStart.y,mouse.y);
-    const w=Math.abs(mouse.x-rectStart.x), h=Math.abs(mouse.y-rectStart.y);
-    if (w>0.5&&h>0.5) {
-      activeSketch().entities.push({type:'rect',x,y,w,h,construction:constructionMode});
-      scheduleExtrude();
-    }
-    rectStart=null; scheduleRender();
-  }
+  // rect commits on click, not mouseup
 });
 
 sk.addEventListener('click', e => {
@@ -1865,10 +1866,32 @@ sk.addEventListener('click', e => {
     return;
   }
 
-  if (tool==='circle'&&circleCenter) {
-    const r=Math.hypot(mouse.x-circleCenter.x,mouse.y-circleCenter.y);
-    if (r>0.5) { activeSketch().entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}); scheduleExtrude(); }
-    circleCenter=null; scheduleRender(); return;
+  // ── Rect: two-click (corner → corner) ───────────────────────────
+  if (tool==='rect') {
+    if (!rectStart) {
+      rectStart = {x:mouse.x, y:mouse.y};
+      scheduleRender(); return;
+    } else {
+      const x=Math.min(rectStart.x,mouse.x), y=Math.min(rectStart.y,mouse.y);
+      const w=Math.abs(mouse.x-rectStart.x), h=Math.abs(mouse.y-rectStart.y);
+      if (w>0.5&&h>0.5) {
+        activeSketch().entities.push({type:'rect',x,y,w,h,construction:constructionMode});
+        scheduleExtrude();
+      }
+      rectStart=null; scheduleRender(); return;
+    }
+  }
+
+  // ── Circle: two-click (center → edge) ────────────────────────────
+  if (tool==='circle') {
+    if (!circleCenter) {
+      circleCenter = {x:mouse.x, y:mouse.y};
+      scheduleRender(); return;
+    } else {
+      const r=Math.hypot(mouse.x-circleCenter.x,mouse.y-circleCenter.y);
+      if (r>0.5) { activeSketch().entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}); scheduleExtrude(); }
+      circleCenter=null; scheduleRender(); return;
+    }
   }
 
   // Arc tool — 3 clicks
