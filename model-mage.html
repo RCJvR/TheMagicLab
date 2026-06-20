@@ -126,6 +126,9 @@
 
 <header>
   <div class="logo">🧙 Model Mage</div>
+  <button class="tb-btn" id="btn-save" title="Save sketch (.mage)" style="margin-left:10px">💾 Save</button>
+  <button class="tb-btn" id="btn-load" title="Load sketch (.mage)">📂 Load</button>
+  <input type="file" id="file-load" accept=".mage,.json" style="display:none">
   <div class="hdr-right">
     <a class="nav-link" href="index.html">← Home</a>
     <a class="nav-link accent" href="model-mage-shapes.html">⬡ 3D Models →</a>
@@ -178,10 +181,6 @@
   <div class="tb-sep"></div>
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
   <button class="tb-btn" id="btn-clear" title="Clear sketch">✕ Clear</button>
-  <div class="tb-sep"></div>
-  <button class="tb-btn" id="btn-save" title="Save sketch (.mage)">💾 Save</button>
-  <button class="tb-btn" id="btn-load" title="Load sketch (.mage)">📂 Load</button>
-  <input type="file" id="file-load" accept=".mage,.json" style="display:none">
   <div class="tb-sep"></div>
   <span class="tb-label">Grid snap</span>
   <select class="snap-sel" id="snap-sel">
@@ -269,8 +268,11 @@
       </div>
       <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
       <div class="vp-hint">Left: orbit · Right: pan · Scroll: zoom · 1/3/7: views · F: focus</div>
-      <button class="btn-stl" id="btn-stl">↓ STL</button>
-      <button class="btn-stl" id="btn-load-stl" style="right:70px">↑ STL</button>
+      <div style="position:absolute;bottom:8px;right:8px;display:flex;gap:5px;">
+        <button class="btn-stl" id="btn-stl" style="position:static">↓ Export STL</button>
+        <button class="btn-stl" id="btn-load-stl" style="position:static">↑ Import STL</button>
+        <button class="btn-stl" id="btn-clear-stl" style="position:static;display:none">✕ Clear STL</button>
+      </div>
       <input type="file" id="file-load-stl" accept=".stl" style="display:none">
     </div>
 
@@ -2065,9 +2067,23 @@ document.getElementById('file-load-stl').addEventListener('change', e => {
     document.getElementById('vp-ph').style.display = 'none';
     document.getElementById('vp-badge').style.display = 'block';
     document.getElementById('vp-badge').textContent = `STL · ${file.name}`;
+    document.getElementById('btn-clear-stl').style.display = '';
   };
   reader.readAsArrayBuffer(file);
   e.target.value = '';
+});
+
+document.getElementById('btn-clear-stl').addEventListener('click', () => {
+  for (const m of importedMeshes) { scene.remove(m); m.geometry.dispose(); m.material.dispose(); }
+  importedMeshes = [];
+  document.getElementById('btn-clear-stl').style.display = 'none';
+  if (!modelMesh) {
+    document.getElementById('vp-ph').style.display = '';
+    document.getElementById('vp-badge').style.display = 'none';
+  } else {
+    document.getElementById('vp-badge').textContent = 'replicad · OpenCascade WASM';
+  }
+  renderer.render(scene, camera);
 });
 
 // ════════════════════════════════════════════════════════════════════
