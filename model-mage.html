@@ -179,6 +179,10 @@
   <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
   <button class="tb-btn" id="btn-clear" title="Clear sketch">✕ Clear</button>
   <div class="tb-sep"></div>
+  <button class="tb-btn" id="btn-save" title="Save sketch (.mage)">💾 Save</button>
+  <button class="tb-btn" id="btn-load" title="Load sketch (.mage)">📂 Load</button>
+  <input type="file" id="file-load" accept=".mage,.json" style="display:none">
+  <div class="tb-sep"></div>
   <span class="tb-label">Grid snap</span>
   <select class="snap-sel" id="snap-sel">
     <option value="1">1 mm</option>
@@ -266,6 +270,8 @@
       <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
       <div class="vp-hint">Left: orbit · Right: pan · Scroll: zoom · 1/3/7: views · F: focus</div>
       <button class="btn-stl" id="btn-stl">↓ STL</button>
+      <button class="btn-stl" id="btn-load-stl" style="right:70px">↑ STL</button>
+      <input type="file" id="file-load-stl" accept=".stl" style="display:none">
     </div>
 
   </div>
@@ -1976,6 +1982,92 @@ document.getElementById('btn-stl').addEventListener('click', ()=>{
     download:`model-mage-sketch_h${extH}mm.stl`,
   });
   a.click(); URL.revokeObjectURL(a.href);
+});
+
+// ════════════════════════════════════════════════════════════════════
+// SAVE / LOAD SKETCH
+// ════════════════════════════════════════════════════════════════════
+
+document.getElementById('btn-save').addEventListener('click', () => {
+  const data = JSON.stringify({ version: 1, entities }, null, 2);
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([data], {type: 'application/json'})),
+    download: 'sketch.mage',
+  });
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('btn-load').addEventListener('click', () => {
+  document.getElementById('file-load').click();
+});
+
+document.getElementById('file-load').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data.entities)) throw new Error('Invalid .mage file');
+      entities = data.entities;
+      scheduleRender();
+      scheduleExtrude();
+    } catch { alert('Could not read sketch file.'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// ════════════════════════════════════════════════════════════════════
+// LOAD STL INTO 3D VIEW
+// ════════════════════════════════════════════════════════════════════
+
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+const stlLoader = new STLLoader();
+let importedMeshes = [];
+
+document.getElementById('btn-load-stl').addEventListener('click', () => {
+  document.getElementById('file-load-stl').click();
+});
+
+document.getElementById('file-load-stl').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const geo = stlLoader.parse(ev.target.result);
+    geo.computeVertexNormals();
+    // Centre the geometry
+    geo.computeBoundingBox();
+    const box = geo.boundingBox;
+    const cx = (box.min.x + box.max.x) / 2;
+    const cy = (box.min.y + box.max.y) / 2;
+    geo.translate(-cx, -cy, -box.min.z);
+
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x6b7db3, roughness: 0.55, metalness: 0.25,
+      transparent: true, opacity: 0.82,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+    importedMeshes.push(mesh);
+
+    // Focus camera on it
+    const sphere = new THREE.Box3().setFromObject(mesh).getBoundingSphere(new THREE.Sphere());
+    controls.target.copy(sphere.center);
+    camera.position.set(sphere.center.x + sphere.radius * 2,
+                        sphere.center.y + sphere.radius * 2,
+                        sphere.center.z + sphere.radius * 2);
+    controls.update();
+    renderer.render(scene, camera);
+
+    document.getElementById('vp-ph').style.display = 'none';
+    document.getElementById('vp-badge').style.display = 'block';
+    document.getElementById('vp-badge').textContent = `STL · ${file.name}`;
+  };
+  reader.readAsArrayBuffer(file);
+  e.target.value = '';
 });
 
 // ════════════════════════════════════════════════════════════════════
