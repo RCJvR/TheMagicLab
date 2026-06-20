@@ -575,8 +575,8 @@ function snapPt(wx, wy) {
     activeOSnap = null;
   }
 
-  // 1. Point snap — nearest vertex within 14px screen
-  const SNAP_PX = 14;
+  // 1. Point snap — nearest vertex within 20px screen
+  const SNAP_PX = 20;
   let best = null, bestD = SNAP_PX;
   for (const pt of allPoints()) {
     const [sx,sy] = wtoc(pt[0],pt[1]);
@@ -1023,10 +1023,11 @@ function drawInProgress() {
 }
 
 function drawSnapIndicator() {
-  // Draw drag-near highlights — only in Edit tool
+  const [csx,csy]=wtoc(mouse.x,mouse.y);
+
+  // Edit tool: drag-near highlights
   if (tool === 'edit') {
     const DRAG_R=10;
-    const [csx,csy]=wtoc(mouse.x,mouse.y);
     for (const e of entities) {
       const pts = getEntityVertices(e);
       for (const p of pts) {
@@ -1035,6 +1036,30 @@ function drawSnapIndicator() {
           vertex(p, true);
         }
       }
+    }
+  }
+
+  // Drawing tools: show yellow square when snapped onto an existing vertex
+  if (tool !== 'edit' && !activeOSnap) {
+    const SNAP_PX = 20;
+    let snapTarget = null;
+    for (const pt of allPoints()) {
+      const [px,py] = wtoc(pt[0],pt[1]);
+      const d = Math.hypot(csx-px, csy-py);
+      if (d < SNAP_PX) { snapTarget = [px,py]; break; }
+    }
+    if (snapTarget) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(245,158,11,1)';
+      ctx.lineWidth = 1.8;
+      ctx.strokeRect(snapTarget[0]-7, snapTarget[1]-7, 14, 14);
+      ctx.fillStyle = 'rgba(245,158,11,0.12)';
+      ctx.fillRect(snapTarget[0]-7, snapTarget[1]-7, 14, 14);
+      ctx.fillStyle = 'rgba(245,158,11,0.9)';
+      ctx.font = '9px JetBrains Mono,monospace';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText('Endpt', snapTarget[0]+11, snapTarget[1]+1);
+      ctx.restore();
     }
   }
 
@@ -1304,7 +1329,36 @@ function isNearFirst(wx, wy) {
 // PROFILE / EXTRUDE
 // ════════════════════════════════════════════════════════════════════
 
+function stitchSegments(segs) {
+  // Try to chain open polyline segments into a single closed loop
+  const EPS = 0.6; // world-unit tolerance (< half a grid step at 1mm snap)
+  const pool = segs.map(s => ({pts: s.points.slice(), used: false}));
+  const chain = pool[0].pts.slice();
+  pool[0].used = true;
+  for (let iter = 0; iter < pool.length - 1; iter++) {
+    const tail = chain[chain.length - 1];
+    let found = false;
+    for (const seg of pool) {
+      if (seg.used) continue;
+      const s = seg.pts[0], e2 = seg.pts[seg.pts.length - 1];
+      if (Math.hypot(tail[0]-s[0], tail[1]-s[1]) < EPS) {
+        chain.push(...seg.pts.slice(1)); seg.used = true; found = true; break;
+      }
+      if (Math.hypot(tail[0]-e2[0], tail[1]-e2[1]) < EPS) {
+        chain.push(...seg.pts.slice().reverse().slice(1)); seg.used = true; found = true; break;
+      }
+    }
+    if (!found) return null;
+  }
+  const head = chain[0], tail2 = chain[chain.length - 1];
+  if (Math.hypot(tail2[0]-head[0], tail2[1]-head[1]) < EPS && chain.length >= 4) {
+    return {type:'polyline', points: chain.slice(0, -1), closed: true};
+  }
+  return null;
+}
+
 function getProfile() {
+  const openSegs = [];
   for (const e of entities) {
     if (e.construction) continue;
     if (e.type==='polyline'&&e.closed&&e.points.length>=3) return e;
@@ -1312,7 +1366,9 @@ function getProfile() {
     if (e.type==='circle'&&e.r>0) return e;
     if (e.type==='arc'&&e.p1&&e.pmid&&e.p2) return e;
     if (e.type==='spline'&&e.points&&e.points.length>=3) return e;
+    if (e.type==='polyline'&&!e.closed&&e.points.length>=2) openSegs.push(e);
   }
+  if (openSegs.length >= 3) return stitchSegments(openSegs);
   return null;
 }
 
