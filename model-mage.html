@@ -2003,9 +2003,9 @@ window.addEventListener('keydown', e => {
   if (e.key === ' ' && !inp) { e.preventDefault(); spaceHeld = true; scheduleRender(); return; }
 
   if (!inp) {
-    if (e.key==='Escape' && facesketchMode) {
-      facesketchMode=false; renderer.domElement.style.cursor='';
-      document.getElementById('st-info').textContent='Face sketch cancelled';
+    if (e.key==='Escape' && _faceHoverPlane) {
+      _faceHoverPlane=null; _clearFaceHighlight(); renderer.domElement.style.cursor='';
+      document.getElementById('st-info').textContent='';
       return;
     }
     if (e.key==='Escape') {
@@ -2155,40 +2155,78 @@ new ResizeObserver(resize3D).observe(vpEl);
 // FACE SKETCHING
 // ════════════════════════════════════════════════════════════════════
 
-let facesketchMode = false;
-let _faceMouseDownPos = null;
+// ── Face hover state ─────────────────────────────────────────────
+let _faceHoverPlane = null;  // detected plane under cursor, or null
+let _faceMDownPos = null;
+let _faceHighlightMesh = null;
 
-function enterFaceSketchMode() {
-  if (!modelMesh) { setRebuildStatus('Build a model first'); return; }
-  facesketchMode = true;
-  renderer.domElement.style.cursor = 'crosshair';
-  document.getElementById('st-info').textContent = 'Click a flat face to start a sketch · Esc to cancel';
+const _faceHighlightMat = new THREE.MeshBasicMaterial({
+  color: 0xf59e0b, transparent: true, opacity: 0.28,
+  side: THREE.DoubleSide, depthTest: false
+});
+
+function _raycastFace(clientX, clientY) {
+  if (!modelMesh) return null;
+  const rect = renderer.domElement.getBoundingClientRect();
+  const ndc = new THREE.Vector2(
+    ((clientX - rect.left) / rect.width)  * 2 - 1,
+   -((clientY - rect.top)  / rect.height) * 2 + 1
+  );
+  const rc = new THREE.Raycaster();
+  rc.setFromCamera(ndc, camera);
+  const hits = rc.intersectObject(modelMesh);
+  if (!hits.length) return null;
+  const hit = hits[0];
+  const normal = hit.face.normal.clone().transformDirection(modelGroup.matrixWorld).normalize();
+  const plane = detectAxisPlane(normal, hit.point);
+  return plane ? { plane, hit } : null;
+}
+
+function _showFaceHighlight(hit) {
+  _clearFaceHighlight();
+  // Build a small translucent quad aligned to the face normal
+  const g = new THREE.BufferGeometry();
+  const fi = hit.face;
+  const pos = modelMesh.geometry.attributes.position;
+  const a = new THREE.Vector3().fromBufferAttribute(pos, fi.a);
+  const b = new THREE.Vector3().fromBufferAttribute(pos, fi.b);
+  const c = new THREE.Vector3().fromBufferAttribute(pos, fi.c);
+  // Use a copy of the whole mesh with highlight mat as a simple overlay
+  const overlay = new THREE.Mesh(modelMesh.geometry, _faceHighlightMat);
+  overlay.renderOrder = 10;
+  modelGroup.add(overlay);
+  _faceHighlightMesh = overlay;
+}
+
+function _clearFaceHighlight() {
+  if (_faceHighlightMesh) { modelGroup.remove(_faceHighlightMesh); _faceHighlightMesh = null; }
 }
 
 function detectAxisPlane(normal, hitPoint) {
   const TOL = Math.cos(Math.PI / 36);
   const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
   const localPt = hitPoint.clone().applyMatrix4(invMat);
-  const checks=[
-    {axis:'Z',dir:new THREE.Vector3(0,0,1),flip:false},
-    {axis:'Z',dir:new THREE.Vector3(0,0,-1),flip:true},
-    {axis:'Y',dir:new THREE.Vector3(0,1,0),flip:false},
-    {axis:'Y',dir:new THREE.Vector3(0,-1,0),flip:true},
-    {axis:'X',dir:new THREE.Vector3(1,0,0),flip:false},
-    {axis:'X',dir:new THREE.Vector3(-1,0,0),flip:true},
+  const checks = [
+    {axis:'Z', dir:new THREE.Vector3(0,0, 1)},
+    {axis:'Z', dir:new THREE.Vector3(0,0,-1)},
+    {axis:'Y', dir:new THREE.Vector3(0, 1,0)},
+    {axis:'Y', dir:new THREE.Vector3(0,-1,0)},
+    {axis:'X', dir:new THREE.Vector3( 1,0,0)},
+    {axis:'X', dir:new THREE.Vector3(-1,0,0)},
   ];
-  for (const {axis,dir,flip} of checks) {
+  for (const {axis, dir} of checks) {
     if (normal.dot(dir) >= TOL) {
-      const offset = axis==='Z'?localPt.z : axis==='Y'?localPt.y : localPt.x;
-      return {axis, offset:parseFloat(offset.toFixed(2)), flip};
+      const offset = axis==='Z' ? localPt.z : axis==='Y' ? localPt.y : localPt.x;
+      return { axis, offset: parseFloat(offset.toFixed(2)) };
     }
   }
   return null;
 }
 
 function createFaceSketch(plane) {
-  facesketchMode = false;
+  _clearFaceHighlight();
   renderer.domElement.style.cursor = '';
+  _faceHoverPlane = null;
   const skId = newId('sk');
   const n = featureTree.filter(f=>f.type==='sketch').length + 1;
   featureTree.push({id:skId, type:'sketch', name:`Sketch ${n}`, plane, entities:[]});
@@ -2200,30 +2238,43 @@ function createFaceSketch(plane) {
   scheduleRender();
 }
 
-renderer.domElement.addEventListener('mousedown', e => { _faceMouseDownPos=[e.clientX,e.clientY]; });
-renderer.domElement.addEventListener('click', e => {
-  if (!facesketchMode||!modelMesh) return;
-  if (_faceMouseDownPos) {
-    if (Math.hypot(e.clientX-_faceMouseDownPos[0],e.clientY-_faceMouseDownPos[1])>4) return;
+// Always-on hover: highlight face and show cursor when in 3D mode
+renderer.domElement.addEventListener('mousemove', e => {
+  if (!document.querySelector('.main').classList.contains('mode-3d')) return;
+  if (!modelMesh) return;
+  const result = _raycastFace(e.clientX, e.clientY);
+  if (result) {
+    _faceHoverPlane = result.plane;
+    renderer.domElement.style.cursor = 'pointer';
+    _showFaceHighlight(result.hit);
+    document.getElementById('st-info').textContent =
+      `${result.plane.axis} face · Click to sketch on it`;
+    renderer.render(scene, camera);
+  } else {
+    _faceHoverPlane = null;
+    renderer.domElement.style.cursor = '';
+    _clearFaceHighlight();
+    if (document.getElementById('st-info').textContent.includes('face ·'))
+      document.getElementById('st-info').textContent = '';
+    renderer.render(scene, camera);
   }
-  const rect=renderer.domElement.getBoundingClientRect();
-  const ndc=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,
-                              -((e.clientY-rect.top)/rect.height)*2+1);
-  const raycaster=new THREE.Raycaster();
-  raycaster.setFromCamera(ndc,camera);
-  const hits=raycaster.intersectObject(modelMesh);
-  if (!hits.length) return;
-  const hit=hits[0];
-  const faceNormal=hit.face.normal.clone().transformDirection(modelGroup.matrixWorld).normalize();
-  const plane=detectAxisPlane(faceNormal,hit.point);
-  if (!plane) {
-    document.getElementById('st-info').textContent='Not axis-aligned — try a flat face';
-    facesketchMode=false; renderer.domElement.style.cursor=''; return;
-  }
-  createFaceSketch(plane);
 });
 
-document.getElementById('btn-face-sketch').addEventListener('click', enterFaceSketchMode);
+renderer.domElement.addEventListener('mousedown', e => { _faceMDownPos = [e.clientX, e.clientY]; });
+
+renderer.domElement.addEventListener('click', e => {
+  if (!document.querySelector('.main').classList.contains('mode-3d')) return;
+  if (!_faceHoverPlane) return;
+  // Ignore if this was a drag (orbit)
+  if (_faceMDownPos && Math.hypot(e.clientX-_faceMDownPos[0], e.clientY-_faceMDownPos[1]) > 5) return;
+  createFaceSketch(_faceHoverPlane);
+});
+
+// Keep "✏ Sketch Face" button as an info tooltip / no-op (face selection is always-on)
+document.getElementById('btn-face-sketch').addEventListener('click', () => {
+  if (!modelMesh) { document.getElementById('st-info').textContent = 'Build a model first'; return; }
+  document.getElementById('st-info').textContent = 'Hover over a face and click to sketch on it';
+});
 
 // ════════════════════════════════════════════════════════════════════
 // STL EXPORT
