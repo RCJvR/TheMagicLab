@@ -1796,8 +1796,10 @@ sk.addEventListener('wheel', e => {
   e.preventDefault();
   const factor=e.deltaY>0?0.85:1.18;
   const {x,y}=evXY(e);
-  panX=x+(panX-x)*factor;
-  panY=y+(panY-y)*factor;
+  // pivot around the cursor in canvas-centre-relative coords
+  const cx=x-W()/2, cy=y-H()/2;
+  panX=cx+(panX-cx)*factor;
+  panY=cy+(panY-cy)*factor;
   zoom=Math.max(0.2,Math.min(zoom*factor,80));
   scheduleRender();
 }, {passive:false});
