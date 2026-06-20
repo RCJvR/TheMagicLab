@@ -487,6 +487,7 @@ let extH = 40;
 let filletR = 0;
 let chamferR = 0;
 let extTimer = null;
+let hasAutoSwitchedTo3d = false;
 
 // ── Feature tree ─────────────────────────────────────────────────
 let featureTree = [];
@@ -1643,6 +1644,7 @@ function clearAll() {
   linePoints=[]; rectStart=null; circleCenter=null;
   arcPts=[]; polyCenter=null; splinePts=[];
   hideLenPopup();
+  hasAutoSwitchedTo3d = false;
   selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree();
 }
 window.clearAll = clearAll;
@@ -1702,8 +1704,10 @@ document.getElementById('s-edge').addEventListener('input', function() {
   document.getElementById('v-edge').textContent = v + ' mm';
   if (edgeMode === 'fillet') { filletR = v; chamferR = 0; }
   else { chamferR = v; filletR = 0; }
-  const _eid2=document.querySelector('.ext-panel')?.dataset?.activeExtrudeId;
-  const _en2=featureTree.find(f=>f.id===_eid2); if(_en2){_en2.filletR=filletR;_en2.chamferR=chamferR;renderFeatureTree();}
+  // Write back to all extrude nodes for the active sketch so sliders always take effect
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.filletR=filletR;n.chamferR=chamferR;});
+  renderFeatureTree();
   scheduleExtrude();
 });
 
@@ -2105,8 +2109,9 @@ function applyMesh(verts,norms,tris) {
   document.getElementById('vp-ph').style.display='none';
   document.getElementById('vp-badge').style.display='';
   document.getElementById('btn-stl').classList.add('show');
-  // Auto-switch to 3D view on first successful build
-  if (!document.querySelector('.main').classList.contains('mode-3d')) {
+  // Auto-switch to 3D view only on the very first build
+  if (!hasAutoSwitchedTo3d) {
+    hasAutoSwitchedTo3d = true;
     setMode3d(true);
   }
 }
