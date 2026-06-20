@@ -129,6 +129,9 @@
              cursor:pointer;opacity:0;pointer-events:none;transition:opacity 200ms;}
     .btn-stl.show{opacity:1;pointer-events:auto;}
 
+    .edge-mode-btn{height:22px;padding:0 8px;border:none;background:none;
+      color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;}
+    .edge-mode-btn.active{background:rgba(217,119,6,0.2);color:var(--accent2);}
     .statusbar{height:26px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);
                display:flex;align-items:center;padding:0 12px;gap:14px;
                font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text2);}
@@ -139,9 +142,9 @@
 
 <header>
   <div class="logo">🧙 Model Mage</div>
-  <button class="tb-btn" id="btn-save" title="Save sketch (.mage)" style="margin-left:10px">💾 Save</button>
-  <button class="tb-btn" id="btn-load" title="Load sketch (.mage)">📂 Load</button>
-  <input type="file" id="file-load" accept=".mage,.json" style="display:none">
+  <button class="tb-btn" id="btn-save" title="Save sketch (.json)" style="margin-left:10px">💾 Save</button>
+  <button class="tb-btn" id="btn-load" title="Load sketch (.json)">📂 Load</button>
+  <input type="file" id="file-load" accept=".json,application/json" style="display:none">
   <div class="hdr-right">
     <a class="nav-link" href="index.html">← Home</a>
     <a class="nav-link accent" href="model-mage-shapes.html">⬡ 3D Models →</a>
@@ -235,12 +238,14 @@
         <input type="range" id="s-h" min="1" max="300" value="40">
       </div>
       <div class="pr">
-        <div class="pr-lbl">Fillet <span class="pr-val" id="v-fillet">0 mm</span></div>
-        <input type="range" id="s-fillet" min="0" max="50" value="0" step="0.5">
-      </div>
-      <div class="pr">
-        <div class="pr-lbl">Chamfer <span class="pr-val" id="v-chamfer">0 mm</span></div>
-        <input type="range" id="s-chamfer" min="0" max="20" value="0" step="0.5">
+        <div class="pr-lbl">
+          <span style="display:flex;gap:0;border:1px solid var(--border);border-radius:5px;overflow:hidden;flex-shrink:0">
+            <button id="btn-fillet-mode" class="edge-mode-btn active" title="Fillet">Fillet</button>
+            <button id="btn-chamfer-mode" class="edge-mode-btn" title="Chamfer">Chamfer</button>
+          </span>
+          <span class="pr-val" id="v-edge">0 mm</span>
+        </div>
+        <input type="range" id="s-edge" min="0" max="50" value="0" step="0.5">
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
         <span id="rebuild-status" style="font-size:0.68rem;color:var(--text2)"></span>
@@ -1534,27 +1539,34 @@ document.getElementById('s-h').addEventListener('input', function() {
   scheduleExtrude();
 });
 
-document.getElementById('s-fillet').addEventListener('input', function() {
-  filletR = +this.value;
-  document.getElementById('v-fillet').textContent = filletR + ' mm';
-  if (filletR > 0) {
-    chamferR = 0;
-    document.getElementById('s-chamfer').value = 0;
-    document.getElementById('v-chamfer').textContent = '0 mm';
-  }
+let edgeMode = 'fillet'; // 'fillet' | 'chamfer'
+
+document.getElementById('btn-fillet-mode').addEventListener('click', () => {
+  edgeMode = 'fillet';
+  document.getElementById('btn-fillet-mode').classList.add('active');
+  document.getElementById('btn-chamfer-mode').classList.remove('active');
+  document.getElementById('s-edge').max = 50;
+  filletR = +document.getElementById('s-edge').value;
+  chamferR = 0;
+  scheduleExtrude();
+});
+document.getElementById('btn-chamfer-mode').addEventListener('click', () => {
+  edgeMode = 'chamfer';
+  document.getElementById('btn-chamfer-mode').classList.add('active');
+  document.getElementById('btn-fillet-mode').classList.remove('active');
+  document.getElementById('s-edge').max = 20;
+  chamferR = +document.getElementById('s-edge').value;
+  filletR = 0;
+  scheduleExtrude();
+});
+document.getElementById('s-edge').addEventListener('input', function() {
+  const v = +this.value;
+  document.getElementById('v-edge').textContent = v + ' mm';
+  if (edgeMode === 'fillet') { filletR = v; chamferR = 0; }
+  else { chamferR = v; filletR = 0; }
   scheduleExtrude();
 });
 
-document.getElementById('s-chamfer').addEventListener('input', function() {
-  chamferR = +this.value;
-  document.getElementById('v-chamfer').textContent = chamferR + ' mm';
-  if (chamferR > 0) {
-    filletR = 0;
-    document.getElementById('s-fillet').value = 0;
-    document.getElementById('v-fillet').textContent = '0 mm';
-  }
-  scheduleExtrude();
-});
 
 // ════════════════════════════════════════════════════════════════════
 // MOUSE EVENTS
@@ -2052,7 +2064,7 @@ document.getElementById('btn-save').addEventListener('click', () => {
   const data = JSON.stringify({ version: 1, entities }, null, 2);
   const a = Object.assign(document.createElement('a'), {
     href: URL.createObjectURL(new Blob([data], {type: 'application/json'})),
-    download: 'sketch.mage',
+    download: 'sketch.json',
   });
   a.click(); URL.revokeObjectURL(a.href);
 });
