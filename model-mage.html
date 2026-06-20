@@ -1523,23 +1523,35 @@ function syncExtrudeNodes() {
 }
 
 function collectExtrudePayload() {
-  const sk = activeSketch();
-  if (!sk) return [];
-  syncExtrudeNodes();
-  const profs = getAllProfiles(sk);
-  if (!profs.length) return [];
-  const {planeName,planeOffset} = planeFromSketch(sk);
-  const extNodes = featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
-  return profs.map(({profile},idx)=>{
-    const node=extNodes.find(n=>n.profileIdx===idx)??{operation:'new',height:extH,filletR,chamferR};
-    return {profile, height:node.height, operation:node.operation,
-            filletR:node.filletR, chamferR:node.chamferR, planeName, planeOffset};
-  });
+  // Sync extrude nodes for the active sketch so newly drawn profiles get nodes
+  if (activeSketch()) syncExtrudeNodes();
+
+  const items = [];
+  for (const node of featureTree) {
+    if (node.type !== 'extrude') continue;
+    const sk = featureTree.find(f => f.id === node.sketchId);
+    if (!sk) continue;
+    const profs = getAllProfiles(sk);
+    const entry = profs[node.profileIdx];
+    if (!entry) continue;
+    const { planeName, planeOffset } = planeFromSketch(sk);
+    items.push({
+      profile:   entry.profile,
+      height:    node.height,
+      operation: node.operation,
+      filletR:   node.filletR,
+      chamferR:  node.chamferR,
+      planeName,
+      planeOffset,
+    });
+  }
+  return items;
 }
 
 function scheduleExtrude() {
   clearTimeout(extTimer);
-  if (getAllProfiles(activeSketch()).length) extTimer = setTimeout(doExtrude, 300);
+  const hasAny = featureTree.some(f => f.type==='sketch' && getAllProfiles(f).length > 0);
+  if (hasAny) extTimer = setTimeout(doExtrude, 300);
 }
 
 function doExtrude() {
@@ -2156,14 +2168,36 @@ new ResizeObserver(resize3D).observe(vpEl);
 // ════════════════════════════════════════════════════════════════════
 
 // ── Face hover state ─────────────────────────────────────────────
-let _faceHoverPlane = null;  // detected plane under cursor, or null
+let _faceHoverPlane = null;
 let _faceMDownPos = null;
-let _faceHighlightMesh = null;
 
-const _faceHighlightMat = new THREE.MeshBasicMaterial({
-  color: 0xf59e0b, transparent: true, opacity: 0.28,
-  side: THREE.DoubleSide, depthTest: false
-});
+// modelGroup.rotation.x = -π/2 maps replicad axes → Three.js world axes:
+//   replicad  Z-up  → Three.js  +Y  (top/bottom faces)
+//   replicad  X     → Three.js  +X  (left/right faces)
+//   replicad  Y     → Three.js  -Z  (front/back faces)
+// So we check Three.js world-space normals accordingly.
+function detectAxisPlane(worldNormal, hitPoint) {
+  const TOL = Math.cos(Math.PI / 36); // 5° tolerance
+  const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
+  const localPt = hitPoint.clone().applyMatrix4(invMat); // replicad local coords
+
+  const checks = [
+    { axis:'Z', dir: new THREE.Vector3( 0, 1, 0) }, // replicad +Z top
+    { axis:'Z', dir: new THREE.Vector3( 0,-1, 0) }, // replicad -Z bottom
+    { axis:'X', dir: new THREE.Vector3( 1, 0, 0) }, // replicad +X
+    { axis:'X', dir: new THREE.Vector3(-1, 0, 0) }, // replicad -X
+    { axis:'Y', dir: new THREE.Vector3( 0, 0,-1) }, // replicad +Y front
+    { axis:'Y', dir: new THREE.Vector3( 0, 0, 1) }, // replicad -Y back
+  ];
+  for (const { axis, dir } of checks) {
+    if (worldNormal.dot(dir) >= TOL) {
+      // offset in replicad local space
+      const offset = axis==='Z' ? localPt.z : axis==='Y' ? localPt.y : localPt.x;
+      return { axis, offset: parseFloat(offset.toFixed(2)) };
+    }
+  }
+  return null;
+}
 
 function _raycastFace(clientX, clientY) {
   if (!modelMesh) return null;
@@ -2182,45 +2216,12 @@ function _raycastFace(clientX, clientY) {
   return plane ? { plane, hit } : null;
 }
 
-function _showFaceHighlight(hit) {
-  _clearFaceHighlight();
-  // Build a small translucent quad aligned to the face normal
-  const g = new THREE.BufferGeometry();
-  const fi = hit.face;
-  const pos = modelMesh.geometry.attributes.position;
-  const a = new THREE.Vector3().fromBufferAttribute(pos, fi.a);
-  const b = new THREE.Vector3().fromBufferAttribute(pos, fi.b);
-  const c = new THREE.Vector3().fromBufferAttribute(pos, fi.c);
-  // Use a copy of the whole mesh with highlight mat as a simple overlay
-  const overlay = new THREE.Mesh(modelMesh.geometry, _faceHighlightMat);
-  overlay.renderOrder = 10;
-  modelGroup.add(overlay);
-  _faceHighlightMesh = overlay;
+// Highlight = subtle emissive glow on the model (no overlay mesh)
+function _showFaceHighlight() {
+  if (modelMesh) { mat.emissive.set(0xf59e0b); mat.emissiveIntensity = 0.22; }
 }
-
 function _clearFaceHighlight() {
-  if (_faceHighlightMesh) { modelGroup.remove(_faceHighlightMesh); _faceHighlightMesh = null; }
-}
-
-function detectAxisPlane(normal, hitPoint) {
-  const TOL = Math.cos(Math.PI / 36);
-  const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
-  const localPt = hitPoint.clone().applyMatrix4(invMat);
-  const checks = [
-    {axis:'Z', dir:new THREE.Vector3(0,0, 1)},
-    {axis:'Z', dir:new THREE.Vector3(0,0,-1)},
-    {axis:'Y', dir:new THREE.Vector3(0, 1,0)},
-    {axis:'Y', dir:new THREE.Vector3(0,-1,0)},
-    {axis:'X', dir:new THREE.Vector3( 1,0,0)},
-    {axis:'X', dir:new THREE.Vector3(-1,0,0)},
-  ];
-  for (const {axis, dir} of checks) {
-    if (normal.dot(dir) >= TOL) {
-      const offset = axis==='Z' ? localPt.z : axis==='Y' ? localPt.y : localPt.x;
-      return { axis, offset: parseFloat(offset.toFixed(2)) };
-    }
-  }
-  return null;
+  if (modelMesh) { mat.emissive.set(0x000000); mat.emissiveIntensity = 0; }
 }
 
 function createFaceSketch(plane) {
@@ -2246,7 +2247,7 @@ renderer.domElement.addEventListener('mousemove', e => {
   if (result) {
     _faceHoverPlane = result.plane;
     renderer.domElement.style.cursor = 'pointer';
-    _showFaceHighlight(result.hit);
+    _showFaceHighlight();
     document.getElementById('st-info').textContent =
       `${result.plane.axis} face · Click to sketch on it`;
     renderer.render(scene, camera);
