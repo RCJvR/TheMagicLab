@@ -397,7 +397,10 @@ self.onmessage = async ({ data }) => {
     const n = m.normals   instanceof Float32Array ? m.normals   : new Float32Array(m.normals);
     const t = m.triangles instanceof Uint32Array  ? m.triangles : new Uint32Array(m.triangles);
     self.postMessage({ type:'mesh', v, n, t }, [v.buffer, n.buffer, t.buffer]);
-  } catch(e) { self.postMessage({ type:'err', msg:e.message }); }
+  } catch(e) {
+    const msg = e?.message || e?.toString?.() || JSON.stringify(e) || 'unknown error';
+    self.postMessage({ type:'err', msg });
+  }
 };
 function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
   let solid;
