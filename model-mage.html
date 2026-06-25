@@ -1520,7 +1520,7 @@ function getAllProfiles(sketch) {
   const openSegs = es.map((e,i)=>({e,i}))
     .filter(({e,i})=>e.type==='polyline'&&!e.closed&&e.points.length>=2&&!usedIdx.has(i));
 
-  if (openSegs.length >= 3) {
+  if (openSegs.length >= 2) {
     function endpts(s){ const p=s.e.points; return [p[0],p[p.length-1]]; }
     function connects(a,b){
       const[a0,a1]=endpts(a),[b0,b1]=endpts(b);
