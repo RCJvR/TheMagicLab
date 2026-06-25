@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cell — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table td:nth-child(2){color:#86efac}
+    .compare-table td:nth-child(3){color:#60a5fa}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+    .cell-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative}
+    canvas{display:block;width:100%;cursor:pointer}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .cell-type-row{display:flex;gap:8px}
+    .ctype-btn{flex:1;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms}
+    .ctype-btn.active{border-color:rgba(34,197,94,.40);background:rgba(34,197,94,.12);color:#86efac}
+    .organelle-info{min-height:200px}
+    .org-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;margin-bottom:4px}
+    .org-also{font-family:var(--fm);font-size:10px;color:var(--muted);margin-bottom:10px}
+    .org-desc{font-size:13px;line-height:1.7;color:rgba(210,218,245,.72)}
+    .org-found{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+    .org-badge{font-family:var(--fm);font-size:9px;font-weight:600;padding:3px 8px;border-radius:6px}
+    .org-badge.plant{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .org-badge.animal{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:#93c5fd}
+    .parts-list{display:flex;flex-direction:column;gap:4px}
+    .parts-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);cursor:pointer;transition:all 140ms;font-size:12.5px;color:rgba(210,218,245,.70)}
+    .parts-item:hover{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.18);color:var(--text)}
+    .parts-item.active{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.28);color:#86efac}
+    .parts-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .wb-lines{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .wb-line{height:1px;background:rgba(255,255,255,.08);border-radius:1px}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.cell-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life &amp; Living</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Life &amp; Living · Lesson 1</div>
+  <h1 class="lesson-title">The Cell — Unit of Life</h1>
+  <p class="lesson-sub">Every living thing is made of cells. Explore the structure of plant and animal cells and discover what each part does.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="microscope" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Cell Theory</h2>
+    <p>The <strong>cell theory</strong> is one of the fundamental principles of biology. It states three things:</p>
+    <ul>
+      <li>All living organisms are made of one or more <strong>cells</strong>.</li>
+      <li>The cell is the <strong>basic unit of life</strong> — the smallest unit that can carry out all life processes.</li>
+      <li>All cells come from <strong>pre-existing cells</strong> (cells only arise from other cells).</li>
+    </ul>
+    <div class="callout"><strong>Unicellular</strong> organisms (like amoeba and bacteria) consist of a single cell. <strong>Multicellular</strong> organisms (like humans and trees) are made of trillions of specialised cells working together.</div>
+
+    <h2>Parts found in ALL cells</h2>
+    <ul>
+      <li><strong>Cell membrane</strong> — a thin, flexible layer that surrounds every cell. It controls what enters and exits the cell.</li>
+      <li><strong>Cytoplasm</strong> — a jelly-like fluid that fills the cell and holds the organelles in place.</li>
+      <li><strong>Nucleus</strong> — the control centre of the cell. Contains DNA, which carries the genetic instructions for the cell.</li>
+      <li><strong>Mitochondria</strong> — the "powerhouse" of the cell. Releases energy from food through cellular respiration.</li>
+      <li><strong>Ribosomes</strong> — tiny structures where proteins are made.</li>
+    </ul>
+
+    <h2>Plant cells vs Animal cells</h2>
+    <p>Plant and animal cells share many features, but plant cells have three additional structures:</p>
+    <table class="compare-table">
+      <thead><tr><th>Structure</th><th style="color:#86efac">Plant cell</th><th style="color:#93c5fd">Animal cell</th></tr></thead>
+      <tbody>
+        <tr><td>Cell membrane</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Cytoplasm</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Nucleus</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Mitochondria</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Ribosomes</td><td>✓</td><td>✓</td></tr>
+        <tr><td>Cell wall</td><td>✓ (rigid, made of cellulose)</td><td>✗</td></tr>
+        <tr><td>Chloroplasts</td><td>✓ (contain chlorophyll for photosynthesis)</td><td>✗</td></tr>
+        <tr><td>Large vacuole</td><td>✓ (stores water, keeps cell firm)</td><td>✗ (small or absent)</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Memory trick: Plant cells have a Wall, Chloroplasts, and a big Vacuole (WCV)</div>
+
+    <h2>Why are cells so small?</h2>
+    <p>Cells are microscopic because they need a large <strong>surface area to volume ratio</strong>. A smaller cell can exchange materials (oxygen, nutrients, waste) across its membrane more efficiently relative to its size. If cells were too large, their centres would not receive enough oxygen.</p>
+    <div class="callout"><strong>Specialised cells</strong> have specific shapes that suit their function. Red blood cells are disc-shaped to carry oxygen. Nerve cells are long and thin to transmit electrical signals. Root hair cells have a large surface area to absorb water.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Cell Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Toggle between plant and animal cells. Click any organelle to learn its function.</p>
+  <div class="explore-layout">
+    <div>
+      <div class="ctrl-card" style="margin-bottom:16px">
+        <div class="ctrl-label">Cell type</div>
+        <div class="cell-type-row">
+          <button class="ctype-btn active" id="btnPlant" onclick="setCellType('plant')">🌿 Plant Cell</button>
+          <button class="ctype-btn" id="btnAnimal" onclick="setCellType('animal')">🐾 Animal Cell</button>
+        </div>
+      </div>
+      <div class="cell-wrap">
+        <canvas id="cellCanvas" height="440"></canvas>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Click any organelle to learn about it</p>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card organelle-info" id="orgInfo">
+        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:40px">👆 Click an organelle<br>to see its function</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Parts of the cell</div>
+        <div class="parts-list" id="partsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book. Draw and label diagrams where required.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">State the three statements that make up the Cell Theory.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (5 marks)</div><div class="wb-qtext">Draw and label a plant cell showing at least 5 structures. Name the function of each structure you label.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">List THREE structures found in a plant cell but NOT in an animal cell. Explain the function of each.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Which organelle is called the "powerhouse" of the cell? Describe what it does.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain why cells are microscopic in size. Use the term "surface area to volume ratio" in your answer.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('cellCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let cellType = 'plant';
+let selectedOrg = null;
+let hoverOrg = null;
+let pulseT = 0;
+
+/* ── Organelle definitions ── */
+const ORGANELLES = {
+  plant: [
+    {id:'wall',      name:'Cell Wall',     color:'#4ade80', alpha:0.25, also:'(rigid outer layer)', found:['plant'],
+     desc:'A rigid outer layer made of cellulose that surrounds the cell membrane. It gives the cell a fixed shape and provides structural support. Animals do not have a cell wall.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); roundRect(ctx,W*0.04,H*0.04,W*0.92,H*0.92,28); }},
+    {id:'membrane',  name:'Cell Membrane', color:'#86efac', alpha:0.40, also:'(plasma membrane)',  found:['plant','animal'],
+     desc:'A thin, flexible barrier that surrounds the cytoplasm. It controls what enters and exits the cell — allowing useful substances in and waste out. Every cell has a cell membrane.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); roundRect(ctx,W*0.09,H*0.09,W*0.82,H*0.82,20); }},
+    {id:'cytoplasm',  name:'Cytoplasm',    color:'#d1fae5', alpha:0.08, also:'(cell fluid)',       found:['plant','animal'],
+     desc:'A jelly-like substance (mostly water) that fills the cell and surrounds the organelles. Chemical reactions take place in the cytoplasm.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); roundRect(ctx,W*0.09,H*0.09,W*0.82,H*0.82,20); }},
+    {id:'nucleus',   name:'Nucleus',       color:'#a78bfa', alpha:0.85, also:'(control centre)',  found:['plant','animal'],
+     desc:'The control centre of the cell. Contains DNA (deoxyribonucleic acid) packaged into chromosomes. DNA carries the genetic instructions for all cell activities and is passed on during cell division.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.42,H*0.50,W*0.14,H*0.12,0,0,Math.PI*2); }},
+    {id:'vacuole',   name:'Large Vacuole', color:'#67e8f9', alpha:0.40, also:'(water storage)',   found:['plant'],
+     desc:'A large, fluid-filled sac that takes up most of the plant cell\'s volume. It stores water, nutrients, and waste products. A full vacuole pushes against the cell wall to keep the cell firm (turgid).',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.55,H*0.50,W*0.22,H*0.28,0.2,0,Math.PI*2); }},
+    {id:'chloroplast',name:'Chloroplast',  color:'#4ade80', alpha:0.80, also:'(photosynthesis)',  found:['plant'],
+     desc:'Green organelles containing chlorophyll pigment. They capture sunlight energy and use it to make glucose from carbon dioxide and water — this process is called photosynthesis. Found only in plant cells (and algae).',
+     draw:(ctx,W,H)=>{
+       [[W*0.20,H*0.28],[W*0.25,H*0.70],[W*0.18,H*0.50]].forEach(([cx,cy])=>{
+         ctx.beginPath(); ctx.ellipse(cx,cy,W*0.07,W*0.04,0.4,0,Math.PI*2);
+       });
+     }},
+    {id:'mito',      name:'Mitochondria', color:'#fb923c', alpha:0.85, also:'(powerhouse)',       found:['plant','animal'],
+     desc:'Often called the "powerhouse of the cell". Mitochondria carry out cellular respiration — breaking down glucose to release energy in the form of ATP. More active cells (like muscle cells) have more mitochondria.',
+     draw:(ctx,W,H)=>{
+       [[W*0.72,H*0.28],[W*0.76,H*0.72],[W*0.80,H*0.48]].forEach(([cx,cy])=>{
+         ctx.beginPath(); ctx.ellipse(cx,cy,W*0.055,W*0.030,0.5,0,Math.PI*2);
+       });
+     }},
+    {id:'ribosome',  name:'Ribosomes',    color:'#fbbf24', alpha:0.90, also:'(protein makers)',   found:['plant','animal'],
+     desc:'Tiny structures found in the cytoplasm (and on the rough endoplasmic reticulum). Ribosomes build proteins by following instructions from DNA. Every cell needs proteins to function.',
+     draw:(ctx,W,H)=>{
+       [[W*0.30,H*0.22],[W*0.62,H*0.25],[W*0.28,H*0.78],[W*0.65,H*0.75],[W*0.50,H*0.30]].forEach(([cx,cy])=>{
+         ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2);
+       });
+     }},
+  ],
+  animal: [
+    {id:'membrane',  name:'Cell Membrane', color:'#93c5fd', alpha:0.45, also:'(plasma membrane)',  found:['plant','animal'],
+     desc:'A thin, flexible barrier that surrounds the cytoplasm. It controls what enters and exits the cell — allowing useful substances in and waste out. Every cell has a cell membrane.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.50,H*0.50,W*0.42,H*0.42,0,0,Math.PI*2); }},
+    {id:'cytoplasm',  name:'Cytoplasm',    color:'#bfdbfe', alpha:0.08, also:'(cell fluid)',       found:['plant','animal'],
+     desc:'A jelly-like substance (mostly water) that fills the cell and surrounds the organelles. Chemical reactions take place in the cytoplasm.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.50,H*0.50,W*0.42,H*0.42,0,0,Math.PI*2); }},
+    {id:'nucleus',   name:'Nucleus',       color:'#a78bfa', alpha:0.85, also:'(control centre)',  found:['plant','animal'],
+     desc:'The control centre of the cell. Contains DNA (deoxyribonucleic acid) packaged into chromosomes. DNA carries the genetic instructions for all cell activities and is passed on during cell division.',
+     draw:(ctx,W,H)=>{ ctx.beginPath(); ctx.ellipse(W*0.46,H*0.48,W*0.14,H*0.13,0,0,Math.PI*2); }},
+    {id:'mito',      name:'Mitochondria', color:'#fb923c', alpha:0.85, also:'(powerhouse)',       found:['plant','animal'],
+     desc:'Often called the "powerhouse of the cell". Mitochondria carry out cellular respiration — breaking down glucose to release energy in the form of ATP. More active cells (like muscle cells) have more mitochondria.',
+     draw:(ctx,W,H)=>{
+       [[W*0.22,H*0.30],[W*0.76,H*0.34],[W*0.24,H*0.70],[W*0.74,H*0.68]].forEach(([cx,cy])=>{
+         ctx.beginPath(); ctx.ellipse(cx,cy,W*0.055,W*0.030,0.4,0,Math.PI*2);
+       });
+     }},
+    {id:'ribosome',  name:'Ribosomes',    color:'#fbbf24', alpha:0.90, also:'(protein makers)',   found:['plant','animal'],
+     desc:'Tiny structures found in the cytoplasm. Ribosomes build proteins by following instructions from DNA. Every cell needs proteins to function.',
+     draw:(ctx,W,H)=>{
+       [[W*0.35,H*0.24],[W*0.62,H*0.26],[W*0.30,H*0.74],[W*0.65,H*0.74],[W*0.72,H*0.52],[W*0.28,H*0.50]].forEach(([cx,cy])=>{
+         ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2);
+       });
+     }},
+    {id:'centriole', name:'Centrioles',   color:'#f472b6', alpha:0.85, also:'(cell division)',    found:['animal'],
+     desc:'Small cylindrical structures found only in animal cells. They play a key role in cell division — they help separate chromosomes when the cell divides. Plant cells manage cell division without centrioles.',
+     draw:(ctx,W,H)=>{
+       ctx.beginPath(); ctx.ellipse(W*0.58,H*0.62,W*0.04,W*0.02,0.2,0,Math.PI*2);
+       ctx.beginPath(); ctx.ellipse(W*0.63,H*0.60,W*0.04,W*0.02,0.9,0,Math.PI*2);
+     }},
+  ],
+};
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500;
+  H = 440;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function setCellType(t){
+  cellType = t;
+  selectedOrg = null;
+  document.getElementById('btnPlant').classList.toggle('active',t==='plant');
+  document.getElementById('btnAnimal').classList.toggle('active',t==='animal');
+  buildPartsList();
+  showOrganelle(null);
+}
+
+function buildPartsList(){
+  const list = document.getElementById('partsList');
+  const orgs = ORGANELLES[cellType];
+  list.innerHTML = orgs.map(o=>`
+    <div class="parts-item" id="pi_${o.id}" onclick="clickOrg('${o.id}')">
+      <span class="parts-dot" style="background:${o.color}"></span>
+      ${o.name}
+    </div>`).join('');
+}
+
+function clickOrg(id){
+  const orgs = ORGANELLES[cellType];
+  const org = orgs.find(o=>o.id===id);
+  selectedOrg = org;
+  document.querySelectorAll('.parts-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('pi_'+id)?.classList.add('active');
+  showOrganelle(org);
+}
+
+function showOrganelle(org){
+  const d = document.getElementById('orgInfo');
+  if(!org){ d.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;margin-top:40px">👆 Click an organelle<br>to see its function</div>'; return; }
+  const badges = org.found.map(f=>`<span class="org-badge ${f}">${f==='plant'?'🌿 Plant':'🐾 Animal'}</span>`).join('');
+  d.innerHTML=`
+    <div class="org-name" style="color:${org.color}">${org.name}</div>
+    <div class="org-also">${org.also}</div>
+    <p class="org-desc">${org.desc}</p>
+    <div class="org-found">${badges}</div>`;
+}
+
+function drawCell(){
+  ctx.clearRect(0,0,W,H);
+  pulseT += 0.04;
+  const orgs = ORGANELLES[cellType];
+  const pulse = 0.85 + 0.15*Math.sin(pulseT);
+
+  orgs.forEach(org=>{
+    const isSelected = selectedOrg?.id === org.id;
+    const isHover = hoverOrg?.id === org.id;
+    ctx.save();
+    org.draw(ctx,W,H);
+    const alpha = isSelected ? Math.min(1, org.alpha*1.6*pulse) : isHover ? org.alpha*1.3 : org.alpha;
+    ctx.fillStyle = hexToRgba(org.color, alpha);
+    ctx.fill();
+    if(isSelected || isHover){
+      ctx.strokeStyle = org.color;
+      ctx.lineWidth = isSelected ? 2.5 : 1.5;
+      org.draw(ctx,W,H);
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
+
+  // Draw nucleus membrane ring
+  const nOrg = orgs.find(o=>o.id==='nucleus');
+  if(nOrg){
+    ctx.save();
+    nOrg.draw(ctx,W,H);
+    ctx.strokeStyle = 'rgba(167,139,250,0.60)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+    // Nucleolus
+    const isPC = cellType==='plant';
+    ctx.beginPath(); ctx.arc(isPC?W*0.42:W*0.46, isPC?H*0.50:H*0.48, 8, 0, Math.PI*2);
+    ctx.fillStyle='rgba(196,181,253,0.80)'; ctx.fill();
+  }
+
+  // Labels for selected
+  if(selectedOrg){
+    orgs.forEach(org=>{
+      if(org.id!==selectedOrg.id) return;
+      ctx.save();
+      // Find center of the shape by sampling
+      const testCanvas = document.createElement('canvas');
+      testCanvas.width=W; testCanvas.height=H;
+      const tc = testCanvas.getContext('2d');
+      org.draw(tc,W,H);
+      // Just use a simple label near the shape
+      ctx.fillStyle='rgba(255,255,255,0.90)';
+      ctx.font='bold 12px "Cabinet Grotesk"';
+      ctx.textAlign='center';
+      ctx.restore();
+    });
+  }
+
+  requestAnimationFrame(drawCell);
+}
+
+function hexToRgba(hex, a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+canvas.addEventListener('click', e=>{
+  const rect=canvas.getBoundingClientRect();
+  const mx=(e.clientX-rect.left), my=(e.clientY-rect.top);
+  const orgs=[...ORGANELLES[cellType]].reverse();
+  for(const org of orgs){
+    const tc=document.createElement('canvas'); tc.width=W; tc.height=H;
+    const tctx=tc.getContext('2d'); org.draw(tctx,W,H); tctx.fill();
+    if(tctx.isPointInPath(mx,my)){ clickOrg(org.id); return; }
+  }
+  selectedOrg=null; showOrganelle(null);
+  document.querySelectorAll('.parts-item').forEach(el=>el.classList.remove('active'));
+});
+
+canvas.addEventListener('mousemove', e=>{
+  const rect=canvas.getBoundingClientRect();
+  const mx=(e.clientX-rect.left), my=(e.clientY-rect.top);
+  const orgs=[...ORGANELLES[cellType]].reverse();
+  let found=null;
+  for(const org of orgs){
+    const tc=document.createElement('canvas'); tc.width=W; tc.height=H;
+    const tctx=tc.getContext('2d'); org.draw(tctx,W,H); tctx.fill();
+    if(tctx.isPointInPath(mx,my)){ found=org; break; }
+  }
+  hoverOrg=found; canvas.style.cursor=found?'pointer':'default';
+});
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+window.addEventListener('resize',()=>resizeCanvas());
+resizeCanvas();
+buildPartsList();
+drawCell();
+
+const QUESTIONS=[
+  {text:'What is the "powerhouse" of the cell — the organelle that releases energy?',opts:['Nucleus','Ribosome','Mitochondria','Chloroplast'],ans:2,exp:'Mitochondria carry out cellular respiration, breaking down glucose to release energy (ATP). Muscle cells and other active cells have many mitochondria.'},
+  {text:'Which of the following structures is found in a plant cell but NOT in an animal cell?',opts:['Nucleus','Cell membrane','Mitochondria','Cell wall'],ans:3,exp:'Animal cells do not have a cell wall. Plant cells have a rigid cell wall made of cellulose that gives them a fixed shape. Both cell types have a nucleus, cell membrane, and mitochondria.'},
+  {text:'What does the cell membrane do?',opts:['Makes proteins','Controls what enters and exits the cell','Stores water','Carries out photosynthesis'],ans:1,exp:'The cell membrane is a selectively permeable barrier — it controls which substances enter or leave the cell, keeping the internal environment stable.'},
+  {text:'Where is DNA found in the cell?',opts:['Cytoplasm','Mitochondria','Ribosome','Nucleus'],ans:3,exp:'DNA is found in the nucleus, wound around proteins into structures called chromosomes. The nucleus is therefore the "control centre" that directs all cell activities.'},
+  {text:'Which organelle is responsible for making proteins?',opts:['Vacuole','Ribosome','Chloroplast','Centriole'],ans:1,exp:'Ribosomes are tiny structures that assemble proteins from amino acids, following instructions coded in DNA (via messenger RNA). They are found in all cells.'},
+  {text:'What is the function of chloroplasts?',opts:['Cellular respiration','Cell division','Protein synthesis','Photosynthesis'],ans:3,exp:'Chloroplasts contain chlorophyll and capture light energy to convert CO₂ and water into glucose — this is photosynthesis. They are only found in plant cells and algae.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! You know your cells!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Solar System — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+    .solar-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%;cursor:pointer}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:72px}
+    input[type=range]{flex:1;accent-color:#fb923c;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fdba74;min-width:40px;text-align:right}
+    .planet-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:160px}
+    .planet-info-name{font-weight:800;font-size:20px;letter-spacing:-0.02em;margin-bottom:4px}
+    .planet-info-sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+    .planet-stat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px}
+    .planet-stat:last-child{border-bottom:none}
+    .planet-stat-label{color:var(--muted)}
+    .planet-stat-val{font-family:var(--fm);font-size:11px;color:var(--text)}
+    .toggle-labels{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+    .toggle-labels label{font-size:13px;font-weight:600;color:var(--text)}
+    input[type=checkbox]{accent-color:#fb923c;width:15px;height:15px;cursor:pointer}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .wb-lines{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .wb-line{height:1px;background:rgba(255,255,255,.08);border-radius:1px}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.solar-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Earth &amp; Beyond</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Earth &amp; Beyond · Lesson 1</div>
+  <h1 class="lesson-title">The Solar System</h1>
+  <p class="lesson-sub">Eight planets, one star, and billions of kilometres of space. Explore our cosmic neighbourhood.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="orbit" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Our Solar System</h2>
+    <p>The <strong>solar system</strong> consists of the Sun and everything that orbits it — eight planets, dwarf planets, moons, asteroids, comets, and dust. It formed about <strong>4.6 billion years ago</strong> from a giant rotating cloud of gas and dust.</p>
+    <div class="callout"><strong>The Sun</strong> contains 99.86% of all the mass in the solar system. Its gravity holds everything in orbit. It is a medium-sized star made mostly of hydrogen and helium, generating energy through nuclear fusion.</div>
+
+    <h2>The eight planets</h2>
+    <p>The planets are divided into two groups: <strong>inner (terrestrial) planets</strong> — rocky, closer to the Sun — and <strong>outer (gas/ice giant) planets</strong> — much larger, farther away.</p>
+    <table class="planets-table">
+      <thead><tr><th>#</th><th>Planet</th><th>Type</th><th>Approx. distance from Sun</th><th>Moons</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Mercury</td><td>Terrestrial</td><td>57.9 million km</td><td>0</td></tr>
+        <tr><td>2</td><td>Venus</td><td>Terrestrial</td><td>108 million km</td><td>0</td></tr>
+        <tr><td>3</td><td>Earth</td><td>Terrestrial</td><td>150 million km</td><td>1</td></tr>
+        <tr><td>4</td><td>Mars</td><td>Terrestrial</td><td>228 million km</td><td>2</td></tr>
+        <tr><td>5</td><td>Jupiter</td><td>Gas giant</td><td>778 million km</td><td>95</td></tr>
+        <tr><td>6</td><td>Saturn</td><td>Gas giant</td><td>1.43 billion km</td><td>146</td></tr>
+        <tr><td>7</td><td>Uranus</td><td>Ice giant</td><td>2.87 billion km</td><td>28</td></tr>
+        <tr><td>8</td><td>Neptune</td><td>Ice giant</td><td>4.50 billion km</td><td>16</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Mnemonic: My Very Energetic Mother Just Served Us Nachos (Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune)</div>
+
+    <h2>Gravity and orbits</h2>
+    <p><strong>Gravity</strong> is the force of attraction between objects with mass. The Sun's enormous gravity keeps the planets in their nearly circular <strong>orbits</strong>. Planets closer to the Sun orbit faster and have shorter orbital periods (years).</p>
+    <p>Earth's orbital period is <strong>365.25 days</strong> (one year). Mercury takes only 88 Earth days to orbit the Sun; Neptune takes 165 Earth years!</p>
+    <div class="callout"><strong>Planets orbit in the same direction</strong> — counter-clockwise when viewed from above Earth's north pole. This is because they all formed from the same rotating cloud of gas.</div>
+
+    <h2>The asteroid belt and dwarf planets</h2>
+    <p>Between Mars and Jupiter lies the <strong>asteroid belt</strong> — a region of rocky bodies ranging from pebbles to hundreds of kilometres across. Beyond Neptune is the <strong>Kuiper Belt</strong>, home to dwarf planets including <strong>Pluto</strong>. Pluto was reclassified as a dwarf planet in 2006 because it has not "cleared the neighbourhood" around its orbit.</p>
+
+    <h2>Why does Earth support life?</h2>
+    <p>Earth is in the <strong>"habitable zone"</strong> — the right distance from the Sun for liquid water to exist. It has a protective atmosphere, a magnetic field that deflects harmful solar radiation, and a stable axial tilt that produces seasons.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Solar System Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch the planets orbit the Sun. Click any planet to learn about it. Use the speed slider to control time.</p>
+  <div class="explore-layout">
+    <div class="solar-wrap">
+      <canvas id="solarCanvas" height="480"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Speed</div>
+        <div class="slider-row">
+          <label>Time speed</label>
+          <input type="range" id="speedSlider" min="0" max="5" step="0.1" value="1" oninput="updateSpeed()">
+          <span class="slider-val" id="speedVal">1×</span>
+        </div>
+        <div class="toggle-labels">
+          <label>Show labels</label>
+          <input type="checkbox" id="showLabels" checked onchange="redraw()">
+        </div>
+        <div class="toggle-labels">
+          <label>Show orbits</label>
+          <input type="checkbox" id="showOrbits" checked onchange="redraw()">
+        </div>
+      </div>
+      <div class="planet-info" id="planetInfo">
+        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:32px">Click a planet to<br>see its details</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book. Use diagrams where helpful.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">List the eight planets in order from the Sun. You may use the mnemonic "My Very Energetic Mother Just Served Us Nachos."</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Distinguish between a <em>terrestrial planet</em> and a <em>gas giant</em>. Give one example of each.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (1 mark)</div><div class="wb-qtext">What force keeps the planets in orbit around the Sun?</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Why is Pluto no longer classified as a planet? Name the category it now belongs to.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Explain THREE reasons why Earth is able to support life, while other planets in the solar system cannot.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+  </div>
+</div>
+
+<script>
+const PLANETS = [
+  {name:'Mercury', color:'#b5b5b5', r:4,  orbit:68,  speed:4.15,  type:'Terrestrial', dist:'57.9 million km', year:'88 Earth days',  moons:0,  temp:'-180 to 430°C', fact:'Mercury has no atmosphere, so temperatures swing wildly between extreme cold and extreme heat.'},
+  {name:'Venus',   color:'#e8cda0', r:7,  orbit:100, speed:1.62,  type:'Terrestrial', dist:'108 million km',  year:'225 Earth days', moons:0,  temp:'462°C',          fact:'Venus is the hottest planet due to its thick CO₂ atmosphere causing a runaway greenhouse effect.'},
+  {name:'Earth',   color:'#4a90d9', r:7.5,orbit:134, speed:1.00,  type:'Terrestrial', dist:'150 million km',  year:'365 days',       moons:1,  temp:'-88 to 58°C',   fact:'Earth is the only known planet to support life. About 71% of its surface is covered in liquid water.'},
+  {name:'Mars',    color:'#c1440e', r:5,  orbit:170, speed:0.532, type:'Terrestrial', dist:'228 million km',  year:'687 Earth days', moons:2,  temp:'-140 to 20°C',  fact:'Mars has the largest volcano in the solar system — Olympus Mons — nearly 3× the height of Everest.'},
+  {name:'Jupiter', color:'#c88b3a', r:22, orbit:232, speed:0.084, type:'Gas giant',   dist:'778 million km',  year:'12 Earth years', moons:95, temp:'-110°C',          fact:'Jupiter\'s Great Red Spot is a storm that has been raging for at least 350 years and is larger than Earth!'},
+  {name:'Saturn',  color:'#e4d191', r:18, orbit:290, speed:0.034, type:'Gas giant',   dist:'1.43 billion km', year:'29 Earth years', moons:146,temp:'-140°C',          fact:'Saturn\'s rings are made of ice and rock. They are 282,000 km wide but only about 10 m thick.'},
+  {name:'Uranus',  color:'#7de8e8', r:13, orbit:340, speed:0.012, type:'Ice giant',   dist:'2.87 billion km', year:'84 Earth years', moons:28, temp:'-195°C',          fact:'Uranus rotates on its side — its axial tilt is 97.8°, so it essentially rolls around the Sun.'},
+  {name:'Neptune', color:'#5b7fde', r:12, orbit:386, speed:0.006, type:'Ice giant',   dist:'4.50 billion km', year:'165 Earth years',moons:16, temp:'-200°C',          fact:'Neptune has the strongest winds in the solar system, reaching speeds of over 2,000 km/h.'},
+];
+
+const canvas = document.getElementById('solarCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, CX, CY;
+let angles = PLANETS.map(()=> Math.random()*Math.PI*2);
+let speed = 1;
+let selectedPlanet = null;
+let animating = true;
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600;
+  H = 480;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  CX = W/2; CY = H/2;
+}
+
+function updateSpeed(){ speed = +document.getElementById('speedSlider').value; document.getElementById('speedVal').textContent = speed.toFixed(1)+'×'; }
+
+function showPlanet(p){
+  selectedPlanet = p;
+  const d = document.getElementById('planetInfo');
+  if(!p){ d.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;margin-top:32px">Click a planet to<br>see its details</div>'; return; }
+  d.innerHTML = `
+    <div class="planet-info-name" style="color:${p.color}">${p.name}</div>
+    <div class="planet-info-sub">${p.type}</div>
+    <div class="planet-stat"><span class="planet-stat-label">Distance from Sun</span><span class="planet-stat-val">${p.dist}</span></div>
+    <div class="planet-stat"><span class="planet-stat-label">Orbital period</span><span class="planet-stat-val">${p.year}</span></div>
+    <div class="planet-stat"><span class="planet-stat-label">Moons</span><span class="planet-stat-val">${p.moons}</span></div>
+    <div class="planet-stat"><span class="planet-stat-label">Temperature</span><span class="planet-stat-val">${p.temp}</span></div>
+    <p style="font-size:12px;color:rgba(210,218,245,.65);line-height:1.6;margin-top:10px">${p.fact}</p>`;
+}
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  for(let i=0; i<PLANETS.length; i++){
+    const px = CX + PLANETS[i].orbit * Math.cos(angles[i]);
+    const py = CY + PLANETS[i].orbit * Math.sin(angles[i]);
+    if(Math.hypot(mx-px, my-py) < PLANETS[i].r + 8){ showPlanet(PLANETS[i]); return; }
+  }
+  showPlanet(null);
+});
+
+let lastTime = 0;
+function draw(ts){
+  const dt = Math.min((ts - lastTime)/16.67, 3); lastTime = ts;
+  ctx.clearRect(0,0,W,H);
+
+  // Starfield (static seed)
+  if(!draw.stars){
+    draw.stars=[];
+    for(let i=0;i<180;i++) draw.stars.push([Math.random()*W,Math.random()*H,Math.random()*1.5+0.2]);
+  }
+  draw.stars.forEach(([sx,sy,sr])=>{ ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.55)';ctx.fill(); });
+
+  const showO = document.getElementById('showOrbits')?.checked ?? true;
+  const showL = document.getElementById('showLabels')?.checked ?? true;
+
+  // Orbits
+  if(showO){
+    PLANETS.forEach(p=>{
+      ctx.beginPath();ctx.arc(CX,CY,p.orbit,0,Math.PI*2);
+      ctx.strokeStyle='rgba(255,255,255,0.07)';ctx.lineWidth=1;ctx.stroke();
+    });
+  }
+
+  // Sun
+  const sunGrd = ctx.createRadialGradient(CX,CY,0,CX,CY,32);
+  sunGrd.addColorStop(0,'#fff7a0');sunGrd.addColorStop(0.4,'#ffd700');sunGrd.addColorStop(1,'rgba(255,140,0,0)');
+  ctx.beginPath();ctx.arc(CX,CY,28,0,Math.PI*2);ctx.fillStyle=sunGrd;ctx.fill();
+  // Sun glow
+  const sunHalo = ctx.createRadialGradient(CX,CY,10,CX,CY,60);
+  sunHalo.addColorStop(0,'rgba(255,200,50,0.25)');sunHalo.addColorStop(1,'rgba(255,200,50,0)');
+  ctx.beginPath();ctx.arc(CX,CY,60,0,Math.PI*2);ctx.fillStyle=sunHalo;ctx.fill();
+
+  // Update and draw planets
+  PLANETS.forEach((p,i)=>{
+    angles[i] += p.speed * 0.0008 * speed * dt;
+    const px = CX + p.orbit * Math.cos(angles[i]);
+    const py = CY + p.orbit * Math.sin(angles[i]);
+
+    // Saturn rings
+    if(p.name==='Saturn'){
+      ctx.save();ctx.translate(px,py);ctx.scale(1,0.3);
+      ctx.beginPath();ctx.arc(0,0,p.r+14,0,Math.PI*2);
+      ctx.strokeStyle='rgba(228,209,145,0.45)';ctx.lineWidth=5;ctx.stroke();
+      ctx.restore();
+    }
+
+    // Planet glow if selected
+    if(selectedPlanet===p){
+      const grd=ctx.createRadialGradient(px,py,p.r,px,py,p.r+16);
+      grd.addColorStop(0,p.color+'88');grd.addColorStop(1,p.color+'00');
+      ctx.beginPath();ctx.arc(px,py,p.r+16,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+    }
+
+    // Planet body
+    const pGrd=ctx.createRadialGradient(px-p.r*0.3,py-p.r*0.3,0,px,py,p.r);
+    pGrd.addColorStop(0,'#ffffff44');pGrd.addColorStop(1,p.color);
+    ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=pGrd;ctx.fill();
+
+    if(showL){
+      ctx.fillStyle='rgba(210,218,245,0.70)';ctx.font='bold 10px "Cabinet Grotesk"';ctx.textAlign='center';
+      ctx.fillText(p.name,px,py-p.r-6);
+    }
+  });
+
+  if(animating) requestAnimationFrame(draw);
+}
+
+function redraw(){ /* triggers on checkbox change — animation handles redraw */ }
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+window.addEventListener('resize',()=>{ resizeCanvas(); });
+resizeCanvas();
+requestAnimationFrame(draw);
+
+const QUESTIONS=[
+  {text:'Which is the largest planet in the solar system?',opts:['Saturn','Neptune','Jupiter','Uranus'],ans:2,exp:'Jupiter is the largest planet — its mass is more than twice the combined mass of all other planets.'},
+  {text:'What is the correct order of the first four planets from the Sun?',opts:['Earth, Mars, Venus, Mercury','Mercury, Venus, Earth, Mars','Mars, Earth, Mercury, Venus','Venus, Mercury, Earth, Mars'],ans:1,exp:'Mercury is closest to the Sun, followed by Venus, Earth, then Mars. Remember: My Very Energetic Mother...'},
+  {text:'What force keeps planets in orbit around the Sun?',opts:['Magnetism','Nuclear force','Gravity','Centrifugal force'],ans:2,exp:'Gravity is the attractive force between masses. The Sun\'s enormous mass creates gravity that pulls planets into their orbits.'},
+  {text:'Why was Pluto reclassified as a "dwarf planet" in 2006?',opts:['It is too cold','It has no moons','It has not cleared the neighbourhood around its orbit','It is too small to be seen'],ans:2,exp:'The International Astronomical Union (IAU) defined a planet as: orbiting the Sun, having enough gravity to be roughly spherical, AND having cleared its orbital neighbourhood. Pluto fails the last condition.'},
+  {text:'Which type of planet is Jupiter?',opts:['Terrestrial planet','Ice giant','Dwarf planet','Gas giant'],ans:3,exp:'Jupiter and Saturn are gas giants — huge planets made mainly of hydrogen and helium with no solid surface. Uranus and Neptune are ice giants.'},
+  {text:'How long does it take Earth to complete one orbit around the Sun?',opts:['24 hours','28 days','365 days','100 years'],ans:2,exp:'Earth takes 365.25 days (one year) to complete one orbit around the Sun. The extra 0.25 days is why we have a leap year every 4 years.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep exploring — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! You\'re a space explorer!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

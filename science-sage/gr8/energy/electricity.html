@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Circuits — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:16px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-bottom:24px}
+    .circuit-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .circuit-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:40px;text-align:right}
+    .toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .toggle-row label{font-size:13px;font-weight:600;color:var(--text)}
+    .toggle-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.08);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;width:100%}
+    .toggle-btn:hover{background:rgba(251,191,36,.16)}
+    .toggle-btn.off{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--muted)}
+    .circuit-type-row{display:flex;gap:8px;margin-bottom:4px}
+    .ctype-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms}
+    .ctype-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fcd34d}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:22px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}
+    .ohm-show{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:12px 16px;font-family:var(--fm);font-size:12px;color:#fcd34d;text-align:center;margin-top:8px}
+    .bulb-status{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:13px;margin-top:8px;transition:all 300ms}
+    .bulb-status.on{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.30);color:#fcd34d}
+    .bulb-status.off{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--muted)}
+
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .wb-lines{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .wb-line{height:1px;background:rgba(255,255,255,.08);border-radius:1px}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.circuit-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Energy &amp; Change · Lesson 2</div>
+  <h1 class="lesson-title">Electric Circuits</h1>
+  <p class="lesson-sub">Explore how electrical circuits work — build series and parallel circuits and see Ohm's Law in action.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:14px;height:14px"></i> Simulate</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is an electric circuit?</h2>
+    <p>An <strong>electric circuit</strong> is a closed path through which electric current can flow. For current to flow, the circuit must be <strong>complete</strong> (no gaps), have a source of energy (like a battery), and have something to use the energy (like a bulb or resistor).</p>
+    <div class="callout"><strong>Electric current (I)</strong> is the flow of electrons through a conductor. It is measured in <strong>Amperes (A)</strong> using an ammeter.</div>
+
+    <h2>Key quantities</h2>
+    <ul>
+      <li><strong>Voltage (V)</strong> — the "push" that drives current around the circuit. Measured in Volts (V) using a voltmeter.</li>
+      <li><strong>Current (I)</strong> — the rate of flow of charge. Measured in Amperes (A).</li>
+      <li><strong>Resistance (R)</strong> — how much a component opposes the flow of current. Measured in Ohms (Ω).</li>
+    </ul>
+
+    <h2>Ohm's Law</h2>
+    <p>The relationship between voltage, current, and resistance is described by <strong>Ohm's Law</strong>:</p>
+    <div class="formula">V = I × R &nbsp;&nbsp;|&nbsp;&nbsp; I = V ÷ R &nbsp;&nbsp;|&nbsp;&nbsp; R = V ÷ I</div>
+    <p>Where V = Voltage (Volts), I = Current (Amperes), R = Resistance (Ohms). If you increase the voltage, more current flows. If you increase resistance, less current flows.</p>
+    <div class="key-fact">Example: V = 6 V, R = 3 Ω → I = 6 ÷ 3 = 2 A</div>
+
+    <h2>Circuit symbols</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Component</th><th>Symbol description</th><th>Function</th></tr></thead>
+      <tbody>
+        <tr><td>Battery (cell)</td><td>Long line (+) and short line (−)</td><td>Provides electrical energy</td></tr>
+        <tr><td>Bulb (lamp)</td><td>Circle with X inside</td><td>Converts electrical energy to light</td></tr>
+        <tr><td>Resistor</td><td>Rectangle</td><td>Opposes current flow</td></tr>
+        <tr><td>Switch</td><td>Gap with a line that can open/close</td><td>Opens or closes the circuit</td></tr>
+        <tr><td>Ammeter</td><td>Circle with A</td><td>Measures current (in series)</td></tr>
+        <tr><td>Voltmeter</td><td>Circle with V</td><td>Measures voltage (in parallel)</td></tr>
+        <tr><td>Wire</td><td>Straight line</td><td>Connects components</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Series vs Parallel circuits</h2>
+    <p>Components can be connected in two ways:</p>
+    <ul>
+      <li><strong>Series circuit:</strong> Components are connected one after another in a single loop. The same current flows through all components. If one bulb breaks, they all go out.</li>
+      <li><strong>Parallel circuit:</strong> Components are connected across the same two points (side by side). Each component has the same voltage across it. If one bulb breaks, the others stay on.</li>
+    </ul>
+    <div class="callout"><strong>Home wiring</strong> uses parallel circuits so that each appliance can be switched on/off independently and receives the full mains voltage.</div>
+  </div>
+</div>
+
+<!-- SIMULATE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Circuit Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust voltage and resistance, toggle the switch, and switch between series and parallel. Watch how current changes and how bright the bulbs glow.</p>
+  <div class="explore-top">
+    <div class="circuit-wrap">
+      <h3>Circuit Diagram</h3>
+      <canvas id="circuitCanvas" height="320"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Circuit Type</div>
+        <div class="circuit-type-row">
+          <button class="ctype-btn active" id="btnSeries" onclick="setCircuitType('series')">Series</button>
+          <button class="ctype-btn" id="btnParallel" onclick="setCircuitType('parallel')">Parallel</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Controls</div>
+        <div class="slider-row">
+          <label>Voltage</label>
+          <input type="range" id="voltageSlider" min="1" max="12" value="6" oninput="updateCircuit()">
+          <span class="slider-val" id="voltVal">6 V</span>
+        </div>
+        <div class="slider-row">
+          <label>Resistance</label>
+          <input type="range" id="resistSlider" min="1" max="12" value="3" oninput="updateCircuit()">
+          <span class="slider-val" id="resistVal">3 Ω</span>
+        </div>
+        <button class="toggle-btn" id="switchBtn" onclick="toggleSwitch()">
+          <i data-lucide="toggle-right" style="width:16px;height:16px"></i>
+          Switch: CLOSED
+        </button>
+        <div class="bulb-status on" id="bulbStatus">💡 Bulb is ON</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Readings</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Voltage</div><div class="readout-val" id="readV">6<span>V</span></div></div>
+          <div class="readout"><div class="readout-label">Resistance</div><div class="readout-val" id="readR">3<span>Ω</span></div></div>
+          <div class="readout"><div class="readout-label">Current</div><div class="readout-val" id="readI" style="color:#fbbf24">2.00<span>A</span></div></div>
+          <div class="readout"><div class="readout-label">Power</div><div class="readout-val" id="readP" style="color:#86efac">12.0<span>W</span></div></div>
+        </div>
+        <div class="ohm-show" id="ohmShow">I = 6 ÷ 3 = 2.00 A</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book. Show all calculations clearly.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (1 mark)</div><div class="wb-qtext">State Ohm's Law in words.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">A circuit has a battery of 9 V and a resistor of 3 Ω. Calculate: (a) the current through the resistor, (b) the power dissipated, (c) what happens to the current if the resistance is doubled.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (2 marks)</div><div class="wb-qtext">What is the difference between a <em>series</em> circuit and a <em>parallel</em> circuit? Give ONE advantage of a parallel circuit in home wiring.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Name the instrument used to measure (a) current and (b) voltage. Describe how each is connected in a circuit.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">In a series circuit with two bulbs and a 12 V battery: each bulb has a resistance of 4 Ω. Calculate the total resistance and the current flowing. What voltage does each bulb experience? Show all working.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+  </div>
+</div>
+
+<script>
+let switchClosed = true;
+let circuitType = 'series';
+let V = 6, R = 3;
+let frame = 0;
+let flowOffset = 0;
+
+const canvas = document.getElementById('circuitCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas(){
+  canvas.width = canvas.offsetWidth * window.devicePixelRatio || 480;
+  canvas.height = 320 * window.devicePixelRatio || 320;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+}
+
+function setCircuitType(t){
+  circuitType=t;
+  document.getElementById('btnSeries').classList.toggle('active',t==='series');
+  document.getElementById('btnParallel').classList.toggle('active',t==='parallel');
+  updateCircuit();
+}
+
+function toggleSwitch(){
+  switchClosed=!switchClosed;
+  const btn=document.getElementById('switchBtn');
+  btn.className='toggle-btn'+(switchClosed?'':' off');
+  btn.innerHTML=`<i data-lucide="${switchClosed?'toggle-right':'toggle-left'}" style="width:16px;height:16px"></i> Switch: ${switchClosed?'CLOSED':'OPEN'}`;
+  lucide.createIcons();
+  updateCircuit();
+}
+
+function updateCircuit(){
+  V=+document.getElementById('voltageSlider').value;
+  R=+document.getElementById('resistSlider').value;
+  document.getElementById('voltVal').textContent=V+' V';
+  document.getElementById('resistVal').textContent=R+' Ω';
+  const I=switchClosed ? V/R : 0;
+  const P=V*I;
+  document.getElementById('readV').innerHTML=`${V}<span>V</span>`;
+  document.getElementById('readR').innerHTML=`${R}<span>Ω</span>`;
+  document.getElementById('readI').innerHTML=`${I.toFixed(2)}<span>A</span>`;
+  document.getElementById('readP').innerHTML=`${P.toFixed(1)}<span>W</span>`;
+  document.getElementById('ohmShow').textContent = switchClosed
+    ? `I = ${V} ÷ ${R} = ${I.toFixed(2)} A`
+    : 'Switch open — no current flows';
+  const status=document.getElementById('bulbStatus');
+  if(!switchClosed){status.className='bulb-status off';status.textContent='💡 Bulb is OFF (open switch)'}
+  else if(I<0.5){status.className='bulb-status off';status.textContent='💡 Bulb very dim (low current)'}
+  else if(I<1.5){status.className='bulb-status on';status.textContent='💡 Bulb glowing dimly'}
+  else{status.className='bulb-status on';status.textContent='💡 Bulb is ON and bright!'}
+}
+
+function drawCircuit(){
+  const W=canvas.offsetWidth||480, H=320;
+  ctx.clearRect(0,0,W,H);
+
+  const I = switchClosed ? V/R : 0;
+  const brightness = Math.min(1, I/4);
+  const wireCol = switchClosed ? `rgba(251,191,36,${0.4+brightness*0.6})` : 'rgba(255,255,255,0.15)';
+  const wireW = 2.5;
+
+  if(circuitType==='series'){
+    // Simple series circuit rectangle
+    // Battery left, top wire, bulb top-right, right wire, switch bottom-right, bottom wire back
+    const L=50,R2=W-50,T=60,B=H-60;
+    const mx=(L+R2)/2;
+
+    // Wires
+    ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
+    // Top
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(mx-30,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(mx+30,T);ctx.lineTo(R2,T);ctx.stroke();
+    // Right
+    ctx.beginPath();ctx.moveTo(R2,T);ctx.lineTo(R2,B*0.45);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(R2,B*0.55);ctx.lineTo(R2,B);ctx.stroke();
+    // Bottom
+    ctx.beginPath();ctx.moveTo(R2,B);ctx.lineTo(L,B);ctx.stroke();
+    // Left (battery wire)
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.stroke();
+
+    // Flow animation
+    if(switchClosed && I>0){
+      flowOffset=(flowOffset+I*0.012)%1;
+      drawFlow([[L,T,mx-30,T],[mx+30,T,R2,T],[R2,T,R2,B*0.45],[R2,B*0.55,R2,B],[R2,B,L,B],[L,B,L,T]],flowOffset,wireCol);
+    }
+
+    // Battery (left side)
+    drawBattery(L,T+(B-T)/2-20,false);
+    // Bulb (top centre)
+    drawBulb(mx,T,brightness);
+    // Switch (right side middle)
+    drawSwitch(R2,B*0.45,R2,B*0.55,switchClosed);
+    // Labels
+    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText('Battery',L,B+20);
+    ctx.fillText('Bulb',mx,T-16);
+    ctx.fillText('Switch',R2+36,(B*0.45+B*0.55)/2);
+    // Ammeter marker
+    ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText(`${I.toFixed(1)} A`,mx,B-8);
+
+  } else {
+    // Parallel: battery left, two bulbs in parallel on right
+    const L=50,R2=W-50,T=70,B=H-60;
+    const M=(T+B)/2;
+    const bx1=W*0.55, bx2=W*0.75;
+
+    ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
+    // Main horizontal
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(R2,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(L,B);ctx.lineTo(R2,B);ctx.stroke();
+    // Left column (battery)
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,M-25);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(L,M+25);ctx.lineTo(L,B);ctx.stroke();
+    // Branch 1 vertical
+    ctx.beginPath();ctx.moveTo(bx1,T);ctx.lineTo(bx1,M-18);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx1,M+18);ctx.lineTo(bx1,B);ctx.stroke();
+    // Branch 2 vertical
+    ctx.beginPath();ctx.moveTo(bx2,T);ctx.lineTo(bx2,M-18);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx2,M+18);ctx.lineTo(bx2,B);ctx.stroke();
+
+    if(switchClosed && I>0){
+      flowOffset=(flowOffset+I*0.010)%1;
+    }
+
+    drawBattery(L,M-20,false);
+    drawBulb(bx1,M,brightness);
+    drawBulb(bx2,M,brightness);
+    drawSwitch(bx2+20,T,bx2+20,T+20,switchClosed);
+
+    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText('Battery',L,B+20);
+    ctx.fillText('Bulb 1',bx1,T-16);
+    ctx.fillText('Bulb 2',bx2,T-16);
+    ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"';
+    ctx.fillText(`Each: ${I.toFixed(1)} A`,W*0.65,B-8);
+  }
+}
+
+function drawFlow(paths, offset, col){
+  const dotSpacing=22;
+  ctx.fillStyle=col.replace('rgba','rgba').replace(/,[^,)]+\)/, ',0.9)');
+  paths.forEach(([x1,y1,x2,y2])=>{
+    const dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy);
+    const nx=dx/len, ny=dy/len;
+    const start=offset*dotSpacing;
+    for(let d=start;d<len;d+=dotSpacing){
+      const x=x1+nx*d, y=y1+ny*d;
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+    }
+  });
+}
+
+function drawBattery(x,y,horiz){
+  ctx.strokeStyle='rgba(255,255,255,0.60)'; ctx.lineWidth=2;
+  if(!horiz){
+    ctx.beginPath();ctx.moveTo(x-10,y);ctx.lineTo(x+10,y);ctx.stroke();
+    ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-6,y+12);ctx.lineTo(x+6,y+12);ctx.stroke();
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x-10,y+24);ctx.lineTo(x+10,y+24);ctx.stroke();
+    ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-6,y+36);ctx.lineTo(x+6,y+36);ctx.stroke();
+    ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='10px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText('+',x+16,y+4); ctx.fillText('−',x+16,y+40);
+  }
+}
+
+function drawBulb(x,y,brightness){
+  const grd=ctx.createRadialGradient(x,y,0,x,y,28);
+  grd.addColorStop(0,`rgba(251,191,36,${brightness*0.6})`);
+  grd.addColorStop(1,'rgba(251,191,36,0)');
+  ctx.beginPath();ctx.arc(x,y,28,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,15,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(251,191,36,${0.3+brightness*0.7})`;ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x-8,y-8);ctx.lineTo(x+8,y+8);ctx.moveTo(x+8,y-8);ctx.lineTo(x-8,y+8);
+  ctx.strokeStyle=`rgba(255,220,100,${0.2+brightness*0.8})`;ctx.lineWidth=2;ctx.stroke();
+}
+
+function drawSwitch(x1,y1,x2,y2,closed){
+  ctx.strokeStyle=closed?'rgba(251,191,36,0.80)':'rgba(255,255,255,0.30)'; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  if(closed){ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);}
+  else{ctx.moveTo(x1,y1);ctx.lineTo(x2-8,y2-16);}
+  ctx.stroke();
+  ctx.beginPath();ctx.arc(x1,y1,4,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.60)';ctx.fill();
+  ctx.beginPath();ctx.arc(x2,y2,4,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.60)';ctx.fill();
+}
+
+function animate(){
+  if(document.getElementById('tab-explore').classList.contains('active')){
+    updateCircuit();
+    drawCircuit();
+    flowOffset=(flowOffset+(switchClosed?V/R*0.003:0))%1;
+  }
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize',()=>{resizeCanvas();});
+resizeCanvas();
+updateCircuit();
+animate();
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+const QUESTIONS=[
+  {text:'What is the unit of electrical resistance?',opts:['Ampere (A)','Volt (V)','Ohm (Ω)','Watt (W)'],ans:2,exp:'Resistance is measured in Ohms (Ω), named after Georg Ohm who discovered the relationship V = I × R.'},
+  {text:'A circuit has a voltage of 12 V and a resistance of 4 Ω. What is the current?',opts:['48 A','0.33 A','8 A','3 A'],ans:3,exp:'Using Ohm\'s Law: I = V ÷ R = 12 ÷ 4 = 3 A.'},
+  {text:'In a series circuit with two bulbs, if one bulb breaks:',opts:['Only that bulb goes out','Both bulbs go out','The current increases','The voltage doubles'],ans:1,exp:'In a series circuit there is only one path for current. If one component breaks (open circuit), no current can flow and all components stop working.'},
+  {text:'Which instrument is connected IN SERIES in a circuit?',opts:['Voltmeter','Galvanometer','Oscilloscope','Ammeter'],ans:3,exp:'An ammeter must be connected in series so that all the current flows through it, allowing it to measure that current accurately.'},
+  {text:'What happens to the current in a circuit if the voltage is doubled but resistance stays the same?',opts:['It halves','It stays the same','It doubles','It becomes zero'],ans:2,exp:'By Ohm\'s Law, I = V ÷ R. If V doubles and R stays the same, I doubles too. Current is directly proportional to voltage.'},
+  {text:'Why is parallel wiring used in homes rather than series wiring?',opts:['It uses less electricity','Each appliance can be switched independently and receives full voltage','It is cheaper to install','It has less resistance'],ans:1,exp:'In a parallel circuit, each branch has the full supply voltage and can be controlled independently. If one appliance breaks, the others continue working — essential for home wiring.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good effort — check the explanations.':score===5?'Well done!':'Perfect score! Excellent work.';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

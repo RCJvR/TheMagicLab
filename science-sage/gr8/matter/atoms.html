@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atoms & Atomic Models — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+      --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.15);
+      --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border);margin-bottom:0}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+
+    /* Lesson content */
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .model-timeline{display:flex;flex-direction:column;gap:0;margin:16px 0}
+    .model-step{display:flex;gap:16px;padding:14px 0;border-left:2px solid rgba(96,165,250,.22);margin-left:10px;padding-left:20px;position:relative}
+    .model-step::before{content:'';position:absolute;left:-6px;top:20px;width:10px;height:10px;border-radius:50%;background:#60a5fa;border:2px solid var(--bg)}
+    .model-step-year{font-family:var(--fm);font-size:10px;font-weight:600;color:#60a5fa;white-space:nowrap;margin-top:2px;min-width:48px}
+    .model-step-body h4{font-weight:700;font-size:14px;color:#fff;margin-bottom:4px}
+    .model-step-body p{font-size:13px;color:rgba(210,218,245,.65);line-height:1.65;margin:0}
+
+    /* Explore tab */
+    .explore-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+    .canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px}
+    canvas{border-radius:12px;display:block;background:#050810}
+    .controls{display:flex;flex-direction:column;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .element-display{text-align:center;padding:16px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;margin-bottom:14px}
+    .element-symbol{font-weight:900;font-size:52px;letter-spacing:-0.04em;color:#60a5fa;line-height:1}
+    .element-name{font-size:13px;color:var(--muted);margin-top:4px}
+    .element-num{font-family:var(--fm);font-size:11px;color:rgba(96,165,250,.70);margin-top:2px}
+    .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+    .slider-row label{font-size:13px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;height:4px;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:12px;color:#60a5fa;min-width:28px;text-align:right}
+    .data-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .data-cell{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:10px 12px}
+    .data-cell-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:3px}
+    .data-cell-val{font-weight:700;font-size:18px;color:#fff}
+    .data-cell-val span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}
+    .shell-config{font-family:var(--fm);font-size:13px;color:#a5f3fc;text-align:center;padding:8px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.18);border-radius:8px;margin-top:8px}
+
+    /* Practice tab */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .wb-lines{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .wb-line{height:1px;background:rgba(255,255,255,.08);border-radius:1px}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}.canvas-wrap{display:none}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Matter &amp; Materials · Lesson 1</div>
+  <h1 class="lesson-title">Atoms &amp; Atomic Models</h1>
+  <p class="lesson-sub">Discover the tiny particles that make up everything — from a grain of sand to a distant star.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is an atom?</h2>
+    <p>Everything around you — your desk, the air you breathe, even you — is made of <strong>matter</strong>. Matter is made up of incredibly tiny particles called <strong>atoms</strong>. Atoms are so small that a single full stop on this page contains billions of them.</p>
+    <div class="callout"><strong>Key idea:</strong> An atom is the smallest unit of an element that still has the chemical properties of that element. You cannot divide an atom further without changing what it is.</div>
+
+    <h2>Inside an atom</h2>
+    <p>Atoms are not solid balls — they have structure. Every atom has three types of sub-atomic particles:</p>
+    <ul>
+      <li><strong>Protons</strong> — positively charged (+), found in the nucleus</li>
+      <li><strong>Neutrons</strong> — no charge (neutral), found in the nucleus</li>
+      <li><strong>Electrons</strong> — negatively charged (−), orbit the nucleus in shells</li>
+    </ul>
+    <div class="key-fact">Atomic number = number of protons = number of electrons (in a neutral atom)</div>
+    <div class="key-fact">Mass number = protons + neutrons</div>
+    <p>The <strong>nucleus</strong> is at the centre and is extremely dense — it contains almost all the atom's mass. The electrons orbit the nucleus in fixed energy levels called <strong>electron shells</strong>.</p>
+
+    <h2>Electron shells</h2>
+    <p>Electrons fill shells in order from the inside out. Each shell has a maximum number of electrons it can hold:</p>
+    <ul>
+      <li>Shell 1 (closest to nucleus): max <strong>2</strong> electrons</li>
+      <li>Shell 2: max <strong>8</strong> electrons</li>
+      <li>Shell 3: max <strong>8</strong> electrons (for first 20 elements)</li>
+    </ul>
+    <p>We write the electron arrangement as a series of numbers, e.g. carbon has 6 electrons arranged as <strong>2,4</strong> (2 in shell 1, 4 in shell 2). This is called the <strong>electron configuration</strong>.</p>
+
+    <h2>History of atomic models</h2>
+    <p>Our understanding of the atom evolved over centuries as scientists built on each other's experiments:</p>
+    <div class="model-timeline">
+      <div class="model-step"><div class="model-step-year">~450 BC</div><div class="model-step-body"><h4>Democritus — "Atomos"</h4><p>Ancient Greek philosopher who suggested matter is made of indivisible particles he called "atomos" (uncuttable). No experiments — just reasoning.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1803</div><div class="model-step-body"><h4>Dalton — Solid Sphere Model</h4><p>John Dalton proposed atoms as solid, indestructible spheres. Each element has identical atoms; compounds form when atoms combine.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1904</div><div class="model-step-body"><h4>Thomson — Plum Pudding Model</h4><p>J.J. Thomson discovered the electron and proposed atoms as a ball of positive charge with electrons scattered throughout like plums in pudding.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1911</div><div class="model-step-body"><h4>Rutherford — Nuclear Model</h4><p>Ernest Rutherford's gold-foil experiment showed most of the atom is empty space, with a tiny dense positive nucleus at the centre.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1913</div><div class="model-step-body"><h4>Bohr — Planetary Model</h4><p>Niels Bohr added that electrons orbit the nucleus in fixed energy levels (shells). This is the model used in Grade 8 science.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Atom Builder</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Use the slider to select an element and watch its Bohr model come to life. See how electrons fill the shells.</p>
+  <div class="explore-layout">
+    <div class="canvas-wrap">
+      <canvas id="atomCanvas" width="420" height="420"></canvas>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-align:center">Protons (red) · Neutrons (grey) · Electrons (blue, animated)</div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Select Element</div>
+        <div class="element-display">
+          <div class="element-symbol" id="elSymbol">H</div>
+          <div class="element-name" id="elName">Hydrogen</div>
+          <div class="element-num" id="elNum">Z = 1</div>
+        </div>
+        <div class="slider-row">
+          <label>Atomic number</label>
+          <input type="range" id="atomicSlider" min="1" max="20" value="1" oninput="setElement(+this.value)">
+          <span class="slider-val" id="sliderVal">1</span>
+        </div>
+        <div class="shell-config" id="shellConfig">2</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Atomic Data</div>
+        <div class="data-grid">
+          <div class="data-cell"><div class="data-cell-label">Protons</div><div class="data-cell-val" id="dProtons" style="color:#f87171">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Neutrons</div><div class="data-cell-val" id="dNeutrons" style="color:#94a3b8">0</div></div>
+          <div class="data-cell"><div class="data-cell-label">Electrons</div><div class="data-cell-val" id="dElectrons" style="color:#60a5fa">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Mass number</div><div class="data-cell-val" id="dMass">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Period</div><div class="data-cell-val" id="dPeriod">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Group</div><div class="data-cell-val" id="dGroup">1</div></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Fun Fact</div>
+        <p style="font-size:13px;color:rgba(210,218,245,.70);line-height:1.65" id="elFact">Hydrogen is the lightest and most abundant element in the universe. The sun is mostly hydrogen!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Scroll up to review any answers.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer these questions in your exercise book. Show all working where required.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (1 mark)</div><div class="wb-qtext">Define the term <em>atom</em>.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Name the three sub-atomic particles found in an atom and state the charge of each.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (2 marks)</div><div class="wb-qtext">Carbon has an atomic number of 6 and a mass number of 12. Calculate the number of (a) protons, (b) neutrons, and (c) electrons in a neutral carbon atom.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Write the electron configuration for sodium (Na), which has atomic number 11. How many electrons are in each shell?</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">Briefly describe <strong>two</strong> different atomic models and name the scientist associated with each. Explain what each model got right and what was later shown to be incorrect.</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">The maximum number of electrons in shell 1 is 2 and in shell 2 is 8. An atom of oxygen has 8 electrons. Draw the electron configuration of oxygen and write it in the form used in science (e.g. 2,6).</div><div class="wb-lines"><div class="wb-line"></div><div class="wb-line"></div><div class="wb-line"></div></div></div>
+  </div>
+</div>
+
+<script>
+/* ─── Element data (Z=1–20) ─── */
+const ELEMENTS=[
+  {z:1,  sym:'H',  name:'Hydrogen',   mass:1,  shells:[1],         group:1, period:1, fact:'Hydrogen is the lightest and most abundant element in the universe. The sun is mostly hydrogen!'},
+  {z:2,  sym:'He', name:'Helium',     mass:4,  shells:[2],         group:18,period:1, fact:'Helium is a noble gas that is lighter than air — that\'s why helium balloons float!'},
+  {z:3,  sym:'Li', name:'Lithium',    mass:7,  shells:[2,1],       group:1, period:2, fact:'Lithium is used in the batteries of smartphones and electric cars.'},
+  {z:4,  sym:'Be', name:'Beryllium',  mass:9,  shells:[2,2],       group:2, period:2, fact:'Beryllium is a very light but strong metal used in spacecraft and satellites.'},
+  {z:5,  sym:'B',  name:'Boron',      mass:11, shells:[2,3],       group:13,period:2, fact:'Boron is used to make borax, a common cleaning product, and to harden steel.'},
+  {z:6,  sym:'C',  name:'Carbon',     mass:12, shells:[2,4],       group:14,period:2, fact:'Carbon is the basis of all life on Earth. Diamonds and graphite are both pure carbon!'},
+  {z:7,  sym:'N',  name:'Nitrogen',   mass:14, shells:[2,5],       group:15,period:2, fact:'Nitrogen makes up 78% of the air we breathe, but our bodies can\'t use it directly.'},
+  {z:8,  sym:'O',  name:'Oxygen',     mass:16, shells:[2,6],       group:16,period:2, fact:'Oxygen is needed by almost all living things for respiration. Plants produce it during photosynthesis.'},
+  {z:9,  sym:'F',  name:'Fluorine',   mass:19, shells:[2,7],       group:17,period:2, fact:'Fluorine is added to toothpaste and drinking water to strengthen tooth enamel.'},
+  {z:10, sym:'Ne', name:'Neon',       mass:20, shells:[2,8],       group:18,period:2, fact:'Neon glows bright orange-red when electricity passes through it — that\'s how neon signs work!'},
+  {z:11, sym:'Na', name:'Sodium',     mass:23, shells:[2,8,1],     group:1, period:3, fact:'Sodium is a soft silver metal that explodes when it touches water. Table salt is sodium chloride (NaCl).'},
+  {z:12, sym:'Mg', name:'Magnesium',  mass:24, shells:[2,8,2],     group:2, period:3, fact:'Magnesium burns with a brilliant white flame. It is used in fireworks and flares.'},
+  {z:13, sym:'Al', name:'Aluminium',  mass:27, shells:[2,8,3],     group:13,period:3, fact:'Aluminium is the most abundant metal in Earth\'s crust and is used in drink cans and aeroplanes.'},
+  {z:14, sym:'Si', name:'Silicon',    mass:28, shells:[2,8,4],     group:14,period:3, fact:'Silicon is used to make computer chips. "Silicon Valley" is named after this element!'},
+  {z:15, sym:'P',  name:'Phosphorus', mass:31, shells:[2,8,5],     group:15,period:3, fact:'Phosphorus is essential for DNA and bones. White phosphorus glows in the dark!'},
+  {z:16, sym:'S',  name:'Sulfur',     mass:32, shells:[2,8,6],     group:16,period:3, fact:'Sulfur has been known since ancient times. It smells like rotten eggs when it forms hydrogen sulfide gas.'},
+  {z:17, sym:'Cl', name:'Chlorine',   mass:35, shells:[2,8,7],     group:17,period:3, fact:'Chlorine is added to swimming pools to kill bacteria. It was also the first chemical weapon used in WW1.'},
+  {z:18, sym:'Ar', name:'Argon',      mass:40, shells:[2,8,8],     group:18,period:3, fact:'Argon is used to fill light bulbs — it stops the filament burning out in oxygen.'},
+  {z:19, sym:'K',  name:'Potassium',  mass:39, shells:[2,8,8,1],   group:1, period:4, fact:'Potassium is vital for nerve signals and muscle contractions. Bananas are a good source of potassium.'},
+  {z:20, sym:'Ca', name:'Calcium',    mass:40, shells:[2,8,8,2],   group:2, period:4, fact:'Calcium makes up bones and teeth. Milk is rich in calcium — important for growing bodies!'},
+];
+
+let currentZ = 1;
+let angleOffsets = [];
+let animId;
+
+function shellConfig(shells){ return shells.join(','); }
+
+function setElement(z){
+  currentZ = z;
+  const el = ELEMENTS[z-1];
+  document.getElementById('elSymbol').textContent = el.sym;
+  document.getElementById('elName').textContent = el.name;
+  document.getElementById('elNum').textContent = `Z = ${el.z}`;
+  document.getElementById('sliderVal').textContent = z;
+  document.getElementById('dProtons').textContent = el.z;
+  document.getElementById('dNeutrons').textContent = el.mass - el.z;
+  document.getElementById('dElectrons').textContent = el.z;
+  document.getElementById('dMass').textContent = el.mass;
+  document.getElementById('dPeriod').textContent = el.period;
+  document.getElementById('dGroup').textContent = el.group;
+  document.getElementById('shellConfig').textContent = 'Electron config: ' + shellConfig(el.shells);
+  document.getElementById('elFact').textContent = el.fact;
+  // Reset angle offsets for new electron count
+  let total = el.shells.reduce((a,b)=>a+b,0);
+  angleOffsets = Array.from({length: total}, (_,i)=> i * 0.3);
+}
+
+/* ─── Canvas draw ─── */
+const canvas = document.getElementById('atomCanvas');
+const ctx = canvas.getContext('2d');
+const CX = 210, CY = 210;
+const SHELL_RADII = [70, 118, 166, 210];
+const SHELL_SPEEDS = [0.022, 0.014, 0.009, 0.006];
+const SHELL_COLORS = ['rgba(96,165,250,0.85)','rgba(96,165,250,0.75)','rgba(96,165,250,0.65)','rgba(96,165,250,0.55)'];
+
+function drawAtom(t){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const el = ELEMENTS[currentZ-1];
+
+  // Draw shells
+  el.shells.forEach((_, si) => {
+    ctx.beginPath();
+    ctx.arc(CX, CY, SHELL_RADII[si], 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(255,255,255,0.07)`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Draw nucleus glow
+  const nucR = Math.max(16, 8 + el.z * 1.1);
+  const grd = ctx.createRadialGradient(CX,CY,0,CX,CY,nucR*1.8);
+  grd.addColorStop(0,'rgba(239,68,68,0.45)');
+  grd.addColorStop(1,'rgba(239,68,68,0)');
+  ctx.beginPath(); ctx.arc(CX,CY,nucR*1.8,0,Math.PI*2);
+  ctx.fillStyle=grd; ctx.fill();
+
+  // Nucleus
+  ctx.beginPath(); ctx.arc(CX,CY,nucR,0,Math.PI*2);
+  ctx.fillStyle='rgba(239,68,68,0.90)'; ctx.fill();
+  ctx.strokeStyle='rgba(255,100,100,0.60)'; ctx.lineWidth=2; ctx.stroke();
+
+  // Nucleus label
+  ctx.fillStyle='#fff'; ctx.font=`bold ${Math.min(14, nucR*0.7)}px "JetBrains Mono"`;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  if(nucR > 18) ctx.fillText(el.sym, CX, CY);
+
+  // Draw electrons
+  let eIdx = 0;
+  el.shells.forEach((count, si) => {
+    const r = SHELL_RADII[si];
+    const speed = SHELL_SPEEDS[si] * (si % 2 === 0 ? 1 : -1);
+    for(let e=0; e<count; e++){
+      const baseAngle = (Math.PI*2 * e / count);
+      const angle = baseAngle + t * speed;
+      const ex = CX + r * Math.cos(angle);
+      const ey = CY + r * Math.sin(angle);
+
+      // Electron glow
+      const eg = ctx.createRadialGradient(ex,ey,0,ex,ey,10);
+      eg.addColorStop(0,'rgba(96,165,250,0.50)');
+      eg.addColorStop(1,'rgba(96,165,250,0)');
+      ctx.beginPath(); ctx.arc(ex,ey,10,0,Math.PI*2);
+      ctx.fillStyle=eg; ctx.fill();
+
+      // Electron dot
+      ctx.beginPath(); ctx.arc(ex,ey,5,0,Math.PI*2);
+      ctx.fillStyle=SHELL_COLORS[si]; ctx.fill();
+      eIdx++;
+    }
+  });
+}
+
+let frame=0;
+function animate(){
+  frame += 1;
+  drawAtom(frame);
+  animId = requestAnimationFrame(animate);
+}
+animate();
+setElement(1);
+
+/* ─── Tab switching ─── */
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+/* ─── Practice questions ─── */
+const QUESTIONS = [
+  {text:'What is the term for the tiny particle that is the smallest unit of an element?', opts:['Molecule','Compound','Atom','Neutron'], ans:2, exp:'An atom is the smallest unit of an element. Molecules are made of two or more atoms bonded together.'},
+  {text:'Where are protons and neutrons found in an atom?', opts:['In the electron shells','In the nucleus','Orbiting the nucleus','Evenly spread throughout'], ans:1, exp:'Protons and neutrons are packed together in the tiny, dense nucleus at the centre of the atom.'},
+  {text:'Carbon has an atomic number of 6. How many electrons does a neutral carbon atom have?', opts:['12','4','3','6'], ans:3, exp:'In a neutral atom, the number of electrons always equals the number of protons (the atomic number). Carbon\'s atomic number is 6, so it has 6 electrons.'},
+  {text:'Which scientist\'s gold-foil experiment proved that atoms have a tiny dense nucleus?', opts:['Dalton','Thomson','Rutherford','Bohr'], ans:2, exp:'Rutherford shot alpha particles at a thin gold foil. Most passed through, but some bounced back — proving there was a tiny, dense, positive nucleus.'},
+  {text:'An atom of sodium (Na) has atomic number 11. What is its electron configuration?', opts:['2,8,1','2,9','3,8','2,8,1,0'], ans:0, exp:'Shell 1 holds 2, shell 2 holds 8, and the remaining 1 electron goes into shell 3. So the configuration is 2,8,1.'},
+  {text:'Which sub-atomic particle has NO charge?', opts:['Proton','Electron','Neutron','Nucleus'], ans:2, exp:'Neutrons are neutral — they have no electrical charge. Protons are positive (+) and electrons are negative (−).'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi,oi){
+  if(answered[qi]) return;
+  answered[qi]=true;
+  const q=QUESTIONS[qi];
+  const opts=document.querySelectorAll(`#qcard${qi} .mc-opt`);
+  opts.forEach(o=>o.disabled=true);
+  opts[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){
+    score++;
+    fb.className='feedback ok show'; fb.innerHTML='✓ Correct! '+q.exp;
+  } else {
+    opts[oi].classList.add('wrong');
+    fb.className='feedback bad show'; fb.innerHTML='✗ Not quite. '+q.exp;
+  }
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    const msg=['Keep studying — re-read the lesson and try again!','Good effort — review the explanations above.','Well done! A solid understanding of atoms.','Excellent! You\'ve mastered atomic structure.'];
+    document.getElementById('scoreMsg').textContent=score<=2?msg[0]:score<=4?msg[1]:score===5?msg[2]:msg[3];
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
