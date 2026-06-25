@@ -422,8 +422,27 @@ function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
     solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   } else if (p.type === 'spline') {
     const pts = p.points;
-    if (pts.length < 2) throw new Error('Need at least 2 points');
-    let sk = draw(pts[0]).splineTo(pts.slice(1)).lineTo(pts[0]);
+    if (pts.length < 3) throw new Error('Need at least 3 spline points');
+    // Approximate Catmull-Rom spline as a dense polyline (avoids splineTo API uncertainty)
+    const STEPS = 24;
+    const approx = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[Math.max(0, i - 1)];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[Math.min(pts.length - 1, i + 2)];
+      for (let j = 0; j < STEPS; j++) {
+        const t = j / STEPS, t2 = t*t, t3 = t2*t;
+        approx.push([
+          0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+          0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3),
+        ]);
+      }
+    }
+    approx.push(pts[pts.length - 1]);
+    let sk = draw(approx[0]);
+    for (let i = 1; i < approx.length; i++) sk = sk.lineTo(approx[i]);
+    sk = sk.lineTo(approx[0]);
     solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   } else {
     const pts = p.points;
@@ -462,10 +481,10 @@ worker.onmessage = ({ data }) => {
     setRebuildStatus('done');
   } else if (data.type === 'err') {
     console.warn('[ModelMage]', data.msg);
-    setRebuildStatus('error');
+    setRebuildStatus('error', data.msg);
   }
 };
-worker.onerror = e => { console.error('[ModelMage] Worker:', e.message); setRebuildStatus('error'); };
+worker.onerror = e => { console.error('[ModelMage] Worker:', e.message); setRebuildStatus('error', e.message); };
 
 // ════════════════════════════════════════════════════════════════════
 // SKETCH STATE
@@ -539,11 +558,11 @@ let pendingLenEdit = null;
 // REBUILD STATUS
 // ════════════════════════════════════════════════════════════════════
 
-function setRebuildStatus(state) {
+function setRebuildStatus(state, msg) {
   const el = document.getElementById('rebuild-status');
   if (state === 'building') { el.textContent = 'Building…'; el.style.color = 'var(--text2)'; }
   else if (state === 'done') { el.textContent = '✓ Done'; el.style.color = 'var(--green)'; }
-  else if (state === 'error') { el.textContent = '⚠ Error'; el.style.color = 'var(--red)'; }
+  else if (state === 'error') { el.textContent = '⚠ ' + (msg || 'Error'); el.style.color = 'var(--red)'; }
   else { el.textContent = ''; }
 }
 
