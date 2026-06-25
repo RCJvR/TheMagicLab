@@ -423,13 +423,14 @@ function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
   } else if (p.type === 'spline') {
     const pts = p.points;
     if (pts.length < 2) throw new Error('Need at least 2 points');
-    let sk = draw(pts[0]).splineTo(pts.slice(1));
+    let sk = draw(pts[0]).splineTo(pts.slice(1)).lineTo(pts[0]);
     solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   } else {
     const pts = p.points;
     if (pts.length < 3) throw new Error('Need at least 3 points');
     let sk = draw(pts[0]);
     for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
+    sk = sk.lineTo(pts[0]);
     solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   }
   if (filletR > 0) {
