@@ -1493,10 +1493,35 @@ function isNearFirst(wx, wy) {
 // PROFILE / EXTRUDE
 // ════════════════════════════════════════════════════════════════════
 
+// Expand a spline entity to dense Catmull-Rom polyline points
+function catmullRomExpand(pts, steps=20) {
+  const result = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+    for (let j=0; j<steps; j++) {
+      const t=j/steps, t2=t*t, t3=t2*t;
+      result.push([
+        0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+        0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3),
+      ]);
+    }
+  }
+  result.push(pts[pts.length-1]);
+  return result;
+}
+
+function entityEndpts(e) {
+  const p = e.points;
+  return [p[0], p[p.length-1]];
+}
+
 function stitchSegments(segs) {
-  // Try to chain open polyline segments into a single closed loop
-  const EPS = 0.6; // world-unit tolerance (< half a grid step at 1mm snap)
-  const pool = segs.map(s => ({pts: s.points.slice(), used: false}));
+  // Expand splines to dense polyline points before stitching
+  const EPS = 0.6;
+  const pool = segs.map(s => ({
+    pts: s.type==='spline' ? catmullRomExpand(s.points) : s.points.slice(),
+    used: false
+  }));
   const chain = pool[0].pts.slice();
   pool[0].used = true;
   for (let iter = 0; iter < pool.length - 1; iter++) {
@@ -1527,23 +1552,26 @@ function getAllProfiles(sketch) {
   const profiles = [];
   const usedIdx = new Set();
 
+  // Pass 1: natively-closed shapes (rect, circle, arc, closed polyline)
   for (let i = 0; i < es.length; i++) {
     const e = es[i];
-    if (e.type==='polyline'&&e.closed&&e.points.length>=3)    { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
-    else if (e.type==='rect'&&e.w>0&&e.h>0)                   { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
-    else if (e.type==='circle'&&e.r>0)                        { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
-    else if (e.type==='arc'&&e.p1&&e.pmid&&e.p2)              { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
-    else if (e.type==='spline'&&e.points&&e.points.length>=3) { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    if (e.type==='polyline'&&e.closed&&e.points.length>=3) { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='rect'&&e.w>0&&e.h>0)               { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='circle'&&e.r>0)                    { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='arc'&&e.p1&&e.pmid&&e.p2)          { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    // splines deferred — try stitching first
   }
 
+  // Pass 2: stitch open segments (polylines + splines) into closed loops
   const EPS = 0.6;
-  const openSegs = es.map((e,i)=>({e,i}))
-    .filter(({e,i})=>e.type==='polyline'&&!e.closed&&e.points.length>=2&&!usedIdx.has(i));
+  const openSegs = es.map((e,i)=>({e,i})).filter(({e,i})=>(
+    (e.type==='polyline'&&!e.closed&&e.points.length>=2) ||
+    (e.type==='spline'&&e.points&&e.points.length>=2)
+  )&&!usedIdx.has(i));
 
   if (openSegs.length >= 2) {
-    function endpts(s){ const p=s.e.points; return [p[0],p[p.length-1]]; }
     function connects(a,b){
-      const[a0,a1]=endpts(a),[b0,b1]=endpts(b);
+      const[a0,a1]=entityEndpts(a.e),[b0,b1]=entityEndpts(b.e);
       return Math.hypot(a1[0]-b0[0],a1[1]-b0[1])<EPS||Math.hypot(a1[0]-b1[0],a1[1]-b1[1])<EPS
           || Math.hypot(a0[0]-b0[0],a0[1]-b0[1])<EPS||Math.hypot(a0[0]-b1[0],a0[1]-b1[1])<EPS;
     }
@@ -1559,10 +1587,21 @@ function getAllProfiles(sketch) {
       }
       if(comp.length>=2){
         const stitched=stitchSegments(comp.map(k=>openSegs[k].e));
-        if(stitched) profiles.push({profile:stitched,srcIdx:-1});
+        if(stitched){
+          profiles.push({profile:stitched,srcIdx:-1});
+          comp.forEach(k=>usedIdx.add(openSegs[k].i));
+        }
       }
     }
   }
+
+  // Pass 3: standalone splines not consumed by stitching
+  for (let i = 0; i < es.length; i++) {
+    if (usedIdx.has(i)) continue;
+    const e = es[i];
+    if (e.type==='spline'&&e.points&&e.points.length>=3) { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+  }
+
   return profiles;
 }
 
