@@ -409,13 +409,16 @@ function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
   } else if (p.type === 'rect') {
     const rw=Math.abs(p.w), rh=Math.abs(p.h), cx=p.x+p.w/2, cy=p.y+p.h/2;
     if (p.cornerR && p.cornerR > 0) {
-      const r = Math.min(p.cornerR, rw/2, rh/2);
-      const hx=rw/2-r, hy=rh/2-r;
-      let sk = draw([-hx-r, -hy])
-        .lineTo([hx, -hy-r]).threePointsArc([hx+r*0.707,-(hy+r*0.707)],[hx+r,-hy])
-        .lineTo([hx+r, hy]).threePointsArc([hx+r*0.707,hy+r*0.707],[hx,hy+r])
-        .lineTo([-hx, hy+r]).threePointsArc([-(hx+r*0.707),hy+r*0.707],[-(hx+r),hy])
-        .lineTo([-(hx+r), -hy]).threePointsArc([-(hx+r*0.707),-(hy+r*0.707)],[-hx-r,-hy]);
+      const r = Math.min(p.cornerR, rw*0.45, rh*0.45);
+      const hw=rw/2, hh=rh/2, tx=hw-r, ty=hh-r;
+      const N=8, rpts=[];
+      // Approximate each 90° corner with N arc steps; close() draws the final left edge
+      const corners=[[-tx,-ty,Math.PI,Math.PI*3/2],[tx,-ty,Math.PI*3/2,Math.PI*2],[tx,ty,0,Math.PI/2],[-tx,ty,Math.PI/2,Math.PI]];
+      corners.forEach(([cx2,cy2,a0,a1],ci)=>{
+        for(let i=(ci===0?0:1);i<=N;i++){const a=a0+(a1-a0)*i/N;rpts.push([cx2+r*Math.cos(a),cy2+r*Math.sin(a)]);}
+      });
+      let sk=draw(rpts[0]);
+      for(let i=1;i<rpts.length;i++) sk=sk.lineTo(rpts[i]);
       solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h).translate([cx, cy, 0]);
     } else {
       solid = drawRectangle(rw, rh).sketchOnPlane(planeName, planeOffset).extrude(h).translate([cx, cy, 0]);
@@ -1516,32 +1519,40 @@ function entityEndpts(e) {
 }
 
 function stitchSegments(segs) {
-  // Expand splines to dense polyline points before stitching
   const EPS = 0.6;
   const pool = segs.map(s => ({
     pts: s.type==='spline' ? catmullRomExpand(s.points) : s.points.slice(),
-    used: false
   }));
-  const chain = pool[0].pts.slice();
-  pool[0].used = true;
-  for (let iter = 0; iter < pool.length - 1; iter++) {
-    const tail = chain[chain.length - 1];
-    let found = false;
-    for (const seg of pool) {
-      if (seg.used) continue;
-      const s = seg.pts[0], e2 = seg.pts[seg.pts.length - 1];
-      if (Math.hypot(tail[0]-s[0], tail[1]-s[1]) < EPS) {
-        chain.push(...seg.pts.slice(1)); seg.used = true; found = true; break;
+
+  function tryStitch(startIdx) {
+    const used = new Array(pool.length).fill(false);
+    const chain = pool[startIdx].pts.slice();
+    used[startIdx] = true;
+    for (let iter = 0; iter < pool.length - 1; iter++) {
+      const tail = chain[chain.length - 1];
+      let found = false;
+      for (let j = 0; j < pool.length; j++) {
+        if (used[j]) continue;
+        const s = pool[j].pts[0], e2 = pool[j].pts[pool[j].pts.length - 1];
+        if (Math.hypot(tail[0]-s[0], tail[1]-s[1]) < EPS) {
+          chain.push(...pool[j].pts.slice(1)); used[j] = true; found = true; break;
+        }
+        if (Math.hypot(tail[0]-e2[0], tail[1]-e2[1]) < EPS) {
+          chain.push(...pool[j].pts.slice().reverse().slice(1)); used[j] = true; found = true; break;
+        }
       }
-      if (Math.hypot(tail[0]-e2[0], tail[1]-e2[1]) < EPS) {
-        chain.push(...seg.pts.slice().reverse().slice(1)); seg.used = true; found = true; break;
-      }
+      if (!found) return null;
     }
-    if (!found) return null;
+    const head = chain[0], tail2 = chain[chain.length - 1];
+    if (Math.hypot(tail2[0]-head[0], tail2[1]-head[1]) < EPS && chain.length >= 4) {
+      return {type:'polyline', points: chain.slice(0, -1), closed: true};
+    }
+    return null;
   }
-  const head = chain[0], tail2 = chain[chain.length - 1];
-  if (Math.hypot(tail2[0]-head[0], tail2[1]-head[1]) < EPS && chain.length >= 4) {
-    return {type:'polyline', points: chain.slice(0, -1), closed: true};
+
+  for (let i = 0; i < pool.length; i++) {
+    const result = tryStitch(i);
+    if (result) return result;
   }
   return null;
 }
