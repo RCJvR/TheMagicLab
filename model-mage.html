@@ -424,7 +424,6 @@ function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
     const pts = p.points;
     if (pts.length < 2) throw new Error('Need at least 2 points');
     let sk = draw(pts[0]).splineTo(pts.slice(1));
-    sk = sk.lineTo(pts[0]);
     solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
   } else {
     const pts = p.points;
@@ -1537,7 +1536,7 @@ function getAllProfiles(sketch) {
           if(!visited.has(j)&&connects(openSegs[cur],openSegs[j])){ visited.add(j); comp.push(j); queue.push(j); }
         }
       }
-      if(comp.length>=3){
+      if(comp.length>=2){
         const stitched=stitchSegments(comp.map(k=>openSegs[k].e));
         if(stitched) profiles.push({profile:stitched,srcIdx:-1});
       }
