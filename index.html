@@ -100,7 +100,7 @@
     .hero {
       display: flex; flex-direction: column; align-items: center;
       text-align: center;
-      padding: 88px 24px 64px;
+      padding: 48px 24px 32px;
       gap: 0;
     }
 
@@ -143,7 +143,7 @@
     .section-row {
       display: flex; align-items: center; gap: 16px;
       padding: 0 52px;
-      margin: 48px 0 24px;
+      margin: 24px 0 16px;
     }
     .section-label {
       font-family: var(--font-mono);
@@ -165,23 +165,23 @@
       background: linear-gradient(to right, rgba(17,217,143,0.20), var(--border) 60%, transparent);
     }
 
-    /* ── Cards scroll track ── */
-    .cards-outer { width: 100%; overflow: visible; }
-    .cards-scroll {
-      overflow-x: auto; padding: 8px 52px 40px;
-      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.12) transparent;
-    }
-    .cards-scroll::-webkit-scrollbar { height: 4px; }
-    .cards-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+    /* ── Cards grid ── */
+    .cards-outer { width: 100%; }
+    .cards-scroll { padding: 8px 52px 32px; }
 
     .cards-track {
-      display: flex; gap: 20px;
-      width: max-content; padding: 4px 0 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
     }
+
+    @media (max-width: 1100px) { .cards-track { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 800px)  { .cards-track { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px)  { .cards-track { grid-template-columns: 1fr; } }
 
     /* ── Card ── */
     .card {
-      width: 248px; flex-shrink: 0;
+      width: auto;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 20px; padding: 22px;
@@ -541,6 +541,23 @@
           </div>
         </a>
 
+        <!-- Science Sage -->
+        <a href="science-sage/index.html" class="card card-science">
+          <div class="card-icon">🔬</div>
+          <div class="card-grade">Grade 8 – 12</div>
+          <div class="card-title">Science Sage</div>
+          <p class="card-desc">Natural Sciences for Gr 8–9, branching into Life Sciences and Physical Sciences for Gr 10–12. Experiments, concepts, and CAPS-aligned content.</p>
+          <div class="card-tags">
+            <span class="tag">Natural Sciences</span>
+            <span class="tag">Life Sciences</span>
+            <span class="tag">Physical Sciences</span>
+          </div>
+          <div class="card-btn btn-science">
+            <i data-lucide="flask-conical" style="width:14px;height:14px;"></i>
+            Enter Science Sage
+          </div>
+        </a>
+
         <!-- Model Mage -->
         <a href="model-mage.html" class="card card-model">
           <div class="card-icon">
@@ -562,23 +579,6 @@
           <div class="card-btn btn-model">
             <i data-lucide="play" style="width:15px;height:15px;"></i>
             Launch Model Mage
-          </div>
-        </a>
-
-        <!-- Science Sage -->
-        <a href="science-sage/index.html" class="card card-science">
-          <div class="card-icon">🔬</div>
-          <div class="card-grade">Grade 8 – 12</div>
-          <div class="card-title">Science Sage</div>
-          <p class="card-desc">Natural Sciences for Gr 8–9, branching into Life Sciences and Physical Sciences for Gr 10–12. Experiments, concepts, and CAPS-aligned content.</p>
-          <div class="card-tags">
-            <span class="tag">Natural Sciences</span>
-            <span class="tag">Life Sciences</span>
-            <span class="tag">Physical Sciences</span>
-          </div>
-          <div class="card-btn btn-science">
-            <i data-lucide="flask-conical" style="width:14px;height:14px;"></i>
-            Enter Science Sage
           </div>
         </a>
 
