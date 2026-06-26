@@ -244,6 +244,7 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
+  if (id === 'simulate') { resizePend(); resetPend(); }
 }
 
 /* ---- Pendulum simulator ---- */
@@ -289,6 +290,7 @@ function togglePlay() {
 function resizePend() {
   pCanvas.width = (pCanvas.offsetWidth || 480) * (window.devicePixelRatio || 1);
   pCanvas.height = 340 * (window.devicePixelRatio || 1);
+  pCtx.setTransform(1, 0, 0, 1, 0, 0);
   pCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
 }
 
@@ -348,7 +350,8 @@ function drawPend(ts) {
 
   // Bob glow
   const speed = Math.abs(angVel);
-  const maxSpeed = Math.sqrt(2 * g * pendH / pendLength > 0 ? 2 * g * pendH / pendLength : 1);
+  const pendKE = 2 * g * pendH / pendLength;
+  const maxSpeed = Math.sqrt(pendKE > 0 ? pendKE : 1);
   const speedFrac = Math.min(speed / (maxSpeed || 1), 1);
   const grd = pCtx.createRadialGradient(bobX, bobY, 0, bobX, bobY, 26);
   grd.addColorStop(0, `rgba(251,191,36,${0.3 + speedFrac * 0.5})`);

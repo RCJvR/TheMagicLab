@@ -281,7 +281,7 @@ function setMode(m,btn){
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
   const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
-  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/420);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/420);
   bgStars=[];
   for(let i=0;i<250;i++) bgStars.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1+0.3,b:Math.random()});
   t=0;loop();

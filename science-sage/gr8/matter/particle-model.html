@@ -276,7 +276,7 @@ function updateStats(){
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
   const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
-  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/420);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/420);
   particles=[]; t=0; wallHits=0;
   const N=currentState==='solid'?36:currentState==='liquid'?30:20;
   if(currentState==='solid'){
@@ -336,7 +336,7 @@ function loop(){
     ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(60,H/2-20);ctx.lineTo(W-60,H/2-20);ctx.stroke();
     ctx.fillStyle='rgba(96,165,250,0.06)';
-    ctx.fillRect(60,H/2-20,W-120,H-p_bottom());
+    ctx.fillRect(60,H/2-20,W-120,H-(H/2-20)-p_bottom());
   } else {
     let hits=0;
     for(const p of particles){

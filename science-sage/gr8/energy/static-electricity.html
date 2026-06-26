@@ -219,10 +219,10 @@ function setMode(m,btn){
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
   const dW=cv.offsetWidth||520,dH=Math.round(dW*400/520);
-  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/400);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/400);
   electrons=[]; sparks=[]; papers=[];
   if(mode==='attract'){
-    for(let i=0;i<12;i++) papers.push({x:50+Math.random()*420,y:300+Math.random()*70,vx:0,vy:0,w:8+Math.random()*8,h:4+Math.random()*4});
+    for(let i=0;i<16;i++) papers.push({x:80+Math.random()*360,y:200+Math.random()*160,vx:0,vy:0,w:10+Math.random()*10,h:5+Math.random()*5});
   } else if(mode==='lightning'){
     charge=0;
     for(let i=0;i<20;i++) electrons.push({x:Math.random()*W,y:50+Math.random()*100,vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*1.5,sign:-1});
@@ -345,12 +345,12 @@ function drawAttract(){
       const dx=rulerCX-p.x, dy=rulerCY-p.y;
       const dist=Math.sqrt(dx*dx+dy*dy)+1;
       if(dist<280){
-        const force=charge*400/(dist*dist+80);
+        const force=charge*8000/(dist*dist+80);
         p.vx+=dx/dist*force*0.06;
         p.vy+=dy/dist*force*0.06;
       }
     }
-    p.vy+=0.25;
+    p.vy+=0.10;
     p.vx*=0.90; p.vy*=0.90;
     p.x+=p.vx; p.y+=p.vy;
     if(p.y>H-10){p.y=H-10;p.vy*=-0.4;}

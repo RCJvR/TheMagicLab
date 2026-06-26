@@ -207,7 +207,7 @@ function showTab(id,btn){
 const cv=document.getElementById('cv');
 const ctx=cv.getContext('2d');
 const W=520,H=400;
-let rxn='vinegar',phase='before',bubbles=[],particles=[],raf=null,t=0,reacted=false;
+let rxn='vinegar',phase='before',bubbles=[],particles=[],raf=null,t=0,reacted=false,reactTimer=null;
 
 const rxnData={
   vinegar:{label:'Vinegar + CaCO₃',reactA:'Vinegar (CH₃COOH)',reactB:'Eggshell (CaCO₃)',product:'CO₂ + Calcium acetate',color:'rgba(251,191,36,',shell:true},
@@ -216,7 +216,7 @@ const rxnData={
 };
 
 function setRxn(r,btn){
-  rxn=r; phase='before'; reacted=false; bubbles=[]; particles=[];
+  rxn=r; phase='before'; reacted=false; bubbles=[]; particles=[]; clearTimeout(reactTimer);
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('st-rxn').textContent=rxnData[r].label;
@@ -231,13 +231,13 @@ function triggerReaction(){
   document.getElementById('st-phase').textContent='Reacting…';
   document.getElementById('react-btn').textContent='Reacting…';
   document.getElementById('react-btn').disabled=true;
-  setTimeout(()=>{phase='after';document.getElementById('st-phase').textContent='After';},3000);
+  reactTimer=setTimeout(()=>{phase='after';document.getElementById('st-phase').textContent='After';},3000);
 }
 
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
   const dW=cv.offsetWidth||520,dH=Math.round(dW*400/520);
-  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/400);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/400);
   t=0; loop();
 }
 
