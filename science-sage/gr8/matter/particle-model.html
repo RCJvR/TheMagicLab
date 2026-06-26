@@ -275,12 +275,15 @@ function updateStats(){
 
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
+  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/420);
   particles=[]; t=0; wallHits=0;
   const N=currentState==='solid'?36:currentState==='liquid'?30:20;
   if(currentState==='solid'){
-    const cols=6,rows=6,px=W/2-90,py=H/2-90,gap=30;
+    const cols=6,rows=6,gap=Math.round(Math.min(W,H)*0.13);
+    const px=W/2-gap*2.5, py=H/2-gap*2.5;
     for(let r=0;r<rows;r++) for(let c=0;c<cols;c++)
-      particles.push({x:px+c*gap,y:py+r*gap,vx:(Math.random()-.5)*0.4,vy:(Math.random()-.5)*0.4,ox:px+c*gap,oy:py+r*gap,r:10});
+      particles.push({x:px+c*gap,y:py+r*gap,vx:(Math.random()-.5)*0.4,vy:(Math.random()-.5)*0.4,ox:px+c*gap,oy:py+r*gap,r:10,gap});
   } else if(currentState==='liquid'){
     for(let i=0;i<N;i++) particles.push({x:80+Math.random()*(W-160),y:H/2+Math.random()*150,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,r:10});
   } else {
@@ -310,9 +313,10 @@ function loop(){
       for(let j=i+1;j<particles.length;j++){
         const dx=particles[j].x-particles[i].x,dy=particles[j].y-particles[i].y;
         const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<35){
+        const bondR=(particles[i].gap||30)*1.5;
+        if(d<bondR){
           ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.strokeStyle=`rgba(96,165,250,${0.3*(1-d/35)})`;ctx.lineWidth=1;ctx.stroke();
+          ctx.strokeStyle=`rgba(96,165,250,${0.3*(1-d/bondR)})`;ctx.lineWidth=1;ctx.stroke();
         }
       }
     }

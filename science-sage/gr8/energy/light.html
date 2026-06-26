@@ -235,6 +235,8 @@ function setMode(m,btn){
 
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
+  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/420);
   t=0; loop();
 }
 
@@ -284,48 +286,53 @@ function drawPrism(){
 }
 
 function drawReflection(){
-  const mx=W/2, my=H/2;
-  // Mirror
-  ctx.strokeStyle='rgba(148,163,184,0.6)';ctx.lineWidth=4;
-  ctx.beginPath();ctx.moveTo(mx,my-120);ctx.lineTo(mx,my+120);ctx.stroke();
-  ctx.fillStyle='rgba(148,163,184,0.3)';ctx.font='11px var(--fd)';ctx.textAlign='left';
-  ctx.fillText('Mirror',mx+6,my-100);
+  const cx=W/2, sy=H/2+40; // contact point, surface y
 
-  // Normal
+  // Mirror surface (horizontal)
+  ctx.strokeStyle='rgba(148,163,184,0.6)';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(60,sy);ctx.lineTo(W-60,sy);ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.25)';ctx.fillRect(60,sy+2,W-120,18);
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Mirror surface',W/2,sy+28);
+
+  // Normal (vertical dashed)
   ctx.setLineDash([5,5]);
   ctx.strokeStyle='rgba(107,114,128,0.5)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(mx-120,my);ctx.lineTo(mx+120,my);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx,sy-150);ctx.lineTo(cx,sy+60);ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle='rgba(107,114,128,0.6)';ctx.font='10px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('Normal',mx,my+14);
+  ctx.fillStyle='rgba(107,114,128,0.55)';ctx.font='10px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Normal',cx+5,sy-130);
 
-  // Incident ray (from top-left)
+  // Incident ray: top-left → contact point
+  const ix1=cx-160, iy1=sy-130;
   ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
-  ctx.beginPath();ctx.moveTo(mx-130,my-80);ctx.lineTo(mx,my);ctx.stroke();
-  drawArrowHead(mx-130,my-80,mx,my,'#fde68a');
-  ctx.fillStyle='#fde68a';ctx.font='11px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('Incident ray',mx-90,my-70);
+  ctx.beginPath();ctx.moveTo(ix1,iy1);ctx.lineTo(cx,sy);ctx.stroke();
+  drawArrowHead(ix1,iy1,cx,sy,'#fde68a');
+  ctx.fillStyle='#fde68a';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Incident ray',ix1+55,iy1+10);
 
-  // Angle of incidence arc
-  ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.arc(mx,my,50,-Math.PI/2,-Math.PI/2+Math.atan2(80,130));ctx.stroke();
-  ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px var(--fd)';
-  ctx.fillText('θᵢ',mx-30,my-18);
-
-  // Reflected ray (same angle other side)
+  // Reflected ray: contact point → top-right (same angle, other side)
+  const rx1=cx+160, ry1=sy-130;
   ctx.strokeStyle='#f87171';ctx.lineWidth=2.5;
-  ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(mx-130,my+80);ctx.stroke();
-  drawArrowHead(mx,my,mx-130,my+80,'#f87171');
-  ctx.fillStyle='#f87171';ctx.font='11px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('Reflected ray',mx-90,my+72);
+  ctx.beginPath();ctx.moveTo(cx,sy);ctx.lineTo(rx1,ry1);ctx.stroke();
+  drawArrowHead(cx,sy,rx1,ry1,'#f87171');
+  ctx.fillStyle='#f87171';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Reflected ray',rx1-55,ry1+10);
 
-  ctx.strokeStyle='rgba(248,113,113,0.4)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.arc(mx,my,50,-Math.PI/2-Math.atan2(80,130),-Math.PI/2);ctx.stroke();
-  ctx.fillStyle='rgba(248,113,113,0.7)';ctx.font='10px var(--fd)';
-  ctx.fillText('θᵣ',mx-28,my+22);
+  // Angle arcs
+  const ang=Math.atan2(130,160);
+  ctx.strokeStyle='rgba(251,191,36,0.5)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(cx,sy,55,-(Math.PI/2+ang),-Math.PI/2);ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.85)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('θᵢ',cx-36,sy-22);
 
-  ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='12px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('Angle of incidence = Angle of reflection',W/2,H-30);
+  ctx.strokeStyle='rgba(248,113,113,0.5)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(cx,sy,55,-Math.PI/2,-(Math.PI/2-ang));ctx.stroke();
+  ctx.fillStyle='rgba(248,113,113,0.85)';ctx.font='12px var(--fd)';
+  ctx.fillText('θᵣ',cx+36,sy-22);
+
+  ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='13px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('θᵢ = θᵣ  —  Angle of incidence = Angle of reflection',W/2,H-20);
 }
 
 function drawRefraction(){

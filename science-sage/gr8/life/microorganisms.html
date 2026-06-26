@@ -255,6 +255,8 @@ function resetSim(){
 
 function startSim(){
   if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*400/520);
+  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/400);
   resetSim();
   loop();
 }

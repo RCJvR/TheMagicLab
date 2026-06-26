@@ -218,6 +218,8 @@ function setMode(m,btn){
 
 function initSim(){
   if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*400/520);
+  cv.width=dW; cv.height=dH; ctx.scale(dW/520,dH/400);
   electrons=[]; sparks=[]; papers=[];
   if(mode==='attract'){
     for(let i=0;i<12;i++) papers.push({x:50+Math.random()*420,y:300+Math.random()*70,vx:0,vy:0,w:8+Math.random()*8,h:4+Math.random()*4});
@@ -258,22 +260,22 @@ function loop(){
 }
 
 function drawRub(){
-  const rx=130,ry=160,rw=260,rh=40;
+  const rx=50,ry=90,rw=420,rh=80;
   ctx.fillStyle='rgba(96,165,250,0.15)';
   ctx.strokeStyle='rgba(96,165,250,0.5)';
   ctx.lineWidth=2;
-  ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,8);ctx.fill();ctx.stroke();
-  ctx.fillStyle='rgba(96,165,250,0.7)';
-  ctx.font='bold 13px sans-serif';ctx.textAlign='center';
-  ctx.fillText('PLASTIC RULER',rx+rw/2,ry+rh/2+5);
+  ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(96,165,250,0.8)';
+  ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('PLASTIC RULER',rx+rw/2,ry+rh/2+6);
 
-  const wx=300,wy=240,ww=100,wh=50;
+  const wx=160,wy=220,ww=200,wh=80;
   ctx.fillStyle='rgba(251,191,36,0.15)';
   ctx.strokeStyle='rgba(251,191,36,0.4)';
-  ctx.beginPath();ctx.roundRect(wx,wy,ww,wh,8);ctx.fill();ctx.stroke();
-  ctx.fillStyle='rgba(251,191,36,0.7)';
-  ctx.font='11px sans-serif';ctx.textAlign='center';
-  ctx.fillText('WOOL',wx+ww/2,wy+wh/2+4);
+  ctx.beginPath();ctx.roundRect(wx,wy,ww,wh,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.8)';
+  ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('WOOL',wx+ww/2,wy+wh/2+6);
 
   if(rubbing){
     const dist=Math.sqrt((mouseX-prevX)**2+(mouseY-prevY)**2);
@@ -314,69 +316,131 @@ function drawRub(){
 }
 
 function drawAttract(){
-  const rx=130,ry=80,rw=260,rh=36;
-  const chColor=charge>0?'rgba(96,165,250,0.7)':'rgba(107,114,128,0.5)';
-  ctx.fillStyle=charge>0?'rgba(96,165,250,0.15)':'rgba(107,114,128,0.05)';
-  ctx.strokeStyle=chColor;
-  ctx.lineWidth=2;
-  ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,8);ctx.fill();ctx.stroke();
+  const rx=50,ry=50,rw=420,rh=60;
+  const charged=charge>0;
+  const chColor=charged?'rgba(96,165,250,0.8)':'rgba(107,114,128,0.5)';
+  ctx.fillStyle=charged?'rgba(96,165,250,0.15)':'rgba(107,114,128,0.06)';
+  ctx.strokeStyle=chColor; ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,10);ctx.fill();ctx.stroke();
   ctx.fillStyle=chColor;
-  ctx.font='bold 13px sans-serif';ctx.textAlign='center';
-  ctx.fillText(charge>0?'CHARGED RULER (−)':'UNCHARGED RULER',rx+rw/2,ry+rh/2+5);
+  ctx.font='bold 15px sans-serif';ctx.textAlign='center';
+  ctx.fillText(charged?'CHARGED RULER  (negative −)':'UNCHARGED RULER  (rub it first!)',rx+rw/2,ry+rh/2+6);
 
-  const rulerCX=rx+rw/2, rulerCY=ry+rh;
+  // Charge indicators on ruler
+  if(charged){
+    const neg=Math.min(Math.round(charge*3),20);
+    for(let i=0;i<neg;i++){
+      ctx.fillStyle='#fbbf24';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+      ctx.fillText('−',rx+30+i*(rw-60)/(neg-1||1),ry+12);
+    }
+    // Arrow showing attraction downward
+    ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(rx+rw/2,ry+rh);ctx.lineTo(rx+rw/2,ry+rh+40);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  const rulerCX=rx+rw/2, rulerCY=ry+rh+4;
   for(const p of papers){
-    if(charge>0){
+    if(charged){
       const dx=rulerCX-p.x, dy=rulerCY-p.y;
-      const dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<200){
-        const force=charge*300/(dist*dist+100);
-        p.vx+=dx/dist*force*0.05;
-        p.vy+=dy/dist*force*0.05;
+      const dist=Math.sqrt(dx*dx+dy*dy)+1;
+      if(dist<280){
+        const force=charge*400/(dist*dist+80);
+        p.vx+=dx/dist*force*0.06;
+        p.vy+=dy/dist*force*0.06;
       }
     }
-    p.vy+=0.2;
-    p.vx*=0.92; p.vy*=0.92;
+    p.vy+=0.25;
+    p.vx*=0.90; p.vy*=0.90;
     p.x+=p.vx; p.y+=p.vy;
     if(p.y>H-10){p.y=H-10;p.vy*=-0.4;}
-    if(p.x<0)p.x=0; if(p.x>W)p.x=W;
-    ctx.fillStyle='rgba(210,218,245,0.8)';
-    ctx.fillRect(p.x-p.w/2,p.y-p.h/2,p.w,p.h);
+    if(p.x<10)p.x=10; if(p.x>W-10)p.x=W-10;
+    // Draw paper scrap as a small white rectangle with slight rotation
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.vx*0.15);
+    ctx.fillStyle='rgba(230,235,255,0.90)';
+    ctx.strokeStyle='rgba(255,255,255,0.3)';
+    ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.roundRect(-p.w/2,-p.h/2,p.w,p.h,2);ctx.fill();ctx.stroke();
+    ctx.restore();
+    // Induced charge on paper when near ruler
+    if(charged && Math.abs(p.y-rulerCY)<120){
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='9px sans-serif';ctx.textAlign='center';
+      ctx.fillText('+',p.x,p.y-p.h/2-2);
+    }
   }
   document.getElementById('st-charge').textContent=charge>5?'High':'Low';
+  // Init papers if empty
+  if(papers.length===0)
+    for(let i=0;i<16;i++) papers.push({x:60+Math.random()*(W-120),y:180+Math.random()*180,vx:0,vy:0,w:14+Math.random()*10,h:7+Math.random()*5});
 }
 
 function drawLightning(){
   charge+=0.015;
-  const cloudY=80, gndY=H-40;
+  const cloudCY=130, cloudW=170, cloudH=55, gndY=H-50;
 
-  ctx.fillStyle='rgba(107,114,128,0.3)';
-  ctx.beginPath();ctx.ellipse(W/2,cloudY,150,50,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='rgba(107,114,128,0.2)';
-  ctx.beginPath();ctx.ellipse(W/2-60,cloudY+20,80,35,0,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.ellipse(W/2+70,cloudY+15,90,35,0,0,Math.PI*2);ctx.fill();
+  // Sky gradient
+  const sky=ctx.createLinearGradient(0,0,0,gndY);
+  sky.addColorStop(0,'#0a0f1e'); sky.addColorStop(1,'#0f1829');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,gndY);
 
-  ctx.fillStyle='#4b5563';
-  ctx.fillRect(0,gndY,W,H-gndY);
-  ctx.fillStyle='#6b7280';
-  ctx.fillRect(0,gndY,W,4);
+  // Storm cloud — layered ellipses
+  const cloudParts=[
+    {x:W/2,    y:cloudCY,      rx:cloudW,   ry:cloudH,   a:0.50},
+    {x:W/2-80, y:cloudCY+18,   rx:90,       ry:40,       a:0.42},
+    {x:W/2+90, y:cloudCY+14,   rx:95,       ry:38,       a:0.42},
+    {x:W/2-30, y:cloudCY-22,   rx:85,       ry:38,       a:0.35},
+    {x:W/2+50, y:cloudCY-18,   rx:75,       ry:32,       a:0.32},
+  ];
+  cloudParts.forEach(({x,y,rx,ry,a})=>{
+    const g=ctx.createRadialGradient(x,y-10,5,x,y,rx);
+    g.addColorStop(0,`rgba(80,90,110,${a+0.1})`);
+    g.addColorStop(1,`rgba(30,38,55,${a-0.1})`);
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();
+  });
+  // Cloud bottom flat
+  ctx.fillStyle='rgba(25,32,48,0.6)';
+  ctx.fillRect(W/2-cloudW+10, cloudCY+cloudH-12, (cloudW-10)*2, 16);
 
-  const negCount=Math.min(Math.floor(charge*8),30);
+  // Ground
+  const grd=ctx.createLinearGradient(0,gndY,0,H);
+  grd.addColorStop(0,'#374151');grd.addColorStop(1,'#1f2937');
+  ctx.fillStyle=grd; ctx.fillRect(0,gndY,W,H-gndY);
+  ctx.fillStyle='#4b5563'; ctx.fillRect(0,gndY,W,3);
+  ctx.fillStyle='rgba(107,114,128,0.4)';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('G R O U N D',W/2,gndY+22);
+
+  // Negative charges in cloud (building up)
+  const negCount=Math.min(Math.floor(charge*8),28);
   for(let i=0;i<negCount;i++){
-    const ex=(W/2-130)+i*(260/30);
-    ctx.fillStyle='#fbbf24';
-    ctx.font='bold 12px sans-serif';ctx.textAlign='center';
-    ctx.fillText('−',ex,cloudY+30);
+    const ex=(W/2-110)+i*(220/(28-1));
+    const ey=cloudCY+20+Math.sin(i*1.3)*12;
+    ctx.fillStyle='#fbbf24'; ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText('−',ex,ey);
   }
-  for(let i=0;i<8;i++){
-    const ex=(W/2-120)+i*(240/8);
-    ctx.fillStyle='#60a5fa';
-    ctx.font='bold 12px sans-serif';ctx.textAlign='center';
-    ctx.fillText('+',ex,gndY-8);
+
+  // Positive charges on ground
+  for(let i=0;i<10;i++){
+    const ex=(W/2-140)+i*(280/9);
+    ctx.fillStyle='#60a5fa'; ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('+',ex,gndY-10);
   }
+
+  // Charge build-up indicator bar
+  const barX=W-60, barY=60, barH=H-130, barW=18;
+  ctx.fillStyle='rgba(255,255,255,0.05)'; ctx.beginPath();ctx.roundRect(barX,barY,barW,barH,5);ctx.fill();
+  const fillH=barH*(charge/5);
+  const barGrad=ctx.createLinearGradient(0,barY+barH-fillH,0,barY+barH);
+  barGrad.addColorStop(0,'#fbbf24');barGrad.addColorStop(1,'#ef4444');
+  ctx.fillStyle=barGrad; ctx.beginPath();ctx.roundRect(barX,barY+barH-fillH,barW,fillH,5);ctx.fill();
+  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ctx.fillText('CHARGE',barX+barW/2,barY-8);
+  ctx.fillText(charge.toFixed(1),barX+barW/2,barY+barH+14);
 
   if(charge>=5){
-    drawBolt(W/2+(Math.random()-.5)*80, cloudY+50, W/2+(Math.random()-.5)*60, gndY);
+    drawBolt(W/2+(Math.random()-.5)*80, cloudCY+cloudH, W/2+(Math.random()-.5)*40, gndY);
     charge=0; sparkCount++;
     document.getElementById('st-sparks').textContent=sparkCount;
   }
