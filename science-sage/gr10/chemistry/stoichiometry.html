@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stoichiometry — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 10px;cursor:pointer;width:100%;margin-bottom:10px}
+select option{background:#1a1f35}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemistry</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Chemistry · Lesson 6</div>
+  <div class="lesson-title">Stoichiometry</div>
+  <div class="lesson-sub">Master the mole concept, calculate molar masses, use Avogadro's number, and apply stoichiometric ratios to solve quantitative chemistry problems.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📝 Workbook</button>
+</div>
+
+<!-- ===== LESSON TAB ===== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>The Mole Concept</h2>
+    <p>Chemistry deals with atoms and molecules — far too small to count individually. The MOLE is the chemist's counting unit that bridges the particle world and the macroscopic (lab) world.</p>
+
+    <div class="callout">
+      <strong>1 mole = 6.022 × 10²³ particles</strong> (atoms, molecules, ions, or formula units). This number is called Avogadro's number (Nₐ). Just as a "dozen" always means 12, a "mole" always means 6.022 × 10²³.
+    </div>
+
+    <p>1 mole of any element contains Avogadro's number of atoms AND has a mass equal to the atomic mass from the periodic table expressed in grams (g·mol⁻¹). For example: 1 mole of carbon (C) has mass 12 g; 1 mole of iron (Fe) has mass 55.85 g; 1 mole of oxygen gas (O₂) has mass 32 g.</p>
+
+    <div class="key-fact">Nₐ = 6.022 × 10²³ mol⁻¹   |   M(element) = atomic mass in g·mol⁻¹</div>
+
+    <h2>Molar Mass</h2>
+    <p>The molar mass (M) of a compound is the mass of 1 mole of that compound. It is calculated by adding together the molar masses of all atoms in the formula, multiplied by their subscripts. Units: g·mol⁻¹.</p>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Compound</th>
+          <th>Formula</th>
+          <th>Calculation</th>
+          <th>M (g·mol⁻¹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Water</td><td>H₂O</td><td>2(1.0) + 16.0</td><td>18.0</td></tr>
+        <tr><td>Calcium carbonate</td><td>CaCO₃</td><td>40.1 + 12.0 + 3(16.0)</td><td>100.1</td></tr>
+        <tr><td>Sulfuric acid</td><td>H₂SO₄</td><td>2(1.0) + 32.1 + 4(16.0)</td><td>98.1</td></tr>
+        <tr><td>Sodium hydroxide</td><td>NaOH</td><td>23.0 + 16.0 + 1.0</td><td>40.0</td></tr>
+        <tr><td>Iron(III) oxide</td><td>Fe₂O₃</td><td>2(55.8) + 3(16.0)</td><td>159.6</td></tr>
+        <tr><td>Glucose</td><td>C₆H₁₂O₆</td><td>6(12.0) + 12(1.0) + 6(16.0)</td><td>180.0</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Mole Calculations</h2>
+    <p>The three core mole equations link moles (n) to mass (m), number of particles (N), and volume of gas (V):</p>
+
+    <div class="formula">
+      n = m / M &nbsp;&nbsp;&nbsp; (moles = mass ÷ molar mass)<br>
+      n = N / Nₐ &nbsp;&nbsp; (moles = number of particles ÷ Avogadro's number)<br>
+      n = V / Vₘ &nbsp;&nbsp; (moles = volume of gas ÷ molar volume; Vₘ = 22.4 L·mol⁻¹ at STP)<br>
+      c = n / V &nbsp;&nbsp;&nbsp;&nbsp; (concentration = moles ÷ volume in litres; units: mol·L⁻¹)
+    </div>
+
+    <div class="callout">
+      <strong>STP</strong> = Standard Temperature and Pressure: 0°C (273 K) and 101.3 kPa. At STP, 1 mole of ANY gas occupies 22.4 litres (the molar volume, Vₘ).
+    </div>
+
+    <p><strong>Worked Example 1</strong> — How many moles in 54 g of water (H₂O)?<br>
+    M(H₂O) = 18 g·mol⁻¹; n = m/M = 54/18 = 3 mol. Answer: 3 moles.</p>
+
+    <p><strong>Worked Example 2</strong> — How many molecules are in 3 mol of water?<br>
+    N = n × Nₐ = 3 × 6.022 × 10²³ = 1.807 × 10²⁴ molecules.</p>
+
+    <p><strong>Worked Example 3</strong> — What volume does 2 mol of CO₂ occupy at STP?<br>
+    V = n × Vₘ = 2 × 22.4 = 44.8 L.</p>
+
+    <p><strong>Worked Example 4</strong> — What is the concentration of a solution containing 0.5 mol NaOH in 250 mL water?<br>
+    V = 250 mL = 0.250 L; c = n/V = 0.5/0.250 = 2 mol·L⁻¹.</p>
+
+    <h2>Percentage Composition</h2>
+    <p>Percentage composition tells us what fraction of a compound's mass comes from each element:</p>
+
+    <div class="formula">% by mass of element X = (molar mass of X × subscript of X) / M(compound) × 100%</div>
+
+    <p>Example: % O in H₂O = (16.0 × 1)/18.0 × 100 = 88.9%. % H in H₂O = (1.0 × 2)/18.0 × 100 = 11.1%.</p>
+
+    <p>Example: % Ca in CaCO₃ = 40.1/100.1 × 100 = 40.1%. This explains why limestone (CaCO₃) is used to supply calcium in agriculture.</p>
+
+    <h2>Empirical and Molecular Formulae</h2>
+    <p>The <strong>EMPIRICAL FORMULA</strong> is the simplest whole-number ratio of atoms in a compound. The <strong>MOLECULAR FORMULA</strong> gives the actual number of atoms in one molecule (it is always a whole-number multiple of the empirical formula).</p>
+
+    <div class="callout">
+      <strong>Method to find empirical formula from % composition:</strong> (1) Take % as mass in grams. (2) Divide each mass by the element's molar mass to get moles. (3) Divide all by the smallest mole value. (4) Round to whole numbers (or multiply to clear fractions).
+    </div>
+
+    <p>Example: A compound is 40.0% C, 6.7% H, 53.3% O by mass. Step 1: 40.0 g C, 6.7 g H, 53.3 g O. Step 2: moles C = 40.0/12 = 3.33; moles H = 6.7/1 = 6.7; moles O = 53.3/16 = 3.33. Step 3: ratio C:H:O = 3.33:6.7:3.33 → divide by 3.33 → 1:2:1. Empirical formula: CH₂O (glucose unit).</p>
+
+    <p>If M(actual) = 180 g·mol⁻¹ and M(empirical CH₂O) = 30 g·mol⁻¹, then n = 180/30 = 6. Molecular formula = 6 × CH₂O = C₆H₁₂O₆ (glucose).</p>
+
+    <h2>Stoichiometric Calculations from Balanced Equations</h2>
+    <p>A balanced chemical equation gives the <strong>MOLE RATIOS</strong> in which reactants combine and products form. These ratios are used directly in stoichiometry calculations.</p>
+
+    <div class="callout">
+      <strong>General method:</strong> (1) Write a balanced equation. (2) Convert given mass to moles using n = m/M. (3) Use the mole ratio from the equation to find moles of the required substance. (4) Convert moles back to mass (or volume, or particles) as required.
+    </div>
+
+    <p><strong>Worked Example — Decomposition of calcium carbonate:</strong><br>
+    CaCO₃ → CaO + CO₂ &nbsp;&nbsp;&nbsp; Mole ratio: 1 : 1 : 1<br>
+    "If 50 g of CaCO₃ decomposes completely, what mass of CO₂ is produced?"<br>
+    Step 1: n(CaCO₃) = 50/100 = 0.5 mol<br>
+    Step 2: From ratio, n(CO₂) = 0.5 mol (1:1 ratio)<br>
+    Step 3: m(CO₂) = n × M = 0.5 × 44 = 22 g</p>
+
+    <p><strong>Worked Example — Neutralisation:</strong><br>
+    NaOH + HCl → NaCl + H₂O &nbsp;&nbsp;&nbsp; Mole ratio: 1 : 1 : 1 : 1<br>
+    "What mass of NaOH is needed to neutralise 3.65 g of HCl?"<br>
+    n(HCl) = 3.65/36.5 = 0.100 mol; n(NaOH) = 0.100 mol (1:1); m(NaOH) = 0.100 × 40 = 4.0 g</p>
+
+    <h2>Limiting Reagent</h2>
+    <p>In most reactions, one reactant runs out first — this is the <strong>LIMITING REAGENT</strong>. It determines the maximum amount of product that can form. The reagent that remains after the reaction is called the <strong>EXCESS</strong> reagent.</p>
+
+    <div class="callout">
+      <strong>Method to find the limiting reagent:</strong> (1) Convert both reactant masses to moles. (2) Divide each by its stoichiometric coefficient (mole ratio number). (3) The smaller result is the limiting reagent.
+    </div>
+
+    <p>Example: 10 g Na₂CO₃ reacts with 10 g HCl. Equation: Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂<br>
+    n(Na₂CO₃) = 10/106 = 0.0943 mol. Ratio requirement: each mole Na₂CO₃ needs 2 mol HCl → would need 0.1887 mol HCl.<br>
+    n(HCl) = 10/36.5 = 0.274 mol. Divide by coefficient: HCl: 0.274/2 = 0.137; Na₂CO₃: 0.0943/1 = 0.0943.<br>
+    Na₂CO₃ gives the smaller value → <strong>Na₂CO₃ is the limiting reagent</strong>. HCl is in excess.<br>
+    Theoretical yield of CO₂: n = 0.0943 mol; m = 0.0943 × 44 = 4.15 g.</p>
+
+    <h2>Percentage Yield</h2>
+
+    <div class="formula">% yield = (actual yield / theoretical yield) × 100%</div>
+
+    <p>In practice, reactions rarely produce 100% of the theoretical yield due to: incomplete reactions, side reactions producing unwanted products, losses during separation/purification, or equilibrium limitations. A high % yield is desirable industrially for economic and environmental reasons.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Dilution, Titrations &amp; Gas Law Stoichiometry</div>
+      <p><strong>Dilution:</strong> When a concentrated solution (stock) is diluted with water, the moles of solute remain constant. C₁V₁ = C₂V₂ where 1 = concentrated, 2 = diluted.<br>
+      Example: What volume of 6 mol·L⁻¹ HCl is needed to make 250 mL of 0.5 mol·L⁻¹ HCl?<br>
+      C₁V₁ = C₂V₂ → 6 × V₁ = 0.5 × 0.250 → V₁ = 0.125/6 = 0.0208 L = 20.8 mL.</p>
+      <p style="margin-top:12px"><strong>Titration:</strong> a volumetric technique for finding the concentration of an unknown solution. A standard solution (known concentration) is added from a burette to a known volume of the unknown solution until the equivalence point is reached (indicated by a colour change of an indicator).<br>
+      Full calculation: NaOH titrated with HCl. NaOH + HCl → NaCl + H₂O. At equivalence: n(NaOH) = n(HCl).<br>
+      If 25.0 mL of NaOH is titrated with 22.4 mL of 0.100 mol·L⁻¹ HCl:<br>
+      n(HCl) = c × V = 0.100 × 0.0224 = 0.00224 mol; n(NaOH) = 0.00224 mol; c(NaOH) = n/V = 0.00224/0.0250 = 0.0896 mol·L⁻¹.</p>
+      <p style="margin-top:12px"><strong>Gas stoichiometry at non-STP conditions:</strong> use the ideal gas law PV = nRT where R = 8.314 J·mol⁻¹·K⁻¹ (or 8.314 Pa·m³·mol⁻¹·K⁻¹).<br>
+      Example: What volume does 2 mol CO₂ occupy at 25°C and 150 kPa?<br>
+      T = 298 K; P = 150 000 Pa; V = nRT/P = (2 × 8.314 × 298)/150 000 = 4955/150 000 = 0.0330 m³ = 33.0 L.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EXPLORE TAB ===== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="stoicTitle">Mole Calculator</h3>
+      <canvas id="stoicCanvas" height="300"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Mode</div>
+        <button class="mode-btn active" onclick="setStoicMode('mole',this)">Mole Calculator</button>
+        <button class="mode-btn" onclick="setStoicMode('rxn',this)">Reaction Stoichiometry</button>
+        <button class="mode-btn" onclick="setStoicMode('limiting',this)">Limiting Reagent</button>
+      </div>
+      <div class="ctrl-card" id="stoicInputs">
+        <!-- dynamic inputs injected by JS -->
+      </div>
+    </div>
+    <div class="readout-grid" id="stoicReadouts" style="max-width:900px">
+      <!-- dynamic readouts injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE TAB ===== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
+        <div style="font-size:13px;color:var(--muted)">NSC Practice Questions</div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Question 1 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">How many moles are in 36 g of water (H₂O)? [M(H₂O) = 18 g·mol⁻¹]</div>
+      <div class="mc-options" id="q1opts">
+        <button class="mc-opt" onclick="checkAns(1,0,1)"><span class="opt-letter">A</span>1 mol</button>
+        <button class="mc-opt" onclick="checkAns(1,1,1)"><span class="opt-letter">B</span>2 mol</button>
+        <button class="mc-opt" onclick="checkAns(1,2,1)"><span class="opt-letter">C</span>0.5 mol</button>
+        <button class="mc-opt" onclick="checkAns(1,3,1)"><span class="opt-letter">D</span>18 mol</button>
+      </div>
+      <div class="feedback" id="fb1">n = m/M = 36/18 = 2 mol. Always use n = m/M to convert grams to moles. Make sure you calculate the molar mass of the compound first.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Question 2 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">The molar mass of CaCO₃ is: [Ca=40, C=12, O=16]</div>
+      <div class="mc-options" id="q2opts">
+        <button class="mc-opt" onclick="checkAns(2,0,2)"><span class="opt-letter">A</span>68 g·mol⁻¹</button>
+        <button class="mc-opt" onclick="checkAns(2,1,2)"><span class="opt-letter">B</span>84 g·mol⁻¹</button>
+        <button class="mc-opt" onclick="checkAns(2,2,2)"><span class="opt-letter">C</span>100 g·mol⁻¹</button>
+        <button class="mc-opt" onclick="checkAns(2,3,2)"><span class="opt-letter">D</span>116 g·mol⁻¹</button>
+      </div>
+      <div class="feedback" id="fb2">M(CaCO₃) = 40 + 12 + 3(16) = 40 + 12 + 48 = 100 g·mol⁻¹. Remember to multiply oxygen's mass by the subscript 3.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Question 3 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">What volume does 0.5 mol of nitrogen gas (N₂) occupy at STP?</div>
+      <div class="mc-options" id="q3opts">
+        <button class="mc-opt" onclick="checkAns(3,0,3)"><span class="opt-letter">A</span>5.6 L</button>
+        <button class="mc-opt" onclick="checkAns(3,1,3)"><span class="opt-letter">B</span>11.2 L</button>
+        <button class="mc-opt" onclick="checkAns(3,2,3)"><span class="opt-letter">C</span>22.4 L</button>
+        <button class="mc-opt" onclick="checkAns(3,3,3)"><span class="opt-letter">D</span>44.8 L</button>
+      </div>
+      <div class="feedback" id="fb3">V = n × Vₘ = 0.5 × 22.4 = 11.2 L at STP. The molar volume (Vₘ) at STP is 22.4 L·mol⁻¹ for any gas.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Question 4 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">In the reaction N₂ + 3H₂ → 2NH₃, how many moles of NH₃ are produced from 3 mol of H₂?</div>
+      <div class="mc-options" id="q4opts">
+        <button class="mc-opt" onclick="checkAns(4,0,4)"><span class="opt-letter">A</span>1 mol</button>
+        <button class="mc-opt" onclick="checkAns(4,1,4)"><span class="opt-letter">B</span>2 mol</button>
+        <button class="mc-opt" onclick="checkAns(4,2,4)"><span class="opt-letter">C</span>3 mol</button>
+        <button class="mc-opt" onclick="checkAns(4,3,4)"><span class="opt-letter">D</span>6 mol</button>
+      </div>
+      <div class="feedback" id="fb4">From the balanced equation, the ratio H₂ : NH₃ = 3 : 2. So 3 mol H₂ produces 3 × (2/3) = 2 mol NH₃.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Question 5 &nbsp;<span style="color:var(--muted);font-weight:400">(3 marks)</span></div>
+      <div class="q-text">A compound contains 75% carbon and 25% hydrogen by mass. Its empirical formula is:</div>
+      <div class="mc-options" id="q5opts">
+        <button class="mc-opt" onclick="checkAns(5,0,5)"><span class="opt-letter">A</span>CH</button>
+        <button class="mc-opt" onclick="checkAns(5,1,5)"><span class="opt-letter">B</span>CH₂</button>
+        <button class="mc-opt" onclick="checkAns(5,2,5)"><span class="opt-letter">C</span>CH₃</button>
+        <button class="mc-opt" onclick="checkAns(5,3,5)"><span class="opt-letter">D</span>CH₄</button>
+      </div>
+      <div class="feedback" id="fb5">Assume 100 g: 75 g C and 25 g H. n(C) = 75/12 = 6.25; n(H) = 25/1 = 25. Ratio C:H = 6.25:25 = 1:4. Empirical formula = CH₄.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Question 6 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">In a reaction, 5 g of product A is obtained when the theoretical yield is 8 g. The percentage yield is:</div>
+      <div class="mc-options" id="q6opts">
+        <button class="mc-opt" onclick="checkAns(6,0,6)"><span class="opt-letter">A</span>37.5%</button>
+        <button class="mc-opt" onclick="checkAns(6,1,6)"><span class="opt-letter">B</span>62.5%</button>
+        <button class="mc-opt" onclick="checkAns(6,2,6)"><span class="opt-letter">C</span>75.5%</button>
+        <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>160%</button>
+      </div>
+      <div class="feedback" id="fb6">% yield = (actual/theoretical) × 100 = (5/8) × 100 = 62.5%. The percentage yield is always ≤ 100% because reactions rarely go to completion with no losses.</div>
+    </div>
+
+    <!-- IEB Practice Questions -->
+    <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Question 1 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+        <div class="q-text">25.0 mL of NaOH solution is titrated against 0.150 mol·L⁻¹ HCl solution. It takes 18.6 mL of HCl to reach the equivalence point. What is the concentration of the NaOH solution? [NaOH + HCl → NaCl + H₂O]</div>
+        <div class="mc-options" id="iq1opts">
+          <button class="mc-opt" onclick="checkAns('i1',0,'i1')"><span class="opt-letter">A</span>0.0930 mol·L⁻¹</button>
+          <button class="mc-opt" onclick="checkAns('i1',1,'i1')"><span class="opt-letter">B</span>0.112 mol·L⁻¹</button>
+          <button class="mc-opt" onclick="checkAns('i1',2,'i1')"><span class="opt-letter">C</span>0.150 mol·L⁻¹</button>
+          <button class="mc-opt" onclick="checkAns('i1',3,'i1')"><span class="opt-letter">D</span>0.202 mol·L⁻¹</button>
+        </div>
+        <div class="feedback" id="fbi1">Step 1: n(HCl) = c × V = 0.150 × 0.0186 = 0.00279 mol. Step 2: Since NaOH:HCl = 1:1, n(NaOH) = 0.00279 mol. Step 3: c(NaOH) = n/V = 0.00279/0.0250 = 0.112 mol·L⁻¹.</div>
+      </div>
+
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Question 2 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+        <div class="q-text">2.00 mol of an ideal gas is at 27°C and 200 kPa. What volume does it occupy? [R = 8.314 J·mol⁻¹·K⁻¹]</div>
+        <div class="mc-options" id="iq2opts">
+          <button class="mc-opt" onclick="checkAns('i2',0,'i2')"><span class="opt-letter">A</span>16.6 L</button>
+          <button class="mc-opt" onclick="checkAns('i2',1,'i2')"><span class="opt-letter">B</span>24.9 L</button>
+          <button class="mc-opt" onclick="checkAns('i2',2,'i2')"><span class="opt-letter">C</span>33.2 L</button>
+          <button class="mc-opt" onclick="checkAns('i2',3,'i2')"><span class="opt-letter">D</span>44.8 L</button>
+        </div>
+        <div class="feedback" id="fbi2">Use PV = nRT: T = 27 + 273 = 300 K; P = 200 000 Pa. V = nRT/P = (2 × 8.314 × 300)/200 000 = 4988.4/200 000 = 0.02494 m³ = 24.9 L.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== WORKBOOK TAB ===== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Print Workbook</button>
+    <div class="wb-intro">Show ALL working. Include units at every step.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">Calculate the molar mass of:<br>
+      (a) Al₂(SO₄)₃ &nbsp;&nbsp; (b) Fe(NO₃)₃ &nbsp;&nbsp; (c) Ca₃(PO₄)₂<br>
+      [Atomic masses: Al = 27, S = 32, O = 16, Fe = 56, N = 14, Ca = 40, P = 31]</div>
+      <div style="margin-top:14px;height:80px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">A compound contains 52.2% carbon, 13.0% hydrogen, and 34.8% oxygen by mass. Its molar mass is 46 g·mol⁻¹.<br>
+      (a) Determine the empirical formula.<br>
+      (b) Determine the molecular formula.</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">In the reaction: 2Al + 3Cl₂ → 2AlCl₃. If 5.4 g of aluminium reacts with excess chlorine:<br>
+      (a) How many moles of Al react?<br>
+      (b) How many moles of AlCl₃ are produced?<br>
+      (c) What mass of AlCl₃ is produced?<br>
+      [M(Al) = 27, M(AlCl₃) = 133.5]</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">10.0 g of iron(III) oxide (Fe₂O₃) is reduced with 4.0 g of carbon monoxide (CO) according to:<br>
+      Fe₂O₃ + 3CO → 2Fe + 3CO₂<br>
+      (a) Identify the limiting reagent.<br>
+      (b) Calculate the theoretical yield of Fe.<br>
+      (c) If only 4.8 g of Fe is obtained, what is the percentage yield?<br>
+      [M(Fe₂O₃) = 160, M(CO) = 28, M(Fe) = 56]</div>
+      <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">A 500 mL volumetric flask contains 0.200 mol·L⁻¹ H₂SO₄.<br>
+      (a) How many moles of H₂SO₄ are present?<br>
+      (b) What mass of H₂SO₄ is present?<br>
+      (c) This solution is used to titrate 20.0 mL of NaOH solution. It takes 16.0 mL of H₂SO₄ to reach the equivalence point. Find the concentration of NaOH.<br>
+      [H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O; M(H₂SO₄) = 98]</div>
+      <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== CURRICULUM TOGGLE =====
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ===== PRACTICE =====
+const correctAnswers = {1:1, 2:2, 3:1, 4:1, 5:3, 6:1, i1:1, i2:1};
+const answered = {};
+let score = 0;
+
+function checkAns(qNum, chosenIdx, fbId){
+  if(answered[qNum]) return;
+  answered[qNum] = true;
+  const isCorrect = chosenIdx === correctAnswers[qNum];
+  if(isCorrect) score++;
+
+  const optId = (typeof qNum === 'string' && qNum.startsWith('i')) ?
+    'i' + qNum.slice(1) + 'opts' : 'q' + qNum + 'opts';
+
+  // Determine actual opts container
+  let optsContainer;
+  if(typeof qNum === 'string' && qNum === 'i1') optsContainer = document.getElementById('iq1opts');
+  else if(typeof qNum === 'string' && qNum === 'i2') optsContainer = document.getElementById('iq2opts');
+  else optsContainer = document.getElementById('q'+qNum+'opts');
+
+  const opts = optsContainer.querySelectorAll('.mc-opt');
+  opts.forEach((opt,i)=>{
+    opt.disabled = true;
+    if(i === correctAnswers[qNum]) opt.classList.add('correct');
+    else if(i === chosenIdx && !isCorrect) opt.classList.add('wrong');
+  });
+
+  let fbEl;
+  if(typeof qNum === 'string' && qNum === 'i1') fbEl = document.getElementById('fbi1');
+  else if(typeof qNum === 'string' && qNum === 'i2') fbEl = document.getElementById('fbi2');
+  else fbEl = document.getElementById('fb'+qNum);
+
+  fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
+
+  // Check if all NSC answered
+  const nscDone = [1,2,3,4,5,6].every(k => answered[k]);
+  if(nscDone){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = score + '/6';
+  }
+}
+
+// ===== SIMULATION =====
+let stoicMode = 'mole';
+let simInitialised = false;
+let canvas, ctx, dpr;
+let simState = {};
+
+function initSim(){
+  if(!canvas){
+    canvas = document.getElementById('stoicCanvas');
+    dpr = window.devicePixelRatio || 1;
+    resizeCanvas();
+    ctx = canvas.getContext('2d');
+  }
+  setStoicMode(stoicMode, null, true);
+}
+
+function resizeCanvas(){
+  const wrap = canvas.parentElement;
+  const w = wrap.clientWidth - 32;
+  const h = 300;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+}
+
+function setStoicMode(mode, btn, force){
+  if(mode === stoicMode && !force) return;
+  stoicMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  buildInputs();
+  drawSim();
+}
+
+function buildInputs(){
+  const inp = document.getElementById('stoicInputs');
+  const rod = document.getElementById('stoicReadouts');
+
+  if(stoicMode === 'mole'){
+    document.getElementById('stoicTitle').textContent = 'Mole Calculator';
+    inp.innerHTML = `
+      <div class="ctrl-label">Compound &amp; Mass</div>
+      <select id="compSel" onchange="updateMole()">
+        <option value="18">H₂O — Water (M = 18)</option>
+        <option value="58.5">NaCl — Sodium chloride (M = 58.5)</option>
+        <option value="100">CaCO₃ — Calcium carbonate (M = 100)</option>
+        <option value="98">H₂SO₄ — Sulfuric acid (M = 98)</option>
+        <option value="44">CO₂ — Carbon dioxide (M = 44)</option>
+        <option value="40">NaOH — Sodium hydroxide (M = 40)</option>
+        <option value="160">Fe₂O₃ — Iron(III) oxide (M = 160)</option>
+        <option value="180">C₆H₁₂O₆ — Glucose (M = 180)</option>
+      </select>
+      <div class="slider-row">
+        <label>Mass (g)</label>
+        <input type="range" id="massSlider" min="0" max="500" value="18" step="1" oninput="updateMole()">
+        <span class="slider-val" id="massVal">18 g</span>
+      </div>
+    `;
+    rod.innerHTML = `
+      <div class="readout"><div class="readout-label">Molar Mass</div><div class="readout-val" id="ro-mm">18<span>g·mol⁻¹</span></div></div>
+      <div class="readout"><div class="readout-label">Moles (n)</div><div class="readout-val" id="ro-n">1.000<span>mol</span></div></div>
+      <div class="readout"><div class="readout-label">Particles (N)</div><div class="readout-val" id="ro-N">6.02 × 10²³<span>particles</span></div></div>
+      <div class="readout"><div class="readout-label">Volume at STP</div><div class="readout-val" id="ro-v">22.4<span>L</span></div></div>
+    `;
+    updateMole();
+
+  } else if(stoicMode === 'rxn'){
+    document.getElementById('stoicTitle').textContent = 'Reaction Stoichiometry';
+    inp.innerHTML = `
+      <div class="ctrl-label">Reaction</div>
+      <select id="rxnSel" onchange="updateRxn()">
+        <option value="0">NaOH + HCl → NaCl + H₂O</option>
+        <option value="1">CaCO₃ → CaO + CO₂</option>
+        <option value="2">2H₂ + O₂ → 2H₂O</option>
+      </select>
+      <div class="slider-row">
+        <label>Reactant mass</label>
+        <input type="range" id="rxnMass" min="0" max="200" value="40" step="1" oninput="updateRxn()">
+        <span class="slider-val" id="rxnMassVal">40 g</span>
+      </div>
+    `;
+    rod.innerHTML = `
+      <div class="readout"><div class="readout-label">n(Reactant)</div><div class="readout-val" id="ro-rn">—<span>mol</span></div></div>
+      <div class="readout"><div class="readout-label">n(Product 1)</div><div class="readout-val" id="ro-p1n">—<span>mol</span></div></div>
+      <div class="readout"><div class="readout-label">m(Product 1)</div><div class="readout-val" id="ro-p1m">—<span>g</span></div></div>
+      <div class="readout"><div class="readout-label">m(Product 2)</div><div class="readout-val" id="ro-p2m">—<span>g</span></div></div>
+    `;
+    updateRxn();
+
+  } else if(stoicMode === 'limiting'){
+    document.getElementById('stoicTitle').textContent = 'Limiting Reagent — 2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂';
+    inp.innerHTML = `
+      <div class="ctrl-label">Reactant Masses</div>
+      <div class="slider-row">
+        <label>HCl (g)</label>
+        <input type="range" id="hclMass" min="0" max="100" value="50" step="1" oninput="updateLimiting()">
+        <span class="slider-val" id="hclVal">50 g</span>
+      </div>
+      <div class="slider-row">
+        <label>CaCO₃ (g)</label>
+        <input type="range" id="cacMass" min="0" max="100" value="50" step="1" oninput="updateLimiting()">
+        <span class="slider-val" id="cacVal">50 g</span>
+      </div>
+    `;
+    rod.innerHTML = `
+      <div class="readout"><div class="readout-label">Limiting Reagent</div><div class="readout-val" id="ro-lim" style="font-size:13px">—</div></div>
+      <div class="readout"><div class="readout-label">Yield of CO₂</div><div class="readout-val" id="ro-co2">—<span>g</span></div></div>
+      <div class="readout"><div class="readout-label">Excess Reagent</div><div class="readout-val" id="ro-exc" style="font-size:13px">—</div></div>
+      <div class="readout"><div class="readout-label">Excess Mass Left</div><div class="readout-val" id="ro-excm">—<span>g</span></div></div>
+    `;
+    updateLimiting();
+  }
+}
+
+// ===== MOLE MODE =====
+function updateMole(){
+  const M = parseFloat(document.getElementById('compSel').value);
+  const mass = parseFloat(document.getElementById('massSlider').value);
+  document.getElementById('massVal').textContent = mass + ' g';
+  const n = mass / M;
+  const N = n * 6.022e23;
+  const V = n * 22.4;
+  document.getElementById('ro-mm').innerHTML = M + '<span>g·mol⁻¹</span>';
+  document.getElementById('ro-n').innerHTML = n.toFixed(3) + '<span>mol</span>';
+  document.getElementById('ro-N').innerHTML = formatSci(N) + '<span>particles</span>';
+  document.getElementById('ro-v').innerHTML = V.toFixed(2) + '<span>L</span>';
+  simState = {mode:'mole', M, mass, n, N, V};
+  drawSim();
+}
+
+function formatSci(x){
+  if(x === 0) return '0';
+  const exp = Math.floor(Math.log10(Math.abs(x)));
+  const man = x / Math.pow(10, exp);
+  return man.toFixed(2) + ' × 10<sup>' + exp + '</sup>';
+}
+
+// ===== RXN MODE =====
+const rxns = [
+  {
+    label:'NaOH + HCl → NaCl + H₂O',
+    reactant:'NaOH', Mr:40,
+    products:['NaCl','H₂O'], Mp:[58.5,18],
+    ratios:[1,1,1], // reactant:p1:p2
+    rCoeff:1, p1Coeff:1, p2Coeff:1
+  },
+  {
+    label:'CaCO₃ → CaO + CO₂',
+    reactant:'CaCO₃', Mr:100,
+    products:['CaO','CO₂'], Mp:[56,44],
+    rCoeff:1, p1Coeff:1, p2Coeff:1
+  },
+  {
+    label:'2H₂ + O₂ → 2H₂O',
+    reactant:'H₂', Mr:2,
+    products:['H₂O','(O₂ consumed)'], Mp:[18,32],
+    rCoeff:2, p1Coeff:2, p2Coeff:1
+  }
+];
+
+function updateRxn(){
+  const rxnIdx = parseInt(document.getElementById('rxnSel').value);
+  const mass = parseFloat(document.getElementById('rxnMass').value);
+  document.getElementById('rxnMassVal').textContent = mass + ' g';
+  const rxn = rxns[rxnIdx];
+  const nR = mass / rxn.Mr;
+  const nP1 = nR * (rxn.p1Coeff / rxn.rCoeff);
+  const nP2 = nR * (rxn.p2Coeff / rxn.rCoeff);
+  const mP1 = nP1 * rxn.Mp[0];
+  const mP2 = nP2 * rxn.Mp[1];
+  document.getElementById('ro-rn').innerHTML = nR.toFixed(3) + '<span>mol</span>';
+  document.getElementById('ro-p1n').innerHTML = nP1.toFixed(3) + '<span>mol</span>';
+  document.getElementById('ro-p1m').innerHTML = mP1.toFixed(2) + '<span>g</span>';
+  document.getElementById('ro-p2m').innerHTML = mP2.toFixed(2) + '<span>g</span>';
+  simState = {mode:'rxn', rxnIdx, mass, nR, nP1, nP2, mP1, mP2, rxn};
+  drawSim();
+}
+
+// ===== LIMITING REAGENT MODE =====
+function updateLimiting(){
+  const mHCl = parseFloat(document.getElementById('hclMass').value);
+  const mCaC = parseFloat(document.getElementById('cacMass').value);
+  document.getElementById('hclVal').textContent = mHCl + ' g';
+  document.getElementById('cacVal').textContent = mCaC + ' g';
+  const nHCl = mHCl / 36.5;
+  const nCaC = mCaC / 100;
+  // 2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂
+  const hclRatio = nHCl / 2;
+  const cacRatio = nCaC / 1;
+  let limiting, excess, excessMass;
+  let nCO2;
+  if(hclRatio <= cacRatio){
+    limiting = 'HCl';
+    excess = 'CaCO₃';
+    nCO2 = hclRatio; // 1 mol CO₂ per 2 mol HCl
+    const nCaCUsed = hclRatio;
+    excessMass = (nCaC - nCaCUsed) * 100;
+  } else {
+    limiting = 'CaCO₃';
+    excess = 'HCl';
+    nCO2 = cacRatio;
+    const nHClUsed = cacRatio * 2;
+    excessMass = (nHCl - nHClUsed) * 36.5;
+  }
+  const mCO2 = nCO2 * 44;
+  document.getElementById('ro-lim').innerHTML = '<span style="color:#fca5a5">' + limiting + '</span>';
+  document.getElementById('ro-co2').innerHTML = mCO2.toFixed(2) + '<span>g</span>';
+  document.getElementById('ro-exc').innerHTML = '<span style="color:#86efac">' + excess + '</span>';
+  document.getElementById('ro-excm').innerHTML = Math.max(0,excessMass).toFixed(2) + '<span>g</span>';
+  simState = {mode:'limiting', mHCl, mCaC, nHCl, nCaC, hclRatio, cacRatio, limiting, nCO2, mCO2, excessMass: Math.max(0,excessMass)};
+  drawSim();
+}
+
+// ===== DRAW SIMULATION =====
+function drawSim(){
+  if(!ctx) return;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = canvas.width / dpr;
+  const H = canvas.height / dpr;
+  ctx.clearRect(0, 0, W, H);
+
+  // background
+  ctx.fillStyle = '#040710';
+  ctx.fillRect(0, 0, W, H);
+
+  if(stoicMode === 'mole') drawMoleVis(W, H);
+  else if(stoicMode === 'rxn') drawRxnVis(W, H);
+  else if(stoicMode === 'limiting') drawLimitingVis(W, H);
+}
+
+function drawMoleVis(W, H){
+  const {M, mass, n} = simState;
+  // Draw balance scale
+  const cx = W / 2;
+  const baseY = H - 30;
+  const poleH = H - 80;
+
+  // Triangle fulcrum
+  ctx.fillStyle = 'rgba(192,132,252,0.4)';
+  ctx.beginPath();
+  ctx.moveTo(cx, baseY - 20);
+  ctx.lineTo(cx - 18, baseY);
+  ctx.lineTo(cx + 18, baseY);
+  ctx.closePath();
+  ctx.fill();
+
+  // Pole
+  ctx.strokeStyle = 'rgba(192,132,252,0.5)';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(cx, baseY - 20);
+  ctx.lineTo(cx, poleH);
+  ctx.stroke();
+
+  // Beam — tilts based on mass vs M
+  const tilt = Math.min(25, Math.max(-25, (mass - M) / (M + 1) * 20));
+  const armLen = Math.min(W * 0.3, 160);
+  const beamY = poleH + 10;
+  const leftX = cx - armLen;
+  const rightX = cx + armLen;
+  const leftY = beamY - Math.sin(tilt * Math.PI / 180) * armLen;
+  const rightY = beamY + Math.sin(tilt * Math.PI / 180) * armLen;
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(leftX, leftY);
+  ctx.lineTo(rightX, rightY);
+  ctx.stroke();
+
+  // Left chain
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(leftX, leftY);
+  ctx.lineTo(leftX, leftY + 20);
+  ctx.stroke();
+
+  // Right chain
+  ctx.beginPath();
+  ctx.moveTo(rightX, rightY);
+  ctx.lineTo(rightX, rightY + 20);
+  ctx.stroke();
+
+  // Left pan (input mass)
+  const panW = 80;
+  const panH = 14;
+  const leftPanY = leftY + 20;
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.rect(leftX - panW/2, leftPanY, panW, panH);
+  ctx.fill();
+  ctx.stroke();
+
+  // Left pan blocks (input mass)
+  const maxBlockH = 80;
+  const blockH = Math.min(maxBlockH, (mass / 500) * maxBlockH);
+  if(blockH > 0){
+    ctx.fillStyle = 'rgba(192,132,252,0.55)';
+    ctx.fillRect(leftX - panW/2 + 4, leftPanY - blockH, panW - 8, blockH);
+    ctx.strokeStyle = 'rgba(192,132,252,0.8)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(leftX - panW/2 + 4, leftPanY - blockH, panW - 8, blockH);
+  }
+
+  // Left label
+  ctx.fillStyle = '#c084fc';
+  ctx.font = 'bold 11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(mass + ' g', leftX, leftPanY + panH + 14);
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.fillText('Input mass', leftX, leftPanY + panH + 26);
+
+  // Right pan (1 mol reference)
+  const rightPanY = rightY + 20;
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.rect(rightX - panW/2, rightPanY, panW, panH);
+  ctx.fill();
+  ctx.stroke();
+
+  const refBlockH = Math.min(maxBlockH, (M / 500) * maxBlockH);
+  if(refBlockH > 0){
+    ctx.fillStyle = 'rgba(96,165,250,0.55)';
+    ctx.fillRect(rightX - panW/2 + 4, rightPanY - refBlockH, panW - 8, refBlockH);
+    ctx.strokeStyle = 'rgba(96,165,250,0.8)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(rightX - panW/2 + 4, rightPanY - refBlockH, panW - 8, refBlockH);
+  }
+
+  ctx.fillStyle = '#60a5fa';
+  ctx.font = 'bold 11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(M + ' g', rightX, rightPanY + panH + 14);
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.fillText('1 mol reference', rightX, rightPanY + panH + 26);
+
+  // n label in centre top
+  ctx.fillStyle = '#e9d5ff';
+  ctx.font = 'bold 15px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('n = ' + n.toFixed(3) + ' mol', cx, 28);
+  ctx.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.fillText('n = m ÷ M = ' + mass + ' ÷ ' + M, cx, 46);
+}
+
+function drawRxnVis(W, H){
+  const {nR, nP1, nP2, rxn} = simState;
+  const vals = [nR, nP1, nP2];
+  const labels = [rxn.reactant, rxn.products[0], rxn.products[1]];
+  const colors = ['rgba(192,132,252,0.7)','rgba(52,211,153,0.7)','rgba(251,191,36,0.7)'];
+  const borderColors = ['#c084fc','#34d399','#fbbf24'];
+
+  const maxVal = Math.max(...vals, 0.01);
+  const barW = 70;
+  const maxBarH = H - 90;
+  const startX = (W - (barW * 3 + 60)) / 2;
+  const baseY = H - 40;
+
+  // Title
+  ctx.fillStyle = 'rgba(210,218,245,0.6)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(rxn.label, W / 2, 22);
+
+  vals.forEach((v, i) => {
+    const x = startX + i * (barW + 30);
+    const barH = (v / maxVal) * maxBarH;
+    const y = baseY - barH;
+
+    // bar
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH, 6);
+    ctx.fill();
+    ctx.strokeStyle = borderColors[i];
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH, 6);
+    ctx.stroke();
+
+    // value on top
+    ctx.fillStyle = borderColors[i];
+    ctx.font = 'bold 12px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(v.toFixed(3), x + barW/2, y - 8);
+
+    // label below
+    ctx.fillStyle = 'rgba(210,218,245,0.7)';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.fillText(labels[i], x + barW/2, baseY + 16);
+
+    // "mol" unit
+    ctx.fillStyle = 'rgba(210,218,245,0.4)';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.fillText('mol', x + barW/2, baseY + 28);
+  });
+}
+
+function drawLimitingVis(W, H){
+  const {mHCl, mCaC, nHCl, nCaC, hclRatio, cacRatio, limiting, nCO2, mCO2} = simState;
+
+  const vals = [nHCl, nCaC, nCO2];
+  const labels = ['HCl', 'CaCO₃', 'CO₂ yield'];
+  const isLimHCl = limiting === 'HCl';
+  const isLimCaC = limiting === 'CaCO₃';
+  const colors = [
+    isLimHCl ? 'rgba(239,68,68,0.65)' : 'rgba(52,211,153,0.65)',
+    isLimCaC ? 'rgba(239,68,68,0.65)' : 'rgba(52,211,153,0.65)',
+    'rgba(251,191,36,0.65)'
+  ];
+  const borders = [
+    isLimHCl ? '#ef4444' : '#34d399',
+    isLimCaC ? '#ef4444' : '#34d399',
+    '#fbbf24'
+  ];
+
+  const maxVal = Math.max(nHCl, nCaC, nCO2, 0.01);
+  const barW = 70;
+  const maxBarH = H - 90;
+  const startX = (W - (barW * 3 + 60)) / 2;
+  const baseY = H - 40;
+
+  // Title
+  ctx.fillStyle = 'rgba(210,218,245,0.6)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂', W / 2, 22);
+
+  vals.forEach((v, i) => {
+    const x = startX + i * (barW + 30);
+    const barH = Math.max(2, (v / maxVal) * maxBarH);
+    const y = baseY - barH;
+
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH, 6);
+    ctx.fill();
+    ctx.strokeStyle = borders[i];
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH, 6);
+    ctx.stroke();
+
+    ctx.fillStyle = borders[i];
+    ctx.font = 'bold 12px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(v.toFixed(3), x + barW/2, y - 8);
+
+    ctx.fillStyle = 'rgba(210,218,245,0.7)';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.fillText(labels[i], x + barW/2, baseY + 16);
+
+    const subLabel = i < 2 ? 'mol' : mCO2.toFixed(1)+' g';
+    ctx.fillStyle = 'rgba(210,218,245,0.4)';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.fillText(subLabel, x + barW/2, baseY + 28);
+  });
+
+  // Legend
+  ctx.fillStyle = 'rgba(239,68,68,0.8)';
+  ctx.fillRect(startX, H - 10, 12, 8);
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('= limiting', startX + 16, H - 3);
+
+  ctx.fillStyle = 'rgba(52,211,153,0.8)';
+  ctx.fillRect(startX + 100, H - 10, 12, 8);
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.fillText('= excess', startX + 116, H - 3);
+}
+
+// Polyfill roundRect for older browsers
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+    this.beginPath();
+    this.moveTo(x+r,y);
+    this.lineTo(x+w-r,y);
+    this.quadraticCurveTo(x+w,y,x+w,y+r);
+    this.lineTo(x+w,y+h-r);
+    this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    this.lineTo(x+r,y+h);
+    this.quadraticCurveTo(x,y+h,x,y+h-r);
+    this.lineTo(x,y+r);
+    this.quadraticCurveTo(x,y,x+r,y);
+    this.closePath();
+  };
+}
+
+window.addEventListener('resize', ()=>{
+  if(canvas && stoicMode){
+    resizeCanvas();
+    ctx = canvas.getContext('2d');
+    drawSim();
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atoms &amp; Electron Arrangement — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+.lesson-header{padding:36px 40px 24px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#fcd34d}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(251,191,36,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+.elem-select{font-family:var(--fm);font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);padding:8px 14px;cursor:pointer;width:100%}
+.elem-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.ei{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-align:center}
+.ei-label{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.ei-val{font-weight:800;font-size:18px;color:#fbbf24;letter-spacing:-0.03em}
+.ei-sub{font-size:10px;color:var(--muted);margin-top:2px}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Matter &amp; Materials · Lesson 1</div>
+  <h1 class="lesson-title">Atoms &amp; Electron Arrangement</h1>
+  <p class="lesson-sub">Explore atomic structure, electron shells, and how the periodic table reflects the electron configuration of every element.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:13px;height:13px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="atom" style="width:13px;height:13px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:13px;height:13px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:13px;height:13px"></i> Workbook</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>What Is an Atom?</h2>
+    <p>An atom is the smallest particle of an element that still has the chemical properties of that element. Every piece of matter around you — water, air, rock, your own body — is made of atoms. Atoms are unimaginably tiny: about 100 million atoms lined up side by side would span just one centimetre.</p>
+    <p>Every atom has two distinct regions:</p>
+    <ul>
+      <li><strong>The nucleus</strong> — a dense, positively-charged centre containing <em>protons</em> (positive charge) and <em>neutrons</em> (no charge).</li>
+      <li><strong>The electron cloud</strong> — negatively-charged <em>electrons</em> that occupy specific energy levels (shells) around the nucleus.</li>
+    </ul>
+    <div class="callout"><strong>Key point:</strong> The positive charge of the protons in the nucleus attracts the negative electrons and keeps them in orbit — just like gravity keeps planets orbiting the Sun.</div>
+
+    <h2>Atomic Number &amp; Mass Number</h2>
+    <p>Each element is defined by two fundamental numbers:</p>
+    <div class="formula">Atomic number (Z) = number of protons = number of electrons (neutral atom)</div>
+    <div class="formula">Mass number (A) = protons + neutrons</div>
+    <div class="formula">Neutrons = Mass number − Atomic number &nbsp;(N = A − Z)</div>
+    <p>For example, sodium (Na) has Z = 11 and A = 23, so it has 11 protons, 11 electrons, and 23 − 11 = 12 neutrons.</p>
+    <div class="callout"><strong>Isotopes</strong> are atoms of the same element with the same atomic number but different mass numbers — they have extra or fewer neutrons. Carbon-12 and Carbon-14 are both carbon, but C-14 has 2 extra neutrons.</div>
+
+    <h2>Electron Shells</h2>
+    <p>Electrons do not orbit the nucleus randomly — they occupy <em>energy shells</em> (also called energy levels). Each shell has a maximum number of electrons it can hold:</p>
+    <ul>
+      <li><strong>Shell 1</strong> (closest to nucleus): maximum <strong>2</strong> electrons</li>
+      <li><strong>Shell 2</strong>: maximum <strong>8</strong> electrons</li>
+      <li><strong>Shell 3</strong>: maximum <strong>8</strong> electrons (for elements 1–20)</li>
+    </ul>
+    <p>Electrons always fill the innermost shell first before moving to the next. This arrangement is written as a series of numbers separated by commas — for example, sodium (11 electrons) is written <strong>2,8,1</strong>.</p>
+    <div class="key-fact">Electron arrangement of the first 20 elements follows the 2 → 8 → 8 → 2 filling pattern.</div>
+
+    <h2>Bohr Diagrams for the First 20 Elements</h2>
+    <p>A Bohr diagram shows the nucleus in the centre (labelled with the number of protons) and circles around it representing each shell, with dots or crosses for the electrons in each shell.</p>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Z</th><th>Element</th><th>Symbol</th><th>Electron Arrangement</th><th>Valence e⁻</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Hydrogen</td><td>H</td><td>1</td><td>1</td></tr>
+        <tr><td>2</td><td>Helium</td><td>He</td><td>2</td><td>2</td></tr>
+        <tr><td>3</td><td>Lithium</td><td>Li</td><td>2,1</td><td>1</td></tr>
+        <tr><td>4</td><td>Beryllium</td><td>Be</td><td>2,2</td><td>2</td></tr>
+        <tr><td>5</td><td>Boron</td><td>B</td><td>2,3</td><td>3</td></tr>
+        <tr><td>6</td><td>Carbon</td><td>C</td><td>2,4</td><td>4</td></tr>
+        <tr><td>7</td><td>Nitrogen</td><td>N</td><td>2,5</td><td>5</td></tr>
+        <tr><td>8</td><td>Oxygen</td><td>O</td><td>2,6</td><td>6</td></tr>
+        <tr><td>9</td><td>Fluorine</td><td>F</td><td>2,7</td><td>7</td></tr>
+        <tr><td>10</td><td>Neon</td><td>Ne</td><td>2,8</td><td>8</td></tr>
+        <tr><td>11</td><td>Sodium</td><td>Na</td><td>2,8,1</td><td>1</td></tr>
+        <tr><td>12</td><td>Magnesium</td><td>Mg</td><td>2,8,2</td><td>2</td></tr>
+        <tr><td>13</td><td>Aluminium</td><td>Al</td><td>2,8,3</td><td>3</td></tr>
+        <tr><td>14</td><td>Silicon</td><td>Si</td><td>2,8,4</td><td>4</td></tr>
+        <tr><td>15</td><td>Phosphorus</td><td>P</td><td>2,8,5</td><td>5</td></tr>
+        <tr><td>16</td><td>Sulfur</td><td>S</td><td>2,8,6</td><td>6</td></tr>
+        <tr><td>17</td><td>Chlorine</td><td>Cl</td><td>2,8,7</td><td>7</td></tr>
+        <tr><td>18</td><td>Argon</td><td>Ar</td><td>2,8,8</td><td>8</td></tr>
+        <tr><td>19</td><td>Potassium</td><td>K</td><td>2,8,8,1</td><td>1</td></tr>
+        <tr><td>20</td><td>Calcium</td><td>Ca</td><td>2,8,8,2</td><td>2</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Valence Electrons &amp; Reactivity</h2>
+    <p>The electrons in the outermost shell are called <strong>valence electrons</strong>. They are the electrons that participate in chemical reactions and bonding. The number of valence electrons is the single most important factor in determining how reactive an element is and what kinds of bonds it forms.</p>
+    <ul>
+      <li>Elements with <strong>1 valence electron</strong> (like Na, K) are very reactive — they easily lose that electron.</li>
+      <li>Elements with <strong>7 valence electrons</strong> (like Cl, F) are also very reactive — they easily gain one electron to complete their outer shell.</li>
+      <li>Elements with a <strong>full outer shell</strong> (like He, Ne, Ar) are almost completely unreactive — they are the noble gases.</li>
+    </ul>
+    <div class="callout"><strong>The Octet Rule:</strong> Atoms tend to react in ways that give them a full outer shell of 8 electrons (or 2 for the first shell). This stable configuration is called a <em>noble gas configuration</em>.</div>
+
+    <h2>The Periodic Table &amp; Electron Configuration</h2>
+    <p>The periodic table is arranged so that electron configuration is immediately visible:</p>
+    <ul>
+      <li><strong>Period number</strong> = the number of electron shells the element has. Period 1 elements have 1 shell; Period 3 elements have 3 shells.</li>
+      <li><strong>Group number</strong> (Groups 1–8, also called main groups) = the number of valence electrons. All Group 1 elements have 1 valence electron; all Group 7 elements have 7 valence electrons.</li>
+      <li>Elements in the same <strong>group</strong> have the same number of valence electrons and therefore similar chemical properties — this is why lithium, sodium, and potassium all react violently with water.</li>
+    </ul>
+    <div class="key-fact">Period 3, Group 7 → 3 shells, 7 valence electrons → that's Chlorine (Cl), electron arrangement 2,8,7. ✓</div>
+
+    <h2>Noble Gases: The Stable Ones</h2>
+    <p>Helium (He), Neon (Ne), Argon (Ar), Krypton (Kr), Xenon (Xe) and Radon (Rn) make up Group 8 (also called Group 18 or Group 0) — the noble gases. Their outer shells are completely full, which means they have no "drive" to gain, lose, or share electrons. This makes them almost completely chemically inert (unreactive). They exist as single atoms (monatomic) rather than molecules.</p>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Interactive Atom Builder — Select an Element</h3>
+      <canvas id="atomCanvas" height="420"></canvas>
+    </div>
+
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Choose Element (Z = 1–20)</div>
+        <select class="elem-select" id="elemSelect" onchange="selectElement(parseInt(this.value))">
+          <option value="1">1 — Hydrogen (H)</option>
+          <option value="2">2 — Helium (He)</option>
+          <option value="3">3 — Lithium (Li)</option>
+          <option value="4">4 — Beryllium (Be)</option>
+          <option value="5">5 — Boron (B)</option>
+          <option value="6">6 — Carbon (C)</option>
+          <option value="7">7 — Nitrogen (N)</option>
+          <option value="8">8 — Oxygen (O)</option>
+          <option value="9">9 — Fluorine (F)</option>
+          <option value="10">10 — Neon (Ne)</option>
+          <option value="11" selected>11 — Sodium (Na)</option>
+          <option value="12">12 — Magnesium (Mg)</option>
+          <option value="13">13 — Aluminium (Al)</option>
+          <option value="14">14 — Silicon (Si)</option>
+          <option value="15">15 — Phosphorus (P)</option>
+          <option value="16">16 — Sulfur (S)</option>
+          <option value="17">17 — Chlorine (Cl)</option>
+          <option value="18">18 — Argon (Ar)</option>
+          <option value="19">19 — Potassium (K)</option>
+          <option value="20">20 — Calcium (Ca)</option>
+        </select>
+        <div class="elem-info-grid" id="elemInfoGrid">
+          <div class="ei"><div class="ei-label">Atomic No.</div><div class="ei-val" id="infoZ">11</div></div>
+          <div class="ei"><div class="ei-label">Mass No.</div><div class="ei-val" id="infoA">23</div></div>
+          <div class="ei"><div class="ei-label">Protons</div><div class="ei-val" id="infoP">11</div></div>
+          <div class="ei"><div class="ei-label">Neutrons</div><div class="ei-val" id="infoN">12</div></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Electron Configuration</div>
+        <div id="configDisplay" style="font-family:var(--fm);font-size:28px;font-weight:800;color:#fbbf24;margin:12px 0;letter-spacing:-0.02em;">2, 8, 1</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7" id="configDesc">
+          Sodium has 3 electron shells. Its outer (valence) shell contains <strong style="color:#fcd34d">1</strong> valence electron, making it a Group 1 element in Period 3. It readily loses this electron to achieve a stable noble gas configuration.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
+        Review the explanations below to strengthen your understanding.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">
+      Answer the following questions in your notebook or on a separate sheet. Draw all diagrams neatly with a pencil and ruler. Show all calculations clearly.
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">Draw fully labelled Bohr diagrams for the following elements: <strong>Lithium (Li)</strong>, <strong>Nitrogen (N)</strong>, <strong>Sodium (Na)</strong>, <strong>Chlorine (Cl)</strong>, and <strong>Calcium (Ca)</strong>. For each diagram, label the nucleus with the number of protons, and show the correct number of electrons in each shell. <em>(2 marks each — 10 marks total)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">Complete the table below for each element. Write the number of valence electrons, the group number, and the period number.<br><br>
+      Elements: Magnesium (Mg, Z=12) &nbsp;|&nbsp; Fluorine (F, Z=9) &nbsp;|&nbsp; Silicon (Si, Z=14) &nbsp;|&nbsp; Potassium (K, Z=19)<br><br>
+      <em>(3 marks per element — 12 marks total)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">Sodium (Na) and Potassium (K) are both in Group 1 of the periodic table. Explain, using the concept of valence electrons, why elements in the same group have <em>similar chemical properties</em>. Use the electron arrangements of Na (2,8,1) and K (2,8,8,1) in your answer. <em>(4 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">An element X has an atomic number of 16 and a mass number of 32.<br>
+      (a) How many protons does element X have?<br>
+      (b) How many electrons does element X have (assuming it is neutral)?<br>
+      (c) How many neutrons does element X have? Show your calculation.<br>
+      (d) Write the electron arrangement of element X.<br>
+      (e) Identify element X by name and symbol.<br>
+      <em>(1 mark each — 5 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">Neon (Ne) is a noble gas. Using your knowledge of electron arrangement and the octet rule, explain why neon is chemically unreactive and does not form compounds with other elements. <em>(3 marks)</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Element Data ───────────────────────────────────────────────────────────
+const ELEMENTS = {
+  1:  {name:'Hydrogen',   sym:'H',  A:1,  shells:[1],       group:1, period:1, desc:'Hydrogen has 1 electron shell with just 1 electron. It needs 1 more to complete its first shell. It is in Group 1, Period 1.'},
+  2:  {name:'Helium',     sym:'He', A:4,  shells:[2],       group:8, period:1, desc:'Helium has a full first shell (2 electrons). It is a noble gas — stable and unreactive. Group 8, Period 1.'},
+  3:  {name:'Lithium',    sym:'Li', A:7,  shells:[2,1],     group:1, period:2, desc:'Lithium has 2 shells: 2 electrons in shell 1 and 1 valence electron in shell 2. It readily loses that 1 electron. Group 1, Period 2.'},
+  4:  {name:'Beryllium',  sym:'Be', A:9,  shells:[2,2],     group:2, period:2, desc:'Beryllium has 2 valence electrons. It tends to lose 2 electrons when bonding. Group 2, Period 2.'},
+  5:  {name:'Boron',      sym:'B',  A:11, shells:[2,3],     group:3, period:2, desc:'Boron has 3 valence electrons. It forms 3 covalent bonds. Group 3, Period 2.'},
+  6:  {name:'Carbon',     sym:'C',  A:12, shells:[2,4],     group:4, period:2, desc:'Carbon has 4 valence electrons — exactly half a full shell. It forms 4 covalent bonds and is the basis of all organic chemistry. Group 4, Period 2.'},
+  7:  {name:'Nitrogen',   sym:'N',  A:14, shells:[2,5],     group:5, period:2, desc:'Nitrogen has 5 valence electrons and needs 3 more for a full shell. It forms N₂ with a triple bond. Group 5, Period 2.'},
+  8:  {name:'Oxygen',     sym:'O',  A:16, shells:[2,6],     group:6, period:2, desc:'Oxygen has 6 valence electrons and needs 2 more. It is very electronegative and forms 2 bonds. Group 6, Period 2.'},
+  9:  {name:'Fluorine',   sym:'F',  A:19, shells:[2,7],     group:7, period:2, desc:'Fluorine has 7 valence electrons — it needs just 1 more. It is the most reactive non-metal. Group 7, Period 2.'},
+  10: {name:'Neon',       sym:'Ne', A:20, shells:[2,8],     group:8, period:2, desc:'Neon has a full outer shell of 8 electrons. It is a noble gas — stable and unreactive. Group 8, Period 2.'},
+  11: {name:'Sodium',     sym:'Na', A:23, shells:[2,8,1],   group:1, period:3, desc:'Sodium has 3 electron shells. Its outer (valence) shell contains 1 valence electron, making it a Group 1 element in Period 3. It readily loses this electron.'},
+  12: {name:'Magnesium',  sym:'Mg', A:24, shells:[2,8,2],   group:2, period:3, desc:'Magnesium has 2 valence electrons in its third shell. It loses these 2 electrons to form Mg²⁺. Group 2, Period 3.'},
+  13: {name:'Aluminium',  sym:'Al', A:27, shells:[2,8,3],   group:3, period:3, desc:'Aluminium has 3 valence electrons. It forms Al³⁺ ions in ionic compounds. Group 3, Period 3.'},
+  14: {name:'Silicon',    sym:'Si', A:28, shells:[2,8,4],   group:4, period:3, desc:'Silicon has 4 valence electrons. It is a semiconductor, the basis of computer chips. Group 4, Period 3.'},
+  15: {name:'Phosphorus', sym:'P',  A:31, shells:[2,8,5],   group:5, period:3, desc:'Phosphorus has 5 valence electrons and commonly forms 3 or 5 bonds. Group 5, Period 3.'},
+  16: {name:'Sulfur',     sym:'S',  A:32, shells:[2,8,6],   group:6, period:3, desc:'Sulfur has 6 valence electrons and needs 2 more for a full outer shell. It forms S²⁻ in ionic compounds. Group 6, Period 3.'},
+  17: {name:'Chlorine',   sym:'Cl', A:35, shells:[2,8,7],   group:7, period:3, desc:'Chlorine has 7 valence electrons — just 1 short of a full outer shell. It is a very reactive non-metal and gains 1 electron to form Cl⁻. Group 7, Period 3.'},
+  18: {name:'Argon',      sym:'Ar', A:40, shells:[2,8,8],   group:8, period:3, desc:'Argon has a full outer shell (8 electrons in shell 3). It is a noble gas — stable and unreactive. Group 8, Period 3.'},
+  19: {name:'Potassium',  sym:'K',  A:39, shells:[2,8,8,1], group:1, period:4, desc:'Potassium has 4 electron shells and 1 valence electron. Like sodium, it is very reactive and loses that 1 electron readily. Group 1, Period 4.'},
+  20: {name:'Calcium',    sym:'Ca', A:40, shells:[2,8,8,2], group:2, period:4, desc:'Calcium has 4 electron shells and 2 valence electrons. It forms Ca²⁺ ions by losing 2 electrons. Group 2, Period 4.'}
+};
+
+// ─── Simulation ──────────────────────────────────────────────────────────────
+const canvas = document.getElementById('atomCanvas');
+const ctx = canvas.getContext('2d');
+let currentZ = 11;
+let angle = 0;
+let animId = null;
+
+function initSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 420;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  canvas.style.height = cssH + 'px';
+  if (animId) cancelAnimationFrame(animId);
+  animate();
+}
+
+function animate() {
+  const cssW = canvas.width / (window.devicePixelRatio || 1);
+  const cssH = 420;
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  const el = ELEMENTS[currentZ];
+  const cx = cssW / 2;
+  const cy = cssH / 2;
+
+  // Draw starfield
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  for (let i = 0; i < 60; i++) {
+    const sx = ((i * 137.5 + 50) % cssW);
+    const sy = ((i * 89.3 + 20) % cssH);
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(sx, sy, 0.7, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Shell radii
+  const shellRadii = [52, 90, 130, 170];
+  const shells = el.shells;
+
+  // Draw shells (orbit rings)
+  shells.forEach((_, i) => {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(251,191,36,0.12)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, shellRadii[i], 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // Draw electrons
+  const shellColors = ['#fbbf24','#60a5fa','#34d399','#f472b6'];
+  shells.forEach((count, si) => {
+    const r = shellRadii[si];
+    const speed = [1, 0.65, 0.42, 0.28][si];
+    for (let ei = 0; ei < count; ei++) {
+      const a = angle * speed + (ei / count) * Math.PI * 2;
+      const ex = cx + r * Math.cos(a);
+      const ey = cy + r * Math.sin(a);
+      // Glow
+      const grad = ctx.createRadialGradient(ex, ey, 0, ex, ey, 7);
+      grad.addColorStop(0, shellColors[si]);
+      grad.addColorStop(1, 'transparent');
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(ex, ey, 7, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+      // Electron dot
+      ctx.fillStyle = shellColors[si];
+      ctx.beginPath();
+      ctx.arc(ex, ey, 4, 0, Math.PI*2);
+      ctx.fill();
+    }
+  });
+
+  // Nucleus glow
+  const nucGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 38);
+  nucGrad.addColorStop(0, 'rgba(251,191,36,0.55)');
+  nucGrad.addColorStop(0.5, 'rgba(251,100,36,0.25)');
+  nucGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = nucGrad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 38, 0, Math.PI*2);
+  ctx.fill();
+
+  // Nucleus body
+  ctx.fillStyle = 'rgba(251,191,36,0.9)';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI*2);
+  ctx.fill();
+
+  // Symbol in nucleus
+  ctx.fillStyle = '#040710';
+  ctx.font = 'bold 14px "Cabinet Grotesk", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(el.sym, cx, cy - 1);
+
+  // Proton count label below nucleus
+  ctx.fillStyle = 'rgba(251,191,36,0.65)';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.fillText(currentZ + 'p', cx, cy + 32);
+
+  // Shell labels
+  shells.forEach((count, i) => {
+    ctx.fillStyle = shellColors[i];
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('Shell ' + (i+1) + ': ' + count + 'e', cx + shellRadii[i] + 6, cy - shellRadii[i] + 4);
+  });
+
+  angle += 0.018;
+  animId = requestAnimationFrame(animate);
+}
+
+function selectElement(z) {
+  currentZ = z;
+  const el = ELEMENTS[z];
+  document.getElementById('infoZ').textContent = z;
+  document.getElementById('infoA').textContent = el.A;
+  document.getElementById('infoP').textContent = z;
+  document.getElementById('infoN').textContent = el.A - z;
+  document.getElementById('configDisplay').textContent = el.shells.join(', ');
+  const valence = el.shells[el.shells.length - 1];
+  document.getElementById('configDesc').innerHTML = el.desc;
+}
+
+// ─── Tab switching ──────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') {
+    setTimeout(() => { initSim(); selectElement(currentZ); }, 50);
+  }
+}
+
+// ─── Practice ───────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: 'What does the atomic number of an element tell you?',
+    opts: ['The total mass of the atom', 'The number of protons (and electrons in a neutral atom)', 'The number of neutrons in the nucleus', 'The number of electron shells'],
+    ans: 1,
+    exp: 'The atomic number (Z) is defined as the number of protons in the nucleus. Since atoms are electrically neutral, the number of electrons equals the number of protons. The atomic number uniquely identifies every element.'
+  },
+  {
+    q: 'What is the correct electron arrangement for sodium (Na, Z = 11)?',
+    opts: ['2, 9', '2, 8, 1', '3, 8', '2, 1, 8'],
+    ans: 1,
+    exp: 'Sodium has 11 electrons. Shell 1 fills with 2 electrons, shell 2 fills with 8 electrons, leaving 11 − 2 − 8 = 1 electron in shell 3. So the arrangement is 2, 8, 1.'
+  },
+  {
+    q: 'In which period of the periodic table is chlorine (Cl, Z = 17) found?',
+    opts: ['Period 1', 'Period 2', 'Period 3', 'Period 7'],
+    ans: 2,
+    exp: 'Chlorine has the electron arrangement 2, 8, 7 — meaning it has 3 electron shells. The period number equals the number of electron shells, so chlorine is in Period 3.'
+  },
+  {
+    q: 'How many valence electrons does oxygen (O, Z = 8) have?',
+    opts: ['2', '4', '6', '8'],
+    ans: 2,
+    exp: 'Oxygen\'s electron arrangement is 2, 6. The valence electrons are those in the outermost shell — in this case, the 6 electrons in shell 2. Oxygen needs 2 more electrons to complete its outer shell.'
+  },
+  {
+    q: 'Which element has the electron arrangement 2, 8, 8?',
+    opts: ['Sulfur (S)', 'Calcium (Ca)', 'Argon (Ar)', 'Potassium (K)'],
+    ans: 2,
+    exp: 'Argon (Z = 18) has 18 electrons: 2 in shell 1, 8 in shell 2, and 8 in shell 3, giving 2, 8, 8. This full outer shell makes argon a stable noble gas.'
+  },
+  {
+    q: 'Why are noble gases (like neon and argon) chemically unreactive?',
+    opts: ['They have very large atomic masses', 'Their outer electron shells are completely full, so they have no tendency to gain, lose, or share electrons', 'They only contain neutrons in their nucleus', 'They have too few electrons to form bonds'],
+    ans: 1,
+    exp: 'Noble gases have a full outer shell of electrons (2 for helium; 8 for all others). According to the octet rule, a full outer shell is the most stable configuration — there is no energy benefit in gaining, losing, or sharing electrons, so they do not form chemical bonds under normal conditions.'
+  }
+];
+
+let answers = new Array(QUESTIONS.length).fill(null);
+let correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="mc-opt" onclick="answer(${qi},${oi})" id="opt-${qi}-${oi}">
+            <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, oi) {
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = QUESTIONS[qi];
+  const isCorrect = oi === q.ans;
+  if (isCorrect) correct++;
+
+  document.querySelectorAll(`#opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+
+  if (answers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = correct + '/' + QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

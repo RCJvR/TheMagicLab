@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproduction in Plants — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    .info-panel{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:120px}
+    .info-panel-title{font-weight:800;font-size:15px;color:#fcd34d;margin-bottom:6px}
+    .info-panel-text{font-size:13px;color:rgba(210,218,245,.75);line-height:1.7}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Life &amp; Living</span>
+  <a class="nav-back" href="../index.html">&#8592; Grade 9</a>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Life &amp; Living · Lesson 2</div>
+  <h1 class="lesson-title">Reproduction in Plants</h1>
+  <p class="lesson-sub">Explore how plants reproduce sexually (through flowers, pollination, and fertilisation) and asexually (through vegetative reproduction), and how seeds are dispersed.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">&#128214; Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#9998; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#128203; Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Asexual Reproduction in Plants</h2>
+    <p>Asexual reproduction involves only <strong style="color:#fcd34d">one parent</strong> and produces offspring that are genetically identical to the parent — they are called <em>clones</em>. No gametes are involved. In plants, asexual reproduction is also called <em>vegetative reproduction</em> because it involves vegetative (non-reproductive) plant parts.</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Method</th><th>Plant Part Used</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Runner (stolon)</td><td>Horizontal stem along ground</td><td>Strawberry, spider plant</td></tr>
+        <tr><td>Bulb</td><td>Underground fleshy leaf bases storing food</td><td>Onion, tulip, daffodil</td></tr>
+        <tr><td>Tuber</td><td>Swollen underground stem storing food</td><td>Potato</td></tr>
+        <tr><td>Rhizome</td><td>Horizontal underground stem</td><td>Ginger, iris, couch grass</td></tr>
+        <tr><td>Cutting</td><td>Stem/leaf cut and rooted in soil</td><td>Geranium, rose</td></tr>
+        <tr><td>Grafting</td><td>One plant joined to rootstock of another</td><td>Apple, rose, grapevine</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Advantages of asexual reproduction:</strong> Fast; no need for a partner or pollinator; all offspring survive (no seed mortality); maintains desirable characteristics of parent.<br><br>
+      <strong>Disadvantages:</strong> No genetic variation — entire population is vulnerable to the same disease or environmental change; cannot adapt over generations.
+    </div>
+
+    <h2>Sexual Reproduction in Plants</h2>
+    <p>Sexual reproduction involves the fusion of <strong style="color:#fcd34d">male and female gametes</strong>. The male gamete is contained in <em>pollen</em>; the female gamete is the <em>egg cell</em> within the ovule. Because gametes from different parents combine, the offspring are genetically varied — this is the raw material for evolution and adaptation.</p>
+
+    <h2>Structure of a Flower</h2>
+    <p>Flowers are the reproductive organs of flowering plants (angiosperms). A typical flower has four whorls of parts:</p>
+    <ul>
+      <li><strong>Sepals</strong> (calyx): outermost whorl; usually green; protect the developing bud before opening.</li>
+      <li><strong>Petals</strong> (corolla): often brightly coloured; attract insect pollinators; may have nectar guides (UV patterns visible to bees).</li>
+      <li><strong>Stamen</strong> (male part): consists of the <em>anther</em> (produces pollen) and the <em>filament</em> (stalk supporting the anther).</li>
+      <li><strong>Carpel / Pistil</strong> (female part): consists of the <em>stigma</em> (receives pollen; sticky surface), the <em>style</em> (tube connecting stigma to ovary), and the <em>ovary</em> (contains one or more <em>ovules</em>, each containing an egg cell).</li>
+    </ul>
+    <div class="key-fact">A flower with both stamens and carpels is called a perfect (bisexual) flower. Some flowers are unisexual — bearing only male or only female parts.</div>
+
+    <h2>Pollination</h2>
+    <p><strong>Pollination</strong> is the transfer of pollen grains from the <em>anther</em> of one flower to the <em>stigma</em> of another (cross-pollination) or to the same flower (self-pollination). Two main agents carry pollen:</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Feature</th><th>Insect-Pollinated Flowers</th><th>Wind-Pollinated Flowers</th></tr></thead>
+      <tbody>
+        <tr><td>Petals</td><td>Large, brightly coloured, scented</td><td>Small or absent, dull coloured</td></tr>
+        <tr><td>Nectaries</td><td>Present — produce nectar as reward</td><td>Absent</td></tr>
+        <tr><td>Pollen</td><td>Large, sticky, spiky — clings to insects</td><td>Tiny, light, smooth — easily airborne</td></tr>
+        <tr><td>Stigma</td><td>Small, sticky, inside flower</td><td>Large, feathery, hangs outside to catch pollen</td></tr>
+        <tr><td>Stamens</td><td>Inside flower, sheltered</td><td>Long filaments hanging outside flower</td></tr>
+        <tr><td>Examples</td><td>Roses, sunflowers, lavender</td><td>Grasses, maize, pine trees</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Fertilisation</h2>
+    <p>After a pollen grain lands on a compatible stigma, it <em>germinates</em>: a <strong style="color:#fcd34d">pollen tube</strong> grows down through the style, enters the ovary, and reaches the ovule. The <em>male nucleus</em> travels down the pollen tube and fuses with the <em>egg cell</em> inside the ovule. This fusion is <strong>fertilisation</strong>.</p>
+    <div class="formula">Pollen grain lands on stigma → pollen tube grows → male nucleus travels down tube → fertilises egg cell → zygote forms</div>
+    <p>The <em>zygote</em> (fertilised egg) divides repeatedly by mitosis to form an <em>embryo</em>. The ovule develops into a <em>seed</em> (containing the embryo and a food store), and the ovary wall develops into the <em>fruit</em>.</p>
+
+    <h2>Seed Dispersal</h2>
+    <p>Seeds must be dispersed (spread away from the parent plant) to reduce competition for light, water, and nutrients, and to colonise new areas. There are four main methods:</p>
+    <ul>
+      <li><strong>Wind dispersal:</strong> seeds are light with adaptations like parachutes (dandelion pappus), wings (maple/sycamore samara), or are so small they blow away (orchid seeds).</li>
+      <li><strong>Water dispersal:</strong> seeds have a waterproof, buoyant outer coating. Example: coconut (floats for months across oceans).</li>
+      <li><strong>Animal dispersal:</strong>
+        <ul>
+          <li><em>External:</em> seeds/fruits with hooks or barbs that attach to fur or clothing (burr, burdock, blackjacks).</li>
+          <li><em>Internal:</em> fleshy fruits eaten by animals; seeds pass through the gut undamaged and are deposited elsewhere in faeces (berries, figs, wild fruit).</li>
+        </ul>
+      </li>
+      <li><strong>Self-dispersal (explosive mechanisms):</strong> the fruit wall dries, creates tension, and bursts open, flinging seeds away (Impatiens/touch-me-not, squirting cucumber, peas).</li>
+    </ul>
+
+    <h2>Germination</h2>
+    <p>A seed is dormant — it contains an embryo and a food reserve (cotyledons) but will not grow until conditions are right. Three conditions are needed for germination:</p>
+    <ul>
+      <li><strong>Water:</strong> activates enzymes; hydrates the seed; needed for metabolic reactions.</li>
+      <li><strong>Warmth (suitable temperature):</strong> enzymes work fastest at optimum temperatures (~20–30 °C for most seeds).</li>
+      <li><strong>Oxygen:</strong> needed for aerobic respiration to provide energy for growth.</li>
+    </ul>
+    <div class="callout"><strong>Note:</strong> Light is NOT required for germination itself (though it is needed for photosynthesis once the seedling emerges and its food stores run out).</div>
+
+    <h2>Comparing Asexual and Sexual Reproduction</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Feature</th><th>Asexual</th><th>Sexual</th></tr></thead>
+      <tbody>
+        <tr><td>Number of parents</td><td>1</td><td>2 (usually)</td></tr>
+        <tr><td>Genetic variation</td><td>None (clones)</td><td>Yes — offspring are unique</td></tr>
+        <tr><td>Speed</td><td>Fast</td><td>Slower</td></tr>
+        <tr><td>Gametes involved</td><td>No</td><td>Yes (pollen + egg cell)</td></tr>
+        <tr><td>Adaptability</td><td>Low — vulnerable to disease</td><td>High — can adapt to change</td></tr>
+        <tr><td>Energy cost</td><td>Low</td><td>High (flowers, nectar, fruit)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Flower Anatomy &amp; Fertilisation Explorer</h3>
+      <canvas id="flowerCanvas" height="460"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Mode</div>
+        <button class="mode-btn active" id="btnAnatomy" onclick="setMode('anatomy',this)">Anatomy</button>
+        <button class="mode-btn" id="btnFert" onclick="setMode('fertilisation',this)">Fertilisation</button>
+        <div style="margin-top:14px">
+          <div class="ctrl-label">Click a part to learn</div>
+          <div id="partButtons" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Selected Part</div>
+        <div class="info-panel">
+          <div class="info-panel-title" id="partTitle">Select a part</div>
+          <div class="info-panel-text" id="partText">Click any flower part or the buttons on the left to learn about its structure and function.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:800;font-size:16px;color:#fff">Quiz Complete!</div><div style="font-size:13px;color:var(--muted)">Review your answers below.</div></div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#128438; Print Workbook</button>
+    <div class="wb-intro">Answer the following questions fully. Use diagrams where required. These questions are CAPS-aligned for Grade 9 Natural Sciences.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">Draw and label a diagram of a typical flower showing the following parts: sepal, petal, anther, filament, stigma, style, ovary, and ovule. Next to each label, state the function of that part.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">Compare wind pollination and insect pollination by completing the table below. For each feature, describe how it differs between the two types of flowers.<br><br>
+      Features to compare: petal size &amp; colour, pollen characteristics, stigma structure, presence of nectar, example plant.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">Describe the process of fertilisation in a flowering plant. In your answer:<br>
+      a) Explain what happens when the pollen grain lands on the stigma.<br>
+      b) Describe how the male gamete reaches the egg cell.<br>
+      c) State what structure forms after fertilisation and what it develops into.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">a) For each of the following plants, name the method of asexual reproduction used and the plant structure involved:<br>
+      &nbsp;&nbsp;&nbsp;(i) Strawberry &nbsp;&nbsp; (ii) Potato &nbsp;&nbsp; (iii) Onion &nbsp;&nbsp; (iv) Ginger<br><br>
+      b) State ONE advantage and ONE disadvantage of asexual reproduction compared to sexual reproduction.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">A coconut falls from a palm tree into a river and is carried many kilometres downstream before washing onto a beach where it germinates.<br><br>
+      a) What method of seed dispersal is demonstrated here?<br>
+      b) Give TWO structural adaptations of the coconut that make this method of dispersal possible.<br>
+      c) State the THREE conditions the coconut seed needs for germination. For each, explain why it is necessary.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') initSim();
+}
+
+// ── FLOWER DATA ───────────────────────────────────────────────────────────────
+const parts = {
+  sepal:  { title:'Sepal', text:'Sepals are the outermost, usually green, leaf-like structures. Before the flower opens, sepals enclose and protect the developing bud. Together they form the calyx.', col:'#4ade80' },
+  petal:  { title:'Petal', text:'Petals are often brightly coloured and scented to attract insect pollinators. They may have nectar guides — UV-visible patterns that direct insects to nectar. Together they form the corolla.', col:'#f472b6' },
+  anther: { title:'Anther', text:'The anther is the tip of the stamen (male reproductive organ). It contains pollen sacs in which pollen grains (containing male gametes) are produced by meiosis.', col:'#fbbf24' },
+  filament:{ title:'Filament', text:'The filament is the slender stalk of the stamen. It positions the anther so that pollen can be picked up by insects or dispersed by wind.', col:'#a3e635' },
+  stigma: { title:'Stigma', text:'The stigma is the top of the carpel (female part). Its sticky or feathery surface traps pollen grains. It must receive pollen from the correct species for fertilisation to occur.', col:'#c084fc' },
+  style:  { title:'Style', text:'The style is the stalk connecting the stigma to the ovary. After pollination, the pollen tube grows through the style to reach the ovule.', col:'#818cf8' },
+  ovary:  { title:'Ovary', text:'The ovary is the enlarged base of the carpel. It contains one or more ovules. After fertilisation, the ovary wall develops into the fruit that protects and disperses the seeds.', col:'#fb923c' },
+  ovule:  { title:'Ovule', text:'The ovule sits inside the ovary and contains the female gamete (egg cell). After fertilisation by the male nucleus, the ovule develops into a seed containing the embryo and a food store.', col:'#f87171' },
+};
+
+let simMode = 'anatomy';
+let selectedPart = null;
+let fertProgress = 0;
+let fertAnim = null;
+let simInit = false;
+
+function setMode(mode, btn) {
+  simMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (mode === 'fertilisation') {
+    selectedPart = null;
+    fertProgress = 0;
+    startFertAnim();
+  } else {
+    if (fertAnim) { cancelAnimationFrame(fertAnim); fertAnim = null; }
+    fertProgress = 0;
+    drawFlower();
+  }
+}
+
+function selectPart(key) {
+  selectedPart = key;
+  document.getElementById('partTitle').textContent = parts[key].title;
+  document.getElementById('partText').textContent = parts[key].text;
+  document.querySelectorAll('#partButtons .mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+  if (fertAnim) { cancelAnimationFrame(fertAnim); fertAnim = null; }
+  drawFlower();
+}
+
+function buildPartButtons() {
+  const wrap = document.getElementById('partButtons');
+  wrap.innerHTML = '';
+  Object.keys(parts).forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'mode-btn';
+    b.dataset.key = k;
+    b.textContent = parts[k].title;
+    b.onclick = () => selectPart(k);
+    wrap.appendChild(b);
+  });
+}
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+const H = 460;
+let ctx2;
+
+function initSim() {
+  simInit = true;
+  buildPartButtons();
+  drawFlower();
+}
+
+function getCanvas() { return document.getElementById('flowerCanvas'); }
+
+function setupCanvas() {
+  const canvas = getCanvas();
+  const dpr = window.devicePixelRatio || 1;
+  const logicalW = canvas.offsetWidth || 640;
+  canvas.width = logicalW * dpr;
+  canvas.height = H * dpr;
+  ctx2 = canvas.getContext('2d');
+  ctx2.setTransform(1, 0, 0, 1, 0, 0);
+  ctx2.scale(dpr, dpr);
+  return { ctx: ctx2, W: logicalW, H };
+}
+
+function drawFlower() {
+  const { ctx, W } = setupCanvas();
+  ctx.clearRect(0, 0, W, H);
+
+  // — Layout constants —
+  const cx = W * 0.42;
+  const cy = H * 0.46;
+  const petalR = 68;
+  const petalLen = 52;
+
+  function highlight(key) {
+    if (simMode === 'anatomy' && selectedPart === key) return parts[key].col;
+    return null;
+  }
+  function partFill(key, defaultFill) {
+    const h = highlight(key);
+    return h || defaultFill;
+  }
+  function partAlpha(key) {
+    if (simMode === 'anatomy' && selectedPart && selectedPart !== key) return 0.35;
+    return 1;
+  }
+
+  // — Stem —
+  ctx.save();
+  ctx.globalAlpha = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + 90);
+  ctx.lineTo(cx, cy + 180);
+  ctx.strokeStyle = '#4ade80';
+  ctx.lineWidth = 6;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // — Petals —
+  const petalCount = 6;
+  for (let i = 0; i < petalCount; i++) {
+    const angle = (i / petalCount) * Math.PI * 2 - Math.PI / 2;
+    const px = cx + Math.cos(angle) * petalR;
+    const py = cy + Math.sin(angle) * petalR;
+    ctx.save();
+    ctx.globalAlpha = partAlpha('petal');
+    ctx.beginPath();
+    ctx.ellipse(px, py, 24, petalLen, angle, 0, Math.PI * 2);
+    ctx.fillStyle = partFill('petal', '#f472b6');
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // — Sepals —
+  const sepalCount = 6;
+  for (let i = 0; i < sepalCount; i++) {
+    const angle = (i / sepalCount) * Math.PI * 2;
+    const sx = cx + Math.cos(angle) * (petalR - 16);
+    const sy = cy + Math.sin(angle) * (petalR - 16);
+    ctx.save();
+    ctx.globalAlpha = partAlpha('sepal') * 0.7;
+    ctx.beginPath();
+    ctx.ellipse(sx, sy, 12, 36, angle, 0, Math.PI * 2);
+    ctx.fillStyle = partFill('sepal', '#4ade80');
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // — Receptacle (centre) —
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 30, 0, Math.PI * 2);
+  ctx.fillStyle = '#1e293b';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Carpel: ovary, style, stigma —
+  // Ovary (oval in centre)
+  ctx.save();
+  ctx.globalAlpha = partAlpha('ovary');
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 10, 18, 22, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partFill('ovary', '#fb923c');
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // Ovule inside ovary
+  ctx.save();
+  ctx.globalAlpha = partAlpha('ovule');
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 12, 7, 9, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partFill('ovule', '#f87171');
+  ctx.fill();
+  ctx.restore();
+
+  // Style
+  ctx.save();
+  ctx.globalAlpha = partAlpha('style');
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 12);
+  ctx.lineTo(cx, cy - 38);
+  ctx.strokeStyle = partFill('style', '#818cf8');
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // Stigma
+  ctx.save();
+  ctx.globalAlpha = partAlpha('stigma');
+  ctx.beginPath();
+  ctx.ellipse(cx, cy - 44, 10, 6, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partFill('stigma', '#c084fc');
+  ctx.fill();
+  ctx.restore();
+
+  // — Stamens (filament + anther) —
+  const stamenAngles = [Math.PI * 0.2, Math.PI * 0.5, Math.PI * 0.8, Math.PI * 1.2, Math.PI * 1.5, Math.PI * 1.8];
+  stamenAngles.forEach(angle => {
+    const fx = cx + Math.cos(angle) * 12;
+    const fy = cy + Math.sin(angle) * 12;
+    const ax = cx + Math.cos(angle) * 26;
+    const ay = cy + Math.sin(angle) * 26;
+
+    ctx.save();
+    ctx.globalAlpha = partAlpha('filament');
+    ctx.beginPath();
+    ctx.moveTo(fx, fy);
+    ctx.lineTo(ax, ay);
+    ctx.strokeStyle = partFill('filament', '#a3e635');
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.globalAlpha = partAlpha('anther');
+    ctx.beginPath();
+    ctx.ellipse(ax, ay, 5, 8, angle + Math.PI / 2, 0, Math.PI * 2);
+    ctx.fillStyle = partFill('anther', '#fbbf24');
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // — Labels in anatomy mode —
+  if (simMode === 'anatomy') {
+    drawLabel(ctx, cx + petalR + 30, cy - 40, 'Petal', parts['petal'].col, selectedPart === 'petal');
+    drawLabel(ctx, cx + petalR + 20, cy + 40, 'Sepal', parts['sepal'].col, selectedPart === 'sepal');
+    drawLabel(ctx, cx + 52, cy - 46, 'Stigma', parts['stigma'].col, selectedPart === 'stigma');
+    drawLabel(ctx, cx + 52, cy - 28, 'Style', parts['style'].col, selectedPart === 'style');
+    drawLabel(ctx, cx + 52, cy + 8, 'Ovary', parts['ovary'].col, selectedPart === 'ovary');
+    drawLabel(ctx, cx + 52, cy + 24, 'Ovule', parts['ovule'].col, selectedPart === 'ovule');
+    drawLabel(ctx, cx - 68, cy - 26, 'Anther', parts['anther'].col, selectedPart === 'anther');
+    drawLabel(ctx, cx - 68, cy - 10, 'Filament', parts['filament'].col, selectedPart === 'filament');
+  }
+
+  // — Fertilisation animation —
+  if (simMode === 'fertilisation') {
+    drawFertilisationFrame(ctx, W, fertProgress);
+  }
+}
+
+function drawLabel(ctx, x, y, text, color, active) {
+  ctx.save();
+  ctx.font = `${active ? '700' : '600'} 11px "Cabinet Grotesk", sans-serif`;
+  ctx.fillStyle = active ? color : 'rgba(210,218,245,0.55)';
+  ctx.textAlign = 'left';
+  if (x < 200) ctx.textAlign = 'right';
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function drawFertilisationFrame(ctx, W, progress) {
+  const cx = W * 0.42;
+  const cy = H * 0.46;
+
+  // Pollen grain on stigma
+  const pollenX = cx + 18;
+  const pollenY = cy - 48;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(pollenX, pollenY, 7, 0, Math.PI * 2);
+  ctx.fillStyle = '#fbbf24';
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 8px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('P', pollenX, pollenY + 3);
+  ctx.restore();
+
+  // Pollen tube growing down through style toward ovule
+  if (progress > 0) {
+    const tubeStart = { x: pollenX, y: pollenY + 7 };
+    const tubeEnd   = { x: cx, y: cy + 12 };
+    const currentY = tubeStart.y + (tubeEnd.y - tubeStart.y) * progress;
+    const currentX = tubeStart.x + (tubeEnd.x - tubeStart.x) * progress;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(tubeStart.x, tubeStart.y);
+    ctx.lineTo(currentX, currentY);
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([4, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Male nucleus dot
+    ctx.beginPath();
+    ctx.arc(currentX, currentY, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#fde68a';
+    ctx.fill();
+    ctx.restore();
+
+    // Label stage
+    const labelX = cx + 90;
+    ctx.save();
+    ctx.font = '600 12px "Cabinet Grotesk",sans-serif';
+    ctx.fillStyle = '#fcd34d';
+    ctx.textAlign = 'left';
+    if (progress < 0.3) {
+      ctx.fillText('1. Pollen lands on stigma', labelX, cy - 60);
+    } else if (progress < 0.7) {
+      ctx.fillText('2. Pollen tube growing', labelX, cy - 60);
+      ctx.fillStyle = 'rgba(210,218,245,0.6)';
+      ctx.font = '500 11px "Cabinet Grotesk",sans-serif';
+      ctx.fillText('Male nucleus travels down', labelX, cy - 44);
+      ctx.fillText('through the style', labelX, cy - 30);
+    } else {
+      ctx.fillText('3. Fertilisation occurring', labelX, cy - 60);
+      ctx.fillStyle = 'rgba(210,218,245,0.6)';
+      ctx.font = '500 11px "Cabinet Grotesk",sans-serif';
+      ctx.fillText('Male nucleus fuses with', labelX, cy - 44);
+      ctx.fillText('egg cell → zygote forms', labelX, cy - 30);
+    }
+    ctx.restore();
+
+    // Flash on ovule at completion
+    if (progress >= 1) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy + 12, 12, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(251,191,36,0.3)';
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+function startFertAnim() {
+  fertProgress = 0;
+  function step() {
+    fertProgress += 0.005;
+    if (fertProgress > 1.2) fertProgress = 0;
+    drawFlower();
+    fertAnim = requestAnimationFrame(step);
+  }
+  if (fertAnim) cancelAnimationFrame(fertAnim);
+  fertAnim = requestAnimationFrame(step);
+}
+
+window.addEventListener('resize', () => { if (simInit) drawFlower(); });
+
+// ── PRACTICE ──────────────────────────────────────────────────────────────────
+const questions = [
+  {
+    q: 'Which part of the flower contains the female gamete (egg cell)?',
+    opts: ['Anther', 'Filament', 'Stigma', 'Ovule'],
+    ans: 3,
+    fb: 'The ovule, located inside the ovary, contains the egg cell (female gamete). After fertilisation by the male nucleus from the pollen, the ovule develops into a seed.'
+  },
+  {
+    q: 'A flower has small, dull petals, no nectar, very light and smooth pollen, and large feathery stigmas. Which type of pollination does this flower rely on?',
+    opts: ['Insect pollination', 'Wind pollination', 'Water pollination', 'Self-pollination'],
+    ans: 1,
+    fb: 'All these features are adaptations for wind pollination: dull petals (no need to attract insects), no nectar (no reward needed), light smooth pollen (easily carried by air), and large feathery stigmas (to catch airborne pollen). Grasses and maize are classic examples.'
+  },
+  {
+    q: 'What does the pollen tube do during fertilisation in a flowering plant?',
+    opts: [
+      'It carries the female gamete up to the stigma',
+      'It grows from the stigma through the style to deliver the male nucleus to the ovule',
+      'It absorbs water from the soil to nourish the embryo',
+      'It prevents multiple pollen grains from reaching the same stigma'
+    ],
+    ans: 1,
+    fb: 'After a pollen grain germinates on the stigma, it grows a pollen tube downward through the style into the ovary. The male nucleus travels inside this tube until it reaches the ovule, where it fuses with the egg cell to form a zygote.'
+  },
+  {
+    q: 'A strawberry plant produces runners (stolons) that grow horizontally and develop into new plants. This is an example of:',
+    opts: [
+      'Sexual reproduction — because it involves two strawberry plants',
+      'Asexual reproduction — because it produces genetically identical offspring from one parent',
+      'Pollination — because pollen is transferred between strawberry plants',
+      'Germination — because the new plants grow from seeds'
+    ],
+    ans: 1,
+    fb: 'Runners are a form of vegetative (asexual) reproduction. The new plants formed are genetically identical to the parent plant (clones), produced from a single parent with no gametes involved.'
+  },
+  {
+    q: 'A dandelion seed has a feathery "parachute" attached to it. What method of seed dispersal does this represent, and what is the advantage of this adaptation?',
+    opts: [
+      'Water dispersal; the seed floats to distant shores',
+      'Animal dispersal (external); the parachute hooks onto animal fur',
+      'Wind dispersal; the parachute keeps the seed airborne so it can travel far from the parent plant',
+      'Explosive dispersal; the parachute allows the seed pod to burst open'
+    ],
+    ans: 2,
+    fb: 'The feathery pappus of a dandelion is a wind dispersal adaptation. It acts like a parachute, allowing air currents to carry the tiny seed far from the parent plant. This reduces competition between parent and offspring for light, water, and nutrients.'
+  },
+  {
+    q: 'Which THREE conditions are required for seed germination?',
+    opts: [
+      'Sunlight, water, and warmth',
+      'Water, warmth (suitable temperature), and oxygen',
+      'Soil, sunlight, and water',
+      'Carbon dioxide, warmth, and mineral salts'
+    ],
+    ans: 1,
+    fb: 'Seeds require water (to activate enzymes and fuel metabolism), warmth (enzymes need an optimum temperature), and oxygen (for aerobic respiration to provide energy for growth). Sunlight is NOT needed for germination itself — it is only required later for photosynthesis.'
+  }
+];
+
+let answered = 0, correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, j) =>
+      `<button class="mc-opt" onclick="answer(${i},${j},this)">
+        <span class="opt-letter">${letters[j]}</span>${o}
+      </button>`
+    ).join('');
+    container.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Question ${i+1} of ${questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="mc-options">${optsHtml}</div>
+        <div class="feedback" id="fb-${i}"></div>
+      </div>`;
+  });
+}
+
+function answer(qi, selected, btn) {
+  const card = document.getElementById('qcard-' + qi);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  const q = questions[qi];
+  const opts = card.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('fb-' + qi);
+  if (selected === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = '&#10003; Correct! ' + q.fb;
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback show bad';
+    fb.innerHTML = '&#10007; Not quite. ' + q.fb;
+  }
+  answered++;
+  if (answered === questions.length) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct + '/' + questions.length;
+  }
+}
+
+buildPractice();
+</script>
+</body>
+</html>

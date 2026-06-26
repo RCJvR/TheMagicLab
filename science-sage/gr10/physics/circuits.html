@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Circuits — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:52px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Physics</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Physics · Lesson 6</div>
+  <div class="lesson-title">Electric Circuits</div>
+  <div class="lesson-sub">Master current, voltage, resistance, Ohm's Law, and the behaviour of series and parallel circuits — the foundation of all electronics.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">📖 Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📋 Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Electric Current</h2>
+    <p>Electric current is the rate of flow of electric charge. In metals, charge is carried by electrons moving through the conductor.</p>
+    <div class="formula">I = Q / t</div>
+    <table class="symbols-table">
+      <tr><th>Quantity</th><th>Symbol</th><th>Unit</th></tr>
+      <tr><td>Current</td><td>I</td><td>Ampere (A)</td></tr>
+      <tr><td>Charge</td><td>Q</td><td>Coulomb (C)</td></tr>
+      <tr><td>Time</td><td>t</td><td>second (s)</td></tr>
+    </table>
+    <div class="callout"><strong>Conventional vs Electron Current:</strong> Conventional current flows from + to − (positive terminal of battery); electrons actually flow from − to +. We always use conventional current direction in circuit diagrams.</div>
+
+    <h2>Potential Difference (Voltage)</h2>
+    <p>Potential difference (voltage) is the work done per unit charge to move charge between two points. It is the "push" that drives current around a circuit.</p>
+    <div class="formula">V = W / Q</div>
+    <p>Unit: Volt (V). One volt = one joule per coulomb. A voltmeter is connected in <strong>parallel</strong> across a component to measure its voltage.</p>
+
+    <h2>Resistance</h2>
+    <p>Resistance is the opposition to the flow of current. It is caused by collisions between electrons and the lattice of metal ions in the conductor.</p>
+    <div class="formula">R = V / I</div>
+    <p>Unit: Ohm (Ω). An ammeter is connected in <strong>series</strong> to measure current. A resistor's resistance depends on: material, length (longer → more R), cross-sectional area (thicker → less R), and temperature.</p>
+
+    <h2>Ohm's Law</h2>
+    <p>For an <strong>ohmic conductor</strong> at constant temperature, the current through it is directly proportional to the voltage across it:</p>
+    <div class="formula">V = I × R</div>
+    <p>The V–I graph of an ohmic conductor is a straight line through the origin. The gradient equals resistance.</p>
+    <p><strong>Non-ohmic conductors</strong> (e.g. light bulb filament) do not produce a straight V–I line, because as temperature increases, resistance increases — the graph curves.</p>
+
+    <h2>Circuit Symbols</h2>
+    <p>Key symbols used in circuit diagrams:</p>
+    <ul>
+      <li><strong>Cell:</strong> short and long parallel lines (short = negative)</li>
+      <li><strong>Battery:</strong> multiple cells in series</li>
+      <li><strong>Resistor:</strong> rectangle</li>
+      <li><strong>Variable resistor (rheostat):</strong> rectangle with an arrow</li>
+      <li><strong>Lamp (bulb):</strong> circle with cross inside</li>
+      <li><strong>Switch:</strong> open gap in line</li>
+      <li><strong>Ammeter:</strong> circle with A — in series</li>
+      <li><strong>Voltmeter:</strong> circle with V — in parallel</li>
+    </ul>
+
+    <h2>Series Circuits</h2>
+    <p>In a series circuit, components are connected end-to-end in a single loop:</p>
+    <ul>
+      <li>The <strong>same current</strong> flows through all components: I<sub>total</sub> = I₁ = I₂ = I₃</li>
+      <li>Voltages add up: V<sub>total</sub> = V₁ + V₂ + V₃</li>
+      <li>Resistances add up: R<sub>total</sub> = R₁ + R₂ + R₃</li>
+    </ul>
+    <div class="key-fact">Example: R₁ = 4 Ω, R₂ = 6 Ω in series → R_total = 10 Ω. With EMF = 20 V: I = V/R = 20/10 = 2 A.</div>
+
+    <h2>Parallel Circuits</h2>
+    <p>In a parallel circuit, components share the same two nodes:</p>
+    <ul>
+      <li>The <strong>same voltage</strong> appears across each branch: V<sub>total</sub> = V₁ = V₂ = V₃</li>
+      <li>Currents add up: I<sub>total</sub> = I₁ + I₂ + I₃</li>
+      <li>Reciprocal resistance: 1/R<sub>total</sub> = 1/R₁ + 1/R₂ + ...</li>
+    </ul>
+    <div class="callout"><strong>Note:</strong> Adding more parallel branches decreases total resistance and increases total current drawn from the battery.</div>
+
+    <h2>Power and Energy</h2>
+    <div class="formula">P = V × I = I²R = V²/R &nbsp;&nbsp;&nbsp; (unit: Watt, W)</div>
+    <div class="formula">E = P × t = V × I × t &nbsp;&nbsp;&nbsp; (unit: Joule, J)</div>
+    <p>Electricity billing uses <strong>kilowatt-hours (kWh)</strong>: 1 kWh = 3.6 × 10⁶ J. A 2 kW heater running for 3 hours uses 6 kWh of energy.</p>
+
+    <h2>EMF and Internal Resistance</h2>
+    <p>A real battery has <strong>internal resistance (r)</strong> that causes a voltage drop when current flows. The <strong>EMF (ε)</strong> is the total energy supplied per unit charge by the battery:</p>
+    <div class="formula">V<sub>terminal</sub> = ε − Ir</div>
+    <p>When a high current is drawn (e.g. from a flat battery), the internal resistance drop (Ir) is large, and the terminal voltage drops noticeably.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Kirchhoff's Laws</div>
+      <p><strong>Kirchhoff's Current Law (KCL):</strong> The sum of currents entering a node equals the sum of currents leaving it. (Conservation of charge)</p>
+      <div class="formula">ΣI<sub>in</sub> = ΣI<sub>out</sub></div>
+      <p style="margin-top:8px"><strong>Kirchhoff's Voltage Law (KVL):</strong> The algebraic sum of all voltages around any closed loop is zero. (Conservation of energy)</p>
+      <div class="formula">ΣV<sub>loop</sub> = 0</div>
+      <p style="margin-top:8px"><strong>Wheatstone Bridge:</strong> A balanced bridge has no current through the galvanometer. Balance condition:</p>
+      <div class="formula">R₁/R₂ = R₃/R₄</div>
+      <p style="font-size:13px;color:var(--muted);margin-top:4px">Used to measure unknown resistances with high precision.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Circuit Simulator</h3>
+      <canvas id="circuitCanvas" height="280"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Circuit Type</div>
+        <button class="mode-btn active" id="modeSeries" onclick="setCircuit('series')">Series</button>
+        <button class="mode-btn" id="modeParallel" onclick="setCircuit('parallel')">Parallel</button>
+        <button class="mode-btn" id="modeMixed" onclick="setCircuit('mixed')">Mixed</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Values</div>
+        <div class="slider-row">
+          <label>EMF (V)</label>
+          <input type="range" id="emfSlider" min="3" max="24" value="12" oninput="updateCircuit()">
+          <span class="slider-val" id="emfVal">12 V</span>
+        </div>
+        <div class="slider-row">
+          <label>R₁ (Ω)</label>
+          <input type="range" id="r1Slider" min="1" max="20" value="4" oninput="updateCircuit()">
+          <span class="slider-val" id="r1Val">4 Ω</span>
+        </div>
+        <div class="slider-row">
+          <label>R₂ (Ω)</label>
+          <input type="range" id="r2Slider" min="1" max="20" value="6" oninput="updateCircuit()">
+          <span class="slider-val" id="r2Val">6 Ω</span>
+        </div>
+      </div>
+    </div>
+    <div class="readout-grid" id="readoutGrid">
+      <div class="readout"><div class="readout-label">Total R</div><div class="readout-val" id="ro-rt">— <span>Ω</span></div></div>
+      <div class="readout"><div class="readout-label">Total I</div><div class="readout-val" id="ro-it">— <span>A</span></div></div>
+      <div class="readout"><div class="readout-label">V across R₁</div><div class="readout-val" id="ro-v1">— <span>V</span></div></div>
+      <div class="readout"><div class="readout-label">Power (W)</div><div class="readout-val" id="ro-pw">— <span>W</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete! Review your answers below.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 1 — Ohm's Law</div>
+      <div class="q-text">A resistor has a voltage of 18 V across it and a current of 3 A through it. What is its resistance?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">A</span>54 Ω</button>
+        <button class="mc-opt" onclick="answer(this,true,'q1')"><span class="opt-letter">B</span>6 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">C</span>15 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">D</span>21 Ω</button>
+      </div>
+      <div class="feedback ok" id="fb-q1-ok">Correct! R = V/I = 18/3 = 6 Ω.</div>
+      <div class="feedback bad" id="fb-q1-bad">Use R = V/I = 18 V ÷ 3 A = 6 Ω.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 2 — Series Circuit</div>
+      <div class="q-text">Three resistors of 3 Ω, 5 Ω, and 2 Ω are connected in series to a 20 V battery. What is the current in the circuit?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">A</span>4 A</button>
+        <button class="mc-opt" onclick="answer(this,true,'q2')"><span class="opt-letter">B</span>2 A</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">C</span>6.67 A</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">D</span>0.5 A</button>
+      </div>
+      <div class="feedback ok" id="fb-q2-ok">Correct! R_total = 3+5+2 = 10 Ω. I = V/R = 20/10 = 2 A. Same current flows through all components in series.</div>
+      <div class="feedback bad" id="fb-q2-bad">In series, R_total = 3+5+2 = 10 Ω. Then I = V/R = 20/10 = 2 A.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 3 — Parallel Circuit</div>
+      <div class="q-text">Two resistors, 6 Ω and 12 Ω, are connected in parallel. What is the total (equivalent) resistance?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">A</span>18 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">B</span>9 Ω</button>
+        <button class="mc-opt" onclick="answer(this,true,'q3')"><span class="opt-letter">C</span>4 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">D</span>2 Ω</button>
+      </div>
+      <div class="feedback ok" id="fb-q3-ok">Correct! 1/R = 1/6 + 1/12 = 2/12 + 1/12 = 3/12 → R = 4 Ω. Parallel resistance is always less than the smallest individual resistor.</div>
+      <div class="feedback bad" id="fb-q3-bad">1/R_total = 1/6 + 1/12 = 3/12 → R_total = 4 Ω. Never simply add in parallel.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 4 — Power</div>
+      <div class="q-text">A lamp draws a current of 0.5 A when connected to a 220 V supply. What is the power rating of the lamp?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">A</span>440 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">B</span>0.0023 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q4')"><span class="opt-letter">C</span>110 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">D</span>55 W</button>
+      </div>
+      <div class="feedback ok" id="fb-q4-ok">Correct! P = VI = 220 × 0.5 = 110 W.</div>
+      <div class="feedback bad" id="fb-q4-bad">P = V × I = 220 V × 0.5 A = 110 W.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 5 — EMF &amp; Internal Resistance</div>
+      <div class="q-text">A battery has an EMF of 9 V and an internal resistance of 0.5 Ω. When a current of 4 A is drawn, what is the terminal voltage?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">A</span>9 V</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">B</span>10 V</button>
+        <button class="mc-opt" onclick="answer(this,true,'q5')"><span class="opt-letter">C</span>7 V</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">D</span>11 V</button>
+      </div>
+      <div class="feedback ok" id="fb-q5-ok">Correct! V_terminal = ε − Ir = 9 − (4 × 0.5) = 9 − 2 = 7 V.</div>
+      <div class="feedback bad" id="fb-q5-bad">V_terminal = ε − Ir = 9 − (4 × 0.5) = 9 − 2 = 7 V. The internal resistance causes a "lost voltage" of Ir = 2 V.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 6 — Energy</div>
+      <div class="q-text">A 1500 W electric heater runs for 2 hours. How much energy does it consume in joules?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">A</span>3 000 J</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">B</span>3 000 000 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q6')"><span class="opt-letter">C</span>10 800 000 J</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">D</span>750 J</button>
+      </div>
+      <div class="feedback ok" id="fb-q6-ok">Correct! E = Pt = 1500 W × (2 × 3600 s) = 1500 × 7200 = 10 800 000 J = 10.8 MJ. This equals 3 kWh.</div>
+      <div class="feedback bad" id="fb-q6-bad">E = P × t. Convert 2 hours to seconds: 2 × 3600 = 7200 s. E = 1500 × 7200 = 10 800 000 J.</div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" id="ieb-practice-section">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB Extension Practice <span class="ieb-badge">IEB ONLY</span></div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Question 1 — Kirchhoff's Voltage Law</div>
+        <div class="q-text">In a closed loop, a battery of EMF 12 V has internal resistance 1 Ω. It drives current through two external resistors R₁ = 3 Ω and R₂ = 5 Ω in series. Applying KVL, what is the current in the circuit?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">A</span>1.5 A</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq1')"><span class="opt-letter">B</span>1.33 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">C</span>2.4 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">D</span>3 A</button>
+        </div>
+        <div class="feedback ok" id="fb-iq1-ok">Correct! KVL: ε − Ir − IR₁ − IR₂ = 0 → 12 − I(1+3+5) = 0 → I = 12/9 ≈ 1.33 A.</div>
+        <div class="feedback bad" id="fb-iq1-bad">KVL: sum of all voltages around the loop = 0. 12 = I×(1+3+5) = 9I → I = 12/9 ≈ 1.33 A.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Question 2 — Kirchhoff's Current Law</div>
+        <div class="q-text">At a junction in a parallel circuit, two branches carry currents of 2.4 A and 1.6 A respectively. A third branch carries an unknown current I₃ away from the junction. A total current of 5.5 A enters the junction. Find I₃.</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">A</span>4 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">B</span>9.5 A</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq2')"><span class="opt-letter">C</span>1.5 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">D</span>0.5 A</button>
+        </div>
+        <div class="feedback ok" id="fb-iq2-ok">Correct! KCL: I_in = I₁ + I₂ + I₃ → 5.5 = 2.4 + 1.6 + I₃ → I₃ = 5.5 − 4.0 = 1.5 A.</div>
+        <div class="feedback bad" id="fb-iq2-bad">KCL: total current in = sum of branch currents out. 5.5 = 2.4 + 1.6 + I₃ → I₃ = 1.5 A.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Print Workbook</button>
+    <div class="wb-intro">Show all working for calculation questions. Use correct units throughout. Draw clearly labelled circuit diagrams where required.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 — Circuit Calculations</div>
+      <div class="wb-qtext">A circuit contains a 15 V battery connected to three resistors: R₁ = 2 Ω in series with a parallel combination of R₂ = 6 Ω and R₃ = 3 Ω.<br>(a) Calculate the equivalent resistance of R₂ and R₃ in parallel.<br>(b) Calculate the total resistance of the circuit.<br>(c) Calculate the total current from the battery.<br>(d) Calculate the voltage across the parallel combination.<br>(e) Calculate the current through R₂.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 — EMF and Internal Resistance</div>
+      <div class="wb-qtext">A battery has an EMF of 6 V. When a 5 Ω resistor is connected, the terminal voltage is 5 V.<br>(a) Calculate the current in the circuit.<br>(b) Calculate the internal resistance of the battery.<br>(c) Calculate the "lost volts" (voltage dropped across internal resistance).<br>(d) Explain why the terminal voltage of a battery decreases as more current is drawn from it.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 — Energy and Cost</div>
+      <div class="wb-qtext">A household uses the following appliances for the times shown: a 2 kW kettle for 30 min, a 150 W television for 5 hours, and a 60 W lamp for 8 hours.<br>(a) Calculate the energy consumed by each appliance in kWh.<br>(b) Calculate the total energy used in joules.<br>(c) If electricity costs R2.50 per kWh, what is the total cost for these appliances?</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 — Ohmic vs Non-Ohmic</div>
+      <div class="wb-qtext">(a) Explain the difference between an ohmic and a non-ohmic conductor. Give one example of each.<br>(b) Sketch the V–I graph for an ohmic conductor and a light bulb filament on the same axes. Label both curves.<br>(c) Explain why the light bulb filament is non-ohmic.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 — Power Relationships</div>
+      <div class="wb-qtext">A 60 Ω resistor is connected to a 12 V power supply.<br>(a) Calculate the current through the resistor.<br>(b) Calculate the power dissipated using P = V²/R.<br>(c) Verify your answer using P = I²R.<br>(d) If the voltage is doubled to 24 V, by what factor does the power increase? Explain using the formula.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  const answered={};let score=0;
+  function answer(btn,correct,qid){
+    if(answered[qid])return;answered[qid]=true;
+    btn.closest('.mc-options').querySelectorAll('.mc-opt').forEach(o=>o.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
+    if(fb)fb.classList.add('show');
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===6){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/6';}}
+  }
+
+  // ---- CIRCUIT SIMULATION ----
+  const canvas=document.getElementById('circuitCanvas');
+  const ctx=canvas.getContext('2d');
+  let circuitMode='series';
+  let animFrame=null;
+  let dots=[];
+  let tick=0;
+
+  function setCircuit(mode){
+    circuitMode=mode;
+    ['modeSeries','modeParallel','modeMixed'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    const map={series:'modeSeries',parallel:'modeParallel',mixed:'modeMixed'};
+    document.getElementById(map[mode]).classList.add('active');
+    initDots();
+    updateCircuit();
+  }
+
+  function updateCircuit(){
+    const emf=parseFloat(document.getElementById('emfSlider').value);
+    const r1=parseFloat(document.getElementById('r1Slider').value);
+    const r2=parseFloat(document.getElementById('r2Slider').value);
+    document.getElementById('emfVal').textContent=emf+' V';
+    document.getElementById('r1Val').textContent=r1+' Ω';
+    document.getElementById('r2Val').textContent=r2+' Ω';
+    let rt,it,v1,pw;
+    if(circuitMode==='series'){
+      rt=r1+r2;it=emf/rt;v1=it*r1;pw=emf*it;
+    } else if(circuitMode==='parallel'){
+      rt=1/(1/r1+1/r2);it=emf/rt;v1=emf;pw=emf*it;
+    } else {
+      // mixed: r2 in parallel with r1, in series with nothing — treat as r1 series, r2 parallel to r1
+      const rp=1/(1/r1+1/r2);rt=rp;it=emf/rt;v1=emf*(r2/(r1+r2));pw=emf*it;
+      // Actually: series R1 + parallel(R2, R3) — but we only have 2 resistors. Use: R1 series with R2
+      // For mixed: R1 in series with (R2 parallel R1) — creates interesting result. Let's just use R1 series + R2/2 as a parallel branch of R2
+      const rpar=r2/2; rt=r1+rpar; it=emf/rt; v1=it*r1; pw=emf*it;
+    }
+    document.getElementById('ro-rt').innerHTML=rt.toFixed(2)+'<span>Ω</span>';
+    document.getElementById('ro-it').innerHTML=it.toFixed(2)+'<span>A</span>';
+    document.getElementById('ro-v1').innerHTML=v1.toFixed(2)+'<span>V</span>';
+    document.getElementById('ro-pw').innerHTML=pw.toFixed(2)+'<span>W</span>';
+  }
+
+  function resizeCanvas(){
+    const dpr=window.devicePixelRatio||1;
+    const w=canvas.parentElement.clientWidth-32;
+    canvas.style.width=w+'px';canvas.style.height='280px';
+    canvas.width=w*dpr;canvas.height=280*dpr;
+    ctx.scale(dpr,dpr);
+  }
+
+  function initDots(){
+    dots=[];
+    const n=16;
+    for(let i=0;i<n;i++) dots.push({t:i/n});
+  }
+
+  function drawCircuit(){
+    const w=canvas.clientWidth,h=280;
+    ctx.clearRect(0,0,w,h);
+    const emf=parseFloat(document.getElementById('emfSlider').value);
+    const r1=parseFloat(document.getElementById('r1Slider').value);
+    const r2=parseFloat(document.getElementById('r2Slider').value);
+    // Layout
+    const L=60,R=w-60,T=50,B=h-50;
+    const mx=(L+R)/2;
+
+    function wire(x1,y1,x2,y2){
+      ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    }
+    function resistorBox(x,y,label,val){
+      ctx.fillStyle='rgba(255,255,255,0.06)';ctx.strokeStyle='rgba(96,165,250,0.6)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.roundRect(x-28,y-12,56,24,5);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#93c5fd';ctx.font='bold 11px monospace';ctx.textAlign='center';
+      ctx.fillText(label,x,y-2);
+      ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='10px monospace';
+      ctx.fillText(val+'Ω',x,y+11);
+    }
+    function battery(x,y){
+      ctx.strokeStyle='#fbbf24';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x,y+18);ctx.stroke();
+      ctx.lineWidth=4;
+      ctx.beginPath();ctx.moveTo(x-10,y-8);ctx.lineTo(x+10,y-8);ctx.stroke();
+      ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x-6,y+8);ctx.lineTo(x+6,y+8);ctx.stroke();
+      ctx.fillStyle='#fbbf24';ctx.font='bold 10px monospace';ctx.textAlign='center';
+      ctx.fillText('+',(x),y-24);ctx.fillText('−',x,y+28);
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px monospace';
+      ctx.fillText(emf+'V',x+22,y+4);
+    }
+
+    if(circuitMode==='series'){
+      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
+      battery(L,h/2);
+      resistorBox(mx-60,T,'R₁',r1);
+      resistorBox(mx+60,T,'R₂',r2);
+    } else if(circuitMode==='parallel'){
+      const mh=(T+B)/2;
+      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
+      wire(mx,T,mx,B);
+      battery(L,mh);
+      resistorBox(mx-60,mh,'R₁',r1);
+      resistorBox(mx+60,mh,'R₂',r2);
+    } else {
+      // Mixed
+      const mh=(T+B)/2;const ph=h*0.28;
+      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
+      wire(mx,T,mx,ph);wire(mx,B-20,mx,B);
+      wire(mx-50,ph,mx+50,ph);wire(mx-50,B-20,mx+50,B-20);
+      wire(mx-50,ph,mx-50,B-20);wire(mx+50,ph,mx+50,B-20);
+      battery(L,mh);
+      resistorBox(mx-110,T,'R₁',r1);
+      resistorBox(mx-50,(ph+B-20)/2,'R₂',r2);
+      resistorBox(mx+50,(ph+B-20)/2,'R₂',r2);
+      ctx.fillStyle='rgba(147,197,253,0.5)';ctx.font='10px monospace';ctx.textAlign='center';
+      ctx.fillText('(R₁ series + R₂ parallel)',w/2,h-8);
+    }
+
+    // Animate current dots
+    tick+=0.008;
+    dots.forEach(d=>{
+      d.t=(d.t+0.004)%1;
+      let x,y;
+      const t=d.t;
+      // Trace the outer rectangle
+      const perim=2*(R-L)+2*(B-T);
+      const pos=t*perim;
+      if(pos<R-L){x=L+pos;y=T;}
+      else if(pos<R-L+B-T){x=R;y=T+(pos-(R-L));}
+      else if(pos<2*(R-L)+B-T){x=R-(pos-(R-L+B-T));y=B;}
+      else{x=L;y=B-(pos-(2*(R-L)+B-T));}
+      ctx.fillStyle='rgba(96,165,250,0.85)';
+      ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+    });
+  }
+
+  function animate(){
+    if(animFrame)cancelAnimationFrame(animFrame);
+    function loop(){drawCircuit();animFrame=requestAnimationFrame(loop);}
+    loop();
+  }
+  function initSim(){resizeCanvas();initDots();updateCircuit();animate();}
+  window.addEventListener('resize',()=>{if(document.getElementById('tab-explore').classList.contains('active')){resizeCanvas();}});
+</script>
+</body>
+</html>

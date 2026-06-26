@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fossils &amp; Geological History — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .lesson-body ol{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    .step-btn{padding:9px 22px;border-radius:8px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.12);color:#fcd34d;font-weight:700;font-size:12px;cursor:pointer;transition:all 150ms;font-family:var(--fd);margin-top:10px}
+    .step-btn:hover{background:rgba(251,191,36,.22)}
+    .step-btn:disabled{opacity:0.4;cursor:default}
+    .step-desc{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-top:10px;font-size:13px;color:rgba(210,218,245,.78);line-height:1.75;min-height:60px}
+    .era-info{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-top:10px;font-size:13px;color:rgba(210,218,245,.78);line-height:1.75;min-height:60px}
+    .era-info strong{color:#fcd34d}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Earth &amp; Beyond</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Earth &amp; Beyond · Lesson 2</div>
+  <h1 class="lesson-title">Fossils &amp; Geological History</h1>
+  <p class="lesson-sub">Explore how fossils form, what they tell us about Earth's history, and how scientists use geological time to understand the evolution of life over billions of years.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="layers" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is a Fossil?</h2>
+    <p>A <strong>fossil</strong> is the preserved remains or traces of an organism that lived in the past, typically found in sedimentary rock. Fossils can be millions or even billions of years old, and they give us direct evidence of what life looked like long before humans existed.</p>
+    <div class="key-fact">Most fossils are found in sedimentary rock (rock formed from compressed layers of sand, mud, and other sediment). Igneous and metamorphic rock are too hot or under too much pressure during formation to preserve fossils.</div>
+
+    <h2>Types of Fossils</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Body fossil</strong></td><td>Preserved hard parts of the organism itself</td><td>Dinosaur bones, shells, teeth, petrified wood</td></tr>
+        <tr><td><strong>Trace fossil</strong></td><td>Evidence of an organism's activity, not its body</td><td>Footprints, burrows, coprolites (fossilised dung)</td></tr>
+        <tr><td><strong>Mould</strong></td><td>A cavity or impression left in rock after the organism dissolves</td><td>Shell-shaped hollow in limestone</td></tr>
+        <tr><td><strong>Cast</strong></td><td>A mould filled with minerals, creating a 3D shape</td><td>Mineral replica of a shell or bone</td></tr>
+        <tr><td><strong>Amber fossil</strong></td><td>Organism trapped in tree resin that hardened over millions of years</td><td>Insects, feathers, plant material preserved in amber</td></tr>
+        <tr><td><strong>Carbonisation</strong></td><td>Organic material reduced to a thin carbon film in rock</td><td>Fern leaf impressions in shale</td></tr>
+      </tbody>
+    </table>
+
+    <h2>How Fossils Form</h2>
+    <p>Fossilisation is a rare and specific process. Here are the steps:</p>
+    <ol>
+      <li><strong>Death and rapid burial:</strong> An organism dies and is quickly covered by sediment (sand, mud, silt). Rapid burial is crucial — it prevents scavengers and decay from destroying the remains.</li>
+      <li><strong>Decay of soft parts:</strong> Over time, soft tissues (skin, muscles, organs) decay and disappear. Only hard parts — bones, teeth, shells — tend to survive.</li>
+      <li><strong>Permineralisation:</strong> Minerals dissolved in groundwater slowly seep into the spaces inside bones and shells, replacing organic material with mineral crystals. The fossil turns to stone.</li>
+      <li><strong>Burial under more sediment:</strong> More layers of sediment build up on top over millions of years. The weight compresses and hardens the lower layers into sedimentary rock.</li>
+      <li><strong>Uplift and erosion:</strong> Geological forces (tectonic movements) push rock layers upward. Wind, water, and ice erode the surface layers, eventually exposing the fossil.</li>
+    </ol>
+    <div class="callout"><strong>Why are fossils rare?</strong> Most organisms die in conditions where fossilisation cannot occur (e.g., on dry land, in forests). Even when buried, fossils can be destroyed by heat, pressure, or chemical alteration. Of all the organisms that ever lived, only an incredibly tiny fraction left any fossil record.</div>
+
+    <h2>Index Fossils</h2>
+    <p><strong>Index fossils</strong> are the remains of organisms that: (a) existed for a relatively short time, (b) were abundant and widespread, and (c) are easily identified. Because they lived only during a specific, known time period, they allow geologists to date rock layers in which they are found.</p>
+    <ul>
+      <li><strong>Ammonites</strong> — extinct coiled molluscs; excellent index fossils for Mesozoic rocks</li>
+      <li><strong>Trilobites</strong> — extinct marine arthropods; index fossils for Palaeozoic rocks</li>
+    </ul>
+
+    <h2>Relative and Absolute Dating</h2>
+    <p><strong>Relative dating</strong> tells us the age of a rock layer or fossil <em>relative to other layers</em> — older or younger — without giving an exact age in years.</p>
+    <ul>
+      <li><strong>Law of Superposition:</strong> In undisturbed rock, the deepest layers are the oldest; layers get progressively younger toward the surface.</li>
+      <li><strong>Principle of Original Horizontality:</strong> Sedimentary layers are originally deposited horizontally. Tilted or folded layers indicate later geological activity.</li>
+      <li><strong>Index fossils</strong> allow correlation of rock layers from different locations.</li>
+    </ul>
+    <p><strong>Absolute dating</strong> gives an actual age in years, using <strong>radiometric dating</strong>. Radioactive elements decay at a known, constant rate (their <em>half-life</em>). By measuring how much of the original radioactive element remains versus how much has decayed, scientists can calculate the age of the rock.</p>
+    <ul>
+      <li><strong>Carbon-14 (¹⁴C):</strong> Half-life ~5 730 years. Used for relatively recent organic material (up to ~50 000 years old).</li>
+      <li><strong>Uranium-Lead:</strong> Half-life billions of years. Used for ancient igneous and metamorphic rocks (dating Earth's oldest rocks at ~4 billion years).</li>
+    </ul>
+
+    <h2>The Geological Time Scale</h2>
+    <p>Earth is approximately <strong>4.6 billion years old</strong>. Geologists divide this enormous span into eons, eras, periods, and epochs based on major events in Earth's history, particularly mass extinctions and the sudden appearance of new life forms.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Era</th><th>Period (approx.)</th><th>Key life forms / events</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" style="background:rgba(251,191,36,.06);color:#fcd34d;font-family:var(--fm);font-size:10px;letter-spacing:.08em">PRECAMBRIAN SUPEREON (~4 600 – 541 Ma)</td></tr>
+        <tr><td>Hadean Eon</td><td>4 600–4 000 Ma</td><td>Formation of Earth; no life; heavy meteorite bombardment; oceans form</td></tr>
+        <tr><td>Archean Eon</td><td>4 000–2 500 Ma</td><td>First life appears (~3.8 Ga) — single-celled prokaryotes; stromatolites</td></tr>
+        <tr><td>Proterozoic Eon</td><td>2 500–541 Ma</td><td>First eukaryotes; first multicellular organisms (~600 Ma); oxygen atmosphere builds up</td></tr>
+        <tr><td colspan="3" style="background:rgba(251,191,36,.06);color:#fcd34d;font-family:var(--fm);font-size:10px;letter-spacing:.08em">PHANEROZOIC EON (541 Ma – present)</td></tr>
+        <tr><td><strong>Palaeozoic Era</strong></td><td>541–252 Ma</td><td>Cambrian Explosion (~541 Ma); first fish (~500 Ma); first land plants (~470 Ma); first amphibians (~375 Ma); first reptiles (~310 Ma); ends with the Great Dying (96% of species extinct)</td></tr>
+        <tr><td><strong>Mesozoic Era</strong></td><td>252–66 Ma</td><td>Age of Dinosaurs (appear ~230 Ma); first mammals; first birds (Archaeopteryx ~150 Ma); first flowering plants; ends with K-Pg extinction (~66 Ma)</td></tr>
+        <tr><td><strong>Cenozoic Era</strong></td><td>66 Ma–present</td><td>Age of Mammals; diversification of birds; grasses appear; first human ancestors (~7 Ma); modern humans (~300 000 years ago)</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Ma = millions of years ago. Ga = billions of years ago. 1 Ma = 1 000 000 years.</div>
+
+    <h2>Fossils as Evidence for Evolution</h2>
+    <p>The fossil record provides some of the most powerful evidence for the theory of evolution — the idea that species change over time through natural selection.</p>
+    <ul>
+      <li><strong>Gradual change:</strong> The fossil record of horses shows a clear sequence from small, multi-toed ancestors (~55 Ma) to the single-hoofed modern horse — increasing in size and specialising for fast running on grasslands over millions of years.</li>
+      <li><strong>Transitional fossils:</strong> <em>Archaeopteryx</em> (150 Ma) shows features of both dinosaurs (teeth, clawed wings, long bony tail) and birds (feathers, wishbone), demonstrating the evolutionary link between theropod dinosaurs and modern birds.</li>
+      <li><strong>Patterns in time:</strong> Simpler organisms are found only in older rock layers; more complex organisms appear in progressively younger layers — exactly what evolution would predict.</li>
+    </ul>
+    <div class="callout"><strong>Important:</strong> Absence of fossils does not disprove evolution. Most organisms never fossilise. The fossil record is incomplete by its very nature, yet it still shows a clear, consistent pattern of increasing complexity over time.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div style="display:flex;gap:10px;margin-bottom:4px;flex-wrap:wrap">
+      <button class="mode-btn active" id="modeTime" onclick="setMode('time')">Geological Time Scale</button>
+      <button class="mode-btn" id="modeFossil" onclick="setMode('fossil')">Fossil Formation</button>
+    </div>
+    <div class="sim-canvas-wrap">
+      <h3 id="canvasTitle">Geological Time Scale — Click an Era to Explore</h3>
+      <canvas id="simCanvas" height="460"></canvas>
+    </div>
+    <div id="timeInfo" class="era-info" style="max-width:900px">Click on any coloured era or eon on the timeline to see key life forms and events from that time period.</div>
+    <div id="fossilControls" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="step-btn" id="prevBtn" onclick="prevStep()" disabled>&#8592; Previous</button>
+        <button class="step-btn" id="nextBtn" onclick="nextStep()">Next Step &#8594;</button>
+        <span style="font-family:var(--fm);font-size:10px;color:var(--muted)" id="stepCounter">Step 1 of 5</span>
+      </div>
+      <div class="step-desc" id="stepDesc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the lesson for any questions you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in your exercise book. Use diagrams where they help explain your answer. Full sentences are required for explanations.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (5 marks)</div><div class="wb-qtext">Describe the process of fossil formation in five numbered steps. For each step, explain what happens to the organism's remains and what geological conditions are necessary. Include a labelled diagram showing a fossil being preserved in rock layers.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Compare relative dating and absolute dating of fossils and rocks. In your answer: (a) define each method, (b) explain what information each method provides, (c) give one technique used in each method, and (d) state when a scientist would choose one method over the other.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (6 marks)</div><div class="wb-qtext">Study the following simplified geological time table and answer the questions: The Palaeozoic Era lasted from 541 Ma to 252 Ma. The Mesozoic Era lasted from 252 Ma to 66 Ma. The Cenozoic Era started 66 Ma ago and continues to the present. (a) Calculate the duration of each era in millions of years. (b) In which era did the first reptiles appear? (c) In which era did the dinosaurs go extinct, and what event caused this? (d) What does "Ma" stand for and why do geologists use this unit?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Explain how fossils provide evidence for the theory of evolution. In your answer: (a) describe what pattern scientists observe when they compare fossils from different rock layers, (b) give a specific example of a transitional fossil and what evolutionary link it shows, and (c) explain why an incomplete fossil record does not disprove evolution.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Distinguish between the following fossil types by giving the definition of each and one example: (a) body fossil vs trace fossil, (b) mould vs cast, (c) amber fossil vs carbonisation.</div></div>
+  </div>
+</div>
+
+<script>
+// ── Tab switching ──────────────────────────────────────────────
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id === 'explore') initSim();
+}
+
+// ── Geological time data ───────────────────────────────────────
+const ERAS = [
+  { name: 'Hadean', start: 4600, end: 4000, color: '#7c2d12', light: '#fb923c',
+    life: 'No life yet. Earth forms from solar nebula debris. Heavy meteorite bombardment. Oceans condense from water vapour. Oldest known minerals (zircon crystals) date to ~4 400 Ma.' },
+  { name: 'Archean', start: 4000, end: 2500, color: '#78350f', light: '#fbbf24',
+    life: 'First life appears (~3.8 Ga) — simple single-celled prokaryotes (bacteria). Stromatolites — layered mats of photosynthetic bacteria — appear in shallow seas. No oxygen in atmosphere yet.' },
+  { name: 'Proterozoic', start: 2500, end: 541, color: '#713f12', light: '#fde68a',
+    life: 'First eukaryotes (cells with nuclei) ~2.1 Ga. First multicellular organisms ~600 Ma. "Great Oxygenation Event" — cyanobacteria produce oxygen, transforming the atmosphere. "Snowball Earth" glaciations.' },
+  { name: 'Palaeozoic', start: 541, end: 252, color: '#1e3a5f', light: '#60a5fa',
+    life: 'Cambrian Explosion (~541 Ma): most major animal body plans appear. First fish (~500 Ma). First land plants (~470 Ma). First amphibians (~375 Ma). First reptiles (~310 Ma). Ends with the Permian mass extinction — 96% of all species wiped out.' },
+  { name: 'Mesozoic', start: 252, end: 66, color: '#14532d', light: '#4ade80',
+    life: 'Age of Dinosaurs — appear ~230 Ma, dominate for 165 million years. First mammals (small, nocturnal). First birds — Archaeopteryx (~150 Ma) links dinosaurs to modern birds. First flowering plants (~130 Ma). Ends with K-Pg extinction (~66 Ma) — asteroid impact kills dinosaurs and 75% of species.' },
+  { name: 'Cenozoic', start: 66, end: 0, color: '#1e3a3a', light: '#34d399',
+    life: 'Age of Mammals — rapid diversification after dinosaur extinction. Modern bird groups evolve. Grasses spread worldwide (~25 Ma). First hominids (~7 Ma). Homo sapiens appears ~300 000 years ago. Ice Ages cycle through the Pleistocene.' },
+];
+
+// ── Canvas / mode state ─────────────────────────────────────────
+let canvas, ctx2, simStarted = false;
+let currentMode = 'time';
+let hoveredEra = null;
+let fossilStep = 0;
+const FOSSIL_STEPS = 5;
+
+const FOSSIL_DESCS = [
+  'Step 1 — Death & Burial: A marine animal dies and sinks to the seafloor. It is quickly covered by a layer of fine sediment (sand and mud). This rapid burial prevents scavengers and bacteria from completely destroying the body.',
+  'Step 2 — Soft Part Decay: Over hundreds to thousands of years, the soft tissues (skin, muscles, organs) decay and disappear. Only the hard parts — bones, shell, and teeth — remain embedded in the sediment.',
+  'Step 3 — Permineralisation: Mineral-rich groundwater slowly seeps through the sediment. Minerals (silica, calcite, iron) gradually replace the organic material in the bones, filling every tiny pore and cavity. The fossil turns to stone.',
+  'Step 4 — Deep Burial & Rock Formation: More sediment layers pile up over millions of years. The weight and pressure compress and cement the lower layers into solid sedimentary rock. The fossil is now locked deep underground.',
+  'Step 5 — Uplift & Exposure: Tectonic forces push rock layers upward. Millions of years of erosion by wind, rain, and rivers strip away the surface layers, eventually revealing the fossil at or near the surface where a scientist can find it.',
+];
+
+function setMode(m){
+  currentMode = m;
+  document.getElementById('modeTime').classList.toggle('active', m === 'time');
+  document.getElementById('modeFossil').classList.toggle('active', m === 'fossil');
+  document.getElementById('canvasTitle').textContent = m === 'time'
+    ? 'Geological Time Scale — Click an Era to Explore'
+    : 'Fossil Formation — Step by Step';
+  document.getElementById('timeInfo').style.display = m === 'time' ? 'block' : 'none';
+  document.getElementById('fossilControls').style.display = m === 'fossil' ? 'block' : 'none';
+  if(m === 'fossil'){
+    fossilStep = 0;
+    updateFossilUI();
+  }
+  drawFrame();
+}
+
+function prevStep(){
+  if(fossilStep > 0){ fossilStep--; updateFossilUI(); drawFrame(); }
+}
+function nextStep(){
+  if(fossilStep < FOSSIL_STEPS - 1){ fossilStep++; updateFossilUI(); drawFrame(); }
+}
+function updateFossilUI(){
+  document.getElementById('stepDesc').textContent = FOSSIL_DESCS[fossilStep];
+  document.getElementById('stepCounter').textContent = `Step ${fossilStep + 1} of ${FOSSIL_STEPS}`;
+  document.getElementById('prevBtn').disabled = fossilStep === 0;
+  document.getElementById('nextBtn').disabled = fossilStep === FOSSIL_STEPS - 1;
+}
+
+// ── Draw ───────────────────────────────────────────────────────
+function drawFrame(){
+  if(!canvas) return;
+  if(currentMode === 'time') drawTimeline();
+  else drawFossil();
+}
+
+function drawTimeline(){
+  const W = canvas.offsetWidth || 800, H = 460;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx2.setTransform(1,0,0,1,0,0);
+  ctx2.scale(devicePixelRatio, devicePixelRatio);
+
+  ctx2.fillStyle = '#04060e';
+  ctx2.fillRect(0, 0, W, H);
+
+  const PAD_LEFT = 110, PAD_RIGHT = 20, PAD_TOP = 24, PAD_BOT = 24;
+  const BAR_W = 42;
+  const totalMa = 4600;
+  const availH = H - PAD_TOP - PAD_BOT;
+
+  function maToY(ma){ return PAD_TOP + (ma / totalMa) * availH; }
+
+  // Background stripe
+  ctx2.fillStyle = 'rgba(255,255,255,0.02)';
+  ctx2.fillRect(PAD_LEFT, PAD_TOP, W - PAD_LEFT - PAD_RIGHT, availH);
+
+  // Era bands
+  ERAS.forEach((era, i) => {
+    const y0 = maToY(era.start), y1 = maToY(era.end);
+    const barH = Math.max(y1 - y0, 6);
+
+    // Solid bar
+    ctx2.fillStyle = era.color;
+    ctx2.fillRect(PAD_LEFT, y0, BAR_W, barH);
+
+    // Right info area tint
+    ctx2.fillStyle = era.color + '28';
+    ctx2.fillRect(PAD_LEFT + BAR_W, y0, W - PAD_LEFT - BAR_W - PAD_RIGHT, barH);
+
+    // Era name label in bar
+    ctx2.save();
+    ctx2.fillStyle = era.light;
+    ctx2.font = 'bold 10px "Cabinet Grotesk"';
+    ctx2.textAlign = 'center';
+    const midY = y0 + barH / 2;
+    if(barH > 14){
+      ctx2.translate(PAD_LEFT + BAR_W / 2, midY);
+      ctx2.rotate(-Math.PI / 2);
+      ctx2.fillText(era.name.toUpperCase(), 0, 4);
+    }
+    ctx2.restore();
+
+    // Ma label right of bar
+    ctx2.fillStyle = 'rgba(210,218,245,0.5)';
+    ctx2.font = '9px "JetBrains Mono"';
+    ctx2.textAlign = 'left';
+    if(barH > 18){
+      ctx2.fillText(era.start + ' Ma', PAD_LEFT + BAR_W + 6, y0 + 12);
+    }
+    if(era.end === 0){
+      ctx2.fillText('Present', PAD_LEFT + BAR_W + 6, y1 - 4);
+    }
+
+    // Key life text
+    if(barH > 30){
+      ctx2.fillStyle = era.light + 'cc';
+      ctx2.font = '10px "Cabinet Grotesk"';
+      ctx2.textAlign = 'left';
+      const words = era.life.split('. ')[0];
+      wrapText(ctx2, words + '.', PAD_LEFT + BAR_W + 6, y0 + 26, W - PAD_LEFT - BAR_W - PAD_RIGHT - 12, 14);
+    }
+
+    // Divider line
+    ctx2.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx2.lineWidth = 1;
+    ctx2.beginPath(); ctx2.moveTo(PAD_LEFT, y0); ctx2.lineTo(W - PAD_RIGHT, y0); ctx2.stroke();
+  });
+
+  // Ma axis (left)
+  ctx2.fillStyle = 'rgba(210,218,245,0.35)';
+  ctx2.font = '9px "JetBrains Mono"';
+  ctx2.textAlign = 'right';
+  [0, 100, 252, 541, 1000, 2000, 2500, 3500, 4000, 4600].forEach(ma => {
+    const y = maToY(ma);
+    ctx2.fillText(ma === 0 ? '0' : ma + '', PAD_LEFT - 6, y + 3);
+    ctx2.beginPath(); ctx2.moveTo(PAD_LEFT - 3, y); ctx2.lineTo(PAD_LEFT, y);
+    ctx2.strokeStyle = 'rgba(255,255,255,0.2)'; ctx2.lineWidth = 1; ctx2.stroke();
+  });
+  // Axis label
+  ctx2.save();
+  ctx2.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx2.font = '9px "JetBrains Mono"';
+  ctx2.textAlign = 'center';
+  ctx2.translate(18, H / 2);
+  ctx2.rotate(-Math.PI / 2);
+  ctx2.fillText('MILLIONS OF YEARS AGO (Ma)', 0, 0);
+  ctx2.restore();
+
+  // Hover highlight
+  if(hoveredEra !== null){
+    const era = ERAS[hoveredEra];
+    const y0 = maToY(era.start), y1 = maToY(era.end);
+    ctx2.strokeStyle = era.light;
+    ctx2.lineWidth = 2;
+    ctx2.strokeRect(PAD_LEFT, y0, W - PAD_LEFT - PAD_RIGHT, y1 - y0);
+  }
+
+  // Title
+  ctx2.fillStyle = 'rgba(252,211,77,0.7)';
+  ctx2.font = 'bold 10px "JetBrains Mono"';
+  ctx2.textAlign = 'left';
+  ctx2.fillText('OLDEST', 22, H - 10);
+  ctx2.fillText('YOUNGEST', 22, 18);
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH){
+  const words = text.split(' ');
+  let line = '';
+  let rows = 0;
+  for(let n = 0; n < words.length; n++){
+    const test = line + words[n] + ' ';
+    if(ctx.measureText(test).width > maxW && n > 0){
+      ctx.fillText(line, x, y + rows * lineH);
+      line = words[n] + ' ';
+      rows++;
+      if(rows >= 3) return;
+    } else {
+      line = test;
+    }
+  }
+  if(rows < 3) ctx.fillText(line, x, y + rows * lineH);
+}
+
+// ── Fossil formation drawing ────────────────────────────────────
+function drawFossil(){
+  const W = canvas.offsetWidth || 800, H = 460;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx2.setTransform(1,0,0,1,0,0);
+  ctx2.scale(devicePixelRatio, devicePixelRatio);
+
+  ctx2.fillStyle = '#04060e';
+  ctx2.fillRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2 - 20;
+  const step = fossilStep;
+
+  // ── Layer palette ─────────────────────────────────────────────
+  const layers = [
+    { y: 0.45, h: 0.12, color: '#5c4317', label: 'Sediment layer 1' },
+    { y: 0.57, h: 0.12, color: '#7a5c2e', label: 'Sediment layer 2' },
+    { y: 0.69, h: 0.12, color: '#8b6914', label: 'Sediment layer 3' },
+    { y: 0.81, h: 0.14, color: '#6b4f1a', label: 'Bedrock' },
+  ];
+
+  // Draw water/sea (steps 0–2)
+  if(step <= 2){
+    const seaGrad = ctx2.createLinearGradient(0, 0, 0, H * 0.44);
+    seaGrad.addColorStop(0, '#0d1f3c');
+    seaGrad.addColorStop(1, '#1a3a6e55');
+    ctx2.fillStyle = seaGrad;
+    ctx2.fillRect(0, 0, W, H * 0.44);
+    // Wave hint
+    ctx2.strokeStyle = 'rgba(100,160,255,0.15)';
+    ctx2.lineWidth = 1.5;
+    for(let wx = 0; wx < W; wx += 60){
+      ctx2.beginPath();
+      ctx2.moveTo(wx, H * 0.42);
+      ctx2.bezierCurveTo(wx + 15, H * 0.40, wx + 30, H * 0.43, wx + 60, H * 0.42);
+      ctx2.stroke();
+    }
+    ctx2.fillStyle = 'rgba(100,160,255,0.25)';
+    ctx2.font = '10px "JetBrains Mono"';
+    ctx2.textAlign = 'center';
+    ctx2.fillText('SEAFLOOR / SEDIMENT', cx, H * 0.46);
+  }
+
+  // Draw rock layers (steps 3+)
+  if(step >= 3){
+    layers.forEach(l => {
+      ctx2.fillStyle = l.color;
+      ctx2.fillRect(0, H * l.y, W, H * l.h);
+      ctx2.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx2.lineWidth = 1;
+      ctx2.beginPath(); ctx2.moveTo(0, H * l.y); ctx2.lineTo(W, H * l.y); ctx2.stroke();
+    });
+    ctx2.fillStyle = 'rgba(210,218,245,0.3)';
+    ctx2.font = '9px "JetBrains Mono"';
+    ctx2.textAlign = 'right';
+    layers.forEach(l => {
+      ctx2.fillText(l.label, W - 10, H * l.y + 14);
+    });
+  }
+
+  // Draw sediment surface (steps 0–2)
+  if(step <= 2){
+    const numLayers = step + 1;
+    for(let li = 0; li < numLayers; li++){
+      const ly = H * (0.45 + li * 0.10);
+      const lh = H * 0.10;
+      const sedColors = ['#5c4317', '#7a5c2e', '#8b6914'];
+      ctx2.fillStyle = sedColors[li] || '#6b4f1a';
+      ctx2.fillRect(0, ly, W, lh);
+      ctx2.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx2.lineWidth = 1;
+      ctx2.beginPath(); ctx2.moveTo(0, ly); ctx2.lineTo(W, ly); ctx2.stroke();
+    }
+  }
+
+  // Fossil object
+  const fossilY = step <= 2 ? H * (0.44 + step * 0.09 + 0.05) : H * 0.55;
+
+  // Step 0: Live fish
+  if(step === 0){
+    drawFish(ctx2, cx, H * 0.25, 55, 'rgba(100,200,255,0.9)', true);
+    // Arrow going down
+    ctx2.strokeStyle = 'rgba(252,211,77,0.5)';
+    ctx2.lineWidth = 2;
+    ctx2.beginPath(); ctx2.moveTo(cx, H * 0.35); ctx2.lineTo(cx, H * 0.40); ctx2.stroke();
+    arrowHead(ctx2, cx, H * 0.40, 'down', '#fcd34d');
+    ctx2.fillStyle = '#fcd34d'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('DIES & SINKS', cx, H * 0.32);
+  }
+
+  // Step 1: Dead fish, partially buried, soft parts fading
+  if(step === 1){
+    drawFish(ctx2, cx, fossilY, 55, 'rgba(180,160,120,0.6)', false);
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('SOFT PARTS DECAYING', cx, H * 0.30);
+  }
+
+  // Step 2: Skeleton only
+  if(step === 2){
+    drawSkeleton(ctx2, cx, fossilY, 55);
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('ONLY HARD PARTS REMAIN', cx, H * 0.30);
+  }
+
+  // Step 3: Mineral replacement — draw orange/gold skeleton in rock
+  if(step === 3){
+    drawFossilBone(ctx2, cx, fossilY, 55, '#fbbf24');
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('MINERALISATION IN PROGRESS', cx, H * 0.30);
+    // Mineral dots
+    for(let i = 0; i < 18; i++){
+      const mx = cx - 50 + Math.random() * 100, my = fossilY - 10 + Math.random() * 25;
+      ctx2.beginPath(); ctx2.arc(mx, my, 1.5, 0, Math.PI * 2);
+      ctx2.fillStyle = 'rgba(251,191,36,0.5)'; ctx2.fill();
+    }
+  }
+
+  // Step 4: Deep burial (more layers)
+  if(step === 4){
+    drawFossilBone(ctx2, cx, fossilY, 55, '#fbbf24');
+    // Crack lines suggesting erosion
+    ctx2.strokeStyle = 'rgba(255,200,100,0.3)';
+    ctx2.lineWidth = 1;
+    ctx2.setLineDash([3, 5]);
+    ctx2.beginPath(); ctx2.moveTo(cx - 80, H * 0.22); ctx2.lineTo(cx + 60, H * 0.34); ctx2.stroke();
+    ctx2.beginPath(); ctx2.moveTo(cx + 40, H * 0.18); ctx2.lineTo(cx - 20, H * 0.38); ctx2.stroke();
+    ctx2.setLineDash([]);
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('ROCK ERODES — FOSSIL EXPOSED', cx, H * 0.16);
+    // Person silhouette
+    ctx2.fillStyle = 'rgba(100,200,255,0.7)';
+    ctx2.beginPath(); ctx2.arc(cx + 130, H * 0.20, 7, 0, Math.PI * 2); ctx2.fill();
+    ctx2.fillRect(cx + 126, H * 0.20 + 7, 8, 18);
+    ctx2.fillStyle = 'rgba(100,200,255,0.5)'; ctx2.font = '9px "Cabinet Grotesk"'; ctx2.textAlign = 'left';
+    ctx2.fillText('Palaeontologist', cx + 142, H * 0.24);
+  }
+
+  // Step label
+  ctx2.fillStyle = 'rgba(252,211,77,0.4)';
+  ctx2.font = 'bold 9px "JetBrains Mono"';
+  ctx2.textAlign = 'left';
+  ctx2.fillText(`STEP ${step + 1} OF 5`, 16, 18);
+}
+
+function drawFish(ctx, x, y, size, color, alive){
+  ctx.save();
+  ctx.translate(x, y);
+  // Body
+  ctx.beginPath();
+  ctx.ellipse(0, 0, size, size * 0.4, 0, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  // Tail
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.8, 0);
+  ctx.lineTo(-size * 1.2, -size * 0.35);
+  ctx.lineTo(-size * 1.2, size * 0.35);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  // Eye
+  if(alive){
+    ctx.beginPath(); ctx.arc(size * 0.5, -size * 0.1, size * 0.07, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(size * 0.52, -size * 0.1, size * 0.035, 0, Math.PI * 2);
+    ctx.fillStyle = '#000'; ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawSkeleton(ctx, x, y, size){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.strokeStyle = 'rgba(230,220,180,0.7)';
+  ctx.lineWidth = 1.5;
+  // Spine
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(size * 0.6, 0); ctx.stroke();
+  // Ribs
+  for(let i = -4; i <= 3; i++){
+    const rx = i * size * 0.11;
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, -size * 0.28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, size * 0.28); ctx.stroke();
+  }
+  // Skull
+  ctx.beginPath(); ctx.arc(size * 0.55, 0, size * 0.14, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(230,220,180,0.7)'; ctx.stroke();
+  // Tail fin
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, -size * 0.3);
+  ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, size * 0.3); ctx.stroke();
+  ctx.restore();
+}
+
+function drawFossilBone(ctx, x, y, size, color){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  // Spine
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(size * 0.6, 0); ctx.stroke();
+  // Ribs
+  for(let i = -4; i <= 3; i++){
+    const rx = i * size * 0.11;
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, -size * 0.28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, size * 0.28); ctx.stroke();
+  }
+  // Skull
+  ctx.beginPath(); ctx.arc(size * 0.55, 0, size * 0.14, 0, Math.PI * 2); ctx.stroke();
+  // Tail
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, -size * 0.3);
+  ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, size * 0.3); ctx.stroke();
+  ctx.restore();
+}
+
+function arrowHead(ctx, x, y, dir, color){
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  if(dir === 'down'){ ctx.moveTo(x, y); ctx.lineTo(x - 6, y - 9); ctx.lineTo(x + 6, y - 9); }
+  ctx.closePath(); ctx.fill();
+}
+
+// ── Canvas click (timeline) ────────────────────────────────────
+function onCanvasClick(e){
+  if(currentMode !== 'time') return;
+  const rect = canvas.getBoundingClientRect();
+  const y = e.clientY - rect.top;
+  const H = 460, totalMa = 4600;
+  const PAD_TOP = 24, PAD_BOT = 24, availH = H - PAD_TOP - PAD_BOT;
+  function maToY(ma){ return PAD_TOP + (ma / totalMa) * availH; }
+
+  let clicked = null;
+  ERAS.forEach((era, i) => {
+    const y0 = maToY(era.start), y1 = maToY(era.end);
+    if(y >= y0 && y <= y1) clicked = i;
+    if(y >= y1 && y <= y0) clicked = i;
+  });
+  if(clicked !== null){
+    hoveredEra = clicked;
+    const era = ERAS[clicked];
+    document.getElementById('timeInfo').innerHTML =
+      `<strong>${era.name} (${era.end === 0 ? '66 Ma–present' : era.start + '–' + era.end + ' Ma'}):</strong><br>${era.life}`;
+    drawFrame();
+  }
+}
+
+// ── Init ───────────────────────────────────────────────────────
+function initSim(){
+  if(simStarted) return;
+  simStarted = true;
+  canvas = document.getElementById('simCanvas');
+  ctx2 = canvas.getContext('2d');
+  canvas.addEventListener('click', onCanvasClick);
+  updateFossilUI();
+  drawFrame();
+  window.addEventListener('resize', drawFrame);
+}
+
+// ── Practice ───────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    text: 'Which type of fossil is formed when an organism\'s body dissolves, leaving a hollow cavity in the rock?',
+    opts: ['Body fossil', 'Cast', 'Mould', 'Trace fossil'],
+    ans: 2,
+    exp: 'A mould is a hollow impression or cavity left in rock after the organism\'s hard parts dissolve. If minerals later fill the mould, it becomes a cast — a solid replica of the original organism.'
+  },
+  {
+    text: 'Why are fossils almost exclusively found in sedimentary rock?',
+    opts: [
+      'Sedimentary rock is older than other rock types',
+      'Sedimentary rock forms from compressed layers of sediment that can bury and preserve organisms',
+      'Igneous rock is too young to contain fossils',
+      'Metamorphic rock does not contain minerals'
+    ],
+    ans: 1,
+    exp: 'Sedimentary rock forms when layers of sediment (sand, mud, silt) are compressed over time. This layering process can rapidly bury organisms and preserve their hard parts. Igneous rock forms from molten magma, and metamorphic rock forms under extreme heat and pressure — conditions that destroy any organic remains.'
+  },
+  {
+    text: 'What does the Law of Superposition state?',
+    opts: [
+      'Radioactive elements decay at a constant rate',
+      'Sedimentary layers are always deposited horizontally',
+      'In undisturbed rock, deeper layers are older than layers closer to the surface',
+      'All organisms leave fossils in the rock record'
+    ],
+    ans: 2,
+    exp: 'The Law of Superposition states that in any undisturbed sequence of sedimentary rock, the oldest layers are at the bottom and layers become progressively younger toward the top. This is the foundation of relative dating.'
+  },
+  {
+    text: 'Which radiometric dating method is best suited to date a piece of organic material that is approximately 20 000 years old?',
+    opts: ['Uranium-Lead dating', 'Potassium-Argon dating', 'Carbon-14 dating', 'Rubidium-Strontium dating'],
+    ans: 2,
+    exp: 'Carbon-14 has a half-life of about 5 730 years and is effective for dating organic material up to about 50 000 years old. For material older than that, uranium-lead or potassium-argon methods (with half-lives of billions of years) are needed.'
+  },
+  {
+    text: 'Archaeopteryx is described as a transitional fossil. What does this mean?',
+    opts: [
+      'It is the oldest fossil ever discovered',
+      'It shows features of both dinosaurs and modern birds, linking the two groups',
+      'It was found in a transitional rock layer between two eras',
+      'It is an index fossil used to date Mesozoic rock layers'
+    ],
+    ans: 1,
+    exp: 'Archaeopteryx (~150 Ma) is a transitional fossil because it displays features of both its ancestors (dinosaur teeth, clawed wings, long bony tail) and its descendants (feathers, wishbone). It provides direct fossil evidence for the evolutionary link between theropod dinosaurs and modern birds.'
+  },
+  {
+    text: 'In which geological era did dinosaurs live and eventually go extinct?',
+    opts: ['Palaeozoic Era', 'Cenozoic Era', 'Mesozoic Era', 'Proterozoic Era'],
+    ans: 2,
+    exp: 'Dinosaurs appeared approximately 230 Ma and dominated Earth during the Mesozoic Era (252–66 Ma). They went extinct at the end of the Mesozoic, during the Cretaceous-Palaeogene (K-Pg) extinction event ~66 Ma, most likely caused by an asteroid impact combined with volcanic activity.'
+  },
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o, oi) => `
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi, oi){
+  if(answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if(oi === q.ans){
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if(answered.every(Boolean)){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep exploring — revisit the lesson!'
+      : score <= 4 ? 'Good work — check the explanations.'
+      : score === 5 ? 'Well done!' : 'Perfect score! Outstanding!';
+    banner.scrollIntoView({behavior: 'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

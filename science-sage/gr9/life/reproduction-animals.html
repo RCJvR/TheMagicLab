@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproduction in Animals — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    .info-panel{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:120px}
+    .info-panel-title{font-weight:800;font-size:15px;color:#fcd34d;margin-bottom:6px}
+    .info-panel-text{font-size:13px;color:rgba(210,218,245,.75);line-height:1.7}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Life &amp; Living</span>
+  <a class="nav-back" href="../index.html">&#8592; Grade 9</a>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Life &amp; Living · Lesson 3</div>
+  <h1 class="lesson-title">Reproduction in Animals</h1>
+  <p class="lesson-sub">Investigate sexual reproduction in animals, focusing on the human reproductive system, fertilisation, and the development of the foetus.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">&#128214; Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#9998; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#128203; Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Types of Reproduction in Animals</h2>
+    <p>Most animals reproduce <strong style="color:#fcd34d">sexually</strong>, but some simpler animals also use asexual reproduction:</p>
+    <ul>
+      <li><strong>Budding (Hydra):</strong> a small outgrowth (bud) forms on the parent, grows, and eventually detaches as a new individual.</li>
+      <li><strong>Binary fission (Amoeba):</strong> the organism splits into two identical daughter cells.</li>
+      <li><strong>Fragmentation (Planaria/flatworms):</strong> the body breaks into fragments, each regenerating into a complete organism.</li>
+    </ul>
+    <div class="callout">
+      <strong>Advantages of sexual reproduction:</strong> produces genetic variation through the combination of two parents' DNA, enabling populations to adapt to changing environments.<br><br>
+      <strong>Disadvantage:</strong> requires finding a mate; energy is invested in attracting a partner (e.g., courtship displays, bright colouration).
+    </div>
+
+    <h2>External vs Internal Fertilisation</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Feature</th><th>External Fertilisation</th><th>Internal Fertilisation</th></tr></thead>
+      <tbody>
+        <tr><td>Where it occurs</td><td>Outside the body, in water</td><td>Inside the female's body</td></tr>
+        <tr><td>Examples</td><td>Fish, frogs (amphibians)</td><td>Reptiles, birds, mammals</td></tr>
+        <tr><td>Number of eggs</td><td>Very many (thousands) — most lost</td><td>Few — well protected</td></tr>
+        <tr><td>Parental care</td><td>Usually none</td><td>Usually present</td></tr>
+        <tr><td>Environment needed</td><td>Aquatic — sperm swim to eggs</td><td>Any — sperm travel inside body</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The Male Reproductive System</h2>
+    <p>The male reproductive system produces sperm (male gametes) and delivers them during reproduction.</p>
+    <ul>
+      <li><strong>Testes (singular: testis):</strong> two glands located in the scrotum (outside the body cavity) where sperm are produced by a process called <em>spermatogenesis</em>. The lower temperature of the scrotum (~2°C below body temperature) is essential for healthy sperm production.</li>
+      <li><strong>Epididymis:</strong> a coiled tube where sperm mature and are stored temporarily.</li>
+      <li><strong>Vas deferens (sperm duct):</strong> carries sperm from the epididymis toward the urethra.</li>
+      <li><strong>Seminal vesicles, prostate gland, Cowper's glands:</strong> accessory glands that add fluids to form semen — providing nutrients (fructose) and buffering the acidic environment of the vagina.</li>
+      <li><strong>Urethra:</strong> the tube through which both semen and urine pass out of the body (but not simultaneously).</li>
+      <li><strong>Penis:</strong> delivers semen into the female reproductive tract during intercourse.</li>
+    </ul>
+
+    <h2>Structure of a Sperm Cell</h2>
+    <p>A sperm cell is highly specialised for its function of reaching and fertilising an egg:</p>
+    <ul>
+      <li><strong>Head:</strong> contains the <em>nucleus</em> with the male's DNA (haploid — 23 chromosomes). The tip of the head has the <em>acrosome</em>, which releases enzymes to penetrate the egg's outer coat.</li>
+      <li><strong>Midpiece:</strong> packed with <em>mitochondria</em> to provide energy (ATP) for movement via cellular respiration.</li>
+      <li><strong>Tail (flagellum):</strong> whip-like structure that propels the sperm through fluid. Sperm can swim at ~3 mm/min.</li>
+    </ul>
+    <div class="key-fact">Males produce approximately 200–500 million sperm per ejaculation, continuously from puberty throughout life.</div>
+
+    <h2>The Female Reproductive System</h2>
+    <ul>
+      <li><strong>Ovaries:</strong> two almond-shaped organs that produce eggs (ova) by a process called <em>oogenesis</em>. They also produce the hormones oestrogen and progesterone.</li>
+      <li><strong>Fallopian tubes (oviducts):</strong> two tubes connecting each ovary to the uterus. Fertilisation usually occurs here. Tiny cilia lining the tube sweep the egg toward the uterus.</li>
+      <li><strong>Uterus (womb):</strong> a thick-walled, muscular organ where the embryo implants and the foetus develops. Its inner lining is the <em>endometrium</em>.</li>
+      <li><strong>Cervix:</strong> the narrow lower opening of the uterus; dilates during childbirth.</li>
+      <li><strong>Vagina:</strong> the muscular tube connecting the cervix to the outside; receives the penis during intercourse and is the birth canal.</li>
+    </ul>
+    <div class="key-fact">Females are born with all their eggs already formed (~1–2 million immature oocytes). By puberty, ~400 000 remain. Only about 400 are ever ovulated in a lifetime.</div>
+
+    <h2>The Menstrual Cycle</h2>
+    <p>The menstrual cycle averages <strong style="color:#fcd34d">28 days</strong> and is controlled by hormones. Key events:</p>
+    <ul>
+      <li><strong>Day 1–5:</strong> Menstruation — the endometrium (uterine lining) sheds as a period because no pregnancy occurred in the previous cycle.</li>
+      <li><strong>Day 6–13:</strong> The endometrium rebuilds under the influence of oestrogen; an egg matures in a follicle in the ovary.</li>
+      <li><strong>Day 14:</strong> Ovulation — a surge in luteinising hormone (LH) triggers the release of the mature egg from the ovary.</li>
+      <li><strong>Day 15–28:</strong> The endometrium thickens under progesterone, preparing for possible implantation. If fertilisation does not occur, hormone levels drop and the cycle repeats.</li>
+    </ul>
+
+    <h2>Fertilisation</h2>
+    <p>During sexual intercourse, millions of sperm are deposited in the vagina. They travel through the cervix and uterus and into the fallopian tubes. Of the millions released, only a few hundred reach the egg. <strong style="color:#fcd34d">Only one sperm penetrates the egg cell</strong> — the moment it does, chemical changes in the egg membrane prevent any other sperm from entering.</p>
+    <div class="formula">Sperm + Egg cell → Zygote (fertilised egg, 46 chromosomes)</div>
+    <p>The zygote contains a full set of 46 chromosomes (23 from each parent) and is genetically unique.</p>
+
+    <h2>Implantation &amp; Early Development</h2>
+    <p>After fertilisation, the zygote begins to divide by mitosis as it travels along the fallopian tube toward the uterus. By the time it reaches the uterus (~5–7 days later) it has become a ball of cells called a <em>blastocyst</em>. It then <strong>implants</strong> into the thickened endometrium (uterine wall). Failure to implant results in loss of the embryo.</p>
+    <ul>
+      <li><strong>0–8 weeks:</strong> called an <em>embryo</em>; all major organs begin to form (organogenesis).</li>
+      <li><strong>9 weeks – birth:</strong> called a <em>foetus</em>; organs develop and grow; recognisably human. Gestation period is ~38 weeks (about 9 months).</li>
+    </ul>
+
+    <h2>The Placenta, Umbilical Cord &amp; Amniotic Fluid</h2>
+    <p>These structures support and protect the developing foetus:</p>
+    <ul>
+      <li><strong>Placenta:</strong> a disc-shaped organ embedded in the uterine wall. It has a large surface area of villi in contact with the mother's blood supply. Across this barrier, <em>oxygen and nutrients pass from mother to foetus</em>, and <em>carbon dioxide and waste products pass from foetus to mother</em>. The mother's and foetus's blood <strong>do not mix</strong> — they are separated by thin membranes. The placenta also produces hormones (hCG, progesterone, oestrogen) to maintain pregnancy.</li>
+      <li><strong>Umbilical cord:</strong> a flexible cord containing two arteries and one vein that connects the foetus to the placenta, carrying blood between them.</li>
+      <li><strong>Amniotic sac &amp; fluid:</strong> the foetus floats in amniotic fluid inside the amniotic sac. The fluid cushions the foetus against physical shocks, maintains a stable temperature, and prevents the foetus from drying out.</li>
+    </ul>
+    <div class="callout"><strong>Key point:</strong> The placenta acts as the foetus's lungs, digestive system, and kidneys all in one. It also acts as a barrier against most (but not all) pathogens and harmful substances — some drugs, alcohol, and viruses (e.g., HIV, rubella) can cross the placenta and harm the foetus.</div>
+
+    <h2>Birth (Parturition)</h2>
+    <p>At the end of gestation (~38 weeks), birth is triggered by a cascade of hormones (oxytocin is key):</p>
+    <ul>
+      <li>The cervix begins to <strong>dilate</strong> (widen) to allow the baby to pass through.</li>
+      <li>Strong rhythmic <strong>uterine contractions</strong> (labour) push the baby downward.</li>
+      <li>The <strong>amniotic sac ruptures</strong> ("waters break"), releasing amniotic fluid.</li>
+      <li>The baby is born head-first through the vagina (birth canal).</li>
+      <li>The <strong>umbilical cord is cut</strong> — the newborn must now breathe independently.</li>
+      <li>The <strong>placenta is expelled</strong> as the "afterbirth" shortly after.</li>
+    </ul>
+
+    <h2>Sexually Transmitted Infections (STIs)</h2>
+    <p>STIs are infections spread primarily through sexual contact. Two important examples:</p>
+    <ul>
+      <li><strong>HIV/AIDS:</strong> Human Immunodeficiency Virus destroys CD4 T-cells of the immune system, eventually causing Acquired Immunodeficiency Syndrome. Transmitted via unprotected sex, blood contact, and mother-to-child (during birth or breastfeeding). No cure exists, but antiretroviral therapy (ART) allows people to live long, healthy lives.</li>
+      <li><strong>Syphilis:</strong> caused by the bacterium <em>Treponema pallidum</em>. Progresses in stages. Curable with antibiotics (penicillin) if caught early.</li>
+    </ul>
+    <div class="key-fact">Consistent and correct use of condoms reduces the risk of most STIs and is the only contraceptive method that also prevents STI transmission.</div>
+
+    <h2>Contraception</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Type</th><th>Method</th><th>How it works</th></tr></thead>
+      <tbody>
+        <tr><td>Barrier</td><td>Male/female condom</td><td>Physically prevents sperm reaching egg; also protects against STIs</td></tr>
+        <tr><td>Hormonal</td><td>Contraceptive pill</td><td>Synthetic hormones prevent ovulation and alter uterine lining</td></tr>
+        <tr><td>Hormonal</td><td>Injection / implant / patch</td><td>Long-acting hormone release prevents ovulation</td></tr>
+        <tr><td>Intrauterine</td><td>IUD (coil)</td><td>Device in uterus prevents implantation</td></tr>
+        <tr><td>Surgical</td><td>Sterilisation (tubal ligation / vasectomy)</td><td>Permanent — fallopian tubes or vas deferens cut/tied</td></tr>
+        <tr><td>Abstinence</td><td>Not engaging in sexual intercourse</td><td>100% effective when practised consistently</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Reproductive System Explorer</h3>
+      <canvas id="reproCanvas" height="460"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">System</div>
+        <button class="mode-btn active" id="btnMale" onclick="setSystem('male',this)">Male</button>
+        <button class="mode-btn" id="btnFemale" onclick="setSystem('female',this)">Female</button>
+        <div style="margin-top:14px">
+          <div class="ctrl-label">Select an organ</div>
+          <div id="organButtons" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Organ Info</div>
+        <div class="info-panel">
+          <div class="info-panel-title" id="infoTitle">Select an organ</div>
+          <div class="info-panel-text" id="infoText">Click an organ name on the left, or tap a structure on the diagram, to learn about its role in reproduction.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:800;font-size:16px;color:#fff">Quiz Complete!</div><div style="font-size:13px;color:var(--muted)">Review your answers below.</div></div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#128438; Print Workbook</button>
+    <div class="wb-intro">Answer the following questions fully. Use diagrams where required. These questions are CAPS-aligned for Grade 9 Natural Sciences.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">a) Draw and label a simplified diagram of the male reproductive system showing: testes, epididymis, vas deferens, urethra, and penis.<br><br>
+      b) Draw and label a simplified diagram of the female reproductive system showing: ovaries, fallopian tubes (oviducts), uterus, cervix, and vagina.<br><br>
+      c) Next to each labelled structure, state its function in reproduction.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">Describe the journey of a sperm cell from its site of production to the moment of fertilisation. In your answer, name each structure the sperm passes through (in the male AND female body) and state what happens at each stage.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">The placenta is often described as a "lifeline" for the developing foetus.<br><br>
+      a) List THREE substances that pass FROM the mother's blood TO the foetus across the placenta.<br>
+      b) List TWO waste products that pass FROM the foetus TO the mother's blood.<br>
+      c) Explain why it is important that the mother's blood and the foetus's blood do NOT mix directly.<br>
+      d) Name the structure that connects the foetus to the placenta.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">Compare external fertilisation (as seen in frogs) and internal fertilisation (as seen in mammals) under the following headings:<br>
+      a) Where fertilisation takes place<br>
+      b) Number of eggs/offspring produced<br>
+      c) Degree of parental care<br>
+      d) Advantage of each method</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">a) What is a sexually transmitted infection (STI)? Name TWO examples of STIs.<br><br>
+      b) Explain how HIV is transmitted and why it is dangerous to the immune system.<br><br>
+      c) State TWO ways in which a person can protect themselves from STIs.<br><br>
+      d) Name ONE contraceptive method that ALSO protects against STIs and explain how it works.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') initSim();
+}
+
+// ── ORGAN DATA ────────────────────────────────────────────────────────────────
+const maleOrgans = {
+  testes:      { title:'Testes', text:'The two testes are located in the scrotum, kept ~2°C below core body temperature. They produce sperm (spermatogenesis) and the hormone testosterone from puberty onwards. Millions of sperm are produced every day.', col:'#60a5fa' },
+  epididymis:  { title:'Epididymis', text:'A tightly coiled tube (~6 m long) where immature sperm mature over about 2–3 weeks, gaining the ability to swim. Sperm are stored here until ejaculation.', col:'#a78bfa' },
+  vasdeferens: { title:'Vas Deferens', text:'The vas deferens (sperm duct) is a muscular tube that propels sperm from the epididymis up into the pelvic cavity toward the urethra during ejaculation.', col:'#34d399' },
+  urethra:     { title:'Urethra', text:'A shared tube for both urine and semen (but never simultaneously). It runs through the penis and carries semen to the outside. A sphincter muscle prevents urine mixing with semen.', col:'#fbbf24' },
+  penis:       { title:'Penis', text:'The external organ that delivers semen into the female reproductive tract during intercourse. Contains erectile tissue that fills with blood to become rigid during arousal.', col:'#f87171' },
+};
+
+const femaleOrgans = {
+  ovaries:      { title:'Ovaries', text:'Two almond-sized organs that contain thousands of immature egg cells (oocytes) present from birth. Each month, hormones stimulate one follicle to mature and release an egg (ovulation). Ovaries also produce oestrogen and progesterone.', col:'#f472b6' },
+  fallopian:    { title:'Fallopian Tubes (Oviducts)', text:'Two tubes (~10 cm long) connecting the ovaries to the uterus. Tiny cilia sweep the released egg toward the uterus. Fertilisation usually occurs in the fallopian tube, about one-third of the way from the ovary.', col:'#fb923c' },
+  uterus:       { title:'Uterus (Womb)', text:'A pear-shaped, thick-walled muscular organ where the embryo implants and the foetus develops for ~38 weeks. The inner lining (endometrium) thickens each month in preparation for implantation. Its powerful muscles contract during labour to push the baby out.', col:'#c084fc' },
+  cervix:       { title:'Cervix', text:'The narrow, lower opening of the uterus. It produces mucus that normally blocks sperm and bacteria from entering. During childbirth (parturition), the cervix dilates to ~10 cm to allow the baby to pass through.', col:'#34d399' },
+  vagina:       { title:'Vagina', text:'The muscular canal connecting the cervix to the outside of the body. It receives the penis during intercourse and serves as the birth canal through which the baby is born. It has an acidic pH to prevent infection.', col:'#fbbf24' },
+};
+
+let system = 'male';
+let selectedOrgan = null;
+let simInit = false;
+
+function setSystem(sys, btn) {
+  system = sys;
+  selectedOrgan = null;
+  document.querySelectorAll('.mode-btn[data-sys]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('infoTitle').textContent = 'Select an organ';
+  document.getElementById('infoText').textContent = 'Click an organ name on the left, or tap a structure on the diagram, to learn about its role in reproduction.';
+  buildOrganButtons();
+  drawSystem();
+}
+
+function selectOrgan(key) {
+  selectedOrgan = key;
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  document.getElementById('infoTitle').textContent = data[key].title;
+  document.getElementById('infoText').textContent = data[key].text;
+  document.querySelectorAll('#organButtons .mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+  drawSystem();
+}
+
+function buildOrganButtons() {
+  const wrap = document.getElementById('organButtons');
+  wrap.innerHTML = '';
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  Object.keys(data).forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'mode-btn';
+    b.dataset.key = k;
+    b.textContent = data[k].title.split('(')[0].trim();
+    b.onclick = () => selectOrgan(k);
+    wrap.appendChild(b);
+  });
+}
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+const H = 460;
+let ctx3;
+
+function initSim() {
+  simInit = true;
+  buildOrganButtons();
+  drawSystem();
+}
+
+function setupCanvas() {
+  const canvas = document.getElementById('reproCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const logicalW = canvas.offsetWidth || 640;
+  canvas.width = logicalW * dpr;
+  canvas.height = H * dpr;
+  ctx3 = canvas.getContext('2d');
+  ctx3.setTransform(1, 0, 0, 1, 0, 0);
+  ctx3.scale(dpr, dpr);
+  return { ctx: ctx3, W: logicalW, H };
+}
+
+function partCol(key, defaultCol) {
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  if (selectedOrgan === key) return data[key].col;
+  return defaultCol;
+}
+function partAlpha(key) {
+  if (!selectedOrgan) return 1;
+  return selectedOrgan === key ? 1 : 0.3;
+}
+
+function drawSystem() {
+  const { ctx, W } = setupCanvas();
+  ctx.clearRect(0, 0, W, H);
+  if (system === 'male') drawMale(ctx, W);
+  else drawFemale(ctx, W);
+}
+
+function label(ctx, x, y, text, key) {
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  const active = selectedOrgan === key;
+  ctx.save();
+  ctx.font = `${active ? '700' : '600'} 11px "Cabinet Grotesk", sans-serif`;
+  ctx.fillStyle = active ? (data[key] ? data[key].col : '#fcd34d') : 'rgba(210,218,245,0.52)';
+  ctx.textAlign = x > W * 0.5 ? 'left' : 'right';
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function drawMale(ctx, W) {
+  const cx = W * 0.46;
+  const baseY = 60;
+
+  // — Body outline (torso hint) —
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(cx - 80, baseY, 160, 280, 20);
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Testes (two ovals at bottom) —
+  const testesY = baseY + 300;
+  [-34, 34].forEach((dx, i) => {
+    ctx.save();
+    ctx.globalAlpha = partAlpha('testes');
+    ctx.beginPath();
+    ctx.ellipse(cx + dx, testesY, 22, 30, 0, 0, Math.PI * 2);
+    ctx.fillStyle = partCol('testes', 'rgba(96,165,250,0.25)');
+    ctx.fill();
+    ctx.strokeStyle = partCol('testes', '#60a5fa');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+  });
+  // scrotum outline
+  ctx.save();
+  ctx.globalAlpha = partAlpha('testes') * 0.4;
+  ctx.beginPath();
+  ctx.ellipse(cx, testesY + 4, 60, 38, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = partCol('testes', '#60a5fa');
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Epididymis (coiled on side of each testis) —
+  [cx - 34, cx + 34].forEach(tx => {
+    const side = tx < cx ? -1 : 1;
+    ctx.save();
+    ctx.globalAlpha = partAlpha('epididymis');
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      ctx.ellipse(tx + side * 24, testesY - 10 + i * 8, 8, 4, 0, 0, Math.PI * 2);
+    }
+    ctx.strokeStyle = partCol('epididymis', '#a78bfa');
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // — Vas deferens (curves up from epididymis to pelvis) —
+  ctx.save();
+  ctx.globalAlpha = partAlpha('vasdeferens');
+  ctx.beginPath();
+  ctx.moveTo(cx - 34 - 32, testesY - 10);
+  ctx.bezierCurveTo(cx - 80, testesY - 60, cx - 70, baseY + 220, cx - 20, baseY + 200);
+  ctx.moveTo(cx + 34 + 32, testesY - 10);
+  ctx.bezierCurveTo(cx + 80, testesY - 60, cx + 70, baseY + 220, cx + 20, baseY + 200);
+  ctx.strokeStyle = partCol('vasdeferens', '#34d399');
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // — Urethra (vertical line through penis) —
+  const urethraTop = baseY + 200;
+  const urethraBot = baseY + 390;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('urethra');
+  ctx.beginPath();
+  ctx.moveTo(cx, urethraTop);
+  ctx.lineTo(cx, urethraBot - 60);
+  ctx.strokeStyle = partCol('urethra', '#fbbf24');
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Penis (rounded rect) —
+  ctx.save();
+  ctx.globalAlpha = partAlpha('penis');
+  ctx.beginPath();
+  ctx.roundRect(cx - 16, urethraBot - 65, 32, 80, 10);
+  ctx.fillStyle = partCol('penis', 'rgba(248,113,113,0.2)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('penis', '#f87171');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Labels —
+  label(ctx, cx - 18, testesY + 5,   'Testes',       'testes');
+  label(ctx, cx - 18, testesY - 6,   'Epididymis',   'epididymis');
+  label(ctx, cx - 18, baseY + 170,   'Vas deferens', 'vasdeferens');
+  label(ctx, cx - 18, urethraTop + 40,'Urethra',      'urethra');
+  label(ctx, cx - 18, urethraBot + 8, 'Penis',        'penis');
+}
+
+function drawFemale(ctx, W) {
+  const cx = W * 0.46;
+  const baseY = 40;
+
+  // — Body outline —
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(cx - 110, baseY + 60, 220, 300, 20);
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Ovaries (two ovals) —
+  const ovY = baseY + 100;
+  [cx - 80, cx + 80].forEach(ox => {
+    ctx.save();
+    ctx.globalAlpha = partAlpha('ovaries');
+    ctx.beginPath();
+    ctx.ellipse(ox, ovY, 22, 16, 0, 0, Math.PI * 2);
+    ctx.fillStyle = partCol('ovaries', 'rgba(244,114,182,0.2)');
+    ctx.fill();
+    ctx.strokeStyle = partCol('ovaries', '#f472b6');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // — Fallopian tubes (arching from ovaries to uterus) —
+  const uterTop = baseY + 150;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('fallopian');
+  ctx.beginPath();
+  // Left tube
+  ctx.moveTo(cx - 80, ovY);
+  ctx.quadraticCurveTo(cx - 80, uterTop - 20, cx - 28, uterTop);
+  // Right tube
+  ctx.moveTo(cx + 80, ovY);
+  ctx.quadraticCurveTo(cx + 80, uterTop - 20, cx + 28, uterTop);
+  ctx.strokeStyle = partCol('fallopian', '#fb923c');
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // — Uterus (pear shape) —
+  const uterCX = cx;
+  const uterCY = baseY + 195;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('uterus');
+  ctx.beginPath();
+  ctx.ellipse(uterCX, uterCY, 44, 52, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partCol('uterus', 'rgba(192,132,252,0.2)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('uterus', '#c084fc');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Cervix —
+  const cervY = baseY + 255;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('cervix');
+  ctx.beginPath();
+  ctx.roundRect(cx - 14, cervY, 28, 26, 6);
+  ctx.fillStyle = partCol('cervix', 'rgba(52,211,153,0.2)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('cervix', '#34d399');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Vagina —
+  const vagY = cervY + 26;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('vagina');
+  ctx.beginPath();
+  ctx.roundRect(cx - 18, vagY, 36, 70, 8);
+  ctx.fillStyle = partCol('vagina', 'rgba(251,191,36,0.12)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('vagina', '#fbbf24');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Labels —
+  label(ctx, cx + 110, ovY,        'Ovaries',          'ovaries');
+  label(ctx, cx + 110, ovY + 20,   'Fallopian tubes',  'fallopian');
+  label(ctx, cx + 110, uterCY,     'Uterus',           'uterus');
+  label(ctx, cx + 110, cervY + 12, 'Cervix',           'cervix');
+  label(ctx, cx + 110, vagY + 35,  'Vagina',           'vagina');
+}
+
+window.addEventListener('resize', () => { if (simInit) drawSystem(); });
+
+// ── PRACTICE ──────────────────────────────────────────────────────────────────
+const questions = [
+  {
+    q: 'Which structure in a sperm cell contains mitochondria, and why is this important?',
+    opts: [
+      'The head; mitochondria contain the sperm\'s genetic material',
+      'The tail; mitochondria provide the force to spin the flagellum',
+      'The midpiece; mitochondria carry out respiration to produce ATP for movement',
+      'The acrosome; mitochondria release enzymes to penetrate the egg'
+    ],
+    ans: 2,
+    fb: 'The midpiece of the sperm is packed with mitochondria. These carry out aerobic respiration to produce ATP (energy currency), which powers the beating of the flagellum (tail). This energy is essential for the sperm to swim the long distance from the vagina to the fallopian tube where fertilisation occurs.'
+  },
+  {
+    q: 'Where does fertilisation most commonly occur in the human female reproductive system?',
+    opts: ['In the uterus', 'In the vagina', 'In the fallopian tube (oviduct)', 'In the ovary'],
+    ans: 2,
+    fb: 'Fertilisation normally occurs in the fallopian tube (oviduct), approximately one-third of the way along from the ovary. The fertilised egg (zygote) then travels toward the uterus over 5–7 days, dividing as it goes, before implanting in the uterine wall (endometrium).'
+  },
+  {
+    q: 'The placenta is an essential structure during pregnancy. Which of the following CORRECTLY describes its function?',
+    opts: [
+      'It stores milk produced by the mother for feeding the newborn',
+      'It allows the mother\'s blood to flow directly into the foetus for oxygen delivery',
+      'It allows oxygen and nutrients to pass from mother to foetus without the blood mixing',
+      'It produces sperm and egg cells for the developing foetus'
+    ],
+    ans: 2,
+    fb: 'The placenta allows exchange of substances (oxygen, nutrients to foetus; carbon dioxide, waste from foetus) across thin membranes. Critically, the mother\'s blood and foetal blood are kept separate — they do not mix. This prevents immune rejection and protects the foetus from most of the mother\'s hormones and immune cells.'
+  },
+  {
+    q: 'A frog releases thousands of eggs into a pond, while a human female releases one egg per month. This difference relates to:',
+    opts: [
+      'External fertilisation producing fewer offspring because water is not a good medium for reproduction',
+      'External fertilisation requiring many eggs because most will not be fertilised or survive; internal fertilisation requires fewer eggs because they are better protected',
+      'Frogs having more ovaries than humans',
+      'Frogs reproducing sexually while humans reproduce asexually'
+    ],
+    ans: 1,
+    fb: 'In external fertilisation (frogs), eggs and sperm are released into open water where fertilisation chances are lower and predation is high — so large numbers compensate. In internal fertilisation (humans), sperm is deposited directly near the egg, and the embryo develops in the protected uterus — so only one or a few eggs are needed per cycle.'
+  },
+  {
+    q: 'During which stage of development is the term "foetus" used?',
+    opts: [
+      'From fertilisation until implantation (0–7 days)',
+      'From fertilisation until 8 weeks (organogenesis phase)',
+      'From 9 weeks after fertilisation until birth (~38 weeks gestation)',
+      'From birth until 4 weeks of age (neonatal period)'
+    ],
+    ans: 2,
+    fb: 'The developing human is called an embryo from fertilisation until the end of week 8, during which all major organs begin to form. From week 9 until birth (total gestation ~38 weeks), it is called a foetus. During the foetal period, organs grow, mature, and the foetus takes on a recognisably human form.'
+  },
+  {
+    q: 'Which contraceptive method also provides protection against sexually transmitted infections (STIs)?',
+    opts: [
+      'The contraceptive pill',
+      'An intrauterine device (IUD)',
+      'Surgical sterilisation (tubal ligation)',
+      'The male or female condom'
+    ],
+    ans: 3,
+    fb: 'The condom (male or female) is the ONLY widely available contraceptive method that also protects against STIs. It physically prevents the exchange of bodily fluids (semen, vaginal secretions, blood) that transmit pathogens like HIV, syphilis, gonorrhoea, and chlamydia. Hormonal methods and IUDs prevent pregnancy but do not block STI transmission.'
+  }
+];
+
+let answered = 0, correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, j) =>
+      `<button class="mc-opt" onclick="answer(${i},${j},this)">
+        <span class="opt-letter">${letters[j]}</span>${o}
+      </button>`
+    ).join('');
+    container.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Question ${i+1} of ${questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="mc-options">${optsHtml}</div>
+        <div class="feedback" id="fb-${i}"></div>
+      </div>`;
+  });
+}
+
+function answer(qi, selected, btn) {
+  const card = document.getElementById('qcard-' + qi);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  const q = questions[qi];
+  const opts = card.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('fb-' + qi);
+  if (selected === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = '&#10003; Correct! ' + q.fb;
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback show bad';
+    fb.innerHTML = '&#10007; Not quite. ' + q.fb;
+  }
+  answered++;
+  if (answered === questions.length) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct + '/' + questions.length;
+  }
+}
+
+// Add data-sys attribute to system mode buttons for correct toggle
+document.getElementById('btnMale').dataset.sys = 'male';
+document.getElementById('btnFemale').dataset.sys = 'female';
+
+buildPractice();
+</script>
+</body>
+</html>

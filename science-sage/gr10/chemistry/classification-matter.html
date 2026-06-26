@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classification of Matter — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#e9d5ff}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff;line-height:1.3}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+    .ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#c084fc;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(192,132,252,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemistry</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Chemistry · Lesson 1</div>
+  <div class="lesson-title">Classification of Matter</div>
+  <div class="lesson-sub">Learn to classify all matter into pure substances and mixtures, distinguish elements from compounds, and select appropriate separation techniques.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">📖 Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📋 Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>What is Matter?</h2>
+    <p>Matter is anything that has <strong>mass</strong> and <strong>occupies space (volume)</strong>. All physical substances — from air to iron to water — are matter. Matter can be classified in several ways based on its composition and properties.</p>
+
+    <h2>Pure Substances vs Mixtures</h2>
+    <p>The first and most fundamental classification separates matter into <strong>pure substances</strong> and <strong>mixtures</strong>:</p>
+    <table class="symbols-table">
+      <tr><th>Feature</th><th>Pure Substance</th><th>Mixture</th></tr>
+      <tr><td>Composition</td><td>Fixed, definite</td><td>Variable</td></tr>
+      <tr><td>Melting/Boiling point</td><td>Sharp, definite</td><td>Range of temperatures</td></tr>
+      <tr><td>All samples identical?</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Can be separated physically?</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Examples</td><td>Water, gold, NaCl</td><td>Salt water, air, sand+iron</td></tr>
+    </table>
+
+    <h2>Elements</h2>
+    <p>An <strong>element</strong> is a pure substance that <em>cannot be broken down</em> into simpler substances by ordinary chemical means. Each element is made up of one type of atom. There are approximately 118 known elements, all found in the Periodic Table.</p>
+    <div class="key-fact">Examples: Hydrogen (H), Oxygen (O), Iron (Fe), Carbon (C), Gold (Au), Copper (Cu)</div>
+
+    <h2>Compounds</h2>
+    <p>A <strong>compound</strong> is a pure substance made of two or more elements <em>chemically combined</em> in fixed ratios. Compounds have properties that are completely different from the elements that form them, and can only be broken down by chemical means (not physical).</p>
+    <div class="callout"><strong>Example:</strong> Water (H₂O) is a compound of hydrogen and oxygen in a 2:1 ratio. It has completely different properties from the explosive gas H₂ or the reactive gas O₂ that make it up.</div>
+
+    <h2>Classification of Mixtures</h2>
+    <p>Mixtures are classified based on whether their composition is uniform throughout:</p>
+    <ul>
+      <li><strong>Homogeneous mixture (solution):</strong> Uniform composition throughout; cannot distinguish components by eye. Examples: salt water, alloys (steel, bronze), air, vinegar. The dissolved substance is the <em>solute</em>; what dissolves it is the <em>solvent</em>.</li>
+      <li><strong>Heterogeneous mixture:</strong> Non-uniform; components are visibly distinct or in different phases. Examples: sand and water, oil and water, salad, granite.</li>
+    </ul>
+    <div class="callout"><strong>Note:</strong> Colloids (e.g. milk, fog) and suspensions (e.g. muddy water) are intermediate — they appear homogeneous but particles are larger than in true solutions.</div>
+
+    <h2>Separation Techniques</h2>
+    <p>Choose the technique based on the type of mixture and the properties of the components:</p>
+    <table class="symbols-table">
+      <tr><th>Technique</th><th>Mixture Type</th><th>Principle</th><th>Example</th></tr>
+      <tr><td>Filtration</td><td>Solid–liquid (insoluble solid)</td><td>Particle size difference</td><td>Sand from water</td></tr>
+      <tr><td>Evaporation</td><td>Dissolved solid in liquid</td><td>Liquid evaporates, solid remains</td><td>Salt from salt water</td></tr>
+      <tr><td>Simple distillation</td><td>Liquids with very different BPs</td><td>Differences in boiling point</td><td>Water from alcohol</td></tr>
+      <tr><td>Fractional distillation</td><td>Liquids with similar BPs</td><td>Repeated vaporisation/condensation</td><td>Crude oil refining, air</td></tr>
+      <tr><td>Crystallisation</td><td>Solid dissolved in liquid</td><td>Solubility decreases on cooling</td><td>Copper sulfate crystals</td></tr>
+      <tr><td>Chromatography</td><td>Dissolved mixtures of solutes</td><td>Different affinities for stationary/mobile phase</td><td>Ink dyes, amino acids</td></tr>
+      <tr><td>Magnetic separation</td><td>Magnetic + non-magnetic solids</td><td>Magnetism</td><td>Iron filings from sulfur</td></tr>
+    </table>
+
+    <h2>Physical vs Chemical Properties</h2>
+    <ul>
+      <li><strong>Physical properties:</strong> Observable/measurable without changing chemical composition. Examples: colour, state of matter, density, melting point, boiling point, solubility, electrical conductivity.</li>
+      <li><strong>Chemical properties:</strong> Describe how a substance changes its composition during a reaction. Examples: flammability, reactivity with acids, ability to rust, combustibility.</li>
+    </ul>
+    <p>Properties can also be classified as:</p>
+    <ul>
+      <li><strong>Intensive:</strong> Do NOT depend on amount of substance (density, melting point, boiling point, colour).</li>
+      <li><strong>Extensive:</strong> DO depend on amount (mass, volume, length, energy).</li>
+    </ul>
+
+    <h2>States of Matter &amp; Density</h2>
+    <p>Matter exists in four states: <strong>solid, liquid, gas,</strong> and <strong>plasma</strong>. The kinetic molecular theory explains states in terms of particle arrangement, energy, and movement.</p>
+    <div class="formula">ρ = m / V &nbsp;&nbsp;&nbsp; (density = mass ÷ volume; unit: kg/m³ or g/cm³)</div>
+    <div class="key-fact">Water: ρ = 1.00 g/cm³ | Gold: ρ = 19.3 g/cm³ | Air: ρ ≈ 0.0013 g/cm³ | Iron: ρ = 7.87 g/cm³</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Colligative Properties &amp; Alloys</div>
+      <p><strong>Colligative properties</strong> depend only on the number of solute particles dissolved, not their identity:</p>
+      <ul style="margin-top:8px;font-size:13px;color:rgba(210,218,245,.75)">
+        <li><strong>Boiling point elevation:</strong> Adding a solute raises the boiling point of the solvent (e.g. antifreeze in a car radiator).</li>
+        <li><strong>Freezing point depression:</strong> Adding a solute lowers the freezing point (e.g. salt on icy roads).</li>
+      </ul>
+      <p style="margin-top:10px"><strong>Alloys</strong> are solid solutions (homogeneous mixtures of metals). Common examples:</p>
+      <table class="symbols-table" style="margin-top:8px">
+        <tr><th>Alloy</th><th>Components</th><th>Use</th></tr>
+        <tr><td>Steel</td><td>Fe + C (0.2–2%)</td><td>Construction, tools</td></tr>
+        <tr><td>Bronze</td><td>Cu + Sn (≈10%)</td><td>Statues, bearings</td></tr>
+        <tr><td>Brass</td><td>Cu + Zn (10–45%)</td><td>Musical instruments, plumbing</td></tr>
+        <tr><td>18-carat gold</td><td>Au (75%) + Cu/Ag (25%)</td><td>Jewellery</td></tr>
+      </table>
+      <p style="margin-top:8px;font-size:13px;color:rgba(210,218,245,.7)"><strong>Raoult's Law (qualitative):</strong> The vapour pressure of a solution is lower than that of the pure solvent. This explains why dissolved solutes raise the boiling point — more energy is needed for solvent molecules to escape from solution.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="sim-title">Matter Classification &amp; Separation Interactive</h3>
+      <canvas id="matterCanvas" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Mode</div>
+        <button class="mode-btn active" id="modeClassify" onclick="setMode('classify')">Classify Matter</button>
+        <button class="mode-btn" id="modeSeparate" onclick="setMode('separate')">Separation Methods</button>
+      </div>
+      <div class="ctrl-card" id="sepCard" style="display:none">
+        <div class="ctrl-label">Separation Technique</div>
+        <button class="mode-btn active" id="sepFilt" onclick="setSep('filtration')">Filtration</button>
+        <button class="mode-btn" id="sepDist" onclick="setSep('distillation')">Distillation</button>
+        <button class="mode-btn" id="sepChrom" onclick="setSep('chromatography')">Chromatography</button>
+      </div>
+      <div class="ctrl-card" id="classifyInfo">
+        <div class="ctrl-label">How to use</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.7">The flowchart shows how to classify any sample of matter. Follow the decision path from top to bottom. Click a node to highlight its path.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete! Review your answers below.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 1 — Classification</div>
+      <div class="q-text">Which of the following is a pure substance?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">A</span>Air</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">B</span>Sea water</button>
+        <button class="mc-opt" onclick="answer(this,true,'q1')"><span class="opt-letter">C</span>Distilled water (H₂O)</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">D</span>Stainless steel</button>
+      </div>
+      <div class="feedback ok" id="fb-q1-ok">Correct! Distilled water is a pure compound with a fixed composition (H₂O) and a definite boiling point of 100°C. Air, sea water, and stainless steel are all mixtures.</div>
+      <div class="feedback bad" id="fb-q1-bad">Air is a mixture of gases. Sea water contains dissolved salts. Stainless steel is an alloy (mixture). Only distilled water (H₂O) is a pure compound with fixed composition.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 2 — Elements vs Compounds</div>
+      <div class="q-text">Carbon dioxide (CO₂) is best described as:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">A</span>An element, because it has a chemical symbol</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">B</span>A homogeneous mixture of carbon and oxygen</button>
+        <button class="mc-opt" onclick="answer(this,true,'q2')"><span class="opt-letter">C</span>A compound, because it contains two elements chemically combined in a fixed ratio</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">D</span>A heterogeneous mixture</button>
+      </div>
+      <div class="feedback ok" id="fb-q2-ok">Correct! CO₂ is a compound — it contains carbon and oxygen atoms chemically bonded together in a fixed 1:2 ratio. It has different properties from pure C or pure O₂.</div>
+      <div class="feedback bad" id="fb-q2-bad">CO₂ is a compound: two elements (C and O) chemically combined in a fixed ratio (1:2). The components cannot be separated physically, and CO₂ has properties different from its constituent elements.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 3 — Separation Technique</div>
+      <div class="q-text">A learner needs to separate salt (sodium chloride) from a salt-water solution. Which technique is most appropriate?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">A</span>Filtration</button>
+        <button class="mc-opt" onclick="answer(this,true,'q3')"><span class="opt-letter">B</span>Evaporation</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">C</span>Chromatography</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">D</span>Magnetic separation</button>
+      </div>
+      <div class="feedback ok" id="fb-q3-ok">Correct! Salt dissolves in water (it's a homogeneous mixture). Evaporation drives off the water as vapour, leaving solid salt behind. Filtration only works for insoluble solids.</div>
+      <div class="feedback bad" id="fb-q3-bad">Filtration won't work because the salt is dissolved (no solid particles to filter). Evaporation is correct — heat the solution until all the water evaporates, leaving dry salt crystals.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 4 — Properties</div>
+      <div class="q-text">Which of the following is an intensive property?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">A</span>Mass</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">B</span>Volume</button>
+        <button class="mc-opt" onclick="answer(this,true,'q4')"><span class="opt-letter">C</span>Density</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">D</span>Length</button>
+      </div>
+      <div class="feedback ok" id="fb-q4-ok">Correct! Density (ρ = m/V) is intensive — it does not change with the amount of substance. Whether you have 1 g or 1 kg of gold, the density is always 19.3 g/cm³. Mass, volume, and length all change with amount (extensive).</div>
+      <div class="feedback bad" id="fb-q4-bad">Density is intensive — it's the ratio of mass to volume, so it stays the same regardless of the amount of substance. Mass, volume, and length are extensive (they depend on how much you have).</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 5 — Homogeneous vs Heterogeneous</div>
+      <div class="q-text">Which of the following is a heterogeneous mixture?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">A</span>Brass (copper-zinc alloy)</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">B</span>White wine</button>
+        <button class="mc-opt" onclick="answer(this,true,'q5')"><span class="opt-letter">C</span>Granite (rock with visible crystals)</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">D</span>Air</button>
+      </div>
+      <div class="feedback ok" id="fb-q5-ok">Correct! Granite is heterogeneous — you can see the different mineral crystals (quartz, feldspar, mica) with the naked eye. Brass, wine, and air are homogeneous (uniform composition throughout).</div>
+      <div class="feedback bad" id="fb-q5-bad">Granite is heterogeneous — distinct mineral grains are visible to the naked eye. Brass (alloy), wine (solution), and air (gas mixture) are all homogeneous — uniform throughout.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 6 — Density Calculation</div>
+      <div class="q-text">A rectangular block of metal has a mass of 540 g and dimensions 3 cm × 4 cm × 5 cm. What is its density?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">A</span>540 g/cm³</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">B</span>4.5 g/cm³</button>
+        <button class="mc-opt" onclick="answer(this,true,'q6')"><span class="opt-letter">C</span>9 g/cm³</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">D</span>27 g/cm³</button>
+      </div>
+      <div class="feedback ok" id="fb-q6-ok">Correct! V = 3 × 4 × 5 = 60 cm³. ρ = m/V = 540/60 = 9 g/cm³. This is close to the density of copper (8.96 g/cm³)!</div>
+      <div class="feedback bad" id="fb-q6-bad">First find the volume: V = 3 × 4 × 5 = 60 cm³. Then ρ = m/V = 540 g ÷ 60 cm³ = 9 g/cm³.</div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" id="ieb-practice-section">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB Extension Practice <span class="ieb-badge">IEB ONLY</span></div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Question 1 — Colligative Properties</div>
+        <div class="q-text">Why does adding salt to water raise its boiling point, and what term describes this phenomenon?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">A</span>It lowers vapour pressure; called freezing point depression</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq1')"><span class="opt-letter">B</span>Dissolved ions lower vapour pressure, so more energy is needed to boil; called boiling point elevation</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">C</span>Salt reacts with water to release heat energy</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">D</span>Increased density requires higher temperature to vaporise</button>
+        </div>
+        <div class="feedback ok" id="fb-iq1-ok">Correct! Dissolved particles (ions from NaCl) reduce the vapour pressure of the solution (Raoult's Law). Since a lower vapour pressure means more energy is needed to reach atmospheric pressure, the boiling point rises. This is a colligative property — boiling point elevation.</div>
+        <div class="feedback bad" id="fb-iq1-bad">Dissolved solute particles reduce vapour pressure (Raoult's Law). Because vapour pressure is lower, more energy is needed to boil the solution → boiling point elevation. This is a colligative property depending only on the number of particles, not what they are.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Question 2 — Alloy Classification</div>
+        <div class="q-text">Bronze is an alloy of copper (Cu) and tin (Sn). How should bronze be classified in terms of the matter classification hierarchy, and why?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">A</span>Pure compound — the atoms are chemically bonded in fixed ratios</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">B</span>Heterogeneous mixture — the metals can be seen as separate phases</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq2')"><span class="opt-letter">C</span>Homogeneous mixture (solid solution) — uniform composition with variable Cu:Sn ratio</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">D</span>Element — because it consists of metallic atoms only</button>
+        </div>
+        <div class="feedback ok" id="fb-iq2-ok">Correct! Alloys are solid solutions — homogeneous mixtures where the composition can vary (e.g. bronze can be 85–95% Cu). The metals are not chemically bonded, so bronze is a mixture, not a compound. Its uniform appearance makes it homogeneous.</div>
+        <div class="feedback bad" id="fb-iq2-bad">Bronze is a homogeneous mixture (solid solution). The Cu:Sn ratio is variable, so it's not a compound (which requires fixed ratios). At the atomic level, the metals are uniformly distributed, so it's homogeneous, not heterogeneous.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Print Workbook</button>
+    <div class="wb-intro">Complete all questions in your notebook. Where diagrams are required, draw large, neat, labelled diagrams. Show all working for calculations.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 — Classify a Substance List</div>
+      <div class="wb-qtext">Classify each of the following as: element, compound, homogeneous mixture, or heterogeneous mixture. Give a reason for each answer.<br><br>
+      (a) Pure copper &nbsp;&nbsp; (b) Table salt (NaCl) &nbsp;&nbsp; (c) Muddy river water &nbsp;&nbsp; (d) Vinegar &nbsp;&nbsp; (e) Oxygen gas (O₂) &nbsp;&nbsp; (f) Concrete &nbsp;&nbsp; (g) Ethanol (C₂H₅OH) &nbsp;&nbsp; (h) Stainless steel</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 — Separation Method Choice &amp; Justification</div>
+      <div class="wb-qtext">For each mixture below, state the most suitable separation technique and justify your choice by referring to the property of the components that makes this technique work.<br><br>
+      (a) Iron filings mixed with sulfur powder<br>
+      (b) Alcohol and water (boiling points: ethanol 78°C, water 100°C)<br>
+      (c) A mixture of blue, red, and yellow food dyes dissolved in water<br>
+      (d) Sand mixed with water<br>
+      (e) Copper sulfate crystals dissolved in hot water</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 — Properties Table</div>
+      <div class="wb-qtext">Complete the table by identifying each property as physical or chemical, and intensive or extensive:<br><br>
+      (a) Flammability of petrol &nbsp;&nbsp; (b) Mass of a rock &nbsp;&nbsp; (c) Boiling point of ethanol &nbsp;&nbsp; (d) Colour of copper &nbsp;&nbsp; (e) Volume of a gas &nbsp;&nbsp; (f) Reactivity of sodium with water &nbsp;&nbsp; (g) Density of gold &nbsp;&nbsp; (h) Length of an iron rod</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 — Density Calculation</div>
+      <div class="wb-qtext">A learner pours 150 mL of an unknown liquid into a measuring cylinder. The liquid has a mass of 120 g.<br>
+      (a) Calculate the density of the liquid in g/mL and in kg/m³.<br>
+      (b) Is this liquid likely to be water, ethanol (ρ = 0.79 g/mL), or glycerol (ρ = 1.26 g/mL)? Justify your answer.<br>
+      (c) If this liquid is poured into a beaker of water, will it float or sink? Explain.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 — Classification Flowchart</div>
+      <div class="wb-qtext">Draw a fully labelled classification flowchart for matter. Your flowchart must include: matter → pure substance / mixture → element / compound / homogeneous mixture / heterogeneous mixture. For each final category, provide two examples and state two identifying features. Use questions like "Is the composition uniform?" and "Can it be broken down chemically?" as decision points.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+  const answered={};let score=0;
+  function answer(btn,correct,qid){
+    if(answered[qid])return;answered[qid]=true;
+    btn.closest('.mc-options').querySelectorAll('.mc-opt').forEach(o=>o.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
+    if(fb)fb.classList.add('show');
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===6){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/6';}}
+  }
+
+  // ---- SIMULATION ----
+  const canvas=document.getElementById('matterCanvas');
+  const ctx=canvas.getContext('2d');
+  let simMode='classify';
+  let sepMode='filtration';
+  let animFrame=null;
+  let tick=0;
+  let highlighted=null;
+
+  function setMode(mode){
+    simMode=mode;
+    document.getElementById('modeClassify').classList.toggle('active',mode==='classify');
+    document.getElementById('modeSeparate').classList.toggle('active',mode==='separate');
+    document.getElementById('sepCard').style.display=mode==='separate'?'block':'none';
+    document.getElementById('classifyInfo').style.display=mode==='classify'?'block':'none';
+    highlighted=null;tick=0;draw();
+  }
+  function setSep(s){
+    sepMode=s;
+    ['sepFilt','sepDist','sepChrom'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    const map={filtration:'sepFilt',distillation:'sepDist',chromatography:'sepChrom'};
+    document.getElementById(map[s]).classList.add('active');
+    tick=0;draw();
+  }
+
+  function resizeCanvas(){
+    const dpr=window.devicePixelRatio||1;
+    const w=canvas.parentElement.clientWidth-32;
+    canvas.style.width=w+'px';canvas.style.height='320px';
+    canvas.width=w*dpr;canvas.height=320*dpr;
+    ctx.scale(dpr,dpr);
+  }
+
+  function box(x,y,w,h,label,sub,col,active){
+    const r=10;
+    ctx.fillStyle=active?col+'33':col+'15';
+    ctx.strokeStyle=active?col:col+'88';
+    ctx.lineWidth=active?2:1.5;
+    ctx.beginPath();ctx.roundRect(x-w/2,y-h/2,w,h,r);ctx.fill();ctx.stroke();
+    ctx.fillStyle=active?'#fff':col+'cc';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(label,x,y+(sub?-4:4));
+    if(sub){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='10px monospace';ctx.fillText(sub,x,y+12);}
+  }
+  function arrow(x1,y1,x2,y2,label){
+    ctx.strokeStyle='rgba(192,132,252,0.35)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+    const ux=dx/len,uy=dy/len;
+    ctx.fillStyle='rgba(192,132,252,0.5)';
+    ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-ux*8+uy*4,y2-uy*8-ux*4);ctx.lineTo(x2-ux*8-uy*4,y2-uy*8+ux*4);ctx.closePath();ctx.fill();
+    if(label){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='9px monospace';ctx.textAlign='center';ctx.fillText(label,(x1+x2)/2-6,(y1+y2)/2-6);}
+  }
+
+  function drawClassify(){
+    const W=canvas.clientWidth,H=320;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2;
+    const purple='#c084fc',blue='#60a5fa',green='#86efac',amber='#fbbf24';
+    // Matter (top)
+    box(cx,28,160,36,'MATTER','anything with mass & volume',purple,true);
+    arrow(cx,46,cx-W*0.22,76,'');
+    arrow(cx,46,cx+W*0.22,76,'');
+    // Pure substance
+    box(cx-W*0.22,96,155,36,'Pure Substance','fixed composition',blue,true);
+    // Mixture
+    box(cx+W*0.22,96,155,36,'Mixture','variable composition',amber,true);
+    // Element & Compound
+    box(cx-W*0.35,180,130,36,'Element','one type of atom',green,false);
+    box(cx-W*0.09,180,130,36,'Compound','2+ elements bonded',green,false);
+    arrow(cx-W*0.22,114,cx-W*0.35,162,'cannot\ndecompose');
+    arrow(cx-W*0.22,114,cx-W*0.09,162,'can\ndecompose');
+    // Homogeneous & Heterogeneous
+    box(cx+W*0.09,180,140,36,'Homogeneous','uniform / solution',amber,false);
+    box(cx+W*0.35,180,140,36,'Heterogeneous','non-uniform',amber,false);
+    arrow(cx+W*0.22,114,cx+W*0.09,162,'uniform');
+    arrow(cx+W*0.22,114,cx+W*0.35,162,'non-uniform');
+    // Examples
+    const exStyle='rgba(210,218,245,0.45)';
+    ctx.fillStyle=exStyle;ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillText('e.g. Fe, O₂, Cu',cx-W*0.35,225);
+    ctx.fillText('e.g. H₂O, NaCl',cx-W*0.09,225);
+    ctx.fillText('e.g. salt water, air',cx+W*0.09,225);
+    ctx.fillText('e.g. sand+water',cx+W*0.35,225);
+    // Decision labels
+    ctx.fillStyle='rgba(192,132,252,0.5)';ctx.font='bold 9px monospace';ctx.textAlign='center';
+    ctx.fillText('Pure Substance',cx-W*0.15,72);
+    ctx.fillText('Mixture',cx+W*0.12,72);
+    ctx.fillText('Title: Is it uniform?',cx+W*0.22,135);
+    ctx.fillText('Can it be broken down?',cx-W*0.22,135);
+  }
+
+  function drawSeparation(){
+    const W=canvas.clientWidth,H=320;
+    ctx.clearRect(0,0,W,H);
+    tick++;
+    if(sepMode==='filtration') drawFiltration(W,H);
+    else if(sepMode==='distillation') drawDistillation(W,H);
+    else drawChromatography(W,H);
+  }
+
+  function drawFiltration(W,H){
+    const cx=W*0.38,cy=90;
+    // Funnel
+    ctx.strokeStyle='rgba(192,132,252,0.6)';ctx.lineWidth=2;ctx.fillStyle='rgba(192,132,252,0.07)';
+    ctx.beginPath();ctx.moveTo(cx-70,cy-30);ctx.lineTo(cx+70,cy-30);ctx.lineTo(cx+20,cy+50);ctx.lineTo(cx-20,cy+50);ctx.closePath();ctx.fill();ctx.stroke();
+    // Filter paper
+    ctx.strokeStyle='#e9d5ff';ctx.lineWidth=1.5;ctx.fillStyle='rgba(233,213,255,0.08)';
+    ctx.beginPath();ctx.moveTo(cx-65,cy-28);ctx.lineTo(cx+65,cy-28);ctx.lineTo(cx+18,cy+45);ctx.lineTo(cx-18,cy+45);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(233,213,255,0.5)';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('filter paper',cx,cy+10);
+    // Sand particles on filter
+    for(let i=0;i<18;i++){
+      const px=cx-50+i*6+Math.sin(i)*3;
+      const py=cy+(i%2===0?15:22);
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fill();
+    }
+    // Stem
+    ctx.strokeStyle='rgba(192,132,252,0.5)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(cx,cy+50);ctx.lineTo(cx,cy+100);ctx.stroke();
+    // Beaker below
+    ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2;ctx.fillStyle='rgba(96,165,250,0.05)';
+    ctx.beginPath();ctx.moveTo(cx-40,cy+100);ctx.lineTo(cx-40,cy+180);ctx.lineTo(cx+40,cy+180);ctx.lineTo(cx+40,cy+100);ctx.stroke();ctx.fill();
+    // Filtrate drops
+    const dropY=cy+90+(tick%40)*1.5;
+    if(dropY<cy+175){ctx.fillStyle='rgba(96,165,250,0.8)';ctx.beginPath();ctx.arc(cx,dropY,3,0,Math.PI*2);ctx.fill();}
+    // Filtrate water in beaker
+    const level=Math.min(60,Math.floor(tick/30)*4);
+    ctx.fillStyle='rgba(96,165,250,0.18)';ctx.fillRect(cx-38,cy+182-level,76,level);
+    ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx-38,cy+182-level);ctx.lineTo(cx+38,cy+182-level);ctx.stroke();
+    // Labels
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText('FILTRATION',W*0.65,50);
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillText('• Separates insoluble',W*0.65,70);
+    ctx.fillText('  solid from liquid',W*0.65,83);
+    ctx.fillText('• Solid: residue on',W*0.65,100);
+    ctx.fillText('  filter paper',W*0.65,113);
+    ctx.fillText('• Liquid: filtrate',W*0.65,130);
+    ctx.fillText('  collects below',W*0.65,143);
+    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillText('Example: sand from water',W*0.65,165);
+  }
+
+  function drawDistillation(W,H){
+    const fx=W*0.18,fy=120;
+    // Flask
+    ctx.strokeStyle='rgba(192,132,252,0.6)';ctx.lineWidth=2;ctx.fillStyle='rgba(192,132,252,0.07)';
+    ctx.beginPath();ctx.arc(fx,fy,50,0,Math.PI*2);ctx.fill();ctx.stroke();
+    // Liquid in flask
+    ctx.fillStyle='rgba(96,165,250,0.2)';ctx.beginPath();ctx.arc(fx,fy,48,0,Math.PI);ctx.fill();
+    // Bubbles
+    if(tick%20<10){
+      for(let i=0;i<3;i++){
+        const bx=fx-20+i*20+Math.sin(tick*0.1+i)*5;
+        const by=fy+20-((tick%20)*3+i*8)%40;
+        ctx.fillStyle='rgba(96,165,250,0.4)';ctx.beginPath();ctx.arc(bx,by,3,0,Math.PI*2);ctx.fill();
+      }
+    }
+    // Flask neck
+    ctx.strokeStyle='rgba(192,132,252,0.5)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(fx,fy-50);ctx.lineTo(fx,fy-80);ctx.lineTo(fx+90,fy-60);ctx.stroke();
+    // Condenser
+    ctx.strokeStyle='rgba(147,197,253,0.6)';ctx.lineWidth=8;
+    ctx.beginPath();ctx.moveTo(fx+90,fy-60);ctx.lineTo(W*0.7,fy+20);ctx.stroke();
+    ctx.strokeStyle='rgba(192,132,252,0.4)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(fx+90,fy-60);ctx.lineTo(W*0.7,fy+20);ctx.stroke();
+    // Distillate
+    ctx.strokeStyle='rgba(134,239,172,0.6)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(W*0.7,fy+20);ctx.lineTo(W*0.7,fy+80);ctx.stroke();
+    // Collection flask
+    ctx.strokeStyle='rgba(134,239,172,0.5)';ctx.lineWidth=2;ctx.fillStyle='rgba(134,239,172,0.07)';
+    ctx.beginPath();ctx.arc(W*0.7,fy+105,30,0,Math.PI*2);ctx.fill();ctx.stroke();
+    const lvl=Math.min(25,Math.floor(tick/60)*3);
+    ctx.fillStyle='rgba(134,239,172,0.3)';ctx.beginPath();ctx.arc(W*0.7,fy+105,28,0,Math.PI);ctx.fill();
+    // Labels
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText('DISTILLATION',W*0.75,50);
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillText('• Separates liquids',W*0.75,70);
+    ctx.fillText('  by boiling point',W*0.75,83);
+    ctx.fillText('• Lower BP vaporises',W*0.75,100);
+    ctx.fillText('  first, condenses',W*0.75,113);
+    ctx.fillText('• Condenser cools',W*0.75,130);
+    ctx.fillText('  vapour → liquid',W*0.75,143);
+    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillText('Example: alcohol from water',W*0.75,165);
+    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillText('condenser',W*0.55,fy-20);
+    ctx.fillStyle='rgba(134,239,172,0.7)';
+    ctx.fillText('distillate',W*0.7,fy+150);
+  }
+
+  function drawChromatography(W,H){
+    const cx=W*0.3,top=30,bottom=H-30;
+    const paperW=100;
+    // Paper
+    ctx.fillStyle='rgba(255,255,255,0.06)';ctx.strokeStyle='rgba(192,132,252,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(cx-paperW/2,top,paperW,bottom-top);ctx.fill();ctx.stroke();
+    // Solvent front (animated)
+    const progress=Math.min(1,(tick%400)/400);
+    const frontY=bottom-progress*(bottom-top-60);
+    ctx.fillStyle='rgba(96,165,250,0.08)';
+    ctx.fillRect(cx-paperW/2+1,frontY,paperW-2,bottom-frontY-1);
+    ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx-paperW/2,frontY);ctx.lineTo(cx+paperW/2,frontY);ctx.stroke();
+    ctx.setLineDash([]);
+    // Dye spots (travel different distances)
+    const startY=bottom-30;
+    const colors=['#ef4444','#3b82f6','#fbbf24'];
+    const rf=[0.8,0.55,0.35];
+    rf.forEach((r,i)=>{
+      const spotY=startY-progress*(bottom-top-60)*r;
+      ctx.fillStyle=colors[i]+'99';
+      ctx.beginPath();ctx.ellipse(cx,spotY,14,6,0,0,Math.PI*2);ctx.fill();
+    });
+    // Origin line
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([2,2]);
+    ctx.beginPath();ctx.moveTo(cx-paperW/2,startY);ctx.lineTo(cx+paperW/2,startY);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillText('origin',cx-paperW/2-30,startY+4);
+    ctx.fillText('solvent front',cx+paperW/2+50,frontY+4);
+    // Solvent trough
+    ctx.fillStyle='rgba(96,165,250,0.15)';ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(cx-paperW/2-10,bottom,paperW+20,20);ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(96,165,250,0.6)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillText('mobile phase (solvent)',cx,bottom+13);
+    // Labels right
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText('CHROMATOGRAPHY',W*0.62,50);
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillText('• Separates dissolved',W*0.62,70);
+    ctx.fillText('  components',W*0.62,83);
+    ctx.fillText('• Mobile phase carries',W*0.62,100);
+    ctx.fillText('  components up paper',W*0.62,113);
+    ctx.fillText('• Higher affinity for',W*0.62,130);
+    ctx.fillText('  stationary = lower Rf',W*0.62,143);
+    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillText('Example: ink dye separation',W*0.62,165);
+  }
+
+  function draw(){
+    if(simMode==='classify') drawClassify();
+    else drawSeparation();
+  }
+
+  function animate(){
+    if(animFrame) cancelAnimationFrame(animFrame);
+    if(simMode==='separate'){
+      function loop(){tick++;drawSeparation();animFrame=requestAnimationFrame(loop);}
+      loop();
+    } else {
+      drawClassify();
+    }
+  }
+
+  function initSim(){resizeCanvas();draw();animate();}
+  canvas.addEventListener('click',e=>{
+    if(simMode==='separate') return;
+    highlighted=!highlighted;drawClassify();
+  });
+  window.addEventListener('resize',()=>{if(document.getElementById('tab-explore').classList.contains('active')){resizeCanvas();draw();}});
+</script>
+</body>
+</html>

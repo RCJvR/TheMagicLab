@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energy &amp; Conservation — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#93c5fd}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(96,165,250,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Physics</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Physics · Lesson 3</div>
+  <h1 class="lesson-title">Energy &amp; Conservation</h1>
+  <p class="lesson-sub">Calculate gravitational potential energy and kinetic energy, and apply the law of conservation of mechanical energy to solve real-world problems.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Simulate</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✓ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📓 Workbook</button>
+</div>
+
+<!-- LESSON TAB -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Work</h2>
+    <p>Work is done when a force causes an object to move through a displacement. Work is a <strong>scalar</strong> quantity measured in joules (J).</p>
+    <div class="formula">W = F · d · cos θ</div>
+    <p>where θ is the angle between the force vector and the displacement vector.</p>
+    <ul>
+      <li><strong>Positive work:</strong> force component is in the same direction as motion (e.g. pushing a box forward). Energy is transferred TO the object.</li>
+      <li><strong>Negative work:</strong> force component opposes motion (e.g. friction, air resistance). Energy is transferred FROM the object.</li>
+      <li><strong>Zero work:</strong> force is perpendicular to displacement (e.g. normal force on a horizontal surface, centripetal force). cos 90° = 0.</li>
+    </ul>
+    <div class="callout"><strong>Example:</strong> A person pushes a 20 kg box 5 m horizontally with a force of 40 N at 30° to the horizontal.<br>W = F·d·cos θ = 40 × 5 × cos 30° = 200 × 0.866 ≈ <strong>173.2 J</strong></div>
+
+    <h2>Work-Energy Theorem</h2>
+    <p>The net work done on an object equals its change in kinetic energy:</p>
+    <div class="formula">W<sub>net</sub> = ΔKE = KE<sub>f</sub> − KE<sub>i</sub></div>
+    <div class="key-fact">This is powerful: if you know all the forces doing work, you can find the change in speed without needing the equations of motion.</div>
+
+    <h2>Kinetic Energy (KE)</h2>
+    <p>Kinetic energy is the energy an object has due to its motion. It is always <strong>positive</strong> (or zero).</p>
+    <div class="formula">KE = ½mv²</div>
+    <p>Note that KE depends on v² — doubling speed quadruples kinetic energy. KE has units of joules (J) and is a scalar.</p>
+
+    <h2>Gravitational Potential Energy (GPE)</h2>
+    <p>GPE is stored energy due to an object's height above a chosen reference level (usually the ground).</p>
+    <div class="formula">GPE = mgh</div>
+    <p>where h is height above the reference point, m is mass (kg), and g = 9.8 m·s⁻². GPE is a scalar measured in joules. The choice of reference point is arbitrary — only changes in GPE matter.</p>
+
+    <h2>Mechanical Energy</h2>
+    <p>The total mechanical energy of an object is the sum of its kinetic and gravitational potential energies:</p>
+    <div class="formula">ME = KE + GPE = ½mv² + mgh</div>
+
+    <h2>Conservation of Mechanical Energy</h2>
+    <p>When only conservative forces act (no friction, no air resistance), mechanical energy is conserved — it stays constant throughout the motion.</p>
+    <div class="formula">½mv₁² + mgh₁ = ½mv₂² + mgh₂</div>
+    <div class="callout">
+      <strong>Worked Example — Ball dropped from 10 m:</strong><br>
+      Mass = 2 kg; h₁ = 10 m; v₁ = 0; h₂ = 0 (ground).<br>
+      GPE₁ = mgh₁ = 2 × 9.8 × 10 = 196 J; KE₁ = 0<br>
+      ME = 196 J (conserved)<br>
+      At ground: KE₂ = 196 J → ½mv₂² = 196 → v₂ = √(196/1) = <strong>14 m·s⁻¹</strong>
+    </div>
+
+    <h2>Energy Lost to Friction</h2>
+    <p>When friction is present, some mechanical energy is converted to thermal energy (heat). The work done by friction equals the loss in mechanical energy:</p>
+    <div class="formula">W<sub>friction</sub> = ME<sub>final</sub> − ME<sub>initial</sub> &nbsp; (always negative)</div>
+    <p>Or equivalently: |W<sub>friction</sub>| = ME<sub>initial</sub> − ME<sub>final</sub></p>
+
+    <h2>Power</h2>
+    <p>Power is the rate of doing work — how quickly energy is transferred.</p>
+    <div class="formula">P = W/t = Fv</div>
+    <p>Unit: watt (W) = J·s⁻¹. P = Fv applies when force and velocity are in the same direction and both are constant.</p>
+    <div class="callout"><strong>Example:</strong> A motor lifts a 500 N load at 2 m·s⁻¹. P = Fv = 500 × 2 = <strong>1 000 W = 1 kW</strong></div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Spring Energy, Hooke's Law &amp; Efficiency</div>
+      <p><strong>Hooke's Law:</strong> The force exerted by a spring is proportional to its extension: F = kx, where k is the spring constant (N·m⁻¹) and x is the extension from natural length. This is valid only within the elastic limit.</p>
+      <p><strong>Elastic Potential Energy:</strong> Energy stored in a compressed or stretched spring:<br>
+      E<sub>p</sub> = ½kx²<br>
+      At maximum compression/extension, all KE has been converted to spring PE (if no energy loss).</p>
+      <p><strong>Efficiency:</strong> No real machine converts 100% of input energy to useful output. Efficiency is defined as:<br>
+      η = (useful energy output / total energy input) × 100%<br>
+      Or equivalently: η = (useful power output / total power input) × 100%<br>
+      Example: A motor uses 500 J of electrical energy to lift a 4 kg mass 10 m. GPE gained = 4 × 9.8 × 10 = 392 J. Efficiency = (392/500) × 100% = 78.4%.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Energy Conservation Visualiser — Ball on Curved Track</h3>
+      <canvas id="energyCanvas" height="360"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Controls</div>
+        <div class="slider-row">
+          <label>Mass (kg)</label>
+          <input type="range" id="slMass" min="1" max="10" value="2" step="0.5" oninput="resetEnergy()">
+          <span class="slider-val" id="valMass">2 kg</span>
+        </div>
+        <div class="slider-row">
+          <label>Start Height</label>
+          <input type="range" id="slH" min="1" max="8" value="5" step="0.5" oninput="resetEnergy()">
+          <span class="slider-val" id="valH">5 m</span>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="mode-btn active" id="btnFric" onclick="toggleFriction()">Friction: OFF</button>
+          <button class="mode-btn active" id="btnPlayE" onclick="togglePlayE()">▶ Play</button>
+          <button class="mode-btn" onclick="resetEnergy()">↺ Reset</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Live Energy Readouts</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">KE</div><div class="readout-val" id="ro-ke">0<span>J</span></div></div>
+          <div class="readout"><div class="readout-label">GPE</div><div class="readout-val" id="ro-gpe">—<span>J</span></div></div>
+          <div class="readout"><div class="readout-label">ME (total)</div><div class="readout-val" id="ro-me">—<span>J</span></div></div>
+          <div class="readout"><div class="readout-label">Heat lost</div><div class="readout-val" id="ro-heat">0<span>J</span></div></div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+          <span style="color:#60a5fa">■</span> KE &nbsp;
+          <span style="color:#4ade80">■</span> GPE &nbsp;
+          <span style="color:#f8fafc">■</span> Total ME &nbsp;
+          <span style="color:#f87171">■</span> Heat
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-val">0/6</div>
+      <div><div style="font-weight:700;color:#fff;margin-bottom:4px">Quiz Complete</div><div style="font-size:13px;color:var(--muted)">Review your answers above.</div></div>
+    </div>
+    <div id="practice-nsc"></div>
+    <div class="ieb-practice" id="practice-ieb"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Show all working. Use g = 9.8 m·s⁻² and assume no air resistance unless stated. State the reference point for GPE in each problem.</div>
+
+    <div class="wb-q"><div class="wb-qnum">Question 1</div><div class="wb-qtext">A 3 kg book is pushed 2 m along a table with a horizontal force of 15 N. Friction exerts a 5 N force opposing motion. (a) Calculate the work done by the applied force. (b) Calculate the work done by friction. (c) Calculate the net work done on the book. (d) By how much does the kinetic energy change?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2</div><div class="wb-qtext">A 0.5 kg ball is dropped from a height of 8 m. Using conservation of mechanical energy (no air resistance): (a) Calculate the GPE at the top. (b) Calculate the KE just before impact. (c) Calculate the speed just before impact.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">A 60 kg rollercoaster car starts from rest at the top of a 25 m hill. It reaches the bottom with a speed of 18 m·s⁻¹. (a) Calculate the ME at the top (take bottom as reference, h = 0). (b) Calculate the ME at the bottom. (c) How much energy was lost to friction? (d) What average friction force acted if the slope length was 30 m?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">A pendulum bob of mass 200 g swings from a height of 0.45 m above its lowest point. Assuming no energy loss: (a) calculate the speed at the lowest point. (b) Explain why the speed at the lowest point does not depend on the mass of the bob.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">An electric motor draws 800 W of power to lift boxes at a rate of one 10 kg box per 5 seconds through a height of 3 m. (a) Calculate the useful power output. (b) Calculate the efficiency of the motor. (c) Where does the "lost" energy go?</div></div>
+  </div>
+</div>
+
+<script>
+// ── Curriculum toggle ──────────────────────────────────────────────
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initEnergy();
+}
+
+// ── Energy Simulation ──────────────────────────────────────────────
+const G=9.8;
+let eInited=false,ePlaying=false,eAnimId=null;
+let ePhase=0; // 0..1 along the track
+let eFriction=false;
+let heatLost=0;
+const FRICTION_COEF=0.08;
+
+function initEnergy(){
+  if(eInited) return;
+  eInited=true;
+  resetEnergy();
+}
+function toggleFriction(){
+  eFriction=!eFriction;
+  document.getElementById('btnFric').textContent='Friction: '+(eFriction?'ON':'OFF');
+  document.getElementById('btnFric').style.color=eFriction?'#f87171':'';
+  resetEnergy();
+}
+function togglePlayE(){
+  if(ePlaying){
+    ePlaying=false;if(eAnimId){cancelAnimationFrame(eAnimId);eAnimId=null;}
+    document.getElementById('btnPlayE').textContent='▶ Play';
+  } else {
+    if(ePhase>=1) resetEnergy();
+    ePlaying=true;document.getElementById('btnPlayE').textContent='⏸ Pause';
+    let last=null;
+    function step(ts){
+      if(!ePlaying) return;
+      if(last===null) last=ts;
+      const dt=Math.min((ts-last)/1000,0.05);last=ts;
+      ePhase+=dt*0.35;
+      if(ePhase>=1){ePhase=1;ePlaying=false;document.getElementById('btnPlayE').textContent='▶ Play';}
+      drawEnergy();
+      if(ePlaying) eAnimId=requestAnimationFrame(step);
+    }
+    eAnimId=requestAnimationFrame(step);
+  }
+}
+function resetEnergy(){
+  if(eAnimId){cancelAnimationFrame(eAnimId);eAnimId=null;}
+  ePlaying=false;ePhase=0;heatLost=0;
+  document.getElementById('btnPlayE').textContent='▶ Play';
+  const m=parseFloat(document.getElementById('slMass').value);
+  const h=parseFloat(document.getElementById('slH').value);
+  document.getElementById('valMass').textContent=m+' kg';
+  document.getElementById('valH').textContent=h+' m';
+  document.getElementById('ro-gpe').innerHTML=(m*G*h).toFixed(1)+'<span>J</span>';
+  document.getElementById('ro-ke').innerHTML='0<span>J</span>';
+  document.getElementById('ro-me').innerHTML=(m*G*h).toFixed(1)+'<span>J</span>';
+  document.getElementById('ro-heat').innerHTML='0<span>J</span>';
+  drawEnergy();
+}
+
+// Track shape: a simple curved hill → parametric
+function trackY(p,W,trackTopY,trackBotY){
+  // Smooth half-sine drop from left high point to bottom to right
+  // p=0 → left top, p=0.5 → bottom, p=1 → right (half height)
+  const h = p<0.5
+    ? trackTopY + (trackBotY-trackTopY)*Math.sin(p*Math.PI)
+    : trackBotY + (trackTopY*0.4-trackBotY)*Math.sin((p-0.5)*Math.PI);
+  return h;
+}
+function trackX(p,W){return 40+p*(W-80);}
+
+function drawEnergy(){
+  const canvas=document.getElementById('energyCanvas');
+  if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||700;
+  const H=360;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#040710';ctx.fillRect(0,0,W,H);
+
+  const m=parseFloat(document.getElementById('slMass').value);
+  const startH=parseFloat(document.getElementById('slH').value);
+  const maxH=8;
+  const trackTopY=40;
+  const trackBotY=220;
+  const trackRightY=trackTopY+0.4*(trackBotY-trackTopY);
+  const BARX=W-90,BARY=40,BARW=30,BARH=trackBotY-40;
+
+  // track path
+  const pts=[];
+  for(let i=0;i<=100;i++){
+    const p=i/100;
+    const ty=p<0.5
+      ? trackTopY+(trackBotY-trackTopY)*Math.sin(p*Math.PI)
+      : trackBotY+(trackRightY-trackBotY)*Math.sin((p-0.5)*Math.PI);
+    pts.push({x:trackX(p,W),y:ty});
+  }
+  ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=3;ctx.beginPath();
+  pts.forEach((pt,i)=>i===0?ctx.moveTo(pt.x,pt.y):ctx.lineTo(pt.x,pt.y));
+  ctx.stroke();
+  // ground
+  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(20,trackBotY+2);ctx.lineTo(W-100,trackBotY+2);ctx.stroke();
+
+  // height arrow
+  const bx=trackX(ePhase,W);
+  const byFn=(p)=> p<0.5
+    ? trackTopY+(trackBotY-trackTopY)*Math.sin(p*Math.PI)
+    : trackBotY+(trackRightY-trackBotY)*Math.sin((p-0.5)*Math.PI);
+  const by=byFn(ePhase);
+
+  // height at current phase
+  const heightFraction=(p)=> p<0.5
+    ? (1-Math.sin(p*Math.PI))
+    : (trackRightY-trackBotY)/trackBotY*(1-Math.sin((p-0.5)*Math.PI))*0;
+  // actual height from track geometry
+  const pixPerM=(trackBotY-trackTopY)/startH;
+  const curH=Math.max(0,(trackBotY-by)/pixPerM);
+
+  const ME0=m*G*startH;
+  let gpe=m*G*curH;
+  let ke=ME0-gpe;
+  if(eFriction){
+    heatLost=ePhase*ME0*FRICTION_COEF*3;
+    heatLost=Math.min(heatLost,ME0*0.35);
+    ke=Math.max(0,ME0-gpe-heatLost);
+    gpe=Math.max(0,ME0-ke-heatLost);
+  }
+  const me=ke+gpe+heatLost;
+
+  document.getElementById('ro-ke').innerHTML=ke.toFixed(1)+'<span>J</span>';
+  document.getElementById('ro-gpe').innerHTML=gpe.toFixed(1)+'<span>J</span>';
+  document.getElementById('ro-me').innerHTML=me.toFixed(1)+'<span>J</span>';
+  document.getElementById('ro-heat').innerHTML=heatLost.toFixed(1)+'<span>J</span>';
+
+  // ── Energy bar chart on right ──
+  ctx.fillStyle='rgba(255,255,255,.06)';
+  ctx.fillRect(BARX-5,BARY-10,BARW+10,BARH+14);
+  ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=1;
+  ctx.strokeRect(BARX-5,BARY-10,BARW+10,BARH+14);
+
+  const drawBar=(x,yBot,val,maxVal,color,label)=>{
+    const bh=Math.max(0,(val/maxVal)*BARH);
+    ctx.fillStyle=color;
+    ctx.fillRect(x,yBot-bh,BARW,bh);
+    ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(label,x+BARW/2,yBot+12);
+    ctx.fillText(val.toFixed(0)+'J',x+BARW/2,Math.max(BARY+4,yBot-bh-4));
+  };
+
+  const colW=BARW;const gap=2;
+  drawBar(BARX, trackBotY, ke, ME0, '#3b82f6','KE');
+
+  // Heat + GPE stacked in one bar
+  ctx.fillStyle='#4ade80';
+  const gpeH=(gpe/ME0)*BARH;
+  const heatH=(heatLost/ME0)*BARH;
+  ctx.fillRect(BARX,trackBotY-gpeH,BARW,gpeH);
+  ctx.fillStyle='#f87171';
+  ctx.fillRect(BARX,trackBotY-gpeH-heatH,BARW,heatH);
+  ctx.fillStyle='rgba(210,218,245,.6)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText('GPE',BARX+BARW/2+2,trackBotY+12);
+
+  // total ME line
+  ctx.strokeStyle='rgba(248,250,252,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(BARX-10,BARY);ctx.lineTo(BARX+BARW+10,BARY);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(248,250,252,.5)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText('ME₀='+ME0.toFixed(0)+'J',BARX+BARW/2,BARY-4);
+
+  // ball
+  const ballR=12;
+  const ballGrad=ctx.createRadialGradient(bx-3,by-18,2,bx,by-15,ballR);
+  ballGrad.addColorStop(0,'#fde68a');ballGrad.addColorStop(1,'#d97706');
+  ctx.beginPath();ctx.arc(bx,by-15,ballR,0,Math.PI*2);ctx.fillStyle=ballGrad;ctx.fill();
+
+  // height dashed line
+  if(curH>0.1){
+    ctx.strokeStyle='rgba(74,222,128,.4)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
+    ctx.beginPath();ctx.moveTo(bx-20,by-15);ctx.lineTo(bx-20,trackBotY);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#4ade80';ctx.font='10px JetBrains Mono';ctx.textAlign='right';
+    ctx.fillText('h='+curH.toFixed(1)+'m',bx-24,(by+trackBotY)/2);
+  }
+
+  // labels
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='10px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('Reference (h = 0)',40,trackBotY+18);
+  if(eFriction){
+    ctx.fillStyle='rgba(248,113,113,.7)';ctx.font='bold 11px Cabinet Grotesk';
+    ctx.fillText('⚠ Friction ON — ME decreasing',40,trackBotY+36);
+  }
+}
+
+window.addEventListener('resize',()=>{if(eInited) drawEnergy();});
+
+// ── Practice ───────────────────────────────────────────────────────
+const nscQs=[
+  {q:"A force of 50 N pushes a box 4 m at 60° to the direction of motion. How much work is done?",opts:["200 J","100 J","173 J","50 J"],ans:1,exp:"W = F·d·cos θ = 50 × 4 × cos 60° = 200 × 0.5 = 100 J."},
+  {q:"A 4 kg ball moves at 5 m·s⁻¹. What is its kinetic energy?",opts:["100 J","20 J","50 J","40 J"],ans:2,exp:"KE = ½mv² = ½ × 4 × 5² = ½ × 4 × 25 = 50 J."},
+  {q:"A 3 kg object is held 6 m above the ground. What is its GPE? (g = 9.8 m·s⁻²)",opts:["176.4 J","18 J","88.2 J","58.8 J"],ans:0,exp:"GPE = mgh = 3 × 9.8 × 6 = 176.4 J."},
+  {q:"A ball of mass 2 kg is dropped from 5 m (no air resistance). What is its speed just before hitting the ground?",opts:["9.8 m·s⁻¹","7 m·s⁻¹","9.9 m·s⁻¹","14 m·s⁻¹"],ans:2,exp:"Conservation of ME: mgh = ½mv² → v = √(2gh) = √(2 × 9.8 × 5) = √98 ≈ 9.9 m·s⁻¹."},
+  {q:"The net work done on an object is 120 J. Its initial KE was 30 J. What is its final KE?",opts:["90 J","150 J","120 J","30 J"],ans:1,exp:"Work-energy theorem: Wnet = ΔKE → KE_f = KE_i + Wnet = 30 + 120 = 150 J."},
+  {q:"An engine does 6 000 J of work in 30 s. What is its power output?",opts:["180 000 W","200 W","2 000 W","600 W"],ans:1,exp:"P = W/t = 6000/30 = 200 W."}
+];
+
+const iebQs=[
+  {q:"A spring with k = 400 N·m⁻¹ is compressed by 0.15 m. What is the elastic PE stored? <span class='ieb-badge'>IEB</span>",opts:["60 J","30 J","4.5 J","9 J"],ans:2,exp:"Ep = ½kx² = ½ × 400 × (0.15)² = 200 × 0.0225 = 4.5 J."},
+  {q:"A motor uses 2 000 J to lift a load through 8 m. The load weighs 200 N. What is the efficiency? <span class='ieb-badge'>IEB</span>",opts:["80%","40%","62.5%","100%"],ans:0,exp:"Useful energy output = F × d = 200 × 8 = 1 600 J. Efficiency = (1600/2000) × 100% = 80%."}
+];
+
+let scores=0,answered=0;
+function buildPractice(){
+  const nsc=document.getElementById('practice-nsc');
+  nscQs.forEach((q,i)=>nsc.appendChild(makeCard(q,i)));
+  const ieb=document.getElementById('practice-ieb');
+  iebQs.forEach((q,i)=>ieb.appendChild(makeCard(q,i+nscQs.length)));
+}
+function makeCard(q,idx){
+  const card=document.createElement('div');card.className='q-card';
+  card.innerHTML=`<div class="q-num">Question ${idx+1}</div><div class="q-text">${q.q}</div><div class="mc-options" id="opts-${idx}"></div><div class="feedback" id="fb-${idx}"></div>`;
+  const opts=card.querySelector(`#opts-${idx}`);
+  q.opts.forEach((o,oi)=>{
+    const btn=document.createElement('button');btn.className='mc-opt';
+    btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+oi)}</span>${o}`;
+    btn.onclick=()=>pick(idx,oi,q,opts);
+    opts.appendChild(btn);
+  });
+  return card;
+}
+function pick(idx,chosen,q,opts){
+  opts.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+  opts.querySelectorAll('.mc-opt')[chosen].classList.add(chosen===q.ans?'correct':'wrong');
+  if(chosen!==q.ans) opts.querySelectorAll('.mc-opt')[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb-'+idx);
+  fb.textContent=q.exp;fb.className='feedback show '+(chosen===q.ans?'ok':'bad');
+  if(chosen===q.ans) scores++;
+  answered++;
+  if(answered===nscQs.length){
+    document.getElementById('score-val').textContent=scores+'/'+nscQs.length;
+    document.getElementById('score-banner').classList.add('show');
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

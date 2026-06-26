@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waves, Sound &amp; Light — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Physics</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Physics · Lesson 5</div>
+  <div class="lesson-title">Waves, Sound &amp; Light</div>
+  <div class="lesson-sub">Explore how waves transfer energy, how sound travels through media, and how light reflects, refracts, and undergoes total internal reflection.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">📖 Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📋 Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>What is a Wave?</h2>
+    <p>A wave is a disturbance that transfers energy through a medium (or through space for electromagnetic waves) without transferring matter. The material through which the wave travels is called the <strong>medium</strong>.</p>
+    <ul>
+      <li><strong>Pulse:</strong> a single disturbance moving through a medium (e.g. flicking a rope once).</li>
+      <li><strong>Continuous wave:</strong> a regular, repeated disturbance (e.g. shaking a rope up and down continuously).</li>
+    </ul>
+    <div class="callout"><strong>Key Idea:</strong> Waves transfer energy, not matter. The medium particles vibrate around their rest positions — they don't travel with the wave.</div>
+
+    <h2>Transverse Waves</h2>
+    <p>In a transverse wave, particles vibrate <em>perpendicular</em> to the direction of wave travel. Examples: light, water surface waves, waves on a string.</p>
+    <ul>
+      <li><strong>Crest:</strong> highest point above rest position</li>
+      <li><strong>Trough:</strong> lowest point below rest position</li>
+      <li><strong>Amplitude (A):</strong> maximum displacement from rest; measured in metres (m)</li>
+      <li><strong>Wavelength (λ):</strong> distance between two consecutive identical points (e.g. crest to crest); unit: metres (m)</li>
+      <li><strong>Rest position:</strong> the undisturbed position of the medium</li>
+    </ul>
+
+    <h2>Longitudinal Waves</h2>
+    <p>In a longitudinal wave, particles vibrate <em>parallel</em> to the direction of wave travel. Sound is the most important example. Longitudinal waves cannot travel through a vacuum — they need a medium.</p>
+    <ul>
+      <li><strong>Compression:</strong> region where particles are bunched together (high pressure)</li>
+      <li><strong>Rarefaction:</strong> region where particles are spread apart (low pressure)</li>
+    </ul>
+    <div class="callout"><strong>Remember:</strong> Sound cannot travel through a vacuum because there are no particles to compress and rarefy.</div>
+
+    <h2>Wave Properties and Equations</h2>
+    <table class="symbols-table">
+      <tr><th>Quantity</th><th>Symbol</th><th>Unit</th><th>Definition</th></tr>
+      <tr><td>Amplitude</td><td>A</td><td>m</td><td>Max displacement from rest</td></tr>
+      <tr><td>Wavelength</td><td>λ (lambda)</td><td>m</td><td>Length of one complete wave</td></tr>
+      <tr><td>Frequency</td><td>f</td><td>Hz (hertz)</td><td>Number of complete waves per second</td></tr>
+      <tr><td>Period</td><td>T</td><td>s</td><td>Time for one complete wave</td></tr>
+      <tr><td>Wave speed</td><td>v</td><td>m/s</td><td>Distance travelled per second</td></tr>
+    </table>
+    <div class="formula">T = 1/f &nbsp;&nbsp;&nbsp; v = f × λ</div>
+    <div class="key-fact">Example: f = 200 Hz, λ = 1.7 m → v = 200 × 1.7 = 340 m/s</div>
+
+    <h2>Sound Waves</h2>
+    <p>Sound is a longitudinal pressure wave that requires a medium. Its speed depends on the properties of the medium:</p>
+    <ul>
+      <li>Sound travels fastest in <strong>solids</strong>, then liquids, then gases (slowest)</li>
+      <li>Speed in air ≈ <strong>340 m/s</strong> at 20°C</li>
+      <li><strong>Pitch</strong> is determined by frequency (higher f → higher pitch)</li>
+      <li><strong>Loudness</strong> is determined by amplitude (larger A → louder)</li>
+      <li><strong>Quality (timbre)</strong> is determined by the waveform shape</li>
+    </ul>
+    <p><strong>Echo:</strong> reflection of sound off a hard surface. Used in sonar (mapping ocean floor) and ultrasound (medical imaging, typically 1–20 MHz, above human hearing range of 20–20,000 Hz).</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Doppler Effect</div>
+      <p>When a source of sound moves relative to an observer, the observed frequency differs from the emitted frequency. Moving toward each other → higher pitch; moving apart → lower pitch.</p>
+      <div class="formula">f<sub>o</sub> = f<sub>s</sub> × (v ± v<sub>o</sub>) / (v ∓ v<sub>s</sub>)</div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px">v = speed of sound; v<sub>o</sub> = speed of observer; v<sub>s</sub> = speed of source. Use + for approach, − for recession (top/bottom swap accordingly).</p>
+    </div>
+
+    <h2>Light — Electromagnetic Waves</h2>
+    <p>Light is a transverse electromagnetic wave. It does <em>not</em> require a medium and travels at <strong>c = 3 × 10⁸ m/s</strong> in a vacuum. Visible light has wavelengths from approximately 400 nm (violet) to 700 nm (red).</p>
+
+    <h2>Reflection of Light</h2>
+    <p>When light strikes a surface, it bounces off according to the <strong>Law of Reflection</strong>:</p>
+    <div class="callout"><strong>Angle of incidence = Angle of reflection</strong> (both measured from the normal to the surface)</div>
+    <p>A <strong>plane mirror</strong> forms an image that is: virtual, upright, laterally inverted, the same size as the object, and the same distance behind the mirror as the object is in front.</p>
+
+    <h2>Refraction of Light</h2>
+    <p>Refraction is the bending of light as it crosses the boundary between two media with different optical densities. The speed of light changes, causing the direction to change (unless it hits the boundary at 90°).</p>
+    <p>The <strong>refractive index</strong> of a medium:</p>
+    <div class="formula">n = c / v</div>
+    <p>where c = speed of light in vacuum, v = speed in the medium. A higher n means slower light and more bending.</p>
+    <p><strong>Snell's Law</strong> relates the angles at a boundary:</p>
+    <div class="formula">n₁ sin θ₁ = n₂ sin θ₂</div>
+    <p>Light bends <em>toward</em> the normal when entering a denser medium (higher n) and away from the normal when entering a less dense medium.</p>
+
+    <h2>Total Internal Reflection</h2>
+    <p>When light travels from a denser to a less dense medium, if the angle of incidence exceeds the <strong>critical angle (θ<sub>c</sub>)</strong>, all light is reflected back into the denser medium — no refraction occurs.</p>
+    <div class="formula">n₁ sin θ<sub>c</sub> = n₂ &nbsp;&nbsp;&nbsp; (when n₂ = 1 for air: sin θ<sub>c</sub> = 1/n₁)</div>
+    <p>Applications: <strong>optical fibres</strong> (data transmission, endoscopes), diamond cutting, periscopes using prisms.</p>
+
+    <h2>Dispersion</h2>
+    <p>White light is a mixture of all visible wavelengths. When it passes through a prism, different wavelengths refract by different amounts (violet bends most, red least), splitting white light into a spectrum: <strong>ROYGBIV</strong>.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Huygens' Principle &amp; Thin Lenses</div>
+      <p><strong>Huygens' Principle:</strong> every point on a wavefront acts as a source of secondary wavelets; the new wavefront is the envelope of all secondary wavelets. Explains diffraction and refraction geometrically.</p>
+      <p style="margin-top:8px"><strong>Thin Lens Equation:</strong></p>
+      <div class="formula">1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub> &nbsp;&nbsp;&nbsp; m = −d<sub>i</sub>/d<sub>o</sub></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:4px">f = focal length; d<sub>o</sub> = object distance; d<sub>i</sub> = image distance; m = magnification. Converging lens: f > 0. Diverging lens: f &lt; 0.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="sim-title">Wave &amp; Optics Simulator</h3>
+      <canvas id="waveCanvas" height="260"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Simulation Mode</div>
+        <button class="mode-btn active" id="modeTransverse" onclick="setMode('transverse')">Transverse Wave</button>
+        <button class="mode-btn" id="modeLong" onclick="setMode('longitudinal')">Sound Wave</button>
+        <button class="mode-btn" id="modeSnell" onclick="setMode('snell')">Snell's Law</button>
+      </div>
+      <div class="ctrl-card" id="sliderCard">
+        <div class="ctrl-label">Controls</div>
+        <div id="transSliders">
+          <div class="slider-row">
+            <label>Frequency</label>
+            <input type="range" id="freqSlider" min="1" max="5" value="2" step="0.1" oninput="updateSim()">
+            <span class="slider-val" id="freqVal">2.0 Hz</span>
+          </div>
+          <div class="slider-row">
+            <label>Amplitude</label>
+            <input type="range" id="ampSlider" min="10" max="60" value="35" oninput="updateSim()">
+            <span class="slider-val" id="ampVal">35 px</span>
+          </div>
+        </div>
+        <div id="snellSliders" style="display:none">
+          <div class="slider-row">
+            <label>θ₁ (incidence)</label>
+            <input type="range" id="theta1Slider" min="5" max="75" value="30" oninput="updateSim()">
+            <span class="slider-val" id="theta1Val">30°</span>
+          </div>
+          <div class="slider-row">
+            <label>n₂ / n₁</label>
+            <input type="range" id="n2Slider" min="10" max="25" value="15" oninput="updateSim()">
+            <span class="slider-val" id="n2Val">1.5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="readout-grid" id="readoutGrid">
+      <div class="readout"><div class="readout-label">Wavelength λ</div><div class="readout-val" id="ro-lambda">— <span>m</span></div></div>
+      <div class="readout"><div class="readout-label">Wave Speed v</div><div class="readout-val" id="ro-speed">— <span>m/s</span></div></div>
+      <div class="readout"><div class="readout-label">Period T</div><div class="readout-val" id="ro-period">— <span>s</span></div></div>
+      <div class="readout"><div class="readout-label">Frequency f</div><div class="readout-val" id="ro-freq">— <span>Hz</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete! Review your answers below.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Question 1 — Wave Equation</div>
+      <div class="q-text">A wave has a frequency of 5 Hz and a wavelength of 2 m. What is its speed?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">A</span>2.5 m/s</button>
+        <button class="mc-opt" onclick="answer(this,true,'q1')"><span class="opt-letter">B</span>10 m/s</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">C</span>7 m/s</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">D</span>0.4 m/s</button>
+      </div>
+      <div class="feedback ok" id="fb-q1-ok">Correct! v = f × λ = 5 × 2 = 10 m/s.</div>
+      <div class="feedback bad" id="fb-q1-bad">Not quite. Use v = f × λ: 5 Hz × 2 m = 10 m/s.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Question 2 — Wave Types</div>
+      <div class="q-text">Which of the following is a longitudinal wave?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">A</span>Light from the Sun</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">B</span>A wave on a guitar string</button>
+        <button class="mc-opt" onclick="answer(this,true,'q2')"><span class="opt-letter">C</span>Sound travelling through air</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">D</span>A water ripple on a pond surface</button>
+      </div>
+      <div class="feedback ok" id="fb-q2-ok">Correct! Sound is a longitudinal wave — particles vibrate parallel to the direction of propagation.</div>
+      <div class="feedback bad" id="fb-q2-bad">Not quite. Light, guitar strings, and water ripples are transverse. Sound is longitudinal.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Question 3 — Sound Properties</div>
+      <div class="q-text">A sound wave has a period of 0.004 s. What is its frequency and what property of sound does a higher frequency affect?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">A</span>f = 400 Hz; affects loudness</button>
+        <button class="mc-opt" onclick="answer(this,true,'q3')"><span class="opt-letter">B</span>f = 250 Hz; affects pitch</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">C</span>f = 250 Hz; affects loudness</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">D</span>f = 400 Hz; affects pitch</button>
+      </div>
+      <div class="feedback ok" id="fb-q3-ok">Correct! f = 1/T = 1/0.004 = 250 Hz. Higher frequency → higher pitch.</div>
+      <div class="feedback bad" id="fb-q3-bad">f = 1/T = 1/0.004 = 250 Hz. Frequency determines pitch; amplitude determines loudness.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Question 4 — Reflection</div>
+      <div class="q-text">A ray of light strikes a plane mirror at an angle of 35° to the mirror surface. What is the angle of reflection (measured from the normal)?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">A</span>35°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">B</span>70°</button>
+        <button class="mc-opt" onclick="answer(this,true,'q4')"><span class="opt-letter">C</span>55°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">D</span>45°</button>
+      </div>
+      <div class="feedback ok" id="fb-q4-ok">Correct! Angle from surface = 35°, so angle from normal = 90° − 35° = 55°. By law of reflection, angle of reflection = 55°.</div>
+      <div class="feedback bad" id="fb-q4-bad">Angles are measured from the normal. If the ray is 35° from the mirror surface, it is 55° from the normal. The angle of reflection equals the angle of incidence = 55°.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Question 5 — Snell's Law</div>
+      <div class="q-text">Light travels from water (n = 1.33) into air (n = 1.00) at an angle of incidence of 30°. What is the angle of refraction?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">A</span>22°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">B</span>30°</button>
+        <button class="mc-opt" onclick="answer(this,true,'q5')"><span class="opt-letter">C</span>41.7°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">D</span>48.5°</button>
+      </div>
+      <div class="feedback ok" id="fb-q5-ok">Correct! n₁sinθ₁ = n₂sinθ₂ → 1.33 × sin30° = 1.00 × sinθ₂ → sinθ₂ = 0.665 → θ₂ ≈ 41.7°. Light bends away from normal when entering less dense medium.</div>
+      <div class="feedback bad" id="fb-q5-bad">Apply Snell's Law: 1.33 × sin30° = 1.00 × sinθ₂ → sinθ₂ = 1.33 × 0.5 = 0.665 → θ₂ = sin⁻¹(0.665) ≈ 41.7°.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Question 6 — Total Internal Reflection</div>
+      <div class="q-text">Glass has a refractive index of 1.5. What is the critical angle for a glass–air boundary?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">A</span>48.6°</button>
+        <button class="mc-opt" onclick="answer(this,true,'q6')"><span class="opt-letter">B</span>41.8°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">C</span>33.6°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">D</span>56.4°</button>
+      </div>
+      <div class="feedback ok" id="fb-q6-ok">Correct! sinθ<sub>c</sub> = n₂/n₁ = 1/1.5 = 0.667 → θ<sub>c</sub> = sin⁻¹(0.667) ≈ 41.8°.</div>
+      <div class="feedback bad" id="fb-q6-bad">Use sinθ<sub>c</sub> = 1/n = 1/1.5 = 0.667 → θ<sub>c</sub> = sin⁻¹(0.667) ≈ 41.8°.</div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" id="ieb-practice-section">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB Extension Practice <span class="ieb-badge">IEB ONLY</span></div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Question 1 — Doppler Effect</div>
+        <div class="q-text">An ambulance emits a siren at 800 Hz and moves toward a stationary observer at 30 m/s. The speed of sound is 340 m/s. What frequency does the observer hear?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">A</span>730 Hz</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq1')"><span class="opt-letter">B</span>873 Hz</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">C</span>856 Hz</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">D</span>800 Hz</button>
+        </div>
+        <div class="feedback ok" id="fb-iq1-ok">Correct! f<sub>o</sub> = f<sub>s</sub> × v/(v − v<sub>s</sub>) = 800 × 340/(340 − 30) = 800 × 340/310 ≈ 873 Hz. Source approaching → frequency increases.</div>
+        <div class="feedback bad" id="fb-iq1-bad">f<sub>o</sub> = f<sub>s</sub> × v/(v − v<sub>s</sub>) = 800 × 340/310 ≈ 873 Hz. The observer is stationary (v<sub>o</sub> = 0); source moves toward observer so denominator decreases, increasing frequency.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Question 2 — Critical Angle &amp; Optical Fibres</div>
+        <div class="q-text">An optical fibre core has n = 1.62. What is the critical angle, and why must light hit the core-cladding boundary at an angle greater than this value for the fibre to work?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">A</span>θ<sub>c</sub> = 51.8°; light must travel through cladding</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq2')"><span class="opt-letter">B</span>θ<sub>c</sub> ≈ 38.1°; total internal reflection keeps light inside the core</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">C</span>θ<sub>c</sub> ≈ 38.1°; refraction directs light through cladding</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">D</span>θ<sub>c</sub> = 62°; refraction at the boundary is maximised</button>
+        </div>
+        <div class="feedback ok" id="fb-iq2-ok">Correct! sinθ<sub>c</sub> = 1/1.62 = 0.617 → θ<sub>c</sub> ≈ 38.1°. When light hits the boundary at angles greater than θ<sub>c</sub>, total internal reflection occurs, keeping all light inside the fibre core for lossless transmission.</div>
+        <div class="feedback bad" id="fb-iq2-bad">sinθ<sub>c</sub> = 1/n = 1/1.62 ≈ 0.617 → θ<sub>c</sub> ≈ 38.1°. For total internal reflection (needed in optical fibres), incidence angle must exceed θ<sub>c</sub> so no light escapes into the cladding.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Print Workbook</button>
+    <div class="wb-intro">Complete these questions in your notebook. Show all working for calculation questions. Draw clearly labelled diagrams where requested.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 — Wave Equation Calculation</div>
+      <div class="wb-qtext">A radio station broadcasts at a frequency of 94.5 MHz. The speed of electromagnetic waves is 3 × 10⁸ m/s. Calculate the wavelength of the radio waves. Show all working including the formula used, substitution, and units in your answer.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 — Snell's Law Calculation</div>
+      <div class="wb-qtext">A ray of light passes from air (n₁ = 1.00) into a glass block (n₂ = 1.52) at an angle of incidence of 45°.<br>(a) Calculate the angle of refraction inside the glass.<br>(b) State whether the refracted ray bends toward or away from the normal, and explain why.<br>(c) Calculate the speed of light inside the glass block.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 — Reflection Diagram</div>
+      <div class="wb-qtext">Draw a clearly labelled diagram showing a ray of light striking a plane mirror at an angle of 40° to the normal. Include: the incident ray, the normal, the reflected ray, the angle of incidence, and the angle of reflection. State the law of reflection and explain how it applies to your diagram.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 — Total Internal Reflection</div>
+      <div class="wb-qtext">Diamond has a refractive index of 2.42.<br>(a) Calculate the critical angle for diamond in air.<br>(b) Explain what total internal reflection is and the two conditions required for it to occur.<br>(c) Explain why diamonds are cut with many facets (flat surfaces at specific angles).</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 — Sound Properties</div>
+      <div class="wb-qtext">A tuning fork produces a sound wave with a frequency of 440 Hz (musical note A). The speed of sound in air is 340 m/s.<br>(a) Calculate the wavelength of this sound wave.<br>(b) Calculate the period of this wave.<br>(c) If the amplitude of the wave is increased, what property of the sound changes? Explain.<br>(d) Explain why this sound cannot be heard in outer space.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Curriculum toggle
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+
+  // Tab switching
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  // Practice scoring
+  const answered = {};
+  let score = 0;
+  function answer(btn, correct, qid){
+    if(answered[qid]) return;
+    answered[qid] = true;
+    const opts = btn.closest('.mc-options').querySelectorAll('.mc-opt');
+    opts.forEach(o => o.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
+    if(fb){ fb.classList.add('show'); }
+    if(correct && !qid.startsWith('i')) {
+      score++;
+      const nsc = Object.keys(answered).filter(k=>!k.startsWith('i')).length;
+      if(nsc===6){ const b=document.getElementById('scoreBanner'); b.classList.add('show'); document.getElementById('scoreNum').textContent=score+'/6'; }
+    }
+  }
+
+  // ---- SIMULATION ----
+  const canvas = document.getElementById('waveCanvas');
+  const ctx = canvas.getContext('2d');
+  let simMode = 'transverse';
+  let animFrame = null;
+  let t = 0;
+
+  function setMode(mode){
+    simMode = mode;
+    ['modeTransverse','modeLong','modeSnell'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    const map = {transverse:'modeTransverse',longitudinal:'modeLong',snell:'modeSnell'};
+    document.getElementById(map[mode]).classList.add('active');
+    document.getElementById('transSliders').style.display = (mode==='snell') ? 'none' : 'block';
+    document.getElementById('snellSliders').style.display = (mode==='snell') ? 'block' : 'none';
+    t=0;
+    updateSim();
+    animate();
+  }
+
+  function updateSim(){
+    const f = parseFloat(document.getElementById('freqSlider').value);
+    const A = parseFloat(document.getElementById('ampSlider').value);
+    document.getElementById('freqVal').textContent = f.toFixed(1)+' Hz';
+    document.getElementById('ampVal').textContent = A.toFixed(0)+' px';
+    const theta1 = parseFloat(document.getElementById('theta1Slider').value);
+    const n2raw = parseFloat(document.getElementById('n2Slider').value)/10;
+    document.getElementById('theta1Val').textContent = theta1+'°';
+    document.getElementById('n2Val').textContent = n2raw.toFixed(1);
+
+    if(simMode!=='snell'){
+      const v = 340; // m/s representative
+      const lambda = v/f;
+      document.getElementById('ro-lambda').innerHTML = lambda.toFixed(2)+'<span>m</span>';
+      document.getElementById('ro-speed').innerHTML = v+'<span>m/s</span>';
+      document.getElementById('ro-period').innerHTML = (1/f).toFixed(3)+'<span>s</span>';
+      document.getElementById('ro-freq').innerHTML = f.toFixed(1)+'<span>Hz</span>';
+    } else {
+      const t1r = theta1*Math.PI/180;
+      const n1=1.0;
+      const sinT2 = n1*Math.sin(t1r)/n2raw;
+      const t2 = sinT2<=1 ? Math.asin(sinT2)*180/Math.PI : null;
+      document.getElementById('ro-lambda').innerHTML = 'n₁ = 1.00';
+      document.getElementById('ro-speed').innerHTML = 'n₂ = '+n2raw.toFixed(2);
+      document.getElementById('ro-period').innerHTML = 'θ₁ = '+theta1+'°';
+      document.getElementById('ro-freq').innerHTML = t2!==null ? 'θ₂ = '+t2.toFixed(1)+'°' : 'TIR';
+    }
+  }
+
+  function resizeCanvas(){
+    const dpr = window.devicePixelRatio||1;
+    const w = canvas.parentElement.clientWidth - 32;
+    canvas.style.width = w+'px';
+    canvas.style.height = '260px';
+    canvas.width = w*dpr;
+    canvas.height = 260*dpr;
+    ctx.scale(dpr,dpr);
+  }
+
+  function drawTransverse(){
+    const w = canvas.clientWidth, h = 260;
+    ctx.clearRect(0,0,w,h);
+    const f = parseFloat(document.getElementById('freqSlider').value);
+    const A = parseFloat(document.getElementById('ampSlider').value);
+    const lambda = w/3;
+    // Rest line
+    ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+    // Wave
+    ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let x=0;x<=w;x++){
+      const y = h/2 - A*Math.sin(2*Math.PI*(x/lambda - f*t*0.05));
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // λ label
+    const xA=30, xB=30+lambda;
+    ctx.strokeStyle='rgba(147,197,253,0.5)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(xA,h/2-A-18);ctx.lineTo(xA,h/2+A+18);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(xB,h/2-A-18);ctx.lineTo(xB,h/2+A+18);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle='#93c5fd';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(xA,h/2-A-12);ctx.lineTo(xB,h/2-A-12);ctx.stroke();
+    ctx.fillStyle='#93c5fd';ctx.font='bold 12px monospace';ctx.textAlign='center';
+    ctx.fillText('λ',(xA+xB)/2,h/2-A-18);
+    // Amplitude arrow
+    const xM=w*0.7;
+    const yWave = h/2 - A*Math.sin(2*Math.PI*(xM/lambda - f*t*0.05));
+    ctx.strokeStyle='#86efac';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(xM,h/2);ctx.lineTo(xM,yWave);ctx.stroke();
+    ctx.fillStyle='#86efac';ctx.font='bold 11px monospace';ctx.textAlign='left';
+    ctx.fillText('A',xM+5,(h/2+yWave)/2);
+    // Labels
+    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='11px monospace';ctx.textAlign='left';
+    ctx.fillText('Crest',5,h/2-A-4);
+    ctx.fillText('Trough',5,h/2+A+14);
+  }
+
+  function drawLongitudinal(){
+    const w = canvas.clientWidth, h = 260;
+    ctx.clearRect(0,0,w,h);
+    const f = parseFloat(document.getElementById('freqSlider').value);
+    const A = parseFloat(document.getElementById('ampSlider').value);
+    const N = 60;
+    const spacing = w/N;
+    // Draw dots
+    for(let i=0;i<N;i++){
+      const baseX = (i+0.5)*spacing;
+      const disp = A*0.3*Math.sin(2*Math.PI*(baseX/w*2 - f*t*0.05));
+      const x = baseX + disp;
+      const density = 1-disp/(A*0.3+1)*0.5;
+      const alpha = Math.min(1,Math.max(0.2,density));
+      ctx.fillStyle=`rgba(96,165,250,${alpha})`;
+      ctx.beginPath();ctx.arc(x,h/2,4,0,Math.PI*2);ctx.fill();
+    }
+    // Labels
+    ctx.fillStyle='rgba(147,197,253,0.7)';ctx.font='bold 11px monospace';ctx.textAlign='center';
+    ctx.fillText('◄ compression',w*0.22,h/2-30);
+    ctx.fillText('rarefaction ►',w*0.72,h/2+42);
+    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px sans-serif';
+    ctx.fillText('Longitudinal / Sound Wave — particles oscillate along direction of travel',w/2,h-16);
+  }
+
+  function drawSnell(){
+    const w = canvas.clientWidth, h = 260;
+    ctx.clearRect(0,0,w,h);
+    const theta1deg = parseFloat(document.getElementById('theta1Slider').value);
+    const n2 = parseFloat(document.getElementById('n2Slider').value)/10;
+    const n1=1.0;
+    const theta1 = theta1deg*Math.PI/180;
+    const sinT2 = n1*Math.sin(theta1)/n2;
+    const tir = sinT2>1;
+
+    // Media
+    ctx.fillStyle='rgba(96,165,250,0.07)';ctx.fillRect(0,0,w,h/2);
+    ctx.fillStyle='rgba(59,130,246,0.13)';ctx.fillRect(0,h/2,w,h/2);
+    ctx.fillStyle='rgba(147,197,253,0.35)';ctx.font='11px monospace';ctx.textAlign='left';
+    ctx.fillText('n₁ = 1.00 (air)',8,20);
+    ctx.fillText('n₂ = '+n2.toFixed(2)+' (glass)',8,h/2+18);
+
+    // Boundary
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Normal
+    const cx=w/2;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx,20);ctx.lineTo(cx,h-20);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Incident ray
+    const len=120;
+    const ix = cx - len*Math.sin(theta1);
+    const iy = h/2 - len*Math.cos(theta1);
+    ctx.strokeStyle='#fbbf24';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(ix,iy);ctx.lineTo(cx,h/2);ctx.stroke();
+    // arrowhead
+    ctx.fillStyle='#fbbf24';
+    const dx1=cx-ix,dy1=h/2-iy,d1=Math.sqrt(dx1*dx1+dy1*dy1);
+    const ux=dx1/d1,uy=dy1/d1;
+    ctx.beginPath();ctx.moveTo(cx,h/2);ctx.lineTo(cx-ux*12+uy*5,h/2-uy*12-ux*5);ctx.lineTo(cx-ux*12-uy*5,h/2-uy*12+ux*5);ctx.closePath();ctx.fill();
+
+    // Refracted or TIR
+    if(!tir){
+      const theta2 = Math.asin(sinT2);
+      const rx = cx + len*Math.sin(theta2);
+      const ry = h/2 + len*Math.cos(theta2);
+      ctx.strokeStyle='#86efac';ctx.lineWidth=2.5;
+      ctx.beginPath();ctx.moveTo(cx,h/2);ctx.lineTo(rx,ry);ctx.stroke();
+      // Angle arcs
+      ctx.strokeStyle='rgba(251,191,36,0.5)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(cx,h/2,40,Math.PI*1.5,Math.PI*1.5+theta1,false);ctx.stroke();
+      ctx.strokeStyle='rgba(134,239,172,0.5)';
+      ctx.beginPath();ctx.arc(cx,h/2,40,Math.PI*0.5-theta2,Math.PI*0.5,false);ctx.stroke();
+      // Labels
+      ctx.fillStyle='#fbbf24';ctx.font='bold 12px monospace';ctx.textAlign='left';
+      ctx.fillText('θ₁='+theta1deg+'°',cx+5,h/2-35);
+      ctx.fillStyle='#86efac';
+      ctx.fillText('θ₂='+(theta2*180/Math.PI).toFixed(1)+'°',cx+5,h/2+50);
+      ctx.fillStyle='rgba(134,239,172,0.6)';ctx.font='11px monospace';
+      ctx.fillText('Refracted ray',rx-80,ry-8);
+    } else {
+      // TIR — reflected ray
+      const rx = cx + len*Math.sin(theta1);
+      const ry = h/2 - len*Math.cos(theta1);
+      ctx.strokeStyle='#f87171';ctx.lineWidth=2.5;ctx.setLineDash([6,3]);
+      ctx.beginPath();ctx.moveTo(cx,h/2);ctx.lineTo(rx,ry);ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#f87171';ctx.font='bold 12px monospace';ctx.textAlign='center';
+      ctx.fillText('TOTAL INTERNAL REFLECTION',w/2,h-28);
+      ctx.fillText('θ > critical angle',w/2,h-12);
+    }
+    ctx.fillStyle='rgba(251,191,36,0.6)';ctx.font='11px monospace';ctx.textAlign='right';
+    ctx.fillText('Incident ray',ix+55,iy+15);
+  }
+
+  function animate(){
+    if(animFrame) cancelAnimationFrame(animFrame);
+    function loop(){
+      t++;
+      if(simMode==='transverse') drawTransverse();
+      else if(simMode==='longitudinal') drawLongitudinal();
+      else drawSnell();
+      animFrame = requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  function initSim(){
+    resizeCanvas();
+    updateSim();
+    animate();
+  }
+
+  window.addEventListener('resize',()=>{ if(document.getElementById('tab-explore').classList.contains('active')){ resizeCanvas(); }});
+</script>
+</body>
+</html>

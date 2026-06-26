@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Bonding — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+.lesson-header{padding:36px 40px 24px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#fcd34d}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(251,191,36,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+.mol-select{font-family:var(--fm);font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);padding:8px 14px;cursor:pointer;width:100%}
+.bond-desc{font-size:13px;color:rgba(210,218,245,.78);line-height:1.75;margin-top:12px}
+.bond-desc strong{color:#fcd34d}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Matter &amp; Materials · Lesson 2</div>
+  <h1 class="lesson-title">Chemical Bonding</h1>
+  <p class="lesson-sub">Discover how atoms bond — through electron transfer (ionic) or electron sharing (covalent) — and why the type of bond determines a substance's properties.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:13px;height:13px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:13px;height:13px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:13px;height:13px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:13px;height:13px"></i> Workbook</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Why Do Atoms Bond?</h2>
+    <p>Atoms form chemical bonds to achieve a more stable electron configuration — specifically, a <em>full outer electron shell</em>. This stable state is called the <strong>noble gas configuration</strong>. Most atoms have partially filled outer shells and are energetically "uncomfortable" — bonding with other atoms lowers their energy and increases stability.</p>
+    <div class="callout"><strong>The Octet Rule:</strong> Most atoms aim for 8 electrons in their outer shell (or 2 for hydrogen and helium). Atoms achieve this by losing, gaining, or sharing electrons with other atoms.</div>
+
+    <h2>Ionic Bonding</h2>
+    <p>Ionic bonding occurs between a <strong>metal</strong> and a <strong>non-metal</strong>. The metal atom has few valence electrons (usually 1–3) and loses them to the non-metal, which has many valence electrons (usually 5–7) and gains them. This transfer creates charged particles called <strong>ions</strong>:</p>
+    <ul>
+      <li>The metal loses electrons → becomes a positively charged <strong>cation</strong> (e.g. Na⁺, Mg²⁺, Ca²⁺)</li>
+      <li>The non-metal gains electrons → becomes a negatively charged <strong>anion</strong> (e.g. Cl⁻, O²⁻, F⁻)</li>
+    </ul>
+    <p>The oppositely charged ions attract each other strongly — this electrostatic attraction is the ionic bond. The ions arrange themselves into a regular, repeating 3D structure called an <strong>ionic lattice</strong> (or crystal lattice).</p>
+
+    <div class="formula">Na → Na⁺ + e⁻ &nbsp;&nbsp;|&nbsp;&nbsp; Cl + e⁻ → Cl⁻ &nbsp;&nbsp;|&nbsp;&nbsp; Na⁺ + Cl⁻ → NaCl</div>
+
+    <p><strong>Properties of ionic compounds:</strong></p>
+    <ul>
+      <li><strong>High melting and boiling points</strong> — the electrostatic forces holding the lattice together are very strong and require a lot of energy to overcome.</li>
+      <li><strong>Hard but brittle</strong> — the lattice is rigid, but if a layer is displaced by a blow, like-charged ions align and repel, causing the crystal to split.</li>
+      <li><strong>Conduct electricity when dissolved in water or melted</strong> — ions are free to move and carry charge, but solid ionic compounds cannot conduct (ions are locked in place).</li>
+      <li><strong>Soluble in water</strong> (many ionic compounds) — water molecules are attracted to the ions and pull them into solution.</li>
+    </ul>
+
+    <h2>Covalent Bonding</h2>
+    <p>Covalent bonding occurs between two <strong>non-metals</strong>. Instead of transferring electrons, the atoms <em>share</em> pairs of electrons. Each shared pair of electrons counts toward the full outer shell of <em>both</em> atoms simultaneously.</p>
+    <ul>
+      <li><strong>Single bond</strong>: 1 shared pair of electrons (e.g. H–H in H₂, H–Cl in HCl)</li>
+      <li><strong>Double bond</strong>: 2 shared pairs of electrons (e.g. O=O in O₂, O=C=O in CO₂)</li>
+      <li><strong>Triple bond</strong>: 3 shared pairs of electrons (e.g. N≡N in N₂)</li>
+    </ul>
+
+    <div class="formula">H· + ·H → H:H (H₂) &nbsp;|&nbsp; Each H shares 1 pair → both get 2e in outer shell ✓</div>
+    <div class="formula">O: + 2H· → H:O:H (H₂O) &nbsp;|&nbsp; O shares 2 pairs with 2 H atoms → O gets 8e, each H gets 2e ✓</div>
+
+    <p><strong>Properties of covalent (molecular) compounds:</strong></p>
+    <ul>
+      <li><strong>Lower melting and boiling points</strong> — the forces between separate molecules (intermolecular forces) are weak; only a little energy is needed to separate them.</li>
+      <li><strong>Do not conduct electricity</strong> — molecules have no overall charge and no free ions or electrons to carry current.</li>
+      <li><strong>Can exist as gases, liquids, or solids</strong> at room temperature (H₂O is liquid; CO₂ is gas; wax is solid).</li>
+      <li><strong>Generally insoluble in water</strong> (non-polar covalent compounds), though polar ones like HCl dissolve readily.</li>
+    </ul>
+
+    <h2>Metallic Bonding</h2>
+    <p>In metallic bonding, metal atoms release their valence electrons into a shared pool — a <strong>"sea of delocalised electrons"</strong> — that flows freely throughout the structure. The remaining positive metal ions (cations) sit in a regular lattice, held in place by their attraction to the surrounding electron sea.</p>
+    <p><strong>Properties explained by metallic bonding:</strong></p>
+    <ul>
+      <li><strong>Excellent electrical conductors</strong> — the delocalised electrons can move freely through the lattice when a voltage is applied.</li>
+      <li><strong>Excellent heat conductors</strong> — free electrons rapidly transfer kinetic energy through the metal.</li>
+      <li><strong>Malleable and ductile</strong> — layers of ions can slide past each other without breaking, because the electron sea is not directional.</li>
+      <li><strong>Lustrous (shiny)</strong> — free electrons reflect light at the surface.</li>
+      <li><strong>High melting points</strong> (generally) — strong attraction between positive ions and electron sea.</li>
+    </ul>
+
+    <h2>Comparing Bond Types</h2>
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Property</th><th>Ionic</th><th>Covalent (molecular)</th><th>Metallic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Electron behaviour</td><td>Transferred (metal → non-metal)</td><td>Shared between non-metals</td><td>Delocalised sea</td></tr>
+        <tr><td>Participants</td><td>Metal + non-metal</td><td>Non-metal + non-metal</td><td>Metal + metal</td></tr>
+        <tr><td>Melting point</td><td>High</td><td>Low (molecular)</td><td>Variable (mostly high)</td></tr>
+        <tr><td>Electrical conduction</td><td>Only when melted/dissolved</td><td>No</td><td>Yes (solid and liquid)</td></tr>
+        <tr><td>Examples</td><td>NaCl, MgO, CaCl₂</td><td>H₂O, CO₂, N₂, HCl</td><td>Fe, Cu, Al, Na</td></tr>
+        <tr><td>State at room temp</td><td>Solid (crystalline)</td><td>Gas / liquid / solid</td><td>Solid (except Hg)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Lewis Dot Structures (Electron Dot Diagrams)</h2>
+    <p>A Lewis dot structure shows the valence electrons of each atom as dots arranged around the element symbol. When atoms bond, shared electron pairs are shown between the two symbols, and lone (unshared) pairs are shown on the outer sides. This is a useful way to visualise how many bonds an atom forms and how electrons are distributed.</p>
+    <ul>
+      <li><strong>H₂</strong>: H·  ·H → H:H (1 shared pair = single bond)</li>
+      <li><strong>Cl₂</strong>: Each Cl has 7 valence electrons; they share 1 pair → :Cl:Cl: with 3 lone pairs on each Cl</li>
+      <li><strong>H₂O</strong>: O has 6 valence electrons; shares 1 pair with each H → H:O:H with 2 lone pairs on O</li>
+    </ul>
+    <div class="callout"><strong>Quick test:</strong> If a bond forms between a metal and a non-metal → <strong>ionic</strong>. If both are non-metals → <strong>covalent</strong>. If both are metals → <strong>metallic</strong>.</div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Bond Formation Visualiser</h3>
+      <canvas id="bondCanvas" height="400"></canvas>
+    </div>
+
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Bond Type</div>
+        <div>
+          <button class="mode-btn active" id="btn-ionic" onclick="setMode('ionic')">Ionic (Na→Cl)</button>
+          <button class="mode-btn" id="btn-covalent" onclick="setMode('covalent')">Covalent</button>
+          <button class="mode-btn" id="btn-metallic" onclick="setMode('metallic')">Metallic</button>
+        </div>
+        <div style="margin-top:10px;display:none" id="molRow">
+          <div class="ctrl-label" style="margin-top:8px">Covalent Molecule</div>
+          <select class="mol-select" id="molSelect" onchange="setMolecule(this.value)">
+            <option value="H2">H₂ — Hydrogen (single bond)</option>
+            <option value="H2O">H₂O — Water (two single bonds)</option>
+            <option value="CO2">CO₂ — Carbon dioxide (two double bonds)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">What's Happening</div>
+        <div class="bond-desc" id="bondDesc">
+          <strong>Ionic bonding — Na + Cl → NaCl</strong><br>
+          Sodium (Na) has 1 valence electron. Chlorine (Cl) has 7. Na <em>transfers</em> its outer electron to Cl. Na becomes Na⁺ (loses 1e⁻) and Cl becomes Cl⁻ (gains 1e⁻). The opposite charges attract strongly — forming an ionic bond.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
+        Review the explanations below to strengthen your understanding.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in your notebook. Use diagrams where appropriate. Show all reasoning clearly.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">Identify the type of bond (ionic, covalent, or metallic) that forms between each of the following pairs of elements. Give a reason for each answer.<br><br>
+      (a) Magnesium and oxygen &nbsp; (b) Hydrogen and chlorine &nbsp; (c) Copper atoms &nbsp; (d) Calcium and fluorine &nbsp; (e) Carbon and oxygen<br><br>
+      <em>(2 marks per pair — 10 marks total)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">Describe, using electron diagrams, what happens when sodium (Na) bonds with chlorine (Cl) to form sodium chloride (NaCl). Your answer must include:<br>
+      • How many electrons Na has in its outer shell before bonding<br>
+      • How many electrons Cl has in its outer shell before bonding<br>
+      • What happens to the electron during bond formation<br>
+      • What ions are formed and their charges<br>
+      • Why the resulting compound is stable<br>
+      <em>(5 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">Compare ionic compounds with covalent compounds by completing a table with the following headings: Bond type, Particles present, Melting point, Electrical conductivity (solid), Electrical conductivity (dissolved/melted), Example compound. Give at least two examples for each type. <em>(8 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">Draw simple Lewis dot structures (electron dot diagrams) for the following molecules. Show all valence electrons as dots and indicate the shared pairs between atoms:<br>
+      (a) Cl₂ &nbsp; (b) H₂O &nbsp; (c) NH₃ (nitrogen has 5 valence electrons; forms 3 bonds with 3 hydrogen atoms)<br>
+      <em>(3 marks each — 9 marks total)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">Copper (Cu) is widely used in electrical wiring. Using your knowledge of metallic bonding, explain:<br>
+      (a) Why copper is an excellent electrical conductor.<br>
+      (b) Why copper can be drawn into thin wires (ductile) without breaking.<br>
+      (c) Why copper has a relatively high melting point (1085 °C).<br>
+      <em>(2 marks each — 6 marks)</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Simulation State ────────────────────────────────────────────────────────
+let mode = 'ionic';
+let molecule = 'H2';
+let animId = null;
+let tick = 0;
+
+const canvas = document.getElementById('bondCanvas');
+const ctx = canvas.getContext('2d');
+
+function initSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 400;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  canvas.style.height = cssH + 'px';
+  if (animId) cancelAnimationFrame(animId);
+  tick = 0;
+  animate();
+}
+
+function animate() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.width / dpr;
+  const cssH = 400;
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  if (mode === 'ionic') drawIonic(cssW, cssH);
+  else if (mode === 'covalent') drawCovalent(cssW, cssH);
+  else drawMetallic(cssW, cssH);
+
+  tick++;
+  animId = requestAnimationFrame(animate);
+}
+
+// ─── IONIC drawing ───────────────────────────────────────────────────────────
+function drawIonic(W, H) {
+  const phase = (tick % 300) / 300; // 0 → 1 cycle
+
+  // Phase 0–0.35: atoms approaching
+  // Phase 0.35–0.55: electron transfer
+  // Phase 0.55–0.85: ions shown, attraction
+  // Phase 0.85–1.0: NaCl label, reset
+
+  const cx = W / 2;
+  const cy = H / 2;
+
+  // Background label
+  ctx.fillStyle = 'rgba(251,191,36,0.06)';
+  ctx.font = 'bold 80px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('NaCl', cx, cy);
+
+  let naX, clX;
+  let electronFrac = 0; // 0 = on Na, 1 = on Cl
+  let showIons = false;
+
+  if (phase < 0.35) {
+    const t = phase / 0.35;
+    naX = cx - 180 + t * 100;
+    clX = cx + 180 - t * 100;
+  } else if (phase < 0.55) {
+    naX = cx - 80;
+    clX = cx + 80;
+    electronFrac = (phase - 0.35) / 0.20;
+  } else if (phase < 0.85) {
+    naX = cx - 80;
+    clX = cx + 80;
+    electronFrac = 1;
+    showIons = true;
+  } else {
+    const t = (phase - 0.85) / 0.15;
+    naX = cx - 80 - t * 100;
+    clX = cx + 80 + t * 100;
+    electronFrac = 1;
+    showIons = true;
+  }
+
+  // Draw Na atom
+  drawAtom(naX, cy, 32, '#fbbf24', 'Na', showIons ? 'Na⁺' : '', showIons ? 10 : 11, false);
+
+  // Draw Cl atom
+  drawAtom(clX, cy, 36, '#60a5fa', 'Cl', showIons ? 'Cl⁻' : '', showIons ? 18 : 17, true);
+
+  // Draw the transferring electron
+  const ex = naX + (clX - naX) * electronFrac;
+  const ey = cy - 40;
+  const eGrad = ctx.createRadialGradient(ex, ey, 0, ex, ey, 8);
+  eGrad.addColorStop(0, '#fbbf24');
+  eGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = eGrad;
+  ctx.beginPath();
+  ctx.arc(ex, ey, 8, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#fbbf24';
+  ctx.beginPath();
+  ctx.arc(ex, ey, 4, 0, Math.PI*2);
+  ctx.fill();
+
+  // Arrow when transferring
+  if (phase >= 0.35 && phase < 0.6) {
+    ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(naX + 35, cy - 40);
+    ctx.lineTo(clX - 38, cy - 40);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Attraction arrow between ions
+  if (showIons && phase < 0.85) {
+    ctx.strokeStyle = 'rgba(200,200,255,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(naX + 35, cy);
+    ctx.lineTo(clX - 38, cy);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(200,200,255,0.4)';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('electrostatic attraction', cx, cy + 55);
+  }
+
+  // Step label
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  let stepLabel = '';
+  if (phase < 0.35) stepLabel = 'Step 1: Atoms approach each other';
+  else if (phase < 0.55) stepLabel = 'Step 2: Na transfers 1 electron to Cl';
+  else if (phase < 0.85) stepLabel = 'Step 3: Ions formed — electrostatic attraction creates the ionic bond';
+  else stepLabel = 'Step 4: NaCl ion pair formed — stable noble gas configurations achieved';
+  ctx.fillText(stepLabel, cx, H - 28);
+}
+
+function drawAtom(x, y, r, color, sym, ionLabel, numE, isRing) {
+  // Glow
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r + 12);
+  g.addColorStop(0, color + '55');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(x, y, r + 12, 0, Math.PI*2);
+  ctx.fill();
+
+  // Body
+  ctx.fillStyle = color + '33';
+  ctx.strokeStyle = color + 'bb';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI*2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Symbol
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 15px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sym, x, y);
+
+  // Ion label
+  if (ionLabel) {
+    ctx.fillStyle = color;
+    ctx.font = 'bold 13px "JetBrains Mono",monospace';
+    ctx.fillText(ionLabel, x, y - r - 16);
+  }
+
+  // Electron count label
+  ctx.fillStyle = 'rgba(210,218,245,0.45)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText(numE + 'e⁻', x, y + r + 14);
+}
+
+// ─── COVALENT drawing ────────────────────────────────────────────────────────
+const MOLECULES = {
+  H2: {
+    label:'H–H (Hydrogen, single bond)',
+    atoms:[
+      {sym:'H', color:'#fbbf24', r:22, ex:[-1], ey:[0]},
+      {sym:'H', color:'#fbbf24', r:22, ex:[1], ey:[0]}
+    ],
+    shared:1,
+    desc:'Two hydrogen atoms each contribute 1 electron. They share 1 pair → single bond. Each H now has 2 electrons in its shell — the stable helium configuration.'
+  },
+  H2O: {
+    label:'H–O–H (Water, two single bonds)',
+    atoms:[
+      {sym:'O', color:'#60a5fa', r:30, ex:[-1,1], ey:[-0.5,0.5]},
+      {sym:'H', color:'#fbbf24', r:20, ex:[1], ey:[0]},
+      {sym:'H', color:'#fbbf24', r:20, ex:[-1], ey:[0]}
+    ],
+    shared:2,
+    desc:'Oxygen has 6 valence electrons and needs 2 more. It shares 1 electron with each of 2 hydrogen atoms — forming 2 single bonds. Oxygen achieves 8e⁻ in outer shell; each H achieves 2e⁻.'
+  },
+  CO2: {
+    label:'O=C=O (Carbon dioxide, two double bonds)',
+    atoms:[
+      {sym:'C', color:'#a78bfa', r:28, ex:[-2,2], ey:[0,0]},
+      {sym:'O', color:'#60a5fa', r:26, ex:[2], ey:[0]},
+      {sym:'O', color:'#60a5fa', r:26, ex:[-2], ey:[0]}
+    ],
+    shared:4,
+    desc:'Carbon has 4 valence electrons and needs 4 more. It forms double bonds with each oxygen atom, sharing 2 pairs (4 electrons) per bond. All three atoms achieve full outer shells.'
+  }
+};
+
+function drawCovalent(W, H) {
+  const mol = MOLECULES[molecule];
+  const cx = W / 2;
+  const cy = H / 2;
+  const pulse = 0.5 + 0.5 * Math.sin(tick * 0.04);
+
+  if (molecule === 'H2') {
+    const sep = 70;
+    const ax = cx - sep, bx = cx + sep;
+
+    // Shared electron cloud (between atoms)
+    const ov = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30);
+    ov.addColorStop(0, `rgba(251,191,36,${0.25 + 0.15*pulse})`);
+    ov.addColorStop(1, 'transparent');
+    ctx.fillStyle = ov;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 30, 0, Math.PI*2);
+    ctx.fill();
+
+    // Bond line
+    ctx.strokeStyle = `rgba(251,191,36,${0.4 + 0.2*pulse})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(ax + 22, cy);
+    ctx.lineTo(bx - 22, cy);
+    ctx.stroke();
+
+    drawSimpleAtom(ax, cy, 22, '#fbbf24', 'H');
+    drawSimpleAtom(bx, cy, 22, '#fbbf24', 'H');
+    drawSharedLabel(cx, cy - 50, '1 shared pair', '#fbbf24');
+
+    // Electron dots
+    for (let i = 0; i < 2; i++) {
+      const a = tick * 0.03 + i * Math.PI;
+      const er = 15;
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(cx + er*Math.cos(a), cy + er*Math.sin(a)*0.5, 4, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+  } else if (molecule === 'H2O') {
+    const ox = cx, oy = cy;
+    const h1x = cx - 80, h1y = cy + 50;
+    const h2x = cx + 80, h2y = cy + 50;
+
+    // Bond lines
+    ctx.strokeStyle = `rgba(96,165,250,${0.5 + 0.2*pulse})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(ox, oy + 30); ctx.lineTo(h1x + 18, h1y - 16); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ox, oy + 30); ctx.lineTo(h2x - 18, h2y - 16); ctx.stroke();
+
+    // Lone pairs on O
+    ctx.fillStyle = 'rgba(96,165,250,0.6)';
+    [[-25,-25],[25,-25]].forEach(([dx,dy]) => {
+      ctx.beginPath(); ctx.arc(ox+dx, oy+dy, 4, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(ox+dx+10, oy+dy, 4, 0, Math.PI*2); ctx.fill();
+    });
+
+    drawSimpleAtom(ox, oy, 30, '#60a5fa', 'O');
+    drawSimpleAtom(h1x, h1y, 20, '#fbbf24', 'H');
+    drawSimpleAtom(h2x, h2y, 20, '#fbbf24', 'H');
+    drawSharedLabel(cx, cy - 60, '2 single bonds — O achieves 8e⁻', '#60a5fa');
+    ctx.fillStyle = 'rgba(96,165,250,0.5)';
+    ctx.font = '10px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('lone pairs', ox, oy - 42);
+
+  } else if (molecule === 'CO2') {
+    const cx2 = cx, cy2 = cy;
+    const o1x = cx - 130, o2x = cx + 130;
+
+    // Double bond lines (left)
+    [[cy2-5, cy2+5]].forEach(() => {
+      ctx.strokeStyle = `rgba(167,139,250,${0.5+0.2*pulse})`;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(o1x+26, cy2-5); ctx.lineTo(cx2-28, cy2-5); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(o1x+26, cy2+5); ctx.lineTo(cx2-28, cy2+5); ctx.stroke();
+      // Double bond right
+      ctx.beginPath(); ctx.moveTo(cx2+28, cy2-5); ctx.lineTo(o2x-26, cy2-5); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx2+28, cy2+5); ctx.lineTo(o2x-26, cy2+5); ctx.stroke();
+    });
+
+    drawSimpleAtom(cx2, cy2, 28, '#a78bfa', 'C');
+    drawSimpleAtom(o1x, cy2, 26, '#60a5fa', 'O');
+    drawSimpleAtom(o2x, cy2, 26, '#60a5fa', 'O');
+    drawSharedLabel(cx, cy2 - 65, '2 double bonds — C shares 4 pairs total', '#a78bfa');
+
+    // Bond labels
+    ctx.fillStyle = 'rgba(167,139,250,0.6)';
+    ctx.font = '11px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('= (double)', cx - 65, cy2 + 30);
+    ctx.fillText('= (double)', cx + 65, cy2 + 30);
+  }
+
+  // Description
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(mol.desc.substring(0,90) + (mol.desc.length>90?'…':''), cx, H - 10);
+}
+
+function drawSimpleAtom(x, y, r, color, sym) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r+8);
+  g.addColorStop(0, color+'44');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r+8, 0, Math.PI*2); ctx.fill();
+
+  ctx.fillStyle = color + '28';
+  ctx.strokeStyle = color + 'aa';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sym, x, y);
+}
+
+function drawSharedLabel(x, y, text, color) {
+  ctx.fillStyle = color;
+  ctx.font = 'bold 12px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, x, y);
+}
+
+// ─── METALLIC drawing ────────────────────────────────────────────────────────
+const metalElectrons = [];
+function initMetalElectrons(W, H) {
+  metalElectrons.length = 0;
+  for (let i = 0; i < 28; i++) {
+    metalElectrons.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 2.5,
+      vy: (Math.random() - 0.5) * 2.5
+    });
+  }
+}
+
+function drawMetallic(W, H) {
+  if (metalElectrons.length === 0) initMetalElectrons(W, H);
+
+  // Ion lattice
+  const cols = 6, rows = 4;
+  const gx = W / (cols + 1), gy = H / (rows + 1);
+  for (let r = 1; r <= rows; r++) {
+    for (let c = 1; c <= cols; c++) {
+      const x = c * gx, y = r * gy;
+      // Glow
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 22);
+      g.addColorStop(0, 'rgba(251,191,36,0.18)');
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI*2); ctx.fill();
+      // Ion
+      ctx.fillStyle = 'rgba(251,191,36,0.25)';
+      ctx.strokeStyle = 'rgba(251,191,36,0.55)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      // Label
+      ctx.fillStyle = '#fcd34d';
+      ctx.font = 'bold 10px "Cabinet Grotesk",sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('M⁺', x, y);
+    }
+  }
+
+  // Free electrons
+  metalElectrons.forEach(e => {
+    e.x += e.vx;
+    e.y += e.vy;
+    if (e.x < 0) e.x = W;
+    if (e.x > W) e.x = 0;
+    if (e.y < 0) e.y = H;
+    if (e.y > H) e.y = 0;
+
+    const eg = ctx.createRadialGradient(e.x, e.y, 0, e.x, e.y, 6);
+    eg.addColorStop(0, 'rgba(96,165,250,0.7)');
+    eg.addColorStop(1, 'transparent');
+    ctx.fillStyle = eg;
+    ctx.beginPath(); ctx.arc(e.x, e.y, 6, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#60a5fa';
+    ctx.beginPath(); ctx.arc(e.x, e.y, 3, 0, Math.PI*2); ctx.fill();
+  });
+
+  // Legend
+  ctx.fillStyle = 'rgba(251,191,36,0.7)';
+  ctx.font = '11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('● M⁺  positive metal ions in fixed lattice', 16, 12);
+  ctx.fillStyle = 'rgba(96,165,250,0.7)';
+  ctx.fillText('● e⁻   delocalised electrons (sea of electrons)', 16, 28);
+}
+
+// ─── Controls ────────────────────────────────────────────────────────────────
+const BOND_DESCS = {
+  ionic: '<strong>Ionic bonding — Na + Cl → NaCl</strong><br>Sodium (Na) has 1 valence electron. Chlorine (Cl) has 7. Na <em>transfers</em> its outer electron to Cl. Na becomes Na⁺ (loses 1e⁻) and Cl becomes Cl⁻ (gains 1e⁻). The opposite charges attract strongly — forming an ionic bond.',
+  covalent: '<strong>Covalent bonding — electron sharing</strong><br>Two non-metal atoms each contribute electrons to a <em>shared pool</em>. Both atoms count the shared electrons as their own, allowing each to achieve a full outer shell. No ions are formed — the bond is the shared electron pair itself.',
+  metallic: '<strong>Metallic bonding — sea of electrons</strong><br>Metal atoms release their valence electrons into a shared "sea." Positive metal ions (M⁺) sit in a regular lattice surrounded by this sea. The strong attraction between the ions and the electron sea holds the metal together and allows excellent electrical and heat conduction.'
+};
+
+function setMode(m) {
+  mode = m;
+  metalElectrons.length = 0;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + m).classList.add('active');
+  document.getElementById('bondDesc').innerHTML = BOND_DESCS[m];
+  document.getElementById('molRow').style.display = m === 'covalent' ? 'block' : 'none';
+}
+
+function setMolecule(v) {
+  molecule = v;
+  const mol = MOLECULES[v];
+  document.getElementById('bondDesc').innerHTML = '<strong>' + mol.label + '</strong><br>' + mol.desc;
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => initSim(), 50);
+}
+
+// ─── Practice ────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: 'Which type of chemical bond forms between sodium (Na) and chlorine (Cl) to produce NaCl?',
+    opts: ['Covalent bond', 'Ionic bond', 'Metallic bond', 'Hydrogen bond'],
+    ans: 1,
+    exp: 'Sodium is a metal and chlorine is a non-metal. When a metal and a non-metal react, the metal transfers electrons to the non-metal, forming oppositely charged ions that attract each other — this is an ionic bond.'
+  },
+  {
+    q: 'What happens to the electrons when an ionic bond forms between a metal and a non-metal?',
+    opts: ['Electrons are shared equally between the two atoms', 'Electrons are transferred from the non-metal to the metal', 'Electrons are transferred from the metal to the non-metal', 'Electrons remain with the metal atom'],
+    ans: 2,
+    exp: 'In ionic bonding, the metal atom loses (donates) one or more electrons to the non-metal atom. The metal becomes a positive ion (cation) and the non-metal becomes a negative ion (anion). The electrostatic attraction between these ions is the ionic bond.'
+  },
+  {
+    q: 'Which of the following is a characteristic property of ionic compounds?',
+    opts: ['They are gases at room temperature', 'They conduct electricity when solid', 'They have high melting and boiling points', 'They are soft and waxy'],
+    ans: 2,
+    exp: 'Ionic compounds form strong lattice structures held together by electrostatic attractions. A large amount of energy is needed to break these forces, so ionic compounds have high melting and boiling points. They cannot conduct electricity as solids (ions are fixed) but can when dissolved or melted.'
+  },
+  {
+    q: 'Which type of bond involves the sharing of electrons between two atoms?',
+    opts: ['Ionic bond', 'Metallic bond', 'Covalent bond', 'Electrostatic bond'],
+    ans: 2,
+    exp: 'In a covalent bond, atoms (both non-metals) share one or more pairs of electrons. Each shared pair is counted toward the full outer shell of both atoms. No ions are formed — the bond is the shared electron pair itself.'
+  },
+  {
+    q: 'What makes metals good conductors of electricity?',
+    opts: ['Metal atoms are very large and heavy', 'Metal atoms have full outer electron shells', 'Metals have delocalised (free-moving) electrons that can carry charge', 'Metal atoms transfer electrons to each other very quickly'],
+    ans: 2,
+    exp: 'In metallic bonding, valence electrons are released into a "sea" of delocalised electrons shared across all the metal ions. When a voltage is applied, these free electrons flow in one direction — carrying electrical charge. This is why metals are excellent conductors.'
+  },
+  {
+    q: 'What type of bonding exists in a molecule of oxygen gas (O₂)?',
+    opts: ['Ionic bonding', 'Metallic bonding', 'Single covalent bonding', 'Double covalent bonding'],
+    ans: 3,
+    exp: 'Oxygen has 6 valence electrons and needs 2 more for a full outer shell. Two oxygen atoms each share 2 electrons — creating 2 shared pairs (4 electrons total) between them. This is a double covalent bond, written as O=O. Both oxygen atoms achieve 8 electrons in their outer shells.'
+  }
+];
+
+let answers = new Array(QUESTIONS.length).fill(null);
+let correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="mc-opt" onclick="answer(${qi},${oi})" id="opt-${qi}-${oi}">
+            <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, oi) {
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = QUESTIONS[qi];
+  const isCorrect = oi === q.ans;
+  if (isCorrect) correct++;
+
+  document.querySelectorAll(`#opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+
+  if (answers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = correct + '/' + QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intermolecular Forces — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Chemistry</span>
+  <a class="nav-back" href="../../index.html">&#8592; Back</a>
+</nav>
+
+<!-- HEADER -->
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Chemistry · Lesson 5</div>
+  <div class="lesson-title">Intermolecular Forces</div>
+  <div class="lesson-sub">Distinguish between the forces within molecules (intramolecular) and the forces between molecules (intermolecular), and understand how these forces determine the physical properties of substances.</div>
+</div>
+
+<!-- CURRICULUM TOGGLE -->
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#128218; Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#10003; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#9998; Workbook</button>
+</div>
+
+<!-- LESSON TAB -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Intramolecular vs Intermolecular Forces</h2>
+    <p>It is essential to distinguish between two very different types of forces in chemistry:</p>
+    <ul>
+      <li><strong>Intramolecular forces</strong>: forces WITHIN a molecule — these are the covalent bonds, ionic bonds, or metallic bonds that hold atoms together within a substance. They determine the chemical properties of the substance (what reactions it undergoes, what products form).</li>
+      <li><strong>Intermolecular forces (IMF)</strong>: forces BETWEEN separate molecules — these hold molecules together in a bulk sample of liquid or solid. They do NOT create new bonds; they are attractions between neighbouring molecules. They determine the physical properties of the substance (melting point, boiling point, viscosity, surface tension, solubility).</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Key distinction:</strong> When water boils, the intermolecular forces (hydrogen bonds between H₂O molecules) are overcome — NOT the O–H covalent bonds within the water molecules. The O–H bonds remain intact in steam.
+    </div>
+
+    <h2>Type 1 — London Dispersion Forces (Van der Waals Forces)</h2>
+    <p>London dispersion forces (LDF) are present in ALL molecules — both polar and non-polar. They arise because the electron cloud around any atom is constantly moving. At any instant, the electrons may be distributed unevenly, creating a TEMPORARY dipole. This temporary dipole induces a dipole in neighbouring molecules, and a weak attraction results.</p>
+    <ul>
+      <li>Present in ALL substances (the only IMF in non-polar molecules)</li>
+      <li>Weakest type of intermolecular force</li>
+      <li>Strength increases with: (1) molar mass — more electrons means larger, more polarisable electron clouds; (2) surface area — more contact between molecules means stronger LDF</li>
+      <li>Examples: noble gases (liquid He, liquid Ar), non-polar molecules (I₂, Cl₂, Br₂, CH₄, all alkanes)</li>
+    </ul>
+
+    <div class="key-fact">LDF: strength ∝ molar mass and surface area. More electrons → bigger instantaneous dipoles → stronger LDF</div>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Molecule</th>
+          <th>Molar Mass (g·mol⁻¹)</th>
+          <th>BP (°C)</th>
+          <th>IMF type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>CH₄</td><td>16</td><td>−161</td><td>LDF only</td></tr>
+        <tr><td>C₂H₆</td><td>30</td><td>−89</td><td>LDF only</td></tr>
+        <tr><td>C₃H₈</td><td>44</td><td>−42</td><td>LDF only</td></tr>
+        <tr><td>I₂</td><td>254</td><td>+184</td><td>LDF only (very large molecule)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Type 2 — Dipole-Dipole Interactions</h2>
+    <p>Dipole-dipole interactions occur between polar molecules. A polar molecule has a PERMANENT dipole — one end is slightly positive (δ+) and the other is slightly negative (δ−), because of unequal sharing of electrons in a polar bond combined with an asymmetric shape.</p>
+    <p>When two polar molecules are near each other, they align so that the δ+ end of one molecule is attracted to the δ− end of another. This electrostatic attraction is a dipole-dipole interaction.</p>
+    <ul>
+      <li>Stronger than LDF for molecules of similar molar mass</li>
+      <li>Only between polar molecules</li>
+      <li>Examples: HCl, SO₂, CHCl₃ (chloroform), acetone (CH₃COCH₃)</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Note:</strong> LDF also acts between polar molecules — dipole-dipole interactions are IN ADDITION to LDF, not instead of them.
+    </div>
+
+    <h2>Type 3 — Hydrogen Bonding (The Strongest IMF)</h2>
+    <p>Hydrogen bonding is a special, unusually strong type of dipole-dipole interaction. It occurs when a hydrogen atom is covalently bonded to a highly electronegative, small atom (N, O, or F). The enormous electronegativity difference creates a very strong δ+ on the H atom. This H atom is then attracted to a lone pair on a N, O, or F atom of an ADJACENT molecule.</p>
+
+    <div class="formula">X−H ··· Y &nbsp;&nbsp; (where X and Y are N, O, or F; the dashed line ··· is the H-bond)</div>
+
+    <ul>
+      <li>Only occurs when H is bonded directly to N, O, or F</li>
+      <li>Much stronger than ordinary dipole-dipole forces</li>
+      <li>Still weaker than covalent bonds (about 1/10 the strength)</li>
+      <li>Explains anomalously high boiling points of H₂O, HF, and NH₃</li>
+    </ul>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Compound</th>
+          <th>Molar Mass (g·mol⁻¹)</th>
+          <th>BP (°C)</th>
+          <th>IMF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>HF</td><td>20</td><td>+19.5</td><td>H-bonding (anomalously high)</td></tr>
+        <tr><td>HCl</td><td>36.5</td><td>−85</td><td>Dipole-dipole + LDF</td></tr>
+        <tr><td>HBr</td><td>81</td><td>−67</td><td>Dipole-dipole + LDF</td></tr>
+        <tr><td>HI</td><td>128</td><td>−35</td><td>Dipole-dipole + LDF (stronger LDF)</td></tr>
+      </tbody>
+    </table>
+
+    <p>Note: HF has a much lower molar mass than HI yet a much higher boiling point. This is because hydrogen bonding in HF is far stronger than the LDF in HI. As a general rule, going from HCl to HBr to HI, BP increases with molar mass (increasing LDF). But HF is the exception because it has strong H-bonding.</p>
+
+    <h2>Anomalous Properties of Water</h2>
+    <p>Water (H₂O) is the most important example of hydrogen bonding:</p>
+    <ul>
+      <li>Unusually high boiling point (100°C) for its small molar mass (18 g·mol⁻¹) — due to strong H-bonding</li>
+      <li>High surface tension — H-bonds hold surface molecules together tightly</li>
+      <li>High specific heat capacity — requires lots of energy to break H-bonds</li>
+      <li>Ice is LESS DENSE than liquid water — in ice, H₂O molecules form a rigid hexagonal lattice with H-bonds holding them further apart than in liquid water. This is why ice floats.</li>
+      <li>Biological importance: DNA base pairs held together by H-bonds (A–T: 2 H-bonds; G–C: 3 H-bonds); protein secondary structure (alpha-helices and beta-sheets); cellulose structure in plant cell walls</li>
+    </ul>
+
+    <h2>Effect of IMF on Physical Properties</h2>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Effect of Stronger IMF</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Boiling point</td><td>Higher</td><td>More energy needed to separate molecules</td></tr>
+        <tr><td>Melting point</td><td>Higher</td><td>Molecules held more firmly in solid structure</td></tr>
+        <tr><td>Viscosity</td><td>Higher</td><td>Molecules resist flowing past each other</td></tr>
+        <tr><td>Surface tension</td><td>Higher</td><td>Molecules attract each other at the surface more strongly</td></tr>
+        <tr><td>Vapour pressure</td><td>Lower</td><td>Fewer molecules have enough energy to escape the liquid surface</td></tr>
+        <tr><td>Solubility</td><td>"Like dissolves like"</td><td>Polar dissolves polar/ionic; non-polar dissolves non-polar</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>"Like dissolves like":</strong> Polar solvents (like water) dissolve polar and ionic substances. Non-polar solvents (like hexane) dissolve non-polar substances. Vitamin C (polar) dissolves in water; vitamin A (non-polar) dissolves in fat.
+    </div>
+
+    <!-- IEB EXTENSION BLOCK -->
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Ion-Dipole Forces &amp; Applications</div>
+      <p>Ion-dipole forces occur between an ion (from an ionic compound) and a polar molecule (solvent). When NaCl dissolves in water, the Na⁺ ions attract the δ− oxygen ends of water molecules, and Cl⁻ ions attract the δ+ hydrogen ends. Each ion is surrounded by a "hydration shell" of water molecules. The ion-dipole attraction must overcome the ionic lattice energy — this is possible because many ion-dipole interactions act together, releasing sufficient energy (hydration enthalpy).</p>
+      <p>Soap and detergent molecules (e.g. sodium stearate) have a dual structure:</p>
+      <ul>
+        <li><strong>Hydrophilic head</strong> (ionic carboxylate end, –COO⁻Na⁺): attracted to water molecules via ion-dipole forces</li>
+        <li><strong>Hydrophobic tail</strong> (long non-polar hydrocarbon chain): dissolves non-polar grease/oil via LDF</li>
+      </ul>
+      <p>When washing with soap, the hydrophobic tails dissolve into grease particles while the hydrophilic heads remain in the water. This creates micelles — spherical clusters with grease inside and ionic heads on the outside — that are easily rinsed away in water.</p>
+      <p>Biological membranes (phospholipid bilayers) use the same principle: phospholipid molecules have a polar head and two non-polar fatty acid tails. In water, they spontaneously form a bilayer with tails facing inward (away from water) and heads facing outward (towards water), forming the basis of all cell membranes.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="imfTitle">IMF Visualiser — London Dispersion</h3>
+      <canvas id="imfCanvas" height="340"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Force Type</div>
+        <button class="mode-btn active" onclick="setIMFMode('london',this)">London Dispersion</button>
+        <button class="mode-btn" onclick="setIMFMode('dipole',this)">Dipole-Dipole</button>
+        <button class="mode-btn" onclick="setIMFMode('hbond',this)">Hydrogen Bonding</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Force Info</div>
+        <div id="imfStrength" style="font-family:var(--fm);font-size:11px;color:#c084fc;margin-bottom:8px"></div>
+        <div id="imfExamples" style="font-size:12px;color:var(--muted);line-height:1.8"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.7">Quiz complete! Review your answers below.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Question 1 <span style="color:var(--muted);font-weight:400">(2 marks)</span></div>
+      <div class="q-text">Which type of intermolecular force is present in ALL molecules, including non-polar ones?</div>
+      <div class="mc-options" id="q1">
+        <button class="mc-opt" onclick="answer('q1',this,false,'fb1')"><span class="opt-letter">A</span>Hydrogen bonding</button>
+        <button class="mc-opt" onclick="answer('q1',this,false,'fb1')"><span class="opt-letter">B</span>Dipole-dipole interactions</button>
+        <button class="mc-opt" onclick="answer('q1',this,true,'fb1')"><span class="opt-letter">C</span>London dispersion forces</button>
+        <button class="mc-opt" onclick="answer('q1',this,false,'fb1')"><span class="opt-letter">D</span>Ion-dipole forces</button>
+      </div>
+      <div class="feedback" id="fb1">London dispersion forces (LDF) arise from temporary dipoles due to electron movement and are present in ALL substances — polar and non-polar. They are the only IMF in non-polar molecules like I₂ or CH₄.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Question 2 <span style="color:var(--muted);font-weight:400">(2 marks)</span></div>
+      <div class="q-text">The boiling point of H₂O is 100°C while H₂S (a larger molecule) boils at −60°C. The BEST explanation is:</div>
+      <div class="mc-options" id="q2">
+        <button class="mc-opt" onclick="answer('q2',this,false,'fb2')"><span class="opt-letter">A</span>H₂O has a higher molar mass than H₂S</button>
+        <button class="mc-opt" onclick="answer('q2',this,false,'fb2')"><span class="opt-letter">B</span>H₂O is polar but H₂S is non-polar</button>
+        <button class="mc-opt" onclick="answer('q2',this,true,'fb2')"><span class="opt-letter">C</span>H₂O molecules form hydrogen bonds while H₂S does not</button>
+        <button class="mc-opt" onclick="answer('q2',this,false,'fb2')"><span class="opt-letter">D</span>H₂O has weaker intermolecular forces than H₂S</button>
+      </div>
+      <div class="feedback" id="fb2">H₂O forms strong hydrogen bonds (O–H···O) because oxygen is highly electronegative and small. Sulfur is less electronegative and larger, so H₂S only has dipole-dipole and LDF — much weaker. This gives H₂O a much higher BP despite its smaller size.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Question 3 <span style="color:var(--muted);font-weight:400">(2 marks)</span></div>
+      <div class="q-text">Which of the following molecules can form hydrogen bonds with water?</div>
+      <div class="mc-options" id="q3">
+        <button class="mc-opt" onclick="answer('q3',this,false,'fb3')"><span class="opt-letter">A</span>CH₄</button>
+        <button class="mc-opt" onclick="answer('q3',this,false,'fb3')"><span class="opt-letter">B</span>CO₂</button>
+        <button class="mc-opt" onclick="answer('q3',this,true,'fb3')"><span class="opt-letter">C</span>NH₃</button>
+        <button class="mc-opt" onclick="answer('q3',this,false,'fb3')"><span class="opt-letter">D</span>CCl₄</button>
+      </div>
+      <div class="feedback" id="fb3">Hydrogen bonding requires H bonded to N, O, or F. NH₃ has H atoms bonded to nitrogen (highly electronegative) and lone pairs on N, so NH₃ can both donate and accept H-bonds with water. CH₄, CO₂, and CCl₄ cannot form H-bonds.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Question 4 <span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">Ice is less dense than liquid water because:</div>
+      <div class="mc-options" id="q4">
+        <button class="mc-opt" onclick="answer('q4',this,false,'fb4')"><span class="opt-letter">A</span>Water expands when cooled to 0°C due to temperature alone</button>
+        <button class="mc-opt" onclick="answer('q4',this,true,'fb4')"><span class="opt-letter">B</span>Hydrogen bonds in ice form a rigid hexagonal lattice with molecules further apart</button>
+        <button class="mc-opt" onclick="answer('q4',this,false,'fb4')"><span class="opt-letter">C</span>Ice has fewer molecules than the same volume of water</button>
+        <button class="mc-opt" onclick="answer('q4',this,false,'fb4')"><span class="opt-letter">D</span>The covalent O–H bonds break when water freezes</button>
+      </div>
+      <div class="feedback" id="fb4">In ice, hydrogen bonds lock water molecules into a hexagonal lattice structure where molecules are held further apart than in liquid water. This makes ice less dense, which is why ice floats on water — a property crucial for aquatic life surviving in frozen lakes.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Question 5 <span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">Iodine (I₂) is soluble in hexane (C₆H₁₄) but insoluble in water. This is best explained by:</div>
+      <div class="mc-options" id="q5">
+        <button class="mc-opt" onclick="answer('q5',this,false,'fb5')"><span class="opt-letter">A</span>Iodine has a higher molar mass than water</button>
+        <button class="mc-opt" onclick="answer('q5',this,true,'fb5')"><span class="opt-letter">B</span>'Like dissolves like' — I₂ and hexane are both non-polar</button>
+        <button class="mc-opt" onclick="answer('q5',this,false,'fb5')"><span class="opt-letter">C</span>I₂ cannot form ions in water</button>
+        <button class="mc-opt" onclick="answer('q5',this,false,'fb5')"><span class="opt-letter">D</span>Hexane is less dense than water</button>
+      </div>
+      <div class="feedback" id="fb5">'Like dissolves like': non-polar I₂ dissolves in non-polar hexane because both have LDF as their only IMF. Water is polar and forms hydrogen bonds — I₂ cannot interact with water molecules strongly enough to dissolve.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Question 6 <span style="color:var(--muted);font-weight:400">(2 marks)</span></div>
+      <div class="q-text">Going from HCl to HBr to HI, the boiling point increases. The main reason is:</div>
+      <div class="mc-options" id="q6">
+        <button class="mc-opt" onclick="answer('q6',this,false,'fb6')"><span class="opt-letter">A</span>The H-bond strength increases</button>
+        <button class="mc-opt" onclick="answer('q6',this,false,'fb6')"><span class="opt-letter">B</span>The dipole moment increases</button>
+        <button class="mc-opt" onclick="answer('q6',this,true,'fb6')"><span class="opt-letter">C</span>The molar mass and number of electrons increase, strengthening London dispersion forces</button>
+        <button class="mc-opt" onclick="answer('q6',this,false,'fb6')"><span class="opt-letter">D</span>The bond angle increases</button>
+      </div>
+      <div class="feedback" id="fb6">HCl, HBr, and HI all have dipole-dipole forces and LDF, but NO hydrogen bonding (H is not bonded to N, O or F here). As molar mass increases (HCl 36.5 → HI 128 g·mol⁻¹), the larger electron cloud creates stronger LDF, raising the boiling point.</div>
+    </div>
+
+    <!-- IEB PRACTICE -->
+    <div class="ieb-practice" id="ieb-practice">
+      <!-- IEB Q1 -->
+      <div class="q-card">
+        <div class="q-num">IEB Question 1 <span class="ieb-badge">IEB</span><span style="color:var(--muted);font-weight:400"> (2 marks)</span></div>
+        <div class="q-text">When sodium chloride (NaCl) dissolves in water, the process is called hydration. What type of intermolecular force is responsible for holding the water molecules around the Na⁺ and Cl⁻ ions?</div>
+        <div class="mc-options" id="iq1">
+          <button class="mc-opt" onclick="answer('iq1',this,false,'ifb1')"><span class="opt-letter">A</span>Hydrogen bonding</button>
+          <button class="mc-opt" onclick="answer('iq1',this,false,'ifb1')"><span class="opt-letter">B</span>London dispersion forces</button>
+          <button class="mc-opt" onclick="answer('iq1',this,true,'ifb1')"><span class="opt-letter">C</span>Ion-dipole forces</button>
+          <button class="mc-opt" onclick="answer('iq1',this,false,'ifb1')"><span class="opt-letter">D</span>Dipole-dipole interactions</button>
+        </div>
+        <div class="feedback" id="ifb1">Ion-dipole forces act between the charged ions (Na⁺ or Cl⁻) and the polar water molecules (which have δ+ on H and δ− on O). Na⁺ attracts the δ− oxygen of water; Cl⁻ attracts the δ+ hydrogen. Many of these ion-dipole interactions collectively provide enough energy to overcome the lattice energy of NaCl, allowing it to dissolve.</div>
+      </div>
+
+      <!-- IEB Q2 -->
+      <div class="q-card">
+        <div class="q-num">IEB Question 2 <span class="ieb-badge">IEB</span><span style="color:var(--muted);font-weight:400"> (1 mark)</span></div>
+        <div class="q-text">A soap molecule has a long non-polar hydrocarbon tail and an ionic carboxylate head (−COO⁻Na⁺). How does this dual structure allow soap to remove grease from surfaces when washed with water?</div>
+        <div class="mc-options" id="iq2">
+          <button class="mc-opt" onclick="answer('iq2',this,false,'ifb2')"><span class="opt-letter">A</span>The soap breaks the covalent bonds in grease molecules</button>
+          <button class="mc-opt" onclick="answer('iq2',this,true,'ifb2')"><span class="opt-letter">B</span>The non-polar tail dissolves in grease (LDF) while the ionic head is attracted to water (ion-dipole), forming micelles that are rinsed away</button>
+          <button class="mc-opt" onclick="answer('iq2',this,false,'ifb2')"><span class="opt-letter">C</span>Soap makes water non-polar so it can dissolve grease</button>
+          <button class="mc-opt" onclick="answer('iq2',this,false,'ifb2')"><span class="opt-letter">D</span>The soap reacts chemically with grease to form water-soluble products</button>
+        </div>
+        <div class="feedback" id="ifb2">Soap molecules form micelles: the hydrophobic (non-polar) hydrocarbon tails dissolve into the grease particle through London dispersion forces, while the hydrophilic (ionic) carboxylate heads remain in the surrounding water through ion-dipole attractions. The grease is trapped inside the micelle and the whole structure is water-soluble — easily rinsed away.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#128438; Print Workbook</button>
+    <div class="wb-intro">Answer in full sentences. Use diagrams where helpful (described in words).</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">Rank the following substances from LOWEST to HIGHEST boiling point and justify your ranking based on intermolecular forces: CH₄, H₂O, HCl, Ne.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">Water has many anomalous properties compared to other small covalent molecules. (a) State THREE physical properties of water that are anomalously high or unusual. (b) Explain ONE of these properties in terms of hydrogen bonding.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">Identify the strongest type of intermolecular force present in each of the following substances: (a) HF &nbsp; (b) CO₂ &nbsp; (c) CH₃OH (methanol) &nbsp; (d) Ar &nbsp; (e) NH₃</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">Explain, using the concept of 'like dissolves like', why: (a) sodium chloride (NaCl) dissolves in water but not in hexane; (b) iodine (I₂) dissolves in hexane but not in water.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">Draw a diagram (described in words) showing three water molecules held together by hydrogen bonding. Label: (a) the O–H covalent bonds within each molecule; (b) the O···H–O hydrogen bonds between molecules; (c) the δ+ and δ− partial charges. Explain why these hydrogen bonds make water's boiling point much higher than expected.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- CURRICULUM TOGGLE ----
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+  var ip=document.getElementById('ieb-practice');
+  if(ip) ip.style.display=mode==='ieb'?'flex':'none';
+}
+
+// ---- TAB SWITCHING ----
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ---- QUIZ ----
+var scores={};
+function answer(qid,btn,correct,fbid){
+  var container=document.getElementById(qid);
+  if(container.dataset.answered) return;
+  container.dataset.answered='1';
+  var opts=container.querySelectorAll('.mc-opt');
+  opts.forEach(function(o){o.disabled=true});
+  btn.classList.add(correct?'correct':'wrong');
+  if(!correct){
+    opts.forEach(function(o){
+      if(o.onclick&&o.onclick.toString().indexOf(',true,')>-1) o.classList.add('correct');
+    });
+  }
+  var fb=document.getElementById(fbid);
+  fb.classList.add('show','ok');
+  if(!correct) fb.classList.replace('ok','bad');
+  scores[qid]=correct?1:0;
+  checkAllAnswered();
+}
+function checkAllAnswered(){
+  var total=Object.keys(scores).length;
+  var baseQs=['q1','q2','q3','q4','q5','q6'];
+  var allBase=baseQs.every(function(q){return scores[q]!==undefined});
+  if(allBase){
+    var correct=baseQs.reduce(function(sum,q){return sum+(scores[q]||0)},0);
+    var banner=document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent=correct+'/6';
+    banner.classList.add('show');
+  }
+}
+
+// ---- IMF SIMULATION ----
+var simMode='london';
+var animFrame=null;
+var simT=0;
+var simInitialized=false;
+
+function setIMFMode(mode,btn){
+  simMode=mode;
+  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  simT=0;
+  updateInfoPanel();
+  if(animFrame) cancelAnimationFrame(animFrame);
+  drawFrame();
+}
+
+function updateInfoPanel(){
+  var strength=document.getElementById('imfStrength');
+  var examples=document.getElementById('imfExamples');
+  var title=document.getElementById('imfTitle');
+  if(simMode==='london'){
+    title.textContent='IMF Visualiser — London Dispersion Forces';
+    strength.textContent='Strength: Weak  |  BP effect: Low boiling points';
+    examples.innerHTML='<strong style="color:#e9d5ff">Examples:</strong> I₂, CH₄, noble gases, alkanes<br><strong style="color:#e9d5ff">Mechanism:</strong> Temporary dipole → induced dipole<br><strong style="color:#e9d5ff">Present in:</strong> ALL substances';
+  } else if(simMode==='dipole'){
+    title.textContent='IMF Visualiser — Dipole-Dipole Interactions';
+    strength.textContent='Strength: Moderate  |  BP effect: Higher than nonpolar';
+    examples.innerHTML='<strong style="color:#e9d5ff">Examples:</strong> HCl, SO₂, CHCl₃, acetone<br><strong style="color:#e9d5ff">Mechanism:</strong> δ+ end ↔ δ− end alignment<br><strong style="color:#e9d5ff">Requires:</strong> Polar molecules only';
+  } else {
+    title.textContent='IMF Visualiser — Hydrogen Bonding';
+    strength.textContent='Strength: Strong (for IMF)  |  BP effect: Anomalously high';
+    examples.innerHTML='<strong style="color:#e9d5ff">Examples:</strong> H₂O, HF, NH₃, DNA base pairs<br><strong style="color:#e9d5ff">Mechanism:</strong> X−H···Y (X,Y = N, O, F)<br><strong style="color:#e9d5ff">Requires:</strong> H bonded to N, O or F';
+  }
+}
+
+function initSim(){
+  if(simInitialized) return;
+  simInitialized=true;
+  updateInfoPanel();
+  drawFrame();
+}
+
+function drawFrame(){
+  var canvas=document.getElementById('imfCanvas');
+  if(!canvas) return;
+  var dpr=window.devicePixelRatio||1;
+  var displayW=canvas.offsetWidth||700;
+  var displayH=340;
+  if(canvas.width!==displayW*dpr||canvas.height!==displayH*dpr){
+    canvas.width=displayW*dpr;
+    canvas.height=displayH*dpr;
+    canvas.style.width=displayW+'px';
+    canvas.style.height=displayH+'px';
+  }
+  var ctx=canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+  var W=displayW, H=displayH;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#040710';
+  ctx.fillRect(0,0,W,H);
+
+  simT++;
+
+  if(simMode==='london') drawLondon(ctx,W,H);
+  else if(simMode==='dipole') drawDipole(ctx,W,H);
+  else drawHBond(ctx,W,H);
+
+  animFrame=requestAnimationFrame(drawFrame);
+}
+
+// ---- LONDON DISPERSION ----
+function drawLondon(ctx,W,H){
+  var t=simT;
+  // Two I2 molecules as ellipses
+  var cx1=W*0.28, cy1=H*0.45;
+  var cx2=W*0.72, cy2=H*0.45;
+  var rx=52, ry=24;
+
+  // Oscillating electron shift phase
+  var phase=Math.sin(t*0.03);
+  var shift1=phase*18;
+  var shift2=-phase*18;
+
+  function drawI2(cx,cy,shift,label){
+    // Atom 1
+    var grd=ctx.createRadialGradient(cx-28+shift*0.3,cy,2,cx-28,cy,26);
+    grd.addColorStop(0,'rgba(140,160,220,0.9)');
+    grd.addColorStop(1,'rgba(60,80,160,0.3)');
+    ctx.beginPath();
+    ctx.ellipse(cx-28,cy,26,22,0,0,Math.PI*2);
+    ctx.fillStyle=grd;
+    ctx.fill();
+    ctx.strokeStyle='rgba(150,170,255,0.35)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // Atom 2
+    var grd2=ctx.createRadialGradient(cx+28+shift*0.3,cy,2,cx+28,cy,26);
+    grd2.addColorStop(0,'rgba(140,160,220,0.9)');
+    grd2.addColorStop(1,'rgba(60,80,160,0.3)');
+    ctx.beginPath();
+    ctx.ellipse(cx+28,cy,26,22,0,0,Math.PI*2);
+    ctx.fillStyle=grd2;
+    ctx.fill();
+    ctx.strokeStyle='rgba(150,170,255,0.35)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // Bond between the two atoms
+    ctx.beginPath();
+    ctx.moveTo(cx-2,cy);
+    ctx.lineTo(cx+2,cy);
+    ctx.strokeStyle='rgba(200,210,255,0.5)';
+    ctx.lineWidth=3;
+    ctx.stroke();
+
+    // Electron cloud dots
+    var nDots=10;
+    for(var i=0;i<nDots;i++){
+      var angle=((i/nDots)*Math.PI*2)+(t*0.015);
+      var ex=cx+Math.cos(angle)*rx*0.75+shift*0.6;
+      var ey=cy+Math.sin(angle)*ry*0.75;
+      var alpha=0.3+0.5*((Math.cos(angle)*shift/18+1)/2);
+      ctx.beginPath();
+      ctx.arc(ex,ey,2.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(180,200,255,'+Math.min(1,Math.max(0,alpha))+')';
+      ctx.fill();
+    }
+
+    // Label
+    ctx.fillStyle='rgba(200,210,255,0.7)';
+    ctx.font='bold 13px "JetBrains Mono", monospace';
+    ctx.textAlign='center';
+    ctx.fillText('I₂',cx,cy+ry+18);
+
+    // Delta labels
+    var dPos=shift>2?'+':shift<-2?'-':'';
+    if(Math.abs(shift)>4){
+      ctx.font='bold 11px "JetBrains Mono", monospace';
+      ctx.fillStyle='rgba(192,132,252,0.9)';
+      ctx.fillText('δ'+(shift>0?'+':'-'),cx-32,cy-28);
+      ctx.fillText('δ'+(shift>0?'-':'+'),cx+32,cy-28);
+    }
+  }
+
+  drawI2(cx1,cy1,shift1,'I₂');
+  drawI2(cx2,cy2,shift2,'I₂');
+
+  // Dashed interaction line between molecules
+  var opacity=Math.abs(phase)*0.7;
+  if(opacity>0.08){
+    ctx.save();
+    ctx.setLineDash([5,5]);
+    ctx.beginPath();
+    ctx.moveTo(cx1+rx+4,cy1);
+    ctx.lineTo(cx2-rx-4,cy2);
+    ctx.strokeStyle='rgba(192,132,252,'+opacity+')';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Title label
+  ctx.fillStyle='rgba(192,132,252,0.65)';
+  ctx.font='12px "JetBrains Mono", monospace';
+  ctx.textAlign='center';
+  ctx.fillText('Temporary dipole → induced dipole',W/2,H*0.85);
+
+  // Explanation text
+  ctx.fillStyle='rgba(160,170,210,0.5)';
+  ctx.font='11px "Cabinet Grotesk", sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('Electron density fluctuates — a momentary imbalance creates a weak attraction',W/2,H*0.93);
+}
+
+// ---- DIPOLE-DIPOLE ----
+function drawDipole(ctx,W,H){
+  var t=simT;
+  var align=Math.sin(t*0.025);
+  var wobble=align*8;
+
+  function drawHCl(cx,cy,flipped){
+    // H atom (small, δ+)
+    var hx=flipped?cx+38:cx-38;
+    var clx=flipped?cx-38:cx+38;
+
+    // Cl atom
+    var gClR=ctx.createRadialGradient(clx,cy,2,clx,cy,22);
+    gClR.addColorStop(0,'rgba(100,220,120,0.85)');
+    gClR.addColorStop(1,'rgba(30,100,50,0.25)');
+    ctx.beginPath();
+    ctx.arc(clx,cy,22,0,Math.PI*2);
+    ctx.fillStyle=gClR;
+    ctx.fill();
+    ctx.strokeStyle='rgba(80,200,100,0.4)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // H atom
+    var gHR=ctx.createRadialGradient(hx,cy,1,hx,cy,13);
+    gHR.addColorStop(0,'rgba(230,240,255,0.9)');
+    gHR.addColorStop(1,'rgba(140,160,220,0.2)');
+    ctx.beginPath();
+    ctx.arc(hx,cy,13,0,Math.PI*2);
+    ctx.fillStyle=gHR;
+    ctx.fill();
+    ctx.strokeStyle='rgba(180,190,255,0.35)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // Bond
+    var bx1=flipped?clx+22:hx+13;
+    var bx2=flipped?hx-13:clx-22;
+    ctx.beginPath();
+    ctx.moveTo(bx1,cy);
+    ctx.lineTo(bx2,cy);
+    ctx.strokeStyle='rgba(200,210,255,0.55)';
+    ctx.lineWidth=2.5;
+    ctx.stroke();
+
+    // Delta labels
+    ctx.font='bold 11px "JetBrains Mono", monospace';
+    ctx.textAlign='center';
+    ctx.fillStyle='rgba(192,132,252,0.9)';
+    ctx.fillText('δ+',hx,cy-20);
+    ctx.fillStyle='rgba(80,220,120,0.9)';
+    ctx.fillText('δ−',clx,cy-26);
+
+    // Labels
+    ctx.fillStyle='rgba(200,210,255,0.65)';
+    ctx.font='bold 12px "JetBrains Mono", monospace';
+    ctx.textAlign='center';
+    ctx.fillText('H',hx,cy+28);
+    ctx.fillStyle='rgba(80,220,120,0.65)';
+    ctx.fillText('Cl',clx,cy+32);
+
+    ctx.fillStyle='rgba(200,210,255,0.5)';
+    ctx.font='12px "JetBrains Mono", monospace';
+    ctx.textAlign='center';
+    ctx.fillText('HCl',cx,cy+50);
+  }
+
+  var cy1=H*0.38+wobble;
+  var cy2=H*0.62-wobble;
+
+  drawHCl(W*0.35,cy1,false);
+  drawHCl(W*0.65,cy2,true);
+
+  // Dashed attraction line between Cl of mol1 and H of mol2
+  var clx1=W*0.35+38;
+  var hx2=W*0.65+38;
+  var lineAlpha=(align+1)/2*0.6;
+  ctx.save();
+  ctx.setLineDash([4,5]);
+  ctx.beginPath();
+  ctx.moveTo(clx1,cy1);
+  ctx.lineTo(hx2,cy2);
+  ctx.strokeStyle='rgba(192,132,252,'+lineAlpha+')';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // Arrows showing attraction direction
+  if(Math.abs(align)>0.3){
+    var arrowAlpha=Math.abs(align)*0.8;
+    ctx.fillStyle='rgba(192,132,252,'+arrowAlpha+')';
+    ctx.font='18px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(align>0?'↔':'↔',W/2,H*0.5);
+  }
+
+  ctx.fillStyle='rgba(192,132,252,0.65)';
+  ctx.font='12px "JetBrains Mono", monospace';
+  ctx.textAlign='center';
+  ctx.fillText('Dipole-dipole attraction: δ+ end ↔ δ− end',W/2,H*0.87);
+
+  ctx.fillStyle='rgba(160,170,210,0.5)';
+  ctx.font='11px "Cabinet Grotesk", sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('Polar molecules align so opposite partial charges attract each other',W/2,H*0.94);
+}
+
+// ---- HYDROGEN BONDING ----
+function drawHBond(ctx,W,H){
+  var t=simT;
+  var pulse=0.5+0.5*Math.sin(t*0.04);
+
+  // 3 water molecules arranged in a triangle pattern
+  var mols=[
+    {cx:W*0.25, cy:H*0.35},
+    {cx:W*0.62, cy:H*0.30},
+    {cx:W*0.50, cy:H*0.68}
+  ];
+
+  function drawWater(cx,cy,angle){
+    angle=angle||0;
+    var OR=20, HR=10;
+    var bondLen=40;
+    var theta=104.5*Math.PI/180/2;
+
+    var hx1=cx+bondLen*Math.cos(angle+theta);
+    var hy1=cy+bondLen*Math.sin(angle+theta);
+    var hx2=cx+bondLen*Math.cos(angle-theta);
+    var hy2=cy+bondLen*Math.sin(angle-theta);
+
+    // O-H bonds
+    ctx.beginPath();
+    ctx.moveTo(cx,cy); ctx.lineTo(hx1,hy1);
+    ctx.strokeStyle='rgba(200,210,255,0.55)';
+    ctx.lineWidth=3;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx,cy); ctx.lineTo(hx2,hy2);
+    ctx.stroke();
+
+    // O atom
+    var gO=ctx.createRadialGradient(cx,cy,2,cx,cy,OR);
+    gO.addColorStop(0,'rgba(255,80,80,0.9)');
+    gO.addColorStop(1,'rgba(160,20,20,0.25)');
+    ctx.beginPath();
+    ctx.arc(cx,cy,OR,0,Math.PI*2);
+    ctx.fillStyle=gO;
+    ctx.fill();
+    ctx.strokeStyle='rgba(255,100,100,0.4)';
+    ctx.lineWidth=1.5;
+    ctx.stroke();
+
+    // H atoms
+    function drawH(hx,hy,sign){
+      var gH=ctx.createRadialGradient(hx,hy,1,hx,hy,HR);
+      gH.addColorStop(0,'rgba(240,245,255,0.9)');
+      gH.addColorStop(1,'rgba(140,160,220,0.2)');
+      ctx.beginPath();
+      ctx.arc(hx,hy,HR,0,Math.PI*2);
+      ctx.fillStyle=gH;
+      ctx.fill();
+      ctx.strokeStyle='rgba(180,190,255,0.35)';
+      ctx.lineWidth=1;
+      ctx.stroke();
+      // delta label
+      ctx.fillStyle='rgba(192,132,252,0.85)';
+      ctx.font='9px "JetBrains Mono",monospace';
+      ctx.textAlign='center';
+      ctx.fillText('δ+',hx,hy-14);
+    }
+
+    drawH(hx1,hy1,'+');
+    drawH(hx2,hy2,'+');
+
+    // O label + delta
+    ctx.fillStyle='rgba(255,130,130,0.85)';
+    ctx.font='bold 10px "JetBrains Mono",monospace';
+    ctx.textAlign='center';
+    ctx.fillText('O',cx,cy+4);
+    ctx.fillStyle='rgba(192,132,252,0.75)';
+    ctx.font='9px "JetBrains Mono",monospace';
+    ctx.fillText('δ−',cx,cy-25);
+
+    return {ox:cx,oy:cy,hx1:hx1,hy1:hy1,hx2:hx2,hy2:hy2};
+  }
+
+  var m0=drawWater(mols[0].cx,mols[0].cy,0.3);
+  var m1=drawWater(mols[1].cx,mols[1].cy,Math.PI+0.4);
+  var m2=drawWater(mols[2].cx,mols[2].cy,-0.2);
+
+  // Draw H-bonds as pulsing dashed lines
+  function drawHBondLine(x1,y1,x2,y2,label){
+    var alpha=0.25+pulse*0.55;
+    ctx.save();
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.strokeStyle='rgba(96,165,250,'+alpha+')';
+    ctx.lineWidth=2;
+    ctx.stroke();
+    ctx.restore();
+
+    // Label
+    if(label){
+      var mx=(x1+x2)/2, my=(y1+y2)/2;
+      ctx.fillStyle='rgba(96,165,250,0.75)';
+      ctx.font='10px "JetBrains Mono",monospace';
+      ctx.textAlign='center';
+      ctx.fillText(label,mx,my-10);
+    }
+  }
+
+  // H-bond: H of m0 → O of m1
+  drawHBondLine(m0.hx1,m0.hy1,m1.ox,m1.oy,'O−H···O');
+  // H-bond: H of m1 → O of m2
+  drawHBondLine(m1.hx2,m1.hy2,m2.ox,m2.oy,null);
+  // H-bond: H of m2 → O of m0
+  drawHBondLine(m2.hx1,m2.hy1,m0.ox,m0.oy,null);
+
+  // Legend
+  ctx.fillStyle='rgba(96,165,250,0.7)';
+  ctx.font='11px "JetBrains Mono",monospace';
+  ctx.textAlign='left';
+  ctx.save();
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(W*0.72,H*0.60);
+  ctx.lineTo(W*0.82,H*0.60);
+  ctx.strokeStyle='rgba(96,165,250,0.7)';
+  ctx.lineWidth=2;
+  ctx.stroke();
+  ctx.restore();
+  ctx.fillText('H-bond',W*0.83,H*0.60+4);
+
+  ctx.strokeStyle='rgba(200,210,255,0.55)';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(W*0.72,H*0.67);
+  ctx.lineTo(W*0.82,H*0.67);
+  ctx.stroke();
+  ctx.fillStyle='rgba(200,210,255,0.6)';
+  ctx.font='11px "JetBrains Mono",monospace';
+  ctx.fillText('O−H bond',W*0.83,H*0.67+4);
+
+  ctx.fillStyle='rgba(192,132,252,0.65)';
+  ctx.font='12px "JetBrains Mono",monospace';
+  ctx.textAlign='center';
+  ctx.fillText('Hydrogen bonding: O−H···O (pulsing = dynamic)',W/2,H*0.88);
+
+  ctx.fillStyle='rgba(160,170,210,0.5)';
+  ctx.font='11px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText('H bonded to O creates strong δ+ on H — attracted to lone pair on adjacent O',W/2,H*0.95);
+}
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded',function(){
+  updateInfoPanel();
+});
+</script>
+</body>
+</html>
