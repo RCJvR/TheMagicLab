@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond the Solar System — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,146,60,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(139,92,246,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#fdba74 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .scale-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .scale-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .scale-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .scale-table td:first-child{color:#fdba74;font-weight:700;font-family:var(--fm)}
+    .scale-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(251,146,60,.40);background:rgba(251,146,60,.12);color:#fdba74}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#fb923c;font-family:var(--fm);font-weight:600;font-size:10px}
+    /* Practice + Workbook */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#fb923c}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(251,146,60,.35)}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Planet Earth &amp; Beyond</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Planet Earth &amp; Beyond · Lesson 2</div>
+  <h1 class="lesson-title">Beyond the Solar System</h1>
+  <p class="lesson-sub">Our Sun is just one of 200–400 billion stars in the Milky Way galaxy — and the Milky Way is one of hundreds of billions of galaxies in the observable universe.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🌌 Explore</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Workbook</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Beyond our solar system</h2>
+    <p>Our solar system — the Sun plus all the objects orbiting it — is enormous. The distance from the Sun to Pluto is about 6 billion km. Yet this is tiny compared to the distances between stars. The nearest star system to our Sun is <strong>Alpha Centauri</strong>, about 4.3 light years away.</p>
+
+    <h2>The light year</h2>
+    <p>Distances in space are so vast that kilometres become impractical. Scientists use the <strong>light year (ly)</strong> as a unit of distance:</p>
+    <div class="callout"><strong>1 light year</strong> = the distance light travels in one year in a vacuum = approximately <strong>9.46 × 10¹² km</strong> (about 9.5 trillion kilometres)</div>
+    <p>Light travels at 300 000 km/s. In one year it covers almost 10 trillion km. When you look at Alpha Centauri, you are seeing light that left it 4.3 years ago — you are looking into the past.</p>
+    <table class="scale-table">
+      <thead><tr><th>Object</th><th>Distance from Earth</th></tr></thead>
+      <tbody>
+        <tr><td>Moon</td><td>1.3 light seconds</td></tr>
+        <tr><td>Sun</td><td>8.3 light minutes</td></tr>
+        <tr><td>Alpha Centauri (nearest star system)</td><td>4.3 light years</td></tr>
+        <tr><td>Centre of Milky Way</td><td>~26 000 light years</td></tr>
+        <tr><td>Andromeda Galaxy (nearest large galaxy)</td><td>~2.5 million light years</td></tr>
+        <tr><td>Observable universe (radius)</td><td>~46 billion light years</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Our galaxy — the Milky Way</h2>
+    <p>A <strong>galaxy</strong> is a massive system of millions or billions of stars, gas, dust and dark matter held together by gravity. Our solar system belongs to the <strong>Milky Way galaxy</strong>:</p>
+    <ul>
+      <li>Contains approximately 200–400 billion stars</li>
+      <li>Diameter: about 100 000 light years</li>
+      <li>Shape: a barred spiral galaxy</li>
+      <li>Our solar system is located in one of the spiral arms, about 26 000 light years from the galactic centre</li>
+      <li>On a clear dark night you can see the Milky Way as a bright band across the sky — you are looking through the disc of our galaxy edge-on</li>
+    </ul>
+
+    <h2>Types of galaxies</h2>
+    <ul>
+      <li><strong>Spiral galaxies</strong> — flat disc with spiral arms; example: Milky Way, Andromeda</li>
+      <li><strong>Elliptical galaxies</strong> — ball-shaped, no spiral arms</li>
+      <li><strong>Irregular galaxies</strong> — no regular shape; example: the Magellanic Clouds visible from South Africa</li>
+    </ul>
+    <div class="callout"><strong>South African connection:</strong> The Magellanic Clouds — the Large and Small Magellanic Clouds (LMC and SMC) — are two small irregular galaxies visible to the naked eye from the Southern Hemisphere. They are satellite galaxies of the Milky Way, approximately 160 000 and 200 000 light years away respectively.</div>
+
+    <h2>The universe</h2>
+    <p>The <strong>universe</strong> contains everything that exists — all matter, energy, space and time. The observable universe contains an estimated 2 trillion (2 000 000 000 000) galaxies. The universe began approximately 13.8 billion years ago in an event called the Big Bang.</p>
+
+    <h2>Size hierarchy</h2>
+    <p>It helps to think in levels of scale:</p>
+    <ul>
+      <li>Planet → Planetary system (solar system) → Star cluster → Galaxy → Galaxy cluster → Observable Universe</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">View</div>
+        <button class="mode-btn active" onclick="setMode('milkyway',this)">🌌 Milky Way</button>
+        <button class="mode-btn" onclick="setMode('distances',this)">📏 Scale of distances</button>
+        <button class="mode-btn" onclick="setMode('galaxies',this)">🌀 Galaxy types</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Scale facts</div>
+        <div class="stat-item"><span>Sun → Alpha Cen</span><span>4.3 ly</span></div>
+        <div class="stat-item"><span>Milky Way diameter</span><span>100 000 ly</span></div>
+        <div class="stat-item"><span>Stars in Milky Way</span><span>~300 billion</span></div>
+        <div class="stat-item"><span>Galaxies in universe</span><span>~2 trillion</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Write your answers in the spaces below. Use full sentences.</p>
+    <div class="wb-card"><div class="wb-q">1. What is a light year? Why do scientists use light years instead of kilometres when measuring distances in space?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. The nearest star to our Sun is Alpha Centauri, about 4.3 light years away. What does it mean to say you are "looking back in time" when you observe a distant star?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Describe the Milky Way galaxy. Where is our solar system located within it?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Name the three main types of galaxies and briefly describe the shape of each. Give an example of each type.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Write the size hierarchy from smallest to largest, starting with "planet" and ending with "observable universe". Name at least 6 levels.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. What are the Magellanic Clouds and why are they significant to observers in South Africa? How far away are they?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let mode='milkyway',raf=null,t=0;
+let stars=[];
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(raf) cancelAnimationFrame(raf);
+  initSim();
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  stars=[];
+  if(mode==='milkyway'){
+    // Generate stars for milky way
+    for(let i=0;i<600;i++){
+      const arm=Math.floor(Math.random()*2);
+      const r=30+Math.pow(Math.random(),0.7)*180;
+      const theta=arm*Math.PI+(r/180)*Math.PI*3+( Math.random()-.5)*0.8;
+      stars.push({
+        x:W/2+r*Math.cos(theta)+(Math.random()-.5)*30,
+        y:H/2+r*Math.sin(theta)*0.4+(Math.random()-.5)*20,
+        s:Math.random()*1.5+0.3,
+        b:Math.random()
+      });
+    }
+    // Core bulge
+    for(let i=0;i<200;i++){
+      const r=Math.random()*45;
+      const th=Math.random()*Math.PI*2;
+      stars.push({x:W/2+r*Math.cos(th),y:H/2+r*Math.sin(th)*0.5,s:Math.random()*1+0.3,b:Math.random(),core:true});
+    }
+  } else {
+    for(let i=0;i<200;i++) stars.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.2+0.2,b:Math.random()});
+  }
+  t=0;loop();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#020408';
+  ctx.fillRect(0,0,W,H);
+
+  if(mode==='milkyway') drawMilkyWay();
+  else if(mode==='distances') drawDistances();
+  else drawGalaxies();
+}
+
+function drawMilkyWay(){
+  for(const s of stars){
+    const twinkle=0.4+0.6*Math.abs(Math.sin(t*0.02+s.b*100));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);
+    const c=s.core?`rgba(253,186,116,${0.6*twinkle})`:`rgba(255,255,255,${0.3*twinkle})`;
+    ctx.fillStyle=c;ctx.fill();
+  }
+  // Sun marker
+  const sx=W/2+100,sy=H/2-30;
+  ctx.beginPath();ctx.arc(sx,sy,5,0,Math.PI*2);
+  ctx.fillStyle='#fde68a';ctx.fill();
+  ctx.strokeStyle='rgba(253,224,71,0.6)';ctx.lineWidth=8;
+  ctx.beginPath();ctx.arc(sx,sy,10,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#fde68a';ctx.font='bold 10px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Our Sun',sx+14,sy+4);
+
+  // Core label
+  ctx.fillStyle='rgba(253,186,116,0.7)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Galactic centre',W/2,H/2+6);
+
+  // Diameter line
+  ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(251,146,60,0.3)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-210,H/2);ctx.lineTo(W/2+210,H/2);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(251,146,60,0.6)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('← ~100 000 light years →',W/2,H/2+56);
+
+  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='11px var(--fd)';
+  ctx.fillText('Milky Way — barred spiral galaxy',W/2,20);
+}
+
+function drawDistances(){
+  // Background stars
+  for(const s of stars){ctx.beginPath();ctx.arc(s.x,s.y,s.s*0.6,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.2*s.b})`;ctx.fill();}
+
+  const items=[
+    {label:'Earth',x:60,color:'#3b82f6',size:8,dist:'0'},
+    {label:'Moon (1.3 ls)',x:110,color:'#94a3b8',size:5,dist:''},
+    {label:'Sun (8.3 lm)',x:180,color:'#fde68a',size:12,dist:''},
+    {label:'Alpha Cen (4.3 ly)',x:320,color:'#fb923c',size:6,dist:''},
+    {label:'Milky Way centre (26 000 ly)',x:460,color:'#c084fc',size:18,dist:''}
+  ];
+
+  items.forEach((it,i)=>{
+    // Arrow line
+    if(i<items.length-1){
+      ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(it.x+10,H/2);ctx.lineTo(items[i+1].x-10,H/2);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    // Glow
+    const g=ctx.createRadialGradient(it.x,H/2,0,it.x,H/2,it.size*2.5);
+    g.addColorStop(0,it.color.replace(')',',0.3)').replace('rgb','rgba'));
+    g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(it.x,H/2,it.size*2.5,0,Math.PI*2);ctx.fill();
+    // Body
+    ctx.beginPath();ctx.arc(it.x,H/2,it.size,0,Math.PI*2);ctx.fillStyle=it.color;ctx.fill();
+    // Label
+    ctx.fillStyle='rgba(210,218,245,0.8)';ctx.font='9.5px var(--fd)';ctx.textAlign='center';
+    const lines=it.label.split('(');
+    ctx.fillText(lines[0].trim(),it.x,H/2+it.size+16);
+    if(lines[1]) ctx.fillText('('+lines[1],it.x,H/2+it.size+28);
+  });
+
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Scale of distances (not to scale — sizes exaggerated for visibility)',W/2,H-16);
+}
+
+function drawGalaxies(){
+  for(const s of stars){ctx.beginPath();ctx.arc(s.x,s.y,s.s*0.5,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.15*s.b})`;ctx.fill();}
+
+  // Spiral
+  drawSpiral(130,150,'Spiral\n(e.g. Milky Way)','#fb923c');
+  // Elliptical
+  drawElliptical(W/2,150,'Elliptical','#c084fc');
+  // Irregular
+  drawIrregular(390,150,'Irregular\n(e.g. Magellanic\nClouds)','#22d3ee');
+
+  // LMC/SMC
+  ctx.fillStyle='rgba(34,211,238,0.7)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Magellanic Clouds visible from South Africa!',W/2,H-16);
+}
+
+function drawSpiral(cx,cy,label,color){
+  for(let arm=0;arm<2;arm++){
+    for(let i=0;i<80;i++){
+      const r=8+i*1.6, th=arm*Math.PI+(i/80)*Math.PI*3;
+      const px=cx+r*Math.cos(th), py=cy+r*Math.sin(th)*0.4;
+      const a=0.6*(1-i/80);
+      ctx.beginPath();ctx.arc(px,py,1.2,0,Math.PI*2);
+      ctx.fillStyle=`${color}${Math.round(a*255).toString(16).padStart(2,'0')}`;
+      ctx.fill();
+    }
+  }
+  // Core
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,18);
+  g.addColorStop(0,'rgba(253,230,138,0.9)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(cx,cy,18,10,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  label.split('\n').forEach((l,i)=>ctx.fillText(l,cx,cy+85+i*13));
+}
+
+function drawElliptical(cx,cy,label,color){
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,55);
+  g.addColorStop(0,'rgba(192,132,252,0.8)');g.addColorStop(0.5,'rgba(139,92,246,0.4)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(cx,cy,55,38,0,0,Math.PI*2);ctx.fill();
+  for(let i=0;i<60;i++){
+    const r=Math.random()*45, th=Math.random()*Math.PI*2;
+    ctx.beginPath();ctx.arc(cx+r*Math.cos(th),cy+r*Math.sin(th)*0.65,0.8,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
+  }
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText(label,cx,cy+85);
+}
+
+function drawIrregular(cx,cy,label,color){
+  const pts=[];
+  for(let i=0;i<50;i++){
+    const r=5+Math.random()*50, th=Math.random()*Math.PI*2;
+    pts.push({x:cx+r*Math.cos(th)*1.2,y:cy+r*Math.sin(th)*0.9});
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,1,0,Math.PI*2);
+    ctx.fillStyle='rgba(34,211,238,0.5)';ctx.fill();
+  }
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  label.split('\n').forEach((l,i)=>ctx.fillText(l,cx,cy+85+i*13));
+}
+
+initSim();
+
+const QS=[
+  {q:"What is a light year?",opts:["The time it takes light to reach the Sun","The distance light travels in one year","One billion kilometres","The age of the universe"],ans:1,fb:"A light year is a unit of DISTANCE — the distance light travels in one year in a vacuum, about 9.46 × 10¹² km."},
+  {q:"Approximately how far is Alpha Centauri, the nearest star system, from Earth?",opts:["4.3 kilometres","4.3 light minutes","4.3 light years","4.3 million light years"],ans:2,fb:"Alpha Centauri is approximately 4.3 light years away — this means the light we see from it left 4.3 years ago."},
+  {q:"Our solar system is located in which galaxy?",opts:["Andromeda","Magellanic Cloud","The Milky Way","The observable universe"],ans:2,fb:"Our solar system (the Sun and everything orbiting it) is located in the Milky Way galaxy, about 26 000 light years from the galactic centre."},
+  {q:"The Milky Way is best described as:",opts:["An elliptical galaxy","A barred spiral galaxy","An irregular galaxy","A globular cluster"],ans:1,fb:"The Milky Way is a barred spiral galaxy with a central bar-shaped region and spiral arms extending outward."},
+  {q:"What are the Magellanic Clouds?",opts:["Clouds of gas inside the Milky Way","Two irregular dwarf galaxies visible from the Southern Hemisphere","Two types of nebulae","Star clusters near the Sun"],ans:1,fb:"The Large and Small Magellanic Clouds are two irregular dwarf galaxies that orbit the Milky Way. They are visible to the naked eye from the Southern Hemisphere, including South Africa."},
+  {q:"When you observe a star that is 1000 light years away, you are seeing:",opts:["The star as it is right now","The star as it was 1000 years ago","A reflection of the star","An artist's impression"],ans:1,fb:"Light from a star 1000 ly away takes 1000 years to reach us. You are seeing how the star looked 1000 years ago — you are looking back in time!"}
+];
+let scores=new Array(6).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Question ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+renderQ();
+</script>
+</body>
+</html>

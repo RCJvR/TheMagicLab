@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particle Model of Matter — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#60a5fa;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(59,130,246,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#93c5fd 50%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .state-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+    .state-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+    .state-card h3{font-size:13px;font-weight:800;color:#93c5fd;margin-bottom:8px}
+    .state-card ul{text-align:left;margin:0 0 0 14px;font-size:12px;color:rgba(210,218,245,.65);line-height:1.7}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(96,165,250,.40);background:rgba(96,165,250,.12);color:#93c5fd}
+    .slider-row{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+    .slider-row label{font-size:11px;color:rgba(210,218,245,.75);display:flex;justify-content:space-between}
+    .slider-row input[type=range]{width:100%;accent-color:#60a5fa;cursor:pointer}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#60a5fa;font-family:var(--fm);font-weight:600}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#60a5fa}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(96,165,250,.35)}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Matter &amp; Materials · Lesson 3</div>
+  <h1 class="lesson-title">Particle Model of Matter</h1>
+  <p class="lesson-sub">All matter is made of tiny particles. How they are arranged and how they move explains every state of matter, density, diffusion, pressure and more.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">⚗️ Explore</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Workbook</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>The particle model</h2>
+    <p>The <strong>particle model of matter</strong> is a scientific theory that explains the behaviour of all matter — solids, liquids, and gases — in terms of tiny particles (atoms and molecules). The key ideas are:</p>
+    <ul>
+      <li>All matter is made of particles too small to see</li>
+      <li>The spaces between particles are empty (not air — nothing)</li>
+      <li>Particles are always moving (even in solids they vibrate)</li>
+      <li>Particles in different states are arranged and behave differently</li>
+    </ul>
+
+    <h2>The three states of matter</h2>
+    <div class="state-grid">
+      <div class="state-card">
+        <h3>SOLID</h3>
+        <ul>
+          <li>Closely packed, regular arrangement</li>
+          <li>Vibrate — do not move around</li>
+          <li>Strong forces between particles</li>
+          <li>Very small spaces</li>
+          <li>Fixed shape and volume</li>
+        </ul>
+      </div>
+      <div class="state-card">
+        <h3>LIQUID</h3>
+        <ul>
+          <li>Loosely arranged, still close</li>
+          <li>Move and slide past each other</li>
+          <li>Weaker forces</li>
+          <li>Small spaces</li>
+          <li>Fixed volume, no fixed shape</li>
+        </ul>
+      </div>
+      <div class="state-card">
+        <h3>GAS</h3>
+        <ul>
+          <li>No regular arrangement</li>
+          <li>Move very fast in all directions</li>
+          <li>Extremely weak forces</li>
+          <li>Very large spaces</li>
+          <li>No fixed shape or volume</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Change of state</h2>
+    <p>Heating gives particles more energy, causing them to move faster and further apart. Cooling removes energy, slowing particles down:</p>
+    <table class="compare-table">
+      <thead><tr><th>Process</th><th>Change</th><th>What happens to particles</th></tr></thead>
+      <tbody>
+        <tr><td>Melting</td><td>Solid → Liquid</td><td>Gain energy; break free of fixed positions; slide past each other</td></tr>
+        <tr><td>Evaporation / Boiling</td><td>Liquid → Gas</td><td>Gain enough energy to escape; move very far apart</td></tr>
+        <tr><td>Condensation</td><td>Gas → Liquid</td><td>Lose energy; slow down; forces pull them closer</td></tr>
+        <tr><td>Freezing / Solidifying</td><td>Liquid → Solid</td><td>Lose more energy; settle into fixed positions</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Diffusion</h2>
+    <p>Diffusion is the net movement of particles from a region of <strong>high concentration</strong> to one of <strong>low concentration</strong>. It happens because particles are constantly moving randomly.</p>
+    <ul>
+      <li>Diffusion is <strong>faster in gases</strong> than in liquids — gas particles move much faster and have more space</li>
+      <li>Example: a perfume bottle opened across the room — you smell it without any wind</li>
+      <li>Example: a drop of food colouring spreading through water (takes minutes to hours)</li>
+    </ul>
+    <div class="callout"><strong>Curriculum link:</strong> Diffusion in gases and liquids also explains gaseous exchange in the lungs (Grade 9 Life & Living — oxygen diffuses from alveoli into blood, CO₂ diffuses out).</div>
+
+    <h2>Density</h2>
+    <p>Density describes how much mass is packed into a given volume. A material has high density if its particles are <strong>heavy</strong> and <strong>closely packed</strong>.</p>
+    <ul>
+      <li><strong>Solids</strong> are generally denser than liquids, which are denser than gases</li>
+      <li><strong>Exception:</strong> Ice (solid water) is <em>less</em> dense than liquid water — that's why ice floats</li>
+      <li>Oil is less dense than water, so oil floats on water</li>
+    </ul>
+
+    <h2>Expansion and contraction</h2>
+    <p>When materials are heated, particles move faster and push further apart — the material <strong>expands</strong>. When cooled, particles slow down and move closer — the material <strong>contracts</strong>.</p>
+    <p>During expansion and contraction, the <strong>number and size of particles stays the same</strong> — only the spaces between them change.</p>
+
+    <h2>Pressure in gases</h2>
+    <p>Gas particles are constantly moving and <strong>colliding with the walls of their container</strong>. These collisions create pressure. If you pump more gas into a container, there are more particles, more collisions, and therefore <strong>higher pressure</strong>. This explains why a tyre gets harder as you pump it up.</p>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">State of matter</div>
+        <button class="mode-btn active" onclick="setState('solid',this)">🧱 Solid</button>
+        <button class="mode-btn" onclick="setState('liquid',this)">💧 Liquid</button>
+        <button class="mode-btn" onclick="setState('gas',this)">💨 Gas</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Temperature</div>
+        <div class="slider-row">
+          <label>Heat <span id="temp-val">50°C</span></label>
+          <input type="range" min="0" max="100" value="50" id="sl-temp" oninput="updateTemp(this.value)">
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Observations</div>
+        <div class="stat-item"><span>State</span><span id="st-state">Solid</span></div>
+        <div class="stat-item"><span>Speed</span><span id="st-speed">Low</span></div>
+        <div class="stat-item"><span>Spacing</span><span id="st-space">Small</span></div>
+        <div class="stat-item"><span>Pressure</span><span id="st-press">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Write your answers in the spaces below. Use full sentences.</p>
+    <div class="wb-card"><div class="wb-q">1. Describe the arrangement, movement and spacing of particles in a solid, liquid, and gas. Use the particle model of matter.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Explain what happens at the particle level when a solid melts and then when the liquid evaporates. What happens to the energy of the particles?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Explain diffusion and give one example in a gas and one example in a liquid. Why is diffusion faster in gases than in liquids?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. A loaf of bread and a brick of the same size do not have the same mass. Explain this using the particle model of matter, referring to the concept of density.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Why does a metal bridge have small gaps built into it at regular intervals? Explain using the concept of expansion and contraction.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Explain why pumping more air into a bicycle tyre increases the pressure inside it. Use the particle model in your answer.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let currentState='solid', temp=50, particles=[], raf=null, t=0;
+let wallHits=0, lastHits=0;
+
+function updateTemp(v){
+  temp=+v;
+  document.getElementById('temp-val').textContent=v+'°C';
+  updateStats();
+}
+
+function setState(s,btn){
+  currentState=s;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  initSim();
+}
+
+function updateStats(){
+  const speedMap={solid:'Very low (vibrate)',liquid:'Medium',gas:'Very high'};
+  const spaceMap={solid:'Very small',liquid:'Small',gas:'Very large'};
+  document.getElementById('st-state').textContent=currentState.charAt(0).toUpperCase()+currentState.slice(1);
+  document.getElementById('st-speed').textContent=speedMap[currentState];
+  document.getElementById('st-space').textContent=spaceMap[currentState];
+  document.getElementById('st-press').textContent=currentState==='gas'?(wallHits+' collisions/s'):'N/A';
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  particles=[]; t=0; wallHits=0;
+  const N=currentState==='solid'?36:currentState==='liquid'?30:20;
+  if(currentState==='solid'){
+    const cols=6,rows=6,px=W/2-90,py=H/2-90,gap=30;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++)
+      particles.push({x:px+c*gap,y:py+r*gap,vx:(Math.random()-.5)*0.4,vy:(Math.random()-.5)*0.4,ox:px+c*gap,oy:py+r*gap,r:10});
+  } else if(currentState==='liquid'){
+    for(let i=0;i<N;i++) particles.push({x:80+Math.random()*(W-160),y:H/2+Math.random()*150,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,r:10});
+  } else {
+    for(let i=0;i<N;i++) particles.push({x:80+Math.random()*(W-160),y:60+Math.random()*(H-120),vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4,r:7});
+  }
+  updateStats();
+  loop();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#060a16';
+  ctx.fillRect(0,0,W,H);
+
+  const speedFactor=0.5+temp/100*1.5;
+
+  if(currentState==='solid'){
+    for(const p of particles){
+      const amp=0.5+temp/100*3;
+      p.x=p.ox+Math.cos(t*0.08+p.ox)*amp+(Math.random()-.5)*0.2;
+      p.y=p.oy+Math.sin(t*0.08+p.oy)*amp+(Math.random()-.5)*0.2;
+      drawParticle(p,true);
+    }
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[j].x-particles[i].x,dy=particles[j].y-particles[i].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<35){
+          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(96,165,250,${0.3*(1-d/35)})`;ctx.lineWidth=1;ctx.stroke();
+        }
+      }
+    }
+  } else if(currentState==='liquid'){
+    for(const p of particles){
+      p.vx+=(Math.random()-.5)*0.1; p.vy+=0.05+(Math.random()-.5)*0.1;
+      const speed=Math.sqrt(p.vx*p.vx+p.vy*p.vy)*speedFactor;
+      const s=Math.min(speed,3);
+      p.x+=p.vx*speedFactor*0.5; p.y+=p.vy*speedFactor*0.5;
+      if(p.x<p.r+60){p.x=p.r+60;p.vx*=-0.7;}
+      if(p.x>W-p.r-60){p.x=W-p.r-60;p.vx*=-0.7;}
+      if(p.y<H/2-20){p.y=H/2-20;p.vy*=-0.5;}
+      if(p.y>H-p.r-20){p.y=H-p.r-20;p.vy*=-0.7;}
+      p.vx*=0.98; p.vy*=0.97;
+      drawParticle(p,false);
+    }
+    ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(60,H/2-20);ctx.lineTo(W-60,H/2-20);ctx.stroke();
+    ctx.fillStyle='rgba(96,165,250,0.06)';
+    ctx.fillRect(60,H/2-20,W-120,H-p_bottom());
+  } else {
+    let hits=0;
+    for(const p of particles){
+      p.x+=p.vx*speedFactor; p.y+=p.vy*speedFactor;
+      if(p.x<p.r+50){p.x=p.r+50;p.vx=Math.abs(p.vx);hits++;}
+      if(p.x>W-p.r-50){p.x=W-p.r-50;p.vx=-Math.abs(p.vx);hits++;}
+      if(p.y<p.r+40){p.y=p.r+40;p.vy=Math.abs(p.vy);hits++;}
+      if(p.y>H-p.r-40){p.y=H-p.r-40;p.vy=-Math.abs(p.vy);hits++;}
+      drawParticle(p,false);
+    }
+    if(t%60===0){wallHits=hits;updateStats();}
+    ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=2;
+    ctx.strokeRect(50,40,W-100,H-80);
+  }
+}
+
+function p_bottom(){ return 60; }
+
+function drawParticle(p,bonded){
+  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  const g=ctx.createRadialGradient(p.x-p.r*0.3,p.y-p.r*0.3,0,p.x,p.y,p.r);
+  g.addColorStop(0,'rgba(147,197,253,0.9)');
+  g.addColorStop(1,'rgba(37,99,235,0.7)');
+  ctx.fillStyle=g;
+  ctx.fill();
+  ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=1;ctx.stroke();
+}
+
+initSim();
+
+const QS=[
+  {q:"In which state of matter are the particles most closely packed and in a regular arrangement?",opts:["Gas","Liquid","Solid","Plasma"],ans:2,fb:"In a solid, particles are closely packed in a regular arrangement and vibrate in fixed positions."},
+  {q:"Diffusion is faster in gases than in liquids because:",opts:["Gases have heavier particles","Gas particles move much faster and have much larger spaces between them","Gases are less dense","Gas particles are smaller"],ans:1,fb:"Gas particles have very high speeds and very large spaces between them, allowing rapid diffusion."},
+  {q:"When a solid melts, what happens to the particles?",opts:["Particles gain energy and break free of fixed positions, sliding past each other","Particles lose energy and slow down","Particles disappear","Particles shrink"],ans:0,fb:"Melting occurs when particles gain enough energy to break out of their fixed positions and slide past each other — the solid becomes a liquid."},
+  {q:"Ice floats on water because:",opts:["Ice is warmer","Ice particles are lighter","Ice is less dense than liquid water","Ice is magnetic"],ans:2,fb:"This is a notable exception — ice (solid water) is less dense than liquid water, so it floats. Most solids are denser than their liquid form."},
+  {q:"When you pump more air into a tyre, the pressure inside increases because:",opts:["The tyre gets warmer","There are more particles, causing more collisions with the tyre walls","The air gets heavier","The tyre expands"],ans:1,fb:"Pressure in a gas results from particles colliding with the container walls. More particles = more collisions = higher pressure."},
+  {q:"A metal bridge has gaps (expansion joints) built into it to allow for:",opts:["Water drainage","Decoration","Expansion and contraction as temperature changes","Wind movement"],ans:2,fb:"Metals expand when heated and contract when cooled. Expansion joints prevent buckling in summer and cracking in winter."}
+];
+let scores=new Array(6).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Question ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+renderQ();
+</script>
+</body>
+</html>

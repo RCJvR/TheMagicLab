@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visible Light — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(139,92,246,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#fde68a 50%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fde68a}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fde68a;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fde68a}
+    .spectrum-bar{display:flex;border-radius:10px;overflow:hidden;height:32px;margin:16px 0}
+    .spectrum-bar div{flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--fm);color:rgba(0,0,0,0.7)}
+    .light-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    .light-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .light-card h3{font-size:13px;font-weight:800;color:#fde68a;margin-bottom:6px}
+    .light-card p{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.6;margin:0}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fde68a}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#fbbf24;font-family:var(--fm);font-weight:600}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(251,191,36,.35)}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Energy &amp; Change · Lesson 4</div>
+  <h1 class="lesson-title">Visible Light</h1>
+  <p class="lesson-sub">Light travels in straight lines, separates into a rainbow spectrum through a prism, bounces off mirrors, bends when it enters glass — and your eye sees all of it.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🌈 Explore</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Workbook</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Properties of light</h2>
+    <p>Light is a form of energy that is emitted from <strong>luminous objects</strong> such as the Sun, light bulbs, and flames. Key properties:</p>
+    <ul>
+      <li>Light travels in <strong>straight lines</strong> (rays)</li>
+      <li>Light travels at 300 000 km/s through empty space</li>
+      <li>It does not need a medium (it can travel through a vacuum)</li>
+      <li>It is transferred by radiation</li>
+    </ul>
+
+    <h2>The spectrum of visible light</h2>
+    <p>White light is not a single colour — it is a mixture of all the colours of the spectrum. When white light passes through a triangular prism, it is dispersed (split) into its component colours, from lowest frequency (longest wavelength) to highest:</p>
+    <div class="spectrum-bar">
+      <div style="background:#6d28d9">V</div>
+      <div style="background:#4f46e5">I</div>
+      <div style="background:#2563eb">B</div>
+      <div style="background:#16a34a">G</div>
+      <div style="background:#ca8a04">Y</div>
+      <div style="background:#ea580c">O</div>
+      <div style="background:#dc2626">R</div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:-8px">Violet · Indigo · Blue · Green · Yellow · Orange · Red (mnemonic: VIBGYOR)</p>
+    <p>A rainbow forms when sunlight is refracted and dispersed by water droplets in the atmosphere — the same principle as a prism.</p>
+    <div class="callout"><strong>Remember:</strong> Violet/indigo/blue light has the highest frequency (shortest wavelength). Red/orange light has the lowest frequency (longest wavelength). Frequency details are NOT required at this level.</div>
+
+    <h2>Opaque and transparent substances</h2>
+    <div class="light-grid">
+      <div class="light-card">
+        <h3>Opaque</h3>
+        <p>Light cannot pass through. It is absorbed or reflected. Opaque objects cast shadows. Examples: metal, brick, wood, cardboard.</p>
+      </div>
+      <div class="light-card">
+        <h3>Transparent</h3>
+        <p>Most light passes through. Some is absorbed and some reflected, but most transmits. Examples: glass, clear plastic, clean water.</p>
+      </div>
+    </div>
+
+    <h2>Absorption and colour</h2>
+    <p>When white light hits a coloured surface, some frequencies (colours) are <strong>absorbed</strong> and others are <strong>reflected</strong>. The colours that reach your eye determine what colour you see:</p>
+    <ul>
+      <li>A <strong>red</strong> wall absorbs violet, indigo, blue, green, yellow, orange — and reflects red</li>
+      <li>A <strong>black</strong> object absorbs ALL frequencies — no light is reflected, so it looks black</li>
+      <li>A <strong>white</strong> object reflects ALL frequencies — all colours reach the eye, so it looks white</li>
+    </ul>
+
+    <h2>Reflection of light</h2>
+    <p>Light bounces off surfaces. The <strong>law of reflection</strong> states: the angle of incidence = the angle of reflection (both measured from the normal — an imaginary line perpendicular to the surface).</p>
+    <ul>
+      <li><strong>Smooth surfaces</strong> (mirrors): all light reflects in the same direction → clear image</li>
+      <li><strong>Rough surfaces</strong> (crumpled foil, wall): reflected light scatters in many directions → no clear image (diffuse reflection)</li>
+    </ul>
+
+    <h2>Refraction of light</h2>
+    <p>When light travels from one medium (e.g. air) into another (e.g. glass or water), it changes speed. If it enters at an angle, it also changes direction. This is called <strong>refraction</strong>:</p>
+    <ul>
+      <li>Light entering a denser medium (air → glass) bends <em>towards</em> the normal (slows down)</li>
+      <li>Light leaving a denser medium (glass → air) bends <em>away from</em> the normal (speeds up)</li>
+      <li>A triangular prism refracts light twice — once entering and once leaving — dispersing it into the spectrum</li>
+      <li>A lens refracts light to focus it to a point</li>
+    </ul>
+    <p>You can see refraction by placing a pencil in a glass of water — the pencil appears bent at the water surface.</p>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Demonstration</div>
+        <button class="mode-btn active" onclick="setMode('prism',this)">🔺 Prism dispersion</button>
+        <button class="mode-btn" onclick="setMode('reflection',this)">🪞 Reflection</button>
+        <button class="mode-btn" onclick="setMode('refraction',this)">💧 Refraction</button>
+        <button class="mode-btn" onclick="setMode('colour',this)">🎨 Colour &amp; absorption</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Info</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7" id="mode-info">White light enters the prism and is dispersed into the visible spectrum — violet bends most, red bends least.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Write your answers in the spaces below. Use full sentences.</p>
+    <div class="wb-card"><div class="wb-q">1. List the colours of the visible spectrum in order from highest frequency to lowest frequency. What mnemonic can help you remember the order?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Explain the difference between an opaque and a transparent substance. Give two examples of each and explain what happens to light when it hits these substances.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. A red car is parked in sunlight. Explain in terms of light absorption and reflection why the car appears red.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. State the law of reflection and draw a ray diagram to illustrate it. Label the normal, angle of incidence, and angle of reflection.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. What is refraction? A ray of light travels from air into a glass block at an angle. In which direction does it bend? What happens when it exits the glass back into air?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Explain how a triangular prism disperses white light into the visible spectrum. Why does violet light bend more than red light?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let mode='prism', raf=null, t=0, mirrorAngle=45;
+
+const modeInfo={
+  prism:'White light enters the prism and is dispersed into the visible spectrum — violet bends most, red bends least.',
+  reflection:'The angle of incidence (incoming ray) equals the angle of reflection (outgoing ray), both measured from the normal.',
+  refraction:'Light bends towards the normal when entering a denser medium (air → water). It bends away when leaving.',
+  colour:'A coloured object reflects only its own colour and absorbs all others. Black absorbs all; white reflects all.'
+};
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-info').textContent=modeInfo[m];
+  if(raf) cancelAnimationFrame(raf);
+  initSim();
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  t=0; loop();
+}
+
+const SPEC=['#8b5cf6','#6366f1','#3b82f6','#22c55e','#eab308','#f97316','#ef4444'];
+const SPEC_NAMES=['Violet','Indigo','Blue','Green','Yellow','Orange','Red'];
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#060a16';
+  ctx.fillRect(0,0,W,H);
+
+  if(mode==='prism') drawPrism();
+  else if(mode==='reflection') drawReflection();
+  else if(mode==='refraction') drawRefraction();
+  else drawColour();
+}
+
+function drawPrism(){
+  // White beam in
+  const beamX=60, beamY=H/2;
+  ctx.strokeStyle='rgba(255,255,255,0.8)';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(beamX,beamY);ctx.lineTo(220,H/2);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('White light',130,H/2-12);
+
+  // Prism
+  const px=220,py=H/2-80,pb=H/2+80;
+  ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+120,pb);ctx.lineTo(px-30,pb);ctx.closePath();
+  ctx.fillStyle='rgba(148,163,184,0.12)';ctx.fill();
+  ctx.strokeStyle='rgba(148,163,184,0.5)';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Prism',px+30,pb+16);
+
+  // Dispersed rays
+  const exitX=290, exitY=H/2+20;
+  SPEC.forEach((c,i)=>{
+    const angle=-0.35+i*0.1;
+    const ex=exitX+Math.cos(angle)*200, ey=exitY+Math.sin(angle)*200;
+    ctx.strokeStyle=c;ctx.lineWidth=2.5;ctx.globalAlpha=0.85;
+    ctx.beginPath();ctx.moveTo(exitX,exitY);ctx.lineTo(ex,ey);ctx.stroke();
+    ctx.globalAlpha=1;
+    ctx.fillStyle=c;ctx.font='10px var(--fd)';
+    ctx.fillText(SPEC_NAMES[i],ex+8,ey+3);
+  });
+}
+
+function drawReflection(){
+  const mx=W/2, my=H/2;
+  // Mirror
+  ctx.strokeStyle='rgba(148,163,184,0.6)';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(mx,my-120);ctx.lineTo(mx,my+120);ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.3)';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Mirror',mx+6,my-100);
+
+  // Normal
+  ctx.setLineDash([5,5]);
+  ctx.strokeStyle='rgba(107,114,128,0.5)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(mx-120,my);ctx.lineTo(mx+120,my);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(107,114,128,0.6)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Normal',mx,my+14);
+
+  // Incident ray (from top-left)
+  ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(mx-130,my-80);ctx.lineTo(mx,my);ctx.stroke();
+  drawArrowHead(mx-130,my-80,mx,my,'#fde68a');
+  ctx.fillStyle='#fde68a';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Incident ray',mx-90,my-70);
+
+  // Angle of incidence arc
+  ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(mx,my,50,-Math.PI/2,-Math.PI/2+Math.atan2(80,130));ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px var(--fd)';
+  ctx.fillText('θᵢ',mx-30,my-18);
+
+  // Reflected ray (same angle other side)
+  ctx.strokeStyle='#f87171';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(mx-130,my+80);ctx.stroke();
+  drawArrowHead(mx,my,mx-130,my+80,'#f87171');
+  ctx.fillStyle='#f87171';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Reflected ray',mx-90,my+72);
+
+  ctx.strokeStyle='rgba(248,113,113,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(mx,my,50,-Math.PI/2-Math.atan2(80,130),-Math.PI/2);ctx.stroke();
+  ctx.fillStyle='rgba(248,113,113,0.7)';ctx.font='10px var(--fd)';
+  ctx.fillText('θᵣ',mx-28,my+22);
+
+  ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Angle of incidence = Angle of reflection',W/2,H-30);
+}
+
+function drawRefraction(){
+  // Water surface
+  ctx.fillStyle='rgba(59,130,246,0.08)';
+  ctx.fillRect(0,H/2,W,H/2);
+  ctx.strokeStyle='rgba(59,130,246,0.4)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+  ctx.fillStyle='rgba(59,130,246,0.5)';ctx.font='11px var(--fd)';ctx.textAlign='right';
+  ctx.fillText('Water',W-10,H/2+20);
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.textAlign='right';
+  ctx.fillText('Air',W-10,H/2-10);
+
+  const ix=W/2,iy=H/2;
+  // Normal
+  ctx.setLineDash([5,5]);ctx.strokeStyle='rgba(107,114,128,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(ix,iy-150);ctx.lineTo(ix,iy+150);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Incident
+  ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(ix-110,iy-110);ctx.lineTo(ix,iy);ctx.stroke();
+  drawArrowHead(ix-110,iy-110,ix,iy,'#fde68a');
+  ctx.fillStyle='#fde68a';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Incident (air)',ix-70,iy-90);
+
+  // Refracted (steeper - bends toward normal)
+  ctx.strokeStyle='#86efac';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(ix,iy);ctx.lineTo(ix+60,iy+130);ctx.stroke();
+  drawArrowHead(ix,iy,ix+60,iy+130,'#86efac');
+  ctx.fillStyle='#86efac';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Refracted (water)',ix+62,iy+80);
+  ctx.fillText('(bends toward normal)',ix+62,iy+96);
+
+  // Angles
+  ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(ix,iy,50,-Math.PI/2,-Math.PI/4);ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('θ₁',ix-18,iy-30);
+
+  ctx.strokeStyle='rgba(134,239,172,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(ix,iy,50,Math.PI/2,Math.PI/2+Math.atan2(60,130));ctx.stroke();
+  ctx.fillStyle='rgba(134,239,172,0.7)';
+  ctx.fillText('θ₂',ix+25,iy+38);
+  ctx.fillText('θ₂ < θ₁',ix+90,iy+130);
+}
+
+function drawColour(){
+  const objs=[
+    {x:100,y:180,r:45,reflect:'#ef4444',name:'Red object',absorbs:'V I B G Y O'},
+    {x:260,y:180,r:45,reflect:'#22c55e',name:'Green object',absorbs:'V I B Y O R'},
+    {x:420,y:180,r:45,reflect:'#666',name:'Black object',absorbs:'all'},
+    {x:180,y:330,r:45,reflect:'#fff',name:'White object',absorbs:'none (reflects all)'},
+    {x:360,y:330,r:45,reflect:'#3b82f6',name:'Blue object',absorbs:'V I G Y O R'}
+  ];
+  ctx.font='bold 11px var(--fd)';
+  for(const o of objs){
+    ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+    ctx.fillStyle=o.reflect==='#fff'?'rgba(255,255,255,0.9)':o.reflect==='#666'?'#111':o.reflect;
+    ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(210,218,245,0.8)';ctx.textAlign='center';
+    ctx.fillText(o.name,o.x,o.y+o.r+14);
+    ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='9px var(--fd)';
+    ctx.fillText('Absorbs: '+o.absorbs,o.x,o.y+o.r+26);
+    ctx.font='bold 11px var(--fd)';
+    // Sun ray in
+    ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(o.x-60,o.y-80);ctx.lineTo(o.x-o.r*0.7,o.y-o.r*0.7);ctx.stroke();
+  }
+  ctx.fillStyle='#fde68a';ctx.font='bold 12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('☀ White light hits coloured surfaces',W/2,40);
+}
+
+function drawArrowHead(x1,y1,x2,y2,color){
+  const ang=Math.atan2(y2-y1,x2-x1);
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-12*Math.cos(ang-0.4),y2-12*Math.sin(ang-0.4));
+  ctx.lineTo(x2-12*Math.cos(ang+0.4),y2-12*Math.sin(ang+0.4));
+  ctx.closePath();ctx.fill();
+}
+
+initSim();
+
+const QS=[
+  {q:"What is the correct order of the visible spectrum from highest frequency to lowest frequency?",opts:["Red, Orange, Yellow, Green, Blue, Indigo, Violet","Violet, Indigo, Blue, Green, Yellow, Orange, Red","Green, Yellow, Blue, Red, Violet, Orange, Indigo","Blue, Green, Red, Yellow, Violet, Orange, Indigo"],ans:1,fb:"VIBGYOR: Violet has the highest frequency, Red has the lowest. The mnemonic is ROY G BIV reversed."},
+  {q:"A black object placed in sunlight appears black because:",opts:["It reflects all colours of light","It absorbs all frequencies of light","It refracts light","It transmits all light through it"],ans:1,fb:"A black object absorbs all frequencies of visible light. None is reflected back to your eye, so it appears black."},
+  {q:"The law of reflection states that:",opts:["The angle of incidence is twice the angle of reflection","The angle of incidence equals the angle of reflection","Light always reflects at 90°","Rough surfaces always reflect more than smooth surfaces"],ans:1,fb:"The law of reflection: angle of incidence = angle of reflection. Both are measured from the normal to the surface."},
+  {q:"When light travels from air into glass at an angle, it bends:",opts:["Away from the normal","Toward the normal","Along the normal","It does not bend"],ans:1,fb:"When light enters a denser medium (like glass), it slows down and bends toward the normal. This is refraction."},
+  {q:"A prism disperses white light into its component colours because:",opts:["The glass absorbs some colours","Different colours of light refract by different amounts","The prism reflects some colours","All colours travel at different speeds in air"],ans:1,fb:"Different frequencies (colours) of light refract by different amounts in glass. Violet refracts most, red refracts least — this disperses white light into the spectrum."},
+  {q:"An opaque object placed between a light source and a wall will:",opts:["Refract the light around it","Create a shadow on the wall","Reflect all the light back","Transmit the light through it"],ans:1,fb:"Opaque objects do not allow light to pass through them. The area behind the object — blocked from the light source — creates a shadow."}
+];
+let scores=new Array(6).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Question ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+renderQ();
+</script>
+</body>
+</html>
