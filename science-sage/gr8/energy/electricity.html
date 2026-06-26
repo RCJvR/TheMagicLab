@@ -250,9 +250,12 @@ const canvas = document.getElementById('circuitCanvas');
 const ctx = canvas.getContext('2d');
 
 function resizeCanvas(){
-  canvas.width = canvas.offsetWidth * window.devicePixelRatio || 480;
-  canvas.height = 320 * window.devicePixelRatio || 320;
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  const dpr = window.devicePixelRatio || 1;
+  const dW = canvas.offsetWidth || 480;
+  canvas.width = dW * dpr;
+  canvas.height = 320 * dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
 }
 
 function setCircuitType(t){
@@ -448,6 +451,7 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  if(id==='explore') resizeCanvas();
 }
 
 const QUESTIONS=[
