@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compounds &amp; Mixtures — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+      --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.15);
+      --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border);margin-bottom:0}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+    .compare-table th{background:rgba(96,165,250,.10);color:#93c5fd;font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;border:1px solid var(--border);text-align:left}
+    .compare-table td{padding:10px 14px;border:1px solid var(--border);color:rgba(210,218,245,.75);vertical-align:top}
+    .compare-table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+    .canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+    canvas{border-radius:12px;display:block;background:#050810}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    select.mol-select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);font-family:var(--fd);font-size:13px;padding:9px 12px;border-radius:10px;outline:none;cursor:pointer}
+    select.mol-select:focus{border-color:rgba(96,165,250,.4)}
+    .mol-formula{font-family:var(--fm);font-size:22px;font-weight:700;color:#60a5fa;text-align:center;margin:10px 0 4px}
+    .mol-name{font-size:13px;color:var(--muted);text-align:center;margin-bottom:8px}
+    .mol-type-pill{display:inline-block;font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin:0 auto;display:block;text-align:center;width:fit-content}
+    .mol-desc{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.65;margin-top:10px}
+    /* Mixture quiz */
+    .mix-quiz{margin-top:4px}
+    .mix-q{font-size:13.5px;color:rgba(210,218,245,.85);margin-bottom:10px;line-height:1.6}
+    .mix-opts{display:flex;flex-direction:column;gap:6px}
+    .mix-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:rgba(210,218,245,.75);font-size:13px;padding:9px 14px;border-radius:9px;cursor:pointer;text-align:left;transition:all 140ms}
+    .mix-btn:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28)}
+    .mix-btn.ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mix-btn.bad{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mix-feedback{font-size:12px;margin-top:8px;line-height:1.6;color:rgba(210,218,245,.65);min-height:36px}
+    .next-mix-btn{margin-top:10px;font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 16px;border-radius:8px;border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.08);color:#93c5fd;cursor:pointer;transition:all 140ms}
+    .next-mix-btn:hover{background:rgba(96,165,250,.18)}
+
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}.canvas-wrap{display:none}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Matter &amp; Materials · Lesson 3</div>
+  <h1 class="lesson-title">Compounds &amp; Mixtures</h1>
+  <p class="lesson-sub">Understand how elements combine to form compounds, and how mixtures differ from pure substances.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Elements, Compounds, and Mixtures</h2>
+    <p>All matter can be classified as either a <strong>pure substance</strong> or a <strong>mixture</strong>. Pure substances are made of only one type of particle and have fixed, definite properties. Mixtures contain two or more substances that are physically combined but not chemically joined.</p>
+    <div class="callout"><strong>Three key categories:</strong>
+      <br>• <strong>Element</strong> — a pure substance made of only one type of atom (e.g. oxygen gas, O₂; iron, Fe)
+      <br>• <strong>Compound</strong> — a pure substance made of two or more different elements chemically bonded together in a fixed ratio (e.g. water, H₂O; salt, NaCl)
+      <br>• <strong>Mixture</strong> — two or more substances physically combined but not chemically bonded (e.g. air, seawater, soil)
+    </div>
+
+    <h2>Elements</h2>
+    <p>An <strong>element</strong> is a pure substance that cannot be broken down into simpler substances by ordinary chemical means. There are 118 known elements, all listed on the periodic table. Elements exist as individual atoms (e.g. helium, He) or as molecules of the same type of atom (e.g. oxygen gas, O₂; hydrogen gas, H₂).</p>
+    <div class="key-fact">If a substance contains only ONE type of atom, it is an element. If it contains two or more DIFFERENT types of atom chemically bonded, it is a compound.</div>
+
+    <h2>Compounds</h2>
+    <p>A <strong>compound</strong> is formed when two or more different elements are chemically combined. The elements are joined by chemical bonds (ionic or covalent) in a fixed, definite ratio. Compounds have entirely different properties from the elements they are made of.</p>
+    <ul>
+      <li><strong>Water (H₂O):</strong> 2 hydrogen atoms + 1 oxygen atom. Both hydrogen and oxygen are flammable gases — yet water extinguishes fires!</li>
+      <li><strong>Sodium chloride / table salt (NaCl):</strong> 1 sodium atom + 1 chlorine atom. Sodium is a dangerously reactive metal and chlorine is a toxic gas — yet together they make ordinary salt, essential for life.</li>
+      <li><strong>Carbon dioxide (CO₂):</strong> 1 carbon atom + 2 oxygen atoms. Produced when fuels burn and during respiration.</li>
+      <li><strong>Methane (CH₄):</strong> 1 carbon atom + 4 hydrogen atoms. Natural gas used for cooking and heating.</li>
+    </ul>
+    <div class="callout"><strong>Key point:</strong> In a compound, the elements are present in a <em>fixed ratio by mass</em>. Water is always H₂O — never H₃O or HO. This is the Law of Definite Proportions. Compounds can only be separated by <strong>chemical</strong> reactions, not physical means.</div>
+
+    <h2>Mixtures</h2>
+    <p>A <strong>mixture</strong> contains two or more substances that are physically combined. The substances keep their own properties and can usually be separated by physical methods (e.g. filtration, evaporation).</p>
+    <ul>
+      <li>The components are <strong>not</strong> chemically bonded.</li>
+      <li>The composition is <strong>variable</strong> — unlike a compound, the ratio can vary.</li>
+      <li>Each component retains its own chemical properties.</li>
+      <li>No energy is released or absorbed during mixing (usually).</li>
+    </ul>
+
+    <h2>Homogeneous vs Heterogeneous Mixtures</h2>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Homogeneous mixture (solution)</th><th>Heterogeneous mixture</th></tr>
+      <tr><td>Appearance</td><td>Uniform throughout — looks the same in every part</td><td>Non-uniform — different parts look different</td></tr>
+      <tr><td>Components visible?</td><td>No — components are not visible to the naked eye</td><td>Often yes — distinct parts can be seen</td></tr>
+      <tr><td>Examples</td><td>Salt water, vinegar, air, bronze (alloy), soft drink</td><td>Sand + water, soil, oil + water, salad, granite</td></tr>
+      <tr><td>Separation</td><td>Usually harder — requires evaporation or distillation</td><td>Easier — filtration, sieving, or decanting</td></tr>
+    </table>
+    <p>Air is a homogeneous mixture of nitrogen (~78%), oxygen (~21%), argon (~1%), and small amounts of other gases. It looks uniform, but can be separated into its component gases by fractional distillation of liquid air.</p>
+
+    <h2>Physical vs Chemical Changes</h2>
+    <p>Understanding how compounds and mixtures form requires knowing the difference between physical and chemical changes:</p>
+    <ul>
+      <li><strong>Physical change:</strong> No new substance is formed. The substance changes shape, size, or state (solid/liquid/gas), but its chemical identity stays the same. Examples: melting ice, dissolving sugar in water, tearing paper, boiling water. Physical changes are usually reversible.</li>
+      <li><strong>Chemical change:</strong> A new substance with new properties is formed. The change involves breaking and forming chemical bonds. Examples: burning wood, rusting iron, cooking an egg, baking a cake. Chemical changes are usually irreversible.</li>
+    </ul>
+    <div class="key-fact">Signs of a chemical change: colour change, gas produced (bubbling), temperature change, light produced, precipitate forms, new smell. Forming a compound = chemical change. Making a mixture = physical change.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Molecule Viewer &amp; Mixture Quiz</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Select a molecule to see its ball-and-stick model rotating on the canvas. Then test yourself with the mixture quiz on the right.</p>
+  <div class="explore-layout">
+    <div class="canvas-wrap">
+      <canvas id="molCanvas" width="420" height="380"></canvas>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-align:center">Drag the canvas to rotate · Ball-and-stick model</div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Select Molecule</div>
+        <select class="mol-select" id="molSelect" onchange="selectMolecule()">
+          <option value="H2">H₂ — Hydrogen gas</option>
+          <option value="O2">O₂ — Oxygen gas</option>
+          <option value="H2O" selected>H₂O — Water</option>
+          <option value="CO2">CO₂ — Carbon dioxide</option>
+          <option value="NaCl">NaCl — Sodium chloride (salt)</option>
+          <option value="CH4">CH₄ — Methane</option>
+          <option value="N2">N₂ — Nitrogen gas</option>
+          <option value="O3">O₃ — Ozone</option>
+        </select>
+        <div class="mol-formula" id="molFormula">H₂O</div>
+        <div class="mol-name" id="molName">Water</div>
+        <div class="mol-type-pill" id="molTypePill">Compound</div>
+        <div class="mol-desc" id="molDesc">Water is one of the most important compounds on Earth. It is made of 2 hydrogen atoms covalently bonded to 1 oxygen atom. Its bent shape gives it unusual properties, including a high boiling point.</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Is It a Mixture? — Mini Quiz</div>
+        <div class="mix-quiz">
+          <div class="mix-q" id="mixQ">Loading…</div>
+          <div class="mix-opts" id="mixOpts"></div>
+          <div class="mix-feedback" id="mixFeedback"></div>
+          <button class="next-mix-btn" id="nextMixBtn" onclick="nextMixQuestion()" style="display:none">Next question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer these questions in your exercise book. Show all reasoning where required.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Define each of the following and give one example of each: (a) element, (b) compound, (c) mixture.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Sodium (Na) is a reactive metal and chlorine (Cl) is a toxic gas. Yet when they combine to form sodium chloride (NaCl), the product is harmless table salt. (a) Is this a physical or chemical change? (b) What type of substance is NaCl? (c) Explain why the properties of NaCl are so different from its constituent elements.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (2 marks)</div><div class="wb-qtext">Explain the difference between a homogeneous mixture and a heterogeneous mixture. Classify each of the following: (i) salt water, (ii) soil, (iii) air, (iv) oil and water.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Classify each of the following as an element, compound, or mixture. Give a reason for each answer: (a) pure iron (Fe), (b) carbon dioxide (CO₂), (c) seawater, (d) pure gold (Au).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">List FOUR signs that a chemical change has taken place. Then decide: is dissolving salt in water a physical change or a chemical change? Explain your answer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (4 marks)</div><div class="wb-qtext">Air is described as a homogeneous mixture. (a) Name THREE gases found in air and give approximate percentages for each. (b) Explain why air is classified as a mixture rather than a compound. (c) Name the industrial process used to separate the gases in air.</div></div>
+  </div>
+</div>
+
+<script>
+/* ── Molecule data ── */
+const MOLECULES = {
+  H2: {
+    formula:'H₂', name:'Hydrogen gas', type:'Element', typeColor:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+    desc:'H₂ is an element — it contains only one type of atom (hydrogen). It is a diatomic molecule: two hydrogen atoms bonded together by a single covalent bond.',
+    atoms:[
+      {x:-0.7,y:0,z:0,r:18,color:'#93c5fd',label:'H'},
+      {x:0.7,y:0,z:0,r:18,color:'#93c5fd',label:'H'},
+    ],
+    bonds:[[0,1]]
+  },
+  O2: {
+    formula:'O₂', name:'Oxygen gas', type:'Element', typeColor:{bg:'rgba(248,113,113,.12)',border:'rgba(248,113,113,.28)',text:'#fca5a5'},
+    desc:'O₂ is an element — only one type of atom. Two oxygen atoms are joined by a double covalent bond. Oxygen makes up 21% of the atmosphere and is essential for respiration.',
+    atoms:[
+      {x:-0.65,y:0,z:0,r:20,color:'#f87171',label:'O'},
+      {x:0.65,y:0,z:0,r:20,color:'#f87171',label:'O'},
+    ],
+    bonds:[[0,1]]
+  },
+  N2: {
+    formula:'N₂', name:'Nitrogen gas', type:'Element', typeColor:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+    desc:'N₂ is an element — two nitrogen atoms joined by a very strong triple covalent bond. It makes up 78% of the atmosphere. Its strong bond makes it mostly unreactive at room temperature.',
+    atoms:[
+      {x:-0.65,y:0,z:0,r:18,color:'#818cf8',label:'N'},
+      {x:0.65,y:0,z:0,r:18,color:'#818cf8',label:'N'},
+    ],
+    bonds:[[0,1]]
+  },
+  H2O: {
+    formula:'H₂O', name:'Water', type:'Compound', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'Water is a compound — it contains two different types of atoms (hydrogen and oxygen) chemically bonded. Its bent shape (104.5°) gives it unique properties, making it the "solvent of life".',
+    atoms:[
+      {x:0,y:0.6,z:0,r:24,color:'#f87171',label:'O'},
+      {x:-0.85,y:-0.45,z:0,r:16,color:'#93c5fd',label:'H'},
+      {x:0.85,y:-0.45,z:0,r:16,color:'#93c5fd',label:'H'},
+    ],
+    bonds:[[0,1],[0,2]]
+  },
+  CO2: {
+    formula:'CO₂', name:'Carbon dioxide', type:'Compound', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'CO₂ is a compound with a linear shape — one carbon atom double-bonded to two oxygen atoms. It is produced in respiration and combustion, and is a greenhouse gas.',
+    atoms:[
+      {x:-1.0,y:0,z:0,r:20,color:'#f87171',label:'O'},
+      {x:0,y:0,z:0,r:20,color:'#94a3b8',label:'C'},
+      {x:1.0,y:0,z:0,r:20,color:'#f87171',label:'O'},
+    ],
+    bonds:[[0,1],[1,2]]
+  },
+  NaCl: {
+    formula:'NaCl', name:'Sodium chloride (table salt)', type:'Compound', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'NaCl is an ionic compound. Sodium (Na) gives its outer electron to chlorine (Cl), forming Na⁺ and Cl⁻ ions held together by electrostatic attraction. Despite its elements being dangerous, NaCl is harmless.',
+    atoms:[
+      {x:-0.75,y:0,z:0,r:26,color:'#fdba74',label:'Na⁺'},
+      {x:0.75,y:0,z:0,r:22,color:'#86efac',label:'Cl⁻'},
+    ],
+    bonds:[[0,1]]
+  },
+  CH4: {
+    formula:'CH₄', name:'Methane', type:'Compound', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'CH₄ is a compound with a tetrahedral shape. One carbon atom forms four single covalent bonds with four hydrogen atoms. It is the main component of natural gas, used for cooking and heating.',
+    atoms:[
+      {x:0,y:0,z:0,r:22,color:'#94a3b8',label:'C'},
+      {x:0,y:1.1,z:0,r:15,color:'#93c5fd',label:'H'},
+      {x:0,-1.1,z:0,r:15,color:'#93c5fd',label:'H'},
+      {x:-1.0,y:0,z:0.4,r:15,color:'#93c5fd',label:'H'},
+      {x:1.0,y:0,z:0.4,r:15,color:'#93c5fd',label:'H'},
+    ],
+    bonds:[[0,1],[0,2],[0,3],[0,4]]
+  },
+  O3: {
+    formula:'O₃', name:'Ozone', type:'Element', typeColor:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+    desc:'Ozone is an allotrope of oxygen — it contains only one type of atom (oxygen) but three atoms form a bent molecule. The ozone layer in the stratosphere protects Earth from harmful UV radiation.',
+    atoms:[
+      {x:0,y:0.7,z:0,r:20,color:'#f87171',label:'O'},
+      {x:-0.85,y:-0.35,z:0,r:20,color:'#f87171',label:'O'},
+      {x:0.85,y:-0.35,z:0,r:20,color:'#f87171',label:'O'},
+    ],
+    bonds:[[0,1],[0,2]]
+  }
+};
+
+/* ── Canvas & rotation ── */
+const canvas = document.getElementById('molCanvas');
+const ctx    = canvas.getContext('2d');
+const CX = 210, CY = 190;
+
+let rotY = 0.4, rotX = 0.2;
+let dragging = false, lastMX = 0, lastMY = 0;
+let autoRotY = 0;
+let frame = 0;
+let currentMol = 'H2O';
+
+canvas.addEventListener('mousedown', e => { dragging = true; lastMX = e.clientX; lastMY = e.clientY; });
+window.addEventListener('mouseup', () => { dragging = false; });
+window.addEventListener('mousemove', e => {
+  if(!dragging) return;
+  rotY += (e.clientX - lastMX) * 0.012;
+  rotX += (e.clientY - lastMY) * 0.010;
+  lastMX = e.clientX; lastMY = e.clientY;
+});
+canvas.addEventListener('touchstart', e => { dragging=true; lastMX=e.touches[0].clientX; lastMY=e.touches[0].clientY; e.preventDefault(); },{passive:false});
+window.addEventListener('touchend', () => { dragging=false; });
+window.addEventListener('touchmove', e => {
+  if(!dragging) return;
+  rotY += (e.touches[0].clientX - lastMX)*0.012;
+  rotX += (e.touches[0].clientY - lastMY)*0.010;
+  lastMX=e.touches[0].clientX; lastMY=e.touches[0].clientY;
+},{passive:false});
+
+function project(x3,y3,z3, scale=105) {
+  /* rotate around Y then X */
+  let x1 = x3*Math.cos(rotY) + z3*Math.sin(rotY);
+  let z1 = -x3*Math.sin(rotY) + z3*Math.cos(rotY);
+  let y1 = y3*Math.cos(rotX) - z1*Math.sin(rotX);
+  let z2 = y3*Math.sin(rotX) + z1*Math.cos(rotX);
+  const fov = 3.5;
+  const pz = fov + z2;
+  const px = CX + (x1 / pz) * scale;
+  const py = CY - (y1 / pz) * scale;
+  const size = 1 / pz;
+  return {px, py, size, z2};
+}
+
+function drawMol() {
+  ctx.clearRect(0,0,420,380);
+  const mol = MOLECULES[currentMol];
+  if(!mol) return;
+
+  /* project all atoms */
+  const projected = mol.atoms.map((a,i) => {
+    const p = project(a.x, a.y, a.z || 0);
+    return {...a,...p,i};
+  });
+
+  /* draw bonds first (behind atoms) */
+  mol.bonds.forEach(([ai,bi]) => {
+    const a = projected[ai], b = projected[bi];
+    ctx.beginPath();
+    ctx.moveTo(a.px, a.py);
+    ctx.lineTo(b.px, b.py);
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    /* inner bright line */
+    ctx.beginPath();
+    ctx.moveTo(a.px, a.py);
+    ctx.lineTo(b.px, b.py);
+    ctx.strokeStyle = 'rgba(255,255,255,0.70)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+
+  /* sort atoms by z (painter's algorithm) */
+  projected.sort((a,b) => a.z2 - b.z2);
+
+  projected.forEach(a => {
+    const r = a.r * a.size * 2.2;
+    /* glow */
+    const grd = ctx.createRadialGradient(a.px-r*0.3,a.py-r*0.3,r*0.05,a.px,a.py,r*1.4);
+    grd.addColorStop(0,'rgba(255,255,255,0.18)');
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(a.px,a.py,r*1.4,0,Math.PI*2);
+    ctx.fillStyle=grd; ctx.fill();
+
+    /* sphere body */
+    const sg = ctx.createRadialGradient(a.px-r*0.3,a.py-r*0.35,r*0.05,a.px,a.py,r);
+    sg.addColorStop(0,'rgba(255,255,255,0.55)');
+    sg.addColorStop(0.35,a.color);
+    sg.addColorStop(1,shadeColor(a.color,-60));
+    ctx.beginPath(); ctx.arc(a.px,a.py,r,0,Math.PI*2);
+    ctx.fillStyle=sg; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1; ctx.stroke();
+
+    /* label */
+    if(r > 10) {
+      ctx.fillStyle='#fff';
+      ctx.font=`bold ${Math.max(8,Math.min(14,r*0.55))}px "JetBrains Mono"`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(a.label,a.px,a.py);
+    }
+  });
+}
+
+function shadeColor(hex, amt) {
+  /* darken/lighten a colour given as rgba(...) or #rrggbb */
+  if(hex.startsWith('#')) {
+    let r=parseInt(hex.slice(1,3),16)+amt, g=parseInt(hex.slice(3,5),16)+amt, b=parseInt(hex.slice(5,7),16)+amt;
+    r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
+    return `rgb(${r},${g},${b})`;
+  }
+  return hex;
+}
+
+function animLoop() {
+  if(!dragging) rotY += 0.008;
+  frame++;
+  drawMol();
+  requestAnimationFrame(animLoop);
+}
+animLoop();
+
+function selectMolecule() {
+  currentMol = document.getElementById('molSelect').value;
+  const mol = MOLECULES[currentMol];
+  document.getElementById('molFormula').textContent = mol.formula;
+  document.getElementById('molName').textContent    = mol.name;
+  const pill = document.getElementById('molTypePill');
+  pill.textContent = mol.type;
+  const tc = mol.typeColor;
+  pill.style.background = tc.bg;
+  pill.style.border = `1px solid ${tc.border}`;
+  pill.style.color  = tc.text;
+  document.getElementById('molDesc').textContent = mol.desc;
+}
+selectMolecule();
+
+/* ── Mixture quiz ── */
+const MIX_QUESTIONS = [
+  {q:'Is <strong>salt water</strong> a mixture or a compound?', opts:['Mixture','Compound','Element'], ans:0, exp:'Salt water is a mixture — salt (NaCl) is dissolved in water (H₂O), but no chemical bonds are formed between them. It can be separated by evaporation.'},
+  {q:'Is <strong>pure water (H₂O)</strong> a mixture or a compound?', opts:['Mixture','Compound','Element'], ans:1, exp:'Pure water is a compound — hydrogen and oxygen atoms are chemically bonded in a fixed 2:1 ratio. It cannot be separated by physical means.'},
+  {q:'Is <strong>air</strong> a mixture or a compound?', opts:['Mixture','Compound','Element'], ans:0, exp:'Air is a mixture of gases (mainly nitrogen and oxygen). The gases are not chemically bonded and can be separated by fractional distillation. The ratio can vary (e.g. more CO₂ near a fire).'},
+  {q:'Is <strong>carbon dioxide (CO₂)</strong> a mixture or a compound?', opts:['Mixture','Compound','Element'], ans:1, exp:'CO₂ is a compound — one carbon and two oxygen atoms are chemically bonded in a fixed ratio. You cannot separate them by physical means.'},
+  {q:'Is <strong>soil</strong> a homogeneous or heterogeneous mixture?', opts:['Homogeneous','Heterogeneous','It is a compound'], ans:1, exp:'Soil is a heterogeneous mixture — it contains different particles (sand, clay, organic matter, minerals) that are not uniformly distributed. Different parts of soil look different.'},
+  {q:'Is <strong>vinegar</strong> (acetic acid dissolved in water) a homogeneous or heterogeneous mixture?', opts:['Homogeneous','Heterogeneous','It is a pure compound'], ans:0, exp:'Vinegar is a homogeneous mixture (a solution) — it is uniform throughout and you cannot see the individual components. It looks the same in every part.'},
+  {q:'Which of these is an <strong>element</strong>?', opts:['Carbon dioxide (CO₂)','Pure oxygen gas (O₂)','Salt water','Methane (CH₄)'], ans:1, exp:'Pure oxygen gas (O₂) is an element — it contains only one type of atom (oxygen). CO₂ and CH₄ are compounds; salt water is a mixture.'},
+  {q:'Iron filings mixed with sand — is this a mixture or a compound?', opts:['Mixture','Compound','Element'], ans:0, exp:'Iron filings and sand are physically mixed, not chemically bonded. No new substance is formed. This is a heterogeneous mixture that can be separated with a magnet.'},
+];
+let mixIdx = 0, mixAnswered = false;
+const mixOrder = [...MIX_QUESTIONS.keys()].sort(()=>Math.random()-0.5);
+
+function renderMixQuestion() {
+  mixAnswered = false;
+  const qi = mixOrder[mixIdx % mixOrder.length];
+  const q  = MIX_QUESTIONS[qi];
+  document.getElementById('mixQ').innerHTML = q.q;
+  document.getElementById('mixFeedback').textContent = '';
+  document.getElementById('nextMixBtn').style.display = 'none';
+  document.getElementById('mixOpts').innerHTML = q.opts.map((o,i) =>
+    `<button class="mix-btn" id="mopt${i}" onclick="answerMix(${i},${qi})">${o}</button>`
+  ).join('');
+}
+
+function answerMix(oi, qi) {
+  if(mixAnswered) return;
+  mixAnswered = true;
+  const q = MIX_QUESTIONS[qi];
+  document.querySelectorAll('.mix-btn').forEach(b => b.disabled=true);
+  document.getElementById('mopt'+q.ans).classList.add('ok');
+  if(oi !== q.ans) document.getElementById('mopt'+oi).classList.add('bad');
+  document.getElementById('mixFeedback').textContent = q.exp;
+  document.getElementById('nextMixBtn').style.display = 'block';
+}
+
+function nextMixQuestion() {
+  mixIdx++;
+  renderMixQuestion();
+}
+renderMixQuestion();
+
+/* ── Tabs ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+/* ── Practice ── */
+const QUESTIONS = [
+  {text:'What is the key difference between a compound and a mixture?',opts:['A compound contains only one element; a mixture contains many','In a compound, elements are chemically bonded in fixed ratios; in a mixture they are physically combined','A compound can be separated by filtering; a mixture cannot','Mixtures are always liquids; compounds are always solids'],ans:1,exp:'In a compound, atoms of different elements are chemically bonded in a definite fixed ratio (e.g. H₂O always 2:1). In a mixture, substances are physically combined with no fixed ratio and no chemical bonding.'},
+  {text:'Water (H₂O) is produced when hydrogen burns in oxygen. What type of change is this?',opts:['A physical change because water is still made of H and O','A chemical change because a new substance (water) is formed','A mixture forming because hydrogen and oxygen are mixed','A physical change because no energy is released'],ans:1,exp:'Burning hydrogen in oxygen is a chemical change — a new substance (water) is formed with completely different properties from hydrogen and oxygen. Energy (light and heat) is also released.'},
+  {text:'Which of the following is a homogeneous mixture?',opts:['Soil','Oil and water','A fizzy cold drink (carbonated beverage)','Sand and pebbles'],ans:2,exp:'A fizzy drink is a homogeneous mixture (solution) — the carbon dioxide and water are uniformly mixed throughout. Soil, oil-and-water, and sand-and-pebbles are heterogeneous — their components are not uniformly distributed.'},
+  {text:'Sodium chloride (NaCl) can be separated from salt water by evaporation. This tells you that salt water is a:',opts:['Compound, because chemical bonds must be broken','Mixture, because it can be separated by a physical method','Element, because sodium and chloride are both present','Compound, because it has a fixed composition'],ans:1,exp:'If a substance can be separated by a physical method (like evaporation), it is a mixture, not a compound. Compounds can only be separated by chemical reactions, not physical processes.'},
+  {text:'Which of the following is an ELEMENT?',opts:['Carbon dioxide (CO₂)','Bronze (copper + tin alloy)','Pure sulfur (S₈)','Methane (CH₄)'],ans:2,exp:'Pure sulfur (S₈) is an element — it contains only one type of atom (sulfur). CO₂ and CH₄ are compounds; bronze is a mixture (alloy). Note: S₈ is the molecular form sulfur naturally takes, but it is still an element.'},
+  {text:'Iron (Fe) and sulfur (S) are mixed together in a beaker. No heating occurs. What is the result?',opts:['A compound called iron sulfide (FeS) is formed','A mixture of iron and sulfur is formed','An element is formed because both are on the periodic table','A chemical reaction occurs and gas is produced'],ans:1,exp:'Simply mixing iron and sulfur without heating produces a heterogeneous mixture — you can still see the yellow sulfur and grey iron separately, and they can be separated with a magnet. No chemical bonds are formed.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    const msgs=['Keep studying — re-read the lesson.','Good effort — review the explanations.','Well done! A solid understanding.','Excellent! You\'ve mastered compounds and mixtures.'];
+    document.getElementById('scoreMsg').textContent=score<=2?msgs[0]:score<=4?msgs[1]:score===5?msgs[2]:msgs[3];
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

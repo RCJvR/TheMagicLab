@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seasons &amp; Day/Night — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    .explore-layout{display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start}
+    .solar-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:72px}
+    input[type=range]{flex:1;accent-color:#fb923c;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fdba74;min-width:40px;text-align:right}
+    .info-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .info-title{font-weight:800;font-size:18px;letter-spacing:-0.02em;color:#fff;margin-bottom:4px}
+    .info-sub{font-size:11px;color:var(--muted);margin-bottom:12px}
+    .info-stat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+    .info-stat:last-child{border-bottom:none}
+    .info-stat-label{color:var(--muted)}
+    .info-stat-val{font-family:var(--fm);font-size:11px;color:var(--text)}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.solar-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Earth &amp; Beyond</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Earth &amp; Beyond · Lesson 3</div>
+  <h1 class="lesson-title">Seasons &amp; Day/Night</h1>
+  <p class="lesson-sub">Discover why Earth has seasons, why days are longer in summer, and how our planet's tilt and orbit shape life as we know it.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="orbit" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Earth's Rotation and Revolution</h2>
+    <p>Earth has two important movements:</p>
+    <ul>
+      <li><strong>Rotation:</strong> Earth spins on its own axis once every <strong>24 hours</strong>. This gives us day and night — the side facing the Sun experiences day, the side facing away experiences night.</li>
+      <li><strong>Revolution:</strong> Earth orbits (revolves) around the Sun once every <strong>365.25 days</strong> (one year). The extra quarter day is why we add a <strong>leap day</strong> (29 February) every four years.</li>
+    </ul>
+    <div class="callout"><strong>Common misconception:</strong> Seasons are NOT caused by Earth being closer to or farther from the Sun. In fact, Earth is slightly closer to the Sun in January (Southern Hemisphere summer). Seasons are caused by Earth's <strong>axial tilt</strong>.</div>
+
+    <h2>Earth's Axial Tilt</h2>
+    <p>Earth's axis is tilted at <strong>23.5°</strong> relative to its orbital plane around the Sun. This tilt always points in the same direction in space (toward Polaris, the North Star). As Earth orbits the Sun, different hemispheres are tilted toward or away from the Sun at different times of year.</p>
+    <ul>
+      <li>When a hemisphere is <strong>tilted toward</strong> the Sun: the Sun is higher in the sky, days are longer, sunlight is more concentrated → <strong>summer</strong></li>
+      <li>When a hemisphere is <strong>tilted away</strong> from the Sun: the Sun is lower in the sky, days are shorter, sunlight is more spread out → <strong>winter</strong></li>
+    </ul>
+    <div class="key-fact">The Southern and Northern Hemispheres always have opposite seasons. When it is summer in South Africa (December), it is winter in Europe.</div>
+
+    <h2>Solstices and Equinoxes (Southern Hemisphere)</h2>
+    <table class="planets-table">
+      <thead><tr><th>Event</th><th>Approx. date</th><th>What happens</th><th>Season in S.A.</th></tr></thead>
+      <tbody>
+        <tr><td>Summer Solstice</td><td>~21 December</td><td>Southern Hemisphere tilted most toward Sun; longest day</td><td>Start of Summer</td></tr>
+        <tr><td>Autumn Equinox</td><td>~21 March</td><td>Neither hemisphere tilted toward Sun; day = night (~12 h each)</td><td>Start of Autumn</td></tr>
+        <tr><td>Winter Solstice</td><td>~21 June</td><td>Southern Hemisphere tilted most away from Sun; shortest day</td><td>Start of Winter</td></tr>
+        <tr><td>Spring Equinox</td><td>~23 September</td><td>Neither hemisphere tilted toward Sun; day = night (~12 h each)</td><td>Start of Spring</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Solstice</strong> comes from the Latin "sol" (sun) + "sistere" (to stand still) — the Sun appears to reach its highest or lowest point and then reverse. <strong>Equinox</strong> means "equal night" — day and night are each approximately 12 hours everywhere on Earth.</div>
+
+    <h2>Why Daylight Hours Change</h2>
+    <p>Because Earth's axis is tilted, the circle of illumination (the boundary between day and night) does not pass through the poles. In summer, a location in the Southern Hemisphere spends more of its daily rotation on the sunlit side → more daylight hours. In winter, the opposite is true.</p>
+    <ul>
+      <li>At the equator, day and night are always close to 12 hours each, year-round.</li>
+      <li>At the poles, there can be continuous day (midnight sun) or continuous night in extreme seasons.</li>
+      <li>In South Africa (mid-latitudes), daylight ranges from about <strong>10 hours in winter</strong> to about <strong>14 hours in summer</strong>.</li>
+    </ul>
+
+    <h2>Why Seasons Occur: Two Key Reasons</h2>
+    <p>When a hemisphere is tilted toward the Sun, two things happen that make it warmer:</p>
+    <ul>
+      <li><strong>Higher sun angle:</strong> Sunlight strikes the ground more directly (less spread out), so energy per square metre is greater.</li>
+      <li><strong>Longer days:</strong> More hours of daylight means more total energy received each day.</li>
+    </ul>
+
+    <h2>Time Zones</h2>
+    <p>Because Earth is a sphere rotating 360° in 24 hours, it rotates 15° per hour. The world is divided into approximately <strong>24 time zones</strong>, each roughly 15° of longitude wide. Countries to the east of you experience sunrise earlier. South Africa uses <strong>SAST (South Africa Standard Time) = UTC+2</strong> — two hours ahead of Greenwich Mean Time.</p>
+    <div class="key-fact">South Africa does not use daylight saving time — our clocks stay the same all year round.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Seasons &amp; Day/Night Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the month slider to move Earth around its orbit. Watch how the tilt changes which hemisphere faces the Sun, and see South Africa's season and daylight hours update live.</p>
+  <div class="explore-layout">
+    <div class="solar-wrap">
+      <canvas id="seasonsCanvas" height="460"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Time of Year</div>
+        <div class="slider-row">
+          <label>Month</label>
+          <input type="range" id="monthSlider" min="0" max="11.99" step="0.05" value="0" oninput="onMonthChange()">
+          <span class="slider-val" id="monthVal">Jan</span>
+        </div>
+        <div class="ctrl-label" style="margin-top:8px">Rotation Speed</div>
+        <div class="slider-row">
+          <label>Spin</label>
+          <input type="range" id="spinSlider" min="0" max="3" step="0.1" value="1" oninput="onSpinChange()">
+          <span class="slider-val" id="spinVal">1×</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ctrl-label">South Africa</div>
+        <div class="info-title" id="saSeasonName">Summer</div>
+        <div class="info-sub" id="saDate">~21 December — Summer Solstice</div>
+        <div class="info-stat"><span class="info-stat-label">Daylight hours</span><span class="info-stat-val" id="saDaylight">~14 h</span></div>
+        <div class="info-stat"><span class="info-stat-label">Sun position at noon</span><span class="info-stat-val" id="saSunAngle">High</span></div>
+        <div class="info-stat"><span class="info-stat-label">Hemisphere tilted</span><span class="info-stat-val" id="saTilt">Toward Sun</span></div>
+        <div class="info-stat"><span class="info-stat-label">N.H. season</span><span class="info-stat-val" id="nhSeason">Winter</span></div>
+      </div>
+      <div class="info-card">
+        <div class="ctrl-label">Day/Night Inset</div>
+        <canvas id="dayNightCanvas" width="220" height="110" style="display:block;border-radius:10px;margin-top:4px"></canvas>
+        <div style="font-size:10px;color:var(--muted);margin-top:6px;text-align:center">🟡 = South Africa's position on Earth</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in your exercise book. Use diagrams where they help explain your answer.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Distinguish between Earth's <em>rotation</em> and its <em>revolution</em>. Give the period (time taken) for each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Explain why Earth has seasons. In your answer: (a) state the angle of Earth's axial tilt, (b) explain what happens when the Southern Hemisphere is tilted toward the Sun, and (c) explain why distance from the Sun is NOT the main cause of seasons.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Draw a diagram showing Earth at four positions in its orbit around the Sun. Label: summer solstice, winter solstice, spring equinox, and autumn equinox for South Africa. Include the approximate dates for each event.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain why daylight hours are longer in summer than in winter. In your answer, refer to Earth's axial tilt and the circle of illumination. Approximately how many hours of daylight does South Africa receive in summer versus winter?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">What is an equinox? On what dates do the equinoxes occur in South Africa, and what do they mark in terms of seasons?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">Explain what a time zone is and why they exist. What is South Africa's time zone (SAST) relative to UTC?</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') startCanvas();
+}
+
+// ── Seasons Canvas ─────────────────────────────────────────────
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// Month 0 = Jan. Orbital angle: Jan = bottom of orbit (perihelion ~ 3 Jan)
+// We'll map: month 0 → orbital angle 270° (bottom), going counter-clockwise
+// At Dec 21 (month ~11.7) = summer solstice SH → Earth at top of diagram tilted SH toward Sun
+// Orbital angle convention: 0° = right, angles increase CCW
+// Month → angle: month 0 (Jan 1) ≈ 270° (bottom). Each month ≈ 30°.
+// So angle = 270 + (month/12)*360 (mod 360), then we go CCW so subtract.
+// Let's say angle(month) = (270 - month*(360/12)) mod 360
+
+function monthToAngle(month){
+  // CCW from right: Jan at bottom (270°)
+  return ((270 - month * 30) + 3600) % 360;
+}
+
+// Southern Hemisphere season from month (0-11.99)
+function getSHInfo(month){
+  // Dec(11), Jan(0), Feb(1) = Summer
+  // Mar(2), Apr(3), May(4) = Autumn
+  // Jun(5), Jul(6), Aug(7) = Winter
+  // Sep(8), Oct(9), Nov(10) = Spring
+  const m = Math.floor(month) % 12;
+  if(m===11||m===0||m===1) return {season:'Summer',color:'#fb923c',nhSeason:'Winter',daylight:'~14 h',sunPos:'High',tilt:'Toward Sun'};
+  if(m===2||m===3||m===4) return {season:'Autumn',color:'#a3e635',nhSeason:'Spring',daylight:'~12 h',sunPos:'Medium',tilt:'Neither'};
+  if(m===5||m===6||m===7) return {season:'Winter',color:'#60a5fa',nhSeason:'Summer',daylight:'~10 h',sunPos:'Low',tilt:'Away from Sun'};
+  return {season:'Spring',color:'#86efac',nhSeason:'Autumn',daylight:'~12 h',sunPos:'Medium',tilt:'Neither'};
+}
+
+function getDateLabel(month){
+  const m = Math.floor(month);
+  const labels = {
+    0:'~January — Southern Hemisphere tilting back',
+    1:'~February — Late Summer',
+    2:'~21 March — Autumn Equinox (equal day/night)',
+    3:'~April — Early Autumn',
+    4:'~May — Late Autumn',
+    5:'~21 June — Winter Solstice (shortest day, S.A.)',
+    6:'~July — Mid Winter',
+    7:'~August — Late Winter',
+    8:'~23 September — Spring Equinox (equal day/night)',
+    9:'~October — Early Spring',
+    10:'~November — Late Spring',
+    11:'~21 December — Summer Solstice (longest day, S.A.)'
+  };
+  return labels[m] || '';
+}
+
+let currentMonth = 0;
+let spinSpeed = 1;
+let rotAngle = 0;
+let animId = null;
+let canvasStarted = false;
+let stars = [];
+
+const seasonsCanvas = document.getElementById('seasonsCanvas');
+const sCtx = seasonsCanvas.getContext('2d');
+const dnCanvas = document.getElementById('dayNightCanvas');
+const dnCtx = dnCanvas.getContext('2d');
+
+function resizeSeasonsCanvas(){
+  const W = seasonsCanvas.offsetWidth || 560;
+  const H = 460;
+  seasonsCanvas.width = W * devicePixelRatio;
+  seasonsCanvas.height = H * devicePixelRatio;
+  sCtx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function onMonthChange(){
+  currentMonth = +document.getElementById('monthSlider').value;
+  document.getElementById('monthVal').textContent = MONTHS[Math.floor(currentMonth) % 12];
+  updateInfoPanel();
+}
+
+function onSpinChange(){
+  spinSpeed = +document.getElementById('spinSlider').value;
+  document.getElementById('spinVal').textContent = spinSpeed.toFixed(1)+'×';
+}
+
+function updateInfoPanel(){
+  const info = getSHInfo(currentMonth);
+  document.getElementById('saSeasonName').textContent = info.season;
+  document.getElementById('saSeasonName').style.color = info.color;
+  document.getElementById('saDate').textContent = getDateLabel(currentMonth);
+  document.getElementById('saDaylight').textContent = info.daylight;
+  document.getElementById('saSunAngle').textContent = info.sunPos;
+  document.getElementById('saTilt').textContent = info.tilt;
+  document.getElementById('nhSeason').textContent = info.nhSeason;
+}
+
+function ensureStars(W,H){
+  if(stars.length===0){
+    for(let i=0;i<130;i++) stars.push([Math.random()*W, Math.random()*H, Math.random()*1.2+0.2]);
+  }
+}
+
+function drawSeasons(W,H){
+  const cx = W/2, cy = H/2;
+  const orbitRx = W*0.36, orbitRy = H*0.36;
+
+  sCtx.clearRect(0,0,W,H);
+  ensureStars(W,H);
+  stars.forEach(([sx,sy,sr])=>{
+    sCtx.beginPath(); sCtx.arc(sx,sy,sr,0,Math.PI*2);
+    sCtx.fillStyle='rgba(255,255,255,0.45)'; sCtx.fill();
+  });
+
+  // Orbit ellipse
+  sCtx.beginPath(); sCtx.ellipse(cx,cy,orbitRx,orbitRy,0,0,Math.PI*2);
+  sCtx.strokeStyle='rgba(255,255,255,0.07)'; sCtx.lineWidth=1; sCtx.stroke();
+
+  // Sun
+  const sunG = sCtx.createRadialGradient(cx,cy,0,cx,cy,36);
+  sunG.addColorStop(0,'#fff7a0'); sunG.addColorStop(0.5,'#ffd700'); sunG.addColorStop(1,'rgba(255,140,0,0)');
+  sCtx.beginPath(); sCtx.arc(cx,cy,32,0,Math.PI*2); sCtx.fillStyle=sunG; sCtx.fill();
+  const sunHalo = sCtx.createRadialGradient(cx,cy,10,cx,cy,70);
+  sunHalo.addColorStop(0,'rgba(255,200,50,0.22)'); sunHalo.addColorStop(1,'rgba(255,200,50,0)');
+  sCtx.beginPath(); sCtx.arc(cx,cy,70,0,Math.PI*2); sCtx.fillStyle=sunHalo; sCtx.fill();
+  sCtx.fillStyle='rgba(255,240,100,0.8)'; sCtx.font='bold 11px "Cabinet Grotesk"'; sCtx.textAlign='center';
+  sCtx.fillText('Sun',cx,cy+46);
+
+  // Earth position
+  const orbAngleDeg = monthToAngle(currentMonth);
+  const orbAngleRad = orbAngleDeg * Math.PI / 180;
+  const ex = cx + orbitRx * Math.cos(orbAngleRad);
+  const ey = cy + orbitRy * Math.sin(orbAngleRad);
+
+  // Axial tilt: always 23.5° tilted, pointing same direction in space
+  // Tilt axis direction (always same in space) — pointing toward upper-right in canvas
+  const tiltAngle = -23.5 * Math.PI / 180; // tilt angle of axis from vertical
+  const earthR = 22;
+
+  // Draw Earth
+  sCtx.save();
+  sCtx.translate(ex, ey);
+
+  // Day/night shadow (half the earth in shadow from Sun direction)
+  const toSunAngle = Math.atan2(cy - ey, cx - ex); // angle from Earth toward Sun
+
+  // Earth base
+  const eg = sCtx.createRadialGradient(-6,-6,2,0,0,earthR);
+  eg.addColorStop(0,'#6dd5fa'); eg.addColorStop(0.5,'#3a7bd5'); eg.addColorStop(1,'#1a3a6e');
+  sCtx.beginPath(); sCtx.arc(0,0,earthR,0,Math.PI*2); sCtx.fillStyle=eg; sCtx.fill();
+
+  // Night shadow
+  sCtx.save();
+  sCtx.beginPath(); sCtx.arc(0,0,earthR,0,Math.PI*2); sCtx.clip();
+  sCtx.beginPath();
+  sCtx.arc(0,0,earthR, toSunAngle+Math.PI/2, toSunAngle+3*Math.PI/2);
+  sCtx.closePath();
+  sCtx.fillStyle='rgba(0,0,20,0.65)'; sCtx.fill();
+  sCtx.restore();
+
+  // Axial tilt line
+  const ax = Math.sin(tiltAngle) * (earthR+12);
+  const ay = -Math.cos(tiltAngle) * (earthR+12);
+  sCtx.beginPath(); sCtx.moveTo(-ax,-ay); sCtx.lineTo(ax,ay);
+  sCtx.strokeStyle='rgba(251,146,60,0.7)'; sCtx.lineWidth=1.5; sCtx.setLineDash([3,3]); sCtx.stroke(); sCtx.setLineDash([]);
+
+  // N/S labels on axis
+  sCtx.fillStyle='rgba(251,146,60,0.9)'; sCtx.font='bold 9px "JetBrains Mono"'; sCtx.textAlign='center';
+  sCtx.fillText('N',-ax-2,-(ay+6));
+  sCtx.fillText('S', ax+2,  ay+14);
+
+  // Equator line (perpendicular to axis)
+  const eqAngle = tiltAngle + Math.PI/2;
+  const eqX = Math.cos(eqAngle) * earthR;
+  const eqY = Math.sin(eqAngle) * earthR;
+  sCtx.beginPath(); sCtx.moveTo(-eqX,-eqY); sCtx.lineTo(eqX,eqY);
+  sCtx.strokeStyle='rgba(255,255,255,0.25)'; sCtx.lineWidth=1; sCtx.stroke();
+
+  sCtx.restore();
+
+  // Earth label
+  sCtx.fillStyle='rgba(210,218,245,0.7)'; sCtx.font='bold 11px "Cabinet Grotesk"'; sCtx.textAlign='center';
+  sCtx.fillText('Earth',ex,ey+earthR+14);
+
+  // Season labels at 4 positions of orbit
+  const positions = [
+    {month:11, label:'Summer\n(S.A.)', a: monthToAngle(11)*Math.PI/180},
+    {month:5,  label:'Winter\n(S.A.)', a: monthToAngle(5)*Math.PI/180},
+    {month:2,  label:'Autumn\nEquinox', a: monthToAngle(2)*Math.PI/180},
+    {month:8,  label:'Spring\nEquinox', a: monthToAngle(8)*Math.PI/180},
+  ];
+  positions.forEach(p=>{
+    const lx = cx + (orbitRx+38)*Math.cos(p.a);
+    const ly = cy + (orbitRy+38)*Math.sin(p.a);
+    sCtx.fillStyle='rgba(253,186,116,0.75)'; sCtx.font='bold 10px "Cabinet Grotesk"'; sCtx.textAlign='center';
+    const lines = p.label.split('\n');
+    lines.forEach((l,i)=> sCtx.fillText(l,lx,ly+i*13));
+  });
+
+  // Month label bottom
+  sCtx.fillStyle='rgba(251,146,60,0.85)'; sCtx.font='bold 12px "Cabinet Grotesk"'; sCtx.textAlign='left';
+  sCtx.fillText(MONTHS[Math.floor(currentMonth)%12] + ' — ' + getSHInfo(currentMonth).season + ' in South Africa', 16, H-16);
+}
+
+function drawDayNight(){
+  const W = 220, H = 110;
+  const cx = W/2, cy = H/2;
+  const r = 42;
+  dnCtx.clearRect(0,0,W,H);
+
+  // Background
+  dnCtx.fillStyle='#06091a'; dnCtx.fillRect(0,0,W,H);
+
+  // Earth
+  const eg = dnCtx.createRadialGradient(cx-10,cy-10,3,cx,cy,r);
+  eg.addColorStop(0,'#6dd5fa'); eg.addColorStop(0.5,'#3a7bd5'); eg.addColorStop(1,'#1a3a6e');
+  dnCtx.beginPath(); dnCtx.arc(cx,cy,r,0,Math.PI*2); dnCtx.fillStyle=eg; dnCtx.fill();
+
+  // Night side (right side = away from Sun, Sun always on left in this inset)
+  dnCtx.save();
+  dnCtx.beginPath(); dnCtx.arc(cx,cy,r,0,Math.PI*2); dnCtx.clip();
+  dnCtx.beginPath(); dnCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2); dnCtx.closePath();
+  dnCtx.fillStyle='rgba(0,0,20,0.72)'; dnCtx.fill();
+  dnCtx.restore();
+
+  // Sun label left
+  dnCtx.fillStyle='rgba(255,220,80,0.8)'; dnCtx.font='bold 9px "Cabinet Grotesk"'; dnCtx.textAlign='center';
+  dnCtx.fillText('☀ Sun',14,cy+4);
+
+  // Terminator line
+  dnCtx.beginPath(); dnCtx.moveTo(cx,cy-r); dnCtx.lineTo(cx,cy+r);
+  dnCtx.strokeStyle='rgba(255,255,255,0.2)'; dnCtx.lineWidth=1; dnCtx.stroke();
+
+  // South Africa dot — approximately at -30° latitude, rotating with rotAngle
+  const saLat = -30 * Math.PI / 180; // latitude
+  const saLon = rotAngle * Math.PI / 180; // longitude based on rotation
+  // 3D to 2D projection (simple cylindrical view, Sun on left)
+  // x in view: longitude (0 = facing Sun), y: latitude
+  const viewX = cx + r * Math.sin(saLon) * Math.cos(saLat);
+  const viewY = cy - r * Math.sin(saLat);
+  // Only draw dot if on front side (facing left = toward sun)
+  const onDaySide = Math.cos(saLon) > 0;
+  dnCtx.beginPath(); dnCtx.arc(viewX, viewY, 5, 0, Math.PI*2);
+  dnCtx.fillStyle = onDaySide ? '#fbbf24' : 'rgba(251,191,36,0.3)';
+  dnCtx.fill();
+  dnCtx.strokeStyle='rgba(255,255,255,0.5)'; dnCtx.lineWidth=1; dnCtx.stroke();
+
+  // "Day" / "Night" text
+  dnCtx.fillStyle='rgba(255,255,255,0.35)'; dnCtx.font='9px "JetBrains Mono"'; dnCtx.textAlign='center';
+  dnCtx.fillText('DAY',cx-r/2,cy-r-4);
+  dnCtx.fillText('NIGHT',cx+r/2,cy-r-4);
+
+  // Earth border
+  dnCtx.beginPath(); dnCtx.arc(cx,cy,r,0,Math.PI*2);
+  dnCtx.strokeStyle='rgba(255,255,255,0.15)'; dnCtx.lineWidth=1; dnCtx.stroke();
+}
+
+let lastTs = 0;
+function loop(ts){
+  const dt = Math.min((ts-lastTs)/16.67,3); lastTs=ts;
+  rotAngle = (rotAngle + spinSpeed*2.5*dt) % 360;
+  const W = seasonsCanvas.offsetWidth || 560;
+  const H = 460;
+  drawSeasons(W,H);
+  drawDayNight();
+  animId = requestAnimationFrame(loop);
+}
+
+function startCanvas(){
+  if(canvasStarted) return;
+  canvasStarted = true;
+  resizeSeasonsCanvas();
+  updateInfoPanel();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',()=>{ if(canvasStarted) resizeSeasonsCanvas(); });
+
+// ── Practice ────────────────────────────────────────────────────
+const QUESTIONS=[
+  {text:'What is the primary cause of Earth\'s seasons?',
+   opts:['Earth\'s varying distance from the Sun','Earth\'s axial tilt of 23.5°','Changes in the Sun\'s energy output','The Moon\'s gravitational pull'],
+   ans:1, exp:'Seasons are caused by Earth\'s axial tilt of 23.5°. When the Southern Hemisphere is tilted toward the Sun, it receives more direct sunlight and has longer days — causing summer.'},
+  {text:'In South Africa, the summer solstice occurs around:',
+   opts:['21 June','21 March','23 September','21 December'],
+   ans:3, exp:'In the Southern Hemisphere, summer solstice falls around 21 December — the longest day of the year for South Africa. This is because the SH is tilted most toward the Sun at this time.'},
+  {text:'An equinox is when:',
+   opts:['The Sun is closest to Earth','Day and night are approximately equal in length everywhere','One hemisphere has its longest day','The Moon and Sun align'],
+   ans:1, exp:'Equinox means "equal night." On equinox dates (~21 March and ~23 September), neither hemisphere is tilted toward the Sun, so day and night are approximately 12 hours each worldwide.'},
+  {text:'How long does Earth take to complete one full rotation on its axis?',
+   opts:['365.25 days','28 days','24 hours','12 hours'],
+   ans:2, exp:'Earth rotates once on its axis in approximately 24 hours — this is what gives us the day/night cycle. One revolution around the Sun takes 365.25 days (one year).'},
+  {text:'When it is winter in South Africa, what season is it in Germany (Northern Hemisphere)?',
+   opts:['Winter','Autumn','Spring','Summer'],
+   ans:3, exp:'The Southern and Northern Hemispheres have opposite seasons. When the SH is tilted away from the Sun (S.A. winter, ~June), the NH is tilted toward the Sun — it is summer in Germany.'},
+  {text:'Why are daylight hours longer in summer than in winter in South Africa?',
+   opts:['The Sun moves faster across the sky in winter','Earth is closer to the Sun in summer','The SH is tilted toward the Sun, so more of each day is spent on the sunlit side','The Moon reflects more light in summer'],
+   ans:2, exp:'Because the Southern Hemisphere is tilted toward the Sun in summer, a location in the SH spends more of its daily rotation facing the Sun — resulting in more daylight hours (up to ~14 h in summer vs ~10 h in winter).'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep exploring — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! Outstanding work!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

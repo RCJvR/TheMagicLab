@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biodiversity & Classification — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    .kingdom-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}
+    .k-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center}
+    .k-card .k-icon{font-size:28px;margin-bottom:6px}
+    .k-card .k-name{font-weight:800;font-size:12px;color:#fff;margin-bottom:4px}
+    .k-card .k-ex{font-size:10px;color:var(--muted);line-height:1.5}
+    /* Explore */
+    .explore-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+    .tree-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+    .game-panel{display:flex;flex-direction:column;gap:12px}
+    .game-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .organism-display{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:14px;margin-bottom:12px;font-size:13px;color:rgba(210,218,245,.80);line-height:1.75}
+    .organism-display strong{color:#86efac}
+    .key-question{font-size:13.5px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.5}
+    .yn-row{display:flex;gap:8px}
+    .yn-btn{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(210,218,245,.75);font-weight:700;font-size:13px;cursor:pointer;transition:all 140ms}
+    .yn-btn.yes:hover{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.35);color:#86efac}
+    .yn-btn.no:hover{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.28);color:#fca5a5}
+    .result-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:14px;font-size:13px;color:#86efac;line-height:1.75;display:none}
+    .result-box.show{display:block}
+    .result-box.wrong{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22);color:#fca5a5}
+    .next-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:9px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.28);color:#86efac;font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-top:10px}
+    .next-btn:hover{background:rgba(34,197,94,.20)}
+    .progress-dots{display:flex;gap:6px;margin-bottom:12px}
+    .pdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12);transition:background 300ms}
+    .pdot.done{background:#22c55e}
+    .pdot.active{background:#86efac;box-shadow:0 0 6px #22c55e}
+    .classification-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .chip{font-family:var(--fm);font-size:9px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:var(--muted)}
+    .chip.revealed{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.25);color:#86efac}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.tree-wrap,.game-panel{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life &amp; Living</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Life &amp; Living · Lesson 3</div>
+  <h1 class="lesson-title">Biodiversity &amp; Classification</h1>
+  <p class="lesson-sub">Explore the incredible variety of life on Earth, understand why it matters, and learn how scientists organise all living things into groups.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="tree-pine" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is Biodiversity?</h2>
+    <p><strong>Biodiversity</strong> (biological diversity) refers to the variety of life on Earth at all its levels. Scientists recognise three main levels of biodiversity:</p>
+    <ul>
+      <li><strong>Genetic diversity</strong> — variation in the genetic information (DNA) within a species. For example, not all lions look identical; individuals carry different gene variants.</li>
+      <li><strong>Species diversity</strong> — the number and variety of different species in an area. A coral reef has far higher species diversity than a wheat field.</li>
+      <li><strong>Ecosystem diversity</strong> — the variety of different ecosystems (habitats and communities) across the planet, from rainforests to deserts.</li>
+    </ul>
+    <div class="callout"><strong>South Africa</strong> is one of the world's most biodiverse countries. The <strong>Cape Floristic Region</strong> (CFR) in the Western Cape is a global biodiversity hotspot containing roughly 9 000 plant species — about 70% of which are found nowhere else on Earth (endemic species). <strong>Kruger National Park</strong> supports the "Big Five" and thousands of other species across its 20 000 km² savanna ecosystem.</div>
+
+    <h2>Why does Biodiversity Matter?</h2>
+    <ul>
+      <li><strong>Ecosystem stability:</strong> More species means more resilient ecosystems — if one species is lost, others can fill its role.</li>
+      <li><strong>Food security:</strong> Wild plants provide genetic material for breeding disease-resistant crops.</li>
+      <li><strong>Medicine:</strong> Many medicines (aspirin, penicillin, anti-malarials) were originally derived from wild organisms.</li>
+      <li><strong>Ecosystem services:</strong> Clean water, clean air, pollination, and soil fertility all depend on biodiversity.</li>
+      <li><strong>Cultural and aesthetic value:</strong> Many South African communities and eco-tourism depend on natural biodiversity.</li>
+    </ul>
+
+    <h2>Threats to Biodiversity</h2>
+    <table class="compare-table">
+      <thead><tr><th>Threat</th><th>Description</th><th>SA Example</th></tr></thead>
+      <tbody>
+        <tr><td>Habitat loss</td><td>Natural areas converted to farmland, cities, mines</td><td>Lowland fynbos destroyed by urban development around Cape Town</td></tr>
+        <tr><td>Invasive species</td><td>Non-native species outcompete indigenous species</td><td>Australian wattle and pine plantations invading fynbos; largemouth bass in rivers</td></tr>
+        <tr><td>Pollution</td><td>Chemical runoff, plastic, and acid mine drainage harm ecosystems</td><td>Acid mine drainage killing aquatic life in Witwatersrand rivers</td></tr>
+        <tr><td>Climate change</td><td>Shifting rainfall and temperatures push species out of their ranges</td><td>Fynbos biome projected to shrink dramatically under warming scenarios</td></tr>
+        <tr><td>Overexploitation</td><td>Overhunting, overfishing, and illegal trade</td><td>Rhino poaching; abalone poaching on the Cape coast</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Classification of Living Things</h2>
+    <p>Scientists use <strong>taxonomy</strong> to group and name organisms. The modern classification system was developed by <strong>Carl Linnaeus</strong> (18th century). Organisms are grouped by shared characteristics — today, mainly by evolutionary (genetic) relationships.</p>
+    <p>The classification hierarchy (from broadest to most specific):</p>
+    <div class="key-fact">Kingdom → Phylum → Class → Order → Family → Genus → Species</div>
+    <div class="key-fact">Mnemonic: "King Philip Came Over For Good Soup"</div>
+
+    <h2>The Five Kingdoms</h2>
+    <div class="kingdom-grid">
+      <div class="k-card"><div class="k-icon">🦠</div><div class="k-name">Monera</div><div class="k-ex">Bacteria, blue-green algae. Prokaryotes — no nucleus.</div></div>
+      <div class="k-card"><div class="k-icon">🔬</div><div class="k-name">Protista</div><div class="k-ex">Amoeba, Paramecium, algae. Mostly single-celled eukaryotes.</div></div>
+      <div class="k-card"><div class="k-icon">🍄</div><div class="k-name">Fungi</div><div class="k-ex">Mushrooms, moulds, yeast. Absorb nutrients from dead matter.</div></div>
+      <div class="k-card"><div class="k-icon">🌿</div><div class="k-name">Plantae</div><div class="k-ex">Mosses, ferns, flowering plants. Photosynthetic, cell walls.</div></div>
+      <div class="k-card"><div class="k-icon">🐾</div><div class="k-name">Animalia</div><div class="k-ex">Insects, fish, birds, mammals. Multicellular, heterotrophic.</div></div>
+    </div>
+
+    <h2>Binomial Nomenclature</h2>
+    <p>Every species is given a unique two-part scientific name (binomial nomenclature), following rules set by Linnaeus:</p>
+    <ul>
+      <li>The first part is the <strong>Genus</strong> name — always capitalised.</li>
+      <li>The second part is the <strong>species</strong> name — always lowercase.</li>
+      <li>The full name is written in <em>italics</em> (or underlined when handwritten).</li>
+    </ul>
+    <div class="callout">
+      <strong>Examples:</strong><br>
+      <em>Homo sapiens</em> — modern humans<br>
+      <em>Panthera leo</em> — lion<br>
+      <em>Protea cynaroides</em> — King Protea (South Africa's national flower)<br>
+      <em>Acinonyx jubatus</em> — cheetah
+    </div>
+
+    <h2>Dichotomous Keys</h2>
+    <p>A <strong>dichotomous key</strong> is a tool scientists use to identify an unknown organism. It works by presenting a series of paired statements — at each step, you choose the one that applies, and follow the path until you reach the organism's identity.</p>
+    <p>"Dichotomous" means "split into two" — each question has exactly two choices (YES or NO, or Choice A vs Choice B). Dichotomous keys can be used to identify plants, animals, rocks, fungi, and more.</p>
+    <div class="key-fact">Try the interactive dichotomous key game in the Explore tab — classify 5 different organisms!</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Classification Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Browse the kingdom tree on the left, then play the dichotomous key game to classify mystery organisms.</p>
+  <div class="explore-cols">
+    <!-- Kingdom Tree -->
+    <div>
+      <div class="tree-wrap">
+        <canvas id="treeCanvas" height="400"></canvas>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center">Click a kingdom to explore examples</p>
+      <div id="kingdomInfo" style="margin-top:12px;display:none">
+        <div style="background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:12px;padding:14px 16px">
+          <div id="kiName" style="font-weight:800;font-size:16px;color:#86efac;margin-bottom:4px"></div>
+          <div id="kiDesc" style="font-size:13px;color:rgba(210,218,245,.75);line-height:1.7;margin-bottom:10px"></div>
+          <div id="kiExamples" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Dichotomous Key Game -->
+    <div class="game-panel">
+      <div class="game-card">
+        <div class="ctrl-label">Dichotomous Key Game</div>
+        <div class="progress-dots" id="progressDots"></div>
+        <div class="organism-display" id="orgDesc"></div>
+        <div id="keyStep">
+          <div class="key-question" id="keyQ"></div>
+          <div class="yn-row" id="keyChoices"></div>
+        </div>
+        <div class="result-box" id="resultBox"></div>
+        <div id="classificationChips" class="classification-chips" style="display:none"></div>
+        <button class="next-btn" id="nextBtn" style="display:none" onclick="nextOrganism()">
+          <i data-lucide="arrow-right" style="width:13px;height:13px"></i> Next Organism
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the lesson for more detail.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Draw diagrams where asked. Use correct scientific names where required.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Define the three levels of biodiversity (genetic, species, and ecosystem). Give one example of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (5 marks)</div><div class="wb-qtext">South Africa is considered a biodiversity hotspot. (a) Name ONE region in South Africa that is a global biodiversity hotspot and state why it is significant. (b) Describe THREE threats to biodiversity in South Africa and explain how each threat causes harm.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (7 marks)</div><div class="wb-qtext">List the seven levels of biological classification from broadest to most specific. Write the mnemonic used to remember them. Then classify the lion (<em>Panthera leo</em>) as completely as you can — use your lesson notes and knowledge.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Explain the rules of binomial nomenclature. Write the scientific names of TWO South African organisms, demonstrating the correct format.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">Explain what a dichotomous key is and how it is used. Construct a simple dichotomous key that could be used to distinguish between these four organisms: mushroom, oak tree, eagle, bacterium. Show your key as a series of numbered paired questions.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">What is the difference between a prokaryote and a eukaryote? Which kingdom contains prokaryotes?</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore'){ resizeTree(); }
+}
+
+/* ─── Kingdom Tree Canvas ─── */
+const treeCanvas = document.getElementById('treeCanvas');
+const tctx = treeCanvas.getContext('2d');
+let TW, TH;
+
+const KINGDOMS = [
+  {id:'monera',  name:'Monera',   icon:'🦠', color:'#fb7185', x:0, y:0,
+   desc:'Prokaryotes — cells with no true nucleus. The simplest and most ancient forms of life. Reproduce by splitting (binary fission). Found in every habitat on Earth.',
+   examples:['🦠 Bacteria','🌿 Cyanobacteria','🔬 Archaea','💊 E. coli']},
+  {id:'protista',name:'Protista', icon:'🔬', color:'#a78bfa', x:0, y:0,
+   desc:'Mostly single-celled eukaryotes (cells with a nucleus). Extremely diverse group — includes animal-like, plant-like, and fungus-like members. Many live in water.',
+   examples:['🦠 Amoeba','🔬 Paramecium','🌊 Kelp (brown algae)','🦟 Plasmodium (malaria)']},
+  {id:'fungi',   name:'Fungi',    icon:'🍄', color:'#fb923c', x:0, y:0,
+   desc:'Multicellular (mostly) organisms with cell walls made of chitin. Absorb nutrients from dead or living organic matter — they are key decomposers. Cannot photosynthesise.',
+   examples:['🍄 Mushrooms','🧫 Penicillium (mould)','🍞 Yeast','🌲 Bracket fungi']},
+  {id:'plantae', name:'Plantae',  icon:'🌿', color:'#22c55e', x:0, y:0,
+   desc:'Multicellular eukaryotes with cell walls made of cellulose. They make their own food through photosynthesis. Range from mosses to the tallest trees.',
+   examples:['🌸 Protea cynaroides','🌾 Grasses','🌴 Palm trees','🌿 Mosses']},
+  {id:'animalia',name:'Animalia', icon:'🐾', color:'#60a5fa', x:0, y:0,
+   desc:'Multicellular eukaryotes that cannot make their own food — they must eat other organisms (heterotrophic). Most can move. Includes all insects, fish, reptiles, birds, and mammals.',
+   examples:['🦁 Panthera leo (lion)','🦏 White rhino','🦅 Martial eagle','🐟 Yellowfish']},
+];
+
+let selectedKingdom = null;
+
+function resizeTree(){
+  TW = treeCanvas.offsetWidth || 500;
+  TH = 400;
+  treeCanvas.width = TW * devicePixelRatio;
+  treeCanvas.height = TH * devicePixelRatio;
+  tctx.scale(devicePixelRatio, devicePixelRatio);
+  layoutTree();
+  drawTree();
+}
+
+function layoutTree(){
+  // Root "Life" node at top
+  const rootX = TW/2, rootY = 52;
+  const spread = TW * 0.42;
+  KINGDOMS.forEach((k, i)=>{
+    k.x = rootX - spread + i * (spread*2/(KINGDOMS.length-1));
+    k.y = TH * 0.60;
+  });
+}
+
+function drawTree(){
+  tctx.clearRect(0,0,TW,TH);
+  const rootX = TW/2, rootY = 52;
+
+  // Root node
+  tctx.save();
+  tctx.beginPath(); tctx.arc(rootX, rootY, 28, 0, Math.PI*2);
+  tctx.fillStyle='rgba(255,255,255,0.08)'; tctx.fill();
+  tctx.strokeStyle='rgba(255,255,255,0.20)'; tctx.lineWidth=2; tctx.stroke();
+  tctx.fillStyle='#fff'; tctx.font='bold 11px "Cabinet Grotesk"'; tctx.textAlign='center'; tctx.textBaseline='middle';
+  tctx.fillText('LIFE', rootX, rootY);
+  tctx.restore();
+
+  // Branch lines
+  KINGDOMS.forEach(k=>{
+    tctx.save();
+    tctx.beginPath();
+    tctx.moveTo(rootX, rootY+28);
+    tctx.bezierCurveTo(rootX, rootY+80, k.x, k.y-80, k.x, k.y-34);
+    tctx.strokeStyle = k.color + '55';
+    tctx.lineWidth = selectedKingdom?.id===k.id ? 3 : 1.5;
+    tctx.stroke();
+    tctx.restore();
+  });
+
+  // Kingdom nodes
+  KINGDOMS.forEach(k=>{
+    const isSelected = selectedKingdom?.id===k.id;
+    const r = isSelected ? 38 : 32;
+    tctx.save();
+    tctx.beginPath(); tctx.arc(k.x, k.y, r, 0, Math.PI*2);
+    tctx.fillStyle = k.color + (isSelected?'2a':'18'); tctx.fill();
+    tctx.strokeStyle = k.color + (isSelected?'dd':'66');
+    tctx.lineWidth = isSelected ? 2.5 : 1.5; tctx.stroke();
+    // Icon
+    tctx.font=`${isSelected?22:18}px serif`; tctx.textAlign='center'; tctx.textBaseline='middle';
+    tctx.fillText(k.icon, k.x, k.y - 4);
+    // Name
+    tctx.fillStyle = isSelected ? '#fff' : 'rgba(210,218,245,0.7)';
+    tctx.font=`${isSelected?'bold ':''} 10px "Cabinet Grotesk"`;
+    tctx.fillText(k.name, k.x, k.y + r + 12);
+    tctx.restore();
+  });
+}
+
+treeCanvas.addEventListener('click', e=>{
+  const rect=treeCanvas.getBoundingClientRect();
+  const mx=(e.clientX-rect.left), my=(e.clientY-rect.top);
+  let hit=null;
+  KINGDOMS.forEach(k=>{
+    const d=Math.sqrt((mx-k.x)**2+(my-k.y)**2);
+    if(d<36) hit=k;
+  });
+  if(hit){
+    selectedKingdom = hit;
+    drawTree();
+    // Show info
+    document.getElementById('kingdomInfo').style.display='block';
+    document.getElementById('kiName').textContent=hit.icon+' Kingdom '+hit.name;
+    document.getElementById('kiDesc').textContent=hit.desc;
+    const ex=document.getElementById('kiExamples');
+    ex.innerHTML=hit.examples.map(e=>`<span style="font-size:11px;padding:4px 9px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);color:rgba(210,218,245,.70)">${e}</span>`).join('');
+  }
+});
+
+/* ─── Dichotomous Key Game ─── */
+const ORGANISMS = [
+  {
+    name:'Lion', sciName:'Panthera leo', icon:'🦁',
+    description:'This organism is <strong>multicellular</strong>. It has no cell wall. It cannot make its own food and must eat other animals. It has a backbone and four legs. It nurses its young on milk. It has fur covering its body.',
+    classification:{Kingdom:'Animalia',Phylum:'Chordata',Class:'Mammalia',Order:'Carnivora',Family:'Felidae',Genus:'Panthera',Species:'leo'},
+    key:[
+      {q:'Does this organism have cells with a true nucleus (eukaryote)?', choices:['Yes','No'], next:[1,'END_MONERA']},
+      {q:'Can this organism make its own food through photosynthesis?', choices:['Yes','No'], next:['END_PLANT',2]},
+      {q:'Does it have a cell wall?', choices:['Yes','No'], next:['END_FUNGI',3]},
+      {q:'Does it have a backbone (vertebrate)?', choices:['Yes','No'], next:[4,'END_INVERT']},
+      {q:'Does it nurse its young on milk (mammal)?', choices:['Yes','No'], next:['CORRECT','END_NONMAMMAL']},
+    ],
+    correctAt:'CORRECT', correctMsg:'Correct! The lion is classified as Kingdom Animalia — a vertebrate mammal in the family Felidae.'
+  },
+  {
+    name:'King Protea', sciName:'Protea cynaroides', icon:'🌸',
+    description:'This organism is <strong>multicellular</strong> with rigid cell walls. It produces its own food using sunlight. It has roots, stems, and large showy flowers. It is found mainly in the Cape Floristic Region of South Africa.',
+    classification:{Kingdom:'Plantae',Phylum:'Magnoliophyta',Class:'Magnoliopsida',Order:'Proteales',Family:'Proteaceae',Genus:'Protea',Species:'cynaroides'},
+    key:[
+      {q:'Does this organism have cells with a true nucleus (eukaryote)?', choices:['Yes','No'], next:[1,'END_MONERA']},
+      {q:'Can this organism make its own food through photosynthesis?', choices:['Yes','No'], next:['CORRECT','END_NOT_PLANT']},
+    ],
+    correctAt:'CORRECT', correctMsg:'Correct! The King Protea is in Kingdom Plantae — a flowering plant (angiosperm) in the family Proteaceae, endemic to South Africa.'
+  },
+  {
+    name:'Mushroom', sciName:'Agaricus bisporus', icon:'🍄',
+    description:'This organism is <strong>multicellular</strong>. It has rigid cell walls but does NOT photosynthesise. It absorbs nutrients from dead and decaying organic matter. It reproduces by releasing spores. It has no chlorophyll.',
+    classification:{Kingdom:'Fungi',Phylum:'Basidiomycota',Class:'Agaricomycetes',Order:'Agaricales',Family:'Agaricaceae',Genus:'Agaricus',Species:'bisporus'},
+    key:[
+      {q:'Does this organism have cells with a true nucleus (eukaryote)?', choices:['Yes','No'], next:[1,'END_MONERA']},
+      {q:'Can this organism make its own food through photosynthesis?', choices:['Yes','No'], next:['END_PLANT',2]},
+      {q:'Does it have rigid cell walls and absorb nutrients from its surroundings?', choices:['Yes','No'], next:['CORRECT','END_ANIMAL']},
+    ],
+    correctAt:'CORRECT', correctMsg:'Correct! The mushroom belongs to Kingdom Fungi — decomposers with chitin cell walls that absorb nutrients from dead organic matter.'
+  },
+  {
+    name:'Bacterium (E. coli)', sciName:'Escherichia coli', icon:'🦠',
+    description:'This organism is <strong>single-celled</strong>. Its cells have NO nucleus — the genetic material floats freely in the cytoplasm. It is extremely small (about 2 micrometres). It reproduces by binary fission and lives in the intestines of animals.',
+    classification:{Kingdom:'Monera',Phylum:'Proteobacteria',Class:'Gammaproteobacteria',Order:'Enterobacterales',Family:'Enterobacteriaceae',Genus:'Escherichia',Species:'coli'},
+    key:[
+      {q:'Does this organism have cells with a true nucleus (eukaryote)?', choices:['Yes','No'], next:['END_NOT_MONERA','CORRECT']},
+    ],
+    correctAt:'CORRECT', correctMsg:'Correct! E. coli is in Kingdom Monera — a prokaryote with no true nucleus. It is one of the most studied bacteria in science.'
+  },
+  {
+    name:'Nile Crocodile', sciName:'Crocodylus niloticus', icon:'🐊',
+    description:'This organism is <strong>multicellular</strong> with no cell wall. It cannot photosynthesise. It has a backbone and scaly skin. It lays eggs and breathes with lungs. Its blood is cold — body temperature depends on the environment.',
+    classification:{Kingdom:'Animalia',Phylum:'Chordata',Class:'Reptilia',Order:'Crocodilia',Family:'Crocodylidae',Genus:'Crocodylus',Species:'niloticus'},
+    key:[
+      {q:'Does this organism have cells with a true nucleus (eukaryote)?', choices:['Yes','No'], next:[1,'END_MONERA']},
+      {q:'Can this organism make its own food through photosynthesis?', choices:['Yes','No'], next:['END_PLANT',2]},
+      {q:'Does it have a cell wall?', choices:['Yes','No'], next:['END_FUNGI',3]},
+      {q:'Does it have a backbone (vertebrate)?', choices:['Yes','No'], next:[4,'END_INVERT']},
+      {q:'Does it nurse its young on milk (mammal)?', choices:['Yes','No'], next:['END_MAMMAL','CORRECT']},
+    ],
+    correctAt:'CORRECT', correctMsg:'Correct! The Nile Crocodile is in Kingdom Animalia, Class Reptilia — a cold-blooded vertebrate that lays eggs. Found across sub-Saharan Africa including South Africa\'s Limpopo and KwaZulu-Natal.'
+  },
+];
+
+let currentOrg = 0;
+let currentStep = 0;
+let orgScores = [];
+
+function buildProgressDots(){
+  const d=document.getElementById('progressDots');
+  d.innerHTML=ORGANISMS.map((_,i)=>`<div class="pdot ${i<currentOrg?'done':i===currentOrg?'active':''}" id="pdot${i}"></div>`).join('');
+}
+
+function loadOrganism(){
+  const org = ORGANISMS[currentOrg];
+  currentStep = 0;
+  buildProgressDots();
+  document.getElementById('orgDesc').innerHTML=`<strong>${org.icon} Mystery Organism ${currentOrg+1}:</strong><br>${org.description}`;
+  document.getElementById('resultBox').className='result-box';
+  document.getElementById('classificationChips').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  renderKeyStep();
+}
+
+function renderKeyStep(){
+  const org=ORGANISMS[currentOrg];
+  const step=org.key[currentStep];
+  document.getElementById('keyQ').textContent=step.q;
+  const choicesDiv=document.getElementById('keyChoices');
+  choicesDiv.innerHTML=step.choices.map((c,i)=>
+    `<button class="yn-btn ${i===0?'yes':'no'}" onclick="chooseKey(${i})">${c}</button>`
+  ).join('');
+  document.getElementById('keyStep').style.display='';
+}
+
+function chooseKey(choiceIdx){
+  const org=ORGANISMS[currentOrg];
+  const step=org.key[currentStep];
+  const next=step.next[choiceIdx];
+
+  if(next==='CORRECT'){
+    showResult(true, org);
+  } else if(typeof next === 'string' && next.startsWith('END_')){
+    showResult(false, org, next);
+  } else {
+    currentStep=next;
+    renderKeyStep();
+  }
+}
+
+function showResult(correct, org, wrongCode){
+  document.getElementById('keyStep').style.display='none';
+  const rb=document.getElementById('resultBox');
+  rb.className='result-box show'+(correct?'':' wrong');
+  if(correct){
+    rb.innerHTML=`✓ ${org.correctMsg}`;
+    // Show classification chips
+    const cc=document.getElementById('classificationChips');
+    cc.style.display='flex';
+    cc.innerHTML=Object.entries(org.classification).map(([lvl,val])=>
+      `<span class="chip revealed"><span style="color:var(--muted)">${lvl}:</span> ${val}</span>`
+    ).join('');
+  } else {
+    const hints={
+      END_MONERA:'That organism has no nucleus — it belongs in Kingdom Monera, not there.',
+      END_PLANT:'That organism can photosynthesise — it should go to Kingdom Plantae.',
+      END_NOT_PLANT:'Photosynthesis is key for plants. Try again!',
+      END_NOT_MONERA:'That organism has a nucleus — it is a eukaryote, not Monera.',
+      END_FUNGI:'It has cell walls but no photosynthesis — that points to Fungi.',
+      END_ANIMAL:'No cell wall and no photosynthesis? That points to Animalia.',
+      END_INVERT:'That organism lacks a backbone — it would be an invertebrate.',
+      END_MAMMAL:'Mammals nurse young on milk. This organism doesn\'t do that.',
+      END_NONMAMMAL:'This organism does nurse young on milk — it IS a mammal.',
+    };
+    rb.innerHTML=`✗ Not quite. ${hints[wrongCode]||'Check your reasoning and try the Lesson tab.'} The correct answer is: <strong>${org.sciName}</strong> — Kingdom ${org.classification.Kingdom}.`;
+    const cc=document.getElementById('classificationChips');
+    cc.style.display='flex';
+    cc.innerHTML=Object.entries(org.classification).map(([lvl,val])=>
+      `<span class="chip revealed"><span style="color:var(--muted)">${lvl}:</span> ${val}</span>`
+    ).join('');
+  }
+  document.getElementById('nextBtn').style.display = currentOrg < ORGANISMS.length-1 ? 'inline-flex' : 'none';
+}
+
+function nextOrganism(){
+  if(currentOrg < ORGANISMS.length-1){ currentOrg++; loadOrganism(); }
+}
+
+/* ─── Init explore ─── */
+window.addEventListener('resize', ()=>{ resizeTree(); });
+resizeTree();
+loadOrganism();
+
+/* ─── Practice ─── */
+const QUESTIONS=[
+  {text:'What are the three levels of biodiversity?',opts:['Genetic, species, and ecosystem diversity','Kingdom, phylum, and class diversity','Producer, consumer, and decomposer diversity','Local, regional, and global diversity'],ans:0,exp:'Biodiversity exists at three levels: genetic diversity (variation within a species), species diversity (number of different species in an area), and ecosystem diversity (variety of habitats and communities).'},
+  {text:'Which of the following correctly lists the classification levels from BROADEST to most SPECIFIC?',opts:['Species → Genus → Family → Order → Class → Phylum → Kingdom','Kingdom → Phylum → Class → Order → Family → Genus → Species','Genus → Family → Order → Class → Phylum → Kingdom → Species','Kingdom → Class → Phylum → Order → Family → Genus → Species'],ans:1,exp:'The hierarchy from broadest to most specific is: Kingdom → Phylum → Class → Order → Family → Genus → Species. Mnemonic: "King Philip Came Over For Good Soup".'},
+  {text:'The scientific name of the lion is Panthera leo. What does "Panthera" represent?',opts:['The species name','The family name','The genus name','The kingdom name'],ans:2,exp:'In binomial nomenclature, the first word (capitalised) is the genus name — in this case Panthera. The second word (lowercase) is the species name — leo. Together they uniquely identify the lion.'},
+  {text:'Which kingdom contains organisms that are prokaryotes (no true nucleus)?',opts:['Protista','Fungi','Monera','Animalia'],ans:2,exp:'Kingdom Monera (also called Bacteria in the six-kingdom system) contains prokaryotes — organisms whose cells lack a membrane-bound nucleus. All other kingdoms contain eukaryotes.'},
+  {text:'The Cape Floristic Region is significant because it:',opts:['Contains the largest number of animal species in Africa','Has about 9 000 plant species, ~70% of which are found nowhere else on Earth','Is the only place where the Big Five can be found','Has no invasive species'],ans:1,exp:'The Cape Floristic Region is a global biodiversity hotspot. It contains approximately 9 000 plant species, with about 70% being endemic — meaning they are found nowhere else on Earth. It is one of the world\'s six floral kingdoms.'},
+  {text:'What is a dichotomous key used for?',opts:['Measuring the rate of photosynthesis','Classifying organisms into the five kingdoms','Identifying an unknown organism by following a series of paired choices','Drawing phylogenetic trees'],ans:2,exp:'A dichotomous key is a scientific tool for identifying unknown organisms. At each step it offers exactly two choices (hence "dichotomous" = split into two). By choosing the correct option at each step, you follow a path to the organism\'s identity.'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi, oi){
+  if(answered[qi]) return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){ score++; fb.className='feedback ok show'; fb.innerHTML='✓ Correct! '+q.exp; }
+  else { document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong'); fb.className='feedback bad show'; fb.innerHTML='✗ Not quite. '+q.exp; }
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner'); banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good effort — check the explanations.':score===5?'Well done!':'Perfect score — outstanding!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

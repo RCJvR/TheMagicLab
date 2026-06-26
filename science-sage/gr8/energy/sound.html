@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound as Energy — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Simulate */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .pitch-bar-wrap{margin-top:10px;background:rgba(255,255,255,.03);border-radius:8px;overflow:hidden;height:18px;border:1px solid rgba(255,255,255,.06);position:relative}
+    .pitch-bar-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#22c55e,#fbbf24,#ef4444);width:100%;position:absolute;left:0;top:0;opacity:0.35}
+    .pitch-marker{position:absolute;top:0;bottom:0;width:3px;background:#fff;border-radius:2px;transition:left 100ms}
+    .pitch-label{font-family:var(--fm);font-size:11px;color:#fcd34d;margin-top:6px;text-align:center;font-weight:700}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Energy &amp; Change · Lesson 4</div>
+  <h1 class="lesson-title">Sound as Energy</h1>
+  <p class="lesson-sub">Explore how sound travels as a longitudinal wave, why it needs a medium, and how frequency and amplitude determine the pitch and loudness we hear.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('simulate',this)"><i data-lucide="radio" style="width:14px;height:14px"></i> Simulate</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is sound?</h2>
+    <p>Sound is a form of energy that travels as a <strong>mechanical wave</strong> — a disturbance that moves through a material medium by causing particles to vibrate. Sound is produced whenever an object <strong>vibrates</strong>: a guitar string, a vocal cord, a loudspeaker cone, or a tuning fork all set nearby air particles oscillating, and those oscillations travel outward as sound.</p>
+    <div class="callout"><strong>Sound cannot travel through a vacuum.</strong> It requires a medium (solid, liquid, or gas) because it is the particles of the medium that carry the disturbance. This is why there is no sound in outer space.</div>
+
+    <h2>Sound as a longitudinal wave</h2>
+    <p>Sound is a <strong>longitudinal wave</strong>: the particles of the medium vibrate <em>parallel</em> to the direction in which the wave travels. This creates alternating regions of:</p>
+    <ul>
+      <li><strong>Compression:</strong> where particles are pushed close together (high pressure region).</li>
+      <li><strong>Rarefaction:</strong> where particles are spread farther apart (low pressure region).</li>
+    </ul>
+    <p>Compare this to a transverse wave (like light or a wave on a rope), where particles vibrate <em>perpendicular</em> to the direction of travel. Sound is always longitudinal in gases and liquids.</p>
+
+    <h2>Properties of sound waves</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Property</th><th>Definition</th><th>Effect on sound</th><th>Unit</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Frequency (f)</strong></td><td>Number of complete vibrations (cycles) per second.</td><td>Determines <strong>pitch</strong>. Higher frequency = higher pitch.</td><td>Hertz (Hz)</td></tr>
+        <tr><td><strong>Amplitude (A)</strong></td><td>Maximum displacement of particles from their rest position.</td><td>Determines <strong>loudness</strong>. Greater amplitude = louder sound.</td><td>metres (m) — loudness in decibels (dB)</td></tr>
+        <tr><td><strong>Wavelength (λ)</strong></td><td>Distance between two consecutive compressions (or rarefactions).</td><td>Related to pitch; shorter wavelength = higher frequency.</td><td>metres (m)</td></tr>
+        <tr><td><strong>Period (T)</strong></td><td>Time taken for one complete vibration.</td><td>T = 1/f. Lower frequency = longer period.</td><td>seconds (s)</td></tr>
+        <tr><td><strong>Speed (v)</strong></td><td>How fast the wave travels through the medium.</td><td>Depends on the medium, not the source.</td><td>metres per second (m/s)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The wave equation</h2>
+    <div class="formula">v = f × λ &nbsp;&nbsp;|&nbsp;&nbsp; λ = v ÷ f &nbsp;&nbsp;|&nbsp;&nbsp; f = v ÷ λ</div>
+    <p>Where <strong>v</strong> = wave speed (m/s), <strong>f</strong> = frequency (Hz), <strong>λ</strong> = wavelength (m).</p>
+    <div class="key-fact">Example: Sound in air at 20°C, f = 440 Hz → λ = 340 ÷ 440 ≈ 0.77 m</div>
+
+    <h2>Speed of sound in different media</h2>
+    <p>Sound travels faster through denser, more elastic media because particles are closer together and can transfer the vibration more rapidly.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Medium</th><th>Speed of sound (approx.)</th></tr></thead>
+      <tbody>
+        <tr><td>Air (20°C)</td><td>~340 m/s</td></tr>
+        <tr><td>Water</td><td>~1 480 m/s</td></tr>
+        <tr><td>Steel</td><td>~5 100 m/s</td></tr>
+        <tr><td>Wood</td><td>~3 800 m/s</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Remember:</strong> Sound travels fastest through <strong>solids</strong>, slower through <strong>liquids</strong>, and slowest through <strong>gases</strong>. The speed of sound in a medium does NOT depend on the frequency or amplitude of the sound.</div>
+
+    <h2>Human hearing range</h2>
+    <p>The human ear can detect sounds in the frequency range of approximately <strong>20 Hz to 20 000 Hz (20 kHz)</strong>.</p>
+    <ul>
+      <li><strong>Infrasound:</strong> below 20 Hz — too low for humans to hear. Produced by earthquakes, elephants communicate using infrasound.</li>
+      <li><strong>Audible sound:</strong> 20 Hz – 20 000 Hz — the range heard by a healthy human ear.</li>
+      <li><strong>Ultrasound:</strong> above 20 000 Hz — too high for humans to hear. Dogs and bats can hear into this range.</li>
+    </ul>
+
+    <h2>Echoes and reflection of sound</h2>
+    <p>Sound, like all waves, can be <strong>reflected</strong>. When a sound wave strikes a hard surface, it bounces back — this is called an <strong>echo</strong>. Echoes require the reflecting surface to be at least ~17 m away (so the reflected sound returns after the original sound has ended — at least 0.1 s later).</p>
+
+    <h2>Applications of sound</h2>
+    <ul>
+      <li><strong>SONAR (Sound Navigation And Ranging):</strong> Ships and submarines send out pulses of ultrasound and measure the time for the echo to return to calculate distance to the ocean floor or other objects.</li>
+      <li><strong>Medical ultrasound:</strong> High-frequency sound waves (1–20 MHz) are used to produce images of internal organs and developing foetuses without harmful radiation.</li>
+      <li><strong>Musical instruments:</strong> Use vibrating strings, columns of air, or membranes to produce sound at specific frequencies.</li>
+      <li><strong>Noise-cancelling headphones:</strong> Use destructive interference — they produce a sound wave that is the exact mirror image (inverted amplitude) of incoming noise, cancelling it out.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SIMULATE -->
+<div class="tab-panel" id="tab-simulate">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Sound Wave Visualiser</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust frequency and amplitude with the sliders. Watch the wave change in real time — the compression diagram shows how particles bunch and spread. The pitch meter shows where your frequency falls.</p>
+  <div class="sim-outer">
+    <!-- Sine wave panel -->
+    <div class="sim-canvas-wrap">
+      <h3>Transverse representation (displacement vs position)</h3>
+      <canvas id="waveCanvas" height="140"></canvas>
+    </div>
+    <!-- Compression / rarefaction panel -->
+    <div class="sim-canvas-wrap">
+      <h3>Longitudinal view (compression &amp; rarefaction)</h3>
+      <canvas id="compCanvas" height="90"></canvas>
+    </div>
+    <!-- Controls row -->
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Wave Controls</div>
+        <div class="slider-row">
+          <label>Frequency</label>
+          <input type="range" id="sliderFreq" min="20" max="2000" step="10" value="440" oninput="updateSound()">
+          <span class="slider-val" id="valFreq">440 Hz</span>
+        </div>
+        <div class="slider-row">
+          <label>Amplitude</label>
+          <input type="range" id="sliderAmp" min="1" max="10" step="0.5" value="5" oninput="updateSound()">
+          <span class="slider-val" id="valAmp">5</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Live Readouts</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Frequency</div><div class="readout-val" id="readFreq">440<span>Hz</span></div></div>
+          <div class="readout"><div class="readout-label">Period</div><div class="readout-val" id="readPeriod">2.27<span>ms</span></div></div>
+          <div class="readout"><div class="readout-label">Wavelength</div><div class="readout-val" id="readWL">0.77<span>m</span></div></div>
+          <div class="readout"><div class="readout-label">Loudness</div><div class="readout-val" id="readLoud" style="color:#fbbf24">Med<span></span></div></div>
+        </div>
+        <!-- Pitch meter -->
+        <div style="margin-top:12px">
+          <div style="font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px">Pitch Range Meter</div>
+          <div class="pitch-bar-wrap">
+            <div class="pitch-bar-fill"></div>
+            <div class="pitch-marker" id="pitchMarker" style="left:30%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--fm);font-size:9px;color:var(--muted);margin-top:4px">
+            <span>20 Hz</span><span>Bass</span><span>Mid</span><span>Treble</span><span>2000 Hz</span>
+          </div>
+          <div class="pitch-label" id="pitchLabel">Midrange</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Show all calculations with units. Use v = 340 m/s for the speed of sound in air unless otherwise stated.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Explain why sound cannot travel through outer space. In your answer, refer to the type of wave sound is and what it requires to travel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Distinguish between a <em>compression</em> and a <em>rarefaction</em> in a longitudinal sound wave. Which region has higher pressure?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">A sound wave has a frequency of 680 Hz and travels through air at 340 m/s. (a) Calculate the wavelength of the sound. (b) Calculate the period of the wave. (c) How would the wavelength change if the frequency doubled (assuming the same medium)? Explain.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Compare the speed of sound in air, water, and steel. Which is fastest and which is slowest? Explain, in terms of particle spacing, why sound travels faster in solids than in gases.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Define <em>ultrasound</em> and give TWO practical applications of ultrasound technology in modern life.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">A ship uses SONAR to measure the depth of the ocean. It sends out an ultrasound pulse and receives the echo 0.6 s later. If the speed of sound in seawater is 1 500 m/s, calculate the depth of the ocean at that point. Show all working.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+/* ---- Sound wave simulator ---- */
+const wCanvas = document.getElementById('waveCanvas');
+const wCtx = wCanvas.getContext('2d');
+const cCanvas = document.getElementById('compCanvas');
+const cCtx = cCanvas.getContext('2d');
+
+const SOUND_SPEED = 340; // m/s in air
+let freq = 440;   // Hz
+let amp = 5;      // arbitrary 1–10 scale
+let animT = 0;
+
+function resizeCanvases() {
+  const dpr = window.devicePixelRatio || 1;
+  [wCanvas, cCanvas].forEach(c => {
+    c.width = (c.offsetWidth || 700) * dpr;
+  });
+  wCanvas.height = 140 * dpr;
+  cCanvas.height = 90 * dpr;
+  wCtx.scale(dpr, dpr);
+  cCtx.scale(dpr, dpr);
+}
+
+function updateSound() {
+  freq = parseFloat(document.getElementById('sliderFreq').value);
+  amp = parseFloat(document.getElementById('sliderAmp').value);
+  document.getElementById('valFreq').textContent = freq + ' Hz';
+  document.getElementById('valAmp').textContent = amp.toFixed(1);
+
+  // Derived values
+  const wavelength = SOUND_SPEED / freq;
+  const period = 1 / freq;
+  const periodMs = period * 1000;
+
+  document.getElementById('readFreq').innerHTML = freq + '<span>Hz</span>';
+  document.getElementById('readPeriod').innerHTML = (periodMs < 1 ? periodMs.toFixed(3) : periodMs.toFixed(2)) + '<span>ms</span>';
+  document.getElementById('readWL').innerHTML = wavelength.toFixed(3) + '<span>m</span>';
+
+  // Loudness descriptor
+  let loudDesc;
+  if (amp <= 2) loudDesc = 'Quiet';
+  else if (amp <= 5) loudDesc = 'Medium';
+  else if (amp <= 8) loudDesc = 'Loud';
+  else loudDesc = 'Very loud';
+  document.getElementById('readLoud').innerHTML = loudDesc + '<span></span>';
+
+  // Pitch meter (log scale 20–2000 Hz)
+  const logMin = Math.log10(20);
+  const logMax = Math.log10(2000);
+  const logF = Math.log10(freq);
+  const pct = Math.max(0, Math.min(1, (logF - logMin) / (logMax - logMin)));
+  document.getElementById('pitchMarker').style.left = (pct * 100).toFixed(1) + '%';
+
+  let pitchName;
+  if (freq < 300) pitchName = 'Bass';
+  else if (freq < 800) pitchName = 'Midrange';
+  else if (freq < 1500) pitchName = 'Treble';
+  else pitchName = 'High treble / near ultrasound';
+  document.getElementById('pitchLabel').textContent = pitchName;
+}
+
+function drawWave(ts) {
+  if (!document.getElementById('tab-simulate').classList.contains('active')) {
+    requestAnimationFrame(drawWave);
+    return;
+  }
+
+  animT = ts * 0.001;
+
+  // Wave canvas
+  const W = wCanvas.offsetWidth || 700;
+  const H = 140;
+  wCtx.clearRect(0, 0, W, H);
+
+  // Axis line
+  wCtx.strokeStyle = 'rgba(255,255,255,0.08)';
+  wCtx.lineWidth = 1;
+  wCtx.beginPath(); wCtx.moveTo(0, H / 2); wCtx.lineTo(W, H / 2); wCtx.stroke();
+
+  // Cycle labels
+  const cyclesShown = Math.min(6, Math.max(1, freq / 150));
+  const waveColor1 = 'rgba(251,191,36,0.90)';
+  const maxDispPx = (amp / 10) * (H / 2 - 16);
+
+  // Gradient stroke
+  const grad = wCtx.createLinearGradient(0, 0, W, 0);
+  grad.addColorStop(0, 'rgba(251,191,36,0)');
+  grad.addColorStop(0.1, 'rgba(251,191,36,0.9)');
+  grad.addColorStop(0.9, 'rgba(251,191,36,0.9)');
+  grad.addColorStop(1, 'rgba(251,191,36,0)');
+
+  wCtx.beginPath();
+  for (let px = 0; px <= W; px++) {
+    const x_norm = px / W;
+    const phase = x_norm * cyclesShown * 2 * Math.PI - animT * freq * 0.5;
+    const y = H / 2 - Math.sin(phase) * maxDispPx;
+    if (px === 0) wCtx.moveTo(px, y);
+    else wCtx.lineTo(px, y);
+  }
+  wCtx.strokeStyle = grad;
+  wCtx.lineWidth = 2.5;
+  wCtx.stroke();
+
+  // Glow fill
+  wCtx.beginPath();
+  for (let px = 0; px <= W; px++) {
+    const x_norm = px / W;
+    const phase = x_norm * cyclesShown * 2 * Math.PI - animT * freq * 0.5;
+    const y = H / 2 - Math.sin(phase) * maxDispPx;
+    if (px === 0) wCtx.moveTo(px, y);
+    else wCtx.lineTo(px, y);
+  }
+  wCtx.lineTo(W, H / 2); wCtx.lineTo(0, H / 2); wCtx.closePath();
+  wCtx.fillStyle = 'rgba(251,191,36,0.06)';
+  wCtx.fill();
+
+  // Labels
+  wCtx.fillStyle = 'rgba(210,218,245,0.35)';
+  wCtx.font = '10px "JetBrains Mono",monospace';
+  wCtx.textAlign = 'left';
+  wCtx.fillText('← compression peak', 10, H / 2 - maxDispPx - 6);
+  wCtx.fillText('← rarefaction trough', 10, H / 2 + maxDispPx + 14);
+
+  // Compression canvas
+  const CW = cCanvas.offsetWidth || 700;
+  const CH = 90;
+  cCtx.clearRect(0, 0, CW, CH);
+
+  // Draw dots representing air particles
+  const dotRows = 3;
+  const dotRadius = 2.5;
+  const baseSpacing = Math.max(8, Math.min(22, CW / (cyclesShown * 14)));
+
+  for (let row = 0; row < dotRows; row++) {
+    const y = 20 + row * 25;
+    let x = baseSpacing;
+    while (x < CW - baseSpacing) {
+      const x_norm = x / CW;
+      const phase = x_norm * cyclesShown * 2 * Math.PI - animT * freq * 0.5;
+      const displacement = Math.sin(phase) * baseSpacing * 0.55;
+      const dx = x + displacement;
+      const density = 1 - Math.sin(phase) * 0.5; // 0.5–1.5
+      const alpha = Math.min(1, Math.max(0.2, density * 0.7));
+      const r = dotRadius * Math.min(1.3, Math.max(0.7, density));
+      cCtx.beginPath();
+      cCtx.arc(dx, y, r, 0, Math.PI * 2);
+      cCtx.fillStyle = `rgba(251,191,36,${alpha.toFixed(2)})`;
+      cCtx.fill();
+      x += baseSpacing;
+    }
+  }
+
+  // Compression / rarefaction labels
+  cCtx.font = '9px "JetBrains Mono",monospace';
+  cCtx.textAlign = 'center';
+  cCtx.fillStyle = 'rgba(210,218,245,0.40)';
+  // Find first compression peak (sin phase = π/2 => phase = 0.5*π => x_norm = 0.5*π / (cycles*2π))
+  const firstComp = (0.5 * Math.PI + animT * freq * 0.5) / (cyclesShown * 2 * Math.PI);
+  if (firstComp > 0 && firstComp < 1) {
+    const cx = firstComp * CW;
+    cCtx.fillStyle = 'rgba(251,191,36,0.55)';
+    cCtx.fillText('C', cx, CH - 8);
+  }
+  const firstRare = (1.5 * Math.PI + animT * freq * 0.5) / (cyclesShown * 2 * Math.PI);
+  if (firstRare > 0 && firstRare < 1) {
+    const rx = firstRare * CW;
+    cCtx.fillStyle = 'rgba(96,165,250,0.55)';
+    cCtx.fillText('R', rx, CH - 8);
+  }
+  cCtx.fillStyle = 'rgba(210,218,245,0.30)';
+  cCtx.textAlign = 'right';
+  cCtx.fillText('C = compression  R = rarefaction', CW - 8, CH - 8);
+
+  requestAnimationFrame(drawWave);
+}
+
+window.addEventListener('resize', () => { resizeCanvases(); });
+resizeCanvases();
+updateSound();
+requestAnimationFrame(drawWave);
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Sound is classified as which type of wave?',
+    opts: ['Transverse wave', 'Longitudinal wave', 'Electromagnetic wave', 'Light wave'],
+    ans: 1,
+    exp: 'Sound is a longitudinal mechanical wave — the particles of the medium vibrate parallel (back and forth) to the direction in which the wave travels, creating compressions and rarefactions.'
+  },
+  {
+    text: 'A sound wave has a frequency of 850 Hz and travels at 340 m/s. What is its wavelength?',
+    opts: ['0.25 m', '0.40 m', '0.55 m', '2.5 m'],
+    ans: 1,
+    exp: 'Using the wave equation: λ = v ÷ f = 340 ÷ 850 = 0.40 m. Always check your units — frequency must be in Hz and speed in m/s.'
+  },
+  {
+    text: 'Which property of a sound wave determines its PITCH?',
+    opts: ['Amplitude', 'Wavelength', 'Speed', 'Frequency'],
+    ans: 3,
+    exp: 'Frequency determines pitch. A high-frequency sound has a high pitch; a low-frequency sound has a low pitch. Amplitude determines loudness, not pitch.'
+  },
+  {
+    text: 'In which medium does sound travel FASTEST?',
+    opts: ['Air', 'Water', 'Steel', 'A vacuum'],
+    ans: 2,
+    exp: 'Sound travels fastest in solids because the particles are closest together and can transfer vibrations most rapidly. Steel: ~5100 m/s vs water: ~1480 m/s vs air: ~340 m/s. Sound cannot travel in a vacuum at all.'
+  },
+  {
+    text: 'What is the approximate range of human hearing?',
+    opts: ['0 Hz – 1 000 Hz', '20 Hz – 20 000 Hz', '100 Hz – 100 000 Hz', '1 Hz – 500 Hz'],
+    ans: 1,
+    exp: 'The healthy human ear can detect sounds between approximately 20 Hz (very low bass) and 20 000 Hz (20 kHz, very high pitch). Sounds below 20 Hz are called infrasound; above 20 000 Hz are called ultrasound.'
+  },
+  {
+    text: 'A ship sends an ultrasound pulse downward and receives the echo after 2 s. If sound travels at 1 500 m/s in seawater, what is the depth of the ocean?',
+    opts: ['3 000 m', '750 m', '1 500 m', '6 000 m'],
+    ans: 2,
+    exp: 'The pulse travels down and back, so the one-way distance = (v × t) ÷ 2 = (1500 × 2) ÷ 2 = 1 500 m. Remember to divide by 2 because the pulse must travel to the bottom and back.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

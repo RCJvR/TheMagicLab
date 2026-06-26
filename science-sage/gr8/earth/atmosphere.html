@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earth's Atmosphere — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 270px;gap:24px;align-items:start}
+    .solar-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:72px}
+    input[type=range]{flex:1;accent-color:#fb923c;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fdba74;min-width:48px;text-align:right}
+    .layer-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:200px;transition:border-color 200ms}
+    .layer-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;margin-bottom:2px}
+    .layer-range{font-family:var(--fm);font-size:10px;color:var(--muted);margin-bottom:10px}
+    .layer-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+    .layer-stat:last-child{border-bottom:none}
+    .layer-stat-label{color:var(--muted)}
+    .layer-stat-val{font-family:var(--fm);font-size:11px;color:var(--text)}
+    .layer-desc{font-size:12px;color:rgba(210,218,245,.65);line-height:1.6;margin-top:10px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.solar-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Earth &amp; Beyond</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Earth &amp; Beyond · Lesson 4</div>
+  <h1 class="lesson-title">Earth's Atmosphere</h1>
+  <p class="lesson-sub">From the air we breathe to the auroras at the edge of space — explore the layered blanket that makes life on Earth possible.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="layers" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Composition of the Atmosphere</h2>
+    <p>The atmosphere is the layer of gases surrounding Earth, held in place by gravity. It is a mixture of gases, mainly:</p>
+    <ul>
+      <li><strong>Nitrogen (N₂): 78%</strong> — the most abundant gas; relatively unreactive, dilutes oxygen to safe levels</li>
+      <li><strong>Oxygen (O₂): 21%</strong> — essential for respiration in animals and combustion</li>
+      <li><strong>Argon (Ar): ~0.9%</strong> — an inert noble gas</li>
+      <li><strong>Carbon dioxide (CO₂): ~0.04%</strong> — essential for photosynthesis; key greenhouse gas</li>
+      <li><strong>Other gases:</strong> water vapour, neon, helium, methane, ozone (trace amounts)</li>
+    </ul>
+    <div class="key-fact">Easy to remember: N₂ = 78%, O₂ = 21%, rest = 1% (Ar + CO₂ + others)</div>
+
+    <h2>The Four Main Layers</h2>
+    <p>The atmosphere is divided into layers based on how temperature changes with altitude. Temperature does NOT decrease steadily — it alternately decreases and increases depending on the layer.</p>
+    <table class="planets-table">
+      <thead><tr><th>Layer</th><th>Altitude</th><th>Temperature trend</th><th>Key features</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Troposphere</strong></td><td>0–12 km</td><td>Decreases with altitude (from ~15°C to -56°C)</td><td>All weather occurs here; contains ~75% of atmospheric mass; humans live here</td></tr>
+        <tr><td><strong>Stratosphere</strong></td><td>12–50 km</td><td>Increases with altitude (up to ~0°C)</td><td>Contains the ozone layer (20–35 km); absorbs UV radiation; jet aircraft fly here</td></tr>
+        <tr><td><strong>Mesosphere</strong></td><td>50–80 km</td><td>Decreases with altitude (down to -90°C)</td><td>Coldest layer; most meteors burn up here; noctilucent clouds form here</td></tr>
+        <tr><td><strong>Thermosphere</strong></td><td>80–700 km</td><td>Increases sharply (up to 2 000°C+)</td><td>Very thin air; auroras occur here; International Space Station orbits in lower thermosphere; radio waves reflect off this layer</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Memory tip for the layers:</strong> <strong>T</strong>he <strong>S</strong>trato-<strong>M</strong>esosphere <strong>T</strong>hermo — or think of temperature: Down, Up, Down, Up as you rise through Troposphere → Stratosphere → Mesosphere → Thermosphere.</div>
+
+    <h2>Air Pressure</h2>
+    <p>Air pressure is the weight of the air column above a point. At sea level, air pressure is about <strong>101 325 Pa (1 atmosphere)</strong>. As altitude increases, there is less air above, so pressure decreases. At 12 km (top of troposphere), pressure is only about 20% of sea level pressure. At 50 km, it is less than 0.1%.</p>
+    <p>This is why aeroplanes must pressurise their cabins — at cruising altitude the air is too thin to breathe without assistance.</p>
+
+    <h2>The Ozone Layer</h2>
+    <p>The <strong>ozone layer</strong> is a region in the stratosphere (about 20–35 km up) where ozone (O₃) is concentrated. Ozone absorbs most of the Sun's harmful <strong>ultraviolet (UV) radiation</strong>, particularly UV-B and UV-C rays.</p>
+    <ul>
+      <li>Without the ozone layer, UV radiation would damage DNA and cause skin cancer, cataracts, and harm to plants and marine life.</li>
+      <li>Chemicals called <strong>CFCs (chlorofluorocarbons)</strong> — once used in refrigerators and aerosol sprays — were destroying the ozone layer, causing an "ozone hole" over Antarctica.</li>
+      <li>The <strong>Montreal Protocol (1987)</strong> banned CFCs worldwide; the ozone layer is slowly recovering.</li>
+    </ul>
+
+    <h2>The Greenhouse Effect</h2>
+    <p>The <strong>natural greenhouse effect</strong> keeps Earth warm enough to support life. Here is how it works:</p>
+    <ul>
+      <li>Short-wave solar radiation passes through the atmosphere and warms Earth's surface.</li>
+      <li>Earth's surface radiates heat as long-wave infrared (heat) radiation.</li>
+      <li><strong>Greenhouse gases</strong> (CO₂, water vapour, methane, nitrous oxide) absorb this outgoing heat and re-radiate some of it back toward Earth's surface.</li>
+      <li>This raises the average surface temperature to about <strong>+15°C</strong> (without any greenhouse effect it would be about -18°C).</li>
+    </ul>
+    <p>The <strong>enhanced greenhouse effect</strong> is the <em>problem</em>: human activities (burning fossil fuels, deforestation) release extra CO₂ and other greenhouse gases, trapping more heat than normal and causing global temperatures to rise — <strong>global warming</strong>, which leads to climate change.</p>
+    <div class="callout"><strong>Key distinction:</strong> The natural greenhouse effect is <em>essential for life</em>. The enhanced greenhouse effect from extra human-produced gases is causing dangerous climate change. Do not confuse the two.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Atmosphere Layers Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the altitude probe slider or click on any layer to explore it. Watch a meteor burn in the mesosphere and auroras glow in the thermosphere.</p>
+  <div class="explore-layout">
+    <div class="solar-wrap" id="atmoWrap">
+      <canvas id="atmoCanvas" height="520"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Altitude Probe</div>
+        <div class="slider-row">
+          <label>Altitude</label>
+          <input type="range" id="altSlider" min="0" max="700" step="1" value="0" oninput="onAltChange()">
+          <span class="slider-val" id="altVal">0 km</span>
+        </div>
+      </div>
+      <div class="layer-card" id="layerCard">
+        <div style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Drag the slider or<br>click a layer to explore</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in your exercise book. Use diagrams where they help explain your answer.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">State the percentage composition of the three most abundant gases in Earth's atmosphere. For each gas, state one role it plays for living organisms or Earth's systems.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Draw and label a diagram of the four main atmospheric layers. For each layer, indicate: (a) the approximate altitude range, and (b) one key feature or event that occurs there.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain why air pressure decreases with altitude. At what approximate altitude does pressure drop to about 20% of sea level pressure? Why do aeroplane cabins need to be pressurised?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Describe the role of the ozone layer. (a) Where in the atmosphere is it found? (b) What type of radiation does it absorb and why is this important? (c) What chemicals damaged the ozone layer, and what international agreement was made to address this?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">Explain the natural greenhouse effect step by step. In your answer: (a) name three greenhouse gases, (b) describe how heat is trapped, and (c) state what Earth's average temperature would be without any greenhouse effect.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (3 marks)</div><div class="wb-qtext">Distinguish between the natural greenhouse effect and the enhanced greenhouse effect. Explain how human activities contribute to the enhanced greenhouse effect and give TWO consequences of this for Earth's climate.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') startCanvas();
+}
+
+// ── Atmosphere Layer Data ──────────────────────────────────────
+const LAYERS = [
+  {
+    name:'Troposphere', range:'0–12 km', color:'#3a7bd5', colorLight:'#6dd5fa',
+    tempFn: alt => 15 - alt * (71/12),   // 15°C at 0, -56°C at 12
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(0) + ' Pa',
+    phenomena:'Weather, clouds, rain, wind',
+    desc:'All weather occurs here. Contains about 75% of all atmospheric mass and almost all water vapour. Temperature decreases with altitude at about 6.5°C per km. The tropopause marks the top boundary.',
+    border: [0, 12]
+  },
+  {
+    name:'Stratosphere', range:'12–50 km', color:'#7c3aed', colorLight:'#a78bfa',
+    tempFn: alt => -56 + (alt-12) * (56/38),  // -56 at 12, ~0 at 50
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(0) + ' Pa',
+    phenomena:'Ozone layer, jet streams, jet aircraft',
+    desc:'Temperature increases with altitude because ozone absorbs UV radiation. Contains the ozone layer (20–35 km). Almost no weather here — very stable, which is why commercial jets fly in the lower stratosphere.',
+    border: [12, 50]
+  },
+  {
+    name:'Mesosphere', range:'50–80 km', color:'#1e3a5f', colorLight:'#60a5fa',
+    tempFn: alt => 0 - (alt-50) * (90/30),    // 0 at 50, -90 at 80
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(0) + ' Pa',
+    phenomena:'Meteors burn up, noctilucent clouds',
+    desc:'The coldest layer — temperatures can drop to -90°C at the top. Most meteors (shooting stars) burn up here due to friction with air molecules. Noctilucent clouds — the highest clouds on Earth — form near the mesopause.',
+    border: [50, 80]
+  },
+  {
+    name:'Thermosphere', range:'80–700 km', color:'#0a0a1a', colorLight:'#312e81',
+    tempFn: alt => -90 + (alt-80) * (2090/620), // -90 at 80, up to ~2000+ at 700
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(4) + ' Pa',
+    phenomena:'Auroras, ISS, radio reflection',
+    desc:'Temperature rises dramatically — molecules absorb high-energy solar radiation. However, air is so thin that there are very few molecules — you would not feel "hot." Auroras (Southern and Northern Lights) glow here. The ISS orbits at ~400 km within the thermosphere.',
+    border: [80, 700]
+  },
+];
+
+function getLayer(alt){
+  if(alt < 12) return LAYERS[0];
+  if(alt < 50) return LAYERS[1];
+  if(alt < 80) return LAYERS[2];
+  return LAYERS[3];
+}
+
+function getTemp(alt){
+  const l = getLayer(alt);
+  return Math.round(l.tempFn(alt));
+}
+
+// ── Canvas Setup ───────────────────────────────────────────────
+const atmoCanvas = document.getElementById('atmoCanvas');
+const ctx = atmoCanvas.getContext('2d');
+let canvasStarted = false;
+let animId = null;
+let probeAlt = 0;
+let selectedLayer = null;
+let meteorAnim = {x:0, y:0, active:false, t:0};
+let auroraT = 0;
+
+// Canvas layout: bottom = Earth surface, top = 700 km
+// Canvas height = 520px. Map: 0km → y=490, 700km → y=10
+let CANVAS_H = 520;
+let CANVAS_W = 560;
+const ATMO_LEFT = 80;  // left edge of atmosphere column
+const ATMO_RIGHT_FN = () => CANVAS_W - 20;
+
+function altToY(alt, H){ return H - 20 - (alt / 700) * (H - 40); }
+function yToAlt(y, H){ return ((H - 20 - y) / (H - 40)) * 700; }
+
+function resizeAtmo(){
+  CANVAS_W = atmoCanvas.offsetWidth || 560;
+  CANVAS_H = 520;
+  atmoCanvas.width = CANVAS_W * devicePixelRatio;
+  atmoCanvas.height = CANVAS_H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function onAltChange(){
+  probeAlt = +document.getElementById('altSlider').value;
+  document.getElementById('altVal').textContent = Math.round(probeAlt) + ' km';
+  selectedLayer = getLayer(probeAlt);
+  updateLayerCard(selectedLayer, probeAlt);
+}
+
+function updateLayerCard(layer, alt){
+  const temp = getTemp(alt);
+  const pressure = +(101325 * Math.exp(-alt/8.5));
+  let pressStr;
+  if(pressure >= 1) pressStr = pressure.toFixed(0) + ' Pa';
+  else if(pressure >= 0.001) pressStr = pressure.toFixed(3) + ' Pa';
+  else pressStr = pressure.toExponential(2) + ' Pa';
+
+  document.getElementById('layerCard').innerHTML = `
+    <div class="layer-name" style="color:${layer.colorLight}">${layer.name}</div>
+    <div class="layer-range">${layer.range}</div>
+    <div class="layer-stat"><span class="layer-stat-label">Altitude</span><span class="layer-stat-val">${Math.round(alt)} km</span></div>
+    <div class="layer-stat"><span class="layer-stat-label">Temperature</span><span class="layer-stat-val">${temp}°C</span></div>
+    <div class="layer-stat"><span class="layer-stat-label">Air pressure</span><span class="layer-stat-val">${pressStr}</span></div>
+    <div class="layer-stat"><span class="layer-stat-label">Phenomena</span><span class="layer-stat-val" style="font-size:10px;text-align:right;max-width:120px">${layer.phenomena}</span></div>
+    <div class="layer-desc">${layer.desc}</div>`;
+}
+
+// Click on canvas to select layer
+atmoCanvas.addEventListener('click', e => {
+  const rect = atmoCanvas.getBoundingClientRect();
+  const y = e.clientY - rect.top;
+  const alt = Math.max(0, Math.min(700, yToAlt(y, CANVAS_H)));
+  probeAlt = alt;
+  document.getElementById('altSlider').value = alt;
+  document.getElementById('altVal').textContent = Math.round(alt) + ' km';
+  selectedLayer = getLayer(alt);
+  updateLayerCard(selectedLayer, alt);
+});
+
+function drawAtmosphere(){
+  const W = CANVAS_W, H = CANVAS_H;
+  const LEFT = ATMO_LEFT;
+  const RIGHT = W - 20;
+  const COLW = RIGHT - LEFT;
+
+  ctx.clearRect(0,0,W,H);
+
+  // Space background
+  ctx.fillStyle='#06091a'; ctx.fillRect(0,0,W,H);
+
+  // Stars in space region (above ~550km on canvas)
+  if(!drawAtmosphere.stars){
+    drawAtmosphere.stars=[];
+    for(let i=0;i<60;i++) drawAtmosphere.stars.push([Math.random()*W, Math.random()*(altToY(400,H)-10)+5, Math.random()*1.0+0.2]);
+  }
+  drawAtmosphere.stars.forEach(([sx,sy,sr])=>{
+    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fill();
+  });
+
+  // Draw layer bands
+  const layerBands = [
+    {alt0:0,  alt1:12,  c0:'rgba(74,144,217,0.85)',  c1:'rgba(100,180,240,0.5)', label:'Troposphere'},
+    {alt0:12, alt1:50,  c0:'rgba(100,80,200,0.6)',   c1:'rgba(80,40,160,0.3)',   label:'Stratosphere'},
+    {alt0:50, alt1:80,  c0:'rgba(20,50,100,0.5)',    c1:'rgba(10,20,60,0.3)',    label:'Mesosphere'},
+    {alt0:80, alt1:700, c0:'rgba(10,10,30,0.4)',     c1:'rgba(0,0,10,0.1)',      label:'Thermosphere'},
+  ];
+
+  layerBands.forEach(b=>{
+    const y1 = altToY(b.alt1, H);
+    const y0 = altToY(b.alt0, H);
+    const grad = ctx.createLinearGradient(0,y1,0,y0);
+    grad.addColorStop(0, b.c0);
+    grad.addColorStop(1, b.c1);
+    ctx.fillStyle = grad;
+    ctx.fillRect(LEFT, y1, COLW, y0-y1);
+  });
+
+  // Layer boundary lines & labels
+  const boundaries = [
+    {alt:12,  label:'Tropopause  12 km'},
+    {alt:50,  label:'Stratopause 50 km'},
+    {alt:80,  label:'Mesopause   80 km'},
+  ];
+  boundaries.forEach(b=>{
+    const y = altToY(b.alt, H);
+    ctx.beginPath(); ctx.moveTo(LEFT, y); ctx.lineTo(RIGHT, y);
+    ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='left';
+    ctx.fillText(b.label, LEFT+4, y-4);
+  });
+
+  // Layer name labels (centred in band)
+  const layerLabels = [
+    {alt:6,   name:'TROPOSPHERE',  color:'rgba(180,220,255,0.9)'},
+    {alt:31,  name:'STRATOSPHERE', color:'rgba(180,160,255,0.9)'},
+    {alt:65,  name:'MESOSPHERE',   color:'rgba(120,160,220,0.9)'},
+    {alt:300, name:'THERMOSPHERE', color:'rgba(100,120,200,0.7)'},
+  ];
+  layerLabels.forEach(l=>{
+    const y = altToY(l.alt, H);
+    ctx.fillStyle=l.color; ctx.font='bold 11px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText(l.name, LEFT + COLW/2, y);
+  });
+
+  // Ozone layer marker
+  const oz0 = altToY(20, H), oz1 = altToY(35, H);
+  ctx.fillStyle='rgba(167,243,208,0.12)';
+  ctx.fillRect(LEFT, oz1, COLW, oz0-oz1);
+  ctx.fillStyle='rgba(167,243,208,0.7)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='left';
+  ctx.fillText('OZONE LAYER', LEFT+4, (oz0+oz1)/2+3);
+
+  // Earth surface strip
+  const surfY = altToY(0, H);
+  const earthGrad = ctx.createLinearGradient(0, surfY, 0, H);
+  earthGrad.addColorStop(0,'#2d5a27'); earthGrad.addColorStop(1,'#1a3a18');
+  ctx.fillStyle=earthGrad; ctx.fillRect(LEFT, surfY, COLW, H-surfY);
+  ctx.fillStyle='rgba(100,180,100,0.8)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('Earth\'s Surface', LEFT+COLW/2, H-8);
+
+  // Altitude axis (left)
+  ctx.fillStyle='rgba(210,218,245,0.5)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='right';
+  [0,50,100,200,300,400,500,600,700].forEach(a=>{
+    const y = altToY(a, H);
+    ctx.fillText(a+'km', LEFT-6, y+3);
+    ctx.beginPath(); ctx.moveTo(LEFT-3,y); ctx.lineTo(LEFT,y);
+    ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
+  });
+
+  // Auroras in thermosphere (animated)
+  auroraT += 0.02;
+  const auroraY_base = altToY(150, H);
+  const auroraY_top  = altToY(300, H);
+  for(let i=0;i<5;i++){
+    const auroraX = LEFT + COLW*0.15 + i*(COLW*0.14);
+    const phase = auroraT + i*1.2;
+    const h = (auroraY_base - auroraY_top) * (0.3 + 0.3*Math.sin(phase));
+    const ag = ctx.createLinearGradient(auroraX, auroraY_base, auroraX, auroraY_base - h);
+    const hue = 120 + i*30 + 20*Math.sin(auroraT);
+    ag.addColorStop(0,'rgba(0,255,120,0)');
+    ag.addColorStop(0.4,`hsla(${hue},100%,65%,0.35)`);
+    ag.addColorStop(1,'rgba(100,200,255,0)');
+    ctx.fillStyle=ag;
+    ctx.fillRect(auroraX-8, auroraY_base-h, 16, h);
+  }
+  // Aurora label
+  ctx.fillStyle='rgba(100,255,160,0.7)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='right';
+  ctx.fillText('AURORA', RIGHT-4, altToY(200,H));
+
+  // ISS marker
+  const issY = altToY(400, H);
+  ctx.fillStyle='rgba(255,200,50,0.8)'; ctx.font='10px "Cabinet Grotesk"'; ctx.textAlign='left';
+  ctx.fillText('🛸 ISS (~400 km)', LEFT+COLW*0.55, issY+4);
+  ctx.beginPath(); ctx.moveTo(LEFT+COLW*0.5, issY); ctx.lineTo(RIGHT-4, issY);
+  ctx.strokeStyle='rgba(255,200,50,0.25)'; ctx.lineWidth=1; ctx.setLineDash([3,4]); ctx.stroke(); ctx.setLineDash([]);
+
+  // Meteor animation in mesosphere
+  if(!meteorAnim.active){
+    if(Math.random()<0.004){
+      meteorAnim.active=true; meteorAnim.t=0;
+      meteorAnim.x = LEFT + Math.random()*COLW*0.6 + COLW*0.1;
+      meteorAnim.startY = altToY(80,H) - 10;
+    }
+  }
+  if(meteorAnim.active){
+    meteorAnim.t += 2.5;
+    const mY = meteorAnim.startY + meteorAnim.t;
+    const mX = meteorAnim.x + meteorAnim.t*0.5;
+    const burnProgress = Math.min(meteorAnim.t / 80, 1);
+    const alpha = 1 - burnProgress;
+    // Trail
+    ctx.save();
+    const mg = ctx.createLinearGradient(mX-meteorAnim.t*0.4, mY-meteorAnim.t, mX, mY);
+    mg.addColorStop(0,'rgba(255,150,50,0)');
+    mg.addColorStop(1,`rgba(255,220,100,${alpha*0.8})`);
+    ctx.beginPath(); ctx.moveTo(mX-meteorAnim.t*0.3, mY-meteorAnim.t*0.8); ctx.lineTo(mX,mY);
+    ctx.strokeStyle=mg; ctx.lineWidth=2; ctx.stroke();
+    // Head
+    ctx.beginPath(); ctx.arc(mX,mY,2+burnProgress*1,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,100,${alpha})`; ctx.fill();
+    ctx.restore();
+    const burnY = altToY(60,H);
+    if(mY > burnY + 40 || alpha<=0) meteorAnim.active=false;
+  }
+  // Meteor label
+  ctx.fillStyle='rgba(255,180,50,0.6)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='right';
+  ctx.fillText('METEORS BURN HERE', RIGHT-4, altToY(70,H));
+
+  // Probe line & dot
+  if(probeAlt >= 0){
+    const py = altToY(probeAlt, H);
+    ctx.beginPath(); ctx.moveTo(LEFT-2, py); ctx.lineTo(RIGHT, py);
+    ctx.strokeStyle='rgba(251,146,60,0.85)'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(LEFT-2, py, 5, 0, Math.PI*2);
+    ctx.fillStyle='#fb923c'; ctx.fill();
+    // Probe alt label
+    ctx.fillStyle='#fb923c'; ctx.font='bold 10px "JetBrains Mono"'; ctx.textAlign='left';
+    ctx.fillText(Math.round(probeAlt)+' km', LEFT+4, py-5);
+  }
+
+  // Outer atmosphere border
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+  ctx.strokeRect(LEFT, altToY(700,H), COLW, altToY(0,H)-altToY(700,H));
+}
+
+let lastTs = 0;
+function loop(ts){
+  const dt = (ts - lastTs)/16.67; lastTs = ts;
+  drawAtmosphere();
+  animId = requestAnimationFrame(loop);
+}
+
+function startCanvas(){
+  if(canvasStarted) return;
+  canvasStarted = true;
+  resizeAtmo();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',()=>{ if(canvasStarted) resizeAtmo(); });
+
+// ── Practice ────────────────────────────────────────────────────
+const QUESTIONS=[
+  {text:'What is the most abundant gas in Earth\'s atmosphere?',
+   opts:['Oxygen (O₂)','Carbon dioxide (CO₂)','Nitrogen (N₂)','Argon (Ar)'],
+   ans:2, exp:'Nitrogen (N₂) makes up approximately 78% of the atmosphere. Oxygen is second at 21%, with all other gases making up about 1%.'},
+  {text:'In which atmospheric layer does all weather occur?',
+   opts:['Stratosphere','Mesosphere','Thermosphere','Troposphere'],
+   ans:3, exp:'All weather — clouds, rain, wind, storms — occurs in the troposphere (0–12 km). It contains about 75% of the atmosphere\'s total mass and virtually all water vapour.'},
+  {text:'What is the main function of the ozone layer?',
+   opts:['Reflecting radio waves back to Earth','Absorbing harmful ultraviolet (UV) radiation from the Sun','Trapping heat to keep Earth warm','Producing oxygen for living organisms'],
+   ans:1, exp:'The ozone layer in the stratosphere (20–35 km) absorbs most of the Sun\'s harmful UV radiation (especially UV-B and UV-C), protecting DNA and living organisms on Earth\'s surface.'},
+  {text:'In which layer do auroras (Southern Lights) occur?',
+   opts:['Troposphere','Stratosphere','Mesosphere','Thermosphere'],
+   ans:3, exp:'Auroras occur in the thermosphere (80–700 km), where charged solar particles interact with gas molecules. The International Space Station also orbits within the thermosphere at about 400 km.'},
+  {text:'What happens to air pressure as altitude increases?',
+   opts:['It increases steadily','It stays the same','It decreases','It first increases then decreases'],
+   ans:2, exp:'Air pressure decreases with altitude because there is less air (fewer molecules) above you. At the top of the troposphere (12 km), pressure is already only about 20% of sea level pressure.'},
+  {text:'What is the difference between the natural greenhouse effect and the enhanced greenhouse effect?',
+   opts:['The natural effect is harmful; the enhanced effect is beneficial','The natural effect keeps Earth habitable; the enhanced effect is caused by extra greenhouse gases from human activities and is causing global warming','They are the same thing','The enhanced greenhouse effect only affects polar regions'],
+   ans:1, exp:'The natural greenhouse effect is essential — without it, Earth would be about -18°C. The enhanced greenhouse effect results from extra CO₂ and other gases released by burning fossil fuels and deforestation, trapping additional heat and causing global warming.'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep exploring — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! Outstanding work!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

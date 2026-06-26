@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earth, the Moon &amp; Tides — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    .explore-layout{display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start}
+    .solar-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:72px}
+    input[type=range]{flex:1;accent-color:#fb923c;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fdba74;min-width:40px;text-align:right}
+    .planet-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:120px}
+    .toggle-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px 16px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:12px;cursor:pointer;transition:all 150ms;font-family:var(--fd)}
+    .toggle-btn:hover{background:rgba(251,146,60,.18)}
+    .phase-label{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
+    .phase-sub{font-size:11px;color:var(--muted);line-height:1.5}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.solar-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Earth &amp; Beyond</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Earth &amp; Beyond · Lesson 2</div>
+  <h1 class="lesson-title">Earth, the Moon &amp; Tides</h1>
+  <p class="lesson-sub">Explore Earth's structure, the Moon's properties, the lunar cycle, and how the Moon's gravity shapes our oceans.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="orbit" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Earth's Internal Structure</h2>
+    <p>Earth is not a solid ball — it has distinct layers, each with different composition and properties. From outside to inside:</p>
+    <ul>
+      <li><strong>Crust:</strong> The thin, solid outer layer. Oceanic crust is about 5–10 km thick; continental crust is 25–70 km thick. Made mainly of silicate rocks.</li>
+      <li><strong>Mantle:</strong> The thickest layer (~2 900 km). Made of semi-solid (plastic) rock that flows very slowly. Convection currents in the mantle drive plate tectonics.</li>
+      <li><strong>Outer Core:</strong> A liquid layer of iron and nickel (~2 200 km thick). Its movement generates Earth's magnetic field.</li>
+      <li><strong>Inner Core:</strong> A solid ball of iron and nickel (~1 200 km radius). Despite being the hottest part (~5 100°C), immense pressure keeps it solid.</li>
+    </ul>
+    <div class="callout"><strong>Earth's magnetic field</strong> is produced by electric currents flowing in the liquid outer core. It acts like a shield, deflecting harmful solar wind particles away from Earth's surface — crucial for protecting life.</div>
+
+    <h2>The Moon</h2>
+    <p>The Moon is Earth's only natural satellite. It orbits Earth approximately every <strong>27.3 days</strong> (sidereal period). Key properties:</p>
+    <ul>
+      <li>Diameter: about 3 474 km (roughly ¼ of Earth's diameter)</li>
+      <li>Distance from Earth: approximately 384 400 km</li>
+      <li>No atmosphere — so no weather, no sound, and extreme temperature swings (-173°C to +127°C)</li>
+      <li>Surface covered in craters formed by meteorite impacts (no atmosphere to burn them up)</li>
+      <li>Surface gravity: about <strong>1/6 of Earth's gravity</strong> (≈1.62 m/s²)</li>
+      <li>The Moon is <strong>tidally locked</strong> — it rotates once per orbit, so we always see the same side</li>
+    </ul>
+    <div class="key-fact">A 60 kg person on Earth would weigh only ~10 kg on the Moon due to its weaker gravity.</div>
+
+    <h2>Moon Phases</h2>
+    <p>As the Moon orbits Earth, the angle between the Sun, Earth, and Moon changes. This changes how much of the sunlit side of the Moon we can see from Earth — these are the <strong>phases of the Moon</strong>. The full cycle takes about <strong>29.5 days</strong> (synodic period).</p>
+    <table class="planets-table">
+      <thead><tr><th>Phase</th><th>What we see</th><th>Sun–Moon angle</th></tr></thead>
+      <tbody>
+        <tr><td>New Moon</td><td>Moon not visible (Sun and Moon on same side)</td><td>0°</td></tr>
+        <tr><td>Waxing Crescent</td><td>Thin sliver visible on right</td><td>~45°</td></tr>
+        <tr><td>First Quarter</td><td>Right half lit</td><td>90°</td></tr>
+        <tr><td>Waxing Gibbous</td><td>More than half lit on right</td><td>~135°</td></tr>
+        <tr><td>Full Moon</td><td>Entire face lit</td><td>180°</td></tr>
+        <tr><td>Waning Gibbous</td><td>More than half lit on left</td><td>~225°</td></tr>
+        <tr><td>Last Quarter</td><td>Left half lit</td><td>270°</td></tr>
+        <tr><td>Waning Crescent</td><td>Thin sliver on left</td><td>~315°</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Waxing</strong> means the lit portion is growing; <strong>waning</strong> means it is shrinking. In the Southern Hemisphere, the lit side appears on the left during waxing phases (opposite to the Northern Hemisphere).</div>
+
+    <h2>Tides</h2>
+    <p>Tides are the periodic rise and fall of sea levels caused primarily by the <strong>Moon's gravitational pull</strong> on Earth's oceans. The Sun also contributes, but its tidal effect is less than half that of the Moon (despite being much larger, it is much farther away).</p>
+    <p>The Moon's gravity pulls the ocean water on the side closest to it outward, creating a <strong>high-tide bulge</strong>. At the same time, inertia creates another bulge on the opposite side. As Earth rotates, most coastlines experience <strong>two high tides and two low tides</strong> every ~24 hours.</p>
+
+    <h2>Spring Tides vs Neap Tides</h2>
+    <ul>
+      <li><strong>Spring tides:</strong> Occur at new moon and full moon, when the Sun, Earth, and Moon are aligned. The gravitational forces combine — tides are higher than usual (largest range). The name comes from the Old English word meaning "to rise up," not the season.</li>
+      <li><strong>Neap tides:</strong> Occur at first and last quarter, when the Sun and Moon are at right angles. Their gravitational forces partially cancel — tides are weaker with a smaller range.</li>
+    </ul>
+
+    <h2>Eclipses</h2>
+    <ul>
+      <li><strong>Solar eclipse:</strong> The Moon moves between Earth and the Sun, casting a shadow on Earth. Only visible in a narrow path. Total solar eclipse = Moon completely blocks the Sun.</li>
+      <li><strong>Lunar eclipse:</strong> Earth moves between the Sun and Moon, casting its shadow on the Moon. The Moon may turn red ("blood moon") as Earth's atmosphere refracts red light onto the Moon. Visible from the entire night-side of Earth.</li>
+    </ul>
+    <div class="callout"><strong>Why don't we get eclipses every month?</strong> The Moon's orbit is tilted about 5° relative to Earth's orbit around the Sun, so alignment only happens occasionally.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Moon Phase &amp; Tides Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch the Moon orbit Earth. The right panel shows the current phase. Toggle to Tides view to see spring and neap tides.</p>
+  <div class="explore-layout">
+    <div class="solar-wrap">
+      <canvas id="moonCanvas" height="460"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Orbit Speed</div>
+        <div class="slider-row">
+          <label>Speed</label>
+          <input type="range" id="speedSlider" min="0.5" max="4" step="0.1" value="1" oninput="updateSpeed()">
+          <span class="slider-val" id="speedVal">1×</span>
+        </div>
+      </div>
+      <button class="toggle-btn" id="viewToggle" onclick="toggleView()">
+        <i data-lucide="waves" style="width:14px;height:14px"></i> Switch to Tides View
+      </button>
+      <div class="ctrl-card" id="phaseCard">
+        <div class="ctrl-label">Current Phase</div>
+        <div class="phase-label" id="phaseName">New Moon</div>
+        <div class="phase-sub" id="phaseSub">Moon between Earth and Sun. The lit side faces away from us.</div>
+        <div style="margin-top:12px">
+          <canvas id="phaseDisp" width="80" height="80" style="display:block;margin:0 auto"></canvas>
+        </div>
+      </div>
+      <div class="ctrl-card" id="tideCard" style="display:none">
+        <div class="ctrl-label">Tide Type</div>
+        <div class="phase-label" id="tideName">Spring Tide</div>
+        <div class="phase-sub" id="tideSub">Sun, Earth and Moon aligned — tidal forces combine for maximum range.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in your exercise book. Use diagrams where they help explain your answer.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (4 marks)</div><div class="wb-qtext">Draw and label a diagram showing Earth's four internal layers. For each layer, state whether it is solid or liquid and give one key property.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">List THREE ways in which the Moon differs from Earth. In your answer, refer to atmosphere, gravity, and surface features.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Explain why the Moon appears to change shape over approximately 29.5 days. Draw and label the 8 main Moon phases in the correct sequence.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain what causes tides. Why do most coastal areas experience two high tides per day? In your answer, refer to the Moon's gravitational pull and the bulge on the opposite side of Earth.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">Compare spring tides and neap tides. For each: (a) state when it occurs in the lunar cycle, (b) describe the positions of the Sun, Earth, and Moon, and (c) state whether the tidal range is larger or smaller than average.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (4 marks)</div><div class="wb-qtext">Distinguish between a solar eclipse and a lunar eclipse. For each: (a) describe the positions of the Sun, Earth, and Moon, (b) explain what an observer on Earth sees. Why do eclipses not occur every month?</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='explore') startCanvas();
+}
+
+// ── Moon Canvas ────────────────────────────────────────────────
+const PHASE_DATA = [
+  {name:'New Moon',         sub:'Moon between Earth and Sun. The lit side faces away from us.',       start:0,   end:22.5},
+  {name:'Waxing Crescent',  sub:'A thin sliver of the right side becomes visible.',                   start:22.5,end:67.5},
+  {name:'First Quarter',    sub:'The right half of the Moon is lit. Half of the visible face glows.', start:67.5,end:112.5},
+  {name:'Waxing Gibbous',   sub:'More than half lit — light is growing toward full.',                  start:112.5,end:157.5},
+  {name:'Full Moon',        sub:'Earth is between the Sun and Moon. The entire face is lit.',          start:157.5,end:202.5},
+  {name:'Waning Gibbous',   sub:'Still more than half lit — light is now decreasing.',                 start:202.5,end:247.5},
+  {name:'Last Quarter',     sub:'The left half of the Moon is lit.',                                   start:247.5,end:292.5},
+  {name:'Waning Crescent',  sub:'A thin sliver on the left — nearly back to new moon.',                start:292.5,end:337.5},
+  // wraps back
+  {name:'New Moon',         sub:'Moon between Earth and Sun. The lit side faces away from us.',       start:337.5,end:360},
+];
+
+let moonAngle = 0;
+let moonSpeed = 1;
+let tidesView = false;
+let animId = null;
+let canvasStarted = false;
+
+const moonCanvas = document.getElementById('moonCanvas');
+const ctx = moonCanvas.getContext('2d');
+const phaseDisp = document.getElementById('phaseDisp');
+const pCtx = phaseDisp.getContext('2d');
+
+function resizeMoonCanvas(){
+  const W = moonCanvas.offsetWidth || 560;
+  const H = 460;
+  moonCanvas.width = W * devicePixelRatio;
+  moonCanvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function updateSpeed(){
+  moonSpeed = +document.getElementById('speedSlider').value;
+  document.getElementById('speedVal').textContent = moonSpeed.toFixed(1)+'×';
+}
+
+function toggleView(){
+  tidesView = !tidesView;
+  const btn = document.getElementById('viewToggle');
+  if(tidesView){
+    btn.innerHTML = '<i data-lucide="moon" style="width:14px;height:14px"></i> Switch to Phase View';
+    document.getElementById('phaseCard').style.display = 'none';
+    document.getElementById('tideCard').style.display = 'block';
+  } else {
+    btn.innerHTML = '<i data-lucide="waves" style="width:14px;height:14px"></i> Switch to Tides View';
+    document.getElementById('phaseCard').style.display = 'block';
+    document.getElementById('tideCard').style.display = 'none';
+  }
+  lucide.createIcons();
+}
+
+function getPhaseInfo(angleDeg){
+  const a = ((angleDeg % 360) + 360) % 360;
+  for(const pd of PHASE_DATA){
+    if(a >= pd.start && a < pd.end) return pd;
+  }
+  return PHASE_DATA[0];
+}
+
+function drawPhaseDisp(angleDeg){
+  const a = ((angleDeg % 360) + 360) % 360;
+  const r = 36;
+  const cx = 40, cy = 40;
+  pCtx.clearRect(0,0,80,80);
+  // Dark moon
+  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
+  pCtx.fillStyle='#2a2a3a'; pCtx.fill();
+  // Lit portion using clip path technique
+  // fraction: 0=new, 0.5=half, 1=full
+  const fraction = a / 360;
+  // illumination fraction of disc visible
+  // At 0° (new): 0% lit; 90° (quarter): 50%; 180° (full): 100%; 270° (last quarter): 50%
+  const illum = (1 - Math.cos(angleDeg * Math.PI / 180)) / 2;
+  // Draw lit side
+  pCtx.save();
+  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
+  pCtx.clip();
+  // Waxing (0–180): light on right side; Waning (180–360): light on left
+  if(a <= 180){
+    // right side lit — width of ellipse goes from r (new, 0) to flat at quarter (90) to r (full,180)
+    // parametric: draw a shape that covers the lit right portion
+    const xScale = Math.cos(a * Math.PI / 180); // -1 to 1
+    pCtx.beginPath();
+    pCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2); // right half circle
+    // close with ellipse on left representing terminator
+    for(let t=Math.PI/2;t<=3*Math.PI/2;t+=0.05){
+      const ex = cx + xScale * r * Math.cos(t - Math.PI);
+      const ey = cy + r * Math.sin(t);
+      if(t === Math.PI/2) pCtx.moveTo(ex,ey); else pCtx.lineTo(ex,ey);
+    }
+    pCtx.fillStyle='#e8d5a3'; pCtx.fill();
+  } else {
+    const xScale = Math.cos(a * Math.PI / 180); // positive for waning: left side lit
+    pCtx.beginPath();
+    pCtx.arc(cx,cy,r,Math.PI/2,3*Math.PI/2); // left half circle
+    for(let t=-Math.PI/2;t<=Math.PI/2;t+=0.05){
+      const ex = cx + xScale * r * Math.cos(t);
+      const ey = cy + r * Math.sin(t);
+      if(t === -Math.PI/2) pCtx.moveTo(ex,ey); else pCtx.lineTo(ex,ey);
+    }
+    pCtx.fillStyle='#e8d5a3'; pCtx.fill();
+  }
+  pCtx.restore();
+  // Moon border
+  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
+  pCtx.strokeStyle='rgba(255,255,255,0.15)'; pCtx.lineWidth=1; pCtx.stroke();
+}
+
+function drawStars(ctx, W, H, stars){
+  stars.forEach(([sx,sy,sr])=>{
+    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fill();
+  });
+}
+
+let stars = [];
+function ensureStars(W,H){
+  if(stars.length===0){
+    for(let i=0;i<120;i++) stars.push([Math.random()*W, Math.random()*H, Math.random()*1.2+0.2]);
+  }
+}
+
+function drawMoonPhaseView(W,H){
+  const cx = W/2, cy = H/2;
+  const orbitR = Math.min(W,H)*0.35;
+  const mAngleRad = moonAngle * Math.PI / 180;
+  const mx = cx + orbitR * Math.cos(mAngleRad);
+  const my = cy + orbitR * Math.sin(mAngleRad);
+
+  ctx.clearRect(0,0,W,H);
+  ensureStars(W,H);
+  drawStars(ctx,W,H,stars);
+
+  // Orbit ring
+  ctx.beginPath(); ctx.arc(cx,cy,orbitR,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.07)'; ctx.lineWidth=1; ctx.stroke();
+
+  // Earth
+  const earthR = 28;
+  const eg = ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,earthR);
+  eg.addColorStop(0,'#6dd5fa'); eg.addColorStop(0.5,'#3a7bd5'); eg.addColorStop(1,'#1a3a6e');
+  ctx.beginPath(); ctx.arc(cx,cy,earthR,0,Math.PI*2);
+  ctx.fillStyle=eg; ctx.fill();
+  // Earth label
+  ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 11px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('Earth',cx,cy+earthR+14);
+
+  // Sun direction arrow (far right)
+  const sunX = W - 30, sunY = cy;
+  ctx.fillStyle='rgba(255,220,50,0.5)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('☀ Sun →',sunX-20,sunY-8);
+
+  // Moon shadow line from Earth toward moon direction (shows terminator concept)
+  // Draw Moon
+  const moonR = 16;
+  // Moon body dark
+  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2);
+  ctx.fillStyle='#2a2a3a'; ctx.fill();
+  // Lit portion — Sun is always to the right (+X direction in canvas = angle 0)
+  // The phase angle: 0 = new (moon at right = same side as sun in this orientation)
+  // Actually moon at angle 0 is to the RIGHT of earth, same side as sun → new moon
+  // At angle 180 = to left of earth, opposite sun → full moon
+  const phaseAngle = mAngleRad; // angle of moon from earth
+  ctx.save();
+  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2); ctx.clip();
+  // Illumination: lit from Sun direction (angle 0 = right)
+  // cos(phaseAngle) = how much the terminator is skewed
+  const xs = -Math.cos(phaseAngle);
+  if(Math.cos(phaseAngle) <= 0){
+    // Right side lit (moon on right half of orbit or new → first quarter)
+    ctx.beginPath();
+    ctx.arc(mx,my,moonR,-Math.PI/2,Math.PI/2);
+    for(let t=Math.PI/2;t<=3*Math.PI/2;t+=0.05){
+      const ex = mx + xs * moonR * Math.cos(t - Math.PI);
+      const ey = my + moonR * Math.sin(t);
+      if(t===Math.PI/2) ctx.moveTo(ex,ey); else ctx.lineTo(ex,ey);
+    }
+    ctx.fillStyle='#e8d5a3'; ctx.fill();
+  } else {
+    ctx.beginPath();
+    ctx.arc(mx,my,moonR,Math.PI/2,3*Math.PI/2);
+    for(let t=-Math.PI/2;t<=Math.PI/2;t+=0.05){
+      const ex = mx + xs * moonR * Math.cos(t);
+      const ey = my + moonR * Math.sin(t);
+      if(t===-Math.PI/2) ctx.moveTo(ex,ey); else ctx.lineTo(ex,ey);
+    }
+    ctx.fillStyle='#e8d5a3'; ctx.fill();
+  }
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2);
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1; ctx.stroke();
+  // Moon label
+  ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('Moon',mx,my+moonR+12);
+
+  // Phase label on canvas
+  const pi = getPhaseInfo(moonAngle);
+  ctx.fillStyle='rgba(251,146,60,0.9)'; ctx.font='bold 12px "Cabinet Grotesk"'; ctx.textAlign='left';
+  ctx.fillText(pi.name, 16, H-16);
+
+  // Update side panel
+  document.getElementById('phaseName').textContent = pi.name;
+  document.getElementById('phaseSub').textContent = pi.sub;
+  drawPhaseDisp(moonAngle);
+}
+
+function drawTidesView(W,H){
+  ctx.clearRect(0,0,W,H);
+  ensureStars(W,H);
+  drawStars(ctx,W,H,stars);
+
+  const cx = W/2, cy = H/2;
+  const mAngleRad = moonAngle * Math.PI / 180;
+  const orbitR = Math.min(W,H)*0.30;
+  const mx = cx + orbitR * Math.cos(mAngleRad);
+  const my = cy + orbitR * Math.sin(mAngleRad);
+
+  // Sun (far left)
+  const sunX = 50, sunY = cy;
+  const sg = ctx.createRadialGradient(sunX,sunY,0,sunX,sunY,35);
+  sg.addColorStop(0,'#fff7a0'); sg.addColorStop(0.5,'#ffd700'); sg.addColorStop(1,'rgba(255,140,0,0)');
+  ctx.beginPath(); ctx.arc(sunX,sunY,30,0,Math.PI*2); ctx.fillStyle=sg; ctx.fill();
+  ctx.fillStyle='rgba(255,220,100,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('Sun',sunX,sunY+38);
+
+  // Earth with tidal bulges
+  const earthR = 26;
+  const eg = ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,earthR);
+  eg.addColorStop(0,'#6dd5fa'); eg.addColorStop(0.5,'#3a7bd5'); eg.addColorStop(1,'#1a3a6e');
+  ctx.beginPath(); ctx.arc(cx,cy,earthR,0,Math.PI*2); ctx.fillStyle=eg; ctx.fill();
+
+  // Tidal bulges (in direction of Moon and opposite)
+  const bulgeAngle = mAngleRad;
+  const bulgeR = 10;
+  const b1x = cx + (earthR+bulgeR*0.5) * Math.cos(bulgeAngle);
+  const b1y = cy + (earthR+bulgeR*0.5) * Math.sin(bulgeAngle);
+  const b2x = cx - (earthR+bulgeR*0.5) * Math.cos(bulgeAngle);
+  const b2y = cy - (earthR+bulgeR*0.5) * Math.sin(bulgeAngle);
+
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  // Bulge toward moon
+  const bulgeGrad1 = ctx.createRadialGradient(b1x,b1y,0,b1x,b1y,bulgeR+4);
+  bulgeGrad1.addColorStop(0,'rgba(96,165,250,0.9)'); bulgeGrad1.addColorStop(1,'rgba(96,165,250,0)');
+  ctx.beginPath(); ctx.arc(b1x,b1y,bulgeR+4,0,Math.PI*2); ctx.fillStyle=bulgeGrad1; ctx.fill();
+  // Bulge opposite
+  const bulgeGrad2 = ctx.createRadialGradient(b2x,b2y,0,b2x,b2y,bulgeR+4);
+  bulgeGrad2.addColorStop(0,'rgba(96,165,250,0.9)'); bulgeGrad2.addColorStop(1,'rgba(96,165,250,0)');
+  ctx.beginPath(); ctx.arc(b2x,b2y,bulgeR+4,0,Math.PI*2); ctx.fillStyle=bulgeGrad2; ctx.fill();
+  ctx.restore();
+
+  // Labels for bulges
+  const labelDist = earthR + bulgeR + 18;
+  const la1x = cx + labelDist * Math.cos(bulgeAngle);
+  const la1y = cy + labelDist * Math.sin(bulgeAngle);
+  const la2x = cx - labelDist * Math.cos(bulgeAngle);
+  const la2y = cy - labelDist * Math.sin(bulgeAngle);
+  ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.font='bold 9px "JetBrains Mono"'; ctx.textAlign='center';
+  ctx.fillText('HIGH TIDE',la1x,la1y);
+  ctx.fillText('HIGH TIDE',la2x,la2y);
+
+  // Moon
+  const moonR = 14;
+  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2); ctx.fillStyle='#c8c8c8'; ctx.fill();
+  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
+  ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('Moon',mx,my+moonR+12);
+
+  // Determine tide type
+  // Sun angle = 0 (left, i.e. from cx to sunX direction = angle 180)
+  const sunAngle = Math.PI; // sun is to the left
+  const moonAngleRad2 = mAngleRad;
+  let angleDiff = Math.abs(((moonAngleRad2 - sunAngle + Math.PI*3) % (Math.PI*2)) - Math.PI);
+  // angleDiff near 0 or π = spring; near π/2 = neap
+  const isSping = angleDiff < Math.PI/4 || angleDiff > 3*Math.PI/4;
+  const tName = isSping ? 'Spring Tide' : 'Neap Tide';
+  const tSub = isSping
+    ? 'Sun, Earth and Moon aligned — tidal forces combine for maximum range.'
+    : 'Sun and Moon at right angles — tidal forces partially cancel, smaller range.';
+  document.getElementById('tideName').textContent = tName;
+  document.getElementById('tideSub').textContent = tSub;
+
+  // Tide type label on canvas
+  ctx.fillStyle='rgba(251,146,60,0.9)'; ctx.font='bold 12px "Cabinet Grotesk"'; ctx.textAlign='left';
+  ctx.fillText(tName, 16, H-16);
+
+  // Draw line Sun → Earth for alignment check
+  ctx.beginPath(); ctx.moveTo(sunX+30,sunY); ctx.lineTo(cx-earthR,cy);
+  ctx.strokeStyle='rgba(255,220,50,0.12)'; ctx.lineWidth=1; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+}
+
+let lastTs = 0;
+function loop(ts){
+  const dt = Math.min((ts - lastTs)/16.67, 3); lastTs = ts;
+  moonAngle = (moonAngle + moonSpeed * 0.4 * dt) % 360;
+  const W = moonCanvas.offsetWidth || 560;
+  const H = 460;
+  if(tidesView) drawTidesView(W,H);
+  else drawMoonPhaseView(W,H);
+  animId = requestAnimationFrame(loop);
+}
+
+function startCanvas(){
+  if(canvasStarted) return;
+  canvasStarted = true;
+  resizeMoonCanvas();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',()=>{ if(canvasStarted) resizeMoonCanvas(); });
+
+// ── Practice ────────────────────────────────────────────────────
+const QUESTIONS=[
+  {text:'What is the approximate gravitational pull on the Moon compared to Earth?',
+   opts:['Same as Earth','Twice as strong','One sixth of Earth\'s gravity','One quarter of Earth\'s gravity'],
+   ans:2, exp:'The Moon\'s gravity is about 1/6 of Earth\'s (≈1.62 m/s²) because the Moon has much less mass than Earth.'},
+  {text:'Which layer of Earth is responsible for generating its magnetic field?',
+   opts:['The crust','The mantle','The outer core','The inner core'],
+   ans:2, exp:'Electric currents flowing in the liquid outer core generate Earth\'s magnetic field, which protects us from harmful solar wind.'},
+  {text:'Spring tides occur when:',
+   opts:['It is spring (September in South Africa)','The Sun, Earth and Moon are aligned','The Moon is at first or last quarter','The Moon is closest to Earth'],
+   ans:1, exp:'Spring tides occur at new moon and full moon when the Sun, Earth, and Moon are aligned. Their gravitational pulls combine to produce larger-than-average tidal ranges.'},
+  {text:'What is a lunar eclipse?',
+   opts:['The Moon moves between Earth and the Sun','Earth moves between the Sun and the Moon','The Moon disappears behind a cloud','The Sun is blocked by Venus'],
+   ans:1, exp:'A lunar eclipse occurs when Earth moves between the Sun and Moon, casting Earth\'s shadow onto the Moon. The Moon may appear red as Earth\'s atmosphere refracts sunlight.'},
+  {text:'Why does the same side of the Moon always face Earth?',
+   opts:['The Moon does not rotate at all','The Moon\'s rotation period equals its orbital period (tidal locking)','Earth\'s gravity prevents the Moon rotating','The Moon rotates twice as fast as it orbits'],
+   ans:1, exp:'The Moon is tidally locked — its rotation period (27.3 days) equals its orbital period, so the same hemisphere always faces Earth.'},
+  {text:'During a neap tide, the Sun and Moon are:',
+   opts:['Aligned on the same side of Earth','Aligned on opposite sides of Earth','At right angles (90°) relative to Earth','Both above the equator'],
+   ans:2, exp:'Neap tides happen at first and last quarter moon, when the Sun and Moon are at right angles to Earth. Their gravitational effects partially cancel, resulting in smaller tidal ranges.'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep exploring — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! Outstanding work!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

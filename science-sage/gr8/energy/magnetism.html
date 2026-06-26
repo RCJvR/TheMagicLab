@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnetism — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Simulate */
+    .sim-layout{display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .ctype-row{display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+    .ctype-btn{flex:1;min-width:80px;padding:8px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:11px;cursor:pointer;transition:all 140ms;text-align:center}
+    .ctype-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fcd34d}
+    .toggle-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.08);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;width:100%;margin-top:8px}
+    .toggle-btn:hover{background:rgba(251,191,36,.16)}
+    .toggle-btn.off{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--muted)}
+    .info-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px}
+    .info-box strong{color:var(--text)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Energy &amp; Change · Lesson 3</div>
+  <h1 class="lesson-title">Magnetism</h1>
+  <p class="lesson-sub">Investigate the invisible forces between magnetic poles, visualise field lines, and discover how Earth itself is a giant magnet.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="compass" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is a magnet?</h2>
+    <p>A <strong>magnet</strong> is an object that produces a magnetic field — an invisible region of force that can attract certain materials (iron, nickel, cobalt and steel) and interact with other magnets. Magnetism is one of the fundamental forces of nature, closely related to electricity.</p>
+    <div class="callout"><strong>Magnetic materials</strong> are called <em>ferromagnetic</em> materials. Iron, nickel, and cobalt are the most common. Materials like wood, plastic, and aluminium are <em>non-magnetic</em> and are not attracted to magnets.</div>
+
+    <h2>Magnetic poles</h2>
+    <p>Every magnet has two <strong>poles</strong> — a <strong>North (N) pole</strong> and a <strong>South (S) pole</strong>. The magnetic force is strongest at the poles. The key rule governing poles is:</p>
+    <div class="formula">Like poles REPEL · Unlike poles ATTRACT</div>
+    <ul>
+      <li>Two North poles pushed together — they repel (push away from each other).</li>
+      <li>Two South poles pushed together — they repel.</li>
+      <li>A North pole and a South pole — they attract (pull towards each other).</li>
+    </ul>
+    <div class="key-fact">You CANNOT isolate a single magnetic pole. If you cut a bar magnet in half, each half becomes a complete magnet with its own N and S pole.</div>
+
+    <h2>Magnetic field lines</h2>
+    <p>A <strong>magnetic field</strong> is the region around a magnet where a magnetic force can be detected. We represent it using <strong>field lines</strong> (also called lines of flux):</p>
+    <ul>
+      <li>Field lines travel from the <strong>North pole to the South pole</strong> outside the magnet.</li>
+      <li>Inside the magnet, field lines travel from South to North (forming closed loops).</li>
+      <li>Where field lines are <strong>close together</strong>, the field is <strong>strong</strong>.</li>
+      <li>Where field lines are <strong>spread apart</strong>, the field is <strong>weak</strong>.</li>
+      <li>Field lines <strong>never cross</strong> each other.</li>
+    </ul>
+
+    <h2>Permanent vs temporary magnets</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Permanent magnet</strong></td><td>Retains its magnetism indefinitely under normal conditions.</td><td>Bar magnet, fridge magnet, horseshoe magnet</td></tr>
+        <tr><td><strong>Temporary magnet</strong></td><td>Only magnetic while in the presence of another magnet or magnetic field.</td><td>Iron nail held next to a magnet, iron filings</td></tr>
+        <tr><td><strong>Electromagnet</strong></td><td>Produced by electric current flowing through a coil of wire. Can be switched on and off.</td><td>Electric motors, MRI machines, scrapyard cranes</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Earth as a magnet</h2>
+    <p>The Earth behaves like a giant bar magnet. Its core (made largely of liquid iron and nickel) generates a magnetic field that extends far into space, forming the <strong>magnetosphere</strong>. This protects life on Earth from harmful solar wind particles.</p>
+    <ul>
+      <li>Earth's <strong>geographic North Pole</strong> is actually near a magnetic <strong>South Pole</strong> — that is why the North-seeking end of a compass needle (the N pole) is attracted to it.</li>
+      <li>The angle between geographic north and magnetic north is called <strong>magnetic declination</strong>.</li>
+      <li>A <strong>compass</strong> is a freely suspended magnetic needle that aligns with Earth's magnetic field, always pointing approximately north.</li>
+    </ul>
+    <div class="callout"><strong>Electromagnetism:</strong> In 1820, Hans Christian Ørsted discovered that an electric current creates a magnetic field around it. This connection between electricity and magnetism — called <strong>electromagnetism</strong> — is the basis of electric motors, generators, transformers, and MRI machines.</div>
+
+    <h2>Applications of magnetism</h2>
+    <ul>
+      <li><strong>Compass:</strong> Uses Earth's magnetic field for navigation.</li>
+      <li><strong>Electric motor:</strong> Uses the force between a current-carrying coil and a magnet to produce rotation.</li>
+      <li><strong>Generator:</strong> Converts kinetic energy to electrical energy using electromagnetic induction.</li>
+      <li><strong>Maglev trains:</strong> Use powerful electromagnets to levitate and propel trains without friction.</li>
+      <li><strong>MRI (Magnetic Resonance Imaging):</strong> Uses very strong magnetic fields to image the inside of the human body.</li>
+      <li><strong>Loudspeakers:</strong> Use an electromagnet vibrating near a permanent magnet to produce sound.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Magnetic Field Visualiser</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the magnets. Switch between unlike poles (attraction) and like poles (repulsion) to see how the field pattern changes. Toggle compass mode to see a needle align with the local field.</p>
+  <div class="sim-layout">
+    <div class="sim-canvas-wrap">
+      <h3>Field Diagram</h3>
+      <canvas id="magCanvas" height="380"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Pole Configuration</div>
+        <div class="ctype-row">
+          <button class="ctype-btn active" id="btnUnlike" onclick="setPoleMode('unlike')">N–S (Attract)</button>
+          <button class="ctype-btn" id="btnLike" onclick="setPoleMode('like')">N–N (Repel)</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Display Mode</div>
+        <div class="ctype-row">
+          <button class="ctype-btn active" id="btnArrows" onclick="setDisplayMode('arrows')">Arrows</button>
+          <button class="ctype-btn" id="btnCompass" onclick="setDisplayMode('compass')">Compass</button>
+        </div>
+        <div class="info-box" id="modeInfo"><strong>Arrow mode:</strong> Small arrows show the direction of the magnetic field at each point. Brighter arrows = stronger field.</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Magnet Strength</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="sliderStrength" min="1" max="5" step="0.5" value="3" oninput="strengthChanged()" style="flex:1;accent-color:#fbbf24;cursor:pointer">
+          <span style="font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:28px;text-align:right" id="valStrength">3</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Key</div>
+        <div style="font-size:12px;color:var(--muted);line-height:2">
+          <div><span style="color:#ef4444;font-weight:700">■</span> North pole (red)</div>
+          <div><span style="color:#3b82f6;font-weight:700">■</span> South pole (blue)</div>
+          <div><span style="color:#fbbf24;font-weight:700">→</span> Field direction</div>
+          <div style="margin-top:6px;font-size:11px">Drag magnets to reposition them.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Draw diagrams where asked.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">State the rule for the interaction between magnetic poles. Give an example of two poles that attract and two poles that repel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Draw a bar magnet and sketch the magnetic field lines around it. Label the North and South poles. On your diagram, mark an area of strong field and an area of weak field.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (2 marks)</div><div class="wb-qtext">Explain why a compass needle points approximately north. In your answer, refer to Earth's magnetic field and the poles of the compass needle.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Distinguish between a permanent magnet and an electromagnet. Give ONE advantage of an electromagnet over a permanent magnet.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">A student claims that if you cut a bar magnet in half, you will get one piece with only a North pole and one piece with only a South pole. Is the student correct? Explain your answer fully.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">Name TWO applications of magnetism in everyday life and explain how magnetism is used in each.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+/* ---- Magnetic field visualiser ---- */
+const magCanvas = document.getElementById('magCanvas');
+const magCtx = magCanvas.getContext('2d');
+
+let poleMode = 'unlike'; // 'unlike' or 'like'
+let displayMode = 'arrows'; // 'arrows' or 'compass'
+let magStrength = 3;
+let animT = 0;
+
+// Two magnets (bar magnets) represented as dipoles
+// Each magnet has a position, orientation, and an N pole and S pole offset
+let magnets = [
+  { x: 0, y: 0, label: 'Left', dragging: false },
+  { x: 0, y: 0, label: 'Right', dragging: false }
+];
+let dragTarget = null;
+let dragOffX = 0, dragOffY = 0;
+
+function resizeMag() {
+  const W = magCanvas.offsetWidth || 560;
+  const H = 380;
+  magCanvas.width = W * (window.devicePixelRatio || 1);
+  magCanvas.height = H * (window.devicePixelRatio || 1);
+  magCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  // Reset magnet positions
+  magnets[0].x = W * 0.30;
+  magnets[0].y = H * 0.50;
+  magnets[1].x = W * 0.70;
+  magnets[1].y = H * 0.50;
+}
+
+function setPoleMode(m) {
+  poleMode = m;
+  document.getElementById('btnUnlike').classList.toggle('active', m === 'unlike');
+  document.getElementById('btnLike').classList.toggle('active', m === 'like');
+}
+
+function setDisplayMode(m) {
+  displayMode = m;
+  document.getElementById('btnArrows').classList.toggle('active', m === 'arrows');
+  document.getElementById('btnCompass').classList.toggle('active', m === 'compass');
+  document.getElementById('modeInfo').innerHTML = m === 'arrows'
+    ? '<strong>Arrow mode:</strong> Small arrows show the direction of the magnetic field at each point. Brighter arrows = stronger field.'
+    : '<strong>Compass mode:</strong> Each needle shows how a real compass would point at that location in the field.';
+}
+
+function strengthChanged() {
+  magStrength = parseFloat(document.getElementById('sliderStrength').value);
+  document.getElementById('valStrength').textContent = magStrength.toFixed(1);
+}
+
+// Compute field at (x, y) from a magnetic dipole at (px, py) with moment pointing in direction (mx, my)
+function dipoleField(x, y, px, py, mx, my, strength) {
+  const dx = x - px, dy = y - py;
+  const r2 = dx * dx + dy * dy;
+  if (r2 < 100) return [0, 0];
+  const r = Math.sqrt(r2);
+  const r3 = r2 * r;
+  const r5 = r3 * r2;
+  // m dot r
+  const mDotR = mx * dx + my * dy;
+  const Bx = strength * (3 * mDotR * dx / r5 - mx / r3);
+  const By = strength * (3 * mDotR * dy / r5 - my / r3);
+  return [Bx, By];
+}
+
+function getField(x, y) {
+  const W = magCanvas.offsetWidth || 560;
+  const H = 380;
+  // Magnet 1: left, moment pointing right (+x) — N is to the right
+  // Magnet 2: depends on poleMode
+  // In 'unlike' mode: magnet2 N pole faces left (moment pointing left)
+  // In 'like' mode: magnet2 N pole faces right (same as magnet1)
+  const m1x = 1, m1y = 0;
+  const m2x = poleMode === 'unlike' ? -1 : 1;
+  const m2y = 0;
+
+  const [B1x, B1y] = dipoleField(x, y, magnets[0].x, magnets[0].y, m1x, m1y, magStrength * 4000);
+  const [B2x, B2y] = dipoleField(x, y, magnets[1].x, magnets[1].y, m2x, m2y, magStrength * 4000);
+  return [B1x + B2x, B1y + B2y];
+}
+
+function drawMagnet(ctx, mx, my, mode) {
+  const hw = 42, hh = 14;
+  // Left half = S pole (or S depending on which magnet)
+  // Magnet 1: left half = S, right half = N
+  // Magnet 2: unlike => left half = N, right half = S; like => left half = S, right half = N
+  let leftCol, rightCol, leftLabel, rightLabel;
+  if (mode === 'left') {
+    leftCol = '#3b82f6'; rightCol = '#ef4444';
+    leftLabel = 'S'; rightLabel = 'N';
+  } else if (mode === 'unlike') {
+    leftCol = '#ef4444'; rightCol = '#3b82f6';
+    leftLabel = 'N'; rightLabel = 'S';
+  } else {
+    leftCol = '#3b82f6'; rightCol = '#ef4444';
+    leftLabel = 'S'; rightLabel = 'N';
+  }
+  // Shadow
+  ctx.shadowColor = 'rgba(0,0,0,0.4)';
+  ctx.shadowBlur = 10;
+  // Left half
+  ctx.fillStyle = leftCol;
+  ctx.beginPath();
+  ctx.roundRect(mx - hw, my - hh, hw, hh * 2, [6, 0, 0, 6]);
+  ctx.fill();
+  // Right half
+  ctx.fillStyle = rightCol;
+  ctx.beginPath();
+  ctx.roundRect(mx, my - hh, hw, hh * 2, [0, 6, 6, 0]);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  // Labels
+  ctx.fillStyle = 'rgba(255,255,255,0.90)';
+  ctx.font = 'bold 12px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(leftLabel, mx - hw / 2, my);
+  ctx.fillText(rightLabel, mx + hw / 2, my);
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawArrowField(ctx, W, H) {
+  const spacing = 36;
+  for (let gx = spacing / 2; gx < W; gx += spacing) {
+    for (let gy = spacing / 2; gy < H; gy += spacing) {
+      // Skip if too close to a magnet
+      let skip = false;
+      for (const m of magnets) {
+        const d = Math.hypot(gx - m.x, gy - m.y);
+        if (d < 52) { skip = true; break; }
+      }
+      if (skip) continue;
+
+      const [bx, by] = getField(gx, gy);
+      const mag = Math.hypot(bx, by);
+      if (mag < 0.001) continue;
+
+      const nx = bx / mag, ny = by / mag;
+      const strength = Math.min(1, Math.log1p(mag * 0.001) / 4);
+      const alpha = 0.15 + strength * 0.80;
+      const len = 10 + strength * 8;
+
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(Math.atan2(ny, nx));
+      ctx.strokeStyle = `rgba(251,191,36,${alpha})`;
+      ctx.fillStyle = `rgba(251,191,36,${alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(-len / 2, 0);
+      ctx.lineTo(len / 2 - 4, 0);
+      ctx.stroke();
+      // Arrowhead
+      ctx.beginPath();
+      ctx.moveTo(len / 2, 0);
+      ctx.lineTo(len / 2 - 5, -3);
+      ctx.lineTo(len / 2 - 5, 3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+function drawCompassField(ctx, W, H) {
+  const spacing = 48;
+  for (let gx = spacing / 2; gx < W; gx += spacing) {
+    for (let gy = spacing / 2; gy < H; gy += spacing) {
+      let skip = false;
+      for (const m of magnets) {
+        const d = Math.hypot(gx - m.x, gy - m.y);
+        if (d < 60) { skip = true; break; }
+      }
+      if (skip) continue;
+
+      const [bx, by] = getField(gx, gy);
+      const mag = Math.hypot(bx, by);
+      if (mag < 0.001) continue;
+
+      const angle = Math.atan2(by, bx);
+      const strength = Math.min(1, Math.log1p(mag * 0.001) / 4);
+      const alpha = 0.25 + strength * 0.65;
+      const r = 10;
+
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(angle);
+      // N half (red)
+      ctx.fillStyle = `rgba(239,68,68,${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(r, -3.5);
+      ctx.lineTo(r, 3.5);
+      ctx.closePath();
+      ctx.fill();
+      // S half (blue)
+      ctx.fillStyle = `rgba(59,130,246,${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-r, -3.5);
+      ctx.lineTo(-r, 3.5);
+      ctx.closePath();
+      ctx.fill();
+      // Centre dot
+      ctx.beginPath();
+      ctx.arc(0, 0, 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+function drawMagFrame() {
+  if (!document.getElementById('tab-explore').classList.contains('active')) {
+    requestAnimationFrame(drawMagFrame);
+    return;
+  }
+  animT += 0.02;
+  const W = magCanvas.offsetWidth || 560;
+  const H = 380;
+  magCtx.clearRect(0, 0, W, H);
+
+  // Background grid
+  magCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+  magCtx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { magCtx.beginPath(); magCtx.moveTo(x, 0); magCtx.lineTo(x, H); magCtx.stroke(); }
+  for (let y = 0; y < H; y += 40) { magCtx.beginPath(); magCtx.moveTo(0, y); magCtx.lineTo(W, y); magCtx.stroke(); }
+
+  // Draw field
+  if (displayMode === 'arrows') drawArrowField(magCtx, W, H);
+  else drawCompassField(magCtx, W, H);
+
+  // Draw magnets on top
+  drawMagnet(magCtx, magnets[0].x, magnets[0].y, 'left');
+  drawMagnet(magCtx, magnets[1].x, magnets[1].y, poleMode === 'unlike' ? 'unlike' : 'like');
+
+  // Labels
+  magCtx.font = '11px "JetBrains Mono",monospace';
+  magCtx.fillStyle = 'rgba(210,218,245,0.35)';
+  magCtx.textAlign = 'center';
+  magCtx.fillText('Magnet 1', magnets[0].x, magnets[0].y + 28);
+  magCtx.fillText('Magnet 2', magnets[1].x, magnets[1].y + 28);
+
+  requestAnimationFrame(drawMagFrame);
+}
+
+// Drag handling
+function getCanvasPos(e) {
+  const rect = magCanvas.getBoundingClientRect();
+  const scaleX = (magCanvas.offsetWidth || 560) / rect.width;
+  const scaleY = 380 / rect.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return [(clientX - rect.left) * scaleX, (clientY - rect.top) * scaleY];
+}
+
+function onPointerDown(e) {
+  const [cx, cy] = getCanvasPos(e);
+  for (const m of magnets) {
+    if (Math.hypot(cx - m.x, cy - m.y) < 50) {
+      dragTarget = m;
+      dragOffX = cx - m.x;
+      dragOffY = cy - m.y;
+      e.preventDefault();
+      return;
+    }
+  }
+}
+
+function onPointerMove(e) {
+  if (!dragTarget) return;
+  const [cx, cy] = getCanvasPos(e);
+  const W = magCanvas.offsetWidth || 560;
+  dragTarget.x = Math.max(50, Math.min(W - 50, cx - dragOffX));
+  dragTarget.y = Math.max(20, Math.min(360, cy - dragOffY));
+  e.preventDefault();
+}
+
+function onPointerUp() { dragTarget = null; }
+
+magCanvas.addEventListener('mousedown', onPointerDown);
+magCanvas.addEventListener('mousemove', onPointerMove);
+magCanvas.addEventListener('mouseup', onPointerUp);
+magCanvas.addEventListener('touchstart', onPointerDown, { passive: false });
+magCanvas.addEventListener('touchmove', onPointerMove, { passive: false });
+magCanvas.addEventListener('touchend', onPointerUp);
+
+window.addEventListener('resize', () => { resizeMag(); });
+resizeMag();
+requestAnimationFrame(drawMagFrame);
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'What happens when the North poles of two bar magnets are brought close together?',
+    opts: ['They attract each other', 'They repel each other', 'Nothing happens', 'One loses its magnetism'],
+    ans: 1,
+    exp: 'Like poles repel. Two North poles or two South poles will push away from each other. Only unlike poles (N and S) attract.'
+  },
+  {
+    text: 'Which of the following materials is attracted to a magnet?',
+    opts: ['Aluminium', 'Copper', 'Iron', 'Plastic'],
+    ans: 2,
+    exp: 'Iron is a ferromagnetic material and is attracted to magnets. Aluminium and copper are non-magnetic metals. Plastic is a non-magnetic non-metal.'
+  },
+  {
+    text: 'Magnetic field lines travel from which pole to which pole OUTSIDE a magnet?',
+    opts: ['South to North', 'North to South', 'They do not have a direction', 'They travel in circles around the magnet'],
+    ans: 1,
+    exp: 'Outside the magnet, field lines travel from North to South. Inside the magnet they travel from South to North, forming closed loops.'
+  },
+  {
+    text: 'What is a compass and how does it work?',
+    opts: [
+      'A device that measures magnetic strength using electricity',
+      'A freely suspended magnetic needle that aligns with Earth\'s magnetic field',
+      'An instrument used to draw circles',
+      'A device that creates a magnetic field'
+    ],
+    ans: 1,
+    exp: 'A compass contains a freely rotating magnetised needle. Earth\'s magnetic field exerts a torque on the needle, causing it to align and point approximately toward geographic north.'
+  },
+  {
+    text: 'An electromagnet differs from a permanent magnet because an electromagnet:',
+    opts: ['Is always stronger', 'Can be switched on and off', 'Only works in one direction', 'Does not produce a magnetic field'],
+    ans: 1,
+    exp: 'An electromagnet is created by passing electric current through a coil of wire. When the current is switched off, the magnetism disappears — this is its key advantage for many applications.'
+  },
+  {
+    text: 'A bar magnet is cut in half. What is the result?',
+    opts: [
+      'One piece has only a N pole, the other only a S pole',
+      'Both pieces lose their magnetism',
+      'Each piece becomes a complete magnet with both N and S poles',
+      'The pieces become stronger magnets'
+    ],
+    ans: 2,
+    exp: 'Magnetic poles cannot be isolated. Cutting a magnet simply creates two smaller complete magnets, each with their own North and South pole. This is true no matter how many times you cut the magnet.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

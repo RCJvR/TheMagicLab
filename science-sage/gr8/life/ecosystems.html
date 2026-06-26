@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecosystems & Food Webs — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    .biome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+    .biome-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:14px 12px}
+    .biome-icon{font-size:22px;margin-bottom:5px}
+    .biome-name{font-weight:800;font-size:12px;color:#fff;margin-bottom:3px}
+    .biome-desc{font-size:11px;color:var(--muted);line-height:1.5}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 260px;gap:18px;align-items:start}
+    .web-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;overflow:hidden;position:relative}
+    canvas{display:block;width:100%}
+    .side-panel{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .node-info{min-height:160px}
+    .ni-name{font-weight:800;font-size:17px;letter-spacing:-0.02em;margin-bottom:2px}
+    .ni-level{font-family:var(--fm);font-size:9px;color:var(--muted);margin-bottom:8px}
+    .ni-body{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.72)}
+    .ni-fact{margin-top:8px;font-size:11.5px;color:#86efac;font-style:italic}
+    .remove-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.22);color:#fca5a5;font-weight:700;font-size:11px;cursor:pointer;transition:all 140ms;margin-top:10px;width:100%}
+    .remove-btn:hover{background:rgba(239,68,68,.18)}
+    .remove-btn:disabled{opacity:0.4;cursor:default}
+    .reset-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac;font-weight:700;font-size:11px;cursor:pointer;transition:all 140ms;margin-top:6px;width:100%}
+    .reset-btn:hover{background:rgba(34,197,94,.16)}
+    .cascade-msg{font-size:12px;color:#fca5a5;line-height:1.6;margin-top:8px;display:none}
+    .cascade-msg.show{display:block}
+    .energy-legend{display:flex;flex-direction:column;gap:6px}
+    .el-item{display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(210,218,245,.65)}
+    .el-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.web-wrap,.side-panel{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life &amp; Living</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Life &amp; Living · Lesson 4</div>
+  <h1 class="lesson-title">Ecosystems &amp; Food Webs</h1>
+  <p class="lesson-sub">Discover how living organisms interact with each other and their environment — from the grass on the savanna to the lion at the top of the food chain.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="network" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is an Ecosystem?</h2>
+    <p>An <strong>ecosystem</strong> is a community of living organisms interacting with one another and with their non-living environment in a particular area. Ecosystems range in size from a small rock pool to an entire ocean.</p>
+    <p>Ecosystem components are divided into two categories:</p>
+    <ul>
+      <li><strong>Biotic factors</strong> (living): all the organisms in the ecosystem — plants, animals, fungi, bacteria.</li>
+      <li><strong>Abiotic factors</strong> (non-living): sunlight, water, soil, temperature, pH, wind, minerals.</li>
+    </ul>
+    <div class="callout"><strong>Biotic roles:</strong> Organisms in an ecosystem fill specific feeding roles. <strong>Producers</strong> (plants, algae) make their own food via photosynthesis. <strong>Consumers</strong> eat other organisms. <strong>Decomposers</strong> (bacteria, fungi) break down dead organic matter and return nutrients to the soil.</div>
+
+    <h2>Food Chains and Food Webs</h2>
+    <p>A <strong>food chain</strong> shows a single linear pathway of energy transfer through an ecosystem. Arrows show the direction of energy flow (from eaten to eater):</p>
+    <div class="key-fact">Grass → Zebra → Lion → Decomposers</div>
+    <p>A <strong>food web</strong> shows all the feeding relationships in an ecosystem — multiple interconnected food chains. Food webs are a more realistic representation because most animals eat several different species.</p>
+
+    <h2>Trophic Levels</h2>
+    <p>Each step in a food chain is called a <strong>trophic level</strong>:</p>
+    <table class="compare-table">
+      <thead><tr><th>Trophic Level</th><th>Role</th><th>SA Savanna Example</th></tr></thead>
+      <tbody>
+        <tr><td>1st — Producers</td><td>Make own food (photosynthesis)</td><td>Grass, Acacia trees, Buffalo thorn</td></tr>
+        <tr><td>2nd — Primary consumers</td><td>Herbivores — eat producers</td><td>Zebra, Wildebeest, Impala, Giraffe</td></tr>
+        <tr><td>3rd — Secondary consumers</td><td>Carnivores/omnivores — eat primary consumers</td><td>Cheetah, Wild dog, Jackal</td></tr>
+        <tr><td>4th — Tertiary consumers</td><td>Top predators — eat secondary consumers</td><td>Lion, Leopard, Crocodile</td></tr>
+        <tr><td>— Decomposers</td><td>Break down dead organic matter</td><td>Bacteria, fungi, dung beetles, vultures</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Energy Pyramids and the 10% Rule</h2>
+    <p>Energy is <strong>lost</strong> at each trophic level — used for the organism's own respiration, movement, growth, and heat. Only about <strong>10% of the energy</strong> at one trophic level is available to the next level. This gives us the energy pyramid: a wide base of producers, narrowing toward the top predators.</p>
+    <div class="key-fact">If grass stores 10 000 kJ of energy → zebra gets ~1 000 kJ → lion gets ~100 kJ</div>
+    <p>This explains why top predators are always rarer than herbivores — the energy supply is too small to support large numbers of lions.</p>
+
+    <h2>Nutrient Cycles</h2>
+    <p><strong>Carbon cycle:</strong> Carbon moves through ecosystems via photosynthesis (CO₂ → glucose), respiration (glucose → CO₂), decomposition, and combustion. Plants absorb CO₂; all organisms release it through respiration.</p>
+    <p><strong>Nitrogen cycle:</strong> Nitrogen makes up 78% of air but most organisms cannot use it directly. Nitrogen-fixing bacteria in the soil (and in root nodules of legumes) convert N₂ into nitrates (NO₃⁻) that plants can absorb. Animals get nitrogen by eating plants. Decomposers return nitrogen to the soil when organisms die.</p>
+
+    <h2>Population Dynamics — Predator-Prey Relationships</h2>
+    <p>When prey numbers increase, predator numbers also increase (more food). Increased predation then reduces prey numbers, which in turn causes predator numbers to decline. This creates a natural <strong>oscillating cycle</strong> that keeps populations in balance.</p>
+    <div class="callout"><strong>Example:</strong> In Kruger National Park, impala populations fluctuate with cheetah and wild dog populations. When a disease reduced wild dog numbers in the 1990s, impala populations grew, increasing pressure on vegetation — illustrating how interconnected food webs are.</div>
+
+    <h2>Ecosystem Services</h2>
+    <p>Ecosystems provide humans with essential services:</p>
+    <ul>
+      <li><strong>Provisioning:</strong> food, water, timber, medicines, genetic resources.</li>
+      <li><strong>Regulating:</strong> climate regulation, flood control, water purification, pollination.</li>
+      <li><strong>Cultural:</strong> tourism (Kruger National Park earns billions for South Africa annually), recreation, spiritual value.</li>
+      <li><strong>Supporting:</strong> soil formation, nutrient cycling, oxygen production.</li>
+    </ul>
+
+    <h2>South African Biomes</h2>
+    <div class="biome-grid">
+      <div class="biome-card"><div class="biome-icon">🌸</div><div class="biome-name">Fynbos</div><div class="biome-desc">Western Cape. 9 000+ plant species, highly endemic. Fire-adapted. King Protea.</div></div>
+      <div class="biome-card"><div class="biome-icon">🌳</div><div class="biome-name">Savanna</div><div class="biome-desc">Largest biome. Grassland with scattered trees. Kruger NP. Big Five.</div></div>
+      <div class="biome-card"><div class="biome-icon">🌾</div><div class="biome-name">Grassland</div><div class="biome-desc">Highveld plateau. Seasonal rain. Springbok, secretary bird, crane.</div></div>
+      <div class="biome-card"><div class="biome-icon">🏜️</div><div class="biome-name">Succulent Karoo</div><div class="biome-desc">Winter rainfall desert. Highest diversity of succulents on Earth.</div></div>
+      <div class="biome-card"><div class="biome-icon">🌲</div><div class="biome-name">Forest</div><div class="biome-desc">Knysna-Tsitsikamma. Afrotemperate forest. Elephants, Knysna loerie.</div></div>
+      <div class="biome-card"><div class="biome-icon">🏝️</div><div class="biome-name">Nama-Karoo</div><div class="biome-desc">Semi-arid plateau. Sparse shrubs. Aardvark, meerkats, bat-eared fox.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Savanna Food Web Builder</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Click any organism to highlight its connections. Drag nodes to rearrange. Use "Remove species" to see cascade effects.</p>
+  <div class="explore-layout">
+    <div class="web-wrap">
+      <canvas id="webCanvas" height="480"></canvas>
+    </div>
+    <div class="side-panel">
+      <div class="ctrl-card node-info" id="nodeInfo">
+        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:30px">👆 Click an organism<br>to see its details</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Actions</div>
+        <button class="remove-btn" id="removeBtn" disabled onclick="removeSelected()">
+          <i data-lucide="trash-2" style="width:12px;height:12px"></i> Remove selected species
+        </button>
+        <button class="reset-btn" onclick="resetWeb()">
+          <i data-lucide="rotate-ccw" style="width:12px;height:12px"></i> Reset food web
+        </button>
+        <div class="cascade-msg" id="cascadeMsg"></div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Energy Flow Legend</div>
+        <div class="energy-legend">
+          <div class="el-item"><div class="el-dot" style="background:#fbbf24"></div>Producers (1st trophic level)</div>
+          <div class="el-item"><div class="el-dot" style="background:#86efac"></div>Primary consumers (2nd)</div>
+          <div class="el-item"><div class="el-dot" style="background:#fb923c"></div>Secondary consumers (3rd)</div>
+          <div class="el-item"><div class="el-dot" style="background:#f87171"></div>Tertiary consumers (4th)</div>
+          <div class="el-item"><div class="el-dot" style="background:#a78bfa"></div>Decomposers</div>
+          <div class="el-item"><div class="el-dot" style="background:#67e8f9"></div>Sun (energy source)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the lesson for more detail.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Draw diagrams where asked. Refer to South African examples where possible.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (4 marks)</div><div class="wb-qtext">Distinguish between biotic and abiotic factors in an ecosystem. Give TWO examples of each. Then explain the difference between a producer, a consumer, and a decomposer. Give a South African example of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (5 marks)</div><div class="wb-qtext">Draw a food web for a South African savanna ecosystem that includes at least 6 organisms across at least 3 trophic levels. Label each organism with its trophic level (producer, primary consumer, etc.).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Explain the "10% rule" of energy transfer between trophic levels. If a savanna grassland fixes 50 000 kJ of energy through photosynthesis, calculate how much energy would be available to (a) primary consumers, (b) secondary consumers, and (c) tertiary consumers. Show all calculations.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe how a predator-prey relationship creates a natural population cycle. Use lions and zebras as your example. Draw a simple sketch graph showing how lion and zebra populations might oscillate over time.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Choose THREE South African biomes. For each, describe: (a) where it is found, (b) one key abiotic characteristic, and (c) one plant or animal species that lives there.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (3 marks)</div><div class="wb-qtext">If the cheetah population in a savanna ecosystem were to collapse due to disease, predict the effects on: (a) impala populations, (b) grass and vegetation, and (c) lion populations. Explain your reasoning using food web principles.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore'){ resizeWeb(); }
+}
+
+/* ──────────────────────────────────────────
+   FOOD WEB CANVAS
+────────────────────────────────────────── */
+const webCanvas = document.getElementById('webCanvas');
+const wctx = webCanvas.getContext('2d');
+let WW, WH;
+
+// Node definitions — positions are fractions, resolved after resize
+const NODE_DEFS = [
+  {id:'sun',      label:'Sun',        icon:'☀️', color:'#fde68a', tcolor:'#fbbf24', trophic:'Energy Source',
+   diet:[], eatenBy:['grass','acacia'],
+   info:'The Sun provides the energy that drives all ecosystems through photosynthesis. Without sunlight, producers cannot make food and the entire food web collapses.',
+   fact:'~1% of solar energy reaching a leaf is actually converted to chemical energy.'},
+  {id:'grass',    label:'Grass',      icon:'🌾', color:'#bbf7d0', tcolor:'#22c55e', trophic:'Producer (1st)',
+   diet:['sun'], eatenBy:['zebra','wildebeest','impala'],
+   info:'Grasses are the dominant producers of the savanna. They fix sunlight energy into glucose through photosynthesis. Their deep roots allow them to survive fires and drought.',
+   fact:'After a savanna fire, grass re-sprouts from underground rhizomes within days — the ash provides extra nutrients.'},
+  {id:'acacia',   label:'Acacia',     icon:'🌳', color:'#bbf7d0', tcolor:'#22c55e', trophic:'Producer (1st)',
+   diet:['sun'], eatenBy:['giraffe','impala'],
+   info:'Acacia trees are iconic savanna producers. Many species have evolved thorns and chemical defences against herbivores. They also fix nitrogen through root-nodule bacteria.',
+   fact:'Giraffes have a 45 cm prehensile tongue to strip acacia leaves between thorns.'},
+  {id:'zebra',    label:'Zebra',      icon:'🦓', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primary Consumer (2nd)',
+   diet:['grass'], eatenBy:['lion','wild_dog'],
+   info:'Plains zebras are grazers — they eat grass. They often migrate long distances following rainfall to find fresh grass. Zebras are important prey for lions and wild dogs.',
+   fact:'Zebra stripes may confuse biting flies and make it harder for predators to single out individuals in a herd.'},
+  {id:'wildebeest',label:'Wildebeest',icon:'🐃', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primary Consumer (2nd)',
+   diet:['grass'], eatenBy:['lion','cheetah'],
+   info:'Blue wildebeest are bulk grazers and key prey animals in the savanna. Their massive annual migration (1.5 million animals in East Africa, smaller herds in SA) shapes entire ecosystems.',
+   fact:'Wildebeest calves can run with the herd within minutes of birth — a defence against predators.'},
+  {id:'impala',   label:'Impala',     icon:'🦌', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primary Consumer (2nd)',
+   diet:['grass','acacia'], eatenBy:['lion','cheetah','wild_dog'],
+   info:'Impalas are both grazers and browsers, making them one of the most adaptable herbivores in African savannas. They are the most common prey species in Kruger National Park.',
+   fact:'Impalas can leap 3 metres high and 10 metres horizontally to escape predators.'},
+  {id:'giraffe',  label:'Giraffe',    icon:'🦒', color:'#bfdbfe', tcolor:'#86efac', trophic:'Primary Consumer (2nd)',
+   diet:['acacia'], eatenBy:['lion'],
+   info:'Giraffes are the tallest animals on Earth, able to browse leaves from the tops of acacia trees that other herbivores cannot reach. Their long necks allow them to exploit this unique food niche.',
+   fact:'A giraffe\'s heart is 60 cm long and pumps blood 2 metres up to the brain.'},
+  {id:'cheetah',  label:'Cheetah',    icon:'🐆', color:'#fed7aa', tcolor:'#fb923c', trophic:'Secondary Consumer (3rd)',
+   diet:['impala','wildebeest'], eatenBy:['lion'],
+   info:'Cheetahs are the fastest land animal (up to 120 km/h) and specialise in daytime hunts. They prey mainly on impala and young wildebeest. Unlike lions, they do not compete well for carcasses.',
+   fact:'Cheetahs are classified as Vulnerable — fewer than 7 000 remain in the wild, with a small population in Kruger NP.'},
+  {id:'wild_dog', label:'Wild Dog',   icon:'🐕', color:'#fed7aa', tcolor:'#fb923c', trophic:'Secondary Consumer (3rd)',
+   diet:['impala','zebra'], eatenBy:['lion'],
+   info:'African wild dogs are highly social pack hunters with a success rate of ~80% — the highest of any large predator in Africa. They are Endangered, with only ~6 600 remaining.',
+   fact:'Wild dog packs vote on whether to hunt by sneezing — the more sneezes, the higher the consensus to move.'},
+  {id:'lion',     label:'Lion',       icon:'🦁', color:'#fecaca', tcolor:'#f87171', trophic:'Tertiary Consumer (4th)',
+   diet:['zebra','wildebeest','impala','giraffe','cheetah','wild_dog'], eatenBy:['decomp'],
+   info:'Lions are apex predators of the African savanna. A pride of lions controls territory and regulates prey populations, preventing overgrazing. Lion numbers in South Africa are about 3 000.',
+   fact:'Lions sleep up to 20 hours a day — conserving energy since large prey provides a large meal at once.'},
+  {id:'decomp',   label:'Decomposers',icon:'🍄', color:'#ddd6fe', tcolor:'#a78bfa', trophic:'Decomposers',
+   diet:['lion','cheetah','wild_dog','giraffe','zebra','wildebeest','impala','grass','acacia'], eatenBy:[],
+   info:'Decomposers (bacteria, fungi, dung beetles, vultures, termites) break down dead organic matter and return nutrients — especially nitrogen and phosphorus — to the soil, enabling new plant growth.',
+   fact:'Termites are the most important decomposers in African savannas, processing more plant material than all the large herbivores combined.'},
+];
+
+// Deep copy for reset
+const NODE_DEFS_ORIG = JSON.parse(JSON.stringify(NODE_DEFS));
+
+// Working node array (with x,y positions added)
+let nodes = [];
+let removedIds = new Set();
+let selectedNode = null;
+let draggingNode = null;
+let dragOffX = 0, dragOffY = 0;
+let energyParticles = [];
+let animT = 0;
+
+function initNodes(){
+  nodes = JSON.parse(JSON.stringify(NODE_DEFS));
+  removedIds = new Set();
+  selectedNode = null;
+  energyParticles = [];
+  placeNodes();
+  updateNodeInfo(null);
+  document.getElementById('removeBtn').disabled = true;
+  document.getElementById('cascadeMsg').className = 'cascade-msg';
+}
+
+function placeNodes(){
+  // Manual layout positions [fx, fy] as fractions of [WW, WH]
+  const positions = {
+    sun:        [0.50, 0.06],
+    grass:      [0.25, 0.22],
+    acacia:     [0.72, 0.22],
+    zebra:      [0.10, 0.42],
+    wildebeest: [0.32, 0.42],
+    impala:     [0.52, 0.42],
+    giraffe:    [0.78, 0.38],
+    cheetah:    [0.22, 0.64],
+    wild_dog:   [0.44, 0.68],
+    lion:       [0.50, 0.86],
+    decomp:     [0.82, 0.72],
+  };
+  nodes.forEach(n=>{
+    const p = positions[n.id] || [0.5, 0.5];
+    n.x = p[0] * WW;
+    n.y = p[1] * WH;
+    n.r = n.id==='sun' ? 28 : n.id==='decomp' ? 24 : 22;
+  });
+}
+
+function resizeWeb(){
+  WW = webCanvas.offsetWidth || 660;
+  WH = 480;
+  webCanvas.width = WW * devicePixelRatio;
+  webCanvas.height = WH * devicePixelRatio;
+  wctx.scale(devicePixelRatio, devicePixelRatio);
+  placeNodes();
+}
+
+function getNode(id){ return nodes.find(n=>n.id===id && !removedIds.has(id)); }
+
+function drawWeb(ts){
+  wctx.clearRect(0,0,WW,WH);
+  animT = ts * 0.001;
+
+  // Draw edges
+  nodes.forEach(n=>{
+    if(removedIds.has(n.id)) return;
+    n.eatenBy.forEach(eid=>{
+      const target = getNode(eid);
+      if(!target) return;
+      const isHighlit = selectedNode && (selectedNode.id===n.id || selectedNode.id===eid ||
+        selectedNode.eatenBy.includes(n.id) || selectedNode.diet.includes(n.id) ||
+        n.eatenBy.includes(selectedNode.id) || n.diet.includes(selectedNode.id));
+      const isBroken = removedIds.has(n.id) || removedIds.has(eid);
+      if(isBroken) return;
+
+      wctx.save();
+      wctx.globalAlpha = selectedNode ? (isHighlit ? 0.85 : 0.12) : 0.35;
+      const grad = wctx.createLinearGradient(n.x, n.y, target.x, target.y);
+      grad.addColorStop(0, n.tcolor);
+      grad.addColorStop(1, target.tcolor);
+      wctx.strokeStyle = grad;
+      wctx.lineWidth = selectedNode && isHighlit ? 2.5 : 1.2;
+      wctx.beginPath();
+      wctx.moveTo(n.x, n.y);
+      wctx.lineTo(target.x, target.y);
+      wctx.stroke();
+
+      // Arrowhead
+      const dx = target.x - n.x, dy = target.y - n.y;
+      const len = Math.sqrt(dx*dx+dy*dy);
+      const ux = dx/len, uy = dy/len;
+      const ax = target.x - ux*target.r - ux*4, ay = target.y - uy*target.r - uy*4;
+      wctx.beginPath();
+      wctx.moveTo(ax, ay);
+      wctx.lineTo(ax - ux*10 + uy*5, ay - uy*10 - ux*5);
+      wctx.lineTo(ax - ux*10 - uy*5, ay - uy*10 + ux*5);
+      wctx.closePath();
+      wctx.fillStyle = target.tcolor;
+      wctx.globalAlpha = selectedNode ? (isHighlit ? 0.9 : 0.08) : 0.4;
+      wctx.fill();
+      wctx.restore();
+    });
+  });
+
+  // Energy particles along selected connections
+  if(selectedNode){
+    updateEnergyParticles();
+    energyParticles.forEach(p=>{
+      wctx.save();
+      wctx.globalAlpha = p.alpha;
+      wctx.beginPath(); wctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      wctx.fillStyle = p.color;
+      wctx.fill();
+      wctx.restore();
+    });
+  }
+
+  // Draw nodes
+  nodes.forEach(n=>{
+    if(removedIds.has(n.id)) return;
+    const isSelected = selectedNode?.id === n.id;
+    const isConnected = selectedNode && (
+      selectedNode.diet.includes(n.id) || selectedNode.eatenBy.includes(n.id) ||
+      n.diet.includes(selectedNode.id) || n.eatenBy.includes(selectedNode.id)
+    );
+    const dimmed = selectedNode && !isSelected && !isConnected;
+    wctx.save();
+    wctx.globalAlpha = dimmed ? 0.25 : 1;
+    // Glow
+    if(isSelected){
+      wctx.shadowBlur = 20; wctx.shadowColor = n.tcolor;
+    }
+    // Circle
+    wctx.beginPath(); wctx.arc(n.x, n.y, n.r + (isSelected?4:0), 0, Math.PI*2);
+    wctx.fillStyle = n.color + '22'; wctx.fill();
+    wctx.strokeStyle = n.tcolor + (isSelected?'ff':'99');
+    wctx.lineWidth = isSelected ? 2.5 : 1.5;
+    wctx.stroke();
+    // Icon
+    wctx.shadowBlur = 0;
+    wctx.font = `${n.id==='sun'?20:16}px serif`;
+    wctx.textAlign='center'; wctx.textBaseline='middle';
+    wctx.fillText(n.icon, n.x, n.y - 2);
+    // Label
+    wctx.fillStyle = isSelected ? '#fff' : 'rgba(210,218,245,0.7)';
+    wctx.font = `${isSelected?'bold ':''}10px "Cabinet Grotesk"`;
+    wctx.textBaseline = 'alphabetic';
+    wctx.fillText(n.label, n.x, n.y + n.r + 13);
+    wctx.restore();
+  });
+
+  requestAnimationFrame(drawWeb);
+}
+
+let lastParticleTime = 0;
+function updateEnergyParticles(){
+  // Spawn particles along edges from selectedNode to its eaters
+  const now = animT;
+  if(now - lastParticleTime > 0.25 && selectedNode){
+    lastParticleTime = now;
+    selectedNode.eatenBy.forEach(eid=>{
+      const target = getNode(eid);
+      if(!target || removedIds.has(eid)) return;
+      energyParticles.push({
+        x: selectedNode.x, y: selectedNode.y,
+        tx: target.x, ty: target.y,
+        progress: 0, speed: 0.4 + Math.random()*0.3,
+        color: selectedNode.tcolor,
+        r: 3 + Math.random()*2,
+        alpha: 0.9
+      });
+    });
+  }
+  energyParticles = energyParticles.filter(p=>p.progress<1);
+  energyParticles.forEach(p=>{
+    p.progress = Math.min(1, p.progress + p.speed * 0.016);
+    p.x = lerp(selectedNode?.x ?? p.x, p.tx, p.progress);
+    p.y = lerp(selectedNode?.y ?? p.y, p.ty, p.progress);
+    p.alpha = 1 - p.progress;
+  });
+}
+
+function lerp(a,b,t){ return a+(b-a)*t; }
+
+// Click handling
+webCanvas.addEventListener('click', e=>{
+  if(draggingNode) return;
+  const rect=webCanvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  let hit=null;
+  [...nodes].reverse().forEach(n=>{
+    if(removedIds.has(n.id)) return;
+    const d=Math.sqrt((mx-n.x)**2+(my-n.y)**2);
+    if(d<n.r+6) hit=n;
+  });
+  selectedNode = hit;
+  energyParticles = [];
+  updateNodeInfo(hit);
+  document.getElementById('removeBtn').disabled = !hit || hit.id==='sun' || hit.id==='decomp';
+});
+
+// Drag handling
+let isDragging = false;
+webCanvas.addEventListener('mousedown', e=>{
+  const rect=webCanvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  nodes.forEach(n=>{
+    if(removedIds.has(n.id)) return;
+    const d=Math.sqrt((mx-n.x)**2+(my-n.y)**2);
+    if(d<n.r+6){ draggingNode=n; dragOffX=mx-n.x; dragOffY=my-n.y; isDragging=false; }
+  });
+});
+webCanvas.addEventListener('mousemove', e=>{
+  const rect=webCanvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  if(draggingNode){ isDragging=true; draggingNode.x=mx-dragOffX; draggingNode.y=my-dragOffY; }
+  let hover=false;
+  nodes.forEach(n=>{ if(!removedIds.has(n.id)&&Math.sqrt((mx-n.x)**2+(my-n.y)**2)<n.r+6) hover=true; });
+  webCanvas.style.cursor=hover?'pointer':'default';
+});
+webCanvas.addEventListener('mouseup', ()=>{ draggingNode=null; });
+
+function updateNodeInfo(n){
+  const d=document.getElementById('nodeInfo');
+  if(!n){ d.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;margin-top:30px">👆 Click an organism<br>to see its details</div>'; return; }
+  const eats = n.diet.filter(id=>!removedIds.has(id)).map(id=>getNode(id)?.label||id);
+  const eatenBy = n.eatenBy.filter(id=>!removedIds.has(id)).map(id=>getNode(id)?.label||id);
+  d.innerHTML=`
+    <div class="ni-name" style="color:${n.tcolor}">${n.icon} ${n.label}</div>
+    <div class="ni-level">${n.trophic}</div>
+    <div class="ni-body">${n.info}
+      ${eats.length?`<br><br><strong style="color:rgba(210,218,245,.6)">Eats:</strong> ${eats.join(', ')}`:'' }
+      ${eatenBy.length?`<br><strong style="color:rgba(210,218,245,.6)">Eaten by:</strong> ${eatenBy.join(', ')}`:'' }
+    </div>
+    <div class="ni-fact">💡 ${n.fact}</div>`;
+}
+
+function removeSelected(){
+  if(!selectedNode || selectedNode.id==='sun' || selectedNode.id==='decomp') return;
+  const id = selectedNode.id;
+  const label = selectedNode.label;
+  removedIds.add(id);
+
+  // Find cascade effects — species that ONLY ate this organism and have no other food
+  const cascadeVictims = [];
+  nodes.forEach(n=>{
+    if(removedIds.has(n.id)) return;
+    if(n.diet.includes(id)){
+      const remainingFood = n.diet.filter(did=>!removedIds.has(did));
+      if(remainingFood.length===0){
+        cascadeVictims.push(n.label);
+      }
+    }
+  });
+
+  const msg = document.getElementById('cascadeMsg');
+  let txt = `<strong style="color:#fca5a5">⚠ ${label} removed.</strong>`;
+  if(cascadeVictims.length){
+    txt += ` Cascade effect: <strong>${cascadeVictims.join(', ')}</strong> now ${cascadeVictims.length===1?'has':'have'} no food source and may collapse.`;
+  } else {
+    txt += ' Other species in the web can compensate.';
+  }
+  msg.innerHTML = txt;
+  msg.className = 'cascade-msg show';
+
+  selectedNode = null;
+  energyParticles = [];
+  updateNodeInfo(null);
+  document.getElementById('removeBtn').disabled = true;
+}
+
+function resetWeb(){
+  initNodes();
+}
+
+/* ─── Init ─── */
+window.addEventListener('resize', ()=>resizeWeb());
+resizeWeb();
+initNodes();
+requestAnimationFrame(drawWeb);
+
+/* ─── Practice ─── */
+const QUESTIONS=[
+  {text:'What is the difference between a biotic factor and an abiotic factor in an ecosystem?',
+   opts:['Biotic = living organisms; abiotic = non-living environmental conditions','Biotic = plants only; abiotic = animals only','Biotic = producers; abiotic = consumers','Biotic = non-living; abiotic = living'],
+   ans:0, exp:'Biotic factors are all the living components of an ecosystem (plants, animals, fungi, bacteria). Abiotic factors are the non-living conditions — sunlight, water, temperature, soil, pH, etc.'},
+  {text:'In the food chain: Grass → Zebra → Lion → Decomposers, what is the zebra\'s trophic level?',
+   opts:['Producer (1st trophic level)','Primary consumer (2nd trophic level)','Secondary consumer (3rd trophic level)','Tertiary consumer (4th trophic level)'],
+   ans:1, exp:'The zebra eats grass (a producer), which makes it a primary consumer at the 2nd trophic level. The lion, which eats the zebra, would be a secondary or tertiary consumer depending on the chain.'},
+  {text:'According to the 10% rule, if grass contains 100 000 kJ of energy, how much is available to the lion (tertiary consumer)?',
+   opts:['10 000 kJ','1 000 kJ','100 kJ','10 kJ'],
+   ans:2, exp:'Each trophic level retains only ~10% of the energy from the level below. Grass (100 000 kJ) → Zebra (10 000 kJ) → Lion (1 000 kJ). If the lion is a tertiary consumer, there is one more step: 100 kJ. So 100 kJ is correct for three energy transfers.'},
+  {text:'Why are top predators such as lions less numerous than herbivores such as zebras in the same ecosystem?',
+   opts:['Lions choose to live in smaller groups','Only 10% of energy transfers to each higher trophic level, leaving far less energy to support predators','Lions need larger territories than zebras','Herbivores reproduce faster than carnivores'],
+   ans:1, exp:'The 10% energy rule means that very little energy remains at higher trophic levels. There is simply not enough energy to support the same number of predators as herbivores — which is why energy pyramids are wide at the base and narrow at the top.'},
+  {text:'What role do decomposers play in an ecosystem?',
+   opts:['They are the top predators in the food chain','They convert sunlight into food','They break down dead organic matter and return nutrients to the soil','They compete with producers for sunlight'],
+   ans:2, exp:'Decomposers (bacteria, fungi, dung beetles, vultures) break down dead organisms and organic waste, releasing nutrients (especially nitrogen and phosphorus) back into the soil. Without decomposers, nutrients would be locked in dead matter and ecosystems would grind to a halt.'},
+  {text:'Which South African biome is a global biodiversity hotspot containing the highest diversity of succulent plants on Earth?',
+   opts:['Savanna','Fynbos','Nama-Karoo / Succulent Karoo','Afrotemperate Forest'],
+   ans:2, exp:'The Succulent Karoo (including parts of the Nama-Karoo) has the highest diversity of succulent plants on Earth, with thousands of species of aloes, euphorbias, and other succulents. It receives mainly winter rainfall and experiences extreme temperature fluctuations.'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi, oi){
+  if(answered[qi]) return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){ score++; fb.className='feedback ok show'; fb.innerHTML='✓ Correct! '+q.exp; }
+  else { document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong'); fb.className='feedback bad show'; fb.innerHTML='✗ Not quite. '+q.exp; }
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner'); banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good effort — check the explanations.':score===5?'Well done!':'Perfect score — outstanding!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

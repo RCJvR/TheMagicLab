@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Periodic Table — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+      --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.15);
+      --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border);margin-bottom:0}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .model-timeline{display:flex;flex-direction:column;gap:0;margin:16px 0}
+    .model-step{display:flex;gap:16px;padding:14px 0;border-left:2px solid rgba(96,165,250,.22);margin-left:10px;padding-left:20px;position:relative}
+    .model-step::before{content:'';position:absolute;left:-6px;top:20px;width:10px;height:10px;border-radius:50%;background:#60a5fa;border:2px solid var(--bg)}
+    .model-step-year{font-family:var(--fm);font-size:10px;font-weight:600;color:#60a5fa;white-space:nowrap;margin-top:2px;min-width:48px}
+    .model-step-body h4{font-weight:700;font-size:14px;color:#fff;margin-bottom:4px}
+    .model-step-body p{font-size:13px;color:rgba(210,218,245,.65);line-height:1.65;margin:0}
+
+    /* Periodic table explore */
+    #tab-explore{padding:24px 20px 48px}
+    .pt-controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;padding:0 20px}
+    .pt-filter-btn{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:99px;border:1px solid;cursor:pointer;transition:all 140ms;background:transparent}
+    .pt-filter-btn:hover{opacity:0.85}
+    .pt-search{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);font-family:var(--fd);font-size:13px;padding:7px 14px;border-radius:10px;outline:none;width:200px}
+    .pt-search:focus{border-color:rgba(96,165,250,.4)}
+    .pt-search::placeholder{color:var(--muted)}
+    .pt-wrap{overflow-x:auto;padding:0 20px 10px}
+    .pt-grid{display:grid;grid-template-columns:repeat(18,44px);grid-template-rows:repeat(10,44px);gap:3px;min-width:820px}
+    .pt-cell{width:44px;height:44px;border-radius:6px;border:1px solid transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 120ms,box-shadow 120ms;position:relative}
+    .pt-cell:hover{transform:scale(1.18);z-index:10;box-shadow:0 0 14px rgba(255,255,255,.15)}
+    .pt-cell.dimmed{opacity:0.12}
+    .pt-cell.selected{box-shadow:0 0 0 2px #fff,0 0 14px rgba(255,255,255,.3);z-index:11}
+    .pt-sym{font-weight:800;font-size:11px;color:#fff;line-height:1}
+    .pt-z{font-family:var(--fm);font-size:7px;color:rgba(255,255,255,.55);line-height:1.2}
+    .pt-gap{width:44px;height:44px}
+    /* category colours */
+    .cat-alkali{background:rgba(239,68,68,.22);border-color:rgba(239,68,68,.35)}
+    .cat-alkaline{background:rgba(251,146,60,.22);border-color:rgba(251,146,60,.35)}
+    .cat-transition{background:rgba(251,191,36,.18);border-color:rgba(251,191,36,.30)}
+    .cat-post{background:rgba(163,230,53,.15);border-color:rgba(163,230,53,.28)}
+    .cat-metalloid{background:rgba(20,184,166,.18);border-color:rgba(20,184,166,.30)}
+    .cat-nonmetal{background:rgba(96,165,250,.20);border-color:rgba(96,165,250,.35)}
+    .cat-noble{background:rgba(168,85,247,.20);border-color:rgba(168,85,247,.35)}
+    .cat-lanthanide{background:rgba(236,72,153,.18);border-color:rgba(236,72,153,.30)}
+    .cat-actinide{background:rgba(99,102,241,.18);border-color:rgba(99,102,241,.30)}
+    /* detail panel */
+    .pt-detail{margin:16px 20px 0;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+    .pt-big-sym{font-weight:900;font-size:72px;letter-spacing:-0.04em;color:#60a5fa;line-height:1;font-family:var(--fd)}
+    .pt-detail-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .pt-di-label{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px}
+    .pt-di-val{font-weight:700;font-size:15px;color:#fff}
+    .pt-di-val.small{font-size:12px}
+    .pt-di-fact{grid-column:1/-1;font-size:13px;color:rgba(210,218,245,.70);line-height:1.7;margin-top:4px;border-top:1px solid var(--border);padding-top:10px}
+    .legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 20px;margin-bottom:4px}
+    .legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+    .legend-dot{width:10px;height:10px;border-radius:3px}
+
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Matter &amp; Materials · Lesson 2</div>
+  <h1 class="lesson-title">The Periodic Table of Elements</h1>
+  <p class="lesson-sub">Explore how all known elements are organised by their properties — a map of matter itself.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is the periodic table?</h2>
+    <p>The <strong>periodic table</strong> is a systematic arrangement of all known chemical elements in order of increasing <strong>atomic number</strong> (number of protons). It is one of the most powerful tools in science because it allows us to predict the properties of elements simply by knowing their position in the table.</p>
+    <div class="callout"><strong>Key idea:</strong> Elements in the same column (group) have similar chemical properties because they have the same number of electrons in their outermost shell.</div>
+
+    <h2>History: Mendeleev's great idea</h2>
+    <div class="model-timeline">
+      <div class="model-step"><div class="model-step-year">1864</div><div class="model-step-body"><h4>John Newlands — Law of Octaves</h4><p>Newlands noticed that when elements were arranged by mass, every eighth element had similar properties — like notes in a musical scale. Dismissed at first, his idea laid the groundwork.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1869</div><div class="model-step-body"><h4>Dmitri Mendeleev — The Periodic Table</h4><p>Russian chemist Mendeleev arranged 63 known elements by atomic mass and noticed repeating (periodic) patterns in their properties. He left gaps for undiscovered elements and predicted their properties — and was proved right when gallium, scandium, and germanium were later found.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1913</div><div class="model-step-body"><h4>Henry Moseley — Atomic Number</h4><p>Moseley used X-rays to determine that elements should be ordered by atomic number (protons), not mass. This fixed some inconsistencies in Mendeleev's table and gave us the modern periodic table.</p></div></div>
+    </div>
+
+    <h2>Periods and Groups</h2>
+    <p>The periodic table is organised into <strong>rows</strong> and <strong>columns</strong>:</p>
+    <ul>
+      <li><strong>Periods (rows):</strong> There are 7 periods. Each period corresponds to a new electron shell being filled. Period 1 has 2 elements; Period 2 has 8; and so on. As you move across a period from left to right, the atomic number increases by 1 each time.</li>
+      <li><strong>Groups (columns):</strong> There are 18 groups. Elements in the same group have the same number of valence electrons (outermost electrons) and therefore similar chemical properties. Group 1 elements all have 1 valence electron; Group 17 all have 7.</li>
+    </ul>
+    <div class="key-fact">Period number = number of electron shells. Group number (for main-group elements) = number of valence electrons.</div>
+
+    <h2>Metals, Metalloids, and Non-metals</h2>
+    <p>The periodic table can be broadly divided into three regions:</p>
+    <ul>
+      <li><strong>Metals</strong> (left and centre): shiny, good conductors of heat and electricity, malleable (can be hammered into shape), ductile (can be drawn into wire), and solid at room temperature (except mercury). Examples: iron (Fe), copper (Cu), gold (Au).</li>
+      <li><strong>Non-metals</strong> (right side): poor conductors, often dull and brittle as solids, may be gases at room temperature. Examples: oxygen (O), chlorine (Cl), sulfur (S).</li>
+      <li><strong>Metalloids / Semi-metals</strong> (staircase boundary): have properties of both metals and non-metals. Examples: silicon (Si), germanium (Ge), arsenic (As). Silicon is a semiconductor used in computer chips.</li>
+    </ul>
+
+    <h2>Important Groups</h2>
+    <ul>
+      <li><strong>Group 1 — Alkali metals</strong> (Li, Na, K, Rb, Cs, Fr): Very reactive metals that react vigorously with water, producing hydrogen gas and a metal hydroxide. Reactivity increases down the group.</li>
+      <li><strong>Group 2 — Alkaline earth metals</strong> (Be, Mg, Ca, Sr, Ba, Ra): Less reactive than Group 1, but still react with water. Calcium is essential for bones and teeth.</li>
+      <li><strong>Groups 3–12 — Transition metals</strong>: Less reactive, harder, have higher melting points. Include iron, copper, gold, and silver. Many form coloured compounds.</li>
+      <li><strong>Group 17 — Halogens</strong> (F, Cl, Br, I, At): Very reactive non-metals with 7 valence electrons. Reactivity decreases down the group. Fluorine is the most reactive element of all.</li>
+      <li><strong>Group 18 — Noble gases</strong> (He, Ne, Ar, Kr, Xe, Rn): Completely unreactive — full outer shells mean no desire to gain or lose electrons. Used in lighting and as inert atmospheres.</li>
+    </ul>
+
+    <h2>Periodic Trends</h2>
+    <p>Properties change in predictable ways across and down the table:</p>
+    <ul>
+      <li><strong>Atomic radius:</strong> Increases down a group (more shells) and decreases across a period left to right (more protons pull electrons closer).</li>
+      <li><strong>Reactivity of metals:</strong> Increases down a group (valence electron is further from nucleus and easier to remove).</li>
+      <li><strong>Reactivity of non-metals:</strong> Increases up a group and across a period to the right (more "eagerness" to gain electrons to complete outer shell).</li>
+      <li><strong>Metallic character:</strong> Decreases across a period from left to right.</li>
+    </ul>
+    <div class="callout"><strong>Remember:</strong> The periodic table is described as "periodic" because similar properties recur at regular intervals — every time a new period begins, the pattern repeats.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <div class="pt-controls">
+    <input class="pt-search" type="text" id="ptSearch" placeholder="Search element name or symbol…" oninput="filterTable()">
+    <button class="pt-filter-btn" id="filterAll" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)" onclick="setFilter('all')">All</button>
+    <button class="pt-filter-btn" style="border-color:rgba(239,68,68,.5);color:#fca5a5" onclick="setFilter('alkali')">Alkali metals</button>
+    <button class="pt-filter-btn" style="border-color:rgba(251,146,60,.5);color:#fdba74" onclick="setFilter('alkaline')">Alkaline earth</button>
+    <button class="pt-filter-btn" style="border-color:rgba(251,191,36,.5);color:#fcd34d" onclick="setFilter('transition')">Transition metals</button>
+    <button class="pt-filter-btn" style="border-color:rgba(20,184,166,.5);color:#5eead4" onclick="setFilter('metalloid')">Metalloids</button>
+    <button class="pt-filter-btn" style="border-color:rgba(96,165,250,.5);color:#93c5fd" onclick="setFilter('nonmetal')">Non-metals</button>
+    <button class="pt-filter-btn" style="border-color:rgba(168,85,247,.5);color:#d8b4fe" onclick="setFilter('noble')">Noble gases</button>
+    <button class="pt-filter-btn" style="border-color:rgba(236,72,153,.5);color:#f9a8d4" onclick="setFilter('lanthanide')">Lanthanides</button>
+    <button class="pt-filter-btn" style="border-color:rgba(99,102,241,.5);color:#a5b4fc" onclick="setFilter('actinide')">Actinides</button>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(239,68,68,.55)"></div>Alkali metal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(251,146,60,.55)"></div>Alkaline earth</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(251,191,36,.45)"></div>Transition metal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(163,230,53,.4)"></div>Post-transition</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(20,184,166,.45)"></div>Metalloid</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(96,165,250,.5)"></div>Non-metal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(168,85,247,.5)"></div>Noble gas</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(236,72,153,.45)"></div>Lanthanide</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(99,102,241,.45)"></div>Actinide</div>
+  </div>
+  <div class="pt-wrap">
+    <div class="pt-grid" id="ptGrid"></div>
+  </div>
+  <div class="pt-detail" id="ptDetail">
+    <div class="pt-big-sym" id="detSym">?</div>
+    <div class="pt-detail-info" id="detInfo">
+      <div style="grid-column:1/-1;color:var(--muted);font-size:13px">Click any element cell to see its details here.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer these questions in your exercise book. Use your periodic table where needed.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Explain what Mendeleev's great contribution to chemistry was and name one prediction he made about undiscovered elements that was later confirmed.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Define the terms <em>period</em> and <em>group</em> as they apply to the periodic table. What does the period number tell you about an element's electron configuration?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Sodium (Na) is in Period 3, Group 1. (a) How many electron shells does sodium have? (b) How many valence electrons does sodium have? (c) Based on its group, would you expect sodium to be reactive or unreactive? Explain.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">List THREE differences between metals and non-metals. Give one example of each from the periodic table.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain the trend in reactivity as you move DOWN Group 1 (alkali metals). Why does reactivity increase?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (3 marks)</div><div class="wb-qtext">Silicon (Si) is described as a metalloid. (a) What does metalloid mean? (b) In which group and period is silicon? (c) Give one important modern use of silicon and explain why its semi-conducting properties make it suitable for this use.</div></div>
+  </div>
+</div>
+
+<script>
+/* ── Element data for periodic table grid ── */
+/* cat codes: alkali, alkaline, transition, post, metalloid, nonmetal, noble, lanthanide, actinide */
+const PT_ELEMENTS = [
+  // Period 1
+  {z:1,sym:'H',name:'Hydrogen',mass:'1.008',cat:'nonmetal',group:1,period:1,config:'1',fact:'The lightest and most abundant element. Makes up ~75% of all ordinary matter in the universe.'},
+  {z:2,sym:'He',name:'Helium',mass:'4.003',cat:'noble',group:18,period:1,config:'2',fact:'Second lightest element. Used in balloons and as a cooling medium for MRI machines.'},
+  // Period 2
+  {z:3,sym:'Li',name:'Lithium',mass:'6.941',cat:'alkali',group:1,period:2,config:'2,1',fact:'Lightest solid metal. Used in rechargeable batteries for phones and electric vehicles.'},
+  {z:4,sym:'Be',name:'Beryllium',mass:'9.012',cat:'alkaline',group:2,period:2,config:'2,2',fact:'Extremely light and stiff. Used in spacecraft and satellite structures.'},
+  {z:5,sym:'B',name:'Boron',mass:'10.81',cat:'metalloid',group:13,period:2,config:'2,3',fact:'Used in borax and borosilicate (heat-resistant) glass. A metalloid — partly metallic.'},
+  {z:6,sym:'C',name:'Carbon',mass:'12.011',cat:'nonmetal',group:14,period:2,config:'2,4',fact:'Basis of all life. Diamond and graphite are both pure carbon in different structures.'},
+  {z:7,sym:'N',name:'Nitrogen',mass:'14.007',cat:'nonmetal',group:15,period:2,config:'2,5',fact:'Makes up 78% of air. Essential for amino acids and DNA. Plants need it for growth.'},
+  {z:8,sym:'O',name:'Oxygen',mass:'15.999',cat:'nonmetal',group:16,period:2,config:'2,6',fact:'Needed by most living things for respiration. Makes up 21% of the atmosphere.'},
+  {z:9,sym:'F',name:'Fluorine',mass:'18.998',cat:'nonmetal',group:17,period:2,config:'2,7',fact:'Most reactive element. Added to toothpaste to protect tooth enamel.'},
+  {z:10,sym:'Ne',name:'Neon',mass:'20.180',cat:'noble',group:18,period:2,config:'2,8',fact:'Glows orange-red when electrified — the classic neon sign colour.'},
+  // Period 3
+  {z:11,sym:'Na',name:'Sodium',mass:'22.990',cat:'alkali',group:1,period:3,config:'2,8,1',fact:'Reacts vigorously with water. Table salt (NaCl) contains sodium — essential for life.'},
+  {z:12,sym:'Mg',name:'Magnesium',mass:'24.305',cat:'alkaline',group:2,period:3,config:'2,8,2',fact:'Burns with a brilliant white flame. Used in fireworks and flares.'},
+  {z:13,sym:'Al',name:'Aluminium',mass:'26.982',cat:'post',group:13,period:3,config:'2,8,3',fact:'Most abundant metal in Earth\'s crust. Used in drink cans, foil, and aircraft.'},
+  {z:14,sym:'Si',name:'Silicon',mass:'28.086',cat:'metalloid',group:14,period:3,config:'2,8,4',fact:'Basis of computer chips and solar panels. A semiconductor — conducts electricity under certain conditions.'},
+  {z:15,sym:'P',name:'Phosphorus',mass:'30.974',cat:'nonmetal',group:15,period:3,config:'2,8,5',fact:'Essential for DNA and bones. White phosphorus glows in the dark.'},
+  {z:16,sym:'S',name:'Sulfur',mass:'32.06',cat:'nonmetal',group:16,period:3,config:'2,8,6',fact:'Yellow solid with a characteristic smell. Used in making sulfuric acid (H₂SO₄).'},
+  {z:17,sym:'Cl',name:'Chlorine',mass:'35.45',cat:'nonmetal',group:17,period:3,config:'2,8,7',fact:'Added to swimming pools to kill bacteria. Very reactive halogen; greenish-yellow gas.'},
+  {z:18,sym:'Ar',name:'Argon',mass:'39.948',cat:'noble',group:18,period:3,config:'2,8,8',fact:'Fills light bulbs to prevent the filament from burning. Makes up ~1% of the atmosphere.'},
+  // Period 4
+  {z:19,sym:'K',name:'Potassium',mass:'39.098',cat:'alkali',group:1,period:4,config:'2,8,8,1',fact:'Essential for nerve and muscle function. Bananas are a well-known source.'},
+  {z:20,sym:'Ca',name:'Calcium',mass:'40.078',cat:'alkaline',group:2,period:4,config:'2,8,8,2',fact:'Builds bones and teeth. The most abundant metal in the human body.'},
+  {z:21,sym:'Sc',name:'Scandium',mass:'44.956',cat:'transition',group:3,period:4,config:'2,8,9,2',fact:'Rare transition metal used to strengthen aluminium alloys for aerospace.'},
+  {z:22,sym:'Ti',name:'Titanium',mass:'47.867',cat:'transition',group:4,period:4,config:'2,8,10,2',fact:'As strong as steel but 45% lighter. Completely corrosion-resistant. Used in jet engines.'},
+  {z:23,sym:'V',name:'Vanadium',mass:'50.942',cat:'transition',group:5,period:4,config:'2,8,11,2',fact:'Added to steel to make it stronger and more wear-resistant.'},
+  {z:24,sym:'Cr',name:'Chromium',mass:'51.996',cat:'transition',group:6,period:4,config:'2,8,13,1',fact:'Gives stainless steel its rust resistance. Responsible for the red colour in rubies.'},
+  {z:25,sym:'Mn',name:'Manganese',mass:'54.938',cat:'transition',group:7,period:4,config:'2,8,13,2',fact:'Essential for steel production. The human body needs tiny amounts for enzyme function.'},
+  {z:26,sym:'Fe',name:'Iron',mass:'55.845',cat:'transition',group:8,period:4,config:'2,8,14,2',fact:'The most used metal in the world and the main component of steel. Earth\'s core is iron.'},
+  {z:27,sym:'Co',name:'Cobalt',mass:'58.933',cat:'transition',group:9,period:4,config:'2,8,15,2',fact:'Gives blue colour to glass and ceramics. Vitamin B12 contains cobalt at its core.'},
+  {z:28,sym:'Ni',name:'Nickel',mass:'58.693',cat:'transition',group:10,period:4,config:'2,8,16,2',fact:'Used in coins, stainless steel, and rechargeable batteries.'},
+  {z:29,sym:'Cu',name:'Copper',mass:'63.546',cat:'transition',group:11,period:4,config:'2,8,18,1',fact:'Excellent electrical conductor — used in all electrical wiring. Known for over 10 000 years.'},
+  {z:30,sym:'Zn',name:'Zinc',mass:'65.38',cat:'transition',group:12,period:4,config:'2,8,18,2',fact:'Galvanises steel to prevent rust. Also essential for human immune function.'},
+  {z:31,sym:'Ga',name:'Gallium',mass:'69.723',cat:'post',group:13,period:4,config:'2,8,18,3',fact:'Melts just above room temperature (30°C) — it can melt in your hand!'},
+  {z:32,sym:'Ge',name:'Germanium',mass:'72.630',cat:'metalloid',group:14,period:4,config:'2,8,18,4',fact:'Predicted by Mendeleev before discovery. Used in fibre optics and semiconductors.'},
+  {z:33,sym:'As',name:'Arsenic',mass:'74.922',cat:'metalloid',group:15,period:4,config:'2,8,18,5',fact:'Toxic metalloid historically used as a poison. Now used in semiconductor manufacturing.'},
+  {z:34,sym:'Se',name:'Selenium',mass:'78.971',cat:'nonmetal',group:16,period:4,config:'2,8,18,6',fact:'Used in solar cells and photocopiers. Small amounts are essential nutrients.'},
+  {z:35,sym:'Br',name:'Bromine',mass:'79.904',cat:'nonmetal',group:17,period:4,config:'2,8,18,7',fact:'One of only two elements that is liquid at room temperature (the other is mercury).'},
+  {z:36,sym:'Kr',name:'Krypton',mass:'83.798',cat:'noble',group:18,period:4,config:'2,8,18,8',fact:'Used in high-performance light bulbs and lasers. A noble gas — almost completely unreactive.'},
+  // Period 5 (stubs with key facts)
+  {z:37,sym:'Rb',name:'Rubidium',mass:'85.468',cat:'alkali',group:1,period:5,config:'2,8,18,8,1',fact:'Ignites spontaneously in air. Used in atomic clocks for extreme precision timekeeping.'},
+  {z:38,sym:'Sr',name:'Strontium',mass:'87.62',cat:'alkaline',group:2,period:5,config:'2,8,18,8,2',fact:'Produces brilliant red colour in fireworks. Chemically similar to calcium.'},
+  {z:39,sym:'Y',name:'Yttrium',mass:'88.906',cat:'transition',group:3,period:5,config:'2,8,18,9,2',fact:'Used in LEDs, superconductors, and the red phosphors in old TV screens.'},
+  {z:40,sym:'Zr',name:'Zirconium',mass:'91.224',cat:'transition',group:4,period:5,config:'2,8,18,10,2',fact:'Highly resistant to corrosion and heat. Used in nuclear reactor fuel rods.'},
+  {z:41,sym:'Nb',name:'Niobium',mass:'92.906',cat:'transition',group:5,period:5,config:'2,8,18,12,1',fact:'Superconductor at low temperatures. Strengthens steel for pipelines and jet engines.'},
+  {z:42,sym:'Mo',name:'Molybdenum',mass:'95.96',cat:'transition',group:6,period:5,config:'2,8,18,13,1',fact:'Has the 6th highest melting point of all elements. Vital for certain bacteria that fix nitrogen.'},
+  {z:43,sym:'Tc',name:'Technetium',mass:'98',cat:'transition',group:7,period:5,config:'2,8,18,13,2',fact:'First artificially produced element. All isotopes radioactive. Used in medical imaging.'},
+  {z:44,sym:'Ru',name:'Ruthenium',mass:'101.07',cat:'transition',group:8,period:5,config:'2,8,18,15,1',fact:'One of the rarest metals on Earth. Used to harden platinum and palladium alloys.'},
+  {z:45,sym:'Rh',name:'Rhodium',mass:'102.91',cat:'transition',group:9,period:5,config:'2,8,18,16,1',fact:'Most expensive naturally occurring element. Used in catalytic converters in cars.'},
+  {z:46,sym:'Pd',name:'Palladium',mass:'106.42',cat:'transition',group:10,period:5,config:'2,8,18,18',fact:'Can absorb up to 900 times its volume of hydrogen. Used in catalytic converters.'},
+  {z:47,sym:'Ag',name:'Silver',mass:'107.87',cat:'transition',group:11,period:5,config:'2,8,18,18,1',fact:'Highest electrical and thermal conductivity of all elements. Used in jewellery and electronics.'},
+  {z:48,sym:'Cd',name:'Cadmium',mass:'112.41',cat:'transition',group:12,period:5,config:'2,8,18,18,2',fact:'Highly toxic but used in rechargeable NiCd batteries and as a yellow pigment.'},
+  {z:49,sym:'In',name:'Indium',mass:'114.82',cat:'post',group:13,period:5,config:'2,8,18,18,3',fact:'Used in touchscreens and flat-panel displays as transparent indium tin oxide.'},
+  {z:50,sym:'Sn',name:'Tin',mass:'118.71',cat:'post',group:14,period:5,config:'2,8,18,18,4',fact:'Used with copper to make bronze (3 500+ years ago). Tin cans are actually steel coated with tin.'},
+  {z:51,sym:'Sb',name:'Antimony',mass:'121.76',cat:'metalloid',group:15,period:5,config:'2,8,18,18,5',fact:'Used by ancient Egyptians as eye makeup. Today used in flame retardants.'},
+  {z:52,sym:'Te',name:'Tellurium',mass:'127.60',cat:'metalloid',group:16,period:5,config:'2,8,18,18,6',fact:'Rarer than gold in Earth\'s crust. Causes garlic-like breath if absorbed into the body.'},
+  {z:53,sym:'I',name:'Iodine',mass:'126.90',cat:'nonmetal',group:17,period:5,config:'2,8,18,18,7',fact:'Essential for thyroid hormones. Deficiency causes goitre. Purple vapour is distinctive.'},
+  {z:54,sym:'Xe',name:'Xenon',mass:'131.29',cat:'noble',group:18,period:5,config:'2,8,18,18,8',fact:'Used in high-intensity car headlights, photography flash lamps, and ion propulsion thrusters.'},
+  // Period 6
+  {z:55,sym:'Cs',name:'Caesium',mass:'132.91',cat:'alkali',group:1,period:6,config:'2,8,18,18,8,1',fact:'Atomic clocks based on caesium lose less than one second every 300 million years.'},
+  {z:56,sym:'Ba',name:'Barium',mass:'137.33',cat:'alkaline',group:2,period:6,config:'2,8,18,18,8,2',fact:'Barium sulfate is swallowed to make the digestive system visible on X-rays.'},
+  {z:57,sym:'La',name:'Lanthanum',mass:'138.91',cat:'lanthanide',group:3,period:6,config:'2,8,18,18,9,2',fact:'Used in camera lenses, studio lighting, and hybrid car batteries.'},
+  {z:58,sym:'Ce',name:'Cerium',mass:'140.12',cat:'lanthanide',group:3,period:6,config:'2,8,18,19,9,2',fact:'Most abundant rare earth element. Used in catalytic converters and glass polishing.'},
+  {z:59,sym:'Pr',name:'Praseodymium',mass:'140.91',cat:'lanthanide',group:3,period:6,config:'2,8,18,21,8,2',fact:'Creates the yellow-green colour in some welding goggles.'},
+  {z:60,sym:'Nd',name:'Neodymium',mass:'144.24',cat:'lanthanide',group:3,period:6,config:'2,8,18,22,8,2',fact:'Neodymium magnets are the strongest permanent magnets — in speakers, hard drives, and motors.'},
+  {z:61,sym:'Pm',name:'Promethium',mass:'145',cat:'lanthanide',group:3,period:6,config:'2,8,18,23,8,2',fact:'No stable isotopes — extremely rare. Named after Prometheus from Greek mythology.'},
+  {z:62,sym:'Sm',name:'Samarium',mass:'150.36',cat:'lanthanide',group:3,period:6,config:'2,8,18,24,8,2',fact:'Samarium-cobalt magnets work at very high temperatures — used in jet engines and spacecraft.'},
+  {z:63,sym:'Eu',name:'Europium',mass:'151.96',cat:'lanthanide',group:3,period:6,config:'2,8,18,25,8,2',fact:'Produces red and blue colours in TV screens and is used in euro banknote security.'},
+  {z:64,sym:'Gd',name:'Gadolinium',mass:'157.25',cat:'lanthanide',group:3,period:6,config:'2,8,18,25,9,2',fact:'Used as an MRI contrast agent — makes soft tissues more visible in MRI scans.'},
+  {z:65,sym:'Tb',name:'Terbium',mass:'158.93',cat:'lanthanide',group:3,period:6,config:'2,8,18,27,8,2',fact:'Used in solid-state devices, fuel cells, and sonar. Glows bright green under UV light.'},
+  {z:66,sym:'Dy',name:'Dysprosium',mass:'162.50',cat:'lanthanide',group:3,period:6,config:'2,8,18,28,8,2',fact:'Added to neodymium magnets to help them work at high temperatures inside electric motors.'},
+  {z:67,sym:'Ho',name:'Holmium',mass:'164.93',cat:'lanthanide',group:3,period:6,config:'2,8,18,29,8,2',fact:'Has the highest magnetic moment of any element. Used in powerful magnets.'},
+  {z:68,sym:'Er',name:'Erbium',mass:'167.26',cat:'lanthanide',group:3,period:6,config:'2,8,18,30,8,2',fact:'Amplifies signals in fibre-optic cables — crucial for long-distance internet communications.'},
+  {z:69,sym:'Tm',name:'Thulium',mass:'168.93',cat:'lanthanide',group:3,period:6,config:'2,8,18,31,8,2',fact:'One of the rarest lanthanides. Used in portable X-ray machines that need no electricity.'},
+  {z:70,sym:'Yb',name:'Ytterbium',mass:'173.04',cat:'lanthanide',group:3,period:6,config:'2,8,18,32,8,2',fact:'Used in stainless steel alloys and atomic clocks. Named after Ytterby village in Sweden.'},
+  {z:71,sym:'Lu',name:'Lutetium',mass:'174.97',cat:'lanthanide',group:3,period:6,config:'2,8,18,32,9,2',fact:'Heaviest and hardest lanthanide. Used in cancer treatment (lutetium-177 therapy).'},
+  {z:72,sym:'Hf',name:'Hafnium',mass:'178.49',cat:'transition',group:4,period:6,config:'2,8,18,32,10,2',fact:'Used in nuclear reactor control rods because it absorbs neutrons very effectively.'},
+  {z:73,sym:'Ta',name:'Tantalum',mass:'180.95',cat:'transition',group:5,period:6,config:'2,8,18,32,11,2',fact:'Used in tiny capacitors inside smartphones and computers.'},
+  {z:74,sym:'W',name:'Tungsten',mass:'183.84',cat:'transition',group:6,period:6,config:'2,8,18,32,12,2',fact:'Highest melting point of all metals (3 422 °C). Used in light bulb filaments.'},
+  {z:75,sym:'Re',name:'Rhenium',mass:'186.21',cat:'transition',group:7,period:6,config:'2,8,18,32,13,2',fact:'Second-highest melting point of any element. Used in jet engine turbine blades.'},
+  {z:76,sym:'Os',name:'Osmium',mass:'190.23',cat:'transition',group:8,period:6,config:'2,8,18,32,14,2',fact:'Densest naturally occurring element — a golf-ball size would weigh 1.4 kg!'},
+  {z:77,sym:'Ir',name:'Iridium',mass:'192.22',cat:'transition',group:9,period:6,config:'2,8,18,32,15,2',fact:'Most corrosion-resistant metal. Found in the layer marking the dinosaur extinction event.'},
+  {z:78,sym:'Pt',name:'Platinum',mass:'195.08',cat:'transition',group:10,period:6,config:'2,8,18,32,17,1',fact:'Rarer than gold. Used in catalytic converters, jewellery, and the cancer drug cisplatin.'},
+  {z:79,sym:'Au',name:'Gold',mass:'196.97',cat:'transition',group:11,period:6,config:'2,8,18,32,18,1',fact:'Does not tarnish or corrode. All Earth\'s gold originally came from meteorite impacts.'},
+  {z:80,sym:'Hg',name:'Mercury',mass:'200.59',cat:'transition',group:12,period:6,config:'2,8,18,32,18,2',fact:'Only metal that is liquid at room temperature. Used in thermometers and barometers.'},
+  {z:81,sym:'Tl',name:'Thallium',mass:'204.38',cat:'post',group:13,period:6,config:'2,8,18,32,18,3',fact:'Highly toxic heavy metal. Used in some medical imaging applications.'},
+  {z:82,sym:'Pb',name:'Lead',mass:'207.2',cat:'post',group:14,period:6,config:'2,8,18,32,18,4',fact:'Used in ancient Roman pipes (plumbum → plumbing). Blocks X-rays and gamma radiation.'},
+  {z:83,sym:'Bi',name:'Bismuth',mass:'208.98',cat:'post',group:15,period:6,config:'2,8,18,32,18,5',fact:'Forms beautiful iridescent crystals. Used in Pepto-Bismol — one of the least toxic heavy metals.'},
+  {z:84,sym:'Po',name:'Polonium',mass:'209',cat:'post',group:16,period:6,config:'2,8,18,32,18,6',fact:'Discovered by Marie Curie, named after her homeland Poland. Intensely radioactive.'},
+  {z:85,sym:'At',name:'Astatine',mass:'210',cat:'nonmetal',group:17,period:6,config:'2,8,18,32,18,7',fact:'Rarest naturally occurring element — less than 1 gram exists in Earth\'s entire crust.'},
+  {z:86,sym:'Rn',name:'Radon',mass:'222',cat:'noble',group:18,period:6,config:'2,8,18,32,18,8',fact:'Radioactive gas that seeps from rocks into buildings. Second leading cause of lung cancer.'},
+  // Period 7
+  {z:87,sym:'Fr',name:'Francium',mass:'223',cat:'alkali',group:1,period:7,config:'2,8,18,32,18,8,1',fact:'Second-rarest naturally occurring element. At any instant, only 20–30 grams exist on Earth.'},
+  {z:88,sym:'Ra',name:'Radium',mass:'226',cat:'alkaline',group:2,period:7,config:'2,8,18,32,18,8,2',fact:'Discovered by Marie Curie. Once used in luminous watch dials — until its danger was realised.'},
+  {z:89,sym:'Ac',name:'Actinium',mass:'227',cat:'actinide',group:3,period:7,config:'2,8,18,32,18,9,2',fact:'Glows blue in the dark due to its intense radioactivity.'},
+  {z:90,sym:'Th',name:'Thorium',mass:'232.04',cat:'actinide',group:3,period:7,config:'2,8,18,32,18,10,2',fact:'Radioactive metal that could fuel nuclear reactors more safely than uranium.'},
+  {z:91,sym:'Pa',name:'Protactinium',mass:'231.04',cat:'actinide',group:3,period:7,config:'2,8,18,32,20,9,2',fact:'One of the rarest and most expensive naturally occurring elements. Highly radioactive.'},
+  {z:92,sym:'U',name:'Uranium',mass:'238.03',cat:'actinide',group:3,period:7,config:'2,8,18,32,21,9,2',fact:'Fuels nuclear power plants, generating ~10% of the world\'s electricity.'},
+  {z:93,sym:'Np',name:'Neptunium',mass:'237',cat:'actinide',group:3,period:7,config:'2,8,18,32,22,9,2',fact:'First transuranic element synthesised (1940). Named after the planet Neptune.'},
+  {z:94,sym:'Pu',name:'Plutonium',mass:'244',cat:'actinide',group:3,period:7,config:'2,8,18,32,24,8,2',fact:'Powered the Cassini spacecraft to Saturn. Also used in nuclear weapons.'},
+  {z:95,sym:'Am',name:'Americium',mass:'243',cat:'actinide',group:3,period:7,config:'2,8,18,32,25,8,2',fact:'Found in smoke detectors in millions of homes — a radioactive element keeping us safe!'},
+  {z:96,sym:'Cm',name:'Curium',mass:'247',cat:'actinide',group:3,period:7,config:'2,8,18,32,25,9,2',fact:'Named after Marie and Pierre Curie. Powered instruments on the Mars Pathfinder rover.'},
+  {z:97,sym:'Bk',name:'Berkelium',mass:'247',cat:'actinide',group:3,period:7,config:'2,8,18,32,27,8,2',fact:'First made at Berkeley, California. Only a few grams have ever been produced.'},
+  {z:98,sym:'Cf',name:'Californium',mass:'251',cat:'actinide',group:3,period:7,config:'2,8,18,32,28,8,2',fact:'Used to start nuclear reactors and inspect aircraft for fatigue cracks.'},
+  {z:99,sym:'Es',name:'Einsteinium',mass:'252',cat:'actinide',group:3,period:7,config:'2,8,18,32,29,8,2',fact:'Discovered in debris of the first hydrogen bomb test (1952). Named after Albert Einstein.'},
+  {z:100,sym:'Fm',name:'Fermium',mass:'257',cat:'actinide',group:3,period:7,config:'2,8,18,32,30,8,2',fact:'Also found in nuclear test debris. Named after Enrico Fermi, builder of the first nuclear reactor.'},
+  {z:101,sym:'Md',name:'Mendelevium',mass:'258',cat:'actinide',group:3,period:7,config:'2,8,18,32,31,8,2',fact:'Named after Dmitri Mendeleev. Only nanogram quantities have ever been made.'},
+  {z:102,sym:'No',name:'Nobelium',mass:'259',cat:'actinide',group:3,period:7,config:'2,8,18,32,32,8,2',fact:'Named after Alfred Nobel, inventor of dynamite and founder of the Nobel Prizes.'},
+  {z:103,sym:'Lr',name:'Lawrencium',mass:'266',cat:'actinide',group:3,period:7,config:'2,8,18,32,32,8,3',fact:'Named after Ernest Lawrence, inventor of the cyclotron particle accelerator.'},
+  {z:104,sym:'Rf',name:'Rutherfordium',mass:'267',cat:'transition',group:4,period:7,config:'2,8,18,32,32,10,2',fact:'Named after Ernest Rutherford. A synthetic element that exists only for seconds.'},
+  {z:105,sym:'Db',name:'Dubnium',mass:'268',cat:'transition',group:5,period:7,config:'2,8,18,32,32,11,2',fact:'Named after Dubna, Russia. Subject of a Cold War dispute between US and Soviet scientists.'},
+  {z:106,sym:'Sg',name:'Seaborgium',mass:'271',cat:'transition',group:6,period:7,config:'2,8,18,32,32,12,2',fact:'Named after Glenn Seaborg, who helped discover 10 elements — most by any individual.'},
+  {z:107,sym:'Bh',name:'Bohrium',mass:'272',cat:'transition',group:7,period:7,config:'2,8,18,32,32,13,2',fact:'Named after Niels Bohr. Decays in less than a second.'},
+  {z:108,sym:'Hs',name:'Hassium',mass:'277',cat:'transition',group:8,period:7,config:'2,8,18,32,32,14,2',fact:'Named after the German state of Hesse. Predicted to be the densest element if made in bulk.'},
+  {z:109,sym:'Mt',name:'Meitnerium',mass:'278',cat:'transition',group:9,period:7,config:'2,8,18,32,32,15,2',fact:'Honours Lise Meitner, who co-discovered nuclear fission.'},
+  {z:110,sym:'Ds',name:'Darmstadtium',mass:'281',cat:'transition',group:10,period:7,config:'2,8,18,32,32,17,1',fact:'Named after Darmstadt, Germany. Only a few atoms have ever been made.'},
+  {z:111,sym:'Rg',name:'Roentgenium',mass:'282',cat:'transition',group:11,period:7,config:'2,8,18,32,32,18,1',fact:'Honours Wilhelm Röntgen, who discovered X-rays. First made in 1994.'},
+  {z:112,sym:'Cn',name:'Copernicium',mass:'285',cat:'transition',group:12,period:7,config:'2,8,18,32,32,18,2',fact:'Synthesised on Nicolaus Copernicus\'s 537th birthday. May behave more like a noble gas.'},
+  {z:113,sym:'Nh',name:'Nihonium',mass:'286',cat:'post',group:13,period:7,config:'2,8,18,32,32,18,3',fact:'Named after Japan (Nihon). First element discovered in Asia.'},
+  {z:114,sym:'Fl',name:'Flerovium',mass:'289',cat:'post',group:14,period:7,config:'2,8,18,32,32,18,4',fact:'Named after the Flerov Laboratory in Russia. May be a gas at room temperature.'},
+  {z:115,sym:'Mc',name:'Moscovium',mass:'290',cat:'post',group:15,period:7,config:'2,8,18,32,32,18,5',fact:'Named after Moscow Oblast. Most stable isotope has a half-life of only 220 milliseconds.'},
+  {z:116,sym:'Lv',name:'Livermorium',mass:'293',cat:'post',group:16,period:7,config:'2,8,18,32,32,18,6',fact:'Named after Lawrence Livermore National Laboratory. Discovered jointly by the US and Russia.'},
+  {z:117,sym:'Ts',name:'Tennessine',mass:'294',cat:'post',group:17,period:7,config:'2,8,18,32,32,18,7',fact:'Named after Tennessee, USA. Predicted to behave unlike other halogens due to relativistic effects.'},
+  {z:118,sym:'Og',name:'Oganesson',mass:'294',cat:'noble',group:18,period:7,config:'2,8,18,32,32,18,8',fact:'Heaviest element ever made. Named after physicist Yuri Oganessian, who is still alive.'},
+];
+
+const CAT_CLASS = {
+  alkali:'cat-alkali', alkaline:'cat-alkaline', transition:'cat-transition',
+  post:'cat-post', metalloid:'cat-metalloid', nonmetal:'cat-nonmetal',
+  noble:'cat-noble', lanthanide:'cat-lanthanide', actinide:'cat-actinide'
+};
+const CAT_LABEL = {
+  alkali:'Alkali metal', alkaline:'Alkaline earth metal', transition:'Transition metal',
+  post:'Post-transition metal', metalloid:'Metalloid', nonmetal:'Non-metal',
+  noble:'Noble gas', lanthanide:'Lanthanide', actinide:'Actinide'
+};
+const CAT_COLORS_DETAIL = {
+  alkali:{bg:'rgba(239,68,68,.12)',border:'rgba(239,68,68,.3)',text:'#fca5a5'},
+  alkaline:{bg:'rgba(251,146,60,.12)',border:'rgba(251,146,60,.3)',text:'#fdba74'},
+  transition:{bg:'rgba(251,191,36,.12)',border:'rgba(251,191,36,.3)',text:'#fcd34d'},
+  post:{bg:'rgba(163,230,53,.10)',border:'rgba(163,230,53,.25)',text:'#bef264'},
+  metalloid:{bg:'rgba(20,184,166,.10)',border:'rgba(20,184,166,.25)',text:'#5eead4'},
+  nonmetal:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+  noble:{bg:'rgba(168,85,247,.12)',border:'rgba(168,85,247,.28)',text:'#d8b4fe'},
+  lanthanide:{bg:'rgba(236,72,153,.10)',border:'rgba(236,72,153,.25)',text:'#f9a8d4'},
+  actinide:{bg:'rgba(99,102,241,.12)',border:'rgba(99,102,241,.28)',text:'#a5b4fc'},
+};
+
+/* Build a lookup by [period][group] for main table */
+const byPos = {};
+PT_ELEMENTS.forEach(el => {
+  if(el.cat === 'lanthanide' || el.cat === 'actinide') return;
+  const key = `${el.period}_${el.group}`;
+  byPos[key] = el;
+});
+const lanthanides = PT_ELEMENTS.filter(e=>e.cat==='lanthanide');
+const actinides   = PT_ELEMENTS.filter(e=>e.cat==='actinide');
+
+let activeFilter = 'all';
+let selectedZ = null;
+
+function buildGrid() {
+  const grid = document.getElementById('ptGrid');
+  grid.innerHTML = '';
+
+  // Rows 1-7 (main table)
+  for(let period = 1; period <= 7; period++) {
+    for(let group = 1; group <= 18; group++) {
+      // Lanthanide/actinide placeholder in col 3, periods 6-7
+      if((period === 6 || period === 7) && group === 3) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'pt-cell ' + (period===6?'cat-lanthanide':'cat-actinide');
+        placeholder.style.opacity='0.4';
+        placeholder.style.fontSize='8px';
+        placeholder.style.color='rgba(255,255,255,.5)';
+        placeholder.style.textAlign='center';
+        placeholder.style.lineHeight='1.2';
+        placeholder.textContent = period===6?'57-71':'89-103';
+        grid.appendChild(placeholder);
+        continue;
+      }
+      const el = byPos[`${period}_${group}`];
+      if(!el) {
+        const gap = document.createElement('div');
+        gap.className = 'pt-gap';
+        grid.appendChild(gap);
+      } else {
+        grid.appendChild(makeCell(el));
+      }
+    }
+  }
+
+  // Blank row
+  for(let i=0;i<18;i++){const g=document.createElement('div');g.className='pt-gap';grid.appendChild(g);}
+
+  // Lanthanide row (row 9 visually, columns 3-17)
+  for(let i=0;i<2;i++){const g=document.createElement('div');g.className='pt-gap';grid.appendChild(g);}
+  lanthanides.forEach(el => grid.appendChild(makeCell(el)));
+  for(let i=0;i<1;i++){const g=document.createElement('div');g.className='pt-gap';grid.appendChild(g);}
+
+  // Actinide row
+  for(let i=0;i<2;i++){const g=document.createElement('div');g.className='pt-gap';grid.appendChild(g);}
+  actinides.forEach(el => grid.appendChild(makeCell(el)));
+  for(let i=0;i<1;i++){const g=document.createElement('div');g.className='pt-gap';grid.appendChild(g);}
+}
+
+function makeCell(el) {
+  const cell = document.createElement('div');
+  cell.className = 'pt-cell ' + CAT_CLASS[el.cat];
+  cell.id = 'cell_' + el.z;
+  cell.title = el.name;
+  cell.innerHTML = `<div class="pt-z">${el.z}</div><div class="pt-sym">${el.sym}</div>`;
+  cell.onclick = () => selectElement(el.z);
+  return cell;
+}
+
+function selectElement(z) {
+  selectedZ = z;
+  document.querySelectorAll('.pt-cell').forEach(c => c.classList.remove('selected'));
+  const cell = document.getElementById('cell_' + z);
+  if(cell) cell.classList.add('selected');
+
+  const el = PT_ELEMENTS.find(e=>e.z===z);
+  const cc = CAT_COLORS_DETAIL[el.cat] || {};
+  document.getElementById('detSym').textContent = el.sym;
+  document.getElementById('detSym').style.color = cc.text || '#60a5fa';
+  document.getElementById('detInfo').innerHTML = `
+    <div><div class="pt-di-label">Name</div><div class="pt-di-val">${el.name}</div></div>
+    <div><div class="pt-di-label">Atomic number</div><div class="pt-di-val">${el.z}</div></div>
+    <div><div class="pt-di-label">Atomic mass</div><div class="pt-di-val">${el.mass}</div></div>
+    <div><div class="pt-di-label">Period</div><div class="pt-di-val">${el.period}</div></div>
+    <div><div class="pt-di-label">Group</div><div class="pt-di-val">${el.group}</div></div>
+    <div><div class="pt-di-label">Category</div><div class="pt-di-val small" style="color:${cc.text||'#93c5fd'}">${CAT_LABEL[el.cat]||el.cat}</div></div>
+    <div><div class="pt-di-label">Electron config</div><div class="pt-di-val small">${el.config}</div></div>
+    <div class="pt-di-fact">${el.fact}</div>
+  `;
+}
+
+function setFilter(cat) {
+  activeFilter = cat;
+  applyFilter();
+}
+
+function applyFilter() {
+  const search = document.getElementById('ptSearch').value.trim().toLowerCase();
+  document.querySelectorAll('.pt-cell').forEach(cell => {
+    const z = parseInt(cell.id.replace('cell_',''));
+    if(!z) return;
+    const el = PT_ELEMENTS.find(e=>e.z===z);
+    if(!el) return;
+    const matchCat  = activeFilter==='all' || el.cat===activeFilter;
+    const matchSearch = !search || el.name.toLowerCase().includes(search) || el.sym.toLowerCase().includes(search);
+    cell.classList.toggle('dimmed', !(matchCat && matchSearch));
+  });
+}
+
+function filterTable() { applyFilter(); }
+
+buildGrid();
+selectElement(1);
+
+/* ── Tabs ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+/* ── Practice ── */
+const QUESTIONS = [
+  {text:'Who first arranged the elements by atomic mass and left gaps for undiscovered elements, correctly predicting their properties?',opts:['John Newlands','Henry Moseley','Dmitri Mendeleev','John Dalton'],ans:2,exp:'Mendeleev arranged the 63 known elements by atomic mass in 1869 and predicted properties of gaps that were later confirmed when gallium, scandium, and germanium were discovered.'},
+  {text:'Elements in the same GROUP of the periodic table have similar chemical properties because they have:',opts:['The same atomic mass','The same number of electron shells','The same number of valence (outermost) electrons','The same number of neutrons'],ans:2,exp:'Group members share the same number of electrons in their outermost shell (valence electrons), which determines how they react chemically.'},
+  {text:'Sodium (Na) is in Period 3, Group 1. How many electron shells does sodium have?',opts:['1','2','3','4'],ans:2,exp:'The period number tells you the number of electron shells. Period 3 means 3 shells. Sodium\'s electron configuration is 2,8,1.'},
+  {text:'Which group of elements is described as "completely unreactive" because they have full outer electron shells?',opts:['Group 1 — Alkali metals','Group 17 — Halogens','Group 18 — Noble gases','Group 2 — Alkaline earth metals'],ans:2,exp:'Noble gases (Group 18) have full outer shells and do not need to gain or lose electrons, making them almost completely unreactive (inert).'},
+  {text:'As you move DOWN Group 1 (the alkali metals), what happens to reactivity?',opts:['Reactivity decreases','Reactivity stays the same','Reactivity increases','Reactivity becomes zero'],ans:2,exp:'Going down Group 1, the valence electron is in a higher shell, further from the nucleus and more easily removed. This makes the element more reactive. Caesium is more reactive than lithium.'},
+  {text:'Silicon (Si) is best described as a:',opts:['Reactive non-metal','Transition metal','Metalloid (semi-metal)','Noble gas'],ans:2,exp:'Silicon sits on the "staircase" boundary between metals and non-metals in the periodic table. It has properties of both — it is a semiconductor, which is why it is used in computer chips.'},
+];
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    const msgs=['Keep studying — re-read the lesson.','Good effort — review the explanations.','Well done! A solid understanding.','Excellent! You\'ve mastered the periodic table.'];
+    document.getElementById('scoreMsg').textContent=score<=2?msgs[0]:score<=4?msgs[1]:score===5?msgs[2]:msgs[3];
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

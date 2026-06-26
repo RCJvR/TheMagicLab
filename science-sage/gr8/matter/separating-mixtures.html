@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Separating Mixtures — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+      --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.15);
+      --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border);margin-bottom:0}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+    .method-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+    .method-card h4{font-weight:800;font-size:14px;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+    .method-card h4 span{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+    .method-card p{font-size:13px;color:rgba(210,218,245,.65);line-height:1.65;margin:0}
+    .method-card .example{font-size:11.5px;color:#60a5fa;font-family:var(--fm);margin-top:8px}
+
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;margin-bottom:28px}
+    .canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+    canvas{border-radius:12px;display:block;background:#050810}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    select.ctrl-select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);font-family:var(--fd);font-size:13px;padding:9px 12px;border-radius:10px;outline:none;cursor:pointer;margin-bottom:8px}
+    select.ctrl-select:focus{border-color:rgba(96,165,250,.4)}
+    .run-btn{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.10);color:#93c5fd;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;transition:all 140ms}
+    .run-btn:hover{background:rgba(96,165,250,.20)}
+    .anim-desc{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.65;margin-top:10px}
+    .anim-status{font-family:var(--fm);font-size:11px;color:#60a5fa;margin-top:8px;min-height:18px}
+
+    /* Match game */
+    .match-section{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:24px}
+    .match-title{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .match-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+    .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .match-col-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .match-mixture{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:13px;color:rgba(210,218,245,.80);margin-bottom:8px;cursor:pointer;transition:all 140ms;user-select:none}
+    .match-mixture.selected{border-color:rgba(96,165,250,.5);background:rgba(96,165,250,.12);color:#fff}
+    .match-mixture.matched-ok{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.10);color:#86efac;cursor:default}
+    .match-mixture.matched-bad{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.10);color:#fca5a5;cursor:default}
+    .match-method{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:13px;color:rgba(210,218,245,.80);margin-bottom:8px;cursor:pointer;transition:all 140ms;user-select:none}
+    .match-method:hover:not(.used){border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.07)}
+    .match-method.used{opacity:0.35;cursor:default}
+    .match-feedback{margin-top:16px;font-size:13px;color:rgba(210,218,245,.70);min-height:20px;line-height:1.6}
+    .match-score{font-family:var(--fm);font-size:12px;color:#60a5fa;margin-top:6px}
+    .reset-btn{margin-top:14px;font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--muted);cursor:pointer;transition:all 140ms}
+    .reset-btn:hover{background:rgba(255,255,255,.10);color:var(--text)}
+
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}.canvas-wrap{display:none}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Matter &amp; Materials</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Matter &amp; Materials · Lesson 4</div>
+  <h1 class="lesson-title">Separating Mixtures</h1>
+  <p class="lesson-sub">Discover the physical techniques scientists and engineers use to separate substances — from filtering water to refining crude oil.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Why do we separate mixtures?</h2>
+    <p>Most natural materials — seawater, crude oil, air, soil — are mixtures. To obtain a useful, pure substance from a mixture, we need to use a <strong>separation technique</strong>. All separation techniques rely on the fact that the components of a mixture <em>retain their own physical properties</em>, which differ from one another. No chemical reaction takes place during separation.</p>
+    <div class="callout"><strong>Key principle:</strong> We choose a separation technique based on the <em>difference in physical properties</em> between the components (e.g. particle size, solubility, boiling point, magnetic properties, density).</div>
+
+    <h2>Methods of Separating Mixtures</h2>
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>Filtration <span>Solid + Liquid</span></h4>
+        <p>A mixture of an insoluble solid and a liquid is poured through filter paper in a funnel. The solid (residue) is trapped by the filter paper; the liquid (filtrate) passes through into a beaker below. Works because the solid particles are too large to pass through the tiny pores in the filter paper.</p>
+        <div class="example">Example: Separating sand from water · Removing tea leaves from tea</div>
+      </div>
+      <div class="method-card">
+        <h4>Evaporation <span>Solid dissolved in Liquid</span></h4>
+        <p>The solution is heated so that the liquid (solvent) evaporates away, leaving behind the dissolved solid (solute). Best used when the solid does not decompose on heating and when we want to recover the solid, not the liquid.</p>
+        <div class="example">Example: Recovering salt (NaCl) from salt water · Making salt pans on the coast</div>
+      </div>
+      <div class="method-card">
+        <h4>Distillation <span>Two or more Liquids</span></h4>
+        <p>The mixture is heated; the liquid with the <strong>lower boiling point</strong> evaporates first. The vapour is cooled in a condenser and collected as a pure liquid. <strong>Fractional distillation</strong> separates liquids with similar boiling points (e.g. crude oil, liquid air) using a fractionating column.</p>
+        <div class="example">Example: Purifying water · Desalinating seawater · Refining crude oil into petrol, diesel, and jet fuel</div>
+      </div>
+      <div class="method-card">
+        <h4>Chromatography <span>Dissolved pigments / dyes</span></h4>
+        <p>A spot of the mixture is placed on chromatography paper. A solvent travels up the paper by capillary action, carrying the dissolved components with it. Components travel at different speeds depending on how strongly they are attracted to the paper vs the solvent — so they separate into distinct bands (spots).</p>
+        <div class="example">Example: Separating ink pigments · Testing food dyes · Forensic analysis of substances</div>
+      </div>
+      <div class="method-card">
+        <h4>Magnetic Separation <span>Magnetic + Non-magnetic solids</span></h4>
+        <p>A magnet is passed over (or through) the mixture. Magnetic materials (iron, nickel, cobalt) are attracted to the magnet and pulled out of the mixture, while non-magnetic materials remain behind.</p>
+        <div class="example">Example: Separating iron filings from sand · Removing iron from breakfast cereal · Steel recycling in industry</div>
+      </div>
+      <div class="method-card">
+        <h4>Sieving <span>Solids of different particle sizes</span></h4>
+        <p>The mixture is passed through a sieve or mesh. Smaller particles pass through the holes; larger particles are retained. Works because of differences in particle size.</p>
+        <div class="example">Example: Separating fine flour from coarse bran · Grading sand and gravel in construction · Separating pebbles from soil</div>
+      </div>
+    </div>
+
+    <h2>Summary: Choosing the Right Method</h2>
+    <div class="key-fact">
+      Insoluble solid + liquid → Filtration<br>
+      Dissolved solid + liquid → Evaporation (or distillation to keep liquid too)<br>
+      Two or more liquids with different boiling points → Distillation<br>
+      Mixed colours/dyes in solution → Chromatography<br>
+      Magnetic + non-magnetic solids → Magnetic separation<br>
+      Solids of different sizes → Sieving
+    </div>
+
+    <h2>Real-world application: Drinking water treatment</h2>
+    <p>Water treatment plants use several separation techniques in sequence: <strong>sieving</strong> (removes large debris), <strong>sedimentation</strong> (heavy particles sink), <strong>filtration</strong> (removes fine particles), and chemical treatment. This demonstrates that real mixtures often need more than one technique to fully separate all their components.</p>
+
+    <h2>Distillation and desalination</h2>
+    <p>South Africa faces water scarcity. <strong>Desalination</strong> — removing salt from seawater — is a key strategy. One method is <strong>distillation</strong>: seawater is heated until water evaporates (salt stays behind), the steam is cooled and collected as fresh water. Modern desalination plants near Cape Town and along the coast use this principle alongside reverse osmosis (forcing water through a membrane under pressure).</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Separation Technique Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Choose a mixture and a separation method, then press Run to watch the animation. Then test your knowledge with the Match-the-Method game below.</p>
+
+  <div class="explore-top">
+    <div class="canvas-wrap">
+      <canvas id="sepCanvas" width="440" height="360"></canvas>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-align:center" id="canvasCaption">Select a method and press Run Animation</div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Choose Mixture</div>
+        <select class="ctrl-select" id="mixtureSelect" onchange="updateMethodOptions()">
+          <option value="sand_water">Sand + Water</option>
+          <option value="salt_water">Salt + Water</option>
+          <option value="iron_sand">Iron filings + Sand</option>
+          <option value="ink">Ink pigments (dyes)</option>
+          <option value="gravel_sand">Gravel + Sand</option>
+          <option value="alcohol_water">Alcohol + Water</option>
+        </select>
+        <div class="ctrl-label" style="margin-top:10px">Choose Method</div>
+        <select class="ctrl-select" id="methodSelect"></select>
+        <button class="run-btn" onclick="runAnimation()">▶ Run Animation</button>
+        <div class="anim-desc" id="animDesc">Select a mixture and method above, then press Run.</div>
+        <div class="anim-status" id="animStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Match the Method game -->
+  <div class="match-section">
+    <div class="match-title">Match the Method</div>
+    <div class="match-sub">Click a mixture on the left, then click the correct separation method on the right. Get all 6 correct!</div>
+    <div class="match-grid">
+      <div>
+        <div class="match-col-label">Mixture</div>
+        <div id="matchMixtures"></div>
+      </div>
+      <div>
+        <div class="match-col-label">Separation Method</div>
+        <div id="matchMethods"></div>
+      </div>
+    </div>
+    <div class="match-feedback" id="matchFeedback"></div>
+    <div class="match-score" id="matchScore"></div>
+    <button class="reset-btn" onclick="resetMatch()">↺ Reset game</button>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer these questions in your exercise book. Draw diagrams where helpful.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Explain WHY it is possible to separate a mixture using physical methods. Why can we not use the same physical methods to separate a compound into its elements?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">A learner has a mixture of sand, salt, and iron filings. Describe, in order, the steps she should take to separate all three components. Name the technique used at each step and explain why it works.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Draw and label a diagram of a filtration setup. Name: (a) the apparatus used to hold the filter paper, (b) the solid left on the filter paper, (c) the liquid that passes through.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain how chromatography separates different dyes in a mixture of ink. In your answer, explain what causes the dyes to travel different distances up the paper.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">South Africa faces water shortages. Explain how distillation can be used to obtain fresh drinking water from seawater. In your answer, state the physical property that makes distillation work for this mixture.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (4 marks)</div><div class="wb-qtext">For each mixture below, state the most appropriate separation technique and explain the physical property difference that makes it work: (a) muddy water, (b) a mixture of ethanol and water, (c) copper coins mixed with iron nails, (d) a mixture of gravel and fine sand.</div></div>
+  </div>
+</div>
+
+<script>
+/* ── Separation animation engine ── */
+const canvas = document.getElementById('sepCanvas');
+const ctx    = canvas.getContext('2d');
+const W = 440, H = 360;
+
+/* Which methods apply to which mixture */
+const MIXTURE_METHODS = {
+  sand_water:   ['Filtration'],
+  salt_water:   ['Evaporation','Distillation'],
+  iron_sand:    ['Magnetic Separation'],
+  ink:          ['Chromatography'],
+  gravel_sand:  ['Sieving'],
+  alcohol_water:['Distillation'],
+};
+
+const MIXTURE_LABEL = {
+  sand_water:'Sand + Water', salt_water:'Salt + Water',
+  iron_sand:'Iron filings + Sand', ink:'Ink pigments',
+  gravel_sand:'Gravel + Sand', alcohol_water:'Alcohol + Water',
+};
+
+let animFrame = null;
+let animT = 0;
+let currentAnim = null;
+
+function updateMethodOptions() {
+  const mix = document.getElementById('mixtureSelect').value;
+  const sel = document.getElementById('methodSelect');
+  sel.innerHTML = MIXTURE_METHODS[mix].map(m => `<option value="${m}">${m}</option>`).join('');
+  document.getElementById('animDesc').textContent = 'Press Run Animation to start.';
+  document.getElementById('animStatus').textContent = '';
+  stopAnim();
+  drawIdle();
+}
+
+function stopAnim() {
+  if(animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+}
+
+function runAnimation() {
+  stopAnim();
+  animT = 0;
+  const mix    = document.getElementById('mixtureSelect').value;
+  const method = document.getElementById('methodSelect').value;
+  currentAnim  = method;
+  const descs = {
+    'Filtration':'The mixture is poured through filter paper. Insoluble sand particles are too large to pass through — they form the residue. Water (the filtrate) drips through into the beaker below.',
+    'Evaporation':'The salt water is heated. Water molecules escape as steam, leaving behind white salt crystals on the evaporating dish. Evaporation works because water has a lower boiling point than salt.',
+    'Distillation':'The mixture is heated in a flask. The component with the lower boiling point (alcohol or water) evaporates first, travels through a condenser where it is cooled back to liquid, and is collected separately.',
+    'Magnetic Separation':'A magnet is moved through or over the mixture. Magnetic iron filings are attracted and cling to the magnet; non-magnetic sand stays behind.',
+    'Chromatography':'The solvent travels up the chromatography paper. It carries the different dye molecules with it — each dye travels a different distance depending on its attraction to the paper, forming separate coloured bands.',
+    'Sieving':'The mixture is shaken through a sieve. Smaller sand particles pass through the holes; larger gravel pieces are retained on top of the sieve.',
+  };
+  document.getElementById('animDesc').textContent = descs[method] || '';
+  document.getElementById('animStatus').textContent = 'Running…';
+
+  function loop() {
+    animT++;
+    drawAnim(method, mix, animT);
+    if(animT < 420) animFrame = requestAnimationFrame(loop);
+    else { document.getElementById('animStatus').textContent = 'Complete — press Run to replay.'; }
+  }
+  animFrame = requestAnimationFrame(loop);
+}
+
+function drawIdle() {
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(255,255,255,0.04)';
+  ctx.fillRect(0,0,W,H);
+  ctx.fillStyle = 'rgba(210,218,245,0.25)';
+  ctx.font = '14px "Cabinet Grotesk"';
+  ctx.textAlign = 'center';
+  ctx.fillText('Select a mixture and method, then press Run.', W/2, H/2);
+  ctx.textAlign = 'left';
+}
+
+function drawAnim(method, mix, t) {
+  ctx.clearRect(0,0,W,H);
+  const progress = Math.min(t / 360, 1); // 0→1 over 360 frames
+
+  if(method === 'Filtration')        drawFiltration(t, progress);
+  else if(method === 'Evaporation')  drawEvaporation(t, progress);
+  else if(method === 'Distillation') drawDistillation(t, progress, mix);
+  else if(method === 'Magnetic Separation') drawMagnetic(t, progress);
+  else if(method === 'Chromatography')      drawChromatography(t, progress);
+  else if(method === 'Sieving')             drawSieving(t, progress);
+}
+
+/* ── FILTRATION ── */
+function drawFiltration(t, p) {
+  // Funnel outline
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 2;
+  // Funnel body (trapezoid)
+  ctx.beginPath();
+  ctx.moveTo(130,60); ctx.lineTo(310,60);
+  ctx.lineTo(230,200); ctx.lineTo(210,200);
+  ctx.closePath(); ctx.stroke();
+  // Funnel stem
+  ctx.beginPath(); ctx.moveTo(220,200); ctx.lineTo(220,250); ctx.stroke();
+  // Beaker
+  ctx.beginPath();
+  ctx.moveTo(165,250); ctx.lineTo(165,340); ctx.lineTo(275,340); ctx.lineTo(275,250);
+  ctx.stroke();
+
+  // Filter paper (cone shape inside funnel)
+  ctx.beginPath();
+  ctx.moveTo(140,65); ctx.lineTo(220,195); ctx.lineTo(300,65); ctx.closePath();
+  ctx.fillStyle = 'rgba(251,191,36,0.18)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(251,191,36,0.5)';
+  ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Sand particles accumulating on filter paper (residue)
+  const sandCount = Math.floor(p * 22);
+  for(let i=0;i<sandCount;i++){
+    const rx = 165 + (i % 8)*10 + Math.sin(i*1.7)*4;
+    const ry = 160 + Math.floor(i/8)*8;
+    ctx.beginPath(); ctx.arc(rx, ry, 5, 0, Math.PI*2);
+    ctx.fillStyle = '#c4a882'; ctx.fill();
+  }
+
+  // Water dripping through (filtrate)
+  const dropsDone = Math.floor(p * 14);
+  for(let i=0;i<dropsDone;i++){
+    const dy = 255 + (i%4)*22;
+    if(dy < 330) {
+      ctx.beginPath();
+      ctx.arc(220, dy, 3, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(96,165,250,0.7)'; ctx.fill();
+    }
+  }
+  // Water level in beaker
+  const waterH = p * 70;
+  ctx.fillStyle = 'rgba(96,165,250,0.20)';
+  ctx.fillRect(167, 340 - waterH, 106, waterH);
+
+  // Animated drop falling from stem
+  const dropY = 205 + ((t * 2) % 45);
+  if(dropY < 250) {
+    ctx.beginPath(); ctx.arc(220, dropY, 4, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(96,165,250,0.85)'; ctx.fill();
+  }
+
+  // Labels
+  drawLabel(ctx, 310, 130, 'Filter paper');
+  drawLabel(ctx, 55,  160, 'Residue (sand)');
+  drawLabel(ctx, 290, 310, 'Filtrate (water)');
+  drawLabel(ctx, 220, 40,  'Mixture poured in');
+}
+
+/* ── EVAPORATION ── */
+function drawEvaporation(t, p) {
+  // Evaporating dish
+  ctx.beginPath();
+  ctx.ellipse(220, 260, 110, 30, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Tripod / stand lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(140,270); ctx.lineTo(160,320); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(300,270); ctx.lineTo(280,320); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(140,320); ctx.lineTo(300,320); ctx.stroke();
+
+  // Flame
+  const flicker = Math.sin(t*0.25)*3;
+  ctx.beginPath();
+  ctx.moveTo(220, 320);
+  ctx.bezierCurveTo(200+flicker, 305, 210, 290, 220, 300+flicker*0.5);
+  ctx.bezierCurveTo(230, 290, 240-flicker, 305, 220, 320);
+  const fGrad = ctx.createRadialGradient(220,315,2,220,310,18);
+  fGrad.addColorStop(0,'#fbbf24'); fGrad.addColorStop(0.5,'#f97316'); fGrad.addColorStop(1,'rgba(239,68,68,0)');
+  ctx.fillStyle=fGrad; ctx.fill();
+
+  // Water level (decreasing)
+  const waterH = Math.max(0, (1-p) * 38);
+  ctx.save();
+  ctx.beginPath(); ctx.ellipse(220,260,108,28,0,0,Math.PI*2); ctx.clip();
+  ctx.fillStyle='rgba(96,165,250,0.18)';
+  ctx.fillRect(112,260-waterH+10,216,waterH);
+  ctx.restore();
+
+  // Salt crystals appearing
+  const crystalCount = Math.floor(p * 18);
+  for(let i=0;i<crystalCount;i++){
+    const cx2 = 150 + (i%6)*16 + 4;
+    const cy2 = 262 + Math.floor(i/6)*6;
+    ctx.fillStyle='rgba(255,255,255,0.80)';
+    ctx.fillRect(cx2-3,cy2-3,6,6);
+  }
+
+  // Steam particles
+  for(let i=0;i<8;i++){
+    const age = (t*1.5 + i*45) % 300;
+    if(age < 200) {
+      const sx = 180 + i*9 + Math.sin(age*0.05 + i)*18;
+      const sy = 240 - age * 0.7;
+      const alpha = 1 - age/200;
+      ctx.beginPath(); ctx.arc(sx, sy, 4+age*0.025, 0, Math.PI*2);
+      ctx.fillStyle=`rgba(180,210,255,${alpha*0.4})`; ctx.fill();
+    }
+  }
+
+  drawLabel(ctx, 310, 190, 'Steam escaping');
+  drawLabel(ctx, 310, 260, 'Salt crystals form');
+  drawLabel(ctx, 60,  260, 'Salt water');
+  drawLabel(ctx, 220, 340, 'Heat source');
+}
+
+/* ── DISTILLATION ── */
+function drawDistillation(t, p, mix) {
+  // Flask
+  ctx.beginPath();
+  ctx.arc(145, 240, 65, 0, Math.PI*2);
+  ctx.fillStyle='rgba(96,165,250,0.08)'; ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
+
+  // Flask neck
+  ctx.beginPath();
+  ctx.moveTo(128,178); ctx.lineTo(128,145); ctx.lineTo(165,145); ctx.lineTo(165,178); ctx.stroke();
+  // Tube going right (condenser)
+  ctx.beginPath();
+  ctx.moveTo(165,145); ctx.lineTo(310,145); ctx.lineTo(340,200); ctx.stroke();
+  // Condenser jacket
+  ctx.beginPath();
+  ctx.moveTo(165,140); ctx.lineTo(310,140); ctx.strokeStyle='rgba(96,165,250,0.4)'; ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(165,150); ctx.lineTo(310,150); ctx.stroke();
+  // Collection beaker
+  ctx.beginPath();
+  ctx.moveTo(315,200); ctx.lineTo(315,290); ctx.lineTo(385,290); ctx.lineTo(385,200);
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.stroke();
+
+  // Liquid in flask (decreasing)
+  const flaskLiqH = (0.4 + (1-p)*0.35) * 90;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(145,240,63,0,Math.PI*2); ctx.clip();
+  ctx.fillStyle = mix==='alcohol_water' ? 'rgba(168,85,247,0.20)' : 'rgba(96,165,250,0.20)';
+  ctx.fillRect(82,240+63-flaskLiqH, 126, flaskLiqH);
+  ctx.restore();
+
+  // Flame
+  const fl = Math.sin(t*0.28)*3;
+  ctx.beginPath();
+  ctx.moveTo(145,308); ctx.bezierCurveTo(130+fl,295,135,280,145,290+fl*0.4);
+  ctx.bezierCurveTo(155,280,160-fl,295,145,308);
+  const fG2 = ctx.createRadialGradient(145,302,2,145,295,18);
+  fG2.addColorStop(0,'#fbbf24'); fG2.addColorStop(0.5,'#f97316'); fG2.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=fG2; ctx.fill();
+
+  // Vapour in tube (animated bubble moving right)
+  const bpos = ((t*1.2) % 200);
+  if(bpos < 175) {
+    const bx = 165 + bpos;
+    const by = 145;
+    ctx.beginPath(); ctx.arc(bx, by, 5, 0, Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.fill();
+  }
+
+  // Condensate collecting
+  const collectH = p * 60;
+  ctx.fillStyle = 'rgba(96,165,250,0.25)';
+  ctx.fillRect(317, 290-collectH, 66, collectH);
+
+  drawLabel(ctx, 55,  240, 'Heated flask');
+  drawLabel(ctx, 215, 125, 'Condenser (cooled)');
+  drawLabel(ctx, 335, 300, 'Distillate');
+  const lowerBP = mix === 'alcohol_water' ? 'alcohol (78°C)' : 'water (100°C)';
+  drawLabel(ctx, 55, 280, `Lower b.p.: ${lowerBP}`);
+}
+
+/* ── MAGNETIC SEPARATION ── */
+function drawMagnetic(t, p) {
+  // Container / dish
+  ctx.beginPath();
+  ctx.moveTo(100, 220); ctx.lineTo(100, 300); ctx.lineTo(340, 300); ctx.lineTo(340, 220);
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
+
+  // Sand particles (static)
+  for(let i=0;i<30;i++){
+    const sx = 115 + (i%10)*22 + Math.sin(i*3.1)*4;
+    const sy = 265 + Math.floor(i/10)*12;
+    ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI*2);
+    ctx.fillStyle='#c4a882'; ctx.fill();
+  }
+
+  // Magnet position (moves left to right)
+  const magnetX = 110 + p * 180;
+  const magnetY = 170;
+  // Magnet body
+  ctx.fillStyle = '#ef4444';
+  ctx.fillRect(magnetX - 20, magnetY, 40, 25);
+  ctx.fillStyle = '#3b82f6';
+  ctx.fillRect(magnetX - 20, magnetY + 25, 40, 20);
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 11px "JetBrains Mono"';
+  ctx.textAlign = 'center';
+  ctx.fillText('N', magnetX, magnetY+17);
+  ctx.fillText('S', magnetX, magnetY+40);
+
+  // Magnetic field lines
+  for(let i=0;i<5;i++){
+    const fy = magnetY+45 + i*8;
+    const alpha = 0.3 - i*0.05;
+    ctx.beginPath();
+    ctx.arc(magnetX, fy, 12+i*6, 0, Math.PI*2);
+    ctx.strokeStyle=`rgba(248,113,113,${alpha})`; ctx.lineWidth=1; ctx.stroke();
+  }
+
+  // Iron filings attracted to magnet (move toward it)
+  for(let i=0;i<18;i++){
+    const origX = 120 + (i%9)*22;
+    const origY = 255 + Math.floor(i/9)*14;
+    const influence = Math.max(0, 1 - Math.abs(origX - magnetX) / 100);
+    const attracted = Math.min(influence * p * 2, influence);
+    const ix = origX + (magnetX - origX) * attracted * 0.85;
+    const iy = origY - (origY - magnetY - 45) * attracted * 0.75;
+    ctx.beginPath(); ctx.arc(ix, iy, 4, 0, Math.PI*2);
+    ctx.fillStyle=`rgba(148,163,184,${0.6 + attracted*0.4})`; ctx.fill();
+  }
+
+  ctx.textAlign='left';
+  drawLabel(ctx, 310, 175, 'Magnet');
+  drawLabel(ctx, 80,  260, 'Sand stays');
+  drawLabel(ctx, 80,  330, '(non-magnetic)');
+  drawLabel(ctx, 220, 150, 'Iron filings lifted');
+}
+
+/* ── CHROMATOGRAPHY ── */
+function drawChromatography(t, p) {
+  // Paper strip
+  ctx.fillStyle = 'rgba(251,191,36,0.08)';
+  ctx.fillRect(170, 60, 100, 280);
+  ctx.strokeStyle = 'rgba(251,191,36,0.4)'; ctx.lineWidth=1.5;
+  ctx.strokeRect(170, 60, 100, 280);
+
+  // Solvent level rising
+  const solventY = 340 - p * 220;
+  ctx.fillStyle = 'rgba(96,165,250,0.12)';
+  ctx.fillRect(170, solventY, 100, 340-solventY);
+
+  // Solvent front line
+  ctx.beginPath();
+  ctx.moveTo(170, solventY); ctx.lineTo(270, solventY);
+  ctx.strokeStyle = 'rgba(96,165,250,0.6)'; ctx.lineWidth=1; ctx.stroke();
+
+  // Starting spot
+  ctx.beginPath(); ctx.arc(220, 330, 7, 0, Math.PI*2);
+  ctx.fillStyle='rgba(50,50,50,0.7)'; ctx.fill();
+
+  // Dye bands (3 colours, different travel distances)
+  const colours = ['#f97316','#22c55e','#a855f7'];
+  const speeds = [0.55, 0.78, 0.35]; // fraction of solvent travel
+  colours.forEach((col, ci) => {
+    const bandY = 330 - p * 220 * speeds[ci];
+    const travelled = Math.max(0, 330 - bandY);
+    if(travelled > 4) {
+      // Band
+      const bw = 40 + ci*8;
+      ctx.beginPath();
+      ctx.ellipse(220, bandY, bw/2, 6, 0, 0, Math.PI*2);
+      ctx.fillStyle = col.replace(')',',0.65)').replace('rgb','rgba');
+      ctx.fillStyle = col + 'aa';
+      ctx.fill();
+      ctx.strokeStyle = col; ctx.lineWidth=1; ctx.stroke();
+    }
+  });
+
+  // Beaker with solvent
+  ctx.beginPath();
+  ctx.moveTo(130,300); ctx.lineTo(130,350); ctx.lineTo(310,350); ctx.lineTo(310,300);
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='rgba(96,165,250,0.10)';
+  ctx.fillRect(132, 330, 176, 18);
+
+  drawLabel(ctx, 280, 330, 'Start spot');
+  drawLabel(ctx, 280, solventY-5, 'Solvent front');
+  drawLabel(ctx, 70,  280, 'Solvent');
+  drawLabel(ctx, 280, 130, 'Separated dye bands');
+}
+
+/* ── SIEVING ── */
+function drawSieving(t, p) {
+  // Sieve frame
+  ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=2;
+  ctx.strokeRect(110, 140, 220, 20);
+  // Sieve mesh lines
+  ctx.lineWidth=1;
+  for(let i=0;i<22;i++){
+    const sx = 120 + i*9;
+    ctx.beginPath(); ctx.moveTo(sx,140); ctx.lineTo(sx,160); ctx.stroke();
+  }
+
+  // Container below
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(140,160); ctx.lineTo(140,300); ctx.lineTo(300,300); ctx.lineTo(300,160);
+  ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.stroke();
+
+  // Gravel on sieve (stays on top)
+  for(let i=0;i<12;i++){
+    const gx = 125 + (i%6)*30 + Math.sin(i*2.1)*5;
+    const gy = 120 + Math.floor(i/6)*12;
+    const gr = 9 + (i%3)*3;
+    ctx.beginPath(); ctx.arc(gx, gy, gr, 0, Math.PI*2);
+    ctx.fillStyle=`rgba(148,163,184,${0.5+i%3*0.1})`; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
+  }
+
+  // Sand falling through (fine particles)
+  for(let i=0;i<28;i++){
+    const phase = (t*1.2 + i*12) % 280;
+    if(phase > 0 && phase < 180) {
+      const sx = 120 + (i%9)*22;
+      const sy = 162 + phase * 0.6;
+      if(sy < 295) {
+        ctx.beginPath(); ctx.arc(sx, sy, 2.5, 0, Math.PI*2);
+        ctx.fillStyle=`rgba(196,168,130,${0.7 - phase/280})`; ctx.fill();
+      }
+    }
+  }
+
+  // Sand collecting at bottom
+  const sandH = p * 80;
+  ctx.fillStyle='rgba(196,168,130,0.35)';
+  ctx.fillRect(142, 300-sandH, 156, sandH);
+
+  drawLabel(ctx, 340, 150, 'Sieve mesh');
+  drawLabel(ctx, 60,  120, 'Gravel stays');
+  drawLabel(ctx, 60,  145, 'on top');
+  drawLabel(ctx, 310, 280, 'Fine sand');
+  drawLabel(ctx, 310, 295, 'falls through');
+}
+
+function drawLabel(ctx2, x, y, text) {
+  ctx2.fillStyle='rgba(210,218,245,0.55)';
+  ctx2.font='11px "Cabinet Grotesk"';
+  ctx2.textAlign='left';
+  ctx2.fillText(text, x, y);
+}
+
+/* init */
+updateMethodOptions();
+drawIdle();
+
+/* ── Match the Method game ── */
+const MATCH_PAIRS = [
+  {mixture:'Sand + Water',          method:'Filtration',           reason:'Sand is an insoluble solid — filter paper blocks it while water passes through.'},
+  {mixture:'Salt dissolved in water',method:'Evaporation',         reason:'Heating evaporates the water (solvent), leaving salt crystals behind.'},
+  {mixture:'Iron filings + Sand',   method:'Magnetic Separation',  reason:'Iron is magnetic; sand is not. A magnet picks up the iron and leaves the sand.'},
+  {mixture:'Ink dyes',              method:'Chromatography',       reason:'Different dye molecules travel different distances up the paper with the solvent.'},
+  {mixture:'Gravel + Fine sand',    method:'Sieving',              reason:'The sieve holds back large gravel but allows smaller sand particles through.'},
+  {mixture:'Alcohol + Water',       method:'Distillation',         reason:'Alcohol (b.p. 78°C) boils first, is condensed and collected separately from water (b.p. 100°C).'},
+];
+
+let selectedMixture = null;
+let matchScore = 0;
+let matchAnswered = new Set();
+
+function renderMatch() {
+  const mixes = document.getElementById('matchMixtures');
+  const meths = document.getElementById('matchMethods');
+
+  mixes.innerHTML = MATCH_PAIRS.map((p,i) => {
+    let cls = 'match-mixture';
+    if(matchAnswered.has(i)) cls += ' matched-ok';
+    return `<div class="${cls}" id="mm${i}" onclick="selectMixture(${i})">${p.mixture}</div>`;
+  }).join('');
+
+  const shuffledMethods = [...MATCH_PAIRS.map(p=>p.method)].sort(()=>Math.random()-0.5);
+  /* use a fixed shuffle seed based on order for stability after reset */
+  meths.innerHTML = MATCH_PAIRS.map(p=>p.method).sort().map((m,i) => {
+    const used = [...matchAnswered].some(idx => MATCH_PAIRS[idx].method === m);
+    return `<div class="match-method${used?' used':''}" id="mme${i}" onclick="selectMethod('${m}')">${m}</div>`;
+  }).join('');
+}
+
+function selectMixture(idx) {
+  if(matchAnswered.has(idx)) return;
+  selectedMixture = idx;
+  document.querySelectorAll('.match-mixture').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('mm'+idx);
+  if(el) el.classList.add('selected');
+  document.getElementById('matchFeedback').textContent = 'Now click the correct separation method on the right.';
+}
+
+function selectMethod(method) {
+  if(selectedMixture === null) {
+    document.getElementById('matchFeedback').textContent = 'Select a mixture on the left first.';
+    return;
+  }
+  const pair = MATCH_PAIRS[selectedMixture];
+  const fb = document.getElementById('matchFeedback');
+  if(method === pair.method) {
+    matchScore++;
+    matchAnswered.add(selectedMixture);
+    fb.textContent = `✓ Correct! ${pair.reason}`;
+    fb.style.color = '#86efac';
+  } else {
+    fb.textContent = `✗ Not quite. The correct method for "${pair.mixture}" is ${pair.method}. ${pair.reason}`;
+    fb.style.color = '#fca5a5';
+  }
+  document.getElementById('matchScore').textContent = `Score: ${matchScore} / ${MATCH_PAIRS.length}`;
+  selectedMixture = null;
+  renderMatch();
+  if(matchAnswered.size === MATCH_PAIRS.length) {
+    fb.textContent = `🎉 Excellent! You matched all ${MATCH_PAIRS.length} correctly! Press Reset to play again.`;
+    fb.style.color = '#60a5fa';
+  }
+}
+
+function resetMatch() {
+  selectedMixture = null;
+  matchScore = 0;
+  matchAnswered = new Set();
+  document.getElementById('matchFeedback').textContent = '';
+  document.getElementById('matchFeedback').style.color = '';
+  document.getElementById('matchScore').textContent = '';
+  renderMatch();
+}
+
+renderMatch();
+
+/* ── Tabs ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+/* ── Practice ── */
+const QUESTIONS = [
+  {text:'A learner wants to separate sand from water. Which technique should she use?',opts:['Evaporation','Filtration','Distillation','Chromatography'],ans:1,exp:'Sand is an insoluble solid — it will not dissolve in water. Filtration uses filter paper to trap the sand (residue) while water (the filtrate) passes through. Evaporation and distillation are used for dissolved substances; chromatography separates dyes.'},
+  {text:'Why does chromatography separate different dyes in an ink mixture?',opts:['Because different dyes have different boiling points','Because some dyes are magnetic and others are not','Because different dye molecules have different attractions to the paper and solvent','Because some dyes are insoluble in the solvent'],ans:2,exp:'In chromatography, dye molecules travel at different speeds up the paper because they differ in how strongly they are attracted to the stationary phase (paper) versus the mobile phase (solvent). Stronger attraction to paper = slower travel = lower Rf value.'},
+  {text:'Salt water is heated strongly until all the water evaporates. What is left behind?',opts:['Nothing — both salt and water evaporate','Hydrogen and chlorine gases','White salt (NaCl) crystals','A mixture of steam and salt crystals'],ans:2,exp:'Evaporation removes the water (solvent) but not the dissolved salt (solute). Salt has a very high boiling point (>1400°C), so it stays behind as white crystals when water evaporates. This technique works because the two components have very different boiling points.'},
+  {text:'Which physical property difference is used in MAGNETIC SEPARATION?',opts:['Particle size','Boiling point','Solubility','Magnetic properties'],ans:3,exp:'Magnetic separation relies on the fact that some materials (like iron) are attracted to magnets while others (like sand or copper) are not. The magnet pulls out the magnetic component, leaving the non-magnetic one behind.'},
+  {text:'Crude oil is a mixture of many different hydrocarbons. Which technique is used industrially to separate crude oil into petrol, diesel, and jet fuel?',opts:['Filtration','Magnetic separation','Fractional distillation','Chromatography'],ans:2,exp:'Fractional distillation separates liquids with different boiling points. Crude oil components (fractions) have different boiling points — they evaporate at different temperatures and are collected separately in a fractionating column. Petrol boils at ~35–75°C, diesel at ~200–350°C.'},
+  {text:'A mixture of coarse gravel and fine sand is shaken through a mesh. Which technique is this, and what physical property makes it work?',opts:['Filtration — difference in solubility','Sieving — difference in particle size','Distillation — difference in boiling point','Evaporation — difference in volatility'],ans:1,exp:'This is sieving. The mesh has holes large enough for fine sand to pass through but small enough to hold back larger gravel pieces. The key property is particle size — larger particles are retained, smaller ones pass through.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    const msgs=['Keep studying — re-read the lesson.','Good effort — review the explanations.','Well done! A solid understanding.','Excellent! You\'ve mastered separation techniques.'];
+    document.getElementById('scoreMsg').textContent=score<=2?msgs[0]:score<=4?msgs[1]:score===5?msgs[2]:msgs[3];
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forms and Transfer of Energy — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:16px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Simulate */
+    .sim-layout{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:44px;text-align:right}
+    .toggle-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.08);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;width:100%}
+    .toggle-btn:hover{background:rgba(251,191,36,.16)}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:18px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Energy &amp; Change · Lesson 1</div>
+  <h1 class="lesson-title">Forms and Transfer of Energy</h1>
+  <p class="lesson-sub">Discover the many forms energy takes, how it transfers between objects, and why the total amount of energy in a closed system never changes.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('simulate',this)"><i data-lucide="activity" style="width:14px;height:14px"></i> Simulate</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is energy?</h2>
+    <p><strong>Energy</strong> is the ability to do work — to cause a change in an object or system. It is not a physical substance you can hold, but it is very real: it makes things move, heat up, glow, make sound, and grow. The SI unit of energy is the <strong>joule (J)</strong>, named after James Prescott Joule. Larger amounts are expressed in kilojoules (kJ) or megajoules (MJ).</p>
+    <div class="formula">1 kJ = 1 000 J &nbsp;&nbsp;|&nbsp;&nbsp; 1 MJ = 1 000 000 J</div>
+
+    <h2>Forms of energy</h2>
+    <p>Energy exists in many forms. All forms can be placed into two broad categories: <strong>kinetic energy</strong> (energy of movement) and <strong>potential energy</strong> (stored energy).</p>
+    <table class="symbols-table">
+      <thead><tr><th>Form</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Kinetic energy</strong></td><td>Energy of a moving object. Depends on mass and speed.</td><td>A rolling ball, wind, flowing water</td></tr>
+        <tr><td><strong>Gravitational potential energy</strong></td><td>Energy stored because of an object's position above the ground.</td><td>A book on a shelf, water in a dam</td></tr>
+        <tr><td><strong>Elastic potential energy</strong></td><td>Energy stored in a stretched or compressed object.</td><td>A stretched rubber band, a compressed spring</td></tr>
+        <tr><td><strong>Thermal (heat) energy</strong></td><td>Energy due to the random motion of particles inside a substance.</td><td>A hot cup of tea, a fire</td></tr>
+        <tr><td><strong>Chemical energy</strong></td><td>Energy stored in the bonds between atoms in substances.</td><td>Food, fuel, batteries</td></tr>
+        <tr><td><strong>Electrical energy</strong></td><td>Energy carried by moving electric charges.</td><td>Lightning, a current in a wire</td></tr>
+        <tr><td><strong>Light (radiant) energy</strong></td><td>Energy carried by electromagnetic waves including visible light.</td><td>Sunlight, a torch beam</td></tr>
+        <tr><td><strong>Sound energy</strong></td><td>Energy carried by vibrations moving through a medium.</td><td>A speaking voice, a loudspeaker</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Kinetic and gravitational potential energy formulas</h2>
+    <p>At Grade 8 level you should recognise the key relationships:</p>
+    <div class="formula">Kinetic Energy (KE) = ½ × m × v²</div>
+    <div class="formula">Gravitational Potential Energy (GPE) = m × g × h</div>
+    <p>Where <strong>m</strong> = mass (kg), <strong>v</strong> = speed (m/s), <strong>g</strong> = 10 N/kg (gravitational field strength near Earth's surface), <strong>h</strong> = height above ground (m). Both give an answer in joules (J).</p>
+    <div class="key-fact">Example: A 2 kg ball moving at 3 m/s has KE = ½ × 2 × 9 = 9 J</div>
+
+    <h2>Energy transfer and transformation</h2>
+    <p>Energy can be <strong>transferred</strong> (moved from one object to another) or <strong>transformed</strong> (changed from one form to another).</p>
+    <ul>
+      <li><strong>Energy transfer:</strong> A hot pan transfers thermal energy to a pot of water sitting on it.</li>
+      <li><strong>Energy transformation:</strong> A solar panel transforms light energy into electrical energy.</li>
+    </ul>
+    <div class="callout"><strong>Energy transfer mechanisms:</strong> Energy moves by <strong>conduction</strong> (through solid contact), <strong>convection</strong> (through fluid movement), <strong>radiation</strong> (through electromagnetic waves), and <strong>mechanical work</strong> (a force moving an object through a distance).</div>
+
+    <h2>Real-world energy chains</h2>
+    <ul>
+      <li><strong>Pendulum:</strong> Gravitational potential energy → Kinetic energy → Gravitational potential energy (repeating). Small amounts are lost to thermal energy due to air resistance and friction at the pivot — but the total energy remains the same.</li>
+      <li><strong>Car engine:</strong> Chemical energy (petrol) → Thermal energy (combustion) → Kinetic energy (moving pistons) → Kinetic energy of the car. Much energy is "wasted" as thermal energy and sound.</li>
+      <li><strong>Solar panel:</strong> Light energy (from sun) → Electrical energy → Light energy (from LED bulb) or Kinetic energy (electric motor).</li>
+      <li><strong>Hydroelectric dam:</strong> Gravitational potential energy (water at height) → Kinetic energy (flowing water) → Kinetic energy (turbine) → Electrical energy (generator).</li>
+    </ul>
+
+    <h2>Law of Conservation of Energy</h2>
+    <p>One of the most important laws in all of science:</p>
+    <div class="callout"><strong>The Law of Conservation of Energy states:</strong> Energy cannot be created or destroyed. It can only be transferred from one object to another, or transformed from one form to another. The total amount of energy in a closed system remains constant.</div>
+    <p>This means that whenever energy seems to "disappear," it has simply been transformed into a less useful form — usually thermal energy (heat) — which spreads out into the surroundings. We say energy is <strong>dissipated</strong>, not destroyed.</p>
+    <div class="key-fact">In a pendulum: Total Energy = KE + GPE = constant (ignoring air resistance)</div>
+    <p>No machine can produce more energy than is put into it. A machine that produces 100% useful energy output from its input is called a perfectly efficient machine — in reality, no such machine exists because some energy is always dissipated as heat or sound.</p>
+  </div>
+</div>
+
+<!-- SIMULATE -->
+<div class="tab-panel" id="tab-simulate">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Pendulum Energy Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch kinetic and potential energy exchange as the pendulum swings. Notice how total energy stays constant — that is conservation of energy in action.</p>
+  <div class="sim-layout">
+    <div class="sim-canvas-wrap">
+      <h3>Pendulum Animation</h3>
+      <canvas id="pendCanvas" height="340"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Settings</div>
+        <div class="slider-row">
+          <label>Height (m)</label>
+          <input type="range" id="sliderH" min="0.5" max="3" step="0.1" value="2" oninput="resetPend()">
+          <span class="slider-val" id="valH">2.0 m</span>
+        </div>
+        <div class="slider-row">
+          <label>Mass (kg)</label>
+          <input type="range" id="sliderM" min="0.5" max="5" step="0.5" value="2" oninput="resetPend()">
+          <span class="slider-val" id="valM">2.0 kg</span>
+        </div>
+        <button class="toggle-btn" id="playBtn" onclick="togglePlay()">
+          <i data-lucide="pause" style="width:15px;height:15px"></i> Pause
+        </button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Live Energy Readings</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">KE</div><div class="readout-val" id="readKE" style="color:#fbbf24">0<span>J</span></div></div>
+          <div class="readout"><div class="readout-label">GPE</div><div class="readout-val" id="readGPE" style="color:#60a5fa">0<span>J</span></div></div>
+          <div class="readout" style="grid-column:span 2"><div class="readout-label">Total Energy (constant)</div><div class="readout-val" id="readTotal" style="color:#86efac">0<span>J</span></div></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Energy Key</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#fbbf24;flex-shrink:0"></div>Kinetic Energy (KE)</div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#60a5fa;flex-shrink:0"></div>Gravitational PE (GPE)</div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:3px;background:#86efac;flex-shrink:0"></div>Total Energy (KE+GPE)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Show all calculations with units.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (1 mark)</div><div class="wb-qtext">State the Law of Conservation of Energy in your own words.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Name TWO forms of potential energy and give a real-life example of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">A 3 kg ball is held at a height of 5 m above the ground. (a) Calculate the gravitational potential energy of the ball. (b) The ball is dropped. Calculate its kinetic energy just before it hits the ground. (c) What assumption did you make in part (b)? Use g = 10 N/kg.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the energy transformations that occur in a coal-fired power station, starting with chemical energy in coal and ending with electrical energy delivered to your home. Include at least three steps in your chain.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain the difference between energy <em>transfer</em> and energy <em>transformation</em>. Give one example of each from everyday life.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (3 marks)</div><div class="wb-qtext">A pendulum bob reaches a maximum height of 0.4 m above its lowest point. Its mass is 0.5 kg. (a) Calculate the maximum gravitational potential energy. (b) What is the maximum kinetic energy of the bob? (c) At what point in the swing does the bob have maximum kinetic energy? Explain why.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+/* ---- Pendulum simulator ---- */
+const pCanvas = document.getElementById('pendCanvas');
+const pCtx = pCanvas.getContext('2d');
+
+let playing = true;
+let angle = 0;       // current angle from vertical (radians)
+let angVel = 0;      // angular velocity
+let angAcc = 0;
+let pendH = 2;       // starting height (m)
+let pendM = 2;       // mass (kg)
+const g = 10;
+let pendLength = 0;  // calculated from height
+let maxAngle = 0;
+let lastTime = null;
+
+function resetPend() {
+  pendH = parseFloat(document.getElementById('sliderH').value);
+  pendM = parseFloat(document.getElementById('sliderM').value);
+  document.getElementById('valH').textContent = pendH.toFixed(1) + ' m';
+  document.getElementById('valM').textContent = pendM.toFixed(1) + ' kg';
+  // pendLength chosen so that max height = pendH
+  // h = L(1 - cos(angle_max)) => if we set max_angle = 60deg for visual clarity
+  // actually: set L such that L*(1-cos(maxAngle)) = pendH with maxAngle=70deg
+  maxAngle = Math.min(Math.PI * 0.38, Math.acos(1 - pendH / 5));
+  pendLength = pendH / (1 - Math.cos(maxAngle));
+  angle = maxAngle;
+  angVel = 0;
+  lastTime = null;
+}
+
+function togglePlay() {
+  playing = !playing;
+  const btn = document.getElementById('playBtn');
+  btn.innerHTML = playing
+    ? '<i data-lucide="pause" style="width:15px;height:15px"></i> Pause'
+    : '<i data-lucide="play" style="width:15px;height:15px"></i> Play';
+  lucide.createIcons();
+  if (playing) lastTime = null;
+}
+
+function resizePend() {
+  pCanvas.width = (pCanvas.offsetWidth || 480) * (window.devicePixelRatio || 1);
+  pCanvas.height = 340 * (window.devicePixelRatio || 1);
+  pCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+}
+
+function drawPend(ts) {
+  if (!document.getElementById('tab-simulate').classList.contains('active')) {
+    requestAnimationFrame(drawPend);
+    return;
+  }
+
+  const W = pCanvas.offsetWidth || 480;
+  const H = 340;
+  pCtx.clearRect(0, 0, W, H);
+
+  // Physics step
+  if (playing) {
+    if (lastTime === null) lastTime = ts;
+    const dt = Math.min((ts - lastTime) / 1000, 0.033);
+    lastTime = ts;
+    const L = pendLength > 0 ? pendLength : 3;
+    angAcc = -(g / L) * Math.sin(angle);
+    angVel += angAcc * dt;
+    angle += angVel * dt;
+  }
+
+  // Pivot point
+  const px = W / 2;
+  const py = 50;
+  const dispScale = Math.min((H - 80) / (pendLength > 0 ? pendLength * 1.1 : 3.3), 60);
+  const bobX = px + Math.sin(angle) * pendLength * dispScale;
+  const bobY = py + Math.cos(angle) * pendLength * dispScale;
+
+  // Ground line
+  const groundY = py + pendLength * dispScale + 20;
+  pCtx.strokeStyle = 'rgba(255,255,255,0.08)';
+  pCtx.lineWidth = 1;
+  pCtx.setLineDash([6, 4]);
+  pCtx.beginPath(); pCtx.moveTo(20, groundY); pCtx.lineTo(W - 20, groundY); pCtx.stroke();
+  pCtx.setLineDash([]);
+
+  // Height indicator (dashed vertical from bob to ground)
+  const bottomY = py + pendLength * dispScale; // lowest point
+  const heightPx = bottomY - bobY;
+  pCtx.strokeStyle = 'rgba(96,165,250,0.35)';
+  pCtx.lineWidth = 1.5;
+  pCtx.setLineDash([4, 3]);
+  pCtx.beginPath(); pCtx.moveTo(bobX, bobY); pCtx.lineTo(bobX, bottomY); pCtx.stroke();
+  pCtx.setLineDash([]);
+
+  // Rod
+  pCtx.strokeStyle = 'rgba(255,255,255,0.40)';
+  pCtx.lineWidth = 2;
+  pCtx.beginPath(); pCtx.moveTo(px, py); pCtx.lineTo(bobX, bobY); pCtx.stroke();
+
+  // Pivot
+  pCtx.beginPath(); pCtx.arc(px, py, 5, 0, Math.PI * 2);
+  pCtx.fillStyle = 'rgba(255,255,255,0.60)'; pCtx.fill();
+
+  // Bob glow
+  const speed = Math.abs(angVel);
+  const maxSpeed = Math.sqrt(2 * g * pendH / pendLength > 0 ? 2 * g * pendH / pendLength : 1);
+  const speedFrac = Math.min(speed / (maxSpeed || 1), 1);
+  const grd = pCtx.createRadialGradient(bobX, bobY, 0, bobX, bobY, 26);
+  grd.addColorStop(0, `rgba(251,191,36,${0.3 + speedFrac * 0.5})`);
+  grd.addColorStop(1, 'rgba(251,191,36,0)');
+  pCtx.beginPath(); pCtx.arc(bobX, bobY, 26, 0, Math.PI * 2);
+  pCtx.fillStyle = grd; pCtx.fill();
+
+  // Bob
+  pCtx.beginPath(); pCtx.arc(bobX, bobY, 14, 0, Math.PI * 2);
+  pCtx.fillStyle = `rgba(251,191,36,${0.5 + speedFrac * 0.5})`; pCtx.fill();
+  pCtx.strokeStyle = '#fbbf24'; pCtx.lineWidth = 2; pCtx.stroke();
+
+  // Energy calculations
+  const currentH = Math.max(0, pendLength * (1 - Math.cos(angle)));
+  const GPE = pendM * g * currentH;
+  const totalE = pendM * g * pendH;
+  const KE = Math.max(0, totalE - GPE);
+
+  // Energy bar chart (right side of canvas)
+  const barX = W - 110;
+  const barY0 = H - 40;
+  const barMaxH = H - 100;
+  const barW = 28;
+  const barGap = 14;
+
+  function drawBar(x, val, maxVal, col, label) {
+    const barH = maxVal > 0 ? (val / maxVal) * barMaxH : 0;
+    // Background
+    pCtx.fillStyle = 'rgba(255,255,255,0.05)';
+    pCtx.beginPath();
+    pCtx.roundRect(x, barY0 - barMaxH, barW, barMaxH, 4);
+    pCtx.fill();
+    // Fill
+    if (barH > 0) {
+      pCtx.fillStyle = col;
+      pCtx.beginPath();
+      pCtx.roundRect(x, barY0 - barH, barW, barH, 4);
+      pCtx.fill();
+    }
+    // Value label
+    pCtx.fillStyle = col;
+    pCtx.font = 'bold 9px "JetBrains Mono"';
+    pCtx.textAlign = 'center';
+    pCtx.fillText(val.toFixed(0) + 'J', x + barW / 2, barY0 - barH - 6);
+    // Bottom label
+    pCtx.fillStyle = 'rgba(210,218,245,0.50)';
+    pCtx.font = '9px "JetBrains Mono"';
+    pCtx.fillText(label, x + barW / 2, barY0 + 14);
+  }
+
+  drawBar(barX, KE, totalE, '#fbbf24', 'KE');
+  drawBar(barX + barW + barGap, GPE, totalE, '#60a5fa', 'GPE');
+  drawBar(barX + (barW + barGap) * 2, totalE, totalE, '#86efac', 'TOT');
+
+  // Readouts
+  document.getElementById('readKE').innerHTML = KE.toFixed(1) + '<span>J</span>';
+  document.getElementById('readGPE').innerHTML = GPE.toFixed(1) + '<span>J</span>';
+  document.getElementById('readTotal').innerHTML = totalE.toFixed(1) + '<span>J</span>';
+
+  requestAnimationFrame(drawPend);
+}
+
+window.addEventListener('resize', () => { resizePend(); });
+resizePend();
+resetPend();
+requestAnimationFrame(drawPend);
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Which of the following is the SI unit of energy?',
+    opts: ['Watt (W)', 'Newton (N)', 'Joule (J)', 'Ampere (A)'],
+    ans: 2,
+    exp: 'The SI unit of energy is the joule (J). The watt is a unit of power (energy per second), not energy itself.'
+  },
+  {
+    text: 'A book rests on a high shelf. What form of energy does it possess?',
+    opts: ['Kinetic energy', 'Chemical energy', 'Gravitational potential energy', 'Elastic potential energy'],
+    ans: 2,
+    exp: 'Because the book is at a height above the ground it has gravitational potential energy (GPE = mgh). It has no kinetic energy because it is not moving.'
+  },
+  {
+    text: 'What does the Law of Conservation of Energy state?',
+    opts: ['Energy is always lost as heat', 'Energy can be created from nothing', 'The total energy in a closed system remains constant', 'Kinetic energy always equals potential energy'],
+    ans: 2,
+    exp: 'The Law of Conservation of Energy states that energy cannot be created or destroyed — only transferred or transformed. The total energy in a closed system stays constant.'
+  },
+  {
+    text: 'A pendulum swings from its highest point to its lowest point. Which energy change occurs?',
+    opts: ['KE → GPE', 'GPE → KE', 'Chemical → Thermal', 'Electrical → Light'],
+    ans: 1,
+    exp: 'As the pendulum swings down from its highest point, gravitational potential energy is transformed into kinetic energy. At the lowest point, kinetic energy is at a maximum.'
+  },
+  {
+    text: 'A solar panel converts light energy into which form of energy?',
+    opts: ['Chemical energy', 'Sound energy', 'Electrical energy', 'Elastic potential energy'],
+    ans: 2,
+    exp: 'A solar (photovoltaic) panel converts light energy (from the sun) directly into electrical energy using the photoelectric effect.'
+  },
+  {
+    text: 'A 4 kg object moves at 3 m/s. What is its kinetic energy?',
+    opts: ['12 J', '18 J', '36 J', '6 J'],
+    ans: 1,
+    exp: 'KE = ½ × m × v² = ½ × 4 × 3² = ½ × 4 × 9 = 18 J. Remember to square the velocity first!'
+  }
+];
+
+let score = 0;
+let answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
