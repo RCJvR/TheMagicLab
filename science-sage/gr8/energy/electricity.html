@@ -305,62 +305,51 @@ function drawCircuit(){
   const wireW = 2.5;
 
   if(circuitType==='series'){
-    // Simple series circuit rectangle
-    // Battery left, top wire, bulb top-right, right wire, switch bottom-right, bottom wire back
-    const L=50,R2=W-50,T=60,B=H-60;
+    const L=85,R2=W-60,T=60,B=H-60;
     const mx=(L+R2)/2;
 
     // Wires
     ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
-    // Top
     ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(mx-30,T);ctx.stroke();
     ctx.beginPath();ctx.moveTo(mx+30,T);ctx.lineTo(R2,T);ctx.stroke();
-    // Right
     ctx.beginPath();ctx.moveTo(R2,T);ctx.lineTo(R2,B*0.45);ctx.stroke();
     ctx.beginPath();ctx.moveTo(R2,B*0.55);ctx.lineTo(R2,B);ctx.stroke();
-    // Bottom
     ctx.beginPath();ctx.moveTo(R2,B);ctx.lineTo(L,B);ctx.stroke();
-    // Left (battery wire)
     ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.stroke();
 
-    // Flow animation
     if(switchClosed && I>0){
       flowOffset=(flowOffset+I*0.012)%1;
       drawFlow([[L,T,mx-30,T],[mx+30,T,R2,T],[R2,T,R2,B*0.45],[R2,B*0.55,R2,B],[R2,B,L,B],[L,B,L,T]],flowOffset,wireCol);
     }
 
-    // Battery (left side)
-    drawBattery(L,T+(B-T)/2-20,false);
-    // Bulb (top centre)
+    const battY = T+(B-T)/2-20;
+    drawBattery(L,battY,false);
     drawBulb(mx,T,brightness);
-    // Switch (right side middle)
     drawSwitch(R2,B*0.45,R2,B*0.55,switchClosed);
-    // Labels
-    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"'; ctx.textAlign='center';
-    ctx.fillText('Battery',L,B+20);
+
+    // Labels — battery beside its symbol, others at natural positions
+    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"';
+    ctx.textAlign='right';
+    ctx.fillText('Battery',L-14,battY+18);
+    ctx.textAlign='center';
     ctx.fillText('Bulb',mx,T-16);
-    ctx.fillText('Switch',R2+36,(B*0.45+B*0.55)/2);
-    // Ammeter marker
+    ctx.textAlign='right';
+    ctx.fillText('Switch',R2-6,(B*0.45+B*0.55)/2-6);
     ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"'; ctx.textAlign='center';
     ctx.fillText(`${I.toFixed(1)} A`,mx,B-8);
 
   } else {
-    // Parallel: battery left, two bulbs in parallel on right
-    const L=50,R2=W-50,T=70,B=H-60;
+    const L=85,R2=W-60,T=70,B=H-60;
     const M=(T+B)/2;
-    const bx1=W*0.55, bx2=W*0.75;
+    const bx1=W*0.52, bx2=W*0.73;
 
     ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
-    // Main horizontal
     ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(R2,T);ctx.stroke();
     ctx.beginPath();ctx.moveTo(L,B);ctx.lineTo(R2,B);ctx.stroke();
-    // Left column (battery)
     ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,M-25);ctx.stroke();
     ctx.beginPath();ctx.moveTo(L,M+25);ctx.lineTo(L,B);ctx.stroke();
-    // Branch 1 vertical
     ctx.beginPath();ctx.moveTo(bx1,T);ctx.lineTo(bx1,M-18);ctx.stroke();
     ctx.beginPath();ctx.moveTo(bx1,M+18);ctx.lineTo(bx1,B);ctx.stroke();
-    // Branch 2 vertical
     ctx.beginPath();ctx.moveTo(bx2,T);ctx.lineTo(bx2,M-18);ctx.stroke();
     ctx.beginPath();ctx.moveTo(bx2,M+18);ctx.lineTo(bx2,B);ctx.stroke();
 
@@ -368,17 +357,20 @@ function drawCircuit(){
       flowOffset=(flowOffset+I*0.010)%1;
     }
 
-    drawBattery(L,M-20,false);
+    const battY2 = M-20;
+    drawBattery(L,battY2,false);
     drawBulb(bx1,M,brightness);
     drawBulb(bx2,M,brightness);
     drawSwitch(bx2+20,T,bx2+20,T+20,switchClosed);
 
-    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"'; ctx.textAlign='center';
-    ctx.fillText('Battery',L,B+20);
+    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"';
+    ctx.textAlign='right';
+    ctx.fillText('Battery',L-14,battY2+18);
+    ctx.textAlign='center';
     ctx.fillText('Bulb 1',bx1,T-16);
     ctx.fillText('Bulb 2',bx2,T-16);
     ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"';
-    ctx.fillText(`Each: ${I.toFixed(1)} A`,W*0.65,B-8);
+    ctx.fillText(`Each: ${I.toFixed(1)} A`,(bx1+bx2)/2,B-8);
   }
 }
 
