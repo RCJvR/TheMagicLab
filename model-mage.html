@@ -357,7 +357,7 @@
       </div>
       <div class="pr">
         <div class="pr-lbl"><span id="lbl-h">Height</span> <span class="pr-val" id="v-h">40 mm</span></div>
-        <input type="range" id="s-h" min="1" max="300" value="40">
+        <input type="range" id="s-h" min="1" max="1000" value="40">
       </div>
       <div class="pr">
         <div class="pr-lbl">
@@ -462,7 +462,10 @@ self.onmessage = async ({ data }) => {
             planeName:'XY', planeOffset:0 }];
     let solid = null;
     for (const item of profileList) {
-      const effectiveH = item.operation==='cut' ? -Math.abs(item.height) : item.height;
+      // normalSign: +1 = face normal points away in positive axis direction, -1 = negative.
+      // To cut INTO the solid we extrude opposite to the outward normal.
+      const ns = item.normalSign ?? 1;
+      const effectiveH = item.operation==='cut' ? -ns * Math.abs(item.height) : item.height;
       const s = makeSolid(item.profile, effectiveH, item.filletR||0, item.chamferR||0,
                           item.planeName||'XY', item.planeOffset||0);
       if (!solid || item.operation === 'new') {
@@ -483,26 +486,34 @@ self.onmessage = async ({ data }) => {
     self.postMessage({ type:'err', msg });
   }
 };
+function _planeTranslate(cx, cy, planeName) {
+  if (planeName === 'YZ') return [0, cx, cy];
+  if (planeName === 'XZ') return [cx, 0, cy];
+  return [cx, cy, 0]; // XY default
+}
+
 function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
   let solid;
   if (p.type === 'circle') {
-    solid = drawCircle(p.r).sketchOnPlane(planeName, planeOffset).extrude(h).translate([p.cx, p.cy, 0]);
+    solid = drawCircle(p.r).sketchOnPlane(planeName, planeOffset).extrude(h)
+      .translate(_planeTranslate(p.cx, p.cy, planeName));
   } else if (p.type === 'rect') {
     const rw=Math.abs(p.w), rh=Math.abs(p.h), cx=p.x+p.w/2, cy=p.y+p.h/2;
     if (p.cornerR && p.cornerR > 0) {
       const r = Math.min(p.cornerR, rw*0.45, rh*0.45);
       const hw=rw/2, hh=rh/2, tx=hw-r, ty=hh-r;
       const N=8, rpts=[];
-      // Approximate each 90° corner with N arc steps; close() draws the final left edge
       const corners=[[-tx,-ty,Math.PI,Math.PI*3/2],[tx,-ty,Math.PI*3/2,Math.PI*2],[tx,ty,0,Math.PI/2],[-tx,ty,Math.PI/2,Math.PI]];
       corners.forEach(([cx2,cy2,a0,a1],ci)=>{
         for(let i=(ci===0?0:1);i<=N;i++){const a=a0+(a1-a0)*i/N;rpts.push([cx2+r*Math.cos(a),cy2+r*Math.sin(a)]);}
       });
       let sk=draw(rpts[0]);
       for(let i=1;i<rpts.length;i++) sk=sk.lineTo(rpts[i]);
-      solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h).translate([cx, cy, 0]);
+      solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h)
+        .translate(_planeTranslate(cx, cy, planeName));
     } else {
-      solid = drawRectangle(rw, rh).sketchOnPlane(planeName, planeOffset).extrude(h).translate([cx, cy, 0]);
+      solid = drawRectangle(rw, rh).sketchOnPlane(planeName, planeOffset).extrude(h)
+        .translate(_planeTranslate(cx, cy, planeName));
     }
   } else if (p.type === 'arc') {
     let sk = draw(p.p1).threePointsArc(p.pmid, p.p2).lineTo(p.p1);
@@ -1744,6 +1755,9 @@ function collectExtrudePayload() {
     const entry = profs[node.profileIdx];
     if (!entry) continue;
     const { planeName, planeOffset } = planeFromSketch(sk);
+    // normalSign: +1 if the face's outward normal is in the positive axis direction.
+    // Needed so cut operations extrude into the solid, not away from it.
+    const normalSign = (typeof sk.plane === 'object' ? sk.plane.normalSign : null) ?? 1;
     items.push({
       profile:   entry.profile,
       height:    node.height,
@@ -1752,6 +1766,7 @@ function collectExtrudePayload() {
       chamferR:  node.chamferR,
       planeName,
       planeOffset,
+      normalSign,
     });
   }
   return items;
@@ -2444,18 +2459,17 @@ function detectAxisPlane(worldNormal, hitPoint) {
   const localPt = hitPoint.clone().applyMatrix4(invMat); // replicad local coords
 
   const checks = [
-    { axis:'Z', dir: new THREE.Vector3( 0, 1, 0) }, // replicad +Z top
-    { axis:'Z', dir: new THREE.Vector3( 0,-1, 0) }, // replicad -Z bottom
-    { axis:'X', dir: new THREE.Vector3( 1, 0, 0) }, // replicad +X
-    { axis:'X', dir: new THREE.Vector3(-1, 0, 0) }, // replicad -X
-    { axis:'Y', dir: new THREE.Vector3( 0, 0,-1) }, // replicad +Y front
-    { axis:'Y', dir: new THREE.Vector3( 0, 0, 1) }, // replicad -Y back
+    { axis:'Z', dir: new THREE.Vector3( 0, 1, 0), normalSign:+1 }, // replicad +Z top
+    { axis:'Z', dir: new THREE.Vector3( 0,-1, 0), normalSign:-1 }, // replicad -Z bottom
+    { axis:'X', dir: new THREE.Vector3( 1, 0, 0), normalSign:+1 }, // replicad +X right
+    { axis:'X', dir: new THREE.Vector3(-1, 0, 0), normalSign:-1 }, // replicad -X left
+    { axis:'Y', dir: new THREE.Vector3( 0, 0,-1), normalSign:+1 }, // replicad +Y front
+    { axis:'Y', dir: new THREE.Vector3( 0, 0, 1), normalSign:-1 }, // replicad -Y back
   ];
-  for (const { axis, dir } of checks) {
+  for (const { axis, dir, normalSign } of checks) {
     if (worldNormal.dot(dir) >= TOL) {
-      // offset in replicad local space
       const offset = axis==='Z' ? localPt.z : axis==='Y' ? localPt.y : localPt.x;
-      return { axis, offset: parseFloat(offset.toFixed(2)) };
+      return { axis, offset: parseFloat(offset.toFixed(2)), normalSign };
     }
   }
   return null;
