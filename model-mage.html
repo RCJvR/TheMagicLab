@@ -2351,7 +2351,9 @@ scene.add(modelGroup);
 
 const mat=new THREE.MeshStandardMaterial({color:0xb0c8e4,roughness:0.28,metalness:0.06});
 const wireMat=new THREE.MeshBasicMaterial({color:0xf59e0b,wireframe:true,transparent:true,opacity:0.05});
+const _faceHlMat=new THREE.MeshBasicMaterial({color:0xf59e0b,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthTest:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
 var modelMesh=null, wireMesh=null, lastGeo=null;
+var _faceHlMesh=null;
 
 function applyMesh(verts,norms,tris) {
   if (modelMesh) { modelGroup.remove(modelMesh); modelGroup.remove(wireMesh); }
@@ -2461,12 +2463,46 @@ function _raycastFace(clientX, clientY) {
   return plane ? { plane, hit } : null;
 }
 
-// Highlight = subtle emissive glow on the model (no overlay mesh)
-function _showFaceHighlight() {
-  if (modelMesh) { mat.emissive.set(0xf59e0b); mat.emissiveIntensity = 0.22; }
+// Extract triangles from the model geometry that belong to the hovered face.
+// Positions in the buffer are in replicad local space (Z-up), so we match
+// the axis coordinate of each triangle's centroid against plane.offset.
+function _extractFaceTriangles(plane) {
+  if (!modelMesh) return null;
+  const geo = modelMesh.geometry;
+  const pos = geo.attributes.position.array;
+  const nor = geo.attributes.normal.array;
+  const idx = geo.index.array;
+  const TOL_POS = 0.8; // mm — loose enough to catch all tris on a flat face
+  const TOL_NRM = 0.94; // cos(~20°) — triangle must face the right direction
+  const out = [];
+  for (let i = 0; i < idx.length; i += 3) {
+    const a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
+    // averaged normal and centroid for this triangle
+    const nx=(nor[a]+nor[b]+nor[c])/3, ny=(nor[a+1]+nor[b+1]+nor[c+1])/3, nz=(nor[a+2]+nor[b+2]+nor[c+2])/3;
+    const nl=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
+    const cx=(pos[a]+pos[b]+pos[c])/3, cy=(pos[a+1]+pos[b+1]+pos[c+1])/3, cz=(pos[a+2]+pos[b+2]+pos[c+2])/3;
+    let ok=false;
+    if      (plane.axis==='Z') ok = Math.abs(nz/nl)>TOL_NRM && Math.abs(cz-plane.offset)<TOL_POS;
+    else if (plane.axis==='X') ok = Math.abs(nx/nl)>TOL_NRM && Math.abs(cx-plane.offset)<TOL_POS;
+    else                       ok = Math.abs(ny/nl)>TOL_NRM && Math.abs(cy-plane.offset)<TOL_POS;
+    if (ok) {
+      out.push(pos[a],pos[a+1],pos[a+2], pos[b],pos[b+1],pos[b+2], pos[c],pos[c+1],pos[c+2]);
+    }
+  }
+  return out.length ? new Float32Array(out) : null;
+}
+
+function _showFaceHighlight(plane) {
+  _clearFaceHighlight();
+  const verts = _extractFaceTriangles(plane);
+  if (!verts) return;
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+  _faceHlMesh = new THREE.Mesh(g, _faceHlMat);
+  modelGroup.add(_faceHlMesh);
 }
 function _clearFaceHighlight() {
-  if (modelMesh) { mat.emissive.set(0x000000); mat.emissiveIntensity = 0; }
+  if (_faceHlMesh) { modelGroup.remove(_faceHlMesh); _faceHlMesh.geometry.dispose(); _faceHlMesh=null; }
 }
 
 function createFaceSketch(plane) {
@@ -2490,11 +2526,12 @@ renderer.domElement.addEventListener('mousemove', e => {
   if (!modelMesh) return;
   const result = _raycastFace(e.clientX, e.clientY);
   if (result) {
-    _faceHoverPlane = result.plane;
+    const p = result.plane;
+    const changed = !_faceHoverPlane || _faceHoverPlane.axis !== p.axis || _faceHoverPlane.offset !== p.offset;
+    _faceHoverPlane = p;
     renderer.domElement.style.cursor = 'pointer';
-    _showFaceHighlight();
-    document.getElementById('st-info').textContent =
-      `${result.plane.axis} face · Click to sketch on it`;
+    if (changed) _showFaceHighlight(p);
+    document.getElementById('st-info').textContent = `${p.axis} face · Click to sketch on it`;
     renderer.render(scene, camera);
   } else {
     _faceHoverPlane = null;
