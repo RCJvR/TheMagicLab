@@ -1836,8 +1836,9 @@ document.getElementById('snap-sel').addEventListener('change', function() {
 document.getElementById('s-h').addEventListener('input', function() {
   extH = +this.value;
   document.getElementById('v-h').textContent = this.value + ' mm';
-  const _eid=document.querySelector('.ext-panel')?.dataset?.activeExtrudeId;
-  const _en=featureTree.find(f=>f.id===_eid); if(_en){_en.height=extH;renderFeatureTree();}
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.height=extH;});
+  renderFeatureTree();
   scheduleExtrude();
 });
 
@@ -1850,6 +1851,9 @@ document.getElementById('btn-fillet-mode').addEventListener('click', () => {
   document.getElementById('s-edge').max = 50;
   filletR = +document.getElementById('s-edge').value;
   chamferR = 0;
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.filletR=filletR;n.chamferR=0;});
+  renderFeatureTree();
   scheduleExtrude();
 });
 document.getElementById('btn-chamfer-mode').addEventListener('click', () => {
@@ -1859,6 +1863,9 @@ document.getElementById('btn-chamfer-mode').addEventListener('click', () => {
   document.getElementById('s-edge').max = 20;
   chamferR = +document.getElementById('s-edge').value;
   filletR = 0;
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.filletR=0;n.chamferR=chamferR;});
+  renderFeatureTree();
   scheduleExtrude();
 });
 document.getElementById('s-edge').addEventListener('input', function() {
