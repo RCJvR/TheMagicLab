@@ -463,18 +463,31 @@ self.onmessage = async ({ data }) => {
             planeName:'XY', planeOffset:0 }];
     let solid = null;
     for (const item of profileList) {
-      // normalSign: +1 = face normal points away in positive axis direction, -1 = negative.
-      // To cut INTO the solid we extrude opposite to the outward normal.
-      const ns = item.normalSign ?? 1;
-      const effectiveH = item.operation==='cut' ? -ns * Math.abs(item.height) : item.height;
-      const s = makeSolid(item.profile, effectiveH, item.filletR||0, item.chamferR||0,
-                          item.planeName||'XY', item.planeOffset||0);
-      if (!solid || item.operation === 'new') {
-        solid = solid ? solid.fuse(s) : s;
-      } else if (item.operation === 'fuse') {
-        solid = solid.fuse(s);
-      } else if (item.operation === 'cut') {
-        solid = solid.cut(s);
+      try {
+        const ns = item.normalSign ?? 1;
+        // Replicad's XZ plane has normal = -Y (opposite convention to XY and YZ planes).
+        // Flip the effective direction for XZ so cuts/fuses go the right way on Y-axis faces.
+        const pf = (item.planeName||'XY') === 'XZ' ? -1 : 1;
+        let effectiveH;
+        if (item.operation === 'cut') {
+          effectiveH = -ns * pf * Math.abs(item.height);
+        } else if (item.operation === 'fuse') {
+          effectiveH = ns * pf * Math.abs(item.height);
+        } else {
+          effectiveH = item.height; // 'new' — plain extrude, no flip
+        }
+        const s = makeSolid(item.profile, effectiveH, item.filletR||0, item.chamferR||0,
+                            item.planeName||'XY', item.planeOffset||0);
+        if (!solid || item.operation === 'new') {
+          solid = solid ? solid.fuse(s) : s;
+        } else if (item.operation === 'fuse') {
+          solid = solid.fuse(s);
+        } else if (item.operation === 'cut') {
+          solid = solid.cut(s);
+        }
+      } catch(opErr) {
+        // Skip this operation so a bad cut/fuse doesn't abort the whole build
+        console.warn('[ModelMage] skipping op', item.operation, opErr?.message || opErr);
       }
     }
     const m = solid.mesh({ tolerance:0.04, angularTolerance:10 });
