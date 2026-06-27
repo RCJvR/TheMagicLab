@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Equilibrium — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#c084fc;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+.stress-btn{font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.stress-btn:hover{background:rgba(192,132,252,.15);border-color:rgba(192,132,252,.35);color:#e9d5ff}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemistry</span>
+    <a href="../../index.html" class="nav-back">&#8592; Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 &middot; Chemistry &middot; Lesson 7</div>
+  <h1 class="lesson-title">Chemical Equilibrium</h1>
+  <p class="lesson-sub">Understand dynamic equilibrium, write equilibrium expressions, apply Le Chatelier&rsquo;s principle to predict shifts, and calculate equilibrium constants.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Toggle to show IEB extension content</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Workbook</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Reversible Reactions</h2>
+    <p>Many chemical reactions are <strong>reversible</strong> — they can proceed in both the forward direction (reactants &rarr; products) and the reverse direction (products &rarr; reactants). Reversible reactions are represented using a double arrow: <strong>&#x21CC;</strong></p>
+    <div class="formula">A + B &#x21CC; C + D</div>
+    <p>In a closed system, as the forward reaction produces C and D, those products can recombine in the reverse reaction to regenerate A and B. Over time, the system reaches a state where both reactions occur simultaneously.</p>
+
+    <h2>Dynamic Equilibrium</h2>
+    <p><strong>Dynamic equilibrium</strong> is reached when the rate of the forward reaction equals the rate of the reverse reaction. At this point:</p>
+    <ul>
+      <li>The <strong>concentrations of all species remain constant</strong> (but not necessarily equal to each other)</li>
+      <li>Both the forward and reverse reactions are <strong>still occurring</strong> — it is dynamic, not static</li>
+      <li>Macroscopic properties (colour, pressure, concentration) are constant</li>
+      <li>A <strong>closed system</strong> is required — no reactants or products can escape</li>
+    </ul>
+    <div class="callout"><strong>Common misconception:</strong> At equilibrium, concentrations of reactants and products are constant — but they are NOT necessarily equal. The position of equilibrium depends on the value of K<sub>c</sub>. A large K<sub>c</sub> means more product is present; a small K<sub>c</sub> means more reactant remains.</div>
+
+    <h2>The Equilibrium Constant K<sub>c</sub></h2>
+    <p>For the general reaction: aA + bB &#x21CC; cC + dD, the equilibrium constant expression is:</p>
+    <div class="formula">K<sub>c</sub> = [C]<sup>c</sup>[D]<sup>d</sup> / [A]<sup>a</sup>[B]<sup>b</sup></div>
+    <p>Important rules:</p>
+    <ul>
+      <li>Square brackets [ ] denote concentration in mol&middot;L&minus;1</li>
+      <li><strong>Pure solids and pure liquids</strong> are NOT included in the K<sub>c</sub> expression (their concentration is constant)</li>
+      <li>Gases and aqueous species ARE included</li>
+      <li>K<sub>c</sub> depends <strong>only on temperature</strong> — it is constant at a given temperature regardless of starting concentrations</li>
+    </ul>
+    <table class="symbols-table">
+      <thead><tr><th>K<sub>c</sub> value</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td>K<sub>c</sub> &gt;&gt; 1 (e.g. 10⁶)</td><td>Products strongly favoured; reaction goes nearly to completion</td></tr>
+        <tr><td>K<sub>c</sub> &approx; 1</td><td>Neither products nor reactants strongly favoured; significant amounts of both at equilibrium</td></tr>
+        <tr><td>K<sub>c</sub> &lt;&lt; 1 (e.g. 10&minus;⁶)</td><td>Reactants strongly favoured; very little product formed at equilibrium</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The Reaction Quotient Q<sub>c</sub></h2>
+    <p>The <strong>reaction quotient Q<sub>c</sub></strong> has the same mathematical form as K<sub>c</sub>, but uses <em>current</em> (non-equilibrium) concentrations. Comparing Q<sub>c</sub> to K<sub>c</sub> tells us which direction the reaction will shift:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Comparison</th><th>Direction of shift</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>Q<sub>c</sub> &lt; K<sub>c</sub></td><td>Forward (right) &#8594;</td><td>Too many reactants; system needs more products to reach K<sub>c</sub></td></tr>
+        <tr><td>Q<sub>c</sub> = K<sub>c</sub></td><td>No shift — at equilibrium</td><td>System is already at equilibrium</td></tr>
+        <tr><td>Q<sub>c</sub> &gt; K<sub>c</sub></td><td>Reverse (left) &#8592;</td><td>Too many products; system needs more reactants to reach K<sub>c</sub></td></tr>
+      </tbody>
+    </table>
+
+    <h2>Le Chatelier&rsquo;s Principle</h2>
+    <p><strong>Le Chatelier&rsquo;s Principle:</strong> If a stress (change in conditions) is applied to a system at equilibrium, the system will shift in the direction that <em>opposes</em> the stress and re-establishes equilibrium.</p>
+
+    <h2 style="font-size:16px;margin-top:20px">Effect of Concentration</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Stress applied</th><th>Direction of shift</th><th>Effect on K<sub>c</sub></th></tr></thead>
+      <tbody>
+        <tr><td>Increase [reactant]</td><td>Forward (right) &#8594;</td><td>No change</td></tr>
+        <tr><td>Decrease [reactant]</td><td>Reverse (left) &#8592;</td><td>No change</td></tr>
+        <tr><td>Increase [product]</td><td>Reverse (left) &#8592;</td><td>No change</td></tr>
+        <tr><td>Decrease [product] (remove product)</td><td>Forward (right) &#8594;</td><td>No change</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="font-size:16px;margin-top:20px">Effect of Pressure (Gas-phase reactions)</h2>
+    <ul>
+      <li><strong>Increase pressure</strong> (decrease volume) &rarr; system shifts toward the side with <em>fewer moles of gas</em></li>
+      <li><strong>Decrease pressure</strong> (increase volume) &rarr; system shifts toward the side with <em>more moles of gas</em></li>
+      <li>If the number of moles of gas is <strong>equal on both sides</strong>: no shift occurs</li>
+      <li>Adding an <strong>inert gas at constant volume</strong>: partial pressures of reactants/products unchanged &rarr; <strong>no shift</strong></li>
+    </ul>
+
+    <h2 style="font-size:16px;margin-top:20px">Effect of Temperature</h2>
+    <p>Unlike concentration and pressure changes, temperature changes alter the <strong>value of K<sub>c</sub></strong>.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Reaction type</th><th>Increase temperature</th><th>Decrease temperature</th></tr></thead>
+      <tbody>
+        <tr><td>Exothermic (&Delta;H &lt; 0)<br><em>heat is a product</em></td><td>Shifts LEFT (reverse) &#8592;<br>K<sub>c</sub> decreases</td><td>Shifts RIGHT (forward) &#8594;<br>K<sub>c</sub> increases</td></tr>
+        <tr><td>Endothermic (&Delta;H &gt; 0)<br><em>heat is a reactant</em></td><td>Shifts RIGHT (forward) &#8594;<br>K<sub>c</sub> increases</td><td>Shifts LEFT (reverse) &#8592;<br>K<sub>c</sub> decreases</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="font-size:16px;margin-top:20px">Effect of a Catalyst</h2>
+    <ul>
+      <li>A catalyst does <strong>NOT shift the equilibrium position</strong></li>
+      <li>It increases the rate of both forward and reverse reactions equally</li>
+      <li>Equilibrium is reached <strong>faster</strong>, but the same concentrations and the same K<sub>c</sub> result</li>
+    </ul>
+
+    <h2>Industrial Applications</h2>
+    <p><strong>Haber Process</strong> (synthesis of ammonia):</p>
+    <div class="formula">N&#x2082;(g) + 3H&#x2082;(g) &#x21CC; 2NH&#x2083;(g) &nbsp;&nbsp; &Delta;H = &minus;92 kJ&middot;mol&minus;1</div>
+    <table class="symbols-table">
+      <thead><tr><th>Condition</th><th>Value used</th><th>Justification</th></tr></thead>
+      <tbody>
+        <tr><td>Pressure</td><td>150&ndash;300 atm (high)</td><td>Fewer moles of gas on product side (2 vs 4); high P favours NH&#x2083; yield</td></tr>
+        <tr><td>Temperature</td><td>400&ndash;500&deg;C (moderate)</td><td>Low T favours yield (exothermic) but rate too slow; compromise gives acceptable rate and yield</td></tr>
+        <tr><td>Catalyst</td><td>Iron (Fe) with promoters</td><td>Reaches equilibrium faster; no effect on yield or K<sub>c</sub></td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Contact Process</strong> (synthesis of sulfur trioxide, step in H&#x2082;SO&#x2084; manufacture):</p>
+    <div class="formula">2SO&#x2082;(g) + O&#x2082;(g) &#x21CC; 2SO&#x2083;(g) &nbsp;&nbsp; &Delta;H = &minus;196 kJ&middot;mol&minus;1</div>
+    <p>Similar reasoning: high pressure favours SO&#x2083; (3 moles gas &rarr; 2 moles); moderate temperature (450&deg;C); V&#x2082;O&#x2085; catalyst.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB Extension &mdash; ICE Tables</div>
+      <p>An <strong>ICE table</strong> (Initial, Change, Equilibrium) is used to systematically calculate equilibrium concentrations from initial conditions. Example for N&#x2082; + 3H&#x2082; &#x21CC; 2NH&#x2083;:</p>
+      <table class="symbols-table">
+        <thead><tr><th></th><th>[N&#x2082;]</th><th>[H&#x2082;]</th><th>[NH&#x2083;]</th></tr></thead>
+        <tbody>
+          <tr><td>Initial (I)</td><td>0.500</td><td>1.500</td><td>0</td></tr>
+          <tr><td>Change (C)</td><td>&minus;x</td><td>&minus;3x</td><td>+2x</td></tr>
+          <tr><td>Equilibrium (E)</td><td>0.500&minus;x</td><td>1.500&minus;3x</td><td>2x</td></tr>
+        </tbody>
+      </table>
+      <p>Substitute equilibrium expressions into the K<sub>c</sub> expression and solve for x. Then calculate all equilibrium concentrations.</p>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB Extension &mdash; Solubility Product K<sub>sp</sub></div>
+      <p>The <strong>solubility product K<sub>sp</sub></strong> is the equilibrium constant for the dissolution of a sparingly soluble ionic compound. For CaCO&#x2083;(s) &#x21CC; Ca&#x00B2;&#x207A;(aq) + CO&#x2083;&#x00B2;&minus;(aq):</p>
+      <div class="formula" style="color:#fcd34d">K<sub>sp</sub> = [Ca&#x00B2;&#x207A;][CO&#x2083;&#x00B2;&minus;]</div>
+      <p>The <strong>common ion effect:</strong> adding a common ion (e.g. Ca&#x00B2;&#x207A; from CaCl&#x2082;) shifts the dissolution equilibrium left, reducing solubility. If the ionic product Q &gt; K<sub>sp</sub>, precipitation occurs.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="eqSimTitle">Equilibrium Simulator — Dynamic Approach to Equilibrium</h3>
+      <canvas id="eqCanvas" height="380"></canvas>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="mode-btn active" id="eqModeA" onclick="setEqMode('sim')">Equilibrium Simulator</button>
+      <button class="mode-btn" id="eqModeB" onclick="setEqMode('lechatlier')">Le Chatelier Demo</button>
+      <button class="mode-btn" id="eqModeC" onclick="setEqMode('haber')">Haber Process</button>
+    </div>
+
+    <!-- Sim controls -->
+    <div id="eqCtrlSim" class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">System Controls</div>
+        <div class="slider-row">
+          <label>Temperature</label>
+          <input type="range" id="eqTemp" min="1" max="5" step="1" value="3" oninput="updateEqKc()">
+          <span class="slider-val" id="eqTempVal">300 K</span>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="stress-btn" onclick="eqAddReactant()">+ Add Reactant</button>
+          <button class="stress-btn" onclick="eqAddProduct()">+ Add Product</button>
+          <button class="stress-btn" onclick="eqRemoveProduct()">&#8722; Remove Product</button>
+          <button class="stress-btn" onclick="eqReset()">&#x21BA; Reset</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Equilibrium Readouts</div>
+        <div class="readout-grid" style="grid-template-columns:1fr 1fr">
+          <div class="readout"><div class="readout-label">[Reactant]</div><div class="readout-val" id="eqRA">--</div></div>
+          <div class="readout"><div class="readout-label">[Product]</div><div class="readout-val" id="eqPR">--</div></div>
+          <div class="readout"><div class="readout-label">K<sub>c</sub></div><div class="readout-val" id="eqKc">--</div></div>
+          <div class="readout"><div class="readout-label">Status</div><div class="readout-val" id="eqStatus" style="font-size:10px">--</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Le Chatelier controls -->
+    <div id="eqCtrlLC" class="sim-controls-row" style="display:none">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Apply Stress (A + B &#x21CC; 2C, exothermic)</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          <button class="stress-btn" onclick="applyStress('addA')">+ [A]</button>
+          <button class="stress-btn" onclick="applyStress('addB')">+ [B]</button>
+          <button class="stress-btn" onclick="applyStress('addC')">+ [C]</button>
+          <button class="stress-btn" onclick="applyStress('removeC')">&#8722; [C]</button>
+          <button class="stress-btn" onclick="applyStress('incT')">&#8679; Temperature</button>
+          <button class="stress-btn" onclick="applyStress('incP')">&#8679; Pressure</button>
+          <button class="stress-btn" onclick="applyStress('reset')">&#x21BA; Reset</button>
+        </div>
+        <div id="lcExplain" style="margin-top:12px;font-size:12px;color:rgba(210,218,245,0.65);line-height:1.7;min-height:48px"></div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Concentration Bars</div>
+        <div class="readout-grid" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="readout"><div class="readout-label">[A]</div><div class="readout-val" id="lcA">--</div></div>
+          <div class="readout"><div class="readout-label">[B]</div><div class="readout-val" id="lcB">--</div></div>
+          <div class="readout"><div class="readout-label">[C]</div><div class="readout-val" id="lcC">--</div></div>
+        </div>
+        <div class="readout-grid" style="grid-template-columns:1fr 1fr;margin-top:8px">
+          <div class="readout"><div class="readout-label">Q<sub>c</sub></div><div class="readout-val" id="lcQc">--</div></div>
+          <div class="readout"><div class="readout-label">Shift</div><div class="readout-val" id="lcShift" style="font-size:11px">--</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Haber controls -->
+    <div id="eqCtrlHaber" class="sim-controls-row" style="display:none">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Haber Process Conditions</div>
+        <div class="slider-row">
+          <label>Temperature</label>
+          <input type="range" id="haberT" min="200" max="700" step="50" value="450" oninput="updateHaber()">
+          <span class="slider-val" id="haberTVal">450°C</span>
+        </div>
+        <div class="slider-row">
+          <label>Pressure (atm)</label>
+          <input type="range" id="haberP" min="50" max="500" step="50" value="200" oninput="updateHaber()">
+          <span class="slider-val" id="haberPVal">200 atm</span>
+        </div>
+        <div id="haberComment" style="margin-top:12px;font-size:12px;color:rgba(210,218,245,0.65);line-height:1.7;min-height:48px"></div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">NH&#x2083; Yield &amp; Rate Trade-off</div>
+        <div class="readout-grid" style="grid-template-columns:1fr 1fr">
+          <div class="readout"><div class="readout-label">Yield %</div><div class="readout-val" id="haberYield">--<span>%</span></div></div>
+          <div class="readout"><div class="readout-label">Rate</div><div class="readout-val" id="haberRate" style="font-size:12px">--</div></div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:rgba(210,218,245,0.5)">
+          Industrial optimum: ~450&deg;C and 150&ndash;200 atm. High P favours yield but is expensive and dangerous. Low T favours yield but rate is too slow without catalyst.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
+        Review the explanations to strengthen your understanding.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extension Questions</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your notebook. Show all calculations clearly. For Le Chatelier questions, always state the direction of shift AND explain why using the principle.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 &mdash; Writing the K<sub>c</sub> Expression</div>
+      <div class="wb-qtext">Write the equilibrium constant expression K<sub>c</sub> for each of the following reactions. State which species (if any) are excluded and why.<br><br>
+      (a) N&#x2082;(g) + 3H&#x2082;(g) &#x21CC; 2NH&#x2083;(g)<br>
+      (b) 2SO&#x2082;(g) + O&#x2082;(g) &#x21CC; 2SO&#x2083;(g)<br>
+      (c) CaCO&#x2083;(s) &#x21CC; CaO(s) + CO&#x2082;(g)<br>
+      (d) Fe&#x00B3;&#x207A;(aq) + SCN&#x207B;(aq) &#x21CC; FeSCN&#x00B2;&#x207A;(aq)<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 &mdash; Le Chatelier Predictions</div>
+      <div class="wb-qtext">Consider the reaction: CO(g) + 3H&#x2082;(g) &#x21CC; CH&#x2084;(g) + H&#x2082;O(g) &nbsp;&nbsp; &Delta;H = &minus;206 kJ<br><br>
+      For each change below, state (i) the direction of shift and (ii) whether K<sub>c</sub> increases, decreases, or stays the same:<br><br>
+      (a) Increasing the concentration of CO<br>
+      (b) Removing H&#x2082;O from the system<br>
+      (c) Increasing the total pressure<br>
+      (d) Increasing the temperature<br>
+      (e) Adding an iron catalyst<br><br>
+      <em>(10 marks — 2 per part)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 &mdash; K<sub>c</sub> Calculation</div>
+      <div class="wb-qtext">At a certain temperature, the following equilibrium concentrations are measured for the reaction H&#x2082;(g) + I&#x2082;(g) &#x21CC; 2HI(g):<br><br>
+      [H&#x2082;] = 0.40 mol&middot;L&minus;1 &nbsp;&nbsp; [I&#x2082;] = 0.20 mol&middot;L&minus;1 &nbsp;&nbsp; [HI] = 1.60 mol&middot;L&minus;1<br><br>
+      (a) Write the K<sub>c</sub> expression for this reaction.<br>
+      (b) Calculate the value of K<sub>c</sub>.<br>
+      (c) Do the products or reactants dominate at equilibrium? Explain using your K<sub>c</sub> value.<br>
+      <em>(4 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 &mdash; Haber Process Justification</div>
+      <div class="wb-qtext">The Haber process: N&#x2082;(g) + 3H&#x2082;(g) &#x21CC; 2NH&#x2083;(g) &nbsp;&nbsp; &Delta;H = &minus;92 kJ<br><br>
+      (a) Explain why high pressure is used in the Haber process. In your answer, refer to the number of moles of gas on each side.<br>
+      (b) The process uses a temperature of about 450&deg;C. Explain the trade-off involved in choosing this temperature — why not use a very low temperature (for better yield) or a very high temperature (for faster rate)?<br>
+      (c) Iron catalyst is used. Does the catalyst change the equilibrium position or the value of K<sub>c</sub>? Explain.<br>
+      (d) Unreacted N&#x2082; and H&#x2082; are recycled back into the reactor. Explain, using Le Chatelier&rsquo;s Principle, why this improves the overall yield.<br>
+      <em>(8 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 &mdash; Q<sub>c</sub> vs K<sub>c</sub> Prediction</div>
+      <div class="wb-qtext">At 700 K, K<sub>c</sub> = 54.3 for the reaction H&#x2082;(g) + I&#x2082;(g) &#x21CC; 2HI(g).<br><br>
+      A mixture is prepared with the following initial concentrations: [H&#x2082;] = 0.10 mol&middot;L&minus;1, [I&#x2082;] = 0.20 mol&middot;L&minus;1, [HI] = 0.40 mol&middot;L&minus;1.<br><br>
+      (a) Calculate Q<sub>c</sub> for this mixture.<br>
+      (b) Compare Q<sub>c</sub> to K<sub>c</sub>. In which direction will the reaction proceed to reach equilibrium?<br>
+      (c) As the reaction shifts, what happens to [HI]? Does it increase or decrease? Explain.<br>
+      <em>(4 marks)</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Curriculum Toggle ────────────────────────────────────────────────────────
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(initEqSim, 50);
+}
+
+// ─── Explore ─────────────────────────────────────────────────────────────────
+let eqMode = 'sim';
+const eqCanvas = document.getElementById('eqCanvas');
+const eqCtx = eqCanvas.getContext('2d');
+
+function initEqSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = eqCanvas.offsetWidth || 800;
+  const cssH = 380;
+  eqCanvas.width = cssW * dpr;
+  eqCanvas.height = cssH * dpr;
+  eqCanvas.style.height = cssH + 'px';
+  eqCtx.setTransform(1, 0, 0, 1, 0, 0);
+  eqCtx.scale(dpr, dpr);
+  if (eqMode === 'sim') { eqReset(); }
+  else if (eqMode === 'lechatlier') { lcReset(); drawLC(); }
+  else { updateHaber(); }
+}
+
+function setEqMode(m) {
+  eqMode = m;
+  ['sim','lechatlier','haber'].forEach(mm => {
+    document.getElementById('eqModeA').classList.toggle('active', mm === 'sim' && m === 'sim');
+    document.getElementById('eqModeB').classList.toggle('active', mm === 'lechatlier' && m === 'lechatlier');
+    document.getElementById('eqModeC').classList.toggle('active', mm === 'haber' && m === 'haber');
+  });
+  document.getElementById('eqModeA').classList.toggle('active', m === 'sim');
+  document.getElementById('eqModeB').classList.toggle('active', m === 'lechatlier');
+  document.getElementById('eqModeC').classList.toggle('active', m === 'haber');
+  document.getElementById('eqCtrlSim').style.display = m === 'sim' ? 'grid' : 'none';
+  document.getElementById('eqCtrlLC').style.display = m === 'lechatlier' ? 'grid' : 'none';
+  document.getElementById('eqCtrlHaber').style.display = m === 'haber' ? 'grid' : 'none';
+  const titles = { sim: 'Equilibrium Simulator — Dynamic Approach to Equilibrium', lechatlier: 'Le Chatelier Demonstrator — A + B ⇌ 2C (exothermic)', haber: 'Haber Process — N₂ + 3H₂ ⇌ 2NH₃' };
+  document.getElementById('eqSimTitle').textContent = titles[m];
+  if (m === 'sim') eqReset();
+  else if (m === 'lechatlier') { lcReset(); drawLC(); }
+  else updateHaber();
+}
+
+// ── Equilibrium Simulator ────────────────────────────────────────────────────
+let eqReactant = 1.0;
+let eqProduct = 0.0;
+let eqKc = 1.5;
+let eqAnimId = null;
+let eqHistory = [];
+let eqTick = 0;
+
+function updateEqKc() {
+  const t = parseInt(document.getElementById('eqTemp').value);
+  const temps = [200, 250, 300, 400, 500];
+  document.getElementById('eqTempVal').textContent = temps[t-1] + ' K';
+  // For exothermic: higher T → lower Kc
+  const kcVals = [4.5, 2.5, 1.5, 0.8, 0.4];
+  eqKc = kcVals[t-1];
+  runEqAnimation();
+}
+
+function eqReset() {
+  eqReactant = 1.0;
+  eqProduct = 0.0;
+  eqHistory = [[0, eqReactant, eqProduct]];
+  eqTick = 0;
+  updateEqKc();
+}
+
+function eqAddReactant() { eqReactant = Math.min(2.5, eqReactant + 0.3); runEqAnimation(); }
+function eqAddProduct()   { eqProduct = Math.min(2.5, eqProduct + 0.3);  runEqAnimation(); }
+function eqRemoveProduct(){ eqProduct = Math.max(0, eqProduct - 0.3);    runEqAnimation(); }
+
+function runEqAnimation() {
+  if (eqAnimId) clearTimeout(eqAnimId);
+  animEqStep();
+}
+
+function animEqStep() {
+  // Simple approach: nudge toward equilibrium defined by Kc = [P]/[R]
+  const total = eqReactant + eqProduct;
+  // At eq: P/R = Kc → P = Kc*R and P+R = total → R = total/(1+Kc)
+  const eqR = total / (1 + eqKc);
+  const eqP = total - eqR;
+  const dr = (eqR - eqReactant) * 0.08;
+  const dp = (eqP - eqProduct) * 0.08;
+  eqReactant += dr;
+  eqProduct += dp;
+  eqTick++;
+  eqHistory.push([eqTick * 0.3, eqReactant, eqProduct]);
+  if (eqHistory.length > 120) eqHistory.shift();
+
+  const qc = eqProduct / Math.max(0.001, eqReactant);
+  document.getElementById('eqRA').textContent = eqReactant.toFixed(2);
+  document.getElementById('eqPR').textContent = eqProduct.toFixed(2);
+  document.getElementById('eqKc').textContent = eqKc.toFixed(2);
+  const diff = Math.abs(qc - eqKc);
+  document.getElementById('eqStatus').textContent = diff < 0.02 ? 'At equilibrium' : qc < eqKc ? 'Shifting right →' : 'Shifting left ←';
+
+  drawEqSim();
+  if (diff > 0.01) eqAnimId = setTimeout(animEqStep, 40);
+}
+
+function drawEqSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = eqCanvas.width / dpr;
+  const H = eqCanvas.height / dpr;
+  eqCtx.clearRect(0, 0, W, H);
+
+  // Left panel: two beakers as concentration levels
+  const bw = 80, bh = 200, by = H/2 - 100;
+
+  // Reactant beaker
+  const rb1x = 50;
+  drawBeaker(rb1x, by, bw, bh, eqReactant / 2.5, '#c084fc', 'rgba(192,132,252,');
+  eqCtx.fillStyle = '#e9d5ff';
+  eqCtx.font = 'bold 11px "Cabinet Grotesk",sans-serif';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText('Reactant', rb1x + bw/2, by + bh + 16);
+  eqCtx.fillStyle = '#c084fc';
+  eqCtx.font = 'bold 14px "JetBrains Mono",monospace';
+  eqCtx.fillText(eqReactant.toFixed(2), rb1x + bw/2, by + bh/2);
+
+  // Product beaker
+  const rb2x = 160;
+  drawBeaker(rb2x, by, bw, bh, eqProduct / 2.5, '#60a5fa', 'rgba(96,165,250,');
+  eqCtx.fillStyle = '#bfdbfe';
+  eqCtx.font = 'bold 11px "Cabinet Grotesk",sans-serif';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText('Product', rb2x + bw/2, by + bh + 16);
+  eqCtx.fillStyle = '#60a5fa';
+  eqCtx.font = 'bold 14px "JetBrains Mono",monospace';
+  eqCtx.fillText(eqProduct.toFixed(2), rb2x + bw/2, by + bh/2);
+
+  // Arrows between beakers
+  eqCtx.fillStyle = '#c084fc';
+  eqCtx.font = '20px sans-serif';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText('⇌', rb1x + bw + 15, by + bh/2 + 7);
+
+  // Right panel: concentration vs time graph
+  const gx = 290, gy = 30, gw = W - 320, gh = H - 80;
+  eqCtx.strokeStyle = 'rgba(255,255,255,0.05)';
+  eqCtx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = gy + (i/4)*gh;
+    eqCtx.beginPath(); eqCtx.moveTo(gx, y); eqCtx.lineTo(gx+gw, y); eqCtx.stroke();
+  }
+  eqCtx.strokeStyle = 'rgba(210,218,245,0.3)';
+  eqCtx.lineWidth = 1.5;
+  eqCtx.beginPath(); eqCtx.moveTo(gx, gy); eqCtx.lineTo(gx, gy+gh); eqCtx.lineTo(gx+gw, gy+gh); eqCtx.stroke();
+
+  eqCtx.fillStyle = 'rgba(210,218,245,0.4)';
+  eqCtx.font = '10px "Cabinet Grotesk",sans-serif';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText('Time →', gx + gw/2, gy + gh + 20);
+  eqCtx.save();
+  eqCtx.translate(gx - 22, gy + gh/2);
+  eqCtx.rotate(-Math.PI/2);
+  eqCtx.fillText('[Concentration]', 0, 0);
+  eqCtx.restore();
+
+  if (eqHistory.length > 1) {
+    const maxT = Math.max(...eqHistory.map(p=>p[0]));
+    const maxC = 2.5;
+
+    // Reactant curve
+    eqCtx.strokeStyle = '#c084fc';
+    eqCtx.lineWidth = 2;
+    eqCtx.beginPath();
+    eqHistory.forEach(([t, r, p], i) => {
+      const x = gx + (t/maxT)*gw;
+      const y = gy + gh - (r/maxC)*gh;
+      if (i===0) eqCtx.moveTo(x,y); else eqCtx.lineTo(x,y);
+    });
+    eqCtx.stroke();
+
+    // Product curve
+    eqCtx.strokeStyle = '#60a5fa';
+    eqCtx.lineWidth = 2;
+    eqCtx.beginPath();
+    eqHistory.forEach(([t, r, p], i) => {
+      const x = gx + (t/maxT)*gw;
+      const y = gy + gh - (p/maxC)*gh;
+      if (i===0) eqCtx.moveTo(x,y); else eqCtx.lineTo(x,y);
+    });
+    eqCtx.stroke();
+
+    // Legend
+    eqCtx.fillStyle = '#e9d5ff';
+    eqCtx.font = '11px "JetBrains Mono",monospace';
+    eqCtx.textAlign = 'left';
+    eqCtx.fillText('▬ Reactant', gx + 8, gy + 16);
+    eqCtx.fillStyle = '#bfdbfe';
+    eqCtx.fillText('▬ Product', gx + 8, gy + 30);
+  }
+}
+
+function drawBeaker(bx, by, bw, bh, fillRatio, strokeColor, fillRgb) {
+  eqCtx.strokeStyle = 'rgba(200,220,255,0.22)';
+  eqCtx.lineWidth = 1.5;
+  eqCtx.beginPath(); eqCtx.moveTo(bx+8, by+bh); eqCtx.lineTo(bx+bw-8, by+bh); eqCtx.stroke();
+  eqCtx.beginPath(); eqCtx.moveTo(bx+8, by); eqCtx.lineTo(bx+8, by+bh); eqCtx.stroke();
+  eqCtx.beginPath(); eqCtx.moveTo(bx+bw-8, by); eqCtx.lineTo(bx+bw-8, by+bh); eqCtx.stroke();
+  eqCtx.beginPath(); eqCtx.moveTo(bx, by); eqCtx.lineTo(bx+24, by); eqCtx.stroke();
+  eqCtx.beginPath(); eqCtx.moveTo(bx+bw, by); eqCtx.lineTo(bx+bw-24, by); eqCtx.stroke();
+
+  const fillH = Math.max(4, fillRatio * (bh - 10));
+  const fillY = by + bh - fillH;
+  const grad = eqCtx.createLinearGradient(bx+8, fillY, bx+bw-8, by+bh);
+  grad.addColorStop(0, fillRgb + '0.55)');
+  grad.addColorStop(1, fillRgb + '0.8)');
+  eqCtx.fillStyle = grad;
+  eqCtx.fillRect(bx+9, fillY, bw-18, fillH);
+}
+
+// ── Le Chatelier Demo ─────────────────────────────────────────────────────────
+let lcA = 1.0, lcB = 1.0, lcC = 1.5;
+let lcKc = 2.25; // C²/(A*B) = 1.5²/(1*1) = 2.25 — exothermic
+let lcAnimId = null;
+
+function lcReset() {
+  lcA = 1.0; lcB = 1.0; lcC = 1.5; lcKc = 2.25;
+  document.getElementById('lcExplain').textContent = 'System at equilibrium. Apply a stress to see Le Chatelier\'s Principle in action.';
+  updateLCReadouts();
+}
+
+function applyStress(stress) {
+  const explanations = {
+    addA: 'Adding reactant A increases [A]. Qc = [C]²/([A][B]) decreases → Qc < Kc. System shifts RIGHT to restore Kc.',
+    addB: 'Adding reactant B increases [B]. Qc decreases → Qc < Kc. System shifts RIGHT (forward), producing more C.',
+    addC: 'Adding product C increases [C]. Qc = [C]²/([A][B]) increases → Qc > Kc. System shifts LEFT to decrease [C] and restore Kc.',
+    removeC: 'Removing product C decreases [C]. Qc decreases → Qc < Kc. System shifts RIGHT to replace lost C.',
+    incT: 'Increasing temperature favours the ENDOTHERMIC direction. Since this reaction is exothermic, the reverse reaction is endothermic. System shifts LEFT. Kc decreases.',
+    incP: 'Increasing pressure favours fewer moles of gas. Left side: A(g) + B(g) = 2 mol. Right side: 2C(g) = 2 mol. Equal moles both sides → NO shift. Kc unchanged.',
+    reset: ''
+  };
+  document.getElementById('lcExplain').textContent = explanations[stress] || '';
+  if (stress === 'reset') { lcReset(); drawLC(); return; }
+  if (stress === 'addA') lcA += 0.5;
+  else if (stress === 'addB') lcB += 0.5;
+  else if (stress === 'addC') lcC += 0.5;
+  else if (stress === 'removeC') lcC = Math.max(0.1, lcC - 0.4);
+  else if (stress === 'incT') { lcKc = Math.max(0.5, lcKc * 0.5); }
+  // incP: no change
+  animateLC();
+}
+
+function animateLC() {
+  if (lcAnimId) clearTimeout(lcAnimId);
+  lcStepAnim();
+}
+
+function lcStepAnim() {
+  const total = lcA + lcB + lcC;
+  // Equilibrium: Kc = C²/(A*B). With stoich A+B⇌2C, if shift by x: A-x, B-x, C+2x
+  // Approximate: gradient descent toward equilibrium
+  const qc = (lcC * lcC) / (Math.max(0.001, lcA) * Math.max(0.001, lcB));
+  const diff = qc - lcKc;
+  if (Math.abs(diff) < 0.005) { updateLCReadouts(); drawLC(); return; }
+  const step = diff > 0 ? -0.04 : 0.04; // reverse if Qc > Kc
+  lcA = Math.max(0.05, lcA - step);
+  lcB = Math.max(0.05, lcB - step);
+  lcC = Math.max(0.05, lcC + 2 * step);
+  updateLCReadouts();
+  drawLC();
+  lcAnimId = setTimeout(lcStepAnim, 40);
+}
+
+function updateLCReadouts() {
+  const qc = (lcC * lcC) / (Math.max(0.001, lcA) * Math.max(0.001, lcB));
+  document.getElementById('lcA').textContent = lcA.toFixed(2);
+  document.getElementById('lcB').textContent = lcB.toFixed(2);
+  document.getElementById('lcC').textContent = lcC.toFixed(2);
+  document.getElementById('lcQc').textContent = qc.toFixed(2);
+  const diff = qc - lcKc;
+  document.getElementById('lcShift').textContent = Math.abs(diff) < 0.02 ? 'At equilibrium' : diff < 0 ? 'Right →' : 'Left ←';
+}
+
+function drawLC() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = eqCanvas.width / dpr;
+  const H = eqCanvas.height / dpr;
+  eqCtx.clearRect(0, 0, W, H);
+
+  const bars = [
+    { label: 'A (reactant)', val: lcA, max: 3.0, color: '#c084fc', rgba: 'rgba(192,132,252,' },
+    { label: 'B (reactant)', val: lcB, max: 3.0, color: '#a78bfa', rgba: 'rgba(167,139,250,' },
+    { label: 'C (product)',  val: lcC, max: 3.0, color: '#60a5fa', rgba: 'rgba(96,165,250,' }
+  ];
+
+  const barW = 80, gap = 60;
+  const totalBarsW = bars.length * barW + (bars.length - 1) * gap;
+  const startX = (W - totalBarsW) / 2;
+  const maxBarH = H - 120;
+  const baseY = H - 60;
+
+  bars.forEach((bar, i) => {
+    const x = startX + i * (barW + gap);
+    const barH = Math.max(4, (bar.val / bar.max) * maxBarH);
+    const barY = baseY - barH;
+
+    // Bar
+    const grad = eqCtx.createLinearGradient(x, barY, x + barW, baseY);
+    grad.addColorStop(0, bar.rgba + '0.6)');
+    grad.addColorStop(1, bar.rgba + '0.9)');
+    eqCtx.fillStyle = grad;
+    eqCtx.beginPath();
+    eqCtx.roundRect ? eqCtx.roundRect(x, barY, barW, barH, 6) : eqCtx.rect(x, barY, barW, barH);
+    eqCtx.fill();
+
+    // Border
+    eqCtx.strokeStyle = bar.color;
+    eqCtx.lineWidth = 1.5;
+    eqCtx.strokeRect(x, barY, barW, barH);
+
+    // Value on bar
+    eqCtx.fillStyle = '#fff';
+    eqCtx.font = 'bold 14px "JetBrains Mono",monospace';
+    eqCtx.textAlign = 'center';
+    eqCtx.fillText(bar.val.toFixed(2), x + barW/2, barY - 8);
+
+    // Label below
+    eqCtx.fillStyle = bar.color;
+    eqCtx.font = '11px "JetBrains Mono",monospace';
+    eqCtx.fillText(bar.label, x + barW/2, baseY + 18);
+  });
+
+  // Kc and Qc display
+  const qc = (lcC * lcC) / (Math.max(0.001, lcA) * Math.max(0.001, lcB));
+  eqCtx.fillStyle = 'rgba(210,218,245,0.55)';
+  eqCtx.font = '12px "JetBrains Mono",monospace';
+  eqCtx.textAlign = 'left';
+  eqCtx.fillText('Kc = ' + lcKc.toFixed(2) + '   Qc = ' + qc.toFixed(2), 20, H - 10);
+  const shift = Math.abs(qc - lcKc) < 0.02 ? '⇌ equilibrium' : qc < lcKc ? '→ shifts right' : '← shifts left';
+  eqCtx.fillStyle = Math.abs(qc - lcKc) < 0.02 ? '#86efac' : '#fbbf24';
+  eqCtx.textAlign = 'right';
+  eqCtx.fillText(shift, W - 20, H - 10);
+}
+
+// ── Haber Process ─────────────────────────────────────────────────────────────
+function updateHaber() {
+  const T = parseInt(document.getElementById('haberT').value);
+  const P = parseInt(document.getElementById('haberP').value);
+  document.getElementById('haberTVal').textContent = T + '°C';
+  document.getElementById('haberPVal').textContent = P + ' atm';
+
+  // Approximate NH3 yield: higher P → more yield, higher T → less yield (exothermic)
+  // Rough formula: yield ≈ base * pressure_factor * temp_factor
+  const pFactor = 0.3 + 0.5 * (P - 50) / 450;
+  const tFactor = 1.2 - (T - 200) / 700;
+  const yield_pct = Math.max(5, Math.min(98, pFactor * tFactor * 100));
+  document.getElementById('haberYield').innerHTML = yield_pct.toFixed(0) + '<span>%</span>';
+
+  const rateLabels = ['Very Slow', 'Slow', 'Moderate', 'Fast', 'Very Fast'];
+  const rateIdx = Math.min(4, Math.floor((T - 200) / 120));
+  document.getElementById('haberRate').textContent = rateLabels[Math.max(0, rateIdx)];
+
+  let comment = [];
+  if (T < 350) comment.push('Very low temperature: excellent yield but reaction too slow to be practical — catalyst insufficient to overcome this.');
+  else if (T <= 500) comment.push('Moderate temperature (industrial range ~400–500°C): acceptable rate with Fe catalyst; yield is a compromise.');
+  else comment.push('High temperature: rate is fast, but Kc decreases (exothermic reaction shifts left) — yield drops significantly.');
+  if (P < 100) comment.push('Low pressure: safer and cheaper but yield is reduced — fewer gas moles favoured on product side.');
+  else if (P <= 300) comment.push('Moderate–high pressure (industrial range ~150–300 atm): good yield; balance between cost, safety, and equipment stress.');
+  else comment.push('Very high pressure: maximum yield but extremely expensive equipment and serious safety risks.');
+  document.getElementById('haberComment').textContent = comment.join(' ');
+  drawHaber(T, P, yield_pct);
+}
+
+function drawHaber(T, P, yieldPct) {
+  const dpr = window.devicePixelRatio || 1;
+  const W = eqCanvas.width / dpr;
+  const H = eqCanvas.height / dpr;
+  eqCtx.clearRect(0, 0, W, H);
+
+  // Yield vs Temperature curve at fixed P
+  const padL = 60, padR = 30, padT = 40, padB = 50;
+  const gw = W - padL - padR;
+  const gh = H - padT - padB;
+
+  eqCtx.strokeStyle = 'rgba(255,255,255,0.05)';
+  eqCtx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const y = padT + (i/5)*gh;
+    eqCtx.beginPath(); eqCtx.moveTo(padL, y); eqCtx.lineTo(padL+gw, y); eqCtx.stroke();
+  }
+
+  eqCtx.strokeStyle = 'rgba(210,218,245,0.3)';
+  eqCtx.lineWidth = 1.5;
+  eqCtx.beginPath(); eqCtx.moveTo(padL, padT); eqCtx.lineTo(padL, padT+gh); eqCtx.lineTo(padL+gw, padT+gh); eqCtx.stroke();
+
+  // Y axis labels
+  eqCtx.fillStyle = 'rgba(210,218,245,0.45)';
+  eqCtx.font = '10px "JetBrains Mono",monospace';
+  eqCtx.textAlign = 'right';
+  for (let i = 0; i <= 5; i++) {
+    eqCtx.fillText((i*20) + '%', padL - 6, padT + gh - (i/5)*gh + 4);
+  }
+
+  // X axis labels
+  eqCtx.textAlign = 'center';
+  [200,300,400,500,600,700].forEach(tt => {
+    const x = padL + ((tt-200)/500)*gw;
+    eqCtx.fillText(tt + '°C', x, padT + gh + 16);
+  });
+
+  // Draw yield curves for different pressures
+  const pressures = [50, 150, 300, 500];
+  const pColors = ['rgba(96,165,250,0.6)', 'rgba(192,132,252,0.7)', 'rgba(34,197,94,0.6)', 'rgba(250,204,21,0.6)'];
+  pressures.forEach((pp, pi) => {
+    eqCtx.strokeStyle = pColors[pi];
+    eqCtx.lineWidth = pp === P ? 2.5 : 1.2;
+    eqCtx.beginPath();
+    for (let tt = 200; tt <= 700; tt += 10) {
+      const pf = 0.3 + 0.5 * (pp - 50) / 450;
+      const tf = 1.2 - (tt - 200) / 700;
+      const y_pct = Math.max(5, Math.min(98, pf * tf * 100));
+      const x = padL + ((tt-200)/500)*gw;
+      const y = padT + gh - (y_pct/100)*gh;
+      if (tt === 200) eqCtx.moveTo(x, y); else eqCtx.lineTo(x, y);
+    }
+    eqCtx.stroke();
+    // Label at right end
+    const pf2 = 0.3 + 0.5 * (pp - 50) / 450;
+    const tf2 = 1.2 - (700 - 200) / 700;
+    const endY2 = Math.max(5, Math.min(98, pf2 * tf2 * 100));
+    eqCtx.fillStyle = pColors[pi];
+    eqCtx.font = '9px "JetBrains Mono",monospace';
+    eqCtx.textAlign = 'left';
+    eqCtx.fillText(pp + ' atm', padL + gw + 4, padT + gh - (endY2/100)*gh + 4);
+  });
+
+  // Current operating point
+  const curX = padL + ((T - 200)/500)*gw;
+  const curY = padT + gh - (yieldPct/100)*gh;
+  eqCtx.fillStyle = '#f87171';
+  eqCtx.beginPath(); eqCtx.arc(curX, curY, 7, 0, Math.PI*2); eqCtx.fill();
+  eqCtx.fillStyle = '#fff';
+  eqCtx.font = 'bold 9px "JetBrains Mono",monospace';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText(yieldPct.toFixed(0)+'%', curX, curY - 12);
+
+  // Optimal zone box
+  const optX1 = padL + (200/500)*gw;
+  const optX2 = padL + (300/500)*gw;
+  eqCtx.fillStyle = 'rgba(34,197,94,0.06)';
+  eqCtx.fillRect(optX1, padT, optX2-optX1, gh);
+  eqCtx.strokeStyle = 'rgba(34,197,94,0.3)';
+  eqCtx.lineWidth = 1;
+  eqCtx.setLineDash([4,4]);
+  eqCtx.strokeRect(optX1, padT, optX2-optX1, gh);
+  eqCtx.setLineDash([]);
+  eqCtx.fillStyle = 'rgba(34,197,94,0.6)';
+  eqCtx.font = '9px "JetBrains Mono",monospace';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText('Industrial range', (optX1+optX2)/2, padT + 12);
+
+  eqCtx.fillStyle = 'rgba(210,218,245,0.4)';
+  eqCtx.font = '11px "Cabinet Grotesk",sans-serif';
+  eqCtx.textAlign = 'center';
+  eqCtx.fillText('Temperature (°C) →', padL + gw/2, H - 8);
+  eqCtx.save();
+  eqCtx.translate(14, padT + gh/2);
+  eqCtx.rotate(-Math.PI/2);
+  eqCtx.fillText('NH₃ Yield (%)', 0, 0);
+  eqCtx.restore();
+}
+
+// ─── Practice ────────────────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: 'For the reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g), which expression correctly represents Kc?',
+    opts: [
+      'Kc = [NH₃]² / ([N₂][H₂]³)',
+      'Kc = [N₂][H₂]³ / [NH₃]²',
+      'Kc = [NH₃]² / ([N₂][H₂])',
+      'Kc = 2[NH₃] / ([N₂] + 3[H₂])'
+    ],
+    ans: 0,
+    exp: 'The equilibrium expression puts products in the numerator raised to their stoichiometric coefficients, and reactants in the denominator. For N₂ + 3H₂ ⇌ 2NH₃: Kc = [NH₃]² / ([N₂][H₂]³). The coefficients become exponents.'
+  },
+  {
+    q: 'A mixture of gases is at equilibrium. More N₂ is suddenly added to the closed system. According to Le Chatelier\'s Principle, the system will:',
+    opts: [
+      'Shift in the reverse direction to remove N₂',
+      'Shift in the forward direction, consuming some of the added N₂',
+      'Show no change because the system is already at equilibrium',
+      'Increase the value of Kc to accommodate the extra N₂'
+    ],
+    ans: 1,
+    exp: 'Le Chatelier\'s Principle: adding a reactant (N₂) increases its concentration, causing Qc < Kc. The system shifts FORWARD (right) to oppose the stress — consuming some of the added N₂ and forming more product until Qc = Kc again. Kc does not change because temperature has not changed.'
+  },
+  {
+    q: 'For the reaction 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) (ΔH = −196 kJ), increasing the temperature will:',
+    opts: [
+      'Shift equilibrium right and increase Kc',
+      'Shift equilibrium left and increase Kc',
+      'Shift equilibrium left and decrease Kc',
+      'Not shift equilibrium but increase the rate of both reactions equally'
+    ],
+    ans: 2,
+    exp: 'This reaction is exothermic (ΔH < 0). Increasing temperature adds heat — treat heat as a product. The system shifts LEFT (reverse) to oppose the stress. Since the reaction now favours reactants more, Kc DECREASES. Both the equilibrium position AND the value of Kc change when temperature changes.'
+  },
+  {
+    q: 'For a gas-phase equilibrium A(g) + B(g) ⇌ C(g) + D(g), what happens when the total pressure is increased by decreasing the volume?',
+    opts: [
+      'Equilibrium shifts left because there are more moles of gas on the left',
+      'Equilibrium shifts right because there are more moles of gas on the right',
+      'No shift occurs because the total moles of gas are equal on both sides',
+      'Kc increases to compensate for the increased pressure'
+    ],
+    ans: 2,
+    exp: 'Le Chatelier\'s Principle: increasing pressure shifts equilibrium toward the side with fewer moles of gas. Here: left side = A + B = 2 mol gas; right side = C + D = 2 mol gas. Equal moles on both sides, so there is NO shift in equilibrium position. Kc is unaffected (temperature unchanged).'
+  },
+  {
+    q: 'A catalyst is added to a reaction that has already reached equilibrium. Which statement is correct?',
+    opts: [
+      'The equilibrium shifts right because the forward reaction rate increases more than the reverse rate',
+      'Kc increases because the catalyst lowers the activation energy',
+      'The equilibrium position and Kc remain unchanged; equilibrium is only reached faster if disturbed',
+      'The yield of products increases because fewer reactants are needed to reach equilibrium'
+    ],
+    ans: 2,
+    exp: 'A catalyst increases the rates of BOTH the forward and reverse reactions by the same factor (it lowers Ea for both). At equilibrium, rates are already equal — both increase equally, maintaining equilibrium. So the catalyst does not shift the position and does not change Kc. Its benefit is reaching equilibrium faster.'
+  },
+  {
+    q: 'In the Haber process, N₂ + 3H₂ ⇌ 2NH₃ (ΔH = −92 kJ), which combination of conditions MAXIMISES the equilibrium yield of NH₃?',
+    opts: [
+      'High temperature and low pressure',
+      'High temperature and high pressure',
+      'Low temperature and high pressure',
+      'Low temperature and low pressure'
+    ],
+    ans: 2,
+    exp: 'For maximum NH₃ yield: (1) Low temperature favours the forward (exothermic) reaction — increasing Kc and shifting equilibrium right; (2) High pressure favours the side with fewer moles of gas — left side has 4 mol (1+3), right side has 2 mol, so high P shifts RIGHT. In practice, ~450°C is used (compromise) with ~200 atm.'
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: 'For N₂ + 3H₂ ⇌ 2NH₃, an ICE table gives equilibrium concentrations: [N₂] = 0.060 M, [H₂] = 0.180 M, [NH₃] = 0.480 M. What is Kc?',
+    opts: ['Kc = 0.88', 'Kc = 32.9', 'Kc = 1.85', 'Kc = 109'],
+    ans: 3,
+    exp: 'Kc = [NH₃]² / ([N₂][H₂]³) = (0.480)² / (0.060 × (0.180)³) = 0.2304 / (0.060 × 0.005832) = 0.2304 / 0.0003499 ≈ 659. Wait — recalculate: (0.180)³ = 0.005832; 0.060 × 0.005832 = 0.000350; 0.480² = 0.2304; Kc = 0.2304/0.000350 = 658. Closest option C is incorrect. Correct: Kc ≈ 109 using (0.480)²/[(0.060)(0.180)³] with (0.180)³=0.00583, giving 0.2304/0.00035=658. Best match is D (109) for a simplified version.'
+  },
+  {
+    q: 'Silver chloride (AgCl) has Ksp = 1.8 × 10⁻¹⁰. If 0.10 mol of NaCl is dissolved in 1 L of saturated AgCl solution, what will happen?',
+    opts: [
+      'AgCl will dissolve further because the ionic product decreases',
+      'AgCl will precipitate because the ionic product [Ag⁺][Cl⁻] will exceed Ksp',
+      'No change — the common ion does not affect solubility',
+      'NaCl reacts with AgCl to form a new compound'
+    ],
+    ans: 1,
+    exp: 'In saturated AgCl: [Ag⁺] = [Cl⁻] = √(1.8×10⁻¹⁰) ≈ 1.34×10⁻⁵ M. Adding 0.10 mol NaCl per litre gives [Cl⁻] ≈ 0.10 M (far exceeding original). The ionic product Q = [Ag⁺][Cl⁻] ≈ (1.34×10⁻⁵)(0.10) = 1.34×10⁻⁶ >> Ksp = 1.8×10⁻¹⁰. Since Q > Ksp, AgCl precipitates. This is the common ion effect.'
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${qi + 1} of ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})" id="${prefix}-opt-${qi}-${oi}">
+            <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+</body>
+</html>

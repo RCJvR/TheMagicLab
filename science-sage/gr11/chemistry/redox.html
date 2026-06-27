@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redox Reactions — Science Sage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#c084fc;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+/* Simulation extras */
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.sim-action-btn{font-size:12px;font-weight:700;padding:8px 18px;border-radius:8px;border:1px solid rgba(192,132,252,.30);background:rgba(192,132,252,.12);color:#e9d5ff;cursor:pointer;transition:all 150ms;margin:4px 2px}
+.sim-action-btn:hover{background:rgba(192,132,252,.22)}
+.step-info{font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../index.html">Science Sage</a>
+  <span class="nav-strand">Chemistry</span>
+  <a class="nav-back" href="../index.html">← Back</a>
+</nav>
+
+<!-- LESSON HEADER -->
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Chemistry · Lesson 4</div>
+  <h1 class="lesson-title">Redox Reactions</h1>
+  <p class="lesson-sub">Assign oxidation numbers, identify oxidation and reduction half-reactions, balance redox equations using the half-reaction method, and understand the electrochemical series.</p>
+</div>
+
+<!-- CURRICULUM TOGGLE -->
+<div class="curr-toggle">
+  <span class="curr-label">Curriculum:</span>
+  <div class="curr-wrap">
+    <button class="curr-btn active" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📓 Workbook</button>
+</div>
+
+<!-- ═══════════════════════════════════════ LESSON TAB ═══════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-lesson">
+<div class="lesson-body">
+
+  <h2>Oxidation and Reduction — Three Definitions</h2>
+  <p>All three definitions describe the same phenomenon — they are consistent with one another. Whichever definition you apply to a reaction, you will always get the same answer about what is oxidised and what is reduced.</p>
+
+  <table class="symbols-table">
+    <thead>
+      <tr>
+        <th>In terms of</th>
+        <th>Oxidation</th>
+        <th>Reduction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Electrons</td>
+        <td>Loss of electrons (LEO)</td>
+        <td>Gain of electrons (GER)</td>
+      </tr>
+      <tr>
+        <td>Oxygen</td>
+        <td>Gain of oxygen</td>
+        <td>Loss of oxygen</td>
+      </tr>
+      <tr>
+        <td>Hydrogen</td>
+        <td>Loss of hydrogen</td>
+        <td>Gain of hydrogen</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>OIL RIG</strong> — <strong>O</strong>xidation <strong>I</strong>s <strong>L</strong>oss (of electrons), <strong>R</strong>eduction <strong>I</strong>s <strong>G</strong>ain (of electrons). Oxidation and reduction always occur <strong>SIMULTANEOUSLY</strong> — you cannot have one without the other. The substance that causes oxidation is the <strong>oxidising agent</strong>; the one that causes reduction is the <strong>reducing agent</strong>.
+  </div>
+
+  <p><strong>⚠ Counterintuitive — memorise this:</strong> The <em>reducing agent</em> is itself <em>oxidised</em>; the <em>oxidising agent</em> is itself <em>reduced</em>. The agent does the opposite of what it is called. It donates or accepts electrons to cause the change in the other substance, and in doing so undergoes the reverse change itself.</p>
+
+  <h2>Oxidation Numbers (Oxidation States)</h2>
+  <p>The <strong>oxidation number (ON)</strong> is the charge an atom would have <em>if</em> the compound were fully ionic — all shared electrons assigned to the more electronegative atom. Oxidation numbers are a bookkeeping tool to track electron transfer in redox reactions.</p>
+
+  <p><strong>Rules for assigning oxidation numbers:</strong></p>
+  <ul>
+    <li><strong>Rule 1 — Pure element:</strong> ON = 0 (e.g. Fe, O₂, Cl₂, Na, H₂ — atoms in their elemental form)</li>
+    <li><strong>Rule 2 — Monoatomic ion:</strong> ON = charge of the ion (e.g. Fe³⁺ → ON = +3; Cl⁻ → ON = −1; Ca²⁺ → ON = +2)</li>
+    <li><strong>Rule 3 — Oxygen:</strong> usually −2 (exceptions: peroxides e.g. H₂O₂, ON(O) = −1; in OF₂, ON(O) = +2 because F is more electronegative)</li>
+    <li><strong>Rule 4 — Hydrogen:</strong> usually +1 (exception: in metal hydrides e.g. NaH, CaH₂, ON(H) = −1)</li>
+    <li><strong>Rule 5 — Fluorine:</strong> always −1 (most electronegative element; never positive)</li>
+    <li><strong>Rule 6 — Sum rule:</strong> The sum of all oxidation numbers in a species = the overall charge of that species (0 for neutral compounds; equal to the ionic charge for polyatomic ions)</li>
+  </ul>
+
+  <p><strong>Worked examples:</strong></p>
+  <div class="formula">
+    H₂O: H(+1)×2 + O(?) = 0 → O = −2 ✓<br>
+    SO₄²⁻: S(?) + O(−2)×4 = −2 → S + (−8) = −2 → S = +6<br>
+    MnO₄⁻: Mn(?) + O(−2)×4 = −1 → Mn + (−8) = −1 → Mn = +7<br>
+    Cr₂O₇²⁻: 2×Cr(?) + O(−2)×7 = −2 → 2Cr − 14 = −2 → Cr = +6<br>
+    Na₂O₂: Na(+1)×2 + O(?)×2 = 0 → 2 + 2O = 0 → O = −1 (peroxide!)
+  </div>
+
+  <div class="key-fact">If ON increases → the species is OXIDISED → it is the REDUCING AGENT (gives away electrons, causing its own ON to rise). If ON decreases → the species is REDUCED → it is the OXIDISING AGENT (receives electrons, causing its own ON to fall).</div>
+
+  <h2>Balancing Redox Equations — Half-Reaction Method</h2>
+  <p><strong>Step-by-step procedure for acidic solutions:</strong></p>
+  <ul>
+    <li><strong>Step 1:</strong> Write the unbalanced ionic equation and identify which atoms change oxidation number (those are the atoms being oxidised or reduced).</li>
+    <li><strong>Step 2:</strong> Separate into two half-reactions — one for oxidation, one for reduction.</li>
+    <li><strong>Step 3:</strong> Balance all atoms except O and H in each half-reaction.</li>
+    <li><strong>Step 4:</strong> Balance O atoms by adding H₂O to whichever side is deficient in oxygen.</li>
+    <li><strong>Step 5:</strong> Balance H atoms by adding H⁺ to whichever side is deficient in hydrogen.</li>
+    <li><strong>Step 6:</strong> Balance charge by adding electrons (e⁻) — electrons appear on the LEFT of the reduction half-reaction (being gained) and on the RIGHT of the oxidation half-reaction (being released).</li>
+    <li><strong>Step 7:</strong> Make the number of electrons equal in both half-reactions by multiplying each half-reaction by appropriate integers.</li>
+    <li><strong>Step 8:</strong> Add the two half-reactions together; cancel the electrons and any species that appear identically on both sides.</li>
+    <li><strong>Step 9:</strong> Simplify if possible (reduce coefficients if they all share a common factor).</li>
+  </ul>
+
+  <p><strong>Worked Example 1: MnO₄⁻ + Fe²⁺ → Mn²⁺ + Fe³⁺ (acidic solution)</strong></p>
+  <div class="formula">
+    Oxidation half-reaction: Fe²⁺ → Fe³⁺ + e⁻<br>
+    &nbsp;&nbsp;(ON of Fe: +2 → +3; loses 1 electron)<br><br>
+    Reduction half-reaction: MnO₄⁻ → Mn²⁺<br>
+    &nbsp;&nbsp;(ON of Mn: +7 → +2; gains 5 electrons)<br><br>
+    Balance O: MnO₄⁻ → Mn²⁺ + 4H₂O<br>
+    Balance H: MnO₄⁻ + 8H⁺ → Mn²⁺ + 4H₂O<br>
+    Balance charge: MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O<br><br>
+    Multiply oxidation × 5: 5Fe²⁺ → 5Fe³⁺ + 5e⁻<br><br>
+    Add half-reactions:<br>
+    MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 4H₂O + 5Fe³⁺
+  </div>
+
+  <p><strong>Worked Example 2: Cr₂O₇²⁻ + I⁻ → Cr³⁺ + I₂ (acidic solution)</strong></p>
+  <div class="formula">
+    Oxidation: 2I⁻ → I₂ + 2e⁻<br>
+    &nbsp;&nbsp;(ON of I: −1 → 0; each I loses 1 electron; 2 electrons total)<br><br>
+    Reduction: Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O<br>
+    &nbsp;&nbsp;(ON of Cr: +6 → +3; each Cr gains 3 electrons; 6 electrons total)<br><br>
+    Multiply oxidation × 3: 6I⁻ → 3I₂ + 6e⁻<br><br>
+    Add half-reactions:<br>
+    Cr₂O₇²⁻ + 14H⁺ + 6I⁻ → 2Cr³⁺ + 7H₂O + 3I₂
+  </div>
+
+  <h2>Oxidising and Reducing Agents</h2>
+  <table class="symbols-table">
+    <thead>
+      <tr><th>Property</th><th>Oxidising Agent (OA)</th><th>Reducing Agent (RA)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Effect on other substance</td><td>Oxidises it</td><td>Reduces it</td></tr>
+      <tr><td>What happens to itself</td><td>Gets reduced</td><td>Gets oxidised</td></tr>
+      <tr><td>Electron movement</td><td>Gains electrons</td><td>Loses electrons</td></tr>
+      <tr><td>ON change</td><td>ON decreases</td><td>ON increases</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><strong>Strong oxidising agents:</strong> MnO₄⁻, Cr₂O₇²⁻, F₂, Cl₂, H₂O₂, O₂, concentrated HNO₃</li>
+    <li><strong>Strong reducing agents:</strong> Na, Li, K, Mg, Fe, Zn (active metals), H₂, I⁻, Fe²⁺, SO₂</li>
+  </ul>
+
+  <h2>The Electrochemical (Reduction Potential) Series</h2>
+  <p>The electrochemical series lists standard reduction half-reactions alongside their standard reduction potentials (E°), measured in volts under standard conditions (298 K, 1 mol·dm⁻³, 101.3 kPa).</p>
+  <ul>
+    <li><strong>TOP of table:</strong> most positive E° → strongest oxidising agents (these species are most easily reduced)</li>
+    <li><strong>BOTTOM of table:</strong> most negative E° → strongest reducing agents (these species are most easily oxidised)</li>
+    <li>A species in the series can oxidise any species that appears <em>below it</em> on the right-hand (reducing) side</li>
+  </ul>
+
+  <table class="symbols-table">
+    <thead>
+      <tr><th>Half-reaction (as written: reduction)</th><th>E° (V)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>F₂ + 2e⁻ → 2F⁻</td><td>+2.87</td></tr>
+      <tr><td>MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O</td><td>+1.51</td></tr>
+      <tr><td>Cl₂ + 2e⁻ → 2Cl⁻</td><td>+1.36</td></tr>
+      <tr><td>Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O</td><td>+1.33</td></tr>
+      <tr><td>O₂ + 4H⁺ + 4e⁻ → 2H₂O</td><td>+1.23</td></tr>
+      <tr><td>Fe³⁺ + e⁻ → Fe²⁺</td><td>+0.77</td></tr>
+      <tr><td>I₂ + 2e⁻ → 2I⁻</td><td>+0.54</td></tr>
+      <tr><td>Fe²⁺ + 2e⁻ → Fe</td><td>−0.44</td></tr>
+      <tr><td>Zn²⁺ + 2e⁻ → Zn</td><td>−0.76</td></tr>
+      <tr><td>Na⁺ + e⁻ → Na</td><td>−2.71</td></tr>
+      <tr><td>Li⁺ + e⁻ → Li</td><td>−3.04</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>Predicting spontaneous reactions:</strong> The species with the <strong>higher (more positive) E°</strong> acts as the oxidising agent and gets reduced. Calculate E°cell = E°cathode − E°anode. If <strong>E°cell &gt; 0</strong>, the reaction is spontaneous. If E°cell &lt; 0, the reaction is non-spontaneous under standard conditions.
+  </div>
+
+  <h2>Corrosion of Iron (Rusting)</h2>
+  <p>Iron is oxidised in the presence of water and dissolved oxygen — rusting is an electrochemical process that requires both an oxidant (O₂) and an electrolyte (water with dissolved ions).</p>
+  <div class="formula">
+    Anode (oxidation):   Fe → Fe²⁺ + 2e⁻<br>
+    Cathode (reduction): O₂ + 4H⁺ + 4e⁻ → 2H₂O<br>
+    &nbsp;&nbsp;&nbsp;or (neutral/basic): O₂ + 2H₂O + 4e⁻ → 4OH⁻<br><br>
+    Overall: 4Fe + 3O₂ + xH₂O → 2Fe₂O₃·xH₂O (rust — hydrated iron(III) oxide)
+  </div>
+  <p>Water acts as the electrolyte; dissolved salt (e.g. sea spray) speeds up rusting by greatly increasing the solution's conductivity.</p>
+  <ul>
+    <li><strong>Painting / coating:</strong> physical barrier excluding O₂ and water; only effective while the coating is intact</li>
+    <li><strong>Galvanising (zinc coating):</strong> Zn has a more negative E° than Fe (−0.76 V vs −0.44 V), so Zn corrodes preferentially — it acts as a <em>sacrificial anode</em>. Even if the coating is scratched, Zn continues to protect the underlying Fe.</li>
+    <li><strong>Tin plating (tin cans):</strong> Sn is <em>below</em> Fe in the activity series (less negative E°) — only protective while intact. If scratched, Fe acts as the anode and corrodes FASTER (galvanic acceleration).</li>
+    <li><strong>Cathodic protection:</strong> Connect iron structure to a block of more active metal (Mg or Zn). The active metal is oxidised (sacrificial anode); iron acts as the cathode and is protected.</li>
+    <li><strong>Electroplating with noble metals:</strong> Coating with Cr, Ni provides a hard, corrosion-resistant surface barrier.</li>
+  </ul>
+
+  <!-- IEB EXTENSION BLOCK -->
+  <div class="ieb-block">
+    <div class="ieb-block-title">IEB Extension: Electrochemical Cells &amp; Electrolysis</div>
+    <p style="font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.78);margin-bottom:12px;"><strong style="color:#fcd34d;">Galvanic (voltaic) cells</strong> convert spontaneous chemical energy into electrical energy.</p>
+    <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 14px 20px;line-height:1.85;">
+      <li><strong>Anode:</strong> oxidation occurs; negative electrode in a galvanic cell</li>
+      <li><strong>Cathode:</strong> reduction occurs; positive electrode in a galvanic cell</li>
+      <li><strong>Salt bridge:</strong> maintains electrical neutrality between the two half-cells by allowing ion flow (typically KNO₃ or KCl in agar)</li>
+      <li><strong>Cell notation:</strong> Zn(s)|Zn²⁺(aq)||Cu²⁺(aq)|Cu(s) — left of || is anode; right of || is cathode; single | = phase boundary</li>
+      <li><strong>E°cell = E°cathode − E°anode;</strong> spontaneous when E°cell &gt; 0</li>
+    </ul>
+    <p style="font-size:13.5px;line-height:1.8;color:rgba(210,218,245,.78);margin-bottom:12px;"><strong style="color:#fcd34d;">Electrolytic cells</strong> use an external power source to drive non-spontaneous redox reactions.</p>
+    <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 14px 20px;line-height:1.85;">
+      <li><strong>Anode:</strong> oxidation; connected to + terminal of external supply</li>
+      <li><strong>Cathode:</strong> reduction; connected to − terminal of external supply</li>
+      <li><strong>Electrolysis of brine (concentrated NaCl):</strong></li>
+    </ul>
+    <div class="formula" style="margin:8px 0 12px;">
+      Cathode: 2H₂O + 2e⁻ → H₂↑ + 2OH⁻ &nbsp; (hydrogen gas)<br>
+      Anode:   2Cl⁻ → Cl₂↑ + 2e⁻ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (chlorine gas)<br>
+      Net products: H₂, Cl₂, NaOH(aq) — the chlor-alkali process
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ EXPLORE TAB ═══════════════════════════════════════ -->
+<div class="tab-panel" id="tab-explore">
+<div class="sim-outer">
+
+  <!-- MODE SELECTOR -->
+  <div class="ctrl-card">
+    <div class="ctrl-label">Simulation Mode</div>
+    <button class="mode-btn active" id="modeBtn1" onclick="setMode(1)">Oxidation Number Trainer</button>
+    <button class="mode-btn" id="modeBtn2" onclick="setMode(2)">Redox Half-Reaction Visualiser</button>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="sim-canvas-wrap">
+    <h3 id="simTitle">Oxidation Number Trainer</h3>
+    <canvas id="simCanvas"></canvas>
+  </div>
+
+  <!-- CONTROLS ROW -->
+  <div class="sim-controls-row">
+    <!-- Mode 1 controls -->
+    <div class="ctrl-card" id="m1ctrl">
+      <div class="ctrl-label">Select Formula</div>
+      <select class="sim-select" id="m1formula" onchange="m1selectFormula()">
+        <option value="H2O">H₂O</option>
+        <option value="SO4">SO₄²⁻</option>
+        <option value="MnO4">MnO₄⁻</option>
+        <option value="Cr2O7">Cr₂O₇²⁻</option>
+        <option value="Fe2O3">Fe₂O₃</option>
+        <option value="Na2O2">Na₂O₂ (peroxide)</option>
+        <option value="NH3">NH₃</option>
+      </select>
+      <button class="sim-action-btn" onclick="m1nextStep()">Next Step →</button>
+      <button class="sim-action-btn" onclick="m1reset()">Reset</button>
+      <div class="step-info" id="m1stepinfo">Step 1 of 3</div>
+    </div>
+    <!-- Mode 2 controls -->
+    <div class="ctrl-card" id="m2ctrl" style="display:none">
+      <div class="ctrl-label">Select Reaction</div>
+      <select class="sim-select" id="m2reaction" onchange="m2selectReaction()">
+        <option value="MnFe">MnO₄⁻ + Fe²⁺ → Mn²⁺ + Fe³⁺</option>
+        <option value="CrI">Cr₂O₇²⁻ + I⁻ → Cr³⁺ + I₂</option>
+        <option value="ZnCu">Zn + Cu²⁺ → Zn²⁺ + Cu</option>
+      </select>
+      <button class="sim-action-btn" onclick="m2nextStep()">Next Step →</button>
+      <button class="sim-action-btn" onclick="m2reset()">Reset</button>
+      <div class="step-info" id="m2stepinfo">Step 1 of 4</div>
+    </div>
+    <!-- Readouts -->
+    <div class="ctrl-card">
+      <div class="ctrl-label">Readouts</div>
+      <div class="readout-grid">
+        <div class="readout"><div class="readout-label">Mode</div><div class="readout-val" id="ro-mode">1</div></div>
+        <div class="readout"><div class="readout-label">Step</div><div class="readout-val" id="ro-step">1</div></div>
+        <div class="readout"><div class="readout-label">e⁻ transfer</div><div class="readout-val" id="ro-e">—<span>e⁻</span></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ PRACTICE TAB ═══════════════════════════════════════ -->
+<div class="tab-panel" id="tab-practice">
+<div class="practice-wrap">
+
+  <div class="score-banner" id="scoreBanner">
+    <div class="score-big" id="scoreBig">0/6</div>
+    <div>
+      <div style="font-weight:700;font-size:15px;color:#fff" id="scoreMsg">Complete all questions to see your score</div>
+      <div style="font-size:12px;color:var(--muted)" id="scoreDetail"></div>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="qc1">
+    <div class="q-num">Question 1 · NSC</div>
+    <div class="q-text">In the reaction 2Mg + O₂ → 2MgO, which statement is correct?</div>
+    <div class="mc-options" id="q1opts">
+      <button class="mc-opt" onclick="checkAns(1,'A','B')"><span class="opt-letter">A</span>Mg is reduced; O₂ is the reducing agent</button>
+      <button class="mc-opt" onclick="checkAns(1,'B','B')"><span class="opt-letter">B</span>Mg is oxidised; O₂ is the oxidising agent</button>
+      <button class="mc-opt" onclick="checkAns(1,'C','B')"><span class="opt-letter">C</span>Both Mg and O₂ are oxidised</button>
+      <button class="mc-opt" onclick="checkAns(1,'D','B')"><span class="opt-letter">D</span>O₂ is oxidised; Mg is reduced</button>
+    </div>
+    <div class="feedback" id="fb1">Mg goes from ON = 0 to ON = +2 in MgO → ON increases → Mg is OXIDISED → Mg is the REDUCING AGENT. O₂ goes from ON = 0 to ON = −2 → ON decreases → O₂ is REDUCED → O₂ is the OXIDISING AGENT.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="qc2">
+    <div class="q-num">Question 2 · NSC</div>
+    <div class="q-text">What is the oxidation number of Cr in Cr₂O₇²⁻?</div>
+    <div class="mc-options" id="q2opts">
+      <button class="mc-opt" onclick="checkAns(2,'A','C')"><span class="opt-letter">A</span>+3</button>
+      <button class="mc-opt" onclick="checkAns(2,'B','C')"><span class="opt-letter">B</span>+4</button>
+      <button class="mc-opt" onclick="checkAns(2,'C','C')"><span class="opt-letter">C</span>+6</button>
+      <button class="mc-opt" onclick="checkAns(2,'D','C')"><span class="opt-letter">D</span>+7</button>
+    </div>
+    <div class="feedback" id="fb2">Let ON(Cr) = x. Two Cr atoms + seven O atoms (each −2) = total charge −2. So 2x + 7(−2) = −2 → 2x − 14 = −2 → 2x = 12 → x = +6.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="qc3">
+    <div class="q-num">Question 3 · NSC</div>
+    <div class="q-text">In the redox reaction MnO₄⁻ + Fe²⁺ → Mn²⁺ + Fe³⁺, the oxidising agent is:</div>
+    <div class="mc-options" id="q3opts">
+      <button class="mc-opt" onclick="checkAns(3,'A','D')"><span class="opt-letter">A</span>Fe²⁺</button>
+      <button class="mc-opt" onclick="checkAns(3,'B','D')"><span class="opt-letter">B</span>Mn²⁺</button>
+      <button class="mc-opt" onclick="checkAns(3,'C','D')"><span class="opt-letter">C</span>Fe³⁺</button>
+      <button class="mc-opt" onclick="checkAns(3,'D','D')"><span class="opt-letter">D</span>MnO₄⁻</button>
+    </div>
+    <div class="feedback" id="fb3">MnO₄⁻ is reduced (Mn goes from +7 to +2; ON decreases) → MnO₄⁻ is the oxidising agent. Fe²⁺ is oxidised (Fe goes from +2 to +3) → Fe²⁺ is the reducing agent.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="qc4">
+    <div class="q-num">Question 4 · NSC</div>
+    <div class="q-text">When balancing the half-reaction MnO₄⁻ → Mn²⁺ in acidic solution, what must be added to balance the oxygen atoms?</div>
+    <div class="mc-options" id="q4opts">
+      <button class="mc-opt" onclick="checkAns(4,'A','B')"><span class="opt-letter">A</span>4O₂ on the right</button>
+      <button class="mc-opt" onclick="checkAns(4,'B','B')"><span class="opt-letter">B</span>4H₂O on the right</button>
+      <button class="mc-opt" onclick="checkAns(4,'C','B')"><span class="opt-letter">C</span>4H₂O on the left</button>
+      <button class="mc-opt" onclick="checkAns(4,'D','B')"><span class="opt-letter">D</span>4OH⁻ on the left</button>
+    </div>
+    <div class="feedback" id="fb4">MnO₄⁻ has 4 oxygen atoms; Mn²⁺ has none. To balance O, add 4H₂O to the right (product) side: MnO₄⁻ → Mn²⁺ + 4H₂O. Then balance the 8 H atoms by adding 8H⁺ to the left.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="qc5">
+    <div class="q-num">Question 5 · NSC</div>
+    <div class="q-text">Iron rusts faster in sea water than in fresh water because:</div>
+    <div class="mc-options" id="q5opts">
+      <button class="mc-opt" onclick="checkAns(5,'A','B')"><span class="opt-letter">A</span>Sea water is warmer</button>
+      <button class="mc-opt" onclick="checkAns(5,'B','B')"><span class="opt-letter">B</span>Dissolved salts make sea water a better electrolyte</button>
+      <button class="mc-opt" onclick="checkAns(5,'C','B')"><span class="opt-letter">C</span>Sea water contains more oxygen</button>
+      <button class="mc-opt" onclick="checkAns(5,'D','B')"><span class="opt-letter">D</span>NaCl reacts with iron directly</button>
+    </div>
+    <div class="feedback" id="fb5">Rusting is an electrochemical process — it requires an electrolyte to conduct ions. Dissolved salts (NaCl) ionise in solution, greatly increasing the conductivity of sea water → faster ion flow → faster corrosion.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="qc6">
+    <div class="q-num">Question 6 · NSC</div>
+    <div class="q-text">Zinc is used to galvanise iron. If the zinc coating is scratched, the iron underneath does NOT rust because:</div>
+    <div class="mc-options" id="q6opts">
+      <button class="mc-opt" onclick="checkAns(6,'A','B')"><span class="opt-letter">A</span>Zinc heals the scratch</button>
+      <button class="mc-opt" onclick="checkAns(6,'B','B')"><span class="opt-letter">B</span>Zinc is higher in the activity series than iron and corrodes preferentially</button>
+      <button class="mc-opt" onclick="checkAns(6,'C','B')"><span class="opt-letter">C</span>Zinc is lower in the activity series</button>
+      <button class="mc-opt" onclick="checkAns(6,'D','B')"><span class="opt-letter">D</span>The scratch is too small to allow corrosion</button>
+    </div>
+    <div class="feedback" id="fb6">Zinc has a more negative reduction potential than iron (E°(Zn²⁺/Zn) = −0.76 V vs E°(Fe²⁺/Fe) = −0.44 V). So Zn is preferentially oxidised (acts as the sacrificial anode), protecting the iron from corrosion even when the coating is broken.</div>
+  </div>
+
+  <!-- IEB SECTION -->
+  <div class="ieb-practice" id="iebPractice" style="flex-direction:column">
+    <div style="font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:24px 0 12px;padding:8px 14px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:8px;display:inline-block">IEB Extension Questions</div>
+
+    <!-- Q7 -->
+    <div class="q-card" id="qc7">
+      <div class="q-num">Question 7 · IEB</div>
+      <div class="q-text">In a galvanic cell, Zn|Zn²⁺||Cu²⁺|Cu: E°(Zn²⁺/Zn) = −0.76 V; E°(Cu²⁺/Cu) = +0.34 V. What is E°cell?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,'A','C',true)"><span class="opt-letter">A</span>−0.42 V</button>
+        <button class="mc-opt" onclick="checkAns(7,'B','C',true)"><span class="opt-letter">B</span>+0.42 V</button>
+        <button class="mc-opt" onclick="checkAns(7,'C','C',true)"><span class="opt-letter">C</span>+1.10 V</button>
+        <button class="mc-opt" onclick="checkAns(7,'D','C',true)"><span class="opt-letter">D</span>−1.10 V</button>
+      </div>
+      <div class="feedback" id="fb7">E°cell = E°cathode − E°anode = E°(Cu²⁺/Cu) − E°(Zn²⁺/Zn) = +0.34 − (−0.76) = +0.34 + 0.76 = +1.10 V. Positive E°cell confirms the reaction is spontaneous.</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card" id="qc8">
+      <div class="q-num">Question 8 · IEB</div>
+      <div class="q-text">During the electrolysis of brine (concentrated NaCl solution), which gas is produced at the cathode?</div>
+      <div class="mc-options" id="q8opts">
+        <button class="mc-opt" onclick="checkAns(8,'A','C',true)"><span class="opt-letter">A</span>Cl₂</button>
+        <button class="mc-opt" onclick="checkAns(8,'B','C',true)"><span class="opt-letter">B</span>O₂</button>
+        <button class="mc-opt" onclick="checkAns(8,'C','C',true)"><span class="opt-letter">C</span>H₂</button>
+        <button class="mc-opt" onclick="checkAns(8,'D','C',true)"><span class="opt-letter">D</span>Na vapour</button>
+      </div>
+      <div class="feedback" id="fb8">At the cathode (reduction), water is preferentially reduced: 2H₂O + 2e⁻ → H₂ + 2OH⁻. Hydrogen gas is produced. At the anode, Cl⁻ is oxidised: 2Cl⁻ → Cl₂ + 2e⁻ (chlorine gas).</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ WORKBOOK TAB ═══════════════════════════════════════ -->
+<div class="tab-panel" id="tab-workbook">
+<div class="wb-wrap">
+  <button class="print-btn" onclick="window.print()">🖨 Print Workbook</button>
+  <div class="wb-intro">Answer all questions in full. Show all working where required. This workbook may be completed and submitted as a classwork or homework assignment.</div>
+
+  <div class="wb-q">
+    <div class="wb-qnum">Question 1 [6 marks]</div>
+    <div class="wb-qtext">For the following species, assign the oxidation number of the indicated element and state whether any change from a previous state represents oxidation or reduction:<br><br>
+    (a) S in H₂SO₄ &nbsp;&nbsp; (b) S in H₂S &nbsp;&nbsp; (c) N in NO₃⁻ &nbsp;&nbsp; (d) N in NH₃<br><br>
+    Using your answers, identify which of the following represents oxidation: H₂S → H₂SO₄ or NO₃⁻ → NH₃? Explain your answer in terms of oxidation numbers.</div>
+  </div>
+
+  <div class="wb-q">
+    <div class="wb-qnum">Question 2 [7 marks]</div>
+    <div class="wb-qtext">Balance the following redox equation in acidic solution using the half-reaction method. Show ALL steps clearly:<br><br>
+    Cr₂O₇²⁻(aq) + Fe²⁺(aq) → Cr³⁺(aq) + Fe³⁺(aq)<br><br>
+    Your answer must include: (i) the unbalanced half-reactions, (ii) balancing of atoms, (iii) balancing of charge with electrons, (iv) the final balanced overall equation.</div>
+  </div>
+
+  <div class="wb-q">
+    <div class="wb-qnum">Question 3 [4 marks]</div>
+    <div class="wb-qtext">Identify the oxidising agent and the reducing agent in each of the following reactions. Explain your choice by referring to oxidation numbers:<br><br>
+    (a) Cl₂ + 2Br⁻ → 2Cl⁻ + Br₂<br><br>
+    (b) Zn + 2HCl → ZnCl₂ + H₂</div>
+  </div>
+
+  <div class="wb-q">
+    <div class="wb-qnum">Question 4 [5 marks]</div>
+    <div class="wb-qtext">A steel (iron) structure near the coast is corroding rapidly.<br><br>
+    (a) Write the half-reactions for the corrosion of iron, clearly indicating which is oxidation and which is reduction. (2 marks)<br><br>
+    (b) Name ONE method to protect this structure from corrosion. Explain in terms of electrochemistry WHY this method works, referring to reduction potentials or the activity series where relevant. (3 marks)</div>
+  </div>
+
+  <div class="wb-q">
+    <div class="wb-qnum">Question 5 [3 marks]</div>
+    <div class="wb-qtext">Use the electrochemical series to predict whether the following reaction will occur spontaneously. Show your reasoning by comparing reduction potentials and calculating E°cell.<br><br>
+    Given: E°(Fe³⁺/Fe²⁺) = +0.77 V and E°(I₂/I⁻) = +0.54 V<br><br>
+    Reaction: I₂(aq) + 2Fe²⁺(aq) → 2I⁻(aq) + 2Fe³⁺(aq)</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* ─── CURRICULUM TOGGLE ─── */
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateScore();
+}
+
+/* ─── TABS ─── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'explore') {
+    setTimeout(() => initSim(), 50);
+  }
+}
+
+/* ─── PRACTICE ─── */
+const answers = {};
+const correctCount = {nsc:0, ieb:0};
+
+function checkAns(qNum, chosen, correct, isIEB) {
+  if (answers[qNum]) return;
+  answers[qNum] = chosen;
+
+  const opts = document.querySelectorAll('#q' + qNum + 'opts .mc-opt');
+  const letters = ['A','B','C','D'];
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if (letters[i] === correct) btn.classList.add('correct');
+    else if (letters[i] === chosen && chosen !== correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('fb' + qNum);
+  fb.classList.add('show');
+  fb.classList.add(chosen === correct ? 'ok' : 'bad');
+
+  if (chosen === correct) {
+    if (isIEB) correctCount.ieb++;
+    else correctCount.nsc++;
+  }
+  updateScore();
+}
+
+function updateScore() {
+  const isIEB = document.body.classList.contains('ieb-mode');
+  const total = isIEB ? 8 : 6;
+  const answered = Object.keys(answers).filter(k => !isIEB ? k <= 6 : true).length;
+  const score = correctCount.nsc + (isIEB ? correctCount.ieb : 0);
+
+  if (answered > 0) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreBig').textContent = score + '/' + (isIEB ? 8 : 6);
+    const pct = Math.round((score / (isIEB ? 8 : 6)) * 100);
+    document.getElementById('scoreMsg').textContent =
+      pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good progress!' : 'Keep practising!';
+    document.getElementById('scoreDetail').textContent =
+      answered + ' of ' + total + ' questions answered · ' + pct + '%';
+  }
+}
+
+/* ─── SIMULATION ─── */
+let cv, ctx, W, H, raf, simMode = 1;
+
+const M1_FORMULAS = {
+  H2O: {
+    label: 'H₂O', charge: 0,
+    atoms: [{sym:'H', color:'#f5f5f5', count:2}, {sym:'O', color:'#ef4444', count:1}],
+    steps: [
+      'Rule 4: H = +1 (hydrogen in a non-metal compound)',
+      'Rule 6: Sum of ONs = 0 (neutral molecule)',
+      '2×(+1) + ON(O) = 0  →  ON(O) = −2 ✓',
+    ],
+    ons: {H: '+1', O: '−2'}
+  },
+  SO4: {
+    label: 'SO₄²⁻', charge: -2,
+    atoms: [{sym:'S', color:'#eab308', count:1}, {sym:'O', color:'#ef4444', count:4}],
+    steps: [
+      'Rule 3: O = −2 (standard oxygen ON)',
+      'Rule 6: Sum of ONs = overall charge = −2',
+      'ON(S) + 4×(−2) = −2  →  ON(S) = +6',
+    ],
+    ons: {S: '+6', O: '−2'}
+  },
+  MnO4: {
+    label: 'MnO₄⁻', charge: -1,
+    atoms: [{sym:'Mn', color:'#f97316', count:1}, {sym:'O', color:'#ef4444', count:4}],
+    steps: [
+      'Rule 3: O = −2 (standard oxygen ON)',
+      'Rule 6: Sum of ONs = overall charge = −1',
+      'ON(Mn) + 4×(−2) = −1  →  ON(Mn) = +7',
+    ],
+    ons: {Mn: '+7', O: '−2'}
+  },
+  Cr2O7: {
+    label: 'Cr₂O₇²⁻', charge: -2,
+    atoms: [{sym:'Cr', color:'#f97316', count:2}, {sym:'O', color:'#ef4444', count:7}],
+    steps: [
+      'Rule 3: O = −2 (standard oxygen ON)',
+      'Rule 6: Sum of ONs = overall charge = −2',
+      '2×ON(Cr) + 7×(−2) = −2  →  ON(Cr) = +6',
+    ],
+    ons: {Cr: '+6', O: '−2'}
+  },
+  Fe2O3: {
+    label: 'Fe₂O₃', charge: 0,
+    atoms: [{sym:'Fe', color:'#92400e', count:2}, {sym:'O', color:'#ef4444', count:3}],
+    steps: [
+      'Rule 3: O = −2 (standard oxygen ON)',
+      'Rule 6: Sum of ONs = 0 (neutral compound)',
+      '2×ON(Fe) + 3×(−2) = 0  →  ON(Fe) = +3',
+    ],
+    ons: {Fe: '+3', O: '−2'}
+  },
+  Na2O2: {
+    label: 'Na₂O₂', charge: 0,
+    atoms: [{sym:'Na', color:'#60a5fa', count:2}, {sym:'O', color:'#ef4444', count:2}],
+    steps: [
+      'Rule 2: Na = +1 (Group 1 metal in compound)',
+      'Rule 6: Sum of ONs = 0 (neutral compound)',
+      '2×(+1) + 2×ON(O) = 0  →  ON(O) = −1  ⚠ PEROXIDE! (not −2)',
+    ],
+    ons: {Na: '+1', O: '−1'}
+  },
+  NH3: {
+    label: 'NH₃', charge: 0,
+    atoms: [{sym:'N', color:'#eab308', count:1}, {sym:'H', color:'#f5f5f5', count:3}],
+    steps: [
+      'Rule 4: H = +1 (hydrogen in a non-metal compound)',
+      'Rule 6: Sum of ONs = 0 (neutral molecule)',
+      'ON(N) + 3×(+1) = 0  →  ON(N) = −3',
+    ],
+    ons: {N: '−3', H: '+1'}
+  }
+};
+
+const M2_REACTIONS = {
+  MnFe: {
+    label: 'MnO₄⁻ + Fe²⁺ → Mn²⁺ + Fe³⁺',
+    oxBox: {agent:'Fe²⁺', label:'OXIDATION (RA)', electrons:1, color:'#f97316',
+      steps:['Fe²⁺ → Fe³⁺ + e⁻','ON: +2 → +3 (increases)','Loses 1 electron','×5: 5Fe²⁺ → 5Fe³⁺ + 5e⁻']},
+    redBox: {agent:'MnO₄⁻', label:'REDUCTION (OA)', electrons:5, color:'#c084fc',
+      steps:['MnO₄⁻ → Mn²⁺','Balance O: + 4H₂O →','Balance H: + 8H⁺ →','MnO₄⁻ + 8H⁺ + 5e⁻ → Mn²⁺ + 4H₂O']},
+    eTransfer: 5
+  },
+  CrI: {
+    label: 'Cr₂O₇²⁻ + I⁻ → Cr³⁺ + I₂',
+    oxBox: {agent:'I⁻', label:'OXIDATION (RA)', electrons:2, color:'#f97316',
+      steps:['2I⁻ → I₂ + 2e⁻','ON: −1 → 0 (increases)','Loses 1e⁻ each','×3: 6I⁻ → 3I₂ + 6e⁻']},
+    redBox: {agent:'Cr₂O₇²⁻', label:'REDUCTION (OA)', electrons:6, color:'#c084fc',
+      steps:['Cr₂O₇²⁻ → 2Cr³⁺','Balance O: + 7H₂O','Balance H: + 14H⁺','Cr₂O₇²⁻ + 14H⁺ + 6e⁻ → 2Cr³⁺ + 7H₂O']},
+    eTransfer: 6
+  },
+  ZnCu: {
+    label: 'Zn + Cu²⁺ → Zn²⁺ + Cu',
+    oxBox: {agent:'Zn', label:'OXIDATION (RA)', electrons:2, color:'#f97316',
+      steps:['Zn → Zn²⁺ + 2e⁻','ON: 0 → +2 (increases)','Loses 2 electrons','(no multiplication needed)']},
+    redBox: {agent:'Cu²⁺', label:'REDUCTION (OA)', electrons:2, color:'#c084fc',
+      steps:['Cu²⁺ → Cu','Cu²⁺ + 2e⁻ → Cu','ON: +2 → 0 (decreases)','Gains 2 electrons']},
+    eTransfer: 2
+  }
+};
+
+let m1step = 0, m1formula = 'H2O';
+let m2step = 0, m2reaction = 'MnFe';
+let electrons = [];
+let animT = 0;
+
+function initSim() {
+  cv = document.getElementById('simCanvas');
+  if (!cv) return;
+  ctx = cv.getContext('2d');
+  if (raf) cancelAnimationFrame(raf);
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = cv.offsetWidth * dpr;
+  cv.height = 380 * dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  W = cv.offsetWidth; H = 380;
+  spawnElectrons();
+  loop();
+}
+
+function setMode(m) {
+  simMode = m;
+  document.getElementById('m1ctrl').style.display = m === 1 ? '' : 'none';
+  document.getElementById('m2ctrl').style.display = m === 2 ? '' : 'none';
+  document.getElementById('modeBtn1').classList.toggle('active', m === 1);
+  document.getElementById('modeBtn2').classList.toggle('active', m === 2);
+  document.getElementById('simTitle').textContent = m === 1 ? 'Oxidation Number Trainer' : 'Redox Half-Reaction Visualiser';
+  document.getElementById('ro-mode').textContent = m;
+  if (m === 2) spawnElectrons();
+  if (!cv) return;
+  if (raf) cancelAnimationFrame(raf);
+  initSim();
+}
+
+function m1selectFormula() {
+  m1formula = document.getElementById('m1formula').value;
+  m1step = 0;
+  updateM1Info();
+  draw();
+}
+function m1nextStep() {
+  const f = M1_FORMULAS[m1formula];
+  if (m1step < f.steps.length - 1) m1step++;
+  updateM1Info();
+  draw();
+}
+function m1reset() { m1step = 0; updateM1Info(); draw(); }
+function updateM1Info() {
+  const f = M1_FORMULAS[m1formula];
+  document.getElementById('m1stepinfo').textContent = 'Step ' + (m1step+1) + ' of ' + f.steps.length;
+  document.getElementById('ro-step').textContent = m1step+1;
+}
+
+function m2selectReaction() {
+  m2reaction = document.getElementById('m2reaction').value;
+  m2step = 0;
+  spawnElectrons();
+  updateM2Info();
+  draw();
+}
+function m2nextStep() {
+  const r = M2_REACTIONS[m2reaction];
+  if (m2step < 3) m2step++;
+  updateM2Info();
+  draw();
+}
+function m2reset() { m2step = 0; spawnElectrons(); updateM2Info(); draw(); }
+function updateM2Info() {
+  document.getElementById('m2stepinfo').textContent = 'Step ' + (m2step+1) + ' of 4';
+  document.getElementById('ro-step').textContent = m2step+1;
+  const r = M2_REACTIONS[m2reaction];
+  document.getElementById('ro-e').innerHTML = r.eTransfer + '<span>e⁻</span>';
+}
+
+function spawnElectrons() {
+  electrons = [];
+  const r = M2_REACTIONS[m2reaction] || M2_REACTIONS.MnFe;
+  for (let i = 0; i < r.eTransfer; i++) {
+    electrons.push({
+      x: W * 0.28,
+      y: H * 0.35 + (i - r.eTransfer/2) * 18,
+      tx: W * 0.72,
+      ty: H * 0.35 + (i - r.eTransfer/2) * 18,
+      prog: -(i * 0.15),
+      speed: 0.004 + Math.random() * 0.002
+    });
+  }
+}
+
+function loop() {
+  raf = requestAnimationFrame(loop);
+  animT += 0.016;
+  draw();
+  if (simMode === 2) {
+    electrons.forEach(e => {
+      if (e.prog < 1) e.prog += e.speed;
+      if (e.prog > 1.2) e.prog = -0.1;
+    });
+  }
+}
+
+/* ── DRAW ── */
+function draw() {
+  if (!ctx) return;
+  ctx.clearRect(0, 0, W, H);
+
+  if (simMode === 1) drawMode1();
+  else drawMode2();
+}
+
+function drawMode1() {
+  const f = M1_FORMULAS[m1formula];
+  // Background subtle glow
+  const grd = ctx.createRadialGradient(W/2, H/2, 20, W/2, H/2, 200);
+  grd.addColorStop(0, 'rgba(192,132,252,0.04)');
+  grd.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  // Formula label
+  ctx.font = '700 22px "Cabinet Grotesk", sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText(f.label, W/2, 40);
+  if (f.charge !== 0) {
+    ctx.font = '600 14px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#c084fc';
+    ctx.fillText('charge: ' + (f.charge > 0 ? '+' : '') + f.charge, W/2, 60);
+  }
+
+  // Draw atoms
+  const totalAtoms = f.atoms.reduce((s, a) => s + a.count, 0);
+  const spacing = Math.min(90, (W - 80) / (totalAtoms + 1));
+  let xi = W/2 - (totalAtoms - 1) * spacing / 2;
+  const ay = 140;
+
+  let atomList = [];
+  f.atoms.forEach(a => {
+    for (let i = 0; i < a.count; i++) {
+      atomList.push({sym: a.sym, color: a.color, x: xi, y: ay});
+      xi += spacing;
+    }
+  });
+
+  atomList.forEach(atom => {
+    // Atom glow
+    const ag = ctx.createRadialGradient(atom.x, atom.y, 4, atom.x, atom.y, 28);
+    ag.addColorStop(0, atom.color + 'cc');
+    ag.addColorStop(1, atom.color + '00');
+    ctx.fillStyle = ag;
+    ctx.beginPath();
+    ctx.arc(atom.x, atom.y, 28, 0, Math.PI*2);
+    ctx.fill();
+
+    // Atom circle
+    ctx.beginPath();
+    ctx.arc(atom.x, atom.y, 20, 0, Math.PI*2);
+    ctx.fillStyle = atom.color + '44';
+    ctx.fill();
+    ctx.strokeStyle = atom.color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Atom symbol
+    ctx.font = '700 13px "Cabinet Grotesk", sans-serif';
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.fillText(atom.sym, atom.x, atom.y + 5);
+
+    // Oxidation number badge
+    const on = f.ons[atom.sym];
+    if (on && m1step >= f.steps.length - 1) {
+      const bx = atom.x + 14, by = atom.y - 22;
+      ctx.beginPath();
+      ctx.arc(bx, by, 11, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(192,132,252,0.85)';
+      ctx.fill();
+      ctx.font = '700 9px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#fff';
+      ctx.fillText(on, bx, by + 3);
+    }
+  });
+
+  // Step text area
+  const stepY = 210;
+  ctx.fillStyle = 'rgba(255,255,255,0.04)';
+  roundRect(ctx, 40, stepY - 16, W - 80, 130, 10);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, 40, stepY - 16, W - 80, 130, 10);
+  ctx.stroke();
+
+  for (let i = 0; i <= m1step; i++) {
+    const isActive = i === m1step;
+    ctx.font = (isActive ? '700' : '500') + ' 13px "JetBrains Mono", monospace';
+    ctx.fillStyle = isActive ? '#c084fc' : 'rgba(210,218,245,0.40)';
+    ctx.textAlign = 'left';
+    ctx.fillText((i+1) + '. ' + f.steps[i], 56, stepY + i * 26);
+  }
+
+  // ON legend at bottom if complete
+  if (m1step >= f.steps.length - 1) {
+    ctx.font = '600 12px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#86efac';
+    ctx.textAlign = 'center';
+    let legendText = Object.entries(f.ons).map(([sym, on]) => sym + ' = ' + on).join('    ');
+    ctx.fillText('✓ ' + legendText, W/2, 358);
+  }
+}
+
+function drawMode2() {
+  const r = M2_REACTIONS[m2reaction];
+  const midX = W/2;
+  const pw = (W - 60) / 2;
+  const lx = 20, rx = midX + 10;
+  const py = 20, ph = H - 50;
+
+  // Left panel (oxidation)
+  ctx.fillStyle = 'rgba(249,115,22,0.06)';
+  roundRect(ctx, lx, py, pw, ph, 12);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(249,115,22,0.25)';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, lx, py, pw, ph, 12);
+  ctx.stroke();
+
+  // Right panel (reduction)
+  ctx.fillStyle = 'rgba(192,132,252,0.06)';
+  roundRect(ctx, rx, py, pw, ph, 12);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(192,132,252,0.25)';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, rx, py, pw, ph, 12);
+  ctx.stroke();
+
+  // Panel labels
+  ctx.font = '700 11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#f97316';
+  ctx.fillText('OXIDATION — Reducing Agent (RA)', lx + pw/2, py + 20);
+  ctx.fillStyle = '#c084fc';
+  ctx.fillText('REDUCTION — Oxidising Agent (OA)', rx + pw/2, py + 20);
+
+  // Agent names
+  ctx.font = '800 16px "Cabinet Grotesk", sans-serif';
+  ctx.fillStyle = '#f97316';
+  ctx.fillText(r.oxBox.agent, lx + pw/2, py + 50);
+  ctx.fillStyle = '#c084fc';
+  ctx.fillText(r.redBox.agent, rx + pw/2, py + 50);
+
+  // Step text
+  const step = Math.min(m2step, r.oxBox.steps.length - 1);
+  for (let i = 0; i <= step; i++) {
+    const alpha = i < step ? 0.35 : 1;
+    const isLast = i === step;
+    ctx.font = (isLast ? '700' : '400') + ' 11px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(249,115,22,' + (isLast ? 0.9 : 0.4) + ')';
+    ctx.textAlign = 'center';
+    ctx.fillText(r.oxBox.steps[i], lx + pw/2, py + 80 + i * 24);
+    ctx.fillStyle = 'rgba(192,132,252,' + (isLast ? 0.9 : 0.4) + ')';
+    ctx.fillText(r.redBox.steps[i], rx + pw/2, py + 80 + i * 24);
+  }
+
+  // Electron animation (only once step >= 1)
+  if (m2step >= 1) {
+    electrons.forEach((e, idx) => {
+      const p = Math.max(0, Math.min(1, e.prog));
+      const ex = lx + pw + p * (rx - lx - pw + 10);
+      const ey = H * 0.62 + (idx - electrons.length/2) * 14;
+
+      // Trail
+      const tg = ctx.createLinearGradient(ex - 20, ey, ex, ey);
+      tg.addColorStop(0, 'rgba(96,165,250,0)');
+      tg.addColorStop(1, 'rgba(96,165,250,0.6)');
+      ctx.fillStyle = tg;
+      ctx.fillRect(ex - 20, ey - 2, 20, 4);
+
+      // Glow
+      const eg = ctx.createRadialGradient(ex, ey, 0, ex, ey, 8);
+      eg.addColorStop(0, 'rgba(147,197,253,0.9)');
+      eg.addColorStop(1, 'rgba(96,165,250,0)');
+      ctx.fillStyle = eg;
+      ctx.beginPath();
+      ctx.arc(ex, ey, 8, 0, Math.PI*2);
+      ctx.fill();
+
+      // Dot
+      ctx.beginPath();
+      ctx.arc(ex, ey, 3.5, 0, Math.PI*2);
+      ctx.fillStyle = '#bfdbfe';
+      ctx.fill();
+
+      // Label
+      if (idx === 0) {
+        ctx.font = '700 9px "JetBrains Mono", monospace';
+        ctx.fillStyle = '#93c5fd';
+        ctx.textAlign = 'center';
+        ctx.fillText('e⁻', ex, ey - 10);
+      }
+    });
+
+    // Arrow in the middle gap
+    const arrowX = midX;
+    const arrowY = H * 0.62;
+    ctx.strokeStyle = 'rgba(96,165,250,0.35)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath();
+    ctx.moveTo(lx + pw + 5, arrowY);
+    ctx.lineTo(rx - 5, arrowY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.font = '700 9px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#93c5fd';
+    ctx.textAlign = 'center';
+    ctx.fillText(r.eTransfer + 'e⁻ transferred', midX, arrowY - 14);
+  }
+
+  // Bottom: overall equation at last step
+  if (m2step >= 3) {
+    ctx.font = '700 12px "JetBrains Mono", monospace';
+    ctx.fillStyle = '#86efac';
+    ctx.textAlign = 'center';
+    ctx.fillText('Overall: ' + r.label, W/2, H - 12);
+  }
+}
+
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y);
+  c.quadraticCurveTo(x + w, y, x + w, y + r);
+  c.lineTo(x + w, y + h - r);
+  c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  c.lineTo(x + r, y + h);
+  c.quadraticCurveTo(x, y + h, x, y + h - r);
+  c.lineTo(x, y + r);
+  c.quadraticCurveTo(x, y, x + r, y);
+  c.closePath();
+}
+
+window.addEventListener('resize', () => { if (cv) initSim(); });
+</script>
+</body>
+</html>

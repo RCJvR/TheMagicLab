@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electromagnetic Induction — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Physics</span>
+    <a class="nav-back" href="../../index.html">← Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Physics · Lesson 7</div>
+  <h1 class="lesson-title">Electromagnetic Induction</h1>
+  <p class="lesson-sub">Understand how changing magnetic flux induces an EMF, apply Faraday's and Lenz's laws, and analyse the operation of generators and transformers.</p>
+</div>
+
+<div class="curr-toggle">
+  <span class="curr-label">Curriculum:</span>
+  <div class="curr-wrap">
+    <button class="curr-btn active" onclick="setCurriculum('nsc',this)">NSC / CAPS</button>
+    <button class="curr-btn" onclick="setCurriculum('ieb',this)">IEB</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">⚡ Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📓 Workbook</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Magnetic Field and Flux</h2>
+    <p>A magnetic field B (measured in Tesla, T) has field lines running from the North pole to the South pole outside a magnet. A current-carrying wire produces a circular magnetic field around it (right-hand rule: thumb points in direction of current, fingers curl in direction of B).</p>
+    <p><strong>Magnetic flux</strong> Φ measures how much magnetic field passes through an area:</p>
+    <div class="formula">Φ = BAcosθ</div>
+    <table class="symbols-table">
+      <tr><th>Symbol</th><th>Quantity</th><th>Unit</th></tr>
+      <tr><td>Φ</td><td>Magnetic flux</td><td>Weber (Wb)</td></tr>
+      <tr><td>B</td><td>Magnetic field strength</td><td>Tesla (T)</td></tr>
+      <tr><td>A</td><td>Area of loop perpendicular to B</td><td>m²</td></tr>
+      <tr><td>θ</td><td>Angle between B and the normal to the surface</td><td>degrees / rad</td></tr>
+    </table>
+    <div class="callout"><strong>Key insight:</strong> When θ = 0° (B perpendicular to plane of loop, i.e., parallel to the normal), flux is maximum: Φ = BA. When θ = 90° (B parallel to plane of loop), flux is zero: Φ = 0.</div>
+
+    <h2>Faraday's Law of Electromagnetic Induction</h2>
+    <p>An EMF is induced in a conductor whenever the <em>magnetic flux through it changes</em>. The magnitude of the induced EMF is proportional to the rate of change of flux and the number of turns:</p>
+    <div class="formula">ε = −N ΔΦ/Δt</div>
+    <p>The negative sign reflects Lenz's Law (see below). For CAPS purposes, we often use the magnitude: |ε| = NΔΦ/Δt.</p>
+    <p><strong>Ways to change flux and induce EMF:</strong></p>
+    <ul>
+      <li>Moving a magnet into or out of a coil</li>
+      <li>Changing the strength of the magnetic field (B)</li>
+      <li>Rotating a coil in a magnetic field (changing θ)</li>
+      <li>Changing the area of the coil (A)</li>
+    </ul>
+    <p><strong>To increase the induced EMF:</strong> increase N (more turns), increase B (stronger magnet), decrease Δt (move faster), increase A (larger coil).</p>
+
+    <h2>Lenz's Law</h2>
+    <p>The induced current flows in a direction such that its magnetic effect <strong>opposes the change in flux</strong> that caused it. This is a consequence of the law of conservation of energy.</p>
+    <div class="callout"><strong>Worked example:</strong> A bar magnet's North pole is pushed toward a coil from the left. The flux through the coil increases (B points right into the coil, Φ increases). By Lenz's Law, the induced current must create a magnetic field that opposes this increase — so the induced B must point to the left (out of the left face). Using the right-hand rule, the induced current flows counter-clockwise when viewed from the left (the left face acts as a North pole to repel the incoming magnet). This means you must do work to push the magnet in — consistent with energy conservation.</div>
+
+    <h2>AC Generator</h2>
+    <p>A coil of N turns, area A, rotates at angular velocity ω in a uniform magnetic field B. The induced EMF varies sinusoidally:</p>
+    <div class="formula">ε = NBAω sinωt<br>Peak EMF: ε_max = NBAω</div>
+    <ul>
+      <li>EMF is <strong>maximum</strong> when the coil is parallel to B (θ = 90°) — flux is zero but changing fastest</li>
+      <li>EMF is <strong>zero</strong> when the coil is perpendicular to B (θ = 0°) — flux is maximum but not changing</li>
+      <li><strong>Slip rings</strong> maintain contact as the coil rotates → AC output</li>
+      <li><strong>Split-ring commutator</strong> reverses connections every half-turn → DC output (motor)</li>
+    </ul>
+
+    <h2>Transformers</h2>
+    <p>A transformer uses electromagnetic induction to change AC voltage. An alternating current in the primary coil creates a changing flux in the iron core, which induces an EMF in the secondary coil.</p>
+    <div class="formula">Vs/Vp = Ns/Np<br>VpIp = VsIs &nbsp;&nbsp;&nbsp; (ideal transformer — 100% efficient)</div>
+    <ul>
+      <li><strong>Step-up transformer:</strong> Ns &gt; Np → Vs &gt; Vp; used in power transmission</li>
+      <li><strong>Step-down transformer:</strong> Ns &lt; Np → Vs &lt; Vp; used in household supplies</li>
+      <li>Transformers only work with AC — DC produces no changing flux, so no induction</li>
+      <li>Power transmission uses high voltage to reduce current → less I²R heating in cables</li>
+    </ul>
+    <div class="key-fact">Power loss in cables: P_loss = I²R. Doubling voltage (step-up) halves current → power loss reduces to one quarter.</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Back-EMF, Self-Inductance &amp; Three-Phase AC</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong>Back-EMF in motors:</strong> A motor's rotating coil also acts as a generator, producing a back-EMF (ε_back) that opposes the supply voltage. The net voltage driving the current is V_supply − ε_back. At start-up, ε_back = 0 so current is highest; as the motor speeds up, ε_back increases and current decreases. If the motor stalls, ε_back drops to zero and the coil can overheat.</p>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px"><strong>Self-inductance L</strong> (unit: Henry, H): A coil opposes changes in its own current by inducing a back-EMF. ε = −L(ΔI/Δt). Energy stored in inductor: U = ½LI².</p>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8"><strong>Three-phase AC:</strong> Three coils at 120° intervals produce three sinusoidal EMFs, each 120° out of phase. Combined power is constant (not pulsating) — more efficient for industrial motors and long-distance power transmission.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+      <button class="mode-btn active" onclick="setSimMode('induction',this)">🧲 Induction</button>
+      <button class="mode-btn" onclick="setSimMode('generator',this)">⚙️ Generator</button>
+      <button class="mode-btn" onclick="setSimMode('transformer',this)">🔄 Transformer</button>
+    </div>
+    <div class="sim-canvas-wrap">
+      <h3 id="sim-title">Electromagnetic Induction — Magnet and Coil</h3>
+      <canvas id="simCanvas" height="380"></canvas>
+    </div>
+    <div id="ctrl-induction">
+      <div class="sim-controls-row">
+        <div class="ctrl-card">
+          <div class="ctrl-label">Magnet</div>
+          <div class="slider-row"><label>Speed</label><input type="range" id="magSpd" min="-5" max="5" value="2" step="0.5" oninput="updateInd()"><span class="slider-val" id="magSpd-v">2.0</span></div>
+          <div class="slider-row"><label>B strength</label><input type="range" id="magB" min="0.1" max="3" value="1" step="0.1" oninput="updateInd()"><span class="slider-val" id="magB-v">1.0 T</span></div>
+          <div class="slider-row"><label>N turns</label><input type="range" id="magN" min="1" max="20" value="5" step="1" oninput="updateInd()"><span class="slider-val" id="magN-v">5</span></div>
+        </div>
+        <div class="ctrl-card">
+          <div class="readout-label" style="margin-bottom:12px">Live Readings</div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">Induced EMF</div><div class="readout-val" id="ro-emf">0.00 <span>V</span></div></div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">ΔΦ/Δt</div><div class="readout-val" id="ro-dphidt">0.00 <span>Wb/s</span></div></div>
+          <div class="readout"><div class="readout-label">Lenz direction</div><div class="readout-val" id="ro-lenz" style="font-size:11px">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="ctrl-generator" style="display:none">
+      <div class="sim-controls-row">
+        <div class="ctrl-card">
+          <div class="ctrl-label">Generator Parameters</div>
+          <div class="slider-row"><label>ω (rad/s)</label><input type="range" id="genOmega" min="0.5" max="10" value="3" step="0.5" oninput="updateGen()"><span class="slider-val" id="genOmega-v">3.0</span></div>
+          <div class="slider-row"><label>N turns</label><input type="range" id="genN" min="1" max="50" value="20" step="1" oninput="updateGen()"><span class="slider-val" id="genN-v">20</span></div>
+          <div class="slider-row"><label>B (T)</label><input type="range" id="genB" min="0.1" max="2" value="0.5" step="0.1" oninput="updateGen()"><span class="slider-val" id="genB-v">0.5</span></div>
+          <div class="slider-row"><label>A (m²)</label><input type="range" id="genA" min="0.01" max="0.2" value="0.05" step="0.01" oninput="updateGen()"><span class="slider-val" id="genA-v">0.05</span></div>
+        </div>
+        <div class="ctrl-card">
+          <div class="readout-label" style="margin-bottom:12px">Generator Readings</div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">ε_peak</div><div class="readout-val" id="ro-epeak">—</div></div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">ε_current</div><div class="readout-val" id="ro-ecurr">—</div></div>
+          <div class="readout"><div class="readout-label">Coil angle</div><div class="readout-val" id="ro-angle">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="ctrl-transformer" style="display:none">
+      <div class="sim-controls-row">
+        <div class="ctrl-card">
+          <div class="ctrl-label">Transformer</div>
+          <div class="slider-row"><label>Np (turns)</label><input type="range" id="trNp" min="10" max="500" value="100" step="10" oninput="updateTr()"><span class="slider-val" id="trNp-v">100</span></div>
+          <div class="slider-row"><label>Ns (turns)</label><input type="range" id="trNs" min="10" max="500" value="200" step="10" oninput="updateTr()"><span class="slider-val" id="trNs-v">200</span></div>
+          <div class="slider-row"><label>Vp (V)</label><input type="range" id="trVp" min="10" max="240" value="120" step="10" oninput="updateTr()"><span class="slider-val" id="trVp-v">120 V</span></div>
+          <div class="slider-row"><label>Load (Ω)</label><input type="range" id="trLoad" min="10" max="1000" value="200" step="10" oninput="updateTr()"><span class="slider-val" id="trLoad-v">200 Ω</span></div>
+        </div>
+        <div class="ctrl-card">
+          <div class="readout-label" style="margin-bottom:12px">Transformer Readings</div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">Vs (output)</div><div class="readout-val" id="ro-Vs">—</div></div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">Is (secondary)</div><div class="readout-val" id="ro-Is">—</div></div>
+          <div class="readout" style="margin-bottom:8px"><div class="readout-label">Ip (primary)</div><div class="readout-val" id="ro-Ip">—</div></div>
+          <div class="readout"><div class="readout-label">Type</div><div class="readout-val" id="ro-type" style="font-size:11px">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/6</div>
+      <div style="font-size:13px;color:var(--muted)">NSC questions answered correctly</div>
+    </div>
+    <div id="nsc-qs"></div>
+    <div class="ieb-practice" id="ieb-qs">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:16px;padding:10px 14px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:10px">IEB Additional Questions</div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Print Workbook</button>
+    <div class="wb-intro">Show all working. For direction questions, justify your answer using the right-hand rule or Lenz's Law explicitly.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1</div><div class="wb-qtext">A rectangular coil of 40 turns has an area of 0.025 m². It is placed in a uniform magnetic field of 0.8 T with the plane of the coil at 30° to the field lines (i.e. θ = 60° between B and the normal). Calculate the magnetic flux through the coil and the total flux linkage (NΦ).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2</div><div class="wb-qtext">A coil of 200 turns experiences a change in magnetic flux from 0.05 Wb to 0.02 Wb in 0.04 s. (a) Calculate the magnitude of the induced EMF. (b) Is flux increasing or decreasing? (c) State whether this represents energy being absorbed or released by the coil, and explain using Lenz's Law.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">A bar magnet is moved toward a circular coil so that the North pole enters from the right. (a) State whether the flux through the coil is increasing or decreasing. (b) Using Lenz's Law, determine the direction of the induced current in the coil (clockwise or anticlockwise when viewed from the right). (c) Draw a diagram showing the induced magnetic poles on the faces of the coil and explain why this opposes the motion of the magnet.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">A step-up transformer has 500 primary turns and 2 000 secondary turns. The primary is connected to a 230 V AC supply. (a) Calculate the secondary voltage. (b) If a 40 Ω load is connected to the secondary, calculate the secondary current and primary current. (c) Verify that power is conserved (P_primary = P_secondary).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">Explain why high-voltage transmission lines are used to carry electricity over long distances. In your answer: (a) state the relationship between transmission voltage and current, (b) explain the effect on power losses in the cable using the formula P = I²R, and (c) give one disadvantage of very high voltage transmission.</div></div>
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode, btn) {
+  document.querySelectorAll('.curr-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (mode === 'ieb') document.body.classList.add('ieb-mode');
+  else document.body.classList.remove('ieb-mode');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'explore') initSim();
+}
+
+// ── Sim infrastructure ─────────────────────────────────────────────
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+let simMode = 'induction';
+let raf = null;
+let t = 0;
+let magX = 100; // magnet position in induction mode
+
+function setSimMode(m, btn) {
+  simMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ctrl-induction').style.display = m === 'induction' ? 'grid' : 'none';
+  document.getElementById('ctrl-generator').style.display = m === 'generator' ? 'grid' : 'none';
+  document.getElementById('ctrl-transformer').style.display = m === 'transformer' ? 'grid' : 'none';
+  const titles = {induction:'Electromagnetic Induction — Magnet and Coil', generator:'AC Generator — Rotating Coil', transformer:'Transformer — Primary and Secondary Coils'};
+  document.getElementById('sim-title').textContent = titles[m];
+  magX = 100; t = 0;
+  initSim();
+}
+
+function resizeCanvas() {
+  const W = Math.max(480, canvas.parentElement.clientWidth - 32);
+  const H = 380;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  return { W, H };
+}
+
+function initSim() {
+  if (raf) cancelAnimationFrame(raf);
+  loop();
+}
+
+function loop() {
+  raf = requestAnimationFrame(loop);
+  t++;
+  const { W, H } = resizeCanvas();
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#040710'; ctx.fillRect(0, 0, W, H);
+  if (simMode === 'induction') drawInduction(W, H);
+  else if (simMode === 'generator') drawGenerator(W, H);
+  else drawTransformer(W, H);
+}
+
+// ── INDUCTION MODE ─────────────────────────────────────────────────
+function updateInd() {
+  document.getElementById('magSpd-v').textContent = parseFloat(document.getElementById('magSpd').value).toFixed(1);
+  document.getElementById('magB-v').textContent = parseFloat(document.getElementById('magB').value).toFixed(1) + ' T';
+  document.getElementById('magN-v').textContent = document.getElementById('magN').value;
+}
+
+function drawInduction(W, H) {
+  const speed = parseFloat(document.getElementById('magSpd').value);
+  const B = parseFloat(document.getElementById('magB').value);
+  const N = parseInt(document.getElementById('magN').value);
+
+  // Animate magnet
+  magX += speed * 1.5;
+  if (magX > W + 60) magX = -60;
+  if (magX < -60) magX = W + 60;
+
+  const coilX = W * 0.6, coilY = H / 2, coilW = 80, coilH = 120;
+  const dist = Math.abs(magX - coilX);
+  const inCoil = magX > coilX - coilW && magX < coilX + coilW;
+
+  // Field lines through coil — density based on proximity
+  const fieldStr = Math.max(0, 1 - dist / 200) * B;
+  const dPhidt = -speed * fieldStr * 0.08 * B;
+  const emfVal = N * Math.abs(dPhidt);
+
+  // Draw field lines
+  const nLines = Math.round(fieldStr * 8);
+  for (let i = 0; i < nLines; i++) {
+    const ly = coilY - coilH / 2 + 15 + i * (coilH - 30) / Math.max(nLines - 1, 1);
+    ctx.strokeStyle = `rgba(96,165,250,${0.12 + fieldStr * 0.3})`;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(speed > 0 ? magX - 40 : magX + 40, ly);
+    ctx.lineTo(speed > 0 ? coilX + coilW + 20 : coilX - coilW - 20, ly);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Magnet body
+  const mW = 50, mH = 90;
+  const leftCol = speed > 0 ? '#ef4444' : '#3b82f6';
+  const rightCol = speed > 0 ? '#3b82f6' : '#ef4444';
+  ctx.fillStyle = leftCol + 'cc';
+  ctx.beginPath(); ctx.roundRect(magX - mW, coilY - mH / 2, mW, mH, [8, 0, 0, 8]); ctx.fill();
+  ctx.fillStyle = rightCol + 'cc';
+  ctx.beginPath(); ctx.roundRect(magX, coilY - mH / 2, mW, mH, [0, 8, 8, 0]); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 18px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(speed > 0 ? 'N' : 'S', magX - mW / 2, coilY + 6);
+  ctx.fillText(speed > 0 ? 'S' : 'N', magX + mW / 2, coilY + 6);
+
+  // Coil
+  for (let i = 0; i < Math.min(N, 12); i++) {
+    const offset = (i - Math.min(N, 12) / 2) * 3;
+    ctx.strokeStyle = `rgba(251,191,36,${0.4 + (i / Math.min(N, 12)) * 0.5})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(coilX - coilW / 2 + offset, coilY - coilH / 2, coilW, coilH, 6); ctx.stroke();
+  }
+  ctx.fillStyle = 'rgba(210,218,245,0.5)'; ctx.font = '10px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('N = ' + N + ' turns', coilX, coilY + coilH / 2 + 18);
+
+  // EMF meter needle
+  const meterX = W - 90, meterY = H / 2;
+  ctx.fillStyle = 'rgba(255,255,255,0.04)'; ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(meterX, meterY, 50, Math.PI, 0); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(210,218,245,0.4)'; ctx.font = '9px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('EMF', meterX, meterY - 58);
+  const needleAngle = Math.PI + (Math.PI * Math.min(emfVal / (N * 2), 1));
+  ctx.strokeStyle = emfVal > 0.1 ? '#34d399' : '#6b7280'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(meterX, meterY);
+  ctx.lineTo(meterX + 40 * Math.cos(needleAngle), meterY + 40 * Math.sin(needleAngle));
+  ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 11px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText(emfVal.toFixed(2) + ' V', meterX, meterY + 16);
+
+  // Lenz direction
+  const lenzDir = dPhidt > 0 ? (speed > 0 ? 'CCW (opposing entry)' : 'CW') : dPhidt < 0 ? (speed > 0 ? 'CW (opposing exit)' : 'CCW') : 'No change';
+
+  document.getElementById('ro-emf').innerHTML = emfVal.toFixed(3) + ' <span>V</span>';
+  document.getElementById('ro-dphidt').innerHTML = Math.abs(dPhidt).toFixed(4) + ' <span>Wb/s</span>';
+  document.getElementById('ro-lenz').textContent = Math.abs(speed) > 0.3 ? lenzDir : 'No motion';
+}
+
+// ── GENERATOR MODE ─────────────────────────────────────────────────
+function updateGen() {
+  document.getElementById('genOmega-v').textContent = parseFloat(document.getElementById('genOmega').value).toFixed(1);
+  document.getElementById('genN-v').textContent = document.getElementById('genN').value;
+  document.getElementById('genB-v').textContent = parseFloat(document.getElementById('genB').value).toFixed(1);
+  document.getElementById('genA-v').textContent = parseFloat(document.getElementById('genA').value).toFixed(2);
+}
+
+let graphBuf = [];
+function drawGenerator(W, H) {
+  const omega = parseFloat(document.getElementById('genOmega').value);
+  const N = parseInt(document.getElementById('genN').value);
+  const B = parseFloat(document.getElementById('genB').value);
+  const A = parseFloat(document.getElementById('genA').value);
+  const epeak = N * B * A * omega;
+  const angle = (t * omega * 0.04) % (2 * Math.PI);
+  const ecurr = epeak * Math.sin(angle);
+
+  document.getElementById('ro-epeak').innerHTML = epeak.toFixed(2) + ' <span>V</span>';
+  document.getElementById('ro-ecurr').innerHTML = ecurr.toFixed(2) + ' <span>V</span>';
+  document.getElementById('ro-angle').innerHTML = (angle * 180 / Math.PI).toFixed(1) + ' <span>°</span>';
+
+  // Coil outline (perspective ellipse)
+  const cx = W * 0.32, cy = H / 2;
+  const rx = 60, ry = 80;
+  const cosA = Math.cos(angle);
+
+  ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.ellipse(cx, cy, Math.max(2, Math.abs(rx * cosA)), ry, 0, 0, Math.PI * 2); ctx.stroke();
+  // Magnetic field arrows
+  for (let i = -1; i <= 1; i += 2) {
+    ctx.fillStyle = '#60a5fa'; ctx.font = '18px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('→', cx + i * (W * 0.22), cy);
+  }
+  ctx.fillStyle = 'rgba(210,218,245,0.4)'; ctx.font = '10px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('B field →', cx, cy - ry - 16);
+  ctx.fillText('θ = ' + (angle * 180 / Math.PI).toFixed(0) + '°', cx, cy + ry + 20);
+
+  // Sine wave graph
+  graphBuf.push(ecurr);
+  if (graphBuf.length > 200) graphBuf.shift();
+  const gx0 = W * 0.52, gy0 = H * 0.15, gW = W * 0.44, gH = H * 0.6;
+  ctx.fillStyle = 'rgba(255,255,255,0.03)'; ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.roundRect(gx0, gy0, gW, gH, 8); ctx.fill(); ctx.stroke();
+  // axis
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(gx0, gy0 + gH / 2); ctx.lineTo(gx0 + gW, gy0 + gH / 2); ctx.stroke();
+  // ε_peak lines
+  ctx.strokeStyle = 'rgba(96,165,250,0.25)'; ctx.setLineDash([3, 3]);
+  ctx.beginPath(); ctx.moveTo(gx0, gy0 + gH / 2 - (epeak / epeak) * gH / 2 * 0.85); ctx.lineTo(gx0 + gW, gy0 + gH / 2 - gH / 2 * 0.85); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(gx0, gy0 + gH / 2 + gH / 2 * 0.85); ctx.lineTo(gx0 + gW, gy0 + gH / 2 + gH / 2 * 0.85); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(96,165,250,0.5)'; ctx.font = '8px var(--fm)'; ctx.textAlign = 'left';
+  ctx.fillText('+ε_peak', gx0 + 2, gy0 + gH / 2 - gH / 2 * 0.85 + 9);
+  ctx.fillText('−ε_peak', gx0 + 2, gy0 + gH / 2 + gH / 2 * 0.85 + 9);
+  // waveform
+  ctx.strokeStyle = '#34d399'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  graphBuf.forEach((v, i) => {
+    const px = gx0 + (i / 200) * gW;
+    const py = gy0 + gH / 2 - (v / (epeak || 1)) * gH / 2 * 0.85;
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.stroke();
+  ctx.fillStyle = '#34d399'; ctx.font = 'bold 10px var(--fm)'; ctx.textAlign = 'right';
+  ctx.fillText('ε(t) = NBAω sinωt', gx0 + gW - 4, gy0 + 12);
+  // current point
+  const dotX = gx0 + gW - 2;
+  const dotY = gy0 + gH / 2 - (ecurr / (epeak || 1)) * gH / 2 * 0.85;
+  ctx.fillStyle = '#fbbf24';
+  ctx.beginPath(); ctx.arc(dotX, dotY, 5, 0, Math.PI * 2); ctx.fill();
+}
+
+// ── TRANSFORMER MODE ───────────────────────────────────────────────
+function updateTr() {
+  const Np = parseInt(document.getElementById('trNp').value);
+  const Ns = parseInt(document.getElementById('trNs').value);
+  const Vp = parseFloat(document.getElementById('trVp').value);
+  const load = parseFloat(document.getElementById('trLoad').value);
+  document.getElementById('trNp-v').textContent = Np;
+  document.getElementById('trNs-v').textContent = Ns;
+  document.getElementById('trVp-v').textContent = Vp.toFixed(0) + ' V';
+  document.getElementById('trLoad-v').textContent = load.toFixed(0) + ' Ω';
+  const Vs = Vp * Ns / Np;
+  const Is = Vs / load;
+  const Ip = Is * Ns / Np;
+  document.getElementById('ro-Vs').innerHTML = Vs.toFixed(1) + ' <span>V</span>';
+  document.getElementById('ro-Is').innerHTML = Is.toFixed(3) + ' <span>A</span>';
+  document.getElementById('ro-Ip').innerHTML = Ip.toFixed(3) + ' <span>A</span>';
+  document.getElementById('ro-type').textContent = Ns > Np ? 'Step-UP ↑' : Ns < Np ? 'Step-DOWN ↓' : 'Isolation (1:1)';
+}
+
+function drawTransformer(W, H) {
+  updateTr();
+  const Np = parseInt(document.getElementById('trNp').value);
+  const Ns = parseInt(document.getElementById('trNs').value);
+  const Vp = parseFloat(document.getElementById('trVp').value);
+  const load = parseFloat(document.getElementById('trLoad').value);
+  const Vs = Vp * Ns / Np;
+  const Is = Vs / load;
+  const Ip = Is * Ns / Np;
+
+  const cx = W / 2, cy = H / 2;
+  const coreW = 80, coreH = 140, coreT = 18;
+
+  // Iron core (rectangle with hollow)
+  ctx.fillStyle = 'rgba(107,114,128,0.35)';
+  ctx.strokeStyle = 'rgba(156,163,175,0.5)'; ctx.lineWidth = 2;
+  // outer
+  ctx.beginPath(); ctx.roundRect(cx - coreW / 2 - coreT, cy - coreH / 2 - coreT, coreW + coreT * 2, coreH + coreT * 2, 6); ctx.fill(); ctx.stroke();
+  // inner (hollow)
+  ctx.fillStyle = '#040710';
+  ctx.beginPath(); ctx.roundRect(cx - coreW / 2, cy - coreH / 2, coreW, coreH, 4); ctx.fill();
+
+  // Primary coils (left side)
+  const nPrimShow = Math.min(Np / 10, 14);
+  for (let i = 0; i < nPrimShow; i++) {
+    const y = cy - coreH / 2 + 10 + i * (coreH - 20) / Math.max(nPrimShow - 1, 1);
+    ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.ellipse(cx - coreW / 2 - coreT - 12, y, 12, 6, 0, 0, Math.PI * 2); ctx.stroke();
+  }
+  // wire stubs
+  ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(cx - coreW / 2 - coreT - 24, cy - coreH / 2 - 10); ctx.lineTo(cx - coreW / 2 - coreT - 60, cy - coreH / 2 - 10); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx - coreW / 2 - coreT - 24, cy + coreH / 2 + 10); ctx.lineTo(cx - coreW / 2 - coreT - 60, cy + coreH / 2 + 10); ctx.stroke();
+  // AC source symbol
+  ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(cx - coreW / 2 - coreT - 75, cy, 16, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath();
+  for (let i = 0; i <= 20; i++) { const ang = (i / 20) * Math.PI * 2; const x = cx - coreW / 2 - coreT - 75 + 11 * Math.cos(ang); const y2 = cy + 8 * Math.sin(ang * 2) * 0.4; i === 0 ? ctx.moveTo(x, y2) : ctx.lineTo(x, y2); }
+  ctx.stroke();
+  ctx.fillStyle = '#93c5fd'; ctx.font = 'bold 10px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('Vp = ' + Vp + 'V', cx - coreW / 2 - coreT - 75, cy + 30);
+  ctx.fillText('Np = ' + Np, cx - coreW / 2 - coreT - 20, cy - coreH / 2 - 20);
+
+  // Secondary coils (right side)
+  const nSecShow = Math.min(Ns / 10, 14);
+  for (let i = 0; i < nSecShow; i++) {
+    const y = cy - coreH / 2 + 10 + i * (coreH - 20) / Math.max(nSecShow - 1, 1);
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.ellipse(cx + coreW / 2 + coreT + 12, y, 12, 6, 0, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(cx + coreW / 2 + coreT + 24, cy - coreH / 2 - 10); ctx.lineTo(cx + coreW / 2 + coreT + 60, cy - coreH / 2 - 10); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx + coreW / 2 + coreT + 24, cy + coreH / 2 + 10); ctx.lineTo(cx + coreW / 2 + coreT + 60, cy + coreH / 2 + 10); ctx.stroke();
+  // Load resistor
+  ctx.fillStyle = 'rgba(167,139,250,0.12)'; ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.roundRect(cx + coreW / 2 + coreT + 50, cy - 22, 30, 44, 5); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#a78bfa'; ctx.font = 'bold 9px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('R', cx + coreW / 2 + coreT + 65, cy + 4);
+  ctx.fillText(load + 'Ω', cx + coreW / 2 + coreT + 65, cy + 16);
+  ctx.fillText('Ns = ' + Ns, cx + coreW / 2 + coreT + 20, cy - coreH / 2 - 20);
+
+  // Animated flux dots in core
+  const fluxT = t * 0.08;
+  for (let i = 0; i < 5; i++) {
+    const frac = ((fluxT + i * 0.2) % 1);
+    const fy = cy - coreH / 2 + frac * coreH;
+    ctx.globalAlpha = 0.7;
+    ctx.fillStyle = '#34d399';
+    ctx.beginPath(); ctx.arc(cx, fy, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  ctx.fillStyle = 'rgba(52,211,153,0.4)'; ctx.font = '8px var(--fm)'; ctx.textAlign = 'center';
+  ctx.fillText('Φ', cx + 14, cy);
+
+  // Labels
+  ctx.fillStyle = '#34d399'; ctx.font = 'bold 11px var(--fm)'; ctx.textAlign = 'center';
+  const typeText = Ns > Np ? '↑ Step-UP' : Ns < Np ? '↓ Step-DOWN' : '↔ Isolation';
+  ctx.fillText(typeText, cx, cy - coreH / 2 - coreT - 12);
+  ctx.fillText('Vs = ' + Vs.toFixed(1) + ' V', cx + coreW / 2 + coreT + 65, cy + 35);
+}
+
+// ── Practice ───────────────────────────────────────────────────────
+const NSC_QS = [
+  {q: "A coil of 50 turns experiences a flux change of 0.04 Wb in 0.2 s. What is the magnitude of the induced EMF?", opts: ["0.01 V","0.4 V","10 V","100 V"], ans: 2, fb: "|ε| = NΔΦ/Δt = 50 × 0.04/0.2 = 50 × 0.2 = 10 V."},
+  {q: "A bar magnet is pushed into a coil with its North pole leading. The induced current in the coil creates a magnetic field that:", opts: ["Attracts the incoming magnet","Repels the incoming magnet (North pole facing the magnet)","Has no effect on the magnet","Is in the same direction as the magnet's field"], ans: 1, fb: "By Lenz's Law, the induced effect opposes the cause. As flux increases (North pole approaching), the coil acts as a North pole to repel the approaching magnet — requiring you to do work."},
+  {q: "Which of the following changes will NOT increase the induced EMF in a coil?", opts: ["Using more turns of wire","Moving the magnet faster","Using a stronger magnet","Increasing the resistance of the coil"], ans: 3, fb: "EMF = NΔΦ/Δt. More turns (N), faster movement (smaller Δt), and stronger magnet (larger ΔΦ) all increase the EMF. Resistance affects current (I = ε/R), not the induced EMF itself."},
+  {q: "An AC generator produces a peak EMF of 340 V at 50 Hz. At what position of the coil is the EMF zero?", opts: ["When the coil is parallel to the magnetic field","When the coil is perpendicular to the magnetic field","When the coil rotates at maximum speed","At the start of each cycle only"], ans: 1, fb: "ε = NBAω sinωt. EMF = 0 when sinωt = 0, i.e., when the coil plane is perpendicular to B (normal is parallel to B). At this position, flux is maximum but its rate of change is zero."},
+  {q: "A step-up transformer has a turns ratio of 1:10. If the primary voltage is 240 V, what is the secondary voltage?", opts: ["24 V","240 V","2 400 V","24 000 V"], ans: 2, fb: "Vs/Vp = Ns/Np → Vs = Vp × (Ns/Np) = 240 × 10 = 2 400 V."},
+  {q: "Why are transformers used to transmit electrical power at high voltage over long distances?", opts: ["High voltage allows more energy storage in the cables","High voltage reduces the current, which reduces I²R power losses in cables","High voltage increases the speed of transmission","High voltage makes the cables lighter"], ans: 1, fb: "P = IV. For a given power, doubling V halves I. Power lost in cables = I²R. Halving I reduces losses by a factor of 4. This makes long-distance transmission far more efficient."}
+];
+
+const IEB_QS = [
+  {q: "A DC motor is running at full speed. Compared to starting current, the running current is:", opts: ["Greater, because back-EMF aids the supply","Less, because back-EMF opposes the supply voltage","The same at all speeds","Zero when running at full speed"], ans: 1, fb: "At full speed, the rotating coil generates a back-EMF that opposes the supply. Net voltage = V_supply − ε_back, so the current I = (V − ε_back)/R is much less than start-up current."},
+  {q: "A 2 H inductor carries a current of 3 A. The energy stored in the inductor is:", opts: ["3 J","6 J","9 J","18 J"], ans: 2, fb: "U = ½LI² = ½ × 2 × 3² = ½ × 2 × 9 = 9 J."}
+];
+
+let nscScores = new Array(NSC_QS.length).fill(null);
+
+function renderPractice() {
+  const nc = document.getElementById('nsc-qs');
+  nc.innerHTML = '';
+  NSC_QS.forEach((q, i) => nc.appendChild(buildQCard(q, i, 'nsc')));
+  const ic = document.getElementById('ieb-qs');
+  IEB_QS.forEach((q, i) => ic.appendChild(buildQCard(q, i, 'ieb')));
+}
+
+function buildQCard(q, i, prefix) {
+  const div = document.createElement('div');
+  div.className = 'q-card';
+  div.innerHTML = `<div class="q-num">Question ${i + 1}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="mc-options">${q.opts.map((o, j) => `<button class="mc-opt" onclick="answer('${prefix}',${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div>
+    <div class="feedback" id="fb-${prefix}-${i}"></div>`;
+  return div;
+}
+
+function answer(prefix, qi, oi, btn) {
+  const qs = prefix === 'nsc' ? NSC_QS : IEB_QS;
+  const q = qs[qi];
+  const opts = btn.closest('.mc-options').querySelectorAll('.mc-opt');
+  opts.forEach(b => b.disabled = true);
+  const fb = document.getElementById('fb-' + prefix + '-' + qi);
+  if (oi === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback ok show';
+    fb.textContent = '✓ Correct! ' + q.fb;
+    if (prefix === 'nsc' && nscScores[qi] === null) { nscScores[qi] = 1; updateScore(); }
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback bad show';
+    fb.textContent = '✗ Not quite. ' + q.fb;
+    if (prefix === 'nsc' && nscScores[qi] === null) { nscScores[qi] = 0; updateScore(); }
+  }
+}
+
+function updateScore() {
+  const s = nscScores.filter(x => x === 1).length;
+  document.getElementById('score-big').textContent = s + '/' + NSC_QS.length;
+  document.getElementById('score-banner').classList.add('show');
+}
+
+renderPractice();
+updateTr();
+</script>
+</body>
+</html>

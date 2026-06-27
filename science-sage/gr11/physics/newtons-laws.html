@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newton's Laws Applied — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Physics</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Physics · Lesson 2</div>
+  <h1 class="lesson-title">Newton's Laws Applied</h1>
+  <p class="lesson-sub">Apply Newton's three laws to systems of objects, analyse forces on inclined planes, and solve problems involving friction, tension and connected objects.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Newton's First Law — Inertia</h2>
+    <p>An object remains at rest or moves in a straight line at constant velocity unless acted upon by a net (resultant) external force.</p>
+    <p>This property is called <strong style="color:#93c5fd">inertia</strong> — the tendency of an object to resist changes to its state of motion. Inertia is directly proportional to mass.</p>
+    <div class="callout"><strong>Real-world examples:</strong> Seatbelts prevent passengers from continuing forward when a car stops suddenly. A tablecloth pulled quickly leaves dishes behind due to their inertia.</div>
+
+    <h2>Newton's Second Law — Fnet = ma</h2>
+    <p>When a net force acts on an object, it accelerates in the direction of the net force. The acceleration is directly proportional to the net force and inversely proportional to the mass.</p>
+    <div class="formula">F<sub>net</sub> = ma</div>
+    <table class="symbols-table">
+      <thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+      <tbody>
+        <tr><td>Fnet</td><td>Net (resultant) force</td><td>N</td></tr>
+        <tr><td>m</td><td>Mass of object</td><td>kg</td></tr>
+        <tr><td>a</td><td>Acceleration</td><td>m·s⁻²</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Fnet = ma is a VECTOR equation. The direction of acceleration is always the same as the direction of the net force.</div>
+
+    <h2>Newton's Third Law — Action-Reaction</h2>
+    <p>For every action force, there is an equal and opposite reaction force. These forces:</p>
+    <ul>
+      <li>Are equal in magnitude but opposite in direction.</li>
+      <li>Act on <strong>different</strong> objects — they do NOT cancel each other out.</li>
+      <li>Are the same type of force (both contact, both gravitational, etc.).</li>
+    </ul>
+    <div class="callout"><strong>Example:</strong> When you push a wall (action), the wall pushes you back equally (reaction). The two forces act on different objects so they do not cancel.</div>
+
+    <h2>Free Body Diagrams (FBD)</h2>
+    <p>An FBD shows all forces acting on a <em>single</em> object as arrows from or through the object's centre. Rules:</p>
+    <ul>
+      <li>Draw only ONE object per FBD.</li>
+      <li>Show ALL forces: weight (down), normal force (perpendicular to surface), friction (along surface opposing motion), tension (along string/rope), applied force.</li>
+      <li>Label each arrow with its symbol and direction.</li>
+      <li>Arrow length should be roughly proportional to magnitude.</li>
+    </ul>
+
+    <h2>Normal Force and Friction</h2>
+    <p>The <strong style="color:#93c5fd">normal force N</strong> is perpendicular to the contact surface. On a flat surface: N = mg. On an incline at angle θ: N = mg cosθ.</p>
+    <p><strong style="color:#93c5fd">Static friction</strong> prevents sliding: fs ≤ μsN. It equals the applied force up to a maximum of μsN (maximum static friction = μsN).</p>
+    <p><strong style="color:#93c5fd">Kinetic friction</strong> acts while sliding: fk = μkN. Note: μk &lt; μs always.</p>
+    <div class="formula">f<sub>k</sub> = μ<sub>k</sub>N &nbsp;&nbsp;&nbsp; f<sub>s(max)</sub> = μ<sub>s</sub>N</div>
+
+    <h2>Inclined Plane Problems</h2>
+    <p>Resolve the weight into components parallel and perpendicular to the slope:</p>
+    <div class="formula">
+      W∥ = mg sinθ &nbsp;(down the slope)<br>
+      W⊥ = mg cosθ &nbsp;(into the slope)<br>
+      N = mg cosθ &nbsp;(Newton's 2nd Law perpendicular to slope)
+    </div>
+    <p>Apply Fnet = ma along the slope: if the block slides down, take down-the-slope as positive.</p>
+    <div class="callout"><strong>Worked Example — Incline with friction:</strong> A 5 kg block on a 30° incline with μk = 0.2. Find acceleration.<br><br>
+    N = mg cos30° = 5×10×0.866 = 43.3 N<br>
+    fk = 0.2 × 43.3 = 8.66 N<br>
+    W∥ = mg sin30° = 5×10×0.5 = 25 N<br>
+    Fnet = 25 − 8.66 = 16.34 N (down slope)<br>
+    a = Fnet/m = 16.34/5 = 3.27 m·s⁻²</div>
+
+    <h2>Connected Objects and Tension</h2>
+    <p>For two blocks connected by a string: treat the whole system for acceleration, then isolate one block for tension.</p>
+    <div class="formula">
+      System: F<sub>net</sub> = (m₁ + m₂) × a<br>
+      Tension: T = m₂ × a &nbsp;(for the block with no applied force)
+    </div>
+
+    <h2>Lifts and Apparent Weight</h2>
+    <p>The apparent weight is the normal force N from the scale in a lift:</p>
+    <ul>
+      <li>Accelerating upward: N = m(g + a) — you feel heavier.</li>
+      <li>Accelerating downward: N = m(g − a) — you feel lighter.</li>
+      <li>Free fall: N = 0 — weightlessness.</li>
+      <li>Constant velocity: N = mg — normal weight.</li>
+    </ul>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Atwood Machine with Friction</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:8px">In an ideal Atwood machine, two masses hang over a massless, frictionless pulley. IEB may introduce a pulley with mass (moment of inertia), or friction in the pulley bearing. Qualitatively: a massive pulley slows the acceleration because energy is used to spin the pulley. The tension on each side of a massive pulley is different (unlike an ideal pulley where tensions are equal for a stationary pulley problem).</p>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Non-Inertial Reference Frames</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">An inertial frame is one that is not accelerating. Newton's Laws hold exactly in inertial frames. In a non-inertial (accelerating) frame (e.g., a rotating carousel), a fictitious force appears — the <em>centrifugal force</em>. It is not a real force; it arises because the observer is accelerating. The Coriolis effect (deflection of moving objects on Earth) is another fictitious force in Earth's rotating frame.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Force and Motion Simulator</h3>
+      <canvas id="nlCanvas" height="380"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Surface Type</div>
+        <button class="mode-btn active" id="modeFlat" onclick="setSurface('flat')">Flat Surface</button>
+        <button class="mode-btn" id="modeIncline" onclick="setSurface('incline')">Inclined Plane</button>
+        <div style="margin-top:10px">
+          <button class="mode-btn active" id="frictionBtn" onclick="toggleFriction()">Friction: ON</button>
+        </div>
+        <div style="margin-top:12px">
+          <button class="mode-btn" onclick="resetBlock()" style="background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd">Reset Block</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Parameters</div>
+        <div class="slider-row"><label>Mass (kg)</label><input type="range" min="1" max="20" value="5" id="sl-mass" oninput="updateSim()"><span class="slider-val" id="sv-mass">5 kg</span></div>
+        <div id="flat-controls">
+          <div class="slider-row"><label>Applied F (N)</label><input type="range" min="0" max="200" value="60" id="sl-F" oninput="updateSim()"><span class="slider-val" id="sv-F">60 N</span></div>
+          <div class="slider-row"><label>μk</label><input type="range" min="0" max="100" value="20" id="sl-muk" oninput="updateSim()"><span class="slider-val" id="sv-muk">0.20</span></div>
+        </div>
+        <div id="incline-controls" style="display:none">
+          <div class="slider-row"><label>Angle (°)</label><input type="range" min="0" max="45" value="30" id="sl-ang" oninput="updateSim()"><span class="slider-val" id="sv-ang">30°</span></div>
+          <div class="slider-row"><label>μk</label><input type="range" min="0" max="80" value="20" id="sl-muki" oninput="updateSim()"><span class="slider-val" id="sv-muki">0.20</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="readout-grid">
+      <div class="readout"><div class="readout-label">Normal N</div><div class="readout-val" id="ro-N">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">Friction fk</div><div class="readout-val" id="ro-fk">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">Fnet</div><div class="readout-val" id="ro-Fn">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">Accel.</div><div class="readout-val" id="ro-acc">—<span>m·s⁻²</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete. Review incorrect answers above.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 1 of 6</div>
+      <div class="q-text">A 4 kg block is pushed with a net force of 20 N. Its acceleration is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>80 m·s⁻²</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">B</span>5 m·s⁻²</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">C</span>0.2 m·s⁻²</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>16 m·s⁻²</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 2 of 6</div>
+      <div class="q-text">A book rests on a table. The reaction force to the weight of the book (Earth pulls book down) is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">A</span>The normal force of the table on the book</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">B</span>The gravitational force of the book on Earth</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">C</span>Friction between book and table</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>The weight of the table</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 3 of 6</div>
+      <div class="q-text">A 10 kg block is on a 37° incline. The component of weight parallel to the slope is (sin 37° ≈ 0.60, g = 10 m·s⁻²):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>100 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">B</span>80 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">C</span>60 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>37 N</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 4 of 6</div>
+      <div class="q-text">A person of mass 60 kg stands in a lift accelerating upward at 2 m·s⁻². Their apparent weight is (g = 10 m·s⁻²):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>480 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>600 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>720 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>120 N</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 5 of 6</div>
+      <div class="q-text">Two blocks (3 kg and 5 kg) are connected by a string on a frictionless surface. A 40 N force is applied to the 5 kg block. The tension in the string is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>40 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">B</span>15 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">C</span>25 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>5 N</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 6 of 6</div>
+      <div class="q-text">The coefficient of kinetic friction between a block and surface is 0.3. The block has a mass of 4 kg (g = 10 m·s⁻²). The kinetic friction force is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>3 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">B</span>40 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">C</span>12 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>0.3 N</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extended Questions</div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 1</div>
+        <div class="q-text">An Atwood machine has masses 3 kg and 5 kg. If the pulley has significant mass (rotational inertia), compared to an ideal massless pulley, the acceleration of the system will be:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">A</span>Greater, because more mass is involved</button>
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">B</span>Less, because energy is used to rotate the pulley</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>The same, mass of pulley cancels out</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>Zero, the pulley locks the system</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 2</div>
+        <div class="q-text">A person feels pushed outward while riding a roundabout (merry-go-round). This "centrifugal force" is best described as:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">A</span>A real force directed away from the centre</button>
+          <button class="mc-opt" onclick="answer(this,'correct','IQ2')"><span class="opt-letter">B</span>A fictitious force arising from the non-inertial (rotating) reference frame</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">C</span>The reaction force to gravity</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">D</span>The normal force from the seat</button>
+        </div>
+        <div class="feedback" id="fb-IQ2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Draw a free body diagram for every problem where forces are involved. Show all formulae, substitutions, and units clearly. Take g = 10 m·s⁻².</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 — FBD Drawing (4 marks)</div><div class="wb-qtext">A 6 kg block is being pushed across a rough horizontal surface by a force of 30 N at 20° below the horizontal. Draw a fully labelled free body diagram showing all forces acting on the block. Name each force and indicate its direction.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 — Inclined Plane (8 marks)</div><div class="wb-qtext">A 12 kg crate slides down a 40° incline. The coefficient of kinetic friction between the crate and incline is 0.25. (a) Draw a free body diagram for the crate. (b) Calculate the normal force. (c) Calculate the kinetic friction force. (d) Find the net force on the crate and its acceleration. State the direction of acceleration.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 — Connected Objects (7 marks)</div><div class="wb-qtext">Block A (8 kg) rests on a frictionless horizontal surface and is connected by a light string over a frictionless pulley to Block B (3 kg) which hangs vertically. (a) Draw a FBD for each block separately. (b) Write Newton's Second Law equations for each block. (c) Solve for the acceleration of the system and the tension in the string.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 — Lift Apparent Weight (5 marks)</div><div class="wb-qtext">A 70 kg person stands on a bathroom scale in a lift. Calculate the reading on the scale (apparent weight) when the lift is: (a) stationary, (b) accelerating upward at 3 m·s⁻², (c) accelerating downward at 3 m·s⁻², (d) in free fall. Comment on what each reading means physically.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 — Friction Coefficient from Stopping Distance (6 marks)</div><div class="wb-qtext">A car of mass 1200 kg travelling at 25 m·s⁻¹ brakes to a stop over a distance of 80 m on a horizontal road. Assuming the only horizontal force is kinetic friction: (a) Use kinematics to find the deceleration. (b) Apply Newton's Second Law to find the friction force. (c) Calculate the coefficient of kinetic friction between the tyres and the road.</div></div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  // Practice
+  const feedbacks={
+    Q1:{ok:'Correct! a = Fnet/m = 20/4 = 5 m·s⁻².',bad:'Use a = Fnet/m = 20/4 = 5 m·s⁻².'},
+    Q2:{ok:'Correct! By Newton\'s Third Law, the reaction to "Earth pulls book down" is "book pulls Earth up" — they act on different objects.',bad:'Newton\'s 3rd Law pairs must act on different objects and be the same type. The weight\'s reaction is the book\'s gravitational pull on Earth.'},
+    Q3:{ok:'Correct! W∥ = mg sinθ = 10×10×sin37° = 100×0.60 = 60 N.',bad:'The component parallel to the slope is mg sinθ = 100×0.60 = 60 N.'},
+    Q4:{ok:'Correct! N = m(g+a) = 60×(10+2) = 60×12 = 720 N.',bad:'In a lift accelerating upward, apparent weight = m(g+a) = 60×12 = 720 N.'},
+    Q5:{ok:'Correct! System: a = F/(m₁+m₂) = 40/8 = 5 m·s⁻². Tension pulls 3 kg: T = m₂×a = 3×5 = 15 N.',bad:'First find system acceleration: a = 40/(3+5) = 5 m·s⁻². Then T = m_small × a = 3×5 = 15 N.'},
+    Q6:{ok:'Correct! fk = μkN = μk×mg = 0.3×4×10 = 12 N.',bad:'fk = μk × N = μk × mg = 0.3 × 40 = 12 N.'},
+    IQ1:{ok:'Correct! A massive pulley stores rotational kinetic energy, so less energy goes into translational acceleration — the system accelerates less.',bad:'A massive pulley has rotational inertia. Some net force goes into spinning the pulley, leaving less for linear acceleration.'},
+    IQ2:{ok:'Correct! The centrifugal force is a fictitious (pseudo) force that only appears when analysing motion in a rotating (non-inertial) reference frame.',bad:'The centrifugal force is not real — it is a fictitious force that appears only in a rotating non-inertial frame.'},
+  };
+  let answered=0,scoreCount=0;
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=6){document.getElementById('score-big').textContent=scoreCount+'/6';document.getElementById('score-banner').classList.add('show');}}
+  }
+
+  // SIMULATION
+  let surface='flat';let frictionOn=true;
+  let blockX=80,blockVx=0;let raf=null;let lastT=null;
+  const g=10;
+
+  function setSurface(s){
+    surface=s;
+    document.getElementById('modeFlat').classList.toggle('active',s==='flat');
+    document.getElementById('modeIncline').classList.toggle('active',s==='incline');
+    document.getElementById('flat-controls').style.display=s==='flat'?'block':'none';
+    document.getElementById('incline-controls').style.display=s==='incline'?'block':'none';
+    resetBlock();
+  }
+  function toggleFriction(){
+    frictionOn=!frictionOn;
+    document.getElementById('frictionBtn').textContent='Friction: '+(frictionOn?'ON':'OFF');
+    document.getElementById('frictionBtn').classList.toggle('active',frictionOn);
+    updateSim();
+  }
+  function resetBlock(){blockX=80;blockVx=0;lastT=null;updateSim();}
+
+  function updateSim(){
+    document.getElementById('sv-mass').textContent=document.getElementById('sl-mass').value+' kg';
+    document.getElementById('sv-F').textContent=document.getElementById('sl-F').value+' N';
+    document.getElementById('sv-muk').textContent=(document.getElementById('sl-muk').value/100).toFixed(2);
+    document.getElementById('sv-ang').textContent=document.getElementById('sl-ang').value+'°';
+    document.getElementById('sv-muki').textContent=(document.getElementById('sl-muki').value/100).toFixed(2);
+    drawNL();
+  }
+
+  let simInited=false;
+  function initSim(){if(!simInited){simInited=true;blockX=80;blockVx=0;updateSim();animate();}}
+
+  function getPhysics(){
+    const m=+document.getElementById('sl-mass').value;
+    if(surface==='flat'){
+      const F=+document.getElementById('sl-F').value;
+      const muk=document.getElementById('sl-muk').value/100;
+      const N=m*g;
+      const fk=frictionOn?muk*N:0;
+      const Fnet=Math.max(0,F-fk);
+      const a=Fnet/m;
+      return{N,fk,Fnet,a,angle:0,m};
+    } else {
+      const ang=+document.getElementById('sl-ang').value*Math.PI/180;
+      const muk=document.getElementById('sl-muki').value/100;
+      const N=m*g*Math.cos(ang);
+      const fk=frictionOn?muk*N:0;
+      const Fnet=Math.max(0,m*g*Math.sin(ang)-fk);
+      const a=Fnet/m;
+      return{N,fk,Fnet,a,angle:+document.getElementById('sl-ang').value,m};
+    }
+  }
+
+  function animate(ts){
+    if(!simInited) return;
+    raf=requestAnimationFrame(animate);
+    if(lastT===null){lastT=ts;return;}
+    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+    const ph=getPhysics();
+    blockVx+=ph.a*dt;
+    blockX+=blockVx*dt*30;
+    const canvas=document.getElementById('nlCanvas');
+    if(blockX>canvas.clientWidth-60){blockX=canvas.clientWidth-60;blockVx=0;}
+    if(blockX<40){blockX=40;blockVx=0;}
+    drawNL(ph);
+  }
+
+  function drawNL(ph){
+    const canvas=document.getElementById('nlCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth,H=380;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,W,H);
+
+    if(!ph) ph=getPhysics();
+
+    if(surface==='flat'){
+      // Ground
+      ctx.fillStyle='rgba(96,165,250,0.08)';
+      ctx.fillRect(0,H-60,W,60);
+      ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(0,H-60);ctx.lineTo(W,H-60);ctx.stroke();
+
+      const bx=blockX,by=H-60-44,bw=64,bh=44;
+      ctx.fillStyle='rgba(96,165,250,0.25)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
+      ctx.beginPath();ctx.roundRect(bx-bw/2,by,bw,bh,6);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
+      ctx.fillText(ph.m+' kg',bx,by+bh/2+5);
+
+      // Force arrows
+      const cx=bx,cy=by+bh/2;
+      // Weight down
+      drawA(ctx,cx,cy+bh/2+5,cx,cy+bh/2+5+ph.m*g*0.3,'#f87171',2,'W='+ph.m*10+'N');
+      // Normal up
+      drawA(ctx,cx,by-5,cx,by-5-ph.N*0.3,'#4ade80',2,'N='+ph.N.toFixed(0)+'N');
+      // Applied force right
+      const F=+document.getElementById('sl-F').value;
+      drawA(ctx,bx+bw/2+5,cy,bx+bw/2+5+F*0.4,cy,'#60a5fa',2,'F='+F+'N');
+      // Friction left
+      if(frictionOn&&ph.fk>0) drawA(ctx,bx-bw/2-5,cy,bx-bw/2-5-ph.fk*0.4,cy,'#fbbf24',2,'fk='+ph.fk.toFixed(1)+'N');
+
+    } else {
+      // Incline
+      const ang=ph.angle*Math.PI/180;
+      const baseX=40,baseY=H-40;
+      const len=W-80;
+      const topX=baseX+len*Math.cos(ang);
+      const topY=baseY-len*Math.sin(ang);
+
+      ctx.fillStyle='rgba(96,165,250,0.08)';
+      ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,topY);ctx.lineTo(topX,baseY);ctx.closePath();ctx.fill();
+      ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,topY);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(baseX,baseY);ctx.lineTo(topX,baseY);ctx.stroke();
+
+      // Angle label
+      ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='11px JetBrains Mono';ctx.textAlign='left';
+      ctx.fillText(ph.angle+'°',baseX+34,baseY-8);
+
+      // Block on slope midpoint
+      const t=0.5;
+      const bCx=baseX+t*len*Math.cos(ang);
+      const bCy=baseY-t*len*Math.sin(ang);
+      const bw=50,bh=36;
+
+      ctx.save();ctx.translate(bCx,bCy);ctx.rotate(-ang);
+      ctx.fillStyle='rgba(96,165,250,0.25)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
+      ctx.beginPath();ctx.roundRect(-bw/2,-bh,bw,bh,5);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font='bold 11px Cabinet Grotesk';ctx.textAlign='center';
+      ctx.fillText(ph.m+' kg',0,-bh/2+4);
+
+      // FBD arrows in rotated frame
+      const sc=0.6;
+      // Normal (perpendicular to slope, up)
+      drawA(ctx,0,-bh,0,-bh-ph.N*sc,'#4ade80',2,'N');
+      // Weight parallel down slope
+      const Wp=ph.m*g*Math.sin(ang);
+      drawA(ctx,bw/2+5,-bh/2,bw/2+5+Wp*sc,-bh/2,'#f87171',1.5,'W∥');
+      // Friction up slope
+      if(frictionOn&&ph.fk>0) drawA(ctx,-bw/2-5,-bh/2,-bw/2-5-ph.fk*sc,-bh/2,'#fbbf24',1.5,'fk');
+      ctx.restore();
+    }
+
+    // Update readouts
+    document.getElementById('ro-N').innerHTML=ph.N.toFixed(1)+'<span>N</span>';
+    document.getElementById('ro-fk').innerHTML=(frictionOn?ph.fk.toFixed(1):'0.0')+'<span>N</span>';
+    document.getElementById('ro-Fn').innerHTML=ph.Fnet.toFixed(1)+'<span>N</span>';
+    document.getElementById('ro-acc').innerHTML=ph.a.toFixed(2)+'<span>m·s⁻²</span>';
+  }
+
+  function drawA(ctx,x1,y1,x2,y2,col,lw,label){
+    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+    if(len<4) return;
+    const ang=Math.atan2(dy,dx);
+    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.fillStyle=col;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-12*Math.cos(ang-0.4),y2-12*Math.sin(ang-0.4));
+    ctx.lineTo(x2-12*Math.cos(ang+0.4),y2-12*Math.sin(ang+0.4));
+    ctx.closePath();ctx.fill();
+    if(label){
+      ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+      ctx.fillText(label,(x1+x2)/2+Math.sin(ang)*10,(y1+y2)/2-Math.cos(ang)*10);
+    }
+  }
+
+  window.addEventListener('resize',()=>{if(simInited)drawNL();});
+</script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vectors in 2D — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:100px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:16px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Physics</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Physics · Lesson 1</div>
+  <h1 class="lesson-title">Vectors in 2D</h1>
+  <p class="lesson-sub">Resolve vectors into components, add vectors algebraically in two dimensions, and apply the triangle and parallelogram laws to find resultants.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Scalars vs Vectors</h2>
+    <p>A <strong style="color:#93c5fd">scalar</strong> has magnitude only (e.g. speed, mass, temperature). A <strong style="color:#93c5fd">vector</strong> has both magnitude and direction (e.g. force, velocity, displacement, acceleration).</p>
+    <p>Vectors are written in bold (<strong>F</strong>) or with an arrow overhead (F⃗). The magnitude is written as |<strong>F</strong>| or simply F (italic).</p>
+    <div class="callout"><strong>Direction conventions used in CAPS:</strong> Bearing from positive x-axis (measured anti-clockwise), compass bearing (N/S/E/W), or angle stated relative to a named direction (e.g. 30° N of E).</div>
+
+    <h2>Resolving a Vector into Components</h2>
+    <p>Any vector <strong>F</strong> at angle θ from the positive x-axis can be broken into perpendicular components:</p>
+    <div class="formula">
+      Fx = F cosθ<br>
+      Fy = F sinθ
+    </div>
+    <p>The components are scalars (can be positive or negative). Always draw a sketch first to identify which quadrant θ falls in.</p>
+    <div class="key-fact">Tip: cos goes with the x-axis; sin goes with the y-axis. This only holds when θ is measured from the positive x-axis.</div>
+
+    <h2>Adding Vectors Using Components</h2>
+    <p>To add multiple vectors algebraically:</p>
+    <ul>
+      <li>Resolve each vector into x and y components.</li>
+      <li>Sum all x-components: ΣFx</li>
+      <li>Sum all y-components: ΣFy</li>
+      <li>Find the magnitude of the resultant: R = √((ΣFx)² + (ΣFy)²)</li>
+      <li>Find the direction: θ = arctan(ΣFy / ΣFx) — then adjust for the correct quadrant.</li>
+    </ul>
+    <div class="formula">
+      R = √((ΣFx)² + (ΣFy)²)<br>
+      θ = arctan(|ΣFy| / |ΣFx|)  [adjust quadrant using signs of ΣFx and ΣFy]
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+      <tbody>
+        <tr><td>F</td><td>Magnitude of force vector</td><td>N</td></tr>
+        <tr><td>Fx</td><td>x-component of force</td><td>N</td></tr>
+        <tr><td>Fy</td><td>y-component of force</td><td>N</td></tr>
+        <tr><td>R</td><td>Magnitude of resultant</td><td>N</td></tr>
+        <tr><td>θ</td><td>Direction angle from positive x-axis</td><td>°</td></tr>
+        <tr><td>ΣFx</td><td>Sum of all x-components</td><td>N</td></tr>
+        <tr><td>ΣFy</td><td>Sum of all y-components</td><td>N</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Triangle and Parallelogram Laws</h2>
+    <p><strong style="color:#93c5fd">Triangle law:</strong> Draw vectors head-to-tail (one after the other). The resultant is the vector drawn from the tail of the first to the head of the last, closing the triangle.</p>
+    <p><strong style="color:#93c5fd">Parallelogram law:</strong> Draw both vectors from the same point. Complete the parallelogram. The resultant is the diagonal from the common point.</p>
+    <div class="callout"><strong>Scale diagrams:</strong> Choose an appropriate scale (e.g. 1 cm = 10 N), draw accurately with a ruler and protractor, and measure the resultant. State the scale used.</div>
+
+    <h2>Equilibrium and the Equilibrant</h2>
+    <p>An object is in <strong style="color:#93c5fd">equilibrium</strong> when the net force on it is zero. For 2D problems this means:</p>
+    <div class="formula">ΣFx = 0  AND  ΣFy = 0</div>
+    <p>A closed vector diagram (the tail of the last vector meets the head of the first) indicates equilibrium.</p>
+    <p>The <strong style="color:#93c5fd">equilibrant</strong> is the single force that would bring a system into equilibrium. It is equal in magnitude but opposite in direction to the resultant.</p>
+
+    <h2>Worked Example — Three Forces in 2D</h2>
+    <p>Three forces act on an object: F₁ = 40 N at 0°, F₂ = 30 N at 90°, F₃ = 50 N at 210°. Find the resultant.</p>
+    <div class="formula">
+      F₁x = 40cos0° = 40 N,  F₁y = 40sin0° = 0 N<br>
+      F₂x = 30cos90° = 0 N,  F₂y = 30sin90° = 30 N<br>
+      F₃x = 50cos210° = −43.3 N,  F₃y = 50sin210° = −25 N<br><br>
+      ΣFx = 40 + 0 − 43.3 = −3.3 N<br>
+      ΣFy = 0 + 30 − 25 = 5 N<br><br>
+      R = √(3.3² + 5²) = √(10.9 + 25) = √35.9 ≈ 5.99 N<br>
+      θ = arctan(5/3.3) ≈ 56.6° above negative x-axis → ≈ 123.4° from positive x-axis
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Lami's Theorem</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">When three concurrent coplanar forces are in equilibrium, Lami's Theorem states:</p>
+      <div class="formula">F₁/sinα = F₂/sinβ = F₃/sinγ</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">where α, β, γ are the angles opposite each force (i.e. the angle between the other two forces). This is a quick method when three forces meet at a point and are in equilibrium — no need to resolve into components.</p>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Introduction to 3D Components</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">In three dimensions, a vector has three mutually perpendicular components: Fx, Fy, Fz. The magnitude is R = √(Fx² + Fy² + Fz²). Direction is specified by angles to each axis. IEB may present introductory problems where a force in a plane tilted in 3D must be resolved into horizontal and vertical components first, then further resolved.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Vector Addition Sandbox</h3>
+      <canvas id="vecCanvas" height="420"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Mode</div>
+        <button class="mode-btn active" id="mode2" onclick="setVecMode(2)">2 Vectors</button>
+        <button class="mode-btn" id="mode3" onclick="setVecMode(3)">3 Vectors</button>
+        <button class="mode-btn" id="modeEq" onclick="setVecMode('eq')">Equilibrium Check</button>
+        <div style="margin-top:10px">
+          <button class="mode-btn" id="compBtn" onclick="toggleComponents()">Component View: OFF</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Vector 1 <span style="color:#60a5fa">●</span></div>
+        <div class="slider-row"><label>Magnitude</label><input type="range" min="0" max="100" value="60" id="m1" oninput="drawVec()"><span class="slider-val" id="m1v">60 N</span></div>
+        <div class="slider-row"><label>Angle</label><input type="range" min="0" max="360" value="30" id="a1" oninput="drawVec()"><span class="slider-val" id="a1v">30°</span></div>
+        <div class="ctrl-label" style="margin-top:10px">Vector 2 <span style="color:#f87171">●</span></div>
+        <div class="slider-row"><label>Magnitude</label><input type="range" min="0" max="100" value="40" id="m2" oninput="drawVec()"><span class="slider-val" id="m2v">40 N</span></div>
+        <div class="slider-row"><label>Angle</label><input type="range" min="0" max="360" value="120" id="a2" oninput="drawVec()"><span class="slider-val" id="a2v">120°</span></div>
+        <div id="v3controls" style="display:none">
+          <div class="ctrl-label" style="margin-top:10px">Vector 3 <span style="color:#4ade80">●</span></div>
+          <div class="slider-row"><label>Magnitude</label><input type="range" min="0" max="100" value="50" id="m3" oninput="drawVec()"><span class="slider-val" id="m3v">50 N</span></div>
+          <div class="slider-row"><label>Angle</label><input type="range" min="0" max="360" value="240" id="a3" oninput="drawVec()"><span class="slider-val" id="a3v">240°</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="readout-grid">
+      <div class="readout"><div class="readout-label">ΣFx</div><div class="readout-val" id="ro-sx">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">ΣFy</div><div class="readout-val" id="ro-sy">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">|R|</div><div class="readout-val" id="ro-r">—<span>N</span></div></div>
+      <div class="readout"><div class="readout-label">θ of R</div><div class="readout-val" id="ro-th">—<span>°</span></div></div>
+    </div>
+    <div id="eq-result" style="display:none;margin-top:4px;padding:12px 16px;border-radius:10px;font-size:13px;font-family:var(--fm)"></div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete. Review incorrect answers above.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Question 1 of 6</div>
+      <div class="q-text">A force of 50 N acts at 37° above the positive x-axis. What is its x-component? (Use cos 37° ≈ 0.80)</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>30 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">B</span>40 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">C</span>50 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>25 N</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Question 2 of 6</div>
+      <div class="q-text">Two forces act on an object: 30 N due East and 40 N due North. What is the magnitude of the resultant?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">A</span>70 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">B</span>35 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">C</span>50 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>10 N</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Question 3 of 6</div>
+      <div class="q-text">The equilibrant of a resultant force of 80 N at 45° NE is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>80 N at 45° NE</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">B</span>80 N at 225° (SW)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">C</span>40 N at 135° NW</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>80 N at 90° North</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Question 4 of 6</div>
+      <div class="q-text">A vector diagram forms a closed polygon. This means the object is in:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>Uniform motion only</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>Free fall</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>Equilibrium (net force = 0)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>Uniform acceleration</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Question 5 of 6</div>
+      <div class="q-text">ΣFx = −20 N and ΣFy = 20 N. In which quadrant does the resultant lie?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>First (top-right)</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">B</span>Second (top-left)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">C</span>Third (bottom-left)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>Fourth (bottom-right)</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Question 6 of 6</div>
+      <div class="q-text">A force of 100 N is directed at a compass bearing of 30° East of North (i.e. 060° bearing). Its northward component is closest to:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>100 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">B</span>86.6 N</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">C</span>50 N</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>70.7 N</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extended Questions</div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 1</div>
+        <div class="q-text">Three concurrent forces are in equilibrium. Force A = 60 N, Force B = 80 N, and the angle between A and B is 90°. Using Lami's Theorem, the magnitude of Force C is closest to:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">A</span>100 N</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">B</span>140 N</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>20 N</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>70 N</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 2</div>
+        <div class="q-text">For three concurrent forces in equilibrium, Lami's Theorem states that each force divided by the sine of the angle opposite to it is constant. Which angle is "opposite" to a force?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">A</span>The angle that force makes with the x-axis</button>
+          <button class="mc-opt" onclick="answer(this,'correct','IQ2')"><span class="opt-letter">B</span>The angle between the other two forces</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">C</span>90° minus the force's direction angle</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">D</span>The complementary angle to 180°</button>
+        </div>
+        <div class="feedback" id="fb-IQ2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions using the component method unless a scale diagram is specifically requested. Show all working including formulae, substitution, and units.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 — Scale Diagram (6 marks)</div><div class="wb-qtext">Two forces act on a bolt: 45 N at 0° (East) and 35 N at 60° (NE). Using a scale of 1 cm = 5 N, construct a scale diagram using the triangle law. Measure and state (a) the magnitude of the resultant and (b) the direction of the resultant as an angle measured from East.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 — Component Method (8 marks)</div><div class="wb-qtext">Three forces act on an object: F₁ = 80 N at 0°, F₂ = 60 N at 135°, F₃ = 50 N at 270°. (a) Resolve each force into x and y components. (b) Calculate ΣFx and ΣFy. (c) Find the magnitude of the resultant. (d) Find the direction of the resultant (angle from the positive x-axis, correctly adjusted for quadrant).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 — Equilibrant (5 marks)</div><div class="wb-qtext">A hanging sign is held in place by two cables. Cable 1 exerts 200 N at 120° from the positive x-axis; Cable 2 exerts 200 N at 60°. (a) Show that these two forces and the weight of the sign form a closed triangle (equilibrium). (b) Calculate the weight of the sign.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 — Bearing Problem (7 marks)</div><div class="wb-qtext">A ship travels 50 km on a bearing of 030° (N30°E), then 80 km on a bearing of 150° (S30°E). Using the component method, find (a) the total displacement (magnitude) and (b) the bearing of the final position from the starting point.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 — Equilibrium Design (4 marks)</div><div class="wb-qtext">An object of weight 120 N is supported by two forces F₁ and F₂. F₁ is horizontal (0°). F₂ acts at 30° above the horizontal. For the system to be in equilibrium: (a) write the two equilibrium equations (ΣFx = 0 and ΣFy = 0). (b) Solve for F₁ and F₂.</div></div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  // Practice
+  const feedbacks={
+    Q1:{ok:'Correct! Fx = F cosθ = 50 × cos37° = 50 × 0.80 = 40 N.',bad:'Not quite. Use Fx = F cosθ = 50 × 0.80 = 40 N.'},
+    Q2:{ok:'Correct! R = √(30² + 40²) = √(900+1600) = √2500 = 50 N.',bad:'Use Pythagoras: R = √(30² + 40²) = 50 N.'},
+    Q3:{ok:'Correct! The equilibrant is equal in magnitude but exactly opposite in direction to the resultant: 80 N at 225°.',bad:'The equilibrant is opposite in direction to the resultant. 45° NE is at 45°, so opposite is 45° + 180° = 225° (SW).'},
+    Q4:{ok:'Correct! A closed vector polygon means the resultant is zero — the object is in equilibrium.',bad:'A closed polygon means head meets tail, so the net displacement (resultant force) is zero — equilibrium.'},
+    Q5:{ok:'Correct! ΣFx < 0 and ΣFy > 0 places the resultant in the second quadrant (top-left).',bad:'Check the signs: negative x and positive y is the second quadrant (top-left).'},
+    Q6:{ok:'Correct! A bearing of 060° means 60° from North towards East. Northward component = 100 cos60° = 100 × 0.5 = 50 N.',bad:'Bearing 060° is 60° from North. Northward component = 100 cos60° = 50 N.'},
+    IQ1:{ok:'Correct! Three forces at 90°, with two sides 60 and 80 N, form a right triangle. C = √(60² + 80²) = 100 N. Lami's theorem confirms the same.',bad:'For three concurrent forces in equilibrium where the angle between two of them is 90°, the third = √(60² + 80²) = 100 N.'},
+    IQ2:{ok:'Correct! In Lami\'s theorem, the angle opposite a force is the angle between the other two forces.',bad:'The "opposite" angle for each force in Lami\'s theorem is the angle formed between the other two forces.'},
+  };
+  const scores={count:0,total:6};
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scores.count+=result==='correct'?1:0;checkScore();}
+  }
+  let answered=0;
+  function checkScore(){
+    answered++;
+    if(answered>=6){
+      const b=document.getElementById('score-banner');
+      document.getElementById('score-big').textContent=scores.count+'/6';
+      b.classList.add('show');
+    }
+  }
+
+  // SIMULATION
+  let vecMode=2;let showComponents=false;
+  function setVecMode(m){
+    vecMode=m;
+    ['mode2','mode3','modeEq'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.remove('active');
+    });
+    document.getElementById('mode'+m)?.classList.add('active');
+    document.getElementById('modeEq')?.classList.toggle('active',m==='eq');
+    document.getElementById('v3controls').style.display=(m===3||m==='eq')?'block':'none';
+    const eqr=document.getElementById('eq-result');
+    if(m!=='eq') eqr.style.display='none';
+    drawVec();
+  }
+  function toggleComponents(){
+    showComponents=!showComponents;
+    document.getElementById('compBtn').textContent='Component View: '+(showComponents?'ON':'OFF');
+    document.getElementById('compBtn').classList.toggle('active',showComponents);
+    drawVec();
+  }
+
+  let simInited=false;
+  function initSim(){if(!simInited){simInited=true;drawVec();}}
+
+  function drawVec(){
+    const canvas=document.getElementById('vecCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth,H=420;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2,cy=H/2;
+    const scale=2.0;// px per N
+
+    // Grid
+    ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
+    for(let x=0;x<=W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<=H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+    // Axes
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='10px JetBrains Mono';
+    ctx.fillText('+x',W-24,cy-6);ctx.fillText('+y',cx+6,14);
+
+    const m1=+document.getElementById('m1').value,a1=+document.getElementById('a1').value;
+    const m2=+document.getElementById('m2').value,a2=+document.getElementById('a2').value;
+    const m3=+document.getElementById('m3').value,a3=+document.getElementById('a3').value;
+    document.getElementById('m1v').textContent=m1+' N';document.getElementById('a1v').textContent=a1+'°';
+    document.getElementById('m2v').textContent=m2+' N';document.getElementById('a2v').textContent=a2+'°';
+    document.getElementById('m3v').textContent=m3+' N';document.getElementById('a3v').textContent=a3+'°';
+
+    const deg=Math.PI/180;
+    const vecs=[];
+    vecs.push({m:m1,a:a1*deg,col:'#60a5fa'});
+    vecs.push({m:m2,a:a2*deg,col:'#f87171'});
+    if(vecMode===3||vecMode==='eq') vecs.push({m:m3,a:a3*deg,col:'#4ade80'});
+
+    let sx=0,sy=0;
+    vecs.forEach(v=>{
+      const vx=v.m*Math.cos(v.a),vy=v.m*Math.sin(v.a);
+      sx+=vx;sy+=vy;
+      drawArrow(ctx,cx,cy,cx+vx*scale,cy-vy*scale,v.col,2.5);
+      if(showComponents){
+        ctx.setLineDash([5,4]);
+        ctx.strokeStyle=v.col+'88';ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+vx*scale,cy);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(cx+vx*scale,cy);ctx.lineTo(cx+vx*scale,cy-vy*scale);ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    });
+
+    const R=Math.sqrt(sx*sx+sy*sy);
+    const theta=Math.atan2(sy,sx)*180/Math.PI;
+    if(R>0.5) drawArrow(ctx,cx,cy,cx+sx*scale,cy-sy*scale,'#fbbf24',3);
+
+    document.getElementById('ro-sx').innerHTML=sx.toFixed(1)+'<span>N</span>';
+    document.getElementById('ro-sy').innerHTML=sy.toFixed(1)+'<span>N</span>';
+    document.getElementById('ro-r').innerHTML=R.toFixed(1)+'<span>N</span>';
+    document.getElementById('ro-th').innerHTML=((theta%360+360)%360).toFixed(1)+'<span>°</span>';
+
+    if(vecMode==='eq'){
+      const eqr=document.getElementById('eq-result');
+      eqr.style.display='block';
+      if(R<2){
+        eqr.textContent='✓ System is in EQUILIBRIUM (|R| < 2 N)';
+        eqr.style.background='rgba(34,197,94,.12)';eqr.style.border='1px solid rgba(34,197,94,.3)';eqr.style.color='#86efac';
+      } else {
+        eqr.textContent='✗ NOT in equilibrium — |R| = '+R.toFixed(1)+' N. Adjust vectors so ΣFx≈0 and ΣFy≈0.';
+        eqr.style.background='rgba(239,68,68,.10)';eqr.style.border='1px solid rgba(239,68,68,.28)';eqr.style.color='#fca5a5';
+      }
+    }
+  }
+
+  function drawArrow(ctx,x1,y1,x2,y2,col,lw){
+    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+    if(len<2) return;
+    const angle=Math.atan2(dy,dx);
+    const hw=8,hl=14;
+    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.fillStyle=col;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-hl*Math.cos(angle-0.4),y2-hl*Math.sin(angle-0.4));
+    ctx.lineTo(x2-hl*Math.cos(angle+0.4),y2-hl*Math.sin(angle+0.4));
+    ctx.closePath();ctx.fill();
+  }
+
+  window.addEventListener('resize',()=>{if(simInited)drawVec();});
+</script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum &amp; Impulse — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:70px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Physics</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Physics · Lesson 3</div>
+  <h1 class="lesson-title">Momentum &amp; Impulse</h1>
+  <p class="lesson-sub">Define momentum and impulse, apply the impulse-momentum theorem, and use conservation of momentum to analyse collisions and explosions.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Momentum</h2>
+    <p><strong style="color:#93c5fd">Momentum</strong> (p) is the product of an object's mass and its velocity. It is a vector — its direction is the same as the direction of velocity.</p>
+    <div class="formula">p = mv</div>
+    <table class="symbols-table">
+      <thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+      <tbody>
+        <tr><td>p</td><td>Momentum (vector)</td><td>kg·m·s⁻¹</td></tr>
+        <tr><td>m</td><td>Mass</td><td>kg</td></tr>
+        <tr><td>v</td><td>Velocity (vector)</td><td>m·s⁻¹</td></tr>
+        <tr><td>Δp</td><td>Change in momentum</td><td>kg·m·s⁻¹</td></tr>
+      </tbody>
+    </table>
+    <p>Change in momentum: Δp = mvf − mvi = m(vf − vi). Choose a positive direction and stick to it throughout a problem.</p>
+    <div class="key-fact">Always define a positive direction first. Velocities opposite to it are negative.</div>
+
+    <h2>Impulse and the Impulse-Momentum Theorem</h2>
+    <p><strong style="color:#93c5fd">Impulse</strong> (J) is the product of the net force and the time over which it acts. Impulse equals the change in momentum.</p>
+    <div class="formula">
+      J = F<sub>net</sub> Δt = Δp = m(v<sub>f</sub> − v<sub>i</sub>)
+    </div>
+    <p>Unit of impulse: N·s = kg·m·s⁻¹ (same as momentum — they are numerically and dimensionally identical).</p>
+    <div class="callout">
+      <strong>Practical applications:</strong><br>
+      • <strong>Airbags and crumple zones</strong> increase the collision time Δt. Since J = FΔt = Δp (fixed), a larger Δt means a smaller F — reducing injury.<br>
+      • <strong>Catching a ball</strong>: pulling your hands back as you catch increases Δt, reducing the impact force on your hands.
+    </div>
+
+    <h2>Conservation of Momentum</h2>
+    <p>In a <strong style="color:#93c5fd">closed (isolated) system</strong> (no net external forces), the total momentum is constant (conserved).</p>
+    <div class="formula">
+      Σp<sub>before</sub> = Σp<sub>after</sub><br>
+      m₁v₁ᵢ + m₂v₂ᵢ = m₁v₁f + m₂v₂f
+    </div>
+    <div class="key-fact">Conservation of momentum is valid for ALL collision types — elastic, inelastic, and perfectly inelastic.</div>
+
+    <h2>Types of Collisions</h2>
+    <ul>
+      <li><strong style="color:#93c5fd">Elastic collision:</strong> both momentum AND kinetic energy are conserved. KE before = KE after. (Ideal; billiard balls approximate this.)</li>
+      <li><strong style="color:#93c5fd">Inelastic collision:</strong> momentum is conserved; kinetic energy is NOT conserved (some converted to heat/sound/deformation).</li>
+      <li><strong style="color:#93c5fd">Perfectly inelastic collision:</strong> objects stick together after collision (v₁f = v₂f = vf); maximum kinetic energy is lost.</li>
+    </ul>
+    <div class="formula">
+      Perfectly inelastic: (m₁ + m₂)v<sub>f</sub> = m₁v₁ᵢ + m₂v₂ᵢ
+    </div>
+
+    <h2>Explosions</h2>
+    <p>In an explosion, the system starts at rest (total momentum = 0). After the explosion, fragments move apart with equal and opposite momenta so the total remains zero.</p>
+    <div class="formula">0 = m₁v₁f + m₂v₂f &nbsp; ⟹ &nbsp; m₁v₁f = −m₂v₂f</div>
+
+    <h2>Worked Example — Car Collision</h2>
+    <div class="callout"><strong>Problem:</strong> Car A (1200 kg) moves at 20 m·s⁻¹ East. Car B (900 kg) is stationary. They collide and stick together. Find vf.<br><br>
+    <strong>Positive direction:</strong> East<br>
+    Σpᵢ = 1200×20 + 900×0 = 24 000 kg·m·s⁻¹<br>
+    Σpf = (1200+900)×vf<br>
+    24 000 = 2100×vf<br>
+    vf = 24 000/2100 = 11.4 m·s⁻¹ East</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — 2D Collisions</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:8px">In a glancing (2D) collision, momentum is conserved independently in the x and y directions:</p>
+      <div class="formula">Σpₓ before = Σpₓ after &nbsp;&nbsp; AND &nbsp;&nbsp; Σpᵧ before = Σpᵧ after</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">Resolve all momenta into components before and after the collision, then apply conservation in each direction separately.</p>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Coefficient of Restitution</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">The coefficient of restitution (e) measures the "bounciness" of a collision:</p>
+      <div class="formula">e = (v₂f − v₁f) / (v₁ᵢ − v₂ᵢ)</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">e = 1: perfectly elastic. e = 0: perfectly inelastic (objects stick). 0 &lt; e &lt; 1: partially inelastic. e is always between 0 and 1 for real collisions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Collision Simulator</h3>
+      <canvas id="colCanvas" height="300"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Collision Type</div>
+        <button class="mode-btn active" id="modeEl" onclick="setColMode('elastic')">Elastic</button>
+        <button class="mode-btn" id="modeIn" onclick="setColMode('inelastic')">Perfectly Inelastic</button>
+        <button class="mode-btn" id="modeCe" onclick="setColMode('custom')">Custom e (IEB)</button>
+        <div id="ce-row" style="display:none;margin-top:10px">
+          <div class="slider-row"><label>e value</label><input type="range" min="0" max="100" value="70" id="sl-e" oninput="updateCe()"><span class="slider-val" id="sv-e">0.70</span></div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="mode-btn active" onclick="resetSim()" style="background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd">Reset</button>
+          <button class="mode-btn" id="playBtn" onclick="playSim()">▶ Play</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Block 1 <span style="color:#60a5fa">●</span> (left)</div>
+        <div class="slider-row"><label>Mass m₁ (kg)</label><input type="range" min="1" max="10" value="4" id="sl-m1" oninput="resetSim()"><span class="slider-val" id="sv-m1">4 kg</span></div>
+        <div class="slider-row"><label>Velocity v₁ᵢ</label><input type="range" min="-10" max="10" value="5" id="sl-v1" oninput="resetSim()"><span class="slider-val" id="sv-v1">+5 m·s⁻¹</span></div>
+        <div class="ctrl-label" style="margin-top:10px">Block 2 <span style="color:#f87171">●</span> (right)</div>
+        <div class="slider-row"><label>Mass m₂ (kg)</label><input type="range" min="1" max="10" value="2" id="sl-m2" oninput="resetSim()"><span class="slider-val" id="sv-m2">2 kg</span></div>
+        <div class="slider-row"><label>Velocity v₂ᵢ</label><input type="range" min="-10" max="10" value="-2" id="sl-v2" oninput="resetSim()"><span class="slider-val" id="sv-v2">−2 m·s⁻¹</span></div>
+      </div>
+    </div>
+    <div class="readout-grid">
+      <div class="readout"><div class="readout-label">p total (before)</div><div class="readout-val" id="ro-pb">—<span>kg·m·s⁻¹</span></div></div>
+      <div class="readout"><div class="readout-label">p total (after)</div><div class="readout-val" id="ro-pa">—<span>kg·m·s⁻¹</span></div></div>
+      <div class="readout"><div class="readout-label">KE before</div><div class="readout-val" id="ro-keb">—<span>J</span></div></div>
+      <div class="readout"><div class="readout-label">KE after</div><div class="readout-val" id="ro-kea">—<span>J</span></div></div>
+      <div class="readout"><div class="readout-label">KE lost</div><div class="readout-val" id="ro-kel">—<span>J</span></div></div>
+      <div class="readout"><div class="readout-label">Status</div><div class="readout-val" id="ro-stat" style="font-size:12px">—</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete. Review incorrect answers above.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 1 of 6</div>
+      <div class="q-text">A 0.5 kg ball moves at 10 m·s⁻¹ East. Its momentum is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>0.05 kg·m·s⁻¹ East</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">B</span>5 kg·m·s⁻¹ East</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">C</span>20 kg·m·s⁻¹ East</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>5 kg·m·s⁻¹ (no direction)</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 2 of 6</div>
+      <div class="q-text">A net force of 40 N acts on a 2 kg object for 0.5 s. The change in momentum is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">A</span>10 N·s</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">B</span>20 N·s</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">C</span>40 N·s</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>80 N·s</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 3 of 6</div>
+      <div class="q-text">A 1500 kg car (30 m·s⁻¹ East) collides with a 1000 kg stationary car and they stick together. Their combined velocity after is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>30 m·s⁻¹ East</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">B</span>15 m·s⁻¹ East</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">C</span>18 m·s⁻¹ East</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>20 m·s⁻¹ East</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 4 of 6</div>
+      <div class="q-text">Which statement is true about a perfectly inelastic collision?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>Both momentum and kinetic energy are conserved</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>Kinetic energy is conserved but momentum is not</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>Momentum is conserved but maximum kinetic energy is lost</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>Neither momentum nor kinetic energy is conserved</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 5 of 6</div>
+      <div class="q-text">A 5 kg gun fires a 0.01 kg bullet at 400 m·s⁻¹. The recoil speed of the gun is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>400 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">B</span>4 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">C</span>0.8 m·s⁻¹</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>2 m·s⁻¹</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 6 of 6</div>
+      <div class="q-text">Airbags reduce injury during a collision primarily by:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>Increasing the change in momentum</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">B</span>Decreasing the change in momentum</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">C</span>Increasing the collision time, thereby decreasing the force</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>Decreasing the mass of the passenger</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extended Questions</div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 1</div>
+        <div class="q-text">Ball A (2 kg, 4 m·s⁻¹ East) hits Ball B (2 kg, at rest). After the collision, Ball A moves at 1 m·s⁻¹ East and Ball B at 3 m·s⁻¹ East. The coefficient of restitution is:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">A</span>0.5</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">B</span>1.0</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>0.75</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>0.25</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 2</div>
+        <div class="q-text">In a 2D collision, a 3 kg puck moving at 6 m·s⁻¹ North strikes a stationary 3 kg puck. After the collision, the first puck moves at 3 m·s⁻¹ West. Using conservation of momentum, the second puck's northward velocity is:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">A</span>3 m·s⁻¹ North</button>
+          <button class="mc-opt" onclick="answer(this,'correct','IQ2')"><span class="opt-letter">B</span>6 m·s⁻¹ North</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">C</span>9 m·s⁻¹ North</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ2')"><span class="opt-letter">D</span>0 m·s⁻¹</button>
+        </div>
+        <div class="feedback" id="fb-IQ2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Define a positive direction at the start of every problem. Momentum is a vector — include direction in all answers. Show formulae, substitutions and units.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 — Impulse Calculation (5 marks)</div><div class="wb-qtext">A 0.15 kg cricket ball bowled at 30 m·s⁻¹ is hit back by a bat at 40 m·s⁻¹ in the opposite direction. The bat is in contact with the ball for 0.002 s. (a) Define a positive direction. (b) Calculate the change in momentum of the ball. (c) Calculate the impulse on the ball. (d) Calculate the average force exerted by the bat on the ball.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 — Conservation in a Collision (6 marks)</div><div class="wb-qtext">Trolley A (3 kg) moves at 5 m·s⁻¹ East. Trolley B (2 kg) moves at 3 m·s⁻¹ West. They collide and move separately afterwards: A at 1 m·s⁻¹ East. (a) State the law of conservation of momentum. (b) Find the velocity (magnitude and direction) of B after the collision. (c) Is this an elastic or inelastic collision? Show working.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 — Explosion (5 marks)</div><div class="wb-qtext">A stationary 80 kg astronaut in space pushes off a 200 kg space module. The astronaut moves at 3 m·s⁻¹ to the right. (a) State why total momentum is conserved here. (b) Calculate the velocity of the space module after the push. (c) Calculate the kinetic energy of each object and comment on where this energy came from.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 — Kinetic Energy Change in Collision (5 marks)</div><div class="wb-qtext">A 6 kg block moving at 8 m·s⁻¹ collides with a stationary 2 kg block. They stick together after the collision. (a) Find the velocity after the collision. (b) Calculate the kinetic energy before and after the collision. (c) Calculate the KE lost. (d) Where does the lost kinetic energy go?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 — Airbag Design Reasoning (4 marks)</div><div class="wb-qtext">A car passenger (70 kg) decelerates from 25 m·s⁻¹ to rest. (a) Calculate the change in momentum of the passenger. (b) Without an airbag, the collision takes 0.05 s. Calculate the average force on the passenger. (c) With an airbag, the collision takes 0.4 s. Calculate the new average force. (d) Explain using physics principles why airbags save lives.</div></div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  // Practice
+  const feedbacks={
+    Q1:{ok:'Correct! p = mv = 0.5×10 = 5 kg·m·s⁻¹. Momentum is a vector — direction must be stated.',bad:'p = mv = 0.5×10 = 5 kg·m·s⁻¹ East. Always include direction for vectors.'},
+    Q2:{ok:'Correct! Impulse = FΔt = 40×0.5 = 20 N·s = 20 kg·m·s⁻¹ = Δp.',bad:'Impulse = FΔt = 40×0.5 = 20 N·s.'},
+    Q3:{ok:'Correct! Conservation: 1500×30 = (1500+1000)×vf → vf = 45000/2500 = 18 m·s⁻¹ East.',bad:'Use conservation: 1500×30 + 0 = (1500+1000)×vf. vf = 45000/2500 = 18 m·s⁻¹ East.'},
+    Q4:{ok:'Correct! In a perfectly inelastic collision momentum is always conserved, but the maximum possible KE is lost (objects stick together).',bad:'Momentum is ALWAYS conserved in collisions (closed system). In perfectly inelastic collisions KE is not conserved — maximum KE is lost.'},
+    Q5:{ok:'Correct! Total momentum before = 0 (system at rest). 0 = 0.01×400 + 5×v_gun → v_gun = −4/5 = −0.8 m·s⁻¹. Speed = 0.8 m·s⁻¹.',bad:'Conservation: 0 = m_bullet×v_bullet + m_gun×v_gun. 0 = 0.01×400 + 5×v → v = −0.8 m·s⁻¹.'},
+    Q6:{ok:'Correct! Impulse = FΔt = Δp (fixed). A larger Δt means F is smaller — reducing the force on the passenger.',bad:'Airbags increase Δt. Since FΔt = Δp (Δp is fixed by the crash speed), increasing Δt decreases F.'},
+    IQ1:{ok:'Correct! e = (v₂f−v₁f)/(v₁ᵢ−v₂ᵢ) = (3−1)/(4−0) = 2/4 = 0.5.',bad:'e = (v₂f−v₁f)/(v₁ᵢ−v₂ᵢ) = (3−1)/(4−0) = 2/4 = 0.5.'},
+    IQ2:{ok:'Correct! Northward: 3×6 = 3×0 + 3×v₂N → v₂N = 6 m·s⁻¹ North. (The first puck\'s northward momentum transfers fully.)',bad:'Apply conservation in y (North): 3×6 + 0 = 3×0 + 3×v₂N → v₂N = 6 m·s⁻¹ North.'},
+  };
+  let answered=0,scoreCount=0;
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=6){document.getElementById('score-big').textContent=scoreCount+'/6';document.getElementById('score-banner').classList.add('show');}}
+  }
+
+  // SIMULATION
+  let colMode='elastic';
+  let b1={x:0,v:0,m:0},b2={x:0,v:0,m:0};
+  let collided=false;let running=false;let raf=null;let lastT=null;
+  let simInited=false;
+
+  function setColMode(m){
+    colMode=m;
+    ['modeEl','modeIn','modeCe'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    document.getElementById(m==='elastic'?'modeEl':m==='inelastic'?'modeIn':'modeCe').classList.add('active');
+    document.getElementById('ce-row').style.display=m==='custom'?'block':'none';
+    resetSim();
+  }
+  function updateCe(){document.getElementById('sv-e').textContent=(document.getElementById('sl-e').value/100).toFixed(2);}
+  function initSim(){if(!simInited){simInited=true;resetSim();}}
+
+  function resetSim(){
+    if(raf){cancelAnimationFrame(raf);raf=null;}
+    running=false;collided=false;lastT=null;
+    document.getElementById('playBtn').textContent='▶ Play';
+    const m1=+document.getElementById('sl-m1').value,v1i=+document.getElementById('sl-v1').value;
+    const m2=+document.getElementById('sl-m2').value,v2i=+document.getElementById('sl-v2').value;
+    document.getElementById('sv-m1').textContent=m1+' kg';
+    document.getElementById('sv-v1').textContent=(v1i>=0?'+':'')+v1i+' m·s⁻¹';
+    document.getElementById('sv-m2').textContent=m2+' kg';
+    document.getElementById('sv-v2').textContent=(v2i>=0?'+':'')+v2i+' m·s⁻¹';
+    const canvas=document.getElementById('colCanvas');
+    const W=canvas.clientWidth||800;
+    b1={x:W*0.25,v:v1i,m:m1};
+    b2={x:W*0.72,v:v2i,m:m2};
+    const pb=m1*v1i+m2*v2i;
+    const keb=0.5*m1*v1i*v1i+0.5*m2*v2i*v2i;
+    document.getElementById('ro-pb').innerHTML=pb.toFixed(1)+'<span>kg·m·s⁻¹</span>';
+    document.getElementById('ro-keb').innerHTML=keb.toFixed(1)+'<span>J</span>';
+    document.getElementById('ro-pa').innerHTML='—<span>kg·m·s⁻¹</span>';
+    document.getElementById('ro-kea').innerHTML='—<span>J</span>';
+    document.getElementById('ro-kel').innerHTML='—<span>J</span>';
+    document.getElementById('ro-stat').innerHTML='Ready';
+    if(simInited) drawCol();
+  }
+
+  function playSim(){
+    if(running){cancelAnimationFrame(raf);running=false;document.getElementById('playBtn').textContent='▶ Play';return;}
+    running=true;lastT=null;document.getElementById('playBtn').textContent='⏸ Pause';
+    raf=requestAnimationFrame(simStep);
+  }
+
+  function simStep(ts){
+    if(!running) return;
+    if(lastT===null){lastT=ts;raf=requestAnimationFrame(simStep);return;}
+    const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+    const scale=30;
+    b1.x+=b1.v*scale*dt;
+    b2.x+=b2.v*scale*dt;
+
+    const r=20;
+    if(!collided&&b1.x+r>=b2.x-r){
+      collided=true;
+      doCollision();
+    }
+
+    const canvas=document.getElementById('colCanvas');
+    const W=canvas.clientWidth||800;
+    if(b1.x<r) b1.x=r;
+    if(b2.x>W-r) b2.x=W-r;
+
+    drawCol();
+    raf=requestAnimationFrame(simStep);
+  }
+
+  function doCollision(){
+    const m1=b1.m,v1i=b1.v,m2=b2.m,v2i=b2.v;
+    let v1f,v2f;
+    if(colMode==='elastic'){
+      v1f=((m1-m2)*v1i+2*m2*v2i)/(m1+m2);
+      v2f=((m2-m1)*v2i+2*m1*v1i)/(m1+m2);
+    } else if(colMode==='inelastic'){
+      const vf=(m1*v1i+m2*v2i)/(m1+m2);
+      v1f=vf;v2f=vf;
+    } else {
+      const e=document.getElementById('sl-e').value/100;
+      // e = (v2f-v1f)/(v1i-v2i), plus conservation: m1*v1i+m2*v2i = m1*v1f+m2*v2f
+      const ptot=m1*v1i+m2*v2i;
+      // v2f - v1f = e*(v1i - v2i)
+      const relV=e*(v1i-v2i);
+      v2f=(ptot+m1*relV)/(m1+m2);
+      v1f=v2f-relV;
+    }
+    b1.v=v1f;b2.v=v2f;
+    const pa=m1*v1f+m2*v2f;
+    const kea=0.5*m1*v1f*v1f+0.5*m2*v2f*v2f;
+    const keb=0.5*m1*v1i*v1i+0.5*m2*v2i*v2i;
+    const kel=keb-kea;
+    document.getElementById('ro-pa').innerHTML=pa.toFixed(1)+'<span>kg·m·s⁻¹</span>';
+    document.getElementById('ro-kea').innerHTML=kea.toFixed(1)+'<span>J</span>';
+    document.getElementById('ro-kel').innerHTML=kel.toFixed(1)+'<span>J</span>';
+    const type=colMode==='elastic'?'Elastic ✓':(colMode==='inelastic'?'Perfectly Inelastic':'Custom e');
+    document.getElementById('ro-stat').innerHTML=type;
+  }
+
+  function drawCol(){
+    const canvas=document.getElementById('colCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth||800,H=300;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,W,H);
+
+    // Track
+    ctx.fillStyle='rgba(96,165,250,0.06)';
+    ctx.fillRect(0,H-50,W,50);
+    ctx.strokeStyle='rgba(96,165,250,0.25)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(0,H-50);ctx.lineTo(W,H-50);ctx.stroke();
+
+    // Positive direction arrow
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='10px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText('+ →',8,16);
+
+    const r1=14+b1.m*2,r2=14+b2.m*2;
+    const by=H-50;
+
+    // Block 1
+    ctx.fillStyle='rgba(96,165,250,0.3)';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(b1.x-r1,by-r1*2,r1*2,r1*2,6);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 11px Cabinet Grotesk';ctx.textAlign='center';
+    ctx.fillText(b1.m+'kg',b1.x,by-r1);
+
+    // Velocity arrow for block 1
+    if(Math.abs(b1.v)>0.05){
+      const arLen=b1.v*10;
+      drawArrow(ctx,b1.x,by-r1*2-8,b1.x+arLen,by-r1*2-8,'#60a5fa',1.5);
+    }
+
+    // Block 2
+    ctx.fillStyle='rgba(248,113,113,0.3)';ctx.strokeStyle='#f87171';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(b2.x-r2,by-r2*2,r2*2,r2*2,6);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 11px Cabinet Grotesk';ctx.textAlign='center';
+    ctx.fillText(b2.m+'kg',b2.x,by-r2);
+
+    if(Math.abs(b2.v)>0.05){
+      const arLen=b2.v*10;
+      drawArrow(ctx,b2.x,by-r2*2-8,b2.x+arLen,by-r2*2-8,'#f87171',1.5);
+    }
+
+    // Velocity labels
+    ctx.fillStyle='rgba(255,255,255,0.45)';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText((b1.v>=0?'+':'')+b1.v.toFixed(1)+' m/s',b1.x,by-r1*2-20);
+    ctx.fillText((b2.v>=0?'+':'')+b2.v.toFixed(1)+' m/s',b2.x,by-r2*2-20);
+  }
+
+  function drawArrow(ctx,x1,y1,x2,y2,col,lw){
+    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+    if(len<3) return;
+    const ang=Math.atan2(dy,dx);
+    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.fillStyle=col;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-10*Math.cos(ang-0.4),y2-10*Math.sin(ang-0.4));ctx.lineTo(x2-10*Math.cos(ang+0.4),y2-10*Math.sin(ang+0.4));ctx.closePath();ctx.fill();
+  }
+
+  window.addEventListener('resize',()=>{if(simInited)drawCol();});
+</script>
+</body>
+</html>
