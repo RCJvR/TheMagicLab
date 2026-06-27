@@ -149,6 +149,15 @@
     .feat-node-op.op-new {background:rgba(16,185,129,0.2);color:var(--green);}
     .feat-node-op.op-fuse{background:rgba(59,130,246,0.2);color:var(--blue);}
     .feat-node-op.op-cut {background:rgba(239,68,68,0.2);color:var(--red);}
+    .feat-node.datum-node{border-left-color:rgba(245,158,11,0.7);color:rgba(245,200,80,0.9);}
+    .feat-node.datum-node:hover{background:rgba(245,158,11,0.08);}
+    .feat-node.sketch-under-datum{padding-left:24px;}
+    .feat-node.extrude-under-datum{padding-left:38px;}
+    .op-toggle{display:none;gap:0;border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:10px;}
+    .op-toggle.visible{display:flex;}
+    .op-btn{flex:1;height:24px;padding:0 8px;border:none;background:none;color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 120ms;}
+    .op-btn.active.add{background:rgba(59,130,246,0.25);color:var(--blue);}
+    .op-btn.active.cut{background:rgba(239,68,68,0.20);color:var(--red);}
     .feat-add-sketch{margin:6px 10px 8px;padding:5px 0;border-radius:5px;
       border:1px dashed var(--border);background:none;color:var(--text2);
       font-size:0.72rem;font-weight:600;cursor:pointer;font-family:inherit;width:calc(100% - 20px);}
@@ -342,8 +351,12 @@
 
     <div class="ext-panel">
       <div class="panel-title">Extrude</div>
+      <div class="op-toggle" id="op-toggle">
+        <button class="op-btn add" id="btn-op-add">Add ↑</button>
+        <button class="op-btn cut active" id="btn-op-cut">Cut ↓</button>
+      </div>
       <div class="pr">
-        <div class="pr-lbl">Height <span class="pr-val" id="v-h">40 mm</span></div>
+        <div class="pr-lbl"><span id="lbl-h">Height</span> <span class="pr-val" id="v-h">40 mm</span></div>
         <input type="range" id="s-h" min="1" max="300" value="40">
       </div>
       <div class="pr">
@@ -449,7 +462,8 @@ self.onmessage = async ({ data }) => {
             planeName:'XY', planeOffset:0 }];
     let solid = null;
     for (const item of profileList) {
-      const s = makeSolid(item.profile, item.height, item.filletR||0, item.chamferR||0,
+      const effectiveH = item.operation==='cut' ? -Math.abs(item.height) : item.height;
+      const s = makeSolid(item.profile, effectiveH, item.filletR||0, item.chamferR||0,
                           item.planeName||'XY', item.planeOffset||0);
       if (!solid || item.operation === 'new') {
         solid = solid ? solid.fuse(s) : s;
@@ -1705,7 +1719,7 @@ function syncExtrudeNodes() {
       id:newId('ex'), type:'extrude',
       name: i===0?'Extrude 1':`Extrude ${i+1}`,
       sketchId:activeSketchId, profileIdx:i,
-      operation: i===0?'new':'fuse',
+      operation: i===0 ? (sk.datumId ? 'cut' : 'new') : (sk.datumId ? 'cut' : 'fuse'),
       height:extH, filletR, chamferR
     });
   }
@@ -2572,9 +2586,20 @@ function createFaceSketch(plane) {
   renderer.domElement.style.cursor = '';
   _faceHoverPlane = null;
   _buildSketchUnderlay(plane);
+
+  // Create a persistent datum plane node so the user can sketch on it again later
+  const datumId = newId('dt');
+  const nDatum = featureTree.filter(f=>f.type==='datum').length + 1;
+  featureTree.push({ id:datumId, type:'datum', name:`Datum ${nDatum}`, plane });
+
+  _addSketchOnDatum(datumId, plane);
+}
+
+function _addSketchOnDatum(datumId, plane) {
+  _buildSketchUnderlay(plane);
   const skId = newId('sk');
   const n = featureTree.filter(f=>f.type==='sketch').length + 1;
-  featureTree.push({id:skId, type:'sketch', name:`Sketch ${n}`, plane, entities:[]});
+  featureTree.push({ id:skId, type:'sketch', name:`Sketch ${n}`, plane, datumId, entities:[] });
   activeSketchId = skId;
   const pl = `${plane.axis} +${plane.offset.toFixed(1)}`;
   document.querySelector('.sk-overlay').textContent = `Sketch ${n} · ${pl} Plane`;
@@ -2659,6 +2684,17 @@ function setMode3d(on) {
     sketch.style.display = 'none';
     right.style.cssText = 'flex:1; width:auto; min-width:0;';
     _sketchFaceTris = null; _sketchFaceEdges = null; // clear underlay when leaving sketch
+    // Auto-select the first extrude node for the active sketch so op-toggle is visible
+    setTimeout(() => {
+      const sk = activeSketch();
+      if (sk?.datumId) {
+        const extNode = featureTree.find(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
+        if (extNode) {
+          document.querySelector('.ext-panel').dataset.activeExtrudeId = extNode.id;
+          _syncOpToggle(extNode);
+        }
+      }
+    }, 0);
   } else {
     sketch.style.display = '';
     right.style.cssText = '';
@@ -2713,13 +2749,27 @@ function renderFeatureTree() {
   if (!list) return;
   list.innerHTML = '';
   for (const node of featureTree) {
+    if (node.type === 'datum') {
+      const div = document.createElement('div');
+      div.className = 'feat-node datum-node';
+      const pl = `${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
+      div.innerHTML = `<span style="flex-shrink:0">◇</span><span class="feat-node-name">${node.name}<span style="font-size:0.62rem;color:rgba(245,200,80,0.55);display:block">${pl} · click to add sketch</span></span>`;
+      div.addEventListener('click', () => selectFeatureNode(node));
+      list.appendChild(div);
+      continue;
+    }
     const div = document.createElement('div');
-    div.className = 'feat-node' + (node.type==='extrude'?' extrude-node':'');
+    const underDatum = node.type==='sketch' && node.datumId;
+    const skOfDatum  = node.type==='extrude' && featureTree.find(f=>f.id===node.sketchId)?.datumId;
+    div.className = 'feat-node'
+      + (node.type==='extrude' ? (skOfDatum ? ' extrude-under-datum' : ' extrude-node') : '')
+      + (underDatum ? ' sketch-under-datum' : '');
     if (node.type==='sketch' && node.id===activeSketchId) div.classList.add('active');
     const icon = node.type==='sketch' ? '✏' : '⬡';
     let sub='', badge='';
     if (node.type==='extrude') {
-      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">h${node.height}mm`
+      const hLabel = node.operation==='cut' ? 'depth' : 'h';
+      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">${hLabel}${node.height}mm`
         +(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:'')+`</span>`;
       badge=`<span class="feat-node-op op-${node.operation}">${node.operation.toUpperCase()}</span>`;
     } else {
@@ -2732,7 +2782,30 @@ function renderFeatureTree() {
   }
 }
 
+function _syncOpToggle(node) {
+  const toggle = document.getElementById('op-toggle');
+  const addBtn = document.getElementById('btn-op-add');
+  const cutBtn = document.getElementById('btn-op-cut');
+  const lblH   = document.getElementById('lbl-h');
+  // Show toggle only for non-'new' extrude nodes (i.e. datum-based or subsequent)
+  if (node && node.type==='extrude' && node.operation !== 'new') {
+    toggle.classList.add('visible');
+    const isCut = node.operation === 'cut';
+    cutBtn.classList.toggle('active', isCut);
+    addBtn.classList.toggle('active', !isCut);
+    if (lblH) lblH.textContent = isCut ? 'Depth' : 'Height';
+  } else {
+    toggle.classList.remove('visible');
+    if (lblH) lblH.textContent = 'Height';
+  }
+}
+
 function selectFeatureNode(node) {
+  if (node.type==='datum') {
+    // Create a new sketch on this datum plane
+    _addSketchOnDatum(node.id, node.plane);
+    return;
+  }
   if (node.type==='sketch') {
     activeSketchId = node.id;
     setMode3d(false);
@@ -2752,10 +2825,30 @@ function selectFeatureNode(node) {
     document.getElementById('s-edge').value=v;
     document.getElementById('v-edge').textContent=v+' mm';
     filletR=node.filletR; chamferR=node.chamferR;
+    _syncOpToggle(node);
     scheduleExtrude();
   }
   renderFeatureTree();
 }
+
+document.getElementById('btn-op-add').addEventListener('click', () => {
+  const ep = document.querySelector('.ext-panel');
+  const node = featureTree.find(f=>f.id===ep.dataset.activeExtrudeId);
+  if (!node) return;
+  node.operation = 'fuse';
+  _syncOpToggle(node);
+  renderFeatureTree();
+  scheduleExtrude();
+});
+document.getElementById('btn-op-cut').addEventListener('click', () => {
+  const ep = document.querySelector('.ext-panel');
+  const node = featureTree.find(f=>f.id===ep.dataset.activeExtrudeId);
+  if (!node) return;
+  node.operation = 'cut';
+  _syncOpToggle(node);
+  renderFeatureTree();
+  scheduleExtrude();
+});
 
 document.getElementById('btn-add-sketch').addEventListener('click', ()=>{
   const skId=newId('sk');
