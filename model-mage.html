@@ -1933,8 +1933,13 @@ document.getElementById('snap-sel').addEventListener('change', function() {
 document.getElementById('s-h').addEventListener('input', function() {
   extH = +this.value;
   document.getElementById('v-h').textContent = this.value + ' mm';
-  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
-    .forEach(n=>{n.height=extH;});
+  // Update the selected extrude node (and all nodes from the same sketch).
+  // Fall back to activeSketchId so the slider works before any node is clicked.
+  const ep = document.querySelector('.ext-panel');
+  const activeNode = featureTree.find(f => f.id === ep.dataset.activeExtrudeId);
+  const targetSketchId = activeNode ? activeNode.sketchId : activeSketchId;
+  featureTree.filter(f => f.type==='extrude' && f.sketchId===targetSketchId)
+    .forEach(n => { n.height = extH; });
   renderFeatureTree();
   scheduleExtrude();
 });
