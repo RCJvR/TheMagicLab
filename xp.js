@@ -457,6 +457,7 @@
     getPlayerStats,
     getBadges,
     recordDailyActivity,
+    updateNavChip: _updateNavXPChip,
     XP_RATES,
     LEVELS,
     BADGES,
