@@ -638,9 +638,12 @@
       const btn = document.getElementById('nav-teachers-btn');
       if (btn) btn.style.display = window.MagicLabAuth?.isTeacher() ? '' : 'none';
     }
+    // Run on initial auth resolve
     document.addEventListener('magiclab:auth:ready', _syncTeachersBtn);
-    document.addEventListener('magiclab:auth:ready', () => {
-      window.MagicLabAuth?.onAuthChange(_syncTeachersBtn);
+    // Re-run whenever auth-modal.js rewrites the nav chip (sign-in / sign-out)
+    document.addEventListener('DOMContentLoaded', () => {
+      const navRight = document.querySelector('.nav-right');
+      if (navRight) new MutationObserver(_syncTeachersBtn).observe(navRight, { childList: true, subtree: true });
     });
   </script>
 
