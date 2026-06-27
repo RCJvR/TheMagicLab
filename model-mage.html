@@ -879,6 +879,7 @@ function render() {
   const cW=W(), cH=H();
   ctx.clearRect(0,0,cW,cH);
   drawGrid(cW,cH);
+  drawFaceUnderlay();
   drawCommitted();
   drawSelection();
   drawInProgress();
@@ -2505,10 +2506,72 @@ function _clearFaceHighlight() {
   if (_faceHlMesh) { modelGroup.remove(_faceHlMesh); _faceHlMesh.geometry.dispose(); _faceHlMesh=null; }
 }
 
+// ── Face underlay: projects selected face into sketch 2D space ──
+let _sketchFaceTris  = null; // [[u0,v0],[u1,v1],[u2,v2], ...] one entry per tri vertex
+let _sketchFaceEdges = null; // [[u0,v0],[u1,v1]][] — boundary edges only
+
+function _buildSketchUnderlay(plane) {
+  _sketchFaceTris = null; _sketchFaceEdges = null;
+  const verts = _extractFaceTriangles(plane);
+  if (!verts) return;
+
+  // Project a 3D vertex index (into the flat verts array) to 2D sketch coords
+  function proj(i) {
+    const x=verts[i*3], y=verts[i*3+1], z=verts[i*3+2];
+    if (plane.axis==='Z') return [x, y];
+    if (plane.axis==='X') return [y, z];
+    return [x, z]; // Y
+  }
+
+  const n = verts.length / 3;
+  const tris = [];
+  const edgeCount = new Map(), edgePts = new Map();
+
+  for (let t = 0; t < n; t += 3) {
+    const pa=proj(t), pb=proj(t+1), pc=proj(t+2);
+    tris.push(pa, pb, pc);
+    for (const [a,b] of [[pa,pb],[pb,pc],[pc,pa]]) {
+      const ka=`${a[0].toFixed(3)},${a[1].toFixed(3)}`;
+      const kb=`${b[0].toFixed(3)},${b[1].toFixed(3)}`;
+      const key = ka<kb ? `${ka}|${kb}` : `${kb}|${ka}`;
+      edgeCount.set(key, (edgeCount.get(key)||0)+1);
+      if (!edgePts.has(key)) edgePts.set(key, [a,b]);
+    }
+  }
+
+  _sketchFaceTris = tris;
+  _sketchFaceEdges = [...edgeCount.entries()]
+    .filter(([,c])=>c===1).map(([k])=>edgePts.get(k));
+}
+
+function drawFaceUnderlay() {
+  if (!_sketchFaceTris || !_sketchFaceEdges) return;
+  ctx.save();
+  // Filled face (very subtle)
+  ctx.fillStyle = 'rgba(245,158,11,0.07)';
+  ctx.beginPath();
+  for (let i=0; i<_sketchFaceTris.length; i+=3) {
+    const [x0,y0]=wtoc(_sketchFaceTris[i][0],  _sketchFaceTris[i][1]);
+    const [x1,y1]=wtoc(_sketchFaceTris[i+1][0],_sketchFaceTris[i+1][1]);
+    const [x2,y2]=wtoc(_sketchFaceTris[i+2][0],_sketchFaceTris[i+2][1]);
+    ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.lineTo(x2,y2); ctx.closePath();
+  }
+  ctx.fill();
+  // Boundary outline (dashed amber)
+  ctx.strokeStyle='rgba(245,158,11,0.45)'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+  ctx.beginPath();
+  for (const [[x0,y0],[x1,y1]] of _sketchFaceEdges) {
+    const [sx0,sy0]=wtoc(x0,y0), [sx1,sy1]=wtoc(x1,y1);
+    ctx.moveTo(sx0,sy0); ctx.lineTo(sx1,sy1);
+  }
+  ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+}
+
 function createFaceSketch(plane) {
   _clearFaceHighlight();
   renderer.domElement.style.cursor = '';
   _faceHoverPlane = null;
+  _buildSketchUnderlay(plane);
   const skId = newId('sk');
   const n = featureTree.filter(f=>f.type==='sketch').length + 1;
   featureTree.push({id:skId, type:'sketch', name:`Sketch ${n}`, plane, entities:[]});
@@ -2595,6 +2658,7 @@ function setMode3d(on) {
   if (on) {
     sketch.style.display = 'none';
     right.style.cssText = 'flex:1; width:auto; min-width:0;';
+    _sketchFaceTris = null; _sketchFaceEdges = null; // clear underlay when leaving sketch
   } else {
     sketch.style.display = '';
     right.style.cssText = '';
