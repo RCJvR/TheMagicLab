@@ -296,7 +296,7 @@
           });
         }
       } else {
-        target.className = 'ml-auth-btn';
+        target.className = 'nav-pill ml-auth-btn';
         target.innerHTML = '🔐 Sign In';
         target.onclick = () => openModal('signin');
       }
