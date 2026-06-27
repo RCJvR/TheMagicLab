@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optical Phenomena &amp; the Photoelectric Effect — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:70px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+    @media(max-width:640px){
+      nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}.sim-controls-row{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Physics</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 · Physics · Lesson 5</div>
+  <h1 class="lesson-title">Optical Phenomena &amp; the Photoelectric Effect</h1>
+  <p class="lesson-sub">Explain the photoelectric effect using the photon model of light, analyse emission and absorption spectra, and link atomic energy levels to spectral lines.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Limitations of the Wave Model of Light</h2>
+    <p>The classical wave model of light predicted that:</p>
+    <ul>
+      <li>Any frequency of light, given enough intensity, should eject electrons from a metal surface</li>
+      <li>Higher intensity → more energetic electrons (higher KE)</li>
+      <li>There should be a time delay before electrons are emitted (wave energy builds up)</li>
+    </ul>
+    <p>None of these predictions matched experimental observations. The <strong style="color:#93c5fd">photoelectric effect</strong> could not be explained by the wave model, prompting Einstein's revolutionary photon model in 1905.</p>
+
+    <h2>Einstein's Photon Model</h2>
+    <p>Einstein proposed that light consists of discrete packets of energy called <strong style="color:#93c5fd">photons</strong>. Each photon carries a fixed energy determined by its frequency:</p>
+    <div class="formula">
+      E = hf = hc/λ
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Symbol</th><th>Meaning</th><th>Value / Unit</th></tr></thead>
+      <tbody>
+        <tr><td>E</td><td>Energy of one photon</td><td>J</td></tr>
+        <tr><td>h</td><td>Planck's constant</td><td>6.63 × 10⁻³⁴ J·s</td></tr>
+        <tr><td>f</td><td>Frequency of light</td><td>Hz</td></tr>
+        <tr><td>c</td><td>Speed of light</td><td>3.0 × 10⁸ m·s⁻¹</td></tr>
+        <tr><td>λ</td><td>Wavelength of light</td><td>m</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Higher frequency = higher photon energy. Blue/UV photons carry more energy per photon than red/infrared photons.</div>
+
+    <h2>The Photoelectric Effect</h2>
+    <p>When light shines on a metal surface, photons can transfer their energy to electrons in the metal. If a photon's energy is sufficient, it can eject an electron from the surface.</p>
+    <ul>
+      <li><strong style="color:#93c5fd">Work function (W₀):</strong> the minimum energy required to eject an electron from the metal surface. Each metal has a unique W₀.</li>
+      <li><strong style="color:#93c5fd">Threshold frequency (f₀):</strong> the minimum frequency of light that can eject an electron. W₀ = hf₀</li>
+      <li>If f &lt; f₀: no electrons are ejected, regardless of intensity</li>
+      <li>If f ≥ f₀: electrons are ejected — maximum KE of ejected electrons is:</li>
+    </ul>
+    <div class="formula">
+      E<sub>k(max)</sub> = hf − W₀ = hf − hf₀ = h(f − f₀)
+    </div>
+    <div class="callout">
+      <strong>Key observations that confirm the photon model:</strong><br>
+      • <strong>No time delay:</strong> ejection is instantaneous — one photon interacts with one electron<br>
+      • <strong>Threshold frequency exists:</strong> below f₀, no electrons are ejected regardless of intensity<br>
+      • <strong>Intensity increases number of electrons</strong> (not their energy) — more photons → more ejections<br>
+      • <strong>Higher frequency</strong> → greater E<sub>k(max)</sub> of ejected electrons<br>
+      • Increasing intensity at fixed frequency → more electrons but same maximum KE
+    </div>
+
+    <h2>Worked Example — Photoelectric Effect</h2>
+    <div class="callout">
+      <strong>Problem:</strong> Light of frequency 8.0 × 10¹⁴ Hz shines on sodium (W₀ = 3.6 × 10⁻¹⁹ J). (a) Find the photon energy. (b) Find E<sub>k(max)</sub> of ejected electrons. (c) Find the threshold frequency.<br><br>
+      <strong>(a)</strong> E = hf = 6.63×10⁻³⁴ × 8.0×10¹⁴ = <strong>5.30 × 10⁻¹⁹ J</strong><br>
+      <strong>(b)</strong> E<sub>k(max)</sub> = hf − W₀ = 5.30×10⁻¹⁹ − 3.6×10⁻¹⁹ = <strong>1.70 × 10⁻¹⁹ J</strong><br>
+      <strong>(c)</strong> f₀ = W₀/h = 3.6×10⁻¹⁹ / 6.63×10⁻³⁴ = <strong>5.43 × 10¹⁴ Hz</strong>
+    </div>
+
+    <h2>Emission Spectra</h2>
+    <p>When a gas is heated or subjected to an electrical discharge, its atoms absorb energy and electrons jump to higher energy levels. When they fall back down, they emit photons of specific frequencies — producing a <strong style="color:#93c5fd">line emission spectrum</strong>.</p>
+    <ul>
+      <li>Each element has a unique set of spectral lines — like a fingerprint</li>
+      <li>Only specific frequencies (colours) are emitted — a series of bright lines on a dark background</li>
+      <li>Used to identify elements in stars and distant galaxies</li>
+    </ul>
+    <div class="formula">ΔE = E<sub>higher</sub> − E<sub>lower</sub> = hf = hc/λ</div>
+
+    <h2>Absorption Spectra</h2>
+    <p>When white light (all frequencies) passes through a cool gas, atoms absorb exactly the same specific frequencies they would emit when excited. The result is a <strong style="color:#93c5fd">dark-line (absorption) spectrum</strong> — a continuous spectrum with dark lines at exactly the same positions as the emission lines for that element.</p>
+    <div class="key-fact">Emission = bright coloured lines on dark background. Absorption = dark lines at same positions on a continuous rainbow background.</div>
+
+    <h2>Bohr Model of the Atom</h2>
+    <p>Niels Bohr proposed that electrons occupy <strong style="color:#93c5fd">discrete (quantised) energy levels</strong> around the nucleus. Electrons can only exist at certain allowed energies — not in between.</p>
+    <ul>
+      <li><strong>Excitation:</strong> electron absorbs a photon and jumps to a higher level (E<sub>photon</sub> = ΔE)</li>
+      <li><strong>De-excitation:</strong> electron falls to a lower level, emitting a photon of exactly ΔE</li>
+      <li>Ground state: lowest energy level (n = 1)</li>
+      <li>Excited states: n = 2, 3, 4, … (higher energy)</li>
+    </ul>
+    <div class="formula">
+      E<sub>photon</sub> = hf = hc/λ = E<sub>higher</sub> − E<sub>lower</sub>
+    </div>
+    <p>For hydrogen: E<sub>n</sub> = −13.6/n² eV (where 1 eV = 1.6 × 10⁻¹⁹ J)</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Wave-Particle Duality and de Broglie Wavelength</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">Einstein's photon model showed that light (previously thought to be a wave) has particle-like properties. de Broglie proposed the converse: matter particles also have wave properties. The <strong style="color:#fcd34d">de Broglie wavelength</strong> of a particle is:</p>
+      <div class="formula">λ = h/p = h/(mv)</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">This was confirmed by electron diffraction experiments. Wave-particle duality is a cornerstone of quantum mechanics. IEB may also reference <strong style="color:#fcd34d">Compton scattering</strong> — X-ray photons scatter off electrons and lose energy (increase in wavelength), confirming photons carry momentum p = h/λ = E/c.</p>
+      <div class="formula">Compton: Δλ = (h/m<sub>e</sub>c)(1 − cos θ) &nbsp;&nbsp; (not required for calculation but context given)</div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Photoelectric Effect Simulator</h3>
+      <canvas id="peCanvas" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Light Source</div>
+        <div class="slider-row">
+          <label>Frequency (×10¹⁴ Hz)</label>
+          <input type="range" min="3" max="15" value="7" id="sl-freq" oninput="updatePE()">
+          <span class="slider-val" id="sv-freq">7.0 ×10¹⁴</span>
+        </div>
+        <div class="slider-row">
+          <label>Metal W₀ (×10⁻¹⁹ J)</label>
+          <input type="range" min="20" max="80" value="36" id="sl-W0" oninput="updatePE()">
+          <span class="slider-val" id="sv-W0">3.6 ×10⁻¹⁹</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Energy Analysis</div>
+        <div class="readout-grid" style="margin-top:0">
+          <div class="readout"><div class="readout-label">Photon E</div><div class="readout-val" id="ro-Eph">—<span>×10⁻¹⁹J</span></div></div>
+          <div class="readout"><div class="readout-label">Work fn W₀</div><div class="readout-val" id="ro-W0">—<span>×10⁻¹⁹J</span></div></div>
+          <div class="readout"><div class="readout-label">Ek max</div><div class="readout-val" id="ro-Ek">—<span>×10⁻¹⁹J</span></div></div>
+        </div>
+        <div id="pe-status" style="margin-top:12px;font-family:var(--fm);font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.04);color:var(--muted)">Adjust sliders to simulate</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete. Review incorrect answers above.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 1 of 6</div>
+      <div class="q-text">The energy of a photon of light with frequency 6.0 × 10¹⁴ Hz is (h = 6.63 × 10⁻³⁴ J·s):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>6.63 × 10⁻³⁴ J</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">B</span>3.98 × 10⁻¹⁹ J</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">C</span>9.05 × 10⁴⁸ J</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>1.10 × 10⁻¹⁵ J</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 2 of 6</div>
+      <div class="q-text">Light of frequency 5 × 10¹⁴ Hz shines on a metal with work function W₀ = 4.0 × 10⁻¹⁹ J. Which of the following is correct?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">A</span>Electrons are ejected with Ek = 4.0 × 10⁻¹⁹ J</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">B</span>Electrons are ejected with Ek = 3.315 × 10⁻¹⁹ J</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">C</span>No electrons are ejected — photon energy is less than W₀</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>Electrons are ejected only if intensity is increased</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 3 of 6</div>
+      <div class="q-text">If the intensity of light (above the threshold frequency) is doubled while the frequency is kept constant, what happens to the photoelectric effect?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>The maximum kinetic energy of ejected electrons doubles</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">B</span>The number of ejected electrons doubles, but their maximum KE stays the same</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">C</span>Neither the number nor KE of electrons changes</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>The threshold frequency decreases</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 4 of 6</div>
+      <div class="q-text">A metal has a threshold frequency of 6.0 × 10¹⁴ Hz. Its work function is (h = 6.63 × 10⁻³⁴ J·s):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>6.0 × 10¹⁴ J</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>6.63 × 10⁻³⁴ J</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>3.98 × 10⁻¹⁹ J</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>1.10 × 10⁻¹⁵ J</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 5 of 6</div>
+      <div class="q-text">The dark lines in the absorption spectrum of hydrogen appear at exactly the same wavelengths as the bright lines in hydrogen's emission spectrum. This is because:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>Hydrogen absorbs all wavelengths of light equally</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">B</span>White light has no photons at those wavelengths</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">C</span>Electrons can only absorb photons whose energy exactly matches an allowed transition between energy levels</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>The temperature of the gas determines which wavelengths are absorbed</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 6 of 6</div>
+      <div class="q-text">An electron in a hydrogen atom falls from n = 3 to n = 2. The energies are E₃ = −1.51 eV and E₂ = −3.40 eV. The wavelength of the emitted photon is (h = 6.63×10⁻³⁴ J·s, c = 3×10⁸ m·s⁻¹, 1 eV = 1.6×10⁻¹⁹ J):</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>121 nm (ultraviolet)</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">B</span>656 nm (red visible)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">C</span>486 nm (blue-green visible)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>1875 nm (infrared)</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extended Questions</div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 1</div>
+        <div class="q-text">An electron is accelerated through a potential difference of 100 V. Its mass is 9.11×10⁻³¹ kg. Using λ = h/p and KE = eV (e = 1.6×10⁻¹⁹ C), the de Broglie wavelength of the electron is approximately:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">A</span>1.23 × 10⁻¹⁰ m</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">B</span>6.63 × 10⁻³⁴ m</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>3.0 × 10⁻⁸ m</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>9.11 × 10⁻³¹ m</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Use h = 6.63 × 10⁻³⁴ J·s, c = 3.0 × 10⁸ m·s⁻¹, 1 eV = 1.6 × 10⁻¹⁹ J. Show all substitutions with correct powers of 10 and units.</div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 — Photoelectric Effect Calculations (8 marks)</div>
+      <div class="wb-qtext">Ultraviolet light of wavelength 200 nm shines on a platinum surface (work function W₀ = 8.0 × 10⁻¹⁹ J). (a) Calculate the frequency of the UV light. (b) Calculate the energy of one photon. (c) Calculate the threshold frequency of platinum. (d) Determine whether electrons will be ejected. Justify your answer. (e) If electrons are ejected, calculate the maximum kinetic energy. (f) Calculate the maximum speed of the ejected electrons (m_e = 9.11 × 10⁻³¹ kg). (g) Explain what would happen if light of the same wavelength but twice the intensity were used. (h) Explain what would happen if light of wavelength 300 nm were used instead.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 — Emission Spectra and Energy Levels (6 marks)</div>
+      <div class="wb-qtext">The energy levels of hydrogen are given by E_n = −13.6/n² eV. (a) Calculate E₁, E₂, E₃, and E₄ in eV. (b) Convert E₁ and E₂ to joules. (c) Calculate the energy of the photon emitted when an electron drops from n=4 to n=2. (d) Calculate the wavelength of this photon. (e) In which part of the electromagnetic spectrum does this wavelength fall? (f) Explain why the absorption spectrum of hydrogen shows dark lines at exactly the same wavelengths as its emission spectrum.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 — Wave Model vs Photon Model (5 marks)</div>
+      <div class="wb-qtext">A physics learner says: "If I shine brighter red light on the metal, the electrons will eventually be ejected because the energy builds up." (a) Identify the model of light the learner is using. (b) State two predictions of the wave model that contradict the photoelectric effect. (c) Explain, using the photon model, why increasing the intensity of red light (below threshold) NEVER ejects electrons. (d) What change to the light source is needed to eject electrons, and why? (e) State which scientist proposed the photon model and in which year.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 — Spectroscopy Application (5 marks)</div>
+      <div class="wb-qtext">An astronomer observes the spectrum of a distant star. The hydrogen-alpha line (normally at 656 nm) appears at 689 nm. (a) Is this an emission or absorption line? Explain. (b) Calculate the energy of a photon at 656 nm. (c) Calculate the energy of a photon at 689 nm. (d) Explain whether the star is moving toward or away from Earth, and name this phenomenon. (e) Using Δλ/λ ≈ v/c, calculate the speed of the star relative to Earth.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initPE();
+  }
+
+  const feedbacks={
+    Q1:{ok:'Correct! E = hf = 6.63×10⁻³⁴ × 6.0×10¹⁴ = 39.78×10⁻²⁰ = 3.978×10⁻¹⁹ ≈ 3.98×10⁻¹⁹ J.',bad:'E = hf = 6.63×10⁻³⁴ × 6.0×10¹⁴ = 3.978×10⁻¹⁹ J ≈ 3.98×10⁻¹⁹ J.'},
+    Q2:{ok:'Correct! E_photon = hf = 6.63×10⁻³⁴ × 5×10¹⁴ = 3.315×10⁻¹⁹ J. W₀ = 4.0×10⁻¹⁹ J. Since E_photon < W₀, no electrons are ejected. Increasing intensity doesn\'t help — more photons of insufficient energy still can\'t eject electrons.',bad:'E = 6.63×10⁻³⁴ × 5×10¹⁴ = 3.315×10⁻¹⁹ J < W₀ = 4.0×10⁻¹⁹ J. No ejection. Intensity cannot compensate for insufficient frequency.'},
+    Q3:{ok:'Correct! More intensity at a fixed frequency means more photons per second, so more electrons are ejected per second. But each photon still has the same energy (hf), so each ejected electron has the same maximum KE.',bad:'Intensity ∝ number of photons. More photons → more electron ejections. But E_photon = hf is unchanged → E_k(max) is unchanged.'},
+    Q4:{ok:'Correct! W₀ = hf₀ = 6.63×10⁻³⁴ × 6.0×10¹⁴ = 3.978×10⁻¹⁹ ≈ 3.98×10⁻¹⁹ J.',bad:'W₀ = hf₀ = 6.63×10⁻³⁴ × 6.0×10¹⁴ = 3.98×10⁻¹⁹ J.'},
+    Q5:{ok:'Correct! Electrons can only absorb a photon if its energy exactly matches the energy gap between two levels (ΔE = hf). Only those specific frequencies are absorbed, creating dark lines at exactly the emission frequencies.',bad:'Energy levels are quantised. Electrons absorb only photons whose E = hf = ΔE between levels. Same transitions → same frequencies for both emission and absorption.'},
+    Q6:{ok:'Correct! ΔE = E₃−E₂ = −1.51−(−3.40) = 1.89 eV = 1.89×1.6×10⁻¹⁹ = 3.024×10⁻¹⁹ J. λ = hc/ΔE = (6.63×10⁻³⁴×3×10⁸)/(3.024×10⁻¹⁹) = 6.57×10⁻⁷ m ≈ 657 nm. This is the red H-alpha line in the Balmer series.',bad:'ΔE = 1.89 eV = 3.024×10⁻¹⁹ J. λ = hc/ΔE = (6.63×10⁻³⁴×3×10⁸)/(3.024×10⁻¹⁹) ≈ 657 nm → red light (Balmer H-alpha).'},
+    IQ1:{ok:'Correct! KE = eV = 1.6×10⁻¹⁹×100 = 1.6×10⁻¹⁷ J. KE = p²/(2m) → p = √(2mKE) = √(2×9.11×10⁻³¹×1.6×10⁻¹⁷) = √(2.92×10⁻⁴⁷) = 5.39×10⁻²⁴ kg·m·s⁻¹. λ = h/p = 6.63×10⁻³⁴/5.39×10⁻²⁴ ≈ 1.23×10⁻¹⁰ m.',bad:'KE = eV = 1.6×10⁻¹⁷ J. p = √(2mKE) = √(2×9.11×10⁻³¹×1.6×10⁻¹⁷) ≈ 5.39×10⁻²⁴. λ = h/p ≈ 6.63×10⁻³⁴/5.39×10⁻²⁴ ≈ 1.23×10⁻¹⁰ m.'},
+  };
+  let answered=0,scoreCount=0;
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=6){document.getElementById('score-big').textContent=scoreCount+'/6';document.getElementById('score-banner').classList.add('show');}}
+  }
+
+  // SIMULATION
+  let peInited=false,peRaf=null,peRunning=false,peT=0,peLastT=null;
+  let electrons=[];
+  const h=6.63e-34;
+
+  function updatePE(){
+    const fval=+document.getElementById('sl-freq').value;
+    const W0val=+document.getElementById('sl-W0').value;
+    const f=fval*1e14;
+    const W0=W0val*1e-20;
+    document.getElementById('sv-freq').textContent=fval.toFixed(1)+' ×10¹⁴';
+    document.getElementById('sv-W0').textContent=(W0val/10).toFixed(1)+' ×10⁻¹⁹';
+    const Eph=h*f;
+    const Ek=Eph-W0;
+    document.getElementById('ro-Eph').innerHTML=(Eph*1e19).toFixed(2)+'<span>×10⁻¹⁹J</span>';
+    document.getElementById('ro-W0').innerHTML=(W0*1e19).toFixed(2)+'<span>×10⁻¹⁹J</span>';
+    const status=document.getElementById('pe-status');
+    if(Ek>0){
+      document.getElementById('ro-Ek').innerHTML=(Ek*1e19).toFixed(2)+'<span>×10⁻¹⁹J</span>';
+      status.textContent='✓ Electrons ejected! Ek(max) = '+(Ek*1e19).toFixed(2)+' ×10⁻¹⁹ J';
+      status.style.color='#86efac';status.style.background='rgba(34,197,94,0.08)';
+    } else {
+      document.getElementById('ro-Ek').innerHTML='0<span>×10⁻¹⁹J</span>';
+      status.textContent='✗ No ejection — photon energy < work function';
+      status.style.color='#fca5a5';status.style.background='rgba(239,68,68,0.08)';
+    }
+    if(peInited) drawPE();
+  }
+
+  function initPE(){if(!peInited){peInited=true;startPEAnim();updatePE();}}
+
+  function startPEAnim(){
+    peRunning=true;peLastT=null;
+    peRaf=requestAnimationFrame(peStep);
+  }
+
+  function peStep(ts){
+    if(!peRunning) return;
+    if(peLastT===null){peLastT=ts;peRaf=requestAnimationFrame(peStep);return;}
+    const dt=Math.min((ts-peLastT)/1000,0.05);peLastT=ts;
+    peT+=dt;
+    const fval=+document.getElementById('sl-freq').value;
+    const W0val=+document.getElementById('sl-W0').value;
+    const f=fval*1e14;const W0=W0val*1e-20;
+    const Ek=h*f-W0;
+    // Spawn electrons if ejected
+    if(Ek>0&&Math.random()<0.15){
+      const angle=(-Math.PI/2)+((Math.random()-0.5)*Math.PI*0.8);
+      const speed=20+Ek*3e19;
+      electrons.push({x:0,y:0,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1.0});
+    }
+    electrons.forEach(e=>{e.x+=e.vx*dt;e.y+=e.vy*dt;e.life-=dt*0.8;});
+    electrons=electrons.filter(e=>e.life>0);
+    drawPE();
+    peRaf=requestAnimationFrame(peStep);
+  }
+
+  function freqToColor(fval){
+    // fval in units of 1e14 Hz, range 3-15
+    if(fval<4.3) return '#ff4444';       // infrared/red
+    if(fval<5.0) return '#ff7700';       // orange
+    if(fval<5.2) return '#ffdd00';       // yellow
+    if(fval<6.1) return '#44ff44';       // green
+    if(fval<6.6) return '#4488ff';       // blue
+    if(fval<7.5) return '#8844ff';       // violet
+    return '#cc88ff';                     // UV
+  }
+
+  function drawPE(){
+    const canvas=document.getElementById('peCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth||800,H=320;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,W,H);
+
+    const fval=+document.getElementById('sl-freq').value;
+    const W0val=+document.getElementById('sl-W0').value;
+    const f=fval*1e14;const W0=W0val*1e-20;
+    const Ek=h*f-W0;
+    const photonColor=freqToColor(fval);
+
+    // Metal surface (right half)
+    const metalX=W*0.5;
+    ctx.fillStyle='rgba(148,163,184,0.15)';
+    ctx.fillRect(metalX,0,W-metalX,H);
+    ctx.strokeStyle='rgba(148,163,184,0.4)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(metalX,0);ctx.lineTo(metalX,H);ctx.stroke();
+    ctx.fillStyle='rgba(148,163,184,0.3)';ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText('METAL',metalX+8,20);
+    ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='9px JetBrains Mono';
+    ctx.fillText('W₀='+(W0val/10).toFixed(1)+'×10⁻¹⁹J',metalX+8,34);
+
+    // Photon beam (animated pulses)
+    const numPulses=4;
+    for(let i=0;i<numPulses;i++){
+      const phase=(peT*1.5+i/numPulses)%1;
+      const px=phase*metalX;
+      const py=H/2;
+      ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);
+      ctx.fillStyle=photonColor;ctx.globalAlpha=0.8;ctx.fill();ctx.globalAlpha=1;
+      // Wave tail
+      for(let j=1;j<=3;j++){
+        ctx.beginPath();ctx.arc(px-j*12,py,3-j*0.5,0,Math.PI*2);
+        ctx.fillStyle=photonColor;ctx.globalAlpha=0.3/(j);ctx.fill();ctx.globalAlpha=1;
+      }
+    }
+
+    // Photon label
+    ctx.fillStyle=photonColor;ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('photon (f='+fval+'×10¹⁴Hz)',metalX/2,H/2-20);
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    ctx.fillText('E=hf='+(h*f*1e19).toFixed(2)+'×10⁻¹⁹J',metalX/2,H/2+20);
+
+    // Electrons
+    const cx=metalX,cy=H/2;
+    electrons.forEach(e=>{
+      const ex=cx+e.x,ey=cy+e.y;
+      if(ex<0||ex>W||ey<0||ey>H) return;
+      ctx.beginPath();ctx.arc(ex,ey,4,0,Math.PI*2);
+      ctx.fillStyle=`rgba(96,165,250,${e.life})`;ctx.fill();
+      // e− label
+      if(e.life>0.5){
+        ctx.fillStyle=`rgba(255,255,255,${e.life*0.6})`;
+        ctx.font='7px JetBrains Mono';ctx.textAlign='center';
+        ctx.fillText('e⁻',ex,ey-6);
+      }
+    });
+
+    // Energy bar chart (right panel)
+    const bx=metalX+20,bTop=50,bBot=H-40,bW=40;
+    const EphJ=h*f;
+    const W0J=W0;
+    const maxE=Math.max(EphJ,W0J)*1.2;
+    const scale=(bBot-bTop)/maxE;
+
+    // W0 bar
+    ctx.fillStyle='rgba(251,191,36,0.3)';
+    ctx.fillRect(bx,bBot-W0J*scale,bW,W0J*scale);
+    ctx.strokeStyle='rgba(251,191,36,0.7)';ctx.lineWidth=1.5;
+    ctx.strokeRect(bx,bBot-W0J*scale,bW,W0J*scale);
+    ctx.fillStyle='rgba(251,191,36,0.8)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('W₀',bx+bW/2,bBot-W0J*scale-4);
+
+    // Eph bar
+    ctx.fillStyle=photonColor+'55';
+    ctx.fillRect(bx+bW+12,bBot-EphJ*scale,bW,EphJ*scale);
+    ctx.strokeStyle=photonColor;ctx.lineWidth=1.5;
+    ctx.strokeRect(bx+bW+12,bBot-EphJ*scale,bW,EphJ*scale);
+    ctx.fillStyle=photonColor;ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('hf',bx+bW+12+bW/2,bBot-EphJ*scale-4);
+
+    // Ek bracket if ejected
+    if(Ek>0){
+      const y1=bBot-EphJ*scale,y2=bBot-W0J*scale;
+      const brx=bx+bW+12+bW+6;
+      ctx.strokeStyle='rgba(134,239,172,0.7)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(brx,y1);ctx.lineTo(brx+6,y1);
+      ctx.moveTo(brx+6,y1);ctx.lineTo(brx+6,y2);
+      ctx.moveTo(brx+6,y2);ctx.lineTo(brx,y2);ctx.stroke();
+      ctx.fillStyle='rgba(134,239,172,0.8)';ctx.font='7px JetBrains Mono';ctx.textAlign='left';
+      ctx.fillText('Ek',brx+9,(y1+y2)/2+2);
+    }
+
+    // Baseline
+    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(bx-5,bBot);ctx.lineTo(bx+bW*2+25,bBot);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='8px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText('Energy',bx-5,bBot+12);
+  }
+
+  window.addEventListener('resize',()=>{if(peInited)drawPE();});
+</script>
+</body>
+</html>

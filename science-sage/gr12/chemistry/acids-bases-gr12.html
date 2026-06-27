@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acids &amp; Bases — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+input[type=range]{flex:1;accent-color:#2dd4bf;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#2dd4bf;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemistry</span>
+    <a href="../../index.html" class="nav-back">&#8592; Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 &middot; Chemistry &middot; Lesson 4</div>
+  <h1 class="lesson-title">Acids &amp; Bases &mdash; Quantitative</h1>
+  <p class="lesson-sub">Calculate pH, pOH and K<sub>a</sub> of weak acids, perform acid-base titration calculations, and interpret titration curves.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Toggle to show IEB extension content</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Br&oslash;nsted-Lowry Theory (Recap)</h2>
+    <p>An <strong>acid</strong> is a proton (H<sup>+</sup>) donor; a <strong>base</strong> is a proton acceptor. When an acid donates a proton, it becomes its <strong>conjugate base</strong>. When a base accepts a proton, it becomes its <strong>conjugate acid</strong>.</p>
+    <div class="formula">HA + H<sub>2</sub>O &#x21CC; H<sub>3</sub>O<sup>+</sup> + A<sup>&minus;</sup><br>(acid + base &#x21CC; conjugate acid + conjugate base)</div>
+    <p>Conjugate pairs differ by exactly one H<sup>+</sup>: HA / A<sup>&minus;</sup> and H<sub>3</sub>O<sup>+</sup> / H<sub>2</sub>O are the two conjugate pairs in the above equilibrium.</p>
+
+    <h2>Self-Ionisation of Water &amp; K<sub>w</sub></h2>
+    <p>Water undergoes self-ionisation (autoprotolysis):</p>
+    <div class="formula">H<sub>2</sub>O + H<sub>2</sub>O &#x21CC; H<sub>3</sub>O<sup>+</sup> + OH<sup>&minus;</sup></div>
+    <div class="formula">K<sub>w</sub> = [H<sub>3</sub>O<sup>+</sup>][OH<sup>&minus;</sup>] = 1.0 &times; 10<sup>&minus;14</sup> at 25&deg;C</div>
+    <p>In pure water at 25&deg;C: [H<sub>3</sub>O<sup>+</sup>] = [OH<sup>&minus;</sup>] = 1.0 &times; 10<sup>&minus;7</sup> mol&middot;dm<sup>&minus;3</sup>. K<sub>w</sub> increases with temperature (water self-ionisation is endothermic).</p>
+
+    <h2>pH and pOH</h2>
+    <div class="formula">
+      pH = &minus;log[H<sub>3</sub>O<sup>+</sup>] &nbsp;&nbsp;&nbsp;&nbsp; [H<sub>3</sub>O<sup>+</sup>] = 10<sup>&minus;pH</sup><br>
+      pOH = &minus;log[OH<sup>&minus;</sup>] &nbsp;&nbsp;&nbsp;&nbsp; [OH<sup>&minus;</sup>] = 10<sup>&minus;pOH</sup><br>
+      pH + pOH = 14 &nbsp; (at 25&deg;C)
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Solution type</th><th>[H<sub>3</sub>O<sup>+</sup>]</th><th>pH</th></tr></thead>
+      <tbody>
+        <tr><td>Acidic</td><td>&gt; 1.0 &times; 10<sup>&minus;7</sup></td><td>&lt; 7</td></tr>
+        <tr><td>Neutral</td><td>= 1.0 &times; 10<sup>&minus;7</sup></td><td>= 7</td></tr>
+        <tr><td>Basic (alkaline)</td><td>&lt; 1.0 &times; 10<sup>&minus;7</sup></td><td>&gt; 7</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Strong vs Weak Acids</h2>
+    <p><strong>Strong acids</strong> (HCl, H<sub>2</sub>SO<sub>4</sub>, HNO<sub>3</sub>) dissociate <em>completely</em> in water. [H<sub>3</sub>O<sup>+</sup>] = concentration of acid.</p>
+    <div class="formula">0.10 mol&middot;dm<sup>&minus;3</sup> HCl: [H<sub>3</sub>O<sup>+</sup>] = 0.10 &rarr; pH = &minus;log(0.10) = 1.00</div>
+    <p><strong>Weak acids</strong> (CH<sub>3</sub>COOH, HF, H<sub>2</sub>CO<sub>3</sub>) dissociate <em>partially</em>. The acid dissociation constant K<sub>a</sub> describes the equilibrium:</p>
+    <div class="formula">
+      HA &#x21CC; H<sup>+</sup> + A<sup>&minus;</sup><br>
+      K<sub>a</sub> = [H<sup>+</sup>][A<sup>&minus;</sup>] / [HA]
+    </div>
+    <p><strong>Worked example &mdash; weak acid pH:</strong> Calculate the pH of 0.10 mol&middot;dm<sup>&minus;3</sup> ethanoic acid. K<sub>a</sub>(CH<sub>3</sub>COOH) = 1.8 &times; 10<sup>&minus;5</sup>.</p>
+    <div class="formula">
+      Let x = [H<sup>+</sup>] = [CH<sub>3</sub>COO<sup>&minus;</sup>]<br>
+      K<sub>a</sub> = x<sup>2</sup> / (0.10 &minus; x) &approx; x<sup>2</sup> / 0.10 &nbsp; (x &lt;&lt; 0.10)<br>
+      x<sup>2</sup> = 1.8 &times; 10<sup>&minus;5</sup> &times; 0.10 = 1.8 &times; 10<sup>&minus;6</sup><br>
+      x = [H<sup>+</sup>] = 1.34 &times; 10<sup>&minus;3</sup> mol&middot;dm<sup>&minus;3</sup><br>
+      pH = &minus;log(1.34 &times; 10<sup>&minus;3</sup>) = <strong>2.87</strong>
+    </div>
+
+    <h2>Acid-Base Indicators</h2>
+    <p>An indicator is a weak acid (HIn) whose conjugate base (In<sup>&minus;</sup>) has a different colour:</p>
+    <div class="formula">HIn &#x21CC; H<sup>+</sup> + In<sup>&minus;</sup> &nbsp;&nbsp; (colour 1 &#x21CC; colour 2)</div>
+    <ul>
+      <li>In acid: equilibrium shifts left &rarr; HIn form (colour 1) predominates.</li>
+      <li>In base: equilibrium shifts right &rarr; In<sup>&minus;</sup> form (colour 2) predominates.</li>
+      <li>Colour change occurs over about 2 pH units centred on pK<sub>a</sub>(indicator).</li>
+      <li>Choose indicator whose colour-change range brackets the equivalence point pH.</li>
+    </ul>
+    <table class="symbols-table">
+      <thead><tr><th>Indicator</th><th>Acid colour</th><th>Base colour</th><th>Range (pH)</th></tr></thead>
+      <tbody>
+        <tr><td>Methyl orange</td><td>Red</td><td>Yellow</td><td>3.1 &ndash; 4.4</td></tr>
+        <tr><td>Phenolphthalein</td><td>Colourless</td><td>Pink</td><td>8.2 &ndash; 10.0</td></tr>
+        <tr><td>Universal indicator</td><td>Red &rarr; orange</td><td>Green &rarr; blue/violet</td><td>1 &ndash; 14</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Titrations &amp; Calculations</h2>
+    <p>In a titration, a solution of known concentration (<strong>titrant</strong> in the burette) is added to a measured volume of analyte in the conical flask until the <strong>equivalence point</strong> is reached (stoichiometric amounts have reacted).</p>
+    <div class="formula">
+      At equivalence point: n(acid) = n(base) &nbsp;&nbsp; (for 1:1 reactions)<br>
+      c<sub>a</sub>V<sub>a</sub> = c<sub>b</sub>V<sub>b</sub> &nbsp;&nbsp;&nbsp;&nbsp; (for monoprotic acid and monobasic base)
+    </div>
+    <p><strong>Worked example:</strong> 25.0 cm<sup>3</sup> of NaOH solution is neutralised by 20.0 cm<sup>3</sup> of 0.100 mol&middot;dm<sup>&minus;3</sup> HCl. Find c(NaOH).</p>
+    <div class="formula">
+      n(HCl) = c &times; V = 0.100 &times; 0.0200 = 2.00 &times; 10<sup>&minus;3</sup> mol<br>
+      n(NaOH) = n(HCl) = 2.00 &times; 10<sup>&minus;3</sup> mol &nbsp;&nbsp; (1:1 ratio)<br>
+      c(NaOH) = n / V = 2.00 &times; 10<sup>&minus;3</sup> / 0.0250 = <strong>0.0800 mol&middot;dm<sup>&minus;3</sup></strong>
+    </div>
+
+    <h2>Titration Curves</h2>
+    <p>A titration curve is a graph of pH (y-axis) against volume of titrant added (x-axis). The shape depends on the strength of the acid and base:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Titration type</th><th>Equivalence point pH</th><th>Best indicator</th><th>Curve shape</th></tr></thead>
+      <tbody>
+        <tr><td>Strong acid + Strong base</td><td>~7.0</td><td>Phenolphthalein or methyl orange</td><td>Sharp vertical jump at EP</td></tr>
+        <tr><td>Weak acid + Strong base</td><td>&gt; 7 (basic)</td><td>Phenolphthalein (8.2&ndash;10)</td><td>Buffer region before EP; more gradual jump</td></tr>
+        <tr><td>Strong acid + Weak base</td><td>&lt; 7 (acidic)</td><td>Methyl orange (3.1&ndash;4.4)</td><td>Sharp jump lower on curve</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Half-equivalence point:</strong> When exactly half the weak acid has been neutralised, [HA] = [A<sup>&minus;</sup>]. Substituting into K<sub>a</sub> = [H<sup>+</sup>][A<sup>&minus;</sup>]/[HA] gives [H<sup>+</sup>] = K<sub>a</sub>, so <strong>pH = pK<sub>a</sub></strong> at the half-equivalence point. This is the centre of the buffer region.</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB Extension &mdash; Buffer Solutions &amp; Henderson-Hasselbalch</div>
+      <p>A <strong>buffer solution</strong> resists changes in pH when small amounts of acid or base are added. It consists of a weak acid and its conjugate base (or a weak base and its conjugate acid) in comparable concentrations.</p>
+      <p><strong>How it works:</strong></p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 10px 20px">
+        <li>Add strong acid (H<sup>+</sup>): reacts with A<sup>&minus;</sup> &rarr; HA. pH barely changes.</li>
+        <li>Add strong base (OH<sup>&minus;</sup>): reacts with HA &rarr; A<sup>&minus;</sup> + H<sub>2</sub>O. pH barely changes.</li>
+        <li>Buffer capacity is greatest when [HA] = [A<sup>&minus;</sup>] (i.e. at the half-equivalence point, pH = pK<sub>a</sub>).</li>
+      </ul>
+      <p><strong>Henderson-Hasselbalch equation:</strong></p>
+      <div class="formula" style="color:#fcd34d">pH = pK<sub>a</sub> + log([A<sup>&minus;</sup>] / [HA])</div>
+      <p>Example: A buffer contains 0.10 mol CH<sub>3</sub>COOH and 0.15 mol CH<sub>3</sub>COO<sup>&minus;</sup> in 1 L. K<sub>a</sub> = 1.8&times;10<sup>&minus;5</sup>, pK<sub>a</sub> = 4.74.</p>
+      <div class="formula" style="color:#fcd34d">pH = 4.74 + log(0.15/0.10) = 4.74 + 0.176 = <strong>4.92</strong></div>
+      <p>Biological buffers: blood pH is maintained at 7.35&ndash;7.45 by the CO<sub>2</sub>/HCO<sub>3</sub><sup>&minus;</sup> buffer system (pK<sub>a</sub> = 6.1) together with the haemoglobin buffer and kidney regulation.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Interactive Titration Curve</h3>
+      <canvas id="titCanvas" height="360"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Titration Setup</div>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Acid in flask</label>
+        <select class="sim-select" id="acidType" onchange="redrawCurve()">
+          <option value="strong">Strong acid (HCl, 0.10 M, 25 mL)</option>
+          <option value="weak">Weak acid (CH₃COOH, 0.10 M, 25 mL, pKa=4.74)</option>
+        </select>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Titrant (burette)</label>
+        <select class="sim-select" id="baseType" onchange="redrawCurve()">
+          <option value="strong">Strong base (NaOH, 0.10 M)</option>
+        </select>
+        <div class="slider-row" style="margin-top:12px">
+          <label>Volume NaOH added</label>
+          <input type="range" id="volSlider" min="0" max="60" step="0.5" value="0" oninput="sliderChange()">
+          <span class="slider-val" id="volVal">0 mL</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Current pH Readout</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Volume added</div><div class="readout-val" id="roVol">0.0 mL</div></div>
+          <div class="readout"><div class="readout-label">pH</div><div class="readout-val" id="roPH" style="color:#2dd4bf">--</div></div>
+          <div class="readout"><div class="readout-label">Stage</div><div class="readout-val" id="roStage" style="font-size:11px">--</div></div>
+          <div class="readout"><div class="readout-label">Equivalence</div><div class="readout-val" id="roEP" style="font-size:11px">25.0 mL</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
+        Review the explanations to strengthen your understanding.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extension Questions</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Print Workbook</button>
+    <div class="wb-intro">Show all calculations with units. For pH problems, always state your assumption (strong = complete dissociation; weak = use Ka). For titration questions, state what is in the flask and what is in the burette.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 &mdash; pH Calculations</div>
+      <div class="wb-qtext">Calculate the pH of the following solutions at 25&deg;C:<br><br>
+      (a) 0.050 mol&middot;dm<sup>&minus;3</sup> HCl (strong acid)<br>
+      (b) 0.20 mol&middot;dm<sup>&minus;3</sup> NaOH (strong base) &mdash; first find pOH, then pH<br>
+      (c) 0.050 mol&middot;dm<sup>&minus;3</sup> methanoic acid (HCOOH); K<sub>a</sub> = 1.8 &times; 10<sup>&minus;4</sup><br>
+      (d) A solution where [H<sub>3</sub>O<sup>+</sup>] = 3.5 &times; 10<sup>&minus;9</sup> mol&middot;dm<sup>&minus;3</sup>. Is it acidic, neutral, or basic?<br><br>
+      <em>(8 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 &mdash; Titration Calculation</div>
+      <div class="wb-qtext">In a titration, 25.0 cm<sup>3</sup> of H<sub>2</sub>SO<sub>4</sub> solution is placed in a conical flask. It is titrated against 0.200 mol&middot;dm<sup>&minus;3</sup> NaOH solution. The average volume of NaOH used is 30.0 cm<sup>3</sup>.<br><br>
+      The reaction is: H<sub>2</sub>SO<sub>4</sub> + 2NaOH &rarr; Na<sub>2</sub>SO<sub>4</sub> + 2H<sub>2</sub>O<br><br>
+      (a) Calculate the moles of NaOH used.<br>
+      (b) Determine the moles of H<sub>2</sub>SO<sub>4</sub> in the flask. (Note the 1:2 ratio.)<br>
+      (c) Calculate the concentration of the H<sub>2</sub>SO<sub>4</sub> solution.<br>
+      (d) Calculate the pH of the H<sub>2</sub>SO<sub>4</sub> solution, assuming complete dissociation of both H<sup>+</sup> ions.<br><br>
+      <em>(8 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 &mdash; Titration Curves</div>
+      <div class="wb-qtext">(a) Sketch (or describe) the titration curve for the titration of 25 cm<sup>3</sup> of 0.10 M CH<sub>3</sub>COOH with 0.10 M NaOH. Label: initial pH, buffer region, half-equivalence point, equivalence point pH, and the region after the equivalence point.<br><br>
+      (b) Explain why the equivalence point pH is greater than 7 for this titration.<br>
+      (c) Which indicator &mdash; methyl orange or phenolphthalein &mdash; would be more suitable for this titration? Justify your answer.<br>
+      (d) If pK<sub>a</sub>(CH<sub>3</sub>COOH) = 4.74, what is the pH at the half-equivalence point?<br><br>
+      <em>(8 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 &mdash; Indicators &amp; Conjugate Pairs</div>
+      <div class="wb-qtext">(a) Write the conjugate base of each of the following acids: HNO<sub>3</sub>; H<sub>2</sub>PO<sub>4</sub><sup>&minus;</sup>; NH<sub>4</sub><sup>+</sup>; H<sub>2</sub>O.<br><br>
+      (b) Explain why water is amphoteric (can act as both acid and base) using Br&oslash;nsted-Lowry theory.<br><br>
+      (c) Phenolphthalein (pK<sub>a</sub> = 9.1) is added to a solution with pH = 7. What colour will it appear? Explain using the HIn equilibrium.<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => { redrawCurve(); }, 50);
+}
+
+// ─── Titration Curve ──────────────────────────────────────────────────────────
+function calcPH(volAdded, acidType) {
+  const Va = 25.0, ca = 0.10, cb = 0.10;
+  const na = ca * Va; // mmol
+  const nb = cb * volAdded; // mmol
+  const pKa = 4.74;
+  const Ka = Math.pow(10, -pKa);
+
+  if (acidType === 'strong') {
+    if (volAdded === 0) return 1.00;
+    if (volAdded < Va) {
+      const excessAcid = (na - nb) / (Va + volAdded);
+      return -Math.log10(excessAcid);
+    }
+    if (Math.abs(volAdded - Va) < 0.1) return 7.00;
+    const excessBase = (nb - na) / (Va + volAdded);
+    return 14 + Math.log10(excessBase);
+  } else {
+    // weak acid + strong base
+    if (volAdded === 0) {
+      const h = Math.sqrt(Ka * ca);
+      return -Math.log10(h);
+    }
+    if (volAdded < Va) {
+      const nHA = na - nb;
+      const nA = nb;
+      return pKa + Math.log10(nA / nHA);
+    }
+    if (Math.abs(volAdded - Va) < 0.1) {
+      // hydrolysis of CH3COO-
+      const cb2 = na / (Va + volAdded);
+      const Kb = 1e-14 / Ka;
+      const oh = Math.sqrt(Kb * cb2);
+      return 14 + Math.log10(oh);
+    }
+    const excessBase = (nb - na) / (Va + volAdded);
+    return 14 + Math.log10(excessBase);
+  }
+}
+
+function sliderChange() {
+  const v = parseFloat(document.getElementById('volSlider').value);
+  document.getElementById('volVal').textContent = v.toFixed(1) + ' mL';
+  redrawCurve();
+}
+
+function redrawCurve() {
+  const acidType = document.getElementById('acidType').value;
+  const vol = parseFloat(document.getElementById('volSlider').value);
+  const canvas = document.getElementById('titCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 360;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  const padL = 55, padR = 20, padT = 20, padB = 45;
+  const gw = W - padL - padR, gh = H - padT - padB;
+  const maxVol = 60, minPH = 0, maxPH = 14;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 7; i++) {
+    const y = padT + (i/7)*gh;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+gw, y); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = 'rgba(210,218,245,0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+gh); ctx.lineTo(padL+gw, padT+gh); ctx.stroke();
+
+  // Y axis labels (pH)
+  ctx.fillStyle = 'rgba(210,218,245,0.45)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.textAlign = 'right';
+  for (let pH = 0; pH <= 14; pH += 2) {
+    const y = padT + gh - (pH/14)*gh;
+    ctx.fillText(pH, padL - 6, y + 4);
+  }
+  // X axis labels (volume)
+  ctx.textAlign = 'center';
+  [0,10,20,25,30,40,50,60].forEach(v2 => {
+    const x = padL + (v2/maxVol)*gw;
+    ctx.fillText(v2, x, padT + gh + 16);
+  });
+
+  // Axis titles
+  ctx.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx.font = '11px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Volume NaOH added (mL)', padL + gw/2, H - 6);
+  ctx.save(); ctx.translate(12, padT + gh/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('pH', 0, 0); ctx.restore();
+
+  // Draw titration curve
+  const curveColor = acidType === 'strong' ? '#2dd4bf' : '#a78bfa';
+  ctx.strokeStyle = curveColor;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  let first = true;
+  for (let v2 = 0; v2 <= 60; v2 += 0.3) {
+    let pH;
+    try { pH = calcPH(v2, acidType); } catch(e) { continue; }
+    if (pH < 0 || pH > 14 || isNaN(pH) || !isFinite(pH)) continue;
+    const x = padL + (v2/maxVol)*gw;
+    const y = padT + gh - (pH/14)*gh;
+    if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Equivalence point line (v=25)
+  const epX = padL + (25/maxVol)*gw;
+  ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(epX, padT); ctx.lineTo(epX, padT+gh); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('EP', epX, padT + 12);
+
+  // Half-equivalence for weak acid
+  if (acidType === 'weak') {
+    const hepX = padL + (12.5/maxVol)*gw;
+    const hepPH = 4.74;
+    const hepY = padT + gh - (hepPH/14)*gh;
+    ctx.strokeStyle = 'rgba(167,139,250,0.4)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(hepX, padT); ctx.lineTo(hepX, padT+gh); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#a78bfa';
+    ctx.font = '9px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('½EP pH=pKa', hepX, padT + 24);
+    // Mark point
+    ctx.beginPath(); ctx.arc(hepX, hepY, 5, 0, Math.PI*2);
+    ctx.fillStyle = '#a78bfa'; ctx.fill();
+  }
+
+  // Current position dot
+  let curPH;
+  try { curPH = calcPH(vol, acidType); } catch(e) { curPH = null; }
+  if (curPH !== null && curPH >= 0 && curPH <= 14) {
+    const curX = padL + (vol/maxVol)*gw;
+    const curY = padT + gh - (curPH/14)*gh;
+    ctx.beginPath(); ctx.arc(curX, curY, 7, 0, Math.PI*2);
+    ctx.fillStyle = '#f87171'; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // pH + H lines
+    ctx.strokeStyle = 'rgba(248,113,113,0.3)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(padL, curY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(curX, curY); ctx.lineTo(curX, padT+gh); ctx.stroke();
+    ctx.setLineDash([]);
+
+    document.getElementById('roPH').textContent = curPH.toFixed(2);
+    document.getElementById('roVol').textContent = vol.toFixed(1) + ' mL';
+    const stage = vol < 25 ? 'Before EP' : vol > 25 ? 'After EP' : 'At EP';
+    document.getElementById('roStage').textContent = stage;
+  }
+}
+
+// ─── Practice Questions ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: 'Calculate the pH of a 0.025 mol·dm⁻³ HNO₃ solution (strong acid).',
+    opts: ['pH = 1.60','pH = 2.40','pH = 0.40','pH = 3.60'],
+    ans: 0,
+    exp: 'HNO₃ is a strong acid — complete dissociation. [H₃O⁺] = 0.025 mol·dm⁻³. pH = −log(0.025) = −log(2.5 × 10⁻²) = 2 − log(2.5) = 2 − 0.398 = 1.60.'
+  },
+  {
+    q: 'At 25°C, Kw = 1.0 × 10⁻¹⁴. If [H₃O⁺] = 2.0 × 10⁻³ mol·dm⁻³, what is [OH⁻]?',
+    opts: ['2.0 × 10⁻³ mol·dm⁻³','5.0 × 10⁻¹² mol·dm⁻³','1.0 × 10⁻¹¹ mol·dm⁻³','5.0 × 10⁻³ mol·dm⁻³'],
+    ans: 1,
+    exp: '[OH⁻] = Kw / [H₃O⁺] = (1.0 × 10⁻¹⁴) / (2.0 × 10⁻³) = 5.0 × 10⁻¹² mol·dm⁻³. The solution is acidic (pH = −log(2.0×10⁻³) = 2.70 < 7).'
+  },
+  {
+    q: 'In a titration of 20.0 cm³ of 0.150 mol·dm⁻³ HCl with 0.100 mol·dm⁻³ NaOH, what volume of NaOH is needed to reach the equivalence point?',
+    opts: ['13.3 mL','20.0 mL','30.0 mL','40.0 mL'],
+    ans: 2,
+    exp: 'n(HCl) = 0.150 × 0.0200 = 3.00 × 10⁻³ mol. At the equivalence point: n(NaOH) = n(HCl) = 3.00 × 10⁻³ mol (1:1 ratio). V(NaOH) = n/c = 3.00×10⁻³ / 0.100 = 0.0300 dm³ = 30.0 mL.'
+  },
+  {
+    q: 'The equivalence point of a weak acid titrated with NaOH has a pH > 7. This is because:',
+    opts: ['The acid was not fully neutralised','The conjugate base (A⁻) undergoes hydrolysis with water to produce OH⁻ ions','The NaOH was in excess','Phenolphthalein changes colour above pH 7, not at the true equivalence point'],
+    ans: 1,
+    exp: 'At the equivalence point of a weak acid + strong base titration, all the weak acid has been converted to its conjugate base A⁻. A⁻ is a base — it undergoes hydrolysis: A⁻ + H₂O ⇌ HA + OH⁻, producing excess OH⁻ and raising the pH above 7. The weaker the acid, the stronger the conjugate base, and the higher the equivalence point pH.'
+  },
+  {
+    q: 'Which indicator is most appropriate for a strong acid + strong base titration?',
+    opts: ['Both phenolphthalein (range 8.2–10.0) and methyl orange (3.1–4.4) are suitable','Only methyl orange is suitable because the equivalence point is acidic','Only phenolphthalein is suitable','Neither is suitable — only universal indicator works'],
+    ans: 0,
+    exp: 'For strong acid + strong base, the equivalence point is at pH 7, but the pH jump near the equivalence point is very sharp — typically from about pH 3 to pH 11 with just one or two drops of titrant. Both phenolphthalein (changes 8.2–10) and methyl orange (changes 3.1–4.4) fall within this jump range, making either suitable.'
+  },
+  {
+    q: 'For ethanoic acid with Ka = 1.8 × 10⁻⁵, what is the pH of 0.100 mol·dm⁻³ CH₃COOH?',
+    opts: ['pH = 1.00','pH = 2.87','pH = 4.74','pH = 5.00'],
+    ans: 1,
+    exp: 'For weak acid: Ka = x²/c (approximation). x² = Ka × c = 1.8×10⁻⁵ × 0.100 = 1.8×10⁻⁶. x = √(1.8×10⁻⁶) = 1.34×10⁻³ mol·dm⁻³. pH = −log(1.34×10⁻³) = 2.87. (pKa = 4.74 is the pH at the half-equivalence point, not the initial pH of the acid solution.)'
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: 'A buffer contains 0.20 mol CH₃COOH and 0.20 mol CH₃COO⁻ in 1 L. pKa = 4.74. What is the pH? If 0.05 mol NaOH is added, what is the new pH?',
+    opts: ['pH = 4.74; new pH = 4.92','pH = 5.00; new pH = 5.20','pH = 4.74; new pH = 5.74','pH = 7.00; new pH = 7.18'],
+    ans: 0,
+    exp: 'Initial: [A⁻]/[HA] = 0.20/0.20 = 1. pH = 4.74 + log(1) = 4.74 + 0 = 4.74. After adding 0.05 mol NaOH: OH⁻ reacts with HA → A⁻ + H₂O. New [HA] = 0.15, [A⁻] = 0.25. pH = 4.74 + log(0.25/0.15) = 4.74 + log(1.667) = 4.74 + 0.222 = 4.96 ≈ 4.92 (rounding). pH changes very little — buffer action demonstrated.'
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${qi + 1} of ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    document.getElementById('scoreBanner').classList.add('show');
+    document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>{redrawCurve();window.dispatchEvent(new Event('resize'));},60);}</script>
+</body>
+</html>

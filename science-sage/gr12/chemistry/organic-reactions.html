@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organic Reactions — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:13px;letter-spacing:-0.02em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemistry</span>
+    <a href="../../index.html" class="nav-back">&#8592; Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 &middot; Chemistry &middot; Lesson 2</div>
+  <h1 class="lesson-title">Organic Reactions</h1>
+  <p class="lesson-sub">Write equations for addition, elimination, substitution, esterification, and hydrolysis reactions, and explain the conditions required for each.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Toggle to show IEB extension content</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Addition Reactions (Alkenes only)</h2>
+    <p>Addition reactions occur across the C=C double bond. The double bond breaks and atoms add to both carbons. Alkenes are <strong>unsaturated</strong> &mdash; they can accommodate additional atoms by converting C=C to C&ndash;C.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Reagent</th><th>Reaction type</th><th>Conditions</th><th>Products</th></tr></thead>
+      <tbody>
+        <tr><td>H<sub>2</sub></td><td>Hydrogenation</td><td>Ni/Pt catalyst, heat</td><td>Alkane (saturated)</td></tr>
+        <tr><td>HX (HBr, HCl)</td><td>Hydrohalogenation</td><td>Room temp, no catalyst</td><td>Halogenoalkane</td></tr>
+        <tr><td>H<sub>2</sub>O</td><td>Hydration</td><td>H<sub>3</sub>PO<sub>4</sub>/H<sub>2</sub>SO<sub>4</sub> catalyst, heat</td><td>Alcohol</td></tr>
+        <tr><td>X<sub>2</sub> (Br<sub>2</sub>, Cl<sub>2</sub>)</td><td>Halogenation</td><td>Room temp (test: bromine water decolourises)</td><td>Dihalogenoalkane</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Markovnikov&rsquo;s Rule:</strong> When HX adds to an unsymmetrical alkene, the H atom adds to the carbon with <em>more</em> hydrogen atoms already attached (the less substituted carbon), and X adds to the carbon with <em>fewer</em> H atoms (the more substituted carbon). &ldquo;The rich get richer.&rdquo;</div>
+    <div class="formula">
+      CH<sub>2</sub>=CH<sub>2</sub> + Br<sub>2</sub> &rarr; CH<sub>2</sub>BrCH<sub>2</sub>Br &nbsp;&nbsp; (1,2-dibromoethane)<br>
+      CH<sub>2</sub>=CHCH<sub>3</sub> + HBr &rarr; CH<sub>3</sub>CHBrCH<sub>3</sub> &nbsp;&nbsp; (Markovnikov &mdash; Br on C2)
+    </div>
+
+    <h2>Elimination Reactions</h2>
+    <p>Elimination is the <strong>reverse</strong> of addition. Atoms are removed to form (or extend) a double bond, producing an unsaturated compound. Two main types:</p>
+    <ul>
+      <li><strong>Dehydration of alcohols:</strong> Alcohol + concentrated H<sub>2</sub>SO<sub>4</sub>, heat &rarr; Alkene + H<sub>2</sub>O. An OH and an adjacent H are eliminated. (If the double bond position is ambiguous, Zaitsev&rsquo;s rule gives the more substituted alkene.)</li>
+      <li><strong>Dehydrohalogenation:</strong> Halogenoalkane + KOH dissolved in ethanol, heat &rarr; Alkene + KX + H<sub>2</sub>O. An H and a halogen on adjacent carbons are eliminated.</li>
+    </ul>
+    <div class="formula">
+      CH<sub>3</sub>CH<sub>2</sub>OH &xrarr;[conc H<sub>2</sub>SO<sub>4</sub>, 180&deg;C] CH<sub>2</sub>=CH<sub>2</sub> + H<sub>2</sub>O &nbsp;&nbsp; (dehydration)<br>
+      CH<sub>3</sub>CHBrCH<sub>3</sub> + KOH(ethanol) &xrarr;[heat] CH<sub>3</sub>CH=CH<sub>2</sub> + KBr + H<sub>2</sub>O &nbsp;&nbsp; (dehydrohalogenation)
+    </div>
+
+    <h2>Substitution Reactions</h2>
+    <p>In substitution, one atom or group is replaced by another without changing the carbon skeleton&rsquo;s connectivity.</p>
+    <ul>
+      <li><strong>Free-radical halogenation of alkanes:</strong> CH<sub>4</sub> + Cl<sub>2</sub> &xrarr;[UV light] CH<sub>3</sub>Cl + HCl. UV light initiates the reaction by homolytically splitting Cl<sub>2</sub> into Cl&bull; radicals. Alkanes are unreactive under most conditions &mdash; UV light provides the activation energy.</li>
+      <li><strong>Nucleophilic substitution of halogenoalkanes:</strong> R&ndash;X + NaOH(aq) &xrarr;[heat] R&ndash;OH + NaX. The OH<sup>&minus;</sup> nucleophile attacks and replaces the halogen.</li>
+    </ul>
+    <div class="formula">
+      CH<sub>3</sub>Br + NaOH(aq) &rarr; CH<sub>3</sub>OH + NaBr &nbsp;&nbsp; (nucleophilic substitution)
+    </div>
+
+    <h2>Esterification</h2>
+    <p>An <strong>ester</strong> is formed when a carboxylic acid reacts with an alcohol in the presence of an acid catalyst. The reaction is <strong>reversible</strong>:</p>
+    <div class="formula">
+      Carboxylic acid + Alcohol &#x21CC; Ester + Water &nbsp;&nbsp; (H<sub>2</sub>SO<sub>4</sub> catalyst, reflux)
+    </div>
+    <div class="formula">
+      CH<sub>3</sub>COOH + CH<sub>3</sub>CH<sub>2</sub>OH &#x21CC; CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub> + H<sub>2</sub>O<br>
+      (ethanoic acid + ethanol &#x21CC; ethyl ethanoate + water)
+    </div>
+    <p>Esters have fruity smells and are used in flavourings, perfumes, and solvents. Naming: the alcohol part names the alkyl group (ethyl), and the acid part becomes -oate (ethanoate).</p>
+
+    <h2>Hydrolysis of Esters</h2>
+    <p><strong>Hydrolysis</strong> is the reverse of esterification &mdash; water breaks the ester bond. Two types:</p>
+    <ul>
+      <li><strong>Acid hydrolysis:</strong> Ester + H<sub>2</sub>O + dilute H<sub>2</sub>SO<sub>4</sub> &rarr; Carboxylic acid + Alcohol (slow, reversible).</li>
+      <li><strong>Base hydrolysis (Saponification):</strong> Ester + NaOH(aq) &rarr; Sodium carboxylate salt + Alcohol. This is the basis of <strong>soap making</strong> &mdash; fats (triglycerides) are saponified to give fatty acid salts (soaps) and glycerol.</li>
+    </ul>
+    <div class="formula">
+      CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub> + NaOH(aq) &rarr; CH<sub>3</sub>COO<sup>&minus;</sup>Na<sup>+</sup> + CH<sub>3</sub>CH<sub>2</sub>OH &nbsp;&nbsp; (saponification)
+    </div>
+
+    <h2>Cracking</h2>
+    <p>Large alkane molecules from crude oil are broken into smaller, more useful alkenes and alkanes by supplying energy:</p>
+    <ul>
+      <li><strong>Thermal cracking:</strong> Very high temperature (500&ndash;900&deg;C), high pressure, no catalyst. Gives a mixture of products including alkenes.</li>
+      <li><strong>Catalytic cracking:</strong> Moderate temperature (~500&deg;C), zeolite catalyst, lower pressure. More controlled; used in refineries to produce petrol-range hydrocarbons and feedstocks.</li>
+    </ul>
+    <div class="formula">C<sub>10</sub>H<sub>22</sub> &rarr; C<sub>5</sub>H<sub>12</sub> + C<sub>5</sub>H<sub>10</sub> &nbsp;&nbsp; (one possible cracking product mix)</div>
+
+    <h2>Combustion</h2>
+    <ul>
+      <li><strong>Complete combustion</strong> (excess O<sub>2</sub>): Hydrocarbon + O<sub>2</sub> &rarr; CO<sub>2</sub> + H<sub>2</sub>O. Clean burning; releases maximum energy.</li>
+      <li><strong>Incomplete combustion</strong> (limited O<sub>2</sub>): Produces CO (toxic) and/or C (soot) in addition to H<sub>2</sub>O. CO is dangerous because it binds to haemoglobin; soot causes air pollution.</li>
+    </ul>
+    <div class="formula">
+      C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> &rarr; 3CO<sub>2</sub> + 4H<sub>2</sub>O &nbsp;&nbsp; (complete)<br>
+      2C<sub>3</sub>H<sub>8</sub> + 7O<sub>2</sub> &rarr; 6CO + 8H<sub>2</sub>O &nbsp;&nbsp; (incomplete)
+    </div>
+
+    <h2>Polymerisation</h2>
+    <ul>
+      <li><strong>Addition polymerisation:</strong> Many alkene monomers join together &mdash; the double bond opens and the monomers link into a long chain. No by-product is produced. Example: n CH<sub>2</sub>=CH<sub>2</sub> &rarr; (&ndash;CH<sub>2</sub>&ndash;CH<sub>2</sub>&ndash;)<sub>n</sub> (polyethene/polyethylene).</li>
+      <li><strong>Condensation polymerisation:</strong> Monomers with two functional groups react repeatedly, releasing a small molecule (water or HCl) at each step. Examples: nylon (polyamide from diamine + dicarboxylic acid), polyester (from diol + dicarboxylic acid), like PET.</li>
+    </ul>
+
+    <h2>Summary Table of Organic Reactions</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Reaction type</th><th>Reactant</th><th>Key conditions</th><th>Product</th></tr></thead>
+      <tbody>
+        <tr><td>Addition (hydrogenation)</td><td>Alkene + H<sub>2</sub></td><td>Ni catalyst, heat</td><td>Alkane</td></tr>
+        <tr><td>Addition (hydration)</td><td>Alkene + H<sub>2</sub>O</td><td>H<sub>3</sub>PO<sub>4</sub>, heat</td><td>Alcohol</td></tr>
+        <tr><td>Addition (halogenation)</td><td>Alkene + Br<sub>2</sub></td><td>Room temp</td><td>Dihalogenoalkane</td></tr>
+        <tr><td>Elimination (dehydration)</td><td>Alcohol</td><td>Conc H<sub>2</sub>SO<sub>4</sub>, heat</td><td>Alkene + H<sub>2</sub>O</td></tr>
+        <tr><td>Substitution (free radical)</td><td>Alkane + X<sub>2</sub></td><td>UV light</td><td>Halogenoalkane + HX</td></tr>
+        <tr><td>Substitution (nucleophilic)</td><td>Halogenoalkane + NaOH(aq)</td><td>Heat</td><td>Alcohol + NaX</td></tr>
+        <tr><td>Esterification</td><td>Carboxylic acid + Alcohol</td><td>H<sub>2</sub>SO<sub>4</sub>, reflux</td><td>Ester + H<sub>2</sub>O</td></tr>
+        <tr><td>Hydrolysis (base)</td><td>Ester + NaOH(aq)</td><td>Heat</td><td>Salt + Alcohol</td></tr>
+        <tr><td>Combustion (complete)</td><td>Hydrocarbon + excess O<sub>2</sub></td><td>Ignition</td><td>CO<sub>2</sub> + H<sub>2</sub>O</td></tr>
+        <tr><td>Cracking</td><td>Long-chain alkane</td><td>High T or catalyst</td><td>Short alkane + alkene</td></tr>
+      </tbody>
+    </table>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB Extension &mdash; Reaction Mechanisms &amp; Regioselectivity</div>
+      <p><strong>SN1 vs SN2 (Nucleophilic Substitution):</strong></p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 12px 20px;line-height:1.85">
+        <li><strong>SN2 (bimolecular):</strong> One-step; nucleophile attacks as leaving group departs simultaneously. Favoured by primary (1&deg;) halogenoalkanes and strong nucleophiles. Causes inversion of configuration (Walden inversion).</li>
+        <li><strong>SN1 (unimolecular):</strong> Two-step; first forms a carbocation intermediate, then nucleophile attacks. Favoured by tertiary (3&deg;) halogenoalkanes in polar protic solvents. Gives racemisation at chiral centres.</li>
+      </ul>
+      <p><strong>E1 vs E2 (Elimination):</strong></p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 12px 20px;line-height:1.85">
+        <li><strong>E2 (bimolecular):</strong> Concerted; base removes H while halogen departs simultaneously. Requires anti-periplanar geometry. Favoured by strong bases (KOH in ethanol), primary and secondary substrates.</li>
+        <li><strong>E1 (unimolecular):</strong> Two-step via carbocation; favoured by tertiary substrates, weak bases, polar protic solvents.</li>
+      </ul>
+      <p><strong>Regioselectivity:</strong> When multiple products are possible (e.g., different alkene positions in elimination), the major product follows <strong>Zaitsev&rsquo;s rule</strong> &mdash; the more substituted (more stable) alkene is the major product.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Reaction Builder &mdash; Select reactant and reaction type to see the balanced equation</h3>
+      <canvas id="rxnCanvas" height="340"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Build a Reaction</div>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Reactant type</label>
+        <select class="sim-select" id="reactantType" onchange="updateReaction()">
+          <option value="alkene">Alkene (ethene, CH₂=CH₂)</option>
+          <option value="alkane">Alkane (methane, CH₄)</option>
+          <option value="alcohol">Alcohol (ethanol)</option>
+          <option value="haloalkane">Halogenoalkane (bromoethane)</option>
+          <option value="ester">Ester (ethyl ethanoate)</option>
+        </select>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Reaction type</label>
+        <select class="sim-select" id="reactionType" onchange="updateReaction()">
+          <option value="">-- Select reaction --</option>
+        </select>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Equation &amp; Conditions</div>
+        <div class="readout-grid" style="grid-template-columns:1fr">
+          <div class="readout"><div class="readout-label">Balanced Equation</div><div class="readout-val" id="rxnEquation" style="font-size:11px;line-height:1.6;white-space:pre-line">Select a reactant and reaction type.</div></div>
+          <div class="readout"><div class="readout-label">Conditions</div><div class="readout-val" id="rxnConditions" style="font-size:11px">--</div></div>
+          <div class="readout"><div class="readout-label">Reaction Class</div><div class="readout-val" id="rxnClass" style="font-size:11px">--</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
+        Review the explanations to strengthen your understanding.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extension Questions</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your notebook. Write balanced equations with state symbols where required. Always state the conditions (catalyst, temperature, solvent) alongside each equation.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 &mdash; Addition Reactions</div>
+      <div class="wb-qtext">Write balanced equations for the following addition reactions. State the conditions required for each:<br><br>
+      (a) but-2-ene + H<sub>2</sub> &rarr; ?<br>
+      (b) propene + HBr &rarr; ? (apply Markovnikov&rsquo;s rule and name the product)<br>
+      (c) ethene + Br<sub>2</sub>(aq) &rarr; ? (explain why bromine water is used as a test for unsaturation)<br>
+      (d) ethene + H<sub>2</sub>O &rarr; ? (name the product)<br><br>
+      <em>(8 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 &mdash; Elimination vs Substitution</div>
+      <div class="wb-qtext">2-bromopropane can undergo two different reactions with NaOH:<br><br>
+      (a) Write the equation for the <strong>substitution</strong> reaction with NaOH(aq). State the conditions and name the organic product.<br>
+      (b) Write the equation for the <strong>elimination</strong> reaction with NaOH in ethanol. State the conditions and name the organic product.<br>
+      (c) State ONE difference in conditions that determines whether substitution or elimination occurs.<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 &mdash; Esterification</div>
+      <div class="wb-qtext">(a) Write the balanced equation for the esterification of propan-1-ol with methanoic acid. Name the ester produced.<br>
+      (b) The reaction is reversible. State TWO ways to increase the yield of ester at equilibrium.<br>
+      (c) Explain how saponification (base hydrolysis) differs from acid hydrolysis of an ester.<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 &mdash; Polymerisation</div>
+      <div class="wb-qtext">(a) Draw the structural repeating unit of the polymer formed from propene (CH<sub>2</sub>=CHCH<sub>3</sub>) by addition polymerisation. Name the polymer.<br>
+      (b) Explain the difference between addition polymerisation and condensation polymerisation. Include the type of monomer required for each.<br>
+      (c) Nylon-6,6 is a condensation polymer formed from 1,6-diaminohexane and hexanedioic acid. Write the equation for the first step and identify the small molecule eliminated.<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => { updateReaction(); }, 50);
+}
+
+// ─── Reaction Builder ─────────────────────────────────────────────────────────
+const REACTIONS = {
+  alkene: {
+    label: 'Alkene (ethene)',
+    types: {
+      add_h2: { label: 'Hydrogenation (+ H₂)', eq: 'CH₂=CH₂ + H₂ → CH₃CH₃\n(ethene → ethane)', cond: 'Ni catalyst, ~150°C', cls: 'Addition' },
+      add_hbr: { label: 'Hydrohalogenation (+ HBr)', eq: 'CH₂=CH₂ + HBr → CH₃CH₂Br\n(ethene → bromoethane)', cond: 'Room temp, no catalyst', cls: 'Addition (Markovnikov)' },
+      add_h2o: { label: 'Hydration (+ H₂O)', eq: 'CH₂=CH₂ + H₂O → CH₃CH₂OH\n(ethene → ethanol)', cond: 'H₃PO₄ catalyst, 300°C, 60 atm', cls: 'Addition' },
+      add_br2: { label: 'Halogenation (+ Br₂)', eq: 'CH₂=CH₂ + Br₂ → CH₂BrCH₂Br\n(ethene → 1,2-dibromoethane)', cond: 'Room temp, bromine water', cls: 'Addition (test for unsaturation)' }
+    }
+  },
+  alkane: {
+    label: 'Alkane (methane)',
+    types: {
+      sub_cl2: { label: 'Free-radical chlorination', eq: 'CH₄ + Cl₂ → CH₃Cl + HCl\n(methane → chloromethane)', cond: 'UV light (hν)', cls: 'Substitution (free radical)' },
+      combustion_c: { label: 'Complete combustion', eq: 'CH₄ + 2O₂ → CO₂ + 2H₂O\n(complete, excess oxygen)', cond: 'Ignition source, excess O₂', cls: 'Combustion' },
+      combustion_i: { label: 'Incomplete combustion', eq: '2CH₄ + 3O₂ → 2CO + 4H₂O\n(incomplete, limited oxygen)', cond: 'Ignition, limited O₂', cls: 'Combustion (incomplete)' }
+    }
+  },
+  alcohol: {
+    label: 'Alcohol (ethanol)',
+    types: {
+      elim: { label: 'Dehydration → alkene', eq: 'CH₃CH₂OH → CH₂=CH₂ + H₂O\n(ethanol → ethene)', cond: 'Conc H₂SO₄, 180°C', cls: 'Elimination (dehydration)' },
+      ester: { label: 'Esterification with ethanoic acid', eq: 'CH₃COOH + CH₃CH₂OH ⇌ CH₃COOCH₂CH₃ + H₂O\n(→ ethyl ethanoate)', cond: 'Conc H₂SO₄ catalyst, reflux', cls: 'Esterification (reversible)' },
+      oxidation: { label: 'Oxidation to aldehyde/acid', eq: 'CH₃CH₂OH → [O] → CH₃CHO → [O] → CH₃COOH\n(ethanol → ethanal → ethanoic acid)', cond: 'K₂Cr₂O₇/H₂SO₄ (acidified dichromate)', cls: 'Oxidation' }
+    }
+  },
+  haloalkane: {
+    label: 'Halogenoalkane (bromoethane)',
+    types: {
+      sub_oh: { label: 'Substitution with NaOH(aq)', eq: 'CH₃CH₂Br + NaOH(aq) → CH₃CH₂OH + NaBr\n(→ ethanol)', cond: 'NaOH aqueous, reflux', cls: 'Nucleophilic substitution (SN2)' },
+      elim_koh: { label: 'Elimination with KOH/ethanol', eq: 'CH₃CH₂Br + KOH(ethanol) → CH₂=CH₂ + KBr + H₂O\n(→ ethene)', cond: 'KOH in ethanol, reflux', cls: 'Elimination (E2)' }
+    }
+  },
+  ester: {
+    label: 'Ester (ethyl ethanoate)',
+    types: {
+      acid_hyd: { label: 'Acid hydrolysis', eq: 'CH₃COOC₂H₅ + H₂O ⇌ CH₃COOH + C₂H₅OH\n(reversible)', cond: 'Dilute H₂SO₄, reflux', cls: 'Hydrolysis (acid)' },
+      base_hyd: { label: 'Base hydrolysis (saponification)', eq: 'CH₃COOC₂H₅ + NaOH → CH₃COO⁻Na⁺ + C₂H₅OH\n(irreversible)', cond: 'NaOH(aq), reflux', cls: 'Hydrolysis (base / saponification)' }
+    }
+  }
+};
+
+function updateReaction() {
+  const rt = document.getElementById('reactantType').value;
+  const rxnSel = document.getElementById('reactionType');
+  // Update reaction options
+  const data = REACTIONS[rt];
+  rxnSel.innerHTML = '<option value="">-- Select reaction --</option>';
+  if (data) {
+    Object.entries(data.types).forEach(([key, val]) => {
+      const opt = document.createElement('option');
+      opt.value = key; opt.textContent = val.label;
+      rxnSel.appendChild(opt);
+    });
+  }
+  showReaction();
+}
+
+function showReaction() {
+  const rt = document.getElementById('reactantType').value;
+  const rxnKey = document.getElementById('reactionType').value;
+  if (!rt || !rxnKey || !REACTIONS[rt] || !REACTIONS[rt].types[rxnKey]) {
+    document.getElementById('rxnEquation').textContent = 'Select a reactant and reaction type above.';
+    document.getElementById('rxnConditions').textContent = '--';
+    document.getElementById('rxnClass').textContent = '--';
+    drawRxnCanvas('Select a reaction above.');
+    return;
+  }
+  const rxn = REACTIONS[rt].types[rxnKey];
+  document.getElementById('rxnEquation').textContent = rxn.eq;
+  document.getElementById('rxnConditions').textContent = rxn.cond;
+  document.getElementById('rxnClass').textContent = rxn.cls;
+  drawRxnCanvas(rxn.eq, rxn.cls, rxn.cond);
+}
+
+document.getElementById('reactionType').addEventListener('change', showReaction);
+
+function drawRxnCanvas(eq, cls, cond) {
+  const canvas = document.getElementById('rxnCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 340;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  // Background gradient
+  const grd = ctx.createRadialGradient(W/2, H/2, 10, W/2, H/2, W*0.6);
+  grd.addColorStop(0, 'rgba(20,184,166,0.04)');
+  grd.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0,0,W,H);
+
+  if (!cls) {
+    ctx.fillStyle = 'rgba(210,218,245,0.3)';
+    ctx.font = '14px "Cabinet Grotesk",sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(eq, W/2, H/2);
+    return;
+  }
+
+  // Draw reaction diagram: reactants → products
+  const lines = eq.split('\n');
+  const mainEq = lines[0];
+  const parts = mainEq.split(/→|⇌/);
+  const arrow = mainEq.includes('⇌') ? '⇌' : '→';
+
+  const lhs = parts[0] ? parts[0].trim() : '';
+  const rhs = parts[1] ? parts[1].trim() : '';
+
+  // Class badge
+  ctx.fillStyle = 'rgba(20,184,166,0.12)';
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(W/2 - 120, 16, 240, 28, 8);
+  else ctx.rect(W/2-120, 16, 240, 28);
+  ctx.fill();
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = '700 11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(cls, W/2, 35);
+
+  // Reactants box
+  const boxH = 60, boxW = Math.min(260, W * 0.35);
+  const lbx = W * 0.12, rbx = W * 0.88 - boxW;
+  const bY = H * 0.42;
+
+  drawBox(ctx, lbx, bY, boxW, boxH, '#f97316', lhs, 'REACTANT(S)');
+  drawBox(ctx, rbx, bY, boxW, boxH, '#34d399', rhs, 'PRODUCT(S)');
+
+  // Arrow
+  const ax1 = lbx + boxW + 10, ax2 = rbx - 10;
+  const aY = bY + boxH/2;
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ax1, aY); ctx.lineTo(ax2, aY); ctx.stroke();
+  // Arrowhead
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath(); ctx.moveTo(ax2, aY); ctx.lineTo(ax2-10, aY-5); ctx.lineTo(ax2-10, aY+5); ctx.closePath(); ctx.fill();
+  if (arrow === '⇌') {
+    ctx.beginPath(); ctx.moveTo(ax1, aY+4); ctx.lineTo(ax1+10, aY-1); ctx.lineTo(ax1+10, aY+9); ctx.closePath(); ctx.fill();
+  }
+
+  // Conditions label on arrow
+  if (cond) {
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = '10px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(cond, (ax1+ax2)/2, aY - 14);
+  }
+
+  // Arrow label
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '700 16px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(arrow, (ax1+ax2)/2, aY + 5);
+
+  // Full equation at bottom
+  if (lines[1]) {
+    ctx.fillStyle = 'rgba(210,218,245,0.45)';
+    ctx.font = '11px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(lines[1], W/2, H - 18);
+  }
+}
+
+function drawBox(ctx, x, y, w, h, color, label, title) {
+  ctx.fillStyle = color + '18';
+  ctx.strokeStyle = color + 'aa';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(x, y, w, h, 10);
+  else ctx.rect(x, y, w, h);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.font = '700 9px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(title, x + w/2, y + 14);
+  ctx.fillStyle = '#fff';
+  ctx.font = '600 11px "JetBrains Mono",monospace';
+  const maxW = w - 16;
+  const words = label.split(' ');
+  let line = '', lines2 = [], lineY = y + 30;
+  words.forEach(w2 => {
+    const test = line ? line + ' ' + w2 : w2;
+    if (ctx.measureText(test).width > maxW && line) { lines2.push(line); line = w2; }
+    else line = test;
+  });
+  if (line) lines2.push(line);
+  lines2.forEach((l, i) => ctx.fillText(l, x + w/2, lineY + i * 14));
+}
+
+// ─── Practice Questions ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: 'Which reagent and conditions are required to convert propene (CH₃CH=CH₂) into propan-2-ol?',
+    opts: ['H₂ with Ni catalyst at 150°C','HBr at room temperature','H₂O with H₃PO₄ catalyst at 300°C','NaOH(aq) with heat'],
+    ans: 2,
+    exp: 'Hydration of an alkene (addition of water across C=C) requires steam and an acid catalyst (H₃PO₄ or H₂SO₄) at elevated temperature and pressure. The water adds to the double bond: CH₃CH=CH₂ + H₂O → CH₃CH(OH)CH₃ (propan-2-ol, by Markovnikov\'s rule).'
+  },
+  {
+    q: 'Bromine water (Br₂ in water) is used as a chemical test. If bromine water DECOLOURISES when added to an unknown compound, this indicates:',
+    opts: ['The compound is an alkane','The compound contains a C=C double bond (is unsaturated)','The compound is an alcohol','The compound is a carboxylic acid'],
+    ans: 1,
+    exp: 'Alkenes decolourise bromine water because Br₂ undergoes addition across the C=C double bond: alkene + Br₂ → dibromoalkane (colourless). Alkanes do NOT react with bromine water at room temperature — they remain yellow/orange. This is the classic test for unsaturation.'
+  },
+  {
+    q: 'What type of reaction occurs when ethanol reacts with concentrated H₂SO₄ at 180°C?',
+    opts: ['Addition — water adds across a double bond','Substitution — the OH is replaced by a hydrogen','Elimination — water is removed to form an alkene','Esterification — an ester is formed with H₂SO₄'],
+    ans: 2,
+    exp: 'Heating ethanol with concentrated H₂SO₄ at 180°C causes DEHYDRATION (elimination). The –OH from one carbon and a H from an adjacent carbon are removed as water, leaving a C=C double bond: CH₃CH₂OH → CH₂=CH₂ + H₂O. This is an ELIMINATION reaction.'
+  },
+  {
+    q: 'Propan-1-ol reacts with propanoic acid in the presence of concentrated H₂SO₄. Which statement about this reaction is correct?',
+    opts: ['It is irreversible and produces propyl propanoate as the only product','It produces propyl propanoate and water and is reversible','It requires UV light to initiate the reaction','It is an elimination reaction producing an alkene'],
+    ans: 1,
+    exp: 'Esterification is a reversible reaction: carboxylic acid + alcohol ⇌ ester + water. Propanoic acid + propan-1-ol ⇌ propyl propanoate + H₂O. H₂SO₄ acts as a catalyst. The reaction does not go to completion — it reaches equilibrium. Water is also produced (not just the ester).'
+  },
+  {
+    q: 'During free-radical halogenation of methane with chlorine, the first step requires UV light. This UV light causes:',
+    opts: ['Cl₂ to dissolve in the methane mixture','Cl₂ molecules to split homolytically into two Cl• radicals (chain initiation)','Methane molecules to decompose into carbon and hydrogen','The reaction to be reversed (decomposition of HCl)'],
+    ans: 1,
+    exp: 'In the initiation step of free-radical halogenation, UV light provides enough energy to break the Cl–Cl bond homolytically (one electron to each atom): Cl₂ → 2Cl•. These chlorine radicals then initiate the chain propagation steps. Without UV light, alkanes are virtually unreactive with chlorine at room temperature.'
+  },
+  {
+    q: 'In the polymerisation of ethene to form polyethene, which type of polymerisation occurs and what is the repeat unit?',
+    opts: ['Condensation polymerisation; repeat unit is –CH₂–CH₂– with water as by-product','Addition polymerisation; repeat unit is –CH₂–CH₂– with no by-product','Addition polymerisation; repeat unit is –CH=CH– (double bond retained)','Condensation polymerisation; repeat unit is –CH₂–CH₂–O– with H₂O released'],
+    ans: 1,
+    exp: 'Ethene undergoes addition polymerisation: the C=C double bond opens and monomers link together. No atoms are lost — the repeat unit (–CH₂–CH₂–) has the same composition as the monomer. No by-product is formed. This contrasts with condensation polymerisation, which releases small molecules (H₂O, HCl) at each step.'
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: '2-bromo-2-methylpropane reacts with NaOH. Which mechanism is most likely and why?',
+    opts: ['SN2 — tertiary substrate reacts fastest with nucleophiles','SN1 — the tertiary carbocation intermediate is stabilised by three alkyl groups','E2 — elimination is always faster than substitution','SN2 — the reaction is always bimolecular'],
+    ans: 1,
+    exp: 'Tertiary substrates favour SN1 because the tertiary carbocation ((CH₃)₃C⁺) is stabilised by three electron-donating alkyl groups (hyperconjugation/induction). SN2 is disfavoured at tertiary carbons due to severe steric hindrance — the nucleophile cannot approach the carbon from behind. SN1 proceeds via a stable tertiary carbocation intermediate.'
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${qi + 1} of ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})" id="${prefix}-opt-${qi}-${oi}"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+updateReaction();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+</body>
+</html>

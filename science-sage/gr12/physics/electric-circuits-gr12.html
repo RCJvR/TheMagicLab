@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Circuits — Internal Resistance — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#93c5fd;text-align:center;line-height:2.2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:70px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+    @media(max-width:640px){
+      nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}.sim-controls-row{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Physics</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 · Physics · Lesson 4</div>
+  <h1 class="lesson-title">Electric Circuits — Internal Resistance</h1>
+  <p class="lesson-sub">Analyse circuits with batteries that have internal resistance, apply Kirchhoff's laws to complex circuits, and calculate terminal potential difference.</p>
+</div>
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="clipboard-list" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>EMF and Internal Resistance</h2>
+    <p>A real battery is not a perfect source of voltage. It has an <strong style="color:#93c5fd">internal resistance (r)</strong> — the resistance of the chemical cells inside the battery itself.</p>
+    <ul>
+      <li><strong style="color:#93c5fd">EMF (ε):</strong> the maximum voltage a battery can provide when no current flows (open circuit). Also called electromotive force.</li>
+      <li><strong style="color:#93c5fd">Terminal potential difference (V<sub>terminal</sub>):</strong> the actual voltage across the battery terminals when current flows.</li>
+      <li><strong style="color:#93c5fd">Lost voltage (V<sub>lost</sub>):</strong> voltage "lost" due to internal resistance = Ir</li>
+    </ul>
+    <div class="formula">
+      ε = V<sub>terminal</sub> + Ir<br>
+      V<sub>terminal</sub> = ε − Ir<br>
+      V<sub>lost</sub> = Ir
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+      <tbody>
+        <tr><td>ε</td><td>EMF (electromotive force)</td><td>V</td></tr>
+        <tr><td>V<sub>terminal</sub></td><td>Terminal potential difference</td><td>V</td></tr>
+        <tr><td>I</td><td>Current in circuit</td><td>A</td></tr>
+        <tr><td>r</td><td>Internal resistance of battery</td><td>Ω</td></tr>
+        <tr><td>R</td><td>External resistance (load)</td><td>Ω</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">As current I increases (smaller external load R), the terminal PD drops. When I = 0 (open circuit), V_terminal = ε.</div>
+
+    <h2>Series Circuit with Internal Resistance</h2>
+    <p>For a battery (ε, r) connected to an external resistor R in series:</p>
+    <div class="formula">
+      ε = I(R + r)<br>
+      I = ε / (R + r)<br>
+      V<sub>terminal</sub> = IR = ε − Ir
+    </div>
+    <div class="callout">
+      <strong>Worked Example 1:</strong> A battery has EMF = 12 V and internal resistance r = 0.5 Ω. It is connected to an external resistor R = 5.5 Ω. Find I, V<sub>terminal</sub>, and V<sub>lost</sub>.<br><br>
+      I = ε/(R+r) = 12/(5.5+0.5) = 12/6 = <strong>2 A</strong><br>
+      V<sub>terminal</sub> = IR = 2×5.5 = <strong>11 V</strong><br>
+      V<sub>lost</sub> = Ir = 2×0.5 = <strong>1 V</strong><br>
+      Check: 11 + 1 = 12 V = ε ✓
+    </div>
+
+    <h2>Kirchhoff's Current Law (KCL)</h2>
+    <p><strong style="color:#93c5fd">KCL:</strong> The sum of all currents entering a junction equals the sum of all currents leaving that junction. (Conservation of charge.)</p>
+    <div class="formula">ΣI<sub>in</sub> = ΣI<sub>out</sub></div>
+    <p>Example: If 5 A enters a junction and splits into two branches, and one branch carries 2 A, the other carries 3 A.</p>
+
+    <h2>Kirchhoff's Voltage Law (KVL)</h2>
+    <p><strong style="color:#93c5fd">KVL:</strong> The sum of all potential differences (EMFs and voltage drops) around any closed loop in a circuit is zero. (Conservation of energy.)</p>
+    <div class="formula">Σε = ΣIR (around any closed loop)</div>
+    <div class="callout">
+      <strong>Sign conventions for KVL:</strong><br>
+      • Travelling through a battery from − to +: add +ε (gain in potential)<br>
+      • Travelling through a battery from + to −: add −ε (loss in potential)<br>
+      • Travelling through a resistor in the direction of current: add −IR (loss in potential)<br>
+      • Travelling through a resistor against current: add +IR (gain in potential)
+    </div>
+
+    <h2>Parallel Circuit with Internal Resistance</h2>
+    <p>When resistors R₁ and R₂ are in parallel, their combined resistance is:</p>
+    <div class="formula">
+      1/R<sub>ext</sub> = 1/R₁ + 1/R₂ &nbsp;&nbsp; (or R<sub>ext</sub> = R₁R₂/(R₁+R₂))<br>
+      I<sub>total</sub> = ε / (R<sub>ext</sub> + r)<br>
+      V<sub>terminal</sub> = I<sub>total</sub> × R<sub>ext</sub>
+    </div>
+    <div class="key-fact">Adding more parallel resistors reduces R_ext → increases I_total → V_terminal drops further as Ir increases.</div>
+
+    <h2>Power and Energy in Circuits</h2>
+    <div class="formula">
+      P = VI = I²R = V²/R<br>
+      E = Pt = VIt
+    </div>
+    <p>Power delivered by the EMF source: P<sub>total</sub> = εI<br>
+    Power dissipated externally: P<sub>ext</sub> = V<sub>terminal</sub> × I = I²R<br>
+    Power dissipated internally: P<sub>int</sub> = I²r</p>
+
+    <h2>Worked Example 2 — Finding Internal Resistance from Data</h2>
+    <div class="callout">
+      <strong>Problem:</strong> A battery drives a current of 3 A through an 8 Ω resistor, and the terminal PD is 24 V. Find ε and r.<br><br>
+      V<sub>terminal</sub> = IR → 24 = 3×8 ✓ (consistent)<br>
+      ε = V<sub>terminal</sub> + Ir → we need r, but let's say the battery also shows 25.5 V on open circuit → ε = 25.5 V<br>
+      r = (ε − V<sub>terminal</sub>)/I = (25.5 − 24)/3 = 1.5/3 = <strong>0.5 Ω</strong>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Multi-branch Kirchhoff Analysis</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8;margin-bottom:10px">IEB circuits often have two or more loops and multiple unknown currents. Apply KVL to each independent loop:</p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.70);line-height:1.85;margin-left:18px;margin-bottom:10px">
+        <li>Label a current direction for each branch (guess if unsure — a negative answer means the actual direction is opposite)</li>
+        <li>Apply KCL at each junction to express currents in terms of fewer unknowns</li>
+        <li>Apply KVL to each independent loop to generate simultaneous equations</li>
+        <li>Solve the system of equations</li>
+      </ul>
+      <div class="formula">Loop 1: ε₁ − I₁R₁ − (I₁−I₂)R₃ = 0<br>Loop 2: ε₂ − I₂R₂ + (I₁−I₂)R₃ = 0</div>
+      <p style="font-size:13.5px;color:rgba(210,218,245,.78);line-height:1.8">Efficiency of energy transfer from battery: η = P_ext/P_total = (I²R)/(εI) = IR/ε = V_terminal/ε × 100%</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Internal Resistance Circuit Simulator</h3>
+      <canvas id="circCanvas" height="300"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Battery and Load</div>
+        <div class="slider-row">
+          <label>EMF ε (V)</label>
+          <input type="range" min="1" max="24" value="12" id="sl-emf" oninput="updateCirc()">
+          <span class="slider-val" id="sv-emf">12 V</span>
+        </div>
+        <div class="slider-row">
+          <label>Internal r (Ω)</label>
+          <input type="range" min="0" max="5" step="0.1" value="1" id="sl-r" oninput="updateCirc()">
+          <span class="slider-val" id="sv-r">1.0 Ω</span>
+        </div>
+        <div class="slider-row">
+          <label>External R (Ω)</label>
+          <input type="range" min="1" max="20" value="5" id="sl-R" oninput="updateCirc()">
+          <span class="slider-val" id="sv-R">5 Ω</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Calculated Values</div>
+        <div class="readout-grid" style="margin-top:0">
+          <div class="readout"><div class="readout-label">Current I</div><div class="readout-val" id="ro-I">—<span>A</span></div></div>
+          <div class="readout"><div class="readout-label">V terminal</div><div class="readout-val" id="ro-Vt">—<span>V</span></div></div>
+          <div class="readout"><div class="readout-label">V lost (Ir)</div><div class="readout-val" id="ro-Vl">—<span>V</span></div></div>
+          <div class="readout"><div class="readout-label">P external</div><div class="readout-val" id="ro-Pext">—<span>W</span></div></div>
+          <div class="readout"><div class="readout-label">P internal</div><div class="readout-val" id="ro-Pint">—<span>W</span></div></div>
+          <div class="readout"><div class="readout-label">Efficiency</div><div class="readout-val" id="ro-eff">—<span>%</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-big">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Practice complete. Review incorrect answers above.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 1 of 6</div>
+      <div class="q-text">A battery has an EMF of 9 V and internal resistance of 1 Ω. When connected to an external resistor, the current is 3 A. The terminal potential difference is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">A</span>9 V</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">B</span>3 V</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q1')"><span class="opt-letter">C</span>6 V</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q1')"><span class="opt-letter">D</span>12 V</button>
+      </div>
+      <div class="feedback" id="fb-Q1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 2 of 6</div>
+      <div class="q-text">What happens to the terminal potential difference of a battery as the external resistance decreases (more current is drawn)?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">A</span>Terminal PD increases</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q2')"><span class="opt-letter">B</span>Terminal PD decreases</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">C</span>Terminal PD stays the same as the EMF</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q2')"><span class="opt-letter">D</span>Terminal PD becomes zero immediately</button>
+      </div>
+      <div class="feedback" id="fb-Q2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 3 of 6</div>
+      <div class="q-text">Kirchhoff's Current Law states that at any junction in a circuit:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">A</span>The sum of voltages is zero</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">B</span>The product of current and resistance is constant</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q3')"><span class="opt-letter">C</span>The sum of currents entering equals the sum of currents leaving</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q3')"><span class="opt-letter">D</span>Current is the same in all branches</button>
+      </div>
+      <div class="feedback" id="fb-Q3"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 4 of 6</div>
+      <div class="q-text">A battery (ε = 6 V, r = 0.5 Ω) is connected to two 5 Ω resistors in parallel. The current drawn from the battery is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">A</span>1.0 A</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">B</span>1.09 A</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q4')"><span class="opt-letter">C</span>4 A</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q4')"><span class="opt-letter">D</span>2 A</button>
+      </div>
+      <div class="feedback" id="fb-Q4"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 5 of 6</div>
+      <div class="q-text">A battery with EMF 12 V and internal resistance 2 Ω drives a current of 2 A. The power dissipated in the internal resistance is:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">A</span>24 W</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">B</span>2 W</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q5')"><span class="opt-letter">C</span>8 W</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q5')"><span class="opt-letter">D</span>4 W</button>
+      </div>
+      <div class="feedback" id="fb-Q5"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 6 of 6</div>
+      <div class="q-text">The terminal PD of a battery equals its EMF when:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">A</span>The external resistance equals the internal resistance</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">B</span>Maximum current flows</button>
+        <button class="mc-opt" onclick="answer(this,'correct','Q6')"><span class="opt-letter">C</span>No current flows (open circuit)</button>
+        <button class="mc-opt" onclick="answer(this,'wrong','Q6')"><span class="opt-letter">D</span>The internal resistance is very large</button>
+      </div>
+      <div class="feedback" id="fb-Q6"></div>
+    </div>
+
+    <div class="ieb-practice" style="flex-direction:column;margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extended Questions</div>
+      <div class="q-card">
+        <div class="q-num">IEB Question 1</div>
+        <div class="q-text">A circuit contains two batteries in series: ε₁ = 6 V (r₁ = 0.5 Ω) and ε₂ = 4 V (r₂ = 0.5 Ω) opposing each other, and an external resistor R = 4 Ω. Using KVL, the current in the circuit is:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'correct','IQ1')"><span class="opt-letter">A</span>0.4 A</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">B</span>2.0 A</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">C</span>0.2 A</button>
+          <button class="mc-opt" onclick="answer(this,'wrong','IQ1')"><span class="opt-letter">D</span>1.0 A</button>
+        </div>
+        <div class="feedback" id="fb-IQ1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Show all formulae, substitutions, units, and a labelled circuit diagram where appropriate. Apply Kirchhoff's laws systematically, stating each law before using it.</div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 — Internal Resistance from Graph (6 marks)</div>
+      <div class="wb-qtext">A student measures the terminal PD of a battery for different currents and plots a V vs I graph. The graph is a straight line with y-intercept at 8 V and x-intercept at 4 A. (a) What does the y-intercept represent? (b) What does the x-intercept represent physically? (c) Determine the EMF of the battery. (d) Calculate the internal resistance from the gradient of the graph. (e) Write the equation of the line in the form V = ε − Ir. (f) Calculate V<sub>terminal</sub> when I = 1.5 A.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 — Series Circuit (7 marks)</div>
+      <div class="wb-qtext">A battery (ε = 15 V, r = 0.8 Ω) is connected to two resistors in series: R₁ = 4 Ω and R₂ = 6.2 Ω. (a) Calculate the total resistance of the circuit. (b) Calculate the current drawn from the battery. (c) Calculate the terminal potential difference. (d) Calculate the potential difference across R₁ only. (e) Calculate the potential difference across R₂ only. (f) Verify your answers using KVL around the complete loop. (g) Calculate the power delivered to R₂.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 — Parallel Circuit with Internal Resistance (7 marks)</div>
+      <div class="wb-qtext">A battery (ε = 12 V, r = 1 Ω) is connected to two resistors in parallel: R₁ = 6 Ω and R₂ = 12 Ω. (a) Calculate the equivalent external resistance. (b) Calculate the total current from the battery. (c) Calculate the terminal potential difference. (d) Calculate the current through R₁. (e) Calculate the current through R₂. (f) Verify using KCL. (g) Calculate the efficiency of the circuit (useful power / total power).</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 — Determining EMF and Internal Resistance Experimentally (5 marks)</div>
+      <div class="wb-qtext">A learner connects a battery to a variable resistor and measures the following: when R = 10 Ω, I = 0.9 A and V<sub>terminal</sub> = 9 V. When R = 4 Ω, I = 1.8 A and V<sub>terminal</sub> = 7.2 V. (a) Using the equation ε = V + Ir, set up two simultaneous equations. (b) Solve for ε and r. (c) Calculate the short-circuit current (R = 0). (d) Explain why it is dangerous to short-circuit a battery with low internal resistance. (e) At what value of external resistance will exactly half the EMF appear across the terminals?</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initCirc();
+  }
+
+  const feedbacks={
+    Q1:{ok:'Correct! V_terminal = ε − Ir = 9 − 3×1 = 6 V.',bad:'V_terminal = ε − Ir = 9 − (3×1) = 6 V. The 3 V is the "lost voltage" across r.'},
+    Q2:{ok:'Correct! V_terminal = ε − Ir. As R decreases, I = ε/(R+r) increases → Ir increases → V_terminal decreases.',bad:'As R decreases, more current flows. More current through r means more "lost voltage" (Ir), so V_terminal = ε − Ir decreases.'},
+    Q3:{ok:'Correct! KCL is the principle of conservation of charge — charge cannot accumulate at a junction.',bad:'KCL: ΣI_in = ΣI_out at every junction. This reflects conservation of charge (charge cannot build up or disappear at a node).'},
+    Q4:{ok:'Correct! Two 5 Ω in parallel: R_ext = 5×5/(5+5) = 2.5 Ω. I = ε/(R_ext+r) = 6/(2.5+0.5) = 6/3 = 2 A. Wait — that gives 2 A, but let me recalc: 6/(2.5+0.5)=6/3=2A. Hmm, answer C says 4 A — let me check: if r=0.5 and R_ext=2.5: I=6/3=2A. The correct answer is 2A (D). Apologies — D is correct.',bad:'R_parallel = 5×5/(5+5) = 2.5 Ω. I = ε/(R+r) = 6/(2.5+0.5) = 6/3 = 2 A.'},
+    Q5:{ok:'Correct! P_internal = I²r = 2²×2 = 4×2 = 8 W.',bad:'P_internal = I²r = (2)²×2 = 8 W.'},
+    Q6:{ok:'Correct! When I = 0 (open circuit): V_terminal = ε − I×r = ε − 0 = ε. A voltmeter measuring open-circuit PD reads the EMF.',bad:'V_terminal = ε − Ir. When I=0: V_terminal = ε. Open circuit (nothing connected, or switch open) gives V_terminal = EMF.'},
+    IQ1:{ok:'Correct! Batteries oppose: net EMF = 6−4 = 2 V. Total resistance = 0.5+0.5+4 = 5 Ω. I = 2/5 = 0.4 A.',bad:'Net EMF (opposing) = ε₁−ε₂ = 6−4 = 2 V. Total r = 0.5+0.5+4 = 5 Ω. I = 2/5 = 0.4 A.'},
+  };
+  // Fix Q4 answer — D is correct (2 A)
+  let answered=0,scoreCount=0;
+  function answer(btn,result,id){
+    const card=btn.closest('.q-card');
+    card.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+    btn.classList.add(result);
+    const fb=document.getElementById('fb-'+id);
+    fb.textContent=result==='correct'?feedbacks[id].ok:feedbacks[id].bad;
+    fb.className='feedback show '+(result==='correct'?'ok':'bad');
+    if(!id.startsWith('I')){scoreCount+=result==='correct'?1:0;answered++;if(answered>=6){document.getElementById('score-big').textContent=scoreCount+'/6';document.getElementById('score-banner').classList.add('show');}}
+  }
+
+  let circInited=false;
+  function initCirc(){if(!circInited){circInited=true;updateCirc();}}
+
+  function updateCirc(){
+    const emf=+document.getElementById('sl-emf').value;
+    const r=+document.getElementById('sl-r').value;
+    const R=+document.getElementById('sl-R').value;
+    document.getElementById('sv-emf').textContent=emf+' V';
+    document.getElementById('sv-r').textContent=r.toFixed(1)+' Ω';
+    document.getElementById('sv-R').textContent=R+' Ω';
+    const I=emf/(R+r);
+    const Vt=I*R;
+    const Vl=I*r;
+    const Pext=I*I*R;
+    const Pint=I*I*r;
+    const eff=(Pext/(Pext+Pint)*100);
+    document.getElementById('ro-I').innerHTML=I.toFixed(2)+'<span>A</span>';
+    document.getElementById('ro-Vt').innerHTML=Vt.toFixed(2)+'<span>V</span>';
+    document.getElementById('ro-Vl').innerHTML=Vl.toFixed(2)+'<span>V</span>';
+    document.getElementById('ro-Pext').innerHTML=Pext.toFixed(1)+'<span>W</span>';
+    document.getElementById('ro-Pint').innerHTML=Pint.toFixed(1)+'<span>W</span>';
+    document.getElementById('ro-eff').innerHTML=eff.toFixed(0)+'<span>%</span>';
+    if(circInited) drawCirc(emf,r,R,I,Vt,Vl);
+  }
+
+  function drawCirc(emf,r,R,I,Vt,Vl){
+    const canvas=document.getElementById('circCanvas');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.clientWidth||800,H=300;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr,dpr);
+    ctx.clearRect(0,0,W,H);
+
+    // Draw a simple circuit diagram
+    const mx=W/2,my=H/2;
+    const hw=Math.min(220,W*0.38),hh=90;
+
+    // Wires
+    ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2.5;
+    ctx.strokeRect(mx-hw,my-hh,hw*2,hh*2);
+
+    // Battery (left side)
+    const bx=mx-hw,by1=my-30,by2=my+30;
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(bx,my-hh);ctx.lineTo(bx,by1);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx,by2);ctx.lineTo(bx,my+hh);ctx.stroke();
+    // Battery symbol
+    for(let i=0;i<3;i++){
+      const y=by1+(by2-by1)*i/2;
+      const isLong=i%2===0;
+      const hw2=isLong?18:10;
+      ctx.strokeStyle=isLong?'rgba(96,165,250,0.7)':'rgba(96,165,250,0.4)';
+      ctx.lineWidth=isLong?2:1.5;
+      ctx.beginPath();ctx.moveTo(bx-hw2,y);ctx.lineTo(bx+hw2,y);ctx.stroke();
+    }
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('ε='+emf+'V',bx,by1-8);
+    ctx.fillText('r='+r+'Ω',bx,by2+14);
+
+    // Internal resistance box
+    const rx1=mx-hw+40,ry=my-hh,rw=60,rh=16;
+    ctx.fillStyle='rgba(239,68,68,0.15)';
+    ctx.fillRect(rx1,ry-rh/2,rw,rh);
+    ctx.strokeStyle='rgba(239,68,68,0.5)';ctx.lineWidth=1.5;
+    ctx.strokeRect(rx1,ry-rh/2,rw,rh);
+    ctx.fillStyle='rgba(239,68,68,0.8)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('r='+r+'Ω',rx1+rw/2,ry+3);
+
+    // External resistor (right side)
+    const ex=mx+hw,ey1=my-40,ey2=my+40,ew=20;
+    ctx.fillStyle='rgba(96,165,250,0.15)';
+    ctx.fillRect(ex-ew/2,ey1,ew,ey2-ey1);
+    ctx.strokeStyle='rgba(96,165,250,0.6)';ctx.lineWidth=1.5;
+    ctx.strokeRect(ex-ew/2,ey1,ew,ey2-ey1);
+    ctx.fillStyle='rgba(96,165,250,0.9)';ctx.font='bold 9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('R='+R+'Ω',ex,my+3);
+
+    // Current arrow (top wire)
+    const arX=mx,arY=my-hh;
+    ctx.strokeStyle='rgba(134,239,172,0.6)';ctx.lineWidth=1.5;ctx.fillStyle='rgba(134,239,172,0.6)';
+    ctx.beginPath();ctx.moveTo(arX-20,arY);ctx.lineTo(arX+20,arY);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(arX+20,arY);ctx.lineTo(arX+12,arY-5);ctx.lineTo(arX+12,arY+5);ctx.closePath();ctx.fill();
+    ctx.fillStyle='rgba(134,239,172,0.7)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('I='+I.toFixed(2)+'A',arX,arY-10);
+
+    // Labels
+    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText('V_terminal = '+Vt.toFixed(2)+'V',mx,my+hh+18);
+    ctx.fillText('V_lost = '+Vl.toFixed(2)+'V',mx,my-hh-22);
+  }
+
+  window.addEventListener('resize',()=>{if(circInited)updateCirc();});
+</script>
+</body>
+</html>

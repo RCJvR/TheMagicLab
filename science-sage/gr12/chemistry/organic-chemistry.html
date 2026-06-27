@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organic Chemistry — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;--acc:rgba(20,184,166,1);--acc2:rgba(52,211,153,1)}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(20,184,166,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(52,211,153,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:6px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.30);color:#5eead4}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2dd4bf;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(20,184,166,.15);color:#5eead4;border:1px solid rgba(20,184,166,.30)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#2dd4bf;border-bottom-color:#2dd4bf}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#5eead4}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:13px;color:#2dd4bf;text-align:center;line-height:2.2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#2dd4bf;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.30);color:#5eead4}
+.sim-select{font-family:var(--fm);font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;outline:none;margin-bottom:10px;width:100%}
+.sim-select option{background:#0d1226;color:var(--text)}
+.readout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(20,184,166,.10);border-color:rgba(20,184,166,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#2dd4bf}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#2dd4bf;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(20,184,166,.10);border:1px solid rgba(20,184,166,.25);color:#5eead4;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(20,184,166,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+@media(max-width:640px){nav{padding:12px 16px}.lesson-header{padding:20px 16px 16px}.tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}.tab-panel{padding:20px 16px 36px}.lesson-body,.practice-wrap,.wb-wrap{max-width:100%}.lesson-title{font-size:clamp(22px,7vw,36px)}.sim-controls-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">&#x1F52C; Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Chemistry</span>
+    <a href="../../index.html" class="nav-back">&#8592; Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 &middot; Chemistry &middot; Lesson 1</div>
+  <h1 class="lesson-title">Organic Chemistry &mdash; Structure &amp; Naming</h1>
+  <p class="lesson-sub">Identify and name organic compounds using IUPAC nomenclature, classify functional groups, and describe the physical properties of homologous series.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label">Toggle to show IEB extension content</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">&#x1F4D6; Learn</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#x1F9EA; Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#x2713; Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#x270F; Workbook</button>
+</div>
+
+<!-- LEARN TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>What is Organic Chemistry?</h2>
+    <p>Organic chemistry is the study of compounds containing <strong>carbon</strong>. Carbon is unique: it forms four covalent bonds, can bond to itself in chains or rings, and produces millions of different compounds. Almost all biological molecules — proteins, DNA, fats, sugars — are organic.</p>
+    <div class="callout"><strong>Key features of carbon:</strong> Tetravalent (4 bonds); forms C&ndash;C single bonds, C=C double bonds, C&equiv;C triple bonds; bonds are covalent (not ionic); non-polar C&ndash;H bonds give organic compounds hydrophobic character unless a polar functional group is present.</div>
+
+    <h2>Hydrocarbons</h2>
+    <p>Hydrocarbons contain only carbon and hydrogen. They are classified by the type of C&ndash;C bonding:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Series</th><th>General Formula</th><th>Bond type</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Alkanes</td><td>C<sub>n</sub>H<sub>2n+2</sub></td><td>Single bonds only (saturated)</td><td>CH<sub>4</sub>, C<sub>2</sub>H<sub>6</sub>, C<sub>3</sub>H<sub>8</sub></td></tr>
+        <tr><td>Alkenes</td><td>C<sub>n</sub>H<sub>2n</sub></td><td>At least one C=C double bond</td><td>C<sub>2</sub>H<sub>4</sub>, C<sub>3</sub>H<sub>6</sub></td></tr>
+        <tr><td>Alkynes</td><td>C<sub>n</sub>H<sub>2n&minus;2</sub></td><td>At least one C&equiv;C triple bond</td><td>C<sub>2</sub>H<sub>2</sub></td></tr>
+      </tbody>
+    </table>
+
+    <h2>IUPAC Naming Rules</h2>
+    <p>IUPAC (International Union of Pure and Applied Chemistry) provides a systematic naming system:</p>
+    <ul>
+      <li><strong>Step 1 &mdash; Parent chain:</strong> Find the longest continuous carbon chain containing the principal functional group. The chain length gives the stem: meth(1), eth(2), prop(3), but(4), pent(5), hex(6).</li>
+      <li><strong>Step 2 &mdash; Suffix:</strong> Alkane &rarr; -ane; alkene &rarr; -ene; alkyne &rarr; -yne; alcohol &rarr; -ol; aldehyde &rarr; -al; ketone &rarr; -one; carboxylic acid &rarr; -oic acid; ester &rarr; -oate.</li>
+      <li><strong>Step 3 &mdash; Number the chain:</strong> Number from the end that gives the functional group or branch the <em>lowest locant</em> (smallest number).</li>
+      <li><strong>Step 4 &mdash; Name branches:</strong> Substituents are named as prefixes: methyl(-CH<sub>3</sub>), ethyl(-C<sub>2</sub>H<sub>5</sub>), chloro-, bromo-, etc. List alphabetically.</li>
+      <li><strong>Step 5 &mdash; Assemble:</strong> locant(s)-prefix(es)-stem-locant-suffix. E.g. 2-methylpropan-1-ol.</li>
+    </ul>
+    <div class="formula">but-2-ene &rarr; 4-carbon chain, double bond starting at C2<br>2-methylpropane &rarr; propane with a methyl group on C2<br>3-chlorobutan-1-ol &rarr; 4-carbon chain, Cl on C3, OH on C1</div>
+
+    <h2>Functional Groups</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Functional Group</th><th>Structure</th><th>Class</th><th>Suffix</th></tr></thead>
+      <tbody>
+        <tr><td>Hydroxyl</td><td>&ndash;OH</td><td>Alcohols</td><td>-ol</td></tr>
+        <tr><td>Carboxyl</td><td>&ndash;COOH</td><td>Carboxylic acids</td><td>-oic acid</td></tr>
+        <tr><td>Amino</td><td>&ndash;NH<sub>2</sub></td><td>Amines</td><td>-amine</td></tr>
+        <tr><td>Ester linkage</td><td>&ndash;COO&ndash;</td><td>Esters</td><td>-oate</td></tr>
+        <tr><td>Halogen</td><td>&ndash;X (F, Cl, Br, I)</td><td>Halogenoalkanes</td><td>halo- prefix</td></tr>
+        <tr><td>Carbonyl (aldehyde)</td><td>&ndash;CHO (end)</td><td>Aldehydes</td><td>-al</td></tr>
+        <tr><td>Carbonyl (ketone)</td><td>&ndash;C(=O)&ndash; (middle)</td><td>Ketones</td><td>-one</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Structural Formulae</h2>
+    <ul>
+      <li><strong>Expanded (displayed) formula:</strong> Shows every bond explicitly &mdash; each C&ndash;H and C&ndash;C bond drawn out. Most detailed; used to show bonding clearly.</li>
+      <li><strong>Condensed formula:</strong> Atoms written linearly without showing bonds; H atoms implied: CH<sub>3</sub>CH<sub>2</sub>OH.</li>
+      <li><strong>Skeletal formula:</strong> Lines represent C&ndash;C bonds; each vertex/end is a carbon; H atoms not shown (assumed to satisfy valency). Most compact; used in complex molecules.</li>
+    </ul>
+
+    <h2>Isomers</h2>
+    <p><strong>Structural isomers</strong> have the same molecular formula but different structural arrangements:</p>
+    <ul>
+      <li><strong>Chain isomers:</strong> Different arrangement of the carbon skeleton (e.g. butane vs 2-methylpropane — both C<sub>4</sub>H<sub>10</sub>).</li>
+      <li><strong>Position isomers:</strong> Same functional group in different positions (e.g. propan-1-ol vs propan-2-ol).</li>
+      <li><strong>Functional group isomers:</strong> Different functional groups with the same formula (e.g. ethanol CH<sub>3</sub>CH<sub>2</sub>OH vs methoxymethane CH<sub>3</sub>OCH<sub>3</sub>).</li>
+    </ul>
+    <p><strong>Geometric isomers</strong> arise from restricted rotation around a C=C double bond. When both carbons of a double bond carry two different groups:</p>
+    <ul>
+      <li><strong>cis-</strong> isomer: same groups on the same side of the double bond.</li>
+      <li><strong>trans-</strong> isomer: same groups on opposite sides.</li>
+    </ul>
+    <div class="callout"><strong>Condition for geometric isomerism:</strong> Each carbon of the C=C must bear two <em>different</em> substituents. If either carbon has two identical groups, no cis/trans isomers exist.</div>
+
+    <h2>Physical Properties of Homologous Series</h2>
+    <p>A <strong>homologous series</strong> is a family of compounds with the same functional group and general formula, differing by &ndash;CH<sub>2</sub>&ndash; units. Properties change <em>gradually</em> along the series:</p>
+    <ul>
+      <li><strong>Boiling point increases</strong> with chain length &mdash; more carbons mean larger molecules, stronger London (dispersion) forces, more energy needed to separate molecules.</li>
+      <li><strong>Branching decreases boiling point</strong> &mdash; branched molecules are more compact (spherical), reducing surface area for intermolecular contact, weakening dispersion forces.</li>
+      <li><strong>Hydroxyl (&ndash;OH) groups dramatically raise boiling point</strong> via hydrogen bonding (H-bonds are much stronger than dispersion forces). Compare ethanol (bp 78&deg;C) vs propane (bp &minus;42&deg;C) &mdash; both have ~3 carbons.</li>
+      <li><strong>Solubility in water:</strong> short-chain alcohols and carboxylic acids dissolve well (H-bonding with water); long chains are increasingly hydrophobic &rarr; insoluble.</li>
+    </ul>
+    <table class="symbols-table">
+      <thead><tr><th>Factor</th><th>Effect on BP</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>Longer chain</td><td>Increases</td><td>More surface area, stronger London forces</td></tr>
+        <tr><td>More branching</td><td>Decreases</td><td>More compact shape, less surface contact</td></tr>
+        <tr><td>&ndash;OH group</td><td>Greatly increases</td><td>Hydrogen bonding (strong intermolecular force)</td></tr>
+        <tr><td>&ndash;COOH group</td><td>Even higher increase</td><td>Dimerisation via 2 H-bonds; also polar C=O</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Worked Naming Examples</h2>
+    <div class="formula">
+      CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>CH<sub>3</sub> &rarr; butane (4-carbon chain, no functional group, alkane suffix -ane)<br><br>
+      CH<sub>3</sub>CH=CHCH<sub>3</sub> &rarr; but-2-ene (4C chain, double bond at C2)<br><br>
+      CH<sub>3</sub>CH(OH)CH<sub>3</sub> &rarr; propan-2-ol (3C chain, OH on C2)<br><br>
+      CH<sub>3</sub>COOH &rarr; ethanoic acid (2C chain, carboxyl group: suffix -oic acid)<br><br>
+      CH<sub>3</sub>CH(CH<sub>3</sub>)CH<sub>2</sub>CH<sub>3</sub> &rarr; 2-methylbutane (4C parent chain + methyl branch on C2)
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">&#x2B50; IEB Extension &mdash; Stereoisomers &amp; Optical Isomers</div>
+      <p>Beyond geometric isomers, molecules can exhibit <strong>optical isomerism</strong>. A carbon atom bonded to four <em>different</em> groups is called a <strong>chiral centre</strong> (or stereocentre). The two non-superimposable mirror-image structures are called <strong>enantiomers</strong>.</p>
+      <p>Enantiomers rotate plane-polarised light in opposite directions: the (+) or R enantiomer and the (&minus;) or S enantiomer. The R/S designation uses the Cahn&ndash;Ingold&ndash;Prelog (CIP) priority rules:</p>
+      <ul style="font-size:13.5px;color:rgba(210,218,245,.75);margin:0 0 10px 20px">
+        <li>Assign priorities 1&ndash;4 to the four substituents by atomic number (highest = 1).</li>
+        <li>View the molecule with the lowest priority group (4) pointing away from you.</li>
+        <li>If 1&rarr;2&rarr;3 is <em>clockwise</em> &rarr; R configuration; <em>anticlockwise</em> &rarr; S.</li>
+      </ul>
+      <p>A racemic mixture (50:50 mixture of enantiomers) shows no net optical rotation. Enantiomers have identical physical properties except optical rotation, but can have very different biological activity (e.g. thalidomide, ibuprofen).</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Molecule Builder &mdash; Draw Structural Formulae</h3>
+      <canvas id="molCanvas" height="360"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Build Your Molecule</div>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px">Chain length (carbons)</label>
+        <select class="sim-select" id="chainLen" onchange="drawMolecule()">
+          <option value="1">1 &mdash; Meth-</option>
+          <option value="2" selected>2 &mdash; Eth-</option>
+          <option value="3">3 &mdash; Prop-</option>
+          <option value="4">4 &mdash; But-</option>
+          <option value="5">5 &mdash; Pent-</option>
+          <option value="6">6 &mdash; Hex-</option>
+        </select>
+        <label style="font-size:12px;color:var(--text);display:block;margin-bottom:4px;margin-top:8px">Functional group</label>
+        <select class="sim-select" id="funcGroup" onchange="drawMolecule()">
+          <option value="alkane">None (Alkane)</option>
+          <option value="alkene">C=C Double bond (Alkene)</option>
+          <option value="alcohol">-OH (Alcohol)</option>
+          <option value="carboxylic">-COOH (Carboxylic acid)</option>
+          <option value="halo">-Cl (Chloroalkane)</option>
+          <option value="aldehyde">-CHO (Aldehyde)</option>
+          <option value="ketone">C=O (Ketone)</option>
+        </select>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">IUPAC Name &amp; Formula</div>
+        <div class="readout-grid">
+          <div class="readout" style="grid-column:1/-1"><div class="readout-label">IUPAC Name</div><div class="readout-val" id="iupacName" style="font-size:13px;letter-spacing:0">--</div></div>
+          <div class="readout"><div class="readout-label">Molecular Formula</div><div class="readout-val" id="molFormula" style="font-size:13px">--</div></div>
+          <div class="readout"><div class="readout-label">Series</div><div class="readout-val" id="seriesName" style="font-size:13px">--</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
+        Review the explanations to strengthen your understanding.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+    <div class="ieb-practice" id="iebPractice" style="margin-top:8px">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:12px">IEB Extension Questions</div>
+      <div id="iebContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#x1F5A8; Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your notebook. Show all reasoning clearly. For naming questions, identify the parent chain and functional group position step by step.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1 &mdash; IUPAC Naming</div>
+      <div class="wb-qtext">Name the following compounds using IUPAC nomenclature. Show your reasoning (identify parent chain, functional group, locant):<br><br>
+      (a) CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>OH<br>
+      (b) CH<sub>3</sub>CHCH<sub>2</sub>CH<sub>3</sub> with a Cl on the second carbon<br>
+      (c) CH<sub>3</sub>CH<sub>2</sub>COOH<br>
+      (d) CH<sub>3</sub>CH=CHCH<sub>2</sub>CH<sub>3</sub><br><br>
+      <em>(8 marks &mdash; 2 per compound)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2 &mdash; Functional Groups &amp; Classification</div>
+      <div class="wb-qtext">For each compound below, (i) identify the functional group present, (ii) name the homologous series it belongs to, and (iii) draw the structural formula:<br><br>
+      (a) hexan-1-ol &nbsp;&nbsp; (b) propanoic acid &nbsp;&nbsp; (c) 2-chloropropane &nbsp;&nbsp; (d) pentan-3-one<br><br>
+      <em>(8 marks &mdash; 2 per compound)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3 &mdash; Isomers</div>
+      <div class="wb-qtext">The molecular formula C<sub>4</sub>H<sub>8</sub>O can represent several different compounds.<br><br>
+      (a) Draw TWO structural isomers that are aldehydes with this formula.<br>
+      (b) Draw ONE structural isomer that is a ketone with this formula.<br>
+      (c) For but-2-ene (C<sub>4</sub>H<sub>8</sub>), draw and label the cis and trans isomers. Explain why geometric isomers are possible for this compound.<br><br>
+      <em>(7 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4 &mdash; Physical Properties</div>
+      <div class="wb-qtext">Consider the following compounds: butane (C<sub>4</sub>H<sub>10</sub>), butan-1-ol (C<sub>4</sub>H<sub>9</sub>OH), and 2-methylpropan-1-ol (C<sub>4</sub>H<sub>9</sub>OH).<br><br>
+      (a) Which compound has the highest boiling point? Explain fully using intermolecular forces.<br>
+      (b) Which of the two C<sub>4</sub> alcohols has the higher boiling point? Explain the effect of branching.<br>
+      (c) Which of these three compounds is most soluble in water? Explain.<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setCurriculum(mode) {
+  document.body.classList.toggle('ieb-mode', mode === 'ieb');
+  document.getElementById('btn-nsc').classList.toggle('active', mode === 'nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode === 'ieb');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(drawMolecule, 50);
+}
+
+// ─── Molecule Builder ─────────────────────────────────────────────────────────
+const stemNames = ['','meth','eth','prop','but','pent','hex'];
+
+function drawMolecule() {
+  const n = parseInt(document.getElementById('chainLen').value);
+  const fg = document.getElementById('funcGroup').value;
+  const canvas = document.getElementById('molCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 360;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.height = cssH + 'px';
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  ctx.clearRect(0,0,W,H);
+
+  // Compute name & formula
+  let name = '', formula = '', series = '';
+  const carbons = fg === 'carboxylic' ? n : n;
+  if (fg === 'alkane') {
+    name = stemNames[n] + 'ane';
+    formula = 'C' + n + 'H' + (2*n+2);
+    series = 'Alkane';
+  } else if (fg === 'alkene') {
+    name = n >= 3 ? stemNames[n] + '-1-ene' : stemNames[n] + 'ene';
+    formula = 'C' + n + 'H' + (2*n);
+    series = 'Alkene';
+  } else if (fg === 'alcohol') {
+    name = stemNames[n] + 'an-1-ol';
+    formula = 'C' + n + 'H' + (2*n+1) + 'OH';
+    series = 'Alcohol';
+  } else if (fg === 'carboxylic') {
+    name = stemNames[n] + 'anoic acid';
+    formula = 'C' + n + 'H' + (2*n-1) + 'COOH';
+    series = 'Carboxylic Acid';
+  } else if (fg === 'halo') {
+    name = '1-chloro' + stemNames[n] + 'ane';
+    formula = 'C' + n + 'H' + (2*n+1) + 'Cl';
+    series = 'Halogenoalkane';
+  } else if (fg === 'aldehyde') {
+    name = stemNames[n] + 'anal';
+    formula = 'C' + n + 'H' + (2*n) + 'O';
+    series = 'Aldehyde';
+  } else if (fg === 'ketone') {
+    name = n >= 3 ? stemNames[n] + 'an-' + Math.floor(n/2) + '-one' : stemNames[n] + 'one';
+    formula = 'C' + n + 'H' + (2*n) + 'O';
+    series = 'Ketone';
+  }
+  document.getElementById('iupacName').textContent = name || '--';
+  document.getElementById('molFormula').textContent = formula || '--';
+  document.getElementById('seriesName').textContent = series || '--';
+
+  // Drawing parameters
+  const totalC = n;
+  const cRadius = 16;
+  const bondLen = Math.min(80, (W - 120) / Math.max(1, totalC));
+  const startX = (W - bondLen * (totalC - 1)) / 2;
+  const cY = H / 2;
+  const hGap = 28;
+  const carbonColor = '#2dd4bf';
+  const hColor = '#94a3b8';
+  const bondColor = 'rgba(255,255,255,0.35)';
+
+  // Draw C-C bonds
+  ctx.strokeStyle = bondColor;
+  ctx.lineWidth = 2;
+  for (let i = 0; i < totalC - 1; i++) {
+    const x1 = startX + i * bondLen;
+    const x2 = x1 + bondLen;
+    if (fg === 'alkene' && i === 0 && totalC >= 2) {
+      // double bond
+      ctx.beginPath(); ctx.moveTo(x1, cY - 4); ctx.lineTo(x2, cY - 4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x1, cY + 4); ctx.lineTo(x2, cY + 4); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.moveTo(x1, cY); ctx.lineTo(x2, cY); ctx.stroke();
+    }
+  }
+
+  // Draw carbons and their H atoms
+  for (let i = 0; i < totalC; i++) {
+    const cx = startX + i * bondLen;
+    let hCount = 0;
+    // Determine H count
+    let bonds = 0;
+    if (i === 0 || i === totalC - 1) bonds = 1; else bonds = 2;
+    if (fg === 'alkene' && (i === 0 || i === 1) && totalC >= 2) bonds++;
+    // functional group bonds
+    if (i === 0 && (fg === 'alcohol' || fg === 'halo' || fg === 'aldehyde')) bonds++;
+    if (i === totalC - 1 && fg === 'carboxylic') bonds += 2;
+    if (i === Math.floor((totalC-1)/2) && fg === 'ketone' && totalC >= 3) bonds++;
+    hCount = 4 - bonds;
+    hCount = Math.max(0, hCount);
+
+    // H bonds above
+    for (let h = 0; h < Math.ceil(hCount/2); h++) {
+      const hx = cx - (Math.ceil(hCount/2)-1)*10/2 + h*10;
+      ctx.strokeStyle = bondColor; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(hx, cY - cRadius); ctx.lineTo(hx, cY - cRadius - hGap); ctx.stroke();
+      ctx.fillStyle = hColor; ctx.font = 'bold 11px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      ctx.fillText('H', hx, cY - cRadius - hGap - 5);
+    }
+    // H bonds below
+    for (let h = 0; h < Math.floor(hCount/2); h++) {
+      const hx = cx - (Math.floor(hCount/2)-1)*10/2 + h*10;
+      ctx.strokeStyle = bondColor; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(hx, cY + cRadius); ctx.lineTo(hx, cY + cRadius + hGap); ctx.stroke();
+      ctx.fillStyle = hColor; ctx.font = 'bold 11px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      ctx.fillText('H', hx, cY + cRadius + hGap + 13);
+    }
+
+    // Carbon atom circle
+    ctx.beginPath(); ctx.arc(cx, cY, cRadius, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(20,184,166,0.18)'; ctx.fill();
+    ctx.strokeStyle = carbonColor; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 12px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+    ctx.fillText('C', cx, cY + 4);
+  }
+
+  // Draw functional group at end/position
+  const lastX = startX + (totalC - 1) * bondLen;
+  const firstX = startX;
+  ctx.font = 'bold 12px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  if (fg === 'alcohol') {
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(firstX - cRadius, cY); ctx.lineTo(firstX - cRadius - 30, cY); ctx.stroke();
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillText('OH', firstX - cRadius - 42, cY + 4);
+  } else if (fg === 'halo') {
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(firstX - cRadius, cY); ctx.lineTo(firstX - cRadius - 30, cY); ctx.stroke();
+    ctx.fillStyle = '#c4b5fd';
+    ctx.fillText('Cl', firstX - cRadius - 42, cY + 4);
+  } else if (fg === 'carboxylic') {
+    ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(lastX + cRadius, cY); ctx.lineTo(lastX + cRadius + 30, cY); ctx.stroke();
+    ctx.fillStyle = '#fca5a5';
+    ctx.fillText('COOH', lastX + cRadius + 55, cY + 4);
+  } else if (fg === 'aldehyde') {
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(lastX + cRadius, cY); ctx.lineTo(lastX + cRadius + 30, cY); ctx.stroke();
+    ctx.fillStyle = '#fbbf24';
+    ctx.fillText('CHO', lastX + cRadius + 48, cY + 4);
+  } else if (fg === 'ketone' && totalC >= 3) {
+    const kx = startX + Math.floor((totalC-1)/2) * bondLen;
+    ctx.strokeStyle = '#f87171'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(kx, cY - cRadius); ctx.lineTo(kx, cY - cRadius - 30); ctx.stroke();
+    ctx.fillStyle = '#fca5a5'; ctx.font = 'bold 11px "JetBrains Mono",monospace';
+    ctx.fillText('=O', kx, cY - cRadius - 36);
+  }
+
+  // IUPAC name label at bottom
+  ctx.fillStyle = 'rgba(45,212,191,0.8)';
+  ctx.font = '600 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(name, W/2, H - 14);
+}
+
+// ─── Practice Questions ───────────────────────────────────────────────────────
+const NSC_QUESTIONS = [
+  {
+    q: 'What is the IUPAC name for CH₃CH₂CH(OH)CH₃?',
+    opts: ['butan-1-ol','butan-3-ol','butan-2-ol','2-methylpropan-1-ol'],
+    ans: 2,
+    exp: 'The longest chain has 4 carbons (butane stem). The –OH group is on the second carbon from either end. Numbering from the end closest to the OH group gives position 2. Name: butan-2-ol.'
+  },
+  {
+    q: 'Which functional group is present in ethanoic acid (CH₃COOH)?',
+    opts: ['Hydroxyl (–OH)','Carbonyl (C=O in middle)','Carboxyl (–COOH)','Amino (–NH₂)'],
+    ans: 2,
+    exp: 'Ethanoic acid contains a –COOH (carboxyl) group. This is the defining functional group of carboxylic acids. It consists of a carbonyl (C=O) and a hydroxyl (–OH) on the same carbon, but together they form the distinct carboxyl group.'
+  },
+  {
+    q: 'But-1-ene and cyclobutane both have the molecular formula C₄H₈. They are examples of:',
+    opts: ['Geometric isomers','Chain isomers','Functional group isomers','Position isomers'],
+    ans: 2,
+    exp: 'But-1-ene (an alkene with a C=C) and cyclobutane (a cyclic alkane) have the same molecular formula C₄H₈ but belong to different homologous series. They have different functional group types (C=C vs ring) — these are functional group isomers.'
+  },
+  {
+    q: 'Why does butan-1-ol have a much higher boiling point than butane, despite both having 4 carbon atoms?',
+    opts: ['Butan-1-ol has stronger London dispersion forces','Butan-1-ol molecules form hydrogen bonds via the –OH group','Butan-1-ol has a higher molar mass causing stronger forces','Butane is a gas so it always boils at a lower temperature'],
+    ans: 1,
+    exp: 'The –OH group in butan-1-ol forms hydrogen bonds between molecules. Hydrogen bonds are much stronger than the London dispersion forces between butane molecules. More energy is therefore needed to separate butan-1-ol molecules — hence its boiling point (118°C) is far higher than butane (−10°C).'
+  },
+  {
+    q: 'For geometric (cis/trans) isomers to exist around a C=C double bond:',
+    opts: ['The molecule must have at least 4 carbons','Each carbon of the C=C must carry two different substituents','The molecule must be cyclic','The double bond must be in the middle of the chain'],
+    ans: 1,
+    exp: 'Geometric isomerism requires restricted rotation (provided by the C=C) AND each carbon of the double bond must carry two DIFFERENT groups. If either carbon has two identical groups, the cis and trans forms are identical — no isomers exist. For example, but-2-ene shows cis/trans isomerism; propene does not (one C=C carbon has two H atoms).'
+  },
+  {
+    q: 'Which compound has the highest boiling point: pentane, 2-methylbutane, or pentan-1-ol? All three are C₅ compounds.',
+    opts: ['Pentane — longest straight chain','2-methylbutane — branching increases BP','Pentan-1-ol — hydrogen bonding from –OH group','All three have the same boiling point because they have the same molecular formula'],
+    ans: 2,
+    exp: 'Pentan-1-ol has a boiling point of 138°C, far higher than pentane (36°C) or 2-methylbutane (28°C). The –OH group in pentan-1-ol creates hydrogen bonds, which are much stronger intermolecular forces than the London dispersion forces in pentane or 2-methylbutane. Branching (2-methylbutane) actually DECREASES the boiling point relative to straight-chain pentane.'
+  }
+];
+
+const IEB_QUESTIONS = [
+  {
+    q: 'A molecule of lactic acid has the structure CH₃CH(OH)COOH. Which carbon atom is a chiral centre?',
+    opts: ['C1 (the CH₃ carbon)','C2 (the CH(OH) carbon)','C3 (the COOH carbon)','No chiral centre exists'],
+    ans: 1,
+    exp: 'C2 is bonded to four different groups: –CH₃, –OH, –COOH, and –H. Since all four groups are different, C2 is a chiral centre (stereocentre). Lactic acid therefore exists as two enantiomers: L-lactic acid (in muscles) and D-lactic acid.'
+  }
+];
+
+let nscAnswers = new Array(NSC_QUESTIONS.length).fill(null);
+let iebAnswers = new Array(IEB_QUESTIONS.length).fill(null);
+let nscCorrect = 0;
+
+function buildPractice() {
+  buildQuestions('practiceContainer', NSC_QUESTIONS, 'nsc', nscAnswers);
+  buildQuestions('iebContainer', IEB_QUESTIONS, 'ieb', iebAnswers);
+}
+
+function buildQuestions(containerId, questions, prefix, answers) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Question ${qi + 1} of ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="${prefix}-opts-${qi}">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" onclick="answer('${prefix}',${qi},${oi})" id="${prefix}-opt-${qi}-${oi}"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="${prefix}-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function answer(prefix, qi, oi) {
+  const questions = prefix === 'nsc' ? NSC_QUESTIONS : IEB_QUESTIONS;
+  const answers = prefix === 'nsc' ? nscAnswers : iebAnswers;
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = questions[qi];
+  const isCorrect = oi === q.ans;
+  if (prefix === 'nsc' && isCorrect) nscCorrect++;
+  document.querySelectorAll(`#${prefix}-opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(`${prefix}-fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  if (prefix === 'nsc' && nscAnswers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = nscCorrect + '/' + NSC_QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+drawMolecule();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>{drawMolecule();window.dispatchEvent(new Event('resize'));},60);}</script>
+</body>
+</html>
