@@ -295,6 +295,7 @@
         target.onclick = () => openModal('signin');
       }
     });
+    document.dispatchEvent(new CustomEvent('magiclab:nav:rendered', { detail: { profile } }));
   }
 
   // ── 12. Utility ───────────────────────────────────────────

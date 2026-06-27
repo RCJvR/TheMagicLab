@@ -445,8 +445,16 @@
   document.addEventListener('magiclab:auth:ready', async ({ detail: { profile } }) => {
     if (profile) {
       await _updateNavXPChip();
-      // Record a daily activity entry (idempotent — safe to call every page load)
       recordDailyActivity();
+    }
+  });
+
+  // Re-inject whenever auth-modal.js re-renders the nav (sign-in, sign-out, sign-up)
+  document.addEventListener('magiclab:nav:rendered', async ({ detail: { profile } }) => {
+    if (profile) await _updateNavXPChip();
+    else {
+      const existing = document.getElementById('ml-xp-nav-chip');
+      if (existing) existing.remove();
     }
   });
 

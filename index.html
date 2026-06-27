@@ -640,21 +640,8 @@
     }
     // Run on initial auth resolve
     document.addEventListener('magiclab:auth:ready', _syncTeachersBtn);
-    // Re-run whenever auth-modal.js rewrites the nav chip (sign-in / sign-out).
-    // Skip mutations caused by the XP chip itself to prevent infinite recursion.
-    document.addEventListener('DOMContentLoaded', () => {
-      const navRight = document.querySelector('.nav-right');
-      if (!navRight) return;
-      new MutationObserver((mutations) => {
-        const isXPChipOnly = mutations.every(m =>
-          Array.from(m.addedNodes).every(n => n.id === 'ml-xp-nav-chip') &&
-          Array.from(m.removedNodes).every(n => n.id === 'ml-xp-nav-chip')
-        );
-        if (isXPChipOnly) return;
-        _syncTeachersBtn();
-        window.MagicLabXP?.updateNavChip?.();
-      }).observe(navRight, { childList: true, subtree: true });
-    });
+    // Re-run whenever auth-modal.js rewrites the nav chip (sign-in / sign-out)
+    document.addEventListener('magiclab:nav:rendered', _syncTeachersBtn);
   </script>
 
 </body>
