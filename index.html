@@ -638,9 +638,8 @@
       const btn = document.getElementById('nav-teachers-btn');
       if (btn) btn.style.display = window.MagicLabAuth?.isTeacher() ? '' : 'none';
     }
-    // Run on initial auth resolve
     document.addEventListener('magiclab:auth:ready', _syncTeachersBtn);
-    // Re-run whenever auth-modal.js rewrites the nav chip (sign-in / sign-out)
+    document.addEventListener('magiclab:auth:change', _syncTeachersBtn);
     document.addEventListener('magiclab:nav:rendered', _syncTeachersBtn);
   </script>
 

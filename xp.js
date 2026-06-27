@@ -449,13 +449,19 @@
     }
   });
 
-  // Re-inject whenever auth-modal.js re-renders the nav (sign-in, sign-out, sign-up)
-  document.addEventListener('magiclab:nav:rendered', async ({ detail: { profile } }) => {
+  // Re-inject on every auth state change (sign-in, sign-out, token refresh)
+  document.addEventListener('magiclab:auth:change', async ({ detail: { profile } }) => {
     if (profile) await _updateNavXPChip();
     else {
       const existing = document.getElementById('ml-xp-nav-chip');
       if (existing) existing.remove();
     }
+  });
+
+  // Also re-inject after auth-modal.js finishes rendering the nav chip
+  // (handles the case where the chip wasn't in the DOM yet when auth:change fired)
+  document.addEventListener('magiclab:nav:rendered', async ({ detail: { profile } }) => {
+    if (profile) await _updateNavXPChip();
   });
 
   // ── PUBLIC API ───────────────────────────────────────────

@@ -250,8 +250,14 @@
   // We use MagicLabAuth.onAuthChange rather than the DOM event so we
   // always get the final settled state after profile fetch completes.
   document.addEventListener('magiclab:auth:ready', ({ detail: { profile } }) => {
-    // Only re-render if the modal is closed — if it's open we're mid-login
-    // and the sign-in handler above will call _renderNavAuth itself once done.
+    if (!overlay().classList.contains('ml-open')) {
+      _renderNavAuth(profile);
+    }
+  });
+
+  // Re-render immediately on every auth state change (sign-in, sign-out, token refresh).
+  // This replaces the 5s timeout path for the common case — the timeout is now just a fallback.
+  document.addEventListener('magiclab:auth:change', ({ detail: { profile } }) => {
     if (!overlay().classList.contains('ml-open')) {
       _renderNavAuth(profile);
     }

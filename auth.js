@@ -37,6 +37,10 @@ async function _initAuth() {
   _supabase.auth.onAuthStateChange(async (event, session) => {
     await _handleSession(session);
     _listeners.forEach(fn => fn(event, _profile));
+    // Broadcast to DOM listeners so pages can react without polling
+    document.dispatchEvent(new CustomEvent('magiclab:auth:change', {
+      detail: { event, profile: _profile }
+    }));
   });
 
   // Expose public API
