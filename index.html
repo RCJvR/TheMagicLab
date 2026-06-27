@@ -140,30 +140,6 @@
     }
 
     /* ── Section label ── */
-    .section-row {
-      display: flex; align-items: center; gap: 16px;
-      padding: 0 52px;
-      margin: 24px 0 16px;
-    }
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--accent-2); white-space: nowrap;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .section-label-live::before {
-      content: '';
-      display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent-2);
-      box-shadow: 0 0 0 3px rgba(17,217,143,0.20);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{box-shadow:0 0 0 3px rgba(17,217,143,0.20);} 50%{box-shadow:0 0 0 6px rgba(17,217,143,0.06);} }
-    .section-label-soon { color: rgba(210,218,245,0.22); }
-    .section-line {
-      flex: 1; height: 1px;
-      background: linear-gradient(to right, rgba(17,217,143,0.20), var(--border) 60%, transparent);
-    }
 
     /* ── Cards grid ── */
     .cards-outer { width: 100%; }
@@ -200,15 +176,14 @@
     }
 
     /* Dim siblings on hover */
-    .cards-track:has(.card:not(.card-soon):hover) .card:not(:hover) { opacity: 0.55; }
-    .cards-track:has(.card:not(.card-soon):hover) .card-soon { opacity: 0.30; }
+    .cards-track:has(.card:hover) .card:not(:hover) { opacity: 0.55; }
 
-    .card:not(.card-soon):hover {
+    .card:hover {
       transform: translateY(-6px) scale(1.03);
       box-shadow: 0 28px 60px rgba(0,0,0,0.50);
       opacity: 1 !important;
     }
-    .card:not(.card-soon):hover::before { opacity: 1; }
+    .card:hover::before { opacity: 1; }
 
     /* ── Card internals ── */
     .card-icon {
@@ -257,43 +232,6 @@
     .card-btn:hover { transform: translateY(-1px); }
     .card-btn:active { transform: none; }
 
-    /* ── Coming soon ── */
-    .card-soon {
-      cursor: default; opacity: 0.55;
-      background: rgba(255,255,255,0.02);
-      border-color: rgba(255,255,255,0.05);
-    }
-    .card-soon:hover { transform: none !important; box-shadow: none !important; opacity: 0.70 !important; }
-    .card-soon::before { display: none; }
-    .soon-badge {
-      position: absolute; top: 16px; right: 16px;
-      font-family: var(--font-mono); font-size: 9px; font-weight: 600;
-      letter-spacing: 0.10em; text-transform: uppercase;
-      padding: 3px 10px; border-radius: 99px;
-      background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.28);
-      color: #f5a623;
-    }
-    .btn-soon {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(210,218,245,0.28); cursor: not-allowed;
-    }
-    .btn-soon:hover { transform: none; }
-
-    /* ── Divider between live and coming soon ── */
-    .track-divider {
-      width: 1px; align-self: stretch; flex-shrink: 0; margin: 0 8px;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.12) 30%, rgba(255,255,255,0.08) 70%, transparent);
-      position: relative;
-    }
-    .track-divider span {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%) rotate(90deg);
-      font-family: var(--font-mono); font-size: 8px; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(245,166,35,0.35); white-space: nowrap;
-      background: var(--bg); padding: 4px 3px;
-    }
 
     /* ═══ PER-TOOL THEMES ═══ */
 
@@ -404,16 +342,6 @@
     <h1>A complete STEM ecosystem.<br><em>Built for browsers.</em></h1>
     <p class="hero-sub">Hands-on, browser-based tools designed for South African students. Develop STEM skills and see real results — no setup, no downloads.</p>
   </section>
-
-  <!-- Section label -->
-  <div class="section-row">
-    <span class="section-label section-label-live">Available now</span>
-    <div class="section-line"></div>
-    <span class="section-label section-label-soon">
-      <i data-lucide="clock" style="width:11px;height:11px;margin-right:4px;"></i>
-      Coming soon
-    </span>
-  </div>
 
   <!-- Cards -->
   <div class="cards-outer">
