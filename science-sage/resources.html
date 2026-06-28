@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080c1a">
+  <title>Resources · Science Sage</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#080c1a;--bg2:#0d1226;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--green-dim:rgba(34,197,94,0.18);
+      --font-display:"Cabinet Grotesk",sans-serif;--font-body:"Cabinet Grotesk",sans-serif;
+      --font-mono:"JetBrains Mono",monospace;--font-serif:"Instrument Serif",serif;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 0%,rgba(132,204,22,0.07) 0%,transparent 55%),radial-gradient(ellipse 50% 35% at 50% 100%,rgba(20,184,166,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:20px 52px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--font-display);font-weight:900;font-size:22px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .nav-link{font-size:12px;font-weight:600;padding:7px 16px;border-radius:8px;border:1px solid transparent;color:var(--muted);text-decoration:none;transition:all 150ms;display:flex;align-items:center;gap:6px}
+    .nav-link:hover{color:var(--text)}
+    .nav-link.active{border-color:rgba(34,197,94,0.30);background:rgba(34,197,94,0.08);color:#86efac}
+    .nav-back{font-size:12px;font-weight:600;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;display:flex;align-items:center;gap:6px}
+    .nav-back:hover{background:rgba(255,255,255,0.09);color:var(--text)}
+
+    .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:60px 24px 44px}
+    .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:6px 16px;border-radius:99px;margin-bottom:20px;background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.28);font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#86efac}
+    .hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(32px,4.5vw,58px);letter-spacing:-0.04em;line-height:1.05;margin-bottom:8px;color:#fff}
+    .hero h1 em{font-style:normal;font-family:var(--font-serif);font-weight:400;background:linear-gradient(110deg,#86efac 0%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:clamp(13px,1.5vw,16px);color:var(--muted);max-width:480px;margin-top:14px;line-height:1.7}
+
+    /* Filter pills */
+    .filter-bar{display:flex;align-items:center;gap:8px;padding:0 52px 36px;flex-wrap:wrap}
+    .filter-pill{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:7px 16px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 150ms}
+    .filter-pill:hover{color:var(--text);border-color:rgba(255,255,255,0.18)}
+    .filter-pill.active{background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.35);color:#86efac}
+    .filter-pill.f-phys.active{background:rgba(96,165,250,0.12);border-color:rgba(96,165,250,0.35);color:#93c5fd}
+    .filter-pill.f-chem.active{background:rgba(192,132,252,0.12);border-color:rgba(192,132,252,0.35);color:#e9d5ff}
+    .filter-pill.f-tools.active{background:rgba(251,191,36,0.12);border-color:rgba(251,191,36,0.35);color:#fcd34d}
+    .filter-pill.f-data.active{background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.35);color:#fdba74}
+
+    /* Section headers */
+    .section-row{display:flex;align-items:center;gap:16px;padding:0 52px;margin:8px 0 24px}
+    .section-label{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:8px}
+    .section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(34,197,94,0.15),var(--border) 60%,transparent)}
+
+    /* Resource grid */
+    .resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:0 52px 56px}
+
+    /* Resource card */
+    .res-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform 240ms cubic-bezier(0.34,1.3,0.64,1),border-color 200ms,box-shadow 200ms;position:relative}
+    .res-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 20px 48px rgba(0,0,0,0.40)}
+    .res-card-header{padding:20px 20px 16px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .res-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+    .res-meta{flex:1;min-width:0}
+    .res-category{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;margin-bottom:4px}
+    .res-title{font-family:var(--font-display);font-weight:800;font-size:16px;letter-spacing:-0.02em;color:#fff;line-height:1.2}
+    .res-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:4px}
+    .res-body{padding:16px 20px;flex:1;display:flex;flex-direction:column;gap:10px}
+    .res-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;flex-wrap:wrap}
+
+    .res-btn{font-family:var(--font-display);font-size:12px;font-weight:700;padding:8px 16px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 150ms;border:1px solid transparent}
+    .res-btn-primary{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.30);color:#86efac}
+    .res-btn-primary:hover{background:rgba(34,197,94,0.25);color:#a7f3d0}
+    .res-btn-ghost{background:rgba(255,255,255,0.05);border-color:var(--border);color:var(--muted)}
+    .res-btn-ghost:hover{background:rgba(255,255,255,0.09);color:var(--text)}
+
+    /* Color variants */
+    .res-card.c-phys .res-card-header{border-bottom-color:rgba(96,165,250,0.10)}
+    .res-card.c-phys:hover{border-color:rgba(96,165,250,0.40)}
+    .res-card.c-phys .res-icon{background:linear-gradient(135deg,rgba(96,165,250,0.28),rgba(168,85,247,0.14));border:1px solid rgba(96,165,250,0.28)}
+    .res-card.c-phys .res-category{color:#93c5fd}
+    .res-card.c-phys .res-btn-primary{background:rgba(96,165,250,0.15);border-color:rgba(96,165,250,0.30);color:#93c5fd}
+    .res-card.c-phys .res-btn-primary:hover{background:rgba(96,165,250,0.25);color:#bfdbfe}
+
+    .res-card.c-chem .res-card-header{border-bottom-color:rgba(192,132,252,0.10)}
+    .res-card.c-chem:hover{border-color:rgba(192,132,252,0.40)}
+    .res-card.c-chem .res-icon{background:linear-gradient(135deg,rgba(192,132,252,0.28),rgba(96,165,250,0.14));border:1px solid rgba(192,132,252,0.28)}
+    .res-card.c-chem .res-category{color:#e9d5ff}
+    .res-card.c-chem .res-btn-primary{background:rgba(192,132,252,0.15);border-color:rgba(192,132,252,0.30);color:#e9d5ff}
+    .res-card.c-chem .res-btn-primary:hover{background:rgba(192,132,252,0.25);color:#f3e8ff}
+
+    .res-card.c-tools .res-card-header{border-bottom-color:rgba(251,191,36,0.10)}
+    .res-card.c-tools:hover{border-color:rgba(251,191,36,0.40)}
+    .res-card.c-tools .res-icon{background:linear-gradient(135deg,rgba(251,191,36,0.28),rgba(245,166,35,0.14));border:1px solid rgba(251,191,36,0.28)}
+    .res-card.c-tools .res-category{color:#fcd34d}
+    .res-card.c-tools .res-btn-primary{background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.30);color:#fcd34d}
+    .res-card.c-tools .res-btn-primary:hover{background:rgba(251,191,36,0.25);color:#fde68a}
+
+    .res-card.c-data .res-card-header{border-bottom-color:rgba(251,146,60,0.10)}
+    .res-card.c-data:hover{border-color:rgba(251,146,60,0.40)}
+    .res-card.c-data .res-icon{background:linear-gradient(135deg,rgba(251,146,60,0.26),rgba(34,197,94,0.14));border:1px solid rgba(251,146,60,0.28)}
+    .res-card.c-data .res-category{color:#fdba74}
+    .res-card.c-data .res-btn-primary{background:rgba(251,146,60,0.15);border-color:rgba(251,146,60,0.30);color:#fdba74}
+    .res-card.c-data .res-btn-primary:hover{background:rgba(251,146,60,0.25);color:#fed7aa}
+
+    /* Inline formula tables inside cards */
+    .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .formula-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:8px 10px}
+    .formula-name{font-size:10px;color:var(--muted);margin-bottom:3px;line-height:1.3}
+    .formula-eq{font-family:var(--font-mono);font-size:11px;color:#e4e8f8;line-height:1.4}
+    .formula-item.full{grid-column:1/-1}
+
+    /* Constant table */
+    .const-table{width:100%;border-collapse:collapse}
+    .const-table td{padding:6px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .const-table tr:last-child td{border-bottom:none}
+    .const-table td:first-child{color:var(--muted);padding-right:10px;width:50%}
+    .const-table td:last-child{font-family:var(--font-mono);font-size:11px;color:#c4b5fd}
+
+    /* Electrochemical series snippet */
+    .echem-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px}
+    .echem-row:last-child{border-bottom:none}
+    .echem-half{font-family:var(--font-mono);font-size:11px;color:#e4e8f8}
+    .echem-val{font-family:var(--font-mono);font-size:11px;font-weight:600}
+
+    /* Grade badge */
+    .grade-badge{font-family:var(--font-mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:var(--muted);white-space:nowrap}
+
+    /* Full-width card */
+    .res-card.wide{grid-column:1/-1}
+
+    /* Organic table */
+    .org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+    .org-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:8px 10px}
+    .org-name{font-size:11px;font-weight:700;color:#e9d5ff;margin-bottom:2px}
+    .org-suffix{font-family:var(--font-mono);font-size:10px;color:#c084fc}
+    .org-group{font-size:10px;color:var(--muted);margin-top:2px}
+
+    footer{margin-top:auto;padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .footer-copy{font-size:13px;color:rgba(210,218,245,0.28)}
+
+    /* hide/show filtering */
+    .res-section{transition:opacity 200ms}
+
+    @media(max-width:640px){
+      nav{padding:16px 20px}
+      .filter-bar{padding:0 20px 28px}
+      .section-row{padding:0 20px}
+      .resources-grid{padding:0 20px 40px;grid-template-columns:1fr}
+      footer{padding:20px}
+      .res-card.wide{grid-column:auto}
+      .formula-grid{grid-template-columns:1fr}
+      .formula-item.full{grid-column:auto}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">🔬 Science Sage</a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link"><i data-lucide="book-open" style="width:13px;height:13px"></i>Lessons</a>
+      <a href="resources.html" class="nav-link active"><i data-lucide="library" style="width:13px;height:13px"></i>Resources</a>
+      <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px;"></i>Magic Lab</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-tag"><i data-lucide="library" style="width:12px;height:12px"></i>&nbsp; Reference Sheets &amp; Tools</div>
+    <h1>Everything you need,<br><em>right here.</em></h1>
+    <p class="hero-sub">Periodic table, formula sheets, physical constants, electrochemical series, and more — all in one place.</p>
+  </section>
+
+  <div class="filter-bar">
+    <button class="filter-pill active" onclick="filterCards('all',this)">All resources</button>
+    <button class="filter-pill f-tools" onclick="filterCards('tools',this)">Interactive tools</button>
+    <button class="filter-pill f-phys" onclick="filterCards('phys',this)">Physics</button>
+    <button class="filter-pill f-chem" onclick="filterCards('chem',this)">Chemistry</button>
+    <button class="filter-pill f-data" onclick="filterCards('data',this)">Data &amp; constants</button>
+  </div>
+
+  <!-- ═══ INTERACTIVE TOOLS ═══ -->
+  <div class="section-row res-section" data-cat="tools">
+    <span class="section-label" style="color:#fcd34d">
+      <span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;box-shadow:0 0 0 3px rgba(251,191,36,0.20);display:inline-block"></span>
+      Interactive Tools
+    </span>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(251,191,36,0.18),var(--border) 60%,transparent)"></div>
+  </div>
+
+  <div class="resources-grid">
+
+    <!-- Periodic Table — main interactive -->
+    <div class="res-card c-tools wide" data-cat="tools">
+      <div class="res-card-header">
+        <div class="res-icon">⚛️</div>
+        <div class="res-meta">
+          <div class="res-category">Interactive Tool · Chemistry</div>
+          <div class="res-title">The Periodic Table</div>
+          <div class="res-desc">Full interactive periodic table — click any element to see atomic number, mass, electron configuration, group, and period. Filter by category.</div>
+        </div>
+      </div>
+      <div class="res-body" style="padding:0;overflow:hidden;border-radius:0 0 20px 20px;height:340px;position:relative">
+        <iframe src="gr10/chemistry/periodic-table.html" style="width:100%;height:100%;border:none;transform-origin:top left;" title="Periodic Table"></iframe>
+        <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(8,12,26,0.6) 0%,transparent 40%)"></div>
+      </div>
+      <div class="res-footer">
+        <a href="gr10/chemistry/periodic-table.html" class="res-btn res-btn-primary" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px"></i> Open full screen</a>
+        <a href="gr8/matter/periodic-table.html" class="res-btn res-btn-ghost" target="_blank"><i data-lucide="external-link" style="width:12px;height:12px"></i> Grade 8 version</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PHYSICS REFERENCE ═══ -->
+  <div class="section-row res-section" data-cat="phys">
+    <span class="section-label" style="color:#93c5fd">
+      <span style="width:6px;height:6px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,0.20);display:inline-block"></span>
+      Physics Reference
+    </span>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(96,165,250,0.18),var(--border) 60%,transparent)"></div>
+  </div>
+
+  <div class="resources-grid">
+
+    <!-- Kinematics -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">🏃</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Mechanics <span class="grade-badge">Gr 10–12</span></div>
+          <div class="res-title">Kinematics &amp; Motion</div>
+          <div class="res-desc">Equations of motion for uniform acceleration — 1D and vertical projectiles.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Final velocity</div>
+            <div class="formula-eq">v = u + at</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Displacement</div>
+            <div class="formula-eq">s = ut + ½at²</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Velocity–displacement</div>
+            <div class="formula-eq">v² = u² + 2as</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Average velocity</div>
+            <div class="formula-eq">v̄ = (u + v) / 2</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Vertical projectile (up positive, g = 9.8 m·s⁻²)</div>
+            <div class="formula-eq">a = −g = −9.8 m·s⁻²</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr10/physics/motion-1d.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> 1D Motion lesson</a>
+        <a href="gr12/physics/vertical-projectile.html" class="res-btn res-btn-ghost"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Projectiles</a>
+      </div>
+    </div>
+
+    <!-- Forces & Newton's Laws -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">⚙️</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Mechanics <span class="grade-badge">Gr 10–11</span></div>
+          <div class="res-title">Forces &amp; Newton's Laws</div>
+          <div class="res-desc">Newton's three laws, friction, and the weight–mass relationship.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item full">
+            <div class="formula-name">Newton's 2nd Law (net force)</div>
+            <div class="formula-eq">F_net = ma</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Weight</div>
+            <div class="formula-eq">F_g = mg</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Friction</div>
+            <div class="formula-eq">f = μN</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Newton's Law of Gravitation</div>
+            <div class="formula-eq">F = Gm₁m₂ / r²</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr11/physics/newtons-laws.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Newton's Laws lesson</a>
+      </div>
+    </div>
+
+    <!-- Momentum & Impulse -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">💥</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Mechanics <span class="grade-badge">Gr 11</span></div>
+          <div class="res-title">Momentum &amp; Impulse</div>
+          <div class="res-desc">Linear momentum, impulse, and conservation of momentum in collisions.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Momentum</div>
+            <div class="formula-eq">p = mv</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Impulse</div>
+            <div class="formula-eq">J = FΔt = Δp</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Conservation of momentum</div>
+            <div class="formula-eq">Σp_before = Σp_after</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Elastic collision (KE conserved)</div>
+            <div class="formula-eq">ΣKE_before = ΣKE_after</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr11/physics/momentum-impulse.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Momentum lesson</a>
+      </div>
+    </div>
+
+    <!-- Work, Energy & Power -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">⚡</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Energy <span class="grade-badge">Gr 10–11</span></div>
+          <div class="res-title">Work, Energy &amp; Power</div>
+          <div class="res-desc">Mechanical energy, work-energy theorem, and power calculations.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Work done</div>
+            <div class="formula-eq">W = FΔx·cosθ</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Power</div>
+            <div class="formula-eq">P = W/t = Fv</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Kinetic energy</div>
+            <div class="formula-eq">KE = ½mv²</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Gravitational PE</div>
+            <div class="formula-eq">PE = mgh</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Work-energy theorem</div>
+            <div class="formula-eq">W_net = ΔKE = KE_f − KE_i</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr11/physics/work-energy-power.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> WEP lesson</a>
+      </div>
+    </div>
+
+    <!-- Waves -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">🌊</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Waves <span class="grade-badge">Gr 10–12</span></div>
+          <div class="res-title">Waves &amp; Sound</div>
+          <div class="res-desc">Wave equation, Doppler effect, and the electromagnetic spectrum.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Wave equation</div>
+            <div class="formula-eq">v = fλ</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Period &amp; frequency</div>
+            <div class="formula-eq">T = 1/f</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Doppler effect (source moving)</div>
+            <div class="formula-eq">f_L = f_s · (v ± v_L) / (v ∓ v_s)</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Speed of light / EM waves</div>
+            <div class="formula-eq">c = 3.0 × 10⁸ m·s⁻¹</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr10/physics/waves-sound-light.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Waves lesson</a>
+        <a href="gr12/physics/doppler-effect.html" class="res-btn res-btn-ghost"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Doppler</a>
+      </div>
+    </div>
+
+    <!-- Electricity & Circuits -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">🔌</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Electricity <span class="grade-badge">Gr 10–12</span></div>
+          <div class="res-title">Electric Circuits</div>
+          <div class="res-desc">Ohm's Law, series/parallel rules, power, and internal resistance.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Ohm's Law</div>
+            <div class="formula-eq">V = IR</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Power</div>
+            <div class="formula-eq">P = VI = I²R = V²/R</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Series resistors</div>
+            <div class="formula-eq">R_T = R₁+R₂+…</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Parallel resistors</div>
+            <div class="formula-eq">1/R_T = 1/R₁+1/R₂</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">EMF with internal resistance</div>
+            <div class="formula-eq">ε = I(R + r) → V_terminal = ε − Ir</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr10/physics/circuits.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Circuits lesson</a>
+        <a href="gr12/physics/electric-circuits-gr12.html" class="res-btn res-btn-ghost"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Gr 12</a>
+      </div>
+    </div>
+
+    <!-- Electrostatics -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">✨</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Electrostatics <span class="grade-badge">Gr 10–11</span></div>
+          <div class="res-title">Electrostatics</div>
+          <div class="res-desc">Coulomb's Law, electric field strength, and charge quantisation.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item full">
+            <div class="formula-name">Coulomb's Law</div>
+            <div class="formula-eq">F = kQ₁Q₂ / r²  (k = 9×10⁹ N·m²·C⁻²)</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Electric field strength</div>
+            <div class="formula-eq">E = F/q = kQ/r²</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Charge quantisation</div>
+            <div class="formula-eq">Q = ne  (e = 1.6×10⁻¹⁹ C)</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr10/physics/electrostatics.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Electrostatics lesson</a>
+      </div>
+    </div>
+
+    <!-- Photoelectric Effect -->
+    <div class="res-card c-phys" data-cat="phys">
+      <div class="res-card-header">
+        <div class="res-icon">💡</div>
+        <div class="res-meta">
+          <div class="res-category">Physics · Modern <span class="grade-badge">Gr 12</span></div>
+          <div class="res-title">Photoelectric Effect</div>
+          <div class="res-desc">Photon energy, work function, and threshold frequency relationships.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Photon energy</div>
+            <div class="formula-eq">E = hf = hc/λ</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Threshold freq.</div>
+            <div class="formula-eq">f₀ = W/h</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Einstein's photoelectric equation</div>
+            <div class="formula-eq">E_k(max) = hf − W</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Planck's constant</div>
+            <div class="formula-eq">h = 6.63 × 10⁻³⁴ J·s</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr12/physics/photoelectric-effect.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Photoelectric lesson</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ CHEMISTRY REFERENCE ═══ -->
+  <div class="section-row res-section" data-cat="chem">
+    <span class="section-label" style="color:#e9d5ff">
+      <span style="width:6px;height:6px;border-radius:50%;background:#c084fc;box-shadow:0 0 0 3px rgba(192,132,252,0.20);display:inline-block"></span>
+      Chemistry Reference
+    </span>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(192,132,252,0.18),var(--border) 60%,transparent)"></div>
+  </div>
+
+  <div class="resources-grid">
+
+    <!-- Stoichiometry -->
+    <div class="res-card c-chem" data-cat="chem">
+      <div class="res-card-header">
+        <div class="res-icon">⚖️</div>
+        <div class="res-meta">
+          <div class="res-category">Chemistry · Stoichiometry <span class="grade-badge">Gr 10–12</span></div>
+          <div class="res-title">Moles &amp; Stoichiometry</div>
+          <div class="res-desc">The mole concept, molar mass, concentration, and gas volumes.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Amount (moles)</div>
+            <div class="formula-eq">n = m / M</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Concentration</div>
+            <div class="formula-eq">c = n / V</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Gas at STP</div>
+            <div class="formula-eq">V = n × 22.4 L</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Avogadro</div>
+            <div class="formula-eq">N = n × Nₐ</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Nₐ = 6.022 × 10²³ mol⁻¹ &nbsp;|&nbsp; STP: 0 °C, 101.3 kPa</div>
+            <div class="formula-eq">Molar volume at STP = 22.4 dm³·mol⁻¹</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr10/chemistry/stoichiometry.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Stoichiometry lesson</a>
+      </div>
+    </div>
+
+    <!-- Acids & Bases -->
+    <div class="res-card c-chem" data-cat="chem">
+      <div class="res-card-header">
+        <div class="res-icon">🧪</div>
+        <div class="res-meta">
+          <div class="res-category">Chemistry · Acids &amp; Bases <span class="grade-badge">Gr 11–12</span></div>
+          <div class="res-title">Acids, Bases &amp; pH</div>
+          <div class="res-desc">Arrhenius and Brønsted–Lowry definitions, pH calculations, and titrations.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">pH definition</div>
+            <div class="formula-eq">pH = −log[H₃O⁺]</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">pOH</div>
+            <div class="formula-eq">pOH = −log[OH⁻]</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Water dissociation</div>
+            <div class="formula-eq">pH + pOH = 14 &nbsp;|&nbsp; Kw = 1×10⁻¹⁴</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Titration formula</div>
+            <div class="formula-eq">c₁V₁/n₁ = c₂V₂/n₂</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Acid dissociation constant</div>
+            <div class="formula-eq">Ka = [H⁺][A⁻] / [HA]</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr11/chemistry/acids-bases.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Acids &amp; Bases lesson</a>
+        <a href="gr12/chemistry/acids-bases-gr12.html" class="res-btn res-btn-ghost"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Gr 12</a>
+      </div>
+    </div>
+
+    <!-- Chemical Equilibrium -->
+    <div class="res-card c-chem" data-cat="chem">
+      <div class="res-card-header">
+        <div class="res-icon">⚖️</div>
+        <div class="res-meta">
+          <div class="res-category">Chemistry · Equilibrium <span class="grade-badge">Gr 11</span></div>
+          <div class="res-title">Chemical Equilibrium</div>
+          <div class="res-desc">Equilibrium constant expressions and Le Chatelier's principle.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item full">
+            <div class="formula-name">For aA + bB ⇌ cC + dD</div>
+            <div class="formula-eq">Kc = [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Reaction quotient (Q vs K)</div>
+            <div class="formula-eq">Q &lt; K → forward  |  Q &gt; K → reverse</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Le Chatelier's principle</div>
+            <div class="formula-eq">System shifts to oppose any change imposed on it</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr11/chemistry/chemical-equilibrium.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Equilibrium lesson</a>
+      </div>
+    </div>
+
+    <!-- Thermochemistry -->
+    <div class="res-card c-chem" data-cat="chem">
+      <div class="res-card-header">
+        <div class="res-icon">🔥</div>
+        <div class="res-meta">
+          <div class="res-category">Chemistry · Thermochem <span class="grade-badge">Gr 11</span></div>
+          <div class="res-title">Energy &amp; Chemical Change</div>
+          <div class="res-desc">Enthalpy changes, activation energy, and Hess's Law.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item">
+            <div class="formula-name">Heat transfer</div>
+            <div class="formula-eq">q = mcΔT</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-name">Enthalpy change</div>
+            <div class="formula-eq">ΔH = H_products − H_reactants</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Exothermic (ΔH &lt; 0) vs Endothermic (ΔH &gt; 0)</div>
+            <div class="formula-eq">Hess's Law: ΔH_rxn = Σ ΔH_f(products) − Σ ΔH_f(reactants)</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Specific heat of water</div>
+            <div class="formula-eq">c = 4.18 J·g⁻¹·°C⁻¹</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr11/chemistry/energy-chemical-change.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Energy &amp; Change lesson</a>
+      </div>
+    </div>
+
+    <!-- Electrochemistry -->
+    <div class="res-card c-chem" data-cat="chem">
+      <div class="res-card-header">
+        <div class="res-icon">🔋</div>
+        <div class="res-meta">
+          <div class="res-category">Chemistry · Electrochemistry <span class="grade-badge">Gr 12</span></div>
+          <div class="res-title">Electrochemistry</div>
+          <div class="res-desc">Galvanic cells, EMF calculations, and electrolysis basics.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="formula-grid">
+          <div class="formula-item full">
+            <div class="formula-name">Cell EMF (standard conditions)</div>
+            <div class="formula-eq">E°_cell = E°_cathode − E°_anode</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Spontaneous reaction</div>
+            <div class="formula-eq">E°_cell &gt; 0 → spontaneous (galvanic cell)</div>
+          </div>
+          <div class="formula-item full">
+            <div class="formula-name">Faraday's law of electrolysis</div>
+            <div class="formula-eq">m = (M × I × t) / (n × F)  &nbsp;|&nbsp; F = 96 485 C·mol⁻¹</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr12/chemistry/electrochemistry.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Electrochemistry lesson</a>
+      </div>
+    </div>
+
+    <!-- Organic Chemistry -->
+    <div class="res-card c-chem wide" data-cat="chem">
+      <div class="res-card-header">
+        <div class="res-icon">🌿</div>
+        <div class="res-meta">
+          <div class="res-category">Chemistry · Organic <span class="grade-badge">Gr 12</span></div>
+          <div class="res-title">Organic Functional Groups &amp; Homologous Series</div>
+          <div class="res-desc">IUPAC naming suffixes and characteristic functional groups for all Gr 12 series.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="org-grid">
+          <div class="org-item">
+            <div class="org-name">Alkane</div>
+            <div class="org-suffix">-ane</div>
+            <div class="org-group">C–C single bonds; –CH₃ / –CH₂–</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Alkene</div>
+            <div class="org-suffix">-ene</div>
+            <div class="org-group">C=C double bond</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Alkyne</div>
+            <div class="org-suffix">-yne</div>
+            <div class="org-group">C≡C triple bond</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Alcohol</div>
+            <div class="org-suffix">-ol</div>
+            <div class="org-group">–OH (hydroxyl)</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Aldehyde</div>
+            <div class="org-suffix">-al</div>
+            <div class="org-group">–CHO (terminal)</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Ketone</div>
+            <div class="org-suffix">-one</div>
+            <div class="org-group">–C(=O)– (internal)</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Carboxylic acid</div>
+            <div class="org-suffix">-oic acid</div>
+            <div class="org-group">–COOH</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Ester</div>
+            <div class="org-suffix">-oate</div>
+            <div class="org-group">–COO– linkage</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Ether</div>
+            <div class="org-suffix">-oxy-</div>
+            <div class="org-group">R–O–R′</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Haloalkane</div>
+            <div class="org-suffix">halo-</div>
+            <div class="org-group">–F / –Cl / –Br / –I</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Amine</div>
+            <div class="org-suffix">-amine</div>
+            <div class="org-group">–NH₂</div>
+          </div>
+          <div class="org-item">
+            <div class="org-name">Amide</div>
+            <div class="org-suffix">-amide</div>
+            <div class="org-group">–CONH₂</div>
+          </div>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr12/chemistry/organic-chemistry.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Organic Chemistry lesson</a>
+        <a href="gr12/chemistry/organic-reactions.html" class="res-btn res-btn-ghost"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Organic Reactions</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ DATA & CONSTANTS ═══ -->
+  <div class="section-row res-section" data-cat="data">
+    <span class="section-label" style="color:#fdba74">
+      <span style="width:6px;height:6px;border-radius:50%;background:#fb923c;box-shadow:0 0 0 3px rgba(251,146,60,0.20);display:inline-block"></span>
+      Data &amp; Constants
+    </span>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(251,146,60,0.18),var(--border) 60%,transparent)"></div>
+  </div>
+
+  <div class="resources-grid">
+
+    <!-- Physical Constants -->
+    <div class="res-card c-data" data-cat="data">
+      <div class="res-card-header">
+        <div class="res-icon">📐</div>
+        <div class="res-meta">
+          <div class="res-category">Data Sheet · Physical Sciences</div>
+          <div class="res-title">Physical Constants</div>
+          <div class="res-desc">CAPS-listed constants for use in NSC and IEB examinations.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <table class="const-table">
+          <tr><td>Speed of light</td><td>c = 3.0 × 10⁸ m·s⁻¹</td></tr>
+          <tr><td>Gravitational acceleration</td><td>g = 9.8 m·s⁻²</td></tr>
+          <tr><td>Gravitational constant</td><td>G = 6.67 × 10⁻¹¹ N·m²·kg⁻²</td></tr>
+          <tr><td>Planck's constant</td><td>h = 6.63 × 10⁻³⁴ J·s</td></tr>
+          <tr><td>Elementary charge</td><td>e = 1.6 × 10⁻¹⁹ C</td></tr>
+          <tr><td>Coulomb's constant</td><td>k = 9.0 × 10⁹ N·m²·C⁻²</td></tr>
+          <tr><td>Electron mass</td><td>mₑ = 9.11 × 10⁻³¹ kg</td></tr>
+          <tr><td>Proton mass</td><td>mₚ = 1.67 × 10⁻²⁷ kg</td></tr>
+          <tr><td>Avogadro's number</td><td>Nₐ = 6.02 × 10²³ mol⁻¹</td></tr>
+          <tr><td>Faraday constant</td><td>F = 96 485 C·mol⁻¹</td></tr>
+          <tr><td>Molar gas volume (STP)</td><td>Vm = 22.4 dm³·mol⁻¹</td></tr>
+          <tr><td>Specific heat of water</td><td>cw = 4.18 J·g⁻¹·°C⁻¹</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- SI Units & Conversions -->
+    <div class="res-card c-data" data-cat="data">
+      <div class="res-card-header">
+        <div class="res-icon">📏</div>
+        <div class="res-meta">
+          <div class="res-category">Data Sheet · Units</div>
+          <div class="res-title">SI Units &amp; Prefixes</div>
+          <div class="res-desc">Base units, derived units, and metric prefixes for Physical Sciences.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <table class="const-table">
+          <tr><td>Length</td><td>metre (m)</td></tr>
+          <tr><td>Mass</td><td>kilogram (kg)</td></tr>
+          <tr><td>Time</td><td>second (s)</td></tr>
+          <tr><td>Electric current</td><td>ampere (A)</td></tr>
+          <tr><td>Temperature</td><td>kelvin (K) · T(K) = T(°C) + 273</td></tr>
+          <tr><td>Amount of substance</td><td>mole (mol)</td></tr>
+          <tr><td colspan="2" style="padding-top:12px;color:rgba(210,218,245,0.55);font-size:10px;font-family:var(--font-mono);letter-spacing:0.06em">PREFIXES</td></tr>
+          <tr><td>tera (T)</td><td>× 10¹²</td></tr>
+          <tr><td>giga (G)</td><td>× 10⁹</td></tr>
+          <tr><td>mega (M)</td><td>× 10⁶</td></tr>
+          <tr><td>kilo (k)</td><td>× 10³</td></tr>
+          <tr><td>centi (c)</td><td>× 10⁻²</td></tr>
+          <tr><td>milli (m)</td><td>× 10⁻³</td></tr>
+          <tr><td>micro (μ)</td><td>× 10⁻⁶</td></tr>
+          <tr><td>nano (n)</td><td>× 10⁻⁹</td></tr>
+          <tr><td>pico (p)</td><td>× 10⁻¹²</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Electrochemical Series -->
+    <div class="res-card c-data" data-cat="data">
+      <div class="res-card-header">
+        <div class="res-icon">🔋</div>
+        <div class="res-meta">
+          <div class="res-category">Data Sheet · Electrochemistry <span class="grade-badge">Gr 12</span></div>
+          <div class="res-title">Standard Electrode Potentials</div>
+          <div class="res-desc">Selected half-reactions at standard conditions (25 °C, 1 mol·dm⁻³, 101.3 kPa). More positive E° = stronger oxidising agent.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.06em;margin-bottom:8px;display:flex;justify-content:space-between"><span>HALF-REACTION (reduction)</span><span>E° (V)</span></div>
+        <div class="echem-row"><span class="echem-half">F₂ + 2e⁻ → 2F⁻</span><span class="echem-val" style="color:#f87171">+2.87</span></div>
+        <div class="echem-row"><span class="echem-half">Cl₂ + 2e⁻ → 2Cl⁻</span><span class="echem-val" style="color:#f87171">+1.36</span></div>
+        <div class="echem-row"><span class="echem-half">Br₂ + 2e⁻ → 2Br⁻</span><span class="echem-val" style="color:#fbbf24">+1.07</span></div>
+        <div class="echem-row"><span class="echem-half">Ag⁺ + e⁻ → Ag</span><span class="echem-val" style="color:#fbbf24">+0.80</span></div>
+        <div class="echem-row"><span class="echem-half">Cu²⁺ + 2e⁻ → Cu</span><span class="echem-val" style="color:#fbbf24">+0.34</span></div>
+        <div class="echem-row"><span class="echem-half">2H⁺ + 2e⁻ → H₂</span><span class="echem-val" style="color:#94a3b8"> 0.00</span></div>
+        <div class="echem-row"><span class="echem-half">Pb²⁺ + 2e⁻ → Pb</span><span class="echem-val" style="color:#86efac">−0.13</span></div>
+        <div class="echem-row"><span class="echem-half">Fe²⁺ + 2e⁻ → Fe</span><span class="echem-val" style="color:#86efac">−0.44</span></div>
+        <div class="echem-row"><span class="echem-half">Zn²⁺ + 2e⁻ → Zn</span><span class="echem-val" style="color:#86efac">−0.76</span></div>
+        <div class="echem-row"><span class="echem-half">Al³⁺ + 3e⁻ → Al</span><span class="echem-val" style="color:#86efac">−1.66</span></div>
+        <div class="echem-row"><span class="echem-half">Mg²⁺ + 2e⁻ → Mg</span><span class="echem-val" style="color:#86efac">−2.37</span></div>
+        <div class="echem-row"><span class="echem-half">Na⁺ + e⁻ → Na</span><span class="echem-val" style="color:#86efac">−2.71</span></div>
+        <div class="echem-row"><span class="echem-half">K⁺ + e⁻ → K</span><span class="echem-val" style="color:#86efac">−2.93</span></div>
+        <div class="echem-row"><span class="echem-half">Li⁺ + e⁻ → Li</span><span class="echem-val" style="color:#86efac">−3.04</span></div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5">
+          Red = strong oxidising agent &nbsp;|&nbsp; Green = strong reducing agent<br>
+          <span style="font-family:var(--font-mono);font-size:10px">E°_cell = E°_cathode − E°_anode</span>
+        </div>
+      </div>
+      <div class="res-footer">
+        <a href="gr12/chemistry/electrochemistry.html" class="res-btn res-btn-primary"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> Electrochemistry lesson</a>
+      </div>
+    </div>
+
+    <!-- Activity / Reactivity Series -->
+    <div class="res-card c-data" data-cat="data">
+      <div class="res-card-header">
+        <div class="res-icon">⚗️</div>
+        <div class="res-meta">
+          <div class="res-category">Data Sheet · Chemistry</div>
+          <div class="res-title">Metal Activity Series</div>
+          <div class="res-desc">Metals ranked from most to least reactive. More reactive metals displace less reactive metals from solutions.</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="flex:1">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.06em;margin-bottom:8px">MOST REACTIVE ↑</div>
+            <table class="const-table" style="font-size:12px">
+              <tr><td>Potassium</td><td style="color:#f87171">K</td></tr>
+              <tr><td>Sodium</td><td style="color:#f87171">Na</td></tr>
+              <tr><td>Calcium</td><td style="color:#fb923c">Ca</td></tr>
+              <tr><td>Magnesium</td><td style="color:#fb923c">Mg</td></tr>
+              <tr><td>Aluminium</td><td style="color:#fbbf24">Al</td></tr>
+              <tr><td>Zinc</td><td style="color:#fbbf24">Zn</td></tr>
+              <tr><td>Iron</td><td style="color:#a3e635">Fe</td></tr>
+              <tr><td>Nickel</td><td style="color:#a3e635">Ni</td></tr>
+              <tr><td>Tin</td><td style="color:#86efac">Sn</td></tr>
+              <tr><td>Lead</td><td style="color:#86efac">Pb</td></tr>
+              <tr><td>Hydrogen</td><td style="color:#94a3b8">H₂</td></tr>
+              <tr><td>Copper</td><td style="color:#93c5fd">Cu</td></tr>
+              <tr><td>Silver</td><td style="color:#c4b5fd">Ag</td></tr>
+              <tr><td>Gold</td><td style="color:#c4b5fd">Au</td></tr>
+            </table>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.06em;margin-top:6px">LEAST REACTIVE ↓</div>
+          </div>
+          <div style="flex:1;font-size:11.5px;color:var(--muted);line-height:1.7;padding-top:24px">
+            <p style="margin-bottom:8px"><strong style="color:var(--text)">React with water:</strong><br>K, Na, Ca (vigorously)</p>
+            <p style="margin-bottom:8px"><strong style="color:var(--text)">React with acid:</strong><br>Mg → Pb (displace H₂)</p>
+            <p><strong style="color:var(--text)">No reaction with acid:</strong><br>Cu, Ag, Au</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="footer-copy">🔬 Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
+    <a href="index.html" style="font-size:12px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back to Lessons</a>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    function filterCards(cat, btn) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+
+      const sections = document.querySelectorAll('.res-section');
+      const cards = document.querySelectorAll('.res-card');
+
+      if (cat === 'all') {
+        sections.forEach(s => s.style.display = '');
+        cards.forEach(c => c.style.display = '');
+        document.querySelectorAll('.resources-grid').forEach(g => g.style.display = '');
+      } else {
+        sections.forEach(s => {
+          const match = s.dataset.cat === cat;
+          s.style.display = match ? '' : 'none';
+        });
+        document.querySelectorAll('.resources-grid').forEach(grid => {
+          let any = false;
+          grid.querySelectorAll('.res-card').forEach(c => {
+            const show = c.dataset.cat === cat;
+            c.style.display = show ? '' : 'none';
+            if (show) any = true;
+          });
+          grid.style.display = any ? '' : 'none';
+        });
+      }
+    }
+  </script>
+</body>
+</html>
