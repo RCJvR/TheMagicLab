@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://unpkg.com/blockly/blockly.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -89,6 +90,13 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f2
 .api-fn{font-family:var(--fm);font-size:10px;color:#fb923c;margin-bottom:2px;}
 .api-desc{font-size:10px;color:var(--muted);line-height:1.5;}
 
+/* ── Block/JS toggle ── */
+.mode-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:2px;}
+.mode-btn{font-family:var(--fd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;color:var(--muted);background:transparent;transition:all 140ms;letter-spacing:0.02em;}
+.mode-btn.active{background:rgba(249,115,22,0.20);color:#fdba74;}
+#blocklyDiv{flex:1;display:none;}
+#blocklyDiv .blocklyMainBackground{fill:#060912 !important;}
+
 /* ── Status bar ── */
 .status-bar{flex-shrink:0;display:flex;align-items:center;gap:16px;padding:6px 16px;border-top:1px solid var(--border);font-size:10px;font-family:var(--fm);color:var(--muted);}
 .status-dot{width:7px;height:7px;border-radius:50%;background:#6b7280;flex-shrink:0;}
@@ -125,9 +133,12 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
   <div class="panel-code">
     <div class="panel-header">
       <span class="panel-title">Code Editor</span>
-      <span style="font-size:10px;font-family:var(--fm);color:var(--muted);">JavaScript</span>
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="modeJs" onclick="setMode('js')">JS</button>
+        <button class="mode-btn" id="modeBlocks" onclick="setMode('blocks')">Blocks</button>
+      </div>
     </div>
-    <div class="code-area">
+    <div class="code-area" id="codeArea">
       <textarea class="code-input" id="codeInput" spellcheck="false">// Robot Realm — starter program
 // Use the Robot API to control your bot.
 
@@ -152,6 +163,7 @@ async function main() {
 }
 </textarea>
     </div>
+    <div id="blocklyDiv"></div>
     <div class="ctrl-bar">
       <button class="btn btn-run" id="btnRun" onclick="runCode()">▶ Run</button>
       <button class="btn btn-step" id="btnStep" onclick="stepCode()">⏭ Step</button>
@@ -783,7 +795,7 @@ async function runCode() {
   }
   setStatus('running', 'Program running…');
 
-  const code = document.getElementById('codeInput').value;
+  const code = currentMode === 'blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
   try {
     const fn = new Function('robot', 'log', `"use strict"; return (async function main(){ ${code} })()`);
     await fn(robotAPI, (msg) => addLog(String(msg), 'ok'));
@@ -997,6 +1009,296 @@ await main();
 };
 
 /* ══════════════════════════════
+   BLOCK CODING (Blockly)
+══════════════════════════════ */
+let blocklyWorkspace = null;
+let currentMode = 'js'; // 'js' | 'blocks'
+
+function initBlockly() {
+  if (blocklyWorkspace) return;
+
+  // ── Custom block definitions ──────────────────────────────────────
+  Blockly.defineBlocksWithJsonArray([
+    // Motion
+    { type:'robot_move_forward', message0:'move forward %1 pixels',
+      args0:[{type:'field_number',name:'PX',value:100,min:1,max:1000}],
+      previousStatement:null, nextStatement:null,
+      colour:230, tooltip:'Move the robot forward.' },
+    { type:'robot_move_backward', message0:'move backward %1 pixels',
+      args0:[{type:'field_number',name:'PX',value:100,min:1,max:1000}],
+      previousStatement:null, nextStatement:null,
+      colour:230, tooltip:'Move the robot backward.' },
+    { type:'robot_turn_left', message0:'turn left %1 degrees',
+      args0:[{type:'field_number',name:'DEG',value:90,min:1,max:360}],
+      previousStatement:null, nextStatement:null,
+      colour:230, tooltip:'Rotate left.' },
+    { type:'robot_turn_right', message0:'turn right %1 degrees',
+      args0:[{type:'field_number',name:'DEG',value:90,min:1,max:360}],
+      previousStatement:null, nextStatement:null,
+      colour:230, tooltip:'Rotate right.' },
+    { type:'robot_set_speed', message0:'set speed %1',
+      args0:[{type:'field_number',name:'SPD',value:5,min:1,max:10}],
+      previousStatement:null, nextStatement:null,
+      colour:230, tooltip:'Set robot speed (1–10).' },
+    { type:'robot_wait', message0:'wait %1 milliseconds',
+      args0:[{type:'field_number',name:'MS',value:500,min:0}],
+      previousStatement:null, nextStatement:null,
+      colour:230, tooltip:'Pause execution.' },
+
+    // Sensors
+    { type:'robot_get_distance', message0:'distance %1',
+      args0:[{type:'field_dropdown',name:'DIR',options:[['front','front'],['left','left'],['right','right']]}],
+      output:'Number', colour:65, tooltip:'Distance to nearest wall (px).' },
+    { type:'robot_get_line', message0:'line sensor %1',
+      args0:[{type:'field_dropdown',name:'POS',options:[['centre','centre'],['left','left'],['right','right']]}],
+      output:'Boolean', colour:65, tooltip:'True if sensor detects a dark line.' },
+    { type:'robot_get_colour', message0:'colour under robot',
+      output:'String', colour:65, tooltip:'Returns colour zone name or "none".' },
+
+    // Output
+    { type:'robot_log', message0:'log %1',
+      args0:[{type:'input_value',name:'MSG'}],
+      previousStatement:null, nextStatement:null,
+      colour:160, tooltip:'Print a message to the console.' },
+  ]);
+
+  // ── Code generators ──────────────────────────────────────────────
+  const gen = Blockly.JavaScript;
+
+  gen.forBlock['robot_move_forward']  = b => `await robot.moveForward(${b.getFieldValue('PX')});\n`;
+  gen.forBlock['robot_move_backward'] = b => `await robot.moveBackward(${b.getFieldValue('PX')});\n`;
+  gen.forBlock['robot_turn_left']     = b => `await robot.turnLeft(${b.getFieldValue('DEG')});\n`;
+  gen.forBlock['robot_turn_right']    = b => `await robot.turnRight(${b.getFieldValue('DEG')});\n`;
+  gen.forBlock['robot_set_speed']     = b => `robot.setSpeed(${b.getFieldValue('SPD')});\n`;
+  gen.forBlock['robot_wait']          = b => `await robot.wait(${b.getFieldValue('MS')});\n`;
+  gen.forBlock['robot_get_distance']  = b => [`robot.getDistance('${b.getFieldValue('DIR')}')`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  gen.forBlock['robot_get_line']      = b => [`robot.getLine('${b.getFieldValue('POS')}')`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  gen.forBlock['robot_get_colour']    = b => [`robot.getColour()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  gen.forBlock['robot_log']           = b => {
+    const msg = gen.valueToCode(b, 'MSG', Blockly.JavaScript.ORDER_NONE) || '""';
+    return `log(${msg});\n`;
+  };
+
+  // ── Toolbox ──────────────────────────────────────────────────────
+  const toolbox = {
+    kind: 'categoryToolbox',
+    contents: [
+      { kind:'category', name:'🤖 Motion', colour:'#f97316', contents:[
+        { kind:'block', type:'robot_move_forward' },
+        { kind:'block', type:'robot_move_backward' },
+        { kind:'block', type:'robot_turn_left' },
+        { kind:'block', type:'robot_turn_right' },
+        { kind:'block', type:'robot_set_speed' },
+        { kind:'block', type:'robot_wait' },
+      ]},
+      { kind:'category', name:'📡 Sensors', colour:'#84cc16', contents:[
+        { kind:'block', type:'robot_get_distance' },
+        { kind:'block', type:'robot_get_line' },
+        { kind:'block', type:'robot_get_colour' },
+      ]},
+      { kind:'category', name:'💬 Output', colour:'#22c55e', contents:[
+        { kind:'block', type:'robot_log' },
+      ]},
+      { kind:'sep' },
+      { kind:'category', name:'🔁 Loops', colour:'#9333ea', contents:[
+        { kind:'block', type:'controls_repeat_ext', inputs:{ TIMES:{ block:{ type:'math_number', fields:{ NUM:10 } } } } },
+        { kind:'block', type:'controls_whileUntil' },
+        { kind:'block', type:'controls_for' },
+      ]},
+      { kind:'category', name:'🔀 Logic', colour:'#3b82f6', contents:[
+        { kind:'block', type:'controls_if' },
+        { kind:'block', type:'controls_ifelse' },
+        { kind:'block', type:'logic_compare' },
+        { kind:'block', type:'logic_operation' },
+        { kind:'block', type:'logic_negate' },
+        { kind:'block', type:'logic_boolean' },
+      ]},
+      { kind:'category', name:'🔢 Math', colour:'#f59e0b', contents:[
+        { kind:'block', type:'math_number' },
+        { kind:'block', type:'math_arithmetic' },
+        { kind:'block', type:'math_random_int' },
+        { kind:'block', type:'math_single' },
+      ]},
+      { kind:'category', name:'📦 Variables', colour:'#ec4899', custom:'VARIABLE' },
+      { kind:'category', name:'💬 Text', colour:'#06b6d4', contents:[
+        { kind:'block', type:'text' },
+        { kind:'block', type:'text_join' },
+        { kind:'block', type:'text_length' },
+      ]},
+    ]
+  };
+
+  const div = document.getElementById('blocklyDiv');
+  blocklyWorkspace = Blockly.inject(div, {
+    toolbox,
+    theme: Blockly.Themes.Dark,
+    grid: { spacing:20, length:3, colour:'rgba(255,255,255,0.04)', snap:true },
+    zoom: { controls:true, wheel:true, startScale:0.9, maxScale:2, minScale:0.4, scaleSpeed:1.2 },
+    trashcan: true,
+    scrollbars: true,
+    sounds: false,
+    renderer: 'zelos',
+  });
+
+  // Keep Blockly sized to its container
+  new ResizeObserver(() => {
+    if (blocklyWorkspace) Blockly.svgResize(blocklyWorkspace);
+  }).observe(div);
+
+  // Load default starter blocks
+  loadStarterBlocks(currentMap);
+}
+
+function loadStarterBlocks(mapId) {
+  if (!blocklyWorkspace) return;
+  const xml = STARTER_BLOCKS[mapId] || STARTER_BLOCKS['empty'];
+  try {
+    const dom = Blockly.utils.xml.textToDom(xml);
+    Blockly.Xml.clearWorkspaceAndLoadFromXml(dom, blocklyWorkspace);
+  } catch(e) {
+    blocklyWorkspace.clear();
+  }
+}
+
+function getCodeFromBlocks() {
+  if (!blocklyWorkspace) return '';
+  // Wrap in async so await works at top level
+  const innerCode = Blockly.JavaScript.workspaceToCode(blocklyWorkspace);
+  return innerCode;
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  const jsBtn = document.getElementById('modeJs');
+  const blBtn = document.getElementById('modeBlocks');
+  const codeArea = document.getElementById('codeArea');
+  const blockDiv = document.getElementById('blocklyDiv');
+
+  if (mode === 'js') {
+    jsBtn.classList.add('active');
+    blBtn.classList.remove('active');
+    codeArea.style.display = '';
+    blockDiv.style.display = 'none';
+  } else {
+    blBtn.classList.add('active');
+    jsBtn.classList.remove('active');
+    codeArea.style.display = 'none';
+    blockDiv.style.display = 'flex';
+    blockDiv.style.flexDirection = 'column';
+    blockDiv.style.flex = '1';
+    initBlockly();
+    // Size Blockly to fill the panel
+    if (blocklyWorkspace) Blockly.svgResize(blocklyWorkspace);
+  }
+}
+
+// Starter block XML per map
+const STARTER_BLOCKS = {
+  empty: `<xml>
+    <block type="controls_repeat_ext" x="20" y="20">
+      <value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value>
+      <statement name="DO">
+        <block type="robot_move_forward">
+          <field name="PX">100</field>
+          <next><block type="robot_turn_right"><field name="DEG">90</field></block></next>
+        </block>
+      </statement>
+    </block>
+  </xml>`,
+  maze: `<xml>
+    <block type="controls_whileUntil" x="20" y="20">
+      <field name="MODE">WHILE</field>
+      <value name="BOOL"><block type="logic_boolean"><field name="BOOL">TRUE</field></block></value>
+      <statement name="DO">
+        <block type="controls_if">
+          <value name="IF0">
+            <block type="logic_compare">
+              <field name="OP">GT</field>
+              <value name="A"><block type="robot_get_distance"><field name="DIR">front</field></block></value>
+              <value name="B"><block type="math_number"><field name="NUM">50</field></block></value>
+            </block>
+          </value>
+          <statement name="DO0"><block type="robot_move_forward"><field name="PX">20</field></block></statement>
+          <mutation else="1"></mutation>
+          <statement name="ELSE"><block type="robot_turn_right"><field name="DEG">90</field></block></statement>
+        </block>
+      </statement>
+    </block>
+  </xml>`,
+  line: `<xml>
+    <block type="robot_set_speed" x="20" y="20">
+      <field name="SPD">4</field>
+      <next>
+        <block type="controls_repeat_ext">
+          <value name="TIMES"><block type="math_number"><field name="NUM">400</field></block></value>
+          <statement name="DO">
+            <block type="controls_if">
+              <value name="IF0"><block type="robot_get_line"><field name="POS">centre</field></block></value>
+              <statement name="DO0"><block type="robot_move_forward"><field name="PX">4</field></block></statement>
+              <mutation else="1"></mutation>
+              <statement name="ELSE">
+                <block type="controls_if">
+                  <value name="IF0"><block type="robot_get_line"><field name="POS">left</field></block></value>
+                  <statement name="DO0">
+                    <block type="robot_turn_left"><field name="DEG">5</field>
+                      <next><block type="robot_move_forward"><field name="PX">3</field></block></next>
+                    </block>
+                  </statement>
+                  <mutation else="1"></mutation>
+                  <statement name="ELSE"><block type="robot_turn_right"><field name="DEG">5</field></block></statement>
+                </block>
+              </statement>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>
+  </xml>`,
+  obstacles: `<xml>
+    <block type="robot_set_speed" x="20" y="20">
+      <field name="SPD">6</field>
+      <next>
+        <block type="controls_repeat_ext">
+          <value name="TIMES"><block type="math_number"><field name="NUM">200</field></block></value>
+          <statement name="DO">
+            <block type="controls_if">
+              <value name="IF0">
+                <block type="logic_compare">
+                  <field name="OP">GT</field>
+                  <value name="A"><block type="robot_get_distance"><field name="DIR">front</field></block></value>
+                  <value name="B"><block type="math_number"><field name="NUM">60</field></block></value>
+                </block>
+              </value>
+              <statement name="DO0"><block type="robot_move_forward"><field name="PX">15</field></block></statement>
+              <mutation else="1"></mutation>
+              <statement name="ELSE"><block type="robot_turn_right"><field name="DEG">45</field></block></statement>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>
+  </xml>`,
+  colour: `<xml>
+    <block type="controls_repeat_ext" x="20" y="20">
+      <value name="TIMES"><block type="math_number"><field name="NUM">60</field></block></value>
+      <statement name="DO">
+        <block type="robot_move_forward"><field name="PX">30</field>
+          <next>
+            <block type="robot_turn_right"><field name="DEG">60</field>
+              <next>
+                <block type="robot_log">
+                  <value name="MSG"><block type="robot_get_colour"></block></value>
+                </block>
+              </next>
+            </block>
+          </next>
+        </block>
+      </statement>
+    </block>
+  </xml>`,
+};
+
+/* ══════════════════════════════
    3D ENGINE (Three.js)
 ══════════════════════════════ */
 const S3 = 1/10; // scale: 1px = 0.1 three.js units
@@ -1191,6 +1493,7 @@ window.loadMap = function(id) {
   if (STARTER_PROGRAMS[id]) {
     document.getElementById('codeInput').value = STARTER_PROGRAMS[id];
   }
+  if (currentMode === 'blocks') loadStarterBlocks(id);
 };
 
 // Tab key in editor
