@@ -303,9 +303,16 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
       </div>
       <div class="ctrl-card" id="elemInfo">
         <div class="ctrl-label">Element Info</div>
-        <div id="elemName" style="font-size:18px;font-weight:800;color:#fff;margin-bottom:4px">—</div>
-        <div id="elemSym" style="font-family:var(--fm);font-size:32px;color:#c084fc;margin-bottom:8px">?</div>
-        <div id="elemDetail" style="font-size:12px;color:var(--muted);line-height:1.8">Hover an element to see its details.</div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:6px">
+          <div>
+            <div id="elemName" style="font-size:18px;font-weight:800;color:#fff;margin-bottom:2px">—</div>
+            <div id="elemSym" style="font-family:var(--fm);font-size:32px;color:#c084fc;line-height:1">?</div>
+          </div>
+          <div id="elemImg" style="width:80px;height:80px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto">
+            <span id="elemImgHint" style="font-size:9px;color:var(--muted);font-family:var(--fm)">click cell</span>
+          </div>
+        </div>
+        <div id="elemDetail" style="font-size:12px;color:var(--muted);line-height:1.8;margin-top:8px">Hover an element to see details · click to load photo.</div>
       </div>
     </div>
     <div class="sim-controls-row" style="margin-top:0">
@@ -666,9 +673,37 @@ function initSim(){
     hoveredElem = null;
     document.getElementById('elemName').textContent = '—';
     document.getElementById('elemSym').textContent = '?';
-    document.getElementById('elemDetail').textContent = 'Hover an element to see its details.';
+    document.getElementById('elemDetail').textContent = 'Hover an element to see details · click to load photo.';
     drawPT();
   });
+
+  canvas.addEventListener('click', function(){
+    if(hoveredElem) fetchElemImage(hoveredElem.name);
+  });
+
+  function fetchElemImage(name) {
+    const wrap = document.getElementById('elemImg');
+    const hint = document.getElementById('elemImgHint');
+    wrap.querySelectorAll('img').forEach(i => i.remove());
+    hint.style.display = 'block';
+    hint.textContent = 'loading…';
+    fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`)
+      .then(r => r.json())
+      .then(data => {
+        if(data.thumbnail && data.thumbnail.source) {
+          hint.style.display = 'none';
+          const img = document.createElement('img');
+          img.src = data.thumbnail.source;
+          img.alt = name;
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+          img.onerror = () => { hint.style.display = 'block'; hint.textContent = '—'; };
+          wrap.appendChild(img);
+        } else {
+          hint.textContent = '—';
+        }
+      })
+      .catch(() => { hint.textContent = '—'; });
+  }
 
   drawPT();
 }

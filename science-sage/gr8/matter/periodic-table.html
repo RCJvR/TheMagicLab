@@ -84,6 +84,11 @@
     /* detail panel */
     .pt-detail{margin:16px 20px 0;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
     .pt-big-sym{font-weight:900;font-size:72px;letter-spacing:-0.04em;color:#60a5fa;line-height:1;font-family:var(--fd)}
+    .det-img-wrap{width:110px;height:110px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+    .det-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+    .det-img-hint{font-family:var(--fm);font-size:10px;color:var(--muted);text-align:center;padding:8px}
+    @keyframes det-pulse{0%,100%{opacity:.35}50%{opacity:.75}}
+    .det-img-loading .det-img-hint{animation:det-pulse 1.2s ease-in-out infinite}
     .pt-detail-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
     .pt-di-label{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:2px}
     .pt-di-val{font-weight:700;font-size:15px;color:#fff}
@@ -237,7 +242,12 @@
     <div class="pt-grid" id="ptGrid"></div>
   </div>
   <div class="pt-detail" id="ptDetail">
-    <div class="pt-big-sym" id="detSym">?</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div class="pt-big-sym" id="detSym">?</div>
+      <div class="det-img-wrap" id="detImg">
+        <span class="det-img-hint" id="detImgHint">—</span>
+      </div>
+    </div>
     <div class="pt-detail-info" id="detInfo">
       <div style="grid-column:1/-1;color:var(--muted);font-size:13px">Click any element cell to see its details here.</div>
     </div>
@@ -510,6 +520,34 @@ function selectElement(z) {
     <div><div class="pt-di-label">Electron config</div><div class="pt-di-val small">${el.config}</div></div>
     <div class="pt-di-fact">${el.fact}</div>
   `;
+
+  // Fetch Wikipedia thumbnail
+  const imgWrap = document.getElementById('detImg');
+  const imgHint = document.getElementById('detImgHint');
+  imgWrap.querySelectorAll('img').forEach(i => i.remove());
+  imgWrap.classList.add('det-img-loading');
+  imgHint.style.display = 'block';
+  imgHint.textContent = 'loading…';
+
+  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(el.name)}`)
+    .then(r => r.json())
+    .then(data => {
+      imgWrap.classList.remove('det-img-loading');
+      if (data.thumbnail && data.thumbnail.source) {
+        imgHint.style.display = 'none';
+        const img = document.createElement('img');
+        img.src = data.thumbnail.source;
+        img.alt = el.name;
+        img.onerror = () => { imgHint.style.display = 'block'; imgHint.textContent = '—'; };
+        imgWrap.appendChild(img);
+      } else {
+        imgHint.textContent = '—';
+      }
+    })
+    .catch(() => {
+      imgWrap.classList.remove('det-img-loading');
+      imgHint.textContent = '—';
+    });
 }
 
 function setFilter(cat) {
