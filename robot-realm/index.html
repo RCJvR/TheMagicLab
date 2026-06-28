@@ -257,8 +257,14 @@ async function main() {
       <button class="map-btn" onclick="loadMap('line')" id="map-line">
         <span class="map-dot" style="background:#f59e0b"></span>Line Follow
       </button>
-      <button class="map-btn" onclick="loadMap('obstacles')" id="map-obstacles">
-        <span class="map-dot" style="background:#ef4444"></span>Obstacle Course
+      <button class="map-btn" onclick="loadMap('chicane')" id="map-chicane">
+        <span class="map-dot" style="background:#ef4444"></span>Chicane
+      </button>
+      <button class="map-btn" onclick="loadMap('asteroids')" id="map-asteroids">
+        <span class="map-dot" style="background:#f97316"></span>Asteroid Field
+      </button>
+      <button class="map-btn" onclick="loadMap('squeeze')" id="map-squeeze">
+        <span class="map-dot" style="background:#fb923c"></span>Tight Squeeze
       </button>
       <button class="map-btn" onclick="loadMap('colour')" id="map-colour">
         <span class="map-dot" style="background:#06b6d4"></span>Colour Zones
@@ -352,7 +358,7 @@ let animFrame3 = null;
 ══════════════════════════════ */
 function loadMap(id) {
   currentMap = id;
-  walls = []; lines = []; colourZones = [];
+  walls = []; lines = []; colourZones = []; goalZone = null;
 
   // Border walls always present
   const T = 16; // thickness
@@ -393,15 +399,42 @@ function loadMap(id) {
     );
   }
 
-  if (id === 'obstacles') {
-    // Scattered boxes
-    const boxes = [
-      {x:150,y:150,w:50,h:50},{x:300,y:120,w:40,h:70},
-      {x:80, y:320,w:60,h:40},{x:380,y:300,w:50,h:50},
-      {x:220,y:380,w:70,h:40},{x:420,y:180,w:40,h:60},
-      {x:160,y:240,w:45,h:45},{x:320,y:420,w:55,h:40},
-    ];
-    walls.push(...boxes);
+  if (id === 'chicane') {
+    // Two offset walls — S-bend, gaps are 160 px wide
+    walls.push(
+      {x:140, y:16,  w:16, h:364},  // left wall, gap at bottom (y=380–544)
+      {x:390, y:180, w:16, h:364},  // right wall, gap at top  (y=16–180)
+    );
+    goalZone = {x:450, y:30, w:80, h:130};
+  }
+
+  if (id === 'asteroids') {
+    // Staggered grid of boxes — guaranteed 110 px corridors between rows
+    walls.push(
+      // Row 1 (y=70)
+      {x:80, y:70,w:40,h:40},{x:210,y:70,w:40,h:40},{x:340,y:70,w:40,h:40},{x:450,y:70,w:40,h:40},
+      // Row 2 (y=220, offset)
+      {x:140,y:220,w:40,h:40},{x:270,y:220,w:40,h:40},{x:400,y:220,w:40,h:40},
+      // Row 3 (y=370)
+      {x:80, y:370,w:40,h:40},{x:210,y:370,w:40,h:40},{x:340,y:370,w:40,h:40},{x:450,y:370,w:40,h:40},
+      // Row 4 partial (y=460, leaves bottom-right open for goal)
+      {x:140,y:460,w:40,h:40},{x:270,y:460,w:40,h:40},
+    );
+    goalZone = {x:455, y:455, w:75, h:75};
+  }
+
+  if (id === 'squeeze') {
+    // Three gates at different heights — robot must climb and dive
+    walls.push(
+      // Gate 1 (x=140): gap y=200–310
+      {x:140, y:16,  w:16, h:184},
+      {x:140, y:310, w:16, h:234},
+      // Gate 2 (x=290): gap at top y=16–120
+      {x:290, y:120, w:16, h:424},
+      // Gate 3 (x=420): gap at bottom y=430–544
+      {x:420, y:16,  w:16, h:414},
+    );
+    goalZone = {x:455, y:445, w:75, h:75};
   }
 
   if (id === 'colour') {
@@ -782,8 +815,8 @@ async function runCode() {
   collisionCount = 0;
   document.getElementById('btnRun').textContent = '⏹ Stop';
   document.getElementById('scoreOverlay').style.display = 'none';
-  // Start timer for maze
-  if (currentMap === 'maze') {
+  // Start timer for timed maps
+  if (['maze','chicane','asteroids','squeeze'].includes(currentMap)) {
     timerStart = Date.now();
     document.getElementById('timerDisplay').style.display = '';
     document.getElementById('collisionDisplay').style.display = '';
@@ -866,9 +899,15 @@ function dismissScore() {
 
 function resetRobotPos() {
   if (currentMap === 'maze') {
-    robot_state = { x: 60, y: 60, heading: 0, speed: 5 };
+    robot_state = { x: 60,  y: 60,  heading: 0, speed: 5 };
   } else if (currentMap === 'line') {
     robot_state = { x: 100, y: 130, heading: 0, speed: 5 };
+  } else if (currentMap === 'chicane') {
+    robot_state = { x: 40,  y: 460, heading: 0, speed: 5 };
+  } else if (currentMap === 'asteroids') {
+    robot_state = { x: 40,  y: 315, heading: 0, speed: 5 };
+  } else if (currentMap === 'squeeze') {
+    robot_state = { x: 40,  y: 255, heading: 0, speed: 5 };
   } else {
     robot_state = { x: W/2, y: H/2, heading: 0, speed: 5 };
   }
@@ -963,25 +1002,76 @@ async function main() {
 }
 await main();
 `,
-  obstacles: `// Obstacle Avoider
-// Navigate around the scattered boxes.
+  chicane: `// Chicane — S-bend challenge
+// Two offset walls create an S-curve.
+// Follow the lower gap, swing up, then dash to the goal!
 
 async function main() {
-  log("Obstacle course started!");
-  robot.setSpeed(6);
+  robot.setSpeed(7);
+  log("Chicane started!");
 
-  for (let i = 0; i < 200; i++) {
-    const dist = robot.getDistance('front');
+  // Phase 1: move right through the lower gap (below the left wall)
+  await robot.moveForward(100);
 
-    if (dist > 60) {
-      await robot.moveForward(15);
-    } else {
-      // Obstacle ahead — turn randomly
-      const turn = Math.random() > 0.5 ? 45 : -45;
-      await robot.turnRight(turn);
-    }
-  }
-  log("Done!");
+  // Phase 2: swing up to clear the right wall's upper gap
+  await robot.turnLeft(90);
+  await robot.moveForward(360);
+  await robot.turnRight(90);
+
+  // Phase 3: dash right into the goal zone
+  await robot.moveForward(340);
+
+  log("Goal!");
+}
+await main();
+`,
+
+  asteroids: `// Asteroid Field — dodge the rocks!
+// Fly straight through the clear corridor at mid-height,
+// then turn down to reach the goal in the bottom-right.
+
+async function main() {
+  robot.setSpeed(8);
+  log("Asteroid field: entering...");
+
+  // The corridor between asteroid rows is clear at y=315
+  await robot.moveForward(470);
+
+  // Drop down to the goal zone
+  await robot.turnRight(90);
+  await robot.moveForward(200);
+
+  log("Goal!");
+}
+await main();
+`,
+
+  squeeze: `// Tight Squeeze — three gates!
+// Each gate is only 110 px wide, at a DIFFERENT height.
+// The robot must climb and dive to thread each one.
+
+async function main() {
+  robot.setSpeed(7);
+  log("Tight Squeeze — GO!");
+
+  // Gate 1: already aligned (y=255, gap y=200–310)
+  await robot.moveForward(150);
+
+  // Climb to Gate 2 (gap at TOP, y < 120)
+  await robot.turnLeft(90);
+  await robot.moveForward(185);
+  await robot.turnRight(90);
+
+  // Pass Gate 2, then clear its wall before diving to Gate 3 (gap at BOTTOM, y > 430)
+  await robot.moveForward(140);
+  await robot.turnRight(90);
+  await robot.moveForward(440);
+  await robot.turnLeft(90);
+
+  // Pass Gate 3 and reach the goal
+  await robot.moveForward(170);
+
+  log("All three gates cleared!");
 }
 await main();
 `,
@@ -1254,28 +1344,52 @@ const STARTER_BLOCKS = {
       </next>
     </block>
   </xml>`,
-  obstacles: `<xml>
+  chicane: `<xml>
     <block type="robot_set_speed" x="20" y="20">
-      <field name="SPD">6</field>
-      <next>
-        <block type="controls_repeat_ext">
-          <value name="TIMES"><block type="math_number"><field name="NUM">200</field></block></value>
-          <statement name="DO">
-            <block type="controls_if">
-              <value name="IF0">
-                <block type="logic_compare">
-                  <field name="OP">GT</field>
-                  <value name="A"><block type="robot_get_distance"><field name="DIR">front</field></block></value>
-                  <value name="B"><block type="math_number"><field name="NUM">60</field></block></value>
-                </block>
-              </value>
-              <statement name="DO0"><block type="robot_move_forward"><field name="PX">15</field></block></statement>
-              <mutation else="1"></mutation>
-              <statement name="ELSE"><block type="robot_turn_right"><field name="DEG">45</field></block></statement>
-            </block>
-          </statement>
-        </block>
-      </next>
+      <field name="SPD">7</field>
+      <next><block type="robot_move_forward"><field name="PX">100</field>
+        <next><block type="robot_turn_left"><field name="DEG">90</field>
+          <next><block type="robot_move_forward"><field name="PX">360</field>
+            <next><block type="robot_turn_right"><field name="DEG">90</field>
+              <next><block type="robot_move_forward"><field name="PX">340</field></block></next>
+            </block></next>
+          </block></next>
+        </block></next>
+      </block></next>
+    </block>
+  </xml>`,
+
+  asteroids: `<xml>
+    <block type="robot_set_speed" x="20" y="20">
+      <field name="SPD">8</field>
+      <next><block type="robot_move_forward"><field name="PX">470</field>
+        <next><block type="robot_turn_right"><field name="DEG">90</field>
+          <next><block type="robot_move_forward"><field name="PX">200</field></block></next>
+        </block></next>
+      </block></next>
+    </block>
+  </xml>`,
+
+  squeeze: `<xml>
+    <block type="robot_set_speed" x="20" y="20">
+      <field name="SPD">7</field>
+      <next><block type="robot_move_forward"><field name="PX">150</field>
+        <next><block type="robot_turn_left"><field name="DEG">90</field>
+          <next><block type="robot_move_forward"><field name="PX">185</field>
+            <next><block type="robot_turn_right"><field name="DEG">90</field>
+              <next><block type="robot_move_forward"><field name="PX">140</field>
+                <next><block type="robot_turn_right"><field name="DEG">90</field>
+                  <next><block type="robot_move_forward"><field name="PX">440</field>
+                    <next><block type="robot_turn_left"><field name="DEG">90</field>
+                      <next><block type="robot_move_forward"><field name="PX">170</field></block></next>
+                    </block></next>
+                  </block></next>
+                </block></next>
+              </block></next>
+            </block></next>
+          </block></next>
+        </block></next>
+      </block></next>
     </block>
   </xml>`,
   colour: `<xml>
