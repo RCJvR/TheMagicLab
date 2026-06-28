@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robot Realm — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c1a;--bg2:#0d1226;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+  --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+  --accent:#f97316;--accent2:#ef4444;
+  --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);-webkit-font-smoothing:antialiased;}
+body{display:flex;flex-direction:column;overflow:hidden;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(249,115,22,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(239,68,68,0.08) 0%,transparent 55%);
+}
+
+/* ── Nav ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.nav-logo{font-weight:900;font-size:17px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#fdba74 50%,#fca5a5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
+.nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+.map-pill{border-color:rgba(249,115,22,0.35);background:rgba(249,115,22,0.08);color:#fdba74;}
+.map-pill.active{background:rgba(249,115,22,0.20);color:#fb923c;}
+
+/* ── Layout ── */
+.workspace{display:flex;flex:1;overflow:hidden;min-height:0;}
+
+/* ── Left panel: code editor ── */
+.panel-code{width:340px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--border);}
+.panel-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.panel-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+.code-area{flex:1;padding:0;position:relative;overflow:hidden;}
+textarea.code-input{width:100%;height:100%;background:#060912;color:#e2e8f0;font-family:var(--fm);font-size:12.5px;line-height:1.7;padding:14px;border:none;outline:none;resize:none;tab-size:2;}
+textarea.code-input::placeholder{color:rgba(210,218,245,0.20);}
+
+/* ── Control bar ── */
+.ctrl-bar{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 140ms;letter-spacing:-0.01em;}
+.btn:active{transform:scale(0.97);}
+.btn-run{background:linear-gradient(135deg,#c2410c,#991b1b);color:#fff;box-shadow:0 2px 10px rgba(194,65,12,0.4);}
+.btn-run:hover{box-shadow:0 4px 16px rgba(194,65,12,0.55);}
+.btn-step{background:rgba(249,115,22,0.15);color:#fdba74;border:1px solid rgba(249,115,22,0.30);}
+.btn-step:hover{background:rgba(249,115,22,0.25);}
+.btn-reset{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border);}
+.btn-reset:hover{background:rgba(255,255,255,0.10);color:var(--text);}
+.btn-speed{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border);font-size:11px;padding:6px 10px;}
+.btn-speed.active{background:rgba(249,115,22,0.15);color:#fdba74;border-color:rgba(249,115,22,0.30);}
+
+/* ── Log panel ── */
+.log-panel{flex-shrink:0;height:120px;border-top:1px solid var(--border);overflow-y:auto;background:#040710;padding:8px 12px;font-family:var(--fm);font-size:11px;line-height:1.6;color:rgba(210,218,245,0.55);}
+.log-panel .log-line{margin-bottom:1px;}
+.log-panel .log-err{color:#f87171;}
+.log-panel .log-ok{color:#34d399;}
+.log-panel .log-info{color:#94a3b8;}
+
+/* ── Centre: arena ── */
+.panel-arena{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.arena-wrap{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;padding:16px;}
+canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f20;cursor:crosshair;max-width:100%;max-height:100%;}
+
+/* ── Right panel: sensors + map selector ── */
+.panel-right{width:220px;flex-shrink:0;display:flex;flex-direction:column;border-left:1px solid var(--border);overflow-y:auto;}
+.sensor-section{padding:12px 14px;border-bottom:1px solid var(--border);}
+.sensor-title{font-size:10px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.sensor-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
+.sensor-label{font-size:11px;color:var(--muted);}
+.sensor-val{font-family:var(--fm);font-size:12px;font-weight:600;color:var(--text);background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:3px 8px;min-width:54px;text-align:right;}
+.sensor-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.sensor-bar{height:100%;border-radius:3px;transition:width 120ms;background:var(--accent);}
+
+.map-section{padding:12px 14px;}
+.map-btn{width:100%;text-align:left;font-family:var(--fd);font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;margin-bottom:6px;transition:all 140ms;display:flex;align-items:center;gap:8px;}
+.map-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);}
+.map-btn.active{border-color:rgba(249,115,22,0.40);background:rgba(249,115,22,0.10);color:#fdba74;}
+.map-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── API Reference ── */
+.api-section{padding:12px 14px;border-top:1px solid var(--border);}
+.api-item{margin-bottom:10px;}
+.api-fn{font-family:var(--fm);font-size:10px;color:#fb923c;margin-bottom:2px;}
+.api-desc{font-size:10px;color:var(--muted);line-height:1.5;}
+
+/* ── Status bar ── */
+.status-bar{flex-shrink:0;display:flex;align-items:center;gap:16px;padding:6px 16px;border-top:1px solid var(--border);font-size:10px;font-family:var(--fm);color:var(--muted);}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#6b7280;flex-shrink:0;}
+.status-dot.running{background:#f97316;animation:pulse 1s ease-in-out infinite;}
+.status-dot.done{background:#34d399;}
+.status-dot.error{background:#f87171;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">🤖 Robot Realm</a>
+  <div class="nav-right">
+    <span id="statusLabel" class="nav-pill" style="pointer-events:none;">Idle</span>
+    <a href="../index.html" class="nav-pill">← Back</a>
+  </div>
+</nav>
+
+<div class="workspace">
+
+  <!-- ── Left: Code Editor ── -->
+  <div class="panel-code">
+    <div class="panel-header">
+      <span class="panel-title">Code Editor</span>
+      <span style="font-size:10px;font-family:var(--fm);color:var(--muted);">JavaScript</span>
+    </div>
+    <div class="code-area">
+      <textarea class="code-input" id="codeInput" spellcheck="false">// Robot Realm — starter program
+// Use the Robot API to control your bot.
+
+async function main() {
+  log("Program started!");
+
+  // Drive forward 100 px
+  await robot.moveForward(100);
+
+  // Turn right 90 degrees
+  await robot.turnRight(90);
+
+  await robot.moveForward(100);
+  await robot.turnRight(90);
+
+  await robot.moveForward(100);
+  await robot.turnRight(90);
+
+  await robot.moveForward(100);
+
+  log("Square complete!");
+}
+</textarea>
+    </div>
+    <div class="ctrl-bar">
+      <button class="btn btn-run" id="btnRun" onclick="runCode()">▶ Run</button>
+      <button class="btn btn-step" id="btnStep" onclick="stepCode()">⏭ Step</button>
+      <button class="btn btn-reset" onclick="resetSim()">↺ Reset</button>
+      <button class="btn btn-speed active" id="btnSlow" onclick="setSpeed('slow')">🐢</button>
+      <button class="btn btn-speed" id="btnFast" onclick="setSpeed('fast')">⚡</button>
+    </div>
+    <div class="log-panel" id="logPanel">
+      <div class="log-line log-info">// Console output appears here</div>
+    </div>
+  </div>
+
+  <!-- ── Centre: Arena ── -->
+  <div class="panel-arena">
+    <div class="arena-wrap">
+      <canvas id="arena" width="560" height="560"></canvas>
+    </div>
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Ready — press Run to start</span>
+      <span style="margin-left:auto;">x: <span id="stX">280</span> &nbsp; y: <span id="stY">280</span> &nbsp; heading: <span id="stH">0</span>°</span>
+    </div>
+  </div>
+
+  <!-- ── Right: Sensors + Maps ── -->
+  <div class="panel-right">
+
+    <div class="sensor-section">
+      <div class="sensor-title">Sensors</div>
+
+      <div class="sensor-row">
+        <span class="sensor-label">Distance (front)</span>
+        <span class="sensor-val" id="sDistF">—</span>
+      </div>
+      <div class="sensor-bar-wrap"><div class="sensor-bar" id="sDistFBar" style="width:0%"></div></div>
+
+      <div style="height:8px"></div>
+      <div class="sensor-row">
+        <span class="sensor-label">Distance (left)</span>
+        <span class="sensor-val" id="sDistL">—</span>
+      </div>
+      <div class="sensor-bar-wrap"><div class="sensor-bar" id="sDistLBar" style="width:0%"></div></div>
+
+      <div style="height:8px"></div>
+      <div class="sensor-row">
+        <span class="sensor-label">Distance (right)</span>
+        <span class="sensor-val" id="sDistR">—</span>
+      </div>
+      <div class="sensor-bar-wrap"><div class="sensor-bar" id="sDistRBar" style="width:0%"></div></div>
+
+      <div style="height:10px"></div>
+      <div class="sensor-row">
+        <span class="sensor-label">Line (left)</span>
+        <span class="sensor-val" id="sLineL">—</span>
+      </div>
+      <div class="sensor-row">
+        <span class="sensor-label">Line (centre)</span>
+        <span class="sensor-val" id="sLineC">—</span>
+      </div>
+      <div class="sensor-row">
+        <span class="sensor-label">Line (right)</span>
+        <span class="sensor-val" id="sLineR">—</span>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="sensor-row">
+        <span class="sensor-label">Colour</span>
+        <span class="sensor-val" id="sColour" style="font-size:10px;">—</span>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <div class="sensor-title" style="margin-bottom:10px;">Maps</div>
+      <button class="map-btn active" onclick="loadMap('empty')" id="map-empty">
+        <span class="map-dot" style="background:#4b5563"></span>Empty Arena
+      </button>
+      <button class="map-btn" onclick="loadMap('maze')" id="map-maze">
+        <span class="map-dot" style="background:#7c3aed"></span>Maze
+      </button>
+      <button class="map-btn" onclick="loadMap('line')" id="map-line">
+        <span class="map-dot" style="background:#f59e0b"></span>Line Follow
+      </button>
+      <button class="map-btn" onclick="loadMap('obstacles')" id="map-obstacles">
+        <span class="map-dot" style="background:#ef4444"></span>Obstacle Course
+      </button>
+      <button class="map-btn" onclick="loadMap('colour')" id="map-colour">
+        <span class="map-dot" style="background:#06b6d4"></span>Colour Zones
+      </button>
+    </div>
+
+    <div class="api-section">
+      <div class="sensor-title" style="margin-bottom:10px;">Robot API</div>
+      <div class="api-item">
+        <div class="api-fn">robot.moveForward(px)</div>
+        <div class="api-desc">Move forward by px pixels</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.moveBackward(px)</div>
+        <div class="api-desc">Move backward by px pixels</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.turnLeft(deg)</div>
+        <div class="api-desc">Rotate left by degrees</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.turnRight(deg)</div>
+        <div class="api-desc">Rotate right by degrees</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.getDistance(dir?)</div>
+        <div class="api-desc">Returns px to nearest wall. dir: "front" | "left" | "right"</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.getLine(pos?)</div>
+        <div class="api-desc">Returns true if line sensor detects dark. pos: "left" | "centre" | "right"</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.getColour()</div>
+        <div class="api-desc">Returns colour name under robot</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">robot.setSpeed(n)</div>
+        <div class="api-desc">Set speed 1–10 (default 5)</div>
+      </div>
+      <div class="api-item">
+        <div class="api-fn">log(message)</div>
+        <div class="api-desc">Print to the console below</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   ROBOT REALM — Simulation Engine
+   ═══════════════════════════════════════════ */
+
+const canvas = document.getElementById('arena');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+/* ── Robot state ── */
+let robot_state = { x: W/2, y: H/2, heading: 0, speed: 5 };
+
+/* ── Simulation control ── */
+let simRunning = false;
+let simAbort = false;
+let simSpeed = 'slow'; // 'slow' | 'fast'
+let stepResolve = null;
+let stepMode = false;
+
+/* ── Map data ── */
+let walls = [];       // [{x,y,w,h}]
+let lines = [];       // [{x1,y1,x2,y2,width}]  dark lines on floor
+let colourZones = []; // [{x,y,w,h,colour}]
+let currentMap = 'empty';
+
+/* ══════════════════════════════
+   MAP DEFINITIONS
+══════════════════════════════ */
+function loadMap(id) {
+  currentMap = id;
+  walls = []; lines = []; colourZones = [];
+
+  // Border walls always present
+  const T = 16; // thickness
+  walls.push(
+    {x:0,   y:0,   w:W, h:T},
+    {x:0,   y:H-T, w:W, h:T},
+    {x:0,   y:0,   w:T, h:H},
+    {x:W-T, y:0,   w:T, h:H}
+  );
+
+  if (id === 'maze') {
+    // Simple maze walls (horizontal + vertical segments)
+    walls.push(
+      {x:16,  y:100, w:200, h:14},
+      {x:100, y:100, w:14,  h:160},
+      {x:100, y:260, w:160, h:14},
+      {x:260, y:140, w:14,  h:134},
+      {x:200, y:140, w:74,  h:14},
+      {x:200, y:340, w:200, h:14},
+      {x:340, y:200, w:14,  h:154},
+      {x:16,  y:350, w:220, h:14},
+      {x:16,  y:420, w:14,  h:130},
+      {x:16,  y:534, w:310, h:14},
+      {x:320, y:420, w:14,  h:130},
+      {x:320, y:420, w:240, h:14},
+      {x:420, y:200, w:14,  h:234},
+      {x:420, y:200, w:140, h:14},
+    );
+  }
+
+  if (id === 'line') {
+    // A looping track drawn as thick dark lines
+    lines.push(
+      {path: [
+        {x:100,y:100},{x:460,y:100},{x:460,y:460},
+        {x:100,y:460},{x:100,y:100}
+      ], width: 18}
+    );
+  }
+
+  if (id === 'obstacles') {
+    // Scattered boxes
+    const boxes = [
+      {x:150,y:150,w:50,h:50},{x:300,y:120,w:40,h:70},
+      {x:80, y:320,w:60,h:40},{x:380,y:300,w:50,h:50},
+      {x:220,y:380,w:70,h:40},{x:420,y:180,w:40,h:60},
+      {x:160,y:240,w:45,h:45},{x:320,y:420,w:55,h:40},
+    ];
+    walls.push(...boxes);
+  }
+
+  if (id === 'colour') {
+    colourZones.push(
+      {x:30, y:30, w:180,h:180, colour:'red',   fill:'rgba(239,68,68,0.35)'},
+      {x:350,y:30, w:180,h:180, colour:'blue',  fill:'rgba(59,130,246,0.35)'},
+      {x:30, y:350,w:180,h:180, colour:'green', fill:'rgba(34,197,94,0.35)'},
+      {x:350,y:350,w:180,h:180, colour:'yellow',fill:'rgba(234,179,8,0.35)'},
+      {x:190,y:190,w:180,h:180, colour:'purple',fill:'rgba(168,85,247,0.35)'},
+    );
+  }
+
+  resetSim();
+  // Highlight active map button
+  document.querySelectorAll('.map-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('map-' + id)?.classList.add('active');
+}
+
+/* ══════════════════════════════
+   DRAWING
+══════════════════════════════ */
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Floor
+  ctx.fillStyle = '#0a0f20';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid dots
+  ctx.fillStyle = 'rgba(255,255,255,0.04)';
+  for (let gx = 40; gx < W; gx += 40)
+    for (let gy = 40; gy < H; gy += 40) {
+      ctx.beginPath(); ctx.arc(gx, gy, 1, 0, Math.PI*2); ctx.fill();
+    }
+
+  // Colour zones
+  colourZones.forEach(z => {
+    ctx.fillStyle = z.fill;
+    ctx.fillRect(z.x, z.y, z.w, z.h);
+    ctx.strokeStyle = z.fill.replace('0.35','0.6');
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(z.x, z.y, z.w, z.h);
+    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+    ctx.font = '11px "JetBrains Mono"';
+    ctx.fillText(z.colour, z.x+6, z.y+16);
+  });
+
+  // Line paths
+  lines.forEach(l => {
+    ctx.strokeStyle = 'rgba(20,20,40,0.95)';
+    ctx.lineWidth = l.width;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    l.path.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.stroke();
+    // White edge highlight
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.lineWidth = l.width + 4;
+    ctx.beginPath();
+    l.path.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.stroke();
+    // Re-draw dark on top
+    ctx.strokeStyle = 'rgba(20,20,40,0.95)';
+    ctx.lineWidth = l.width;
+    ctx.beginPath();
+    l.path.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.stroke();
+  });
+
+  // Walls
+  walls.forEach(w => {
+    ctx.fillStyle = 'rgba(249,115,22,0.18)';
+    ctx.fillRect(w.x, w.y, w.w, w.h);
+    ctx.strokeStyle = 'rgba(249,115,22,0.55)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(w.x, w.y, w.w, w.h);
+  });
+
+  // Draw sensor rays
+  drawSensorRays();
+
+  // Robot
+  drawRobot();
+}
+
+function drawRobot() {
+  const {x, y, heading} = robot_state;
+  const R = 18;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(heading * Math.PI / 180);
+
+  // Body
+  ctx.beginPath();
+  ctx.arc(0, 0, R, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(249,115,22,0.20)';
+  ctx.fill();
+  ctx.strokeStyle = '#f97316';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Direction arrow
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(R+4, 0);
+  ctx.strokeStyle = '#fb923c';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(R+4, 0);
+  ctx.lineTo(R, -4);
+  ctx.moveTo(R+4, 0);
+  ctx.lineTo(R, 4);
+  ctx.stroke();
+
+  // Line sensors (3 dots at front-bottom)
+  const sensorOffsets = [{x:10,y:-8},{x:14,y:0},{x:10,y:8}];
+  sensorOffsets.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, 3, 0, Math.PI*2);
+    ctx.fillStyle = getLineSensorAt(x + s.x*Math.cos(heading*Math.PI/180) - s.y*Math.sin(heading*Math.PI/180),
+                                    y + s.x*Math.sin(heading*Math.PI/180) + s.y*Math.cos(heading*Math.PI/180))
+                    ? '#1a1a2e' : '#fbbf24';
+    ctx.fill();
+  });
+
+  ctx.restore();
+}
+
+function drawSensorRays() {
+  const {x, y, heading} = robot_state;
+  const dirs = [
+    {angle: 0,   id:'F', color:'rgba(249,115,22,0.4)'},
+    {angle: -90, id:'L', color:'rgba(96,165,250,0.4)'},
+    {angle: 90,  id:'R', color:'rgba(167,243,208,0.4)'},
+  ];
+  dirs.forEach(d => {
+    const rayAngle = (heading + d.angle) * Math.PI / 180;
+    const dist = castRay(x, y, rayAngle);
+    const ex = x + Math.cos(rayAngle) * dist;
+    const ey = y + Math.sin(rayAngle) * dist;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(ex, ey);
+    ctx.strokeStyle = d.color;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.arc(ex, ey, 3, 0, Math.PI*2);
+    ctx.fillStyle = d.color.replace('0.4','0.9');
+    ctx.fill();
+  });
+}
+
+/* ══════════════════════════════
+   PHYSICS / SENSORS
+══════════════════════════════ */
+function castRay(ox, oy, angle, maxDist=300) {
+  const dx = Math.cos(angle), dy = Math.sin(angle);
+  for (let t = 1; t < maxDist; t++) {
+    const px = ox + dx*t, py = oy + dy*t;
+    if (hitsWall(px, py)) return t;
+  }
+  return maxDist;
+}
+
+function hitsWall(px, py) {
+  return walls.some(w => px >= w.x && px <= w.x+w.w && py >= w.y && py <= w.y+w.h);
+}
+
+function robotHitsWall(nx, ny) {
+  const R = 18;
+  return walls.some(w =>
+    nx+R > w.x && nx-R < w.x+w.w &&
+    ny+R > w.y && ny-R < w.y+w.h
+  );
+}
+
+function getLineSensorAt(px, py) {
+  // Check if point is on a drawn line path
+  for (const l of lines) {
+    for (let i = 1; i < l.path.length; i++) {
+      const a = l.path[i-1], b = l.path[i];
+      const d = distToSegment(px, py, a.x, a.y, b.x, b.y);
+      if (d < l.width/2) return true;
+    }
+  }
+  return false;
+}
+
+function distToSegment(px,py,ax,ay,bx,by) {
+  const dx=bx-ax, dy=by-ay, len2=dx*dx+dy*dy;
+  if(len2===0) return Math.hypot(px-ax,py-ay);
+  let t=((px-ax)*dx+(py-ay)*dy)/len2;
+  t=Math.max(0,Math.min(1,t));
+  return Math.hypot(px-(ax+t*dx),py-(ay+t*dy));
+}
+
+function getColourAtRobot() {
+  const {x, y} = robot_state;
+  for (const z of colourZones)
+    if (x>=z.x && x<=z.x+z.w && y>=z.y && y<=z.y+z.h) return z.colour;
+  return 'none';
+}
+
+function getSensorData() {
+  const {x, y, heading} = robot_state;
+  const toRad = a => (heading + a) * Math.PI / 180;
+  const dF = Math.round(castRay(x, y, toRad(0)));
+  const dL = Math.round(castRay(x, y, toRad(-90)));
+  const dR = Math.round(castRay(x, y, toRad(90)));
+  const sOff = [{dx:10,dy:-8},{dx:14,dy:0},{dx:10,dy:8}];
+  const hRad = heading * Math.PI / 180;
+  const lineSensors = sOff.map(s => {
+    const sx = x + s.dx*Math.cos(hRad) - s.dy*Math.sin(hRad);
+    const sy = y + s.dx*Math.sin(hRad) + s.dy*Math.cos(hRad);
+    return getLineSensorAt(sx, sy);
+  });
+  const colour = getColourAtRobot();
+  return { dF, dL, dR, lineSensors, colour };
+}
+
+function updateSensorDisplay() {
+  const s = getSensorData();
+  const fmt = n => n >= 300 ? '> 300' : n + ' px';
+  document.getElementById('sDistF').textContent = fmt(s.dF);
+  document.getElementById('sDistL').textContent = fmt(s.dL);
+  document.getElementById('sDistR').textContent = fmt(s.dR);
+  document.getElementById('sDistFBar').style.width = Math.min(100, s.dF/3) + '%';
+  document.getElementById('sDistLBar').style.width = Math.min(100, s.dL/3) + '%';
+  document.getElementById('sDistRBar').style.width = Math.min(100, s.dR/3) + '%';
+  document.getElementById('sLineL').textContent = s.lineSensors[0] ? 'LINE' : 'clear';
+  document.getElementById('sLineC').textContent = s.lineSensors[1] ? 'LINE' : 'clear';
+  document.getElementById('sLineR').textContent = s.lineSensors[2] ? 'LINE' : 'clear';
+  document.getElementById('sLineL').style.color = s.lineSensors[0] ? '#fbbf24' : 'var(--muted)';
+  document.getElementById('sLineC').style.color = s.lineSensors[1] ? '#fbbf24' : 'var(--muted)';
+  document.getElementById('sLineR').style.color = s.lineSensors[2] ? '#fbbf24' : 'var(--muted)';
+  document.getElementById('sColour').textContent = s.colour;
+  document.getElementById('sColour').style.color = s.colour === 'none' ? 'var(--muted)' : '#e4e8f8';
+  document.getElementById('stX').textContent = Math.round(robot_state.x);
+  document.getElementById('stY').textContent = Math.round(robot_state.y);
+  document.getElementById('stH').textContent = Math.round(robot_state.heading);
+}
+
+/* ══════════════════════════════
+   ROBOT API (async, awaitable)
+══════════════════════════════ */
+const STEP_PX = 1; // pixels per animation frame
+
+function delay(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+
+function frameDelay() {
+  if (simSpeed === 'fast') return delay(0);
+  // slow: ~60fps animation, speed 1-10 controls step size
+  return new Promise(res => requestAnimationFrame(res));
+}
+
+async function animateMove(distPx) {
+  const dir = distPx >= 0 ? 1 : -1;
+  let remaining = Math.abs(distPx);
+  const step = Math.max(1, robot_state.speed * 0.8);
+  while (remaining > 0 && !simAbort) {
+    const d = Math.min(step, remaining);
+    const rad = robot_state.heading * Math.PI / 180;
+    const nx = robot_state.x + Math.cos(rad) * d * dir;
+    const ny = robot_state.y + Math.sin(rad) * d * dir;
+    if (!robotHitsWall(nx, ny)) {
+      robot_state.x = nx; robot_state.y = ny;
+    } else {
+      addLog('⚠ Collision detected — movement stopped.', 'err');
+      break;
+    }
+    remaining -= d;
+    draw(); updateSensorDisplay();
+    await frameDelay();
+  }
+}
+
+async function animateTurn(degrees) {
+  const dir = degrees >= 0 ? 1 : -1;
+  let remaining = Math.abs(degrees);
+  const step = Math.max(1, robot_state.speed * 1.5);
+  while (remaining > 0 && !simAbort) {
+    const d = Math.min(step, remaining);
+    robot_state.heading = (robot_state.heading + d * dir + 360) % 360;
+    remaining -= d;
+    draw(); updateSensorDisplay();
+    await frameDelay();
+  }
+}
+
+const robotAPI = {
+  async moveForward(px=50) { await animateMove(px); },
+  async moveBackward(px=50) { await animateMove(-px); },
+  async turnLeft(deg=90) { await animateTurn(-deg); },
+  async turnRight(deg=90) { await animateTurn(deg); },
+  getDistance(dir='front') {
+    const s = getSensorData();
+    if (dir==='left') return s.dL;
+    if (dir==='right') return s.dR;
+    return s.dF;
+  },
+  getLine(pos='centre') {
+    const s = getSensorData();
+    if (pos==='left') return s.lineSensors[0];
+    if (pos==='right') return s.lineSensors[2];
+    return s.lineSensors[1];
+  },
+  getColour() { return getColourAtRobot(); },
+  setSpeed(n) { robot_state.speed = Math.max(1, Math.min(10, n)); },
+  async wait(ms) { await delay(ms); },
+};
+
+/* ══════════════════════════════
+   CODE EXECUTION
+══════════════════════════════ */
+function addLog(msg, type='info') {
+  const panel = document.getElementById('logPanel');
+  const div = document.createElement('div');
+  div.className = 'log-line log-' + type;
+  div.textContent = msg;
+  panel.appendChild(div);
+  panel.scrollTop = panel.scrollHeight;
+}
+
+function clearLog() {
+  document.getElementById('logPanel').innerHTML = '';
+}
+
+function setStatus(state, text) {
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot ' + state;
+  document.getElementById('statusText').textContent = text;
+  document.getElementById('statusLabel').textContent =
+    state === 'running' ? 'Running' : state === 'done' ? 'Done' : state === 'error' ? 'Error' : 'Idle';
+}
+
+async function runCode() {
+  if (simRunning) { simAbort = true; return; }
+  clearLog();
+  resetRobotPos();
+  simAbort = false;
+  simRunning = true;
+  stepMode = false;
+  document.getElementById('btnRun').textContent = '⏹ Stop';
+  setStatus('running', 'Program running…');
+
+  const code = document.getElementById('codeInput').value;
+  try {
+    const fn = new Function('robot', 'log', `"use strict"; return (async function main(){ ${code} })()`);
+    await fn(robotAPI, (msg) => addLog(String(msg), 'ok'));
+    if (!simAbort) {
+      addLog('✓ Program finished.', 'ok');
+      setStatus('done', 'Program finished');
+    } else {
+      addLog('⏹ Stopped by user.', 'info');
+      setStatus('', 'Stopped');
+    }
+  } catch(e) {
+    addLog('✗ Error: ' + e.message, 'err');
+    setStatus('error', 'Error: ' + e.message);
+  }
+  simRunning = false;
+  simAbort = false;
+  document.getElementById('btnRun').textContent = '▶ Run';
+  draw(); updateSensorDisplay();
+}
+
+async function stepCode() {
+  // In step mode we run the code but pause after each awaited move
+  addLog('Step mode: click Step to advance one instruction.', 'info');
+}
+
+function resetSim() {
+  simAbort = true;
+  setTimeout(() => {
+    simRunning = false;
+    simAbort = false;
+    resetRobotPos();
+    document.getElementById('btnRun').textContent = '▶ Run';
+    setStatus('', 'Ready — press Run to start');
+    clearLog();
+    addLog('// Console output appears here', 'info');
+    draw(); updateSensorDisplay();
+  }, 50);
+}
+
+function resetRobotPos() {
+  if (currentMap === 'maze') {
+    robot_state = { x: 60, y: 60, heading: 0, speed: 5 };
+  } else if (currentMap === 'line') {
+    robot_state = { x: 100, y: 130, heading: 0, speed: 5 };
+  } else {
+    robot_state = { x: W/2, y: H/2, heading: 0, speed: 5 };
+  }
+}
+
+function setSpeed(s) {
+  simSpeed = s;
+  document.getElementById('btnSlow').classList.toggle('active', s==='slow');
+  document.getElementById('btnFast').classList.toggle('active', s==='fast');
+}
+
+/* ══════════════════════════════
+   STARTER PROGRAMS per map
+══════════════════════════════ */
+const STARTER_PROGRAMS = {
+  empty: `// Robot Realm — starter program
+// Use the Robot API to control your bot.
+
+async function main() {
+  log("Program started!");
+
+  // Drive forward 100 px
+  await robot.moveForward(100);
+
+  // Turn right 90 degrees
+  await robot.turnRight(90);
+
+  await robot.moveForward(100);
+  await robot.turnRight(90);
+
+  await robot.moveForward(100);
+  await robot.turnRight(90);
+
+  await robot.moveForward(100);
+
+  log("Square complete!");
+}
+`,
+  maze: `// Maze Navigator
+// Try to reach the bottom-right corner!
+// Tip: use robot.getDistance() to avoid walls.
+
+async function main() {
+  log("Navigating maze...");
+
+  while (true) {
+    const front = robot.getDistance('front');
+    const right  = robot.getDistance('right');
+
+    if (front > 50) {
+      await robot.moveForward(20);
+    } else if (right > 50) {
+      await robot.turnRight(90);
+    } else {
+      await robot.turnLeft(90);
+    }
+  }
+}
+`,
+  line: `// Line Follower
+// The robot follows the dark track using
+// its three line sensors.
+
+async function main() {
+  log("Line following started...");
+  robot.setSpeed(4);
+
+  for (let i = 0; i < 400; i++) {
+    const left   = robot.getLine('left');
+    const centre = robot.getLine('centre');
+    const right  = robot.getLine('right');
+
+    if (centre) {
+      // On the line — go straight
+      await robot.moveForward(4);
+    } else if (left) {
+      // Drifted right — correct left
+      await robot.turnLeft(5);
+      await robot.moveForward(3);
+    } else if (right) {
+      // Drifted left — correct right
+      await robot.turnRight(5);
+      await robot.moveForward(3);
+    } else {
+      // Lost the line — search
+      await robot.turnLeft(5);
+    }
+  }
+  log("Done!");
+}
+`,
+  obstacles: `// Obstacle Avoider
+// Navigate around the scattered boxes.
+
+async function main() {
+  log("Obstacle course started!");
+  robot.setSpeed(6);
+
+  for (let i = 0; i < 200; i++) {
+    const dist = robot.getDistance('front');
+
+    if (dist > 60) {
+      await robot.moveForward(15);
+    } else {
+      // Obstacle ahead — turn randomly
+      const turn = Math.random() > 0.5 ? 45 : -45;
+      await robot.turnRight(turn);
+    }
+  }
+  log("Done!");
+}
+`,
+  colour: `// Colour Zone Explorer
+// Drive around and detect which colour
+// zone the robot is currently in.
+
+async function main() {
+  log("Starting colour exploration...");
+
+  for (let i = 0; i < 60; i++) {
+    await robot.moveForward(30);
+    await robot.turnRight(60);
+
+    const colour = robot.getColour();
+    if (colour !== 'none') {
+      log("Found zone: " + colour);
+    }
+  }
+
+  log("Exploration complete!");
+}
+`
+};
+
+/* ══════════════════════════════
+   INIT
+══════════════════════════════ */
+// Override loadMap to also set starter code
+const _origLoadMap = loadMap;
+window.loadMap = function(id) {
+  _origLoadMap(id);
+  if (STARTER_PROGRAMS[id]) {
+    document.getElementById('codeInput').value = STARTER_PROGRAMS[id];
+  }
+};
+
+// Tab key in editor
+document.getElementById('codeInput').addEventListener('keydown', e => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const s = e.target.selectionStart;
+    const v = e.target.value;
+    e.target.value = v.slice(0,s) + '  ' + v.slice(e.target.selectionEnd);
+    e.target.selectionStart = e.target.selectionEnd = s + 2;
+  }
+});
+
+// Initial load
+loadMap('empty');
+</script>
+</body>
+</html>
