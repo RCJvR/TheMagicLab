@@ -114,6 +114,62 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
 .score-card .score-detail{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.8;}
 .score-card button{font-family:var(--fd);font-size:13px;font-weight:700;padding:9px 22px;border-radius:10px;border:none;cursor:pointer;background:linear-gradient(135deg,#c2410c,#991b1b);color:#fff;}
 
+/* ── Mobile tab bar (hidden on desktop) ── */
+.mobile-tabs{display:none;}
+
+/* ── Tablet (641–900px): narrower panels ── */
+@media(min-width:641px)and(max-width:900px){
+  .panel-code{width:260px;}
+  .panel-right{width:170px;}
+}
+
+/* ── Mobile (≤640px): single-panel tab layout ── */
+@media(max-width:640px){
+  nav{padding:8px 12px;}
+  .nav-logo{font-size:14px;}
+  #btn3d{display:none;}
+
+  /* All panels hidden by default; only one shown at a time */
+  .panel-code,.panel-arena,.panel-right{
+    display:none;
+    width:100%;
+    flex:1;
+    border-left:none;
+    border-right:none;
+  }
+  .panel-code.tab-active,
+  .panel-arena.tab-active,
+  .panel-right.tab-active{display:flex;}
+
+  /* Canvas responsive sizing */
+  .arena-wrap{padding:8px;}
+  canvas#arena3d{max-width:100%;max-height:100%;}
+
+  /* Compact log + controls */
+  .log-panel{height:72px;}
+  .ctrl-bar{gap:5px;padding:8px 10px;}
+
+  /* Compact status bar; hide coordinates */
+  .status-bar{font-size:9px;gap:6px;padding:4px 10px;}
+  .status-coords{display:none;}
+
+  /* Mobile tab bar */
+  .mobile-tabs{
+    display:flex;
+    flex-shrink:0;
+    background:var(--bg2);
+    border-top:1px solid var(--border);
+  }
+  .mobile-tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:3px;padding:10px 4px;
+    font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;
+    color:var(--muted);background:none;border:none;cursor:pointer;
+    font-family:var(--fd);transition:color 140ms;
+  }
+  .mobile-tab.active{color:#fdba74;}
+}
+
 </style>
 </head>
 <body>
@@ -130,7 +186,7 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
 <div class="workspace">
 
   <!-- ── Left: Code Editor ── -->
-  <div class="panel-code">
+  <div class="panel-code tab-active">
     <div class="panel-header">
       <span class="panel-title">Code Editor</span>
       <div class="mode-toggle">
@@ -195,7 +251,7 @@ async function main() {
       <span id="statusText">Ready — press Run to start</span>
       <span id="timerDisplay" style="display:none;color:#fdba74;font-weight:600;">⏱ 0.0s</span>
       <span id="collisionDisplay" style="display:none;color:#f87171;">💥 0 hits</span>
-      <span style="margin-left:auto;">x: <span id="stX">280</span> &nbsp; y: <span id="stY">280</span> &nbsp; heading: <span id="stH">0</span>°</span>
+      <span class="status-coords" style="margin-left:auto;">x: <span id="stX">280</span> &nbsp; y: <span id="stY">280</span> &nbsp; heading: <span id="stH">0</span>°</span>
     </div>
   </div>
 
@@ -312,6 +368,21 @@ async function main() {
     </div>
 
   </div>
+</div>
+
+<div class="mobile-tabs">
+  <button class="mobile-tab active" id="tabCode" onclick="switchTab('code')">
+    <span style="font-size:15px;line-height:1;">&lt;/&gt;</span>
+    Code
+  </button>
+  <button class="mobile-tab" id="tabArena" onclick="switchTab('arena')">
+    <span style="font-size:15px;line-height:1;">&#9654;</span>
+    Arena
+  </button>
+  <button class="mobile-tab" id="tabInfo" onclick="switchTab('info')">
+    <span style="font-size:15px;line-height:1;">&#9776;</span>
+    Info
+  </button>
 </div>
 
 <script>
@@ -806,6 +877,7 @@ function setStatus(state, text) {
 
 async function runCode() {
   if (simRunning) { simAbort = true; return; }
+  if (window.matchMedia('(max-width:640px)').matches) switchTab('arena');
   clearLog();
   resetRobotPos();
   simAbort = false;
@@ -1595,6 +1667,20 @@ function toggle3D() {
     if (animFrame3) { cancelAnimationFrame(animFrame3); animFrame3 = null; }
     draw();
   }
+}
+
+/* ══════════════════════════════
+   MOBILE TAB SWITCHING
+══════════════════════════════ */
+function switchTab(tab) {
+  const panels = {code:'.panel-code', arena:'.panel-arena', info:'.panel-right'};
+  const tabs   = {code:'tabCode',    arena:'tabArena',     info:'tabInfo'};
+  Object.values(panels).forEach(sel => document.querySelector(sel).classList.remove('tab-active'));
+  Object.values(tabs).forEach(id => document.getElementById(id).classList.remove('active'));
+  document.querySelector(panels[tab]).classList.add('tab-active');
+  document.getElementById(tabs[tab]).classList.add('active');
+  if (tab === 'arena') requestAnimationFrame(() => { draw(); updateSensorDisplay(); });
+  if (tab === 'code' && blocklyWorkspace) requestAnimationFrame(() => Blockly.svgResize(blocklyWorkspace));
 }
 
 /* ══════════════════════════════
