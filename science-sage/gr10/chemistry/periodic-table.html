@@ -311,11 +311,14 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
     <div class="sim-controls-row" style="margin-top:0">
       <div class="ctrl-card" style="grid-column:1/-1">
         <div class="ctrl-label">Legend</div>
-        <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:12px">
-          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:rgba(96,165,250,0.5);display:inline-block"></span>Metal</span>
-          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:rgba(192,132,252,0.5);display:inline-block"></span>Non-metal</span>
-          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:rgba(45,212,191,0.5);display:inline-block"></span>Metalloid</span>
-          <span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;background:rgba(251,191,36,0.4);display:inline-block"></span>Noble Gas</span>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:12px">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(239,68,68,0.55);display:inline-block"></span>Alkali metals</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(251,146,60,0.55);display:inline-block"></span>Alkaline earth</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(251,191,36,0.55);display:inline-block"></span>Transition metals</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(163,230,53,0.55);display:inline-block"></span>Other metals</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(20,184,166,0.55);display:inline-block"></span>Metalloids</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(96,165,250,0.55);display:inline-block"></span>Non-metals</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(168,85,247,0.55);display:inline-block"></span>Noble gases</span>
         </div>
       </div>
     </div>
@@ -598,14 +601,14 @@ function setMode(mode, btn){
   drawPT();
 }
 
-function typeColor(type, alpha){
-  switch(type){
-    case 'metal':     return `rgba(96,165,250,${alpha})`;
-    case 'nonmetal':  return `rgba(192,132,252,${alpha})`;
-    case 'metalloid': return `rgba(45,212,191,${alpha})`;
-    case 'noble':     return `rgba(251,191,36,${alpha})`;
-    default:          return `rgba(180,180,180,${alpha})`;
-  }
+function typeColor(el, alpha){
+  if(el.type === 'noble')                      return `rgba(168,85,247,${alpha})`;
+  if(el.type === 'metalloid')                  return `rgba(20,184,166,${alpha})`;
+  if(el.type === 'nonmetal')                   return `rgba(96,165,250,${alpha})`;
+  if(el.groupName === 'Alkali Metals')         return `rgba(239,68,68,${alpha})`;
+  if(el.groupName === 'Alk. Earth Metals')     return `rgba(251,146,60,${alpha})`;
+  if(el.groupName === 'Transition Metals')     return `rgba(251,191,36,${alpha})`;
+  return `rgba(163,230,53,${alpha})`;
 }
 
 function initSim(){
@@ -615,7 +618,7 @@ function initSim(){
   const canvas = document.getElementById('ptCanvas');
   const dpr = window.devicePixelRatio || 1;
   const cssW = canvas.parentElement.clientWidth - 32;
-  const cssH = 320;
+  const cssH = Math.round(cssW / 18) * 5;
   canvas.style.width = cssW + 'px';
   canvas.style.height = cssH + 'px';
   canvas.width = Math.round(cssW * dpr);
@@ -709,26 +712,34 @@ function drawPT(){
       const alpha = isHovered ? 0.70 : 0.30;
 
       // cell background
-      ctx.fillStyle = typeColor(el.type, alpha);
+      ctx.fillStyle = typeColor(el, alpha);
       ctx.beginPath();
-      ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 3);
+      ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 4);
       ctx.fill();
 
       if(isHovered){
         ctx.strokeStyle = 'rgba(255,255,255,0.5)';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 3);
+        ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 4);
         ctx.stroke();
       }
 
-      // symbol
-      const symSize = Math.max(8, Math.floor(cellW * 0.42));
+      // atomic number — small, top-left
+      const znSize = Math.max(5, Math.floor(cellW * 0.26));
+      ctx.font = `600 ${znSize}px "JetBrains Mono", monospace`;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = isHovered ? 'rgba(255,255,255,0.70)' : 'rgba(210,218,245,0.42)';
+      ctx.fillText(String(el.Z), x + pad + 2, y + pad + 2);
+
+      // symbol — centered, slightly below mid to balance with Z number
+      const symSize = Math.max(8, Math.floor(cellW * 0.40));
       ctx.font = '700 ' + symSize + 'px "Cabinet Grotesk", sans-serif';
-      ctx.fillStyle = isHovered ? '#fff' : 'rgba(228,232,248,0.85)';
+      ctx.fillStyle = isHovered ? '#fff' : 'rgba(228,232,248,0.88)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(el.sym, x + cellW/2, y + cellH/2);
+      ctx.fillText(el.sym, x + cellW/2, y + cellH * 0.60);
     });
   } else {
     // TRENDS MODE
