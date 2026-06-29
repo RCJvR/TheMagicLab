@@ -47,8 +47,14 @@
     /* ── Header ── */
     #appHeader {
       flex-shrink: 0; display: flex; align-items: center; gap: 12px;
-      padding: 10px 20px; border-bottom: 1px solid var(--border);
+      padding: 10px 20px; border-bottom: 1px solid var(--border); position: relative;
     }
+    .hdr-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .hdr-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 6px; z-index: 1;
+    }
+    .hdr-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
     .home-btn {
       display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
       padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
@@ -74,7 +80,7 @@
       padding: 3px 10px; border-radius: 99px;
       background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.30); color: #94a3b8;
     }
-    .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    /* hdr-left/center/right defined above */
     .progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
 
     /* ── Main layout ── */
@@ -383,16 +389,19 @@
 
   <!-- Header -->
   <header id="appHeader">
-    <a href="index.html" class="home-btn">
-      <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home
-    </a>
-    <div class="app-icon">📚</div>
-    <h1 class="app-title">Computer Codex</h1>
-    <span class="grade-badge">Grade 8 – 10</span>
-    <div class="header-right">
-      <span class="progress-text" id="headerProgress">Lesson 1 of 27</span>
-      <a href="../dashboard-student.html" class="home-btn" style="color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:12px;height:12px;"></i></a>
+    <div class="hdr-left">
+      <div class="app-icon">📚</div>
+      <h1 class="app-title">Computer Codex</h1>
+      <span class="grade-badge">Grade 8 – 10</span>
+    </div>
+    <div class="hdr-center">
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#93c5fd;border-color:rgba(59,130,246,0.30);background:rgba(59,130,246,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
+      <button onclick="window.MagicLabWelcome?.show('computer-codex')" class="hdr-btn" title="About Computer Codex">? About</button>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+    </div>
+    <div class="hdr-right">
+      <span class="progress-text" id="headerProgress">Lesson 1 of 27</span>
+      <a href="index.html" class="home-btn">← Home</a>
     </div>
   </header>
 

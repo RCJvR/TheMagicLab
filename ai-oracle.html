@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
 <html lang="en">
 <head>
@@ -74,7 +74,7 @@
       padding: 3px 10px; border-radius: 99px;
       background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.28); color: #c084fc;
     }
-    .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    /* hdr-left/center/right defined above */
     .progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
 
     /* ── Main layout ── */
@@ -481,18 +481,22 @@
 
   <!-- Header -->
   <header id="appHeader">
-    <a href="index.html" class="home-btn">
-      <i data-lucide="arrow-left" style="width:13px;height:13px;"></i>
-      Home
-    </a>
-    <button id="mob-menu-btn" onclick="toggleSidebar()" title="Course contents">
-      <i data-lucide="menu" style="width:16px;height:16px;"></i>
-    </button>
-    <div class="app-icon">🔮</div>
-    <h1 class="app-title">AI Oracle</h1>
-    <span class="grade-badge">Gr 8 – 12</span>
-    <div class="header-right">
+    <div class="hdr-left">
+      <button id="mob-menu-btn" onclick="toggleSidebar()" title="Course contents">
+        <i data-lucide="menu" style="width:16px;height:16px;"></i>
+      </button>
+      <div class="app-icon">🔮</div>
+      <h1 class="app-title">AI Oracle</h1>
+      <span class="grade-badge">Gr 8 – 12</span>
+    </div>
+    <div class="hdr-center">
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#d8b4fe;border-color:rgba(126,34,206,0.30);background:rgba(126,34,206,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
+      <button onclick="window.MagicLabWelcome?.show('ai-oracle')" class="hdr-btn" title="About AI Oracle">? About</button>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+    </div>
+    <div class="hdr-right">
       <span class="progress-text" id="headerProgress">0 / 9 lessons</span>
+      <a href="index.html" class="home-btn">← Home</a>
     </div>
   </header>
 

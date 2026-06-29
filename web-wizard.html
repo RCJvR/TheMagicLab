@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
 <html lang="en">
 <head>
@@ -49,8 +49,14 @@
     /* ── Header ── */
     #appHeader {
       flex-shrink: 0; display: flex; align-items: center; gap: 12px;
-      padding: 10px 20px; border-bottom: 1px solid var(--border);
+      padding: 10px 20px; border-bottom: 1px solid var(--border); position: relative;
     }
+    .hdr-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .hdr-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 6px; z-index: 1;
+    }
+    .hdr-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
 
     .home-btn {
       display: flex; align-items: center; gap: 6px;
@@ -68,7 +74,7 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
 
-    .header-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+    /* hdr-left/center/right defined above */
 
     .hdr-btn {
       display: flex; align-items: center; gap: 6px; padding: 6px 13px;
@@ -498,16 +504,16 @@
 
   <!-- Header -->
   <header id="appHeader">
-    <a href="index.html" class="home-btn">
-      <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home
-    </a>
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div class="hdr-left">
       <span style="font-size:1.4em;line-height:1;">🧙</span>
       <h1 class="app-title">Web Wizard</h1>
     </div>
-
-    <div class="header-actions">
-      <!-- Preview size -->
+    <div class="hdr-center">
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#67e8f9;border-color:rgba(8,145,178,0.30);background:rgba(8,145,178,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
+      <button onclick="window.MagicLabWelcome?.show('web-wizard')" class="hdr-btn" title="About Web Wizard">? About</button>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+    </div>
+    <div class="hdr-right">
       <div class="preview-size-group">
         <button class="size-btn active" data-size="desktop" title="Desktop preview"><i data-lucide="monitor" style="width:12px;height:12px;"></i></button>
         <button class="size-btn" data-size="tablet"  title="Tablet preview"><i data-lucide="tablet" style="width:12px;height:12px;"></i></button>
@@ -518,9 +524,7 @@
       </button>
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
-      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
-      <button onclick="window.MagicLabWelcome?.show('web-wizard')" class="hdr-btn" title="About Web Wizard">?</button>
-      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+      <a href="index.html" class="home-btn">← Home</a>
       <input type="file" id="fileInput" accept=".html,.htm,.css,.txt" class="hidden">
     </div>
   </header>

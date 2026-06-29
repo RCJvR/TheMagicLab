@@ -32,8 +32,14 @@
     /* ── Header ── */
     #appHeader {
       flex-shrink: 0; display: flex; align-items: center; gap: 10px;
-      padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.085);
+      padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.085); position: relative;
     }
+    .hdr-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .hdr-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 6px; z-index: 1;
+    }
+    .hdr-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
     .home-btn {
       display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600;
       padding: 6px 13px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.085);
@@ -57,7 +63,7 @@
       padding: 3px 9px; border-radius: 99px;
       background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.30); color: #fda4af;
     }
-    .header-actions { margin-left: auto; display: flex; gap: 6px; }
+    /* hdr-left/center/right defined above */
     .hdr-btn {
       display: flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
@@ -433,15 +439,20 @@
 <div id="appShell">
 
   <header id="appHeader">
-    <a href="index.html" class="home-btn"><i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Home</a>
-    <div class="app-icon">🪄</div>
-    <h1 class="app-title">Code Conjurer</h1>
-    <span class="grade-badge">Grade 10–12 IT</span>
-    <div class="header-actions">
+    <div class="hdr-left">
+      <div class="app-icon">🪄</div>
+      <h1 class="app-title">Code Conjurer</h1>
+      <span class="grade-badge">Grade 10–12 IT</span>
+    </div>
+    <div class="hdr-center">
+      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#fda4af;border-color:rgba(190,18,60,0.30);background:rgba(190,18,60,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
+      <button onclick="window.MagicLabWelcome?.show('code-conjurer')" class="hdr-btn" title="About Code Conjurer">? About</button>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+    </div>
+    <div class="hdr-right">
       <button id="saveBtn" class="hdr-btn"><i data-lucide="download" style="width:13px;height:13px;"></i> Save</button>
       <button id="loadBtn" class="hdr-btn"><i data-lucide="upload"   style="width:13px;height:13px;"></i> Load</button>
-      <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#a5b4fc;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i></a>
-      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
+      <a href="index.html" class="home-btn">← Home</a>
       <input type="file" id="fileInput" accept=".java,.txt" class="hidden">
     </div>
   </header>

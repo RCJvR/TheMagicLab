@@ -22,14 +22,15 @@
          height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
     header{height:46px;flex-shrink:0;background:var(--bg2);border-bottom:1px solid var(--border);
-           display:flex;align-items:center;padding:0 14px;gap:12px;}
-    .logo{font-weight:800;font-size:1rem;color:var(--accent2);display:flex;align-items:center;gap:8px;}
-    .hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+           display:flex;align-items:center;padding:0 14px;gap:12px;position:relative;}
+    .logo{font-weight:800;font-size:1rem;color:var(--accent2);display:flex;align-items:center;gap:8px;flex:1;}
+    .hdr-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;}
+    .hdr-right{display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;}
     .nav-link{background:var(--surface);border:1px solid var(--border);color:var(--text2);
               font-size:0.76rem;font-weight:600;padding:4px 11px;border-radius:8px;
               text-decoration:none;transition:color 120ms,border-color 120ms;}
     .nav-link:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
-    .nav-link.accent{background:rgba(217,119,6,0.15);border-color:rgba(217,119,6,0.4);color:var(--accent2);}
+    .nav-link.accent{background:rgba(20,184,166,0.15);border-color:rgba(20,184,166,0.4);color:var(--accent2);}
 
     .toolbar{height:40px;flex-shrink:0;background:rgba(10,15,32,0.95);border-bottom:1px solid var(--border);
              display:flex;align-items:center;padding:0 8px;gap:2px;}
@@ -244,18 +245,20 @@
 <body>
 
 <header>
-  <div class="logo"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(153,246,228,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><line x1="14" y1="3" x2="14" y2="14" stroke="rgba(153,246,228,0.55)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="24" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="4" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="rgba(245,158,11,0.90)"/></svg> Model Mage</div>
-  <input type="text" id="filename-input" value="sketch"
-    style="margin-left:10px;height:26px;padding:0 8px;border-radius:5px;border:1px solid var(--border);
-    background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;
-    font-size:0.74rem;width:120px;" title="Filename (without extension)">
-  <span style="font-size:0.72rem;color:var(--text2);margin-right:4px">.json</span>
-  <button class="tb-btn" id="btn-save" title="Save sketch">💾 Save</button>
-  <button class="tb-btn" id="btn-load" title="Load sketch">📂 Load</button>
-  <input type="file" id="file-load" accept=".json,application/json" style="display:none">
+  <div class="logo"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(153,246,228,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><line x1="14" y1="3" x2="14" y2="14" stroke="rgba(153,246,228,0.55)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="24" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="4" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="rgba(20,184,166,0.90)"/></svg> Model Mage</div>
+  <div class="hdr-center">
+    <input type="text" id="filename-input" value="sketch"
+      style="height:26px;padding:0 8px;border-radius:5px;border:1px solid var(--border);
+      background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;
+      font-size:0.74rem;width:110px;" title="Filename (without extension)">
+    <span style="font-size:0.72rem;color:var(--text2);">.json</span>
+    <button class="tb-btn" id="btn-save" title="Save sketch">💾 Save</button>
+    <button class="tb-btn" id="btn-load" title="Load sketch">📂 Load</button>
+    <input type="file" id="file-load" accept=".json,application/json" style="display:none">
+  </div>
   <div class="hdr-right">
-    <a class="nav-link" href="index.html">← Home</a>
     <a class="nav-link accent" href="model-mage-shapes.html">⬡ 3D Models →</a>
+    <a class="nav-link" href="index.html">← Home</a>
   </div>
 </header>
 
