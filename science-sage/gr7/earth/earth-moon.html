@@ -94,6 +94,7 @@
       .sim-layout{grid-template-columns:1fr}
       .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
       .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -312,49 +313,32 @@ function getPhaseInfo(angleDeg){
 
 function drawPhaseDisp(angleDeg){
   const a = ((angleDeg % 360) + 360) % 360;
-  const r = 36;
-  const cx = 40, cy = 40;
+  const r = 36, cx = 40, cy = 40;
   pCtx.clearRect(0,0,80,80);
-  // Dark moon
   pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
   pCtx.fillStyle='#2a2a3a'; pCtx.fill();
-  // Lit portion using clip path technique
-  // fraction: 0=new, 0.5=half, 1=full
-  const fraction = a / 360;
-  // illumination fraction of disc visible
-  // At 0° (new): 0% lit; 90° (quarter): 50%; 180° (full): 100%; 270° (last quarter): 50%
-  const illum = (1 - Math.cos(angleDeg * Math.PI / 180)) / 2;
-  // Draw lit side
   pCtx.save();
-  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
-  pCtx.clip();
-  // Waxing (0–180): light on right side; Waning (180–360): light on left
+  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2); pCtx.clip();
+  pCtx.fillStyle='#e8d5a3';
+  pCtx.beginPath();
   if(a <= 180){
-    // right side lit — width of ellipse goes from r (new, 0) to flat at quarter (90) to r (full,180)
-    // parametric: draw a shape that covers the lit right portion
-    const xScale = Math.cos(a * Math.PI / 180); // -1 to 1
-    pCtx.beginPath();
-    pCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2); // right half circle
-    // close with ellipse on left representing terminator
-    for(let t=Math.PI/2;t<=3*Math.PI/2;t+=0.05){
-      const ex = cx + xScale * r * Math.cos(t - Math.PI);
-      const ey = cy + r * Math.sin(t);
-      if(t === Math.PI/2) pCtx.moveTo(ex,ey); else pCtx.lineTo(ex,ey);
+    // Waxing: right half lit; terminator shifts from right (new) through centre (quarter) to left (full)
+    const termX = r * Math.cos(a * Math.PI / 180);
+    pCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2,false); // CW right arc top→bottom
+    for(let t=Math.PI/2;t>-Math.PI/2-0.01;t-=0.04){
+      pCtx.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
     }
-    pCtx.fillStyle='#e8d5a3'; pCtx.fill();
   } else {
-    const xScale = Math.cos(a * Math.PI / 180); // positive for waning: left side lit
-    pCtx.beginPath();
-    pCtx.arc(cx,cy,r,Math.PI/2,3*Math.PI/2); // left half circle
-    for(let t=-Math.PI/2;t<=Math.PI/2;t+=0.05){
-      const ex = cx + xScale * r * Math.cos(t);
-      const ey = cy + r * Math.sin(t);
-      if(t === -Math.PI/2) pCtx.moveTo(ex,ey); else pCtx.lineTo(ex,ey);
+    // Waning: left half lit; terminator shifts from left (full) through centre (last quarter) to right (new)
+    const termX = -r * Math.cos(a * Math.PI / 180);
+    pCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2,true); // CCW left arc top→bottom
+    for(let t=Math.PI/2;t>-Math.PI/2-0.01;t-=0.04){
+      pCtx.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
     }
-    pCtx.fillStyle='#e8d5a3'; pCtx.fill();
   }
+  pCtx.closePath();
+  pCtx.fill();
   pCtx.restore();
-  // Moon border
   pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
   pCtx.strokeStyle='rgba(255,255,255,0.15)'; pCtx.lineWidth=1; pCtx.stroke();
 }
