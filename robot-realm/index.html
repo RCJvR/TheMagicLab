@@ -1253,9 +1253,22 @@ function initBlockly() {
   };
 
   const div = document.getElementById('blocklyDiv');
+  const rrTheme = Blockly.Theme.defineTheme('robotrealm', {
+    base: Blockly.Themes.Dark,
+    componentStyles: {
+      toolboxBackgroundColour: '#080c1a',
+      toolboxForegroundColour: '#dde1f0',
+      flyoutBackgroundColour: '#0d1226',
+      flyoutForegroundColour: '#dde1f0',
+      flyoutOpacity: 0.97,
+      scrollbarColour: '#2a3050',
+      scrollbarOpacity: 0.6,
+    }
+  });
+
   blocklyWorkspace = Blockly.inject(div, {
     toolbox,
-    theme: Blockly.Themes.Dark,
+    theme: rrTheme,
     grid: { spacing:20, length:3, colour:'rgba(255,255,255,0.04)', snap:true },
     zoom: { controls:true, wheel:true, startScale:0.9, maxScale:2, minScale:0.4, scaleSpeed:1.2 },
     trashcan: true,
@@ -1264,23 +1277,14 @@ function initBlockly() {
     renderer: 'zelos',
   });
 
-  // Force toolbox label contrast — Blockly injects high-specificity styles so we override via JS
-  (function injectToolboxStyles() {
-    const s = document.createElement('style');
-    s.id = 'rr-toolbox-fix';
-    s.textContent = `
-      .blocklyToolboxDiv, .blocklyToolboxContents { background: #080c1a !important; }
-      .blocklyToolboxCategory .blocklyTreeRow,
-      .blocklyTreeRow { border-radius: 7px !important; margin: 1px 5px !important; }
-      .blocklyTreeRow:hover { background: rgba(255,255,255,0.08) !important; }
-      .blocklyTreeSelected > .blocklyTreeRow { background: rgba(249,115,22,0.20) !important; }
-      .blocklyToolboxCategory .blocklyTreeLabel,
-      .blocklyTreeLabel { color: #dde1f0 !important; font-family: 'Cabinet Grotesk', sans-serif !important; font-weight: 700 !important; font-size: 12.5px !important; }
-      .blocklyTreeSelected > .blocklyTreeRow > .blocklyTreeLabel { color: #fff !important; }
-      .blocklyFlyout { opacity: 0.98; }
-    `;
-    document.head.appendChild(s);
-  })();
+  // Belt-and-suspenders: patch any inline styles Blockly set on the toolbox div
+  setTimeout(() => {
+    const tbDiv = document.querySelector('.blocklyToolboxDiv');
+    if (tbDiv) { tbDiv.style.background = '#080c1a'; tbDiv.style.borderRight = '1px solid rgba(255,255,255,0.08)'; }
+    document.querySelectorAll('.blocklyTreeLabel').forEach(el => {
+      el.style.color = '#dde1f0'; el.style.fontWeight = '700'; el.style.fontSize = '12.5px';
+    });
+  }, 150);
 
   // Keep Blockly sized to its container
   new ResizeObserver(() => {
