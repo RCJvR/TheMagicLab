@@ -47,11 +47,21 @@
     /* ── Header ── */
     #appHeader {
       flex-shrink: 0; display: flex; align-items: center; gap: 12px;
-      padding: 10px 20px; border-bottom: 1px solid var(--border);
+      padding: 10px 20px; border-bottom: 1px solid var(--border); position: relative;
     }
+    .hdr-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .hdr-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; z-index: 1; }
+    .hdr-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
+    .hdr-btn {
+      display: flex; align-items: center; gap: 5px; padding: 6px 13px; border-radius: 99px;
+      border: 1px solid var(--border); background: var(--surface);
+      font-family: var(--font-body); font-size: 12px; font-weight: 600;
+      color: var(--text2); cursor: pointer; transition: all 130ms;
+    }
+    .hdr-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
     .home-btn {
       display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
-      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border);
       background: var(--surface); color: var(--muted);
       text-decoration: none; transition: all 140ms; flex-shrink: 0;
       font-family: var(--font-body);
@@ -59,7 +69,7 @@
     .home-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
     .app-icon {
       width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-      background: linear-gradient(135deg, #7c22b8, #b5205e);
+      background: linear-gradient(135deg,rgba(168,85,247,0.30),rgba(236,72,153,0.16)); border:1px solid rgba(168,85,247,0.30);
       display: flex; align-items: center; justify-content: center; font-size: 17px;
     }
     h1.app-title {
@@ -74,7 +84,6 @@
       padding: 3px 10px; border-radius: 99px;
       background: rgba(168,85,247,0.14); border: 1px solid rgba(168,85,247,0.28); color: #c084fc;
     }
-    /* hdr-left/center/right defined above */
     .progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
 
     /* ── Main layout ── */
@@ -491,7 +500,6 @@
     </div>
     <div class="hdr-center">
       <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#d8b4fe;border-color:rgba(126,34,206,0.30);background:rgba(126,34,206,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
-      <button onclick="window.MagicLabWelcome?.show('ai-oracle')" class="hdr-btn" title="About AI Oracle">? About</button>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
     </div>
     <div class="hdr-right">

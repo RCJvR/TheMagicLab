@@ -20,9 +20,9 @@
       grade:   'Grade 8 – 10',
       tagline: 'Your complete guide to digital literacy',
       desc:    'From Windows basics to Excel, Word, and a full unit on Artificial Intelligence — 25 structured lessons across 9 units. Work through them at your own pace.',
-      color:   '#5256c8',
-      colorBg: 'rgba(82,86,200,0.14)',
-      colorBd: 'rgba(82,86,200,0.30)',
+      color:   '#93c5fd',
+      colorBg: 'rgba(59,130,246,0.15)',
+      colorBd: 'rgba(59,130,246,0.28)',
       features: [
         { icon: '📖', label: '25 lessons across 9 units' },
         { icon: '🧩', label: 'Interactive quizzes & challenges' },
@@ -283,14 +283,14 @@
   function _showWelcome(toolId, cfg) {
     // Build shadow colours
     const shadowMap = {
-      'computer-codex':  'rgba(82,86,200,0.35)',
+      'computer-codex':  'rgba(59,130,246,0.32)',
       'java-genie':      'rgba(91,80,214,0.35)',
       'web-wizard':      'rgba(7,118,160,0.32)',
       'code-conjurer':   'rgba(179,21,64,0.32)',
       'math-magician':   'rgba(212,146,14,0.32)',
     };
     const btnMap = {
-      'computer-codex':  'linear-gradient(135deg,#3d5068,#5256c8)',
+      'computer-codex':  'linear-gradient(135deg,#1d4ed8,#3b82f6)',
       'java-genie':      'linear-gradient(135deg,#5b50d6,#0fa874)',
       'web-wizard':      'linear-gradient(135deg,#0776a0,#6d28d9)',
       'code-conjurer':   'linear-gradient(135deg,#b31540,#e06012)',

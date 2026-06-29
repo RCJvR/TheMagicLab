@@ -56,6 +56,11 @@
       display: flex; align-items: center; gap: 6px; z-index: 1;
     }
     .hdr-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
+    .app-icon {
+      width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg,rgba(124,109,250,0.30),rgba(17,217,143,0.12)); border: 1px solid rgba(124,109,250,0.28);
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
     .badge {
       display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
       border-radius: 99px; background: rgba(124,109,250,0.16); border: 1px solid rgba(124,109,250,0.32);
@@ -71,11 +76,18 @@
     /* hdr-left/center/right defined above */
     .hdr-btn {
       display: flex; align-items: center; gap: 6px; padding: 6px 13px;
-      border-radius: 8px; border: 1px solid var(--border);
+      border-radius: 99px; border: 1px solid var(--border);
       background: var(--surface); font-family: var(--font-body); font-size: 12px; font-weight: 600;
       color: var(--text2); cursor: pointer; transition: all 130ms;
     }
     .hdr-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
+    .home-btn {
+      display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600;
+      padding: 6px 13px; border-radius: 99px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      text-decoration: none; transition: all 140ms; flex-shrink: 0; font-family: var(--font-body);
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.10); color: var(--text); border-color: rgba(255,255,255,0.16); }
 
     /* ── Main grid ── */
     #mainGrid {
@@ -303,7 +315,7 @@
       animation: tutorialFadeIn 180ms ease;
     }
     #challengesBox {
-      background: #0f1628; border: 1px solid rgba(245,158,11,0.25);
+      background: #0f1628; border: 1px solid rgba(124,109,250,0.25);
       border-radius: 18px; width: min(780px, 95vw); max-height: 88vh;
       display: flex; flex-direction: column; overflow: hidden;
       box-shadow: 0 32px 80px rgba(0,0,0,0.55);
@@ -315,7 +327,7 @@
     }
     #challengesHeader h2 {
       font-family: var(--font-display); font-weight: 800; font-size: 16px;
-      background: linear-gradient(125deg, #fff 0%, #fcd34d 60%, #fb923c 100%);
+      background: linear-gradient(125deg, #fff 0%, #c4baff 60%, #a89ffc 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     #challengesBody {
@@ -330,10 +342,10 @@
       border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
       transition: border-color 150ms;
     }
-    .chal-card:hover { border-color: rgba(245,158,11,0.35); }
+    .chal-card:hover { border-color: rgba(124,109,250,0.35); }
     .chal-num {
       font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
-      color: rgba(245,158,11,0.70);
+      color: rgba(196,186,255,0.70);
     }
     .chal-title {
       font-family: var(--font-display); font-weight: 700; font-size: 13px; color: #e8eaf4;
@@ -341,7 +353,7 @@
     .chal-lines {
       display: inline-flex; align-items: center; gap: 5px;
       font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px;
-      background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.22); color: #fbbf24;
+      background: rgba(124,109,250,0.12); border: 1px solid rgba(124,109,250,0.22); color: #c4baff;
     }
     .chal-diff {
       display: inline-flex; align-items: center; gap: 5px;
@@ -895,12 +907,11 @@
 
   <header id="appHeader">
     <div class="hdr-left">
-      <span style="font-size:1.4em;line-height:1;-webkit-text-fill-color:initial;background:none;">🧞</span>
+      <div class="app-icon">🧞</div>
       <h1 class="app-title">Java Genie</h1>
     </div>
     <div class="hdr-center">
       <a href="../dashboard-student.html" class="hdr-btn" style="text-decoration:none;color:#c4baff;border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.10);" title="My Progress"><i data-lucide="bar-chart-2" style="width:13px;height:13px;"></i> My Progress</a>
-      <button onclick="window.MagicLabWelcome?.show('java-genie')" class="hdr-btn" title="About Java Genie">? About</button>
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
     </div>
     <div class="hdr-right">
