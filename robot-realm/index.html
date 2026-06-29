@@ -1253,6 +1253,19 @@ function initBlockly() {
   };
 
   const div = document.getElementById('blocklyDiv');
+  // Patch Dark theme component styles in-place so block colours are preserved
+  try {
+    const cs = Blockly.Themes.Dark.componentStyles_;
+    if (cs) {
+      cs.toolboxBackgroundColour = '#080c1a';
+      cs.toolboxForegroundColour = '#dde1f0';
+      cs.flyoutBackgroundColour = '#0d1226';
+      cs.flyoutForegroundColour = '#dde1f0';
+      cs.flyoutOpacity = 0.97;
+      cs.scrollbarColour = '#2a3050';
+    }
+  } catch(e) {}
+
   blocklyWorkspace = Blockly.inject(div, {
     toolbox,
     theme: Blockly.Themes.Dark,
