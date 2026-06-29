@@ -1277,14 +1277,28 @@ function initBlockly() {
     renderer: 'zelos',
   });
 
-  // Belt-and-suspenders: patch any inline styles Blockly set on the toolbox div
-  setTimeout(() => {
+  // Patch toolbox inline styles and keep them patched as Blockly re-renders
+  function patchToolbox() {
     const tbDiv = document.querySelector('.blocklyToolboxDiv');
-    if (tbDiv) { tbDiv.style.background = '#080c1a'; tbDiv.style.borderRight = '1px solid rgba(255,255,255,0.08)'; }
+    if (tbDiv && tbDiv.style.backgroundColor !== 'rgb(8, 12, 26)') {
+      tbDiv.style.setProperty('background-color', '#080c1a', 'important');
+      tbDiv.style.setProperty('border-right', '1px solid rgba(255,255,255,0.08)', 'important');
+    }
     document.querySelectorAll('.blocklyTreeLabel').forEach(el => {
-      el.style.color = '#dde1f0'; el.style.fontWeight = '700'; el.style.fontSize = '12.5px';
+      if (el.style.color !== 'rgb(221, 225, 240)') {
+        el.style.setProperty('color', '#dde1f0', 'important');
+        el.style.setProperty('font-weight', '700', 'important');
+        el.style.setProperty('font-size', '12.5px', 'important');
+      }
     });
-  }, 150);
+  }
+  setTimeout(patchToolbox, 100);
+  setTimeout(patchToolbox, 500);
+  // Re-patch whenever Blockly mutates the toolbox (category clicks, theme reapplication)
+  new MutationObserver(patchToolbox).observe(
+    document.getElementById('blocklyDiv'),
+    { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] }
+  );
 
   // Keep Blockly sized to its container
   new ResizeObserver(() => {
