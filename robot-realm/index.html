@@ -25,11 +25,11 @@ body{display:flex;flex-direction:column;overflow:hidden;
 
 /* ── Nav ── */
 nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);}
-.nav-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.nav-left{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;}
 .app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(249,115,22,0.28),rgba(239,68,68,0.16));border:1px solid rgba(249,115,22,0.28);display:flex;align-items:center;justify-content:center;font-size:17px;}
 .app-title{font-family:var(--fd);font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;line-height:1;background:linear-gradient(125deg,#fff 0%,#fdba74 50%,#fca5a5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-center{display:flex;align-items:center;justify-content:center;gap:6px;}
-.nav-right{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;}
+.nav-center{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;}
+.nav-right{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;flex-wrap:wrap;}
 .nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
 .nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
 .map-pill{border-color:rgba(249,115,22,0.35);background:rgba(249,115,22,0.08);color:#fdba74;}
@@ -37,6 +37,14 @@ nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;
 .nav-filename-input{height:28px;padding:0 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fm);font-size:11px;width:120px;}
 .nav-filename-input:focus{outline:none;border-color:rgba(249,115,22,0.45);}
 .nav-filename-ext{font-size:11px;color:var(--muted);margin-right:2px;}
+
+@media (max-width: 640px) {
+  nav{grid-template-columns:1fr;justify-items:center;padding:8px 12px;gap:6px;}
+  .nav-left,.nav-center,.nav-right{justify-content:center;}
+  .app-title{font-size:16px;}
+  .nav-pill{font-size:10px;padding:5px 11px;}
+  .nav-filename-input{width:100px;}
+}
 
 /* ── Layout ── */
 .workspace{display:flex;flex:1;overflow:hidden;min-height:0;}

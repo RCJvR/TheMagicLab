@@ -47,15 +47,14 @@
 
     /* ── Header ── */
     #appHeader {
-      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
-      padding: 10px 20px; border-bottom: 1px solid var(--border); position: relative;
+      flex-shrink: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+      padding: 10px 20px; border-bottom: 1px solid var(--border);
     }
-    .hdr-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .hdr-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap; }
     .hdr-center {
-      position: absolute; left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: 6px; z-index: 1;
+      display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
     }
-    .hdr-right { display: flex; align-items: center; gap: 6px; flex: 1; justify-content: flex-end; }
+    .hdr-right { display: flex; align-items: center; gap: 6px; justify-content: flex-end; min-width: 0; flex-wrap: wrap; }
     .app-icon {
       width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
       background: linear-gradient(135deg,rgba(124,109,250,0.30),rgba(17,217,143,0.12)); border: 1px solid rgba(124,109,250,0.28);
@@ -805,15 +804,16 @@
         min-height: 100vh;
       }
 
-      /* Header: wrap onto two lines if needed, smaller text */
+      /* Header: stack into centred rows instead of overlapping */
       #appHeader {
-        flex-wrap: wrap;
-        gap: 8px;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 6px;
         padding: 8px 12px;
       }
+      .hdr-left, .hdr-center, .hdr-right { justify-content: center; }
       h1.app-title { font-size: 18px; }
-      .header-actions { flex-wrap: wrap; gap: 5px; }
-      .hdr-btn { font-size: 10px; padding: 4px 8px; }
+      .hdr-btn, .home-btn { font-size: 10px; padding: 4px 8px; }
 
       /* Stack columns vertically, no fixed height */
       #mainGrid {
