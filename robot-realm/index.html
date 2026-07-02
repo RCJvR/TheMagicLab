@@ -24,16 +24,19 @@ body{display:flex;flex-direction:column;overflow:hidden;
 }
 
 /* ── Nav ── */
-nav{display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative;background:var(--bg2);}
-.nav-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);}
+.nav-left{display:flex;align-items:center;gap:10px;min-width:0;}
 .app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(249,115,22,0.28),rgba(239,68,68,0.16));border:1px solid rgba(249,115,22,0.28);display:flex;align-items:center;justify-content:center;font-size:17px;}
 .app-title{font-family:var(--fd);font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;line-height:1;background:linear-gradient(125deg,#fff 0%,#fdba74 50%,#fca5a5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;}
-.nav-right{display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end;}
+.nav-center{display:flex;align-items:center;justify-content:center;gap:6px;}
+.nav-right{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;}
 .nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
 .nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
 .map-pill{border-color:rgba(249,115,22,0.35);background:rgba(249,115,22,0.08);color:#fdba74;}
 .map-pill.active{background:rgba(249,115,22,0.20);color:#fb923c;}
+.nav-filename-input{height:28px;padding:0 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fm);font-size:11px;width:120px;}
+.nav-filename-input:focus{outline:none;border-color:rgba(249,115,22,0.45);}
+.nav-filename-ext{font-size:11px;color:var(--muted);margin-right:2px;}
 
 /* ── Layout ── */
 .workspace{display:flex;flex:1;overflow:hidden;min-height:0;}
@@ -42,9 +45,6 @@ nav{display:flex;align-items:center;padding:10px 20px;border-bottom:1px solid va
 .panel-code{width:580px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--border);}
 .panel-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .panel-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
-.header-actions{display:flex;align-items:center;gap:8px;}
-.icon-btn{font-size:13px;padding:5px 9px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--muted);cursor:pointer;line-height:1;transition:all 140ms;}
-.icon-btn:hover{background:rgba(255,255,255,0.09);color:var(--text);border-color:rgba(255,255,255,0.18);}
 .code-area{flex:1;padding:0;position:relative;overflow:hidden;}
 textarea.code-input{width:100%;height:100%;background:#060912;color:#e2e8f0;font-family:var(--fm);font-size:12.5px;line-height:1.7;padding:14px;border:none;outline:none;resize:none;tab-size:2;}
 textarea.code-input::placeholder{color:rgba(210,218,245,0.20);}
@@ -141,6 +141,11 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
     <span id="statusLabel" class="nav-pill" style="pointer-events:none;">Idle</span>
   </div>
   <div class="nav-right">
+    <input type="text" id="filenameInput" class="nav-filename-input" value="robot-program" title="Filename (without extension)">
+    <span class="nav-filename-ext">.json</span>
+    <button class="nav-pill" id="btnSave" onclick="saveProgram()" title="Save program to a file">💾 Save</button>
+    <button class="nav-pill" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file">📂 Load</button>
+    <input type="file" id="loadFileInput" accept="application/json,.json" style="display:none;" onchange="loadProgramFromFile(event)">
     <button class="nav-pill" id="btn3d" onclick="toggle3D()" style="border-color:rgba(99,102,241,0.35);background:rgba(99,102,241,0.08);color:#a5b4fc;">⬡ 3D View</button>
     <a href="../index.html" class="nav-pill">← Home</a>
   </div>
@@ -152,14 +157,9 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
   <div class="panel-code">
     <div class="panel-header">
       <span class="panel-title">Code Editor</span>
-      <div class="header-actions">
-        <button class="icon-btn" id="btnSave" onclick="saveProgram()" title="Save program to a file">💾 Save</button>
-        <button class="icon-btn" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file">📂 Load</button>
-        <input type="file" id="loadFileInput" accept="application/json,.json" style="display:none;" onchange="loadProgramFromFile(event)">
-        <div class="mode-toggle">
-          <button class="mode-btn" id="modeJs" onclick="setMode('js')">JS</button>
-          <button class="mode-btn active" id="modeBlocks" onclick="setMode('blocks')">Blocks</button>
-        </div>
+      <div class="mode-toggle">
+        <button class="mode-btn" id="modeJs" onclick="setMode('js')">JS</button>
+        <button class="mode-btn active" id="modeBlocks" onclick="setMode('blocks')">Blocks</button>
       </div>
     </div>
     <div class="code-area" id="codeArea">
@@ -961,9 +961,11 @@ function setSpeed(s) {
    SAVE / LOAD PROGRAM
 ══════════════════════════════ */
 function saveProgram() {
+  const name = (document.getElementById('filenameInput')?.value || 'robot-program').trim() || 'robot-program';
   const data = {
     type: 'robot-realm-program',
     version: 1,
+    filename: name,
     mode: currentMode,
     map: currentMap,
     js: document.getElementById('codeInput').value,
@@ -973,7 +975,7 @@ function saveProgram() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `robot-realm-${currentMap}.json`;
+  a.download = name.replace(/[^\w\-_.]/g, '_') + '.json';
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -1002,6 +1004,8 @@ function loadProgramFromFile(event) {
         Blockly.Xml.clearWorkspaceAndLoadFromXml(dom, blocklyWorkspace);
       }
       setMode(data.mode === 'js' ? 'js' : 'blocks');
+      const nameInput = document.getElementById('filenameInput');
+      if (nameInput) nameInput.value = data.filename || file.name.replace(/\.json$/i, '');
       addLog('📂 Program loaded from file.', 'ok');
     } catch(e) {
       addLog('✗ Failed to load file: ' + e.message, 'err');
