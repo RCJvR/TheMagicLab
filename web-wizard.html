@@ -105,6 +105,16 @@
       min-height: 0; overflow: hidden;
     }
 
+    /* Mobile Code/Preview switcher — hidden on desktop, shown in the mobile media query below */
+    .mobile-view-toggle { display: none; }
+    .mv-tab {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 8px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text2);
+      font-family: var(--font-body); font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .mv-tab.active { background: rgba(6,182,212,0.18); border-color: rgba(6,182,212,0.4); color: #67e8f9; }
+
     /* ── Panels ── */
     .panel {
       background: var(--surface);
@@ -408,14 +418,6 @@
     ══════════════════════════════════════════════════════════════ */
     @media (max-width: 700px) {
 
-      html, body { height: auto; overflow: auto; }
-
-      #appShell {
-        height: auto;
-        overflow: visible;
-        min-height: 100vh;
-      }
-
       #appHeader {
         grid-template-columns: 1fr;
         justify-items: center;
@@ -425,50 +427,27 @@
       .hdr-left, .hdr-center, .hdr-right { justify-content: center; }
       h1.app-title { font-size: 17px; }
       .hdr-btn, .home-btn { font-size: 10px; padding: 4px 8px; }
-      .preview-size-group { display: none; }
 
-      /* Stack editor and preview vertically */
+      /* Show the Code/Preview switcher; each panel gets the full remaining
+         height instead of both being squeezed into fixed-height stacks. */
+      .mobile-view-toggle { display: flex; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--border2); flex-shrink: 0; }
+
       #mainGrid {
         grid-template-columns: 1fr !important;
-        grid-template-rows: auto auto;
-        height: auto;
-        min-height: 0;
-        overflow: visible;
-        padding: 8px 10px 16px;
-        gap: 12px;
+        grid-template-rows: 1fr;
+        padding: 8px 10px;
+        gap: 0;
       }
 
       /* Hide the resize handle — not useful on mobile */
       #resizeHandle { display: none; }
 
-      #leftCol {
-        min-height: 0;
-        height: auto;
-        overflow: visible;
-      }
+      #leftCol, #rightCol { min-height: 0; }
+      #mainGrid.show-preview #leftCol { display: none; }
+      #mainGrid:not(.show-preview) #rightCol { display: none; }
 
-      /* Editor: fixed comfortable height */
-      .editor-wrap {
-        height: 300px;
-        flex: none;
-      }
-
-      /* Right col / preview: fixed height so iframe is usable */
-      #rightCol {
-        min-height: 0;
-        height: auto;
-        overflow: visible;
-      }
-
-      #previewPanel {
-        flex: none;
-        height: auto;
-      }
-
-      .preview-outer {
-        flex: none;
-        height: 360px;
-      }
+      .editor-wrap { flex: 1; height: auto; }
+      .preview-outer { flex: 1; height: auto; }
 
       /* Status bar: truncate on small screens */
       #statusBar { font-size: 9px; gap: 10px; padding: 4px 10px; }
@@ -518,11 +497,6 @@
       <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()" style="padding:5px 10px;">🔐</button>
     </div>
     <div class="hdr-right">
-      <div class="preview-size-group">
-        <button class="size-btn active" data-size="desktop" title="Desktop preview"><i data-lucide="monitor" style="width:12px;height:12px;"></i></button>
-        <button class="size-btn" data-size="tablet"  title="Tablet preview"><i data-lucide="tablet" style="width:12px;height:12px;"></i></button>
-        <button class="size-btn" data-size="mobile"  title="Mobile preview"><i data-lucide="smartphone" style="width:12px;height:12px;"></i></button>
-      </div>
       <button id="learnWebBtn" class="hdr-btn" style="background:rgba(6,182,212,0.18);border-color:rgba(6,182,212,0.40);color:#67e8f9;">
         <i data-lucide="book-open" style="width:13px;height:13px;"></i> Learn HTML
       </button>
@@ -532,6 +506,12 @@
       <input type="file" id="fileInput" accept=".html,.htm,.css,.txt" class="hidden">
     </div>
   </header>
+
+  <!-- Mobile-only Code/Preview switcher (hidden on desktop) -->
+  <div class="mobile-view-toggle" id="mobileViewToggle">
+    <button class="mv-tab active" data-view="code"><i data-lucide="code-2" style="width:13px;height:13px;"></i> Code</button>
+    <button class="mv-tab" data-view="preview"><i data-lucide="monitor" style="width:13px;height:13px;"></i> Preview</button>
+  </div>
 
   <!-- Main -->
   <div id="mainGrid" style="grid-template-columns: 420px 4px 1fr;">
@@ -671,7 +651,14 @@
             <i data-lucide="monitor" style="width:14px;height:14px;color:#67e8f9;"></i>
             Live preview
           </h2>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.35);" id="previewSizeLabel">Desktop</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="preview-size-group">
+              <button class="size-btn active" data-size="desktop" title="Desktop preview"><i data-lucide="monitor" style="width:12px;height:12px;"></i></button>
+              <button class="size-btn" data-size="tablet"  title="Tablet preview"><i data-lucide="tablet" style="width:12px;height:12px;"></i></button>
+              <button class="size-btn" data-size="mobile"  title="Mobile preview"><i data-lucide="smartphone" style="width:12px;height:12px;"></i></button>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(221,225,240,0.35);" id="previewSizeLabel">Desktop</div>
+          </div>
         </div>
         <div class="preview-outer" id="previewOuter">
           <div class="browser-bar">
@@ -1383,6 +1370,18 @@ const loadBtn           = document.getElementById('loadBtn');
 const fileInput         = document.getElementById('fileInput');
 const mainGrid          = document.getElementById('mainGrid');
 const resizeHandle      = document.getElementById('resizeHandle');
+const mobileViewToggle  = document.getElementById('mobileViewToggle');
+
+// ── Mobile Code/Preview switcher ────────────────────────────────────────────
+mobileViewToggle?.querySelectorAll('.mv-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    mobileViewToggle.querySelectorAll('.mv-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const showingPreview = btn.dataset.view === 'preview';
+    mainGrid.classList.toggle('show-preview', showingPreview);
+    if (showingPreview) refreshPreview();
+  });
+});
 
 // ── Syntax highlighting (HTML/CSS aware) ──────────────────────────────────────
 function highlight(code) {
@@ -1529,7 +1528,21 @@ function scheduleRun() {
 
 // ── Preview ───────────────────────────────────────────────────────────────────
 function refreshPreview() {
-  const code = codeEditor.value;
+  let code = codeEditor.value;
+  // Student code rarely includes a viewport meta tag. Without one, mobile
+  // browsers render the iframe's document at a desktop-width virtual
+  // viewport (~980px) and scale it down, making the preview look like a
+  // tiny desktop page instead of matching the preview frame's actual size.
+  if (!/<meta[^>]+name=["']viewport["']/i.test(code)) {
+    const viewportTag = '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+    if (/<head[^>]*>/i.test(code)) {
+      code = code.replace(/<head[^>]*>/i, match => `${match}\n  ${viewportTag}`);
+    } else if (/<html[^>]*>/i.test(code)) {
+      code = code.replace(/<html[^>]*>/i, match => `${match}\n<head>${viewportTag}</head>`);
+    } else {
+      code = `${viewportTag}\n${code}`;
+    }
+  }
   const blob = new Blob([code], {type: 'text/html'});
   const url  = URL.createObjectURL(blob);
   previewFrame.onload = () => URL.revokeObjectURL(url);
