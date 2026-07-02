@@ -97,7 +97,8 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f2
 .mode-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:2px;}
 .mode-btn{font-family:var(--fd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;color:var(--muted);background:transparent;transition:all 140ms;letter-spacing:0.02em;}
 .mode-btn.active{background:rgba(249,115,22,0.20);color:#fdba74;}
-#blocklyDiv{flex:1;display:none;}
+#codeArea{display:none;}
+#blocklyDiv{flex:1;display:flex;flex-direction:column;}
 #blocklyDiv .blocklyMainBackground{fill:#060912 !important;}
 
 /* ── Blockly toolbox contrast fixes (Blockly 13's real class names). Selected/hover
@@ -149,8 +150,8 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
     <div class="panel-header">
       <span class="panel-title">Code Editor</span>
       <div class="mode-toggle">
-        <button class="mode-btn active" id="modeJs" onclick="setMode('js')">JS</button>
-        <button class="mode-btn" id="modeBlocks" onclick="setMode('blocks')">Blocks</button>
+        <button class="mode-btn" id="modeJs" onclick="setMode('js')">JS</button>
+        <button class="mode-btn active" id="modeBlocks" onclick="setMode('blocks')">Blocks</button>
       </div>
     </div>
     <div class="code-area" id="codeArea">
@@ -1134,7 +1135,7 @@ await main();
    BLOCK CODING (Blockly)
 ══════════════════════════════ */
 let blocklyWorkspace = null;
-let currentMode = 'js'; // 'js' | 'blocks'
+let currentMode = 'blocks'; // 'js' | 'blocks'
 
 function initBlockly() {
   if (blocklyWorkspace) return;
@@ -1320,7 +1321,7 @@ function setMode(mode) {
   if (mode === 'js') {
     jsBtn.classList.add('active');
     blBtn.classList.remove('active');
-    codeArea.style.display = '';
+    codeArea.style.display = 'block';
     blockDiv.style.display = 'none';
   } else {
     blBtn.classList.add('active');
@@ -1675,6 +1676,7 @@ document.getElementById('codeInput').addEventListener('keydown', e => {
 });
 
 // Initial load
+initBlockly();
 loadMap('empty');
 </script>
 </body>
