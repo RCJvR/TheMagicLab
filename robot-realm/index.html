@@ -100,12 +100,12 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f2
 #blocklyDiv{flex:1;display:none;}
 #blocklyDiv .blocklyMainBackground{fill:#060912 !important;}
 
-/* ── Blockly toolbox contrast fixes (CSS layer — JS setProperty handles inline !important) ── */
-.blocklyTreeRow{border-radius:7px !important;margin:1px 5px !important;padding:0 4px !important;}
-.blocklyTreeRow:hover{background:rgba(255,255,255,0.07) !important;}
-.blocklyTreeSelected>.blocklyTreeRow{background:rgba(249,115,22,0.18) !important;}
-.blocklyTreeLabel{color:#dde1f0 !important;font-weight:700 !important;font-size:12.5px !important;}
-.blocklyTreeSelected>.blocklyTreeRow>.blocklyTreeLabel{color:#fff !important;}
+/* ── Blockly toolbox contrast fixes (Blockly 13's real class names — the theme sets colours,
+     this just tidies hover/selected states to match the site's accent) ── */
+.blocklyToolboxCategoryContainer{border-radius:7px;margin:1px 5px;}
+.blocklyToolboxCategory:not(.blocklyToolboxSelected):hover .blocklyToolboxCategoryContainer{background:rgba(255,255,255,0.07);}
+.blocklyToolboxSelected .blocklyToolboxCategoryContainer{background:rgba(249,115,22,0.18);}
+.blocklyToolboxCategoryLabel{font-weight:700 !important;font-size:12.5px !important;}
 
 /* ── Status bar ── */
 .status-bar{flex-shrink:0;display:flex;align-items:center;gap:16px;padding:6px 16px;border-top:1px solid var(--border);font-size:10px;font-family:var(--fm);color:var(--muted);}
@@ -1251,50 +1251,36 @@ function initBlockly() {
   };
 
   const div = document.getElementById('blocklyDiv');
-  // Patch Dark theme component styles in-place so block colours are preserved
-  try {
-    const cs = Blockly.Themes.Dark.componentStyles_;
-    if (cs) {
-      cs.toolboxBackgroundColour = '#080c1a';
-      cs.toolboxForegroundColour = '#dde1f0';
-      cs.flyoutBackgroundColour = '#0d1226';
-      cs.flyoutForegroundColour = '#dde1f0';
-      cs.flyoutOpacity = 0.97;
-      cs.scrollbarColour = '#2a3050';
-    }
-  } catch(e) {}
+
+  // This Blockly build only ships 'Classic' and 'Zelos' themes — there is no
+  // 'Dark' theme to reference. Define our own, based on Zelos, with real
+  // componentStyles so Blockly generates the correct toolbox/flyout CSS itself.
+  const magicLabTheme = Blockly.Theme.defineTheme('magiclab-dark', {
+    base: Blockly.Themes.Zelos,
+    componentStyles: {
+      workspaceBackgroundColour: '#060912',
+      toolboxBackgroundColour: '#0d1226',
+      toolboxForegroundColour: '#dde1f0',
+      flyoutBackgroundColour: '#0d1226',
+      flyoutForegroundColour: '#dde1f0',
+      flyoutOpacity: 1,
+      scrollbarColour: '#3a4066',
+      scrollbarOpacity: 0.7,
+      insertionMarkerColour: '#f97316',
+      insertionMarkerOpacity: 0.4,
+      cursorColour: '#f97316',
+    },
+  });
 
   blocklyWorkspace = Blockly.inject(div, {
     toolbox,
-    theme: Blockly.Themes.Dark,
+    theme: magicLabTheme,
     grid: { spacing:20, length:3, colour:'rgba(255,255,255,0.04)', snap:true },
     zoom: { controls:true, wheel:true, startScale:0.9, maxScale:2, minScale:0.4, scaleSpeed:1.2 },
     trashcan: true,
     scrollbars: true,
     sounds: false,
     renderer: 'zelos',
-  });
-
-  // Force toolbox dark background — Blockly sets inline style with !important so we must use setProperty('important')
-  function patchToolbox() {
-    const tbDiv = document.querySelector('.blocklyToolboxDiv');
-    if (tbDiv) {
-      tbDiv.style.setProperty('background-color', '#080c1a', 'important');
-      tbDiv.style.setProperty('border-right', '1px solid rgba(255,255,255,0.08)', 'important');
-    }
-    const tbContents = document.querySelector('.blocklyToolboxContents');
-    if (tbContents) tbContents.style.setProperty('background-color', '#080c1a', 'important');
-    document.querySelectorAll('.blocklyTreeLabel').forEach(el => {
-      el.style.setProperty('color', '#dde1f0', 'important');
-      el.style.setProperty('font-weight', '700', 'important');
-      el.style.setProperty('font-size', '12.5px', 'important');
-    });
-  }
-  // Run at multiple intervals to catch Blockly's async rendering passes
-  [50, 150, 350, 700, 1500].forEach(t => setTimeout(patchToolbox, t));
-  // Re-run whenever Blockly mutates anything (category clicks, flyout open/close)
-  new MutationObserver(patchToolbox).observe(document.body, {
-    childList: true, subtree: true, attributes: true, attributeFilter: ['style']
   });
 
   // Keep Blockly sized to its container
