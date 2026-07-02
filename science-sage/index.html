@@ -35,17 +35,24 @@
     .hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(36px,5.5vw,68px);letter-spacing:-0.04em;line-height:1.0;margin-bottom:8px;color:#fff}
     .hero h1 em{font-style:normal;font-family:var(--font-serif);font-weight:400;background:linear-gradient(110deg,#86efac 0%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .hero-sub{font-size:clamp(14px,1.6vw,17px);color:var(--muted);max-width:520px;margin-top:18px;line-height:1.7}
-    .pathway{margin:0 52px 48px;padding:18px 24px;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:0;flex-wrap:wrap}
-    .pathway-step{display:flex;align-items:center;gap:10px;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap}
-    .pathway-step.active{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.28);color:#86efac}
-    .pathway-step.active-gr8{background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.28);color:#93c5fd}
-    .pathway-step.active-gr9{background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.22);color:#fde68a}
-    .pathway-step.future{color:rgba(210,218,245,0.30)}
-    .pathway-step.branch-life{color:rgba(74,222,128,0.55)}
-    .pathway-step.branch-phys{color:rgba(96,165,250,0.55)}
-    .pathway-arrow{color:rgba(255,255,255,0.15);font-size:16px;padding:0 4px}
-    .pathway-fork{display:flex;flex-direction:column;gap:4px}
-    .pathway-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.10em;text-transform:uppercase;color:rgba(255,255,255,0.18);margin:0 8px 6px}
+    .path-dropdown{position:relative;margin:0 52px 48px}
+    .path-trigger{width:100%;display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);cursor:pointer;font-family:var(--font-body);color:var(--text);transition:all 150ms;text-align:left}
+    .path-trigger:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.14)}
+    .path-trigger-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 200ms,color 200ms}
+    .path-trigger-text{flex:1;min-width:0}
+    .path-trigger-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.10em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:2px}
+    .path-trigger-current{font-size:14px;font-weight:700;color:#fff}
+    .path-chevron{transition:transform 200ms;color:var(--muted);flex-shrink:0}
+    .path-dropdown.open .path-chevron{transform:rotate(180deg)}
+    .path-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#0d1226;border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:8px;box-shadow:0 24px 56px rgba(0,0,0,0.5);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity 160ms,transform 160ms,visibility 160ms;z-index:80}
+    .path-dropdown.open .path-menu{opacity:1;visibility:visible;transform:translateY(0)}
+    .path-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:11px;text-decoration:none;color:var(--text);transition:background 140ms;cursor:pointer}
+    .path-item:hover{background:rgba(255,255,255,0.06)}
+    .path-item-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--pc)}
+    .path-item i{color:var(--pc);flex-shrink:0}
+    .path-item-title{font-size:13.5px;font-weight:700;color:#fff}
+    .path-item-sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+    .path-divider{height:1px;background:rgba(255,255,255,0.07);margin:6px 6px}
     .section-row{display:flex;align-items:center;gap:16px;padding:0 52px;margin:0 0 28px}
     .section-label{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);white-space:nowrap;display:flex;align-items:center;gap:8px}
     .section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(34,197,94,0.20),var(--border) 60%,transparent)}
@@ -128,28 +135,29 @@
     <p class="hero-sub">CAPS-aligned Natural Sciences (Gr 7–9) and Physical Sciences (Gr 10–12), with NSC and IEB curriculum support. Every lesson has theory, an interactive simulation, MCQ practice, and written workbook questions.</p>
   </section>
 
-  <div class="pathway">
-    <span class="pathway-label">Your learning path</span>
-    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
-      <div class="pathway-step active"><i data-lucide="flask-conical" style="width:14px;height:14px;"></i>Grade 7</div>
-      <span class="pathway-arrow">→</span>
-      <div class="pathway-step active-gr8"><i data-lucide="flask-conical" style="width:14px;height:14px;"></i>Grade 8</div>
-      <span class="pathway-arrow">→</span>
-      <div class="pathway-step active-gr9"><i data-lucide="flask-conical" style="width:14px;height:14px;"></i>Grade 9</div>
-      <span class="pathway-arrow">→</span>
-      <div class="pathway-fork">
-        <div class="pathway-step branch-life" style="opacity:.4"><i data-lucide="leaf" style="width:13px;height:13px;"></i>Gr 10–12 · Life Sciences</div>
-        <div class="pathway-step branch-phys" style="background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.28);color:#93c5fd"><i data-lucide="zap" style="width:13px;height:13px;"></i>Gr 10 · Physical Sciences</div>
+  <div class="path-dropdown" id="pathDropdown">
+    <button class="path-trigger" onclick="togglePathMenu(event)">
+      <div class="path-trigger-icon" id="pathTriggerIcon" style="background:rgba(34,197,94,0.14);color:#86efac"><i data-lucide="flask-conical" style="width:17px;height:17px;"></i></div>
+      <div class="path-trigger-text">
+        <div class="path-trigger-label">Your learning path</div>
+        <div class="path-trigger-current" id="pathCurrent">Grade 7 · Natural Sciences</div>
       </div>
-      <span class="pathway-arrow">→</span>
-      <div class="pathway-step branch-phys" style="background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.28);color:#d8b4fe"><i data-lucide="zap" style="width:13px;height:13px;"></i>Gr 11 · Physical Sciences</div>
-      <span class="pathway-arrow">→</span>
-      <div class="pathway-step branch-phys" style="background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.28);color:#f9a8d4"><i data-lucide="zap" style="width:13px;height:13px;"></i>Gr 12 · Physical Sciences</div>
+      <i data-lucide="chevron-down" class="path-chevron" style="width:16px;height:16px;"></i>
+    </button>
+    <div class="path-menu">
+      <a class="path-item" style="--pc:#4ade80" onclick="selectPath(event,'grade7','Grade 7 · Natural Sciences','flask-conical')"><i data-lucide="flask-conical" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 7</div><div class="path-item-sub">Natural Sciences</div></div></a>
+      <a class="path-item" style="--pc:#60a5fa" onclick="selectPath(event,'grade8','Grade 8 · Natural Sciences','flask-conical')"><i data-lucide="flask-conical" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 8</div><div class="path-item-sub">Natural Sciences</div></div></a>
+      <a class="path-item" style="--pc:#fbbf24" onclick="selectPath(event,'grade9','Grade 9 · Natural Sciences','flask-conical')"><i data-lucide="flask-conical" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 9</div><div class="path-item-sub">Natural Sciences</div></div></a>
+      <div class="path-divider"></div>
+      <a class="path-item" style="--pc:#4ade80" onclick="selectPath(event,'grade10-life','Grade 10–12 · Life Sciences','leaf')"><i data-lucide="leaf" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 10–12</div><div class="path-item-sub">Life Sciences</div></div></a>
+      <a class="path-item" style="--pc:#60a5fa" onclick="selectPath(event,'grade10-phys','Grade 10 · Physical Sciences','zap')"><i data-lucide="zap" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 10</div><div class="path-item-sub">Physical Sciences</div></div></a>
+      <a class="path-item" style="--pc:#c084fc" onclick="selectPath(event,'grade11','Grade 11 · Physical Sciences','zap')"><i data-lucide="zap" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 11</div><div class="path-item-sub">Physical Sciences</div></div></a>
+      <a class="path-item" style="--pc:#f472b6" onclick="selectPath(event,'grade12','Grade 12 · Physical Sciences','zap')"><i data-lucide="zap" style="width:15px;height:15px;"></i><div><div class="path-item-title">Grade 12</div><div class="path-item-sub">Physical Sciences</div></div></a>
     </div>
   </div>
 
   <!-- GRADE 7 -->
-  <div class="section-row">
+  <div class="section-row" id="grade7">
     <span class="section-label" style="color:#86efac;">
       <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
       Grade 7 · Natural Sciences
@@ -201,7 +209,7 @@
   </div>
 
   <!-- GRADE 8 -->
-  <div class="section-row" style="margin-top:0;">
+  <div class="section-row" id="grade8" style="margin-top:0;">
     <span class="section-label" style="color:#93c5fd;">
       <span style="width:6px;height:6px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
       Grade 8 · Natural Sciences
@@ -267,7 +275,7 @@
   </div>
 
   <!-- GRADE 9 -->
-  <div class="section-row" style="margin-top:0;">
+  <div class="section-row" id="grade9" style="margin-top:0;">
     <span class="section-label" style="color:#fde68a;">
       <span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
       Grade 9 · Natural Sciences
@@ -331,20 +339,67 @@
       </div>
     </div>
 
-    <!-- Life Sciences Gr 10-12 -->
+  </div>
+
+  <!-- GRADE 10 Life Sciences -->
+  <div class="section-row" id="grade10-life" style="margin-top:16px;">
+    <span class="section-label" style="color:#86efac;">
+      <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
+      Grade 10 · Life Sciences
+    </span>
+    <div class="section-line" style="background:linear-gradient(to right,rgba(34,197,94,0.18),var(--border) 60%,transparent)"></div>
+  </div>
+
+  <div class="strands" style="padding-bottom:56px;">
+    <!-- Strand 1: Molecular, Cellular & Tissue level -->
+    <div class="strand-card strand-life">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+        <div class="strand-icon">🧬</div><span class="strand-tag">Molecular, Cellular &amp; Tissue Level · T1</span>
+      </div>
+      <div><div class="strand-title">Chemistry of Life &amp; Cells</div><p class="strand-desc">Inorganic and organic compounds, the cell as the unit of life, cell division, and plant and animal tissues.</p></div>
+      <div class="strand-topics">
+        <a href="gr10/life/chemistry-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemistry of life<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/life/cell-structure.html" class="strand-topic"><span class="strand-topic-dot"></span>The cell — structure &amp; function<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/life/cell-division-mitosis.html" class="strand-topic"><span class="strand-topic-dot"></span>Cell division — mitosis<span class="strand-badge">Lesson</span></a>
+      </div>
+    </div>
+
+    <!-- Strand 2: Life Processes in Plants & Animals -->
     <div class="strand-card strand-soon" style="border-color:rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);">
       <span class="soon-pill">Coming soon</span>
-      <div class="strand-icon" style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.10);">🧬</div>
+      <div class="strand-icon" style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.10);">🌱</div>
       <div>
-        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:rgba(34,197,94,0.30);margin-bottom:6px;text-transform:uppercase;">Grade 10 – 12</div>
-        <div class="strand-title" style="color:rgba(134,239,172,0.40);">Life Sciences</div>
-        <p class="strand-desc" style="color:rgba(210,218,245,0.25);">DNA, genetics, evolution, human biology, ecology, and more. Aligned to CAPS Life Sciences Gr 10–12.</p>
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:rgba(34,197,94,0.30);margin-bottom:6px;text-transform:uppercase;">Term 2</div>
+        <div class="strand-title" style="color:rgba(134,239,172,0.40);">Life Processes in Plants &amp; Animals</div>
+        <p class="strand-desc" style="color:rgba(210,218,245,0.25);">Support and transport systems in plants and animals, and the transport system in mammals.</p>
+      </div>
+    </div>
+
+    <!-- Strand 3: Environmental Studies -->
+    <div class="strand-card strand-soon" style="border-color:rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);">
+      <span class="soon-pill">Coming soon</span>
+      <div class="strand-icon" style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.10);">🌍</div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:rgba(34,197,94,0.30);margin-bottom:6px;text-transform:uppercase;">Term 3</div>
+        <div class="strand-title" style="color:rgba(134,239,172,0.40);">Environmental Studies</div>
+        <p class="strand-desc" style="color:rgba(210,218,245,0.25);">Biosphere to ecosystems — energy flow, nutrient cycles, and ecological relationships.</p>
+      </div>
+    </div>
+
+    <!-- Strand 4: Diversity, Change & Continuity -->
+    <div class="strand-card strand-soon" style="border-color:rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);">
+      <span class="soon-pill">Coming soon</span>
+      <div class="strand-icon" style="background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.10);">🦴</div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:rgba(34,197,94,0.30);margin-bottom:6px;text-transform:uppercase;">Term 4</div>
+        <div class="strand-title" style="color:rgba(134,239,172,0.40);">Diversity, Change &amp; Continuity</div>
+        <p class="strand-desc" style="color:rgba(210,218,245,0.25);">Biodiversity and classification, and the history of life on Earth.</p>
       </div>
     </div>
   </div>
 
   <!-- GRADE 10 Physical Sciences -->
-  <div class="section-row" style="margin-top:16px;">
+  <div class="section-row" id="grade10-phys" style="margin-top:16px;">
     <span class="section-label" style="color:#93c5fd;">
       <span style="width:6px;height:6px;border-radius:50%;background:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
       Grade 10 · Physical Sciences
@@ -398,7 +453,7 @@
   </div>
 
   <!-- GRADE 11 Physical Sciences -->
-  <div class="section-row" style="margin-top:16px;">
+  <div class="section-row" id="grade11" style="margin-top:16px;">
     <span class="section-label" style="color:#d8b4fe;">
       <span style="width:6px;height:6px;border-radius:50%;background:#a855f7;box-shadow:0 0 0 3px rgba(168,85,247,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
       Grade 11 · Physical Sciences
@@ -452,7 +507,7 @@
   </div>
 
   <!-- GRADE 12 Physical Sciences -->
-  <div class="section-row" style="margin-top:16px;">
+  <div class="section-row" id="grade12" style="margin-top:16px;">
     <span class="section-label" style="color:#f9a8d4;">
       <span style="width:6px;height:6px;border-radius:50%;background:#ec4899;box-shadow:0 0 0 3px rgba(236,72,153,0.20);display:inline-block;animation:blink 2s ease-in-out infinite;"></span>
       Grade 12 · Physical Sciences
@@ -506,6 +561,29 @@
 
   <script>
     lucide.createIcons();
+
+    function togglePathMenu(e){
+      e.stopPropagation();
+      document.getElementById('pathDropdown').classList.toggle('open');
+    }
+    function selectPath(e,id,label,icon){
+      e.preventDefault();
+      const target=document.getElementById(id);
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+      document.getElementById('pathCurrent').textContent=label;
+      const iconColor=getComputedStyle(e.currentTarget).getPropertyValue('--pc').trim();
+      const iconWrap=document.getElementById('pathTriggerIcon');
+      iconWrap.style.color=iconColor;
+      iconWrap.style.background=iconColor.startsWith('#')?iconColor+'24':iconColor;
+      iconWrap.innerHTML=`<i data-lucide="${icon}" style="width:17px;height:17px;"></i>`;
+      lucide.createIcons();
+      document.getElementById('pathDropdown').classList.remove('open');
+    }
+    document.addEventListener('click', e=>{
+      const dd=document.getElementById('pathDropdown');
+      if(dd && !dd.contains(e.target)) dd.classList.remove('open');
+    });
+
     function setCurr12(mode){
       const nsc=mode==='nsc';
       document.getElementById('pill12-nsc').classList.toggle('active',nsc);

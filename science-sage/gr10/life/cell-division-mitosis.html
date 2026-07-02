@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cell Division — Mitosis — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body h3{font-weight:700;font-size:15px;letter-spacing:-0.01em;color:#e2e8f0;margin:18px 0 8px}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .phase-label{text-align:center;margin-top:10px}
+    .phase-name{font-weight:800;font-size:17px;color:#86efac;letter-spacing:-0.01em}
+    .phase-desc{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:520px;margin-inline:auto;line-height:1.6}
+    .playbar{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px 18px}
+    .play-btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:9px 18px;border-radius:9px;border:none;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;cursor:pointer;flex-shrink:0}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .mode-row{display:flex;gap:8px;flex-shrink:0}
+    .mode-btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:9px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 140ms;white-space:nowrap}
+    .mode-btn.active{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.40);color:#86efac}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .playbar{flex-wrap:wrap}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 10</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Molecular, Cellular &amp; Tissue Level · Lesson 3</div>
+  <h1 class="lesson-title">Cell Division — Mitosis</h1>
+  <p class="lesson-sub">One cell becomes two identical cells. Follow the cell cycle through interphase, mitosis, and cytokinesis, and see why mitosis matters for growth, repair — and what happens when it goes wrong.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-branch" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Chromosomes</h2>
+    <p>Chromosomes are found in the nucleus of every cell. Before division, each chromosome is copied, producing two identical <strong>sister chromatids</strong> joined together at a point called the <strong>centromere</strong>. Once the chromatids separate during division, each becomes its own chromosome.</p>
+
+    <h2>The Cell Cycle</h2>
+    <p>The cell cycle is the continuous process a cell goes through between one division and the next. It has two main parts:</p>
+    <ul>
+      <li><strong>Interphase</strong> — the "resting" phase (though the cell is very active): the cell grows and copies its DNA, ready for division.</li>
+      <li><strong>Mitosis</strong> — the nucleus divides, producing two identical nuclei, followed by <strong>cytokinesis</strong> — the division of the cytoplasm to form two separate daughter cells.</li>
+    </ul>
+
+    <h2>The phases of mitosis</h2>
+    <table class="compare-table">
+      <thead><tr><th>Phase</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td>Prophase</td><td>Chromosomes condense and become visible; the nuclear membrane starts to break down.</td></tr>
+        <tr><td>Metaphase</td><td>Chromosomes line up along the middle (equator) of the cell.</td></tr>
+        <tr><td>Anaphase</td><td>Sister chromatids separate and are pulled to opposite poles (ends) of the cell.</td></tr>
+        <tr><td>Telophase</td><td>A new nuclear membrane forms around each set of chromosomes at the two poles.</td></tr>
+      </tbody>
+    </table>
+    <p>Mitosis produces <strong>two identical daughter cells</strong>, each with the same number of chromosomes as the original parent cell.</p>
+
+    <h2>Cytokinesis — plant vs animal</h2>
+    <p>After telophase, the cytoplasm itself divides — but plant and animal cells do this differently:</p>
+    <ul>
+      <li><strong>Animal cells</strong> — the cell membrane pinches inward from the outside, forming a "cleavage furrow" that eventually splits the cell in two.</li>
+      <li><strong>Plant cells</strong> — because they have a rigid cell wall, they cannot pinch inward. Instead, a new <strong>cell plate</strong> forms across the middle of the cell and develops into a new cell wall, dividing it into two.</li>
+    </ul>
+    <div class="callout">Try switching between <strong>Plant cell</strong> and <strong>Animal cell</strong> mode in the Explore tab to see this difference for yourself.</div>
+
+    <h2>Why mitosis matters</h2>
+    <ul>
+      <li><strong>Growth</strong> — an organism grows by producing more cells through mitosis.</li>
+      <li><strong>Repair</strong> — damaged or worn-out cells are replaced.</li>
+      <li><strong>Reproduction</strong> — some simple organisms reproduce asexually using mitosis.</li>
+    </ul>
+
+    <h2>When mitosis goes wrong: cancer</h2>
+    <p><strong>Cancer</strong> is uncontrolled cell division and growth. Normally, the cell cycle is carefully regulated — but if this control breaks down, cells divide uncontrollably, forming a tumour. Treatments include surgery, radiotherapy, and chemotherapy, which aim to destroy the rapidly-dividing cancer cells.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Mitosis Stage Viewer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Scrub through the cell cycle to see how chromosomes behave in each phase, or press Play to animate it.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Cell cycle</h3>
+      <canvas id="mitoCanvas" height="300"></canvas>
+      <div class="phase-label">
+        <div class="phase-name" id="phaseName">Interphase</div>
+        <div class="phase-desc" id="phaseDesc">The cell grows and copies its DNA, preparing to divide.</div>
+      </div>
+    </div>
+    <div class="playbar">
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Play</button>
+      <input type="range" id="scrub" min="0" max="1000" value="0">
+      <div class="mode-row">
+        <button class="mode-btn active" id="btnPlant" onclick="setCellType('plant')">🌿 Plant</button>
+        <button class="mode-btn" id="btnAnimal" onclick="setCellType('animal')">🐾 Animal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book. Draw diagrams where required.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Define the terms "chromatid" and "centromere".</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Name the two main parts of the cell cycle.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Draw and label simple diagrams showing the chromosomes during prophase, metaphase, anaphase, and telophase.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain the difference between how animal cells and plant cells complete cytokinesis.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Give THREE reasons why mitosis is important to living organisms.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">Explain, in your own words, what cancer is and why it occurs.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   MITOSIS STAGE VIEWER
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('mitoCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let cellType = 'plant';
+let playing = false;
+let progress = 0; // 0-1000, maps to cell cycle position
+
+const PHASES = [
+  {name:'Interphase', from:0,   to:280, desc:'The cell grows and copies its DNA, preparing to divide.'},
+  {name:'Prophase',   from:280, to:440, desc:'Chromosomes condense and become visible; the nuclear membrane starts to break down.'},
+  {name:'Metaphase',  from:440, to:580, desc:'Chromosomes line up along the equator of the cell.'},
+  {name:'Anaphase',   from:580, to:720, desc:'Sister chromatids separate and move to opposite poles.'},
+  {name:'Telophase',  from:720, to:860, desc:'A new nuclear membrane forms around each set of chromosomes.'},
+  {name:'Cytokinesis',from:860, to:1000,desc:'The cytoplasm divides, forming two identical daughter cells.'},
+];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600;
+  H = 300;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function currentPhase(){
+  return PHASES.find(p=>progress>=p.from && progress<=p.to) || PHASES[PHASES.length-1];
+}
+
+function localT(phase){
+  return (progress - phase.from) / (phase.to - phase.from);
+}
+
+function setCellType(t){
+  cellType = t;
+  document.getElementById('btnPlant').classList.toggle('active', t==='plant');
+  document.getElementById('btnAnimal').classList.toggle('active', t==='animal');
+}
+
+function togglePlay(){
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸ Pause' : '▶ Play';
+}
+
+document.getElementById('scrub').addEventListener('input', e=>{
+  progress = parseInt(e.target.value);
+  playing = false;
+  document.getElementById('playBtn').textContent = '▶ Play';
+});
+
+// 4 chromosomes, each with a base angle around the cell centre used for interphase/prophase scatter
+const CHROMS = [0,1,2,3].map(i => ({ angle: (i/4)*Math.PI*2 + 0.4, side: i<2?-1:1 }));
+
+function drawChromosome(cx, cy, splitDist, condensed, alpha){
+  // draws a chromatid pair (X-shape) or, post-anaphase, a single chromatid, centred at cx,cy
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = '#86efac';
+  ctx.lineWidth = condensed ? 3 : 1.4;
+  if (splitDist <= 0.01){
+    // X shape: two chromatids joined at centromere
+    ctx.beginPath();
+    ctx.moveTo(cx-7,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx-7,cy+9);
+    ctx.moveTo(cx+7,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx+7,cy+9);
+    ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx,cy,2.2,0,Math.PI*2); ctx.fillStyle='#fde047'; ctx.fill();
+  } else {
+    // separated single chromatids, moving apart by splitDist
+    [-1,1].forEach(dir=>{
+      const ox = cx + dir*splitDist;
+      ctx.beginPath();
+      ctx.moveTo(ox-5, cy-8); ctx.lineTo(ox+5, cy); ctx.lineTo(ox-5, cy+8);
+      ctx.stroke();
+    });
+  }
+  ctx.restore();
+}
+
+function drawScene(){
+  ctx.clearRect(0,0,W,H);
+  const phase = currentPhase();
+  const t = localT(phase);
+  document.getElementById('phaseName').textContent = phase.name;
+  document.getElementById('phaseDesc').textContent = phase.desc;
+
+  const cx = W/2, cy = H/2;
+  const R = Math.min(W,H)*0.32;
+
+  // ── Cell outline ──
+  ctx.save();
+  if (phase.name === 'Cytokinesis'){
+    const pinch = t; // 0 -> 1 splitting into two cells
+    const sep = pinch * R * 1.15;
+    [-1,1].forEach(dir=>{
+      ctx.beginPath();
+      ctx.ellipse(cx + dir*sep*0.55, cy, R*0.75, R*0.85, 0, 0, Math.PI*2);
+      ctx.strokeStyle = cellType==='plant' ? 'rgba(74,222,128,0.55)' : 'rgba(96,165,250,0.55)';
+      ctx.lineWidth = cellType==='plant'?3:2;
+      ctx.stroke();
+      if (cellType==='plant'){ ctx.fillStyle='rgba(74,222,128,0.05)'; ctx.fill(); }
+    });
+    if (cellType==='plant' && pinch>0.05){
+      // cell plate line growing from centre outward
+      ctx.strokeStyle = 'rgba(253,224,71,0.75)';
+      ctx.lineWidth = 2;
+      const plateLen = R*1.5*Math.min(1,pinch*2);
+      ctx.beginPath(); ctx.moveTo(cx,cy-plateLen/2); ctx.lineTo(cx,cy+plateLen/2); ctx.stroke();
+    }
+  } else {
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, R, R*0.92, 0, 0, Math.PI*2);
+    ctx.strokeStyle = cellType==='plant' ? 'rgba(74,222,128,0.45)' : 'rgba(96,165,250,0.45)';
+    ctx.lineWidth = cellType==='plant'?3:2;
+    ctx.stroke();
+    if (cellType==='plant'){ ctx.fillStyle='rgba(74,222,128,0.04)'; ctx.fill(); }
+  }
+  ctx.restore();
+
+  // ── Nuclear membrane (present in interphase, reforming in telophase) ──
+  if (phase.name==='Interphase' || phase.name==='Telophase'){
+    ctx.save();
+    ctx.strokeStyle = 'rgba(167,139,250,0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([3,2]);
+    if (phase.name==='Interphase'){
+      ctx.beginPath(); ctx.arc(cx,cy,R*0.55,0,Math.PI*2); ctx.stroke();
+    } else {
+      const sep = R*0.62;
+      [-1,1].forEach(dir=>{ ctx.beginPath(); ctx.arc(cx+dir*sep,cy,R*0.42,0,Math.PI*2); ctx.stroke(); });
+    }
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  // ── Chromosomes ──
+  if (phase.name==='Interphase'){
+    // faint chromatin dots inside nucleus
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    CHROMS.forEach(c=>{
+      const r = R*0.30;
+      const x = cx + Math.cos(c.angle)*r, y = cy + Math.sin(c.angle)*r;
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fillStyle='#a78bfa'; ctx.fill();
+    });
+    ctx.restore();
+  } else if (phase.name==='Prophase'){
+    CHROMS.forEach(c=>{
+      const r = R*0.45*(1-t*0.4);
+      const x = cx + Math.cos(c.angle)*r, y = cy + Math.sin(c.angle)*r;
+      drawChromosome(x,y,0,true,1);
+    });
+  } else if (phase.name==='Metaphase'){
+    CHROMS.forEach((c,i)=>{
+      const y = cy - R*0.55 + (i/(CHROMS.length-1))*R*1.1;
+      drawChromosome(cx, y, 0, true, 1);
+    });
+    ctx.save();
+    ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(cx,cy-R*0.8); ctx.lineTo(cx,cy+R*0.8); ctx.stroke();
+    ctx.setLineDash([]); ctx.restore();
+  } else if (phase.name==='Anaphase'){
+    CHROMS.forEach((c,i)=>{
+      const y = cy - R*0.55 + (i/(CHROMS.length-1))*R*1.1;
+      const splitDist = t * R*0.55;
+      drawChromosome(cx, y, splitDist, true, 1);
+    });
+  } else if (phase.name==='Telophase'){
+    const sep = R*0.62;
+    [-1,1].forEach(dir=>{
+      CHROMS.forEach((c,i)=>{
+        const y = cy - R*0.32 + (i/(CHROMS.length-1))*R*0.64;
+        drawChromosome(cx+dir*sep, y, 0, false, 0.9);
+      });
+    });
+  } else if (phase.name==='Cytokinesis'){
+    const sep = R*1.15*t*0.55;
+    [-1,1].forEach(dir=>{
+      CHROMS.forEach((c,i)=>{
+        const y = cy - R*0.32 + (i/(CHROMS.length-1))*R*0.64;
+        drawChromosome(cx+dir*sep, y, 0, false, 0.6);
+      });
+    });
+  }
+}
+
+function loop(){
+  if (playing){
+    progress += 3.5;
+    if (progress > 1000) progress = 0;
+    document.getElementById('scrub').value = progress;
+  }
+  drawScene();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+loop();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is the point called where two sister chromatids are joined?',opts:['Nucleolus','Centromere','Spindle','Membrane'],ans:1,exp:'The centromere is the point where two identical sister chromatids are joined together, until they separate during anaphase.'},
+  {text:'During which phase do chromosomes line up along the equator of the cell?',opts:['Prophase','Metaphase','Anaphase','Telophase'],ans:1,exp:'In metaphase, chromosomes align along the middle (equator) of the cell before being pulled apart.'},
+  {text:'What happens during anaphase?',opts:['DNA is copied','The nuclear membrane reforms','Sister chromatids separate and move to opposite poles','The cytoplasm divides'],ans:2,exp:'During anaphase, sister chromatids separate at the centromere and are pulled to opposite poles of the cell.'},
+  {text:'How does cytokinesis differ in plant cells compared to animal cells?',opts:['Plant cells form a cell plate; animal cells pinch inward','Animal cells form a cell plate; plant cells pinch inward','Both form a cell plate','Neither divides the cytoplasm'],ans:0,exp:'Because plant cells have a rigid cell wall, they cannot pinch inward like animal cells — instead, a new cell plate forms and develops into a dividing wall.'},
+  {text:'Which of the following is NOT a reason mitosis is important?',opts:['Growth','Repair of damaged tissue','Asexual reproduction in simple organisms','Producing genetically varied offspring'],ans:3,exp:'Mitosis produces genetically identical daughter cells — it does not create genetic variation (that happens through meiosis and sexual reproduction, studied in later grades).'},
+  {text:'What best describes cancer?',opts:['A virus that destroys cells','Uncontrolled cell division and growth','A type of chromosome','A phase of the cell cycle'],ans:1,exp:'Cancer occurs when the normal control of the cell cycle breaks down, causing cells to divide uncontrollably and form a tumour.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! You know your mitosis!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cell — Structure &amp; Function — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body h3{font-weight:700;font-size:15px;letter-spacing:-0.01em;color:#e2e8f0;margin:18px 0 8px}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .mode-row{display:flex;gap:8px}
+    .mode-btn{flex:1;font-family:var(--fd);font-size:12px;font-weight:700;padding:9px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 140ms}
+    .mode-btn.active{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.40);color:#86efac}
+    .readout-row{display:flex;gap:16px;font-family:var(--fm);font-size:12px}
+    .readout-chip{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center}
+    .readout-chip .n{font-size:20px;font-weight:800;color:#86efac}
+    .sim-caption{font-size:12.5px;color:var(--muted);line-height:1.7;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px 16px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sim-controls-row{grid-template-columns:1fr}
+      .readout-row{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 10</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Molecular, Cellular &amp; Tissue Level · Lesson 2</div>
+  <h1 class="lesson-title">The Cell — Structure &amp; Function</h1>
+  <p class="lesson-sub">Building on Grade 9: go deeper into organelle structure and function, the fluid mosaic model of the cell membrane, and how substances move across membranes by diffusion, osmosis and active transport.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="droplets" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>From lenses to cells</h2>
+    <p>Our understanding of cells only became possible with the invention of the <strong>microscope</strong>. Early lens-based instruments let scientists first see cells; modern <strong>light microscopes</strong> use glass lenses and visible light, while <strong>electron microscopes</strong> use beams of electrons to reveal much finer detail — including the internal organelles you'll learn about below.</p>
+    <div class="key-fact">Magnification = size of the image ÷ actual size of the specimen. If a drawing of a cell is 40mm wide and the real cell is 0.02mm wide, the magnification is 40 ÷ 0.02 = 2000×.</div>
+
+    <h2>The cell membrane — a fluid mosaic</h2>
+    <p>The cell membrane is described by the <strong>fluid mosaic model</strong>: a flexible ("fluid") double layer of phospholipids with proteins floating in it like tiles in a mosaic. This structure controls what can move into and out of the cell.</p>
+    <table class="compare-table">
+      <thead><tr><th>Process</th><th>Description</th><th>Energy needed?</th></tr></thead>
+      <tbody>
+        <tr><td>Diffusion</td><td>Movement of particles from a high to a low concentration, until evenly spread</td><td>No</td></tr>
+        <tr><td>Osmosis</td><td>Diffusion of water molecules specifically, across a selectively permeable membrane</td><td>No</td></tr>
+        <tr><td>Active transport</td><td>Movement of particles against the concentration gradient (low to high)</td><td>Yes (uses ATP)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">Try the <strong>Diffusion &amp; Osmosis Simulator</strong> in the Explore tab to see these processes happen in real time.</div>
+
+    <h2>Organelles — structure and function</h2>
+    <p>Beyond the basics you learnt in Grade 9 (membrane, cytoplasm, nucleus, mitochondria, ribosomes), Grade 10 introduces more organelles and their roles:</p>
+    <ul>
+      <li><strong>Nucleus</strong> — bounded by a nuclear membrane with pores (nucleopores); contains chromatin material and a nucleolus. It's the control centre of the cell and the site of heredity (DNA storage).</li>
+      <li><strong>Endoplasmic reticulum (ER)</strong> — a network of membranes; <em>rough ER</em> (studded with ribosomes) helps transport proteins, <em>smooth ER</em> transports lipids.</li>
+      <li><strong>Golgi body</strong> — modifies, packages, and assembles secretions from the ER for transport out of the cell.</li>
+      <li><strong>Plastids</strong> (plants only) — organelles such as chloroplasts, involved in producing and storing food and pigments.</li>
+      <li><strong>Vacuole, lysosomes and vesicles</strong> — involved in storage, digestion of waste material, and (in plants) osmoregulation.</li>
+      <li><strong>Cell wall</strong> (plants only) — a rigid support structure outside the cell membrane.</li>
+    </ul>
+    <div class="callout"><strong>Cell theory recap:</strong> all living organisms are made of cells; the cell is the basic unit of life; and all cells arise from pre-existing cells.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Diffusion &amp; Osmosis Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Watch particles move across a membrane. In Diffusion mode, all particles can cross freely. In Osmosis mode, only water (blue) can cross — solute (orange) stays put — and water moves to balance the concentration.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Membrane chamber</h3>
+      <canvas id="diffCanvas" height="300"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Mode</div>
+        <div class="mode-row">
+          <button class="mode-btn active" id="btnDiff" onclick="setMode('diffusion')">Diffusion</button>
+          <button class="mode-btn" id="btnOsm" onclick="setMode('osmosis')">Osmosis</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Starting concentration gradient <span class="val" id="gradVal">High</span></div>
+        <input type="range" id="gradSlider" min="10" max="90" value="85">
+      </div>
+    </div>
+    <div class="readout-row">
+      <div class="readout-chip"><div class="n" id="leftCount">0</div>Left side</div>
+      <div class="readout-chip"><div class="n" id="rightCount">0</div>Right side</div>
+    </div>
+    <div class="sim-caption" id="simCaption">All particles start on the left. Watch them spread until concentration is equal on both sides — that's diffusion.</div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">A student draws a cell 45mm wide. The actual cell is 0.03mm wide. Calculate the magnification of the drawing. Show your working.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Describe the fluid mosaic model of the cell membrane.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (6 marks)</div><div class="wb-qtext">Complete a table comparing diffusion, osmosis, and active transport in terms of: (a) what moves, (b) direction relative to the concentration gradient, and (c) whether energy is required.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Name FOUR organelles (other than the nucleus, mitochondria, and ribosomes) and give the function of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">State the THREE points of cell theory.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   DIFFUSION & OSMOSIS SIMULATOR
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('diffCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let mode = 'diffusion';
+let gradient = 85;
+let particles = [];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600;
+  H = 300;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  initParticles();
+}
+
+function initParticles(){
+  particles = [];
+  const N = 60;
+  if (mode === 'diffusion'){
+    // all particles start on the left, can cross freely
+    for(let i=0;i<N;i++){
+      particles.push({
+        type:'solute', canCross:true,
+        x: Math.random()*(W/2-20)+10, y: Math.random()*(H-20)+10,
+        vx:(Math.random()-0.5)*1.6, vy:(Math.random()-0.5)*1.6,
+      });
+    }
+  } else {
+    // osmosis: solute fixed distribution (imbalanced), water free to cross
+    const soluteRightFrac = gradient/100;
+    const soluteN = 24, waterN = 40;
+    for(let i=0;i<soluteN;i++){
+      const onRight = i < soluteN*soluteRightFrac;
+      particles.push({
+        type:'solute', canCross:false,
+        x: onRight ? Math.random()*(W/2-20)+W/2+10 : Math.random()*(W/2-20)+10,
+        y: Math.random()*(H-20)+10,
+        vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6,
+      });
+    }
+    for(let i=0;i<waterN;i++){
+      particles.push({
+        type:'water', canCross:true,
+        x: Math.random()*(W-20)+10, y: Math.random()*(H-20)+10,
+        vx:(Math.random()-0.5)*1.8, vy:(Math.random()-0.5)*1.8,
+      });
+    }
+  }
+}
+
+function setMode(m){
+  mode = m;
+  document.getElementById('btnDiff').classList.toggle('active', m==='diffusion');
+  document.getElementById('btnOsm').classList.toggle('active', m==='osmosis');
+  document.getElementById('simCaption').textContent = m==='diffusion'
+    ? 'All particles start on the left. Watch them spread until concentration is equal on both sides — that\'s diffusion.'
+    : 'Orange solute particles cannot cross the membrane. Blue water molecules cross freely, moving toward the side with more solute — that\'s osmosis.';
+  initParticles();
+}
+
+document.getElementById('gradSlider').addEventListener('input', e=>{
+  gradient = parseInt(e.target.value);
+  document.getElementById('gradVal').textContent = gradient>65?'High':gradient>35?'Medium':'Low';
+  if (mode==='osmosis') initParticles();
+});
+
+function step(){
+  const midX = W/2;
+  particles.forEach(p=>{
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < 8 || p.y > H-8) p.vy *= -1;
+    if (p.x < 8 || p.x > W-8) p.vx *= -1;
+    // membrane collision for non-crossing particles
+    if (!p.canCross){
+      const onRight = p.x > midX;
+      if (onRight && p.x < midX+8) { p.x = midX+8; p.vx = Math.abs(p.vx); }
+      if (!onRight && p.x > midX-8) { p.x = midX-8; p.vx = -Math.abs(p.vx); }
+    } else if (mode === 'osmosis') {
+      // water: slight bias toward the side with more solute
+      const rightSolute = particles.filter(q=>q.type==='solute'&&q.x>midX).length;
+      const leftSolute = particles.filter(q=>q.type==='solute'&&q.x<=midX).length;
+      const bias = (rightSolute - leftSolute) * 0.006;
+      p.vx += bias * (Math.random()>0.5?1:0.3);
+      p.vx = Math.max(-2.2, Math.min(2.2, p.vx));
+    }
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // chambers
+  ctx.fillStyle = 'rgba(34,197,94,0.03)';
+  ctx.fillRect(0,0,W/2,H);
+  ctx.fillStyle = 'rgba(96,165,250,0.03)';
+  ctx.fillRect(W/2,0,W/2,H);
+  // membrane
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+  ctx.setLineDash([]);
+
+  particles.forEach(p=>{
+    ctx.beginPath();
+    const r = p.type==='water' ? 4 : 6;
+    ctx.arc(p.x, p.y, r, 0, Math.PI*2);
+    ctx.fillStyle = p.type==='water' ? 'rgba(96,165,250,0.85)' : 'rgba(251,146,60,0.85)';
+    ctx.fill();
+  });
+
+  const leftN = particles.filter(p=>p.x<=W/2).length;
+  const rightN = particles.filter(p=>p.x>W/2).length;
+  document.getElementById('leftCount').textContent = leftN;
+  document.getElementById('rightCount').textContent = rightN;
+
+  step();
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+draw();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What does the "fluid mosaic model" describe?',opts:['The rigid structure of the cell wall','The flexible phospholipid bilayer with floating proteins that makes up the cell membrane','The arrangement of chromosomes in the nucleus','The way water moves through a plant'],ans:1,exp:'The fluid mosaic model describes the cell membrane as a flexible double layer of phospholipids with proteins scattered through it like tiles in a mosaic.'},
+  {text:'Which of these processes requires energy (ATP)?',opts:['Diffusion','Osmosis','Active transport','None of these'],ans:2,exp:'Active transport moves particles against their concentration gradient (low to high), which requires energy. Diffusion and osmosis both happen passively, without energy input.'},
+  {text:'Which organelle modifies and packages proteins for secretion out of the cell?',opts:['Golgi body','Ribosome','Vacuole','Cell wall'],ans:0,exp:'The Golgi body receives proteins from the endoplasmic reticulum, modifies them, and packages them for transport or secretion.'},
+  {text:'A drawing of a cell is 60mm wide, and the real cell is 0.03mm wide. What is the magnification?',opts:['200×','2 000×','20 000×','2×'],ans:1,exp:'Magnification = image size ÷ actual size = 60 ÷ 0.03 = 2000×.'},
+  {text:'Rough endoplasmic reticulum is studded with which organelle?',opts:['Mitochondria','Ribosomes','Chloroplasts','Lysosomes'],ans:1,exp:'Rough ER gets its "rough" appearance from ribosomes attached to its surface, where proteins are synthesised and fed into the ER for transport.'},
+  {text:'Osmosis specifically refers to the diffusion of which substance?',opts:['Oxygen','Glucose','Water','Protein'],ans:2,exp:'Osmosis is the diffusion of water molecules specifically, across a selectively permeable membrane, from a region of high water concentration to low water concentration.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! You know your cells!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
