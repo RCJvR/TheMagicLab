@@ -1423,16 +1423,27 @@ function highlight(code) {
       if (!m) continue;
       const raw = m[0]; pos += raw.length; matched = true;
       if (tok.html) {
-        // colour tag name + attribute names + values separately
-        let h = raw.replace(/^(<\/?)([a-zA-Z][a-zA-Z0-9]*)/, (_, p, t) =>
-          `${esc(p)}<span class="hl-tag">${esc(t)}</span>`
-        );
-        h = h.replace(/\s([a-zA-Z:_-]+)=/g, (_, a) =>
-          ` <span class="hl-attr">${esc(a)}</span>=`
-        );
-        h = h.replace(/=(["'])([^"']*)\1/g, (_, q, v) =>
-          `=${esc(q)}<span class="hl-val">${esc(v)}</span>${esc(q)}`
-        );
+        // colour tag name + attribute names + values separately, in a single
+        // pass over the raw text so injected <span class="..."> markup is
+        // never re-scanned (which would corrupt it into literal text).
+        const [, bracket, name, rest] = raw.match(/^(<\/?)([a-zA-Z][a-zA-Z0-9]*)([\s\S]*)$/);
+        let h = `${esc(bracket)}<span class="hl-tag">${esc(name)}</span>`;
+        let rpos = 0;
+        while (rpos < rest.length) {
+          const rslice = rest.slice(rpos);
+          let rm;
+          if ((rm = rslice.match(/^\s+/))) {
+            h += esc(rm[0]);
+          } else if ((rm = rslice.match(/^[a-zA-Z:_-]+(?==)/))) {
+            h += `<span class="hl-attr">${esc(rm[0])}</span>`;
+          } else if ((rm = rslice.match(/^=(["'])([^"']*)\1/))) {
+            h += `=${rm[1]}<span class="hl-val">${esc(rm[2])}</span>${rm[1]}`;
+          } else {
+            rm = [rslice[0]];
+            h += esc(rm[0]);
+          }
+          rpos += rm[0].length;
+        }
         out += h;
       } else if (tok.cls) {
         out += `<span class="${tok.cls}">${esc(raw)}</span>`;
