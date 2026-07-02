@@ -100,11 +100,11 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f2
 #blocklyDiv{flex:1;display:none;}
 #blocklyDiv .blocklyMainBackground{fill:#060912 !important;}
 
-/* ── Blockly toolbox contrast fixes (Blockly 13's real class names — the theme sets colours,
-     this just tidies hover/selected states to match the site's accent) ── */
-.blocklyToolboxCategoryContainer{border-radius:7px;margin:1px 5px;}
-.blocklyToolboxCategory:not(.blocklyToolboxSelected):hover .blocklyToolboxCategoryContainer{background:rgba(255,255,255,0.07);}
-.blocklyToolboxSelected .blocklyToolboxCategoryContainer{background:rgba(249,115,22,0.18);}
+/* ── Blockly toolbox contrast fixes (Blockly 13's real class names). Selected/hover
+     backgrounds are Blockly's own inline styles driven by each category's `colour` in
+     the toolbox definition below — matched to that category's block colour — so no
+     override is needed here beyond layout polish. ── */
+.blocklyToolboxCategory{border-radius:7px;margin:1px 5px;}
 .blocklyToolboxCategoryLabel{font-weight:700 !important;font-size:12.5px !important;}
 
 /* ── Status bar ── */
@@ -1205,7 +1205,7 @@ function initBlockly() {
   const toolbox = {
     kind: 'categoryToolbox',
     contents: [
-      { kind:'category', name:'🤖 Motion', colour:'#f97316', contents:[
+      { kind:'category', name:'🤖 Motion', colour:'#5b67a5', contents:[
         { kind:'block', type:'robot_move_forward' },
         { kind:'block', type:'robot_move_backward' },
         { kind:'block', type:'robot_turn_left' },
@@ -1213,21 +1213,21 @@ function initBlockly() {
         { kind:'block', type:'robot_set_speed' },
         { kind:'block', type:'robot_wait' },
       ]},
-      { kind:'category', name:'📡 Sensors', colour:'#84cc16', contents:[
+      { kind:'category', name:'📡 Sensors', colour:'#9fa55b', contents:[
         { kind:'block', type:'robot_get_distance' },
         { kind:'block', type:'robot_get_line' },
         { kind:'block', type:'robot_get_colour' },
       ]},
-      { kind:'category', name:'💬 Output', colour:'#22c55e', contents:[
+      { kind:'category', name:'💬 Output', colour:'#5ba58c', contents:[
         { kind:'block', type:'robot_log' },
       ]},
       { kind:'sep' },
-      { kind:'category', name:'🔁 Loops', colour:'#9333ea', contents:[
+      { kind:'category', name:'🔁 Loops', colour:'#0fbd8c', contents:[
         { kind:'block', type:'controls_repeat_ext', inputs:{ TIMES:{ block:{ type:'math_number', fields:{ NUM:10 } } } } },
         { kind:'block', type:'controls_whileUntil' },
         { kind:'block', type:'controls_for' },
       ]},
-      { kind:'category', name:'🔀 Logic', colour:'#3b82f6', contents:[
+      { kind:'category', name:'🔀 Logic', colour:'#4c97ff', contents:[
         { kind:'block', type:'controls_if' },
         { kind:'block', type:'controls_ifelse' },
         { kind:'block', type:'logic_compare' },
@@ -1235,14 +1235,14 @@ function initBlockly() {
         { kind:'block', type:'logic_negate' },
         { kind:'block', type:'logic_boolean' },
       ]},
-      { kind:'category', name:'🔢 Math', colour:'#f59e0b', contents:[
+      { kind:'category', name:'🔢 Math', colour:'#59c059', contents:[
         { kind:'block', type:'math_number' },
         { kind:'block', type:'math_arithmetic' },
         { kind:'block', type:'math_random_int' },
         { kind:'block', type:'math_single' },
       ]},
-      { kind:'category', name:'📦 Variables', colour:'#ec4899', custom:'VARIABLE' },
-      { kind:'category', name:'💬 Text', colour:'#06b6d4', contents:[
+      { kind:'category', name:'📦 Variables', colour:'#ff8c1a', custom:'VARIABLE' },
+      { kind:'category', name:'💬 Text', colour:'#ffbf00', contents:[
         { kind:'block', type:'text' },
         { kind:'block', type:'text_join' },
         { kind:'block', type:'text_length' },
