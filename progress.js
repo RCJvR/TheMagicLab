@@ -23,7 +23,8 @@ const TOOLS = {
   CODE_CONJURER:   'code-conjurer',
   MATH_MAGICIAN:   'math-magician',
   COMPUTER_CODEX:  'computer-codex',
-  AI_ORACLE:       'ai-oracle'
+  AI_ORACLE:       'ai-oracle',
+  DRAWING_DRUID:   'drawing-druid'
 };
 window.ML_TOOLS = TOOLS;
 

@@ -1,0 +1,108 @@
+/* Drawing Druid — shared A3 workbook print stylesheet, reused by every chapter page. */
+
+.a3-sheet {
+  position: relative;
+  width: 297mm;
+  height: 420mm;
+  margin: 0 auto 20px;
+  background: #fff;
+  color: #111;
+  display: none;
+  overflow: hidden;
+  font-family: "Cabinet Grotesk", sans-serif;
+}
+
+.a3-sheet .frame {
+  position: absolute;
+  inset: 5mm;
+  border: 0.7mm solid #111;
+  pointer-events: none;
+}
+
+/* Full-scale construction. No CSS width/height here — the SVG's own mm width/height
+   attributes (set by ConstructionEngine.render) must drive its physical print size. */
+.a3-sheet .a3-main-svg {
+  position: absolute;
+  top: 26mm;
+  left: 12mm;
+}
+
+.a3-sheet .thumb-box {
+  position: absolute;
+  left: 10mm;
+  bottom: 10mm;
+  width: 60mm;
+  height: 60mm;
+  border: 0.35mm solid #111;
+  background: #fff;
+}
+.a3-sheet .thumb-label {
+  position: absolute;
+  top: 1.5mm;
+  left: 2mm;
+  right: 2mm;
+  font-size: 6pt;
+  color: #555;
+  text-align: center;
+}
+.a3-sheet .thumb-box svg {
+  position: absolute;
+  top: 8mm;
+  left: 2mm;
+}
+
+.a3-sheet .title-block {
+  position: absolute;
+  right: 10mm;
+  bottom: 10mm;
+  width: 110mm;
+  border: 0.35mm solid #111;
+  padding: 4mm;
+  font-size: 8pt;
+  color: #111;
+}
+.a3-sheet .tb-title {
+  font-weight: 800;
+  font-size: 10pt;
+  margin-bottom: 3mm;
+}
+.a3-sheet .tb-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 6mm;
+  padding: 1.2mm 0;
+  border-top: 0.2mm solid #ccc;
+}
+.a3-sheet .tb-row span:first-child {
+  color: #666;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.a3-sheet .tb-blank {
+  flex: 1;
+  border-bottom: 0.2mm solid #999;
+  margin-left: 4mm;
+}
+
+.a3-sheet .sheet-prompt {
+  position: absolute;
+  top: 8mm;
+  left: 8mm;
+  right: 8mm;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: #333;
+  background: #f4f4f4;
+  border-left: 1.5mm solid #999;
+  padding: 2mm 4mm;
+}
+
+@media print {
+  nav, .tabs, .lesson-header, .print-btn { display: none !important; }
+  .tab-panel { display: none !important; }
+  #printSheets { display: block !important; }
+  .a3-sheet { display: block; page-break-after: always; }
+  .a3-sheet:last-child { page-break-after: auto; }
+  @page { size: A3 portrait; margin: 12mm; }
+}

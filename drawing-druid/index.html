@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drawing Druid — Cam &amp; Loci Simulator — The Magic Lab</title>
+<title>Drawing Druid — Engineering Graphics &amp; Design — The Magic Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -14,74 +14,54 @@
   --accent:#eab308;--accent2:#64748b;
   --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);-webkit-font-smoothing:antialiased;}
-body{display:flex;flex-direction:column;overflow:hidden;
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;
   background-image:
     radial-gradient(ellipse 60% 50% at 0% 0%,rgba(234,179,8,0.10) 0%,transparent 60%),
     radial-gradient(ellipse 50% 40% at 100% 0%,rgba(100,116,139,0.14) 0%,transparent 55%);
 }
-
-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);}
+nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 40px;border-bottom:1px solid var(--border);}
 .nav-left{display:flex;align-items:center;gap:10px;min-width:0;}
-.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.app-icon{width:36px;height:36px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:18px;}
 .app-title{font-family:var(--fd);font-weight:900;font-size:clamp(16px,2vw,22px);letter-spacing:-0.03em;line-height:1.15;background:linear-gradient(125deg,#fff 0%,#fde68a 50%,#cbd5e1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .app-sub{font-size:10.5px;color:var(--muted);font-family:var(--fm);margin-top:1px;}
-.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;flex-shrink:0;}
+.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
 .nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
 
-@media (max-width: 640px) {
-  nav{padding:8px 12px;}
-  .app-title{font-size:15px;}
+.hero{padding:48px 40px 36px;}
+.hero-tag{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fde047;margin-bottom:12px;}
+.hero h1{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.06;margin-bottom:10px;}
+.hero p{font-size:14px;color:var(--muted);max-width:640px;line-height:1.75;}
+
+.section-row{display:flex;align-items:center;gap:14px;padding:0 40px;margin:0 0 20px;}
+.section-label{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#fde047;white-space:nowrap;}
+.section-line{flex:1;height:1px;background:linear-gradient(to right,rgba(234,179,8,0.25),var(--border) 60%,transparent);}
+
+.chapters{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 40px 44px;}
+.chapter-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;position:relative;transition:transform 200ms cubic-bezier(0.34,1.3,0.64,1),border-color 200ms,box-shadow 200ms;}
+.chapter-card:not(.locked):hover{transform:translateY(-4px);border-color:rgba(234,179,8,0.40);box-shadow:0 20px 44px rgba(0,0,0,0.40);}
+.chapter-card.locked{opacity:.45;cursor:default;}
+.chapter-num{font-family:var(--fm);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.08em;}
+.chapter-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,rgba(234,179,8,0.26),rgba(100,116,139,0.16));border:1px solid rgba(234,179,8,0.28);display:flex;align-items:center;justify-content:center;font-size:19px;}
+.chapter-title{font-weight:800;font-size:15.5px;letter-spacing:-0.02em;color:#fff;line-height:1.25;}
+.chapter-desc{font-size:12.5px;line-height:1.6;color:rgba(214,218,235,.55);flex:1;}
+.chapter-btn{font-size:12px;font-weight:700;color:#fde047;display:flex;align-items:center;gap:5px;}
+.soon-pill{position:absolute;top:16px;right:16px;font-family:var(--fm);font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:rgba(148,163,184,0.14);border:1px solid rgba(148,163,184,0.28);color:#cbd5e1;}
+
+.tools-wrap{padding:0 40px 56px;}
+.tool-card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 22px;text-decoration:none;color:inherit;max-width:520px;transition:all 200ms;}
+.tool-card:hover{border-color:rgba(234,179,8,0.40);background:rgba(255,255,255,.06);}
+.tool-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.tool-title{font-weight:800;font-size:14.5px;color:#fff;margin-bottom:3px;}
+.tool-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+
+@media (max-width:640px){
+  nav{padding:12px 16px;}
+  .hero{padding:28px 16px 24px;}
+  .section-row{padding:0 16px;}
+  .chapters{padding:0 16px 32px;grid-template-columns:1fr;}
+  .tools-wrap{padding:0 16px 40px;}
   .app-sub{display:none;}
-}
-
-.workspace{display:flex;flex:1;overflow:hidden;min-height:0;}
-
-.panel-controls{width:290px;flex-shrink:0;overflow-y:auto;border-right:1px solid var(--border);padding:16px;background:var(--bg2);}
-.ctrl-group{margin-bottom:18px;}
-.ctrl-label{font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
-.ctrl-label .val{color:#fde047;font-family:var(--fm);font-weight:600;}
-input[type=range]{width:100%;accent-color:#eab308;}
-input[type=number]{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:6px 8px;font-family:var(--fm);font-size:12px;}
-select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:7px 8px;font-family:var(--fd);font-size:12px;cursor:pointer;}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.seg-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;}
-.seg-card .seg-title{font-size:10.5px;font-weight:700;color:#cbd5e1;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-.seg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.dwell-info{font-size:10.5px;color:var(--muted);font-family:var(--fm);background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 10px;line-height:1.6;}
-.toggle-row{display:flex;gap:6px;}
-.toggle-btn{flex:1;font-family:var(--fd);font-size:11px;font-weight:700;padding:7px 8px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--muted);cursor:pointer;transition:all 140ms;}
-.toggle-btn.active{background:rgba(234,179,8,0.16);border-color:rgba(234,179,8,0.40);color:#fde047;}
-.warn-box{font-size:11px;color:#fca5a5;background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:8px 10px;margin-top:6px;display:none;}
-.warn-box.show{display:block;}
-
-.panel-main{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0;}
-.canvases{display:flex;flex:1;min-height:0;flex-wrap:wrap;}
-.canvas-card{flex:1;min-width:320px;display:flex;flex-direction:column;padding:14px;}
-.canvas-card+.canvas-card{border-left:1px solid var(--border);}
-.canvas-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.canvas-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
-.canvas-wrap{flex:1;background:#05070c;border:1px solid var(--border);border-radius:14px;position:relative;min-height:260px;overflow:hidden;}
-canvas{position:absolute;inset:0;width:100%;height:100%;}
-
-.playbar{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--border);background:var(--bg2);flex-wrap:wrap;}
-.btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:9px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 140ms;letter-spacing:-0.01em;}
-.btn:active{transform:scale(0.97);}
-.btn-play{background:linear-gradient(135deg,#a05c08,#78350f);color:#fff;box-shadow:0 2px 10px rgba(160,92,8,0.4);}
-.btn-play:hover{box-shadow:0 4px 16px rgba(160,92,8,0.55);}
-.scrub-wrap{flex:1;min-width:180px;display:flex;align-items:center;gap:10px;}
-.scrub-label{font-family:var(--fm);font-size:11px;color:var(--muted);white-space:nowrap;}
-.speed-select{width:110px;}
-.info-strip{padding:10px 20px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.6;background:var(--bg2);flex-shrink:0;}
-.info-strip strong{color:#fde047;}
-.legend-dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:middle;}
-
-@media (max-width:768px){
-  .workspace{flex-direction:column;overflow-y:auto;}
-  .panel-controls{width:100%;border-right:none;border-bottom:1px solid var(--border);max-height:none;}
-  .canvases{flex-direction:column;}
-  .canvas-card+.canvas-card{border-left:none;border-top:1px solid var(--border);}
-  .canvas-wrap{min-height:240px;}
 }
 </style>
 </head>
@@ -92,463 +72,81 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
     <div class="app-icon">🪶</div>
     <div>
       <div class="app-title">Drawing Druid</div>
-      <div class="app-sub">Cam &amp; Loci Simulator — EGD</div>
+      <div class="app-sub">Engineering Graphics &amp; Design</div>
     </div>
   </div>
   <a href="../index.html" class="nav-pill">← Home</a>
 </nav>
 
-<div class="workspace">
+<div class="hero">
+  <div class="hero-tag">Grade 10 – 12 · EGD · CAPS/SAGS Aligned</div>
+  <h1>Engineering Graphics &amp; Design</h1>
+  <p>A full CAPS/SAGS-aligned EGD curriculum — step-by-step construction lessons, interactive tools, practice questions, and printable A3 workbook sheets for every drawing discipline.</p>
+</div>
 
-  <!-- Controls -->
-  <div class="panel-controls">
+<div class="section-row">
+  <span class="section-label">Chapters</span>
+  <div class="section-line"></div>
+</div>
 
-    <div class="ctrl-group">
-      <div class="ctrl-label">Base circle radius <span class="val" id="vBase">30 mm</span></div>
-      <input type="range" id="baseRadius" min="15" max="60" value="30" step="1">
+<div class="chapters" id="chapterGrid">
+  <!-- Chapter 1 — active -->
+  <a href="chapters/geometric-constructions.html" class="chapter-card">
+    <span class="chapter-num">CHAPTER 01</span>
+    <div class="chapter-icon">📐</div>
+    <div class="chapter-title">Geometric Constructions</div>
+    <p class="chapter-desc">Line types (A/B/C), bisecting lines and angles, tangents, regular polygons, and the helix — built step by step with a compass and straightedge.</p>
+    <span class="chapter-btn">Start chapter →</span>
+  </a>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Coming Soon</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="chapters" id="lockedGrid"></div>
+
+<div class="section-row">
+  <span class="section-label">Explore Tools</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="tools-wrap">
+  <a href="tools/cam-loci.html" class="tool-card">
+    <div class="tool-icon">⚙️</div>
+    <div>
+      <div class="tool-title">Cam &amp; Loci Simulator</div>
+      <div class="tool-desc">Displacement diagrams and cam profiles, built and animated live. Will move under Mechanical Analytical once that chapter is built.</div>
     </div>
-
-    <div class="ctrl-group">
-      <div class="ctrl-label">Total lift <span class="val" id="vLift">30 mm</span></div>
-      <input type="range" id="lift" min="5" max="60" value="30" step="1">
-    </div>
-
-    <div class="ctrl-group">
-      <div class="ctrl-label">Direction of rotation</div>
-      <div class="toggle-row">
-        <button class="toggle-btn active" id="dirCW" onclick="setDirection(1)">↻ Clockwise</button>
-        <button class="toggle-btn" id="dirCCW" onclick="setDirection(-1)">↺ Anti-clockwise</button>
-      </div>
-    </div>
-
-    <div class="ctrl-group">
-      <div class="ctrl-label">Follower type</div>
-      <div class="toggle-row">
-        <button class="toggle-btn active" id="folWedge" onclick="setFollower('wedge')">Wedge (knife-edge)</button>
-        <button class="toggle-btn" id="folRoller" onclick="setFollower('roller')">Roller</button>
-      </div>
-    </div>
-    <div class="ctrl-group" id="rollerRadiusGroup" style="display:none;">
-      <div class="ctrl-label">Roller radius <span class="val" id="vRoller">8 mm</span></div>
-      <input type="range" id="rollerRadius" min="3" max="18" value="8" step="1">
-    </div>
-
-    <div class="seg-card">
-      <div class="seg-title"><span class="seg-dot" style="background:#eab308"></span>Rise</div>
-      <div class="row2" style="margin-bottom:8px;">
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div><input type="number" id="riseAngle" value="120" min="10" max="340"></div>
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Motion</div>
-          <select id="riseMotion"><option value="uniform">Uniform velocity</option><option value="shm">Harmonic (SHM)</option></select>
-        </div>
-      </div>
-    </div>
-
-    <div class="seg-card">
-      <div class="seg-title"><span class="seg-dot" style="background:#64748b"></span>Dwell (top)</div>
-      <div class="row2">
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div><input type="number" id="dwell1Angle" value="60" min="0" max="200"></div>
-        <div></div>
-      </div>
-    </div>
-
-    <div class="seg-card">
-      <div class="seg-title"><span class="seg-dot" style="background:#38bdf8"></span>Fall</div>
-      <div class="row2">
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div><input type="number" id="fallAngle" value="120" min="10" max="340"></div>
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Motion</div>
-          <select id="fallMotion"><option value="uniform">Uniform velocity</option><option value="shm">Harmonic (SHM)</option></select>
-        </div>
-      </div>
-    </div>
-
-    <div class="dwell-info" id="dwell2Info">Dwell (bottom): 60°</div>
-    <div class="warn-box" id="angleWarn">⚠ Rise + Dwell + Fall must total 360° or less.</div>
-
-  </div>
-
-  <!-- Main -->
-  <div class="panel-main">
-    <div class="canvases">
-      <div class="canvas-card">
-        <div class="canvas-head"><span class="canvas-title">Displacement Diagram</span></div>
-        <div class="canvas-wrap"><canvas id="dispCanvas"></canvas></div>
-      </div>
-      <div class="canvas-card">
-        <div class="canvas-head"><span class="canvas-title">Cam Profile</span></div>
-        <div class="canvas-wrap"><canvas id="camCanvas"></canvas></div>
-      </div>
-    </div>
-
-    <div class="playbar">
-      <button class="btn btn-play" id="btnPlay" onclick="togglePlay()">▶ Animate</button>
-      <div class="scrub-wrap">
-        <span class="scrub-label">0°</span>
-        <input type="range" id="scrub" min="0" max="359" value="0" step="1" style="flex:1;">
-        <span class="scrub-label">360°</span>
-      </div>
-      <select class="speed-select" id="speedSelect">
-        <option value="20">Slow</option>
-        <option value="60" selected>Normal</option>
-        <option value="140">Fast</option>
-      </select>
-      <span class="scrub-label" id="angleReadout">θ = 0°</span>
-    </div>
-
-    <div class="info-strip">
-      <span class="legend-dot" style="background:#eab308"></span><strong>Rise</strong> — follower moves away from the cam centre &nbsp;
-      <span class="legend-dot" style="background:#64748b"></span><strong>Dwell</strong> — follower stationary &nbsp;
-      <span class="legend-dot" style="background:#38bdf8"></span><strong>Fall</strong> — follower returns towards the cam centre. Uniform velocity gives a straight-line displacement graph (constant speed, abrupt direction change); harmonic motion (SHM) gives a smooth sine-based curve (gradual acceleration/deceleration).
-    </div>
-  </div>
-
+  </a>
 </div>
 
 <script>
-/* ══════════════════════════════
-   STATE
-══════════════════════════════ */
-let params = {
-  baseRadius: 30,
-  lift: 30,
-  direction: 1,       // 1 = CW, -1 = CCW
-  follower: 'wedge',  // 'wedge' | 'roller'
-  rollerRadius: 8,
-  riseAngle: 120, riseMotion: 'uniform',
-  dwell1Angle: 60,
-  fallAngle: 120, fallMotion: 'uniform',
-};
+const LOCKED_CHAPTERS = [
+  { num: '02', icon: '✏️', title: 'Freehand Drawing', desc: 'Sketching technique, proportion, and line control without instruments.' },
+  { num: '03', icon: '🔩', title: 'Mechanical Assemblies', desc: 'Reading and drawing assembled components from detail drawings.' },
+  { num: '04', icon: '🧊', title: 'Isometric Drawing', desc: 'Pictorial 3D representation of objects on isometric axes.' },
+  { num: '05', icon: '📊', title: 'Orthographic Projection', desc: 'First- and third-angle multi-view projection of 3D objects.' },
+  { num: '06', icon: '⚙️', title: 'Mechanical Analytical', desc: 'Cams, gears, and mechanisms — including the Cam & Loci Simulator.' },
+  { num: '07', icon: '🏠', title: 'Civil Drawing', desc: 'Floor plans, elevations, and civil analytical drawings.' },
+  { num: '08', icon: '🏙️', title: 'Perspective (1 & 2 Point)', desc: 'Pictorial perspective drawing using one and two vanishing points.' },
+  { num: '09', icon: '🔪', title: 'Sectional Views', desc: 'Cutting planes, hatching conventions, and sectioned assemblies.' },
+  { num: '10', icon: '📝', title: 'Practical Assessment Task', desc: 'Full PAT-style combined drawing tasks and rubrics.' },
+];
 
-let angle = 0;         // current cam rotation, degrees
-let playing = false;
-let lastT = null;
-let profilePoints = []; // {theta, r, x, y} in cam body frame (theta=0 -> "up")
-
-const dispCanvas = document.getElementById('dispCanvas');
-const camCanvas = document.getElementById('camCanvas');
-const dctx = dispCanvas.getContext('2d');
-const cctx = camCanvas.getContext('2d');
-
-function fitCanvas(c){
-  const rect = c.parentElement.getBoundingClientRect();
-  c.width = rect.width * devicePixelRatio;
-  c.height = rect.height * devicePixelRatio;
-  const ctx = c.getContext('2d');
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-  return {w: rect.width, h: rect.height};
-}
-
-/* ══════════════════════════════
-   DISPLACEMENT MODEL
-══════════════════════════════ */
-function segments(){
-  const d2 = Math.max(0, 360 - params.riseAngle - params.dwell1Angle - params.fallAngle);
-  let start = 0;
-  const segs = [];
-  segs.push({type:'rise', start, len:params.riseAngle, motion:params.riseMotion, from:0, to:params.lift});
-  start += params.riseAngle;
-  segs.push({type:'dwell', start, len:params.dwell1Angle, from:params.lift, to:params.lift});
-  start += params.dwell1Angle;
-  segs.push({type:'fall', start, len:params.fallAngle, motion:params.fallMotion, from:params.lift, to:0});
-  start += params.fallAngle;
-  segs.push({type:'dwell', start, len:d2, from:0, to:0});
-  return {segs, d2};
-}
-
-function displacementAt(theta){
-  theta = ((theta % 360) + 360) % 360;
-  const {segs} = segments();
-  for(const seg of segs){
-    if(seg.len <= 0) continue;
-    if(theta >= seg.start && theta <= seg.start + seg.len){
-      const t = (theta - seg.start) / seg.len;
-      if(seg.type === 'dwell') return seg.from;
-      if(seg.motion === 'uniform') return seg.from + (seg.to - seg.from) * t;
-      return seg.from + (seg.to - seg.from) * 0.5 * (1 - Math.cos(Math.PI * t));
-    }
-  }
-  return 0;
-}
-
-/* ══════════════════════════════
-   PROFILE BUILD (called when params change)
-══════════════════════════════ */
-function buildProfile(){
-  const N = 720;
-  const pitch = [];
-  for(let i=0;i<N;i++){
-    const theta = i * 360 / N;
-    const r = params.baseRadius + displacementAt(theta);
-    pitch.push({theta, r});
-  }
-
-  if(params.follower === 'wedge'){
-    profilePoints = pitch.map(p => ({theta:p.theta, r:p.r, surfaceR:p.r}));
-  } else {
-    // Roller follower: offset the pitch curve outward by the roller radius
-    // along the local normal (finite-difference tangent approximation).
-    const rr = params.rollerRadius;
-    profilePoints = pitch.map((p, i) => {
-      const prev = pitch[(i - 1 + N) % N], next = pitch[(i + 1) % N];
-      const toXY = (pt) => {
-        const rad = (pt.theta - 90) * Math.PI / 180;
-        return {x: pt.r * Math.cos(rad), y: pt.r * Math.sin(rad)};
-      };
-      const a = toXY(prev), b = toXY(next), c = toXY(p);
-      let tx = b.x - a.x, ty = b.y - a.y;
-      const tlen = Math.hypot(tx, ty) || 1;
-      tx /= tlen; ty /= tlen;
-      // outward normal (rotate tangent -90°); ensure it points away from centre
-      let nx = ty, ny = -tx;
-      if(nx * c.x + ny * c.y < 0){ nx = -nx; ny = -ny; }
-      const sx = c.x + nx * rr, sy = c.y + ny * rr;
-      const surfaceR = Math.hypot(sx, sy);
-      return {theta:p.theta, r:p.r, surfaceR};
-    });
-  }
-}
-
-/* ══════════════════════════════
-   DRAW: Displacement Diagram
-══════════════════════════════ */
-function drawDisplacement(){
-  const {w, h} = fitCanvas(dispCanvas);
-  dctx.clearRect(0,0,w,h);
-  const padL = 40, padR = 14, padT = 14, padB = 26;
-  const plotW = w - padL - padR, plotH = h - padT - padB;
-  const maxY = Math.max(10, params.lift) * 1.15;
-
-  const X = (deg) => padL + (deg/360) * plotW;
-  const Y = (mm) => padT + plotH - (mm/maxY) * plotH;
-
-  // segment shading
-  const {segs} = segments();
-  const colors = {rise:'rgba(234,179,8,0.10)', dwell:'rgba(100,116,139,0.08)', fall:'rgba(56,189,248,0.10)'};
-  segs.forEach(seg=>{
-    if(seg.len<=0) return;
-    dctx.fillStyle = colors[seg.type] || 'transparent';
-    dctx.fillRect(X(seg.start), padT, (seg.len/360)*plotW, plotH);
-  });
-
-  // grid
-  dctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  dctx.lineWidth = 1;
-  dctx.font = '9.5px "JetBrains Mono"';
-  dctx.fillStyle = 'rgba(214,218,235,0.35)';
-  for(let d=0; d<=360; d+=30){
-    dctx.beginPath(); dctx.moveTo(X(d), padT); dctx.lineTo(X(d), padT+plotH); dctx.stroke();
-    dctx.fillText(d+'°', X(d)-8, h-8);
-  }
-  for(let m=0; m<=maxY; m += Math.ceil(maxY/5/5)*5 || 5){
-    dctx.beginPath(); dctx.moveTo(padL, Y(m)); dctx.lineTo(padL+plotW, Y(m)); dctx.stroke();
-    dctx.fillText(Math.round(m), 4, Y(m)+3);
-  }
-
-  // curve
-  dctx.strokeStyle = '#fde047';
-  dctx.lineWidth = 2;
-  dctx.beginPath();
-  for(let d=0; d<=360; d++){
-    const y = displacementAt(d);
-    if(d===0) dctx.moveTo(X(d), Y(y)); else dctx.lineTo(X(d), Y(y));
-  }
-  dctx.stroke();
-
-  // axes
-  dctx.strokeStyle = 'rgba(255,255,255,0.25)';
-  dctx.lineWidth = 1.5;
-  dctx.beginPath(); dctx.moveTo(padL, padT); dctx.lineTo(padL, padT+plotH); dctx.lineTo(padL+plotW, padT+plotH); dctx.stroke();
-
-  // current angle marker
-  const cx = X(angle), cy = Y(displacementAt(angle));
-  dctx.strokeStyle = 'rgba(248,113,113,0.65)';
-  dctx.setLineDash([3,3]);
-  dctx.beginPath(); dctx.moveTo(cx, padT); dctx.lineTo(cx, padT+plotH); dctx.stroke();
-  dctx.setLineDash([]);
-  dctx.beginPath(); dctx.arc(cx, cy, 4.5, 0, Math.PI*2);
-  dctx.fillStyle = '#f87171'; dctx.fill();
-}
-
-/* ══════════════════════════════
-   DRAW: Cam Profile
-══════════════════════════════ */
-function drawCamProfile(){
-  const {w, h} = fitCanvas(camCanvas);
-  cctx.clearRect(0,0,w,h);
-  const cx = w/2, cy = h/2 + 10;
-  const maxR = params.baseRadius + params.lift + (params.follower==='roller'?params.rollerRadius:0);
-  const scale = Math.min(w, h-40) / (2*maxR) * 0.82;
-
-  // The contact point (theta === current shaft angle) must always sit at "up" (12 o'clock),
-  // regardless of direction. Direction only controls which way theta sweeps visually as it
-  // increases (clockwise for CW, counter-clockwise for CCW).
-  const toScreen = (theta, r) => {
-    const canvasAngle = -90 + params.direction * (theta - angle);
-    const rad = canvasAngle * Math.PI/180;
-    return {x: cx + r*scale*Math.cos(rad), y: cy + r*scale*Math.sin(rad)};
-  };
-
-  // base circle (dashed)
-  cctx.strokeStyle = 'rgba(255,255,255,0.20)';
-  cctx.setLineDash([4,4]); cctx.lineWidth = 1;
-  cctx.beginPath(); cctx.arc(cx, cy, params.baseRadius*scale, 0, Math.PI*2); cctx.stroke();
-  cctx.setLineDash([]);
-
-  // pitch curve (dashed, thin) — shown for roller mode as reference
-  if(params.follower === 'roller'){
-    cctx.strokeStyle = 'rgba(148,163,184,0.55)';
-    cctx.setLineDash([2,3]); cctx.lineWidth = 1.2;
-    cctx.beginPath();
-    profilePoints.forEach((p,i)=>{
-      const s = toScreen(p.theta, p.r);
-      if(i===0) cctx.moveTo(s.x,s.y); else cctx.lineTo(s.x,s.y);
-    });
-    cctx.closePath(); cctx.stroke();
-    cctx.setLineDash([]);
-  }
-
-  // actual cam surface (solid)
-  cctx.strokeStyle = '#38bdf8';
-  cctx.lineWidth = 2.2;
-  cctx.beginPath();
-  profilePoints.forEach((p,i)=>{
-    const s = toScreen(p.theta, p.surfaceR);
-    if(i===0) cctx.moveTo(s.x,s.y); else cctx.lineTo(s.x,s.y);
-  });
-  cctx.closePath();
-  cctx.fillStyle = 'rgba(56,189,248,0.07)';
-  cctx.fill();
-  cctx.stroke();
-
-  // centre + shaft
-  cctx.fillStyle = '#e8eaf2';
-  cctx.beginPath(); cctx.arc(cx, cy, 3.5, 0, Math.PI*2); cctx.fill();
-
-  // rotation direction arrow
-  cctx.strokeStyle = '#eab308'; cctx.fillStyle = '#eab308'; cctx.lineWidth = 2;
-  const arcR = params.baseRadius*scale*0.55;
-  const a1 = -170*Math.PI/180, a2 = -100*Math.PI/180;
-  cctx.beginPath();
-  if(params.direction===1) cctx.arc(cx, cy, arcR, a1, a2); else cctx.arc(cx, cy, arcR, a2, a1);
-  cctx.stroke();
-  const tipAngle = params.direction===1 ? a2 : a1;
-  const tipX = cx + arcR*Math.cos(tipAngle), tipY = cy + arcR*Math.sin(tipAngle);
-  const normalDir = params.direction===1 ? tipAngle+Math.PI/2 : tipAngle-Math.PI/2;
-  cctx.beginPath();
-  cctx.moveTo(tipX + 6*Math.cos(normalDir), tipY + 6*Math.sin(normalDir));
-  cctx.lineTo(tipX - 5*Math.cos(tipAngle), tipY - 5*Math.sin(tipAngle));
-  cctx.lineTo(tipX - 6*Math.cos(normalDir), tipY - 6*Math.sin(normalDir));
-  cctx.closePath(); cctx.fill();
-
-  // follower (fixed at top, 12 o'clock)
-  const followerR = params.baseRadius + params.lift + 18;
-  const topY = cy - followerR*scale;
-  cctx.strokeStyle = '#f87171'; cctx.lineWidth = 2.5;
-  if(params.follower === 'wedge'){
-    const contactR = (params.baseRadius + displacementAt(angle)) * scale;
-    cctx.beginPath();
-    cctx.moveTo(cx, cy - contactR - 26);
-    cctx.lineTo(cx, cy - contactR - 2);
-    cctx.stroke();
-    // knife tip
-    cctx.beginPath();
-    cctx.moveTo(cx-5, cy-contactR-2-8);
-    cctx.lineTo(cx, cy-contactR-2);
-    cctx.lineTo(cx+5, cy-contactR-2-8);
-    cctx.stroke();
-  } else {
-    const contactR = (params.baseRadius + displacementAt(angle) + params.rollerRadius) * scale;
-    cctx.beginPath();
-    cctx.moveTo(cx, cy - contactR - params.rollerRadius*scale - 22);
-    cctx.lineTo(cx, cy - contactR - params.rollerRadius*scale);
-    cctx.stroke();
-    cctx.fillStyle = 'rgba(248,113,113,0.16)';
-    cctx.beginPath();
-    cctx.arc(cx, cy - contactR + params.rollerRadius*scale, params.rollerRadius*scale, 0, Math.PI*2);
-    cctx.fill(); cctx.stroke();
-  }
-}
-
-/* ══════════════════════════════
-   UI WIRING
-══════════════════════════════ */
-function syncParamsFromUI(){
-  params.baseRadius = +document.getElementById('baseRadius').value;
-  params.lift = +document.getElementById('lift').value;
-  params.riseAngle = Math.max(0, +document.getElementById('riseAngle').value || 0);
-  params.dwell1Angle = Math.max(0, +document.getElementById('dwell1Angle').value || 0);
-  params.fallAngle = Math.max(0, +document.getElementById('fallAngle').value || 0);
-  params.riseMotion = document.getElementById('riseMotion').value;
-  params.fallMotion = document.getElementById('fallMotion').value;
-  params.rollerRadius = +document.getElementById('rollerRadius').value;
-
-  document.getElementById('vBase').textContent = params.baseRadius + ' mm';
-  document.getElementById('vLift').textContent = params.lift + ' mm';
-  document.getElementById('vRoller').textContent = params.rollerRadius + ' mm';
-
-  const sum = params.riseAngle + params.dwell1Angle + params.fallAngle;
-  const warn = document.getElementById('angleWarn');
-  if(sum > 360){ warn.classList.add('show'); } else { warn.classList.remove('show'); }
-  const {d2} = segments();
-  document.getElementById('dwell2Info').textContent = `Dwell (bottom): ${d2.toFixed(0)}°  (auto-calculated so the cycle totals 360°)`;
-
-  buildProfile();
-  redraw();
-}
-
-function redraw(){
-  drawDisplacement();
-  drawCamProfile();
-  document.getElementById('angleReadout').textContent = 'θ = ' + Math.round(angle) + '°';
-  document.getElementById('scrub').value = Math.round(angle);
-}
-
-function setDirection(d){
-  params.direction = d;
-  document.getElementById('dirCW').classList.toggle('active', d===1);
-  document.getElementById('dirCCW').classList.toggle('active', d===-1);
-  redraw();
-}
-
-function setFollower(type){
-  params.follower = type;
-  document.getElementById('folWedge').classList.toggle('active', type==='wedge');
-  document.getElementById('folRoller').classList.toggle('active', type==='roller');
-  document.getElementById('rollerRadiusGroup').style.display = type==='roller' ? 'block' : 'none';
-  syncParamsFromUI();
-}
-
-['baseRadius','lift','riseAngle','dwell1Angle','fallAngle','riseMotion','fallMotion','rollerRadius'].forEach(id=>{
-  document.getElementById(id).addEventListener('input', syncParamsFromUI);
+const grid = document.getElementById('lockedGrid');
+LOCKED_CHAPTERS.forEach(ch => {
+  const card = document.createElement('div');
+  card.className = 'chapter-card locked';
+  card.innerHTML =
+    '<span class="soon-pill">Coming soon</span>' +
+    '<span class="chapter-num">CHAPTER ' + ch.num + '</span>' +
+    '<div class="chapter-icon">' + ch.icon + '</div>' +
+    '<div class="chapter-title">' + ch.title + '</div>' +
+    '<p class="chapter-desc">' + ch.desc + '</p>';
+  grid.appendChild(card);
 });
-
-document.getElementById('scrub').addEventListener('input', (e)=>{
-  playing = false;
-  document.getElementById('btnPlay').textContent = '▶ Animate';
-  angle = +e.target.value;
-  redraw();
-});
-
-function togglePlay(){
-  playing = !playing;
-  document.getElementById('btnPlay').textContent = playing ? '⏸ Pause' : '▶ Animate';
-  lastT = null;
-  if(playing) requestAnimationFrame(loop);
-}
-
-function loop(t){
-  if(!playing) return;
-  if(lastT===null) lastT = t;
-  const dt = (t - lastT)/1000;
-  lastT = t;
-  const speed = +document.getElementById('speedSelect').value; // deg/sec
-  angle = (angle + speed*dt) % 360;
-  redraw();
-  requestAnimationFrame(loop);
-}
-
-window.addEventListener('resize', redraw);
-
-syncParamsFromUI();
 </script>
 </body>
 </html>
