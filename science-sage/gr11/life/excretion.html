@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excretion — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .kingdom-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:900px;margin-bottom:18px}
+    .kingdom-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;transition:all 150ms}
+    .kingdom-card:hover{background:rgba(255,255,255,.06)}
+    .kingdom-card.active{border-color:var(--kc);background:color-mix(in srgb, var(--kc) 16%, transparent)}
+    .kingdom-icon{font-size:24px}
+    .kingdom-label{font-size:11px;font-weight:700;color:#fff;text-align:center;line-height:1.3}
+    .kingdom-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:900px}
+    .ki-title{font-weight:800;font-size:19px;color:#fff;margin-bottom:4px}
+    .ki-sub{font-family:var(--fm);font-size:10.5px;color:var(--muted);margin-bottom:10px;text-transform:uppercase}
+    .ki-desc{font-size:13.5px;line-height:1.75;color:rgba(210,218,245,.78)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.kingdom-grid{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .kingdom-grid,.kingdom-info{margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .kingdom-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 11</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Life Processes in Plants &amp; Animals · Lesson 5</div>
+  <h1 class="lesson-title">Excretion</h1>
+  <p class="lesson-sub">Excretion removes the waste products of metabolism from the body. Explore the five human excretory organs, and the nephron — the kidney's filtering unit.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="droplet" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Excretion — removing metabolic waste</h2>
+    <p><strong>Excretion</strong> is the removal of waste products made by the body's own metabolism (not the same as egestion, which removes undigested food). Several organs share this job — explore each one in the Explore tab.</p>
+
+    <h2>The urinary system and the kidney</h2>
+    <p>The urinary system consists of two <strong>kidneys</strong>, two <strong>ureters</strong>, a <strong>bladder</strong>, and a <strong>urethra</strong>. Each kidney has an outer <strong>cortex</strong>, an inner <strong>medulla</strong> (arranged in pyramids), and a central <strong>pelvis</strong> that connects to the ureter at the hilum.</p>
+
+    <h2>The nephron — the kidney's filtering unit</h2>
+    <p>Each kidney contains around a million tiny filtering units called <strong>nephrons</strong>. Each nephron:</p>
+    <ul>
+      <li>Performs <strong>ultrafiltration</strong> — filtering blood under pressure to remove small molecules (water, salts, glucose, and urea) from the blood into the nephron.</li>
+      <li>Carries out <strong>reabsorption</strong> — reclaiming useful substances (glucose, most water and salts) back into the blood.</li>
+      <li>Excretes waste — the remaining fluid (containing <strong>urea</strong> and excess water and salts) becomes urine.</li>
+    </ul>
+    <div class="callout"><strong>Homeostatic control of water and salts</strong> is managed by hormones — <strong>ADH</strong> (antidiuretic hormone) controls how much water is reabsorbed, and <strong>aldosterone</strong> regulates salt reabsorption.</div>
+
+    <h2>Kidney disease and treatment</h2>
+    <p>Kidney function can be damaged by conditions such as kidney stones, or kidney failure (sometimes linked to overuse of certain painkillers) or infections such as bilharzia. Severe kidney failure is treated with <strong>dialysis</strong> (artificially filtering the blood) or a <strong>kidney transplant</strong>.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Excretory Organs Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click each organ to see what it excretes from the body.</p>
+  <div class="kingdom-grid" id="kingdomGrid"></div>
+  <div class="kingdom-info" id="kingdomInfo"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Distinguish between excretion and egestion.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (5 marks)</div><div class="wb-qtext">Name the five human excretory organs and the substance each removes from the body.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Describe the processes of ultrafiltration and reabsorption in the nephron.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Name the hormones responsible for regulating water and salt reabsorption respectively.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Name TWO treatments for severe kidney failure.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   EXCRETORY ORGANS EXPLORER
+═══════════════════════════════════════════════ */
+const KINGDOMS = [
+  {id:'kidneys', name:'Kidneys', icon:'🫘', color:'#f87171',
+   desc:'Filter the blood via nephrons (ultrafiltration + reabsorption), excreting urea, excess water, and excess salts as urine. The main excretory organs in mammals.'},
+  {id:'lungs', name:'Lungs', icon:'🫁', color:'#60a5fa',
+   desc:'Excrete carbon dioxide, the waste gas produced during cellular respiration, along with a small amount of water vapour, every time you breathe out.'},
+  {id:'skin', name:'Skin', icon:'💧', color:'#fbbf24',
+   desc:'Excretes small amounts of water, salts, and urea in sweat, produced by sweat glands — this also helps with temperature regulation.'},
+  {id:'liver', name:'Liver', icon:'🫀', color:'#c084fc',
+   desc:'Deaminates excess amino acids, converting the waste nitrogen-containing part into urea, which is then passed to the kidneys for excretion. Also breaks down other waste substances, such as alcohol.'},
+  {id:'gut', name:'Alimentary canal', icon:'🧫', color:'#4ade80',
+   desc:'Excretes some waste substances (such as bile pigments, broken down from old red blood cells by the liver) via the gut, in addition to egesting undigested food.'},
+];
+let activeKingdom = null;
+
+function buildKingdoms(){
+  document.getElementById('kingdomGrid').innerHTML = KINGDOMS.map(k=>`
+    <div class="kingdom-card" id="kc_${k.id}" style="--kc:${k.color}" onclick="selectKingdom('${k.id}')">
+      <span class="kingdom-icon">${k.icon}</span>
+      <span class="kingdom-label">${k.name}</span>
+    </div>`).join('');
+  selectKingdom('kidneys');
+}
+function selectKingdom(id){
+  activeKingdom = KINGDOMS.find(k=>k.id===id);
+  document.querySelectorAll('.kingdom-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('kc_'+id).classList.add('active');
+  document.getElementById('kingdomInfo').innerHTML = `
+    <div class="ki-title" style="color:${activeKingdom.color}">${activeKingdom.icon} ${activeKingdom.name}</div>
+    <p class="ki-desc">${activeKingdom.desc}</p>`;
+}
+buildKingdoms();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is excretion?',opts:['The removal of undigested food','The removal of waste products of metabolism from the body','The intake of food','The production of urine only'],ans:1,exp:'Excretion is the removal of waste products produced by the body\'s own metabolism, such as urea and carbon dioxide — distinct from egestion, which removes undigested food.'},
+  {text:'What waste product do the lungs excrete?',opts:['Urea','Carbon dioxide','Bile','Excess salts'],ans:1,exp:'The lungs excrete carbon dioxide, a waste product of cellular respiration, every time you exhale.'},
+  {text:'What process filters the blood in the nephron under pressure?',opts:['Reabsorption','Ultrafiltration','Assimilation','Egestion'],ans:1,exp:'Ultrafiltration is the process that filters blood under pressure in the nephron, removing small molecules like water, salts, glucose, and urea.'},
+  {text:'What happens during reabsorption in the nephron?',opts:['All filtered substances are excreted','Useful substances like glucose and most water are reclaimed back into the blood','Urea is added to the blood','Blood cells are filtered out'],ans:1,exp:'Reabsorption reclaims useful substances — glucose and most water and salts — back into the blood, leaving the waste (urea, excess water and salts) to form urine.'},
+  {text:'Which organ converts excess amino acids into urea?',opts:['Kidney','Liver','Lungs','Skin'],ans:1,exp:'The liver deaminates excess amino acids, converting the waste nitrogen-containing part into urea, which is then excreted by the kidneys.'},
+  {text:'Which hormone controls how much water is reabsorbed by the kidney?',opts:['Insulin','ADH (antidiuretic hormone)','Adrenaline','Aldosterone only'],ans:1,exp:'ADH (antidiuretic hormone) controls how much water is reabsorbed in the kidney, while aldosterone regulates salt reabsorption.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
