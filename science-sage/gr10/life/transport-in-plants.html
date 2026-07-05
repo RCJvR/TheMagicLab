@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support &amp; Transport in Plants — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .rate-readout{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+    .rate-num{font-weight:900;font-size:30px;letter-spacing:-0.03em;flex-shrink:0;color:#86efac}
+    .rate-bar-wrap{flex:1}
+    .rate-bar-track{height:10px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:8px}
+    .rate-bar-fill{height:100%;border-radius:99px;transition:width 200ms,background 300ms;background:#22c55e}
+    .rate-status{font-size:12.5px;color:var(--muted);line-height:1.6}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sim-controls-row{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 10</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Life Processes in Plants &amp; Animals · Lesson 1</div>
+  <h1 class="lesson-title">Support &amp; Transport in Plants</h1>
+  <p class="lesson-sub">How does water get from the roots to the top of a tree? Explore transpiration — the process that pulls water up through the xylem — and see how temperature, humidity, light and wind affect its rate.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="droplets" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Two transport systems, one plant</h2>
+    <p>Plants have two separate transport tissues, both found in the roots, stems, and leaves:</p>
+    <table class="compare-table">
+      <thead><tr><th>Tissue</th><th>Transports</th><th>Direction</th></tr></thead>
+      <tbody>
+        <tr><td>Xylem</td><td>Water and dissolved minerals</td><td>Upward — roots to leaves</td></tr>
+        <tr><td>Phloem</td><td>Manufactured food (sugars) — <strong>translocation</strong></td><td>From leaves to all other parts</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Transpiration — the engine that pulls water up</h2>
+    <p><strong>Transpiration</strong> is the loss of water vapour from a plant's surface, mostly through tiny pores (stomata) in the leaves. As water evaporates from the leaf, it creates a "pull" that draws more water up through the xylem, all the way from the roots — a bit like sucking on a straw.</p>
+    <div class="callout">The pathway is: water uptake by root hairs → movement up the xylem → evaporation from the leaves (transpiration). This constant flow also carries dissolved minerals to where they're needed.</div>
+
+    <h2>What affects the rate of transpiration?</h2>
+    <ul>
+      <li><strong>Temperature</strong> — higher temperature increases the rate of evaporation, speeding up transpiration.</li>
+      <li><strong>Light intensity</strong> — more light means stomata open wider (for photosynthesis), increasing water loss.</li>
+      <li><strong>Humidity</strong> — high humidity in the air reduces the concentration gradient for evaporation, slowing transpiration.</li>
+      <li><strong>Wind</strong> — moving air sweeps away water vapour near the leaf surface, increasing the rate of transpiration.</li>
+    </ul>
+    <div class="callout">Scientists measure transpiration rate in the lab using a <strong>potometer</strong>, which tracks how quickly a leafy shoot draws up water.</div>
+
+    <h2>Growth rings — a record in the wood</h2>
+    <p>As a tree undergoes <strong>secondary growth</strong> each year, it produces a new ring of wood. Counting these <strong>annual rings</strong> in a cut tree trunk can reveal both the tree's age and clues about past climate conditions — wider rings generally indicate a favourable growing season.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Transpiration Rate Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust the four environmental factors and watch how fast water is drawn up the xylem and lost from the leaf.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Water movement through the plant</h3>
+      <canvas id="transCanvas" height="280"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Temperature <span class="val" id="tempVal">25°C</span></div>
+        <input type="range" id="tempSlider" min="5" max="45" value="25">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Light <span class="val" id="lightVal">Medium</span></div>
+        <input type="range" id="lightSlider" min="0" max="100" value="50">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Humidity <span class="val" id="humVal">Medium</span></div>
+        <input type="range" id="humSlider" min="0" max="100" value="50">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Wind <span class="val" id="windVal">None</span></div>
+        <input type="range" id="windSlider" min="0" max="100" value="0">
+      </div>
+    </div>
+    <div class="rate-readout">
+      <div class="rate-num" id="rateNum">50%</div>
+      <div class="rate-bar-wrap">
+        <div class="rate-bar-track"><div class="rate-bar-fill" id="rateBar" style="width:50%"></div></div>
+        <div class="rate-status" id="rateStatus">Moderate transpiration rate.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Define transpiration.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Explain how transpiration helps draw water up through the xylem, from the roots to the leaves.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">State FOUR factors that affect the rate of transpiration, and explain how EACH one affects the rate.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Name the instrument used to measure the rate of water uptake in a leafy shoot.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Explain what annual rings in a tree trunk can tell us, and why they form.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   TRANSPIRATION SIMULATOR
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('transCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+let temp=25, light=50, hum=50, wind=0;
+let droplets = [];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600; H = 280;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function computeRate(){
+  const tempF = Math.max(0, Math.min(1, (temp-5)/35));
+  const lightF = light/100;
+  const humF = 1 - hum/100;
+  const windF = 0.5 + (wind/100)*0.5;
+  return Math.max(0.02, Math.min(1, tempF*0.35 + lightF*0.25 + humF*0.25 + windF*0.15));
+}
+
+function updateReadout(){
+  const rate = computeRate();
+  const pct = Math.round(rate*100);
+  document.getElementById('rateNum').textContent = pct+'%';
+  document.getElementById('rateBar').style.width = pct+'%';
+  const color = pct>=65?'#22c55e':pct>=35?'#fbbf24':'#60a5fa';
+  document.getElementById('rateBar').style.background = color;
+  document.getElementById('rateNum').style.color = color;
+  document.getElementById('rateStatus').textContent =
+    pct>=80 ? 'Very high transpiration — hot, bright, dry and windy conditions pull water up fast.' :
+    pct>=50 ? 'Moderate-to-high transpiration rate.' :
+    pct>=25 ? 'Low transpiration — cool, humid or still conditions slow water loss.' :
+    'Very low transpiration — the plant is barely losing water right now.';
+}
+
+document.getElementById('tempSlider').addEventListener('input', e=>{ temp=+e.target.value; document.getElementById('tempVal').textContent=temp+'°C'; updateReadout(); });
+document.getElementById('lightSlider').addEventListener('input', e=>{ light=+e.target.value; document.getElementById('lightVal').textContent=light<33?'Low':light<66?'Medium':'High'; updateReadout(); });
+document.getElementById('humSlider').addEventListener('input', e=>{ hum=+e.target.value; document.getElementById('humVal').textContent=hum<33?'Low':hum<66?'Medium':'High'; updateReadout(); });
+document.getElementById('windSlider').addEventListener('input', e=>{ wind=+e.target.value; document.getElementById('windVal').textContent=wind<10?'None':wind<50?'Light breeze':'Strong wind'; updateReadout(); });
+
+function initDroplets(){
+  droplets = [];
+  for(let i=0;i<10;i++) droplets.push({ x: W*0.5+(Math.random()-0.5)*10, y: H - Math.random()*H*0.6, phase: Math.random() });
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const rate = computeRate();
+  const stemX = W*0.5, stemTop = H*0.28, stemBottom = H*0.95;
+
+  // ground
+  ctx.fillStyle='rgba(120,80,40,0.25)'; ctx.fillRect(0,stemBottom,W,H-stemBottom);
+  // stem/xylem tube
+  ctx.strokeStyle='rgba(96,165,250,0.35)'; ctx.lineWidth=14;
+  ctx.beginPath(); ctx.moveTo(stemX,stemBottom); ctx.lineTo(stemX,stemTop); ctx.stroke();
+  // leaf canopy
+  ctx.beginPath(); ctx.ellipse(stemX, stemTop-10, 70, 40, 0, 0, Math.PI*2);
+  ctx.fillStyle='rgba(74,222,128,0.18)'; ctx.fill();
+  ctx.strokeStyle='rgba(74,222,128,0.5)'; ctx.lineWidth=2; ctx.stroke();
+
+  // droplets moving upward at speed proportional to rate
+  droplets.forEach(d=>{
+    d.y -= 0.6 + rate*3.2;
+    if (d.y < stemTop){ d.y = stemBottom; d.x = stemX+(Math.random()-0.5)*10; }
+    ctx.beginPath(); ctx.arc(d.x, d.y, 4, 0, Math.PI*2);
+    ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.fill();
+  });
+
+  // evaporation wisps from canopy, density/speed proportional to rate
+  const wispCount = Math.round(rate*8);
+  for(let i=0;i<wispCount;i++){
+    const a = (Date.now()/500 + i) % (Math.PI*2);
+    const wx = stemX + Math.cos(a)*(50+i*4);
+    const wy = stemTop-10 - Math.abs(Math.sin(a))*30 - (Date.now()/40 % 20);
+    ctx.beginPath(); ctx.arc(wx, wy, 2, 0, Math.PI*2);
+    ctx.fillStyle='rgba(224,242,254,0.5)'; ctx.fill();
+  }
+
+  // label
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('ROOTS', stemX, stemBottom+18);
+  ctx.fillText('LEAVES (evaporation)', stemX, stemTop-58);
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', ()=>{ resizeCanvas(); initDroplets(); });
+resizeCanvas();
+initDroplets();
+updateReadout();
+draw();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is transpiration?',opts:['The movement of sugars through phloem','The loss of water vapour from a plant\'s surface','The uptake of minerals by roots','The process of photosynthesis'],ans:1,exp:'Transpiration is the loss of water vapour from a plant\'s surface, mostly through stomata in the leaves.'},
+  {text:'Which condition would INCREASE the rate of transpiration?',opts:['High humidity','Low temperature','Strong wind','Darkness (stomata closed)'],ans:2,exp:'Wind sweeps away water vapour near the leaf surface, maintaining a steep concentration gradient and increasing transpiration.'},
+  {text:'What is the term for the movement of manufactured food through phloem?',opts:['Transpiration','Translocation','Osmosis','Diffusion'],ans:1,exp:'Translocation is the movement of manufactured food (sugars) through the phloem, from the leaves to the rest of the plant.'},
+  {text:'What instrument is used to measure the rate of water uptake by a leafy shoot?',opts:['Barometer','Potometer','Thermometer','Hygrometer'],ans:1,exp:'A potometer measures how quickly a leafy shoot draws up water, giving an indirect measure of transpiration rate.'},
+  {text:'Why does high humidity REDUCE the rate of transpiration?',opts:['It closes the stomata completely','It reduces the concentration gradient for water evaporation','It cools the leaf down','It increases wind speed'],ans:1,exp:'When the air is already humid, there is less of a concentration gradient between the leaf surface and the air, so water evaporates more slowly.'},
+  {text:'What can annual growth rings in a tree trunk tell scientists?',opts:['The tree\'s exact species only','The tree\'s age and clues about past climate conditions','The direction of the wind','The pH of the soil'],ans:1,exp:'Each ring generally represents one year of secondary growth; counting rings reveals age, and their width can indicate past growing conditions.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

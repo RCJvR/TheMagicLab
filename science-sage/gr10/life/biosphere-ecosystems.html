@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biosphere to Ecosystems — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .pyramid-wrap{max-width:820px;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .pyr-level{display:flex;align-items:center;justify-content:center;color:#04150a;font-weight:800;font-size:13px;border-radius:8px;cursor:pointer;transition:all 160ms;padding:14px 10px;margin:0 auto;text-align:center}
+    .pyr-level:hover{transform:scale(1.02);filter:brightness(1.1)}
+    .pyr-level.active{outline:3px solid #fff;outline-offset:-3px}
+    .pyr-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:820px;margin-top:16px}
+    .pyr-info-title{font-weight:800;font-size:18px;color:#fff;margin-bottom:4px}
+    .pyr-info-energy{font-family:var(--fm);font-size:11px;color:#86efac;margin-bottom:10px}
+    .pyr-info-desc{font-size:13.5px;line-height:1.75;color:rgba(210,218,245,.78)}
+    .pyr-examples{font-size:12px;color:var(--muted);margin-top:8px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.pyramid-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .pyramid-wrap,.pyr-info{margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 10</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Environmental Studies · Lesson 1</div>
+  <h1 class="lesson-title">Biosphere to Ecosystems</h1>
+  <p class="lesson-sub">From the whole biosphere down to a single ecosystem: explore abiotic and biotic factors, trophic levels, and how energy flows — and is lost — as it passes up a food chain.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="triangle" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>From biosphere to ecosystem</h2>
+    <p>The <strong>biosphere</strong> is the global "layer of life" — the sum of every ecosystem on Earth, made up of the atmosphere, hydrosphere (water), and lithosphere (land) all interconnected. Within the biosphere, an <strong>ecosystem</strong> is a smaller unit: a community of living organisms interacting with each other and with their non-living environment in one area.</p>
+
+    <h2>Abiotic and biotic factors</h2>
+    <p>Every ecosystem is shaped by two kinds of factors:</p>
+    <table class="compare-table">
+      <thead><tr><th>Factor type</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Abiotic (non-living)</td><td>Temperature, light, water, soil (pH, texture, humus content), physiographic factors (slope, altitude, aspect)</td></tr>
+        <tr><td>Biotic (living)</td><td>All the organisms in the ecosystem, and their interactions with each other</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Trophic levels — who eats whom</h2>
+    <p>Organisms in an ecosystem occupy different <strong>trophic (feeding) levels</strong>:</p>
+    <ul>
+      <li><strong>Producers</strong> — plants and other organisms that make their own food (usually via photosynthesis).</li>
+      <li><strong>Consumers</strong> — organisms that eat other organisms: <strong>herbivores</strong> (eat plants), <strong>carnivores</strong> (eat other animals), and <strong>omnivores</strong> (eat both).</li>
+      <li><strong>Decomposers</strong> — break down dead organisms and waste, returning nutrients to the ecosystem.</li>
+    </ul>
+
+    <h2>Energy flow through an ecosystem</h2>
+    <p>Energy enters an ecosystem from the sun and flows through it via <strong>food chains</strong>: producer → primary consumer → secondary consumer → tertiary consumer. At each step, a large amount of energy is lost (mostly as heat), so less energy is available at each successive trophic level. This is why food chains rarely have more than 4–5 levels, and why ecosystems can support far more producers than top predators — visualised as a <strong>food/energy pyramid</strong>.</p>
+    <div class="callout">Try the <strong>Ecosystem Energy Pyramid</strong> in the Explore tab to see how energy shrinks at each trophic level.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Ecosystem Energy Pyramid</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click each level of the pyramid to see how much energy remains and which organisms occupy it.</p>
+  <div class="pyramid-wrap" id="pyramidWrap"></div>
+  <div class="pyr-info" id="pyrInfo"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Distinguish between the biosphere and an ecosystem.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Give TWO examples each of abiotic and biotic factors in an ecosystem.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Define producer, consumer, and decomposer, and give an example of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain why energy decreases at each successive trophic level in a food chain.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain why food chains rarely have more than four or five levels.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   ENERGY PYRAMID
+═══════════════════════════════════════════════ */
+const LEVELS = [
+  {name:'Producers', energy:'100% of energy available', color:'#4ade80', width:100,
+   desc:'Plants and other photosynthetic organisms capture energy from sunlight and convert it into chemical energy (glucose). This is the base of every food chain — all other levels ultimately depend on it.',
+   examples:'e.g. grass, trees, algae'},
+  {name:'Primary consumers', energy:'~10% of producer energy', color:'#a3e635', width:78,
+   desc:'Herbivores that eat producers directly. Only about 10% of the energy producers capture is transferred to this level — the rest is lost as heat through the producers\' own life processes.',
+   examples:'e.g. grasshopper, antelope, rabbit'},
+  {name:'Secondary consumers', energy:'~1% of producer energy', color:'#facc15', width:56,
+   desc:'Carnivores or omnivores that eat primary consumers. Again, only about 10% of the energy at the previous level is transferred here.',
+   examples:'e.g. frog, small bird'},
+  {name:'Tertiary consumers', energy:'~0.1% of producer energy', color:'#f97316', width:34,
+   desc:'Top predators that eat secondary consumers. By this level, only a tiny fraction of the original energy captured by producers remains — which is why top predators are always far less numerous than producers.',
+   examples:'e.g. eagle, lion'},
+];
+let activeLevel = null;
+
+function buildPyramid(){
+  const wrap = document.getElementById('pyramidWrap');
+  wrap.innerHTML = [...LEVELS].reverse().map(l=>`
+    <div class="pyr-level" id="lvl_${l.name.replace(/\s/g,'')}" style="background:${l.color};width:${l.width}%" onclick="selectLevel('${l.name}')">${l.name}</div>
+  `).join('');
+  selectLevel('Producers');
+}
+function selectLevel(name){
+  activeLevel = LEVELS.find(l=>l.name===name);
+  document.querySelectorAll('.pyr-level').forEach(el=>el.classList.remove('active'));
+  document.getElementById('lvl_'+name.replace(/\s/g,'')).classList.add('active');
+  document.getElementById('pyrInfo').innerHTML = `
+    <div class="pyr-info-title">${activeLevel.name}</div>
+    <div class="pyr-info-energy">${activeLevel.energy.toUpperCase()}</div>
+    <p class="pyr-info-desc">${activeLevel.desc}</p>
+    <div class="pyr-examples">${activeLevel.examples}</div>`;
+}
+buildPyramid();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is the difference between the biosphere and an ecosystem?',opts:['They are the same thing','The biosphere is the global sum of all ecosystems; an ecosystem is one smaller area','An ecosystem is bigger than the biosphere','The biosphere only includes water'],ans:1,exp:'The biosphere is the entire global "layer of life" made up of all ecosystems combined; an ecosystem is a single, smaller community of organisms interacting with their environment.'},
+  {text:'Which of these is an abiotic factor?',opts:['Grasshoppers in a field','Soil pH','Competition between lions','Predation'],ans:1,exp:'Soil pH is a non-living (abiotic) factor. The others all involve living organisms and their interactions (biotic factors).'},
+  {text:'What is a "producer" in an ecosystem?',opts:['An organism that eats other animals','An organism that makes its own food, usually through photosynthesis','An organism that breaks down dead matter','An organism at the top of the food chain'],ans:1,exp:'Producers, like plants and algae, capture energy from the sun and convert it into food through photosynthesis, forming the base of the food chain.'},
+  {text:'Approximately what percentage of energy is transferred from one trophic level to the next?',opts:['100%','50%','10%','1%'],ans:2,exp:'On average, only about 10% of the energy at one trophic level is transferred to the next — the rest is lost, mostly as heat.'},
+  {text:'Why are top predators (tertiary consumers) always far less numerous than producers?',opts:['They reproduce more slowly','Only a tiny fraction of the original energy captured by producers remains by that level','They eat less food','They live longer'],ans:1,exp:'Because energy decreases at each trophic level, only a small fraction of the original energy remains by the top of the food chain, limiting how many top predators an ecosystem can support.'},
+  {text:'What role do decomposers play in an ecosystem?',opts:['They produce their own food','They break down dead organisms and waste, returning nutrients to the ecosystem','They are always the largest organisms','They only live in water'],ans:1,exp:'Decomposers break down dead organic matter and waste, recycling nutrients back into the ecosystem for producers to use again.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
