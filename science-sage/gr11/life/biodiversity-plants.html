@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biodiversity of Plants — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .kingdom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:760px;margin-bottom:18px}
+    .kingdom-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;transition:all 150ms}
+    .kingdom-card:hover{background:rgba(255,255,255,.06)}
+    .kingdom-card.active{border-color:var(--kc);background:color-mix(in srgb, var(--kc) 16%, transparent)}
+    .kingdom-icon{font-size:26px}
+    .kingdom-label{font-size:12px;font-weight:700;color:#fff;text-align:center}
+    .kingdom-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:22px;max-width:820px}
+    .ki-title{font-weight:800;font-size:19px;color:#fff;margin-bottom:4px}
+    .ki-sub{font-family:var(--fm);font-size:10.5px;color:var(--muted);margin-bottom:10px;text-transform:uppercase}
+    .ki-desc{font-size:13.5px;line-height:1.75;color:rgba(210,218,245,.78);margin-bottom:10px}
+    .ki-row{display:flex;gap:8px;font-size:12px;margin-bottom:6px}
+    .ki-row .h{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:110px;flex-shrink:0;padding-top:2px}
+    .ki-row .v{color:rgba(210,218,245,.80)}
+    .water-track{display:flex;align-items:center;gap:6px;margin-top:14px;max-width:820px}
+    .water-track .lbl{font-family:var(--fm);font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+    .water-bar{flex:1;height:8px;border-radius:99px;background:rgba(255,255,255,.06);position:relative;overflow:hidden}
+    .water-fill{height:100%;background:linear-gradient(90deg,#60a5fa,#3b82f6);border-radius:99px;transition:width 250ms}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.kingdom-grid{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .kingdom-grid,.kingdom-info,.water-track{margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .kingdom-grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 11</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 11 · Diversity, Change &amp; Continuity · Lesson 2</div>
+  <h1 class="lesson-title">Biodiversity of Plants</h1>
+  <p class="lesson-sub">Plants are grouped into four divisions that reveal a clear evolutionary trend: decreasing dependence on water for reproduction. Explore bryophytes, pteridophytes, gymnosperms, and angiosperms.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="sprout" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Four divisions of the plant kingdom</h2>
+    <p>Plants (Kingdom Plantae) are grouped into four major divisions. Moving from bryophytes through to angiosperms, there's a clear evolutionary trend: <strong>decreasing dependence on water for reproduction</strong>, alongside increasing structural complexity.</p>
+    <table class="compare-table">
+      <thead><tr><th>Division</th><th>Key features</th><th>Reproduces via</th></tr></thead>
+      <tbody>
+        <tr><td>Bryophytes</td><td>Simple moss plants; no vascular tissue, no true leaves or roots</td><td>Spores — needs water for reproduction</td></tr>
+        <tr><td>Pteridophytes</td><td>Rhizome and fronds (leaves) bearing sori (spore clusters); has vascular tissue</td><td>Spores — still needs water</td></tr>
+        <tr><td>Gymnosperms</td><td>True leaves (often needles) and roots; vascular tissue; cones</td><td>Seeds — not enclosed in fruit</td></tr>
+        <tr><td>Angiosperms</td><td>True leaves and roots; vascular tissue; flowers</td><td>Seeds — enclosed in fruit</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The big structural leap: vascular tissue</h2>
+    <p>Bryophytes lack <strong>vascular tissue</strong> (xylem and phloem), which limits their size and ties them to damp habitats. Pteridophytes, gymnosperms, and angiosperms all have vascular tissue, allowing water and nutrient transport over longer distances — enabling larger plants that can grow further from water sources.</p>
+
+    <h2>Seeds versus spores</h2>
+    <p>Gymnosperms and angiosperms produce <strong>seeds</strong> rather than spores. A seed contains a protected embryo with a food store, giving it a major survival advantage over a spore. The key difference between the two seed-producing groups is that angiosperm seeds are enclosed in a <strong>fruit</strong>, while gymnosperm seeds (e.g. in a pine cone) are not.</p>
+    <div class="callout">Try the <strong>Plant Division Explorer</strong> in the Explore tab to see how water-dependence decreases across the four divisions.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Plant Division Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click each division to compare structure, reproduction, and dependence on water.</p>
+  <div class="kingdom-grid" id="kingdomGrid"></div>
+  <div class="kingdom-info" id="kingdomInfo"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (4 marks)</div><div class="wb-qtext">Name the four plant divisions in order of increasing structural complexity.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Describe the evolutionary trend seen from bryophytes to angiosperms in terms of water dependence.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain why the presence of vascular tissue allows plants to grow larger and further from water.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Distinguish between how gymnosperms and angiosperms protect their seeds.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Name the reproductive structures used to identify bryophytes, pteridophytes, and gymnosperms respectively.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   PLANT DIVISION EXPLORER
+═══════════════════════════════════════════════ */
+const KINGDOMS = [
+  {id:'bryophyte', name:'Bryophytes', icon:'🌾', color:'#4ade80', waterDep:95,
+   structure:'Simple moss plants with no vascular tissue and no true leaves or roots — water and nutrients move slowly by diffusion, keeping them small and low-growing.',
+   reproduces:'Spores', example:'Moss'},
+  {id:'pteridophyte', name:'Pteridophytes', icon:'🌿', color:'#22c55e', waterDep:70,
+   structure:'Has a rhizome (underground stem) and fronds (leaves) bearing sori — clusters where spores are produced. First group with true vascular tissue (xylem and phloem).',
+   reproduces:'Spores', example:'Fern'},
+  {id:'gymnosperm', name:'Gymnosperms', icon:'🌲', color:'#16a34a', waterDep:30,
+   structure:'True leaves (often needle-shaped) and roots, with vascular tissue. Produces seeds inside cones — not enclosed in a fruit.',
+   reproduces:'Seeds (in cones)', example:'Pine tree'},
+  {id:'angiosperm', name:'Angiosperms', icon:'🌸', color:'#86efac', waterDep:10,
+   structure:'True leaves and roots, with vascular tissue. Produces flowers, and seeds enclosed and protected inside a fruit — the most structurally advanced division.',
+   reproduces:'Seeds (in fruit)', example:'Sunflower'},
+];
+let activeKingdom = null;
+
+function buildKingdoms(){
+  document.getElementById('kingdomGrid').innerHTML = KINGDOMS.map(k=>`
+    <div class="kingdom-card" id="kc_${k.id}" style="--kc:${k.color}" onclick="selectKingdom('${k.id}')">
+      <span class="kingdom-icon">${k.icon}</span>
+      <span class="kingdom-label">${k.name}</span>
+    </div>`).join('');
+  selectKingdom('bryophyte');
+}
+function selectKingdom(id){
+  activeKingdom = KINGDOMS.find(k=>k.id===id);
+  document.querySelectorAll('.kingdom-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('kc_'+id).classList.add('active');
+  document.getElementById('kingdomInfo').innerHTML = `
+    <div class="ki-title" style="color:${activeKingdom.color}">${activeKingdom.icon} ${activeKingdom.name}</div>
+    <div class="ki-sub">Example: ${activeKingdom.example}</div>
+    <p class="ki-desc">${activeKingdom.structure}</p>
+    <div class="ki-row"><span class="h">Reproduces via</span><span class="v">${activeKingdom.reproduces}</span></div>
+    <div class="water-track">
+      <span class="lbl">Water dependence</span>
+      <div class="water-bar"><div class="water-fill" style="width:${activeKingdom.waterDep}%"></div></div>
+      <span class="lbl">${activeKingdom.waterDep}%</span>
+    </div>`;
+}
+buildKingdoms();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is the overall evolutionary trend from bryophytes to angiosperms?',opts:['Increasing dependence on water for reproduction','Decreasing dependence on water for reproduction','No change in water dependence','Loss of the ability to reproduce'],ans:1,exp:'From bryophytes to angiosperms, plants show decreasing dependence on water for reproduction, alongside increasing structural complexity.'},
+  {text:'Which plant division was the first to develop vascular tissue?',opts:['Bryophytes','Pteridophytes','Gymnosperms','Angiosperms'],ans:1,exp:'Pteridophytes (ferns) were the first division to develop vascular tissue (xylem and phloem), allowing for larger growth.'},
+  {text:'What structure distinguishes angiosperms from gymnosperms?',opts:['Angiosperms have vascular tissue, gymnosperms do not','Angiosperm seeds are enclosed in a fruit; gymnosperm seeds are not','Gymnosperms reproduce via spores','Angiosperms have no roots'],ans:1,exp:'Both groups produce seeds and have vascular tissue, but angiosperm seeds are enclosed in a protective fruit, while gymnosperm seeds (e.g. in a cone) are not.'},
+  {text:'Bryophytes lack which key structure that limits their size?',opts:['Chlorophyll','Vascular tissue','A cell wall','Chloroplasts'],ans:1,exp:'Bryophytes have no vascular tissue, so water and nutrients move slowly by diffusion — this keeps them small and restricted to damp habitats.'},
+  {text:'What reproductive structures are used to identify pteridophytes?',opts:['Flowers','Cones','Fronds with sori','Fruit'],ans:2,exp:'Pteridophytes (ferns) are identified by their fronds (leaves) bearing sori — clusters of spore-producing structures.'},
+  {text:'Which of these is an example of a gymnosperm?',opts:['Moss','Fern','Pine tree','Sunflower'],ans:2,exp:'A pine tree is a gymnosperm — it produces seeds in cones, which are not enclosed in a fruit.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
