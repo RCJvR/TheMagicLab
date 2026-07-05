@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energy and the National Electricity Grid — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:16px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+
+    /* Explore */
+    .explore-intro{font-size:13px;color:var(--muted);margin-bottom:20px;max-width:640px}
+    .grid-pipeline{display:flex;align-items:stretch;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:22px}
+    .stage-card{flex:1;min-width:130px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 160ms}
+    .stage-card:hover{border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.07)}
+    .stage-card.active{border-color:rgba(251,191,36,.55);background:rgba(251,191,36,.14)}
+    .stage-emoji{font-size:26px;margin-bottom:6px}
+    .stage-name{font-size:11.5px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:6px}
+    .stage-volt{font-family:var(--fm);font-size:11px;font-weight:700;color:#fcd34d}
+    .stage-arrow{display:flex;align-items:center;color:rgba(251,191,36,.4);font-size:18px;padding:0 2px}
+    .stage-detail{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:20px}
+    .stage-detail h3{font-size:16px;font-weight:800;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .stage-detail p{font-size:13.5px;line-height:1.75;color:rgba(210,218,245,.80);margin-bottom:10px}
+    .stage-detail p:last-child{margin-bottom:0}
+    .voltage-readout{display:flex;align-items:center;gap:14px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin-bottom:20px}
+    .voltage-readout .vlabel{font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .voltage-readout .vval{font-weight:900;font-size:26px;letter-spacing:-0.03em;color:#fbbf24}
+    .voltage-readout .vval span{font-size:12px;font-weight:500;color:var(--muted);margin-left:3px}
+    .why-highv{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px 22px}
+    .why-highv h3{font-size:14px;font-weight:800;color:#fcd34d;margin-bottom:8px}
+    .why-highv p{font-size:13px;line-height:1.75;color:rgba(210,218,245,.75)}
+
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.grid-pipeline{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .grid-pipeline,.stage-detail,.voltage-readout,.why-highv,.explore-intro{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .stage-card{min-width:110px}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Energy &amp; Change · Lesson 5</div>
+  <h1 class="lesson-title">Energy and the National Electricity Grid</h1>
+  <p class="lesson-sub">Follow electricity on its journey from a power station to your home — and find out why it travels most of the way at hundreds of thousands of volts.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Generating electricity in South Africa</h2>
+    <p>South Africa's <strong>national electricity grid</strong> is supplied by electricity generated at power stations spread across the country. Most of our electricity comes from <strong>coal-fired power stations</strong>, where burning coal boils water into steam, and the steam spins turbines connected to generators. South Africa also generates electricity from:</p>
+    <ul>
+      <li><strong>Hydroelectric power</strong> — falling or flowing water spins turbines (e.g. the Gariep and Vanderkloof dams).</li>
+      <li><strong>Nuclear power</strong> — Koeberg Power Station near Cape Town, South Africa's only nuclear power station, uses nuclear fission to generate heat that produces steam.</li>
+      <li><strong>Renewable energy</strong> — a fast-growing share from solar photovoltaic farms and wind farms, especially in the Northern and Eastern Cape.</li>
+    </ul>
+    <div class="callout"><strong>Key idea:</strong> whatever the source, a power station's job is the same — convert some other form of energy (chemical, nuclear, kinetic, or light) into electrical energy that can be sent out on the grid.</div>
+
+    <h2>The journey from power station to home</h2>
+    <p>Electricity travels a long way before it reaches your wall socket. The journey happens in clear stages:</p>
+    <ul>
+      <li><strong>1. Generation</strong> — electricity is generated at the power station, typically at 11–22 kV (kilovolts).</li>
+      <li><strong>2. Step-up transformer</strong> — at the power station, a transformer increases ("steps up") the voltage to around 400 kV for transmission.</li>
+      <li><strong>3. Transmission</strong> — electricity travels over long-distance pylons and cables at this very high voltage, sometimes hundreds of kilometres, to reach the areas where it is needed.</li>
+      <li><strong>4. Step-down transformer (substation)</strong> — at a substation nearer to towns and cities, transformers reduce ("step down") the voltage to safer, more manageable levels.</li>
+      <li><strong>5. Distribution</strong> — the electricity is distributed to homes and businesses at a safe, usable voltage — 230 V in South African homes.</li>
+    </ul>
+
+    <h2>Why transmit electricity at such high voltage?</h2>
+    <p>It seems strange to push electricity to such extreme voltages just to reduce it again later — but there is a very good reason. When electrical energy is transmitted, some of it is always lost as heat in the cables due to their resistance.</p>
+    <p>For the same amount of power delivered, transmitting at a <strong>much higher voltage</strong> means a <strong>much lower current</strong> is needed. Since the heat lost in a cable increases sharply as current increases, a lower current means far less energy is wasted as heat over those long distances.</p>
+    <div class="key-fact">Qualitative idea: less current for the same power = less energy lost as heat in the transmission cables. This is why power stations step voltage UP before sending electricity long distances, then step it DOWN again before it reaches your home.</div>
+
+    <h2>Transformers: stepping voltage up and down</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Transformer type</th><th>What it does</th><th>Where found</th></tr></thead>
+      <tbody>
+        <tr><td>Step-up transformer</td><td>Increases voltage, decreases current</td><td>At the power station, before transmission</td></tr>
+        <tr><td>Step-down transformer</td><td>Decreases voltage, increases current</td><td>At substations, before distribution to homes</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Using electricity wisely at home</h2>
+    <p>Generating electricity uses resources and, for coal-fired power stations, releases greenhouse gases. South Africa has also experienced <strong>load shedding</strong> — planned power cuts used when the demand for electricity is greater than the supply available from the grid. This makes the efficient, careful use of electricity in the home especially important.</p>
+    <ul>
+      <li>Switch off lights and appliances when they're not in use.</li>
+      <li>Use energy-efficient LED bulbs instead of old incandescent bulbs.</li>
+      <li>Use a geyser blanket and timer to reduce water-heating energy use (geysers are one of the biggest users of electricity in a home).</li>
+      <li>Unplug chargers and appliances on standby, which still draw small amounts of power.</li>
+    </ul>
+    <div class="callout"><strong>Local relevance:</strong> understanding the grid helps you understand why load shedding happens — the demand for electricity across the country can exceed what the power stations and grid can safely supply at that moment, so supply is deliberately reduced in some areas to protect the whole system.</div>
+    <div class="callout"><strong>Links forward:</strong> in later grades you'll study the formula P = I²R which explains mathematically why high voltage/low current transmission minimises energy loss.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">The grid pipeline</h2>
+  <p class="explore-intro">Click each stage below to see what happens there, why it matters, and how the voltage changes along the journey from power station to home.</p>
+  <div class="grid-pipeline" id="pipeline"></div>
+  <div class="voltage-readout">
+    <span class="vlabel">Voltage at this stage</span>
+    <span class="vval" id="vReadout">11<span>kV</span></span>
+  </div>
+  <div class="stage-detail" id="stageDetail"></div>
+  <div class="why-highv">
+    <h3>💡 Why does the voltage rise so high, then drop again?</h3>
+    <p>Sending electricity at very high voltage (~400 kV) means a much lower current is needed to deliver the same amount of power. Since heat lost in cables depends strongly on the current flowing through them, a lower current on the long transmission lines means far less energy is wasted before the electricity ever reaches your home. Step-down transformers then bring the voltage back down to a safe 230 V for household use.</p>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book. Write in full sentences and pay attention to the mark allocation for each question.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name THREE different ways that South Africa generates electricity, and for each one, state what form of energy is being converted into electrical energy.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (5 marks)</div><div class="wb-qtext">List, in the correct order, the FIVE stages electricity passes through on its journey from a power station to a home. Include an approximate voltage for at least three of the stages.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain, in your own words, why electricity is transmitted over long distances at very high voltage rather than at the voltage used in homes.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Describe the difference between what a step-up transformer does and what a step-down transformer does.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">What is load shedding, and why does it happen? Suggest TWO ways a household can reduce its electricity usage to help ease pressure on the grid.</div></div>
+  </div>
+</div>
+
+<script>
+const STAGES=[
+  {key:'gen',emoji:'🏭',name:'Power Station',volt:'11',unit:'kV',title:'1. Generation',detail:['Electricity is generated at the power station — most commonly by burning coal to boil water into steam, which spins a turbine connected to a generator.','At this point the electricity is produced at a relatively modest voltage, typically around 11–22 kV.']},
+  {key:'up',emoji:'⬆️',name:'Step-up Transformer',volt:'400',unit:'kV',title:'2. Step-up Transformer',detail:['Before the electricity leaves the power station, a step-up transformer dramatically increases the voltage — up to around 400 kV.','Raising the voltage lowers the current needed to deliver the same power, which is the key to minimising energy losses over the long transmission journey ahead.']},
+  {key:'trans',emoji:'🗼',name:'Transmission Lines',volt:'400',unit:'kV',title:'3. Transmission',detail:['Electricity now travels across the country on high-voltage transmission lines, carried on tall pylons, sometimes for hundreds of kilometres.','Because the current is low at this very high voltage, only a small fraction of the energy is lost as heat along the way.']},
+  {key:'down',emoji:'⬇️',name:'Step-down Transformer',volt:'11',unit:'kV',title:'4. Step-down Transformer (Substation)',detail:['At a substation closer to towns and cities, step-down transformers reduce the voltage from the transmission level down to a lower, safer distribution voltage.','This makes the electricity manageable and safe to route through local streets and neighbourhoods.']},
+  {key:'home',emoji:'🏠',name:'Your Home',volt:'230',unit:'V',title:'5. Distribution to Homes',detail:['A final step-down transformer, often mounted on a pole or in a small substation near your neighbourhood, reduces the voltage to 230 V — the standard safe voltage used in South African homes.','This is the voltage that reaches your wall sockets and powers your lights and appliances.']}
+];
+let activeStage=0;
+
+function renderPipeline(){
+  const wrap=document.getElementById('pipeline');
+  wrap.innerHTML='';
+  STAGES.forEach((s,i)=>{
+    const card=document.createElement('div');
+    card.className='stage-card'+(i===activeStage?' active':'');
+    card.id='stage-'+i;
+    card.onclick=()=>selectStage(i);
+    card.innerHTML=`<div class="stage-emoji">${s.emoji}</div><div class="stage-name">${s.name}</div><div class="stage-volt">${s.volt} ${s.unit}</div>`;
+    wrap.appendChild(card);
+    if(i<STAGES.length-1){
+      const arrow=document.createElement('div');
+      arrow.className='stage-arrow';
+      arrow.innerHTML='→';
+      wrap.appendChild(arrow);
+    }
+  });
+}
+
+function selectStage(i){
+  activeStage=i;
+  document.querySelectorAll('.stage-card').forEach((c,ci)=>c.classList.toggle('active',ci===i));
+  const s=STAGES[i];
+  document.getElementById('vReadout').innerHTML=`${s.volt}<span>${s.unit}</span>`;
+  document.getElementById('stageDetail').innerHTML=`<h3>${s.emoji} ${s.title}</h3>${s.detail.map(p=>`<p>${p}</p>`).join('')}`;
+}
+
+renderPipeline();
+selectStage(0);
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+const QUESTIONS=[
+  {text:'Which of the following is the main source of electricity generation in South Africa?',opts:['Wind power','Coal-fired power stations','Nuclear power','Solar power'],ans:1,exp:'Most of South Africa\'s electricity is generated by coal-fired power stations, though hydroelectric, nuclear (Koeberg) and renewable sources also contribute.'},
+  {text:'What is the main job of a step-up transformer at a power station?',opts:['Decrease the voltage for home use','Increase the voltage for transmission','Store electrical energy','Convert AC to DC'],ans:1,exp:'A step-up transformer increases the voltage to a very high level (around 400 kV) before electricity is sent out on the long-distance transmission lines.'},
+  {text:'Why is electricity transmitted over long distances at very high voltage?',opts:['It makes the electricity cheaper','High voltage means lower current, which reduces energy lost as heat in the cables','It is required by law with no scientific reason','High voltage travels faster than low voltage'],ans:1,exp:'For the same power delivered, a higher voltage allows a lower current, and lower current means less energy is wasted as heat in the transmission cables over long distances.'},
+  {text:'What happens at a substation?',opts:['Electricity is generated','A step-down transformer reduces the voltage for safer distribution','Coal is burned to produce steam','Electricity is converted into light energy'],ans:1,exp:'Substations contain step-down transformers that reduce the very high transmission voltage down to a safer level before it is distributed to homes and businesses.'},
+  {text:'What is the standard voltage supplied to homes in South Africa?',opts:['400 kV','11 kV','230 V','1000 V'],ans:2,exp:'After being stepped down through substations and local transformers, South African homes receive electricity at a standard voltage of 230 V.'},
+  {text:'What is "load shedding"?',opts:['A method of generating extra electricity','Planned power cuts used when demand for electricity exceeds available supply','A type of renewable energy','The process of stepping up voltage'],ans:1,exp:'Load shedding is a planned, controlled reduction in electricity supply to certain areas, used to prevent the entire grid from failing when demand outstrips the available supply.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good effort — check the explanations.':score===5?'Well done!':'Perfect score! Excellent work.';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

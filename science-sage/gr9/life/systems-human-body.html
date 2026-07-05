@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Systems in the Human Body — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-bottom:24px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%;cursor:pointer}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px 3px 0 0}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .info-panel{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:140px}
+    .info-panel-title{font-weight:800;font-size:16px;color:#fcd34d;margin-bottom:6px}
+    .info-panel-text{font-size:13px;color:rgba(210,218,245,.75);line-height:1.7}
+    .info-panel-organs{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.9}
+    .info-panel-organs strong{color:var(--text)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-top{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life &amp; Living</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Life &amp; Living · Lesson 5</div>
+  <h1 class="lesson-title">Systems in the Human Body</h1>
+  <p class="lesson-sub">Discover how the digestive, respiratory, circulatory and excretory systems work together to keep the body alive and functioning.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="user" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Why does the body need systems?</h2>
+    <p>The human body is made up of trillions of cells, organised into tissues, organs, and <strong style="color:#fcd34d">organ systems</strong>. Each system carries out a specific set of functions, but no system works alone — they are all <strong>interdependent</strong>, constantly exchanging materials so the whole body can survive.</p>
+    <div class="callout"><strong>Big idea:</strong> The digestive system supplies nutrients, and the respiratory system supplies oxygen — but neither nutrients nor oxygen are useful unless the <strong>circulatory system</strong> transports them to every cell in the body. The excretory system then removes the waste these processes produce.</div>
+
+    <h2>The Digestive System (brief recap)</h2>
+    <p>The digestive system breaks down food into small, soluble nutrient molecules (glucose, amino acids, fatty acids) that can be absorbed into the blood in the small intestine. This topic is covered in full detail in the <strong>Nutrients &amp; Digestion</strong> lesson — refer back to that lesson for the structures of the alimentary canal, enzymes, and food tests.</p>
+    <ul>
+      <li><strong>Main organs:</strong> mouth, oesophagus, stomach, small intestine, large intestine.</li>
+      <li><strong>Its job in the bigger picture:</strong> supply digested nutrients to the blood so the circulatory system can deliver them to every cell.</li>
+    </ul>
+
+    <h2>The Respiratory System</h2>
+    <p>The respiratory system is responsible for <strong style="color:#fcd34d">gas exchange</strong> — taking in oxygen from the air and removing carbon dioxide, a waste product of respiration.</p>
+    <ul>
+      <li><strong>Nose/mouth &amp; trachea (windpipe):</strong> air is warmed, moistened, and filtered as it travels down towards the lungs.</li>
+      <li><strong>Bronchi &amp; bronchioles:</strong> the trachea splits into two bronchi (one per lung), which branch into smaller and smaller bronchioles — like the branches of a tree.</li>
+      <li><strong>Alveoli:</strong> tiny air sacs at the end of the bronchioles where gas exchange actually happens. There are millions of them, giving the lungs a huge surface area. Each alveolus is surrounded by a network of capillaries.</li>
+    </ul>
+    <div class="callout"><strong>Gas exchange:</strong> Oxygen diffuses from the air in the alveolus into the blood in the surrounding capillaries (where oxygen concentration is lower). Carbon dioxide diffuses the opposite way — from the blood into the alveolus, to be breathed out.</div>
+
+    <h2>The Breathing Mechanism</h2>
+    <p>Breathing (ventilation) moves air in and out of the lungs using the <strong>diaphragm</strong> (a dome-shaped muscle below the lungs) and the <strong>intercostal muscles</strong> (between the ribs).</p>
+    <table class="symbols-table">
+      <thead><tr><th>Stage</th><th>Diaphragm</th><th>Rib cage</th><th>Chest volume &amp; pressure</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Inhalation</strong></td><td>Contracts &amp; flattens (moves down)</td><td>Intercostal muscles contract, ribs move up and out</td><td>Volume increases, pressure decreases → air rushes in</td></tr>
+        <tr><td><strong>Exhalation</strong></td><td>Relaxes &amp; domes upward</td><td>Intercostal muscles relax, ribs move down and in</td><td>Volume decreases, pressure increases → air is pushed out</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">The lungs themselves have no muscle — they are inflated and deflated passively by changes in chest volume and pressure.</div>
+
+    <h2>The Circulatory System</h2>
+    <p>The circulatory (cardiovascular) system transports oxygen, nutrients, hormones, and waste products around the body. It consists of the <strong style="color:#fcd34d">heart</strong>, <strong style="color:#fcd34d">blood vessels</strong>, and <strong style="color:#fcd34d">blood</strong>.</p>
+    <h2>The Heart — a Double Pump</h2>
+    <p>The heart is a muscular organ divided into four chambers (two atria, two ventricles) that pumps blood through two separate circuits — this is called <strong>double circulation</strong>:</p>
+    <ul>
+      <li><strong>Pulmonary circulation:</strong> the right side of the heart pumps deoxygenated blood to the lungs, where it picks up oxygen and releases carbon dioxide. Oxygenated blood returns to the left side of the heart.</li>
+      <li><strong>Systemic circulation:</strong> the left side of the heart pumps oxygenated blood at high pressure to the rest of the body. Deoxygenated blood returns to the right side of the heart.</li>
+    </ul>
+    <div class="callout">Double circulation means blood passes through the heart <strong>twice</strong> for each complete circuit of the body — once for the lungs, once for the body. This keeps oxygenated and deoxygenated blood separate and allows blood to be pumped at higher pressure to the body.</div>
+
+    <h2>Blood Vessels</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Vessel</th><th>Carries blood</th><th>Wall structure</th><th>Direction</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Arteries</strong></td><td>Away from the heart (usually oxygenated, except the pulmonary artery)</td><td>Thick, muscular, elastic walls to withstand high pressure</td><td>Heart → body/lungs</td></tr>
+        <tr><td><strong>Veins</strong></td><td>Towards the heart (usually deoxygenated, except the pulmonary vein)</td><td>Thinner walls, larger lumen, contain valves to prevent backflow</td><td>Body/lungs → heart</td></tr>
+        <tr><td><strong>Capillaries</strong></td><td>Connect arteries to veins</td><td>Walls just one cell thick, allowing diffusion</td><td>Site of exchange with body cells</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The Excretory System</h2>
+    <p>Excretion is the removal of metabolic waste products from the body. The main excretory organs are the <strong style="color:#fcd34d">kidneys</strong>, which filter the blood.</p>
+    <ul>
+      <li>Blood enters each kidney under high pressure and is filtered by thousands of tiny structures called <em>nephrons</em>.</li>
+      <li>Useful substances (glucose, most water, salts) are reabsorbed back into the blood.</li>
+      <li>Waste products — especially <strong>urea</strong> (from the breakdown of excess amino acids in the liver) — and excess water and salts remain to form <strong>urine</strong>.</li>
+      <li>Urine travels via the ureters to the bladder, where it is stored before leaving the body through the urethra.</li>
+    </ul>
+    <div class="key-fact">The lungs also excrete a waste product — carbon dioxide — making the respiratory system part of excretion too.</div>
+
+    <h2>How the Systems Work Together</h2>
+    <p>No organ system functions in isolation. Consider what happens after you eat a meal and go for a run:</p>
+    <ul>
+      <li>The <strong>digestive system</strong> breaks food into glucose and amino acids and absorbs them into the blood.</li>
+      <li>The <strong>respiratory system</strong> brings oxygen into the blood via the alveoli.</li>
+      <li>The <strong>circulatory system</strong> transports both the glucose and the oxygen to every muscle cell in the body, where they are used in cellular respiration to release energy.</li>
+      <li>Cellular respiration produces carbon dioxide and other waste (like urea from excess protein breakdown) as by-products.</li>
+      <li>The circulatory system carries carbon dioxide back to the lungs (respiratory system) to be breathed out, and carries urea to the kidneys (excretory system) to be removed as urine.</li>
+    </ul>
+    <div class="callout"><strong>Exam tip:</strong> When asked to explain how systems are interdependent, always trace the actual substance being moved (glucose, oxygen, carbon dioxide, urea) from the system that produces/absorbs it, through the circulatory system, to the system or cells that use or remove it.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Body Systems Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click on a region of the body outline (or use the buttons) to reveal which organ system is found there and what it does.</p>
+  <div class="explore-top">
+    <div class="sim-canvas-wrap">
+      <h3>Human Body Outline</h3>
+      <canvas id="bodyCanvas" height="440"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Select a region</div>
+        <div>
+          <button class="mode-btn active" onclick="selectRegion('chest',this)">Chest (Lungs &amp; Heart)</button>
+          <button class="mode-btn" onclick="selectRegion('abdomen',this)">Abdomen (Digestive &amp; Excretory)</button>
+          <button class="mode-btn" onclick="selectRegion('head',this)">Head &amp; Airway</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">System Info</div>
+        <div class="info-panel" id="regionInfo">
+          <div class="info-panel-title" id="regionTitle">Chest</div>
+          <div class="info-panel-text" id="regionText">Contains the <strong>lungs</strong> (respiratory system) and the <strong>heart</strong> (circulatory system) — working together to bring in oxygen and pump it around the body.</div>
+          <div class="info-panel-organs" id="regionOrgans"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in full sentences. These questions are CAPS-aligned for Grade 9 Natural Sciences.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Explain what is meant by "double circulation" in the human heart. In your answer, name the two circuits and state what each one does.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Complete the table by stating ONE structural difference and ONE functional difference between arteries and veins.<br><br>
+    a) Structural difference: __________<br>
+    b) Functional difference: __________<br>
+    c) Name the type of blood vessel where the actual exchange of substances with body cells takes place.<br>
+    d) Explain why this vessel's wall structure is suited to this function.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Describe what happens to the diaphragm and rib cage during inhalation, and explain how these changes cause air to move into the lungs.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">a) Name the organ that filters waste from the blood to form urine.<br>
+    b) Name the main nitrogenous waste product removed from the blood by this organ.<br>
+    c) Explain why useful substances such as glucose are reabsorbed back into the blood rather than being excreted.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">A learner runs a 400 m race. Using the digestive, respiratory, circulatory and excretory systems, explain how these FOUR systems work together to supply the learner's leg muscles with what they need and remove the waste produced. Refer to specific substances (glucose, oxygen, carbon dioxide, urea) in your answer.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tabs ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') { resizeBody(); drawBody(); }
+}
+
+/* ---- Region data ---- */
+const regionData = {
+  head: {
+    title: 'Head & Airway',
+    color: '#60a5fa',
+    text: 'Contains the <strong>nose, mouth and trachea</strong> — the start of the respiratory system. Air is warmed, moistened and filtered here before travelling down to the lungs.',
+    organs: '<strong>Organs:</strong> nose, mouth, trachea (windpipe)<br><strong>System:</strong> Respiratory (upper airway)'
+  },
+  chest: {
+    title: 'Chest (Thorax)',
+    color: '#f87171',
+    text: 'Contains the <strong>lungs</strong> (respiratory system) and the <strong>heart</strong> (circulatory system). The lungs perform gas exchange; the heart pumps blood around both the pulmonary and systemic circuits.',
+    organs: '<strong>Organs:</strong> lungs, bronchi, alveoli, heart<br><strong>Systems:</strong> Respiratory &amp; Circulatory'
+  },
+  abdomen: {
+    title: 'Abdomen',
+    color: '#34d399',
+    text: 'Contains most of the <strong>digestive system</strong> (stomach, small &amp; large intestine, liver, pancreas) as well as the <strong>excretory system</strong> (kidneys, bladder).',
+    organs: '<strong>Organs:</strong> stomach, intestines, liver, kidneys, bladder<br><strong>Systems:</strong> Digestive &amp; Excretory'
+  }
+};
+
+let selectedRegion = 'chest';
+
+function selectRegion(key, btn) {
+  selectedRegion = key;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const d = regionData[key];
+  document.getElementById('regionTitle').textContent = d.title;
+  document.getElementById('regionText').innerHTML = d.text;
+  document.getElementById('regionOrgans').innerHTML = d.organs;
+  drawBody();
+}
+
+/* ---- Canvas ---- */
+const bodyCanvas = document.getElementById('bodyCanvas');
+const bodyCtx = bodyCanvas.getContext('2d');
+const CH = 440;
+
+let regionBoxes = {};
+
+function resizeBody() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = bodyCanvas.offsetWidth || 420;
+  bodyCanvas.width = W * dpr;
+  bodyCanvas.height = CH * dpr;
+  bodyCtx.setTransform(1, 0, 0, 1, 0, 0);
+  bodyCtx.scale(dpr, dpr);
+}
+
+function drawBody() {
+  const W = bodyCanvas.offsetWidth || 420;
+  bodyCtx.clearRect(0, 0, W, CH);
+  const cx = W / 2;
+
+  function fillCol(key) {
+    return selectedRegion === key ? regionData[key].color + 'cc' : 'rgba(255,255,255,0.06)';
+  }
+  function strokeCol(key) {
+    return selectedRegion === key ? regionData[key].color : 'rgba(255,255,255,0.18)';
+  }
+  function txtCol(key) {
+    return selectedRegion === key ? '#fff' : 'rgba(210,218,245,0.55)';
+  }
+
+  bodyCtx.font = '600 12px "Cabinet Grotesk", sans-serif';
+  bodyCtx.textAlign = 'center';
+
+  // Head
+  const headY = 45, headR = 34;
+  bodyCtx.beginPath();
+  bodyCtx.arc(cx, headY, headR, 0, Math.PI * 2);
+  bodyCtx.fillStyle = fillCol('head');
+  bodyCtx.fill();
+  bodyCtx.strokeStyle = strokeCol('head');
+  bodyCtx.lineWidth = 1.5;
+  bodyCtx.stroke();
+  bodyCtx.fillStyle = txtCol('head');
+  bodyCtx.fillText('Head', cx, headY + 4);
+  regionBoxes.head = { x: cx - headR, y: headY - headR, w: headR * 2, h: headR * 2, shape: 'circle', cx: cx, cy: headY, r: headR };
+
+  // Neck
+  bodyCtx.beginPath();
+  bodyCtx.roundRect(cx - 12, headY + headR - 4, 24, 26, 4);
+  bodyCtx.fillStyle = 'rgba(255,255,255,0.06)';
+  bodyCtx.fill();
+
+  // Chest (torso upper)
+  const chestX = cx - 78, chestY = headY + headR + 20, chestW = 156, chestH = 130;
+  bodyCtx.beginPath();
+  bodyCtx.roundRect(chestX, chestY, chestW, chestH, 24);
+  bodyCtx.fillStyle = fillCol('chest');
+  bodyCtx.fill();
+  bodyCtx.strokeStyle = strokeCol('chest');
+  bodyCtx.lineWidth = 1.5;
+  bodyCtx.stroke();
+  bodyCtx.fillStyle = txtCol('chest');
+  bodyCtx.font = '600 13px "Cabinet Grotesk", sans-serif';
+  bodyCtx.fillText('Chest', cx, chestY + chestH / 2 - 4);
+  bodyCtx.font = '500 10px "Cabinet Grotesk", sans-serif';
+  bodyCtx.fillText('(lungs & heart)', cx, chestY + chestH / 2 + 14);
+  regionBoxes.chest = { x: chestX, y: chestY, w: chestW, h: chestH, shape: 'rect' };
+
+  // simple heart + lung glyphs if selected
+  if (selectedRegion === 'chest') {
+    bodyCtx.fillStyle = 'rgba(255,255,255,0.85)';
+    bodyCtx.beginPath();
+    const hx = cx, hy = chestY + 34;
+    bodyCtx.moveTo(hx, hy + 8);
+    bodyCtx.bezierCurveTo(hx - 14, hy - 8, hx - 4, hy - 18, hx, hy - 6);
+    bodyCtx.bezierCurveTo(hx + 4, hy - 18, hx + 14, hy - 8, hx, hy + 8);
+    bodyCtx.fill();
+  }
+
+  // Abdomen
+  const abX = cx - 70, abY = chestY + chestH - 6, abW = 140, abH = 130;
+  bodyCtx.beginPath();
+  bodyCtx.roundRect(abX, abY, abW, abH, 20);
+  bodyCtx.fillStyle = fillCol('abdomen');
+  bodyCtx.fill();
+  bodyCtx.strokeStyle = strokeCol('abdomen');
+  bodyCtx.lineWidth = 1.5;
+  bodyCtx.stroke();
+  bodyCtx.fillStyle = txtCol('abdomen');
+  bodyCtx.font = '600 13px "Cabinet Grotesk", sans-serif';
+  bodyCtx.fillText('Abdomen', cx, abY + abH / 2 - 4);
+  bodyCtx.font = '500 10px "Cabinet Grotesk", sans-serif';
+  bodyCtx.fillText('(gut & kidneys)', cx, abY + abH / 2 + 14);
+  regionBoxes.abdomen = { x: abX, y: abY, w: abW, h: abH, shape: 'rect' };
+
+  // Arms
+  bodyCtx.strokeStyle = 'rgba(255,255,255,0.12)';
+  bodyCtx.lineWidth = 20;
+  bodyCtx.lineCap = 'round';
+  bodyCtx.beginPath();
+  bodyCtx.moveTo(chestX + 6, chestY + 14);
+  bodyCtx.lineTo(chestX - 34, chestY + 110);
+  bodyCtx.stroke();
+  bodyCtx.beginPath();
+  bodyCtx.moveTo(chestX + chestW - 6, chestY + 14);
+  bodyCtx.lineTo(chestX + chestW + 34, chestY + 110);
+  bodyCtx.stroke();
+
+  // Legs
+  bodyCtx.lineWidth = 24;
+  bodyCtx.beginPath();
+  bodyCtx.moveTo(cx - 30, abY + abH - 6);
+  bodyCtx.lineTo(cx - 34, abY + abH + 110);
+  bodyCtx.stroke();
+  bodyCtx.beginPath();
+  bodyCtx.moveTo(cx + 30, abY + abH - 6);
+  bodyCtx.lineTo(cx + 34, abY + abH + 110);
+  bodyCtx.stroke();
+}
+
+function canvasClickPos(e) {
+  const rect = bodyCanvas.getBoundingClientRect();
+  const W = bodyCanvas.offsetWidth || 420;
+  const scaleX = W / rect.width;
+  const scaleY = CH / rect.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return [(clientX - rect.left) * scaleX, (clientY - rect.top) * scaleY];
+}
+
+function pointInRegion(px, py, box) {
+  if (box.shape === 'circle') {
+    return Math.hypot(px - box.cx, py - box.cy) <= box.r;
+  }
+  return px >= box.x && px <= box.x + box.w && py >= box.y && py <= box.y + box.h;
+}
+
+bodyCanvas.addEventListener('click', (e) => {
+  const [px, py] = canvasClickPos(e);
+  for (const key of ['head', 'chest', 'abdomen']) {
+    const box = regionBoxes[key];
+    if (box && pointInRegion(px, py, box)) {
+      const btnMap = { head: 0, chest: 1, abdomen: 2 };
+      const btns = document.querySelectorAll('.mode-btn');
+      selectRegion(key, btns[btnMap[key]]);
+      return;
+    }
+  }
+});
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    resizeBody();
+    drawBody();
+  }
+});
+
+resizeBody();
+drawBody();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Which TWO organs are found in the chest and work together to supply oxygen to the body?',
+    opts: ['Stomach and liver', 'Lungs and heart', 'Kidneys and bladder', 'Brain and trachea'],
+    ans: 1,
+    exp: 'The lungs (respiratory system) take in oxygen through gas exchange, and the heart (circulatory system) pumps that oxygenated blood to the rest of the body.'
+  },
+  {
+    text: 'What happens to the diaphragm and chest volume during inhalation?',
+    opts: [
+      'The diaphragm relaxes and chest volume decreases',
+      'The diaphragm contracts and flattens, and chest volume increases',
+      'The diaphragm stays still while the lungs expand on their own',
+      'The diaphragm contracts and chest volume decreases'
+    ],
+    ans: 1,
+    exp: 'During inhalation the diaphragm contracts and moves down (flattens), while the rib cage moves up and out. This increases the volume of the chest cavity, lowering pressure so air flows in.'
+  },
+  {
+    text: 'Why is "double circulation" an accurate description of blood flow through the human heart?',
+    opts: [
+      'Blood passes through the heart twice for each complete circuit of the body — once for the lungs, once for the body',
+      'The heart has two separate blood supplies from outside the body',
+      'Blood is pumped around the body twice as fast as normal',
+      'There are two hearts in the human body'
+    ],
+    ans: 0,
+    exp: 'In double circulation, blood returning from the body passes through the right side of the heart to the lungs (pulmonary circulation), returns to the left side of the heart, and is then pumped out to the body (systemic circulation) — passing through the heart twice per full circuit.'
+  },
+  {
+    text: 'Which blood vessels have walls that are only one cell thick, allowing diffusion of substances into body cells?',
+    opts: ['Arteries', 'Veins', 'Capillaries', 'Venules'],
+    ans: 2,
+    exp: 'Capillaries have extremely thin, single-cell-thick walls. This allows oxygen, nutrients, and waste products to diffuse easily between the blood and the surrounding body cells.'
+  },
+  {
+    text: 'What is the main nitrogenous waste product removed from the blood by the kidneys?',
+    opts: ['Glucose', 'Carbon dioxide', 'Urea', 'Bile'],
+    ans: 2,
+    exp: 'Urea is produced in the liver from the breakdown of excess amino acids. The kidneys filter urea out of the blood, and it is excreted from the body dissolved in urine.'
+  },
+  {
+    text: 'A learner has just eaten a meal rich in glucose and is about to go for a run. Which system is responsible for transporting the absorbed glucose to the leg muscles?',
+    opts: ['Digestive system', 'Respiratory system', 'Circulatory system', 'Excretory system'],
+    ans: 2,
+    exp: 'The digestive system absorbs glucose into the blood, but it is the circulatory system that transports the glucose (along with oxygen from the respiratory system) to the muscle cells where it is needed for energy release.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+</body>
+</html>

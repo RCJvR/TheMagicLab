@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forces — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-bottom:24px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:78px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:52px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:20px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}
+    .result-banner{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:13px;margin-top:8px;transition:all 300ms}
+    .result-banner.balanced{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.30);color:#93c5fd}
+    .result-banner.left{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.30);color:#fcd34d}
+    .result-banner.right{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.30);color:#86efac}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-top{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Energy &amp; Change · Lesson 4</div>
+  <h1 class="lesson-title">Forces</h1>
+  <p class="lesson-sub">Explore what forces are, the different types of contact and non-contact forces, and how balanced and unbalanced forces affect motion.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="move-horizontal" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is a force?</h2>
+    <p>A <strong style="color:#fcd34d">force</strong> is a push or a pull that one object exerts on another. A force can:</p>
+    <ul>
+      <li>Change an object's <strong>speed</strong> (make it speed up or slow down)</li>
+      <li>Change an object's <strong>direction</strong> of motion</li>
+      <li>Change an object's <strong>shape</strong> (stretch, squash, bend, or twist it)</li>
+      <li>Start or stop motion altogether</li>
+    </ul>
+    <div class="callout">Force is measured in <strong>newtons (N)</strong>, named after Sir Isaac Newton. Force is a <em>vector</em> quantity — it has both magnitude (size) and direction.</div>
+
+    <h2>Contact forces</h2>
+    <p>Contact forces require the objects to be touching each other:</p>
+    <ul>
+      <li><strong>Friction:</strong> a force that opposes motion between two surfaces in contact. Friction always acts in the opposite direction to motion (or attempted motion).</li>
+      <li><strong>Applied (muscular) force:</strong> a push or pull applied directly by a person or animal, e.g. pushing a trolley or lifting a schoolbag.</li>
+      <li><strong>Normal force:</strong> the support force a surface exerts on an object resting on it, acting perpendicular (at a right angle) to the surface.</li>
+      <li><strong>Tension:</strong> the pulling force transmitted through a string, rope, or cable when it is pulled tight, e.g. a rope in a tug-of-war.</li>
+    </ul>
+
+    <h2>Non-contact forces</h2>
+    <p>Non-contact forces act on an object without the objects needing to touch:</p>
+    <ul>
+      <li><strong>Gravitational force (gravity):</strong> the force of attraction between any two objects with mass. On Earth, gravity pulls all objects towards the centre of the Earth — this is why objects fall and have weight.</li>
+      <li><strong>Magnetic force:</strong> the force between magnets, or between a magnet and a magnetic material, acting at a distance.</li>
+      <li><strong>Electrostatic force:</strong> the force between electrically charged objects — like charges repel, unlike charges attract, even without touching.</li>
+    </ul>
+    <div class="key-fact">Weight is actually the force of gravity acting on an object's mass. Weight = mass × gravitational field strength (W = m × g), and is measured in newtons — not to be confused with mass, which is measured in kilograms.</div>
+
+    <h2>Representing forces as vectors</h2>
+    <p>Because force has both magnitude and direction, we represent it with an <strong>arrow</strong>:</p>
+    <ul>
+      <li>The <strong>length</strong> of the arrow shows the magnitude (size) of the force — a longer arrow means a bigger force.</li>
+      <li>The <strong>direction</strong> the arrow points shows the direction the force acts in.</li>
+    </ul>
+    <div class="formula">Force diagrams: longer arrow = bigger force · arrow direction = force direction</div>
+
+    <h2>Balanced vs unbalanced forces</h2>
+    <p>When more than one force acts on an object, we must consider their combined effect:</p>
+    <ul>
+      <li><strong>Balanced forces:</strong> forces that are equal in size and opposite in direction. They cancel out, so there is <strong>no change</strong> in the object's motion — it either stays at rest or continues moving at a constant speed in a straight line.</li>
+      <li><strong>Unbalanced forces:</strong> forces that do not cancel out completely. An unbalanced force causes the object to <strong>accelerate</strong> — it speeds up, slows down, or changes direction.</li>
+    </ul>
+    <div class="callout"><strong>Example:</strong> A book resting on a table has its weight (down) balanced by the normal force from the table (up) — the book stays still. If you push a trolley and the applied force is bigger than friction, the forces are unbalanced and the trolley speeds up.</div>
+
+    <h2>Resultant force</h2>
+    <p>The <strong style="color:#fcd34d">resultant force</strong> is the single overall force that would have the same effect as all the individual forces acting on an object combined. For forces acting along the same straight line:</p>
+    <ul>
+      <li>Forces acting in the <strong>same direction</strong> are <strong>added</strong> together.</li>
+      <li>Forces acting in <strong>opposite directions</strong> are <strong>subtracted</strong> from each other, and the resultant acts in the direction of the bigger force.</li>
+    </ul>
+    <div class="formula">Resultant force = sum of forces in one direction − sum of forces in the opposite direction</div>
+    <div class="key-fact">Example: Two learners push a box. One pushes right with 40 N, the other pushes left (opposing) with 25 N. Resultant force = 40 − 25 = 15 N to the right → the box accelerates to the right.</div>
+    <p>If the resultant force is <strong>zero</strong>, the forces are balanced and there is no change in motion. If the resultant force is <strong>not zero</strong>, the object accelerates in the direction of the resultant force.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Resultant Force Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Adjust the two opposing horizontal forces acting on the box using the sliders. Watch the resultant force arrow update and see whether the box accelerates left, right, or stays balanced.</p>
+  <div class="explore-top">
+    <div class="sim-canvas-wrap">
+      <h3>Force Diagram</h3>
+      <canvas id="forceCanvas" height="320"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Force pushing LEFT (on the box)</div>
+        <div class="slider-row">
+          <label>Left force</label>
+          <input type="range" id="leftSlider" min="0" max="50" value="20" oninput="updateForces()">
+          <span class="slider-val" id="leftVal">20 N</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Force pushing RIGHT (on the box)</div>
+        <div class="slider-row">
+          <label>Right force</label>
+          <input type="range" id="rightSlider" min="0" max="50" value="20" oninput="updateForces()">
+          <span class="slider-val" id="rightVal">20 N</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Result</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Resultant</div><div class="readout-val" id="readResultant" style="color:#fbbf24">0<span>N</span></div></div>
+          <div class="readout"><div class="readout-label">Direction</div><div class="readout-val" id="readDirection" style="font-size:14px">Balanced</div></div>
+        </div>
+        <div class="result-banner balanced" id="resultBanner">Forces are balanced — the box stays still.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Draw force diagrams where asked.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Define the term "force" and give the unit in which force is measured.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Classify EACH of the following forces as a contact force or a non-contact force, and name the specific type of force:<br><br>
+    a) A book resting on a table is supported by the table.<br>
+    b) A fridge magnet sticks to a metal door without touching a magnet inside.<br>
+    c) A learner pulls a rope in a tug-of-war.<br>
+    d) A ball falls to the ground after being thrown into the air.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Two learners push a crate from opposite sides. Learner A pushes with a force of 35 N to the right. Learner B pushes with a force of 20 N to the left. Calculate the resultant force on the crate, stating both the magnitude and the direction. Describe what will happen to the crate.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain the difference between balanced forces and unbalanced forces. For EACH case, state what happens to the motion of an object.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Draw a labelled force diagram of a book resting on a table. Show the weight force and the normal force as arrows, label each force, and explain why the book remains stationary.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tabs ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') { resizeForce(); drawForce(); }
+}
+
+/* ---- Canvas ---- */
+const forceCanvas = document.getElementById('forceCanvas');
+const forceCtx = forceCanvas.getContext('2d');
+const FH = 320;
+let leftF = 20, rightF = 20;
+let boxOffset = 0;
+
+function resizeForce() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = forceCanvas.offsetWidth || 480;
+  forceCanvas.width = W * dpr;
+  forceCanvas.height = FH * dpr;
+  forceCtx.setTransform(1, 0, 0, 1, 0, 0);
+  forceCtx.scale(dpr, dpr);
+}
+
+function updateForces() {
+  leftF = +document.getElementById('leftSlider').value;
+  rightF = +document.getElementById('rightSlider').value;
+  document.getElementById('leftVal').textContent = leftF + ' N';
+  document.getElementById('rightVal').textContent = rightF + ' N';
+
+  const resultant = rightF - leftF; // positive = net right, negative = net left
+  const mag = Math.abs(resultant);
+  document.getElementById('readResultant').innerHTML = mag + '<span>N</span>';
+
+  const banner = document.getElementById('resultBanner');
+  const dirEl = document.getElementById('readDirection');
+
+  if (mag < 0.5) {
+    dirEl.textContent = 'Balanced';
+    dirEl.style.color = '#93c5fd';
+    banner.className = 'result-banner balanced';
+    banner.textContent = 'Forces are balanced — the box stays at rest (or moves at constant speed).';
+  } else if (resultant > 0) {
+    dirEl.textContent = 'Right →';
+    dirEl.style.color = '#86efac';
+    banner.className = 'result-banner right';
+    banner.textContent = `Unbalanced! Resultant force of ${mag} N to the RIGHT — the box accelerates right.`;
+  } else {
+    dirEl.textContent = '← Left';
+    dirEl.style.color = '#fcd34d';
+    banner.className = 'result-banner left';
+    banner.textContent = `Unbalanced! Resultant force of ${mag} N to the LEFT — the box accelerates left.`;
+  }
+}
+
+function drawArrow(ctx, x1, y, len, color, pointRight) {
+  const x2 = pointRight ? x1 + len : x1 - len;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x2, y);
+  ctx.stroke();
+  // arrowhead
+  const headLen = 12;
+  const dir = pointRight ? 1 : -1;
+  ctx.beginPath();
+  ctx.moveTo(x2, y);
+  ctx.lineTo(x2 - dir * headLen, y - 7);
+  ctx.lineTo(x2 - dir * headLen, y + 7);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawForce() {
+  const W = forceCanvas.offsetWidth || 480;
+  forceCtx.clearRect(0, 0, W, FH);
+  const cx = W / 2 + boxOffset;
+  const cy = FH / 2;
+
+  // ground line
+  forceCtx.strokeStyle = 'rgba(255,255,255,0.10)';
+  forceCtx.lineWidth = 1.5;
+  forceCtx.beginPath();
+  forceCtx.moveTo(0, cy + 40);
+  forceCtx.lineTo(W, cy + 40);
+  forceCtx.stroke();
+
+  // box
+  const boxSize = 64;
+  forceCtx.fillStyle = 'rgba(251,191,36,0.18)';
+  forceCtx.strokeStyle = 'rgba(251,191,36,0.55)';
+  forceCtx.lineWidth = 2;
+  forceCtx.beginPath();
+  forceCtx.roundRect(cx - boxSize / 2, cy + 40 - boxSize, boxSize, boxSize, 8);
+  forceCtx.fill();
+  forceCtx.stroke();
+  forceCtx.fillStyle = 'rgba(255,255,255,0.85)';
+  forceCtx.font = '600 12px "Cabinet Grotesk", sans-serif';
+  forceCtx.textAlign = 'center';
+  forceCtx.fillText('Box', cx, cy + 40 - boxSize / 2 + 4);
+
+  const boxMidY = cy + 40 - boxSize / 2;
+  const maxLen = Math.min(W / 2 - 70, 170);
+
+  // left force arrow (pointing right, i.e. pushing box rightwards from the left side)
+  if (leftF > 0) {
+    const len = (leftF / 50) * maxLen;
+    drawArrow(forceCtx, cx - boxSize / 2 - 8, boxMidY - 18, len, '#fbbf24', false);
+    forceCtx.fillStyle = '#fcd34d';
+    forceCtx.font = '600 11px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'right';
+    forceCtx.fillText(`${leftF} N`, cx - boxSize / 2 - 12 - len, boxMidY - 30);
+  }
+
+  // right force arrow
+  if (rightF > 0) {
+    const len = (rightF / 50) * maxLen;
+    drawArrow(forceCtx, cx + boxSize / 2 + 8, boxMidY - 18, len, '#4ade80', true);
+    forceCtx.fillStyle = '#86efac';
+    forceCtx.font = '600 11px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'left';
+    forceCtx.fillText(`${rightF} N`, cx + boxSize / 2 + 12 + len, boxMidY - 30);
+  }
+
+  // resultant arrow (below box)
+  const resultant = rightF - leftF;
+  if (Math.abs(resultant) > 0.5) {
+    const rlen = (Math.abs(resultant) / 50) * maxLen;
+    const resColor = resultant > 0 ? 'rgba(96,165,250,0.9)' : 'rgba(96,165,250,0.9)';
+    drawArrow(forceCtx, cx, boxMidY + 55, rlen, resColor, resultant > 0);
+    forceCtx.fillStyle = '#93c5fd';
+    forceCtx.font = '700 12px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'center';
+    forceCtx.fillText(`Resultant: ${Math.abs(resultant)} N`, cx, boxMidY + 75);
+  } else {
+    forceCtx.fillStyle = 'rgba(210,218,245,0.4)';
+    forceCtx.font = '600 12px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'center';
+    forceCtx.fillText('Balanced — resultant = 0 N', cx, boxMidY + 65);
+  }
+
+  // gentle animation nudge to suggest motion direction when unbalanced
+  if (Math.abs(resultant) > 0.5) {
+    boxOffset += resultant > 0 ? 0.3 : -0.3;
+    const limit = W * 0.15;
+    if (boxOffset > limit) boxOffset = limit;
+    if (boxOffset < -limit) boxOffset = -limit;
+  }
+}
+
+function animateForce() {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    drawForce();
+  }
+  requestAnimationFrame(animateForce);
+}
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    resizeForce();
+    drawForce();
+  }
+});
+
+resizeForce();
+updateForces();
+animateForce();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'What is the unit used to measure force?',
+    opts: ['Kilogram (kg)', 'Newton (N)', 'Metre (m)', 'Joule (J)'],
+    ans: 1,
+    exp: 'Force is measured in newtons (N), named after Sir Isaac Newton. Mass is measured in kilograms; these are different quantities.'
+  },
+  {
+    text: 'A fridge magnet attracts a metal door without touching it first. This is an example of:',
+    opts: ['A contact force (friction)', 'A contact force (tension)', 'A non-contact force (magnetic force)', 'A non-contact force (gravitational force)'],
+    ans: 2,
+    exp: 'Magnetic force is a non-contact force — it can act between two objects (like a magnet and a metal door) even before they touch.'
+  },
+  {
+    text: 'Which of the following is a contact force?',
+    opts: ['Gravity', 'Magnetic force', 'Friction', 'Electrostatic force'],
+    ans: 2,
+    exp: 'Friction requires two surfaces to be touching, so it is a contact force. Gravity, magnetic force, and electrostatic force are all non-contact forces.'
+  },
+  {
+    text: 'Two forces act on a crate along the same line: 60 N to the right and 60 N to the left. What is the resultant force, and what happens to the crate?',
+    opts: [
+      '120 N to the right; the crate accelerates right',
+      '0 N; the forces are balanced and the crate\'s motion does not change',
+      '60 N to the left; the crate accelerates left',
+      'The crate automatically stops moving completely'
+    ],
+    ans: 1,
+    exp: 'Equal forces acting in opposite directions cancel out, giving a resultant of 0 N. When forces are balanced, there is no change in the object\'s motion — it stays at rest or continues at constant velocity.'
+  },
+  {
+    text: 'A trolley is pushed with an applied force of 45 N to the right, while friction acts with 15 N to the left. What is the resultant force, and what happens to the trolley?',
+    opts: [
+      '30 N to the right; the trolley accelerates to the right',
+      '60 N to the right; the trolley accelerates to the right',
+      '30 N to the left; the trolley accelerates to the left',
+      '0 N; the trolley stays still'
+    ],
+    ans: 0,
+    exp: 'Resultant force = 45 N − 15 N = 30 N to the right (since the applied force is bigger). This unbalanced force causes the trolley to accelerate in the direction of the resultant — to the right.'
+  },
+  {
+    text: 'Why is a force considered a vector quantity?',
+    opts: [
+      'Because it can only be measured with a special instrument',
+      'Because it has both magnitude and direction',
+      'Because it never changes over time',
+      'Because it only occurs between touching objects'
+    ],
+    ans: 1,
+    exp: 'A vector quantity has both size (magnitude) and direction. Force is a vector because we must state both how big it is and which way it acts — this is why forces are represented as arrows.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+</body>
+</html>

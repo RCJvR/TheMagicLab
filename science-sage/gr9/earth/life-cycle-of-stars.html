@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Birth, Life and Death of a Star — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+    .star-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .ctype-row{display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+    .ctype-btn{flex:1;min-width:100px;padding:9px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;text-align:center}
+    .ctype-btn.active{border-color:rgba(251,146,60,.40);background:rgba(251,146,60,.12);color:#fdba74}
+    .stage-nav{display:flex;gap:8px}
+    .stage-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:var(--text);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms}
+    .stage-btn:hover:not(:disabled){background:rgba(251,146,60,.15)}
+    .stage-btn:disabled{opacity:.35;cursor:default}
+    .stage-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;margin-bottom:6px;margin-top:4px}
+    .stage-desc{font-size:12.5px;color:rgba(210,218,245,.75);line-height:1.7}
+    .stage-dots{display:flex;gap:6px;margin:10px 0}
+    .stage-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15)}
+    .stage-dot.done{background:#fb923c}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.star-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Earth &amp; Beyond</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Earth &amp; Beyond · Lesson 7</div>
+  <h1 class="lesson-title">The Birth, Life and Death of a Star</h1>
+  <p class="lesson-sub">Every star — including our Sun — is born, lives for billions of years, and eventually dies. How it dies depends entirely on its mass.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="sparkles" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>The birth of a star</h2>
+    <p>Stars are born inside a <strong>nebula</strong> — a giant cloud of gas (mostly hydrogen) and dust in space. Gravity causes denser regions within the nebula to slowly collapse inward:</p>
+    <ul>
+      <li>As the cloud collapses, it becomes denser and hotter, forming a spinning ball of gas called a <strong>protostar</strong>.</li>
+      <li>When the core becomes hot and dense enough (around 10 million °C), <strong>nuclear fusion</strong> ignites — hydrogen atoms fuse together to form helium, releasing enormous amounts of energy.</li>
+      <li>This marks the birth of a true star. The outward pressure from fusion balances the inward pull of gravity, and the star becomes stable.</li>
+    </ul>
+    <div class="key-fact">Our Sun formed this way about 4.6 billion years ago, from a collapsing region of a solar nebula.</div>
+
+    <h2>The main sequence: a star's "adult life"</h2>
+    <p>Once fusion begins, a star enters the <strong>main sequence</strong> — the longest and most stable phase of its life. During this phase:</p>
+    <ul>
+      <li>Nuclear fusion in the core continuously converts hydrogen into helium, releasing energy as light and heat.</li>
+      <li>The outward pressure of fusion energy exactly balances the inward pull of the star's own gravity, keeping the star stable in size for billions of years.</li>
+      <li>Our Sun is currently a main-sequence star, roughly halfway through its main-sequence lifetime.</li>
+    </ul>
+    <div class="callout"><strong>Mass determines lifespan:</strong> More massive stars burn their hydrogen fuel much faster, giving them shorter (but far more luminous) lives — sometimes only a few million years. Less massive stars burn fuel slowly and can shine steadily for tens of billions of years, far longer than the current age of the universe.</div>
+
+    <h2>Death of a Sun-like (lower-mass) star</h2>
+    <p>When a star like our Sun eventually runs out of hydrogen fuel in its core, it can no longer produce enough outward pressure to balance gravity, and its life cycle enters its final stages:</p>
+    <ul>
+      <li>The core contracts and heats up further, while the outer layers expand enormously — the star becomes a <strong>red giant</strong>.</li>
+      <li>The outer layers are eventually shed into space, forming a glowing shell of gas called a <strong>planetary nebula</strong>.</li>
+      <li>What remains is the exposed, extremely dense core of the star — a <strong>white dwarf</strong> — which will slowly cool and dim over an immense span of time.</li>
+    </ul>
+
+    <h2>Death of a massive star</h2>
+    <p>Stars with much greater mass than the Sun meet a far more dramatic end:</p>
+    <ul>
+      <li>The star swells into an even larger <strong>red supergiant</strong>.</li>
+      <li>Once fusion can no longer support the core, the star collapses suddenly and explodes in a massive explosion called a <strong>supernova</strong> — briefly outshining an entire galaxy.</li>
+      <li>What remains after the explosion depends on the mass of the original star's core:
+        <ul>
+          <li>A very dense, compact <strong>neutron star</strong> may form, or</li>
+          <li>For the most massive stars, the core collapses completely into a <strong>black hole</strong> — a region where gravity is so strong that not even light can escape.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="callout"><strong>Key CAPS idea:</strong> The mass of a star determines both how long it lives and how it dies. Lower-mass stars: nebula → main sequence → red giant → planetary nebula → white dwarf. Higher-mass stars: nebula → main sequence → red supergiant → supernova → neutron star or black hole.</div>
+
+    <h2>Why this matters</h2>
+    <p>The heavier elements that make up planets, and even our own bodies (such as carbon, oxygen, and iron), were originally created inside stars through nuclear fusion, and scattered into space by supernova explosions. In a very real sense, we are made of star material.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Star Life Cycle Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Choose a starting star mass, then step through the stages of its life using the Next/Previous buttons.</p>
+  <div class="explore-layout">
+    <div class="star-wrap">
+      <canvas id="starCanvas" height="380"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Star Mass</div>
+        <div class="ctype-row">
+          <button class="ctype-btn active" id="btnSun" onclick="setPath('sun')">Sun-like star</button>
+          <button class="ctype-btn" id="btnMassive" onclick="setPath('massive')">Massive star</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stage</div>
+        <div class="stage-dots" id="stageDots"></div>
+        <div class="stage-name" id="stageName"></div>
+        <div class="stage-desc" id="stageDesc"></div>
+        <div class="stage-nav" style="margin-top:12px">
+          <button class="stage-btn" id="btnPrev" onclick="prevStage()">◀ Previous</button>
+          <button class="stage-btn" id="btnNext" onclick="nextStage()">Next ▶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer the following questions in your exercise book. Use diagrams to support your answers where useful.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Describe how a star is born, starting from a nebula. Refer to gravity and nuclear fusion in your answer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Explain what is meant by the "main sequence" phase of a star's life, and explain why more massive stars have shorter main-sequence lifespans than less massive stars.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Describe, in order, the stages in the death of a Sun-like (lower-mass) star, ending with the object that remains.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Describe, in order, the stages in the death of a much more massive star. Name the TWO possible objects that can remain after a supernova, and state what determines which one forms.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain why scientists say that the atoms making up our bodies were originally formed inside stars.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+}
+
+/* ---- Star life cycle data ---- */
+const PATHS = {
+  sun: [
+    { name: 'Nebula', color: '#60a5fa', shape: 'cloud', desc: 'A vast cloud of gas and dust in space. Gravity causes a denser region to begin collapsing inward.' },
+    { name: 'Main Sequence Star', color: '#fde68a', shape: 'star', desc: 'Nuclear fusion of hydrogen into helium ignites in the core. Outward fusion pressure balances inward gravity — the star shines steadily for billions of years. Our Sun is here now.' },
+    { name: 'Red Giant', color: '#f87171', shape: 'giant', desc: 'Core hydrogen runs out. The core contracts and heats further while the outer layers expand enormously, cooling and reddening the star.' },
+    { name: 'Planetary Nebula', color: '#c084fc', shape: 'nebulaShell', desc: 'The red giant sheds its outer layers into space, forming a glowing shell of expanding gas around the exposed core.' },
+    { name: 'White Dwarf', color: '#e0e7ff', shape: 'dwarf', desc: 'The remaining exposed core — extremely dense and hot, but no longer undergoing fusion. It will cool and dim over an immense span of time.' }
+  ],
+  massive: [
+    { name: 'Nebula', color: '#60a5fa', shape: 'cloud', desc: 'A vast cloud of gas and dust in space. Gravity causes a denser region to begin collapsing inward — this region is far more massive than the one that formed our Sun.' },
+    { name: 'Main Sequence Star', color: '#93c5fd', shape: 'star', desc: 'Nuclear fusion ignites, but because the star is far more massive, it burns through its hydrogen fuel much faster than a Sun-like star — its main-sequence life lasts only millions of years.' },
+    { name: 'Red Supergiant', color: '#ef4444', shape: 'supergiant', desc: 'Core hydrogen runs out. The star swells to an enormous size — far larger than a red giant — while fusing progressively heavier elements in its core.' },
+    { name: 'Supernova', color: '#fef08a', shape: 'explosion', desc: 'Once fusion can no longer support the core, it collapses suddenly and the star explodes in a catastrophic supernova, briefly outshining an entire galaxy.' },
+    { name: 'Neutron Star or Black Hole', color: '#a78bfa', shape: 'remnant', desc: 'What remains depends on the mass of the collapsed core: a very dense neutron star, or — for the most massive cores — complete collapse into a black hole, from which not even light can escape.' }
+  ]
+};
+
+let currentPath = 'sun';
+let currentStage = 0;
+
+function setPath(p) {
+  currentPath = p;
+  currentStage = 0;
+  document.getElementById('btnSun').classList.toggle('active', p === 'sun');
+  document.getElementById('btnMassive').classList.toggle('active', p === 'massive');
+  renderStage();
+}
+
+function nextStage() {
+  const stages = PATHS[currentPath];
+  if (currentStage < stages.length - 1) { currentStage++; renderStage(); }
+}
+function prevStage() {
+  if (currentStage > 0) { currentStage--; renderStage(); }
+}
+
+function renderStage() {
+  const stages = PATHS[currentPath];
+  const s = stages[currentStage];
+  document.getElementById('stageName').textContent = s.name;
+  document.getElementById('stageName').style.color = s.color;
+  document.getElementById('stageDesc').textContent = s.desc;
+  document.getElementById('btnPrev').disabled = currentStage === 0;
+  document.getElementById('btnNext').disabled = currentStage === stages.length - 1;
+
+  const dotsDiv = document.getElementById('stageDots');
+  dotsDiv.innerHTML = stages.map((_, i) => `<div class="stage-dot ${i <= currentStage ? 'done' : ''}"></div>`).join('');
+
+  drawStar();
+}
+
+/* ---- Canvas drawing ---- */
+const starCanvas = document.getElementById('starCanvas');
+const starCtx = starCanvas.getContext('2d');
+let starsBg = [];
+
+function resizeStarCanvas() {
+  const W = starCanvas.offsetWidth || 560;
+  const H = 380;
+  starCanvas.width = W * (window.devicePixelRatio || 1);
+  starCanvas.height = H * (window.devicePixelRatio || 1);
+  starCtx.setTransform(1,0,0,1,0,0);
+  starCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  if (starsBg.length === 0) {
+    for (let i = 0; i < 100; i++) starsBg.push([Math.random() * W, Math.random() * H, Math.random() * 1.2 + 0.2]);
+  }
+  drawStar();
+}
+
+let pulseT = 0;
+function drawStar() {
+  const W = starCanvas.offsetWidth || 560;
+  const H = 380;
+  starCtx.clearRect(0, 0, W, H);
+  starCtx.fillStyle = '#040710';
+  starCtx.fillRect(0, 0, W, H);
+
+  starsBg.forEach(([sx, sy, sr]) => {
+    starCtx.beginPath();
+    starCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+    starCtx.fillStyle = 'rgba(255,255,255,0.5)';
+    starCtx.fill();
+  });
+
+  const cx = W / 2, cy = H / 2;
+  const s = PATHS[currentPath][currentStage];
+
+  const radii = { cloud: 90, star: 45, giant: 100, nebulaShell: 110, dwarf: 22, supergiant: 140, explosion: 150, remnant: 30 };
+  const r = radii[s.shape] || 50;
+
+  if (s.shape === 'cloud') {
+    for (let i = 0; i < 40; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const dist = Math.random() * r;
+      const px = cx + Math.cos(ang) * dist;
+      const py = cy + Math.sin(ang) * dist;
+      const pr = Math.random() * 18 + 6;
+      const grad = starCtx.createRadialGradient(px, py, 0, px, py, pr);
+      grad.addColorStop(0, 'rgba(96,165,250,0.35)');
+      grad.addColorStop(1, 'rgba(96,165,250,0)');
+      starCtx.beginPath();
+      starCtx.arc(px, py, pr, 0, Math.PI * 2);
+      starCtx.fillStyle = grad;
+      starCtx.fill();
+    }
+  } else if (s.shape === 'nebulaShell') {
+    const grad = starCtx.createRadialGradient(cx, cy, r * 0.3, cx, cy, r);
+    grad.addColorStop(0, 'rgba(224,231,255,0.9)');
+    grad.addColorStop(0.5, 'rgba(192,132,252,0.35)');
+    grad.addColorStop(1, 'rgba(192,132,252,0)');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r, 0, Math.PI * 2);
+    starCtx.fillStyle = grad;
+    starCtx.fill();
+    // Bright core
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, 14, 0, Math.PI * 2);
+    starCtx.fillStyle = '#e0e7ff';
+    starCtx.fill();
+  } else if (s.shape === 'explosion') {
+    pulseT += 0.05;
+    const pulse = 1 + Math.sin(pulseT) * 0.06;
+    const grad = starCtx.createRadialGradient(cx, cy, 0, cx, cy, r * pulse);
+    grad.addColorStop(0, 'rgba(255,255,255,0.95)');
+    grad.addColorStop(0.3, 'rgba(254,240,138,0.85)');
+    grad.addColorStop(0.6, 'rgba(248,113,113,0.5)');
+    grad.addColorStop(1, 'rgba(248,113,113,0)');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r * pulse, 0, Math.PI * 2);
+    starCtx.fillStyle = grad;
+    starCtx.fill();
+    requestAnimationFrame(() => { if (document.getElementById('tab-explore').classList.contains('active') && s.shape === 'explosion') drawStar(); });
+  } else if (s.shape === 'remnant') {
+    // draw both possibilities side by side
+    const grad1 = starCtx.createRadialGradient(cx - 70, cy, 0, cx - 70, cy, 24);
+    grad1.addColorStop(0, '#e0e7ff');
+    grad1.addColorStop(1, 'rgba(224,231,255,0)');
+    starCtx.beginPath(); starCtx.arc(cx - 70, cy, 18, 0, Math.PI * 2); starCtx.fillStyle = grad1; starCtx.fill();
+    starCtx.font = '11px "JetBrains Mono",monospace'; starCtx.fillStyle = 'rgba(210,218,245,0.6)'; starCtx.textAlign = 'center';
+    starCtx.fillText('Neutron star', cx - 70, cy + 45);
+
+    const grad2 = starCtx.createRadialGradient(cx + 70, cy, 0, cx + 70, cy, 30);
+    grad2.addColorStop(0, '#000');
+    grad2.addColorStop(0.6, '#000');
+    grad2.addColorStop(1, 'rgba(167,139,250,0.4)');
+    starCtx.beginPath(); starCtx.arc(cx + 70, cy, 26, 0, Math.PI * 2); starCtx.fillStyle = grad2; starCtx.fill();
+    starCtx.strokeStyle = 'rgba(167,139,250,0.6)'; starCtx.lineWidth = 2; starCtx.stroke();
+    starCtx.fillStyle = 'rgba(210,218,245,0.6)';
+    starCtx.fillText('Black hole', cx + 70, cy + 50);
+  } else {
+    // star, giant, dwarf, supergiant - simple glowing sphere
+    const grad = starCtx.createRadialGradient(cx - r * 0.2, cy - r * 0.2, 0, cx, cy, r);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(0.4, s.color);
+    grad.addColorStop(1, s.color + '55');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r, 0, Math.PI * 2);
+    starCtx.fillStyle = grad;
+    starCtx.fill();
+
+    // halo
+    const halo = starCtx.createRadialGradient(cx, cy, r, cx, cy, r * 1.6);
+    halo.addColorStop(0, s.color + '33');
+    halo.addColorStop(1, s.color + '00');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r * 1.6, 0, Math.PI * 2);
+    starCtx.fillStyle = halo;
+    starCtx.fill();
+  }
+
+  // Stage label
+  starCtx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  starCtx.fillStyle = 'rgba(255,255,255,0.85)';
+  starCtx.textAlign = 'center';
+  starCtx.fillText(s.name, cx, H - 24);
+}
+
+window.addEventListener('resize', resizeStarCanvas);
+resizeStarCanvas();
+renderStage();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'What triggers the formation of a star from a nebula?',
+    opts: ['Magnetic fields repelling gas outward', 'Gravity causing a dense region of gas and dust to collapse inward', 'Solar wind pushing particles together', 'Sudden cooling of space'],
+    ans: 1,
+    exp: 'Gravity pulls a denser region of a nebula (cloud of gas and dust) inward, causing it to collapse, heat up, and eventually ignite nuclear fusion.'
+  },
+  {
+    text: 'What process powers a star during its main-sequence phase?',
+    opts: ['Chemical burning of gas', 'Radioactive decay only', 'Nuclear fusion of hydrogen into helium in the core', 'Reflection of sunlight'],
+    ans: 2,
+    exp: 'During the main sequence, nuclear fusion converts hydrogen into helium in the star\'s core, releasing energy that balances gravity and keeps the star stable.'
+  },
+  {
+    text: 'Why do more massive stars have shorter main-sequence lifespans than less massive stars?',
+    opts: [
+      'They contain less hydrogen fuel overall',
+      'They burn through their fuel much faster despite often having more of it',
+      'They are cooler and burn more slowly',
+      'Mass has no effect on how long a star lives'
+    ],
+    ans: 1,
+    exp: 'More massive stars fuse hydrogen at a much faster rate to support their greater mass against gravity, burning through their fuel supply far more quickly and living shorter lives.'
+  },
+  {
+    text: 'What does a Sun-like star become after it leaves the main sequence?',
+    opts: ['A black hole', 'A red giant, then eventually a white dwarf', 'A supernova immediately', 'A neutron star'],
+    ans: 1,
+    exp: 'A Sun-like (lower-mass) star expands into a red giant, sheds its outer layers as a planetary nebula, and leaves behind a white dwarf.'
+  },
+  {
+    text: 'What happens when a much more massive star reaches the end of its life?',
+    opts: [
+      'It quietly fades into a white dwarf',
+      'It swells into a red supergiant and explodes as a supernova',
+      'It simply stops shining with no other changes',
+      'It turns directly into a nebula'
+    ],
+    ans: 1,
+    exp: 'Massive stars swell into red supergiants, then undergo a core collapse and explode as a supernova — one of the most energetic events in the universe.'
+  },
+  {
+    text: 'What determines whether a neutron star or a black hole forms after a supernova?',
+    opts: ['The colour of the star before it exploded', 'The mass of the collapsed core left behind', 'How long the star existed before exploding', 'The distance of the star from Earth'],
+    ans: 1,
+    exp: 'If the collapsed core is very massive, its gravity is strong enough to collapse it completely into a black hole. A less massive collapsed core instead forms an extremely dense neutron star.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

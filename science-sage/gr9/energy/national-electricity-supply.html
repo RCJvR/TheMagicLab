@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The National Electricity Supply System — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Simulate */
+    .sim-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+    .source-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .source-row:last-child{border-bottom:none}
+    .source-info{display:flex;flex-direction:column}
+    .source-name{font-size:12.5px;font-weight:700;color:var(--text)}
+    .source-mw{font-family:var(--fm);font-size:10px;color:var(--muted)}
+    .src-toggle{width:40px;height:22px;border-radius:99px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);cursor:pointer;position:relative;transition:all 150ms;flex-shrink:0}
+    .src-toggle::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--muted);transition:all 150ms}
+    .src-toggle.on{background:rgba(34,197,94,.25);border-color:rgba(34,197,94,.5)}
+    .src-toggle.on::after{left:20px;background:#4ade80}
+    .status-box{border-radius:12px;padding:14px 16px;text-align:center;font-family:var(--fm)}
+    .status-ok{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.30)}
+    .status-warn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35)}
+    .status-label{font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+    .status-value{font-size:20px;font-weight:700}
+    .status-ok .status-value{color:#4ade80}
+    .status-warn .status-value{color:#f87171}
+    .info-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px}
+    .info-box strong{color:var(--text)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energy &amp; Change</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 9 · Energy &amp; Change · Lesson 6</div>
+  <h1 class="lesson-title">The National Electricity Supply System</h1>
+  <p class="lesson-sub">Zoom out from the plug socket to the whole country: how South Africa generates, transmits and distributes electricity — and what happens when demand outgrows supply.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="activity" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Electricity as a national system</h2>
+    <p>In Grade 8 you learnt how electricity travels from a power station to your home. In Grade 9 we zoom out further: electricity is not just a local pipeline, it is a <strong>national system</strong> that must constantly balance how much electricity is being <strong>generated</strong> against how much is being <strong>used (demanded)</strong> by homes, businesses, factories, hospitals and schools right across the country, at every moment of the day.</p>
+    <div class="callout"><strong>Systems thinking:</strong> A system is a set of interconnected parts working together. South Africa's electricity supply system has three main parts — <strong>generation</strong> (making electricity), <strong>transmission</strong> (moving it over long distances at high voltage), and <strong>distribution</strong> (delivering it to individual users at usable voltages). If any part cannot keep up, the whole system is affected.</div>
+
+    <h2>Generation: where South Africa's electricity comes from</h2>
+    <p>Most of South Africa's electricity is generated by <strong>Eskom</strong>, the state-owned power utility, using a mix of sources:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Source</th><th>How it works</th><th>Share of supply</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Coal</strong></td><td>Burning coal boils water into steam, which spins turbines connected to generators. South Africa has large coal reserves (e.g. Mpumalanga).</td><td>Largest share — the baseload</td></tr>
+        <tr><td><strong>Nuclear</strong></td><td>Koeberg Power Station (near Cape Town) splits uranium atoms (nuclear fission) to produce heat, which makes steam to drive turbines.</td><td>Small but steady baseload</td></tr>
+        <tr><td><strong>Hydropower</strong></td><td>Falling or flowing water spins turbines, e.g. at the Gariep and Vanderkloof dams on the Orange River.</td><td>Small share</td></tr>
+        <tr><td><strong>Renewables (solar &amp; wind)</strong></td><td>Photovoltaic panels convert sunlight to electricity; wind turbines convert moving air into rotational energy.</td><td>Fast-growing share</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">"Baseload" power stations (coal, nuclear) run continuously and provide a steady, reliable minimum supply. Renewables are variable — they depend on whether the sun is shining or the wind is blowing.</div>
+
+    <h2>Transmission: moving electricity across the country</h2>
+    <p>Power stations are often far from cities. Electricity is stepped up to very <strong>high voltages</strong> (hundreds of thousands of volts) using transformers, then carried over long distances along the <strong>national grid</strong> — a network of pylons and transmission lines criss-crossing the country. High voltage is used because it reduces energy losses over long distances.</p>
+
+    <h2>Distribution: getting power to the end user</h2>
+    <p>Near towns and cities, transformers <strong>step the voltage back down</strong> at substations. Municipalities then distribute this lower-voltage electricity through local networks to homes, schools, farms, and businesses. This is the "last mile" of the system.</p>
+    <div class="formula">Generation (power station) → Transmission (national grid, high voltage) → Distribution (municipality, lower voltage) → End user</div>
+
+    <h2>Supply and demand: a constant balancing act</h2>
+    <p>Electricity is difficult and expensive to store in large quantities, so it must be generated at almost the exact same moment it is used. This means the amount of electricity flowing onto the grid (<strong>supply</strong>) must be carefully matched to the amount being drawn off it (<strong>demand</strong>) at every instant.</p>
+    <ul>
+      <li>Demand rises and falls throughout the day — for example, it is usually higher in the early morning and evening (people cooking, heating, using appliances) and lower late at night.</li>
+      <li>Demand also varies by season — winter evenings in South Africa typically see the highest demand of the year, due to heating and earlier darkness.</li>
+      <li>If supply is greater than or equal to demand, the system runs normally.</li>
+      <li>If demand exceeds the electricity available to supply it, the grid becomes unstable and could fail completely (a total blackout) unless action is taken.</li>
+    </ul>
+
+    <h2>Load shedding: a real example of supply-demand mismatch</h2>
+    <p><strong>Load shedding</strong> is the controlled, planned switching off of electricity to particular areas, on a rotating schedule, when the total demand on the national grid is greater than the electricity available to supply it. It is used as a last resort to protect the whole grid from an uncontrolled collapse.</p>
+    <ul>
+      <li><strong>Why it happens:</strong> South Africa's generation capacity (largely ageing coal power stations requiring maintenance and breakdowns) has, at various times, not been able to keep up with national demand.</li>
+      <li><strong>How it works:</strong> Eskom and municipalities divide the country into groups ("stages"). As the shortfall between supply and demand grows, higher load shedding stages are declared, and more areas are switched off for scheduled periods to reduce total demand back to a level the available supply can handle.</li>
+      <li><strong>Why not just make more?</strong> Building new large power stations or maintaining old ones takes years and enormous investment — supply cannot be increased overnight to match a sudden shortfall.</li>
+    </ul>
+    <div class="callout"><strong>Key idea:</strong> Load shedding is a scheduled, controlled response to an imbalance between supply and demand — it is used specifically to <em>prevent</em> a total, uncontrolled national blackout, which would take far longer to recover from.</div>
+
+    <h2>Diversifying supply for the future</h2>
+    <p>To secure a more reliable electricity supply, South Africa is working to <strong>diversify its energy sources</strong> — relying on a wider mix of generation methods rather than coal alone:</p>
+    <ul>
+      <li><strong>Solar power:</strong> South Africa has some of the highest levels of sunshine in the world, making solar photovoltaic and solar-thermal power stations highly effective, especially in provinces like the Northern Cape.</li>
+      <li><strong>Wind power:</strong> Coastal and inland wind farms (e.g. in the Eastern and Western Cape) are being built to add electricity to the grid.</li>
+      <li><strong>Independent power producers (IPPs):</strong> Private companies are increasingly licensed to generate electricity (often renewable) and feed it into the national grid alongside Eskom's supply.</li>
+      <li><strong>Household and business solar:</strong> More homes, farms and businesses are installing their own solar panels and battery storage, reducing the demand they place on the national grid.</li>
+    </ul>
+    <div class="key-fact">Diversifying supply reduces dependence on any single source, spreads risk, and adds capacity — helping supply keep pace with the country's growing demand over time.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Supply vs Demand Simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Set national demand with the slider, then switch generation sources on or off to try to meet it. Watch the live gauge — if demand outstrips available supply, a load shedding stage is triggered.</p>
+  <div class="sim-layout">
+    <div class="sim-canvas-wrap">
+      <h3>Grid Balance</h3>
+      <canvas id="gridCanvas" height="380"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">National Demand</div>
+        <div class="slider-row">
+          <input type="range" id="demandSlider" min="4000" max="34000" step="500" value="20000" oninput="onDemandChange()">
+        </div>
+        <div class="slider-val" id="demandVal" style="text-align:center;font-size:14px;margin-top:4px">20 000 MW</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Generation Sources Online</div>
+        <div id="sourceList"></div>
+      </div>
+      <div class="status-box status-ok" id="statusBox">
+        <div class="status-label">Grid Status</div>
+        <div class="status-value" id="statusValue">Supply Meets Demand</div>
+      </div>
+      <div class="info-box" id="infoBox"><strong>Tip:</strong> Coal and nuclear provide steady baseload power. Renewables add capacity but are smaller in scale. Try switching sources off to see how quickly a shortfall appears.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations for any you missed.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer all questions in your exercise book. Write in full sentences where explanations are required.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name the THREE main parts of the national electricity supply system and briefly describe the function of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Name THREE different sources South Africa uses to generate electricity. For each one, state whether it provides a steady baseload supply or a variable supply, and explain why.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (2 marks)</div><div class="wb-qtext">Explain why electricity is transmitted across the country at very high voltages, and what must happen to the voltage before it reaches homes.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Define load shedding. Explain why it is used, and why Eskom uses a scheduled, rotating approach rather than allowing an uncontrolled blackout to occur.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Suggest THREE ways South Africa is trying to diversify and secure its future electricity supply. For each, briefly explain how it helps balance supply and demand.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+}
+
+/* ---- Supply vs demand simulator ---- */
+const SOURCES = [
+  { id: 'coal',      name: 'Coal (baseload)',     mw: 18000, on: true  },
+  { id: 'nuclear',   name: 'Nuclear (Koeberg)',    mw: 1800,  on: true  },
+  { id: 'hydro',     name: 'Hydropower',           mw: 1200,  on: true  },
+  { id: 'renewables',name: 'Solar & wind',         mw: 4500,  on: false }
+];
+
+let demand = 20000;
+
+function onDemandChange() {
+  demand = +document.getElementById('demandSlider').value;
+  document.getElementById('demandVal').textContent = demand.toLocaleString() + ' MW';
+  updateStatus();
+}
+
+function toggleSource(id) {
+  const s = SOURCES.find(s => s.id === id);
+  s.on = !s.on;
+  buildSourceList();
+  updateStatus();
+}
+
+function buildSourceList() {
+  const div = document.getElementById('sourceList');
+  div.innerHTML = SOURCES.map(s => `
+    <div class="source-row">
+      <div class="source-info">
+        <div class="source-name">${s.name}</div>
+        <div class="source-mw">${s.mw.toLocaleString()} MW capacity</div>
+      </div>
+      <button class="src-toggle ${s.on ? 'on' : ''}" onclick="toggleSource('${s.id}')" aria-label="Toggle ${s.name}"></button>
+    </div>`).join('');
+}
+
+function totalSupply() {
+  return SOURCES.filter(s => s.on).reduce((sum, s) => sum + s.mw, 0);
+}
+
+function loadSheddingStage(shortfall) {
+  if (shortfall <= 0) return 0;
+  return Math.min(8, Math.ceil(shortfall / 1000));
+}
+
+function updateStatus() {
+  const supply = totalSupply();
+  const shortfall = demand - supply;
+  const box = document.getElementById('statusBox');
+  const val = document.getElementById('statusValue');
+  if (shortfall <= 0) {
+    box.className = 'status-box status-ok';
+    val.textContent = 'Supply Meets Demand';
+  } else {
+    const stage = loadSheddingStage(shortfall);
+    box.className = 'status-box status-warn';
+    val.textContent = `Load Shedding — Stage ${stage}`;
+  }
+  drawGrid(supply, demand);
+}
+
+/* ---- Canvas visual ---- */
+const gridCanvas = document.getElementById('gridCanvas');
+const gridCtx = gridCanvas.getContext('2d');
+
+function resizeGrid() {
+  const W = gridCanvas.offsetWidth || 560;
+  const H = 380;
+  gridCanvas.width = W * (window.devicePixelRatio || 1);
+  gridCanvas.height = H * (window.devicePixelRatio || 1);
+  gridCtx.setTransform(1,0,0,1,0,0);
+  gridCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  drawGrid(totalSupply(), demand);
+}
+
+function drawGrid(supply, demandVal) {
+  const W = gridCanvas.offsetWidth || 560;
+  const H = 380;
+  gridCtx.clearRect(0, 0, W, H);
+
+  const maxScale = 34000;
+  const barW = 140;
+  const barMaxH = 260;
+  const baseY = H - 50;
+
+  // Supply bar
+  const supplyH = Math.min(barMaxH, (supply / maxScale) * barMaxH);
+  const supplyX = W * 0.30 - barW / 2;
+  const supplyGrad = gridCtx.createLinearGradient(0, baseY - supplyH, 0, baseY);
+  supplyGrad.addColorStop(0, 'rgba(74,222,128,0.9)');
+  supplyGrad.addColorStop(1, 'rgba(34,197,94,0.5)');
+  gridCtx.fillStyle = supplyGrad;
+  gridCtx.beginPath();
+  gridCtx.roundRect(supplyX, baseY - supplyH, barW, supplyH, [8,8,0,0]);
+  gridCtx.fill();
+
+  // Demand bar
+  const demandH = Math.min(barMaxH, (demandVal / maxScale) * barMaxH);
+  const demandX = W * 0.70 - barW / 2;
+  const demandGrad = gridCtx.createLinearGradient(0, baseY - demandH, 0, baseY);
+  demandGrad.addColorStop(0, 'rgba(251,191,36,0.9)');
+  demandGrad.addColorStop(1, 'rgba(251,191,36,0.45)');
+  gridCtx.fillStyle = demandGrad;
+  gridCtx.beginPath();
+  gridCtx.roundRect(demandX, baseY - demandH, barW, demandH, [8,8,0,0]);
+  gridCtx.fill();
+
+  // Baseline
+  gridCtx.strokeStyle = 'rgba(255,255,255,0.15)';
+  gridCtx.lineWidth = 1;
+  gridCtx.beginPath();
+  gridCtx.moveTo(40, baseY);
+  gridCtx.lineTo(W - 40, baseY);
+  gridCtx.stroke();
+
+  // Labels
+  gridCtx.font = 'bold 13px "Cabinet Grotesk",sans-serif';
+  gridCtx.textAlign = 'center';
+  gridCtx.fillStyle = '#86efac';
+  gridCtx.fillText('Supply', W * 0.30, baseY + 22);
+  gridCtx.fillStyle = '#fcd34d';
+  gridCtx.fillText('Demand', W * 0.70, baseY + 22);
+
+  gridCtx.font = '11px "JetBrains Mono",monospace';
+  gridCtx.fillStyle = 'rgba(210,218,245,0.75)';
+  gridCtx.fillText(supply.toLocaleString() + ' MW', W * 0.30, baseY - supplyH - 10);
+  gridCtx.fillText(demandVal.toLocaleString() + ' MW', W * 0.70, baseY - demandH - 10);
+
+  // Shortfall indicator
+  const shortfall = demandVal - supply;
+  if (shortfall > 0) {
+    gridCtx.fillStyle = 'rgba(248,113,113,0.9)';
+    gridCtx.font = 'bold 12px "JetBrains Mono",monospace';
+    gridCtx.fillText(`Shortfall: ${shortfall.toLocaleString()} MW`, W / 2, 30);
+  } else {
+    gridCtx.fillStyle = 'rgba(74,222,128,0.9)';
+    gridCtx.font = 'bold 12px "JetBrains Mono",monospace';
+    gridCtx.fillText(`Reserve margin: ${Math.abs(shortfall).toLocaleString()} MW`, W / 2, 30);
+  }
+
+  // Background grid lines
+  gridCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+  for (let y = 60; y < baseY; y += 40) {
+    gridCtx.beginPath();
+    gridCtx.moveTo(40, y);
+    gridCtx.lineTo(W - 40, y);
+    gridCtx.stroke();
+  }
+}
+
+window.addEventListener('resize', resizeGrid);
+buildSourceList();
+resizeGrid();
+updateStatus();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Which THREE parts make up South Africa\'s national electricity supply system?',
+    opts: ['Generation, storage, recycling', 'Generation, transmission, distribution', 'Mining, refining, transmission', 'Solar, wind, coal'],
+    ans: 1,
+    exp: 'The system consists of generation (making electricity at power stations), transmission (moving it at high voltage across the country), and distribution (delivering it to end users at usable voltages).'
+  },
+  {
+    text: 'Why is electricity transmitted across the country at very high voltages?',
+    opts: ['It is cheaper to build high-voltage lines', 'High voltage reduces energy losses over long distances', 'High voltage is safer for pylons', 'Homes require high voltage electricity'],
+    ans: 1,
+    exp: 'Transmitting electricity at high voltage significantly reduces the energy lost over long distances. Voltage is stepped back down at substations before reaching homes and businesses.'
+  },
+  {
+    text: 'Which of these South African power sources is generally described as providing a steady "baseload" supply?',
+    opts: ['Solar power', 'Wind power', 'Coal-fired power stations', 'Household batteries'],
+    ans: 2,
+    exp: 'Coal (and nuclear) power stations run continuously and provide a steady, reliable minimum ("baseload") supply, unlike solar and wind which vary with weather and time of day.'
+  },
+  {
+    text: 'What is load shedding?',
+    opts: [
+      'A permanent shutdown of the national grid',
+      'A controlled, scheduled switching off of electricity to certain areas when demand exceeds available supply',
+      'A method of generating extra electricity quickly',
+      'A tax charged on electricity usage'
+    ],
+    ans: 1,
+    exp: 'Load shedding is a planned, rotating reduction in electricity supply to specific areas, used to bring total demand back in line with available supply and prevent an uncontrolled collapse of the whole grid.'
+  },
+  {
+    text: 'Why can South Africa not simply build enough new power stations overnight to end load shedding immediately?',
+    opts: [
+      'It is against the law to build new power stations',
+      'Building or maintaining large power stations takes years and significant investment',
+      'South Africa has no more space to build power stations',
+      'New power stations cannot be connected to the grid'
+    ],
+    ans: 1,
+    exp: 'Power stations are large infrastructure projects that take years to plan, build, and commission, and require significant financial investment — supply cannot increase instantly to match sudden shortfalls.'
+  },
+  {
+    text: 'Which of the following is an example of South Africa diversifying its electricity supply for the future?',
+    opts: [
+      'Relying only on one coal power station',
+      'Reducing the number of transmission lines',
+      'Increasing solar and wind power generation and licensing independent power producers',
+      'Removing Koeberg from the national grid'
+    ],
+    ans: 2,
+    exp: 'Diversifying supply means adding a wider mix of generation sources — such as solar, wind, and independent power producers (IPPs) — to reduce reliance on any single source and increase overall reliability.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Question ${qi + 1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
