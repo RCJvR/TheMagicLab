@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Hydrosphere — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%;cursor:pointer}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.readout-fact{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 16px;grid-column:1/-1;font-size:13px;color:rgba(210,218,245,.8);line-height:1.7}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 10px;cursor:pointer;width:100%;margin-bottom:10px}
+select option{background:#1a1f35}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemistry</span>
+    <a class="nav-back" href="../../index.html">← Home</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 10 · Chemistry · Lesson 10</div>
+  <div class="lesson-title">The Hydrosphere</div>
+  <div class="lesson-sub">Investigate the distribution of Earth's water, the water cycle, water as the universal solvent, and South Africa's water security challenges.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">National Senior Certificate</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📝 Workbook</button>
+</div>
+
+<!-- ===== LESSON TAB ===== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>What is the Hydrosphere?</h2>
+    <p>The <strong>hydrosphere</strong> is the term geologists and chemists use for all the water found on, above, and below the surface of the Earth. It includes the water in oceans, ice caps and glaciers, groundwater stored underground, lakes and rivers, and even the water vapour suspended in the atmosphere. The hydrosphere interacts constantly with the other Earth systems — the atmosphere (air), lithosphere (rock and soil), and biosphere (living things) — making water central to almost every chemical and biological process on the planet.</p>
+
+    <div class="key-fact">Hydrosphere = oceans + ice caps/glaciers + groundwater + lakes/rivers + atmospheric water vapour</div>
+
+    <h2>The Distribution of Earth's Water</h2>
+    <p>Although Earth is often called the "blue planet" because roughly 71% of its surface is covered in water, the vast majority of that water is <strong>not usable</strong> by humans, plants, or land animals in its natural state. This is one of the most important — and most surprising — facts in environmental chemistry.</p>
+
+    <div class="callout">
+      <strong>Approximately 97% of all water on Earth is saline (salty) ocean water.</strong> Only about <strong>2.5%</strong> is freshwater. Of that small freshwater fraction, most is not even in a liquid, accessible form — roughly <strong>69%</strong> of freshwater is locked away in ice caps and glaciers, about <strong>30%</strong> is groundwater, and less than <strong>1%</strong> exists as surface water in rivers, lakes, and wetlands that we can easily access.
+    </div>
+
+    <p>This means that the freshwater available to sustain all terrestrial life — every river, lake, dam, and accessible aquifer on Earth — makes up a tiny sliver of the planet's total water budget. This scarcity is why sustainable water management and water chemistry (purification, treatment, and conservation) are such critical fields of study.</p>
+
+    <table class="symbols-table">
+      <tr><th>Water reservoir</th><th>Approx. % of total water</th><th>State</th></tr>
+      <tr><td>Oceans (saline)</td><td>~97%</td><td>Liquid</td></tr>
+      <tr><td>Ice caps &amp; glaciers</td><td>~1.7% (≈69% of freshwater)</td><td>Solid</td></tr>
+      <tr><td>Groundwater</td><td>~0.75% (≈30% of freshwater)</td><td>Liquid</td></tr>
+      <tr><td>Surface water (rivers, lakes) &amp; atmosphere</td><td>&lt;0.03%</td><td>Liquid / vapour</td></tr>
+    </table>
+
+    <h2>The Water Cycle</h2>
+    <p>Water continuously moves between the hydrosphere, atmosphere, and lithosphere in a cycle driven by solar energy and gravity. This is the <strong>water cycle</strong> (hydrological cycle), and it consists of five key processes:</p>
+
+    <ul>
+      <li><strong>Evaporation:</strong> Liquid water at the surface of oceans, lakes, and rivers absorbs heat energy from the sun and changes into water vapour, entering the atmosphere. (Transpiration from plants contributes similarly.)</li>
+      <li><strong>Condensation:</strong> As water vapour rises and cools in the atmosphere, it changes back into tiny liquid droplets, forming clouds.</li>
+      <li><strong>Precipitation:</strong> When cloud droplets combine and grow heavy enough, water falls back to Earth's surface as rain, snow, sleet, or hail.</li>
+      <li><strong>Collection / runoff:</strong> Precipitation that falls on land flows over the surface as runoff, collecting in streams, rivers, lakes, and eventually oceans.</li>
+      <li><strong>Infiltration:</strong> Some precipitation soaks into the ground, replenishing soil moisture and groundwater stored in aquifers, from which it may re-emerge in springs or be drawn up by plant roots.</li>
+    </ul>
+
+    <div class="formula">Evaporation → Condensation → Precipitation → Collection/Runoff → Infiltration → (back to Evaporation)</div>
+
+    <div class="key-fact">The water cycle is powered by solar energy (which drives evaporation) and gravity (which drives precipitation and runoff).</div>
+
+    <h2>Water: The Universal Solvent</h2>
+    <p>Water is often called the <strong>"universal solvent"</strong> because its polar molecular structure allows it to dissolve more substances than any other common liquid. The oxygen atom in H₂O carries a partial negative charge (δ⁻) and the two hydrogen atoms carry partial positive charges (δ⁺). This polarity allows water molecules to surround and separate ions and other polar molecules, pulling them into solution.</p>
+
+    <p>This solvent property is essential to both biology and chemistry:</p>
+    <ul>
+      <li><strong>Biological processes:</strong> nutrients, gases, and waste products are transported around living organisms dissolved in water (e.g. blood plasma, cell cytoplasm, xylem sap in plants).</li>
+      <li><strong>Chemical processes:</strong> most laboratory and industrial reactions occur in aqueous solution, where dissolved ions can move freely and react (as you will explore further when studying reactions in aqueous solution).</li>
+      <li><strong>Geological processes:</strong> water dissolves minerals from rock over time, transporting them and depositing them elsewhere (forming caves, sediment, and mineral deposits).</li>
+    </ul>
+
+    <h2>South African Context — Water Scarcity and Water Security</h2>
+    <p>South Africa is classified as a <strong>water-scarce country</strong>. Rainfall is low and unevenly distributed (the national average is roughly half the global average), evaporation rates are high due to our warm climate, and there are few large natural lakes or major rivers compared to many other countries. As a result, South Africa relies heavily on a network of built <strong>dams</strong> to store surface water and on <strong>groundwater (aquifers)</strong> to supplement supply, particularly in drier regions such as the Karoo and parts of the Western and Northern Cape.</p>
+
+    <div class="callout">
+      <strong>Why this matters for chemistry:</strong> Water security involves more than just having enough water — the chemistry of water matters too. <strong>Water treatment</strong> (removing pathogens, sediment, and pollutants), <strong>purification</strong> (e.g. chlorination, filtration), and understanding <strong>water hardness</strong> (caused by dissolved Ca²⁺ and Mg²⁺ ions, which affects soap efficiency and causes scale build-up in pipes and kettles) are all everyday applications of the chemical principles you are learning in this strand.
+    </div>
+
+    <p>Events such as the Cape Town "Day Zero" drought crisis (2017–2018) highlighted how quickly a water-scarce country can approach the point where municipal water supplies run dry, underscoring the importance of conservation, reuse, and sound water chemistry in both households and industry.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB Extension — Water Quality Chemistry and Treatment</div>
+      <p><strong>Water hardness</strong> is caused by dissolved calcium (Ca²⁺) and magnesium (Mg²⁺) ions, typically picked up as groundwater passes through limestone or dolomite rock. Hard water reacts with soap to form an insoluble "scum" (a precipitate of calcium/magnesium stearate) rather than lathering easily, and on heating it can deposit solid calcium carbonate (CaCO₃) scale inside kettles, geysers, and pipes.</p>
+      <p style="margin-top:10px"><strong>Typical municipal water treatment steps</strong> in South Africa include: (1) screening — removing large debris; (2) coagulation/flocculation — adding chemicals to clump fine suspended particles together; (3) sedimentation — allowing clumped particles to settle out; (4) filtration — passing water through sand/gravel beds to remove remaining particles; (5) disinfection — typically chlorination, to kill disease-causing microorganisms before the water is distributed.</p>
+      <p style="margin-top:10px">Understanding these steps links directly to the ionic chemistry studied in this strand — coagulation, precipitation of impurities, and disinfection reactions are all governed by the same principles of solubility and reactions in aqueous solution covered earlier in this content area.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EXPLORE TAB ===== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="waterTitle">Earth's Water Budget — Click a Segment</h3>
+      <canvas id="waterCanvas" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">View</div>
+        <button class="mode-btn active" id="viewTotal" onclick="setWaterView('total',this)">Total Water Budget</button>
+        <button class="mode-btn" id="viewFresh" onclick="setWaterView('fresh',this)">Freshwater Breakdown</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">How to use</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.7">Click any segment of the bar to see its exact percentage and a short fact. Switch views to zoom from Earth's total water into just the freshwater slice.</p>
+      </div>
+    </div>
+    <div class="readout-grid" id="waterReadouts" style="max-width:900px">
+      <div class="readout"><div class="readout-label">Selected Segment</div><div class="readout-val" id="ro-seg" style="font-size:15px">Click a segment</div></div>
+      <div class="readout"><div class="readout-label">Percentage</div><div class="readout-val" id="ro-pct">—<span>%</span></div></div>
+      <div class="readout-fact" id="ro-fact">Click on any coloured segment of the bar above to learn more about that part of Earth's water budget.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE TAB ===== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
+        <div style="font-size:13px;color:var(--muted)">NSC Practice Questions</div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Question 1 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">The hydrosphere includes all of the following EXCEPT:</div>
+      <div class="mc-options" id="q1opts">
+        <button class="mc-opt" onclick="checkAns(1,0,1)"><span class="opt-letter">A</span>Oceans</button>
+        <button class="mc-opt" onclick="checkAns(1,1,1)"><span class="opt-letter">B</span>Ice caps and glaciers</button>
+        <button class="mc-opt" onclick="checkAns(1,2,1)"><span class="opt-letter">C</span>Groundwater</button>
+        <button class="mc-opt" onclick="checkAns(1,3,1)"><span class="opt-letter">D</span>Igneous rock</button>
+      </div>
+      <div class="feedback" id="fb1">Igneous rock is part of the lithosphere, not the hydrosphere. The hydrosphere includes all water on Earth: oceans, ice caps/glaciers, groundwater, lakes, rivers, and atmospheric water vapour.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Question 2 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">Approximately what percentage of Earth's total water is saline ocean water?</div>
+      <div class="mc-options" id="q2opts">
+        <button class="mc-opt" onclick="checkAns(2,0,2)"><span class="opt-letter">A</span>50%</button>
+        <button class="mc-opt" onclick="checkAns(2,1,2)"><span class="opt-letter">B</span>75%</button>
+        <button class="mc-opt" onclick="checkAns(2,2,2)"><span class="opt-letter">C</span>97%</button>
+        <button class="mc-opt" onclick="checkAns(2,3,2)"><span class="opt-letter">D</span>25%</button>
+      </div>
+      <div class="feedback" id="fb2">About 97% of all water on Earth is saline ocean water. Only around 2.5% is freshwater, and most of that freshwater is not easily accessible (locked in ice caps and groundwater).</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Question 3 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">Of Earth's freshwater, the largest single share is found in:</div>
+      <div class="mc-options" id="q3opts">
+        <button class="mc-opt" onclick="checkAns(3,0,3)"><span class="opt-letter">A</span>Rivers and lakes</button>
+        <button class="mc-opt" onclick="checkAns(3,1,3)"><span class="opt-letter">B</span>Ice caps and glaciers</button>
+        <button class="mc-opt" onclick="checkAns(3,2,3)"><span class="opt-letter">C</span>The atmosphere</button>
+        <button class="mc-opt" onclick="checkAns(3,3,3)"><span class="opt-letter">D</span>Groundwater</button>
+      </div>
+      <div class="feedback" id="fb3">Roughly 69% of Earth's freshwater is locked away in ice caps and glaciers, making it inaccessible for immediate use. Groundwater is the next largest share (~30%), with rivers, lakes, and the atmosphere making up less than 1%.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Question 4 &nbsp;<span style="color:var(--muted);font-weight:400">(2 marks)</span></div>
+      <div class="q-text">Which sequence correctly describes the water cycle?</div>
+      <div class="mc-options" id="q4opts">
+        <button class="mc-opt" onclick="checkAns(4,0,4)"><span class="opt-letter">A</span>Precipitation → evaporation → infiltration → condensation</button>
+        <button class="mc-opt" onclick="checkAns(4,1,4)"><span class="opt-letter">B</span>Evaporation → condensation → precipitation → collection/infiltration</button>
+        <button class="mc-opt" onclick="checkAns(4,2,4)"><span class="opt-letter">C</span>Condensation → infiltration → evaporation → runoff</button>
+        <button class="mc-opt" onclick="checkAns(4,3,4)"><span class="opt-letter">D</span>Infiltration → precipitation → runoff → evaporation</button>
+      </div>
+      <div class="feedback" id="fb4">The water cycle proceeds: evaporation (liquid water → vapour) → condensation (vapour → cloud droplets) → precipitation (droplets fall as rain/snow) → collection/runoff and infiltration (water gathers in rivers/lakes or soaks into groundwater), and the cycle repeats.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Question 5 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">Water is often called the "universal solvent" mainly because:</div>
+      <div class="mc-options" id="q5opts">
+        <button class="mc-opt" onclick="checkAns(5,0,5)"><span class="opt-letter">A</span>It has a very high boiling point</button>
+        <button class="mc-opt" onclick="checkAns(5,1,5)"><span class="opt-letter">B</span>Its polar molecular structure allows it to dissolve a very wide range of substances</button>
+        <button class="mc-opt" onclick="checkAns(5,2,5)"><span class="opt-letter">C</span>It is the most abundant liquid on Earth</button>
+        <button class="mc-opt" onclick="checkAns(5,3,5)"><span class="opt-letter">D</span>It exists in all three states of matter</button>
+      </div>
+      <div class="feedback" id="fb5">Water's polarity (partial negative charge on oxygen, partial positive charges on hydrogens) allows it to surround and separate ions and polar molecules, dissolving them. This is why it is called the universal solvent — not simply because of its abundance.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Question 6 &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+      <div class="q-text">South Africa relies heavily on which two sources to manage its water-scarce status?</div>
+      <div class="mc-options" id="q6opts">
+        <button class="mc-opt" onclick="checkAns(6,0,6)"><span class="opt-letter">A</span>Glaciers and rivers</button>
+        <button class="mc-opt" onclick="checkAns(6,1,6)"><span class="opt-letter">B</span>Dams and groundwater</button>
+        <button class="mc-opt" onclick="checkAns(6,2,6)"><span class="opt-letter">C</span>Desalination plants only</button>
+        <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>Natural lakes</button>
+      </div>
+      <div class="feedback" id="fb6">South Africa has low, unevenly distributed rainfall, high evaporation, and few large natural lakes, so it depends heavily on built dams to store surface water and on groundwater (aquifers) to supplement supply, especially in drier regions.</div>
+    </div>
+
+    <!-- IEB Practice Questions -->
+    <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Question 1 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+        <div class="q-text">Water hardness in South African groundwater is primarily caused by dissolved:</div>
+        <div class="mc-options" id="iq1opts">
+          <button class="mc-opt" onclick="checkAns('i1',0,'i1')"><span class="opt-letter">A</span>Na⁺ and K⁺ ions</button>
+          <button class="mc-opt" onclick="checkAns('i1',1,'i1')"><span class="opt-letter">B</span>Ca²⁺ and Mg²⁺ ions</button>
+          <button class="mc-opt" onclick="checkAns('i1',2,'i1')"><span class="opt-letter">C</span>Cl⁻ and NO₃⁻ ions</button>
+          <button class="mc-opt" onclick="checkAns('i1',3,'i1')"><span class="opt-letter">D</span>Dissolved oxygen gas</button>
+        </div>
+        <div class="feedback" id="fbi1">Groundwater passing through limestone or dolomite rock picks up dissolved calcium (Ca²⁺) and magnesium (Mg²⁺) ions, causing hardness. This reacts with soap to form scum and can deposit CaCO₃ scale when heated.</div>
+      </div>
+
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Question 2 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(1 mark)</span></div>
+        <div class="q-text">In a typical municipal water treatment process, which step directly follows sedimentation?</div>
+        <div class="mc-options" id="iq2opts">
+          <button class="mc-opt" onclick="checkAns('i2',0,'i2')"><span class="opt-letter">A</span>Screening</button>
+          <button class="mc-opt" onclick="checkAns('i2',1,'i2')"><span class="opt-letter">B</span>Coagulation/flocculation</button>
+          <button class="mc-opt" onclick="checkAns('i2',2,'i2')"><span class="opt-letter">C</span>Filtration</button>
+          <button class="mc-opt" onclick="checkAns('i2',3,'i2')"><span class="opt-letter">D</span>Disinfection</button>
+        </div>
+        <div class="feedback" id="fbi2">The typical order is: screening → coagulation/flocculation → sedimentation → filtration → disinfection. Filtration (passing water through sand/gravel beds) directly follows sedimentation, removing remaining fine particles before final disinfection.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== WORKBOOK TAB ===== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Print Workbook</button>
+    <div class="wb-intro">Show ALL working where calculations are required. Write in full sentences for explanation questions.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 1</div>
+      <div class="wb-qtext">(a) Define the term "hydrosphere."<br>
+      (b) List four reservoirs that make up the hydrosphere.<br>
+      (c) State the approximate percentages of Earth's total water that are (i) saline and (ii) fresh.</div>
+      <div style="margin-top:14px;height:90px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 2</div>
+      <div class="wb-qtext">Of the small fraction of Earth's water that is freshwater:<br>
+      (a) State the approximate percentage locked in ice caps and glaciers.<br>
+      (b) State the approximate percentage stored as groundwater.<br>
+      (c) Explain, using these figures, why accessible surface freshwater (rivers, lakes) is considered a very limited resource, even though "most of the Earth is covered in water."</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 3</div>
+      <div class="wb-qtext">Draw a fully labelled diagram of the water cycle, showing evaporation, condensation, precipitation, collection/runoff, and infiltration.<br>
+      (a) Identify the main source of energy that drives evaporation.<br>
+      (b) Explain, in terms of particle behaviour, what happens to water molecules during evaporation and during condensation.</div>
+      <div style="margin-top:14px;height:110px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 4</div>
+      <div class="wb-qtext">(a) Explain why water is described as the "universal solvent," referring to the polarity of the water molecule.<br>
+      (b) Give one example each of how this solvent property is important in (i) a biological process and (ii) an industrial/chemical process.</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5</div>
+      <div class="wb-qtext">South Africa is described as a "water-scarce country."<br>
+      (a) Give two reasons why South Africa has limited natural water resources compared to many other countries.<br>
+      (b) Name two ways South Africa supplements its water supply.<br>
+      (c) Explain what is meant by "water hardness" and describe one practical problem it causes in households.<br>
+      (d) Briefly describe the main steps of municipal water treatment, in order.</div>
+      <div style="margin-top:14px;height:130px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== CURRICULUM TOGGLE =====
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'National Senior Certificate':'Independent Examinations Board';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ===== PRACTICE =====
+const correctAnswers = {1:3, 2:2, 3:1, 4:1, 5:1, 6:1, i1:1, i2:2};
+const answered = {};
+let score = 0;
+
+function checkAns(qNum, chosenIdx, fbId){
+  if(answered[qNum]) return;
+  answered[qNum] = true;
+  const isCorrect = chosenIdx === correctAnswers[qNum];
+  if(isCorrect) score++;
+
+  let optsContainer;
+  if(typeof qNum === 'string' && qNum === 'i1') optsContainer = document.getElementById('iq1opts');
+  else if(typeof qNum === 'string' && qNum === 'i2') optsContainer = document.getElementById('iq2opts');
+  else optsContainer = document.getElementById('q'+qNum+'opts');
+
+  const opts = optsContainer.querySelectorAll('.mc-opt');
+  opts.forEach((opt,i)=>{
+    opt.disabled = true;
+    if(i === correctAnswers[qNum]) opt.classList.add('correct');
+    else if(i === chosenIdx && !isCorrect) opt.classList.add('wrong');
+  });
+
+  let fbEl;
+  if(typeof qNum === 'string' && qNum === 'i1') fbEl = document.getElementById('fbi1');
+  else if(typeof qNum === 'string' && qNum === 'i2') fbEl = document.getElementById('fbi2');
+  else fbEl = document.getElementById('fb'+qNum);
+
+  fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
+
+  const nscDone = [1,2,3,4,5,6].every(k => answered[k]);
+  if(nscDone){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = score + '/6';
+  }
+}
+
+// ===== SIMULATION: EARTH'S WATER BUDGET =====
+let canvas, ctx, dpr;
+let waterView = 'total';
+let simSegments = []; // current clickable segments {x0,x1,label,pct,fact,colour}
+
+const totalSegments = [
+  {label:'Oceans (saline)', pct:97, colour:'#3b82f6', fact:'Oceans hold about 97% of all water on Earth. This water is too salty for drinking, irrigation, or most industrial uses without expensive desalination.'},
+  {label:'Freshwater', pct:3, colour:'#86efac', fact:"Only around 2.5–3% of Earth's water is fresh. Click \"Freshwater Breakdown\" above to see how this tiny slice is further divided."}
+];
+
+const freshSegments = [
+  {label:'Ice caps & glaciers', pct:69, colour:'#e0f2fe', fact:'About 69% of all freshwater is frozen in ice caps and glaciers (e.g. Antarctica, Greenland) — locked away and not readily accessible for use.'},
+  {label:'Groundwater', pct:30, colour:'#60a5fa', fact:'Roughly 30% of freshwater is stored underground as groundwater in aquifers. This is a vital source for boreholes and wells, especially in dry regions like much of South Africa.'},
+  {label:'Surface water & atmosphere', pct:1, colour:'#c084fc', fact:'Less than 1% of freshwater exists as surface water in rivers, lakes, and wetlands, or as vapour in the atmosphere — yet this tiny fraction supplies most of the water we use directly day to day.'}
+];
+
+function initSim(){
+  if(!canvas){
+    canvas = document.getElementById('waterCanvas');
+    dpr = window.devicePixelRatio || 1;
+    resizeCanvas();
+    ctx = canvas.getContext('2d');
+    canvas.addEventListener('click', onCanvasClick);
+  }
+  setWaterView(waterView, null, true);
+}
+
+function resizeCanvas(){
+  const wrap = canvas.parentElement;
+  const w = wrap.clientWidth - 32;
+  const h = 320;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+}
+
+function setWaterView(view, btn, force){
+  if(view === waterView && !force) return;
+  waterView = view;
+  document.getElementById('viewTotal').classList.toggle('active', view==='total');
+  document.getElementById('viewFresh').classList.toggle('active', view==='fresh');
+  document.getElementById('waterTitle').textContent = view==='total' ? "Earth's Total Water Budget — Click a Segment" : "Freshwater Breakdown — Click a Segment";
+  document.getElementById('ro-seg').textContent = 'Click a segment';
+  document.getElementById('ro-pct').innerHTML = '—<span>%</span>';
+  document.getElementById('ro-fact').textContent = view==='total'
+    ? "Click on any coloured segment of the bar above to learn more about that part of Earth's water budget."
+    : "Click on any coloured segment to zoom into how Earth's tiny freshwater slice is divided up.";
+  drawSim();
+}
+
+function drawSim(){
+  if(!ctx) return;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = canvas.width / dpr;
+  const H = canvas.height / dpr;
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.fillStyle = '#040710';
+  ctx.fillRect(0, 0, W, H);
+
+  drawBudgetBar(W, H);
+}
+
+function drawBudgetBar(W, H){
+  const segments = waterView === 'total' ? totalSegments : freshSegments;
+  const barX = 40;
+  const barW = W - 80;
+  const barY = H/2 - 50;
+  const barH = 100;
+
+  simSegments = [];
+  let xCursor = barX;
+
+  ctx.font = 'bold 12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+
+  segments.forEach((seg, i)=>{
+    const segW = (seg.pct/100) * barW;
+    ctx.fillStyle = seg.colour;
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(xCursor, barY, Math.max(segW,1), barH);
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(4,7,16,0.8)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(xCursor, barY, Math.max(segW,1), barH);
+
+    // label inside or above segment depending on width
+    const midX = xCursor + segW/2;
+    if(segW > 60){
+      ctx.fillStyle = '#040710';
+      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      ctx.fillText(seg.pct + '%', midX, barY + barH/2 + 4);
+    }
+    // label below bar
+    ctx.fillStyle = 'rgba(210,218,245,0.7)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    const labelY = barY + barH + 20 + (i%2)*16;
+    ctx.fillText(seg.label, Math.min(Math.max(midX, barX+40), barX+barW-40), labelY);
+    // connecting tick
+    ctx.strokeStyle = 'rgba(210,218,245,0.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(midX, barY+barH);
+    ctx.lineTo(Math.min(Math.max(midX, barX+40), barX+barW-40), labelY-10);
+    ctx.stroke();
+
+    simSegments.push({x0:xCursor, x1:xCursor+segW, seg});
+    xCursor += segW;
+  });
+
+  // Title above bar
+  ctx.fillStyle = 'rgba(210,218,245,0.55)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(waterView==='total' ? "100% of Earth's water" : "100% of Earth's freshwater", W/2, barY - 16);
+}
+
+function onCanvasClick(e){
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = (canvas.width/dpr) / rect.width;
+  const clickX = (e.clientX - rect.left) * scaleX;
+
+  for(const s of simSegments){
+    if(clickX >= s.x0 && clickX <= s.x1){
+      document.getElementById('ro-seg').textContent = s.seg.label;
+      document.getElementById('ro-pct').innerHTML = s.seg.pct + '<span>%</span>';
+      document.getElementById('ro-fact').textContent = s.seg.fact;
+      break;
+    }
+  }
+}
+
+window.addEventListener('resize', ()=>{
+  if(canvas){
+    resizeCanvas();
+    ctx = canvas.getContext('2d');
+    drawSim();
+  }
+});
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+</body>
+</html>
