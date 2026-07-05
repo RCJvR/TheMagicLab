@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNA — The Code of Life — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .strand-row{display:flex;align-items:center;justify-content:center;gap:6px;margin:6px 0;font-family:var(--fm);font-size:15px}
+    .base-slot{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03);color:var(--muted)}
+    .base-slot.given{color:#fff}
+    .base-slot.correct{background:rgba(34,197,94,.20);border-color:rgba(34,197,94,.45);color:#86efac}
+    .base-slot.wrong{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.40);color:#fca5a5}
+    .base-picker{display:flex;justify-content:center;gap:10px;margin-top:16px}
+    .base-btn{font-family:var(--fm);font-weight:800;font-size:16px;width:46px;height:46px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;transition:all 140ms}
+    .base-btn:hover:not(:disabled){background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.35)}
+    .base-btn:disabled{opacity:.4;cursor:default}
+    .dna-status{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
+    .dna-status.ok{color:#86efac}
+    .dna-status.bad{color:#fca5a5}
+    .next-btn{display:block;margin:16px auto 0;font-family:var(--fd);font-size:12.5px;font-weight:700;padding:9px 20px;border-radius:9px;border:none;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;cursor:pointer}
+    .next-btn:disabled{opacity:.35;cursor:default}
+    .progress-track{max-width:420px;margin:0 auto;display:flex;gap:5px}
+    .progress-dot{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.10)}
+    .progress-dot.done{background:#22c55e}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .base-btn{width:38px;height:38px;font-size:14px}
+      .base-slot{width:28px;height:28px;font-size:13px}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 12</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 · Life at Molecular, Cellular &amp; Tissue Level · Lesson 1</div>
+  <h1 class="lesson-title">DNA — The Code of Life</h1>
+  <p class="lesson-sub">Every cell in your body carries the same instruction manual, written in a four-letter code. Discover how DNA is built, how it copies itself perfectly, and how its code is read to build proteins.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="dna" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>The structure of DNA</h2>
+    <p><strong>Deoxyribonucleic acid (DNA)</strong> is the molecule that carries the genetic instructions for building and running every living organism. DNA is shaped like a twisted ladder — a <strong>double helix</strong> — made of two strands winding around each other.</p>
+    <p>Each strand is a chain of repeating units called <strong>nucleotides</strong>. Every nucleotide has three parts:</p>
+    <ul>
+      <li>A <strong>deoxyribose sugar</strong> (a 5-carbon sugar)</li>
+      <li>A <strong>phosphate group</strong></li>
+      <li>A <strong>nitrogenous base</strong> — either adenine (A), thymine (T), guanine (G), or cytosine (C)</li>
+    </ul>
+    <p>The sugar and phosphate groups alternate to form the "backbone" (the sides of the ladder), while the nitrogenous bases point inward and form the "rungs".</p>
+
+    <h2>Complementary base pairing</h2>
+    <p>The two strands of the double helix are held together by <strong>hydrogen bonds</strong> between the bases, and the bases only pair up in specific combinations — this is called <strong>complementary base pairing</strong>:</p>
+    <div class="key-fact">A ⇌ T &nbsp;(2 hydrogen bonds)&nbsp;&nbsp;|&nbsp;&nbsp; G ⇌ C &nbsp;(3 hydrogen bonds)</div>
+    <p>Because of this strict pairing rule, if you know the sequence of bases on one strand, you can always work out the sequence on the other — the strands are complementary, not identical.</p>
+
+    <h2>Packaging DNA — chromosomes, genes and alleles</h2>
+    <p>A DNA molecule is extremely long, so it is tightly coiled and packaged around proteins to form a <strong>chromosome</strong>. A section of DNA that codes for a particular characteristic (such as eye colour) is called a <strong>gene</strong>. Different versions of the same gene are called <strong>alleles</strong> — for example, an allele for brown eyes and an allele for blue eyes are both versions of the eye-colour gene, found at the same position (locus) on homologous chromosomes.</p>
+    <div class="callout"><strong>Analogy:</strong> if a chromosome is a book, a gene is one sentence in it giving an instruction, and an allele is a particular wording of that sentence.</div>
+
+    <h2>DNA replication</h2>
+    <p>Before a cell divides, its DNA must be copied so that each new cell receives a complete set of instructions. This process is called <strong>DNA replication</strong>, and it is <strong>semi-conservative</strong>:</p>
+    <ul>
+      <li>The double helix "unzips" as the hydrogen bonds between bases break, separating the two strands.</li>
+      <li>Each original strand acts as a <strong>template</strong>.</li>
+      <li>Free nucleotides pair up with the exposed bases on each template strand, following the A-T and G-C rule.</li>
+      <li>Two new double helices are formed, each containing <strong>one original (old) strand and one newly-made strand</strong> — hence "semi-conservative".</li>
+    </ul>
+    <p>Accurate replication is essential — it ensures that when a cell divides (during mitosis or meiosis), every daughter cell receives an identical, complete copy of the genetic information.</p>
+
+    <h2>From gene to protein: the genetic code</h2>
+    <p>Genes don't build the body directly — they carry the instructions for making <strong>proteins</strong>, which do the actual work in cells (as enzymes, structural components, hormones, and more). This happens in two main steps:</p>
+    <ul>
+      <li><strong>Transcription</strong> — in the nucleus, the DNA code for a gene is copied into a molecule of <strong>messenger RNA (mRNA)</strong>, which then leaves the nucleus.</li>
+      <li><strong>Translation</strong> — at a ribosome, the mRNA sequence is "read" three bases at a time. Each group of three bases is called a <strong>codon</strong>, and each codon specifies one particular amino acid. Amino acids are joined together in the order specified by the codons, building up a chain that folds into a functional protein.</li>
+    </ul>
+    <div class="callout">Gene → mRNA (transcription) → protein (translation). This flow of information — DNA to RNA to protein — underlies how your genes determine your characteristics.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Base-Pairing Challenge</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">A template DNA strand is shown. Pick the correct complementary base for the highlighted position, following the A-T / G-C rule.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Template strand → complementary strand</h3>
+      <div class="strand-row" id="templateRow"></div>
+      <div class="strand-row" id="answerRow"></div>
+      <div class="base-picker" id="basePicker"></div>
+      <div class="dna-status" id="dnaStatus">Pick the base that pairs with the highlighted letter.</div>
+      <div style="display:flex;justify-content:center;gap:14px;align-items:center;margin-top:14px">
+        <div class="progress-track" id="progressTrack"></div>
+      </div>
+      <button class="next-btn" id="nextRoundBtn" onclick="nextRound()" disabled>New Strand →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Name the three components of a DNA nucleotide, and state which two form the "backbone" of the double helix.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">A section of a DNA template strand reads: A T T G C A. Give the sequence of bases on the complementary strand.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Distinguish between a gene, an allele, and a chromosome.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Describe what is meant by "semi-conservative replication", and explain why accurate DNA replication is important before cell division.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Briefly explain the difference between transcription and translation in protein synthesis.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   BASE-PAIRING CHALLENGE
+═══════════════════════════════════════════════ */
+const COMPLEMENT = {A:'T', T:'A', G:'C', C:'G'};
+const BASES = ['A','T','G','C'];
+const ROUNDS = 6;
+let round = 0;
+let template = [];
+let answers = [];
+let userAnswers = [];
+let activeIdx = 0;
+let roundLocked = false;
+
+function randomStrand(len){
+  const arr = [];
+  for(let i=0;i<len;i++) arr.push(BASES[Math.floor(Math.random()*4)]);
+  return arr;
+}
+
+function buildProgress(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = Array.from({length:ROUNDS}).map((_,i)=>`<div class="progress-dot${i<round?' done':''}" id="pd${i}"></div>`).join('');
+}
+
+function startRound(){
+  template = randomStrand(6);
+  answers = template.map(b=>COMPLEMENT[b]);
+  userAnswers = new Array(6).fill(null);
+  activeIdx = 0;
+  roundLocked = false;
+  renderStrands();
+  renderPicker();
+  document.getElementById('dnaStatus').className = 'dna-status';
+  document.getElementById('dnaStatus').textContent = 'Pick the base that pairs with the highlighted letter.';
+  document.getElementById('nextRoundBtn').disabled = true;
+  buildProgress();
+}
+
+function renderStrands(){
+  document.getElementById('templateRow').innerHTML = template.map((b,i)=>
+    `<div class="base-slot given" style="${i===activeIdx?'outline:2px solid #86efac':''}">${b}</div>`
+  ).join('');
+  document.getElementById('answerRow').innerHTML = userAnswers.map((b,i)=>{
+    let cls = 'base-slot';
+    if (b) cls += (b===answers[i] ? ' correct' : ' wrong');
+    return `<div class="${cls}">${b || '?'}</div>`;
+  }).join('');
+}
+
+function renderPicker(){
+  document.getElementById('basePicker').innerHTML = BASES.map(b=>
+    `<button class="base-btn" onclick="pickBase('${b}')">${b}</button>`
+  ).join('');
+}
+
+function pickBase(b){
+  if (roundLocked || activeIdx>=6) return;
+  userAnswers[activeIdx] = b;
+  const correct = b === answers[activeIdx];
+  const status = document.getElementById('dnaStatus');
+  if (correct){
+    status.className = 'dna-status ok';
+    status.textContent = `Correct! ${template[activeIdx]} pairs with ${b}.`;
+    activeIdx++;
+  } else {
+    status.className = 'dna-status bad';
+    status.textContent = `Not quite — ${template[activeIdx]} pairs with ${answers[activeIdx]}, not ${b}. Try the next one.`;
+    userAnswers[activeIdx] = b;
+    activeIdx++;
+  }
+  renderStrands();
+  if (activeIdx >= 6){
+    roundLocked = true;
+    document.getElementById('nextRoundBtn').disabled = false;
+    const correctCount = userAnswers.filter((b,i)=>b===answers[i]).length;
+    status.className = correctCount===6 ? 'dna-status ok' : 'dna-status bad';
+    status.textContent = `Strand complete: ${correctCount}/6 correct. Click "New Strand" to try another.`;
+    if (round < ROUNDS){
+      const dot = document.getElementById('pd'+round);
+      if (dot) dot.classList.add('done');
+    }
+  }
+}
+
+function nextRound(){
+  round = Math.min(round+1, ROUNDS);
+  if (round >= ROUNDS){
+    round = 0; // loop back for continued practice
+  }
+  startRound();
+}
+
+startRound();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Which three components make up a single DNA nucleotide?',opts:['A base, an amino acid, and a phosphate','A deoxyribose sugar, a phosphate group, and a nitrogenous base','A ribose sugar, a codon, and a base','A gene, an allele, and a chromosome'],ans:1,exp:'Each nucleotide consists of a deoxyribose sugar, a phosphate group, and one of four nitrogenous bases (A, T, G, or C).'},
+  {text:'Which pair of bases is held together by three hydrogen bonds?',opts:['A and T','G and C','A and G','T and C'],ans:1,exp:'Guanine and cytosine (G-C) form three hydrogen bonds, while adenine and thymine (A-T) form only two.'},
+  {text:'What does "semi-conservative" replication mean?',opts:['Both new DNA molecules are made entirely of new material','Each new DNA molecule contains one original strand and one newly-made strand','DNA is only partly copied','Replication only happens in half the cells'],ans:1,exp:'In semi-conservative replication, the double helix unzips and each original (template) strand pairs with new nucleotides, so each resulting molecule has one old and one new strand.'},
+  {text:'What is a gene?',opts:['A different version of the same characteristic','A section of DNA that codes for a particular characteristic','The point where chromatids join','A type of protein'],ans:1,exp:'A gene is a section of DNA that codes for a specific characteristic. Different versions of a gene are called alleles.'},
+  {text:'During translation, what does a codon (a group of three mRNA bases) specify?',opts:['A whole protein','A single amino acid','A whole chromosome','A nucleotide'],ans:1,exp:'Each codon (three-base sequence) on the mRNA specifies one particular amino acid to be added to the growing protein chain.'},
+  {text:'Where does transcription take place, and what molecule is produced?',opts:['At the ribosome; a protein is produced','In the nucleus; mRNA is produced','In the mitochondria; DNA is produced','At the cell membrane; an enzyme is produced'],ans:1,exp:'Transcription occurs in the nucleus, where the DNA code of a gene is copied into a molecule of messenger RNA (mRNA), which then moves to a ribosome for translation.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

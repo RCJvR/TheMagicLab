@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genetics and Inheritance — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-outer{max-width:960px}
+    .punnett-controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+    .parent-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .parent-card label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+    .geno-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .geno-btn{font-family:var(--fm);font-size:13px;font-weight:700;padding:8px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:rgba(210,218,245,.75);cursor:pointer;transition:all 140ms}
+    .geno-btn:hover{background:rgba(34,197,94,.10);color:var(--text)}
+    .geno-btn.active{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.45);color:#86efac}
+    .punnett-layout{display:grid;grid-template-columns:1fr 300px;gap:22px}
+    .punnett-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:20px}
+    .punnett-grid{display:grid;grid-template-columns:44px repeat(2,1fr);grid-template-rows:44px repeat(2,1fr);gap:6px;max-width:340px;margin:0 auto}
+    .pg-cell{display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:700;border-radius:8px;min-height:64px;font-size:15px}
+    .pg-corner{background:transparent}
+    .pg-head{background:rgba(255,255,255,.06);color:#86efac;font-size:17px}
+    .pg-result{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#fff;flex-direction:column;gap:2px}
+    .pg-result .g{font-size:16px}
+    .pg-result .p{font-size:9px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+    .results-panel{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .results-panel h4{font-size:12px;font-weight:800;color:#fff;margin-bottom:10px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    .ratio-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(210,218,245,.80)}
+    .ratio-row:last-child{border-bottom:none}
+    .ratio-row .pct{color:#86efac;font-weight:700;font-family:var(--fm)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.punnett-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .punnett-controls{grid-template-columns:1fr}
+      .punnett-layout{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 12</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 · Diversity, Change &amp; Continuity · Lesson 3</div>
+  <h1 class="lesson-title">Genetics and Inheritance</h1>
+  <p class="lesson-sub">Mendel's laws explain how traits pass from parents to offspring. Build your own crosses with the Punnett square generator and see the genotype and phenotype ratios calculated live.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="grid-3x3" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Mendelian genetics — key vocabulary</h2>
+    <p>Gregor Mendel's experiments with pea plants established the basic rules of inheritance. Understanding these terms is essential:</p>
+    <ul>
+      <li><strong>Gene</strong> — a section of DNA that codes for a particular characteristic.</li>
+      <li><strong>Allele</strong> — a different version of the same gene (e.g. an allele for tallness vs an allele for shortness).</li>
+      <li><strong>Genotype</strong> — the genetic makeup of an organism for a trait (e.g. Tt).</li>
+      <li><strong>Phenotype</strong> — the observable physical characteristic resulting from the genotype (e.g. tall).</li>
+      <li><strong>Homozygous</strong> — having two identical alleles for a gene (e.g. TT or tt).</li>
+      <li><strong>Heterozygous</strong> — having two different alleles for a gene (e.g. Tt).</li>
+      <li><strong>Dominant</strong> allele — masks the effect of a recessive allele when present (written as a capital letter, e.g. T); only one copy is needed to show the dominant phenotype.</li>
+      <li><strong>Recessive</strong> allele — only shows its effect in the phenotype when two copies are present (written as a lowercase letter, e.g. t).</li>
+    </ul>
+
+    <h2>Monohybrid crosses and the Punnett square</h2>
+    <p>A <strong>monohybrid cross</strong> tracks the inheritance of a single gene. A <strong>Punnett square</strong> is a grid used to predict the possible genotypes (and their probabilities) of offspring from a cross between two parents.</p>
+    <div class="callout"><strong>Worked example:</strong> Cross Tt (heterozygous tall) × Tt (heterozygous tall), where T = tall (dominant), t = short (recessive). Each parent can contribute either a T or a t gamete. The resulting offspring genotype ratio is 1 TT : 2 Tt : 1 tt, giving a phenotype ratio of 3 tall : 1 short.</div>
+
+    <h2>Incomplete dominance and codominance</h2>
+    <p>Not all alleles show simple dominant/recessive inheritance:</p>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Incomplete dominance</th><th>Codominance</th></tr></thead>
+      <tbody>
+        <tr><td>Heterozygous phenotype</td><td>A blended, intermediate phenotype</td><td>Both alleles fully and separately expressed</td></tr>
+        <tr><td>Example</td><td>Red (RR) × White (WW) snapdragon flowers → Pink (RW) offspring</td><td>Human ABO blood groups — allele I<sup>A</sup> and I<sup>B</sup> are both expressed in genotype I<sup>A</sup>I<sup>B</sup>, giving blood type AB</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Sex-linked inheritance</h2>
+    <p>Some genes are carried on the sex chromosomes (X and Y) rather than the other ("autosomal") chromosomes. Because the Y chromosome is much smaller and carries far fewer genes than the X chromosome, X-linked recessive conditions (such as <strong>red-green colour blindness</strong> and <strong>haemophilia</strong>) are much more common in males (XY) than females (XX) — a male only needs one copy of the recessive allele (on his single X chromosome) to show the condition, while a female needs two copies (one on each X chromosome) to be affected. A female with only one copy is a <strong>carrier</strong> — she does not show the condition but can pass the allele to her children.</p>
+    <div class="callout"><strong>Human genetic disorders:</strong> conditions like haemophilia, colour blindness, and Down syndrome are real-world applications of genetics — understanding inheritance patterns helps with genetic counselling and predicting the probability that a couple's children will inherit a condition.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Punnett Square Generator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Choose each parent's genotype for a gene where A = dominant allele, a = recessive allele. The grid and ratios update live.</p>
+  <div class="explore-outer">
+    <div class="punnett-controls">
+      <div class="parent-card">
+        <label>Parent 1 genotype</label>
+        <div class="geno-btns" id="p1btns"></div>
+      </div>
+      <div class="parent-card">
+        <label>Parent 2 genotype</label>
+        <div class="geno-btns" id="p2btns"></div>
+      </div>
+    </div>
+    <div class="punnett-layout">
+      <div class="punnett-wrap">
+        <div class="punnett-grid" id="punnettGrid"></div>
+      </div>
+      <div class="results-panel">
+        <h4>Genotype ratio</h4>
+        <div id="genoRatios"></div>
+        <h4 style="margin-top:16px">Phenotype ratio</h4>
+        <div id="phenoRatios"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (4 marks)</div><div class="wb-qtext">Define the following terms: genotype, phenotype, homozygous, heterozygous.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (4 marks)</div><div class="wb-qtext">Draw a Punnett square for a cross between two heterozygous tall pea plants (Tt × Tt), where T (tall) is dominant over t (short). Give the genotype ratio and the phenotype ratio of the offspring.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Distinguish between incomplete dominance and codominance, giving an example of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Explain why X-linked recessive disorders (such as red-green colour blindness) are more common in males than in females.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain what is meant by a "carrier" of a genetic disorder.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   PUNNETT SQUARE GENERATOR
+═══════════════════════════════════════════════ */
+const GENOTYPES = ['AA','Aa','aa'];
+let p1 = 'Aa', p2 = 'Aa';
+
+function buildGenoButtons(){
+  document.getElementById('p1btns').innerHTML = GENOTYPES.map(g=>`<button class="geno-btn" id="p1_${g}" onclick="setParent(1,'${g}')">${g}</button>`).join('');
+  document.getElementById('p2btns').innerHTML = GENOTYPES.map(g=>`<button class="geno-btn" id="p2_${g}" onclick="setParent(2,'${g}')">${g}</button>`).join('');
+  refreshButtons();
+}
+function setParent(num,g){
+  if (num===1) p1=g; else p2=g;
+  refreshButtons();
+  renderPunnett();
+}
+function refreshButtons(){
+  GENOTYPES.forEach(g=>{
+    document.getElementById('p1_'+g).classList.toggle('active', p1===g);
+    document.getElementById('p2_'+g).classList.toggle('active', p2===g);
+  });
+}
+
+function renderPunnett(){
+  const alleles1 = p1.split(''); // e.g. ['A','A']
+  const alleles2 = p2.split('');
+
+  // Build 2x2 grid: rows = alleles1, cols = alleles2
+  const grid = document.getElementById('punnettGrid');
+  let html = `<div class="pg-cell pg-corner"></div>`;
+  alleles2.forEach(a=>{ html += `<div class="pg-cell pg-head">${a}</div>`; });
+  alleles1.forEach(rowAllele=>{
+    html += `<div class="pg-cell pg-head">${rowAllele}</div>`;
+    alleles2.forEach(colAllele=>{
+      const combo = sortAlleles(rowAllele+colAllele);
+      html += `<div class="pg-cell pg-result"><span class="g">${combo}</span><span class="p">${phenoLabel(combo)}</span></div>`;
+    });
+  });
+  grid.innerHTML = html;
+
+  // tally genotypes
+  const tally = {};
+  alleles1.forEach(a1=>{
+    alleles2.forEach(a2=>{
+      const combo = sortAlleles(a1+a2);
+      tally[combo] = (tally[combo]||0)+1;
+    });
+  });
+  const total = alleles1.length*alleles2.length;
+
+  const genoDiv = document.getElementById('genoRatios');
+  genoDiv.innerHTML = Object.keys(tally).sort().map(g=>{
+    const pct = Math.round(tally[g]/total*100);
+    return `<div class="ratio-row"><span>${g}</span><span class="pct">${tally[g]}/${total} (${pct}%)</span></div>`;
+  }).join('');
+
+  // tally phenotypes
+  const phenoTally = {};
+  Object.keys(tally).forEach(g=>{
+    const label = phenoLabel(g);
+    phenoTally[label] = (phenoTally[label]||0) + tally[g];
+  });
+  const phenoDiv = document.getElementById('phenoRatios');
+  phenoDiv.innerHTML = Object.keys(phenoTally).map(label=>{
+    const pct = Math.round(phenoTally[label]/total*100);
+    return `<div class="ratio-row"><span>${label}</span><span class="pct">${phenoTally[label]}/${total} (${pct}%)</span></div>`;
+  }).join('');
+}
+function sortAlleles(s){
+  // capital (dominant) letters sort first, e.g. "aA" -> "Aa"
+  return s.split('').sort((x,y)=>{
+    const xd = x===x.toUpperCase(), yd = y===y.toUpperCase();
+    if (xd && !yd) return -1;
+    if (!xd && yd) return 1;
+    return 0;
+  }).join('');
+}
+function phenoLabel(genotype){
+  return genotype.includes('A') ? 'Dominant trait' : 'Recessive trait';
+}
+
+buildGenoButtons();
+renderPunnett();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is the difference between a gene and an allele?',opts:['They mean exactly the same thing','A gene is a section of DNA coding for a trait; an allele is a different version of that gene','An allele is always dominant, a gene is always recessive','A gene only exists in plants'],ans:1,exp:'A gene codes for a particular characteristic, while an allele is one of the different versions that gene can come in (e.g. a "tall" allele vs a "short" allele of the height gene).'},
+  {text:'In a cross between two heterozygous (Tt × Tt) pea plants, where T (tall) is dominant, what is the expected phenotype ratio of the offspring?',opts:['1 tall : 1 short','3 tall : 1 short','1 tall : 3 short','All offspring will be tall'],ans:1,exp:'A Tt × Tt cross gives a genotype ratio of 1 TT : 2 Tt : 1 tt. Since T is dominant, TT and Tt are both tall, giving a phenotype ratio of 3 tall : 1 short.'},
+  {text:'What is codominance?',opts:['When one allele completely masks another','When both alleles in a heterozygote are fully and separately expressed in the phenotype','When a gene has only one allele','When alleles blend to form an intermediate phenotype'],ans:1,exp:'In codominance, both alleles are fully expressed in the phenotype at the same time — for example, in the AB blood group, both the IA and IB alleles are expressed.'},
+  {text:'Red (RR) snapdragons crossed with white (WW) snapdragons produce pink (RW) offspring. What form of inheritance is this?',opts:['Codominance','Sex-linked inheritance','Incomplete dominance','Simple dominant/recessive inheritance'],ans:2,exp:'This is incomplete dominance — the heterozygous phenotype (pink) is a blend, intermediate between the two homozygous phenotypes (red and white).'},
+  {text:'Why are X-linked recessive disorders like colour blindness more common in males than females?',opts:['Males have two X chromosomes','A male only needs one copy of the recessive allele (on his single X) to be affected, while a female needs two copies','Females cannot carry X-linked alleles','Colour blindness is not linked to any chromosome'],ans:1,exp:'Males (XY) only have one X chromosome, so a single recessive allele on it will be expressed. Females (XX) need the recessive allele on both X chromosomes to show the condition.'},
+  {text:'A female with genotype X^A X^a for an X-linked recessive condition, who does not show symptoms, is best described as a:',opts:['Homozygous dominant','Carrier','Homozygous recessive','Unaffected non-carrier'],ans:1,exp:'A heterozygous female (X^A X^a) does not show the recessive condition herself, but carries the recessive allele and can pass it on to her offspring — she is a carrier.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

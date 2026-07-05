@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meiosis — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .phase-label{text-align:center;margin-top:10px}
+    .phase-name{font-weight:800;font-size:17px;color:#86efac;letter-spacing:-0.01em}
+    .phase-desc{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:560px;margin-inline:auto;line-height:1.6}
+    .playbar{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px 18px}
+    .play-btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:9px 18px;border-radius:9px;border:none;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;cursor:pointer;flex-shrink:0}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .stage-pill{font-family:var(--fm);font-size:10px;font-weight:700;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--muted);flex-shrink:0;white-space:nowrap}
+    .stage-pill.m1{background:rgba(96,165,250,.14);color:#93c5fd}
+    .stage-pill.m2{background:rgba(251,191,36,.14);color:#fde047}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .playbar{flex-wrap:wrap}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Life Sciences · Gr 12</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 12 · Life at Molecular, Cellular &amp; Tissue Level · Lesson 2</div>
+  <h1 class="lesson-title">Meiosis</h1>
+  <p class="lesson-sub">Sexual reproduction needs sex cells with half the usual number of chromosomes. Step through meiosis I and II to see how chromosome number is halved — and how genetic variation is created along the way.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-branch" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Why meiosis is needed</h2>
+    <p>Body (somatic) cells are <strong>diploid</strong> — they contain two sets of chromosomes (2n), one set inherited from each parent, arranged in homologous pairs. If sex cells (gametes) were also diploid, fertilisation would double the chromosome number every generation.</p>
+    <p><strong>Meiosis</strong> solves this problem: it is a type of cell division that halves the chromosome number, producing <strong>haploid</strong> (n) gametes — sperm and egg cells in animals. When a haploid sperm fertilises a haploid egg, the diploid number is restored in the offspring.</p>
+    <div class="callout">Meiosis involves <strong>two</strong> divisions — Meiosis I and Meiosis II — producing <strong>four haploid daughter cells</strong> from one diploid parent cell.</div>
+
+    <h2>Meiosis I — homologous pairs separate</h2>
+    <p>Meiosis I is the "reduction division", where chromosome number is halved:</p>
+    <ul>
+      <li>Homologous chromosomes (one from each parent) pair up tightly — this is called <strong>synapsis</strong>, forming a structure of four chromatids (a bivalent/tetrad).</li>
+      <li>While paired, non-sister chromatids can exchange segments of DNA in a process called <strong>crossing over</strong>, creating new combinations of alleles — a major source of <strong>genetic variation</strong>.</li>
+      <li>The homologous pairs then separate, with one whole chromosome (still as two sister chromatids) from each pair moving to opposite poles.</li>
+    </ul>
+    <p>The independent way each homologous pair lines up and separates (independent assortment) adds even more genetic variation between gametes.</p>
+
+    <h2>Meiosis II — sister chromatids separate</h2>
+    <p>Meiosis II happens in both resulting cells and closely resembles mitosis: the sister chromatids of each chromosome separate and move to opposite poles. No further DNA copying happens between Meiosis I and II.</p>
+    <div class="key-fact">1 diploid cell → (Meiosis I) → 2 haploid cells → (Meiosis II) → 4 haploid cells, each genetically different</div>
+
+    <h2>The result: four genetically varied gametes</h2>
+    <p>Meiosis produces four haploid daughter cells, each genetically different from one another and from the parent cell — due to crossing over and independent assortment. This genetic variation is the raw material for evolution by natural selection, and is why offspring resemble but are never identical to their parents (except identical twins).</p>
+
+    <h2>Mitosis vs meiosis</h2>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Mitosis</th><th>Meiosis</th></tr></thead>
+      <tbody>
+        <tr><td>Purpose</td><td>Growth, repair, asexual reproduction</td><td>Production of gametes for sexual reproduction</td></tr>
+        <tr><td>Number of divisions</td><td>One</td><td>Two (Meiosis I and II)</td></tr>
+        <tr><td>Daughter cells produced</td><td>2</td><td>4</td></tr>
+        <tr><td>Chromosome number</td><td>Same as parent cell (diploid → diploid)</td><td>Halved (diploid → haploid)</td></tr>
+        <tr><td>Genetic identity</td><td>Genetically identical to parent</td><td>Genetically varied (crossing over &amp; independent assortment)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Meiosis Stage Viewer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Scrub through Meiosis I and Meiosis II to see how homologous pairs and then sister chromatids separate, or press Play to animate it.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>One diploid cell (2n=4) undergoing meiosis</h3>
+      <canvas id="meioCanvas" height="300"></canvas>
+      <div class="phase-label">
+        <div class="phase-name" id="phaseName">Interphase</div>
+        <div class="phase-desc" id="phaseDesc">Chromosomes are copied, ready for two rounds of division.</div>
+      </div>
+    </div>
+    <div class="playbar">
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Play</button>
+      <input type="range" id="scrub" min="0" max="1000" value="0">
+      <span class="stage-pill" id="stagePill">SETUP</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (2 marks)</div><div class="wb-qtext">Distinguish between a haploid and a diploid cell.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Explain why meiosis is necessary for sexual reproduction, referring to chromosome number.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Describe what happens during Meiosis I, including the terms "synapsis" and "crossing over".</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain how crossing over and independent assortment both contribute to genetic variation among gametes.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">Draw up a table comparing mitosis and meiosis in terms of: number of divisions, number of daughter cells produced, and genetic identity of the daughter cells.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   MEIOSIS STAGE VIEWER
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('meioCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let playing = false;
+let progress = 0; // 0-1000
+
+const PHASES = [
+  {name:'Interphase',       from:0,   to:120, stage:'setup', desc:'Chromosomes are copied, each now made of two sister chromatids, ready for two rounds of division.'},
+  {name:'Prophase I',       from:120, to:260, stage:'m1',    desc:'Homologous chromosomes pair up (synapsis) and exchange segments of DNA — crossing over — creating new allele combinations.'},
+  {name:'Metaphase I',      from:260, to:400, stage:'m1',    desc:'Homologous pairs line up along the equator, oriented independently — the start of independent assortment.'},
+  {name:'Anaphase I',       from:400, to:540, stage:'m1',    desc:'Homologous chromosomes (each still two sister chromatids) separate and move to opposite poles.'},
+  {name:'Telophase I',      from:540, to:640, stage:'m1',    desc:'Two haploid cells form, each with half the chromosome number — but each chromosome still has two chromatids.'},
+  {name:'Metaphase II',     from:640, to:780, stage:'m2',    desc:'In each haploid cell, chromosomes (still paired chromatids) line up along the equator — much like mitosis.'},
+  {name:'Anaphase II',      from:780, to:900, stage:'m2',    desc:'Sister chromatids finally separate and move to opposite poles in each cell.'},
+  {name:'Telophase II',     from:900, to:1000,stage:'m2',    desc:'Four genetically different haploid daughter cells are produced in total.'},
+];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600;
+  H = 300;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function currentPhase(){
+  return PHASES.find(p=>progress>=p.from && progress<=p.to) || PHASES[PHASES.length-1];
+}
+function localT(phase){
+  return (progress - phase.from) / (phase.to - phase.from);
+}
+
+function togglePlay(){
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸ Pause' : '▶ Play';
+}
+document.getElementById('scrub').addEventListener('input', e=>{
+  progress = parseInt(e.target.value);
+  playing = false;
+  document.getElementById('playBtn').textContent = '▶ Play';
+});
+
+// two homologous pairs, distinguished by colour (maternal/paternal)
+const PAIRS = [
+  {colorA:'#86efac', colorB:'#60a5fa', angle:0.3},
+  {colorA:'#fde047', colorB:'#f472b6', angle:2.6},
+];
+
+function drawBivalent(cx, cy, colorA, colorB, spread){
+  // two homologous chromosomes (each an X of sister chromatids) close together, spread apart as crossing-over/alignment proceeds
+  [-1,1].forEach((dir,idx)=>{
+    const color = idx===0?colorA:colorB;
+    const ox = cx + dir*spread;
+    ctx.save();
+    ctx.strokeStyle = color; ctx.lineWidth = 2.6;
+    ctx.beginPath();
+    ctx.moveTo(ox-6,cy-9); ctx.lineTo(ox,cy); ctx.lineTo(ox-6,cy+9);
+    ctx.moveTo(ox+6,cy-9); ctx.lineTo(ox,cy); ctx.lineTo(ox+6,cy+9);
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+function drawSingleChromatidPair(cx,cy,color){
+  ctx.save();
+  ctx.strokeStyle = color; ctx.lineWidth = 2.6;
+  ctx.beginPath();
+  ctx.moveTo(cx-6,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx-6,cy+9);
+  ctx.moveTo(cx+6,cy-9); ctx.lineTo(cx,cy); ctx.lineTo(cx+6,cy+9);
+  ctx.stroke();
+  ctx.restore();
+}
+function drawSingleChromatid(cx,cy,color){
+  ctx.save();
+  ctx.strokeStyle = color; ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  ctx.moveTo(cx-5,cy-8); ctx.lineTo(cx+5,cy); ctx.lineTo(cx-5,cy+8);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawCellOutline(cx,cy,r){
+  ctx.beginPath();
+  ctx.ellipse(cx,cy,r,r*0.9,0,0,Math.PI*2);
+  ctx.strokeStyle='rgba(148,163,255,0.4)';
+  ctx.lineWidth=2;
+  ctx.stroke();
+}
+
+function drawScene(){
+  ctx.clearRect(0,0,W,H);
+  const phase = currentPhase();
+  const t = localT(phase);
+  document.getElementById('phaseName').textContent = phase.name;
+  document.getElementById('phaseDesc').textContent = phase.desc;
+  const pill = document.getElementById('stagePill');
+  pill.textContent = phase.stage==='m1' ? 'MEIOSIS I' : phase.stage==='m2' ? 'MEIOSIS II' : 'SETUP';
+  pill.className = 'stage-pill ' + (phase.stage==='m1'?'m1':phase.stage==='m2'?'m2':'');
+
+  const cx = W/2, cy = H/2;
+  const R = Math.min(W,H)*0.30;
+
+  if (phase.name==='Interphase'){
+    drawCellOutline(cx,cy,R);
+    PAIRS.forEach((p,i)=>{
+      const yoff = (i-0.5)*R*0.5;
+      drawBivalent(cx, cy+yoff, p.colorA, p.colorB, 8);
+    });
+  } else if (phase.name==='Prophase I'){
+    drawCellOutline(cx,cy,R);
+    PAIRS.forEach((p,i)=>{
+      const yoff = (i-0.5)*R*0.5;
+      const spread = 8 + t*6; // pairs draw close together (synapsis) then start to show crossing over
+      drawBivalent(cx, cy+yoff, p.colorA, p.colorB, spread);
+    });
+  } else if (phase.name==='Metaphase I'){
+    drawCellOutline(cx,cy,R);
+    PAIRS.forEach((p,i)=>{
+      const yoff = (i-0.5)*R*0.6;
+      drawBivalent(cx, cy+yoff, p.colorA, p.colorB, 14);
+    });
+    ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.setLineDash([4,3]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(cx,cy-R*0.8); ctx.lineTo(cx,cy+R*0.8); ctx.stroke();
+    ctx.setLineDash([]); ctx.restore();
+  } else if (phase.name==='Anaphase I'){
+    drawCellOutline(cx,cy,R);
+    const sep = t * R*0.55;
+    PAIRS.forEach((p,i)=>{
+      const yoff = (i-0.5)*R*0.6;
+      drawSingleChromatidPair(cx-sep, cy+yoff, p.colorA);
+      drawSingleChromatidPair(cx+sep, cy+yoff, p.colorB);
+    });
+  } else if (phase.name==='Telophase I'){
+    const sep = R*0.62;
+    [-1,1].forEach(dir=>{
+      drawCellOutline(cx+dir*sep*0.6, cy, R*0.6);
+      PAIRS.forEach((p,i)=>{
+        const yoff = (i-0.5)*R*0.4;
+        const color = dir<0 ? p.colorA : p.colorB;
+        drawSingleChromatidPair(cx+dir*sep*0.6, cy+yoff, color);
+      });
+    });
+  } else if (phase.name==='Metaphase II'){
+    const sep = R*0.62;
+    [-1,1].forEach(dir=>{
+      drawCellOutline(cx+dir*sep*0.6, cy, R*0.6);
+      PAIRS.forEach((p,i)=>{
+        const yoff = (i-0.5)*R*0.4;
+        const color = dir<0 ? p.colorA : p.colorB;
+        drawSingleChromatidPair(cx+dir*sep*0.6, cy+yoff, color);
+      });
+      ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.14)'; ctx.setLineDash([3,3]); ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(cx+dir*sep*0.6,cy-R*0.5); ctx.lineTo(cx+dir*sep*0.6,cy+R*0.5); ctx.stroke();
+      ctx.setLineDash([]); ctx.restore();
+    });
+  } else if (phase.name==='Anaphase II'){
+    const sep = R*0.62;
+    const split = t*R*0.3;
+    [-1,1].forEach(dir=>{
+      drawCellOutline(cx+dir*sep*0.6, cy, R*0.6);
+      PAIRS.forEach((p,i)=>{
+        const yoff = (i-0.5)*R*0.4;
+        const color = dir<0 ? p.colorA : p.colorB;
+        drawSingleChromatid(cx+dir*sep*0.6-split, cy+yoff, color);
+        drawSingleChromatid(cx+dir*sep*0.6+split, cy+yoff, color);
+      });
+    });
+  } else if (phase.name==='Telophase II'){
+    const positions = [-1.4,-0.5,0.5,1.4];
+    positions.forEach((px,idx)=>{
+      const gx = cx + px*R*0.6;
+      drawCellOutline(gx, cy, R*0.42);
+      const pairIdx = idx % 2;
+      const colorSet = idx<2 ? PAIRS.map(p=>p.colorA) : PAIRS.map(p=>p.colorB);
+      colorSet.forEach((color,i)=>{
+        const yoff = (i-0.5)*R*0.3;
+        drawSingleChromatid(gx, cy+yoff, color);
+      });
+    });
+  }
+}
+
+function loop(){
+  if (playing){
+    progress += 3;
+    if (progress > 1000) progress = 0;
+    document.getElementById('scrub').value = progress;
+  }
+  drawScene();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+loop();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'What is the main purpose of meiosis?',opts:['To repair damaged tissue','To produce genetically identical body cells','To produce haploid gametes for sexual reproduction','To copy DNA before mitosis'],ans:2,exp:'Meiosis produces haploid gametes (sex cells) with half the normal chromosome number, so that fertilisation restores the diploid number in offspring.'},
+  {text:'How many haploid daughter cells are produced from one diploid cell by the end of meiosis?',opts:['One','Two','Four','Eight'],ans:2,exp:'Meiosis involves two divisions (Meiosis I and II), producing four haploid daughter cells from a single diploid parent cell.'},
+  {text:'During which stage do homologous chromosomes pair up and exchange DNA segments?',opts:['Prophase I (crossing over)','Metaphase II','Anaphase II','Telophase II'],ans:0,exp:'During Prophase I, homologous chromosomes pair up (synapsis) and non-sister chromatids can exchange segments of DNA — crossing over — increasing genetic variation.'},
+  {text:'What separates during Anaphase I, and what separates during Anaphase II?',opts:['Sister chromatids in both','Homologous chromosomes in Anaphase I; sister chromatids in Anaphase II','Homologous chromosomes in both','Alleles in Anaphase I; genes in Anaphase II'],ans:1,exp:'In Anaphase I, whole homologous chromosomes (each still made of two sister chromatids) separate. In Anaphase II, the sister chromatids finally separate, similar to mitosis.'},
+  {text:'Which of the following is a key difference between mitosis and meiosis?',opts:['Mitosis produces four daughter cells; meiosis produces two','Meiosis halves the chromosome number; mitosis keeps it the same','Mitosis involves crossing over; meiosis does not','Meiosis only occurs in plants'],ans:1,exp:'Meiosis reduces the chromosome number from diploid to haploid, while mitosis produces daughter cells with the same chromosome number as the parent cell.'},
+  {text:'Besides crossing over, what other process during meiosis increases genetic variation among gametes?',opts:['DNA replication','Independent assortment of homologous pairs','Cytokinesis','Formation of the spindle fibres'],ans:1,exp:'Independent assortment — the random orientation of each homologous pair at Metaphase I — means each gamete gets a different combination of maternal and paternal chromosomes.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
