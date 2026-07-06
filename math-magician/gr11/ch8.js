@@ -304,6 +304,238 @@ MathMagician.registerChapter(8, {
           topic: "Tangent theorems & chord proofs"
         }
       ]
+    },
+    {
+      id: 802,
+      chapter: 8,
+      name: "Chord, radius & distance calculations",
+      fullName: "Using the perpendicular-bisector-of-a-chord theorem with Pythagoras to find radii, chord lengths, and distances from the centre",
+      lesson: {
+        heading: "Chord, radius, and distance calculations",
+        sub: "Chapter 8 · Topic 3",
+        body: `
+          <p>The theorem that <strong>the line from the centre perpendicular to a chord bisects the chord</strong> (and its converse) turns every chord problem into a right-angled triangle problem — solved with Pythagoras.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The right triangle hiding in every chord</div>
+            <p>
+              If O is the centre, OM ⊥ chord AB at M, then AM = MB = ½AB, and triangle OMA is right-angled at M.<br>
+              <span class="math">OA² = OM² + AM²</span>, i.e. <span class="math">r² = d² + (½c)²</span><br>
+              where r = radius, d = distance from centre to chord, c = chord length.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Find the radius</div>
+            <p>A chord of length 48 mm is 7 mm from the centre.<br>
+            r² = 7² + 24² = 49 + 576 = 625 → r = 25 mm</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Two chords, same circle</div>
+            <p>AB and CD are chords of a circle, centre O, with OM ⊥ AB and ON ⊥ CD. AB = 50 mm, OM = 40 mm... wait — recompute with consistent radius: r² = OM² + (AB/2)².<br>
+            If AB = 48 mm and OM = 7 mm: r = 25 mm (as above). Since ON ⊥ CD is also a radius-based right triangle, once r is known, CD = 2√(r² − ON²).</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Any two of {radius, half-chord, distance from centre} determine the third via Pythagoras — identify which two you're given, then solve for the unknown.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Chord–Radius–Distance Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter any two of radius r, chord length c, distance d from the centre — solve for the third using r² = d² + (c/2)².</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Radius r</div><input id="g11c8t3r" type="text" value="25" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Chord c</div><input id="g11c8t3c" type="text" value="48" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Distance d</div><input id="g11c8t3d" type="text" value="?" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c8t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <p style="margin:0 0 8px;color:rgba(221,225,240,0.45);font-size:12px;">Leave the unknown value as <code>?</code> — fill in the other two.</p>
+            <div id="g11c8t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4));}
+              function raw(id){return document.getElementById(id).value.trim();}
+              function calc(){
+                const out=document.getElementById('g11c8t3Out');
+                const rS=raw('g11c8t3r'),cS=raw('g11c8t3c'),dS=raw('g11c8t3d');
+                const isQ=s=>s==='?'||s==='';
+                const vals=[rS,cS,dS];
+                const unknownCount=vals.filter(isQ).length;
+                if(unknownCount!==1){out.innerHTML='<span style="color:#fca5a5;">Enter exactly two values and leave the third as ? .</span>';return;}
+                const r=isQ(rS)?NaN:parseFloat(rS), c=isQ(cS)?NaN:parseFloat(cS), d=isQ(dS)?NaN:parseFloat(dS);
+                if(isQ(rS)){
+                  if(isNaN(c)||isNaN(d)||c<=0||d<0){out.innerHTML='<span style="color:#fca5a5;">Enter valid positive chord and non-negative distance.</span>';return;}
+                  const half=c/2, newR=Math.sqrt(d*d+half*half);
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">r² = d² + (c/2)² = '+f(d*d)+' + '+f(half*half)+'</span><br><span style="color:#6ee7b7;">r = '+f(newR)+'</span>';
+                } else if(isQ(cS)){
+                  if(isNaN(r)||isNaN(d)||r<=0||d<0||d>=r){out.innerHTML='<span style="color:#fca5a5;">Enter valid radius and distance (distance must be less than radius).</span>';return;}
+                  const half=Math.sqrt(r*r-d*d), newC=2*half;
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">(c/2)² = r² − d² = '+f(r*r)+' − '+f(d*d)+'</span><br><span style="color:#6ee7b7;">c = '+f(newC)+'</span>';
+                } else {
+                  if(isNaN(r)||isNaN(c)||r<=0||c<=0||c>2*r){out.innerHTML='<span style="color:#fca5a5;">Enter valid radius and chord (chord cannot exceed the diameter).</span>';return;}
+                  const half=c/2, newD=Math.sqrt(r*r-half*half);
+                  out.innerHTML='<span style="color:rgba(221,225,240,0.50);">d² = r² − (c/2)² = '+f(r*r)+' − '+f(half*half)+'</span><br><span style="color:#6ee7b7;">d = '+f(newD)+'</span>';
+                }
+              }
+              ['g11c8t3r','g11c8t3c','g11c8t3d'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c8t3Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A chord of length 30 mm is 8 mm from the centre. The radius is:",
+          options: ["17 mm", "34 mm", "23 mm", "15 mm"],
+          answer: 0,
+          topic: "Chord, radius & distance calculations"
+        },
+        {
+          type: "input",
+          text: "Radius = 13 cm. A chord is 5 cm from the centre. Find the length of the chord (cm).",
+          answer: "24",
+          topic: "Chord, radius & distance calculations"
+        },
+        {
+          type: "mc",
+          text: "The perpendicular drawn from the centre of a circle to a chord always:",
+          options: ["Bisects the chord", "Doubles the chord", "Is equal to the chord", "Bisects the circle's circumference only if the chord is a diameter"],
+          answer: 0,
+          topic: "Chord, radius & distance calculations"
+        },
+        {
+          type: "input",
+          text: "A circle has radius 10 cm. Find the distance from the centre to a chord of length 12 cm (to 1 decimal place).",
+          answer: "8.0",
+          altAnswers: ["8"],
+          topic: "Chord, radius & distance calculations"
+        },
+        {
+          type: "mc",
+          text: "Two equal chords AB and CD lie in the same circle. Which statement must be true?",
+          options: ["They are equidistant from the centre", "They intersect inside the circle", "They subtend different angles at the centre", "One must be a diameter"],
+          answer: 0,
+          topic: "Chord, radius & distance calculations"
+        }
+      ]
+    },
+    {
+      id: 803,
+      chapter: 8,
+      name: "Circle geometry riders",
+      fullName: "Solving multi-step riders that combine several circle theorems, and writing formal proofs",
+      lesson: {
+        heading: "Solving circle geometry riders",
+        sub: "Chapter 8 · Topic 4",
+        body: `
+          <p>A <strong>rider</strong> is a multi-step problem where you must combine several circle theorems (and sometimes triangle angle properties) in sequence to find unknown angles or prove a result. This is the cognitive level most tested in Grade 11 and 12 examinations.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Strategy for riders</div>
+            <p>
+              1. Mark all given information on the diagram (equal angles, equal lengths, right angles, parallel lines).<br>
+              2. Look for: isosceles triangles (two radii), cyclic quadrilaterals, tangent-chord angles, and angles in the same segment.<br>
+              3. Work from what you know towards what you need — write a reason after every statement (e.g. "∠s in same segment", "opp ∠s cyclic quad", "tan ⊥ radius", "ext ∠ of cyclic quad").<br>
+              4. Chain small deductions — riders are rarely solved in one step.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Chaining theorems</div>
+            <p>O is the centre of circle ABC. Ô₁ = 2x (central angle on arc AB). MPT is a tangent at P.<br>
+            ∠ at circumference on arc AB = x (central angle = 2 × circumference angle).<br>
+            If ABPT is cyclic and ∠BAT is the tangent-chord angle at P equal to the inscribed angle in the alternate segment, further angle chasing gives every other marked angle in terms of x.</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Common rider "give-aways"</div>
+            <p>
+              • Two radii drawn to the same chord → isosceles triangle, base angles equal.<br>
+              • A tangent and a radius meeting → 90° angle to use in a right-angled triangle.<br>
+              • A cyclic quadrilateral hidden inside a bigger diagram → supplementary opposite angles.<br>
+              • Two chords/tangents from an external point → equal lengths or equal tangent-chord angles.
+            </p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always state the reason in the standard abbreviated form your teacher/marker expects — a correct angle without a reason usually loses marks.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Angle-Chase Rider Walkthrough</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the central angle Ô (in terms of a variable x, as a number of degrees per unit x) to see a full chained rider solved step by step.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">x (°)</div><input id="g11c8t4x" type="number" value="35" min="1" max="89" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c8t4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Chase angles</button>
+            </div>
+            <div id="g11c8t4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const x=gv('g11c8t4x');
+                const out=document.getElementById('g11c8t4Out');
+                if(isNaN(x)||x<=0||x>=90){out.innerHTML='<span style="color:#fca5a5;">Enter x strictly between 0° and 90°.</span>';return;}
+                const central=2*x;
+                const cyclicOpp=180-central;
+                const extAngle=central;
+                let html='<span style="color:rgba(221,225,240,0.50);">Step 1: ∠ at circumference = x = '+x+'° (given)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Step 2: central ∠O = 2 × x = '+central+'° (∠ at centre = 2 × ∠ at circumference)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Step 3: if this central angle sits inside cyclic quad ABPO-type figure, opposite ∠ = 180° − '+central+'° = '+cyclicOpp+'° (opp ∠s cyclic quad)</span><br>';
+                html+='<span style="color:#6ee7b7;">Step 4: exterior angle at the adjacent vertex = '+extAngle+'° (ext ∠ cyclic quad = int opp ∠)</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.45);font-size:12px;">This mirrors the chain of reasoning used in multi-step riders — each new angle depends on the one before it.</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c8t4x').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              document.getElementById('g11c8t4Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "In a rider, two radii OA and OB are drawn to chord AB. Triangle OAB is:",
+          options: ["Isosceles (OA = OB, both radii)", "Equilateral always", "Right-angled at O always", "Scalene"],
+          answer: 0,
+          topic: "Circle geometry riders"
+        },
+        {
+          type: "mc",
+          text: "O is the centre, Ô = 2x. The inscribed angle on the same arc, at the circumference, equals:",
+          options: ["x", "2x", "180 − 2x", "90 − x"],
+          answer: 0,
+          topic: "Circle geometry riders"
+        },
+        {
+          type: "input",
+          text: "ABCD is a cyclic quadrilateral with ∠A = 3y and ∠C = 2y + 30°. Solve for y.",
+          answer: "30",
+          topic: "Circle geometry riders"
+        },
+        {
+          type: "mc",
+          text: "The correct reason to give for 'opposite angles of a cyclic quadrilateral are supplementary' in a proof is:",
+          options: ["opp ∠s cyclic quad", "∠s in same segment", "tan ⊥ radius", "ext ∠ of triangle"],
+          answer: 0,
+          topic: "Circle geometry riders"
+        },
+        {
+          type: "mc",
+          text: "PT is a tangent at T, and TA is a chord. If the tangent-chord angle at T is 48°, the inscribed angle in the alternate segment is:",
+          options: ["48°", "96°", "132°", "42°"],
+          answer: 0,
+          topic: "Circle geometry riders"
+        },
+        {
+          type: "input",
+          text: "In a rider, ∠BAC = 40° (angle at circumference on arc BC) and ∠ACD = 25° (angle at circumference on arc AD, with ABCD cyclic and diagonals meeting inside). Using the exterior angle of triangle formed by the diagonals, find the angle between chords AC and BD, on the side containing ∠BAC and ∠ACD (i.e. the exterior angle of the triangle formed).",
+          answer: "65",
+          topic: "Circle geometry riders"
+        }
+      ]
     }
   ],
   workbook: {

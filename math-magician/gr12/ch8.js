@@ -193,6 +193,102 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "In the Pythagorean proof: AC² = AB · AD. If AB = 25 and AD = 9, find AC.", answer: "15", topic: "Similarity & Pythagorean theorem proofs" },
         { type: "mc", text: "△ABC ||| △PQR. If area of △ABC = 18 cm² and AB/PQ = 1/2, area of △PQR =", options: ["36 cm²", "72 cm²", "9 cm²", "4.5 cm²"], answer: 1, topic: "Similarity & Pythagorean theorem proofs" }
       ]
+    },
+    {
+      id: 802,
+      chapter: 8,
+      name: "Similar polygons & scale factor problems",
+      fullName: "Necessary and sufficient conditions for polygons to be similar, and scale-factor problems",
+      lesson: {
+        heading: "Similar polygons and scale factor problems",
+        sub: "Chapter 8 · Topic 3",
+        body: `
+          <p>Before proving triangles similar, Grade 12 revises exactly <strong>when two polygons</strong> (not just triangles) can be called similar.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Conditions for similar polygons</div>
+            <p>
+              Two polygons are similar if and only if:<br>
+              1. Their corresponding angles are equal, AND<br>
+              2. Their corresponding sides are in proportion.<br><br>
+              <strong>Both conditions are necessary</strong> for polygons with more than 3 sides — unlike triangles, where AA alone (equal angles) is already sufficient because the angle sum forces the sides into proportion.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Why triangles are special</div>
+            <p>
+              For triangles, equal angles (AA) automatically forces proportional sides — this is NOT true for quadrilaterals and other polygons.<br>
+              Example: a square and a non-square rectangle have all equal angles (90°) but are not similar unless their sides are also in the same ratio.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Scale factor</div>
+            <p>
+              The <strong>scale factor k</strong> is the ratio of corresponding lengths between similar figures.<br>
+              Lengths scale by k, areas scale by k², volumes scale by k³.<br><br>
+              To find missing lengths: multiply the corresponding original length by the scale factor.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>Two similar pentagons have corresponding sides 6 cm and 15 cm.<br>
+            Scale factor k = 15/6 = 2.5<br>
+            If the smaller pentagon has perimeter 40 cm and area 60 cm², the larger has:<br>
+            Perimeter = 40 × 2.5 = 100 cm<br>
+            Area = 60 × 2.5² = 60 × 6.25 = 375 cm²</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Common mistake</div>
+            <p>
+              Do NOT apply the linear scale factor directly to area or volume — always square it for area, cube it for volume.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Scale Factor Explorer</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two corresponding sides of similar polygons, plus a known perimeter/area/volume — scale the rest.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Side (small)</div><input id="g12c8t3s1" type="number" value="6" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Side (large)</div><input id="g12c8t3s2" type="number" value="15" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Perimeter (small)</div><input id="g12c8t3p1" type="number" value="40" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Area (small)</div><input id="g12c8t3a1" type="number" value="60" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c8t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Scale up</button>
+            </div>
+            <div id="g12c8t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const s1=gv('g12c8t3s1'),s2=gv('g12c8t3s2'),p1=gv('g12c8t3p1'),a1=gv('g12c8t3a1');
+                const out=document.getElementById('g12c8t3Out');
+                if(!s1||!s2||s1<=0||s2<=0){out.innerHTML='<span style="color:#fca5a5;">Enter both positive corresponding sides.</span>';return;}
+                const k=s2/s1;
+                let html='<span style="color:rgba(221,225,240,0.50);">Scale factor k = '+s2+'/'+s1+' = '+f4(k)+'</span><br>';
+                if(p1) html+='<span style="color:#6ee7b7;">Perimeter (large) = '+p1+' × '+f4(k)+' = '+f4(p1*k)+'</span><br>';
+                if(a1) html+='<span style="color:#fcd34d;">Area (large) = '+a1+' × '+f4(k)+'² = '+f4(a1*k*k)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">(Volume, if applicable, would scale by k³ = '+f4(k*k*k)+')</span>';
+                out.innerHTML=html;
+              }
+              ['g12c8t3s1','g12c8t3s2','g12c8t3p1','g12c8t3a1'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c8t3Btn').addEventListener('click',calc);
+
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "For a triangle, which condition alone is sufficient to prove similarity?", options: ["Proportional sides only", "Equal angles (AA) only", "Equal angles OR proportional sides — either alone is sufficient", "Neither is ever sufficient"], answer: 2, topic: "Similar polygons & scale factor problems" },
+        { type: "mc", text: "A square and a non-square rectangle both have all angles equal to 90°. Are they necessarily similar?", options: ["Yes, always", "No — sides must also be proportional", "Yes, if perimeters are equal", "Only if they are congruent"], answer: 1, topic: "Similar polygons & scale factor problems" },
+        { type: "input", text: "Two similar hexagons have corresponding sides 4 cm and 10 cm. Find the scale factor (large ÷ small).", answer: "2.5", altAnswers: ["2,5", "5/2"], topic: "Similar polygons & scale factor problems" },
+        { type: "mc", text: "Similar figures have scale factor 3. If the smaller has area 12 cm², the larger has area:", options: ["36 cm²", "108 cm²", "15 cm²", "324 cm²"], answer: 1, topic: "Similar polygons & scale factor problems" },
+        { type: "mc", text: "For polygons with more than 3 sides, which statement is TRUE?", options: ["Equal angles alone guarantees similarity", "Proportional sides alone guarantees similarity", "Both equal angles AND proportional sides are needed", "Neither condition is ever required"], answer: 2, topic: "Similar polygons & scale factor problems" }
+      ]
     }
   ],
   workbook: {

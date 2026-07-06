@@ -290,6 +290,136 @@ MathMagician.registerChapter(3, {
           topic: "Patterns in context"
         }
       ]
+    },
+    {
+      id: 302,
+      chapter: 3,
+      name: "Non-obvious pattern problems",
+      fullName: "Repeating patterns, position-in-cycle problems, and non-linear investigations",
+      lesson: {
+        heading: "Non-obvious pattern problems",
+        sub: "Chapter 3 · Topic 3",
+        body: `
+          <p>Not every pattern problem is a straightforward linear sequence. CAPS specifically highlights problems where <strong>the approach isn't immediately obvious</strong> — these need creative thinking rather than a memorised formula.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Repeating letter/symbol cycles</div>
+            <p>
+              For a repeating block (like "MATHS" repeated), find the <strong>cycle length</strong>, then use <strong>remainders</strong> (division) to locate any position.<br>
+              If the cycle length is <span class="math">L</span>, the item in position <span class="math">n</span> matches the item in position <span class="math">n</span> mod <span class="math">L</span> (using the cycle's last position when the remainder is 0).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: MATHSMATHSMATHS…</div>
+            <p>
+              The word "MATHS" has 5 letters — cycle length <span class="math">L = 5</span>.<br>
+              What is the 267th letter?<br>
+              <span class="math">267 ÷ 5 = 53</span> remainder <span class="math">2</span>.<br>
+              Remainder 2 → 2nd letter of "MATHS" → <strong>A</strong>.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: A growing dot pattern (non-linear)</div>
+            <p>
+              A pattern of dots: 1, 4, 9, 16, … (each figure is a square array).<br>
+              These differences are 3, 5, 7, … — <em>not</em> constant, so this is <strong>not</strong> a linear sequence.<br>
+              Investigating further: <span class="math">Tₙ = n²</span> — recognise the perfect square pattern directly.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 General strategy for unfamiliar patterns</div>
+            <p>
+              1. List several terms and check first differences.<br>
+              2. If differences are constant → linear (Topic 1/2 methods apply).<br>
+              3. If not constant, look for a repeating cycle, a doubling pattern, or a recognisable sequence like square/triangular numbers.<br>
+              4. Test your rule against <em>all</em> given terms before trusting it.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Cycle Position Finder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a repeating word/sequence and a position number — find which letter/element lands there.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Repeating block</div>
+                <input id="g10c3cycWord" type="text" value="MATHS" maxlength="12"
+                  style="width:120px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;text-transform:uppercase;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Position n</div>
+                <input id="g10c3cycN" type="number" value="267" min="1"
+                  style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c3cycBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Find
+              </button>
+            </div>
+            <div id="g10c3cycOut" style="font-size:14px;line-height:2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function run(){
+                const word=(document.getElementById('g10c3cycWord').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+                const n=parseInt(document.getElementById('g10c3cycN').value);
+                const out=document.getElementById('g10c3cycOut');
+                if(!word||!n||n<1){out.innerHTML='<span style="color:#fca5a5;">Enter a block and a position ≥ 1.</span>';return;}
+                const L=word.length;
+                let rem=n%L;
+                const idx=rem===0?L:rem;
+                const letter=word[idx-1];
+                let html='<span style="color:rgba(221,225,240,0.50);">Cycle length L = '+L+' ("'+word+'")</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">'+n+' ÷ '+L+' = '+Math.floor(n/L)+' remainder '+rem+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Remainder '+rem+' → position '+idx+' in the block</span><br>';
+                html+='<span style="color:#6ee7b7;">The '+n+'th element is: '+letter+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c3cycBtn').addEventListener('click',run);
+              ['g10c3cycWord','g10c3cycN'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When remainder = 0, the item is the <em>last</em> one in the cycle, not the "0th" — a common off-by-one error.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "input",
+          text: "The pattern ABCABCABC… repeats. What is the 100th letter?",
+          answer: "A",
+          topic: "Non-obvious pattern problems"
+        },
+        {
+          type: "mc",
+          text: "For the sequence 1, 4, 9, 16, 25, … the general term is:",
+          options: ["Tₙ = n²", "Tₙ = 3n − 2", "Tₙ = 2n + 1", "Tₙ = n² + 1"],
+          answer: 0,
+          topic: "Non-obvious pattern problems"
+        },
+        {
+          type: "input",
+          text: "The word SUM repeats: SUMSUMSUM…. What is the 250th letter?",
+          answer: "S",
+          topic: "Non-obvious pattern problems"
+        },
+        {
+          type: "mc",
+          text: "A sequence has first differences 2, 4, 6, 8, … (not constant). This means the sequence is:",
+          options: ["Quadratic, not linear", "Linear with d = 2", "Linear with d = 4", "Impossible to analyse"],
+          answer: 0,
+          topic: "Non-obvious pattern problems"
+        },
+        {
+          type: "input",
+          text: "The pattern 7;14;7;14;7;14;… repeats with cycle length 2. What is the 41st term?",
+          answer: "7",
+          topic: "Non-obvious pattern problems"
+        }
+      ]
     }
   ],
   workbook: {

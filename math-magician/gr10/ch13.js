@@ -292,6 +292,262 @@ MathMagician.registerChapter(13, {
           topic: "Volume & scale factor"
         }
       ]
+    },
+    {
+      id: 1302,
+      chapter: 13,
+      name: "Composite solids",
+      fullName: "Volume and surface area of composite (combined) solid figures",
+      lesson: {
+        heading: "Composite solids",
+        sub: "Chapter 13 · Topic 3",
+        body: `
+          <p>A <strong>composite solid</strong> is made by joining two or more basic solids together (e.g. a cone on top of a cylinder, or a hemisphere on top of a cone).</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Strategy for composite solids</div>
+            <p>
+              <strong>Volume:</strong> simply ADD the volumes of the separate parts.<br>
+              <strong>Surface area:</strong> you must be careful — do NOT add the full surface areas of each part. Any face where two solids join is <em>internal</em> and must be EXCLUDED from the total surface area (it is not an outer surface).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Cylinder + hemisphere + cone</div>
+            <p>A solid has a cylinder (r=2, h=10), a hemisphere on one end (r=2), and a cone on the other end (r=2, height 2, so slant l=√(2²+2²)=√8).<br><br>
+            <strong>Volume</strong> = cylinder + hemisphere + cone<br>
+            = πr²h + ⅔πr³ + ⅓πr²h_cone<br>
+            = π(2)²(10) + ⅔π(2)³ + ⅓π(2)²(2)<br>
+            = 40π + 16π/3 + 8π/3 = 40π + 8π = 48π ≈ 150.80 cm³<br><br>
+            <strong>Surface area</strong> = curved cylinder + curved hemisphere + curved cone (flat circular ends are internal, excluded)<br>
+            = 2πrh + 2πr² + πrl<br>
+            = 2π(2)(10) + 2π(2)² + π(2)(√8) ≈ 125.66 + 25.13 + 17.77 ≈ 168.56 cm²</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Common trap</div>
+            <p>Never include the flat circular face(s) where two solids are joined in the surface area — only the OUTER, visible surfaces count.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Composite Solid Calculator — Cylinder with Cone/Hemisphere Cap</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Build a cylinder with an optional cone or hemisphere on top — get the combined volume and surface area.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Radius r</div><input id="g10c13cr" type="number" value="2" min="0.1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Cylinder height</div><input id="g10c13ch" type="number" value="10" min="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Top cap</div>
+                <select id="g10c13cap" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="none">None (plain cylinder)</option>
+                  <option value="cone">Cone</option>
+                  <option value="hemisphere">Hemisphere</option>
+                </select>
+              </div>
+              <div id="g10c13capH" style="display:none;"><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Cone height</div><input id="g10c13coneh" type="number" value="2" min="0.1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:monospace;text-align:center;"></div>
+              <button id="g10c13cBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c13cOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const π=Math.PI;
+              function f(n){return n.toFixed(2);}
+              function toggleConeH(){document.getElementById('g10c13capH').style.display=document.getElementById('g10c13cap').value==='cone'?'':'none';}
+              function run(){
+                const r=parseFloat(document.getElementById('g10c13cr').value);
+                const h=parseFloat(document.getElementById('g10c13ch').value);
+                const cap=document.getElementById('g10c13cap').value;
+                const out=document.getElementById('g10c13cOut');
+                if(isNaN(r)||isNaN(h)||r<=0||h<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive radius and height.</span>';return;}
+                let V=π*r*r*h;
+                let SA=2*π*r*h+π*r*r; // curved cylinder + ONE flat base (bottom); top face replaced or open
+                let detail='<span style="color:rgba(221,225,240,0.50);">Cylinder: V = πr²h = '+f(π*r*r*h)+' cm³; curved SA = 2πrh = '+f(2*π*r*h)+' cm²; base SA = πr² = '+f(π*r*r)+' cm²</span><br>';
+                if(cap==='cone'){
+                  const ch=parseFloat(document.getElementById('g10c13coneh').value);
+                  if(isNaN(ch)||ch<=0){out.innerHTML='<span style="color:#fca5a5;">Enter a positive cone height.</span>';return;}
+                  const Vcone=π*r*r*ch/3;
+                  const l=Math.sqrt(r*r+ch*ch);
+                  const SAcone=π*r*l;
+                  V+=Vcone;
+                  SA+=SAcone; // top circular face is internal, excluded
+                  detail+='<span style="color:rgba(221,225,240,0.50);">Cone cap: V = ⅓πr²h = '+f(Vcone)+' cm³; slant l = √(r²+h²) = '+f(l)+'; curved SA = πrl = '+f(SAcone)+' cm² (flat join excluded)</span><br>';
+                } else if(cap==='hemisphere'){
+                  const Vhemi=(2/3)*π*r*r*r;
+                  const SAhemi=2*π*r*r;
+                  V+=Vhemi;
+                  SA+=SAhemi; // flat circle of hemisphere is internal, excluded
+                  detail+='<span style="color:rgba(221,225,240,0.50);">Hemisphere cap: V = ⅔πr³ = '+f(Vhemi)+' cm³; curved SA = 2πr² = '+f(SAhemi)+' cm² (flat join excluded)</span><br>';
+                } else {
+                  SA+=π*r*r; // plain cylinder: include the top face too
+                  detail+='<span style="color:rgba(221,225,240,0.50);">No cap: top flat face included = πr² = '+f(π*r*r)+' cm²</span><br>';
+                }
+                let html=detail;
+                html+='<span style="color:#6ee7b7;">Total volume = '+f(V)+' cm³</span><br>';
+                html+='<span style="color:#6ee7b7;">Total surface area = '+f(SA)+' cm²</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c13cap').addEventListener('change',()=>{toggleConeH();run();});
+              document.getElementById('g10c13cBtn').addEventListener('click',run);
+              ['g10c13cr','g10c13ch','g10c13coneh'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              toggleConeH();
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Before calculating, sketch the composite solid and shade the faces that are actually on the OUTSIDE — this prevents the common mistake of double-counting or including internal joins.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A composite solid is a cylinder (r=3, h=8) with a hemisphere (r=3) on top. Its total volume is closest to:",
+          options: ["282.7 cm³", "226.2 cm³", "339.3 cm³", "254.5 cm³"],
+          answer: 0,
+          topic: "Composite solids"
+        },
+        {
+          type: "mc",
+          text: "When finding the surface area of a composite solid formed by joining two shapes, you must:",
+          options: ["Add both full surface areas", "Exclude the internal joined face(s) from the total", "Only calculate the volume, not surface area", "Double the smaller shape's surface area"],
+          answer: 1,
+          topic: "Composite solids"
+        },
+        {
+          type: "input",
+          text: "A cone (r=3, h=4) sits on a cylinder (r=3, h=6). Find the total volume in terms of π.",
+          answer: "66π",
+          topic: "Composite solids"
+        },
+        {
+          type: "mc",
+          text: "A composite solid = cube (side 4 cm) with a square pyramid (base 4×4, height 3 cm) on top. Total volume is:",
+          options: ["80 cm³", "64 cm³", "16 cm³", "112 cm³"],
+          answer: 0,
+          topic: "Composite solids"
+        },
+        {
+          type: "mc",
+          text: "For a cylinder capped with a hemisphere, which face is excluded from the total surface area calculation?",
+          options: ["The curved cylinder surface", "The bottom circular base", "The flat circle where the hemisphere meets the cylinder", "The curved hemisphere surface"],
+          answer: 2,
+          topic: "Composite solids"
+        }
+      ]
+    },
+    {
+      id: 1303,
+      chapter: 13,
+      name: "Pyramids and cones in depth",
+      fullName: "Detailed volume and surface area problems involving right pyramids and cones",
+      lesson: {
+        heading: "Pyramids and cones in depth",
+        sub: "Chapter 13 · Topic 4",
+        body: `
+          <p>CAPS specifies that pyramid bases in Grade 10 are either an <strong>equilateral triangle</strong> or a <strong>square</strong> — this section works through both cases carefully.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Square-based pyramid</div>
+            <p>
+              <strong>Volume:</strong> V = ⅓ × base² × height (perpendicular height)<br>
+              <strong>Surface area:</strong> SA = base² + 4 × (½ × base × slant height)<br>
+              Slant height (of a triangular face) is found using Pythagoras: <span class="math">l_face² = h² + (base/2)²</span> if h is the perpendicular height from the centre of the base.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Triangular-based pyramid (equilateral triangle base)</div>
+            <p>
+              <strong>Base area</strong> (equilateral triangle, side a): <span class="math">A = (√3/4)a²</span><br>
+              <strong>Volume:</strong> V = ⅓ × base area × height
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Cone recap</div>
+            <p>
+              <strong>Volume:</strong> V = ⅓πr²h<br>
+              <strong>Slant height:</strong> l = √(r² + h²)<br>
+              <strong>Total surface area:</strong> SA = πr² + πrl
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Square pyramid</div>
+            <p>Square pyramid: base = 6 cm, perpendicular height = 4 cm.<br>
+            Slant height of a face: <span class="math">l = √(4² + 3²) = √25 = 5 cm</span> (using half the base = 3)<br>
+            Volume = ⅓(6²)(4) = ⅓(144) = 48 cm³<br>
+            SA = 6² + 4(½×6×5) = 36 + 60 = 96 cm²</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Square Pyramid Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the base side and the perpendicular height — get the slant height, volume, and total surface area.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Base side</div><input id="g10c13pb" type="number" value="6" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Perp. height</div><input id="g10c13ph" type="number" value="4" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c13pBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c13pOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(2);}
+              function run(){
+                const b=parseFloat(document.getElementById('g10c13pb').value);
+                const h=parseFloat(document.getElementById('g10c13ph').value);
+                const out=document.getElementById('g10c13pOut');
+                if(isNaN(b)||isNaN(h)||b<=0||h<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const l=Math.sqrt(h*h+(b/2)*(b/2));
+                const V=(b*b*h)/3;
+                const SA=b*b+4*(0.5*b*l);
+                let html='<span style="color:rgba(221,225,240,0.50);">Slant height l = √(h² + (b/2)²) = √('+h+'² + '+(b/2)+'²) = </span><span style="color:#fcd34d;">'+f(l)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Volume = ⅓b²h = ⅓('+b+'²)('+h+') = </span><span style="color:#6ee7b7;">'+f(V)+' units³</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">SA = b² + 4(½bl) = '+b+'² + 4(½×'+b+'×'+f(l)+') = </span><span style="color:#6ee7b7;">'+f(SA)+' units²</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c13pBtn').addEventListener('click',run);
+              ['g10c13pb','g10c13ph'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Don't confuse the pyramid's perpendicular height (used in the volume formula) with the slant height of a triangular face (used in the surface area formula) — they are different lengths found using different right triangles.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A square pyramid has base 8 cm and perpendicular height 3 cm. Its volume is:",
+          options: ["64 cm³", "192 cm³", "24 cm³", "96 cm³"],
+          answer: 0,
+          topic: "Pyramids and cones in depth"
+        },
+        {
+          type: "input",
+          text: "A square pyramid has base 10 cm and perpendicular height 12 cm. Find the slant height of a triangular face.",
+          answer: "13",
+          topic: "Pyramids and cones in depth"
+        },
+        {
+          type: "mc",
+          text: "A cone has radius 5 cm and height 12 cm. Its total surface area (in terms of π) is:",
+          options: ["90π cm²", "60π cm²", "25π cm²", "156π cm²"],
+          answer: 0,
+          topic: "Pyramids and cones in depth"
+        },
+        {
+          type: "mc",
+          text: "The area of an equilateral triangle with side 6 cm is:",
+          options: ["9√3 cm²", "18 cm²", "36 cm²", "6√3 cm²"],
+          answer: 0,
+          topic: "Pyramids and cones in depth"
+        },
+        {
+          type: "input",
+          text: "A square pyramid has base 6 cm and total surface area 96 cm². Given the base area is 36 cm², find the total lateral (triangular faces) area.",
+          answer: "60",
+          topic: "Pyramids and cones in depth"
+        }
+      ]
     }
   ],
   workbook: {

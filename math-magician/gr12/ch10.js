@@ -222,6 +222,204 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Deck of 52 cards. P(5-card hand with all hearts):", options: ["₁₃C₅/₅₂C₅", "13/52", "₁₃P₅/₅₂P₅", "5/52"], answer: 0, topic: "Combinations & probability applications" },
         { type: "mc", text: "From 5 boys and 3 girls, choose 4. P(exactly 2 boys and 2 girls)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Both A and C"], answer: 0, topic: "Combinations & probability applications" }
       ]
+    },
+    {
+      id: 1002,
+      chapter: 10,
+      name: "Revision: probability identities & Venn diagrams",
+      fullName: "Revising Grade 11 probability rules — mutually exclusive, complementary, independent events, and Venn diagrams",
+      lesson: {
+        heading: "Revision: probability identities and Venn diagrams",
+        sub: "Chapter 10 · Topic 3",
+        body: `
+          <p>Before tackling counting techniques, CAPS requires a solid revision of the <strong>core probability identities</strong> from Grade 11 — these underpin every counting-based probability question.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The addition rule</div>
+            <p>
+              For any two events A and B:<br>
+              <span class="math">P(A or B) = P(A) + P(B) − P(A and B)</span><br><br>
+              <strong>Mutually exclusive</strong> events (cannot happen together, so P(A and B) = 0):<br>
+              <span class="math">P(A or B) = P(A) + P(B)</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Independent events</div>
+            <p>
+              A and B are <strong>independent</strong> if the occurrence of one does not affect the probability of the other:<br>
+              <span class="math">P(A and B) = P(A) × P(B)</span><br><br>
+              To test independence: check whether P(A and B) = P(A) × P(B). If equal, independent; otherwise, dependent.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Complementary rule</div>
+            <p>
+              <span class="math">P(not A) = 1 − P(A)</span><br><br>
+              Very useful for "at least one" problems: <span class="math">P(at least one) = 1 − P(none)</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Venn diagram</div>
+            <p>In a class of 30, 18 play soccer (S), 12 play tennis (T), 6 play both.<br>
+            P(S or T) = P(S) + P(T) − P(S and T) = 18/30 + 12/30 − 6/30 = 24/30 = 4/5<br>
+            P(neither) = 1 − 4/5 = 1/5</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Reading a Venn diagram</div>
+            <p>
+              Always fill in the <strong>intersection region first</strong> (the "and" value), then work outwards to the regions belonging to only one event, using the given totals.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Venn Diagram / Addition Rule Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter P(A), P(B) and P(A and B) — compute P(A or B), P(not A), and test independence.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A)</div><input id="g12c10t3a" type="number" value="0.6" step="0.01" min="0" max="1" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(B)</div><input id="g12c10t3b" type="number" value="0.4" step="0.01" min="0" max="1" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P(A and B)</div><input id="g12c10t3ab" type="number" value="0.2" step="0.01" min="0" max="1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c10t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Analyse</button>
+            </div>
+            <div id="g12c10t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const pa=gv('g12c10t3a'),pb=gv('g12c10t3b'),pab=gv('g12c10t3ab');
+                const out=document.getElementById('g12c10t3Out');
+                if([pa,pb,pab].some(isNaN)||pa<0||pa>1||pb<0||pb>1||pab<0||pab>1){out.innerHTML='<span style="color:#fca5a5;">Enter probabilities between 0 and 1.</span>';return;}
+                const por=pa+pb-pab;
+                const notA=1-pa;
+                const indep=Math.abs(pab-pa*pb)<0.0001;
+                const mutex=Math.abs(pab)<0.0001;
+                let html='<span style="color:#6ee7b7;">P(A or B) = '+f4(pa)+' + '+f4(pb)+' − '+f4(pab)+' = '+f4(por)+'</span><br>';
+                html+='<span style="color:#fcd34d;">P(not A) = 1 − '+f4(pa)+' = '+f4(notA)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A)×P(B) = '+f4(pa*pb)+' vs P(A and B) = '+f4(pab)+' → '+(indep?'INDEPENDENT':'NOT independent (dependent)')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">P(A and B) = '+f4(pab)+' → '+(mutex?'mutually exclusive':'NOT mutually exclusive (events overlap)')+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c10t3a','g12c10t3b','g12c10t3ab'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c10t3Btn').addEventListener('click',calc);
+
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "P(A) = 0.5, P(B) = 0.3, P(A and B) = 0.1. Find P(A or B).", options: ["0.8", "0.7", "0.9", "0.6"], answer: 1, topic: "Revision: probability identities & Venn diagrams" },
+        { type: "mc", text: "Two mutually exclusive events A and B have P(A) = 0.4 and P(B) = 0.35. P(A or B) =", options: ["0.14", "0.75", "0.05", "1"], answer: 1, topic: "Revision: probability identities & Venn diagrams" },
+        { type: "input", text: "P(A) = 0.7. Find P(not A).", answer: "0.3", altAnswers: ["0,3"], topic: "Revision: probability identities & Venn diagrams" },
+        { type: "mc", text: "Events A and B satisfy P(A) = 0.5, P(B) = 0.4, P(A and B) = 0.2. Are they independent?", options: ["Yes, since P(A)×P(B) = 0.2 = P(A and B)", "No, since P(A and B) ≠ 0", "Cannot be determined", "Yes, all events are independent"], answer: 0, topic: "Revision: probability identities & Venn diagrams" },
+        { type: "mc", text: "In a Venn diagram, 40 people total, n(S) = 22, n(T) = 20, n(S and T) = 8. How many are in NEITHER S nor T?", options: ["6", "10", "34", "14"], answer: 0, topic: "Revision: probability identities & Venn diagrams" },
+        { type: "input", text: "P(rain) = 0.3 on each of 2 independent days. Find P(rain on both days).", answer: "0.09", altAnswers: ["0,09", "9/100"], topic: "Revision: probability identities & Venn diagrams" }
+      ]
+    },
+    {
+      id: 1003,
+      chapter: 10,
+      name: "Tree diagrams, tables & dependent events",
+      fullName: "Using tree diagrams and two-way contingency tables for dependent and independent events, with and without replacement",
+      lesson: {
+        heading: "Tree diagrams, two-way tables, and dependent events",
+        sub: "Chapter 10 · Topic 4",
+        body: `
+          <p>Many real exam problems combine counting with <strong>sequential</strong> events — where the outcome of one step affects the next. Tree diagrams and two-way tables help organise these systematically.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Tree diagrams</div>
+            <p>
+              A tree diagram shows all possible sequences of outcomes, with probabilities on each branch.<br>
+              • Multiply probabilities <strong>along a branch</strong> (AND, sequential)<br>
+              • Add probabilities <strong>across different branches</strong> (OR, different paths to the same result)
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 With vs without replacement</div>
+            <p>
+              <strong>With replacement:</strong> probabilities stay the same at each draw (independent events).<br>
+              <strong>Without replacement:</strong> probabilities change after each draw because the total changes (dependent events) — this is where tree diagrams are essential.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: without replacement</div>
+            <p>A bag has 5 red and 3 blue balls. Two are drawn without replacement. P(both red)?<br>
+            P(1st red) = 5/8<br>
+            P(2nd red | 1st red) = 4/7 (one red ball removed)<br>
+            P(both red) = 5/8 × 4/7 = 20/56 = 5/14</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Two-way contingency tables</div>
+            <p>
+              A two-way table organises counts by two categorical variables in rows and columns, with row/column totals.<br>
+              Used to compute conditional probabilities: <span class="math">P(A | B) = n(A and B) / n(B)</span>, reading directly from the table.
+            </p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Choosing a technique</div>
+            <p>
+              Sequential draws (order matters, dependent) → tree diagram.<br>
+              Two categorical variables measured on the same group → two-way table.<br>
+              Overlapping sets/conditions → Venn diagram.<br>
+              Counting arrangements/selections → fundamental counting principle, permutations, or combinations.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Without-Replacement Tree Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">A bag has some red and some blue balls. Draw 2 without replacement — find P(both red), P(both blue), P(one of each).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Red balls</div><input id="g12c10t4r" type="number" value="5" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Blue balls</div><input id="g12c10t4b" type="number" value="3" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c10t4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Build tree</button>
+            </div>
+            <div id="g12c10t4Out" style="font-size:13px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseInt(document.getElementById(id).value);}
+              function f4(n){return parseFloat(n.toFixed(4));}
+              function calc(){
+                const r=gv('g12c10t4r'),b=gv('g12c10t4b');
+                const out=document.getElementById('g12c10t4Out');
+                if(isNaN(r)||isNaN(b)||r<0||b<0||(r+b)<2){out.innerHTML='<span style="color:#fca5a5;">Enter non-negative red and blue counts (total ≥ 2).</span>';return;}
+                const total=r+b;
+                const pRR=(r/total)*((r-1)/(total-1));
+                const pBB=(b/total)*((b-1)/(total-1));
+                const pRB=(r/total)*(b/(total-1));
+                const pBR=(b/total)*(r/(total-1));
+                const pOneEach=pRB+pBR;
+                let html='<span style="color:rgba(221,225,240,0.50);">Bag: '+r+' red, '+b+' blue ('+total+' total). Drawing 2 without replacement:</span><br>';
+                html+='<span style="color:#6ee7b7;">P(both red) = ('+r+'/'+total+')×('+(r-1)+'/'+(total-1)+') = '+f4(pRR)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">P(both blue) = ('+b+'/'+total+')×('+(b-1)+'/'+(total-1)+') = '+f4(pBB)+'</span><br>';
+                html+='<span style="color:#fcd34d;">P(one of each) = P(RB)+P(BR) = '+f4(pRB)+' + '+f4(pBR)+' = '+f4(pOneEach)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Check: '+f4(pRR)+' + '+f4(pBB)+' + '+f4(pOneEach)+' = '+f4(pRR+pBB+pOneEach)+'</span>';
+                out.innerHTML=html;
+              }
+              ['g12c10t4r','g12c10t4b'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c10t4Btn').addEventListener('click',calc);
+
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "On a tree diagram, probabilities along a single branch (sequential events) should be:", options: ["Added", "Multiplied", "Subtracted", "Divided"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
+        { type: "mc", text: "A bag has 4 red and 6 blue balls. One is drawn, NOT replaced, then a second is drawn. This models:", options: ["Independent events", "Dependent events", "Mutually exclusive events", "Complementary events"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
+        { type: "input", text: "Bag has 3 red, 2 blue (5 total). Draw 2 without replacement. Find P(both red) as a fraction in lowest terms (e.g. 3/10).", answer: "3/10", altAnswers: ["0.3", "0,3"], topic: "Tree diagrams, tables & dependent events" },
+        { type: "mc", text: "A two-way table is most useful for finding:", options: ["ₙCᵣ values", "Conditional probabilities from two categorical variables", "Factorials", "The correlation coefficient"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
+        { type: "mc", text: "With replacement, drawing twice from a bag of 4 red and 6 blue balls means the events are:", options: ["Dependent", "Independent", "Mutually exclusive", "Impossible"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
+        { type: "input", text: "A coin is tossed twice (independent). Find P(exactly one head) as a fraction.", answer: "1/2", altAnswers: ["0.5", "0,5"], topic: "Tree diagrams, tables & dependent events" }
+      ]
     }
   ],
   workbook: {

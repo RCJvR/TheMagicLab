@@ -297,6 +297,280 @@ MathMagician.registerChapter(9, {
           topic: "Exchange rates & hire purchase"
         }
       ]
+    },
+    {
+      id: 902,
+      chapter: 9,
+      name: "Inflation & population growth",
+      fullName: "Applying compound growth to inflation and population problems",
+      lesson: {
+        heading: "Inflation and population growth",
+        sub: "Chapter 9 · Topic 3",
+        body: `
+          <p>Inflation and population growth are real-life applications of the <strong>compound growth formula</strong> — a quantity grows by a fixed percentage each period.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Growth formula for inflation/population</div>
+            <p>
+              <span class="math">A = P(1 + i)ⁿ</span><br>
+              where P = current price/population, i = annual inflation/growth rate, n = number of years, A = future price/population.<br><br>
+              The same formula also works <strong>backwards in time</strong> to find a past price: <span class="math">P = A(1 + i)⁻ⁿ</span> if A is the value now and you want the value n years ago.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Future price</div>
+            <p>Bread costs R16.50 today. Inflation is 6% p.a. Find the price in 4 years.<br>
+            <span class="math">A = 16.50(1.06)⁴ ≈ 16.50 × 1.2625 ≈ R20.83</span></p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Past price</div>
+            <p>A car costs R320 000 today. Inflation has averaged 7% p.a. over the last 5 years. Find its approximate price 5 years ago.<br>
+            <span class="math">P = 320000 ÷ (1.07)⁵ ≈ 320000 ÷ 1.4026 ≈ R228 148</span></p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Population growth</div>
+            <p>A town has 12 000 residents, growing at 3.2% p.a. Estimate the population in 6 years.<br>
+            <span class="math">A = 12000(1.032)⁶ ≈ 12000 × 1.2098 ≈ 14 518</span> residents</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Inflation & Growth Time-Travel Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a current value, a growth rate, and a number of years — project forward or backward in time.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Value now</div><input id="g10c9ipv" type="number" value="16.50" step="0.01" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate (% p.a.)</div><input id="g10c9ii" type="number" value="6" step="0.1" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years</div><input id="g10c9in" type="number" value="4" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Direction</div>
+                <select id="g10c9idir" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="fwd">Project forward (future value)</option>
+                  <option value="back">Project backward (past value)</option>
+                </select>
+              </div>
+              <button id="g10c9iBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c9iOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function rand(n){return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+              function run(){
+                const P=parseFloat(document.getElementById('g10c9ipv').value);
+                const i=parseFloat(document.getElementById('g10c9ii').value)/100;
+                const n=parseFloat(document.getElementById('g10c9in').value);
+                const dir=document.getElementById('g10c9idir').value;
+                const out=document.getElementById('g10c9iOut');
+                if([P,i,n].some(isNaN)||P<=0||i<=0||n<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                let html='';
+                if(dir==='fwd'){
+                  const A=P*Math.pow(1+i,n);
+                  html+='<span style="color:rgba(221,225,240,0.50);">A = P(1+i)ⁿ = '+P+'(1+'+i+')^'+n+' = </span><span style="color:#6ee7b7;">'+rand(A)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">In '+n+' year'+(n!==1?'s':'')+', the value grows from '+rand(P)+' to '+rand(A)+'</span>';
+                } else {
+                  const P0=P/Math.pow(1+i,n);
+                  html+='<span style="color:rgba(221,225,240,0.50);">P = A(1+i)⁻ⁿ = '+P+' ÷ (1+'+i+')^'+n+' = </span><span style="color:#6ee7b7;">'+rand(P0)+'</span><br>';
+                  html+='<span style="color:rgba(221,225,240,0.50);">'+n+' year'+(n!==1?'s':'')+' ago, the estimated value was '+rand(P0)+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c9iBtn').addEventListener('click',run);
+              document.getElementById('g10c9idir').addEventListener('change',run);
+              ['g10c9ipv','g10c9ii','g10c9in'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>"How much did it cost n years ago" always means dividing by (1+i)ⁿ, not multiplying — you're undoing n years of growth.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A loaf of bread costs R14. Inflation is 5% p.a. Its price in 3 years will be closest to:",
+          options: ["R16.21", "R21.00", "R14.75", "R15.75"],
+          answer: 0,
+          topic: "Inflation & population growth"
+        },
+        {
+          type: "input",
+          text: "A town's population is 8 000, growing at 4% p.a. Estimate the population after 2 years (round to nearest whole number).",
+          answer: "8653",
+          topic: "Inflation & population growth"
+        },
+        {
+          type: "mc",
+          text: "A car is worth R210 000 today. Inflation has averaged 6% p.a. for the past 3 years. Its approximate price 3 years ago was:",
+          options: ["R176 358", "R250 133", "R198 000", "R211 800"],
+          answer: 0,
+          topic: "Inflation & population growth"
+        },
+        {
+          type: "mc",
+          text: "Which formula estimates a value n years IN THE PAST, given today's value A?",
+          options: ["P = A(1+i)ⁿ", "P = A(1+i)⁻ⁿ", "P = A(1−i)ⁿ", "P = A × i × n"],
+          answer: 1,
+          topic: "Inflation & population growth"
+        },
+        {
+          type: "input",
+          text: "A city has 50 000 people and grows at 2.5% p.a. Find the population after 5 years (nearest whole number).",
+          answer: "56591",
+          topic: "Inflation & population growth"
+        }
+      ]
+    },
+    {
+      id: 903,
+      chapter: 9,
+      name: "Solving for rate or time period",
+      fullName: "Rearranging the compound growth formula to solve for i or n",
+      lesson: {
+        heading: "Solving for the rate or the time period",
+        sub: "Chapter 9 · Topic 4",
+        body: `
+          <p>Sometimes A, P, and one of i or n are given, and you must solve for the <strong>missing rate</strong> or <strong>missing number of years</strong>.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Solving for the rate i</div>
+            <p>
+              From <span class="math">A = P(1+i)ⁿ</span>:<br>
+              <span class="math">(A/P) = (1+i)ⁿ</span><br>
+              <span class="math">(A/P)^(1/n) = 1+i</span><br>
+              <span class="math">i = (A/P)^(1/n) − 1</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Solving for the time period n (Grade 10 method)</div>
+            <p>
+              At Grade 10 level (before logarithms are formally covered), n is usually found by <strong>trial and error / systematic guessing</strong>, or by using the calculator to test values of n until <span class="math">P(1+i)ⁿ</span> matches A closely.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Finding i</div>
+            <p>R8 000 grows to R10 368.30 in 3 years, compounded annually. Find i.<br>
+            <span class="math">i = (10368.30/8000)^(1/3) − 1 = (1.29604)^(1/3) − 1 ≈ 1.09 − 1 = 0.09 = 9%</span></p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Finding n by trial</div>
+            <p>How many years for R5 000 to grow to at least R7 000 at 8% p.a. compound interest?<br>
+            n=4: 5000(1.08)⁴ ≈ R6 802.44 (not enough)<br>
+            n=5: 5000(1.08)⁵ ≈ R7 346.64 (enough) → n = 5 years</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Solve for Rate or Time</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Choose what to solve for — enter the remaining known values.</p>
+            <div style="display:flex;gap:8px;margin-bottom:12px;">
+              <button id="g10c9srRate" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:13px;">Solve for rate (i)</button>
+              <button id="g10c9srTime" style="background:rgba(99,102,241,0.15);color:#a5b4fc;padding:5px 14px;border-radius:7px;font-weight:700;cursor:pointer;border:1px solid rgba(99,102,241,0.30);font-size:13px;">Solve for time (n)</button>
+            </div>
+            <div id="g10c9srRatePanel">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P</div><input id="g10c9srP1" type="number" value="8000" style="width:85px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A</div><input id="g10c9srA1" type="number" value="10368.30" step="0.01" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years n</div><input id="g10c9srN1" type="number" value="3" min="1" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+                <button id="g10c9srBtn1" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+              </div>
+            </div>
+            <div id="g10c9srTimePanel" style="display:none;">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P</div><input id="g10c9srP2" type="number" value="5000" style="width:85px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Target A</div><input id="g10c9srA2" type="number" value="7000" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+                <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate (%)</div><input id="g10c9srI2" type="number" value="8" step="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+                <button id="g10c9srBtn2" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find n by trial</button>
+              </div>
+            </div>
+            <div id="g10c9srOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function rand(n){return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+              function setMode(m){
+                document.getElementById('g10c9srRatePanel').style.display=m==='rate'?'':'none';
+                document.getElementById('g10c9srTimePanel').style.display=m==='time'?'':'none';
+                const rb=document.getElementById('g10c9srRate'),tb=document.getElementById('g10c9srTime');
+                if(m==='rate'){rb.style.background='linear-gradient(135deg,#4338ca,#6366f1)';rb.style.color='#fff';rb.style.border='none';tb.style.background='rgba(99,102,241,0.15)';tb.style.color='#a5b4fc';tb.style.border='1px solid rgba(99,102,241,0.30)';}
+                else{tb.style.background='linear-gradient(135deg,#4338ca,#6366f1)';tb.style.color='#fff';tb.style.border='none';rb.style.background='rgba(99,102,241,0.15)';rb.style.color='#a5b4fc';rb.style.border='1px solid rgba(99,102,241,0.30)';}
+                document.getElementById('g10c9srOut').innerHTML='';
+              }
+              function solveRate(){
+                const P=parseFloat(document.getElementById('g10c9srP1').value);
+                const A=parseFloat(document.getElementById('g10c9srA1').value);
+                const n=parseFloat(document.getElementById('g10c9srN1').value);
+                const out=document.getElementById('g10c9srOut');
+                if([P,A,n].some(isNaN)||P<=0||A<=0||n<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const i=Math.pow(A/P,1/n)-1;
+                let html='<span style="color:rgba(221,225,240,0.50);">i = (A/P)^(1/n) − 1 = ('+rand(A)+'/'+rand(P)+')^(1/'+n+') − 1</span><br>';
+                html+='<span style="color:#6ee7b7;">i ≈ '+(i*100).toFixed(2)+'% per annum</span>';
+                out.innerHTML=html;
+              }
+              function solveTime(){
+                const P=parseFloat(document.getElementById('g10c9srP2').value);
+                const target=parseFloat(document.getElementById('g10c9srA2').value);
+                const i=parseFloat(document.getElementById('g10c9srI2').value)/100;
+                const out=document.getElementById('g10c9srOut');
+                if([P,target,i].some(isNaN)||P<=0||target<=P||i<=0){out.innerHTML='<span style="color:#fca5a5;">Target A must be greater than P, and all values positive.</span>';return;}
+                let html='';
+                let n=0,A=P;
+                while(A<target&&n<200){n++;A=P*Math.pow(1+i,n);html+='<span style="color:rgba(221,225,240,0.50);">n='+n+': '+rand(P)+'×(1+'+i+')^'+n+' = </span><span style="color:'+(A>=target?'#6ee7b7':'rgba(221,225,240,0.5)')+'">'+rand(A)+'</span><br>';}
+                html+='<span style="color:#6ee7b7;">Smallest whole number of years needed: n = '+n+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c9srRate').addEventListener('click',()=>setMode('rate'));
+              document.getElementById('g10c9srTime').addEventListener('click',()=>setMode('time'));
+              document.getElementById('g10c9srBtn1').addEventListener('click',solveRate);
+              document.getElementById('g10c9srBtn2').addEventListener('click',solveTime);
+              ['g10c9srP1','g10c9srA1','g10c9srN1'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solveRate();}));
+              ['g10c9srP2','g10c9srA2','g10c9srI2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solveTime();}));
+              setMode('rate');
+              solveRate();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Solving for n by trial and error is a legitimate Grade 10 method — logarithms are only formally introduced in Grade 12. Just test whole-number values of n systematically.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "R6 000 grows to R7 986 in 4 years, compounded annually. The rate i is closest to:",
+          options: ["7.4%", "10%", "5%", "8.3%"],
+          answer: 0,
+          topic: "Solving for rate or time period"
+        },
+        {
+          type: "input",
+          text: "R10 000 grows to R12 100 in 2 years compound interest. Find i (as a %).",
+          answer: "10",
+          topic: "Solving for rate or time period"
+        },
+        {
+          type: "mc",
+          text: "At Grade 10 level, the time period n in A = P(1+i)ⁿ is typically found by:",
+          options: ["Using logarithms directly", "Trial and error with whole-number guesses", "Dividing A by P", "It cannot be found"],
+          answer: 1,
+          topic: "Solving for rate or time period"
+        },
+        {
+          type: "mc",
+          text: "How many years (smallest whole number) for R4 000 to at least double at 15% p.a. compound interest?",
+          options: ["4", "5", "6", "7"],
+          answer: 1,
+          topic: "Solving for rate or time period"
+        },
+        {
+          type: "input",
+          text: "R15 000 grows to R19 998.15 in 3 years. Find i (as a %, to 1 decimal place).",
+          answer: "10.0",
+          altAnswers: ["10", "10,0"],
+          topic: "Solving for rate or time period"
+        }
+      ]
     }
   ],
   workbook: {

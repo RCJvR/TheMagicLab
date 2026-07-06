@@ -315,6 +315,155 @@ MathMagician.registerChapter(1, {
           topic: "Surd equations & exponential applications"
         }
       ]
+    },
+    {
+      id: 102,
+      chapter: 1,
+      name: "Laws of exponents & exponential equations",
+      fullName: "Simplifying expressions and solving equations using the laws of exponents for rational exponents",
+      lesson: {
+        heading: "Laws of exponents and exponential equations",
+        sub: "Chapter 1 · Topic 3",
+        body: `
+          <p>Before tackling surds, Grade 11 first revises and extends the <strong>laws of exponents</strong> from Grade 10 to rational (fractional) exponents, and uses them to solve exponential equations.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The laws of exponents (for x &gt; 0, unless stated)</div>
+            <p>
+              <span class="math">xᵐ · xⁿ = xᵐ⁺ⁿ</span><br>
+              <span class="math">xᵐ ÷ xⁿ = xᵐ⁻ⁿ</span><br>
+              <span class="math">(xᵐ)ⁿ = xᵐⁿ</span><br>
+              <span class="math">(xy)ⁿ = xⁿyⁿ</span><br>
+              <span class="math">x⁰ = 1 (x ≠ 0)</span>, &nbsp; <span class="math">x⁻ⁿ = 1/xⁿ</span><br><br>
+              These laws now also apply when m and n are <strong>rational</strong> (fractions), provided <span class="math">x &gt; 0</span> — this avoids problems like (−8)^(1/2) being non-real while (−8)^(1/3) is real.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Simplify using exponent laws</div>
+            <p><strong>(a)</strong> <span class="math">x^(2/3) · x^(1/3) = x^(2/3+1/3) = x¹ = x</span></p>
+            <p><strong>(b)</strong> <span class="math">(27a⁶)^(1/3) = 27^(1/3) · a^(6/3) = 3a²</span></p>
+            <p><strong>(c)</strong> <span class="math">(x^(1/2)·y²)³ / x^(3/2) = x^(3/2)·y⁶ / x^(3/2) = y⁶</span></p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Solving exponential equations</div>
+            <p>
+              <strong>Method:</strong> get the same base on both sides, then equate exponents (since <span class="math">bᵐ = bⁿ ⟺ m = n</span> for b &gt; 0, b ≠ 1).<br><br>
+              If the equation has a rational exponent on the unknown (e.g. <span class="math">x^(2/3) = 9</span>), raise both sides to the reciprocal power instead.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Solve for x</div>
+            <p><strong>(a)</strong> <span class="math">3^(2x−1) = 27 → 3^(2x−1) = 3³ → 2x−1 = 3 → x = 2</span></p>
+            <p><strong>(b)</strong> <span class="math">x^(2/3) = 9 → (x^(2/3))^(3/2) = 9^(3/2) → x = 27</span></p>
+            <p><strong>(c)</strong> <span class="math">2^(x+1) + 2^x = 24 → 2^x(2 + 1) = 24 → 2^x = 8 → x = 3</span></p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Exponent Law Simplifier</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a base and two rational exponents (as fractions p/q) and an operation — see the simplified result.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Base x</div><input id="g11c1t3x" type="number" value="2" min="0.01" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Exponent 1 (p/q)</div><input id="g11c1t3e1" type="text" value="2/3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Operation</div>
+                <select id="g11c1t3op" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="mul">×  (add exponents)</option>
+                  <option value="div">÷  (subtract exponents)</option>
+                  <option value="pow">raise to power (multiply exponents)</option>
+                </select>
+              </div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Exponent 2 (p/q)</div><input id="g11c1t3e2" type="text" value="1/3" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c1t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Simplify</button>
+            </div>
+            <div id="g11c1t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gcd(a,b){a=Math.abs(a);b=Math.abs(b);return b===0?a:gcd(b,a%b);}
+              function parseFrac(s){
+                s=s.trim();
+                if(s.includes('/')){const [n,d]=s.split('/').map(Number);return {n,d};}
+                return {n:Number(s),d:1};
+              }
+              function fracStr(n,d){
+                if(d<0){n=-n;d=-d;}
+                const g=gcd(n,d)||1;
+                n/=g;d/=g;
+                return d===1?(''+n):(n+'/'+d);
+              }
+              function calc(){
+                const x=parseFloat(document.getElementById('g11c1t3x').value);
+                const e1=parseFrac(document.getElementById('g11c1t3e1').value);
+                const e2=parseFrac(document.getElementById('g11c1t3e2').value);
+                const op=document.getElementById('g11c1t3op').value;
+                const out=document.getElementById('g11c1t3Out');
+                if(isNaN(x)||x<=0||isNaN(e1.n)||isNaN(e1.d)||isNaN(e2.n)||isNaN(e2.d)||e1.d===0||e2.d===0){
+                  out.innerHTML='<span style="color:#fca5a5;">Enter a positive base and valid fraction exponents (e.g. 2/3).</span>';return;
+                }
+                let rn,rd,symbol;
+                if(op==='mul'){rn=e1.n*e2.d+e2.n*e1.d;rd=e1.d*e2.d;symbol='+';}
+                else if(op==='div'){rn=e1.n*e2.d-e2.n*e1.d;rd=e1.d*e2.d;symbol='−';}
+                else {rn=e1.n*e2.n;rd=e1.d*e2.d;symbol='×';}
+                const resultExp=fracStr(rn,rd);
+                const value=Math.pow(x,rn/rd);
+                let html='<span style="color:rgba(221,225,240,0.50);">x^('+fracStr(e1.n,e1.d)+') '+(op==='mul'?'·':op==='div'?'÷':'raised to')+' x^('+fracStr(e2.n,e2.d)+') → exponent: '+fracStr(e1.n,e1.d)+' '+symbol+' '+fracStr(e2.n,e2.d)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">= '+x+'^('+resultExp+')</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Numeric check (x = '+x+'): </span><span style="color:#fcd34d;">'+parseFloat(value.toFixed(6))+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c1t3Btn').addEventListener('click',calc);
+              ['g11c1t3x','g11c1t3e1','g11c1t3e2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When solving exponential equations, always try to write both sides as powers of the <em>same base</em> first. If the bases can't easily match, look for a common factor to take out (like 2^x in 2^(x+1) + 2^x).</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Simplify: x^(3/4) · x^(1/4)",
+          options: ["x", "x^(3/16)", "x²", "x^(1/2)"],
+          answer: 0,
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "input",
+          text: "Simplify: (64)^(2/3). Give the answer as an integer.",
+          answer: "16",
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Solve for x: 5^(x−2) = 125",
+          options: ["x = 3", "x = 5", "x = 1", "x = 25"],
+          answer: 0,
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Solve for x: 3^x + 3^(x+1) = 36",
+          options: ["x = 2", "x = 3", "x = 9", "x = 4"],
+          answer: 0,
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Simplify: (x²y^(1/2))² / x³",
+          options: ["xy", "x²y", "y/x", "x⁻¹y"],
+          answer: 0,
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "input",
+          text: "Solve for x: x^(2/3) = 4. Give the positive value of x.",
+          answer: "8",
+          topic: "Laws of exponents & exponential equations"
+        }
+      ]
     }
   ],
   workbook: {

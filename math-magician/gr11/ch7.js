@@ -300,6 +300,248 @@ MathMagician.registerChapter(7, {
           topic: "Volume & the effect of scale factor k"
         }
       ]
+    },
+    {
+      id: 702,
+      chapter: 7,
+      name: "Composite shapes in context",
+      fullName: "Solving practical, real-world problems involving multiple composite 2D and 3D shapes",
+      lesson: {
+        heading: "Composite shapes in context",
+        sub: "Chapter 7 · Topic 3",
+        body: `
+          <p>CAPS requires you to apply the surface area and volume formulae to <strong>real, practical problems</strong> — tanks, silos, packaging, building materials — where a single object is made of several joined shapes, and you must reason about which faces are "real" (painted, filled, exposed) and which are internal.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 A practical problem-solving checklist</div>
+            <p>
+              1. Sketch (or imagine) the solid and label every shape that makes it up.<br>
+              2. Decide: do you need surface area (paint, material, wrapping) or volume (capacity, contents, cost of filling)?<br>
+              3. Identify shared/internal faces that must be <em>excluded</em> from surface area.<br>
+              4. Convert units consistently (e.g. cm³ → litres: 1000 cm³ = 1 ℓ) before answering.<br>
+              5. Round sensibly for the context (money, materials) but keep full accuracy mid-calculation.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Silo capacity</div>
+            <p>A grain silo is a cylinder (r = 3 m, h = 6 m) topped with a cone (same radius, height 2 m).<br>
+            Volume = cylinder + cone = π(3)²(6) + ⅓π(3)²(2) = 54π + 6π = 60π ≈ 188.5 m³<br>
+            In litres: 188.5 m³ × 1000 = 188 496 ℓ (using more accurate π)</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Material and cost</div>
+            <p>An open-top rectangular water tank (no lid) is 2 m × 1.5 m × 1 m. Sheet metal costs R185/m².<br>
+            Surface area (base + 4 sides, no top) = (2×1.5) + 2(2×1) + 2(1.5×1) = 3 + 4 + 3 = 10 m²<br>
+            Cost = 10 × R185 = R1 850</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always re-read the question to check whether a lid/base/top is included — "open tank" or "no lid" means you must subtract that face from the total surface area.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Unit Conversion & Cost Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Convert a volume to litres, or find material cost from an area and a price per m².</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button id="g11c7t3vol" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.50);cursor:pointer;font-size:13px;font-weight:600;background:rgba(99,102,241,0.30);color:#a5b4fc;">Volume → Litres</button>
+              <button id="g11c7t3cost" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">Area → Cost</button>
+            </div>
+            <div id="g11c7t3volP" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Volume (cm³)</div><input id="g11c7t3v" type="number" value="5000" min="0" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c7t3volBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Convert</button>
+            </div>
+            <div id="g11c7t3costP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Area (m²)</div><input id="g11c7t3a" type="number" value="10" min="0" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Price (R/m²)</div><input id="g11c7t3p" type="number" value="185" min="0" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c7t3costBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate Cost</button>
+            </div>
+            <div id="g11c7t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              const volBtn=document.getElementById('g11c7t3vol'),costBtn=document.getElementById('g11c7t3cost');
+              const volP=document.getElementById('g11c7t3volP'),costP=document.getElementById('g11c7t3costP');
+              const out=document.getElementById('g11c7t3Out');
+              function setMode(m){
+                if(m==='vol'){volP.style.display='flex';costP.style.display='none';volBtn.style.background='rgba(99,102,241,0.30)';volBtn.style.color='#a5b4fc';volBtn.style.borderColor='rgba(99,102,241,0.50)';costBtn.style.background='transparent';costBtn.style.color='rgba(221,225,240,0.50)';costBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                else{costP.style.display='flex';volP.style.display='none';costBtn.style.background='rgba(99,102,241,0.30)';costBtn.style.color='#a5b4fc';costBtn.style.borderColor='rgba(99,102,241,0.50)';volBtn.style.background='transparent';volBtn.style.color='rgba(221,225,240,0.50)';volBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                out.innerHTML='';
+              }
+              volBtn.addEventListener('click',()=>setMode('vol'));
+              costBtn.addEventListener('click',()=>setMode('cost'));
+              document.getElementById('g11c7t3volBtn').addEventListener('click',()=>{
+                const v=gv('g11c7t3v');
+                if(isNaN(v)||v<0){out.innerHTML='<span style="color:#fca5a5;">Enter a non-negative volume.</span>';return;}
+                const litres=v/1000;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">1000 cm³ = 1 litre</span><br><span style="color:#6ee7b7;">'+v+' cm³ = '+litres.toLocaleString('en-ZA',{maximumFractionDigits:3})+' ℓ</span>';
+              });
+              document.getElementById('g11c7t3costBtn').addEventListener('click',()=>{
+                const a=gv('g11c7t3a'),p=gv('g11c7t3p');
+                if([a,p].some(isNaN)||a<0||p<0){out.innerHTML='<span style="color:#fca5a5;">Enter non-negative values.</span>';return;}
+                const cost=a*p;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Cost = Area × Price = '+a+' m² × '+R(p)+'/m²</span><br><span style="color:#6ee7b7;">Total cost = '+R(cost)+'</span>';
+              });
+              setMode('vol');
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A closed rectangular box 40 cm × 30 cm × 20 cm holds water. Its capacity in litres is:",
+          options: ["24 ℓ", "2.4 ℓ", "240 ℓ", "0.24 ℓ"],
+          answer: 0,
+          topic: "Composite shapes in context"
+        },
+        {
+          type: "mc",
+          text: "A silo is a cylinder (r = 2 m, h = 5 m) with a cone (r = 2 m, h = 1.5 m) on top. Total volume (in terms of π):",
+          options: ["22π m³", "20π m³", "24π m³", "26π m³"],
+          answer: 0,
+          topic: "Composite shapes in context"
+        },
+        {
+          type: "input",
+          text: "An open (no lid) cube tank has side 1.2 m. Sheet costs R150/m². Find the total cost (to the nearest rand). [Surface = 5 faces]",
+          answer: "1080",
+          topic: "Composite shapes in context"
+        },
+        {
+          type: "mc",
+          text: "Which quantity would you use to answer 'how much paint is needed to cover this water tower'?",
+          options: ["Volume", "Surface area", "Perimeter", "Diameter"],
+          answer: 1,
+          topic: "Composite shapes in context"
+        },
+        {
+          type: "input",
+          text: "A cylindrical can (r = 7 cm, h = 15 cm, closed both ends) is to be re-covered in paper. Find the surface area to the nearest cm² (use π ≈ 3.142).",
+          answer: "968",
+          altAnswers: ["967", "969"],
+          topic: "Composite shapes in context"
+        },
+        {
+          type: "mc",
+          text: "A rectangular swimming pool 8 m × 4 m × 1.5 m (deep) is filled with water. The volume of water needed, in kilolitres (1 kℓ = 1 m³), is:",
+          options: ["48 kℓ", "480 kℓ", "4.8 kℓ", "12 kℓ"],
+          answer: 0,
+          topic: "Composite shapes in context"
+        }
+      ]
+    },
+    {
+      id: 703,
+      chapter: 7,
+      name: "Measurement with trigonometry",
+      fullName: "Solving 2D and 3D measurement problems that combine surface area/volume with trigonometric ratios",
+      lesson: {
+        heading: "Measurement combined with trigonometry",
+        sub: "Chapter 7 · Topic 4",
+        body: `
+          <p>CAPS explicitly requires problems in 2D and 3D that combine measurement (surface area, volume, perimeter) with trigonometry — usually you must first use a trig ratio or the Pythagorean theorem to find an unknown length or angle, and then substitute it into a measurement formula.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The two-stage method</div>
+            <p>
+              <strong>Stage 1 — Trigonometry:</strong> Use SOH-CAHTOA, the sine rule, cosine rule, or Pythagoras to find a missing side or angle (often the height, slant height, or radius).<br>
+              <strong>Stage 2 — Measurement:</strong> Substitute the value found into the relevant surface area, volume, or perimeter formula.<br><br>
+              Common triggers: "angle of elevation", "the slant makes an angle of...", "cross-section is a triangle with angle...".
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Cone height from a half-angle</div>
+            <p>A cone has base radius 6 cm. The slant side makes an angle of 65° with the base.<br>
+            Stage 1: tan(65°) = h/6 → h = 6 tan(65°) ≈ 12.867 cm<br>
+            Slant height l = 6/cos(65°) ≈ 14.199 cm<br>
+            Stage 2: Volume = ⅓π(6)²(12.867) ≈ 485.1 cm³</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Prism cross-section using the area rule</div>
+            <p>A triangular prism has length 12 cm. Its triangular cross-section has two sides 8 cm and 10 cm with an included angle of 50°.<br>
+            Cross-section area = ½(8)(10)sin(50°) ≈ 30.64 cm²<br>
+            Volume = area × length ≈ 30.64 × 12 ≈ 367.7 cm³</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Keep full calculator accuracy for trig values through Stage 1 — only round the final answer in Stage 2, otherwise rounding errors compound.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Cone Height-from-Angle → Volume Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the base radius and the base angle the slant makes with the base — get height, slant height, and volume.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Radius r (cm)</div><input id="g11c7t4r" type="number" value="6" min="0.01" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Base angle (°)</div><input id="g11c7t4ang" type="number" value="65" min="1" max="89" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c7t4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c7t4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              const π=Math.PI;
+              function f(n){return n.toFixed(3);}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const r=gv('g11c7t4r'),ang=gv('g11c7t4ang');
+                const out=document.getElementById('g11c7t4Out');
+                if([r,ang].some(isNaN)||r<=0||ang<=0||ang>=90){out.innerHTML='<span style="color:#fca5a5;">Enter r > 0 and an angle strictly between 0° and 90°.</span>';return;}
+                const rad=ang*π/180;
+                const h=r*Math.tan(rad);
+                const l=r/Math.cos(rad);
+                const V=(1/3)*π*r*r*h;
+                const SA=π*r*r+π*r*l;
+                let html='<span style="color:rgba(221,225,240,0.50);">Stage 1 — Trig: h = r·tan('+ang+'°) = '+r+'×tan('+ang+'°) = '+f(h)+' cm</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Slant l = r/cos('+ang+'°) = '+f(l)+' cm</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Stage 2 — Measurement: V = ⅓πr²h = '+f(V)+' cm³</span><br>';
+                html+='<span style="color:#6ee7b7;">Total SA = πr² + πrl = '+f(SA)+' cm²</span>   <span style="color:#fcd34d;">Volume = '+f(V)+' cm³</span>';
+                out.innerHTML=html;
+              }
+              ['g11c7t4r','g11c7t4ang'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c7t4Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A cone has base radius 5 cm. The slant makes an angle of 60° with the base. The height is:",
+          options: ["5tan(60°) cm", "5cos(60°) cm", "5sin(60°) cm", "5/tan(60°) cm"],
+          answer: 0,
+          topic: "Measurement with trigonometry"
+        },
+        {
+          type: "mc",
+          text: "A triangular prism (length 10 cm) has a cross-section with two sides 6 cm and 9 cm and an included angle of 40°. Its volume is closest to:",
+          options: ["173.6 cm³", "270 cm³", "347.2 cm³", "54 cm³"],
+          answer: 0,
+          topic: "Measurement with trigonometry"
+        },
+        {
+          type: "input",
+          text: "A cone has radius 4 cm and the slant side makes a 70° angle with the base. Find the height (to 2 decimal places).",
+          answer: "10.99",
+          topic: "Measurement with trigonometry"
+        },
+        {
+          type: "mc",
+          text: "To find the cross-sectional area of a triangular prism when two sides and the included angle are known, you should use:",
+          options: ["Area = ½ab sin(C)", "Area = ½ base × height only", "The cosine rule directly for area", "Heron's formula only"],
+          answer: 0,
+          topic: "Measurement with trigonometry"
+        },
+        {
+          type: "mc",
+          text: "A ladder leans against a cylindrical water tower of radius 3 m, touching the ground 8 m from the base. What must you compute first before finding any surface area involving the ladder's length?",
+          options: ["The ladder's length using Pythagoras/trigonometry", "The tower's volume", "The tower's surface area", "The tower's circumference"],
+          answer: 0,
+          topic: "Measurement with trigonometry"
+        }
+      ]
     }
   ],
   workbook: {

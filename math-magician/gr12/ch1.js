@@ -243,6 +243,183 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "Σᵢ₌₁⁴ (3i) = ", options: ["30", "24", "36", "42"], answer: 0, topic: "Series — arithmetic, geometric & infinite" },
         { type: "mc", text: "For which value of r does an infinite geometric series converge?", options: ["r = 1", "r = −2", "r = 0.8", "r = −1.1"], answer: 2, topic: "Series — arithmetic, geometric & infinite" }
       ]
+    },
+    {
+      id: 102,
+      chapter: 1,
+      name: "Sigma notation & number patterns",
+      fullName: "Working with sigma notation, general terms of patterns, and manipulating series",
+      lesson: {
+        heading: "Sigma notation and number patterns",
+        sub: "Chapter 1 · Topic 3",
+        body: `
+          <p>Before summing a series it helps to be completely fluent in <strong>reading, writing, and manipulating sigma notation</strong>, and in spotting the general term of a number pattern that isn't obviously arithmetic or geometric.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Reading sigma notation</div>
+            <p>
+              <span class="math">Σᵢ₌₁ⁿ Tᵢ</span> tells you: the <strong>variable</strong> (i), the <strong>starting value</strong> (1), the <strong>ending value</strong> (n), and the <strong>formula</strong> for each term (Tᵢ).<br><br>
+              Number of terms in the sum = (top value) − (bottom value) + 1.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Writing a series in sigma notation</div>
+            <p>
+              Given a series, first identify whether it is arithmetic or geometric, find the general term Tₙ, then write:<br>
+              <span class="math">Σₙ₌₁ᵏ Tₙ</span> where k is the number of terms.<br><br>
+              Example: 5 + 8 + 11 + … + 32 → arithmetic, a=5, d=3, Tₙ = 3n+2. Since T₁₀=32, this is <span class="math">Σₙ₌₁¹⁰ (3n+2)</span>.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Examples</div>
+            <p><strong>Evaluate:</strong> Σᵢ₌₃⁶ (i² − 1) = (9−1)+(16−1)+(25−1)+(36−1) = 8+15+24+35 = 82</p>
+            <p><strong>Split a sum:</strong> Σᵢ₌₁ⁿ (2i + 3) = 2Σᵢ₌₁ⁿ i + Σᵢ₌₁ⁿ 3 = 2·[n(n+1)/2] + 3n = n(n+1) + 3n = n² + 4n</p>
+            <p><strong>Largest n such that a sum stays under a limit:</strong> often solved by writing Sₙ in terms of n and solving an inequality, e.g. find the largest n for which 3 + 7 + 11 + … (n terms) &lt; 400 → solve n/2(6+(n−1)4) &lt; 400.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Non-linear patterns</div>
+            <p>If first differences aren't constant, try <strong>second differences</strong> — if those are constant, the pattern is quadratic: Tₙ = an² + bn + c. Use three equations (from T₁, T₂, T₃) to solve for a, b, c.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Sigma Notation Evaluator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Evaluate Σ for a term formula of the form <strong>An² + Bn + C</strong> from n=start to n=end.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A (n²)</div><input id="g12c1sigA" type="number" value="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">B (n)</div><input id="g12c1sigB" type="number" value="3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">C (const)</div><input id="g12c1sigC" type="number" value="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">start</div><input id="g12c1sigS" type="number" value="1" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">end</div><input id="g12c1sigE" type="number" value="5" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1sigBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Evaluate</button>
+            </div>
+            <div id="g12c1sigOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const A=gv('g12c1sigA'),B=gv('g12c1sigB'),C=gv('g12c1sigC'),s=gv('g12c1sigS'),e=gv('g12c1sigE');
+                const out=document.getElementById('g12c1sigOut');
+                if([A,B,C,s,e].some(isNaN)||s>e||!Number.isInteger(s)||!Number.isInteger(e)){out.innerHTML='<span style="color:#fca5a5;">Enter integer start ≤ end and valid coefficients.</span>';return;}
+                let terms=[],sum=0;
+                for(let n=s;n<=e;n++){const t=A*n*n+B*n+C;terms.push(t);sum+=t;}
+                const shown=terms.slice(0,8).map(t=>parseFloat(t.toFixed(4)));
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Terms (n='+s+' to '+e+'): '+shown.join(', ')+(terms.length>8?' …':'')+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">Number of terms = '+(e-s+1)+'</span><br>'+
+                  '<span style="color:#6ee7b7;">Σ = '+parseFloat(sum.toFixed(4))+'</span>';
+              }
+              ['g12c1sigA','g12c1sigB','g12c1sigC','g12c1sigS','g12c1sigE'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c1sigBtn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "input", text: "Evaluate: Σᵢ₌₁⁴ (2i + 1)", answer: "24", topic: "Sigma notation & number patterns" },
+        { type: "mc", text: "Σᵢ₌₁ⁿ (2i + 3) simplifies to:", options: ["n² + 4n", "n² + 3n", "2n² + 3", "n(n+3)"], answer: 0, topic: "Sigma notation & number patterns" },
+        { type: "mc", text: "The series 4 + 9 + 14 + … + 49 written in sigma notation (with Tₙ = 5n − 1) is:", options: ["Σₙ₌₁¹⁰ (5n − 1)", "Σₙ₌₁⁹ (5n − 1)", "Σₙ₌₀⁹ (5n − 1)", "Σₙ₌₁⁴⁹ (5n − 1)"], answer: 0, topic: "Sigma notation & number patterns" },
+        { type: "input", text: "A quadratic number pattern has first differences 4, 7, 10, … Find the second difference.", answer: "3", topic: "Sigma notation & number patterns" },
+        { type: "mc", text: "How many terms are in Σₖ₌₅¹² Tₖ?", options: ["7", "8", "12", "17"], answer: 1, topic: "Sigma notation & number patterns" },
+        { type: "mc", text: "Find the largest n such that 3 + 7 + 11 + … (n terms) < 200.", options: ["9", "10", "11", "12"], answer: 0, topic: "Sigma notation & number patterns" }
+      ]
+    },
+    {
+      id: 103,
+      chapter: 1,
+      name: "Deriving series formulae & applications",
+      fullName: "Deriving the arithmetic and geometric series formulae, and applying series to real contexts",
+      lesson: {
+        heading: "Deriving and applying series formulae",
+        sub: "Chapter 1 · Topic 4",
+        body: `
+          <p>CAPS specifically requires that you can <strong>derive</strong> (not just use) the arithmetic and geometric series formulae — this is examinable on its own.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Deriving the arithmetic series formula</div>
+            <p>
+              Write Sₙ forwards and backwards, then add the two rows:<br>
+              <span class="math">Sₙ = a + (a+d) + (a+2d) + … + (a+(n−1)d)</span><br>
+              <span class="math">Sₙ = (a+(n−1)d) + (a+(n−2)d) + … + a</span><br>
+              Adding: <span class="math">2Sₙ = n·[2a + (n−1)d]</span> → <span class="math">Sₙ = n/2·[2a + (n−1)d]</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Deriving the geometric series formula</div>
+            <p>
+              Write Sₙ, then multiply the whole equation by r, and subtract:<br>
+              <span class="math">Sₙ = a + ar + ar² + … + arⁿ⁻¹</span><br>
+              <span class="math">rSₙ = ar + ar² + … + arⁿ⁻¹ + arⁿ</span><br>
+              Subtracting: <span class="math">Sₙ − rSₙ = a − arⁿ → Sₙ(1−r) = a(1−rⁿ) → Sₙ = a(1−rⁿ)/(1−r)</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Deriving the infinite sum (convergence condition)</div>
+            <p>
+              As n → ∞, if <span class="math">−1 &lt; r &lt; 1</span>, then <span class="math">rⁿ → 0</span>, so:<br>
+              <span class="math">S∞ = a(1 − 0)/(1 − r) = a/(1 − r)</span><br><br>
+              This is why the condition for convergence is strictly <span class="math">−1 &lt; r &lt; 1</span> (equivalently |r| &lt; 1) — for any other r, rⁿ does not tend to 0.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Applications</div>
+            <p><strong>Recurring decimal as a series:</strong> 0,999... = 9/10 + 9/100 + 9/1000 + … is geometric with a=9/10, r=1/10.<br>
+            S∞ = (9/10)/(1 − 1/10) = (9/10)/(9/10) = 1. So 0,999... = 1 exactly.</p>
+            <p><strong>Bouncing ball / repeated halving contexts</strong> use the infinite geometric sum once you recognise the repeating ratio.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Exam tip</div>
+            <p>"Derive" or "prove" questions expect you to show the forwards/backwards-add (arithmetic) or multiply-by-r-and-subtract (geometric) technique — simply quoting the final formula earns no marks.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Recurring Decimal → Fraction Converter</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the repeating digit block and see it expressed as an infinite geometric series converted to a fraction.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Repeating digits (e.g. 3, 27, 142)</div><input id="g12c1recD" type="text" value="27" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c1recBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Convert</button>
+            </div>
+            <div id="g12c1recOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){[x,y]=[y,x%y];}return x;}
+              function calc(){
+                const raw=document.getElementById('g12c1recD').value.trim();
+                const out=document.getElementById('g12c1recOut');
+                if(!/^[0-9]+$/.test(raw)){out.innerHTML='<span style="color:#fca5a5;">Enter digits only, e.g. 27.</span>';return;}
+                const k=raw.length;
+                const a=parseInt(raw)/Math.pow(10,k);
+                const r=1/Math.pow(10,k);
+                const num=parseInt(raw),den=Math.pow(10,k)-1;
+                const g=gcd(num,den);
+                const sn=num/g,sd=den/g;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">0,'+raw+raw+raw+'... = '+a.toFixed(k)+' + '+a.toFixed(k)+'×(1/'+Math.pow(10,k)+') + …  (a='+a.toFixed(k)+', r=1/'+Math.pow(10,k)+')</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">S∞ = a/(1−r) = '+num+'/'+den+'</span><br>'+
+                  '<span style="color:#6ee7b7;">= '+sn+'/'+sd+' (simplified)</span>';
+              }
+              document.getElementById('g12c1recD').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              document.getElementById('g12c1recBtn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "In deriving Sₙ for an arithmetic series, the key technique is to:", options: ["Write Sₙ forwards and backwards, then add", "Multiply Sₙ by r and subtract", "Take logs of both sides", "Differentiate Sₙ"], answer: 0, topic: "Deriving series formulae & applications" },
+        { type: "mc", text: "In deriving Sₙ for a geometric series, we multiply Sₙ by r and then:", options: ["Add the two equations", "Subtract the two equations", "Divide the two equations", "Take the square root"], answer: 1, topic: "Deriving series formulae & applications" },
+        { type: "mc", text: "The condition for an infinite geometric series to converge is:", options: ["r > 1", "r < 0", "−1 < r < 1", "r = 0"], answer: 2, topic: "Deriving series formulae & applications" },
+        { type: "input", text: "Express 0,555... as a fraction using the infinite geometric series (a=0.5, r=0.1).", answer: "5/9", topic: "Deriving series formulae & applications" },
+        { type: "mc", text: "As n → ∞ with −1 < r < 1, rⁿ approaches:", options: ["1", "r", "0", "∞"], answer: 2, topic: "Deriving series formulae & applications" },
+        { type: "input", text: "Express 0,181818... as a fraction in simplest form.", answer: "2/11", topic: "Deriving series formulae & applications" }
+      ]
     }
   ],
   workbook: {

@@ -326,6 +326,176 @@ MathMagician.registerChapter(4, {
           topic: "Word problems & inequalities"
         }
       ]
+    },
+    {
+      id: 402,
+      chapter: 4,
+      name: "Simultaneous equations — deeper practice",
+      fullName: "Substitution and elimination methods, including one linear and one quadratic",
+      lesson: {
+        heading: "Simultaneous equations — substitution, elimination, and mixed systems",
+        sub: "Chapter 4 · Topic 3",
+        body: `
+          <p>Beyond two linear equations, CAPS problems can pair a <strong>linear</strong> equation with a <strong>quadratic</strong> one — a preview of the algebra-graph connection developed further in later grades.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Choosing a method</div>
+            <p>
+              <strong>Substitution</strong> — best when one equation already has a variable isolated (or is easy to isolate), e.g. <span class="math">y = 2x + 1</span>.<br>
+              <strong>Elimination</strong> — best when both equations are in standard form <span class="math">ax + by = c</span> and coefficients can be matched by multiplying.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Elimination</div>
+            <p>
+              <span class="math">3x + 2y = 12 … (1)</span><br>
+              <span class="math">2x − y = 1 … (2)</span><br>
+              Multiply (2) by 2: <span class="math">4x − 2y = 2 … (3)</span><br>
+              Add (1) and (3): <span class="math">7x = 14 → x = 2</span><br>
+              Substitute into (2): <span class="math">4 − y = 1 → y = 3</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Linear and quadratic together</div>
+            <p>
+              <span class="math">y = x + 1 … (1)</span><br>
+              <span class="math">y = x² − 5 … (2)</span><br>
+              Substitute (1) into (2): <span class="math">x + 1 = x² − 5 → x² − x − 6 = 0</span><br>
+              <span class="math">(x − 3)(x + 2) = 0 → x = 3</span> or <span class="math">x = −2</span><br>
+              Corresponding y-values: <span class="math">y = 4</span> or <span class="math">y = −1</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Always find both variables</div>
+            <p>A simultaneous system asks for a <strong>pair</strong> of values (or several pairs). Never stop after solving for just one variable — always substitute back to find the other(s), and check your solution in <em>both</em> original equations.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When one equation is quadratic, expect up to <strong>two solution pairs</strong> — this reflects the fact that a line can cross a parabola at up to two points.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "input",
+          text: "Solve simultaneously: 2x + 3y = 16 and x − y = 2. Find y.",
+          answer: "12/5",
+          altAnswers: ["2.4", "2,4"],
+          topic: "Simultaneous equations — deeper practice"
+        },
+        {
+          type: "mc",
+          text: "Solve simultaneously: y = x − 1 and y = x² − 3. Find the x-values.",
+          options: ["x = 2 or x = −1", "x = 1 or x = −2", "x = 2 or x = 1", "x = −2 or x = −1"],
+          answer: 0,
+          topic: "Simultaneous equations — deeper practice"
+        },
+        {
+          type: "input",
+          text: "Solve: 4x − y = 10 and 3x + y = 11. Find x.",
+          answer: "3",
+          topic: "Simultaneous equations — deeper practice"
+        },
+        {
+          type: "mc",
+          text: "For the system y = 2x and y = x² − 3x + 4, the solutions are:",
+          options: ["x = 1 or x = 4", "x = 2 or x = 4", "x = 1 or x = 2", "no real solutions"],
+          answer: 0,
+          topic: "Simultaneous equations — deeper practice"
+        },
+        {
+          type: "input",
+          text: "Two numbers have a sum of 15 and their difference is 3. Find the larger number.",
+          answer: "9",
+          topic: "Simultaneous equations — deeper practice"
+        }
+      ]
+    },
+    {
+      id: 403,
+      chapter: 4,
+      name: "Word problems in context",
+      fullName: "Translating real-world word problems into linear, quadratic, or simultaneous equations",
+      lesson: {
+        heading: "Solving word problems in context",
+        sub: "Chapter 4 · Topic 4",
+        body: `
+          <p>Word problems test whether you can <strong>translate</strong> a real situation into algebra — this is often the hardest step, not the solving itself.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 A reliable 5-step method</div>
+            <p>
+              1. <strong>Read</strong> the problem twice — identify what is being asked.<br>
+              2. <strong>Define</strong> variable(s) clearly in words, e.g. "let x = the number of pies sold".<br>
+              3. <strong>Translate</strong> the given information into equation(s).<br>
+              4. <strong>Solve</strong> using the appropriate technique.<br>
+              5. <strong>Interpret</strong> — write the answer in context, checking it makes sense (e.g. no negative ages or fractional people).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Age problem (linear)</div>
+            <p>
+              Kagiso is 4 years older than his sister. In 6 years' time, the sum of their ages will be 42. How old is Kagiso now?<br>
+              Let sister's age = x, so Kagiso's age = x + 4.<br>
+              <span class="math">(x + 6) + (x + 4 + 6) = 42 → 2x + 16 = 42 → x = 13</span><br>
+              Kagiso is <span class="math">13 + 4 = 17</span> years old.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Area problem (quadratic)</div>
+            <p>
+              A rectangular garden is 3 m longer than it is wide, and its area is 40 m². Find its width.<br>
+              Let width = x, length = x + 3.<br>
+              <span class="math">x(x + 3) = 40 → x² + 3x − 40 = 0 → (x + 8)(x − 5) = 0</span><br>
+              <span class="math">x = 5</span> (rejecting x = −8, a width cannot be negative). Width = 5 m.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Rejecting invalid solutions</div>
+            <p>Quadratic word problems often produce two mathematical solutions, but only one may make sense physically. Always check both roots against the real-world context (lengths, ages, quantities cannot be negative).</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>If a problem gives you two unknowns with two relationships, it's a simultaneous equations problem in disguise — define both variables before writing any equation.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "input",
+          text: "A number plus twice the number is 45. Find the number.",
+          answer: "15",
+          topic: "Word problems in context"
+        },
+        {
+          type: "mc",
+          text: "A rectangle's length is 5 cm more than its width, and its area is 50 cm². What is the width?",
+          options: ["5 cm", "10 cm", "7 cm", "6 cm"],
+          answer: 0,
+          topic: "Word problems in context"
+        },
+        {
+          type: "input",
+          text: "Thabo is twice as old as his daughter. In 5 years, the sum of their ages will be 55. Find the daughter's current age.",
+          answer: "15",
+          topic: "Word problems in context"
+        },
+        {
+          type: "mc",
+          text: "A charity sells tickets: adult tickets cost R50 and child tickets R20. 60 tickets were sold for R2400. How many adult tickets were sold?",
+          options: ["40", "20", "30", "45"],
+          answer: 0,
+          topic: "Word problems in context"
+        },
+        {
+          type: "input",
+          text: "The product of two consecutive positive integers is 132. Find the smaller integer.",
+          answer: "11",
+          topic: "Word problems in context"
+        }
+      ]
     }
   ],
   workbook: {

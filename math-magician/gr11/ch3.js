@@ -263,6 +263,112 @@ MathMagician.registerChapter(3, {
           topic: "Working with quadratic sequences"
         }
       ]
+    },
+    {
+      id: 302,
+      chapter: 3,
+      name: "Quadratic patterns in context",
+      fullName: "Deriving quadratic general terms from real-world counting problems",
+      lesson: {
+        heading: "Quadratic patterns in context",
+        sub: "Chapter 3 · Topic 3",
+        body: `
+          <p>Many counting problems — round-robin tournaments, handshakes, diagonals of a polygon — generate quadratic sequences. The skill here is <strong>translating a situation into a sequence</strong>, then applying everything you already know about quadratic patterns.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Building the sequence from a description</div>
+            <p>
+              1. Work out the actual value for small cases (n = 1, 2, 3, 4 …) by direct counting or reasoning.<br>
+              2. Write these as a sequence of terms.<br>
+              3. Test the differences to confirm it is quadratic (constant 2nd difference).<br>
+              4. Find <span class="math">Tₙ = an² + bn + c</span> as before.<br>
+              5. Answer the actual question — this may ask for a specific term, or for n given Tₙ.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Round-robin tournament</div>
+            <p>In a group stage, every team plays every other team once. With n teams, the number of matches is:<br>
+            n = 2: 1 match. n = 3: 3 matches. n = 4: 6 matches. n = 5: 10 matches.<br>
+            Sequence: 1, 3, 6, 10, … &nbsp; 1st differences: 2, 3, 4 &nbsp; 2nd difference: 1 (constant) → quadratic.<br>
+            <span class="math">a = 1/2</span>; solving further gives <span class="math">Tₙ = n(n−1)/2</span> — the familiar "n choose 2" formula.<br>
+            For 6 teams: T₆ = 6(5)/2 = 15 matches.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Diagonals of a polygon</div>
+            <p>The number of diagonals of a convex polygon with n sides is <span class="math">D(n) = n(n−3)/2</span>.<br>
+            A hexagon (n = 6): D(6) = 6(3)/2 = 9 diagonals.<br>
+            How many sides has a polygon with 35 diagonals? Solve <span class="math">n(n−3)/2 = 35 → n² − 3n − 70 = 0 → (n−10)(n+7) = 0 → n = 10</span> (reject n = −7).</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Round-Robin Matches Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the number of teams in a group (every team plays every other team once) — see the quadratic pattern and the number of matches.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Number of teams (n)</div><input id="g11c3t3n" type="number" value="6" min="2" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c3t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate matches</button>
+            </div>
+            <div id="g11c3t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function calc(){
+                const n=parseInt(document.getElementById('g11c3t3n').value);
+                const out=document.getElementById('g11c3t3Out');
+                if(isNaN(n)||n<2){out.innerHTML='<span style="color:#fca5a5;">Enter a whole number of teams (at least 2).</span>';return;}
+                const seqTerms=[];
+                for(let k=2;k<=Math.min(n+1,7);k++) seqTerms.push(k*(k-1)/2);
+                const matches=n*(n-1)/2;
+                let html='<span style="color:rgba(221,225,240,0.50);">Sequence of matches for 2,3,4,…teams: '+seqTerms.join(', ')+(n+1>7?', …':'')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">General term: Tₙ = n(n−1)/2</span><br>';
+                html+='<span style="color:#6ee7b7;">With '+n+' teams: T'+n+' = '+n+'('+(n-1)+')/2 = '+matches+' matches</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c3t3Btn').addEventListener('click',calc);
+              document.getElementById('g11c3t3n').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Counting problems like this almost always give <em>triangular-number</em>-style patterns: Tₙ = n(n−1)/2 for "matches/handshakes between n people/teams", and Tₙ = n(n−3)/2 for "diagonals of an n-sided polygon".</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "input",
+          text: "In a group of 5 teams, every team plays every other team once. How many matches are played?",
+          answer: "10",
+          topic: "Quadratic patterns in context"
+        },
+        {
+          type: "mc",
+          text: "A polygon has 20 diagonals. Using D(n) = n(n−3)/2, how many sides does it have?",
+          options: ["8", "7", "9", "10"],
+          answer: 0,
+          topic: "Quadratic patterns in context"
+        },
+        {
+          type: "mc",
+          text: "The number of handshakes among n people (each shakes hands with every other person once) follows which pattern?",
+          options: ["Linear", "Quadratic", "Constant", "Cubic"],
+          answer: 1,
+          topic: "Quadratic patterns in context"
+        },
+        {
+          type: "input",
+          text: "Using H(n) = n(n−1)/2, how many handshakes occur among 9 people?",
+          answer: "36",
+          topic: "Quadratic patterns in context"
+        },
+        {
+          type: "mc",
+          text: "A tournament sequence of matches is 3, 6, 10, 15, 21, … What is the second difference?",
+          options: ["1", "2", "3", "0"],
+          answer: 0,
+          topic: "Quadratic patterns in context"
+        }
+      ]
     }
   ],
   workbook: {

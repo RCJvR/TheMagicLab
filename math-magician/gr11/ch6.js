@@ -333,6 +333,151 @@ MathMagician.registerChapter(6, {
           topic: "Sine rule, cosine rule & area rule"
         }
       ]
+    },
+    {
+      id: 602,
+      chapter: 6,
+      name: "Solving trigonometric equations",
+      fullName: "Finding general solutions of trigonometric equations and solutions in a specified interval",
+      lesson: {
+        heading: "Solving trigonometric equations",
+        sub: "Chapter 6 · Topic 3",
+        body: `
+          <p>Because sine, cosine and tangent are <strong>periodic</strong>, a trig equation has infinitely many solutions. Grade 11 introduces writing the <strong>general solution</strong>, and then restricting it to a given interval.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 General solutions</div>
+            <p>
+              If <span class="math">cos θ = cos α</span>, then <span class="math">θ = 360°n ± α</span>, n ∈ ℤ.<br>
+              If <span class="math">sin θ = sin α</span>, then <span class="math">θ = 180°n + (−1)ⁿα</span>, n ∈ ℤ — or equivalently, <span class="math">θ = α + 360°n</span> or <span class="math">θ = (180° − α) + 360°n</span>.<br>
+              If <span class="math">tan θ = tan α</span>, then <span class="math">θ = 180°n + α</span>, n ∈ ℤ (period 180°, only one family of solutions).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: General solution</div>
+            <p>Solve <span class="math">sin θ = 0,5</span> for the general solution.<br>
+            Reference angle: <span class="math">α = sin⁻¹(0,5) = 30°</span><br>
+            <span class="math">θ = 30° + 360°n</span> or <span class="math">θ = 150° + 360°n</span>, n ∈ ℤ</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Restrict to an interval</div>
+            <p>Solve <span class="math">cos θ = −0,6</span> for <span class="math">θ ∈ [0°; 360°]</span>.<br>
+            Reference angle: <span class="math">α = cos⁻¹(0,6) ≈ 53,1°</span>. Since cos θ is negative, θ is in Quadrant 2 or 3:<br>
+            <span class="math">θ = 180° − 53,1° = 126,9°</span> or <span class="math">θ = 180° + 53,1° = 233,1°</span></p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Equations needing extra algebra first</div>
+            <p>
+              Some equations need factorising or an identity substitution before you can isolate a single trig ratio:<br>
+              <span class="math">2sin²θ − sinθ − 1 = 0 → (2sinθ + 1)(sinθ − 1) = 0 → sinθ = −½ or sinθ = 1</span><br>
+              Then solve each separately using the general solution rules above.<br><br>
+              You may also be asked for which values of a variable an expression like <span class="math">1/(sinθ − 1)</span> is <strong>undefined</strong> — set the denominator to zero and exclude those θ.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Trig Equation Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter sin/cos/tan θ = a value — get the reference angle, the general solution, and all solutions in [0°; 360°].</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Function</div>
+                <select id="g11c6t3fn" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sin">sin θ =</option><option value="cos">cos θ =</option><option value="tan">tan θ =</option>
+                </select>
+              </div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Value</div><input id="g11c6t3val" type="number" value="0.5" step="0.05" min="-3" max="3" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c6t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g11c6t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(2)).toString();}
+              function calc(){
+                const fn=document.getElementById('g11c6t3fn').value;
+                const val=parseFloat(document.getElementById('g11c6t3val').value);
+                const out=document.getElementById('g11c6t3Out');
+                if(isNaN(val)){out.innerHTML='<span style="color:#fca5a5;">Enter a valid value.</span>';return;}
+                if(fn!=='tan'&&(val<-1||val>1)){out.innerHTML='<span style="color:#fca5a5;">'+fn+'θ must be between −1 and 1.</span>';return;}
+                let html='';
+                if(fn==='sin'){
+                  const alpha=Math.asin(val)*180/Math.PI;
+                  html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: α = sin⁻¹('+val+') = '+f(alpha)+'°</span><br>';
+                  html+='<span style="color:#6ee7b7;">General solution: θ = '+f(alpha)+'° + 360°n &nbsp;or&nbsp; θ = '+f(180-alpha)+'° + 360°n, &nbsp;n ∈ ℤ</span><br>';
+                  const sols=new Set();
+                  [alpha,180-alpha].forEach(a=>{let s=a;while(s<0)s+=360;s=s%360;sols.add(f(s));let s2=s+360;if(s2<=360)sols.add(f(s2%360===0?360:s2));});
+                  html+='<span style="color:rgba(221,225,240,0.50);">Solutions in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
+                } else if(fn==='cos'){
+                  const alpha=Math.acos(val)*180/Math.PI;
+                  html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: α = cos⁻¹('+val+') = '+f(alpha)+'°</span><br>';
+                  html+='<span style="color:#6ee7b7;">General solution: θ = 360°n ± '+f(alpha)+'°, &nbsp;n ∈ ℤ</span><br>';
+                  const sols=new Set();
+                  [alpha,360-alpha].forEach(a=>{let s=((a%360)+360)%360;sols.add(f(s));});
+                  html+='<span style="color:rgba(221,225,240,0.50);">Solutions in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
+                } else {
+                  const alpha=Math.atan(val)*180/Math.PI;
+                  html+='<span style="color:rgba(221,225,240,0.50);">Reference angle: α = tan⁻¹('+val+') = '+f(alpha)+'°</span><br>';
+                  html+='<span style="color:#6ee7b7;">General solution: θ = 180°n + '+f(alpha)+'°, &nbsp;n ∈ ℤ</span><br>';
+                  const sols=new Set();
+                  for(let n=-1;n<=2;n++){let s=180*n+alpha;s=((s%360)+360)%360;if(s>=0&&s<=360)sols.add(f(s));}
+                  html+='<span style="color:rgba(221,225,240,0.50);">Solutions in [0°; 360°]: </span><span style="color:#fcd34d;">'+[...sols].sort((a,b)=>a-b).join('°, ')+'°</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c6t3Btn').addEventListener('click',calc);
+              document.getElementById('g11c6t3val').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The ± in the cosine general solution and the (−1)ⁿ trick for sine both come from the fact that cos is positive/negative symmetrically about 0°/180°, while sin is symmetric about 90°. Tan only ever needs +180°n, since tan repeats every 180°.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "The general solution of cosθ = cos40° is:",
+          options: ["θ = 360°n ± 40°", "θ = 180°n + 40°", "θ = 40° + 360°n only", "θ = 90°n + 40°"],
+          answer: 0,
+          topic: "Solving trigonometric equations"
+        },
+        {
+          type: "mc",
+          text: "Solve sinθ = 1 for θ ∈ [0°; 360°]:",
+          options: ["θ = 90°", "θ = 90° and 270°", "θ = 0° and 180°", "θ = 270°"],
+          answer: 0,
+          topic: "Solving trigonometric equations"
+        },
+        {
+          type: "input",
+          text: "Solve tanθ = 1 for the smallest positive θ (in degrees).",
+          answer: "45",
+          topic: "Solving trigonometric equations"
+        },
+        {
+          type: "mc",
+          text: "2sin²θ − sinθ − 1 = 0 factorises to:",
+          options: ["(2sinθ + 1)(sinθ − 1) = 0", "(2sinθ − 1)(sinθ + 1) = 0", "(sinθ − 1)(sinθ + 1) = 0", "(2sinθ + 1)(sinθ + 1) = 0"],
+          answer: 0,
+          topic: "Solving trigonometric equations"
+        },
+        {
+          type: "mc",
+          text: "For which value(s) of θ ∈ [0°; 360°] is 1/(cosθ) undefined?",
+          options: ["90° and 270°", "0° and 180°", "180° only", "None"],
+          answer: 0,
+          topic: "Solving trigonometric equations"
+        },
+        {
+          type: "input",
+          text: "Solve cosθ = 0,5 for the smallest positive θ in [0°; 360°] (in degrees).",
+          answer: "60",
+          topic: "Solving trigonometric equations"
+        }
+      ]
     }
   ],
   workbook: {

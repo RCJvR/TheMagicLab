@@ -291,6 +291,239 @@ MathMagician.registerChapter(2, {
           topic: "Quadratic inequalities & simultaneous equations"
         }
       ]
+    },
+    {
+      id: 202,
+      chapter: 2,
+      name: "Quadratic formula & derivation",
+      fullName: "Deriving and applying the quadratic formula, and choosing the best solution method",
+      lesson: {
+        heading: "The quadratic formula and choosing a method",
+        sub: "Chapter 2 · Topic 3",
+        body: `
+          <p>The quadratic formula is derived by completing the square on the <strong>general</strong> quadratic <span class="math">ax² + bx + c = 0</span> — it works for every quadratic equation, even ones that don't factorise.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Deriving the quadratic formula</div>
+            <p>
+              Starting from <span class="math">ax² + bx + c = 0</span> (a ≠ 0), divide by a:<br>
+              <span class="math">x² + (b/a)x = −c/a</span><br>
+              Complete the square (add <span class="math">(b/2a)²</span> to both sides):<br>
+              <span class="math">(x + b/2a)² = (b² − 4ac)/4a²</span><br>
+              Take square roots and isolate x:<br>
+              <span class="math">x = (−b ± √(b² − 4ac)) / 2a</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Solve 2x² − 5x − 3 = 0</div>
+            <p>a = 2, b = −5, c = −3<br>
+            <span class="math">x = (5 ± √(25 + 24)) / 4 = (5 ± 7)/4</span><br>
+            <span class="math">x = 3</span> or <span class="math">x = −1/2</span></p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Choosing a method</div>
+            <p>
+              • <strong>Factorisation</strong> — fastest, use first if a, b, c are small integers and it factorises easily.<br>
+              • <strong>Quadratic formula</strong> — always works, use when factorising is hard or the roots are irrational.<br>
+              • <strong>Completing the square</strong> — useful when you need vertex form, or the equation is already set up that way.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Quadratic Formula Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter a, b, c — see the full substitution into the formula and both roots (or a message if non-real).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c2t3a" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b</div><input id="g11c2t3b" type="number" value="-5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">c</div><input id="g11c2t3c" type="number" value="-3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c2t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g11c2t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const a=parseFloat(document.getElementById('g11c2t3a').value);
+                const b=parseFloat(document.getElementById('g11c2t3b').value);
+                const c=parseFloat(document.getElementById('g11c2t3c').value);
+                const out=document.getElementById('g11c2t3Out');
+                if([a,b,c].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                const D=b*b-4*a*c;
+                let html='<span style="color:rgba(221,225,240,0.50);">x = (−('+b+') ± √(('+b+')² − 4('+a+')('+c+'))) / (2·'+a+')</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">x = ('+(-b)+' ± √'+D+') / '+(2*a)+'</span><br>';
+                if(D<0){html+='<span style="color:#fca5a5;">Δ = '+D+' &lt; 0 → no real solutions.</span>';out.innerHTML=html;return;}
+                const sq=Math.sqrt(D);
+                const x1=(-b+sq)/(2*a),x2=(-b-sq)/(2*a);
+                html+='<span style="color:#6ee7b7;">x₁ = '+f(x1)+'</span>  <span style="color:#6ee7b7;">x₂ = '+f(x2)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c2t3Btn').addEventListener('click',calc);
+              ['g11c2t3a','g11c2t3b','g11c2t3c'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The quadratic formula and the discriminant come from the same derivation — Δ = b² − 4ac is just the part under the square root sign.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Using the quadratic formula, x² − 2x − 8 = 0 gives:",
+          options: ["x = 4 or x = −2", "x = 2 or x = −4", "x = −4 or x = −2", "x = 4 or x = 2"],
+          answer: 0,
+          topic: "Quadratic formula & derivation"
+        },
+        {
+          type: "mc",
+          text: "For 3x² + x − 2 = 0, the correct substitution into the formula is:",
+          options: ["x = (−1 ± √(1+24))/6", "x = (1 ± √(1−24))/6", "x = (−1 ± √(1−24))/6", "x = (−1 ± √25)/3"],
+          answer: 0,
+          topic: "Quadratic formula & derivation"
+        },
+        {
+          type: "input",
+          text: "Solve 2x² + 3x − 5 = 0 using the formula. Give the positive root.",
+          answer: "1",
+          topic: "Quadratic formula & derivation"
+        },
+        {
+          type: "mc",
+          text: "Completing the square on ax² + bx + c = 0 leads to which term being added to both sides?",
+          options: ["(b/2a)²", "b²/a", "(b/a)²", "4ac"],
+          answer: 0,
+          topic: "Quadratic formula & derivation"
+        },
+        {
+          type: "mc",
+          text: "Which method is most efficient for x² − 3x − 10 = 0?",
+          options: ["Factorisation: (x−5)(x+2)=0", "Quadratic formula only", "Completing the square only", "Graphing only"],
+          answer: 0,
+          topic: "Quadratic formula & derivation"
+        }
+      ]
+    },
+    {
+      id: 203,
+      chapter: 2,
+      name: "Solving problems with quadratic equations",
+      fullName: "Applying quadratic equations, inequalities, and simultaneous systems to real-world problems",
+      lesson: {
+        heading: "Solving problems with quadratic equations",
+        sub: "Chapter 2 · Topic 4",
+        body: `
+          <p>Many real-world situations — areas, rates of work, projectile motion — lead to quadratic equations. The hardest part is usually <strong>setting up</strong> the equation, not solving it.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 General strategy for word problems</div>
+            <p>
+              1. Define a variable (e.g. let x = one unknown length/time/rate).<br>
+              2. Express all other quantities in terms of x.<br>
+              3. Use the given relationship to form an equation (often area, product, or a rate/time relationship).<br>
+              4. Solve the quadratic.<br>
+              5. <strong>Reject answers that don't make sense</strong> in context (e.g. negative lengths or negative time).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Fencing problem</div>
+            <p>A farmer has 12 m of fencing to enclose a rectangular area using an existing wall as one side. Let the two equal sides (perpendicular to the wall) be x metres.<br>
+            Then the side parallel to the wall is <span class="math">12 − 2x</span>.<br>
+            Area: <span class="math">A(x) = x(12 − 2x) = 12x − 2x²</span><br>
+            This is a downward parabola — maximum area occurs at the turning point <span class="math">x = −b/2a = −12/(2×−2) = 3</span>.<br>
+            So x = 3 m, and the other side = 12 − 6 = 6 m. Maximum area = 18 m².</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Work-rate problem</div>
+            <p>Two machines together take 2 hours 24 minutes (= 12/5 h) to finish a job. One machine alone takes 2 hours longer than the other. Let the faster machine take x hours alone.<br>
+            Rate equation: <span class="math">1/x + 1/(x+2) = 5/12</span><br>
+            Multiply through by 12x(x+2): <span class="math">12(x+2) + 12x = 5x(x+2)</span><br>
+            <span class="math">24x + 24 = 5x² + 10x → 5x² − 14x − 24 = 0</span><br>
+            Solve: <span class="math">x = 4</span> (reject the negative root) → faster machine: 4 h, slower: 6 h.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Fencing / Maximum Area Explorer</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the total fencing length (one side against a wall) — see the area function and the maximum area.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Total fencing (m)</div><input id="g11c2t4L" type="number" value="12" min="1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c2t4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Find max area</button>
+            </div>
+            <div id="g11c2t4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function calc(){
+                const L=parseFloat(document.getElementById('g11c2t4L').value);
+                const out=document.getElementById('g11c2t4Out');
+                if(isNaN(L)||L<=0){out.innerHTML='<span style="color:#fca5a5;">Enter a positive fencing length.</span>';return;}
+                // A(x) = x(L - 2x) = Lx - 2x^2, max at x = L/4
+                const x=L/4;
+                const other=L-2*x;
+                const area=x*other;
+                let html='<span style="color:rgba(221,225,240,0.50);">Let the two equal sides = x. Third side (parallel to wall) = '+L+' − 2x</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">A(x) = x('+L+' − 2x) = '+L+'x − 2x²</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Turning point at x = −b/2a = '+L+'/4 = '+f(x)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Equal sides = '+f(x)+' m, third side = '+f(other)+' m</span><br>';
+                html+='<span style="color:#6ee7b7;">Maximum area = '+f(area)+' m²</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c2t4Btn').addEventListener('click',calc);
+              document.getElementById('g11c2t4L').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In work-rate problems, "1/x" represents the fraction of the job done per hour by a machine/person that takes x hours alone. Combined rates add.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A rectangle has length 3 m more than its width, and area 40 m². If x is the width, which equation must be solved?",
+          options: ["x(x+3) = 40", "x² + 3 = 40", "2x + 3 = 40", "x(x−3) = 40"],
+          answer: 0,
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "input",
+          text: "The product of two consecutive positive integers is 132. Find the smaller integer.",
+          answer: "11",
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "mc",
+          text: "A ball's height is h(t) = −5t² + 20t (t in seconds). After how many seconds does it hit the ground again (h = 0, t > 0)?",
+          options: ["4", "2", "5", "20"],
+          answer: 0,
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "mc",
+          text: "Two taps together fill a tank in 6 hours. One tap alone takes 5 hours longer than the other. If x = time for the faster tap alone, the correct equation is:",
+          options: ["1/x + 1/(x+5) = 1/6", "x + (x+5) = 6", "1/x − 1/(x+5) = 1/6", "x(x+5) = 6"],
+          answer: 0,
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "input",
+          text: "With 20 m of fencing against a wall (one side open, two equal sides + one parallel side), find the equal side length x that maximises the enclosed area.",
+          answer: "5",
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "mc",
+          text: "Why must both roots of a word-problem quadratic be checked against the context?",
+          options: ["Because negative or non-integer roots may not make physical sense", "Because the discriminant might be negative", "Because factorisation can be wrong", "Because quadratics always have two valid answers"],
+          answer: 0,
+          topic: "Solving problems with quadratic equations"
+        }
+      ]
     }
   ],
   workbook: {

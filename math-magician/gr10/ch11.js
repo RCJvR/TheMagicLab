@@ -244,6 +244,225 @@ MathMagician.registerChapter(11, {
           topic: "Multi-triangle problems"
         }
       ]
+    },
+    {
+      id: 1102,
+      chapter: 11,
+      name: "Bearings & navigation problems",
+      fullName: "Solving two-dimensional problems involving compass bearings",
+      lesson: {
+        heading: "Bearings and navigation problems",
+        sub: "Chapter 11 · Topic 3",
+        body: `
+          <p>A <strong>bearing</strong> is a way of describing direction as an angle measured <em>clockwise from North</em>, always written as three digits (e.g. 035°, 270°).</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Reading and using bearings</div>
+            <p>
+              • North = 000°, East = 090°, South = 180°, West = 270°.<br>
+              • A bearing of 060° means 60° clockwise from North.<br>
+              • To find the return (back) bearing, add 180° if the original bearing is under 180°, or subtract 180° if it is 180° or more.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Strategy for bearing problems</div>
+            <p>
+              1. Draw a diagram with compass directions marked at each point.<br>
+              2. Convert bearings into angles inside the triangle formed by the paths (often using co-interior or alternate angle facts, since North lines at different points are parallel).<br>
+              3. Apply right-angled trigonometry (or split into right triangles) to find the unknown distance or angle.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>A ship sails from port P on a bearing of 090° (due East) for 40 km to point Q. From Q, it's known that the bearing back to P is 270°.<br>
+            A hiker at P wants the bearing of a mountain M, due North of Q at a distance of 30 km.<br>
+            Since PQ ⊥ QM (P→Q is East, Q→M is North), △PQM is right-angled at Q.<br>
+            <span class="math">tan(∠QPM) = 30/40 = 0.75 → ∠QPM ≈ 36.87°</span><br>
+            Bearing of M from P = 090° − 36.87° ≈ 053.1°</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Right-Angle Bearing Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">A person travels East then North (a right-angle turn) — enter both distances to find the direct distance and the bearing back to the start.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">East leg (km)</div><input id="g10c11bE" type="number" value="40" min="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">North leg (km)</div><input id="g10c11bN" type="number" value="30" min="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c11bBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve</button>
+            </div>
+            <div id="g10c11bOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(2);}
+              function run(){
+                const E=parseFloat(document.getElementById('g10c11bE').value);
+                const N=parseFloat(document.getElementById('g10c11bN').value);
+                const out=document.getElementById('g10c11bOut');
+                if(isNaN(E)||isNaN(N)||E<=0||N<=0){out.innerHTML='<span style="color:#fca5a5;">Enter two positive distances.</span>';return;}
+                const dist=Math.sqrt(E*E+N*N);
+                const angleFromEast=Math.atan2(N,E)*180/Math.PI; // angle above the East line at start
+                const bearingOut=90-angleFromEast; // bearing of final point from start
+                const bearingBack=(bearingOut+180)%360;
+                let html='<span style="color:rgba(221,225,240,0.50);">Direct distance = √(E²+N²) = √('+E+'²+'+N+'²) = </span><span style="color:#6ee7b7;">'+f(dist)+' km</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Angle above East line = tan⁻¹('+N+'/'+E+') ≈ '+f(angleFromEast)+'°</span><br>';
+                html+='<span style="color:#6ee7b7;">Bearing of finish point from start ≈ '+f(bearingOut)+'°</span>  ';
+                html+='<span style="color:#fcd34d;">Bearing back to start ≈ '+f(bearingBack)+'°</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c11bBtn').addEventListener('click',run);
+              ['g10c11bE','g10c11bN'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>North lines drawn at two different points are parallel — this lets you use alternate/co-interior angle facts to transfer a bearing angle into a usable triangle angle.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A bearing of 135° means the direction is:",
+          options: ["Due South", "South-East", "North-East", "South-West"],
+          answer: 1,
+          topic: "Bearings & navigation problems"
+        },
+        {
+          type: "mc",
+          text: "If the bearing from A to B is 050°, the bearing from B to A (the return bearing) is:",
+          options: ["050°", "130°", "230°", "310°"],
+          answer: 2,
+          topic: "Bearings & navigation problems"
+        },
+        {
+          type: "input",
+          text: "A hiker walks 60 km East then 25 km North. Find the direct distance back to the start (to 1 decimal place).",
+          answer: "65.0",
+          altAnswers: ["65", "65,0"],
+          topic: "Bearings & navigation problems"
+        },
+        {
+          type: "mc",
+          text: "A ship travels 50 km on a bearing of 090° then 50 km on a bearing of 000°. The angle between its outbound leg and its final position (as seen from the start), measured from East towards North, is closest to:",
+          options: ["30°", "45°", "60°", "90°"],
+          answer: 1,
+          topic: "Bearings & navigation problems"
+        },
+        {
+          type: "mc",
+          text: "Two towns' North lines are used in a bearing problem. Why can alternate angles be used between them?",
+          options: ["The North lines are perpendicular", "The North lines are parallel", "The towns are the same distance from the equator", "Bearings are always less than 180°"],
+          answer: 1,
+          topic: "Bearings & navigation problems"
+        }
+      ]
+    },
+    {
+      id: 1103,
+      chapter: 11,
+      name: "Mixed 2D trigonometry applications",
+      fullName: "Combining elevation, depression, and multi-triangle techniques in mixed problems",
+      lesson: {
+        heading: "Mixed 2D trigonometry applications",
+        sub: "Chapter 11 · Topic 4",
+        body: `
+          <p>Exam problems often combine several ideas at once — elevation and depression, two triangles, and sometimes the sine or cosine rule extended informally through right-angled splitting.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Recognising the right approach</div>
+            <p>
+              • If ONE right triangle and one unknown → use SOH-CAH-TOA directly.<br>
+              • If TWO triangles share a common side or angle → set up two equations and solve simultaneously (as in the flagpole/two-triangle method).<br>
+              • If a problem gives both an angle of elevation and an angle of depression from the same point → the two angles combine to give the full angle between the lines of sight.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Elevation and depression together</div>
+            <p>From the top of a 45 m tower, the angle of elevation to the top of a taller building is 20°, and the angle of depression to the base of the same building is 35°. The buildings are on level ground.<br>
+            Horizontal distance: <span class="math">tan35° = 45/d → d = 45/tan35° ≈ 64.26 m</span><br>
+            Extra height above tower level: <span class="math">tan20° = h/d → h = 64.26 × tan20° ≈ 23.39 m</span><br>
+            Total building height ≈ 45 + 23.39 ≈ 68.39 m</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 The classic "two flagpoles" problem</div>
+            <p>Two flagpoles of different heights stand a known distance apart, connected by two ropes crossing between the top of each pole and the foot of the other. The height at which the ropes cross can be found using similar triangles: <span class="math">height = (h₁ × h₂)/(h₁ + h₂)</span>, independent of the distance between the poles!</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Two Flagpoles — Rope Crossing Height</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the heights of two flagpoles — find where two ropes (top-to-foot) crossing between them intersect.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Pole 1 height (m)</div><input id="g10c11fh1" type="number" value="10" min="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Pole 2 height (m)</div><input id="g10c11fh2" type="number" value="15" min="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Distance apart (m)</div><input id="g10c11fd" type="number" value="30" min="0.1" style="width:85px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c11fBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g10c11fOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(3);}
+              function run(){
+                const h1=parseFloat(document.getElementById('g10c11fh1').value);
+                const h2=parseFloat(document.getElementById('g10c11fh2').value);
+                const d=parseFloat(document.getElementById('g10c11fd').value);
+                const out=document.getElementById('g10c11fOut');
+                if([h1,h2,d].some(isNaN)||h1<=0||h2<=0||d<=0){out.innerHTML='<span style="color:#fca5a5;">Enter three positive values.</span>';return;}
+                const h=(h1*h2)/(h1+h2);
+                let html='<span style="color:rgba(221,225,240,0.50);">height = (h₁×h₂)/(h₁+h₂) = ('+h1+'×'+h2+')/('+h1+'+'+h2+')</span><br>';
+                html+='<span style="color:#6ee7b7;">Crossing height ≈ '+f(h)+' m</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">— notice this does NOT depend on the distance apart ('+d+' m had no effect)!</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c11fBtn').addEventListener('click',run);
+              ['g10c11fh1','g10c11fh2','g10c11fd'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The flagpole-crossing-height formula surprises many learners because the distance between the poles cancels out algebraically — always check whether a "obviously needed" value actually cancels before assuming you're missing information.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Two flagpoles are 12 m and 8 m tall. Ropes connect the top of each to the foot of the other. The height where they cross is:",
+          options: ["4.8 m", "10 m", "6 m", "20 m"],
+          answer: 0,
+          topic: "Mixed 2D trigonometry applications"
+        },
+        {
+          type: "mc",
+          text: "From a 50 m tower, the angle of depression to the base of a nearby building is 40°, and the angle of elevation to its top is 15°. Which two right triangles are needed?",
+          options: ["Only one — they use the same triangle", "One triangle for the horizontal distance, another for the extra height above the tower", "Neither — use the sine rule only", "The building height cannot be found"],
+          answer: 1,
+          topic: "Mixed 2D trigonometry applications"
+        },
+        {
+          type: "input",
+          text: "Two flagpoles are 20 m and 30 m tall. Find the height (in m, to 1 decimal place) where the connecting ropes cross.",
+          answer: "12.0",
+          altAnswers: ["12", "12,0"],
+          topic: "Mixed 2D trigonometry applications"
+        },
+        {
+          type: "mc",
+          text: "In the flagpole-crossing problem, the distance between the poles:",
+          options: ["Must be measured first", "Cancels out of the final height formula", "Doubles the crossing height", "Is needed to find which rope is longer"],
+          answer: 1,
+          topic: "Mixed 2D trigonometry applications"
+        },
+        {
+          type: "mc",
+          text: "From the top of a cliff, the angle of depression to a boat is 25° and to a second boat further out is 12°. To find the distance between the boats, you should:",
+          options: ["Subtract the two horizontal distances found separately", "Add the two angles", "Use only the closer boat's data", "Multiply the two tangent ratios"],
+          answer: 0,
+          topic: "Mixed 2D trigonometry applications"
+        }
+      ]
     }
   ],
   workbook: {

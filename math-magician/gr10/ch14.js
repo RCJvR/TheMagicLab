@@ -312,6 +312,225 @@ MathMagician.registerChapter(14, {
           topic: "Mutually exclusive & complementary events"
         }
       ]
+    },
+    {
+      id: 1402,
+      chapter: 14,
+      name: "Relative frequency vs theoretical probability",
+      fullName: "Comparing experimental relative frequency with theoretical probability",
+      lesson: {
+        heading: "Relative frequency and theoretical probability",
+        sub: "Chapter 14 · Topic 3",
+        body: `
+          <p><strong>Theoretical probability</strong> is calculated from reasoning about equally likely outcomes. <strong>Relative frequency</strong> (experimental probability) is measured by actually performing an experiment.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Definitions</div>
+            <p>
+              <strong>Theoretical probability:</strong> <span class="math">P(E) = n(E)/n(S)</span> — based on counting outcomes.<br>
+              <strong>Relative frequency:</strong> <span class="math">RF(E) = (number of times E occurred)/(total number of trials)</span> — based on data from an experiment.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The law of large numbers</div>
+            <p>As the number of trials increases, the relative frequency of an event tends to get closer to its theoretical probability. With only a few trials, relative frequency can be quite different from the theoretical value — this is normal, not an error.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>A fair coin is tossed 10 times, giving 7 heads. Relative frequency of heads = 7/10 = 0.7 — quite far from the theoretical P(heads) = 0.5.<br>
+            The same coin tossed 1 000 times gives 508 heads. Relative frequency = 508/1000 = 0.508 — much closer to 0.5, as expected from the law of large numbers.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Coin Toss Simulator — Relative Frequency vs Theoretical</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Simulate tossing a fair coin many times — watch how the relative frequency of heads settles near 0.5 as trials increase.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Number of tosses</div><input id="g10c14rfN" type="number" value="50" min="1" max="10000" style="width:90px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g10c14rfBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Toss coins</button>
+            </div>
+            <div id="g10c14rfOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(4);}
+              function run(){
+                const N=parseInt(document.getElementById('g10c14rfN').value);
+                const out=document.getElementById('g10c14rfOut');
+                if(isNaN(N)||N<1||N>10000){out.innerHTML='<span style="color:#fca5a5;">Enter between 1 and 10 000 tosses.</span>';return;}
+                let heads=0;
+                for(let i=0;i<N;i++){ if(Math.random()<0.5) heads++; }
+                const rf=heads/N;
+                const diff=Math.abs(rf-0.5);
+                let html='<span style="color:rgba(221,225,240,0.50);">Simulated '+N+' tosses: </span><span style="color:#fcd34d;">'+heads+' heads, '+(N-heads)+' tails</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Relative frequency of heads = '+heads+'/'+N+' = </span><span style="color:#6ee7b7;">'+f(rf)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Theoretical P(heads) = </span><span style="color:#fcd34d;">0.5000</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">Difference = </span><span style="color:'+(diff<0.05?'#6ee7b7':'#fca5a5')+'">'+f(diff)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.45);font-size:12px;">Try increasing the number of tosses — the relative frequency should drift closer to 0.5.</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c14rfBtn').addEventListener('click',run);
+              document.getElementById('g10c14rfN').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Never say relative frequency "should" match theoretical probability exactly after a small number of trials — variation is expected and only reduces (on average) as trials increase.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A die is rolled 60 times, landing on 6 a total of 8 times. The relative frequency of rolling a 6 is:",
+          options: ["1/6", "8/60", "6/60", "1/8"],
+          answer: 1,
+          topic: "Relative frequency vs theoretical probability"
+        },
+        {
+          type: "mc",
+          text: "As the number of trials in an experiment increases, relative frequency tends to:",
+          options: ["Move further from theoretical probability", "Approach the theoretical probability", "Stay exactly the same", "Become exactly 1"],
+          answer: 1,
+          topic: "Relative frequency vs theoretical probability"
+        },
+        {
+          type: "input",
+          text: "A spinner is spun 200 times and lands on red 55 times. Find the relative frequency of red (as a decimal, to 2 decimal places).",
+          answer: "0.28",
+          altAnswers: ["0,28"],
+          topic: "Relative frequency vs theoretical probability"
+        },
+        {
+          type: "mc",
+          text: "A coin is tossed 5 times giving 4 heads. This large deviation from 0.5 relative frequency:",
+          options: ["Proves the coin is unfair", "Is normal for a small number of trials", "Means the coin has no theoretical probability", "Should never happen with a fair coin"],
+          answer: 1,
+          topic: "Relative frequency vs theoretical probability"
+        },
+        {
+          type: "mc",
+          text: "Which best describes theoretical probability?",
+          options: ["Based on counting equally likely outcomes", "Based only on past experimental data", "Always equal to relative frequency", "Only applies to coins and dice"],
+          answer: 0,
+          topic: "Relative frequency vs theoretical probability"
+        }
+      ]
+    },
+    {
+      id: 1403,
+      chapter: 14,
+      name: "Two-way tables",
+      fullName: "Using two-way (contingency) tables to solve probability problems",
+      lesson: {
+        heading: "Two-way tables",
+        sub: "Chapter 14 · Topic 4",
+        body: `
+          <p>A <strong>two-way table</strong> (contingency table) organises data by two categories at once — an alternative to a Venn diagram that many learners find easier to fill in and read.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Structure of a two-way table</div>
+            <p>
+              Rows represent one category (e.g. Male/Female), columns represent another (e.g. Passed/Failed). Row and column totals are added, with a grand total in the bottom-right corner.<br>
+              Every cell count can be turned into a probability by dividing by the grand total.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>A survey of 100 learners on whether they own a cellphone (C) and a tablet (T):</p>
+            <table style="width:100%;border-collapse:collapse;margin:8px 0;font-size:13px;color:rgba(221,225,240,0.85);">
+              <tr style="background:rgba(99,102,241,0.15);"><th style="padding:6px;border:1px solid rgba(99,102,241,0.3);"></th><th style="padding:6px;border:1px solid rgba(99,102,241,0.3);">Tablet</th><th style="padding:6px;border:1px solid rgba(99,102,241,0.3);">No tablet</th><th style="padding:6px;border:1px solid rgba(99,102,241,0.3);">Total</th></tr>
+              <tr><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">Cellphone</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">32</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">40</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">72</td></tr>
+              <tr><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">No cellphone</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">8</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">20</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">28</td></tr>
+              <tr><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">Total</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">40</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">60</td><td style="padding:6px;border:1px solid rgba(99,102,241,0.3);">100</td></tr>
+            </table>
+            <p>P(has both) = 32/100 = 0.32. P(has cellphone) = 72/100 = 0.72. P(has tablet OR cellphone) = (72+40−32)/100 = 80/100 = 0.8</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Two-Way Table Builder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the two "both/neither/only" counts — the table completes itself with totals and key probabilities.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A only</div><input id="g10c14twAonly" type="number" value="40" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">B only</div><input id="g10c14twBonly" type="number" value="8" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Both A and B</div><input id="g10c14twBoth" type="number" value="32" min="0" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Neither</div><input id="g10c14twNeither" type="number" value="20" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <button id="g10c14twBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Build table</button>
+            </div>
+            <div id="g10c14twOut" style="font-size:14px;line-height:2.0;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fr(n,d){if(d===0)return'0';const g=gcd(n,d);return n/g+'/'+d/g;}
+              function gcd(a,b){return b===0?a:gcd(b,a%b);}
+              function run(){
+                const aOnly=parseInt(document.getElementById('g10c14twAonly').value);
+                const bOnly=parseInt(document.getElementById('g10c14twBonly').value);
+                const both=parseInt(document.getElementById('g10c14twBoth').value);
+                const neither=parseInt(document.getElementById('g10c14twNeither').value);
+                const out=document.getElementById('g10c14twOut');
+                if([aOnly,bOnly,both,neither].some(v=>isNaN(v)||v<0)){out.innerHTML='<span style="color:#fca5a5;">Enter non-negative whole numbers in all four boxes.</span>';return;}
+                const totalA=aOnly+both, totalB=bOnly+both, totalNotA=bOnly+neither, totalNotB=aOnly+neither;
+                const grand=aOnly+bOnly+both+neither;
+                let html='<table style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:13px;">';
+                html+='<tr style="background:rgba(99,102,241,0.15);"><th style="padding:5px;border:1px solid rgba(99,102,241,0.3);"></th><th style="padding:5px;border:1px solid rgba(99,102,241,0.3);">B</th><th style="padding:5px;border:1px solid rgba(99,102,241,0.3);">Not B</th><th style="padding:5px;border:1px solid rgba(99,102,241,0.3);">Total</th></tr>';
+                html+='<tr><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);">A</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#6ee7b7;">'+both+'</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#6ee7b7;">'+aOnly+'</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#fcd34d;">'+totalA+'</td></tr>';
+                html+='<tr><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);">Not A</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#6ee7b7;">'+bOnly+'</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#6ee7b7;">'+neither+'</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#fcd34d;">'+totalNotB+'</td></tr>';
+                html+='<tr><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);">Total</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#fcd34d;">'+totalB+'</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#fcd34d;">'+totalNotA+'</td><td style="padding:5px;border:1px solid rgba(99,102,241,0.3);color:#a5b4fc;">'+grand+'</td></tr>';
+                html+='</table>';
+                if(grand>0){
+                  html+='<span style="color:rgba(221,225,240,0.50);">P(A) = '+fr(totalA,grand)+'  P(B) = '+fr(totalB,grand)+'  P(A and B) = '+fr(both,grand)+'</span><br>';
+                  html+='<span style="color:#6ee7b7;">P(A or B) = '+fr(totalA+totalB-both,grand)+'</span>  <span style="color:rgba(221,225,240,0.50);">P(neither) = '+fr(neither,grand)+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c14twBtn').addEventListener('click',run);
+              ['g10c14twAonly','g10c14twBonly','g10c14twBoth','g10c14twNeither'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Two-way tables and Venn diagrams show exactly the same information in different layouts — if a question gives you one, you can always redraw it as the other, whichever helps you think more clearly.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "In a two-way table, the bottom-right cell always represents:",
+          options: ["P(A and B)", "The grand total (n(S))", "P(neither)", "The row total for A"],
+          answer: 1,
+          topic: "Two-way tables"
+        },
+        {
+          type: "mc",
+          text: "A two-way table shows: 15 own a dog only, 10 own a cat only, 5 own both, 20 own neither. Total surveyed:",
+          options: ["50", "30", "45", "40"],
+          answer: 0,
+          topic: "Two-way tables"
+        },
+        {
+          type: "input",
+          text: "Using the table in the previous question (15 dog only, 10 cat only, 5 both, 20 neither), find P(owns a dog).",
+          answer: "0.4",
+          altAnswers: ["0,4", "2/5"],
+          topic: "Two-way tables"
+        },
+        {
+          type: "mc",
+          text: "A two-way table and a Venn diagram for the same data will always give:",
+          options: ["Different probabilities", "The same probabilities, just displayed differently", "The Venn diagram is always more accurate", "Two-way tables cannot show intersections"],
+          answer: 1,
+          topic: "Two-way tables"
+        },
+        {
+          type: "mc",
+          text: "In a two-way table with rows Male/Female and columns Pass/Fail, the cell 'Female AND Pass' corresponds to which Venn region?",
+          options: ["Female only", "Pass only", "The intersection of Female and Pass", "The complement of Female"],
+          answer: 2,
+          topic: "Two-way tables"
+        }
+      ]
     }
   ],
   workbook: {

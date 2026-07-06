@@ -495,6 +495,297 @@ MathMagician.registerChapter(8, {
           topic: "Gradient of a line"
         }
       ]
+    },
+    {
+      id: 802,
+      chapter: 8,
+      name: "Equation of a line",
+      fullName: "Finding and using the equation of a straight line",
+      lesson: {
+        heading: "The equation of a straight line",
+        sub: "Chapter 8 · Topic 3",
+        body: `
+          <div class="def-box">
+            <div class="def-box-title">📖 Forms of a straight line equation</div>
+            <p>
+              <strong>Gradient–intercept form:</strong> <span class="math">y = mx + c</span>, where m = gradient, c = y-intercept<br>
+              <strong>Point–gradient form:</strong> <span class="math">y − y₁ = m(x − x₁)</span> — useful when you know one point and the gradient
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Finding the equation of a line</div>
+            <p>
+              1. Find the gradient m (from two points, or from a parallel/perpendicular condition).<br>
+              2. Substitute a known point (x₁; y₁) and m into <span class="math">y − y₁ = m(x − x₁)</span>.<br>
+              3. Rearrange into <span class="math">y = mx + c</span> form.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Equation through two points</div>
+            <p>Find the equation of the line through A(−2; 1) and B(4; 13).<br>
+            <span class="math">m = (13−1)/(4−(−2)) = 12/6 = 2</span><br>
+            Using A: <span class="math">y − 1 = 2(x − (−2)) = 2x + 4</span><br>
+            <span class="math">y = 2x + 5</span></p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Using a parallel condition</div>
+            <p>Find the equation of the line through (3; −2) that is parallel to y = 4x − 1.<br>
+            Parallel → same gradient: m = 4<br>
+            <span class="math">y − (−2) = 4(x − 3) → y = 4x − 14</span></p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Equation of a Line Builder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter one point and either a second point or a gradient — build the equation step by step.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">x₁</div><input id="g10c8ex1" type="number" value="-2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">y₁</div><input id="g10c8ey1" type="number" value="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Mode</div>
+                <select id="g10c8emode" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="point">Second point</option>
+                  <option value="grad">Gradient</option>
+                </select>
+              </div>
+              <div id="g10c8emodeInputs"></div>
+              <button id="g10c8eBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Build equation</button>
+            </div>
+            <div id="g10c8eOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fmt(n){return Number.isInteger(n)?''+n:parseFloat(n.toFixed(4))+'';}
+              function inputsHTML(){
+                const m=document.getElementById('g10c8emode').value;
+                if(m==='point'){
+                  return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">x₂</div><input id="g10c8ex2" type="number" value="4" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:monospace;text-align:center;"></div>'
+                    +'<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">y₂</div><input id="g10c8ey2" type="number" value="13" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:monospace;text-align:center;"></div>';
+                }
+                return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Gradient m</div><input id="g10c8egm" type="number" value="2" step="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:monospace;text-align:center;"></div>';
+              }
+              function buildInputs(){
+                document.getElementById('g10c8emodeInputs').innerHTML=inputsHTML();
+                ['g10c8ex2','g10c8ey2','g10c8egm'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')run();});});
+              }
+              function run(){
+                const x1=parseFloat(document.getElementById('g10c8ex1').value),y1=parseFloat(document.getElementById('g10c8ey1').value);
+                const mode=document.getElementById('g10c8emode').value;
+                const out=document.getElementById('g10c8eOut');
+                let m;
+                if(mode==='point'){
+                  const x2=parseFloat(document.getElementById('g10c8ex2').value),y2=parseFloat(document.getElementById('g10c8ey2').value);
+                  if([x1,y1,x2,y2].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter valid coordinates.</span>';return;}
+                  if(x2===x1){out.innerHTML='<span style="color:#fca5a5;">Vertical line — gradient undefined. Equation: x = '+x1+'</span>';return;}
+                  m=(y2-y1)/(x2-x1);
+                } else {
+                  m=parseFloat(document.getElementById('g10c8egm').value);
+                  if([x1,y1,m].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter valid values.</span>';return;}
+                }
+                const c=y1-m*x1;
+                let html='';
+                if(mode==='point'){
+                  const x2=parseFloat(document.getElementById('g10c8ex2').value),y2=parseFloat(document.getElementById('g10c8ey2').value);
+                  html+='<span style="color:rgba(221,225,240,0.50);">m = ('+y2+'−'+y1+')/('+x2+'−'+x1+') = </span><span style="color:#fcd34d;">'+fmt(m)+'</span><br>';
+                }
+                html+='<span style="color:rgba(221,225,240,0.50);">y − '+y1+' = '+fmt(m)+'(x − '+x1+')</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">c = y₁ − m·x₁ = '+y1+' − ('+fmt(m)+')×'+x1+' = </span><span style="color:#fcd34d;">'+fmt(c)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Equation: y = '+fmt(m)+'x '+(c>=0?'+ '+fmt(c):'− '+fmt(Math.abs(c)))+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c8emode').addEventListener('change',()=>{buildInputs();});
+              document.getElementById('g10c8eBtn').addEventListener('click',run);
+              document.getElementById('g10c8ex1').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              document.getElementById('g10c8ey1').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              buildInputs();
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Whenever a question mentions "parallel to" or "perpendicular to" a given line, that instantly gives you the gradient — you don't need a second point.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "The equation of the line through (2; 5) with gradient 3 is:",
+          options: ["y = 3x − 1", "y = 3x + 5", "y = 3x + 1", "y = 5x + 3"],
+          answer: 0,
+          topic: "Equation of a line"
+        },
+        {
+          type: "input",
+          text: "Find c if the line y = −2x + c passes through (3; 1).",
+          answer: "7",
+          topic: "Equation of a line"
+        },
+        {
+          type: "mc",
+          text: "Find the equation of the line through (0; −4) and (2; 0):",
+          options: ["y = 2x − 4", "y = 2x + 4", "y = −2x − 4", "y = 4x − 4"],
+          answer: 0,
+          topic: "Equation of a line"
+        },
+        {
+          type: "mc",
+          text: "A line parallel to y = −3x + 2 passes through (1; 4). Its equation is:",
+          options: ["y = −3x + 7", "y = 3x + 1", "y = −3x + 1", "y = −3x + 4"],
+          answer: 0,
+          topic: "Equation of a line"
+        },
+        {
+          type: "input",
+          text: "A line perpendicular to y = 2x − 1 passes through (4; 3). Find its gradient.",
+          answer: "-0.5",
+          altAnswers: ["-1/2", "−0.5", "-0,5"],
+          topic: "Equation of a line"
+        },
+        {
+          type: "mc",
+          text: "Line AB passes through A(−1; −2) and has equation y = 3x + 1. Find the y-coordinate when x = 2.",
+          options: ["7", "5", "4", "6"],
+          answer: 0,
+          topic: "Equation of a line"
+        }
+      ]
+    },
+    {
+      id: 803,
+      chapter: 8,
+      name: "Analytical geometry of quadrilaterals",
+      fullName: "Using distance, gradient and midpoint together to classify and prove properties of figures",
+      lesson: {
+        heading: "Classifying figures using analytical geometry",
+        sub: "Chapter 8 · Topic 4",
+        body: `
+          <p>Combining the distance, gradient, and midpoint formulae lets us <strong>prove</strong> what type of figure a set of points forms — without drawing on grid paper.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Which formula answers which question?</div>
+            <p>
+              <strong>Distance formula</strong> → is a side/diagonal a certain length? Are two sides equal?<br>
+              <strong>Gradient formula</strong> → are two sides parallel (equal m)? Perpendicular (m₁ × m₂ = −1)?<br>
+              <strong>Midpoint formula</strong> → do the diagonals bisect each other?
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Checklist for classifying a quadrilateral</div>
+            <p>
+              • Both pairs of opposite sides parallel AND equal → <strong>parallelogram</strong><br>
+              • Parallelogram + all sides equal → <strong>rhombus</strong><br>
+              • Parallelogram + one right angle (adjacent sides perpendicular) → <strong>rectangle</strong><br>
+              • Parallelogram + all sides equal + one right angle → <strong>square</strong><br>
+              • Diagonals bisect each other → parallelogram (a shortcut check)
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>A(0; 0), B(4; 2), C(6; 6), D(2; 4).<br>
+            <span class="math">m_AB = (2−0)/(4−0) = ½</span>, <span class="math">m_DC = (6−4)/(6−2) = ½</span> → AB ∥ DC<br>
+            <span class="math">AB = √(16+4) = √20</span>, <span class="math">DC = √(16+4) = √20</span> → AB = DC<br>
+            One pair of sides equal and parallel ⟹ ABCD is a parallelogram.<br>
+            Check <span class="math">m_AD = (4−0)/(2−0) = 2</span>; since <span class="math">m_AB × m_AD = ½ × 2 = 1 ≠ −1</span>, adjacent sides are not perpendicular, so it's not a rectangle.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Quadrilateral Classifier</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter four vertices A, B, C, D (in order) — the tool checks side lengths, gradients, and classifies the shape.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A (x,y)</div><input id="g10c8qA" type="text" value="0,0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">B (x,y)</div><input id="g10c8qB" type="text" value="4,2" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">C (x,y)</div><input id="g10c8qC" type="text" value="6,6" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">D (x,y)</div><input id="g10c8qD" type="text" value="2,4" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:monospace;text-align:center;"></div>
+              <button id="g10c8qBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Classify</button>
+            </div>
+            <div id="g10c8qOut" style="font-size:14px;line-height:2.0;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function parsePt(s){const p=s.split(',').map(v=>parseFloat(v.trim()));return p.length===2&&!p.some(isNaN)?p:null;}
+              function dist(p,q){return Math.sqrt((q[0]-p[0])**2+(q[1]-p[1])**2);}
+              function grad(p,q){return q[0]===p[0]?null:(q[1]-p[1])/(q[0]-p[0]);}
+              function fmt(n){return n===null?'undefined':parseFloat(n.toFixed(4))+'';}
+              function run(){
+                const A=parsePt(document.getElementById('g10c8qA').value);
+                const B=parsePt(document.getElementById('g10c8qB').value);
+                const C=parsePt(document.getElementById('g10c8qC').value);
+                const D=parsePt(document.getElementById('g10c8qD').value);
+                const out=document.getElementById('g10c8qOut');
+                if(!A||!B||!C||!D){out.innerHTML='<span style="color:#fca5a5;">Enter all four points as x,y (e.g. 4,2).</span>';return;}
+                const AB=dist(A,B),BC=dist(B,C),CD=dist(C,D),DA=dist(D,A);
+                const mAB=grad(A,B),mBC=grad(B,C),mCD=grad(C,D),mDA=grad(D,A);
+                const near=(a,b)=>Math.abs(a-b)<0.001;
+                const parAB_CD=(mAB===null&&mCD===null)||(mAB!==null&&mCD!==null&&near(mAB,mCD));
+                const parBC_DA=(mBC===null&&mDA===null)||(mBC!==null&&mDA!==null&&near(mBC,mDA));
+                const eqAB_CD=near(AB,CD), eqBC_DA=near(BC,DA);
+                const perpAB_BC=(mAB!==null&&mBC!==null)&&near(mAB*mBC,-1);
+                let shape='Quadrilateral (no special properties detected)';
+                const isPara=(parAB_CD&&parBC_DA);
+                if(isPara){
+                  const allEqual=near(AB,BC)&&near(BC,CD)&&near(CD,DA);
+                  if(allEqual&&perpAB_BC) shape='Square';
+                  else if(allEqual) shape='Rhombus';
+                  else if(perpAB_BC) shape='Rectangle';
+                  else shape='Parallelogram';
+                } else if((parAB_CD&&!parBC_DA)||(!parAB_CD&&parBC_DA)){
+                  shape='Trapezium (one pair of parallel sides)';
+                }
+                let html='<span style="color:rgba(221,225,240,0.50);">AB = '+fmt(AB)+', BC = '+fmt(BC)+', CD = '+fmt(CD)+', DA = '+fmt(DA)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">m(AB) = '+fmt(mAB)+', m(BC) = '+fmt(mBC)+', m(CD) = '+fmt(mCD)+', m(DA) = '+fmt(mDA)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">AB ∥ CD? </span><span style="color:'+(parAB_CD?'#6ee7b7':'#fca5a5')+'">'+(parAB_CD?'Yes':'No')+'</span>  ';
+                html+='<span style="color:rgba(221,225,240,0.50);">BC ∥ DA? </span><span style="color:'+(parBC_DA?'#6ee7b7':'#fca5a5')+'">'+(parBC_DA?'Yes':'No')+'</span><br>';
+                html+='<span style="color:#fcd34d;">Classification: '+shape+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c8qBtn').addEventListener('click',run);
+              ['g10c8qA','g10c8qB','g10c8qC','g10c8qD'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In an exam, always state the reasoning explicitly: e.g. "m_AB = m_DC = ½ ⟹ AB ∥ DC" and "AB = DC = √20" — a numeric answer alone doesn't earn full marks for a "show that" question.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A(0;0), B(4;0), C(4;3), D(0;3). What shape is ABCD?",
+          options: ["Rectangle", "Rhombus", "Trapezium", "Kite"],
+          answer: 0,
+          topic: "Analytical geometry of quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "To show that a quadrilateral's diagonals bisect each other, you should calculate:",
+          options: ["The gradients of all four sides", "The midpoints of both diagonals", "The lengths of all four sides", "The gradient of one diagonal only"],
+          answer: 1,
+          topic: "Analytical geometry of quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "P(1;1), Q(5;1), R(5;5), S(1;5). PQRS is best classified as:",
+          options: ["Square", "Rhombus (not square)", "Trapezium", "Kite"],
+          answer: 0,
+          topic: "Analytical geometry of quadrilaterals"
+        },
+        {
+          type: "input",
+          text: "A(0;0), B(6;0), C(6;4), D(0;4). Find the length of diagonal AC.",
+          answer: "7.21",
+          altAnswers: ["7,21", "√52"],
+          topic: "Analytical geometry of quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "For ABCD to be a rhombus (given it is already a parallelogram), you must additionally show:",
+          options: ["Diagonals are equal", "One angle is 90°", "All four sides are equal in length", "Diagonals are parallel"],
+          answer: 2,
+          topic: "Analytical geometry of quadrilaterals"
+        }
+      ]
     }
   ],
   workbook: {

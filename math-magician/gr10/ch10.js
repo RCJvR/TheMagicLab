@@ -259,6 +259,252 @@ MathMagician.registerChapter(10, {
           topic: "Dispersion & five-number summary"
         }
       ]
+    },
+    {
+      id: 1002,
+      chapter: 10,
+      name: "Box-and-whisker diagrams",
+      fullName: "Drawing and interpreting box-and-whisker plots from the five-number summary",
+      lesson: {
+        heading: "Box-and-whisker diagrams",
+        sub: "Chapter 10 · Topic 3",
+        body: `
+          <p>A <strong>box-and-whisker plot</strong> (box plot) is a visual summary of the five-number summary — it shows the spread and skewness of data at a glance.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Parts of a box-and-whisker plot</div>
+            <p>
+              • The <strong>box</strong> stretches from Q1 to Q3 (the middle 50% of the data — the IQR).<br>
+              • A line inside the box marks the <strong>median</strong> (Q2).<br>
+              • <strong>Whiskers</strong> extend from the box to the minimum and maximum values.<br>
+              • The plot is drawn on a numeric axis so lengths are comparable.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Reading skewness from a box plot</div>
+            <p>
+              • If the median is closer to Q1 and the right whisker is longer → data is <strong>positively skewed</strong> (skewed right).<br>
+              • If the median is closer to Q3 and the left whisker is longer → data is <strong>negatively skewed</strong> (skewed left).<br>
+              • If the box and whiskers are roughly symmetric → data is roughly <strong>symmetric</strong>.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>Five-number summary: Min = 12, Q1 = 20, Median = 24, Q3 = 30, Max = 45.<br>
+            Box from 20 to 30, median line at 24. Left whisker: 20→12 (length 8). Right whisker: 30→45 (length 15).<br>
+            The right whisker is much longer and the median sits closer to Q1 than Q3 → the data is <strong>positively skewed</strong>.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">📈 Box-and-Whisker Plot Builder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter comma-separated data — the plot is drawn automatically from the five-number summary, with a skewness comment.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div style="flex:1;min-width:220px;">
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Data values (comma separated)</div>
+                <input id="g10c10bwdata" type="text" value="12, 18, 20, 20, 22, 24, 26, 28, 30, 33, 45"
+                  style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <button id="g10c10bwBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Draw plot</button>
+            </div>
+            <canvas id="g10c10bwcv" style="width:100%;max-width:560px;display:block;border-radius:8px;background:rgba(15,10,40,0.88);border:1px solid rgba(99,102,241,0.22);margin-bottom:10px;"></canvas>
+            <div id="g10c10bwOut" style="font-size:14px;line-height:2.0;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function med(arr){const m=Math.floor(arr.length/2);return arr.length%2===1?arr[m]:(arr[m-1]+arr[m])/2;}
+              const cv=document.getElementById('g10c10bwcv');
+              const DPR=Math.min(window.devicePixelRatio||1,2);
+              const W=560,H=160;
+              cv.width=W*DPR;cv.height=H*DPR;
+              const ctx=cv.getContext('2d');
+              ctx.scale(DPR,DPR);
+              function run(){
+                const raw=document.getElementById('g10c10bwdata').value;
+                const out=document.getElementById('g10c10bwOut');
+                const vals=raw.split(',').map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+                ctx.clearRect(0,0,W,H);
+                if(vals.length<4){out.innerHTML='<span style="color:#fca5a5;">Enter at least 4 values.</span>';return;}
+                const s=[...vals].sort((a,b)=>a-b);
+                const n=s.length;
+                const mn=s[0],mx=s[n-1],Q2=med(s);
+                const lower=n%2===1?s.slice(0,Math.floor(n/2)):s.slice(0,n/2);
+                const upper=n%2===1?s.slice(Math.floor(n/2)+1):s.slice(n/2);
+                const Q1=med(lower),Q3=med(upper);
+                const pad=40,plotW=W-2*pad;
+                const range=mx-mn||1;
+                const x=v=>pad+((v-mn)/range)*plotW;
+                const midY=H/2,boxH=44;
+                // axis
+                ctx.strokeStyle='rgba(99,102,241,0.30)';ctx.lineWidth=1;
+                ctx.beginPath();ctx.moveTo(pad,H-20);ctx.lineTo(W-pad,H-20);ctx.stroke();
+                [mn,Q1,Q2,Q3,mx].forEach(v=>{
+                  ctx.strokeStyle='rgba(99,102,241,0.25)';
+                  ctx.beginPath();ctx.moveTo(x(v),H-24);ctx.lineTo(x(v),H-16);ctx.stroke();
+                  ctx.fillStyle='rgba(165,180,252,0.55)';ctx.font='10px monospace';ctx.textAlign='center';
+                  ctx.fillText(parseFloat(v.toFixed(2)),x(v),H-6);
+                });
+                // whiskers
+                ctx.strokeStyle='#a5b4fc';ctx.lineWidth=2;
+                ctx.beginPath();ctx.moveTo(x(mn),midY);ctx.lineTo(x(Q1),midY);ctx.stroke();
+                ctx.beginPath();ctx.moveTo(x(Q3),midY);ctx.lineTo(x(mx),midY);ctx.stroke();
+                [mn,mx].forEach(v=>{ctx.beginPath();ctx.moveTo(x(v),midY-10);ctx.lineTo(x(v),midY+10);ctx.stroke();});
+                // box
+                ctx.fillStyle='rgba(99,102,241,0.20)';
+                ctx.fillRect(x(Q1),midY-boxH/2,x(Q3)-x(Q1),boxH);
+                ctx.strokeStyle='#6ee7b7';ctx.lineWidth=2.5;
+                ctx.strokeRect(x(Q1),midY-boxH/2,x(Q3)-x(Q1),boxH);
+                // median line
+                ctx.strokeStyle='#fcd34d';ctx.lineWidth=2.5;
+                ctx.beginPath();ctx.moveTo(x(Q2),midY-boxH/2);ctx.lineTo(x(Q2),midY+boxH/2);ctx.stroke();
+
+                const IQR=Q3-Q1;
+                const leftW=Q1-mn, rightW=mx-Q3;
+                let skew;
+                if(Math.abs(leftW-rightW)<0.05*range && Math.abs((Q2-Q1)-(Q3-Q2))<0.05*(IQR||1)) skew='roughly symmetric';
+                else if(rightW>leftW && (Q2-Q1)<(Q3-Q2)) skew='positively skewed (skewed right) — a longer right whisker and median closer to Q1';
+                else if(leftW>rightW && (Q2-Q1)>(Q3-Q2)) skew='negatively skewed (skewed left) — a longer left whisker and median closer to Q3';
+                else skew='not strongly skewed either way';
+
+                let html='<span style="color:rgba(221,225,240,0.50);">Min='+mn+', Q1='+Q1+', Median='+Q2+', Q3='+Q3+', Max='+mx+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">IQR = '+IQR+'</span><br>';
+                html+='<span style="color:#fcd34d;">Shape: '+skew+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c10bwBtn').addEventListener('click',run);
+              document.getElementById('g10c10bwdata').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>A box plot hides the individual data values but reveals spread and skewness instantly — useful for comparing two data sets (e.g. two classes' test marks) side by side.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "In a box-and-whisker plot, the box represents:",
+          options: ["The full range of data", "The middle 50% of the data (IQR)", "The mode", "The mean ± standard deviation"],
+          answer: 1,
+          topic: "Box-and-whisker diagrams"
+        },
+        {
+          type: "mc",
+          text: "A box plot has a long right whisker and the median close to Q1. The data is:",
+          options: ["Symmetric", "Negatively skewed", "Positively skewed", "Bimodal"],
+          answer: 2,
+          topic: "Box-and-whisker diagrams"
+        },
+        {
+          type: "input",
+          text: "Five-number summary: Min=5, Q1=10, Median=14, Q3=22, Max=30. Find the IQR.",
+          answer: "12",
+          topic: "Box-and-whisker diagrams"
+        },
+        {
+          type: "mc",
+          text: "The line drawn inside the box of a box-and-whisker plot represents:",
+          options: ["The mean", "The mode", "The median", "Q1"],
+          answer: 2,
+          topic: "Box-and-whisker diagrams"
+        },
+        {
+          type: "mc",
+          text: "Two classes' box plots are compared. Class A's box is much narrower than Class B's. This means:",
+          options: ["Class A has a higher mean", "Class A's marks are more consistent (less spread in the middle 50%)", "Class A has more learners", "Class A has a higher maximum"],
+          answer: 1,
+          topic: "Box-and-whisker diagrams"
+        }
+      ]
+    },
+    {
+      id: 1003,
+      chapter: 10,
+      name: "Interpreting statistics in context",
+      fullName: "Using statistical summaries and graphs together to analyse and comment on real data",
+      lesson: {
+        heading: "Interpreting statistics in context",
+        sub: "Chapter 10 · Topic 4",
+        body: `
+          <p>CAPS requires more than calculation — you must be able to <strong>analyse and comment</strong> on what the statistics reveal about a real situation.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 What to look for and compare</div>
+            <p>
+              • <strong>Centre:</strong> which data set has the higher mean/median — what does that mean in context?<br>
+              • <strong>Spread:</strong> which data set is more consistent (smaller IQR/range)?<br>
+              • <strong>Outliers:</strong> are there unusually high/low values, and could they distort the mean?<br>
+              • <strong>Shape:</strong> is the data symmetric or skewed, and why might that be, given the context?
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Mean vs median — which is more reliable?</div>
+            <p>The mean is affected by extreme values (outliers); the median is not. For skewed data or data with outliers, the <strong>median</strong> is usually a more reliable measure of the "typical" value.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Comparing two classes</div>
+            <p>Class A test marks: mean = 62%, IQR = 8. Class B test marks: mean = 60%, IQR = 22.<br>
+            Comment: Class A performed slightly better on average, but more importantly, Class A's marks are far <strong>more consistent</strong> (smaller IQR) — most learners scored close to the mean, while Class B has much greater variation in performance.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Effect of an outlier</div>
+            <p>Salaries (in R'000s) at a small company: 18, 19, 20, 21, 22, 95 (owner).<br>
+            Mean = 32.5 (pulled upward by the outlier); Median = 20.5.<br>
+            The median gives a far more realistic picture of what a "typical" employee earns.</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Common exam-style comments</div>
+            <p>
+              • "The data is skewed because the mean is much greater/less than the median."<br>
+              • "Group X has less variability than Group Y because its IQR/range is smaller."<br>
+              • "The outlier at [value] increases the mean but has little effect on the median."
+            </p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When asked to "comment", always link your statistic back to the real-world context — don't just state a number, explain what it means for the people/situation in the question.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Data set A has mean 45 and median 40. This suggests the data is:",
+          options: ["Symmetric", "Skewed by some high values pulling the mean up", "Skewed by low values pulling the mean down", "Impossible"],
+          answer: 1,
+          topic: "Interpreting statistics in context"
+        },
+        {
+          type: "mc",
+          text: "Which measure of central tendency is LEAST affected by an outlier?",
+          options: ["Mean", "Median", "Both equally affected", "Range"],
+          answer: 1,
+          topic: "Interpreting statistics in context"
+        },
+        {
+          type: "mc",
+          text: "Two soccer teams' goal-scoring: Team A has IQR = 1, Team B has IQR = 5 (same median). Team A's scoring is:",
+          options: ["Less consistent than Team B", "More consistent than Team B", "Identical to Team B", "Impossible to compare"],
+          answer: 1,
+          topic: "Interpreting statistics in context"
+        },
+        {
+          type: "input",
+          text: "Data: 10, 11, 12, 13, 14, 90. Is the mean or median a more reliable 'typical' value here? Answer 'mean' or 'median'.",
+          answer: "median",
+          topic: "Interpreting statistics in context"
+        },
+        {
+          type: "mc",
+          text: "A company reports the 'average' salary using the mean, which is far higher than most employees earn. This is most likely because:",
+          options: ["The data is symmetric", "A few very high salaries (outliers) are pulling the mean up", "The median was used instead", "There is no variation in salaries"],
+          answer: 1,
+          topic: "Interpreting statistics in context"
+        }
+      ]
     }
   ],
   workbook: {

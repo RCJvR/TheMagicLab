@@ -263,6 +263,207 @@ MathMagician.registerChapter(12, {
           topic: "Proving parallelogram properties"
         }
       ]
+    },
+    {
+      id: 1202,
+      chapter: 12,
+      name: "Congruency proofs",
+      fullName: "Using the four congruency conditions to prove triangles congruent",
+      lesson: {
+        heading: "Proving triangles congruent",
+        sub: "Chapter 12 · Topic 3",
+        body: `
+          <p>Many Euclidean geometry riders rely on proving two triangles <strong>congruent</strong> (identical in shape and size) before deducing that corresponding sides or angles are equal.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The four congruency conditions</div>
+            <p>
+              <strong>SSS:</strong> three sides of one triangle equal three sides of the other.<br>
+              <strong>SAS:</strong> two sides and the INCLUDED angle equal.<br>
+              <strong>AAS:</strong> two angles and a corresponding side equal.<br>
+              <strong>RHS:</strong> right angle, hypotenuse, and one other side equal (right-angled triangles only).
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Why order matters: naming congruent triangles</div>
+            <p>When you write <span class="math">△ABC ≡ △DEF</span>, the order of the letters tells you the correspondence: A↔D, B↔E, C↔F. Getting the order right is essential for correctly stating which sides/angles are equal afterwards.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: SAS proof</div>
+            <p>Given: AB = CD, AD = CB, with diagonal AC common to both triangles ABC and CDA.<br>
+            <strong>RTP:</strong> △ABC ≡ △CDA<br><br>
+            In △ABC and △CDA:<br>
+            AB = CD (given)<br>
+            BC = DA (given)<br>
+            AC = CA (common side)<br>
+            ∴ △ABC ≡ △CDA (SSS)</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Common mistakes to avoid</div>
+            <p>
+              • Do not confuse SAS with SSA (side-side-angle) — SSA is NOT a valid congruency condition, because the angle must be the INCLUDED angle (between the two known sides).<br>
+              • Always double check the correspondence — matching sides/angles must be listed in the same order in both triangle names.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Congruency Condition Checker</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Tick which facts are known about two triangles — find out whether they are proven congruent, and by which condition.</p>
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;font-size:13px;color:rgba(221,225,240,0.75);">
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="g10c12cc1"> 3 pairs of sides equal (SSS)</label>
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="g10c12cc2"> 2 pairs of sides equal AND the angle between them equal (SAS)</label>
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="g10c12cc3"> 2 pairs of angles equal AND a corresponding side equal (AAS)</label>
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="g10c12cc4"> Both right-angled, hypotenuses equal, AND one other pair of sides equal (RHS)</label>
+              <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="g10c12cc5"> 2 pairs of sides equal AND a NON-included angle equal (SSA only)</label>
+            </div>
+            <button id="g10c12ccBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;margin-bottom:10px;">Check congruency</button>
+            <div id="g10c12ccOut" style="font-size:14px;line-height:1.8;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function run(){
+                const c1=document.getElementById('g10c12cc1').checked;
+                const c2=document.getElementById('g10c12cc2').checked;
+                const c3=document.getElementById('g10c12cc3').checked;
+                const c4=document.getElementById('g10c12cc4').checked;
+                const c5=document.getElementById('g10c12cc5').checked;
+                const out=document.getElementById('g10c12ccOut');
+                let msgs=[];
+                if(c1)msgs.push('<span style="color:#6ee7b7;">Congruent by SSS ✓</span>');
+                if(c2)msgs.push('<span style="color:#6ee7b7;">Congruent by SAS ✓</span>');
+                if(c3)msgs.push('<span style="color:#6ee7b7;">Congruent by AAS ✓</span>');
+                if(c4)msgs.push('<span style="color:#6ee7b7;">Congruent by RHS ✓</span>');
+                if(c5)msgs.push('<span style="color:#fca5a5;">SSA is NOT a valid congruency condition on its own — the triangles may NOT be congruent ✗</span>');
+                if(msgs.length===0){out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Tick the facts you know about the two triangles.</span>';return;}
+                out.innerHTML=msgs.join('<br>');
+              }
+              document.getElementById('g10c12ccBtn').addEventListener('click',run);
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Write your congruency proof in three clearly labelled lines (one per pair of equal parts), then state the condition (SSS/SAS/AAS/RHS) in brackets — examiners look for this exact structure.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Which of these IS a valid congruency condition?",
+          options: ["SSA", "AAA", "SAS", "ASA is the same as AAS but never valid"],
+          answer: 2,
+          topic: "Congruency proofs"
+        },
+        {
+          type: "mc",
+          text: "In △ABC ≡ △DEF, which side in △DEF corresponds to AB?",
+          options: ["DE", "EF", "DF", "Cannot tell without more information"],
+          answer: 0,
+          topic: "Congruency proofs"
+        },
+        {
+          type: "mc",
+          text: "Two right-angled triangles have equal hypotenuses and one equal corresponding side. This proves congruency by:",
+          options: ["SAS", "AAS", "RHS", "SSS"],
+          answer: 2,
+          topic: "Congruency proofs"
+        },
+        {
+          type: "mc",
+          text: "For SAS to apply, the equal angle must be:",
+          options: ["Any angle in the triangle", "The angle included between the two known equal sides", "The largest angle", "Opposite the longest side"],
+          answer: 1,
+          topic: "Congruency proofs"
+        },
+        {
+          type: "mc",
+          text: "△PQR and △XYZ share PQ = XY, QR = YZ, and ∠Q = ∠Y. This proves:",
+          options: ["△PQR ≡ △XYZ by SAS", "The triangles are similar but not necessarily congruent", "Nothing can be concluded", "△PQR ≡ △XYZ by SSS"],
+          answer: 0,
+          topic: "Congruency proofs"
+        }
+      ]
+    },
+    {
+      id: 1203,
+      chapter: 12,
+      name: "Mixed riders with quadrilaterals",
+      fullName: "Multi-step riders combining congruency, parallel lines, and quadrilateral properties",
+      lesson: {
+        heading: "Mixed riders combining several theorems",
+        sub: "Chapter 12 · Topic 4",
+        body: `
+          <p>The most challenging Grade 10 riders combine several theorems in one proof: parallel line angle facts, triangle congruency, and quadrilateral properties, often across two or three steps.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 A general strategy for multi-step riders</div>
+            <p>
+              1. Mark ALL given information on the diagram first (equal sides/angles, parallel marks).<br>
+              2. Identify which two triangles you need to prove congruent (or similar) to make progress.<br>
+              3. Work out what that congruency gives you (equal sides/angles) — this often unlocks the next step.<br>
+              4. Use the newly proven facts to reach the final required result (e.g. proving a quadrilateral is a parallelogram).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Multi-step rider</div>
+            <p><strong>Given:</strong> EFGH is a parallelogram. M and N are points on EF and GH respectively such that EM = GN.<br>
+            <strong>RTP:</strong> MFNH is a parallelogram.<br><br>
+            <strong>Proof:</strong><br>
+            EF = GH (opposite sides of parallelogram EFGH are equal)<br>
+            EM = GN (given)<br>
+            ∴ MF = EF − EM = GH − GN = NH (subtracting equals from equals)<br>
+            EF ∥ GH ⟹ MF ∥ NH (MF and NH are parts of parallel sides EF, GH)<br>
+            ∴ MFNH has one pair of opposite sides (MF and NH) equal AND parallel<br>
+            ∴ MFNH is a parallelogram.</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Tip: work backwards from the RTP</div>
+            <p>If you're stuck, start from what you need to prove and ask "which condition would give me this directly?" Then work forwards to show that condition is met — this often reveals the missing congruent triangles.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In multi-step riders, each new fact you prove should be written as its own numbered statement with a reason — never skip a logical step, even if it feels "obvious".</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "In a multi-step rider, the best first step is usually to:",
+          options: ["Guess the final answer", "Mark all given information on the diagram", "Assume the result and work backwards only", "Measure the diagram with a ruler"],
+          answer: 1,
+          topic: "Mixed riders with quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "EFGH is a parallelogram. M is on EF, N is on GH, with EM = GN. Which reason shows MF = NH?",
+          options: ["Vertically opposite angles", "EF = GH (opposite sides of parallelogram) minus equal parts EM = GN", "Corresponding angles", "Diagonals bisect each other"],
+          answer: 1,
+          topic: "Mixed riders with quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "To prove MFNH (from the example) is a parallelogram using one pair of sides, you need to show that pair is:",
+          options: ["Equal only", "Parallel only", "Both equal AND parallel", "Perpendicular"],
+          answer: 2,
+          topic: "Mixed riders with quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "When stuck on a multi-step rider, a useful technique is to:",
+          options: ["Work backwards from the RTP to see what condition would prove it", "Skip straight to the conclusion", "Ignore the given information", "Redraw the diagram to a different scale only"],
+          answer: 0,
+          topic: "Mixed riders with quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "In a rider, every statement in the proof must be followed by:",
+          options: ["A diagram", "A reason (theorem or given fact)", "A measurement", "A repeat of the RTP"],
+          answer: 1,
+          topic: "Mixed riders with quadrilaterals"
+        }
+      ]
     }
   ],
   workbook: {

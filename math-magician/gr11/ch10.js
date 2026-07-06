@@ -254,6 +254,231 @@ MathMagician.registerChapter(10, {
           topic: "Venn diagrams, tree diagrams & contingency tables"
         }
       ]
+    },
+    {
+      id: 1002,
+      chapter: 10,
+      name: "Venn diagrams for three events",
+      fullName: "Using Venn diagrams and set formulae for three events A, B and C",
+      lesson: {
+        heading: "Venn diagrams for three events",
+        sub: "Chapter 10 · Topic 3",
+        body: `
+          <p>CAPS requires deriving and applying probability formulae for <strong>any three events</strong> A, B and C — the classic "drug trial" or "three subjects" style question with a 3-circle Venn diagram.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The addition rule for three events</div>
+            <p>
+              <span class="math">P(A∪B∪C) = P(A)+P(B)+P(C) − P(A∩B) − P(A∩C) − P(B∩C) + P(A∩B∩C)</span><br><br>
+              To fill in a 3-circle Venn diagram, always work from the <strong>centre outward</strong>: place the "all three" region first, then each pairwise-only region, then each single-only region.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Three-circle Venn</div>
+            <p>80 patients; 40 relief from A, 35 from B, 40 from C; 21 from A and C; 18 from B and C; 68 from at least one; 7 from all three.<br>
+            Centre (A∩B∩C) = 7.<br>
+            A∩C only = 21 − 7 = 14; B∩C only = 18 − 7 = 11.<br>
+            Using the addition rule to find A∩B: 68 = 40+35+40 − (A∩B) − 21 − 18 + 7 → solve for A∩B = 15, so A∩B only = 15 − 7 = 8.<br>
+            A only = 40 − 14 − 8 − 7 = 11; B only = 35 − 8 − 11 − 7 = 9; C only = 40 − 14 − 11 − 7 = 8.<br>
+            None of the three: 80 − 68 = 12.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always double check: all regions of the Venn diagram should add up to the total sample size — this catches most arithmetic slips.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Three-Event Venn Diagram Solver</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the total, each single-event count, each pairwise-intersection count, and the triple intersection — get every disjoint region.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Total n(S)</div><input id="g11c10t3s" type="number" value="80" min="1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(A)</div><input id="g11c10t3a" type="number" value="40" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(B)</div><input id="g11c10t3b" type="number" value="35" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(C)</div><input id="g11c10t3c" type="number" value="40" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(A∩C)</div><input id="g11c10t3ac" type="number" value="21" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(B∩C)</div><input id="g11c10t3bc" type="number" value="18" min="0" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(A∪B∪C)</div><input id="g11c10t3u" type="number" value="68" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n(A∩B∩C)</div><input id="g11c10t3abc" type="number" value="7" min="0" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c10t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve Venn</button>
+            </div>
+            <div id="g11c10t3Out" style="font-size:14px;line-height:2.0;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const S=gv('g11c10t3s'),A=gv('g11c10t3a'),B=gv('g11c10t3b'),C=gv('g11c10t3c'),AC=gv('g11c10t3ac'),BC=gv('g11c10t3bc'),U=gv('g11c10t3u'),ABC=gv('g11c10t3abc');
+                const out=document.getElementById('g11c10t3Out');
+                if([S,A,B,C,AC,BC,U,ABC].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter all values.</span>';return;}
+                const AB=A+B+C-AC-BC+ABC-U;
+                const aOnly=A-AC-AB+ABC, bOnly=B-AB-BC+ABC, cOnly=C-AC-BC+ABC;
+                const acOnly=AC-ABC, bcOnly=BC-ABC, abOnly=AB-ABC;
+                const none=S-U;
+                if(AB<0||aOnly<0||bOnly<0||cOnly<0||acOnly<0||bcOnly<0||abOnly<0||none<0){
+                  out.innerHTML='<span style="color:#fca5a5;">These values are inconsistent — check a region came out negative. Review your given counts.</span>';return;
+                }
+                let html='<span style="color:rgba(221,225,240,0.50);">n(A∩B) solved from addition rule: '+AB+'</span><br>';
+                html+='<span style="color:#fcd34d;">A only = '+aOnly+'</span>   <span style="color:#fcd34d;">B only = '+bOnly+'</span>   <span style="color:#fcd34d;">C only = '+cOnly+'</span><br>';
+                html+='<span style="color:#a5b4fc;">A∩B only = '+abOnly+'</span>   <span style="color:#a5b4fc;">A∩C only = '+acOnly+'</span>   <span style="color:#a5b4fc;">B∩C only = '+bcOnly+'</span><br>';
+                html+='<span style="color:#6ee7b7;">A∩B∩C = '+ABC+'</span>   <span style="color:#6ee7b7;">None of the three = '+none+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.45);font-size:12px;">Check: '+aOnly+'+'+bOnly+'+'+cOnly+'+'+abOnly+'+'+acOnly+'+'+bcOnly+'+'+ABC+'+'+none+' = '+(aOnly+bOnly+cOnly+abOnly+acOnly+bcOnly+ABC+none)+' (should equal n(S) = '+S+')</span>';
+                out.innerHTML=html;
+              }
+              document.querySelectorAll('#g11c10t3s,#g11c10t3a,#g11c10t3b,#g11c10t3c,#g11c10t3ac,#g11c10t3bc,#g11c10t3u,#g11c10t3abc').forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c10t3Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "The addition rule for three events A, B, C is:",
+          options: ["P(A)+P(B)+P(C)−P(A∩B)−P(A∩C)−P(B∩C)+P(A∩B∩C)", "P(A)+P(B)+P(C)", "P(A)×P(B)×P(C)", "P(A)+P(B)+P(C)−P(A∩B∩C)"],
+          answer: 0,
+          topic: "Venn diagrams for three events"
+        },
+        {
+          type: "input",
+          text: "In a 3-circle Venn diagram, A∩B (all, including triple overlap) = 15 and A∩B∩C = 6. Find the region 'A∩B only' (excluding C).",
+          answer: "9",
+          topic: "Venn diagrams for three events"
+        },
+        {
+          type: "mc",
+          text: "When building a 3-circle Venn diagram from given data, you should always start by filling in:",
+          options: ["The centre region (A∩B∩C)", "The outer 'none' region", "Any single-event region", "The total first"],
+          answer: 0,
+          topic: "Venn diagrams for three events"
+        },
+        {
+          type: "input",
+          text: "120 learners: 60 play soccer, 50 play rugby, 45 play cricket, 20 play soccer and rugby, 15 play rugby and cricket, 18 play soccer and cricket, 8 play all three. How many play none of the three sports?",
+          answer: "30",
+          topic: "Venn diagrams for three events"
+        },
+        {
+          type: "mc",
+          text: "If every region of a completed 3-circle Venn diagram is added together, the total should equal:",
+          options: ["n(S), the size of the sample space", "P(A∩B∩C)", "1", "n(A) + n(B) + n(C)"],
+          answer: 0,
+          topic: "Venn diagrams for three events"
+        }
+      ]
+    },
+    {
+      id: 1003,
+      chapter: 10,
+      name: "Fundamental counting principle",
+      fullName: "Using the fundamental counting principle to count outcomes and calculate probabilities",
+      lesson: {
+        heading: "The fundamental counting principle",
+        sub: "Chapter 10 · Topic 4",
+        body: `
+          <p>The <strong>fundamental counting principle</strong> lets you count the total number of possible outcomes of a multi-stage process without listing them all — essential for probability problems involving passwords, number plates, arrangements, and codes.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The fundamental counting principle</div>
+            <p>
+              If a first choice can be made in m ways, and for each of those a second choice can be made in n ways, and so on, then the total number of outcomes is:<br>
+              <span class="math">m × n × p × ...</span><br><br>
+              Watch for the phrase "without repetition" — this reduces the number of choices available at each subsequent stage.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: PIN codes</div>
+            <p>How many 4-digit PIN codes are possible (digits 0-9, repetition allowed)?<br>
+            10 × 10 × 10 × 10 = 10 000<br>
+            How many if no digit may repeat?<br>
+            10 × 9 × 8 × 7 = 5 040</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Probability using counting</div>
+            <p>A password is 2 letters (A-Z) followed by 3 digits, no repetition within each part. Find the probability that a randomly generated password starts with "AB".<br>
+            Total passwords = (26×25) × (10×9×8) = 650 × 720 = 468 000<br>
+            Passwords starting "AB": 1 × (10×9×8) = 720<br>
+            P = 720/468 000 = 1/650</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The fundamental counting principle is the foundation for factorial-based arrangements you'll extend further in Grade 12 (permutations and combinations).</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Counting Principle Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the number of choices available at each stage (comma-separated) — get the total outcomes, with and without repetition.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div style="flex:1;min-width:220px;">
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Choices per stage (comma-separated, e.g. 26,26,10,10,10)</div>
+                <input id="g11c10t4data" type="text" value="26,26,10,10,10" style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <button id="g11c10t4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c10t4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function calc(){
+                const raw=document.getElementById('g11c10t4data').value;
+                const out=document.getElementById('g11c10t4Out');
+                const arr=raw.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n)&&n>0);
+                if(arr.length<1){out.innerHTML='<span style="color:#fca5a5;">Enter at least one positive integer.</span>';return;}
+                const withRep=arr.reduce((a,b)=>a*b,1);
+                let html='<span style="color:rgba(221,225,240,0.50);">Stages: '+arr.join(' × ')+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Total outcomes (repetition allowed) = '+withRep.toLocaleString('en-ZA')+'</span><br>';
+                if(arr.every(n=>n===arr[0])){
+                  const k=arr[0],len=arr.length;
+                  let noRep=1,ok=true;
+                  for(let i=0;i<len;i++){const v=k-i; if(v<=0){ok=false;break;} noRep*=v;}
+                  if(ok) html+='<span style="color:#fcd34d;">Total outcomes (no repetition, same pool size '+k+' each stage) = '+k+(len>1?'×'+Array.from({length:len-1},(_, i)=>k-1-i).join('×'):'')+' = '+noRep.toLocaleString('en-ZA')+'</span>';
+                  else html+='<span style="color:rgba(221,225,240,0.45);">Cannot avoid repetition — more stages than items in the pool.</span>';
+                } else {
+                  html+='<span style="color:rgba(221,225,240,0.45);font-size:12px;">"No repetition" only applies cleanly when every stage draws from the same pool — mixed pools (e.g. letters then digits) usually only forbid repeats within each part.</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c10t4data').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              document.getElementById('g11c10t4Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A restaurant offers 4 starters, 5 mains, and 3 desserts. The number of possible 3-course meals is:",
+          options: ["12", "60", "15", "20"],
+          answer: 1,
+          topic: "Fundamental counting principle"
+        },
+        {
+          type: "input",
+          text: "How many 3-digit codes (digits 0-9) are possible if repetition is allowed?",
+          answer: "1000",
+          topic: "Fundamental counting principle"
+        },
+        {
+          type: "mc",
+          text: "How many 3-digit codes (digits 0-9) are possible if NO digit may repeat?",
+          options: ["1000", "720", "504", "900"],
+          answer: 1,
+          topic: "Fundamental counting principle"
+        },
+        {
+          type: "mc",
+          text: "A number plate has 3 letters followed by 3 digits (repetition allowed in both parts). The total number of plates is:",
+          options: ["26³ × 10³", "26 × 10", "(26+10)³", "3 × 26 × 10"],
+          answer: 0,
+          topic: "Fundamental counting principle"
+        },
+        {
+          type: "input",
+          text: "A 4-digit PIN (0-9, no repetition) is chosen at random. What is the probability it is exactly '1234' (as a fraction with denominator equal to the total number of PINs, give just the denominator)?",
+          answer: "5040",
+          topic: "Fundamental counting principle"
+        }
+      ]
     }
   ],
   workbook: {

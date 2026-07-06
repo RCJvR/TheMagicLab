@@ -332,6 +332,307 @@ MathMagician.registerChapter(1, {
           topic: "Products & factorisation"
         }
       ]
+    },
+    {
+      id: 102,
+      chapter: 1,
+      name: "Multiplying binomials by trinomials",
+      fullName: "Expanding the product of a binomial and a trinomial",
+      lesson: {
+        heading: "Multiplying a binomial by a trinomial",
+        sub: "Chapter 1 · Topic 3",
+        body: `
+          <p>Grade 10 extends the distributive law to products of a <strong>binomial</strong> (2 terms) and a <strong>trinomial</strong> (3 terms). The method is the same as FOIL, just with more terms to track.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The method — distribute every term</div>
+            <p>To expand <span class="math">(a + b)(c + d + e)</span>, multiply <strong>each term</strong> of the binomial by <strong>each term</strong> of the trinomial:<br>
+            <span class="math">(a + b)(c + d + e) = ac + ad + ae + bc + bd + be</span><br>
+            That gives <strong>6 products</strong> before simplifying — always collect like terms at the end.</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Expand (x + 2)(x² − 3x + 4)</div>
+            <p>
+              <span class="math">x(x² − 3x + 4) = x³ − 3x² + 4x</span><br>
+              <span class="math">2(x² − 3x + 4) = 2x² − 6x + 8</span><br>
+              Add: <span class="math">x³ − 3x² + 4x + 2x² − 6x + 8</span><br>
+              Collect like terms: <span class="math">x³ − x² − 2x + 8</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Special case: (a + b)(a² − ab + b²)</div>
+            <p>This particular pattern always simplifies to <span class="math">a³ + b³</span> — it's the reverse of the sum of cubes factorisation you'll meet in the next topic.<br>
+            Check with a = x, b = 2: <span class="math">(x + 2)(x² − 2x + 4) = x³ + 8</span> ✓ (verify by expanding)</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Staying organised</div>
+            <p>Write the binomial's terms down the side and the trinomial's terms across the top like a small grid — this prevents missing a product, especially with negative signs.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Watch your signs carefully when the binomial or trinomial contains subtraction — a common error is dropping a negative sign partway through six multiplications.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Expand: (x + 1)(x² + 2x − 3)",
+          options: ["x³ + 3x² − x − 3", "x³ + 2x² − 3x − 3", "x³ + x² − x − 3", "x³ + 3x² + x − 3"],
+          answer: 0,
+          topic: "Multiplying binomials by trinomials"
+        },
+        {
+          type: "mc",
+          text: "Expand: (x − 2)(x² + 2x + 4)",
+          options: ["x³ − 8", "x³ + 8", "x³ − 4x² + 8", "x³ − 2x² − 8"],
+          answer: 0,
+          topic: "Multiplying binomials by trinomials"
+        },
+        {
+          type: "input",
+          text: "Expand and simplify: (2x + 1)(x² − x + 3). Give the coefficient of x².",
+          answer: "-1",
+          altAnswers: ["−1"],
+          topic: "Multiplying binomials by trinomials"
+        },
+        {
+          type: "mc",
+          text: "Expand: (a − b)(a² + ab + b²)",
+          options: ["a³ − b³", "a³ + b³", "a³ − 2ab² − b³", "a³ − a²b − b³"],
+          answer: 0,
+          topic: "Multiplying binomials by trinomials"
+        },
+        {
+          type: "input",
+          text: "Expand (x + 3)(2x² − x + 5) and give the constant term.",
+          answer: "15",
+          topic: "Multiplying binomials by trinomials"
+        }
+      ]
+    },
+    {
+      id: 103,
+      chapter: 1,
+      name: "Sum and difference of cubes",
+      fullName: "Factorising the sum and difference of two cubes",
+      lesson: {
+        heading: "Factorising the sum and difference of two cubes",
+        sub: "Chapter 1 · Topic 4",
+        body: `
+          <p>Just as <span class="math">a² − b²</span> factorises as a difference of squares, cubic expressions of the form <span class="math">a³ ± b³</span> have their own standard factorisation.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The cube factorisation formulas</div>
+            <p>
+              <strong>Sum of cubes:</strong> <span class="math">a³ + b³ = (a + b)(a² − ab + b²)</span><br>
+              <strong>Difference of cubes:</strong> <span class="math">a³ − b³ = (a − b)(a² + ab + b²)</span><br><br>
+              Memory aid: <em>"same, opposite, always positive"</em> — the sign in the first bracket matches the original sign; the middle sign in the trinomial is opposite; the last term is always <strong>+</strong>.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Factorise x³ + 27</div>
+            <p>
+              Recognise <span class="math">27 = 3³</span>, so <span class="math">a = x, b = 3</span>.<br>
+              <span class="math">x³ + 27 = (x + 3)(x² − 3x + 9)</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Factorise 8x³ − 125</div>
+            <p>
+              <span class="math">8x³ = (2x)³</span> and <span class="math">125 = 5³</span>, so <span class="math">a = 2x, b = 5</span>.<br>
+              <span class="math">8x³ − 125 = (2x − 5)(4x² + 10x + 25)</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Common cubes to recognise</div>
+            <p>1, 8, 27, 64, 125, 216, 343, 512, 729, 1000 — the cubes of 1 to 10. Spotting these instantly makes cube factorisation much faster.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Cube Factoriser</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the coefficients for <strong>a</strong> and <strong>b</strong> in a³ ± b³ (as in (ka)³ ± (mb)³ using simple integers) to see the factorisation.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a (coefficient of x)</div>
+                <input id="g10c1cba" type="number" value="2" min="1"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (constant)</div>
+                <input id="g10c1cbb" type="number" value="5" min="1"
+                  style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Sign</div>
+                <select id="g10c1cbop"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;">
+                  <option value="plus">+</option>
+                  <option value="minus">−</option>
+                </select>
+              </div>
+              <button id="g10c1cbBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Factorise
+              </button>
+            </div>
+            <div id="g10c1cbOut" style="font-size:14px;line-height:2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function run(){
+                const a=parseInt(document.getElementById('g10c1cba').value);
+                const b=parseInt(document.getElementById('g10c1cbb').value);
+                const op=document.getElementById('g10c1cbop').value;
+                const out=document.getElementById('g10c1cbOut');
+                if(!a||!b||a<1||b<1){out.innerHTML='<span style="color:#fca5a5;">Enter positive integers for a and b.</span>';return;}
+                const a3=a*a*a, b3=b*b*b;
+                const isPlus=op==='plus';
+                const expr=(a===1?'x³':'('+a+'x)³')+(isPlus?' + ':' − ')+b+'³';
+                const exprNum=(a===1?'x³':a3+'x³')+(isPlus?' + ':' − ')+b3;
+                const firstSign=isPlus?'+':'−';
+                const midSign=isPlus?'−':'+';
+                const firstBracket='('+(a===1?'x':a+'x')+' '+firstSign+' '+b+')';
+                const ax2=a===1?'x²':a3+'x²'.replace('x²',''); // not used directly
+                const sqTermCoef=a*a;
+                const secondBracket='('+(sqTermCoef===1?'x²':sqTermCoef+'x²')+' '+midSign+' '+(a*b===1?'x':(a*b)+'x')+' + '+(b*b)+')';
+                let html='<span style="color:rgba(221,225,240,0.50);">Expression: </span><span style="color:#fcd34d;">'+exprNum+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Recognise as cubes: </span><span style="color:#fcd34d;">'+expr+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Apply '+(isPlus?'sum':'difference')+' of cubes formula:</span><br>';
+                html+='<span style="color:#6ee7b7;">'+firstBracket+secondBracket+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c1cbBtn').addEventListener('click',run);
+              document.getElementById('g10c1cbop').addEventListener('change',run);
+              ['g10c1cba','g10c1cbb'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The trinomial factor <span class="math">a² ∓ ab + b²</span> never factorises further over the integers — don't waste time trying.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Factorise: x³ + 8",
+          options: ["(x + 2)(x² − 2x + 4)", "(x + 2)(x² + 2x + 4)", "(x + 2)³", "(x − 2)(x² + 2x + 4)"],
+          answer: 0,
+          topic: "Sum and difference of cubes"
+        },
+        {
+          type: "mc",
+          text: "Factorise: x³ − 64",
+          options: ["(x − 4)(x² + 4x + 16)", "(x − 4)(x² − 4x + 16)", "(x + 4)(x² − 4x + 16)", "(x − 4)³"],
+          answer: 0,
+          topic: "Sum and difference of cubes"
+        },
+        {
+          type: "input",
+          text: "Factorise 27x³ + 1. What is the constant term inside the trinomial factor?",
+          answer: "1",
+          topic: "Sum and difference of cubes"
+        },
+        {
+          type: "mc",
+          text: "Factorise: 8x³ − 125",
+          options: ["(2x − 5)(4x² + 10x + 25)", "(2x − 5)(4x² − 10x + 25)", "(2x + 5)(4x² − 10x + 25)", "(2x − 5)(2x² + 5x + 25)"],
+          answer: 0,
+          topic: "Sum and difference of cubes"
+        },
+        {
+          type: "mc",
+          text: "Which is the correct first step to factorise 64 + x³y³?",
+          options: ["Recognise 64 = 4³ and x³y³ = (xy)³, apply sum of cubes", "Take out a common factor of x", "It cannot be factorised", "Recognise it as a difference of squares"],
+          answer: 0,
+          topic: "Sum and difference of cubes"
+        }
+      ]
+    },
+    {
+      id: 104,
+      chapter: 1,
+      name: "Algebraic fractions with cube denominators",
+      fullName: "Simplifying algebraic fractions using sum/difference of cubes factorisation",
+      lesson: {
+        heading: "Simplifying algebraic fractions with cube-based denominators",
+        sub: "Chapter 1 · Topic 5",
+        body: `
+          <p>Once you can factorise <span class="math">a³ ± b³</span>, you can simplify algebraic fractions whose numerator or denominator is a sum or difference of cubes.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Method</div>
+            <p>
+              1. Factorise the numerator and denominator completely (look for cube patterns).<br>
+              2. Cancel any <strong>common factors</strong> (never common terms).<br>
+              3. State the <strong>restrictions</strong> — values that make the original denominator zero.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Simplify (x³ − 8)/(x − 2)</div>
+            <p>
+              <span class="math">x³ − 8 = (x − 2)(x² + 2x + 4)</span><br>
+              <span class="math">(x³ − 8)/(x − 2) = (x − 2)(x² + 2x + 4)/(x − 2) = x² + 2x + 4</span>, where <span class="math">x ≠ 2</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Simplify (x² − x − 6)/(x³ + 8)</div>
+            <p>
+              Numerator: <span class="math">x² − x − 6 = (x − 3)(x + 2)</span><br>
+              Denominator: <span class="math">x³ + 8 = (x + 2)(x² − 2x + 4)</span><br>
+              <span class="math">= (x − 3)(x + 2) / [(x + 2)(x² − 2x + 4)] = (x − 3)/(x² − 2x + 4)</span>, where <span class="math">x ≠ −2</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Finding restrictions</div>
+            <p>Restrictions come from the <strong>original, unsimplified denominator</strong> — set it equal to zero and solve. Even after cancelling, that value still cannot be substituted in.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Before cancelling, always double-check that the trinomial you're left with (like <span class="math">x² + 2x + 4</span>) really has no more common factors with the other side — cube trinomials never factorise further, but always verify with the specific numbers.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Simplify: (x³ + 27)/(x + 3)",
+          options: ["x² − 3x + 9", "x² + 3x + 9", "x² − 9", "x² + 9"],
+          answer: 0,
+          topic: "Algebraic fractions with cube denominators"
+        },
+        {
+          type: "input",
+          text: "Simplify (x³ − 1)/(x − 1) and state the coefficient of x in your answer.",
+          answer: "1",
+          topic: "Algebraic fractions with cube denominators"
+        },
+        {
+          type: "mc",
+          text: "Simplify: (x² − 4)/(x³ − 8)",
+          options: ["(x + 2)/(x² + 2x + 4)", "(x − 2)/(x² + 2x + 4)", "(x + 2)/(x² − 2x + 4)", "1/(x² + 2x + 4)"],
+          answer: 0,
+          topic: "Algebraic fractions with cube denominators"
+        },
+        {
+          type: "mc",
+          text: "For (x³ + 8)/(x² − 4), the restriction(s) on x are:",
+          options: ["x ≠ 2 and x ≠ −2", "x ≠ −2 only", "x ≠ 2 only", "x ≠ 0"],
+          answer: 0,
+          topic: "Algebraic fractions with cube denominators"
+        },
+        {
+          type: "input",
+          text: "Simplify (2x³ + 2)/(x + 1) and give the constant term of the simplified expression.",
+          answer: "2",
+          topic: "Algebraic fractions with cube denominators"
+        }
+      ]
     }
   ],
   workbook: {

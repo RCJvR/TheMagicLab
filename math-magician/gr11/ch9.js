@@ -253,6 +253,250 @@ MathMagician.registerChapter(9, {
           topic: "Nominal & effective interest rates"
         }
       ]
+    },
+    {
+      id: 902,
+      chapter: 9,
+      name: "Multi-stage investments with timelines",
+      fullName: "Solving problems with changing interest rates and deposits/withdrawals using a timeline",
+      lesson: {
+        heading: "Multi-stage investments with timelines",
+        sub: "Chapter 9 · Topic 3",
+        body: `
+          <p>Real investments often change rate part-way through, or have money added/withdrawn. CAPS explicitly recommends drawing a <strong>timeline</strong> to keep track of every stage.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 How to build a timeline</div>
+            <p>
+              1. Draw a horizontal line marked with every point in time something changes (deposit, withdrawal, rate change).<br>
+              2. Grow the balance forward from one marked point to the next using the rate that applies <em>during that interval</em>.<br>
+              3. At a withdrawal, subtract the amount at that exact point before continuing to grow the remainder.<br>
+              4. At a deposit, add the amount at that exact point.<br>
+              5. Never mix stages — each stage needs its own A = P(1 + i/n)^(nt) calculation with the correct P, i, n, t for that interval only.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Rate change plus a withdrawal</div>
+            <p>R50 000 invested at 8% p.a. compounded quarterly for 18 months, then the rate changes to 6% p.a. compounded monthly. 2 years after the start, R10 000 is withdrawn. Find the value after 4 years.<br>
+            Stage 1 (0 → 1.5 yr, 8% quarterly): A₁ = 50000(1.02)⁶ ≈ R56 308.12<br>
+            Stage 2 (1.5 → 2 yr, 6% monthly, 6 months): A₂ = 56308.12(1.005)⁶ ≈ R58 018.05<br>
+            Withdraw R10 000 at year 2: balance = 48 018.05<br>
+            Stage 3 (2 → 4 yr, 6% monthly, 24 months): A₃ = 48018.05(1.005)²⁴ ≈ R54 152.71</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Keep at least 4-5 decimal places (or full calculator accuracy) at each intermediate stage — rounding early causes the final answer to drift.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Two-Stage Timeline Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Model an investment with one rate change (and optional withdrawal/deposit at the change point).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P (R)</div><input id="g11c9t3p" type="number" value="50000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate 1 (% p.a.)</div><input id="g11c9t3r1" type="number" value="8" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Periods/yr 1</div><input id="g11c9t3n1" type="number" value="4" min="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years stage 1</div><input id="g11c9t3t1" type="number" value="1.5" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Withdraw/Deposit (R, +/-)</div><input id="g11c9t3wd" type="number" value="0" style="width:110px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate 2 (% p.a.)</div><input id="g11c9t3r2" type="number" value="6" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Periods/yr 2</div><input id="g11c9t3n2" type="number" value="12" min="1" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years stage 2</div><input id="g11c9t3t2" type="number" value="2.5" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c9t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Run timeline</button>
+            </div>
+            <div id="g11c9t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const P=gv('g11c9t3p'),r1=gv('g11c9t3r1')/100,n1=gv('g11c9t3n1'),t1=gv('g11c9t3t1'),wd=gv('g11c9t3wd'),r2=gv('g11c9t3r2')/100,n2=gv('g11c9t3n2'),t2=gv('g11c9t3t2');
+                const out=document.getElementById('g11c9t3Out');
+                if([P,r1,n1,t1,wd,r2,n2,t2].some(isNaN)||P<=0||r1<=0||n1<=0||t1<=0||r2<=0||n2<=0||t2<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (withdrawal/deposit may be 0 or negative to deposit).</span>';return;}
+                const A1=P*Math.pow(1+r1/n1,n1*t1);
+                const afterWd=A1-wd;
+                if(afterWd<0){out.innerHTML='<span style="color:#fca5a5;">Withdrawal exceeds the balance at that point.</span>';return;}
+                const A2=afterWd*Math.pow(1+r2/n2,n2*t2);
+                let html='<span style="color:rgba(221,225,240,0.50);">Stage 1: A₁ = '+R(P)+'(1 + '+(r1*100).toFixed(2)+'%/'+n1+')^('+n1+'×'+t1+') = '+R(A1)+'</span><br>';
+                if(wd!==0) html+='<span style="color:rgba(221,225,240,0.50);">'+(wd>0?'Withdraw ':'Deposit ')+R(Math.abs(wd))+' → balance = '+R(afterWd)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Stage 2: A₂ = '+R(afterWd)+'(1 + '+(r2*100).toFixed(2)+'%/'+n2+')^('+n2+'×'+t2+')</span><br>';
+                html+='<span style="color:#6ee7b7;">Final value = '+R(A2)+'</span>   <span style="color:#fcd34d;">Total time = '+(t1+t2)+' years</span>';
+                out.innerHTML=html;
+              }
+              ['g11c9t3p','g11c9t3r1','g11c9t3n1','g11c9t3t1','g11c9t3wd','g11c9t3r2','g11c9t3n2','g11c9t3t2'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c9t3Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A timeline is most useful when an investment problem involves:",
+          options: ["A single constant rate for the whole period", "A change in rate and/or a withdrawal or deposit partway through", "Only simple interest", "Only depreciation"],
+          answer: 1,
+          topic: "Multi-stage investments with timelines"
+        },
+        {
+          type: "input",
+          text: "R20 000 is invested at 10% p.a. compounded annually for 2 years, then the full amount grows at 8% p.a. compounded annually for 1 more year. Find the final value (to the nearest rand).",
+          answer: "26136",
+          topic: "Multi-stage investments with timelines"
+        },
+        {
+          type: "mc",
+          text: "R15 000 grows at 9% p.a. compounded monthly for 1 year, then R5 000 is withdrawn. The next stage's principal is:",
+          options: ["The value after 1 year, minus R5 000", "R15 000 minus R5 000", "The value after 1 year, plus R5 000", "R5 000"],
+          answer: 0,
+          topic: "Multi-stage investments with timelines"
+        },
+        {
+          type: "mc",
+          text: "When rates change mid-investment, the correct approach is:",
+          options: ["Use the average of the two rates for the whole period", "Calculate each stage separately with its own rate and compounding, then chain the results", "Use only the first rate", "Use only the final rate for all years"],
+          answer: 1,
+          topic: "Multi-stage investments with timelines"
+        },
+        {
+          type: "input",
+          text: "R8 000 is invested at 12% p.a. compounded quarterly for 6 months, then a further R2 000 is deposited. Find the balance immediately after the deposit (to the nearest rand).",
+          answer: "10488",
+          topic: "Multi-stage investments with timelines"
+        }
+      ]
+    },
+    {
+      id: 903,
+      chapter: 9,
+      name: "Solving for n and i",
+      fullName: "Finding the time period (n) or the interest rate (i) in compound growth and decay formulae",
+      lesson: {
+        heading: "Solving for the time period n and the rate i",
+        sub: "Chapter 9 · Topic 4",
+        body: `
+          <p>Besides finding A, CAPS requires you to work backwards: given A, P and i, find n; or given A, P and n, find i. These use logarithms and roots respectively.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Solving for n (using logarithms)</div>
+            <p>
+              From <span class="math">A = P(1 + i)ⁿ</span>:<br>
+              <span class="math">A/P = (1 + i)ⁿ</span><br>
+              <span class="math">n = log(A/P) / log(1 + i)</span><br>
+              Always round n <em>up</em> to the next full compounding period if the context requires a whole number of periods (e.g. "how many years until the investment reaches...").
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Solving for i (using roots)</div>
+            <p>
+              From <span class="math">A = P(1 + i)ⁿ</span>:<br>
+              <span class="math">(1 + i) = (A/P)^(1/n)</span><br>
+              <span class="math">i = (A/P)^(1/n) − 1</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Solve for n</div>
+            <p>How many years for R10 000 to grow to R20 000 at 9% p.a. compounded annually?<br>
+            2 = (1.09)ⁿ → n = log(2)/log(1.09) ≈ 8.04 years → after 9 full years (round up)</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Solve for i</div>
+            <p>R5 000 grows to R7 000 in 4 years, compounded annually. Find i.<br>
+            i = (7000/5000)^(1/4) − 1 = (1.4)^0.25 − 1 ≈ 0.0878 = 8.78% p.a.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>For depreciation (decay), the same log/root techniques apply to A = P(1 − i)ⁿ — just substitute (1 − i) in place of (1 + i).</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Solve for n or i Calculator</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <button id="g11c9t4nbtn" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.50);cursor:pointer;font-size:13px;font-weight:600;background:rgba(99,102,241,0.30);color:#a5b4fc;">Solve for n</button>
+              <button id="g11c9t4ibtn" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(99,102,241,0.20);cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:rgba(221,225,240,0.50);">Solve for i</button>
+            </div>
+            <div id="g11c9t4nP" style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P (R)</div><input id="g11c9t4np" type="number" value="10000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A (R)</div><input id="g11c9t4na" type="number" value="20000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">i (% p.a.)</div><input id="g11c9t4ni" type="number" value="9" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c9t4nCalc" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve n</button>
+            </div>
+            <div id="g11c9t4iP" style="display:none;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">P (R)</div><input id="g11c9t4ip" type="number" value="5000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A (R)</div><input id="g11c9t4ia" type="number" value="7000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">n (years)</div><input id="g11c9t4in" type="number" value="4" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c9t4iCalc" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Solve i</button>
+            </div>
+            <div id="g11c9t4Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              const nBtn=document.getElementById('g11c9t4nbtn'),iBtn=document.getElementById('g11c9t4ibtn');
+              const nP=document.getElementById('g11c9t4nP'),iP=document.getElementById('g11c9t4iP');
+              const out=document.getElementById('g11c9t4Out');
+              function setMode(m){
+                if(m==='n'){nP.style.display='flex';iP.style.display='none';nBtn.style.background='rgba(99,102,241,0.30)';nBtn.style.color='#a5b4fc';nBtn.style.borderColor='rgba(99,102,241,0.50)';iBtn.style.background='transparent';iBtn.style.color='rgba(221,225,240,0.50)';iBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                else{iP.style.display='flex';nP.style.display='none';iBtn.style.background='rgba(99,102,241,0.30)';iBtn.style.color='#a5b4fc';iBtn.style.borderColor='rgba(99,102,241,0.50)';nBtn.style.background='transparent';nBtn.style.color='rgba(221,225,240,0.50)';nBtn.style.borderColor='rgba(99,102,241,0.20)';}
+                out.innerHTML='';
+              }
+              nBtn.addEventListener('click',()=>setMode('n'));
+              iBtn.addEventListener('click',()=>setMode('i'));
+              document.getElementById('g11c9t4nCalc').addEventListener('click',()=>{
+                const P=gv('g11c9t4np'),A=gv('g11c9t4na'),i=gv('g11c9t4ni')/100;
+                if([P,A,i].some(isNaN)||P<=0||A<=0||i<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid positive values.</span>';return;}
+                const n=Math.log(A/P)/Math.log(1+i);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">A/P = '+(A/P).toFixed(4)+' = (1 + '+i.toFixed(4)+')ⁿ</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">n = log('+(A/P).toFixed(4)+') / log('+(1+i).toFixed(4)+')</span><br>'+
+                  '<span style="color:#6ee7b7;">n ≈ '+n.toFixed(4)+' years</span>   <span style="color:#fcd34d;">Round up to '+Math.ceil(n)+' full years if a whole period is required</span>';
+              });
+              document.getElementById('g11c9t4iCalc').addEventListener('click',()=>{
+                const P=gv('g11c9t4ip'),A=gv('g11c9t4ia'),n=gv('g11c9t4in');
+                if([P,A,n].some(isNaN)||P<=0||A<=0||n<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid positive values.</span>';return;}
+                const i=Math.pow(A/P,1/n)-1;
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">(1 + i) = (A/P)^(1/n) = ('+(A/P).toFixed(4)+')^(1/'+n+')</span><br>'+
+                  '<span style="color:#6ee7b7;">i ≈ '+(i*100).toFixed(4)+'% p.a.</span>';
+              });
+              setMode('n');
+              document.getElementById('g11c9t4nCalc').click();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "To solve A = P(1+i)ⁿ for n, you must use:",
+          options: ["Logarithms", "Square roots only", "The quadratic formula", "Simple division"],
+          answer: 0,
+          topic: "Solving for n and i"
+        },
+        {
+          type: "input",
+          text: "How many years (to 2 decimal places) for R12 000 to grow to R18 000 at 7% p.a. compounded annually?",
+          answer: "5.99",
+          topic: "Solving for n and i"
+        },
+        {
+          type: "mc",
+          text: "To solve A = P(1+i)ⁿ for i, you must use:",
+          options: ["A logarithm", "An nth root", "Long division", "Simultaneous equations"],
+          answer: 1,
+          topic: "Solving for n and i"
+        },
+        {
+          type: "input",
+          text: "R6 000 grows to R9 000 in 3 years compounded annually. Find i as a percentage (to 2 decimal places).",
+          answer: "14.47",
+          topic: "Solving for n and i"
+        },
+        {
+          type: "mc",
+          text: "An investment must reach at least R50 000 from R30 000 at 10% p.a. If n works out to 5.36 years, and interest is only credited at full-year intervals, the minimum whole number of years needed is:",
+          options: ["5", "6", "5.36", "5.5"],
+          answer: 1,
+          topic: "Solving for n and i"
+        }
+      ]
     }
   ],
   workbook: {

@@ -253,6 +253,240 @@ MathMagician.registerChapter(11, {
           topic: "Skewness, outliers & data interpretation"
         }
       ]
+    },
+    {
+      id: 1102,
+      chapter: 11,
+      name: "Comparing datasets with standard deviation",
+      fullName: "Using standard deviation to interpret and compare the spread of two or more datasets",
+      lesson: {
+        heading: "Comparing datasets using standard deviation",
+        sub: "Chapter 11 · Topic 3",
+        body: `
+          <p>CAPS emphasises <strong>interpreting</strong> standard deviation, not just calculating it. A common exam task is comparing two datasets (e.g. two classes' test marks) using both mean and standard deviation together.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Interpreting standard deviation</div>
+            <p>
+              • A <strong>small</strong> σ means data is clustered tightly around the mean (consistent, predictable).<br>
+              • A <strong>large</strong> σ means data is spread widely (variable, less predictable).<br>
+              • Two datasets can have the <em>same mean</em> but very different spreads — σ tells the difference.<br>
+              • Always interpret σ <em>in context</em>: "Class A's marks (σ = 4) were more consistent than Class B's (σ = 11)."
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Health, social & economic contexts</div>
+            <p>
+              CAPS explicitly wants statistics problems drawn from health, social, economic, cultural, political and environmental contexts — e.g. comparing rainfall consistency between two towns, blood pressure readings, or household income spread between two regions.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Comparing two classes</div>
+            <p>Class A marks: mean = 62, σ = 4.2. Class B marks: mean = 62, σ = 11.5.<br>
+            Both classes averaged the same mark, but Class A's marks were far more <strong>consistent</strong> (clustered near 62), while Class B had a much wider spread — some learners did very well, others very poorly.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Never compare raw standard deviations of datasets with very different means or units without also considering the mean — always interpret spread relative to context.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Two-Dataset Comparison Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two comma-separated datasets — compare their means and standard deviations.</p>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Dataset A</div>
+                <input id="g11c11t3a" type="text" value="58,60,61,62,63,64,66" style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Dataset B</div>
+                <input id="g11c11t3b" type="text" value="30,45,50,62,70,85,92" style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <button id="g11c11t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;align-self:flex-start;">Compare</button>
+            </div>
+            <div id="g11c11t3Out" style="font-size:13px;line-height:2.0;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(4);}
+              function stats(arr){
+                const n=arr.length,mean=arr.reduce((a,b)=>a+b,0)/n;
+                const variance=arr.reduce((a,b)=>a+(b-mean)*(b-mean),0)/n;
+                return {n,mean,variance,sigma:Math.sqrt(variance)};
+              }
+              function calc(){
+                const out=document.getElementById('g11c11t3Out');
+                const A=document.getElementById('g11c11t3a').value.split(',').map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+                const B=document.getElementById('g11c11t3b').value.split(',').map(s=>parseFloat(s.trim())).filter(x=>!isNaN(x));
+                if(A.length<2||B.length<2){out.innerHTML='<span style="color:#fca5a5;">Enter at least 2 values in each dataset.</span>';return;}
+                const sa=stats(A),sb=stats(B);
+                let html='<span style="color:#fcd34d;">Dataset A: n='+sa.n+', mean='+f(sa.mean)+', σ='+f(sa.sigma)+'</span><br>';
+                html+='<span style="color:#a5b4fc;">Dataset B: n='+sb.n+', mean='+f(sb.mean)+', σ='+f(sb.sigma)+'</span><br>';
+                if(Math.abs(sa.mean-sb.mean)<0.01) html+='<span style="color:rgba(221,225,240,0.60);">Both datasets have essentially the same mean, but ';
+                else html+='<span style="color:rgba(221,225,240,0.60);">The means differ, but ';
+                if(sa.sigma<sb.sigma) html+='Dataset A is more consistent (smaller σ) — its values cluster closer to the mean than Dataset B.</span>';
+                else if(sb.sigma<sa.sigma) html+='Dataset B is more consistent (smaller σ) — its values cluster closer to the mean than Dataset A.</span>';
+                else html+='both datasets have identical spread (equal σ).</span>';
+                out.innerHTML=html;
+              }
+              ['g11c11t3a','g11c11t3b'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g11c11t3Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Two classes have the same mean test mark, but Class X has σ = 3 and Class Y has σ = 14. Which class had more consistent marks?",
+          options: ["Class X", "Class Y", "Both equally consistent", "Cannot tell without the marks"],
+          answer: 0,
+          topic: "Comparing datasets with standard deviation"
+        },
+        {
+          type: "mc",
+          text: "A large standard deviation indicates that the data is:",
+          options: ["Tightly clustered around the mean", "Widely spread out from the mean", "All equal to the mean", "Negatively valued"],
+          answer: 1,
+          topic: "Comparing datasets with standard deviation"
+        },
+        {
+          type: "input",
+          text: "Two towns' monthly rainfall (mm): Town P: 40,42,41,39,43,40 and Town Q: 10,70,15,65,20,80. Which town (P or Q) has the smaller standard deviation? Answer 'P' or 'Q'.",
+          answer: "P",
+          topic: "Comparing datasets with standard deviation"
+        },
+        {
+          type: "mc",
+          text: "CAPS recommends statistics problems be set in contexts such as:",
+          options: ["Health, social, economic, cultural, political and environmental issues", "Only sports statistics", "Only financial statistics", "Purely abstract number sets with no context"],
+          answer: 0,
+          topic: "Comparing datasets with standard deviation"
+        },
+        {
+          type: "mc",
+          text: "Dataset A has mean 50, σ = 2. Dataset B has mean 50, σ = 9. A value of 54 would be considered:",
+          options: ["Unusual in Dataset A, ordinary in Dataset B", "Unusual in both", "Ordinary in both", "Unusual in Dataset B, ordinary in Dataset A"],
+          answer: 0,
+          topic: "Comparing datasets with standard deviation"
+        }
+      ]
+    },
+    {
+      id: 1103,
+      chapter: 11,
+      name: "Standard deviation from a frequency table",
+      fullName: "Calculating the mean, variance, and standard deviation of ungrouped data given in a frequency table",
+      lesson: {
+        heading: "Standard deviation from a frequency table",
+        sub: "Chapter 11 · Topic 4",
+        body: `
+          <p>Data is often given as a <strong>frequency table</strong> rather than a raw list. CAPS allows the use of a calculator's built-in statistical mode, but you must understand what it is computing.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Mean and standard deviation with frequencies</div>
+            <p>
+              For values xᵢ with frequencies fᵢ (n = Σfᵢ):<br>
+              <span class="math">x̄ = Σ(fᵢxᵢ) / Σfᵢ</span><br>
+              <span class="math">σ = √( Σfᵢ(xᵢ − x̄)² / Σfᵢ )</span><br><br>
+              Each deviation is weighted by how many times that value occurs.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Frequency table</div>
+            <p>Marks out of 10: value 6 (freq 2), 7 (freq 5), 8 (freq 8), 9 (freq 3), 10 (freq 2). n = 20<br>
+            Σfx = 6(2)+7(5)+8(8)+9(3)+10(2) = 12+35+64+27+20 = 158<br>
+            Mean = 158/20 = 7.9<br>
+            Σf(x−x̄)² = 2(1.9)²+5(0.9)²+8(0.1)²+3(1.1)²+2(2.1)² ≈ 7.22+4.05+0.08+3.63+8.82 = 23.8<br>
+            σ = √(23.8/20) ≈ √1.19 ≈ 1.09</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>On a calculator, entering data with frequencies (e.g. as a "FREQ" column in STAT mode) gives x̄ and σ directly — you should still know how to build the table by hand for full-mark method questions.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Frequency Table Standard Deviation Calculator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter value:frequency pairs separated by commas (e.g. 6:2,7:5,8:8).</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div style="flex:1;min-width:220px;">
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Value:Frequency pairs</div>
+                <input id="g11c11t4data" type="text" value="6:2,7:5,8:8,9:3,10:2" style="width:100%;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;box-sizing:border-box;">
+              </div>
+              <button id="g11c11t4Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c11t4Out" style="font-size:13px;line-height:2.0;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return n.toFixed(4);}
+              function calc(){
+                const raw=document.getElementById('g11c11t4data').value;
+                const out=document.getElementById('g11c11t4Out');
+                const pairs=raw.split(',').map(p=>{
+                  const parts=p.split(':').map(s=>parseFloat(s.trim()));
+                  return {x:parts[0],freq:parts[1]};
+                }).filter(p=>!isNaN(p.x)&&!isNaN(p.freq)&&p.freq>0);
+                if(pairs.length<2){out.innerHTML='<span style="color:#fca5a5;">Enter at least 2 value:frequency pairs, e.g. 6:2,7:5.</span>';return;}
+                const n=pairs.reduce((a,p)=>a+p.freq,0);
+                const sumfx=pairs.reduce((a,p)=>a+p.freq*p.x,0);
+                const mean=sumfx/n;
+                const sumfd2=pairs.reduce((a,p)=>a+p.freq*(p.x-mean)*(p.x-mean),0);
+                const variance=sumfd2/n;
+                const sigma=Math.sqrt(variance);
+                let table='<table style="border-collapse:collapse;font-size:12px;margin:8px 0;">';
+                table+='<tr><th style="padding:3px 8px;color:rgba(221,225,240,0.45);border-bottom:1px solid rgba(99,102,241,0.20);">x</th><th style="padding:3px 8px;color:rgba(221,225,240,0.45);border-bottom:1px solid rgba(99,102,241,0.20);">f</th><th style="padding:3px 8px;color:rgba(221,225,240,0.45);border-bottom:1px solid rgba(99,102,241,0.20);">fx</th><th style="padding:3px 8px;color:rgba(221,225,240,0.45);border-bottom:1px solid rgba(99,102,241,0.20);">f(x−x̄)²</th></tr>';
+                pairs.forEach(p=>{table+='<tr><td style="padding:3px 8px;color:#fcd34d;text-align:center;">'+p.x+'</td><td style="padding:3px 8px;color:rgba(221,225,240,0.70);text-align:center;">'+p.freq+'</td><td style="padding:3px 8px;color:rgba(221,225,240,0.70);text-align:center;">'+(p.freq*p.x)+'</td><td style="padding:3px 8px;color:rgba(221,225,240,0.70);text-align:center;">'+f(p.freq*(p.x-mean)*(p.x-mean))+'</td></tr>';});
+                table+='</table>';
+                let html=table;
+                html+='<span style="color:rgba(221,225,240,0.50);">n = Σf = '+n+'   Σfx = '+sumfx+'</span><br>';
+                html+='<span style="color:#fcd34d;">Mean x̄ = Σfx/n = '+f(mean)+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Σf(x−x̄)² = '+f(sumfd2)+'</span><br>';
+                html+='<span style="color:#6ee7b7;">Variance σ² = '+f(variance)+'   Standard deviation σ = '+f(sigma)+'</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c11t4data').addEventListener('keydown',e=>{if(e.key==='Enter')calc();});
+              document.getElementById('g11c11t4Btn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "For a frequency table, the mean is calculated as:",
+          options: ["Σ(fx) / Σf", "Σx / n", "Σf / Σx", "Σ(x − x̄)² / n"],
+          answer: 0,
+          topic: "Standard deviation from a frequency table"
+        },
+        {
+          type: "input",
+          text: "Values 4 (freq 3) and 8 (freq 2). Find the mean.",
+          answer: "5.6",
+          topic: "Standard deviation from a frequency table"
+        },
+        {
+          type: "mc",
+          text: "In the formula σ = √(Σf(x−x̄)²/Σf), the frequency f represents:",
+          options: ["How many times each value x occurs", "The class width", "The rank of each value", "The cumulative frequency"],
+          answer: 0,
+          topic: "Standard deviation from a frequency table"
+        },
+        {
+          type: "input",
+          text: "Values: 2 (freq 1), 4 (freq 2), 6 (freq 1). Find the standard deviation (to 2 decimal places).",
+          answer: "1.41",
+          topic: "Standard deviation from a frequency table"
+        },
+        {
+          type: "mc",
+          text: "A calculator's statistical (STAT/FREQ) mode is used for frequency table data mainly to:",
+          options: ["Compute x̄ and σ directly without manual summation", "Draw a histogram automatically", "Skip the need for a mean altogether", "Convert frequencies into percentages only"],
+          answer: 0,
+          topic: "Standard deviation from a frequency table"
+        }
+      ]
     }
   ],
   workbook: {

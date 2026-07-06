@@ -671,6 +671,253 @@ MathMagician.registerChapter(6, {
           topic: "Exponential & trig functions"
         }
       ]
+    },
+    {
+      id: 602,
+      chapter: 6,
+      name: "The concept of a function",
+      fullName: "Functions as unique input-output relationships across tables, graphs, words, and formulae",
+      lesson: {
+        heading: "The concept of a function",
+        sub: "Chapter 6 · Topic 3",
+        body: `
+          <p>Before sketching graphs, it's essential to understand what makes a relationship a <strong>function</strong> in the first place.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Definition (Grade 10 level)</div>
+            <p>
+              A <strong>function</strong> is a relationship where each <strong>input value</strong> (independent variable, usually x) gives exactly <strong>one unique output value</strong> (dependent variable, usually y).<br>
+              If any input produces more than one output, the relationship is <em>not</em> a function.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Four representations</div>
+            <p>
+              A function can be shown as:<br>
+              • A <strong>table</strong> of input/output pairs<br>
+              • A <strong>graph</strong> on the Cartesian plane<br>
+              • A <strong>formula</strong> (equation), e.g. <span class="math">y = 2x + 1</span><br>
+              • A <strong>verbal description</strong>, e.g. "double the input and add one"<br>
+              You should be able to convert flexibly between all four.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Is this a function?</div>
+            <p>
+              Table: x = 1 → y = 2; x = 2 → y = 4; x = 3 → y = 6. Each x gives one y → <strong>function</strong>.<br>
+              Table: x = 1 → y = 2; x = 1 → y = 5. The same x gives two different y-values → <strong>not a function</strong>.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The vertical line test (graphical)</div>
+            <p>
+              If a vertical line drawn anywhere on the graph crosses the curve <strong>more than once</strong>, the relationship is <em>not</em> a function.<br>
+              A circle, for example, fails this test — but a parabola opening upward passes it.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Discrete vs continuous</div>
+            <p>Some real-world functions only make sense for whole-number inputs (e.g. number of learners in a class) — these are <strong>discrete</strong>. Others, like temperature over time, are <strong>continuous</strong>, taking any real value.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>The words "input" and "output" map directly onto "independent variable" (x) and "dependent variable" (y) — the output <em>depends on</em> the input you choose.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Which of these tables represents a function?",
+          options: ["x: 1,2,3 → y: 5,7,9", "x: 1,1,2 → y: 3,4,5", "x: 2,3,2 → y: 6,7,9", "x: 1,2,1 → y: 4,5,9"],
+          answer: 0,
+          topic: "The concept of a function"
+        },
+        {
+          type: "mc",
+          text: "A graph fails the vertical line test. This means:",
+          options: ["It is not a function", "It is a linear function", "It has no y-intercept", "It is symmetric"],
+          answer: 0,
+          topic: "The concept of a function"
+        },
+        {
+          type: "input",
+          text: "A function is described as 'triple the input and subtract 2'. Write its formula using y and x (form: y = ax + b). Give the value of a.",
+          answer: "3",
+          topic: "The concept of a function"
+        },
+        {
+          type: "mc",
+          text: "Which real-world scenario is best modelled as a discrete function?",
+          options: ["Number of cars sold per day", "Temperature during a day", "Height of a growing plant over time", "Distance travelled by a car over time"],
+          answer: 0,
+          topic: "The concept of a function"
+        },
+        {
+          type: "mc",
+          text: "In the function y = x² , the input x = −3 and x = 3 both give y = 9. Is y = x² still a valid function?",
+          options: ["Yes — each input still gives only one output", "No — two inputs cannot share an output", "Only for positive x", "Only if x is restricted to integers"],
+          answer: 0,
+          topic: "The concept of a function"
+        }
+      ]
+    },
+    {
+      id: 603,
+      chapter: 6,
+      name: "Effect of parameters a and q",
+      fullName: "Investigating how the parameters a and q transform y = x², y = 1/x, and y = bˣ",
+      lesson: {
+        heading: "Investigating the effect of parameters a and q",
+        sub: "Chapter 6 · Topic 4",
+        body: `
+          <p>Once you know the basic shapes of <span class="math">y = x²</span>, <span class="math">y = 1/x</span>, and <span class="math">y = bˣ</span>, CAPS asks you to investigate what happens when you write <span class="math">y = a·f(x) + q</span>.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The role of q — vertical shift</div>
+            <p>
+              Adding <span class="math">q</span> shifts the <strong>entire graph up or down</strong> by |q| units.<br>
+              <span class="math">q > 0</span>: shift up. <span class="math">q < 0</span>: shift down.<br>
+              For <span class="math">y = x² + q</span>: turning point moves from (0,0) to (0, q).<br>
+              For <span class="math">y = 1/x + q</span>: horizontal asymptote moves from y = 0 to y = q.<br>
+              For <span class="math">y = bˣ + q</span>: horizontal asymptote moves from y = 0 to y = q.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 The role of a — vertical stretch and reflection</div>
+            <p>
+              Multiplying by <span class="math">a</span> stretches (|a| &gt; 1) or compresses (0 &lt; |a| &lt; 1) the graph <strong>vertically</strong>.<br>
+              If <span class="math">a &lt; 0</span>, the graph is also <strong>reflected about the x-axis</strong> (flipped upside down).<br>
+              For <span class="math">y = ax²</span>: a &gt; 0 opens up, a &lt; 0 opens down — steeper for larger |a|.<br>
+              For <span class="math">y = a/x</span>: a &gt; 0 puts branches in quadrants 1 & 3; a &lt; 0 puts them in quadrants 2 & 4.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Compare y = x², y = 2x², y = x² − 3</div>
+            <p>
+              <span class="math">y = x²</span>: standard parabola, turning point (0, 0).<br>
+              <span class="math">y = 2x²</span>: same turning point, but <strong>narrower</strong> (stretched vertically by factor 2).<br>
+              <span class="math">y = x² − 3</span>: same shape as y = x², but shifted <strong>down 3 units</strong>, turning point (0, −3).
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Summary table</div>
+            <p>
+              | Parameter | Effect |<br>
+              | a &gt; 0 | same orientation as parent graph |<br>
+              | a &lt; 0 | reflected about the x-axis |<br>
+              | \|a\| &gt; 1 | vertically stretched (steeper / narrower) |<br>
+              | 0 &lt; \|a\| &lt; 1 | vertically compressed (flatter / wider) |<br>
+              | q &gt; 0 | shifted up |<br>
+              | q &lt; 0 | shifted down |
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Parameter Effect Explorer</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Choose a parent graph and adjust a and q — see the described transformation.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Parent graph</div>
+                <select id="g10c6pgFn"
+                  style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;">
+                  <option value="sq">y = x²</option>
+                  <option value="hyp">y = 1/x</option>
+                  <option value="exp">y = bˣ (b=2)</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div>
+                <input id="g10c6pgA" type="number" value="2" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div>
+                <input id="g10c6pgQ" type="number" value="-3" step="0.5"
+                  style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;">
+              </div>
+              <button id="g10c6pgBtn"
+                style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">
+                Describe
+              </button>
+            </div>
+            <div id="g10c6pgOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function fmt(n){return Number.isInteger(n)?''+n:n.toFixed(2).replace(/\\.?0+$/,'');}
+              function run(){
+                const fn=document.getElementById('g10c6pgFn').value;
+                const a=parseFloat(document.getElementById('g10c6pgA').value);
+                const q=parseFloat(document.getElementById('g10c6pgQ').value);
+                const out=document.getElementById('g10c6pgOut');
+                if(isNaN(a)||isNaN(q)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                const label=fn==='sq'?'x²':fn==='hyp'?'1/x':'2ˣ';
+                let html='<span style="color:rgba(221,225,240,0.50);">Function: </span><span style="color:#fcd34d;">y = '+fmt(a)+'·'+label+' '+(q>=0?'+ '+fmt(q):'− '+fmt(Math.abs(q)))+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Orientation: </span><span style="color:#fcd34d;">'+(a>0?'same as parent graph':'reflected about the x-axis')+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Stretch: </span><span style="color:#fcd34d;">'+(Math.abs(a)>1?'vertically stretched (narrower/steeper), factor '+fmt(Math.abs(a)):Math.abs(a)===1?'no stretch (same width)':'vertically compressed (wider/flatter), factor '+fmt(Math.abs(a)))+'</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Vertical shift: </span><span style="color:#fcd34d;">'+(q>0?fmt(q)+' units up':q<0?fmt(Math.abs(q))+' units down':'none')+'</span><br>';
+                if(fn==='sq'){
+                  html+='<span style="color:#6ee7b7;">Turning point: (0, '+fmt(q)+')</span>';
+                } else if(fn==='hyp'){
+                  html+='<span style="color:#6ee7b7;">Asymptotes: x = 0 and y = '+fmt(q)+'</span>';
+                } else {
+                  html+='<span style="color:#6ee7b7;">Horizontal asymptote: y = '+fmt(q)+'; y-intercept: y = '+fmt(a+q)+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g10c6pgBtn').addEventListener('click',run);
+              document.getElementById('g10c6pgFn').addEventListener('change',run);
+              ['g10c6pgA','g10c6pgQ'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')run();}));
+              run();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Practise describing transformations in words first — "shifted down 3, reflected, stretched by 2" — before writing the equation. Examiners often ask you to go in <em>either</em> direction.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Compared to y = x², the graph of y = x² + 5 is:",
+          options: ["Shifted up 5 units", "Shifted down 5 units", "Shifted left 5 units", "Stretched by factor 5"],
+          answer: 0,
+          topic: "Effect of parameters a and q"
+        },
+        {
+          type: "mc",
+          text: "The graph of y = −3x² compared to y = x² is:",
+          options: ["Reflected and stretched (narrower, opens down)", "Reflected only (same width, opens down)", "Stretched only (opens up, narrower)", "Shifted down 3 units"],
+          answer: 0,
+          topic: "Effect of parameters a and q"
+        },
+        {
+          type: "input",
+          text: "For y = 1/x − 4, what is the equation of the horizontal asymptote?",
+          answer: "y=-4",
+          altAnswers: ["y = -4", "y=−4"],
+          topic: "Effect of parameters a and q"
+        },
+        {
+          type: "mc",
+          text: "For y = 0.5x², compared to y = x², the graph is:",
+          options: ["Vertically compressed (wider)", "Vertically stretched (narrower)", "Shifted down", "Reflected about the x-axis"],
+          answer: 0,
+          topic: "Effect of parameters a and q"
+        },
+        {
+          type: "input",
+          text: "For y = 2(x²) − 3, what is the y-coordinate of the turning point?",
+          answer: "-3",
+          altAnswers: ["−3"],
+          topic: "Effect of parameters a and q"
+        }
+      ]
     }
   ],
   workbook: {

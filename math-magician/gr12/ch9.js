@@ -195,6 +195,91 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "A study finds r = 0.88 between hours of study and test scores. This means:", options: ["Studying causes good scores", "Strong positive linear association between the variables", "More study always leads to better scores", "The relationship is exactly linear"], answer: 1, topic: "Correlation coefficient" },
         { type: "input", text: "r = 0.75. Find r² as a percentage (%).", answer: "56.25", altAnswers: ["56,25"], topic: "Correlation coefficient" }
       ]
+    },
+    {
+      id: 902,
+      chapter: 9,
+      name: "Symmetric & skewed data",
+      fullName: "Revising symmetric and skewed distributions, and reading skewness from summary statistics or a graph",
+      lesson: {
+        heading: "Symmetric and skewed data",
+        sub: "Chapter 9 · Topic 3",
+        body: `
+          <p>Before analysing bivariate data, CAPS requires you to revise how the <strong>shape</strong> of a single-variable (univariate) distribution is described — symmetric or skewed.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Symmetric distributions</div>
+            <p>
+              A distribution is <strong>symmetric</strong> if its left and right halves are mirror images.<br>
+              For symmetric data: <span class="math">mean ≈ median ≈ mode</span><br>
+              The box-and-whisker plot has whiskers of roughly equal length, and the box is centred.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Skewed distributions</div>
+            <p>
+              <strong>Positively skewed (skewed right):</strong> a long tail on the right side.<br>
+              <span class="math">mean &gt; median &gt; mode</span> — the mean is pulled towards the tail by extreme high values.<br><br>
+              <strong>Negatively skewed (skewed left):</strong> a long tail on the left side.<br>
+              <span class="math">mean &lt; median &gt; mode</span> is wrong — correct order: <span class="math">mean &lt; median &lt; mode</span> — the mean is pulled down by extreme low values.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>A class test has mean = 58, median = 65, mode = 70.<br>
+            Since mean &lt; median &lt; mode, the data is <strong>negatively (left) skewed</strong> — a few very low marks are pulling the mean down.</p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Reading skewness from a box plot</div>
+            <p>
+              If the whisker/box on the LEFT of the median is longer → negatively skewed (skewed left).<br>
+              If the whisker/box on the RIGHT of the median is longer → positively skewed (skewed right).<br>
+              Equal box/whisker lengths on both sides → symmetric.
+            </p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Skewness Identifier</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter the mean, median and mode of a dataset — identify the type of skewness.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Mean</div><input id="g12c9t3mean" type="number" value="58" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Median</div><input id="g12c9t3med" type="number" value="65" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Mode</div><input id="g12c9t3mode" type="number" value="70" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g12c9t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Identify shape</button>
+            </div>
+            <div id="g12c9t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function calc(){
+                const mean=gv('g12c9t3mean'),med=gv('g12c9t3med'),mode=gv('g12c9t3mode');
+                const out=document.getElementById('g12c9t3Out');
+                if([mean,med,mode].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter mean, median and mode.</span>';return;}
+                let shape,color;
+                if(Math.abs(mean-med)<0.001&&Math.abs(med-mode)<0.001){shape='Symmetric (mean ≈ median ≈ mode)';color='#6ee7b7';}
+                else if(mean>med&&med>mode){shape='Positively skewed (skewed right) — tail to the right, mean &gt; median &gt; mode';color='#fcd34d';}
+                else if(mean<med&&med<mode){shape='Negatively skewed (skewed left) — tail to the left, mean &lt; median &lt; mode';color='#fcd34d';}
+                else {shape='Mixed pattern — not a clean textbook skew, but compare mean vs median to judge direction';color='rgba(221,225,240,0.70);'}
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Mean='+mean+'  Median='+med+'  Mode='+mode+'</span><br><span style="color:'+color+';">'+shape+'</span>';
+              }
+              ['g12c9t3mean','g12c9t3med','g12c9t3mode'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c9t3Btn').addEventListener('click',calc);
+
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "A dataset has mean = 72, median = 68, mode = 65. The data is:", options: ["Symmetric", "Positively skewed", "Negatively skewed", "Cannot be determined"], answer: 1, topic: "Symmetric & skewed data" },
+        { type: "mc", text: "In a symmetric distribution, we expect:", options: ["Mean far from median", "Mean ≈ median ≈ mode", "Mode &gt; mean always", "No mode exists"], answer: 1, topic: "Symmetric & skewed data" },
+        { type: "mc", text: "On a box-and-whisker plot, a long whisker on the left of the median indicates:", options: ["Positive skew", "Negative skew", "Symmetry", "An error in the data"], answer: 1, topic: "Symmetric & skewed data" },
+        { type: "input", text: "A distribution has mean = 40, median = 40, mode = 40. How many of the three measures are equal (as a number)?", answer: "3", topic: "Symmetric & skewed data" },
+        { type: "mc", text: "Salary data for a company is usually strongly positively skewed. This means:", options: ["Most salaries are high, with a few very low", "Most salaries are low to moderate, with a few very high pulling the mean up", "All salaries are the same", "The median is greater than the mean"], answer: 1, topic: "Symmetric & skewed data" }
+      ]
     }
   ],
   workbook: {

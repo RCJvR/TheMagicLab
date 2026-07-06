@@ -262,6 +262,117 @@ MathMagician.registerChapter(4, {
           topic: "Parallel, perpendicular & complex problems"
         }
       ]
+    },
+    {
+      id: 402,
+      chapter: 4,
+      name: "Angle between two lines",
+      fullName: "Finding the angle between two lines using their angles of inclination",
+      lesson: {
+        heading: "Angle between two lines",
+        sub: "Chapter 4 · Topic 3",
+        body: `
+          <p>A common CAPS-style question gives three points forming a triangle and asks for the size of an angle at one vertex — this is found using the angles of inclination of the two lines that meet there.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Method: angle between two lines at a common point</div>
+            <p>
+              1. Find the gradient of each line meeting at the vertex.<br>
+              2. Find the angle of inclination of each line: <span class="math">tan θ = m</span>.<br>
+              3. The angle between the lines (interior angle of the triangle) is the <strong>difference</strong> between the two inclinations — take the positive difference, and if it exceeds 180°, use 180° minus that difference to get the angle actually inside the triangle.<br><br>
+              Alternative direct formula for the acute angle between two lines:<br>
+              <span class="math">tan α = |m₁ − m₂| / |1 + m₁m₂|</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example</div>
+            <p>A(2; 5), B(−3; −4), C(4; −2). Find <strong>Ĉ</strong> = the angle at C in △ABC (angle ACB).<br>
+            <span class="math">m_CA = (5−(−2))/(2−4) = 7/(−2) = −3,5</span> → θ₁ = tan⁻¹(−3,5) + 180° ≈ 105,9°<br>
+            <span class="math">m_CB = (−4−(−2))/(−3−4) = −2/−7 ≈ 0,286</span> → θ₂ = tan⁻¹(0,286) ≈ 16,0°<br>
+            Angle ACB = θ₁ − θ₂ ≈ 105,9° − 16,0° = 89,9°</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Sketch first</div>
+            <p>Always draw a rough sketch. The angle you want is the one physically <em>inside</em> the triangle at that vertex — this helps you decide whether to add or subtract the two inclination angles, and catches sign errors.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Angle Between Two Lines Calculator</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two gradients — get each angle of inclination and the acute angle between the lines.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Gradient m₁</div><input id="g11c4t3m1" type="number" value="-3.5" step="0.1" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Gradient m₂</div><input id="g11c4t3m2" type="number" value="0.286" step="0.001" style="width:80px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c4t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Calculate</button>
+            </div>
+            <div id="g11c4t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(2)).toString();}
+              function incl(m){const r=Math.atan(m)*180/Math.PI;return r<0?r+180:r;}
+              function calc(){
+                const m1=parseFloat(document.getElementById('g11c4t3m1').value);
+                const m2=parseFloat(document.getElementById('g11c4t3m2').value);
+                const out=document.getElementById('g11c4t3Out');
+                if([m1,m2].some(isNaN)){out.innerHTML='<span style="color:#fca5a5;">Enter valid gradients.</span>';return;}
+                const t1=incl(m1),t2=incl(m2);
+                const diff=Math.abs(t1-t2);
+                const interior=diff>90?180-diff:diff;
+                const acuteFormula=Math.atan(Math.abs((m1-m2)/(1+m1*m2)))*180/Math.PI;
+                let html='<span style="color:rgba(221,225,240,0.50);">θ₁ = tan⁻¹('+f(m1)+')'+(m1<0?' + 180°':'')+' = '+f(t1)+'°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">θ₂ = tan⁻¹('+f(m2)+')'+(m2<0?' + 180°':'')+' = '+f(t2)+'°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Difference |θ₁ − θ₂| = '+f(diff)+'°</span><br>';
+                html+='<span style="color:#6ee7b7;">Angle between the lines ≈ '+f(interior)+'°</span><br>';
+                html+='<span style="color:rgba(221,225,240,0.50);">Check via tan α = |m₁−m₂|/|1+m₁m₂| → α ≈ '+f(acuteFormula)+'° (acute angle between lines)</span>';
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c4t3Btn').addEventListener('click',calc);
+              ['g11c4t3m1','g11c4t3m2'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>If both lines have positive gradients, subtract inclinations directly. If one gradient is negative, its inclination is obtuse — the interior angle of a triangle is usually the difference between the two inclinations.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Line 1 has inclination 40°, line 2 has inclination 110°. The angle between them is:",
+          options: ["70°", "150°", "40°", "110°"],
+          answer: 0,
+          topic: "Angle between two lines"
+        },
+        {
+          type: "mc",
+          text: "A line has gradient 1 (θ₁ = 45°) and another has gradient −1 (θ₂ = 135°). The angle between them is:",
+          options: ["90°", "180°", "45°", "135°"],
+          answer: 0,
+          topic: "Angle between two lines"
+        },
+        {
+          type: "input",
+          text: "A(0;0), B(4;0), C(2;2). Find the size of angle B (angle ABC), to the nearest degree. (Hint: find gradients of BA and BC, then their inclinations.)",
+          answer: "45",
+          topic: "Angle between two lines"
+        },
+        {
+          type: "mc",
+          text: "Using tan α = |m₁ − m₂|/|1 + m₁m₂| with m₁ = 2 and m₂ = 3, tan α equals:",
+          options: ["1/7", "5", "1", "7"],
+          answer: 0,
+          topic: "Angle between two lines"
+        },
+        {
+          type: "mc",
+          text: "Two lines are perpendicular. What is the angle between them?",
+          options: ["90°", "0°", "180°", "Cannot be determined"],
+          answer: 0,
+          topic: "Angle between two lines"
+        }
+      ]
     }
   ],
   workbook: {

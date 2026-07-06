@@ -541,6 +541,171 @@ MathMagician.registerChapter(5, {
           topic: "Trigonometric functions — period, amplitude & phase shift"
         }
       ]
+    },
+    {
+      id: 502,
+      chapter: 5,
+      name: "Sketching functions: intercepts, domain & range",
+      fullName: "Finding intercepts, domain, range, and the equation of a function from a sketch or given information",
+      lesson: {
+        heading: "Sketching functions — intercepts, domain and range",
+        sub: "Chapter 5 · Topic 3",
+        body: `
+          <p>Before you can sketch a quadratic, hyperbola, or exponential graph accurately, you need to find its <strong>intercepts</strong>, its <strong>domain and range</strong>, and — often — work backwards from given features to find the equation itself.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Finding intercepts</div>
+            <p>
+              <strong>y-intercept:</strong> set x = 0 and evaluate.<br>
+              <strong>x-intercept(s):</strong> set y = 0 and solve for x (factorise for a quadratic; for a hyperbola or exponential, isolate the variable algebraically).
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Domain and range</div>
+            <p>
+              <strong>Quadratic</strong> y = a(x−p)² + q: domain x ∈ ℝ; range y ≥ q (if a &gt; 0) or y ≤ q (if a &lt; 0).<br>
+              <strong>Hyperbola</strong> y = a/(x−p) + q: domain x ∈ ℝ, x ≠ p; range y ∈ ℝ, y ≠ q.<br>
+              <strong>Exponential</strong> y = a·b^(x−p) + q: domain x ∈ ℝ; range y &gt; q (if a &gt; 0) or y &lt; q (if a &lt; 0).
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Intercepts of a quadratic</div>
+            <p>y = (x−1)(x+3)<br>
+            y-intercept: x = 0 → y = (−1)(3) = −3 → (0; −3)<br>
+            x-intercepts: y = 0 → x = 1 or x = −3 → (1; 0) and (−3; 0)</p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Finding the equation from given features</div>
+            <p>A hyperbola has asymptotes x = 1 and y = 2, and passes through (3; 3).<br>
+            <span class="math">y = a/(x−1) + 2</span><br>
+            Substitute (3; 3): <span class="math">3 = a/2 + 2 → a/2 = 1 → a = 2</span><br>
+            Equation: <span class="math">y = 2/(x−1) + 2</span></p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Intercepts, Domain &amp; Range Finder</div>
+            <p style="margin-bottom:10px;color:rgba(221,225,240,0.70);font-size:13px;">Choose a function type and enter its parameters — see intercepts, domain, and range.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Function type</div>
+                <select id="g11c5t3type" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="quad">Quadratic: a(x−p)²+q</option>
+                  <option value="hyp">Hyperbola: a/(x−p)+q</option>
+                  <option value="exp">Exponential: a·bˣ⁻ᵖ+q</option>
+                </select>
+              </div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">a</div><input id="g11c5t3a" type="number" value="1" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div id="g11c5t3bDiv" style="display:none;"><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">b (base)</div><input id="g11c5t3b" type="number" value="2" min="0.01" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">p</div><input id="g11c5t3p" type="number" value="2" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">q</div><input id="g11c5t3q" type="number" value="-3" style="width:55px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:14px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <button id="g11c5t3Btn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Analyse</button>
+            </div>
+            <div id="g11c5t3Out" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function f(n){return parseFloat(n.toFixed(4)).toString();}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              document.getElementById('g11c5t3type').addEventListener('change',()=>{
+                const t=document.getElementById('g11c5t3type').value;
+                document.getElementById('g11c5t3bDiv').style.display=t==='exp'?'':'none';
+              });
+              function calc(){
+                const t=document.getElementById('g11c5t3type').value;
+                const a=gv('g11c5t3a'),p=gv('g11c5t3p'),q=gv('g11c5t3q');
+                const out=document.getElementById('g11c5t3Out');
+                if([a,p,q].some(isNaN)||a===0){out.innerHTML='<span style="color:#fca5a5;">Enter valid values (a ≠ 0).</span>';return;}
+                let html='';
+                if(t==='quad'){
+                  const yInt=a*p*p+q;
+                  const disc=-q/a;
+                  html+='<span style="color:rgba(221,225,240,0.50);">y = '+a+'(x−'+p+')² + '+q+'</span><br>';
+                  html+='<span style="color:#fcd34d;">y-intercept: </span><span style="color:#6ee7b7;">(0; '+f(yInt)+')</span><br>';
+                  if(disc<0){html+='<span style="color:#fcd34d;">x-intercepts: </span><span style="color:#fca5a5;">none (turning point does not reach the x-axis)</span><br>';}
+                  else{const d=Math.sqrt(disc);const x1=p-d,x2=p+d;html+='<span style="color:#fcd34d;">x-intercepts: </span><span style="color:#6ee7b7;">x = '+f(x1)+' and x = '+f(x2)+'</span><br>';}
+                  html+='<span style="color:#fcd34d;">Turning point: </span><span style="color:#6ee7b7;">('+p+'; '+q+')</span><br>';
+                  html+='<span style="color:#fcd34d;">Domain: </span><span style="color:#6ee7b7;">x ∈ ℝ</span> &nbsp; <span style="color:#fcd34d;">Range: </span><span style="color:#6ee7b7;">y '+(a>0?'≥':'≤')+' '+q+'</span>';
+                } else if(t==='hyp'){
+                  const yInt=p===0?NaN:(a/(-p)+q);
+                  html+='<span style="color:rgba(221,225,240,0.50);">y = '+a+'/(x−'+p+') + '+q+'</span><br>';
+                  if(p===0){html+='<span style="color:#fca5a5;">y-intercept undefined (asymptote at x = 0)</span><br>';}
+                  else{html+='<span style="color:#fcd34d;">y-intercept: </span><span style="color:#6ee7b7;">(0; '+f(yInt)+')</span><br>';}
+                  if(q===0){html+='<span style="color:#fca5a5;">x-intercept undefined (asymptote at y = 0)</span><br>';}
+                  else{const xInt=p-a/q;html+='<span style="color:#fcd34d;">x-intercept: </span><span style="color:#6ee7b7;">('+f(xInt)+'; 0)</span><br>';}
+                  html+='<span style="color:#fcd34d;">Asymptotes: </span><span style="color:#6ee7b7;">x = '+p+', y = '+q+'</span><br>';
+                  html+='<span style="color:#fcd34d;">Domain: </span><span style="color:#6ee7b7;">x ∈ ℝ, x ≠ '+p+'</span> &nbsp; <span style="color:#fcd34d;">Range: </span><span style="color:#6ee7b7;">y ∈ ℝ, y ≠ '+q+'</span>';
+                } else {
+                  const b=gv('g11c5t3b');
+                  if(isNaN(b)||b<=0){out.innerHTML='<span style="color:#fca5a5;">Enter a valid base b &gt; 0.</span>';return;}
+                  const yInt=a*Math.pow(b,-p)+q;
+                  html+='<span style="color:rgba(221,225,240,0.50);">y = '+a+'·'+b+'^(x−'+p+') + '+q+'</span><br>';
+                  html+='<span style="color:#fcd34d;">y-intercept: </span><span style="color:#6ee7b7;">(0; '+f(yInt)+')</span><br>';
+                  const canCrossX=(a>0&&-q/a>0)||(a<0&&-q/a>0);
+                  if(q===0){html+='<span style="color:#fca5a5;">No x-intercept (asymptote y = 0 passes through it in the limit only)</span><br>';}
+                  else if((a>0&&q<0)||(a<0&&q>0)){
+                    const ratio=-q/a;const xInt=p+Math.log(ratio)/Math.log(b);
+                    html+='<span style="color:#fcd34d;">x-intercept: </span><span style="color:#6ee7b7;">('+f(xInt)+'; 0)</span><br>';
+                  } else {html+='<span style="color:#fca5a5;">No x-intercept (graph never reaches y = 0)</span><br>';}
+                  html+='<span style="color:#fcd34d;">Asymptote: </span><span style="color:#6ee7b7;">y = '+q+'</span><br>';
+                  html+='<span style="color:#fcd34d;">Domain: </span><span style="color:#6ee7b7;">x ∈ ℝ</span> &nbsp; <span style="color:#fcd34d;">Range: </span><span style="color:#6ee7b7;">y '+(a>0?'>':'<')+' '+q+'</span>';
+                }
+                out.innerHTML=html;
+              }
+              document.getElementById('g11c5t3Btn').addEventListener('click',calc);
+              ['g11c5t3a','g11c5t3b','g11c5t3p','g11c5t3q'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();}));
+              calc();
+            })();
+            </script>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always identify the asymptotes of a hyperbola or exponential <em>first</em> — they tell you p and q directly, since a hyperbola's asymptotes are x = p, y = q, and an exponential's horizontal asymptote is y = q.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "y = (x−2)(x+4). The x-intercepts are:",
+          options: ["x = 2 and x = −4", "x = −2 and x = 4", "x = 2 and x = 4", "x = −2 and x = −4"],
+          answer: 0,
+          topic: "Sketching functions: intercepts, domain & range"
+        },
+        {
+          type: "mc",
+          text: "For y = 3/(x+1) − 2, the range is:",
+          options: ["y ∈ ℝ, y ≠ −2", "y ∈ ℝ, y ≠ −1", "y ≥ −2", "y ≤ −2"],
+          answer: 0,
+          topic: "Sketching functions: intercepts, domain & range"
+        },
+        {
+          type: "input",
+          text: "y = 2(x−3)² + 5. What is the y-intercept? (Give just the y-value.)",
+          answer: "23",
+          topic: "Sketching functions: intercepts, domain & range"
+        },
+        {
+          type: "mc",
+          text: "A hyperbola has asymptotes x = 0 and y = 1, and passes through (2; 3). Its equation is:",
+          options: ["y = 4/x + 1", "y = 2/x + 1", "y = 4/x − 1", "y = 1/x + 2"],
+          answer: 0,
+          topic: "Sketching functions: intercepts, domain & range"
+        },
+        {
+          type: "mc",
+          text: "y = −3(x+1)² + 2. The range of this function is:",
+          options: ["y ≤ 2", "y ≥ 2", "y ≤ −1", "y ∈ ℝ"],
+          answer: 0,
+          topic: "Sketching functions: intercepts, domain & range"
+        },
+        {
+          type: "mc",
+          text: "An exponential graph y = a·bˣ + q has horizontal asymptote y = −2 and a > 0. Its range is:",
+          options: ["y > −2", "y < −2", "y ≥ −2", "y ∈ ℝ"],
+          answer: 0,
+          topic: "Sketching functions: intercepts, domain & range"
+        }
+      ]
     }
   ],
   workbook: {

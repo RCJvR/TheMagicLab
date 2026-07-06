@@ -185,6 +185,198 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "P = 10000, i = 0.01 per month, n = 12. Find x (monthly payment) to nearest rand. Use x = Pi/[1−(1.01)⁻¹²]. Answer ≈", answer: "889", topic: "Present value annuities & loan repayments" },
         { type: "mc", text: "Total interest paid on a loan = ", options: ["Principal × rate × time", "Total repayments − original loan amount", "Monthly payment × n", "Future value − present value"], answer: 1, topic: "Present value annuities & loan repayments" }
       ]
+    },
+    {
+      id: 302,
+      chapter: 3,
+      name: "Simple & compound growth vs decay",
+      fullName: "Distinguishing simple growth/decay, compound growth/decay, and annuities",
+      lesson: {
+        heading: "Simple growth, compound growth, and decay",
+        sub: "Chapter 3 · Topic 3",
+        body: `
+          <p>Before tackling annuities, Grade 12 revises and sharpens the distinction between <strong>simple</strong> and <strong>compound</strong> growth/decay — and clarifies how annuities differ from both (a single lump sum vs a stream of payments).</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Simple growth/decay (linear)</div>
+            <p>
+              Interest is calculated on the <strong>original principal only</strong>, every period:<br>
+              <span class="math">A = P(1 + i·n)</span> — growth<br>
+              <span class="math">A = P(1 − i·n)</span> — decay<br>
+              where P = principal, i = rate per period, n = number of periods.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Compound growth/decay (exponential)</div>
+            <p>
+              Interest is calculated on the <strong>accumulated amount</strong> (principal + previous interest):<br>
+              <span class="math">A = P(1 + i)ⁿ</span> — growth (e.g. investments, population growth)<br>
+              <span class="math">A = P(1 − i)ⁿ</span> — decay (e.g. depreciation, radioactive decay)
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Annuities vs single-sum growth/decay</div>
+            <p>
+              Growth/decay formulae (A = P(1±i)ⁿ) apply to a <strong>single lump sum</strong> left to grow or shrink.<br>
+              Annuity formulae (F and P from Topics 1–2) apply when there is a <strong>series of equal regular payments</strong> — the geometric series formula is what generates them.<br><br>
+              Recognising which situation you're in is often the hardest part of a finance question.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Compound growth rate</div>
+            <p>A town's population grows from 120 000 to 214 000 in 10 years. Find the annual compound growth rate.<br>
+            <span class="math">214000 = 120000(1+i)¹⁰ → (1+i)¹⁰ = 1.7833</span><br>
+            <span class="math">1+i = 1.7833^(1/10) ≈ 1.0596 → i ≈ 5.96% p.a.</span></p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Straight-line depreciation</div>
+            <p>A machine costing R80 000 depreciates by simple decay at 15% p.a. Book value after 4 years:<br>
+            <span class="math">A = 80000(1 − 0.15×4) = 80000(0.4) = R32 000</span></p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Simple vs Compound Comparison Tool</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Compare simple and compound growth/decay on the same principal, rate, and time.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Principal P (R)</div><input id="g12c3gP" type="number" value="80000" min="1" style="width:100px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Rate %/yr</div><input id="g12c3gi" type="number" value="15" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Years</div><input id="g12c3gn" type="number" value="4" min="0.1" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div>
+                <div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Mode</div>
+                <select id="g12c3gMode" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;">
+                  <option value="growth">Growth</option><option value="decay">Decay</option>
+                </select>
+              </div>
+              <button id="g12c3gBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Compare</button>
+            </div>
+            <div id="g12c3gOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function R(n){return 'R'+n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function gs(id){return document.getElementById(id).value;}
+              function calc(){
+                const P=gv('g12c3gP'),i=gv('g12c3gi')/100,n=gv('g12c3gn'),mode=gs('g12c3gMode');
+                const out=document.getElementById('g12c3gOut');
+                if([P,i,n].some(isNaN)||P<=0||i<=0||n<=0){out.innerHTML='<span style="color:#fca5a5;">Enter positive values.</span>';return;}
+                const sign=mode==='growth'?1:-1;
+                const simple=P*(1+sign*i*n);
+                const compound=P*Math.pow(1+sign*i,n);
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Simple: A = P(1'+(sign>0?'+':'−')+'i·n) = '+R(P)+'(1'+(sign>0?'+':'−')+(i).toFixed(4)+'×'+n+')</span><br>'+
+                  '<span style="color:#fcd34d;">Simple '+mode+': A = '+R(simple)+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">Compound: A = P(1'+(sign>0?'+':'−')+'i)ⁿ = '+R(P)+'(1'+(sign>0?'+':'−')+(i).toFixed(4)+')^'+n+'</span><br>'+
+                  '<span style="color:#6ee7b7;">Compound '+mode+': A = '+R(compound)+'</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.45);">Difference: '+R(Math.abs(compound-simple))+'</span>';
+              }
+              ['g12c3gP','g12c3gi','g12c3gn'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              document.getElementById('g12c3gMode').addEventListener('change',calc);
+              document.getElementById('g12c3gBtn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Simple interest is calculated on:", options: ["The accumulated amount each period", "The original principal only", "The final amount only", "Nothing — it doesn't apply to money"], answer: 1, topic: "Simple & compound growth vs decay" },
+        { type: "mc", text: "A car depreciates using compound decay. The formula is:", options: ["A = P(1 − in)", "A = P(1 − i)ⁿ", "A = P(1 + i)ⁿ", "A = Pin"], answer: 1, topic: "Simple & compound growth vs decay" },
+        { type: "input", text: "R50 000 grows by simple interest at 8% p.a. for 3 years. Find A.", answer: "62000", topic: "Simple & compound growth vs decay" },
+        { type: "mc", text: "A population grows from 50 000 to 65 000 in 5 years under compound growth. Which equation finds the rate i?", options: ["65000 = 50000(1+i)⁵", "65000 = 50000(1+5i)", "50000 = 65000(1+i)⁵", "i = (65000−50000)/5"], answer: 0, topic: "Simple & compound growth vs decay" },
+        { type: "mc", text: "Annuity formulae differ from single-sum growth/decay formulae because annuities involve:", options: ["A once-off lump sum", "A series of equal regular payments", "No interest at all", "Only simple interest"], answer: 1, topic: "Simple & compound growth vs decay" },
+        { type: "input", text: "Equipment worth R120 000 depreciates by compound decay at 20% p.a. Find its value after 2 years (nearest rand).", answer: "76800", topic: "Simple & compound growth vs decay" }
+      ]
+    },
+    {
+      id: 303,
+      chapter: 3,
+      name: "Comparing investment & loan options",
+      fullName: "Critically analysing and comparing investment and loan options, including effective vs nominal rates",
+      lesson: {
+        heading: "Comparing investment and loan options",
+        sub: "Chapter 3 · Topic 4",
+        body: `
+          <p>CAPS requires learners to <strong>critically analyse investment and loan options</strong> and make informed decisions — this means comparing rates fairly, not just picking the biggest-looking percentage.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Nominal vs effective interest rate</div>
+            <p>
+              A <strong>nominal</strong> rate is quoted per year but compounded more often (e.g. "9% p.a. compounded monthly").<br>
+              The <strong>effective annual rate</strong> converts this to a true yearly equivalent for fair comparison:<br><br>
+              <span class="math">i_eff = (1 + i_nom/m)^m − 1</span><br>
+              where m = number of compounding periods per year.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Comparing two investments</div>
+            <p>Investment A: 9% p.a. compounded monthly. Investment B: 9.2% p.a. compounded annually.<br>
+            A: i_eff = (1 + 0.09/12)¹² − 1 ≈ 9.381%<br>
+            B: i_eff = 9.2% (already annual)<br>
+            Investment A is actually the better rate, despite B's headline rate looking higher!</p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Points to weigh when comparing loans</div>
+            <p>
+              • Effective interest rate (not just the quoted nominal rate)<br>
+              • Total amount repaid over the full term (small monthly savings can cost more overall if the term is longer)<br>
+              • Fees and charges (initiation fees, admin fees) which add to the real cost<br>
+              • Flexibility — early settlement, extra payments, repayment holidays<br>
+              • For pyramid-type "investment" schemes: sustainable schemes pay returns from real profit; unsustainable ("pyramid") schemes pay early investors using new investors' money and inevitably collapse.
+            </p>
+          </div>
+
+          <div class="tip-box">
+            <div class="tip-box-title">💡 Exam tip</div>
+            <p>Always convert competing rates to the same compounding basis (usually effective annual rate) before comparing — never compare a monthly-compounded nominal rate directly to an annually-compounded one.</p>
+          </div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">🔢 Effective Annual Rate Comparator</div>
+            <p style="margin-bottom:8px;color:rgba(221,225,240,0.70);font-size:13px;">Enter two nominal rates with their compounding frequency — see which gives the better effective annual rate.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;">
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Option A rate %</div><input id="g12c3eA" type="number" value="9" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">A compounds/yr</div><select id="g12c3eAm" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="12" selected>12</option></select></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Option B rate %</div><input id="g12c3eB" type="number" value="9.2" min="0.01" style="width:70px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:'JetBrains Mono',monospace;text-align:center;"></div>
+              <div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">B compounds/yr</div><select id="g12c3eBm" style="background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:13px;font-family:'JetBrains Mono',monospace;"><option value="1" selected>1</option><option value="2">2</option><option value="4">4</option><option value="12">12</option></select></div>
+              <button id="g12c3eBtn" style="background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;padding:7px 16px;border-radius:7px;font-weight:700;cursor:pointer;border:none;font-size:14px;">Compare</button>
+            </div>
+            <div id="g12c3eOut" style="font-size:14px;line-height:2.2;color:rgba(221,225,240,0.85);min-height:24px;"></div>
+            <script>
+            (function(){
+              function gv(id){return parseFloat(document.getElementById(id).value);}
+              function gi(id){return parseInt(document.getElementById(id).value);}
+              function calc(){
+                const rA=gv('g12c3eA')/100,mA=gi('g12c3eAm'),rB=gv('g12c3eB')/100,mB=gi('g12c3eBm');
+                const out=document.getElementById('g12c3eOut');
+                if([rA,rB].some(isNaN)||rA<=0||rB<=0){out.innerHTML='<span style="color:#fca5a5;">Enter valid rates.</span>';return;}
+                const effA=(Math.pow(1+rA/mA,mA)-1)*100;
+                const effB=(Math.pow(1+rB/mB,mB)-1)*100;
+                const better=effA>effB?'A':(effB>effA?'B':'A and B are equal');
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Option A: i_eff = (1+'+(rA/mA).toFixed(6)+')^'+mA+' − 1 = '+effA.toFixed(4)+'%</span><br>'+
+                  '<span style="color:rgba(221,225,240,0.50);">Option B: i_eff = (1+'+(rB/mB).toFixed(6)+')^'+mB+' − 1 = '+effB.toFixed(4)+'%</span><br>'+
+                  '<span style="color:#6ee7b7;">Better effective rate: Option '+better+'</span>';
+              }
+              ['g12c3eA','g12c3eB'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')calc();});});
+              ['g12c3eAm','g12c3eBm'].forEach(id=>{document.getElementById(id).addEventListener('change',calc);});
+              document.getElementById('g12c3eBtn').addEventListener('click',calc);
+              calc();
+            })();
+            </script>
+          </div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "The effective annual rate formula is:", options: ["i_eff = (1 + i_nom/m)^m − 1", "i_eff = i_nom × m", "i_eff = i_nom/m", "i_eff = m(1+i_nom)"], answer: 0, topic: "Comparing investment & loan options" },
+        { type: "mc", text: "9% p.a. compounded monthly gives an effective annual rate of approximately:", options: ["9%", "9.38%", "9.75%", "10.2%"], answer: 1, topic: "Comparing investment & loan options" },
+        { type: "mc", text: "Before comparing two investment rates fairly, you should first:", options: ["Multiply both by the term", "Convert both to the same effective annual rate", "Always choose the higher nominal rate", "Ignore compounding frequency"], answer: 1, topic: "Comparing investment & loan options" },
+        { type: "mc", text: "A pyramid scheme is unsustainable because:", options: ["It pays no interest at all", "Returns are paid from new investors' money, not real profit", "It always uses compound interest", "It is illegal to advertise"], answer: 1, topic: "Comparing investment & loan options" },
+        { type: "input", text: "Find the effective annual rate for 12% p.a. compounded quarterly, to 2 decimal places (%).", answer: "12.55", altAnswers: ["12,55"], topic: "Comparing investment & loan options" }
+      ]
     }
   ],
   workbook: {

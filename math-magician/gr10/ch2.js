@@ -288,6 +288,171 @@ MathMagician.registerChapter(2, {
           topic: "Exponential equations"
         }
       ]
+    },
+    {
+      id: 202,
+      chapter: 2,
+      name: "Simplifying complex exponential expressions",
+      fullName: "Simplifying expressions combining several exponent laws, including factorisation",
+      lesson: {
+        heading: "Simplifying complex exponential expressions",
+        sub: "Chapter 2 · Topic 3",
+        body: `
+          <p>CAPS expects Grade 10 learners to combine <strong>all</strong> the exponent laws in a single simplification — and sometimes to spot a hidden factorisation first.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Strategy for multi-step simplification</div>
+            <p>
+              1. Write every term with the <strong>same base</strong> where possible (e.g. 4 = 2², 9 = 3²).<br>
+              2. Split any sums/differences in the exponent using <span class="math">a^(m+n) = aᵐ·aⁿ</span>.<br>
+              3. Factorise numerators/denominators that are sums or differences of exponential terms.<br>
+              4. Cancel common factors, then apply the remaining exponent laws.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Simplify (3 × 5²)³ ÷ 75</div>
+            <p>
+              <span class="math">(3 × 5²)³ = 3³ × 5⁶</span><br>
+              <span class="math">75 = 3 × 5²</span><br>
+              <span class="math">(3³ × 5⁶)/(3 × 5²) = 3² × 5⁴ = 9 × 625 = 5625</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Simplify by factorising first — (2ˣ⁺¹ + 2ˣ)/2ˣ</div>
+            <p>
+              Numerator: <span class="math">2ˣ⁺¹ + 2ˣ = 2ˣ(2 + 1) = 3 · 2ˣ</span><br>
+              <span class="math">(3 · 2ˣ)/2ˣ = 3</span><br>
+              <em>Spotting the common factor 2ˣ is the key insight — this is a problem-solving-level question if you haven't seen the type before.</em>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Common trap</div>
+            <p>
+              <span class="math">2ˣ⁺¹ ≠ 2 · 2ˣ⁺¹</span> and <span class="math">2ˣ⁺¹ ≠ 2ˣ + 2</span>. Always expand <span class="math">2ˣ⁺¹ = 2ˣ · 2¹ = 2 · 2ˣ</span> using the multiplication law — do not distribute over addition in an exponent.
+            </p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>When you see a sum or difference of exponential terms (like <span class="math">3^(x+2) − 3^x</span>), factor out the smallest power first — it almost always simplifies beautifully.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Simplify: (2 × 3²)² ÷ 18",
+          options: ["18", "36", "9", "2"],
+          answer: 0,
+          topic: "Simplifying complex exponential expressions"
+        },
+        {
+          type: "input",
+          text: "Simplify: (3ˣ⁺¹ + 3ˣ)/3ˣ",
+          answer: "4",
+          topic: "Simplifying complex exponential expressions"
+        },
+        {
+          type: "mc",
+          text: "Simplify: (5ˣ⁺² − 5ˣ)/(5ˣ · 24)",
+          options: ["1", "5", "24", "5/24"],
+          answer: 0,
+          topic: "Simplifying complex exponential expressions"
+        },
+        {
+          type: "mc",
+          text: "Simplify: (2²ˣ − 1)/(2ˣ − 1) using difference of squares on the exponent term",
+          options: ["2ˣ + 1", "2ˣ − 1", "2ˣ", "4ˣ + 1"],
+          answer: 0,
+          topic: "Simplifying complex exponential expressions"
+        },
+        {
+          type: "input",
+          text: "Simplify: (4^x · 8)/2^(2x+1). Give the answer as an integer.",
+          answer: "4",
+          topic: "Simplifying complex exponential expressions"
+        }
+      ]
+    },
+    {
+      id: 203,
+      chapter: 2,
+      name: "Advanced exponential equations",
+      fullName: "Exponential equations requiring factorisation or fractional-exponent techniques",
+      lesson: {
+        heading: "Advanced exponential equations",
+        sub: "Chapter 2 · Topic 4",
+        body: `
+          <p>Beyond simple same-base equations, CAPS includes exponential equations that need <strong>factorisation</strong> or careful handling of <strong>fractional exponents</strong> before you can solve for x.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Type 1: Equation with a common factor</div>
+            <p>
+              Example form: <span class="math">2^(x+3) − 2^x = 56</span><br>
+              Factorise the left side: <span class="math">2^x(2³ − 1) = 56 → 2^x(7) = 56 → 2^x = 8 → x = 3</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Type 2: Fractional/rational exponent equations</div>
+            <p>
+              Example form: <span class="math">x^(2/3) = 4</span><br>
+              Raise both sides to the power <span class="math">3/2</span>: <span class="math">x = 4^(3/2) = (√4)³ = 2³ = 8</span>
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Solve 3^(2x) − 3^x − 6 = 0</div>
+            <p>
+              Let <span class="math">k = 3^x</span>: <span class="math">k² − k − 6 = 0</span><br>
+              <span class="math">(k − 3)(k + 2) = 0 → k = 3</span> or <span class="math">k = −2</span> (rejected, since 3^x > 0)<br>
+              <span class="math">3^x = 3 → x = 1</span>
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Why negative or zero substitutions are rejected</div>
+            <p>Since <span class="math">aˣ > 0</span> for any base <span class="math">a > 0</span>, a substitution result like <span class="math">k = −2</span> or <span class="math">k = 0</span> gives <strong>no real solution</strong> for x and must be discarded.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Whenever you see two exponential terms added or subtracted (not multiplied), suspect that factorising out the smallest power is the way in — it's the same strategy as the previous topic, just now inside an equation.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "input",
+          text: "Solve: 2^(x+2) − 2^x = 12",
+          answer: "2",
+          topic: "Advanced exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Solve: x^(3/2) = 27",
+          options: ["x = 9", "x = 3", "x = 81", "x = 18"],
+          answer: 0,
+          topic: "Advanced exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Solve: 3^(2x) − 4·3^x + 3 = 0. Which are valid solutions?",
+          options: ["x = 0 or x = 1", "x = 1 or x = 3", "x = 0 or x = 3", "x = 1 only"],
+          answer: 0,
+          topic: "Advanced exponential equations"
+        },
+        {
+          type: "input",
+          text: "Solve for x: 5^(x+1) + 5^x = 30",
+          answer: "1",
+          topic: "Advanced exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Solve: x^(2/3) = 9",
+          options: ["x = 27", "x = 3", "x = 18", "x = 729"],
+          answer: 0,
+          topic: "Advanced exponential equations"
+        }
+      ]
     }
   ],
   workbook: {

@@ -300,6 +300,181 @@ MathMagician.registerChapter(7, {
           topic: "Quadrilaterals & midpoint theorem"
         }
       ]
+    },
+    {
+      id: 702,
+      chapter: 7,
+      name: "Special quadrilaterals — kite & trapezium",
+      fullName: "Defining and proving properties of the kite and trapezium",
+      lesson: {
+        heading: "The kite and trapezium — definitions and properties",
+        sub: "Chapter 7 · Topic 3",
+        body: `
+          <p>CAPS requires you to <strong>define</strong> each special quadrilateral precisely, then <strong>investigate and prove</strong> its properties — not simply memorise a list of facts.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Kite — definition and properties</div>
+            <p>
+              A <strong>kite</strong> is a quadrilateral with <strong>two pairs of adjacent sides equal</strong>.<br>
+              Properties (provable from the definition using congruent triangles):<br>
+              • One diagonal bisects the other at 90° (the axis of symmetry).<br>
+              • One pair of opposite angles (between the unequal sides) are equal.<br>
+              • The axis of symmetry bisects the angles it passes through.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Trapezium — definition and properties</div>
+            <p>
+              A <strong>trapezium</strong> is a quadrilateral with <strong>exactly one pair of parallel sides</strong>.<br>
+              Co-interior angles between the parallel sides are supplementary (add to 180°) — this follows directly from the parallel-line angle theorems.<br>
+              A trapezium has no general rule linking its diagonals unless further information (like it being isosceles) is given.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Proving a kite property</div>
+            <p>
+              In kite KITE with KI = KE and TI = TE, diagonal KT is drawn. Prove KT bisects ∠IKE.<br>
+              In △KIT and △KET: <span class="math">KI = KE</span> (given), <span class="math">TI = TE</span> (given), <span class="math">KT = KT</span> (common)<br>
+              <span class="math">∴ △KIT ≡ △KET</span> (SSS)<br>
+              <span class="math">∴ ∠IKT = ∠EKT</span> (corresponding ∠s of congruent triangles) — so KT bisects ∠IKE.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 A single counter-example disproves a conjecture</div>
+            <p>If you're asked to investigate a property, one clear counter-example is enough to show a conjecture is false — but proving a conjecture true requires a general argument (using congruency or known theorems), not just checking several examples.</p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>A kite's two diagonals are <strong>not both</strong> axes of symmetry — only the diagonal joining the vertices between the equal sides is. Sketch a kite and test this yourself.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "A kite has two pairs of:",
+          options: ["Adjacent sides equal", "Opposite sides equal", "Opposite sides parallel", "Adjacent angles equal"],
+          answer: 0,
+          topic: "Special quadrilaterals — kite & trapezium"
+        },
+        {
+          type: "mc",
+          text: "In a trapezium with one pair of parallel sides, the co-interior angles between those parallel sides are:",
+          options: ["Supplementary (sum to 180°)", "Equal", "Complementary (sum to 90°)", "Always 90° each"],
+          answer: 0,
+          topic: "Special quadrilaterals — kite & trapezium"
+        },
+        {
+          type: "input",
+          text: "In trapezium ABCD with AB ∥ DC, angle A = 110°. Find angle D (co-interior with A).",
+          answer: "70",
+          topic: "Special quadrilaterals — kite & trapezium"
+        },
+        {
+          type: "mc",
+          text: "In a kite, the diagonal that lies along the axis of symmetry:",
+          options: ["Bisects the other diagonal at 90°", "Is equal in length to the other diagonal", "Is parallel to two sides", "Bisects only one angle of the kite"],
+          answer: 0,
+          topic: "Special quadrilaterals — kite & trapezium"
+        },
+        {
+          type: "mc",
+          text: "To disprove the conjecture 'every trapezium has equal diagonals', you need:",
+          options: ["Just one counter-example", "At least three counter-examples", "A general proof", "It cannot be disproved"],
+          answer: 0,
+          topic: "Special quadrilaterals — kite & trapezium"
+        }
+      ]
+    },
+    {
+      id: 703,
+      chapter: 7,
+      name: "Special quadrilaterals — parallelogram family",
+      fullName: "Proving properties of the parallelogram, rectangle, rhombus, and square",
+      lesson: {
+        heading: "The parallelogram family — rectangle, rhombus, and square",
+        sub: "Chapter 7 · Topic 4",
+        body: `
+          <p>The rectangle, rhombus, and square are all <strong>special cases of the parallelogram</strong> — each adds extra conditions on top of the basic parallelogram properties.</p>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Parallelogram — the base definition</div>
+            <p>
+              A <strong>parallelogram</strong> is a quadrilateral with <strong>two pairs of opposite sides parallel</strong>.<br>
+              From this definition alone, you can prove: opposite sides are equal, opposite angles are equal, and the diagonals bisect each other.
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">📖 Building up the family</div>
+            <p>
+              <strong>Rectangle</strong> = parallelogram + all angles 90° → diagonals are also <strong>equal</strong>.<br>
+              <strong>Rhombus</strong> = parallelogram + all sides equal → diagonals <strong>bisect each other at 90°</strong> and <strong>bisect the vertex angles</strong>.<br>
+              <strong>Square</strong> = rectangle + rhombus (all properties of both) → diagonals are equal, bisect each other at 90°, and bisect the angles.
+            </p>
+          </div>
+
+          <div class="example-box">
+            <div class="example-box-title">✏️ Example: Proving opposite angles of a parallelogram are equal</div>
+            <p>
+              In parallelogram ABCD, prove <span class="math">∠A = ∠C</span>.<br>
+              Draw diagonal BD. Since AB ∥ DC: <span class="math">∠ABD = ∠BDC</span> (alt ∠s).<br>
+              Since AD ∥ BC: <span class="math">∠ADB = ∠DBC</span> (alt ∠s).<br>
+              <span class="math">BD = BD</span> (common) → <span class="math">△ABD ≡ △CDB</span> (AAS)<br>
+              <span class="math">∴ ∠A = ∠C</span> (corresponding ∠s of congruent triangles).
+            </p>
+          </div>
+
+          <div class="def-box">
+            <div class="def-box-title">💡 Quick identification chart</div>
+            <p>
+              | Shape | Sides | Angles | Diagonals |<br>
+              | Parallelogram | opp. sides ∥ and = | opp. ∠s = | bisect each other |<br>
+              | Rectangle | as above | all 90° | equal + bisect each other |<br>
+              | Rhombus | all sides = | opp. ∠s = | bisect each other at 90°, bisect ∠s |<br>
+              | Square | all sides = | all 90° | equal, bisect at 90°, bisect ∠s |
+            </p>
+          </div>
+
+          <div class="tip-box"><span class="tip-icon">💡</span><span>To prove a quadrilateral is a <em>specific</em> type, you must show it satisfies that shape's <em>definition</em> first — proving "diagonals bisect each other" alone only proves it's a parallelogram, not automatically a rectangle or rhombus.</span></div>
+        `
+      },
+      questions: [
+        {
+          type: "mc",
+          text: "Which property is true for a rhombus but not for a general parallelogram?",
+          options: ["Diagonals bisect each other at 90°", "Opposite sides are parallel", "Opposite angles are equal", "Diagonals bisect each other"],
+          answer: 0,
+          topic: "Special quadrilaterals — parallelogram family"
+        },
+        {
+          type: "input",
+          text: "In rectangle ABCD, diagonal AC = 26 cm. Find diagonal BD.",
+          answer: "26",
+          topic: "Special quadrilaterals — parallelogram family"
+        },
+        {
+          type: "mc",
+          text: "A quadrilateral has diagonals that bisect each other but are NOT equal and NOT perpendicular. It must be a:",
+          options: ["Parallelogram (but not rectangle, rhombus, or square)", "Rectangle", "Rhombus", "Kite"],
+          answer: 0,
+          topic: "Special quadrilaterals — parallelogram family"
+        },
+        {
+          type: "mc",
+          text: "To prove a parallelogram is a rhombus, which single condition is sufficient?",
+          options: ["One pair of adjacent sides are equal", "The diagonals are equal", "One angle is 90°", "The diagonals bisect each other"],
+          answer: 0,
+          topic: "Special quadrilaterals — parallelogram family"
+        },
+        {
+          type: "input",
+          text: "In rhombus PQRS, diagonal PR = 16 and diagonal QS = 12. The diagonals intersect at O. Find PO (half of PR).",
+          answer: "8",
+          topic: "Special quadrilaterals — parallelogram family"
+        }
+      ]
     }
   ],
   workbook: {
