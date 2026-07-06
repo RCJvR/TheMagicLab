@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechanical Advantage Calculations — Tech Placeholder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%}
+    .part-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left;flex:1}
+    .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .part-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .btn-row{display:flex;gap:6px}
+    .control-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+    .control-label{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+    .num-input{width:100%;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--fm);font-size:14px}
+    .num-input:focus{outline:none;border-color:var(--accent)}
+    .part-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:120px}
+    .part-name{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .part-force{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-bottom:8px}
+    .part-force.tension{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.30)}
+    .part-force.compression{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.30)}
+    .part-desc{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    .readout{font-family:var(--fm);font-size:13px;color:var(--accent-light);background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 14px;margin-top:4px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn,.truss-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 Tech Placeholder</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Mechanical Systems · Gr 8</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Mechanical Systems &amp; Control · Term 3 · Lesson 2</div>
+  <h1 class="lesson-title">Mechanical Advantage Calculations</h1>
+  <p class="lesson-sub">Calculate mechanical advantage for levers and gears using simple ratios, represent gear systems graphically, and break a bicycle gear system into a systems diagram.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-commit" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Calculating mechanical advantage for levers</h2>
+    <p>Mechanical advantage (MA) compares the load a machine lifts or moves to the effort you put in. For levers, we calculate MA using simple ratios — NOT by "taking moments about a point" (that method comes later, in higher grades). At Grade 8 level, use these two equivalent ratio methods:</p>
+    <div class="key-fact">MA = Load &divide; Effort &nbsp;&nbsp;|&nbsp;&nbsp; MA = Effort arm &divide; Load arm</div>
+    <p>The <strong>effort arm</strong> is the distance from the fulcrum to where you apply your effort force. The <strong>load arm</strong> is the distance from the fulcrum to the load. The longer the effort arm is compared to the load arm, the greater the mechanical advantage.</p>
+    <div class="callout"><strong>Worked example:</strong> A wheelbarrow lever has an effort arm of 900&nbsp;mm and a load arm of 300&nbsp;mm. MA = Effort arm &divide; Load arm = 900 &divide; 300 = <strong>3</strong>. This means the wheelbarrow multiplies your effort force three times.</div>
+    <table class="compare-table">
+      <thead><tr><th>Lever example</th><th>Class</th><th>Mechanical advantage</th></tr></thead>
+      <tbody>
+        <tr><td>Paper scissors (equal blade &amp; handle)</td><td>First-class</td><td>MA = 1 (no advantage)</td></tr>
+        <tr><td>Secateurs (long handle, short blade)</td><td>First-class</td><td>MA &gt; 1</td></tr>
+        <tr><td>Office punch / heavy-duty stapler</td><td>Second-class</td><td>MA &gt; 1 (always)</td></tr>
+        <tr><td>Light-duty stapler / tweezers</td><td>Third-class</td><td>MA &lt; 1 (never gives advantage)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Calculating mechanical advantage for gears</h2>
+    <p>For gears, we calculate MA using the ratio of teeth or the ratio of gear wheel diameters, instead of load and effort arms:</p>
+    <div class="key-fact">MA = Driven gear teeth &divide; Driver gear teeth &nbsp;&nbsp;=&nbsp;&nbsp; Driven diameter &divide; Driver diameter</div>
+    <p>The <strong>velocity ratio (VR)</strong> works the opposite way around — it tells you how many times the driver must turn to turn the driven gear once:</p>
+    <div class="key-fact">VR = Driver gear teeth &divide; Driven gear teeth</div>
+    <div class="callout"><strong>Worked example:</strong> A driver gear has 12 teeth and meshes with a driven gear of 36 teeth. MA = 36 &divide; 12 = <strong>3</strong> (force is tripled). VR = 12 &divide; 36 = <strong>0.33</strong>, meaning the driven gear turns at one-third the speed of the driver — three times slower, but three times stronger.</div>
+
+    <h2>Representing gear systems graphically</h2>
+    <p>Gear systems are drawn using circles (for the pitch circles of each gear) drawn with a pair of compasses or circular templates, sized proportionally to the number of teeth. When sketching gear systems you should be able to show:</p>
+    <ul>
+      <li>The driven gear rotating in the <strong>opposite</strong> direction to the driver (direct mesh, no idler) — shown with curved direction arrows pointing opposite ways.</li>
+      <li>The driven gear rotating in the <strong>same</strong> direction as the driver — achieved by adding an idler gear between them.</li>
+      <li>The driven gear rotating <strong>faster</strong> than the driver — draw the driven gear smaller than the driver (with or without an idler for direction control).</li>
+      <li>The driven gear rotating <strong>slower</strong> than the driver — draw the driven gear larger than the driver.</li>
+    </ul>
+    <div class="callout"><strong>Bevel gears:</strong> when two bevel gears (cone-shaped gears) are meshed, they transfer the axis of rotation through 90&deg; — useful whenever a machine needs to change the direction a shaft is pointing, such as in a hand drill or a car differential.</div>
+
+    <h2>Systems diagrams: input &rarr; process &rarr; output</h2>
+    <p>Any mechanical system can be analysed by breaking it down into three parts: what goes IN, what happens during the PROCESS, and what comes OUT.</p>
+    <div class="callout"><strong>Systems diagram for a gear system with MA = 4:1:</strong><br>
+    <strong>INPUT:</strong> effort force turning the driver gear (small gear, e.g. 10 teeth) &rarr;
+    <strong>PROCESS:</strong> driver gear meshes with a driven gear four times larger (40 teeth), multiplying the turning force &rarr;
+    <strong>OUTPUT:</strong> output force at the driven gear, four times greater than the input effort, turning four times slower.</div>
+
+    <h2>System analysis: the bicycle gear system</h2>
+    <p>A bicycle gearing system is a classic real-world gear train, and CAPS uses specific terminology for it:</p>
+    <table class="compare-table">
+      <thead><tr><th>Term</th><th>Meaning in a bicycle</th></tr></thead>
+      <tbody>
+        <tr><td>Master / driver</td><td>The chain wheel (attached to the pedals) — the part you put effort into.</td></tr>
+        <tr><td>Slave / driven</td><td>The rear cog (attached to the back wheel) — the part that produces the output.</td></tr>
+        <tr><td>Chain wheel</td><td>The large front gear turned directly by the pedal cranks.</td></tr>
+        <tr><td>Cogs (sprockets)</td><td>The smaller gears at the back wheel, of different sizes for different gear ratios.</td></tr>
+      </tbody>
+    </table>
+    <p>A large chain wheel paired with a small rear cog gives a high velocity ratio — the back wheel spins many times per pedal turn, ideal for speed on flat roads. A small chain wheel paired with a large rear cog gives strong mechanical advantage but a low output speed, ideal for climbing hills.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Mechanical Advantage Calculator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Switch between a lever and a gear system, enter your own values, and see the mechanical advantage calculated live with a matching diagram.</p>
+  <div class="explore-layout">
+    <div class="truss-canvas-wrap"><canvas id="maCanvas" height="320"></canvas></div>
+    <div>
+      <div class="control-group">
+        <div class="control-label">System type</div>
+        <div class="btn-row">
+          <button class="part-btn active" id="mode_lever" onclick="setMode('lever')">Lever</button>
+          <button class="part-btn" id="mode_gear" onclick="setMode('gear')">Gears</button>
+        </div>
+      </div>
+      <div id="leverControls">
+        <div class="control-group">
+          <div class="control-label">Effort arm (mm)</div>
+          <input class="num-input" type="number" id="effortArm" value="300" min="10" max="1000" oninput="recalc()">
+        </div>
+        <div class="control-group">
+          <div class="control-label">Load arm (mm)</div>
+          <input class="num-input" type="number" id="loadArm" value="100" min="10" max="1000" oninput="recalc()">
+        </div>
+      </div>
+      <div id="gearControls" style="display:none">
+        <div class="control-group">
+          <div class="control-label">Driver gear teeth</div>
+          <input class="num-input" type="number" id="driverTeethIn" value="12" min="4" max="60" oninput="recalc()">
+        </div>
+        <div class="control-group">
+          <div class="control-label">Driven gear teeth</div>
+          <input class="num-input" type="number" id="drivenTeethIn" value="36" min="4" max="60" oninput="recalc()">
+        </div>
+      </div>
+      <div class="part-info" id="partInfo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book. Show all calculation steps.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">A lever has an effort arm of 600 mm and a load arm of 150 mm. Calculate the mechanical advantage. Show your formula and working.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">A driver gear has 8 teeth and meshes directly with a driven gear of 32 teeth. Calculate (a) the mechanical advantage and (b) the velocity ratio.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Sketch two gear diagrams (circles only, no need to draw teeth): one showing the driven gear rotating in the opposite direction to the driver, and one showing the driven gear rotating in the same direction as the driver. Label which one includes an idler gear.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Draw a systems diagram (input &rarr; process &rarr; output) for a gear system that gives a mechanical advantage of 4:1.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">Using bicycle terminology, name the master (driver) part and the slave (driven) part of a bicycle gear system, and explain why a cyclist shifts to a small chain wheel and large rear cog when climbing a steep hill.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   MECHANICAL ADVANTAGE CALCULATOR
+═══════════════════════════════════════════════ */
+let mode = 'lever';
+function setMode(m){
+  mode = m;
+  document.getElementById('mode_lever').classList.toggle('active', m==='lever');
+  document.getElementById('mode_gear').classList.toggle('active', m==='gear');
+  document.getElementById('leverControls').style.display = m==='lever' ? 'block' : 'none';
+  document.getElementById('gearControls').style.display = m==='gear' ? 'block' : 'none';
+  recalc();
+}
+
+function recalc(){
+  if(mode==='lever'){
+    const effortArm = Math.max(1, parseFloat(document.getElementById('effortArm').value)||0);
+    const loadArm = Math.max(1, parseFloat(document.getElementById('loadArm').value)||0);
+    const ma = effortArm/loadArm;
+    document.getElementById('partInfo').innerHTML = `
+      <div class="part-name">Lever mechanical advantage</div>
+      <span class="part-force ${ma>=1?'tension':'compression'}">MA ${ma.toFixed(2)} : 1</span>
+      <div class="part-desc">MA = Effort arm &divide; Load arm = ${effortArm} &divide; ${loadArm} = ${ma.toFixed(2)}. ${ma>1?'This lever multiplies your effort force.':(ma<1?'This lever reduces force but increases speed/distance of movement.':'This lever gives no mechanical advantage — effort equals load.')}</div>
+      <div class="readout">Load = Effort &times; ${ma.toFixed(2)}</div>`;
+    drawLever(effortArm, loadArm);
+  } else {
+    const driverTeeth = Math.max(1, parseFloat(document.getElementById('driverTeethIn').value)||0);
+    const drivenTeeth = Math.max(1, parseFloat(document.getElementById('drivenTeethIn').value)||0);
+    const ma = drivenTeeth/driverTeeth;
+    const vr = driverTeeth/drivenTeeth;
+    document.getElementById('partInfo').innerHTML = `
+      <div class="part-name">Gear mechanical advantage</div>
+      <span class="part-force ${ma>=1?'tension':'compression'}">MA ${ma.toFixed(2)} : 1</span>
+      <div class="part-desc">MA = Driven teeth &divide; Driver teeth = ${drivenTeeth} &divide; ${driverTeeth} = ${ma.toFixed(2)}. Velocity ratio VR = Driver teeth &divide; Driven teeth = ${driverTeeth} &divide; ${drivenTeeth} = ${vr.toFixed(2)}.</div>
+      <div class="readout">${ma>1?'Force multiplied, driven gear turns SLOWER.':(ma<1?'Force reduced, driven gear turns FASTER.':'Force and speed unchanged (equal gears).')}</div>`;
+    drawGears(driverTeeth, drivenTeeth);
+  }
+}
+
+const canvas = document.getElementById('maCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500; H = 320;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  recalc();
+}
+
+function drawLever(effortArm, loadArm){
+  ctx.clearRect(0,0,W,H);
+  const total = effortArm+loadArm;
+  const usableW = W*0.7;
+  const scale = usableW/total;
+  const fulcrumX = W*0.15 + loadArm*scale;
+  const barY = H*0.55;
+  const leftX = W*0.15, rightX = fulcrumX + effortArm*scale;
+
+  ctx.strokeStyle = '#fdba74'; ctx.lineWidth = 8; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(leftX, barY); ctx.lineTo(rightX, barY); ctx.stroke();
+
+  ctx.fillStyle = '#f97316';
+  ctx.beginPath(); ctx.moveTo(fulcrumX, barY+8); ctx.lineTo(fulcrumX-18, barY+44); ctx.lineTo(fulcrumX+18, barY+44); ctx.closePath(); ctx.fill();
+
+  ctx.fillStyle = '#fca5a5';
+  ctx.beginPath(); ctx.arc(leftX, barY-18, 14, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'rgba(210,218,245,.8)'; ctx.font='12px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('LOAD', leftX, barY-40);
+  ctx.fillText(loadArm+'mm', (leftX+fulcrumX)/2, barY+26);
+
+  ctx.fillStyle = '#93c5fd';
+  ctx.beginPath(); ctx.arc(rightX, barY-18, 10, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'rgba(210,218,245,.8)';
+  ctx.fillText('EFFORT', rightX, barY-38);
+  ctx.fillText(effortArm+'mm', (fulcrumX+rightX)/2, barY+26);
+
+  ctx.fillStyle='var(--muted)'; ctx.fillStyle = 'rgba(210,218,245,.5)';
+  ctx.fillText('FULCRUM', fulcrumX, barY+62);
+}
+
+function gearRadius(teeth){ return Math.min(20+teeth*3, 130); }
+function drawGearShape(cx,cy,teeth,color){
+  const rBase = gearRadius(teeth), toothH=7;
+  ctx.save(); ctx.translate(cx,cy);
+  ctx.beginPath();
+  for(let i=0;i<teeth;i++){
+    const a0=(i/teeth)*Math.PI*2, a1=a0+(Math.PI*2/teeth)*0.5, a2=a0+(Math.PI*2/teeth)*1.0;
+    ctx.lineTo(Math.cos(a0)*rBase, Math.sin(a0)*rBase);
+    ctx.lineTo(Math.cos(a0)*(rBase+toothH), Math.sin(a0)*(rBase+toothH));
+    ctx.lineTo(Math.cos(a1)*(rBase+toothH), Math.sin(a1)*(rBase+toothH));
+    ctx.lineTo(Math.cos(a2)*rBase, Math.sin(a2)*rBase);
+  }
+  ctx.closePath();
+  ctx.fillStyle=color+'22'; ctx.strokeStyle=color; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+function drawGears(driverTeeth, drivenTeeth){
+  ctx.clearRect(0,0,W,H);
+  const rDriver = gearRadius(driverTeeth), rDriven = gearRadius(drivenTeeth);
+  const cy = H/2;
+  const gap = rDriver+rDriven-4;
+  const driverX = W/2 - gap/2, drivenX = W/2 + gap/2;
+  drawGearShape(driverX, cy, driverTeeth, '#fdba74');
+  drawGearShape(drivenX, cy, drivenTeeth, '#fca5a5');
+  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('DRIVER ('+driverTeeth+'T)', driverX, cy+rDriver+20);
+  ctx.fillText('DRIVEN ('+drivenTeeth+'T)', drivenX, cy+rDriven+20);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'For a lever, mechanical advantage can be calculated as:',opts:['Load × Effort','Effort arm ÷ Load arm','Load arm × Effort arm','Fulcrum ÷ Load'],ans:1,exp:'MA = Effort arm ÷ Load arm (equivalently MA = Load ÷ Effort). We use these simple ratios at Grade 8 level, not the "taking moments" method.'},
+  {text:'A lever has an effort arm of 400 mm and a load arm of 100 mm. What is its mechanical advantage?',opts:['0.25','4','40','400'],ans:1,exp:'MA = Effort arm ÷ Load arm = 400 ÷ 100 = 4. This lever multiplies the effort force four times.'},
+  {text:'For gears, mechanical advantage is calculated using the ratio of:',opts:['Effort arm to load arm','Driven gear teeth to driver gear teeth','Colour of the gears','Number of idler gears only'],ans:1,exp:'Gear MA = Driven gear teeth ÷ Driver gear teeth (or driven diameter ÷ driver diameter) — the bigger the driven gear compared to the driver, the greater the mechanical advantage.'},
+  {text:'A driver gear of 10 teeth meshes with a driven gear of 40 teeth. What is the mechanical advantage?',opts:['0.25','2.5','4','10'],ans:2,exp:'MA = Driven teeth ÷ Driver teeth = 40 ÷ 10 = 4. The output turning force is four times the input, but the driven gear turns four times slower.'},
+  {text:'Two bevel gears are meshed together mainly in order to:',opts:['Increase mechanical advantage to 10:1','Transfer the axis of rotation through 90°','Make the gears counter-rotate','Reduce the number of teeth needed'],ans:1,exp:'Bevel gears are cone-shaped gears used specifically to transfer the axis of rotation through 90°, such as changing a horizontal drive shaft into a vertical one.'},
+  {text:'On a bicycle, the chain wheel (turned directly by the pedals) is best described using which term?',opts:['Slave / driven','Cog only','Master / driver','Idler'],ans:2,exp:'The chain wheel, turned directly by the pedal cranks, is the master or driver gear. The rear cog (sprocket) attached to the back wheel is the slave or driven gear.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

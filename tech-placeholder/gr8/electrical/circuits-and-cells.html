@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuits &amp; Electrochemical Cells — Tech Placeholder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .circuit-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%}
+    .explore-tools{display:flex;flex-direction:column;gap:10px}
+    .mode-switch{display:flex;gap:6px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:4px}
+    .mode-btn{flex:1;font-family:var(--fd);font-size:12px;font-weight:700;padding:8px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 140ms}
+    .mode-btn.active{background:rgba(249,115,22,.16);color:var(--accent-light)}
+    .comp-list{display:flex;flex-direction:column;gap:5px}
+    .comp-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left}
+    .comp-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .comp-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .circuit-status{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:90px;font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    .circuit-status.ok{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:#86efac}
+    .circuit-status.bad{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#fca5a5}
+    .toggle-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:9px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:12.5px;cursor:pointer;transition:all 150ms}
+    .toggle-btn:hover{background:rgba(249,115,22,.18)}
+    .symbol-quiz{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px}
+    .symbol-quiz-name{font-weight:800;font-size:15px;color:#fff;margin-bottom:10px}
+    .symbol-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .symbol-opt{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px;cursor:pointer;transition:all 140ms}
+    .symbol-opt:hover{background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28)}
+    .symbol-opt.correct{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.4)}
+    .symbol-opt.wrong{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35)}
+    .symbol-opt canvas{width:100%;height:50px;pointer-events:none}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn,.circuit-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 Tech Placeholder</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Electrical Systems · Gr 8</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Electrical Systems · Term 4 · Lesson 1</div>
+  <h1 class="lesson-title">Circuits &amp; Electrochemical Cells</h1>
+  <p class="lesson-sub">Input, output and control devices, correct connections versus short circuits, and how to draw a circuit using accepted electrical symbols.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Input, output and control devices</h2>
+    <p>Every electrical circuit is a system: something provides energy, something uses it, and something controls the flow. Components are grouped by their role in the circuit:</p>
+    <ul>
+      <li><strong>Input devices</strong> — supply electrical energy into the circuit: an <strong>electrochemical cell</strong> (battery), a <strong>generator</strong>, or a <strong>solar (photovoltaic) panel</strong>.</li>
+      <li><strong>Output devices</strong> — convert electrical energy into another useful form: a <strong>resistor</strong> (limits current), <strong>lamp</strong> (light), <strong>heater</strong> (heat), <strong>buzzer</strong> (sound), or <strong>motor</strong> (movement).</li>
+      <li><strong>Control devices</strong> — manage when and how current flows: <strong>switches</strong> of all kinds.</li>
+    </ul>
+    <div class="callout"><strong>Some devices wear more than one hat!</strong> A motor is usually an output device, but spun by hand it can act as a generator (input). A resistor can act as an output device (limiting current) or as part of a sensing/control circuit. Always classify a device by the job it is doing in that specific circuit.</div>
+
+    <h2>Correct connections and short circuits</h2>
+    <p>For a circuit to work, current must flow in one continuous, unbroken loop from the cell, through the components, and back to the cell. This is called a <strong>closed circuit</strong>. If the loop is broken anywhere (a wire disconnected, a switch open), it is an <strong>open circuit</strong> and no current flows.</p>
+    <p>A <strong>short circuit</strong> happens when current finds an unintended low-resistance path that bypasses the output device — for example, if the two terminals of a lamp are connected directly to each other by a stray wire. Almost all the current rushes through this shortcut instead of through the lamp, so the lamp stays dark, the wires overheat, and the cell drains very quickly. Short circuits are dangerous and can start fires.</p>
+    <div class="key-fact">Correct circuit: one continuous loop through every component. Short circuit: a "shortcut" path that skips the output device.</div>
+
+    <h2>Electrical component symbols</h2>
+    <p>Circuits are drawn using standard, internationally accepted symbols so that anyone, anywhere, can read the diagram the same way. You must be able to recognise and draw these symbols:</p>
+    <table class="compare-table">
+      <thead><tr><th>Component</th><th>Role</th><th>Symbol description</th></tr></thead>
+      <tbody>
+        <tr><td>Cell</td><td>Input</td><td>One long and one short parallel line (long = positive)</td></tr>
+        <tr><td>Battery (multiple cells)</td><td>Input</td><td>Two or more cell symbols in a row</td></tr>
+        <tr><td>Lamp</td><td>Output</td><td>A circle with an X or cross inside it</td></tr>
+        <tr><td>Resistor</td><td>Output</td><td>A rectangle (or zig-zag line in older diagrams)</td></tr>
+        <tr><td>Switch</td><td>Control</td><td>A break in the line with a short diagonal "lever" line</td></tr>
+        <tr><td>Buzzer</td><td>Output</td><td>A circle or semicircle labelled with a wavy sound line</td></tr>
+        <tr><td>Motor</td><td>Output</td><td>A circle with an "M" inside it</td></tr>
+      </tbody>
+    </table>
+    <p>Connecting wires are drawn as straight lines, and every component is placed <em>in</em> the wire loop — never floating off to the side. Junctions where wires join are shown with a solid dot.</p>
+
+    <h2>Setting up circuits with a range of components</h2>
+    <p>When building a real circuit, always: (1) connect components in a single closed loop, (2) check the cell's positive and negative terminals are the right way round for polarised components, (3) place the switch so it can safely cut off the whole circuit, and (4) test with a low-cost output device (like a lamp) before adding more components. Once built, the physical circuit should always be redrawn as a symbol diagram — this is how technologists record and communicate a design.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Circuit Builder &amp; Symbol Quiz</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Switch between two modes: build a working circuit and watch the lamp respond, or test yourself on component symbols.</p>
+  <div class="explore-layout">
+    <div class="circuit-canvas-wrap"><canvas id="circuitCanvas" height="320"></canvas></div>
+    <div class="explore-tools">
+      <div class="mode-switch">
+        <button class="mode-btn active" id="modeBuildBtn" onclick="setMode('build')">Build a Circuit</button>
+        <button class="mode-btn" id="modeQuizBtn" onclick="setMode('quiz')">Symbol Quiz</button>
+      </div>
+      <div id="buildPanel">
+        <div class="comp-list">
+          <button class="comp-btn active" id="cb_switchOpen" onclick="setSwitch(false)">🔓 Switch open</button>
+          <button class="comp-btn" id="cb_switchClosed" onclick="setSwitch(true)">🔒 Switch closed</button>
+          <button class="comp-btn" id="cb_short" onclick="toggleShort()">⚡ Add short-circuit wire</button>
+        </div>
+        <div class="circuit-status" id="circuitStatus">The switch is open, so this is an open circuit — no current flows and the lamp is off.</div>
+      </div>
+      <div id="quizPanel" style="display:none">
+        <div class="symbol-quiz">
+          <div class="symbol-quiz-name" id="quizCompName">Cell</div>
+          <div class="symbol-opts" id="quizOpts"></div>
+        </div>
+        <button class="toggle-btn" style="margin-top:10px" onclick="nextQuizQuestion()">Next component →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (3 marks)</div><div class="wb-qtext">Classify each of the following as an input, output, or control device: solar panel, buzzer, switch.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (2 marks)</div><div class="wb-qtext">Explain why a motor can sometimes act as an input device rather than an output device.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Describe what a short circuit is, and explain why it is dangerous.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (5 marks)</div><div class="wb-qtext">Draw a simple circuit diagram, using accepted symbols, containing one cell, one switch, and one lamp connected in a single closed loop.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Name the standard symbol used for a resistor and for a motor.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   CIRCUIT BUILDER + SYMBOL QUIZ
+═══════════════════════════════════════════════ */
+let mode = 'build';
+let switchClosed = false;
+let shortActive = false;
+
+function setMode(m){
+  mode = m;
+  document.getElementById('modeBuildBtn').classList.toggle('active', m==='build');
+  document.getElementById('modeQuizBtn').classList.toggle('active', m==='quiz');
+  document.getElementById('buildPanel').style.display = m==='build' ? 'block' : 'none';
+  document.getElementById('quizPanel').style.display = m==='quiz' ? 'block' : 'none';
+  if(m==='quiz'){ drawQuizSymbol(); }
+  drawCircuit();
+}
+
+function setSwitch(closed){
+  switchClosed = closed;
+  document.getElementById('cb_switchOpen').classList.toggle('active', !closed);
+  document.getElementById('cb_switchClosed').classList.toggle('active', closed);
+  updateStatus();
+  drawCircuit();
+}
+function toggleShort(){
+  shortActive = !shortActive;
+  document.getElementById('cb_short').classList.toggle('active', shortActive);
+  updateStatus();
+  drawCircuit();
+}
+function updateStatus(){
+  const el = document.getElementById('circuitStatus');
+  if(!switchClosed){
+    el.className = 'circuit-status';
+    el.textContent = 'The switch is open, so this is an open circuit — no current flows and the lamp is off.';
+  } else if(shortActive){
+    el.className = 'circuit-status bad';
+    el.textContent = '⚠ Short circuit! The extra wire lets current bypass the lamp completely. Almost all current takes the low-resistance shortcut, so the lamp stays dark, the wire gets hot, and the cell drains very fast. This is dangerous.';
+  } else {
+    el.className = 'circuit-status ok';
+    el.textContent = '✓ Closed circuit! Current flows in one continuous loop from the cell, through the switch, through the lamp, and back to the cell. The lamp lights up.';
+  }
+}
+
+const canvas = document.getElementById('circuitCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500; H = 320;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  drawCircuit();
+}
+
+function drawWire(x1,y1,x2,y2,color){
+  ctx.strokeStyle=color; ctx.lineWidth=3; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+}
+
+function drawCircuit(){
+  ctx.clearRect(0,0,W,H);
+  if(mode==='quiz') return;
+  const lit = switchClosed && !shortActive;
+  const wireColor = switchClosed ? (shortActive?'#fca5a5':'#fdba74') : 'rgba(210,218,245,.35)';
+  const left=80, right=W-80, top=70, bottom=H-70;
+
+  // rectangle loop: cell (left side), lamp (right side), switch (top), short wire (bottom, optional)
+  drawWire(left, top, right, top, wireColor);       // top wire (through switch, drawn as gap)
+  drawWire(right, top, right, bottom, wireColor);   // right wire (through lamp)
+  drawWire(right, bottom, left, bottom, wireColor); // bottom wire
+  drawWire(left, bottom, left, top, wireColor);     // left wire (through cell)
+
+  // cell symbol (left-middle)
+  const cellY = (top+bottom)/2;
+  ctx.strokeStyle = wireColor; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.moveTo(left-14,cellY-16); ctx.lineTo(left-14,cellY+16); ctx.stroke();
+  ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(left-14,cellY+26); ctx.lineTo(left-14,cellY+46); ctx.stroke();
+  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px sans-serif'; ctx.fillText('cell', left-40, cellY+2);
+
+  // switch symbol (top-middle) — gap with lever
+  const midX = (left+right)/2;
+  ctx.fillStyle = '#05070f';
+  ctx.fillRect(midX-22, top-8, 44, 16);
+  ctx.strokeStyle = wireColor; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(midX-20, top);
+  if(switchClosed){ ctx.lineTo(midX+20, top); } else { ctx.lineTo(midX+14, top-16); }
+  ctx.stroke();
+  ctx.beginPath(); ctx.arc(midX-20, top, 3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(midX+20, top, 3, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.fillText('switch', midX-16, top-22);
+
+  // short-circuit bypass wire, drawn across the lamp if active
+  if(shortActive){
+    ctx.strokeStyle = '#fca5a5'; ctx.lineWidth=3; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(right+18, top); ctx.lineTo(right+18, bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(right, top); ctx.lineTo(right+18, top); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(right, bottom); ctx.lineTo(right+18, bottom); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#fca5a5'; ctx.fillText('short!', right+22, (top+bottom)/2);
+  }
+
+  // lamp symbol (right-middle)
+  const lampY=(top+bottom)/2;
+  ctx.beginPath(); ctx.arc(right, lampY, 18, 0, Math.PI*2);
+  ctx.fillStyle = lit ? 'rgba(253,224,71,0.35)' : '#05070f';
+  ctx.fill();
+  ctx.strokeStyle = lit ? '#fde047' : wireColor; ctx.lineWidth=3;
+  ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(right-13,lampY-13); ctx.lineTo(right+13,lampY+13);
+  ctx.moveTo(right+13,lampY-13); ctx.lineTo(right-13,lampY+13); ctx.stroke();
+  if(lit){
+    ctx.save();
+    ctx.shadowColor='#fde047'; ctx.shadowBlur=25;
+    ctx.beginPath(); ctx.arc(right, lampY, 18, 0, Math.PI*2); ctx.strokeStyle='#fde047'; ctx.stroke();
+    ctx.restore();
+  }
+  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.fillText('lamp', right-12, lampY+40);
+}
+
+/* symbol quiz */
+const COMPONENTS = [
+  {name:'Cell', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=4;c.beginPath();c.moveTo(30,10);c.lineTo(30,40);c.stroke();c.lineWidth=2;c.beginPath();c.moveTo(55,17);c.lineTo(55,33);c.stroke();}},
+  {name:'Lamp', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(34,14);c.lineTo(56,36);c.moveTo(56,14);c.lineTo(34,36);c.stroke();}},
+  {name:'Switch', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.moveTo(10,30);c.lineTo(25,30);c.lineTo(60,14);c.stroke();c.beginPath();c.arc(25,30,3,0,Math.PI*2);c.arc(60,30,3,0,Math.PI*2);c.fill();c.beginPath();c.moveTo(60,30);c.lineTo(80,30);c.stroke();}},
+  {name:'Resistor', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.strokeRect(20,18,50,14);}},
+  {name:'Buzzer', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(36,25);c.quadraticCurveTo(40,15,45,25);c.quadraticCurveTo(50,35,54,25);c.stroke();}},
+  {name:'Motor', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.font='bold 16px sans-serif';c.fillStyle='#fdba74';c.fillText('M',39,31);}},
+];
+let quizIdx = 0;
+function makeSymbolCanvas(comp, isCorrectSlot){
+  const cv = document.createElement('canvas');
+  cv.width=90; cv.height=50;
+  const cc = cv.getContext('2d');
+  comp.draw(cc);
+  return cv;
+}
+function drawQuizSymbol(){
+  quizIdx = Math.floor(Math.random()*COMPONENTS.length);
+  const comp = COMPONENTS[quizIdx];
+  document.getElementById('quizCompName').textContent = comp.name;
+  const opts = [comp];
+  const pool = COMPONENTS.filter(c=>c.name!==comp.name);
+  while(opts.length<4 && pool.length){
+    const i = Math.floor(Math.random()*pool.length);
+    opts.push(pool.splice(i,1)[0]);
+  }
+  opts.sort(()=>Math.random()-0.5);
+  const optsDiv = document.getElementById('quizOpts');
+  optsDiv.innerHTML='';
+  opts.forEach(o=>{
+    const wrap = document.createElement('div');
+    wrap.className='symbol-opt';
+    wrap.appendChild(makeSymbolCanvas(o));
+    wrap.onclick=()=>{
+      document.querySelectorAll('.symbol-opt').forEach(el=>el.style.pointerEvents='none');
+      wrap.classList.add(o.name===comp.name?'correct':'wrong');
+      if(o.name!==comp.name){
+        [...optsDiv.children].forEach(child=>{});
+      }
+    };
+    optsDiv.appendChild(wrap);
+  });
+}
+function nextQuizQuestion(){ drawQuizSymbol(); }
+
+window.addEventListener('resize', resizeCanvas);
+setSwitch(false);
+resizeCanvas();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Which of these is classified as an input device in a circuit?',opts:['Buzzer','Resistor','Electrochemical cell','Lamp'],ans:2,exp:'Input devices supply electrical energy into the circuit — an electrochemical cell, generator, or solar panel are all input devices.'},
+  {text:'A switch is best classified as a:',opts:['Control device','Input device','Output device','Short circuit'],ans:0,exp:'A switch manages when and how current flows through a circuit, making it a control device.'},
+  {text:'Why can a single device sometimes act as either an input or an output device?',opts:['It never can — devices only have one role','It depends on the job the device is doing in that specific circuit, e.g. a motor spun by hand can generate electricity','All devices are always both input and output','Only cells can change roles'],ans:1,exp:'Some devices, like a motor, can serve more than one role. A motor is usually an output device (converting electricity to movement), but if turned by hand it generates electricity, acting as an input device.'},
+  {text:'What happens in a short circuit?',opts:['The lamp glows brighter than normal','Current finds a low-resistance path that bypasses the output device','The switch automatically opens','Nothing changes'],ans:1,exp:'In a short circuit, current takes an unintended low-resistance shortcut that bypasses the output device, so the output device does not work properly and wires can overheat dangerously.'},
+  {text:'In standard circuit symbols, a lamp is drawn as:',opts:['A rectangle','A circle with a cross inside it','A zig-zag line','Two parallel lines of different lengths'],ans:1,exp:'A lamp is drawn as a circle with an X (cross) inside it. Two parallel lines of different lengths represent a cell instead.'},
+  {text:'For current to flow and light a lamp, the circuit must be:',opts:['Open','A short circuit','Closed (one continuous, unbroken loop)','Made only of resistors'],ans:2,exp:'Current only flows when the circuit forms one continuous, unbroken loop — a closed circuit. An open circuit has a break somewhere and no current flows.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>

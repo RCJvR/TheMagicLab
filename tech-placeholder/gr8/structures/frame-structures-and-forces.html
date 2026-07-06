@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c2d12'/%3E%3Cpath d='M12 52 L32 12 L52 52 M22 52 L32 32 L42 52 M12 52 L52 52' stroke='rgba(253,186,116,0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frame Structures &amp; Forces — Tech Placeholder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--accent:#f97316;--accent-light:#fdba74;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(249,115,22,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,146,60,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,var(--accent-light) 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.22);color:var(--accent-light)}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:var(--accent-light)}
+    .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:8px;width:100%;cursor:pointer}
+    .parts-list{display:flex;flex-direction:column;gap:5px}
+    .part-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left}
+    .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .part-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
+    .part-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .part-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px;min-height:120px}
+    .part-name{font-weight:800;font-size:16px;color:#fff;margin-bottom:6px}
+    .part-force{display:inline-block;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-bottom:8px}
+    .part-force.tension{background:rgba(96,165,250,.15);color:#93c5fd;border:1px solid rgba(96,165,250,.30)}
+    .part-force.compression{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.30)}
+    .part-desc{font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:var(--accent)}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(249,115,22,.10);border:1px solid rgba(249,115,22,.25);color:var(--accent-light);font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(249,115,22,.18)}
+    @media print{nav,.tabs,.print-btn,.truss-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔧 Tech Placeholder</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Structures · Gr 8</span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Grade 8 · Structures · Term 1 · Lesson 1</div>
+  <h1 class="lesson-title">Frame Structures &amp; Forces</h1>
+  <p class="lesson-sub">Roof trusses, bridges and pylons all rely on structural members working together. Learn how forces act on each member, and why triangulation makes structures stiff.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="git-commit" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>What is a frame structure?</h2>
+    <p>A <strong>frame structure</strong> is built from a skeleton of separate structural members (beams, poles, struts) joined together, rather than a single solid mass. Roof trusses, electrical pylons, and bicycle frames are all frame structures — they use far less material than a solid structure while still carrying heavy loads.</p>
+    <div class="callout"><strong>Roof truss members:</strong> a king post truss has a <strong>tie beam</strong> (the horizontal base), <strong>rafters</strong> (the sloping top members), a <strong>king post</strong> (the central vertical member), and <strong>struts</strong> (diagonal supports). A queen post truss uses two vertical posts instead of one, for wider spans.</div>
+
+    <h2>Forces on structural members</h2>
+    <p>Every member in a frame structure experiences one or more of these forces:</p>
+    <ul>
+      <li><strong>Tension</strong> — a pulling/stretching force that tries to lengthen the member.</li>
+      <li><strong>Compression</strong> — a pushing/squeezing force that tries to shorten the member.</li>
+      <li><strong>Torsion</strong> — a twisting force.</li>
+      <li><strong>Shear</strong> — two forces acting in opposite directions, sliding past each other (like scissors cutting paper).</li>
+    </ul>
+    <div class="key-fact">Ties are in tension. Struts are in compression. That's why they're named differently!</div>
+
+    <h2>Case study: electrical pylons</h2>
+    <p>Pylon designs vary widely, but they all solve the same problem: holding heavy power lines high above the ground, safely, in wind. Look closely at any pylon and you'll see a lattice of small triangles rather than large open squares. This is <strong>triangulation</strong> — a triangle is the only shape that cannot change shape without one of its sides changing length, so triangulated frames resist twisting and bending far better than a frame of squares. The diagonal <strong>cross-bracing</strong> members convert what would be a wobbly rectangle into two rigid triangles.</p>
+
+    <h2>Structures that span space</h2>
+    <table class="compare-table">
+      <thead><tr><th>Type</th><th>How it spans a gap</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Beam</td><td>A single rigid horizontal member resists bending</td><td>Steel I-beams (girders), concrete lintels, beam-and-column bridges</td></tr>
+        <tr><td>Suspension / cable-stayed</td><td>Cables in tension hold up a deck</td><td>Suspension bridges, cable-stayed bridges</td></tr>
+        <tr><td>Arch</td><td>Compression is carried around the curve into the supports</td><td>Bridges, dam walls, building doorways</td></tr>
+        <tr><td>Cantilever</td><td>A beam fixed at only one end, projecting outward</td><td>Balconies, cable-stayed cantilevers</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Why structures fail</h2>
+    <p>There are three main ways a structure can fail:</p>
+    <ul>
+      <li><strong>Fracture</strong> — a member snaps because it isn't <em>strong</em> enough for the force on it.</li>
+      <li><strong>Bending / buckling</strong> — a member flexes or buckles because it isn't <em>stiff</em> (rigid) enough.</li>
+      <li><strong>Toppling over</strong> — the whole structure falls over because it isn't <em>stable</em> (it's too top-heavy or has too narrow a base).</li>
+    </ul>
+    <div class="callout"><strong>Strength vs stiffness vs stability</strong> are three different properties — a member can be strong enough not to snap, yet not stiff enough to stop it bending, on a structure that is still stable overall.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Truss Force Explorer</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click a member of the king post truss (or the list) to see whether it's in tension or compression, and why.</p>
+  <div class="explore-layout">
+    <div class="truss-canvas-wrap"><canvas id="trussCanvas" height="320"></canvas></div>
+    <div>
+      <div class="parts-list" id="partsList"></div>
+      <div class="part-info" id="partInfo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Print Workbook</button>
+    <div class="wb-intro">Answer in your exercise book.</div>
+    <div class="wb-q"><div class="wb-qnum">Question 1 · (4 marks)</div><div class="wb-qtext">Name the four types of force that can act on a structural member, and give a one-sentence definition of each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 2 · (3 marks)</div><div class="wb-qtext">Name the tie beam, rafters, and king post on a labelled sketch of a simple king post truss (draw or describe their positions).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain why triangulation (cross-bracing) makes an electrical pylon more rigid than a lattice of plain squares would be.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Name and briefly describe the three ways a structure can fail.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">A cable holding up a suspension bridge deck — is it in tension or compression? Explain your answer.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════
+   TRUSS FORCE EXPLORER — king post truss
+═══════════════════════════════════════════════ */
+const PARTS = [
+  {id:'tiebeam', name:'Tie beam', force:'tension', color:'#93c5fd',
+   desc:'The horizontal base of the truss. It is pulled outward by the rafters pushing down and out, so it is in TENSION — it resists being stretched.'},
+  {id:'rafterL', name:'Rafter (left)', force:'compression', color:'#fca5a5',
+   desc:'The sloping top members carry the roof load down to the walls. They are squeezed along their length, so they are in COMPRESSION.'},
+  {id:'rafterR', name:'Rafter (right)', force:'compression', color:'#fca5a5',
+   desc:'Like the left rafter, this sloping member is squeezed by the roof load pressing down on it — it is in COMPRESSION.'},
+  {id:'kingpost', name:'King post', force:'tension', color:'#93c5fd',
+   desc:'The central vertical member hangs from the peak and pulls up on the middle of the tie beam, stopping it from sagging — it is in TENSION.'},
+  {id:'strutL', name:'Strut (left)', force:'compression', color:'#fca5a5',
+   desc:'Struts brace the rafters against the king post. They are pushed by the rafter, so they are in COMPRESSION (this is exactly why they are called "struts" — struts always resist pushing).'},
+  {id:'strutR', name:'Strut (right)', force:'compression', color:'#fca5a5',
+   desc:'Like the left strut, this diagonal brace is squeezed between the rafter and the king post — it is in COMPRESSION.'},
+];
+let activePart = null;
+
+function buildPartsList(){
+  document.getElementById('partsList').innerHTML = PARTS.map(p=>`
+    <button class="part-btn" id="pb_${p.id}" onclick="selectPart('${p.id}')">
+      <span class="part-dot" style="background:${p.color}"></span>${p.name}
+    </button>`).join('');
+  selectPart('tiebeam');
+}
+function selectPart(id){
+  activePart = PARTS.find(p=>p.id===id);
+  document.querySelectorAll('.part-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pb_'+id).classList.add('active');
+  document.getElementById('partInfo').innerHTML = `
+    <div class="part-name">${activePart.name}</div>
+    <span class="part-force ${activePart.force}">${activePart.force}</span>
+    <div class="part-desc">${activePart.desc}</div>`;
+  drawTruss();
+}
+
+const canvas = document.getElementById('trussCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+function resizeCanvas(){
+  W = canvas.offsetWidth || 500; H = 320;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  drawTruss();
+}
+
+const REGIONS = {};
+function computeRegions(){
+  const cx = W/2, baseY = H*0.75, halfSpan = Math.min(W*0.38, 220), apexY = baseY - halfSpan*0.62;
+  REGIONS.tiebeam = {a:[cx-halfSpan,baseY], b:[cx+halfSpan,baseY], width:8};
+  REGIONS.rafterL = {a:[cx-halfSpan,baseY], b:[cx,apexY], width:8};
+  REGIONS.rafterR = {a:[cx+halfSpan,baseY], b:[cx,apexY], width:8};
+  REGIONS.kingpost = {a:[cx,baseY], b:[cx,apexY], width:7};
+  REGIONS.strutL = {a:[cx-halfSpan*0.5,baseY-halfSpan*0.31], b:[cx,baseY-halfSpan*0.10], width:6};
+  REGIONS.strutR = {a:[cx+halfSpan*0.5,baseY-halfSpan*0.31], b:[cx,baseY-halfSpan*0.10], width:6};
+}
+function lineHit(mx,my,a,b,tol){
+  const dx=b[0]-a[0], dy=b[1]-a[1];
+  const len2 = dx*dx+dy*dy;
+  let t = len2===0 ? 0 : ((mx-a[0])*dx + (my-a[1])*dy)/len2;
+  t = Math.max(0,Math.min(1,t));
+  const px = a[0]+t*dx, py = a[1]+t*dy;
+  const dist = Math.hypot(mx-px, my-py);
+  return dist <= tol;
+}
+
+function drawTruss(){
+  ctx.clearRect(0,0,W,H);
+  computeRegions();
+  Object.keys(REGIONS).forEach(id=>{
+    const p = PARTS.find(pp=>pp.id===id);
+    const r = REGIONS[id];
+    const isActive = activePart && activePart.id===id;
+    ctx.strokeStyle = isActive ? p.color : p.color+'66';
+    ctx.lineWidth = r.width + (isActive?2:0);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(r.a[0], r.a[1]);
+    ctx.lineTo(r.b[0], r.b[1]);
+    ctx.stroke();
+    if(isActive){
+      ctx.fillStyle = '#fff';
+      const mx=(r.a[0]+r.b[0])/2, my=(r.a[1]+r.b[1])/2;
+      ctx.beginPath(); ctx.arc(mx,my,4,0,Math.PI*2); ctx.fill();
+    }
+  });
+  requestAnimationFrame(drawTruss);
+}
+canvas.addEventListener('click', e=>{
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX-rect.left, my = e.clientY-rect.top;
+  for (const id of Object.keys(REGIONS)){
+    if (lineHit(mx,my,REGIONS[id].a,REGIONS[id].b,14)){ selectPart(id); return; }
+  }
+});
+
+window.addEventListener('resize', resizeCanvas);
+buildPartsList();
+resizeCanvas();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'A member that is being pulled or stretched is said to be in:',opts:['Compression','Tension','Torsion','Shear'],ans:1,exp:'Tension is a pulling/stretching force that tries to lengthen a member. Ties and cables are almost always in tension.'},
+  {text:'Why are the diagonal members in an electrical pylon arranged as triangles rather than squares?',opts:['Triangles use less material only','A triangle cannot change shape without a side changing length, making it far more rigid','Squares are illegal in pylon design','Triangles look more attractive'],ans:1,exp:'Triangulation makes a frame rigid: unlike a square, a triangle cannot be pushed out of shape unless one of its sides actually changes length. This is why cross-bracing is added to convert squares into triangles.'},
+  {text:'In a king post truss, the king post itself is normally in:',opts:['Compression','Torsion','Tension','Shear'],ans:2,exp:'The king post hangs from the truss apex and pulls upward on the centre of the tie beam to stop it sagging — it is in tension, just like the tie beam.'},
+  {text:'A structure that fails by snapping a member has failed due to lack of:',opts:['Strength','Stiffness','Stability','Colour'],ans:0,exp:'Fracture (snapping) happens when a member is not strong enough to resist the force on it. Bending/buckling is a lack of stiffness; toppling is a lack of stability.'},
+  {text:'Which structure type carries its load mainly by compression curving around to its supports?',opts:['Suspension bridge','Arch','Cantilever','Cable-stayed bridge'],ans:1,exp:'An arch works by channelling compression forces along its curve down into the supports at each end — this is why Roman arches and bridges have lasted so long.'},
+  {text:'A structure that is top-heavy with a narrow base is most at risk of failing by:',opts:['Fracture','Bending','Toppling over','Torsion'],ans:2,exp:'Toppling over happens when a structure lacks stability — it is too top-heavy or has too narrow a base to stay upright, even if its members are individually strong and stiff.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Question ${qi+1} of ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Correct! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Not quite. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+</body>
+</html>
