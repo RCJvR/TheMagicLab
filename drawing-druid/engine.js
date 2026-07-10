@@ -17,8 +17,16 @@
 
   const CALLOUT_COLORS = ['#eab308', '#f472b6', '#60a5fa', '#4ade80', '#fb923c', '#a78bfa', '#22d3ee', '#f87171'];
 
+  // The on-screen palette is light-on-dark. Printed sheets are dark ink on white paper, so
+  // print modes remap every colour to something that actually reads as ink on a physical page.
+  const PRINT_COLORS = {
+    A: '#111111', B: '#3f3f46', C: '#8a8a92', construction: '#b45309', centre: '#52525b', hidden: '#52525b',
+  };
+  const PRINT_TEXT_COLOR = '#1c1c1f';
+
   // On-screen strokes are scaled up relative to true mm width for legibility; print modes use true mm.
   const MODE_STROKE_MULT = { interactive: 2.4, 'print-full': 1, 'print-thumb': 1 };
+  function isPrintMode(mode) { return mode === 'print-full' || mode === 'print-thumb'; }
 
   function el(tag, attrs) {
     const e = document.createElementNS(NS, tag);
@@ -31,8 +39,9 @@
   function strokeAttrs(lineType, mode) {
     const lt = LINE_TYPES[lineType] || LINE_TYPES.B;
     const mult = MODE_STROKE_MULT[mode] || 1;
+    const color = isPrintMode(mode) ? (PRINT_COLORS[lineType] || PRINT_COLORS.B) : lt.color;
     return {
-      stroke: lt.color,
+      stroke: color,
       'stroke-width': (lt.width * mult).toFixed(3),
       'stroke-dasharray': lt.dash || null,
       'stroke-linecap': 'round',
@@ -78,13 +87,14 @@
   function renderPoint(r, mode, showLabels) {
     const g = el('g', { class: 'ce-point' });
     const [x, y] = r.at;
-    g.appendChild(el('circle', { cx: x, cy: y, r: r.size || 0.9, fill: r.color || '#fde047' }));
+    const printMode = isPrintMode(mode);
+    g.appendChild(el('circle', { cx: x, cy: y, r: r.size || 0.9, fill: printMode ? PRINT_COLORS.A : (r.color || '#fde047') }));
     if (r.draggable) {
       g.appendChild(el('circle', { cx: x, cy: y, r: (r.size || 0.9) + 4, fill: 'transparent', class: 'ce-drag-hit' }));
     }
     if (showLabels && r.label) {
       const t = el('text', {
-        x: x + 2.2, y: y - 1.8, 'font-size': 3.6, fill: '#e8eaf2',
+        x: x + 2.2, y: y - 1.8, 'font-size': 3.6, fill: printMode ? PRINT_TEXT_COLOR : '#e8eaf2',
         'font-family': '"Cabinet Grotesk",sans-serif', 'font-weight': '700',
       });
       t.textContent = r.label;
@@ -102,6 +112,7 @@
     const offset = r.offset != null ? r.offset : 10;
     const ox = nx * offset, oy = ny * offset;
     const sa = strokeAttrs('B', mode);
+    const printMode = isPrintMode(mode);
     g.appendChild(el('line', Object.assign({ x1, y1, x2: x1 + ox, y2: y1 + oy }, sa)));
     g.appendChild(el('line', Object.assign({ x1: x2, y1: y2, x2: x2 + ox, y2: y2 + oy }, sa)));
     const dax = x1 + ox, day = y1 + oy, dbx = x2 + ox, dby = y2 + oy;
@@ -112,11 +123,11 @@
       const s = 2.2;
       const p1 = [fx + s * Math.cos(ang - 0.4), fy + s * Math.sin(ang - 0.4)];
       const p2 = [fx + s * Math.cos(ang + 0.4), fy + s * Math.sin(ang + 0.4)];
-      g.appendChild(el('polygon', { points: `${fx},${fy} ${p1[0]},${p1[1]} ${p2[0]},${p2[1]}`, fill: LINE_TYPES.B.color }));
+      g.appendChild(el('polygon', { points: `${fx},${fy} ${p1[0]},${p1[1]} ${p2[0]},${p2[1]}`, fill: printMode ? PRINT_COLORS.B : LINE_TYPES.B.color }));
     });
     const mx = (dax + dbx) / 2, my = (day + dby) / 2;
     const text = el('text', {
-      x: mx, y: my - 1.4, 'text-anchor': 'middle', 'font-size': 4.2, fill: '#fde047',
+      x: mx, y: my - 1.4, 'text-anchor': 'middle', 'font-size': 4.2, fill: printMode ? PRINT_TEXT_COLOR : '#fde047',
       'font-family': '"JetBrains Mono",monospace', 'font-weight': '600',
     });
     text.textContent = r.text || '';
@@ -136,21 +147,21 @@
       const midDeg = a1 + sweep / 2;
       const tx = vx + (radius + 3.5) * Math.cos(toRad(midDeg));
       const ty = vy + (radius + 3.5) * Math.sin(toRad(midDeg));
-      const t = el('text', { x: tx, y: ty, 'text-anchor': 'middle', 'font-size': 3.8, fill: '#fde047', 'font-family': '"JetBrains Mono",monospace' });
+      const t = el('text', { x: tx, y: ty, 'text-anchor': 'middle', 'font-size': 3.8, fill: isPrintMode(mode) ? PRINT_TEXT_COLOR : '#fde047', 'font-family': '"JetBrains Mono",monospace' });
       t.textContent = r.text;
       g.appendChild(t);
     }
     return g;
   }
 
-  function renderRightAngleMarker(r) {
+  function renderRightAngleMarker(r, mode) {
     const size = r.size || 3.5;
     const [x, y] = r.at;
     const rot = r.rotationDeg || 0;
     const g = el('g', { transform: `translate(${x} ${y}) rotate(${rot})` });
     g.appendChild(el('path', {
       d: `M 0 -${size} L ${size} -${size} L ${size} 0`,
-      stroke: LINE_TYPES.B.color, 'stroke-width': 0.35, fill: 'none',
+      stroke: isPrintMode(mode) ? PRINT_COLORS.B : LINE_TYPES.B.color, 'stroke-width': 0.35, fill: 'none',
     }));
     return g;
   }
@@ -165,9 +176,9 @@
     return el('polygon', Object.assign({ points: pts }, strokeAttrs(r.lineType || 'A', mode)));
   }
 
-  function renderLabel(r) {
+  function renderLabel(r, mode) {
     const t = el('text', {
-      x: r.at[0], y: r.at[1], 'font-size': r.size || 3.8, fill: r.color || '#cbd5e1',
+      x: r.at[0], y: r.at[1], 'font-size': r.size || 3.8, fill: isPrintMode(mode) ? PRINT_TEXT_COLOR : (r.color || '#cbd5e1'),
       'text-anchor': r.anchor || 'start', 'font-family': '"Cabinet Grotesk",sans-serif',
     });
     t.textContent = r.text;
@@ -195,10 +206,10 @@
       case 'point': return renderPoint(r, ctx.mode, ctx.showLabels);
       case 'dimension': return ctx.showMeasurements ? renderDimension(r, ctx.mode) : null;
       case 'angle-arc': return renderAngleArc(r, ctx.mode);
-      case 'right-angle-marker': return renderRightAngleMarker(r);
+      case 'right-angle-marker': return renderRightAngleMarker(r, ctx.mode);
       case 'polyline': return renderPolyline(r, ctx.mode);
       case 'polygon': return renderPolygon(r, ctx.mode);
-      case 'label': return ctx.showLabels ? renderLabel(r) : null;
+      case 'label': return ctx.showLabels ? renderLabel(r, ctx.mode) : null;
       default: return null;
     }
   }

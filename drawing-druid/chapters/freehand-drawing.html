@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freehand Drawing — Drawing Druid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../print.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c12;--bg2:#10131c;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.09);
+  --text:#e8eaf2;--muted:rgba(214,218,235,0.48);
+  --accent:#eab308;--accent2:#64748b;
+  --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(234,179,8,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(100,116,139,0.14) 0%,transparent 55%);
+}
+nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 32px;border-bottom:1px solid var(--border);}
+.nav-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(15px,2vw,20px);letter-spacing:-0.03em;line-height:1.15;background:linear-gradient(125deg,#fff 0%,#fde68a 50%,#cbd5e1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.app-sub{font-size:10.5px;color:var(--muted);font-family:var(--fm);margin-top:1px;}
+.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
+.nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+
+.lesson-header{padding:28px 32px 18px;}
+.chapter-tag{font-family:var(--fm);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fde047;margin-bottom:10px;}
+.lesson-title{font-weight:900;font-size:clamp(24px,3.4vw,36px);letter-spacing:-0.04em;color:#fff;line-height:1.08;margin-bottom:8px;}
+.lesson-sub{font-size:13.5px;color:var(--muted);max-width:640px;line-height:1.75;}
+
+.tabs{display:flex;gap:4px;padding:0 32px;border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:#fde047;border-bottom-color:#fde047;}
+.tab-panel{display:none;padding:28px 32px 48px;}
+.tab-panel.active{display:block;}
+
+.callout{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.22);border-radius:12px;padding:14px 18px;margin:16px 0 0;font-size:13px;color:rgba(214,218,235,.85);line-height:1.7;}
+.callout strong{color:#fde047;}
+.key-fact{background:rgba(234,179,8,.07);border:1px solid rgba(234,179,8,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:12.5px;color:#fde047;font-family:var(--fm);}
+
+/* Lesson tab — theory */
+.lesson-body{max-width:720px;}
+.lesson-body h2{font-weight:800;font-size:19px;letter-spacing:-0.02em;color:#fff;margin:26px 0 12px;}
+.lesson-body h2:first-child{margin-top:0;}
+.lesson-body p{font-size:14px;line-height:1.8;color:rgba(214,218,235,.78);margin-bottom:12px;}
+.lesson-body ul{margin:0 0 12px 20px;color:rgba(214,218,235,.72);font-size:13.5px;line-height:1.85;}
+
+/* Explore tab */
+.explore-intro{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:660px;margin-bottom:16px;}
+.explore-readout{font-family:var(--fm);font-size:12px;color:#fde047;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:12px;}
+.constr-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.constr-pill{font-family:var(--fd);font-size:12px;font-weight:700;padding:8px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 140ms;}
+.constr-pill:hover{color:var(--text);}
+.constr-pill.active{background:rgba(234,179,8,.16);border-color:rgba(234,179,8,.40);color:#fde047;}
+.explore-layout{display:flex;flex-direction:column;gap:14px;max-width:640px;}
+.canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:14px;}
+.canvas-wrap{background:#05070c;border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+#practiceCanvas{width:100%;height:340px;display:block;touch-action:none;cursor:crosshair;}
+.explore-actions{display:flex;gap:8px;margin-top:12px;}
+.step-btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:9px 14px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;}
+.step-btn:hover{background:rgba(255,255,255,.07);}
+
+/* Practice tab */
+.practice-wrap{max-width:640px;}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;}
+.q-text{font-size:14px;line-height:1.7;color:rgba(214,218,235,.90);margin-bottom:14px;}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.mc-opt{padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13px;color:rgba(214,218,235,.78);transition:all 140ms;text-align:left;width:100%;font-family:var(--fd);}
+.mc-opt:hover:not(.answered *){background:rgba(234,179,8,.10);border-color:rgba(234,179,8,.28);color:var(--text);}
+.q-opts.answered .mc-opt{cursor:default;}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac;}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5;}
+.q-explain{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:12.5px;line-height:1.7;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);display:none;}
+.q-explain.show{display:block;}
+
+/* Workbook tab */
+.wb-wrap{max-width:900px;}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:16px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06);line-height:1.7;}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(234,179,8,.10);border:1px solid rgba(234,179,8,.25);color:#fde047;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd);}
+.print-btn:hover{background:rgba(234,179,8,.18);}
+.wb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.wb-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.wb-card svg{width:100%;height:140px;background:#05070c;border-radius:8px;}
+.wb-card-title{font-size:12.5px;font-weight:800;color:#fde047;margin:10px 0 4px;}
+.wb-card-prompt{font-size:11.5px;color:var(--muted);line-height:1.6;}
+
+@media (max-width:900px){
+  .lesson-main{grid-template-columns:1fr;}
+}
+@media (max-width:640px){
+  nav{padding:10px 16px;}
+  .lesson-header{padding:18px 16px 14px;}
+  .tabs{padding:0 12px;}
+  .tab-panel{padding:18px 16px 36px;}
+  .app-sub{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <div class="app-icon">🪶</div>
+    <div>
+      <div class="app-title">Drawing Druid</div>
+      <div class="app-sub">Chapter 1 · Freehand Drawing</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <a href="../index.html" class="nav-pill">🪶 Chapters</a>
+    <a href="../../index.html" class="nav-pill">← Home</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="chapter-tag">Grade 10 – 12 · Chapter 1</div>
+  <h1 class="lesson-title">Freehand Drawing</h1>
+  <p class="lesson-sub">Sketching technique, proportion, and line control without instruments — the basic hand movements needed to draw proportional single, multi-view and pictorial drawings on plain paper.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="pencil-line" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Freehand vs. instrument drawing</h2>
+    <p>Not every drawing starts with a ruler and compass. <strong>Freehand drawing</strong> — sketching without instruments — is how engineers and designers quickly explore ideas before committing to an accurate instrument drawing. It's faster, but it still isn't careless: freehand work follows the exact same SANS 0111/0143 line-type conventions as instrument drawing.</p>
+    <div class="key-fact">Type A (thick) = outlines. Type B (medium) = dimensions &amp; writing. Type C (thin) = construction &amp; guidelines — even freehand.</div>
+
+    <h2>Freehand lettering</h2>
+    <p>All writing on an EGD drawing — titles, dimensions, notes — follows the SANS 0111/0143 single-stroke lettering style: plain, upright (or uniformly sloped) capital letters and numerals, every one the same height, with even spacing between letters and words.</p>
+    <ul>
+      <li>Sketch light Type C guidelines first — a cap-height line and a baseline — before writing a single letter.</li>
+      <li>Keep every letter between the two guidelines; never let a letter float above the cap line or sink below the baseline.</li>
+      <li>Build each letter from a small number of straight strokes and simple arcs — avoid decorative flourishes.</li>
+    </ul>
+
+    <h2>Hand movement &amp; line control</h2>
+    <p>Confident freehand lines come from how you move, not just how carefully you aim:</p>
+    <ul>
+      <li>Rest your whole forearm on the table — don't draw with just your fingers.</li>
+      <li>Mark your start and end points first, then draw the line in <strong>one long, smooth stroke</strong> rather than several short, scratchy ones.</li>
+      <li>Look at the target point you are drawing towards, not at your pencil tip — this guides your hand to travel straight, instead of over-correcting for tiny wobbles.</li>
+      <li>Draw horizontal lines left-to-right and vertical lines top-to-bottom (for right-handers); rotate the paper if a line runs at an awkward angle.</li>
+    </ul>
+
+    <h2>Sketching circles freehand — the box method</h2>
+    <p>An accurate freehand circle almost always starts with a guideline, not a single blind stroke:</p>
+    <ul>
+      <li>Lightly sketch a bounding <strong>square</strong> (Type C) around where the circle will go.</li>
+      <li>Mark the midpoint of each of the four sides — these four points all lie exactly on the circle.</li>
+      <li>Connect the four midpoints with four short freehand arcs, one per side of the square.</li>
+    </ul>
+    <div class="callout"><strong>Why it works:</strong> a circle's radius touches the midpoint of a tangent square on every side, so the box gives you four guaranteed points to arc between — far more accurate than guessing a curve freehand with no guide at all.</div>
+
+    <h2>Blocking-in &amp; proportion</h2>
+    <p><strong>Blocking-in</strong> is the single most important freehand skill CAPS assesses at Grade 10: before you sketch any detail, lightly rough in an overall bounding box (Type C) that captures the object's correct proportions — its width-to-height ratio and the position of its major features. Only once the blocking guidelines are in place do you sketch the real outline over them in a darker Type A line.</p>
+    <div class="key-fact">Block first (light Type C) → subdivide for major features → outline last (dark Type A).</div>
+
+    <h2>Enlarging a freehand drawing</h2>
+    <p>A common Grade 10 task is to enlarge a small reference drawing freehand by an exact ratio, e.g. 2:1. The blocking-in method makes this manageable: scale the bounding block itself by the same ratio in <em>both</em> directions (double both width and height for a 2:1 enlargement), subdivide the enlarged block the same way you subdivided the original, and then sketch the enlarged outline using those guides. This keeps every proportion identical to the original — just bigger.</p>
+    <div class="callout"><strong>CAPS Grade 10 requirement:</strong> your enlarged freehand drawing must show clear evidence of the blocking guidelines used to establish correct proportions — don't erase them completely before handing in your practical work.</div>
+
+    <h2>Sketching on a raster (square) grid</h2>
+    <p>CAPS specifically allows freehand sketching "on plain paper and/or grid sheets" — and a plain square grid is one of the most effective proportion aids there is. Instead of guessing measurements, describe the object in grid squares: "the body is 6 squares wide and 3 squares tall, with a hole 2 squares in from the left." Sketching multi-view (front and side view) drawings on a raster grid is how you'll practise reading and reproducing proportions before moving on to instrument-drawn orthographic projection.</p>
+    <div class="key-fact">Count squares, don't estimate distances — the grid does the proportion-checking for you.</div>
+
+    <h2>Sketching on an isometric (30°) grid</h2>
+    <p>A pictorial (3D-look) freehand sketch is far easier to keep consistent on an <strong>isometric grid</strong>: a pattern of lines running vertically, and at 30° to the horizontal in both directions. These three directions are the three isometric axes. As long as every edge of your sketch runs along one of these three grid directions, your pictorial sketch will look proportioned and consistent — even freehand, with no instruments at all.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <p class="explore-intro">Practise the two core freehand skills below. Draw with your mouse or finger — the app measures how close your stroke came to the target and gives you feedback, just like a teacher checking your line control.</p>
+  <div class="constr-picker" id="modePicker"></div>
+  <div class="explore-layout">
+    <div class="canvas-card">
+      <div class="canvas-wrap"><canvas id="practiceCanvas"></canvas></div>
+      <div class="explore-actions">
+        <button class="step-btn" id="retryBtn">Clear &amp; retry</button>
+        <button class="step-btn" id="newTargetBtn">New target</button>
+      </div>
+      <div class="explore-readout" id="exploreReadout">Draw on the canvas to begin.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap" id="practiceWrap"></div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <p class="wb-intro">Each exercise below prints as a full-scale A3 sheet — the same format used in EGD practical assessments. These sheets give you guide targets only; the actual sketching happens on paper with a pencil, not a ruler. Use your printer's "Actual Size" setting (not "Fit to Page").</p>
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:15px;height:15px"></i> Print Workbook (A3)</button>
+    <div class="wb-grid" id="workbookPreviewGrid"></div>
+  </div>
+</div>
+<div id="printSheets"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+<script defer src="../../auth.js"></script>
+<script defer src="../../progress.js"></script>
+<script defer src="../../xp.js"></script>
+<script src="../engine-geometry.js"></script>
+<script src="../engine.js"></script>
+<script src="freehand-drawing.data.js"></script>
+<script>
+(function () {
+  const G = window.ConstructionGeometry;
+  const CE = window.ConstructionEngine;
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (id === 'explore') setTimeout(() => { resizeCanvas(); newTarget(); }, 30);
+  }
+  window.switchTab = switchTab;
+
+  // ── Explore tab: freehand line & circle challenges ──
+  const MODES = [
+    { id: 'line', label: 'Straight Line Challenge' },
+    { id: 'circle', label: 'Freehand Circle Challenge' },
+  ];
+  let mode = 'line';
+  const canvas = document.getElementById('practiceCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, dpr;
+  let target = null;      // { a:[x,y], b:[x,y] } for line, { c:[x,y], r } for circle
+  let strokePts = [];
+  let drawing = false;
+  let lastResult = null;
+
+  function renderPicker() {
+    const wrap = document.getElementById('modePicker');
+    wrap.innerHTML = '';
+    MODES.forEach(m => {
+      const btn = document.createElement('button');
+      btn.className = 'constr-pill' + (m.id === mode ? ' active' : '');
+      btn.type = 'button';
+      btn.textContent = m.label;
+      btn.onclick = () => { mode = m.id; newTarget(); };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    dpr = window.devicePixelRatio || 1;
+    W = rect.width; H = 340;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+
+  function randRange(min, max) { return min + Math.random() * (max - min); }
+
+  function newTarget() {
+    strokePts = [];
+    lastResult = null;
+    if (mode === 'line') {
+      const angle = randRange(-35, 35) * (Math.random() < 0.5 ? 1 : -1) + (Math.random() < 0.3 ? 90 : 0);
+      const len = randRange(140, Math.min(W, 460) - 60);
+      const cx = randRange(80, Math.max(80, W - 80)), cy = randRange(70, H - 70);
+      const rad = angle * Math.PI / 180;
+      const a = [cx - Math.cos(rad) * len / 2, cy - Math.sin(rad) * len / 2];
+      const b = [cx + Math.cos(rad) * len / 2, cy + Math.sin(rad) * len / 2];
+      target = { a, b };
+      document.getElementById('exploreReadout').textContent = 'Draw ONE confident stroke from the start dot to the end dot.';
+    } else {
+      const r = randRange(45, 85);
+      const c = [randRange(r + 30, Math.max(r + 30, W - r - 30)), randRange(r + 30, H - r - 30)];
+      target = { c, r };
+      document.getElementById('exploreReadout').textContent = 'Sketch a freehand circle following the guide, using the box method.';
+    }
+    renderPicker();
+    draw();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(234,179,8,0.55)';
+    ctx.setLineDash([5, 4]);
+    ctx.lineWidth = 1.4;
+    if (mode === 'line' && target) {
+      ctx.beginPath(); ctx.moveTo(target.a[0], target.a[1]); ctx.lineTo(target.b[0], target.b[1]); ctx.stroke();
+      ctx.restore();
+      [target.a, target.b].forEach(p => {
+        ctx.beginPath(); ctx.arc(p[0], p[1], 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#fde047'; ctx.fill();
+      });
+    } else if (target) {
+      ctx.beginPath(); ctx.arc(target.c[0], target.c[1], target.r, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+      ctx.beginPath(); ctx.arc(target.c[0], target.c[1], 2.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#fde047'; ctx.fill();
+    } else {
+      ctx.restore();
+    }
+    if (strokePts.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(strokePts[0][0], strokePts[0][1]);
+      strokePts.slice(1).forEach(p => ctx.lineTo(p[0], p[1]));
+      ctx.strokeStyle = '#60a5fa';
+      ctx.lineWidth = 2.2;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.stroke();
+    }
+  }
+
+  function scoreStroke() {
+    if (strokePts.length < 2) return;
+    let result;
+    if (mode === 'line') {
+      const devs = strokePts.map(p => G.ptSegDist(p[0], p[1], target.a[0], target.a[1], target.b[0], target.b[1]));
+      const maxDev = Math.max(...devs);
+      const avgDev = devs.reduce((s, d) => s + d, 0) / devs.length;
+      result = { maxDev, avgDev };
+    } else {
+      const devs = strokePts.map(p => Math.abs(G.distance(p, target.c) - target.r));
+      const maxDev = Math.max(...devs);
+      const avgDev = devs.reduce((s, d) => s + d, 0) / devs.length;
+      result = { maxDev, avgDev };
+    }
+    lastResult = result;
+    const rating = result.maxDev < 8 ? 'Excellent line control!' : result.maxDev < 18 ? 'Good — a little wobble, but solid.' : 'Keep practising — try one longer, more confident stroke.';
+    const label = mode === 'line' ? 'deviation from the straight line' : 'deviation from the target radius';
+    document.getElementById('exploreReadout').textContent =
+      rating + '  (max ' + label + ': ' + result.maxDev.toFixed(1) + 'px, average: ' + result.avgDev.toFixed(1) + 'px)';
+  }
+
+  function canvasPoint(evt) {
+    const rect = canvas.getBoundingClientRect();
+    return [evt.clientX - rect.left, evt.clientY - rect.top];
+  }
+
+  function wireDrawing() {
+    canvas.addEventListener('pointerdown', e => {
+      drawing = true;
+      strokePts = [canvasPoint(e)];
+      canvas.setPointerCapture(e.pointerId);
+      draw();
+    });
+    canvas.addEventListener('pointermove', e => {
+      if (!drawing) return;
+      strokePts.push(canvasPoint(e));
+      draw();
+    });
+    ['pointerup', 'pointercancel'].forEach(evt => canvas.addEventListener(evt, () => {
+      if (!drawing) return;
+      drawing = false;
+      scoreStroke();
+    }));
+  }
+
+  document.getElementById('retryBtn').onclick = () => { strokePts = []; lastResult = null; draw(); document.getElementById('exploreReadout').textContent = mode === 'line' ? 'Draw ONE confident stroke from the start dot to the end dot.' : 'Sketch a freehand circle following the guide, using the box method.'; };
+  document.getElementById('newTargetBtn').onclick = newTarget;
+  window.addEventListener('resize', resizeCanvas);
+
+  // ── Practice tab ──
+  function renderPractice() {
+    CE.wirePractice(document.getElementById('practiceWrap'), window.PRACTICE_QUESTIONS, { tool: 'drawing-druid', topic: 'freehand-drawing' });
+  }
+
+  // ── Workbook tab ──
+  function renderWorkbookPreviews() {
+    const grid = document.getElementById('workbookPreviewGrid');
+    grid.innerHTML = '';
+    window.WORKBOOK_ORDER.forEach(id => {
+      const model = window.WORKBOOK_SHEETS[id];
+      const card = document.createElement('div');
+      card.className = 'wb-card';
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      card.appendChild(svg);
+      const title = document.createElement('div');
+      title.className = 'wb-card-title';
+      title.textContent = model.title;
+      card.appendChild(title);
+      const prompt = document.createElement('div');
+      prompt.className = 'wb-card-prompt';
+      prompt.textContent = model.workbookPrompt;
+      card.appendChild(prompt);
+      grid.appendChild(card);
+      CE.render(svg, model, { uptoStep: Infinity, mode: 'interactive', showCallouts: false });
+    });
+  }
+
+  function buildPrintSheets() {
+    const host = document.getElementById('printSheets');
+    host.innerHTML = '';
+    window.WORKBOOK_ORDER.forEach(id => {
+      const model = window.WORKBOOK_SHEETS[id];
+      const sheet = document.createElement('div');
+      sheet.className = 'a3-sheet';
+
+      sheet.appendChild(Object.assign(document.createElement('div'), { className: 'frame' }));
+
+      const mainSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      mainSvg.setAttribute('class', 'a3-main-svg');
+      sheet.appendChild(mainSvg);
+
+      const thumbBox = document.createElement('div');
+      thumbBox.className = 'thumb-box';
+      const thumbLabel = document.createElement('div');
+      thumbLabel.className = 'thumb-label';
+      thumbLabel.textContent = model.referenceReveals ? 'Reference shape (actual size)' : 'Reference (not to scale)';
+      thumbBox.appendChild(thumbLabel);
+      const thumbSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      thumbBox.appendChild(thumbSvg);
+      sheet.appendChild(thumbBox);
+
+      const titleBlock = document.createElement('div');
+      titleBlock.className = 'title-block';
+      titleBlock.innerHTML =
+        '<div class="tb-title">' + model.title + '</div>' +
+        '<div class="tb-row"><span>Scale</span><span>1:1</span></div>' +
+        '<div class="tb-row"><span>Name</span><span class="tb-blank"></span></div>' +
+        '<div class="tb-row"><span>Class</span><span class="tb-blank"></span></div>' +
+        '<div class="tb-row"><span>Date</span><span class="tb-blank"></span></div>';
+      sheet.appendChild(titleBlock);
+
+      const promptEl = document.createElement('div');
+      promptEl.className = 'sheet-prompt';
+      promptEl.textContent = model.workbookPrompt;
+      sheet.appendChild(promptEl);
+
+      host.appendChild(sheet);
+
+      CE.render(mainSvg, model, { uptoStep: Infinity, mode: 'print-full', scale: 1, showCallouts: false });
+      if (model.referenceReveals) {
+        const refModel = { bounds: model.referenceBounds, steps: [{ reveals: model.referenceReveals }] };
+        const fitScale = Math.min(55 / (model.referenceBounds.w + 28), 55 / (model.referenceBounds.h + 28), 0.9);
+        CE.render(thumbSvg, refModel, { uptoStep: Infinity, mode: 'print-thumb', scale: fitScale, showCallouts: false, showLabels: false, pad: 14 });
+      } else {
+        const b = model.bounds;
+        const fitScale = Math.min(55 / (b.w + 28), 55 / (b.h + 28), 0.35);
+        CE.render(thumbSvg, model, { uptoStep: Infinity, mode: 'print-thumb', scale: fitScale, showCallouts: false, showLabels: false, pad: 14 });
+      }
+    });
+  }
+
+  renderPicker();
+  resizeCanvas();
+  wireDrawing();
+  renderPractice();
+  renderWorkbookPreviews();
+  buildPrintSheets();
+  if (window.lucide) lucide.createIcons();
+})();
+</script>
+</body>
+</html>
