@@ -115,6 +115,31 @@
     return lines;
   }
 
+  // One row per character (like a real lettering worksheet): a light Type C cap-height/baseline
+  // guideline pair spanning the full row, a handful of printed examples on the left to copy, and
+  // the rest of the guideline left blank so the student continues the row freehand by hand.
+  function letteringSheetReveals() {
+    const W = 200, rowH = 7, letterSize = 5, repeatCount = 6, spacing = 9, startX = 6;
+    const reveals = [];
+    let row = 0;
+    function addRow(char) {
+      const yBase = 16 + row * rowH;
+      const yCap = yBase - letterSize;
+      reveals.push({ kind: 'line', p1: [0, yCap], p2: [W, yCap], lineType: 'C' });
+      reveals.push({ kind: 'line', p1: [0, yBase], p2: [W, yBase], lineType: 'C' });
+      for (let i = 0; i < repeatCount; i++) {
+        reveals.push({ kind: 'label', at: [startX + i * spacing, yBase], text: char, size: letterSize, anchor: 'start', color: '#e8eaf2' });
+      }
+      row++;
+    }
+    reveals.push({ kind: 'label', at: [0, 8], text: 'CAPITAL LETTERS — SINGLE-STROKE, SANS 0111', size: 4, anchor: 'start', color: '#fde047' });
+    for (let c = 65; c <= 90; c++) addRow(String.fromCharCode(c));
+    row += 1; // blank gap row before numerals
+    reveals.push({ kind: 'label', at: [0, 16 + row * rowH - letterSize - 3], text: 'NUMERALS', size: 4, anchor: 'start', color: '#fde047' });
+    for (let c = 48; c <= 57; c++) addRow(String.fromCharCode(c));
+    return { reveals, width: W, height: 16 + row * rowH + 6 };
+  }
+
   // ── Reference-object icons (small, deliberately simple line art) ──
 
   // A "roller": circular front view with a bored hole, centre lines, plus a side view with hidden (dashed) bore.
@@ -180,23 +205,16 @@
   // ── Workbook / print sheets ──
   const WORKBOOK_SHEETS = {};
 
-  WORKBOOK_SHEETS['lettering'] = {
-    id: 'lettering',
-    title: 'Lettering Practice',
-    workbookPrompt: 'Copy the example rows freehand in the guide strips below. Keep every letter the same height, use single confident strokes, and keep uniform spacing between letters.',
-    bounds: { w: 200, h: 190 },
-    steps: [{
-      id: 1,
-      reveals: [
-        { kind: 'label', at: [4, 14], text: 'ABCDEFGHIJKLM', size: 10, anchor: 'start', color: '#e8eaf2' },
-        { kind: 'label', at: [4, 28], text: 'NOPQRSTUVWXYZ', size: 10, anchor: 'start', color: '#e8eaf2' },
-        { kind: 'label', at: [4, 42], text: '0123456789', size: 10, anchor: 'start', color: '#e8eaf2' },
-        { kind: 'line', p1: [0, 50], p2: [200, 50], lineType: 'construction' },
-        ...[58, 86, 114, 142, 170].map(y => ({ kind: 'line', p1: [0, y], p2: [200, y], lineType: 'construction' })),
-        ...[58, 86, 114, 142, 170].map(y => ({ kind: 'line', p1: [0, y + 16], p2: [200, y + 16], lineType: 'construction' })),
-      ],
-    }],
-  };
+  (function () {
+    const lettering = letteringSheetReveals();
+    WORKBOOK_SHEETS['lettering'] = {
+      id: 'lettering',
+      title: 'Lettering Practice',
+      workbookPrompt: 'Each row has a guideline pair (cap-height and baseline) and a few printed examples on the left. Continue the row freehand along the same guideline, keeping every letter the same height, evenly spaced, in single confident strokes.',
+      bounds: { w: lettering.width, h: lettering.height },
+      steps: [{ id: 1, reveals: lettering.reveals }],
+    };
+  })();
 
   WORKBOOK_SHEETS['line-types'] = {
     id: 'line-types',
