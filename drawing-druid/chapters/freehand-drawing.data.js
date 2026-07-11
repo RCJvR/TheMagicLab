@@ -233,12 +233,12 @@
     id: 'raster-grid',
     title: 'Raster Grid — Multi-View Sketching',
     workbookPrompt: 'Using the square grid, freehand-sketch each reference object as a front view AND a side view, counting grid squares to keep proportions accurate. Include centre lines and hidden detail where shown.',
-    bounds: { w: 260, h: 190 },
+    bounds: { w: 240, h: 190 },
     referenceBounds: { w: 150, h: 46 },
     referenceReveals: [...rollerIcon(4, 6), ...steppedBracketIcon(96, 6)],
     steps: [{
       id: 1,
-      reveals: squareGridLines(260, 190, 10),
+      reveals: squareGridLines(240, 190, 10),
     }],
   };
 
@@ -246,12 +246,12 @@
     id: 'isometric-grid',
     title: 'Isometric Grid — Pictorial Sketching',
     workbookPrompt: 'Using the 30° isometric grid, freehand-sketch each reference object pictorially (in 3D), keeping every edge along one of the three grid directions: vertical, or 30° left/right.',
-    bounds: { w: 260, h: 190 },
+    bounds: { w: 240, h: 190 },
     referenceBounds: { w: 145, h: 40 },
     referenceReveals: [...carIcon(4, 4), ...leverMachineIcon(76, 2)],
     steps: [{
       id: 1,
-      reveals: isoGridLines(260, 190, 10),
+      reveals: isoGridLines(240, 190, 10),
     }],
   };
 

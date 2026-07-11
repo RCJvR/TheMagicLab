@@ -5,14 +5,25 @@
   'use strict';
   const NS = 'http://www.w3.org/2000/svg';
 
-  // SANS drawing line-type conventions (A/B/C) + in-app-only helper conventions.
+  // SANS (SABS) 0111/0143 line-type conventions, per the CAPS EGD spec:
+  //   A-type (darkest/thickest, continuous): outlines, visible parts, borders/title blocks.
+  //     Pencil equivalent: HB, 0.5mm lead.
+  //   B-type (medium, continuous): dimensions, writing, hatching, break lines. Also used at
+  //     B-weight for two chain/broken variants: medium chain-line (centre lines) and short
+  //     broken-line (hidden detail) — never dashed at C-weight, and never used for construction.
+  //     Pencil equivalent: H, 0.5mm lead — same lead diameter as A, but harder graphite wears
+  //     to a finer point and lays down less, so a B line reads thinner and lighter than A even
+  //     though both start from a 0.5mm lead.
+  //   C-type (lightest/thinnest, continuous — NOT dashed): constructions, planning, guidelines.
+  //     Pencil equivalent: 2H, 0.3mm lead — a genuinely thinner lead, so C is the biggest step
+  //     down in both width and tone.
   const LINE_TYPES = {
-    A:            { width: 0.7,  dash: null,        color: '#e8eaf2' }, // continuous thick — outlines/final result
-    B:            { width: 0.35, dash: null,        color: '#cbd5e1' }, // continuous thin — dimension/projection lines
-    C:             { width: 0.35, dash: null,        color: '#cbd5e1' }, // continuous thin freehand — break lines
-    construction: { width: 0.25, dash: '2,2',        color: '#eab308' }, // in-app-only: distinguishes scaffolding from result
-    centre:       { width: 0.3,  dash: '8,2,1,2',    color: '#94a3b8' },
-    hidden:       { width: 0.35, dash: '4,2',        color: '#94a3b8' },
+    A:            { width: 0.5,  dash: null,        color: '#e8eaf2' },
+    B:            { width: 0.4,  dash: null,        color: '#cbd5e1' },
+    C:            { width: 0.25, dash: null,        color: '#94a3b8' },
+    construction: { width: 0.25, dash: null,        color: '#eab308' }, // in-app-only colour alias of C: same weight, distinct hue so scaffolding reads apart from the final result on screen
+    centre:       { width: 0.4,  dash: '8,2,1,2',    color: '#94a3b8' }, // medium chain-line (B-weight)
+    hidden:       { width: 0.4,  dash: '4,2',        color: '#94a3b8' }, // short broken-line (B-weight)
   };
 
   const CALLOUT_COLORS = ['#eab308', '#f472b6', '#60a5fa', '#4ade80', '#fb923c', '#a78bfa', '#22d3ee', '#f87171'];
