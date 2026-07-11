@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Drawing — Drawing Druid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../print.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c12;--bg2:#10131c;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.09);
+  --text:#e8eaf2;--muted:rgba(214,218,235,0.48);
+  --accent:#eab308;--accent2:#64748b;
+  --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(234,179,8,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(100,116,139,0.14) 0%,transparent 55%);
+}
+nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 32px;border-bottom:1px solid var(--border);}
+.nav-left{display:flex;align-items:center;gap:10px;min-width:0;}
+.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(15px,2vw,20px);letter-spacing:-0.03em;line-height:1.15;background:linear-gradient(125deg,#fff 0%,#fde68a 50%,#cbd5e1 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.app-sub{font-size:10.5px;color:var(--muted);font-family:var(--fm);margin-top:1px;}
+.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
+.nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+
+.lesson-header{padding:28px 32px 18px;}
+.chapter-tag{font-family:var(--fm);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fde047;margin-bottom:10px;}
+.lesson-title{font-weight:900;font-size:clamp(24px,3.4vw,36px);letter-spacing:-0.04em;color:#fff;line-height:1.08;margin-bottom:8px;}
+.lesson-sub{font-size:13.5px;color:var(--muted);max-width:640px;line-height:1.75;}
+
+.tabs{display:flex;gap:4px;padding:0 32px;border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:#fde047;border-bottom-color:#fde047;}
+.tab-panel{display:none;padding:28px 32px 48px;}
+.tab-panel.active{display:block;}
+
+.callout{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.22);border-radius:12px;padding:14px 18px;margin:16px 0 0;font-size:13px;color:rgba(214,218,235,.85);line-height:1.7;}
+.callout strong{color:#fde047;}
+.step-measure{margin-top:8px;font-family:var(--fm);font-size:12px;color:#fde047;}
+
+/* Lesson tab */
+.constr-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.constr-pill{font-family:var(--fd);font-size:12px;font-weight:700;padding:8px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 140ms;}
+.constr-pill:hover{color:var(--text);}
+.constr-pill.active{background:rgba(234,179,8,.16);border-color:rgba(234,179,8,.40);color:#fde047;}
+.lesson-main{display:grid;grid-template-columns:270px 1fr;gap:20px;align-items:start;}
+.step-panel{display:flex;flex-direction:column;gap:14px;}
+.step-list{display:flex;flex-direction:column;gap:6px;}
+.step-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:12px;color:var(--muted);transition:all 140ms;text-align:left;}
+.step-item:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.step-item.active{border-color:rgba(234,179,8,.40);background:rgba(234,179,8,.10);color:#fde047;}
+.step-badge{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10.5px;font-weight:800;flex-shrink:0;color:#0a0c12;}
+.step-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.step-btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:9px 14px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;}
+.step-btn:disabled{opacity:.35;cursor:default;}
+.step-counter{font-family:var(--fm);font-size:11px;color:var(--muted);}
+.svg-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:18px;min-width:0;}
+.svg-card-title{font-size:13px;font-weight:800;color:#fde047;}
+.svg-wrap{background:#05070c;border:1px solid var(--border);border-radius:14px;padding:10px;margin:12px 0;}
+svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
+
+/* Explore tab */
+.explore-intro{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:660px;margin-bottom:16px;}
+.explore-readout{font-family:var(--fm);font-size:12px;color:#fde047;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:12px;line-height:1.7;}
+.explore-controls{display:flex;flex-direction:column;gap:10px;margin-top:14px;}
+.explore-slider-row{display:flex;align-items:center;gap:14px;}
+.explore-slider{flex:1;accent-color:#eab308;}
+.explore-slider-label{font-family:var(--fm);font-size:11px;color:var(--muted);white-space:nowrap;width:120px;}
+
+/* Practice tab */
+.practice-wrap{max-width:640px;}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;}
+.q-text{font-size:14px;line-height:1.7;color:rgba(214,218,235,.90);margin-bottom:14px;}
+.q-opts{display:flex;flex-direction:column;gap:8px;}
+.mc-opt{padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13px;color:rgba(214,218,235,.78);transition:all 140ms;text-align:left;width:100%;font-family:var(--fd);}
+.mc-opt:hover:not(.answered *){background:rgba(234,179,8,.10);border-color:rgba(234,179,8,.28);color:var(--text);}
+.q-opts.answered .mc-opt{cursor:default;}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac;}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5;}
+.q-explain{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:12.5px;line-height:1.7;background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--muted);display:none;}
+.q-explain.show{display:block;}
+
+/* Workbook tab */
+.wb-wrap{max-width:900px;}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:16px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06);line-height:1.7;}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(234,179,8,.10);border:1px solid rgba(234,179,8,.25);color:#fde047;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd);}
+.print-btn:hover{background:rgba(234,179,8,.18);}
+.wb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.wb-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.wb-card svg{width:100%;height:170px;background:#05070c;border-radius:8px;}
+.wb-card-title{font-size:12.5px;font-weight:800;color:#fde047;margin:10px 0 4px;}
+.wb-card-prompt{font-size:11.5px;color:var(--muted);line-height:1.6;}
+
+@media (max-width:900px){
+  .lesson-main{grid-template-columns:1fr;}
+}
+@media (max-width:640px){
+  nav{padding:10px 16px;}
+  .lesson-header{padding:18px 16px 14px;}
+  .tabs{padding:0 12px;}
+  .tab-panel{padding:18px 16px 36px;}
+  .app-sub{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <div class="app-icon">🏠</div>
+    <div>
+      <div class="app-title">Drawing Druid</div>
+      <div class="app-sub">Chapter 7 · Civil Drawing</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <a href="../index.html" class="nav-pill">🪶 Chapters</a>
+    <a href="../../index.html" class="nav-pill">← Home</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="chapter-tag">Grade 10 · Chapter 7</div>
+  <h1 class="lesson-title">Civil Drawing</h1>
+  <p class="lesson-sub">Single-storey floor plans and sectional elevations to SANS 0143 — walls, doors, windows, dimensions, and foundation-to-slab detail.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Lesson</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="home" style="width:14px;height:14px"></i> Explore</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Practice</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Workbook</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="constr-picker" id="constrPicker"></div>
+  <div class="lesson-main">
+    <div class="step-panel">
+      <div class="step-list" id="stepList"></div>
+      <div class="step-nav">
+        <button class="step-btn" id="prevStepBtn">← Previous</button>
+        <span class="step-counter" id="stepCounter"></span>
+        <button class="step-btn" id="nextStepBtn">Next →</button>
+      </div>
+    </div>
+    <div class="svg-card">
+      <span class="svg-card-title" id="constrTitle"></span>
+      <div class="svg-wrap"><svg id="lessonSvg"></svg></div>
+      <div class="callout" id="stepCallout"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <p class="explore-intro">Resize this room by dragging the sliders and watch the floor area recalculate live, using the internal (inner wall face) dimensions — exactly how floor area is worked out on a real floor plan.</p>
+  <div class="svg-card">
+    <span class="svg-card-title">Floor Area Calculator</span>
+    <div class="svg-wrap"><svg id="exploreSvg"></svg></div>
+    <div class="explore-controls">
+      <div class="explore-slider-row"><span class="explore-slider-label">Outer width</span><input type="range" class="explore-slider" id="wSlider" min="50" max="110" value="70"></div>
+      <div class="explore-slider-row"><span class="explore-slider-label">Outer depth</span><input type="range" class="explore-slider" id="dSlider" min="35" max="80" value="50"></div>
+    </div>
+    <div class="explore-readout" id="exploreReadout"></div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap" id="practiceWrap"></div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <p class="wb-intro">Each exercise below prints as a full-scale A3 sheet — the same format used in EGD practical assessments. The reference thumbnail shows the completed drawing; redraw it full-size on paper using correct line types, hatching and dimensions. Use your printer's "Actual Size" setting (not "Fit to Page").</p>
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:15px;height:15px"></i> Print Workbook (A3)</button>
+    <div class="wb-grid" id="workbookPreviewGrid"></div>
+  </div>
+</div>
+<div id="printSheets"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+<script defer src="../../auth.js"></script>
+<script defer src="../../progress.js"></script>
+<script defer src="../../xp.js"></script>
+<script src="../engine-geometry.js"></script>
+<script src="../engine.js"></script>
+<script src="civil-drawing.data.js"></script>
+<script>
+(function () {
+  const G = window.ConstructionGeometry;
+  const CE = window.ConstructionEngine;
+  const order = window.CONSTRUCTION_ORDER;
+  let currentId = order[0];
+  let currentStep = 1;
+
+  function currentModel() { return window.CONSTRUCTIONS[currentId]; }
+
+  function renderPicker() {
+    const wrap = document.getElementById('constrPicker');
+    wrap.innerHTML = '';
+    order.forEach(id => {
+      const btn = document.createElement('button');
+      btn.className = 'constr-pill' + (id === currentId ? ' active' : '');
+      btn.type = 'button';
+      btn.textContent = window.CONSTRUCTIONS[id].title;
+      btn.onclick = () => { currentId = id; currentStep = 1; renderLesson(); };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function renderStepList() {
+    const model = currentModel();
+    const wrap = document.getElementById('stepList');
+    wrap.innerHTML = '';
+    model.steps.forEach((step, i) => {
+      const n = i + 1;
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'step-item' + (n === currentStep ? ' active' : '');
+      const badge = document.createElement('span');
+      badge.className = 'step-badge';
+      badge.style.background = CE.CALLOUT_COLORS[i % CE.CALLOUT_COLORS.length];
+      badge.textContent = n;
+      item.appendChild(badge);
+      const txt = document.createElement('span');
+      txt.textContent = step.instruction.length > 62 ? step.instruction.slice(0, 60) + '…' : step.instruction;
+      item.appendChild(txt);
+      item.onclick = () => { currentStep = n; renderLesson(); };
+      wrap.appendChild(item);
+    });
+  }
+
+  function renderCallout() {
+    const step = currentModel().steps[currentStep - 1];
+    const box = document.getElementById('stepCallout');
+    let html = '<strong>Step ' + currentStep + ':</strong> ' + step.instruction;
+    if (step.measurement && step.measurement.label) {
+      html += '<div class="step-measure">📏 ' + step.measurement.label + '</div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function renderNavButtons() {
+    const model = currentModel();
+    document.getElementById('prevStepBtn').disabled = currentStep <= 1;
+    document.getElementById('nextStepBtn').disabled = currentStep >= model.steps.length;
+    document.getElementById('stepCounter').textContent = currentStep + ' / ' + model.steps.length;
+  }
+
+  function renderLesson() {
+    const model = currentModel();
+    document.getElementById('constrTitle').textContent = model.title;
+    renderPicker();
+    renderStepList();
+    CE.render(document.getElementById('lessonSvg'), model, { uptoStep: currentStep, mode: 'interactive' });
+    renderCallout();
+    renderNavButtons();
+    if (currentStep === model.steps.length && window.MagicLabProgress) {
+      window.MagicLabProgress.track('drawing-druid', 'lesson_complete', { topic: currentId });
+    }
+  }
+
+  document.getElementById('prevStepBtn').onclick = () => { if (currentStep > 1) { currentStep--; renderLesson(); } };
+  document.getElementById('nextStepBtn').onclick = () => { if (currentStep < currentModel().steps.length) { currentStep++; renderLesson(); } };
+
+  // ── Explore tab: live floor-area calculator ──
+  const T = 6;
+  const OX1 = 20, OY1 = 20;
+  const wSlider = document.getElementById('wSlider'), dSlider = document.getElementById('dSlider');
+
+  function buildExploreModel(outerW, outerD) {
+    const OX2 = OX1 + outerW, OY2 = OY1 + outerD;
+    const IX1 = OX1 + T, IY1 = OY1 + T, IX2 = OX2 - T, IY2 = OY2 - T;
+    const reveals = [
+      { kind: 'polygon', points: [[OX1, OY1], [OX2, OY1], [OX2, OY2], [OX1, OY2]], lineType: 'A' },
+      { kind: 'polygon', points: [[IX1, IY1], [IX2, IY1], [IX2, IY2], [IX1, IY2]], lineType: 'A' },
+      { kind: 'dimension', p1: [OX1, OY1 - 8], p2: [OX2, OY1 - 8], offset: -6, text: (outerW / 10).toFixed(1) + 'm' },
+      { kind: 'dimension', p1: [OX1 - 8, OY1], p2: [OX1 - 8, OY2], offset: -6, text: (outerD / 10).toFixed(1) + 'm' },
+    ];
+    const innerW = (IX2 - IX1) / 10, innerD = (IY2 - IY1) / 10;
+    return { bounds: { w: 150, h: 130 }, steps: [{ id: 1, reveals }], _innerW: innerW, _innerD: innerD, _area: innerW * innerD };
+  }
+
+  function renderExplore() {
+    const outerW = parseFloat(wSlider.value), outerD = parseFloat(dSlider.value);
+    const model = buildExploreModel(outerW, outerD);
+    CE.render(document.getElementById('exploreSvg'), model, { uptoStep: Infinity, mode: 'interactive' });
+    document.getElementById('exploreReadout').textContent =
+      'Outer: ' + (outerW / 10).toFixed(1) + 'm × ' + (outerD / 10).toFixed(1) + 'm → Inner (usable) floor area: ' +
+      model._innerW.toFixed(1) + 'm × ' + model._innerD.toFixed(1) + 'm = ' + model._area.toFixed(2) + 'm²';
+  }
+
+  [wSlider, dSlider].forEach(s => s.addEventListener('input', renderExplore));
+
+  // ── Practice tab ──
+  function renderPractice() {
+    CE.wirePractice(document.getElementById('practiceWrap'), window.PRACTICE_QUESTIONS, { tool: 'drawing-druid', topic: 'civil-drawing' });
+  }
+
+  // ── Workbook tab ──
+  function renderWorkbookPreviews() {
+    const grid = document.getElementById('workbookPreviewGrid');
+    grid.innerHTML = '';
+    order.forEach(id => {
+      const model = window.CONSTRUCTIONS[id];
+      const card = document.createElement('div');
+      card.className = 'wb-card';
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      card.appendChild(svg);
+      const title = document.createElement('div');
+      title.className = 'wb-card-title';
+      title.textContent = model.title;
+      card.appendChild(title);
+      const prompt = document.createElement('div');
+      prompt.className = 'wb-card-prompt';
+      prompt.textContent = model.workbookPrompt;
+      card.appendChild(prompt);
+      grid.appendChild(card);
+      CE.render(svg, model, { uptoStep: Infinity, mode: 'interactive', showCallouts: false });
+    });
+  }
+
+  function buildPrintSheets() {
+    const host = document.getElementById('printSheets');
+    host.innerHTML = '';
+    order.forEach(id => {
+      const model = window.CONSTRUCTIONS[id];
+      const sheet = document.createElement('div');
+      sheet.className = 'a3-sheet';
+
+      sheet.appendChild(Object.assign(document.createElement('div'), { className: 'frame' }));
+
+      const mainSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      mainSvg.setAttribute('class', 'a3-main-svg');
+      sheet.appendChild(mainSvg);
+
+      const thumbBox = document.createElement('div');
+      thumbBox.className = 'thumb-box';
+      const thumbLabel = document.createElement('div');
+      thumbLabel.className = 'thumb-label';
+      thumbLabel.textContent = 'Reference (not to scale)';
+      thumbBox.appendChild(thumbLabel);
+      const thumbSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      thumbBox.appendChild(thumbSvg);
+      sheet.appendChild(thumbBox);
+
+      const titleBlock = document.createElement('div');
+      titleBlock.className = 'title-block';
+      titleBlock.innerHTML =
+        '<div class="tb-title">' + model.title + '</div>' +
+        '<div class="tb-row"><span>Scale</span><span>1:100</span></div>' +
+        '<div class="tb-row"><span>Name</span><span class="tb-blank"></span></div>' +
+        '<div class="tb-row"><span>Class</span><span class="tb-blank"></span></div>' +
+        '<div class="tb-row"><span>Date</span><span class="tb-blank"></span></div>';
+      sheet.appendChild(titleBlock);
+
+      const promptEl = document.createElement('div');
+      promptEl.className = 'sheet-prompt';
+      promptEl.textContent = model.workbookPrompt;
+      sheet.appendChild(promptEl);
+
+      host.appendChild(sheet);
+
+      CE.render(mainSvg, model, { uptoStep: Infinity, mode: 'print-full', scale: 1, showCallouts: false });
+      const b = model.bounds;
+      const fitScale = Math.min(55 / (b.w + 28), 55 / (b.h + 28), 0.35);
+      CE.render(thumbSvg, model, { uptoStep: Infinity, mode: 'print-thumb', scale: fitScale, showCallouts: false, showLabels: false, pad: 14 });
+    });
+  }
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (id === 'explore') setTimeout(renderExplore, 30);
+  }
+  window.switchTab = switchTab;
+
+  renderLesson();
+  renderExplore();
+  renderPractice();
+  renderWorkbookPreviews();
+  buildPrintSheets();
+  if (window.lucide) lucide.createIcons();
+})();
+</script>
+</body>
+</html>
