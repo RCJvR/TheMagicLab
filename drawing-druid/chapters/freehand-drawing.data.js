@@ -108,7 +108,14 @@
     const rad = 30 * Math.PI / 180;
     const reach = h * 1.8 + spacing;
     const dx = Math.cos(rad) * reach, dy = Math.sin(rad) * reach;
-    for (let x0 = -reach; x0 <= w + reach; x0 += spacing) {
+    // For a family of lines at 30° from horizontal, the perpendicular distance between
+    // consecutive parallel lines equals their x-intercept spacing times sin(30°) = 0.5.
+    // To match the vertical lines' perpendicular spacing (= `spacing`, since they're vertical),
+    // the diagonals' x-intercepts must step by spacing / sin(30°) = 2 * spacing — not `spacing`
+    // itself, which packs the diagonals twice as tight as the verticals and breaks the lattice.
+    const diagStep = spacing * 2;
+    const start = -Math.ceil(reach / diagStep) * diagStep;
+    for (let x0 = start; x0 <= w + reach; x0 += diagStep) {
       lines.push({ kind: 'line', p1: [x0 - dx, 0 + dy], p2: [x0 + dx, 0 - dy], lineType: 'C' }); // rising left-to-right (+30°)
       lines.push({ kind: 'line', p1: [x0 - dx, 0 - dy], p2: [x0 + dx, 0 + dy], lineType: 'C' }); // falling left-to-right (-30°/150°)
     }
@@ -116,10 +123,10 @@
   }
 
   // One row per character (like a real lettering worksheet): a light Type C cap-height/baseline
-  // guideline pair spanning the full row, a handful of printed examples on the left to copy, and
-  // the rest of the guideline left blank so the student continues the row freehand by hand.
+  // guideline pair spanning the full row, ONE printed example on the left to copy, and the rest
+  // of the guideline left blank so the student repeats the letter freehand across the row.
   function letteringSheetReveals() {
-    const W = 200, rowH = 7, letterSize = 5, repeatCount = 6, spacing = 9, startX = 6;
+    const W = 200, rowH = 7, letterSize = 5, startX = 6;
     const reveals = [];
     let row = 0;
     function addRow(char) {
@@ -127,9 +134,7 @@
       const yCap = yBase - letterSize;
       reveals.push({ kind: 'line', p1: [0, yCap], p2: [W, yCap], lineType: 'C' });
       reveals.push({ kind: 'line', p1: [0, yBase], p2: [W, yBase], lineType: 'C' });
-      for (let i = 0; i < repeatCount; i++) {
-        reveals.push({ kind: 'label', at: [startX + i * spacing, yBase], text: char, size: letterSize, anchor: 'start', color: '#e8eaf2' });
-      }
+      reveals.push({ kind: 'label', at: [startX, yBase], text: char, size: letterSize, anchor: 'start', color: '#e8eaf2' });
       row++;
     }
     reveals.push({ kind: 'label', at: [0, 8], text: 'CAPITAL LETTERS — SINGLE-STROKE, SANS 0111', size: 4, anchor: 'start', color: '#fde047' });
