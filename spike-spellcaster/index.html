@@ -1196,33 +1196,22 @@ def yaw():
     # tilt_angles() is in decidegrees; /10 -> degrees. Print it once to confirm.
     return motion_sensor.tilt_angles()[0] / 10
 
-async def turn_to(target, speed=200):
+async def turn_to(target, speed=200, tolerance=8):
     def norm(a):
         return (a + 180) % 360 - 180                 # shortest way round
-    # Coarse phase — drive fast while far from the target.
+    # One continuous, decelerating approach — no repeated "nudge and
+    # recheck" near the target, because on real hardware that phase can
+    # itself overshoot and re-trigger, which is what looks like a "wiggle".
+    # tolerance is generous on purpose: chasing a tighter angle than this
+    # runs into gyro noise and drivetrain backlash and rarely helps a
+    # RoboMission run. Pass a smaller tolerance if you need it tighter.
     while True:
         error = norm(target - yaw())
-        if abs(error) <= 15:
+        if abs(error) <= tolerance:
             break
-        power = min(speed, max(60, int(abs(error) * 4)))
+        power = max(35, min(speed, int(abs(error) * 5)))
         motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
-    motor_pair.stop(motor_pair.PAIR_1)
-    await runloop.sleep_ms(200)                      # let momentum settle before fine-tuning
-
-    # Fine phase — very short low-power nudges, stopping to settle between
-    # each one, so momentum can't carry it past the target and start a
-    # "wiggle". Gentler and more patient than a continuous P-loop.
-    for i in range(20):
-        error = norm(target - yaw())
-        if abs(error) <= 5:                          # deadband (°): widen if it still wiggles
-            break
-        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=22)
-        await runloop.sleep_ms(35)
-        motor_pair.stop(motor_pair.PAIR_1)
-        await runloop.sleep_ms(220)
-    else:
-        print("turn_to: gave up", round(norm(target - yaw()), 1), "deg from target")
     motor_pair.stop(motor_pair.PAIR_1)
 
 async def main():
@@ -1261,10 +1250,14 @@ _pair_drive_base()
 def yaw():
     return motion_sensor.tilt_angles()[0] / 10   # decidegrees -> degrees
 
-async def drive_straight(distance_deg, speed=300, heading=0):
+async def drive_straight(distance_deg, speed=300):
+    heading = yaw()                               # hold whatever way we face now
     motor.reset_relative_position(LEFT, 0)
     while abs(motor.relative_position(LEFT)) < distance_deg:
-        steer = max(-100, min(100, int((heading - yaw()) * 2)))  # P-correct
+        error = ((heading - yaw() + 180) % 360) - 180
+        # Gentle correction only — a wide cap here (like a pivot turn) can
+        # yank the robot into an actual turn mid-drive if error ever grows.
+        steer = 0 if abs(error) < 2 else max(-35, min(35, int(error * 1.5)))
         motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
@@ -1362,33 +1355,19 @@ async def settle():
     await runloop.sleep_ms(1000)
     motion_sensor.reset_yaw(0)
 
-async def turn_to(target, speed=200):
+async def turn_to(target, speed=200, tolerance=8):
     def norm(a):
         return (a + 180) % 360 - 180
-    # Coarse phase — drive fast while far from the target.
+    # One continuous, decelerating approach — no repeated "nudge and
+    # recheck" near the target, because on real hardware that phase can
+    # itself overshoot and re-trigger, which is what looks like a "wiggle".
     while True:
         error = norm(target - yaw())
-        if abs(error) <= 15:
+        if abs(error) <= tolerance:
             break
-        power = min(speed, max(60, int(abs(error) * 4)))
+        power = max(35, min(speed, int(abs(error) * 5)))
         motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
-    motor_pair.stop(motor_pair.PAIR_1)
-    await runloop.sleep_ms(200)                   # let momentum settle before fine-tuning
-
-    # Fine phase — very short low-power nudges, stopping to settle between
-    # each one, so momentum can't carry it past the target and start a
-    # "wiggle". Gentler and more patient than a continuous P-loop.
-    for i in range(20):
-        error = norm(target - yaw())
-        if abs(error) <= 5:
-            break
-        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=22)
-        await runloop.sleep_ms(35)
-        motor_pair.stop(motor_pair.PAIR_1)
-        await runloop.sleep_ms(220)
-    else:
-        print("turn_to: gave up", round(norm(target - yaw()), 1), "deg from target")
     motor_pair.stop(motor_pair.PAIR_1)
 
 async def drive_straight(distance_deg, speed=300):
@@ -1396,7 +1375,9 @@ async def drive_straight(distance_deg, speed=300):
     motor.reset_relative_position(LEFT, 0)
     while abs(motor.relative_position(LEFT)) < distance_deg:
         error = ((heading - yaw() + 180) % 360) - 180
-        steer = max(-100, min(100, int(error * 2)))
+        # Gentle correction only — a wide cap here (like a pivot turn) can
+        # yank the robot into an actual turn mid-drive if error ever grows.
+        steer = 0 if abs(error) < 2 else max(-35, min(35, int(error * 1.5)))
         motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
@@ -1544,33 +1525,19 @@ _pair_drive_base()
 def yaw():
     return motion_sensor.tilt_angles()[0] / 10   # decidegrees -> degrees
 
-async def turn_to(target, speed=200):
+async def turn_to(target, speed=200, tolerance=8):
     def norm(a):
         return (a + 180) % 360 - 180
-    # Coarse phase — drive fast while far from the target.
+    # One continuous, decelerating approach — no repeated "nudge and
+    # recheck" near the target, because on real hardware that phase can
+    # itself overshoot and re-trigger, which is what looks like a "wiggle".
     while True:
         error = norm(target - yaw())
-        if abs(error) <= 15:
+        if abs(error) <= tolerance:
             break
-        power = min(speed, max(60, int(abs(error) * 4)))
+        power = max(35, min(speed, int(abs(error) * 5)))
         motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
-    motor_pair.stop(motor_pair.PAIR_1)
-    await runloop.sleep_ms(200)                                # let momentum settle before fine-tuning
-
-    # Fine phase — very short low-power nudges, stopping to settle between
-    # each one, so momentum can't carry it past the target and start a
-    # "wiggle". Gentler and more patient than a continuous P-loop.
-    for i in range(20):
-        error = norm(target - yaw())
-        if abs(error) <= 5:                                    # deadband (°): widen if it still wiggles
-            break
-        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=22)
-        await runloop.sleep_ms(35)
-        motor_pair.stop(motor_pair.PAIR_1)
-        await runloop.sleep_ms(220)
-    else:
-        print("turn_to: gave up", round(norm(target - yaw()), 1), "deg from target")
     motor_pair.stop(motor_pair.PAIR_1)
 
 async def turn_by(delta, speed=200):
@@ -1582,7 +1549,9 @@ async def drive_straight_cm(cm, speed=300):
     motor.reset_relative_position(LEFT, 0)
     while abs(motor.relative_position(LEFT)) < deg:
         error = ((heading - yaw() + 180) % 360) - 180
-        steer = max(-100, min(100, int(error * 2)))
+        # Gentle correction only — a wide cap here (like a pivot turn) can
+        # yank the robot into an actual turn mid-drive if error ever grows.
+        steer = 0 if abs(error) < 2 else max(-35, min(35, int(error * 1.5)))
         motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
