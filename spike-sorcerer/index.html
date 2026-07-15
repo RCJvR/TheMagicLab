@@ -1035,6 +1035,7 @@ async function runOnHub(){
     addLog('⏹ Stopping the current program…', 'info');
     try { await SpikeBLE.stopProgram({ slot: 0 }); } catch(e){ /* best-effort */ }
     hubProgramRunning = false;
+    await new Promise(r => setTimeout(r, 400));   // give the hub a moment to release the motors
   }
   addLog('⬆ Uploading program to hub…', 'info');
   setStatus('running', 'Uploading…');
@@ -1059,6 +1060,7 @@ async function syncToHub(){
     addLog('⏹ Stopping the current program before syncing…', 'info');
     try { await SpikeBLE.stopProgram({ slot: 0 }); } catch(e){ /* best-effort */ }
     hubProgramRunning = false;
+    await new Promise(r => setTimeout(r, 400));   // give the hub a moment to release the motors
   }
   addLog('⬆ Syncing program to hub (not running it)…', 'info');
   setStatus('running', 'Syncing…');
@@ -1139,11 +1141,22 @@ const HUB_EXAMPLES = {
   basic:
 `# Runs on a REAL SPIKE Prime hub (firmware v3 · SPIKE 3 Python API).
 # Note: this differs from the Simulator's classic 'spike' module.
-import runloop, motor_pair, distance_sensor
+import runloop, utime, motor_pair, distance_sensor
 from hub import light_matrix, port
 
 # Pair your driving-base motors — change the ports to match YOUR build
-motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
+def _pair_drive_base(attempts=8):
+    # Right after Stop, the hub can take a moment to release the motors —
+    # pairing immediately can raise OSError(ENODEV). Retry briefly.
+    for i in range(attempts):
+        try:
+            motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
+            return
+        except OSError:
+            utime.sleep_ms(300)
+    raise OSError("No motors found on ports A/B — check the wiring.")
+
+_pair_drive_base()
 
 async def main():
     light_matrix.write("GO")
@@ -1164,9 +1177,20 @@ runloop.run(main())
   gyroturn:
 `# GYRO TURN — pivot to an exact heading using the hub's gyro (stock firmware).
 from hub import port, motion_sensor
-import motor_pair, runloop
+import motor_pair, runloop, utime
 
-motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)   # <- set YOUR drive ports
+def _pair_drive_base(attempts=8):
+    # Right after Stop, the hub can take a moment to release the motors —
+    # pairing immediately can raise OSError(ENODEV). Retry briefly.
+    for i in range(attempts):
+        try:
+            motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)   # <- set YOUR drive ports
+            return
+        except OSError:
+            utime.sleep_ms(300)
+    raise OSError("No motors found on ports A/B — check the wiring.")
+
+_pair_drive_base()
 
 def yaw():
     # tilt_angles() is in decidegrees; /10 -> degrees. Print it once to confirm.
@@ -1199,11 +1223,23 @@ runloop.run(main())
   gyrostraight:
 `# STRAIGHT DRIVE — gyro-corrected heading + encoder distance (stock firmware).
 from hub import port, motion_sensor
-import motor, motor_pair, runloop
+import motor, motor_pair, runloop, utime
 
 LEFT = port.A            # <- set YOUR drive ports
 RIGHT = port.B
-motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+
+def _pair_drive_base(attempts=8):
+    # Right after Stop, the hub can take a moment to release the motors —
+    # pairing immediately can raise OSError(ENODEV). Retry briefly.
+    for i in range(attempts):
+        try:
+            motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+            return
+        except OSError:
+            utime.sleep_ms(300)
+    raise OSError("No motors found on ports A/B — check the wiring.")
+
+_pair_drive_base()
 
 def yaw():
     return motion_sensor.tilt_angles()[0] / 10   # decidegrees -> degrees
@@ -1230,9 +1266,20 @@ runloop.run(main())
 `# PID LINE FOLLOWER — colour sensor reflected light (stock firmware).
 # Follows the EDGE of a line. If it veers off, flip the sign of KP.
 from hub import port
-import color_sensor, motor_pair, runloop
+import color_sensor, motor_pair, runloop, utime
 
-motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)   # <- drive ports
+def _pair_drive_base(attempts=8):
+    # Right after Stop, the hub can take a moment to release the motors —
+    # pairing immediately can raise OSError(ENODEV). Retry briefly.
+    for i in range(attempts):
+        try:
+            motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)   # <- drive ports
+            return
+        except OSError:
+            utime.sleep_ms(300)
+    raise OSError("No motors found on ports A/B — check the wiring.")
+
+_pair_drive_base()
 LINE_SENSOR = port.C                                  # <- colour sensor port
 
 TARGET = 50        # edge value = (line + floor) / 2  (calibrate on YOUR mat)
@@ -1270,12 +1317,24 @@ runloop.run(main())
 # Reusable, closed-loop movement = accurate and battery-proof.
 # Drop these functions into any program, then call them from main().
 from hub import port, motion_sensor
-import motor, motor_pair, runloop
+import motor, motor_pair, runloop, utime
 
 # ── Configure your robot ──
 LEFT = port.A
 RIGHT = port.B
-motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+
+def _pair_drive_base(attempts=8):
+    # Right after Stop, the hub can take a moment to release the motors —
+    # pairing immediately can raise OSError(ENODEV). Retry briefly.
+    for i in range(attempts):
+        try:
+            motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+            return
+        except OSError:
+            utime.sleep_ms(300)
+    raise OSError("No motors found on ports A/B — check the wiring.")
+
+_pair_drive_base()
 
 def yaw():
     # tilt_angles() -> decidegrees; /10 gives degrees. Print once to verify.
@@ -1421,7 +1480,7 @@ function hubBlockPreamble(leftPort, rightPort, body){
   body = body || '';
   const imports = [
     'from hub import port, motion_sensor, light_matrix',
-    'import runloop, motor, motor_pair, color_sensor, distance_sensor, force_sensor',
+    'import runloop, utime, motor, motor_pair, color_sensor, distance_sensor, force_sensor',
   ];
   if (/\bbutton\./.test(body)) imports.splice(1, 0, 'from hub import button');
   return `# Auto-generated from blocks for a real SPIKE Prime hub (firmware v3 · SPIKE 3 API).
@@ -1431,7 +1490,20 @@ ${imports.join('\n')}
 LEFT = port.${leftPort}
 RIGHT = port.${rightPort}
 WHEEL_CIRC_CM = 17.5   # measure YOUR wheel (circumference in cm) for accurate distance
-motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+
+def _pair_drive_base(attempts=8):
+    # Right after Stop, the hub can take a moment to release the motors —
+    # pairing immediately can raise OSError(ENODEV) even when the motors
+    # are plugged in correctly. Retry briefly before giving up.
+    for i in range(attempts):
+        try:
+            motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+            return
+        except OSError:
+            utime.sleep_ms(300)
+    raise OSError("No motors found on ports ${leftPort}/${rightPort} — check the wiring.")
+
+_pair_drive_base()
 
 def yaw():
     return motion_sensor.tilt_angles()[0] / 10   # decidegrees -> degrees

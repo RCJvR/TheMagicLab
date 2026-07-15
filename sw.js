@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v13'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v13: Sync button + Run always uploads & runs latest code
+const CACHE_NAME = 'magic-lab-v14'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v14: fix ENODEV on motor_pair.pair() after Stop (retry + client delay)
 
 const urlsToCache = [
   '/',
