@@ -2522,7 +2522,13 @@ function detectAxisPlane(worldNormal, hitPoint) {
   for (const { axis, dir, normalSign } of checks) {
     if (worldNormal.dot(dir) >= TOL) {
       const offset = axis==='Z' ? localPt.z : axis==='Y' ? localPt.y : localPt.x;
-      return { axis, offset: parseFloat(offset.toFixed(2)), normalSign };
+      // seedPoint: the exact point clicked, in replicad local space. Used to
+      // re-locate which specific (connected) face was meant — several faces
+      // across the model can share the same axis+offset (e.g. two stacked
+      // boxes of the same width both have a left face at the same X), so
+      // offset alone doesn't uniquely identify a face.
+      return { axis, offset: parseFloat(offset.toFixed(2)), normalSign,
+               seedPoint: [localPt.x, localPt.y, localPt.z] };
     }
   }
   return null;
@@ -2546,8 +2552,16 @@ function _raycastFace(clientX, clientY) {
 }
 
 // Extract triangles from the model geometry that belong to the hovered face.
-// Positions in the buffer are in replicad local space (Z-up), so we match
-// the axis coordinate of each triangle's centroid against plane.offset.
+// Positions in the buffer are in replicad local space (Z-up).
+//
+// Matching by axis+offset alone isn't enough: several PHYSICALLY SEPARATE
+// faces can share the same coordinate (e.g. two boxes stacked in Z with the
+// same width both have a left face at the same X). So after finding every
+// coplanar triangle, we flood-fill out from the triangle nearest to
+// plane.seedPoint (the point actually clicked) across shared edges, and
+// keep only that connected region — i.e. the one real face the user meant.
+// Falls back to the old "all coplanar triangles" behaviour when no seed
+// point is available (e.g. a datum plane saved before this fix existed).
 function _extractFaceTriangles(plane) {
   if (!modelMesh) return null;
   const geo = modelMesh.geometry;
@@ -2556,10 +2570,10 @@ function _extractFaceTriangles(plane) {
   const idx = geo.index.array;
   const TOL_POS = 0.8; // mm — loose enough to catch all tris on a flat face
   const TOL_NRM = 0.94; // cos(~20°) — triangle must face the right direction
-  const out = [];
-  for (let i = 0; i < idx.length; i += 3) {
-    const a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
-    // averaged normal and centroid for this triangle
+  const nTris = idx.length / 3;
+  const coplanar = [];
+  for (let t = 0; t < nTris; t++) {
+    const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
     const nx=(nor[a]+nor[b]+nor[c])/3, ny=(nor[a+1]+nor[b+1]+nor[c+1])/3, nz=(nor[a+2]+nor[b+2]+nor[c+2])/3;
     const nl=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
     const cx=(pos[a]+pos[b]+pos[c])/3, cy=(pos[a+1]+pos[b+1]+pos[c+1])/3, cz=(pos[a+2]+pos[b+2]+pos[c+2])/3;
@@ -2567,9 +2581,51 @@ function _extractFaceTriangles(plane) {
     if      (plane.axis==='Z') ok = Math.abs(nz/nl)>TOL_NRM && Math.abs(cz-plane.offset)<TOL_POS;
     else if (plane.axis==='X') ok = Math.abs(nx/nl)>TOL_NRM && Math.abs(cx-plane.offset)<TOL_POS;
     else                       ok = Math.abs(ny/nl)>TOL_NRM && Math.abs(cy-plane.offset)<TOL_POS;
-    if (ok) {
-      out.push(pos[a],pos[a+1],pos[a+2], pos[b],pos[b+1],pos[b+2], pos[c],pos[c+1],pos[c+2]);
+    if (ok) coplanar.push(t);
+  }
+  if (!coplanar.length) return null;
+
+  let selected = coplanar;
+  if (plane.seedPoint) {
+    const [sx, sy, sz] = plane.seedPoint;
+    // Nearest coplanar triangle (by centroid) to the point actually clicked.
+    let seedTri = coplanar[0], bestD = Infinity;
+    for (const t of coplanar) {
+      const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
+      const cx=(pos[a]+pos[b]+pos[c])/3, cy=(pos[a+1]+pos[b+1]+pos[c+1])/3, cz=(pos[a+2]+pos[b+2]+pos[c+2])/3;
+      const d = (cx-sx)**2 + (cy-sy)**2 + (cz-sz)**2;
+      if (d < bestD) { bestD = d; seedTri = t; }
     }
+    // Edge-adjacency flood-fill, restricted to the coplanar set.
+    const vKey = vi => `${pos[vi*3].toFixed(3)},${pos[vi*3+1].toFixed(3)},${pos[vi*3+2].toFixed(3)}`;
+    const edgeKey = (p,q) => p<q ? `${p}|${q}` : `${q}|${p}`;
+    const edgeToTris = new Map();
+    for (const t of coplanar) {
+      const i = t*3, va=vKey(idx[i]), vb=vKey(idx[i+1]), vc=vKey(idx[i+2]);
+      for (const [p,q] of [[va,vb],[vb,vc],[vc,va]]) {
+        const k = edgeKey(p,q);
+        if (!edgeToTris.has(k)) edgeToTris.set(k, []);
+        edgeToTris.get(k).push(t);
+      }
+    }
+    const visited = new Set([seedTri]);
+    const queue = [seedTri];
+    while (queue.length) {
+      const t = queue.pop();
+      const i = t*3, va=vKey(idx[i]), vb=vKey(idx[i+1]), vc=vKey(idx[i+2]);
+      for (const [p,q] of [[va,vb],[vb,vc],[vc,va]]) {
+        for (const other of edgeToTris.get(edgeKey(p,q)) || []) {
+          if (!visited.has(other)) { visited.add(other); queue.push(other); }
+        }
+      }
+    }
+    selected = [...visited];
+  }
+
+  const out = [];
+  for (const t of selected) {
+    const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
+    out.push(pos[a],pos[a+1],pos[a+2], pos[b],pos[b+1],pos[b+2], pos[c],pos[c+1],pos[c+2]);
   }
   return out.length ? new Float32Array(out) : null;
 }

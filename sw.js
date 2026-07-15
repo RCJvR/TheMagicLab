@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v20'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v20: Drawing Druid recoloured to sky blue; footer links match card order
+const CACHE_NAME = 'magic-lab-v21'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v21: Model Mage — fix face-sketch/cut contamination on coincident-offset faces
 
 const urlsToCache = [
   '/',
