@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v9'; // bumped from v8 → refresh for Spike Sorcerer
+const CACHE_NAME = 'magic-lab-v10'; // bumped from v9 → Spike Sorcerer Live Hub (Bluetooth)
 
 const urlsToCache = [
   '/',
@@ -20,6 +20,7 @@ const urlsToCache = [
   '/math-magician/gr8/ch4.js',
   '/spike-sorcerer/index.html',
   '/spike-sorcerer/spike-python.js',
+  '/spike-sorcerer/spike-ble.js',
 
   // ── Phase 1 additions ──────────────────────────────────────
   '/auth.js',

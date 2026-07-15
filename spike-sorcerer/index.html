@@ -162,6 +162,8 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
     <button class="nav-pill" id="btnSave" onclick="saveProgram()" title="Save program to a file">💾 Save</button>
     <button class="nav-pill" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file">📂 Load</button>
     <input type="file" id="loadFileInput" accept="application/json,.json" style="display:none;" onchange="loadProgramFromFile(event)">
+    <button class="nav-pill" id="btnConnect" onclick="toggleHubConnection()" title="Connect a real SPIKE Prime hub over Bluetooth"
+      style="border-color:rgba(59,130,246,0.40);background:rgba(59,130,246,0.10);color:#93c5fd;">🔵 Connect Hub</button>
     <a href="../index.html" class="nav-pill">← Home</a>
   </div>
 </nav>
@@ -182,6 +184,10 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
     </div>
     <div id="blocklyDiv"></div>
     <div class="ctrl-bar">
+      <div class="mode-toggle" id="targetToggle" title="Run in the simulator, or on a connected SPIKE Prime hub">
+        <button class="mode-btn active" id="tgtSim" onclick="setTarget('sim')">🖥 Simulator</button>
+        <button class="mode-btn" id="tgtHub" onclick="setTarget('hub')">🤖 Live Hub</button>
+      </div>
       <button class="btn btn-run" id="btnRun" onclick="runCode()" title="Run (Ctrl+R)">▶ Run</button>
       <button class="btn btn-reset" onclick="resetSim()">↺ Reset</button>
       <button class="btn btn-speed active" id="btnSlow" onclick="setSpeed('slow')" title="Real-time speed">🐢 Slow</button>
@@ -226,7 +232,21 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
   <!-- ── Right: Ports / Sensors / Missions / API ── -->
   <div class="panel-right">
 
-    <div class="sec">
+    <!-- Live Hub telemetry (shown when a real hub is connected) -->
+    <div class="sec" id="hubSection" style="display:none;">
+      <div class="sec-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>🤖 Hub — <span id="hubName">SPIKE</span></span>
+        <span id="hubBattery" class="port-chip" style="background:rgba(74,222,128,0.14);color:#4ade80;border-color:rgba(74,222,128,0.25);">—</span>
+      </div>
+      <div id="hubMeta" style="font-size:10px;color:var(--muted);font-family:var(--fm);margin-bottom:8px;">firmware —</div>
+      <button class="press-btn" style="margin-bottom:10px;" onclick="loadHubExample()">📋 Load hub example (SPIKE 3 API)</button>
+      <div id="hubPorts"></div>
+      <div class="row" style="margin-top:6px;">
+        <span class="row-label">Gyro yaw</span><span class="row-val" id="hubYaw">—</span>
+      </div>
+    </div>
+
+    <div class="sec" id="simSensorSection">
       <div class="sec-title">Live Sensors</div>
       <div class="row">
         <span class="row-label"><span class="port-chip">D</span> Distance</span>
@@ -286,6 +306,7 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 </div>
 
 <script src="spike-python.js"></script>
+<script src="spike-ble.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    SPIKE SORCERER — Simulator
@@ -863,6 +884,7 @@ function setStatus(state,text){
 }
 
 async function runCode(){
+  if (runTarget === 'hub') return runOnHub();
   if (simRunning){ simAbort = true; return; }
   clearLog();
   resetBase(); matrixOff(); statusColour='white'; renderStatus();
@@ -913,6 +935,189 @@ function setSpeed(s){
 }
 function setButton(which,val){ buttons[which]=val; document.getElementById(which==='left'?'btnLeft':'btnRight').classList.toggle('pressed', val); }
 function setForce(val){ forcePressed=val; document.getElementById('forceBtn').classList.toggle('on', val); }
+
+/* ══════════════════════════════════════════════════════════════════
+   LIVE HUB  (real SPIKE Prime over Web Bluetooth — see spike-ble.js)
+══════════════════════════════════════════════════════════════════ */
+let runTarget = 'sim';          // 'sim' | 'hub'
+let hubProgramRunning = false;
+let hubConsoleBuf = '';
+
+function setTarget(t){
+  if (t === 'hub' && !SpikeBLE.isConnected()){
+    if (!SpikeBLE.isSupported()) { showHubUnsupported(); }
+    else { addLog('ℹ Pair your SPIKE Prime first — opening the Bluetooth chooser…', 'info'); toggleHubConnection(); }
+    return;
+  }
+  runTarget = t;
+  document.getElementById('tgtSim').classList.toggle('active', t === 'sim');
+  document.getElementById('tgtHub').classList.toggle('active', t === 'hub');
+  document.getElementById('btnSlow').style.opacity = t === 'hub' ? 0.35 : 1;
+  document.getElementById('btnFast').style.opacity = t === 'hub' ? 0.35 : 1;
+  const rb = document.getElementById('btnRun');
+  rb.title = t === 'hub' ? 'Upload & run on the connected hub (Ctrl+R)' : 'Run in the simulator (Ctrl+R)';
+}
+
+async function toggleHubConnection(){
+  if (SpikeBLE.isConnected()){ await SpikeBLE.disconnect(); return; }
+  if (!SpikeBLE.isSupported()){ showHubUnsupported(); return; }
+  const btn = document.getElementById('btnConnect');
+  btn.textContent = '🔵 Connecting…'; btn.disabled = true;
+  try {
+    const { info, name } = await SpikeBLE.connect({
+      onStatus: onHubStatus, onConsole: onHubConsole,
+      onDevices: onHubDevices, onDisconnect: onHubDisconnect,
+    });
+    document.getElementById('hubName').textContent = name;
+    document.getElementById('hubMeta').textContent = `firmware ${info.firmware.join('.')} · slot 0`;
+    document.getElementById('hubSection').style.display = '';
+    btn.textContent = '🟢 ' + name;
+    btn.style.background = 'rgba(74,222,128,0.14)'; btn.style.color = '#4ade80'; btn.style.borderColor = 'rgba(74,222,128,0.3)';
+    btn.title = 'Disconnect the hub';
+    addLog(`✓ Connected to ${name} — firmware ${info.firmware.join('.')}.`, 'ok');
+    addLog('ℹ Programs now upload & run on the hub. It uses the SPIKE 3 API —', 'info');
+    addLog('  click “📋 Load hub example” for a template, then press Run.', 'info');
+    await SpikeBLE.enableTelemetry(250);
+    setTarget('hub');
+  } catch(e){
+    // AbortError = user closed the chooser without picking a device
+    if (e && e.name === 'NotFoundError') addLog('ℹ No hub selected.', 'info');
+    else addLog('✗ Connect failed: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+    if (!SpikeBLE.isConnected()) btn.textContent = '🔵 Connect Hub';
+  }
+}
+
+function onHubDisconnect(){
+  addLog('🔌 Hub disconnected.', 'info');
+  document.getElementById('hubSection').style.display = 'none';
+  const btn = document.getElementById('btnConnect');
+  btn.textContent = '🔵 Connect Hub'; btn.style.background = 'rgba(59,130,246,0.10)';
+  btn.style.color = '#93c5fd'; btn.style.borderColor = 'rgba(59,130,246,0.40)';
+  btn.title = 'Connect a real SPIKE Prime hub over Bluetooth';
+  hubProgramRunning = false; document.getElementById('btnRun').textContent = '▶ Run';
+  if (runTarget === 'hub') setTarget('sim');
+}
+
+async function runOnHub(){
+  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
+  if (hubProgramRunning){   // Run button acts as Stop while a program is running
+    try { await SpikeBLE.stopProgram({ slot: 0 }); addLog('⏹ Stop sent to hub.', 'info'); }
+    catch(e){ addLog('✗ ' + e.message, 'err'); }
+    return;
+  }
+  const source = currentMode === 'blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
+  clearLog(); hubConsoleBuf = '';
+  addLog('⬆ Uploading program to hub…', 'info');
+  hubProgramRunning = true;
+  document.getElementById('btnRun').textContent = '⏹ Stop';
+  setStatus('running', 'Uploading…');
+  try {
+    await SpikeBLE.runProgram(source, { slot: 0,
+      onProgress: (p) => setStatus('running', 'Uploading ' + Math.round(p * 100) + '%…') });
+    addLog('▶ Program started on the hub.', 'ok');
+    setStatus('running', 'Program running on hub');
+  } catch(e){
+    addLog('✗ ' + e.message, 'err'); setStatus('error', e.message);
+    hubProgramRunning = false; document.getElementById('btnRun').textContent = '▶ Run';
+  }
+}
+
+function onHubStatus(s){
+  document.getElementById('statusText').textContent = s;
+  if (s === 'Program stopped'){
+    if (hubConsoleBuf){ addLog(hubConsoleBuf, 'out'); hubConsoleBuf = ''; }
+    hubProgramRunning = false;
+    document.getElementById('btnRun').textContent = '▶ Run';
+    setStatus('done', 'Program finished on hub');
+  } else if (s === 'Program running'){
+    setStatus('running', 'Program running on hub');
+  }
+}
+
+function onHubConsole(text){
+  hubConsoleBuf += text;
+  let idx;
+  while ((idx = hubConsoleBuf.indexOf('\n')) >= 0){
+    const line = hubConsoleBuf.slice(0, idx);
+    hubConsoleBuf = hubConsoleBuf.slice(idx + 1);
+    addLog(line, 'out');
+  }
+}
+
+function onHubDevices(devs){
+  const ports = {}; let battery = null, yaw = null;
+  devs.forEach(d => {
+    if (d.type === 'battery') battery = d.pct;
+    else if (d.type === 'imu') yaw = d.yaw;
+    else if (d.port) ports[d.port] = d;
+  });
+  if (battery != null) document.getElementById('hubBattery').textContent = battery + '%';
+  if (yaw != null) document.getElementById('hubYaw').textContent = Math.round(yaw) + '°';
+  renderHubPorts(ports);
+}
+
+function renderHubPorts(ports){
+  const el = document.getElementById('hubPorts');
+  const order = ['A','B','C','D','E','F'];
+  let html = '', any = false;
+  for (const p of order){
+    const d = ports[p]; if (!d) continue; any = true;
+    let val = '', label = d.type;
+    if (d.type === 'motor'){ label = 'motor'; val = `${d.position}° · pw ${d.power}`; }
+    else if (d.type === 'color'){ label = 'colour'; val = SpikeBLE.colorName(d.color); }
+    else if (d.type === 'distance'){ label = 'distance'; val = d.distanceMm < 0 ? '—' : Math.round(d.distanceMm / 10) + ' cm'; }
+    else if (d.type === 'force'){ label = 'force'; val = d.pressed ? 'pressed' : String(d.value); }
+    else if (d.type === 'matrix3'){ label = '3×3 light'; val = ''; }
+    html += `<div class="row"><span class="row-label"><span class="port-chip">${p}</span> ${label}</span>`
+          + `<span class="row-val" style="font-size:10px;">${val}</span></div>`;
+  }
+  el.innerHTML = any ? html
+    : '<div style="font-size:10px;color:var(--muted);line-height:1.5;">No motors or sensors detected on ports A–F. Plug them in — they appear here live.</div>';
+}
+
+// A real firmware-v3 hub runs the modern SPIKE 3 Python API (not the simulator's
+// classic `spike` module). This template targets that API.
+const HUB_STARTER =
+`# Runs on a REAL SPIKE Prime hub (firmware v3 · SPIKE 3 Python API).
+# Note: this differs from the Simulator's classic 'spike' module.
+import runloop, motor_pair, distance_sensor
+from hub import light_matrix, port
+
+# Pair your driving-base motors — change the ports to match YOUR build
+motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)
+
+async def main():
+    light_matrix.write("GO")
+
+    # Drive straight: turn both wheels 720 degrees at 360 deg/s
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 720, 0, velocity=360)
+
+    # Pivot in place: steering 100 = turn right
+    await motor_pair.move_for_degrees(motor_pair.PAIR_1, 300, 100, velocity=300)
+
+    # Read the distance sensor on port D (millimetres, -1 = nothing)
+    print("Distance ahead (mm):", distance_sensor.distance(port.D))
+    light_matrix.show_image(light_matrix.IMAGE_YES)
+
+runloop.run(main())
+`;
+
+function loadHubExample(){
+  if (currentMode === 'blocks') setMode('py');
+  document.getElementById('codeInput').value = HUB_STARTER;
+  addLog('📋 Loaded the SPIKE 3 hub example into the Python editor.', 'info');
+}
+
+function showHubUnsupported(){
+  clearLog();
+  addLog('✗ Web Bluetooth is not available in this browser.', 'err');
+  addLog('  • Use Chrome or Edge on Windows, macOS, Linux, ChromeOS or Android.', 'info');
+  addLog('  • iPhone/iPad (Safari) and Firefox cannot connect over Bluetooth.', 'info');
+  addLog('  • The page must be served over HTTPS (this site is).', 'info');
+  addLog('  You can still build and test your program in the Simulator.', 'info');
+}
 
 /* ══════════════════════════════════════════════════════════════════
    SAVE / LOAD
