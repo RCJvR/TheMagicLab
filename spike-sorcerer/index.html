@@ -245,6 +245,7 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
           <option value="basic">📋 Basic drive</option>
           <option value="gyroturn">🧭 Gyro turn</option>
           <option value="gyrostraight">📏 Straight drive (gyro)</option>
+          <option value="linepid">🛤 PID line follower</option>
           <option value="helpers">🛠 Gyro helpers + square demo</option>
         </select>
         <button class="press-btn" style="width:auto;padding:0 12px;flex:0 0 auto;" onclick="loadHubExample()">Load</button>
@@ -1018,6 +1019,11 @@ async function runOnHub(){
   }
   const source = currentMode === 'blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
   clearLog(); hubConsoleBuf = '';
+  if (currentMode === 'blocks'){
+    addLog('⚠ Blocks generate the Simulator’s classic API, which usually will NOT', 'err');
+    addLog('  run on a firmware-v3 hub. For the hub, switch to Python and load a', 'info');
+    addLog('  hub template (the picker above). Uploading anyway…', 'info');
+  }
   addLog('⬆ Uploading program to hub…', 'info');
   hubProgramRunning = true;
   document.getElementById('btnRun').textContent = '⏹ Stop';
@@ -1176,6 +1182,45 @@ async def main():
     # distance is in motor degrees — ~360 per wheel turn
     await drive_straight(1000, speed=300)
     print("done — yaw drift:", yaw())
+
+runloop.run(main())
+`,
+
+  linepid:
+`# PID LINE FOLLOWER — colour sensor reflected light (stock firmware).
+# Follows the EDGE of a line. If it veers off, flip the sign of KP.
+from hub import port
+import color_sensor, motor_pair, runloop
+
+motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)   # <- drive ports
+LINE_SENSOR = port.C                                  # <- colour sensor port
+
+TARGET = 50        # edge value = (line + floor) / 2  (calibrate on YOUR mat)
+KP = 0.4           # proportional — tune this FIRST
+KI = 0.0           # integral — usually start at 0
+KD = 2.5           # derivative — smooths the wobble
+BASE_SPEED = 250   # forward velocity
+
+async def follow_line(duration_ms):
+    integral = 0
+    last_error = 0
+    t = 0
+    while t < duration_ms:
+        reflection = color_sensor.reflection(LINE_SENSOR)   # 0 (dark) .. 100 (bright)
+        error = reflection - TARGET
+        integral += error
+        derivative = error - last_error
+        steer = KP * error + KI * integral + KD * derivative
+        steer = max(-100, min(100, int(steer)))
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=BASE_SPEED)
+        last_error = error
+        t += 10
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def main():
+    await follow_line(5000)     # follow the line for 5 seconds
+    print("line-follow done")
 
 runloop.run(main())
 `,
