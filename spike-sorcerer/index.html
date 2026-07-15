@@ -1135,11 +1135,12 @@ def yaw():
 async def turn_to(target, speed=200):
     def norm(a):
         return (a + 180) % 360 - 180                 # shortest way round
-    while abs(norm(target - yaw())) > 1:
+    while True:
         error = norm(target - yaw())
-        steer = 100 if error > 0 else -100           # 100 = right, -100 = left
-        v = max(40, min(speed, abs(error) * 8))      # ease off near the target
-        motor_pair.move(motor_pair.PAIR_1, steer, velocity=int(v))
+        if abs(error) <= 3:                          # deadband (°): widen if it wiggles
+            break
+        power = max(30, min(speed, int(abs(error) * 4)))   # ease off near the target
+        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
 
@@ -1248,18 +1249,21 @@ async def settle():
 async def turn_to(target, speed=200):
     def norm(a):
         return (a + 180) % 360 - 180
-    while abs(norm(target - yaw())) > 1:
+    while True:
         error = norm(target - yaw())
-        steer = 100 if error > 0 else -100
-        v = max(40, min(speed, abs(error) * 8))
-        motor_pair.move(motor_pair.PAIR_1, steer, velocity=int(v))
+        if abs(error) <= 3:
+            break
+        power = max(30, min(speed, int(abs(error) * 4)))
+        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
 
-async def drive_straight(distance_deg, speed=300, heading=0):
+async def drive_straight(distance_deg, speed=300):
+    heading = yaw()                              # hold whatever way we face now
     motor.reset_relative_position(LEFT, 0)
     while abs(motor.relative_position(LEFT)) < distance_deg:
-        steer = max(-100, min(100, int((heading - yaw()) * 2)))
+        error = ((heading - yaw() + 180) % 360) - 180
+        steer = max(-100, min(100, int(error * 2)))
         motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
@@ -1267,11 +1271,11 @@ async def drive_straight(distance_deg, speed=300, heading=0):
 # ── Demo: drive a square using gyro turns ──
 async def main():
     await settle()
+    heading = 0
     for corner in range(4):
-        await drive_straight(720, speed=350)   # forward, held straight by gyro
-        motion_sensor.reset_yaw(0)             # re-zero for the next leg
-        await turn_to(90)                      # accurate 90-degree gyro turn
-        motion_sensor.reset_yaw(0)
+        await drive_straight(720, speed=350)   # forward, held straight by the gyro
+        heading = heading + 90
+        await turn_to(heading)                 # accurate cumulative gyro turn
     print("Square complete.")
 
 runloop.run(main())
@@ -1395,23 +1399,25 @@ def yaw():
 async def turn_to(target, speed=200):
     def norm(a):
         return (a + 180) % 360 - 180
-    while abs(norm(target - yaw())) > 1:
+    while True:
         error = norm(target - yaw())
-        steer = 100 if error > 0 else -100
-        v = max(40, min(speed, abs(error) * 8))
-        motor_pair.move(motor_pair.PAIR_1, steer, velocity=int(v))
+        if abs(error) <= 3:                                   # deadband (°): widen if it wiggles
+            break
+        power = max(30, min(speed, int(abs(error) * 4)))      # ease off near the target
+        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
 
 async def turn_by(delta, speed=200):
-    motion_sensor.reset_yaw(0)
-    await turn_to(delta, speed)
+    await turn_to(yaw() + delta, speed)                        # relative turn, no gyro reset
 
 async def drive_straight_cm(cm, speed=300):
     deg = int(cm / WHEEL_CIRC_CM * 360)
+    heading = yaw()                                           # hold whatever way we face now
     motor.reset_relative_position(LEFT, 0)
     while abs(motor.relative_position(LEFT)) < deg:
-        steer = max(-100, min(100, int((0 - yaw()) * 2)))
+        error = ((heading - yaw() + 180) % 360) - 180
+        steer = max(-100, min(100, int(error * 2)))
         motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)

@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v11'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v11: Spike Sorcerer hub-capable blocks, gyro/PID, "when program starts"
+const CACHE_NAME = 'magic-lab-v12'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v12: fix gyro-turn wiggle + heading-hold on drive-straight
 
 const urlsToCache = [
   '/',
