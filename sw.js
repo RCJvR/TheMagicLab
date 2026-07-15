@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v15'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v15: two-phase gyro turn_to (coarse + settle-nudge) fixes wiggle
+const CACHE_NAME = 'magic-lab-v16'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v16: renamed Spike Sorcerer -> Spike Spellcaster (new path)
 
 const urlsToCache = [
   '/',
@@ -19,9 +19,9 @@ const urlsToCache = [
   '/math-magician/gr8/ch2.js',
   '/math-magician/gr8/ch3.js',
   '/math-magician/gr8/ch4.js',
-  '/spike-sorcerer/index.html',
-  '/spike-sorcerer/spike-python.js',
-  '/spike-sorcerer/spike-ble.js',
+  '/spike-spellcaster/index.html',
+  '/spike-spellcaster/spike-python.js',
+  '/spike-spellcaster/spike-ble.js',
 
   // ── Phase 1 additions ──────────────────────────────────────
   '/auth.js',

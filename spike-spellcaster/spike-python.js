@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// Spike Sorcerer — Python Interpreter (LEGO SPIKE Prime subset)
+// Spike Spellcaster — Python Interpreter (LEGO SPIKE Prime subset)
 // Indentation-aware tokeniser → recursive-descent parser → async tree-walker.
 //
 // Designed for the SPIKE Prime programming subset: imports, def, if/elif/else,

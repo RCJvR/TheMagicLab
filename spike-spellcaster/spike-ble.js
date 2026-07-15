@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// Spike Sorcerer — Web Bluetooth bridge for a real LEGO® SPIKE™ Prime hub
+// Spike Spellcaster — Web Bluetooth bridge for a real LEGO® SPIKE™ Prime hub
 //
 // Implements LEGO's official SPIKE Prime BLE protocol (firmware v3+):
 //   docs: https://lego.github.io/spike-prime-docs
