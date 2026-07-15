@@ -2,7 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v10'; // bumped from v9 → Spike Sorcerer Live Hub (Bluetooth)
+const CACHE_NAME = 'magic-lab-v11'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v11: Spike Sorcerer hub-capable blocks, gyro/PID, "when program starts"
 
 const urlsToCache = [
   '/',
