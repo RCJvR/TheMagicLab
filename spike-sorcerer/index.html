@@ -239,7 +239,16 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
         <span id="hubBattery" class="port-chip" style="background:rgba(74,222,128,0.14);color:#4ade80;border-color:rgba(74,222,128,0.25);">—</span>
       </div>
       <div id="hubMeta" style="font-size:10px;color:var(--muted);font-family:var(--fm);margin-bottom:8px;">firmware —</div>
-      <button class="press-btn" style="margin-bottom:10px;" onclick="loadHubExample()">📋 Load hub example (SPIKE 3 API)</button>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <select id="hubExampleSelect" title="SPIKE 3 API examples that run on the real hub"
+          style="flex:1;min-width:0;height:30px;border-radius:8px;border:1px solid var(--border);background:#14110a;color:var(--text);font-family:var(--fd);font-size:11px;font-weight:600;padding:0 6px;cursor:pointer;">
+          <option value="basic">📋 Basic drive</option>
+          <option value="gyroturn">🧭 Gyro turn</option>
+          <option value="gyrostraight">📏 Straight drive (gyro)</option>
+          <option value="helpers">🛠 Gyro helpers + square demo</option>
+        </select>
+        <button class="press-btn" style="width:auto;padding:0 12px;flex:0 0 auto;" onclick="loadHubExample()">Load</button>
+      </div>
       <div id="hubPorts"></div>
       <div class="row" style="margin-top:6px;">
         <span class="row-label">Gyro yaw</span><span class="row-val" id="hubYaw">—</span>
@@ -1078,8 +1087,11 @@ function renderHubPorts(ports){
 }
 
 // A real firmware-v3 hub runs the modern SPIKE 3 Python API (not the simulator's
-// classic `spike` module). This template targets that API.
-const HUB_STARTER =
+// classic `spike` module). These templates target that API and run ON the hub.
+// Note: tilt_angles() returns decidegrees on SPIKE 3 firmware — /10 gives degrees.
+// Print it once on your hub to confirm, and tune the gain constants to your robot.
+const HUB_EXAMPLES = {
+  basic:
 `# Runs on a REAL SPIKE Prime hub (firmware v3 · SPIKE 3 Python API).
 # Note: this differs from the Simulator's classic 'spike' module.
 import runloop, motor_pair, distance_sensor
@@ -1102,12 +1114,134 @@ async def main():
     light_matrix.show_image(light_matrix.IMAGE_YES)
 
 runloop.run(main())
-`;
+`,
+
+  gyroturn:
+`# GYRO TURN — pivot to an exact heading using the hub's gyro (stock firmware).
+from hub import port, motion_sensor
+import motor_pair, runloop
+
+motor_pair.pair(motor_pair.PAIR_1, port.A, port.B)   # <- set YOUR drive ports
+
+def yaw():
+    # tilt_angles() is in decidegrees; /10 -> degrees. Print it once to confirm.
+    return motion_sensor.tilt_angles()[0] / 10
+
+async def turn_to(target, speed=200):
+    def norm(a):
+        return (a + 180) % 360 - 180                 # shortest way round
+    while abs(norm(target - yaw())) > 1:
+        error = norm(target - yaw())
+        steer = 100 if error > 0 else -100           # 100 = right, -100 = left
+        v = max(40, min(speed, abs(error) * 8))      # ease off near the target
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=int(v))
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def main():
+    await runloop.sleep_ms(1000)     # keep the robot STILL so the gyro settles
+    motion_sensor.reset_yaw(0)
+
+    await turn_to(90)                # turn to +90 degrees (right)
+    await runloop.sleep_ms(400)
+    await turn_to(0)                 # turn back to 0
+    print("final yaw:", yaw())
+
+runloop.run(main())
+`,
+
+  gyrostraight:
+`# STRAIGHT DRIVE — gyro-corrected heading + encoder distance (stock firmware).
+from hub import port, motion_sensor
+import motor, motor_pair, runloop
+
+LEFT = port.A            # <- set YOUR drive ports
+RIGHT = port.B
+motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+
+def yaw():
+    return motion_sensor.tilt_angles()[0] / 10   # decidegrees -> degrees
+
+async def drive_straight(distance_deg, speed=300, heading=0):
+    motor.reset_relative_position(LEFT, 0)
+    while abs(motor.relative_position(LEFT)) < distance_deg:
+        steer = max(-100, min(100, int((heading - yaw()) * 2)))  # P-correct
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def main():
+    await runloop.sleep_ms(1000)     # let the gyro settle (robot still)
+    motion_sensor.reset_yaw(0)
+    # distance is in motor degrees — ~360 per wheel turn
+    await drive_straight(1000, speed=300)
+    print("done — yaw drift:", yaw())
+
+runloop.run(main())
+`,
+
+  helpers:
+`# ── GYRO HELPERS (stock SPIKE firmware) ─────────────────────────────
+# Reusable, closed-loop movement = accurate and battery-proof.
+# Drop these functions into any program, then call them from main().
+from hub import port, motion_sensor
+import motor, motor_pair, runloop
+
+# ── Configure your robot ──
+LEFT = port.A
+RIGHT = port.B
+motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+
+def yaw():
+    # tilt_angles() -> decidegrees; /10 gives degrees. Print once to verify.
+    return motion_sensor.tilt_angles()[0] / 10
+
+async def settle():
+    # Keep the robot STILL and flat for this — the gyro calibrates here.
+    await runloop.sleep_ms(1000)
+    motion_sensor.reset_yaw(0)
+
+async def turn_to(target, speed=200):
+    def norm(a):
+        return (a + 180) % 360 - 180
+    while abs(norm(target - yaw())) > 1:
+        error = norm(target - yaw())
+        steer = 100 if error > 0 else -100
+        v = max(40, min(speed, abs(error) * 8))
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=int(v))
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def drive_straight(distance_deg, speed=300, heading=0):
+    motor.reset_relative_position(LEFT, 0)
+    while abs(motor.relative_position(LEFT)) < distance_deg:
+        steer = max(-100, min(100, int((heading - yaw()) * 2)))
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+# ── Demo: drive a square using gyro turns ──
+async def main():
+    await settle()
+    for corner in range(4):
+        await drive_straight(720, speed=350)   # forward, held straight by gyro
+        motion_sensor.reset_yaw(0)             # re-zero for the next leg
+        await turn_to(90)                      # accurate 90-degree gyro turn
+        motion_sensor.reset_yaw(0)
+    print("Square complete.")
+
+runloop.run(main())
+`,
+};
 
 function loadHubExample(){
+  const sel = document.getElementById('hubExampleSelect');
+  const key = sel ? sel.value : 'basic';
+  const code = HUB_EXAMPLES[key] || HUB_EXAMPLES.basic;
   if (currentMode === 'blocks') setMode('py');
-  document.getElementById('codeInput').value = HUB_STARTER;
-  addLog('📋 Loaded the SPIKE 3 hub example into the Python editor.', 'info');
+  document.getElementById('codeInput').value = code;
+  const label = (sel && sel.selectedOptions[0]) ? sel.selectedOptions[0].textContent.trim() : 'example';
+  addLog('📋 Loaded “' + label + '” into the Python editor.', 'info');
 }
 
 function showHubUnsupported(){
