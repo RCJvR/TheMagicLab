@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0f1e">
+<title>Spike Sorcerer — The Magic Lab</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23a16207'/%3E%3Crect x='16' y='14' width='32' height='28' rx='5' fill='none' stroke='rgba(253%2C224%2C71%2C0.9)' stroke-width='3'/%3E%3Ccircle cx='24' cy='24' r='2.5' fill='%23fde047'/%3E%3Ccircle cx='32' cy='24' r='2.5' fill='%23fde047'/%3E%3Ccircle cx='40' cy='24' r='2.5' fill='%23fde047'/%3E%3Ccircle cx='28' cy='32' r='2.5' fill='%23fde047'/%3E%3Ccircle cx='36' cy='32' r='2.5' fill='%23fde047'/%3E%3Crect x='24' y='48' width='16' height='8' rx='3' fill='rgba(253%2C224%2C71%2C0.5)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
+<script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
+<script src="https://unpkg.com/blockly/python_compressed.js"></script>
+<script src="https://unpkg.com/blockly/msg/en.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0a06;--bg2:#14110a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+  --text:#f4efdf;--muted:rgba(240,232,205,0.45);
+  --accent:#facc15;--accent2:#f59e0b;--accent-dim:#a16207;
+  --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);-webkit-font-smoothing:antialiased;}
+body{display:flex;flex-direction:column;overflow:hidden;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 0% 0%,rgba(250,204,21,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 0%,rgba(245,158,11,0.07) 0%,transparent 55%);
+}
+
+/* ── Nav ── */
+nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg2);}
+.nav-left{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;}
+.app-icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,rgba(250,204,21,0.28),rgba(245,158,11,0.16));border:1px solid rgba(250,204,21,0.30);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.app-title{font-family:var(--fd);font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;line-height:1;background:linear-gradient(125deg,#fff 0%,#fde047 50%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-center{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;}
+.nav-right{display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;flex-wrap:wrap;}
+.nav-pill{font-size:11px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;transition:all 150ms;cursor:pointer;font-family:var(--fd);display:inline-flex;align-items:center;gap:5px;line-height:1;}
+.nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
+.nav-filename-input{height:28px;padding:0 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fm);font-size:11px;width:120px;}
+.nav-filename-input:focus{outline:none;border-color:rgba(250,204,21,0.45);}
+.nav-filename-ext{font-size:11px;color:var(--muted);margin-right:2px;}
+
+@media (max-width: 640px){
+  nav{grid-template-columns:1fr;justify-items:center;padding:8px 12px;gap:6px;}
+  .nav-left,.nav-center,.nav-right{justify-content:center;}
+  .app-title{font-size:16px;}
+  .nav-pill{font-size:10px;padding:5px 11px;}
+  .nav-filename-input{width:100px;}
+}
+
+/* ── Layout ── */
+.workspace{display:flex;flex:1;overflow:hidden;min-height:0;}
+
+/* ── Left panel: code editor ── */
+.panel-code{width:560px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--border);min-width:0;}
+.panel-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px;}
+.panel-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+.code-area{flex:1;padding:0;position:relative;overflow:hidden;}
+textarea.code-input{width:100%;height:100%;background:#080703;color:#f1ecdb;font-family:var(--fm);font-size:12.5px;line-height:1.7;padding:14px;border:none;outline:none;resize:none;tab-size:4;}
+textarea.code-input::placeholder{color:rgba(240,232,205,0.20);}
+
+/* ── Control bar ── */
+.ctrl-bar{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all 140ms;letter-spacing:-0.01em;}
+.btn:active{transform:scale(0.97);}
+.btn-run{background:linear-gradient(135deg,#ca8a04,#a16207);color:#fff;box-shadow:0 2px 10px rgba(202,138,4,0.4);}
+.btn-run:hover{box-shadow:0 4px 16px rgba(202,138,4,0.55);}
+.btn-reset{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border);}
+.btn-reset:hover{background:rgba(255,255,255,0.10);color:var(--text);}
+.btn-speed{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border);font-size:11px;padding:6px 10px;}
+.btn-speed.active{background:rgba(250,204,21,0.15);color:#fde047;border-color:rgba(250,204,21,0.30);}
+
+/* ── Log panel ── */
+.log-panel{flex-shrink:0;height:130px;border-top:1px solid var(--border);overflow-y:auto;background:#050403;padding:8px 12px;font-family:var(--fm);font-size:11px;line-height:1.6;color:rgba(240,232,205,0.55);}
+.log-panel .log-line{margin-bottom:1px;white-space:pre-wrap;word-break:break-word;}
+.log-panel .log-err{color:#f87171;}
+.log-panel .log-ok{color:#4ade80;}
+.log-panel .log-info{color:#a3a3a3;}
+.log-panel .log-out{color:#fde047;}
+
+/* ── Centre: hub + arena ── */
+.panel-arena{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:auto;position:relative;padding:14px;gap:14px;}
+canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b06;max-width:100%;max-height:60vh;}
+.hub-strip{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;}
+
+/* ── Hub graphic ── */
+.hub{background:linear-gradient(160deg,#26221a,#171410);border:1px solid rgba(250,204,21,0.22);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(0,0,0,0.4);}
+.hub-top{display:flex;align-items:center;gap:12px;}
+.matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:6px;background:#0a0906;border-radius:8px;border:1px solid rgba(255,255,255,0.05);}
+.px{width:14px;height:14px;border-radius:3px;background:#1a1710;transition:background 80ms,box-shadow 80ms;}
+.hub-side{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.status-light{width:22px;height:22px;border-radius:50%;background:#333;border:2px solid rgba(255,255,255,0.12);box-shadow:0 0 0 rgba(0,0,0,0);transition:all 120ms;}
+.hub-btns{display:flex;gap:5px;}
+.hub-btn{width:26px;height:22px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--fd);}
+.hub-btn:active,.hub-btn.pressed{background:rgba(250,204,21,0.25);color:#fde047;border-color:rgba(250,204,21,0.4);}
+.hub-label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+
+/* ── Right panel ── */
+.panel-right{width:236px;flex-shrink:0;display:flex;flex-direction:column;border-left:1px solid var(--border);overflow-y:auto;}
+.sec{padding:12px 14px;border-bottom:1px solid var(--border);}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;}
+.row-label{font-size:11px;color:var(--muted);}
+.row-val{font-family:var(--fm);font-size:12px;font-weight:600;color:var(--text);background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:3px 8px;min-width:60px;text-align:right;}
+.bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.bar{height:100%;border-radius:3px;transition:width 120ms;background:var(--accent);}
+.port-chip{font-family:var(--fm);font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(250,204,21,0.14);color:#fde047;border:1px solid rgba(250,204,21,0.25);}
+.mission-btn{width:100%;text-align:left;font-family:var(--fd);font-size:12px;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;margin-bottom:6px;transition:all 140ms;display:flex;align-items:center;gap:8px;}
+.mission-btn:hover{background:rgba(255,255,255,0.08);color:var(--text);}
+.mission-btn.active{border-color:rgba(250,204,21,0.40);background:rgba(250,204,21,0.10);color:#fde047;}
+.mission-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.api-item{margin-bottom:9px;}
+.api-fn{font-family:var(--fm);font-size:10px;color:#fbbf24;margin-bottom:2px;word-break:break-word;}
+.api-desc{font-size:10px;color:var(--muted);line-height:1.5;}
+.press-btn{width:100%;font-family:var(--fd);font-size:11px;font-weight:700;padding:7px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--muted);cursor:pointer;transition:all 120ms;}
+.press-btn:active,.press-btn.on{background:rgba(250,204,21,0.20);color:#fde047;border-color:rgba(250,204,21,0.35);}
+
+/* ── Block/Python toggle ── */
+.mode-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:2px;}
+.mode-btn{font-family:var(--fd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;color:var(--muted);background:transparent;transition:all 140ms;letter-spacing:0.02em;}
+.mode-btn.active{background:rgba(250,204,21,0.20);color:#fde047;}
+#codeArea{display:none;}
+#blocklyDiv{flex:1;display:flex;flex-direction:column;min-height:0;}
+#blocklyDiv .blocklyMainBackground{fill:#080703 !important;}
+.blocklyToolboxCategory{border-radius:7px;margin:1px 5px;}
+.blocklyToolboxCategoryLabel{font-weight:700 !important;font-size:12.5px !important;}
+
+/* ── Status bar ── */
+.status-bar{flex-shrink:0;display:flex;align-items:center;gap:14px;padding:6px 16px;border-top:1px solid var(--border);font-size:10px;font-family:var(--fm);color:var(--muted);flex-wrap:wrap;}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#6b7280;flex-shrink:0;}
+.status-dot.running{background:#facc15;animation:pulse 1s ease-in-out infinite;}
+.status-dot.done{background:#4ade80;}
+.status-dot.error{background:#f87171;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* ── Mobile ── */
+@media (max-width:820px){
+  .workspace{flex-direction:column;overflow-y:auto;}
+  .panel-code{width:100%;flex-shrink:0;border-right:none;border-bottom:1px solid var(--border);}
+  .code-area{height:300px;flex:none;}
+  #blocklyDiv{height:320px;flex:none;}
+  .log-panel{height:100px;}
+  .panel-arena{width:100%;flex:none;flex-shrink:0;}
+  .panel-right{width:100%;flex:none;flex-shrink:0;border-left:none;border-top:1px solid var(--border);}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <div class="app-icon">🧱</div>
+    <span class="app-title">Spike Sorcerer</span>
+  </div>
+  <div class="nav-center">
+    <span id="statusLabel" class="nav-pill" style="pointer-events:none;">Idle</span>
+  </div>
+  <div class="nav-right">
+    <input type="text" id="filenameInput" class="nav-filename-input" value="spike-program" title="Filename (without extension)">
+    <span class="nav-filename-ext">.json</span>
+    <button class="nav-pill" id="btnSave" onclick="saveProgram()" title="Save program to a file">💾 Save</button>
+    <button class="nav-pill" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file">📂 Load</button>
+    <input type="file" id="loadFileInput" accept="application/json,.json" style="display:none;" onchange="loadProgramFromFile(event)">
+    <a href="../index.html" class="nav-pill">← Home</a>
+  </div>
+</nav>
+
+<div class="workspace">
+
+  <!-- ── Left: Code Editor ── -->
+  <div class="panel-code">
+    <div class="panel-header">
+      <span class="panel-title">Program</span>
+      <div class="mode-toggle">
+        <button class="mode-btn" id="modePy" onclick="setMode('py')">Python</button>
+        <button class="mode-btn active" id="modeBlocks" onclick="setMode('blocks')">Blocks</button>
+      </div>
+    </div>
+    <div class="code-area" id="codeArea">
+      <textarea class="code-input" id="codeInput" spellcheck="false"></textarea>
+    </div>
+    <div id="blocklyDiv"></div>
+    <div class="ctrl-bar">
+      <button class="btn btn-run" id="btnRun" onclick="runCode()" title="Run (Ctrl+R)">▶ Run</button>
+      <button class="btn btn-reset" onclick="resetSim()">↺ Reset</button>
+      <button class="btn btn-speed active" id="btnSlow" onclick="setSpeed('slow')" title="Real-time speed">🐢 Slow</button>
+      <button class="btn btn-speed" id="btnFast" onclick="setSpeed('fast')" title="Fast forward">⚡ Fast</button>
+    </div>
+    <div class="log-panel" id="logPanel">
+      <div class="log-line log-info"># Console output appears here</div>
+    </div>
+  </div>
+
+  <!-- ── Centre: Hub + Arena ── -->
+  <div class="panel-arena">
+    <div class="stage">
+      <div class="hub-strip">
+        <div class="hub">
+          <div class="hub-top">
+            <div class="matrix" id="matrix"></div>
+            <div class="hub-side">
+              <div class="status-light" id="statusLight" title="Status light"></div>
+              <div class="hub-label">Hub</div>
+            </div>
+          </div>
+          <div class="hub-btns">
+            <button class="hub-btn" id="btnLeft" title="Left button"
+              onmousedown="setButton('left',true)" onmouseup="setButton('left',false)" onmouseleave="setButton('left',false)">◀</button>
+            <button class="hub-btn" id="btnCenter" title="Center button" style="width:32px;">●</button>
+            <button class="hub-btn" id="btnRight" title="Right button"
+              onmousedown="setButton('right',true)" onmouseup="setButton('right',false)" onmouseleave="setButton('right',false)">▶</button>
+          </div>
+        </div>
+      </div>
+      <canvas id="arena" width="560" height="440"></canvas>
+    </div>
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Ready — press Run to start</span>
+      <span style="margin-left:auto;">yaw: <span id="stYaw">0</span>°
+        &nbsp; x: <span id="stX">0</span> &nbsp; y: <span id="stY">0</span></span>
+    </div>
+  </div>
+
+  <!-- ── Right: Ports / Sensors / Missions / API ── -->
+  <div class="panel-right">
+
+    <div class="sec">
+      <div class="sec-title">Live Sensors</div>
+      <div class="row">
+        <span class="row-label"><span class="port-chip">D</span> Distance</span>
+        <span class="row-val" id="sDist">—</span>
+      </div>
+      <div class="bar-wrap"><div class="bar" id="sDistBar" style="width:0%"></div></div>
+      <div style="height:9px"></div>
+      <div class="row">
+        <span class="row-label"><span class="port-chip">C</span> Colour</span>
+        <span class="row-val" id="sColour" style="font-size:10px;">—</span>
+      </div>
+      <div class="row">
+        <span class="row-label"><span class="port-chip">C</span> Reflection</span>
+        <span class="row-val" id="sReflect">—</span>
+      </div>
+      <div style="height:9px"></div>
+      <div class="row">
+        <span class="row-label"><span class="port-chip">E</span> Force</span>
+        <span class="row-val" id="sForce">—</span>
+      </div>
+      <button class="press-btn" id="forceBtn" style="margin-top:4px;"
+        onmousedown="setForce(true)" onmouseup="setForce(false)" onmouseleave="setForce(false)">Hold to press Force sensor</button>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">Ports</div>
+      <div class="row"><span class="row-label">Drive base</span><span class="row-val" style="font-size:10px;">A ↔ B</span></div>
+      <div class="row"><span class="row-label"><span class="port-chip">F</span> Motor</span><span class="row-val" id="sMotorF">0°</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">Missions</div>
+      <button class="mission-btn active" id="mission-free" onclick="loadMission('free')">
+        <span class="mission-dot" style="background:#a3a3a3"></span>Free Play Table</button>
+      <button class="mission-btn" id="mission-line" onclick="loadMission('line')">
+        <span class="mission-dot" style="background:#fde047"></span>Line Track</button>
+      <button class="mission-btn" id="mission-slalom" onclick="loadMission('slalom')">
+        <span class="mission-dot" style="background:#f59e0b"></span>Obstacle Slalom</button>
+      <button class="mission-btn" id="mission-colour" onclick="loadMission('colour')">
+        <span class="mission-dot" style="background:#22d3ee"></span>Colour Zones</button>
+    </div>
+
+    <div class="sec">
+      <div class="sec-title">Quick Reference</div>
+      <div class="api-item"><div class="api-fn">motor_pair.move(cm)</div><div class="api-desc">Drive straight forward (negative = back).</div></div>
+      <div class="api-item"><div class="api-fn">motor_pair.move(deg, 'degrees', steering=100)</div><div class="api-desc">Pivot the base. steering 100 = right, −100 = left.</div></div>
+      <div class="api-item"><div class="api-fn">motor_pair.start(steering, speed)</div><div class="api-desc">Drive continuously until stop().</div></div>
+      <div class="api-item"><div class="api-fn">distance_sensor.get_distance_cm()</div><div class="api-desc">Distance ahead in cm.</div></div>
+      <div class="api-item"><div class="api-fn">color_sensor.get_color()</div><div class="api-desc">Colour name under sensor, or None.</div></div>
+      <div class="api-item"><div class="api-fn">color_sensor.get_reflected_light()</div><div class="api-desc">0 (dark) – 100 (bright).</div></div>
+      <div class="api-item"><div class="api-fn">hub.light_matrix.show_image('HEART')</div><div class="api-desc">Show a picture on the 5×5 display.</div></div>
+      <div class="api-item"><div class="api-fn">hub.speaker.beep()</div><div class="api-desc">Play a beep.</div></div>
+      <div class="api-item"><div class="api-fn">wait_for_seconds(1)</div><div class="api-desc">Pause the program.</div></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="spike-python.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   SPIKE SORCERER — Simulator
+   A LEGO® SPIKE Prime driving base, hub and sensors, simulated in the
+   browser and driven by the real SPIKE Python API (spike module).
+   ═══════════════════════════════════════════════════════════════════ */
+
+const canvas = document.getElementById('arena');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+const PX_PER_CM = 4;            // arena scale
+const WHEEL_BASE = 44;          // px between the two drive wheels (~11 cm)
+const WHEEL_CIRC_CM = 17.6;     // standard SPIKE wheel circumference
+const ROBOT_R = 20;             // robot body radius (px)
+
+/* ── World state ── */
+let base = null;                // driving base state (see resetBase)
+let motorF = { pos: 0 };        // an attachment motor on port F
+let walls = [], lines = [], colourZones = [], startPose = null;
+let currentMission = 'free';
+
+/* ── Hub state ── */
+let matrixBrightness = new Array(25).fill(0);
+let statusColour = 'white';
+
+/* ── Input state ── */
+let buttons = { left: false, right: false, center: false };
+let forcePressed = false;
+
+/* ── Sim control ── */
+let simRunning = false, simAbort = false, simSpeed = 'slow';
+let audioCtx = null;
+
+/* ══════════════════════════════════════════════════════════════════
+   MISSIONS
+══════════════════════════════════════════════════════════════════ */
+function loadMission(id) {
+  currentMission = id;
+  walls = []; lines = []; colourZones = [];
+  const T = 14;
+  walls.push({x:0,y:0,w:W,h:T},{x:0,y:H-T,w:W,h:T},{x:0,y:0,w:T,h:H},{x:W-T,y:0,w:T,h:H});
+  startPose = { x: 70, y: H/2, heading: 0 };
+
+  if (id === 'line') {
+    lines.push({ path:[{x:90,y:H-90},{x:470,y:H-90},{x:470,y:90},{x:90,y:90},{x:90,y:H-90}], width:20 });
+    startPose = { x: 90, y: H-90, heading: 0 };
+  }
+  if (id === 'slalom') {
+    walls.push(
+      {x:150,y:150,w:18,h:H-150},   // rises from the floor  → pass over the top
+      {x:290,y:0,  w:18,h:H-150},   // hangs from the ceiling → pass along the bottom
+      {x:430,y:150,w:18,h:H-150},   // rises again           → back over the top
+    );
+    startPose = { x: 70, y: 80, heading: 0 };
+  }
+  if (id === 'colour') {
+    colourZones.push(
+      {x:60, y:60, w:150,h:130,colour:'red',   fill:'rgba(239,68,68,0.32)'},
+      {x:350,y:60, w:150,h:130,colour:'blue',  fill:'rgba(59,130,246,0.32)'},
+      {x:60, y:250,w:150,h:130,colour:'green', fill:'rgba(34,197,94,0.32)'},
+      {x:350,y:250,w:150,h:130,colour:'yellow',fill:'rgba(234,179,8,0.34)'},
+    );
+    startPose = { x: W/2, y: H/2, heading: -90 };
+  }
+
+  document.querySelectorAll('.mission-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mission-'+id)?.classList.add('active');
+  resetSim();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ROBOT / BASE STATE
+══════════════════════════════════════════════════════════════════ */
+function resetBase() {
+  const p = startPose || { x: W/2, y: H/2, heading: 0 };
+  base = { x: p.x, y: p.y, heading: p.heading, startHeading: p.heading, speed: 50,
+           continuous: null /* {vL,vR} normalised -1..1 */ };
+  motorF.pos = 0;
+}
+
+// heading stored in degrees, 0 = facing +x (right). Positive = clockwise on screen.
+function rad(d){ return d*Math.PI/180; }
+
+/* ══════════════════════════════════════════════════════════════════
+   DRAWING
+══════════════════════════════════════════════════════════════════ */
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#0d0b06'; ctx.fillRect(0,0,W,H);
+
+  // grid
+  ctx.fillStyle = 'rgba(255,255,255,0.035)';
+  for (let gx=40; gx<W; gx+=40) for (let gy=40; gy<H; gy+=40){ ctx.beginPath(); ctx.arc(gx,gy,1,0,7); ctx.fill(); }
+
+  // colour zones
+  colourZones.forEach(z => {
+    ctx.fillStyle = z.fill; ctx.fillRect(z.x,z.y,z.w,z.h);
+    ctx.strokeStyle = z.fill.replace(/0\.\d+/,'0.6'); ctx.lineWidth=1.5; ctx.strokeRect(z.x,z.y,z.w,z.h);
+    ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font='11px "JetBrains Mono"'; ctx.fillText(z.colour, z.x+7, z.y+16);
+  });
+
+  // lines
+  lines.forEach(l => {
+    ctx.strokeStyle='rgba(245,240,225,0.10)'; ctx.lineWidth=l.width+4; ctx.lineCap='round'; ctx.lineJoin='round';
+    strokePath(l.path);
+    ctx.strokeStyle='#1b1810'; ctx.lineWidth=l.width; strokePath(l.path);
+  });
+
+  // walls
+  walls.forEach(w => {
+    ctx.fillStyle='rgba(250,204,21,0.14)'; ctx.fillRect(w.x,w.y,w.w,w.h);
+    ctx.strokeStyle='rgba(250,204,21,0.45)'; ctx.lineWidth=1; ctx.strokeRect(w.x,w.y,w.w,w.h);
+  });
+
+  drawSensorRay();
+  drawRobot();
+}
+function strokePath(path){ ctx.beginPath(); path.forEach((p,i)=> i? ctx.lineTo(p.x,p.y): ctx.moveTo(p.x,p.y)); ctx.stroke(); }
+
+function drawRobot() {
+  const {x,y,heading} = base;
+  ctx.save(); ctx.translate(x,y); ctx.rotate(rad(heading));
+  // body
+  ctx.beginPath(); ctx.roundRect(-ROBOT_R, -ROBOT_R+2, ROBOT_R*2, ROBOT_R*2-4, 6);
+  ctx.fillStyle='rgba(250,204,21,0.18)'; ctx.fill();
+  ctx.strokeStyle='#facc15'; ctx.lineWidth=2.5; ctx.stroke();
+  // wheels
+  ctx.fillStyle='#2a2410';
+  ctx.fillRect(-6,-ROBOT_R-3,12,6); ctx.fillRect(-6,ROBOT_R-3,12,6);
+  // heading arrow
+  ctx.beginPath(); ctx.moveTo(4,0); ctx.lineTo(ROBOT_R-2,0);
+  ctx.strokeStyle='#fde047'; ctx.lineWidth=2; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ROBOT_R-2,0); ctx.lineTo(ROBOT_R-8,-4); ctx.moveTo(ROBOT_R-2,0); ctx.lineTo(ROBOT_R-8,4); ctx.stroke();
+  // colour sensor dot (front)
+  ctx.beginPath(); ctx.arc(ROBOT_R-3,0,3,0,7);
+  ctx.fillStyle = getColourAt(x+Math.cos(rad(heading))*(ROBOT_R-3), y+Math.sin(rad(heading))*(ROBOT_R-3)).css;
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawSensorRay() {
+  const {x,y,heading} = base;
+  const d = castRay(x,y,rad(heading));
+  const ex = x+Math.cos(rad(heading))*d, ey = y+Math.sin(rad(heading))*d;
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(ex,ey);
+  ctx.strokeStyle='rgba(34,211,238,0.35)'; ctx.lineWidth=1; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.beginPath(); ctx.arc(ex,ey,3,0,7); ctx.fillStyle='rgba(34,211,238,0.9)'; ctx.fill();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PHYSICS / SENSORS
+══════════════════════════════════════════════════════════════════ */
+function castRay(ox,oy,angle,maxDist=W){
+  const dx=Math.cos(angle), dy=Math.sin(angle);
+  for (let t=ROBOT_R; t<maxDist; t+=2){ if (hitsWall(ox+dx*t, oy+dy*t)) return t-ROBOT_R; }
+  return maxDist-ROBOT_R;
+}
+function hitsWall(px,py){ return walls.some(w=> px>=w.x&&px<=w.x+w.w&&py>=w.y&&py<=w.y+w.h); }
+function robotHitsWall(nx,ny){
+  return walls.some(w => nx+ROBOT_R>w.x && nx-ROBOT_R<w.x+w.w && ny+ROBOT_R>w.y && ny-ROBOT_R<w.y+w.h);
+}
+function onLine(px,py){
+  for (const l of lines) for (let i=1;i<l.path.length;i++){
+    if (distToSeg(px,py,l.path[i-1],l.path[i]) < l.width/2) return true;
+  }
+  return false;
+}
+function distToSeg(px,py,a,b){
+  const dx=b.x-a.x, dy=b.y-a.y, len2=dx*dx+dy*dy;
+  if(!len2) return Math.hypot(px-a.x,py-a.y);
+  let t=((px-a.x)*dx+(py-a.y)*dy)/len2; t=Math.max(0,Math.min(1,t));
+  return Math.hypot(px-(a.x+t*dx), py-(a.y+t*dy));
+}
+const COLOUR_CSS = { red:'#ef4444', blue:'#3b82f6', green:'#22c55e', yellow:'#eab308', white:'#e5e7eb', black:'#111827' };
+function getColourAt(px,py){
+  for (const z of colourZones) if (px>=z.x&&px<=z.x+z.w&&py>=z.y&&py<=z.y+z.h) return { name:z.colour, css:COLOUR_CSS[z.colour]||'#888' };
+  if (onLine(px,py)) return { name:'black', css:'#111827' };
+  return { name:null, css:'#c8c2a8' };
+}
+function frontSensorPoint(){
+  const {x,y,heading}=base; const r=ROBOT_R-2;
+  return { x:x+Math.cos(rad(heading))*r, y:y+Math.sin(rad(heading))*r };
+}
+
+function updateSensorDisplay() {
+  const {x,y,heading}=base;
+  const distCm = Math.round(castRay(x,y,rad(heading))/PX_PER_CM);
+  document.getElementById('sDist').textContent = distCm + ' cm';
+  document.getElementById('sDistBar').style.width = Math.min(100, distCm/1.4) + '%';
+  const fp = frontSensorPoint(); const col = getColourAt(fp.x,fp.y);
+  document.getElementById('sColour').textContent = col.name || 'none';
+  document.getElementById('sColour').style.color = col.name ? '#f4efdf' : 'var(--muted)';
+  const refl = onLine(fp.x,fp.y) || col.name==='black' ? 8 : (col.name===null || col.name==='white' ? 95 : 55);
+  document.getElementById('sReflect').textContent = refl;
+  document.getElementById('sForce').textContent = forcePressed ? 'pressed' : 'released';
+  document.getElementById('sForce').style.color = forcePressed ? '#fde047' : 'var(--muted)';
+  document.getElementById('sMotorF').textContent = Math.round(motorF.pos)+'°';
+  let yaw = Math.round(((heading - base.startHeading) % 360 + 540) % 360 - 180);
+  document.getElementById('stYaw').textContent = yaw;
+  document.getElementById('stX').textContent = Math.round((x-startPose.x)/PX_PER_CM);
+  document.getElementById('stY').textContent = Math.round((y-startPose.y)/PX_PER_CM);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ANIMATION HELPERS
+══════════════════════════════════════════════════════════════════ */
+function frameDelay(){ return simSpeed==='fast' ? new Promise(r=>setTimeout(r,0)) : new Promise(r=>requestAnimationFrame(r)); }
+function checkAbort(){ if (simAbort) throw new SpikePython.PyError('stopped'); }
+
+// integrate one differential step of wheel travel (px)
+function stepBase(dL, dR){
+  const dc = (dL + dR)/2;
+  const dTheta = (dL - dR)/WHEEL_BASE;            // radians, +ve = clockwise (right)
+  const midH = rad(base.heading) + dTheta/2;
+  const nx = base.x + dc*Math.cos(midH);
+  const ny = base.y + dc*Math.sin(midH);
+  if (robotHitsWall(nx,ny)) return false;         // blocked
+  base.x = nx; base.y = ny;
+  base.heading = (base.heading + dTheta*180/Math.PI) % 360;
+  return true;
+}
+
+// Blocking move: wheels travel dLtot / dRtot px, animated
+async function driveWheels(dLtot, dRtot){
+  const maxTravel = Math.max(Math.abs(dLtot), Math.abs(dRtot));
+  if (maxTravel < 0.01) return;
+  const perFrame = Math.max(1.2, base.speed * 0.09);      // px of the faster wheel per frame
+  const steps = Math.max(1, Math.ceil(maxTravel / perFrame));
+  const sL = dLtot/steps, sR = dRtot/steps;
+  for (let i=0;i<steps;i++){
+    checkAbort();
+    if (!stepBase(sL, sR)){ addLog('⚠ Bumped a wall — base stopped.', 'err'); break; }
+    draw(); updateSensorDisplay();
+    await frameDelay();
+  }
+}
+
+// Continuous driving integrated during any wait
+function integrateContinuous(){
+  if (!base.continuous) return;
+  const per = Math.max(1.2, base.speed*0.09);
+  stepBase(base.continuous.vL*per, base.continuous.vR*per);
+}
+
+function amountToPx(amount, unit){
+  switch(unit){
+    case 'cm': return amount*PX_PER_CM;
+    case 'in': return amount*2.54*PX_PER_CM;
+    case 'rotations': return amount*WHEEL_CIRC_CM*PX_PER_CM;
+    case 'degrees': return (amount/360)*WHEEL_CIRC_CM*PX_PER_CM;
+    default: return amount*PX_PER_CM;
+  }
+}
+// steering (-100..100) → normalised wheel fractions {vL,vR}, outer wheel = ±1
+function steerFractions(steering){
+  const s = Math.max(-100, Math.min(100, steering));
+  if (s >= 0) return { vL: 1, vR: 1 - 2*(s/100) };
+  return { vR: 1, vL: 1 + 2*(s/100) };
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HUB DISPLAY
+══════════════════════════════════════════════════════════════════ */
+const MATRIX_IMAGES = {
+  HEART:    ['01010','11111','11111','01110','00100'],
+  HEART_SMALL:['00000','01010','01110','00100','00000'],
+  HAPPY:    ['00000','01010','00000','10001','01110'],
+  SMILE:    ['00000','01010','00000','10001','01110'],
+  SAD:      ['00000','01010','00000','01110','10001'],
+  YES:      ['00000','00001','00010','10100','01000'],
+  NO:       ['10001','01010','00100','01010','10001'],
+  ARROW_N:  ['00100','01110','10101','00100','00100'],
+  ARROW_S:  ['00100','00100','10101','01110','00100'],
+  ARROW_E:  ['00100','00010','11111','00010','00100'],
+  ARROW_W:  ['00100','01000','11111','01000','00100'],
+  SQUARE:   ['11111','10001','10001','10001','11111'],
+  DIAMOND:  ['00100','01110','11111','01110','00100'],
+  ASLEEP:   ['00000','11011','00000','01110','00000'],
+  CONFUSED: ['00000','01010','00000','01010','10101'],
+  DUCK:     ['01100','11100','01111','01110','00000'],
+  TARGET:   ['00100','01110','11011','01110','00100'],
+  GO:       ['00100','01110','11111','01110','00100'],
+};
+function renderMatrix(){
+  const cells = document.getElementById('matrix').children;
+  for (let i=0;i<25;i++){
+    const b = matrixBrightness[i];
+    const a = b/9;
+    cells[i].style.background = b? `rgba(250,204,21,${0.15+a*0.85})` : '#1a1710';
+    cells[i].style.boxShadow = b>5 ? `0 0 6px rgba(250,204,21,${a*0.7})` : 'none';
+  }
+}
+function setImage(rows){
+  for (let y=0;y<5;y++) for (let x=0;x<5;x++)
+    matrixBrightness[y*5+x] = (rows[y] && rows[y][x]==='1') ? 9 : 0;
+  renderMatrix();
+}
+function matrixOff(){ matrixBrightness.fill(0); renderMatrix(); }
+function renderStatus(){
+  const map = { red:'#ef4444', orange:'#f97316', yellow:'#eab308', green:'#22c55e',
+    cyan:'#22d3ee', azure:'#0ea5e9', blue:'#3b82f6', violet:'#8b5cf6', magenta:'#d946ef',
+    pink:'#ec4899', white:'#e5e7eb', black:'#333' };
+  const c = map[statusColour] || '#e5e7eb';
+  const el = document.getElementById('statusLight');
+  el.style.background = c;
+  el.style.boxShadow = statusColour==='black' ? 'none' : `0 0 12px ${c}`;
+}
+
+// 5×5 font for light_matrix.write()  (columns packed as bits, bit4 = top row)
+const FONT = {
+  ' ':[0,0,0,0,0], '!':[0,0,23,0,0], '?':[2,1,21,1,2], '.':[0,0,0,0,1], ',':[0,0,0,1,2], '-':[4,4,4,4,4],
+  '0':[14,17,17,17,14],'1':[0,9,31,1,0],'2':[19,25,21,21,9],'3':[17,17,21,21,10],'4':[28,4,4,31,4],
+  '5':[23,21,21,21,9],'6':[14,21,21,21,8],'7':[16,16,19,28,16],'8':[10,21,21,21,10],'9':[2,21,21,21,14],
+  'A':[15,20,20,20,15],'B':[31,21,21,21,10],'C':[14,17,17,17,10],'D':[31,17,17,17,14],'E':[31,21,21,17,17],
+  'F':[31,20,20,16,16],'G':[14,17,17,21,11],'H':[31,4,4,4,31],'I':[17,17,31,17,17],'J':[2,1,1,1,30],
+  'K':[31,4,10,17,0],'L':[31,1,1,1,1],'M':[31,8,4,8,31],'N':[31,8,4,2,31],'O':[14,17,17,17,14],
+  'P':[31,20,20,20,8],'Q':[14,17,19,18,13],'R':[31,20,22,21,8],'S':[9,21,21,21,18],'T':[16,16,31,16,16],
+  'U':[30,1,1,1,30],'V':[28,2,1,2,28],'W':[31,2,4,2,31],'X':[27,4,4,4,27],'Y':[24,4,3,4,24],'Z':[19,21,21,21,25],
+};
+function glyphRows(ch){
+  const cols = FONT[ch.toUpperCase()] || FONT[' '];
+  const rows=[];
+  for (let r=0;r<5;r++){ let s=''; for (let c=0;c<5;c++) s += (cols[c]>>(4-r))&1 ? '1':'0'; rows.push(s); }
+  return rows;
+}
+async function scrollText(text){
+  text = String(text);
+  // build a wide bitmap: each char 5 cols + 1 space
+  let bmp = [];
+  for (const ch of text){ const g = glyphRows(ch); for (let c=0;c<5;c++){ bmp.push(colOf(g,c)); } bmp.push([0,0,0,0,0]); }
+  // pad so it scrolls fully off
+  for (let i=0;i<5;i++) bmp.unshift([0,0,0,0,0]);
+  for (let i=0;i<5;i++) bmp.push([0,0,0,0,0]);
+  for (let off=0; off<=bmp.length-5; off++){
+    checkAbort();
+    for (let x=0;x<5;x++){ const col = bmp[off+x]||[0,0,0,0,0]; for (let y=0;y<5;y++) matrixBrightness[y*5+x] = col[y]?9:0; }
+    renderMatrix();
+    await sleepMs(140);
+  }
+}
+function colOf(rows,c){ return rows.map(r=> r[c]==='1'?1:0); }
+
+/* ══════════════════════════════════════════════════════════════════
+   TIMING
+══════════════════════════════════════════════════════════════════ */
+async function sleepMs(ms){
+  const factor = simSpeed==='fast' ? 0.06 : 1;
+  const end = performance.now() + ms*factor;
+  while (performance.now() < end){
+    checkAbort();
+    integrateContinuous();
+    draw(); updateSensorDisplay();
+    await frameDelay();
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SPIKE PYTHON API  (host objects handed to the interpreter)
+══════════════════════════════════════════════════════════════════ */
+function beep(freq, seconds){
+  try {
+    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.frequency.value = freq; o.type='sine';
+    g.gain.value = 0.06; o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime + Math.min(2, seconds||0.2));
+  } catch(e){}
+}
+// SPIKE note number → frequency (60 = middle range default)
+function noteToFreq(n){ return 440 * Math.pow(2, (n-69)/12); }
+
+function makeLightMatrix(){
+  return {
+    show_image: (name)=>{ const img = MATRIX_IMAGES[name] || MATRIX_IMAGES.SQUARE; setImage(img); },
+    show: (name)=>{ const img = MATRIX_IMAGES[name] || MATRIX_IMAGES.SQUARE; setImage(img); },
+    write: async (text)=>{ await scrollText(text); },
+    set_pixel: (x,y,brightness)=>{ if(x>=0&&x<5&&y>=0&&y<5){ matrixBrightness[y*5+x]=Math.max(0,Math.min(9, brightness===undefined?9:brightness)); renderMatrix(); } },
+    off: ()=> matrixOff(),
+  };
+}
+function makeButton(which){
+  return {
+    is_pressed: ()=> buttons[which],
+    was_pressed: ()=> buttons[which],
+    wait_until_pressed: async ()=>{ while(!buttons[which]){ await sleepMs(30); } },
+    wait_until_released: async ()=>{ while(buttons[which]){ await sleepMs(30); } },
+  };
+}
+function makePrimeHub(){
+  return {
+    light_matrix: makeLightMatrix(),
+    left_button: makeButton('left'),
+    right_button: makeButton('right'),
+    speaker: {
+      beep: async (note, seconds)=>{ beep(noteToFreq(note===undefined?60:note), seconds===undefined?0.5:seconds); await sleepMs((seconds===undefined?0.5:seconds)*1000); },
+      start_beep: (note)=> beep(noteToFreq(note===undefined?60:note), 2),
+      stop: ()=>{},
+      play_sound: async (name)=>{ beep(600,0.25); await sleepMs(250); },
+      set_volume: ()=>{},
+    },
+    status_light: {
+      on: (colour)=>{ statusColour = colour || 'white'; renderStatus(); },
+      off: ()=>{ statusColour = 'black'; renderStatus(); },
+    },
+    motion_sensor: {
+      get_yaw_angle: ()=> Math.round(((base.heading - base.startHeading)%360 + 540)%360 - 180),
+      get_pitch_angle: ()=> 0,
+      get_roll_angle: ()=> 0,
+      reset_yaw_angle: ()=>{ base.startHeading = base.heading; },
+      get_gesture: ()=> null,
+      was_gesture: ()=> false,
+    },
+  };
+}
+function makeMotorPair(left, right){
+  const api = {
+    move: async (amount, unit='cm', steering=0, kw)=>{
+      if (kw===undefined && typeof steering==='object'){ kw=steering; steering=0; }
+      if (kw && kw.steering!==undefined) steering = kw.steering;
+      if (kw && kw.speed!==undefined) base.speed = Math.abs(kw.speed);
+      base.continuous = null;
+      // simulator convention: pivot in place for ±100 steering given in degrees of heading
+      if (Math.abs(steering)===100 && unit==='degrees'){
+        const dir = steering>0 ? 1 : -1;
+        const arc = rad(Math.abs(amount)) * (WHEEL_BASE/2);   // px each wheel travels
+        await driveWheels(dir*arc, -dir*arc);
+        return;
+      }
+      const px = amountToPx(amount, unit);
+      const f = steerFractions(steering);
+      await driveWheels(px*f.vL, px*f.vR);
+    },
+    move_tank: async (amount, unit='cm', left_speed=50, right_speed=50, kw)=>{
+      if (kw){ if(kw.left_speed!==undefined) left_speed=kw.left_speed; if(kw.right_speed!==undefined) right_speed=kw.right_speed; }
+      base.continuous = null;
+      const px = amountToPx(amount, unit);
+      const m = Math.max(Math.abs(left_speed), Math.abs(right_speed)) || 1;
+      await driveWheels(px*(left_speed/m), px*(right_speed/m));
+    },
+    start: (steering=0, speed, kw)=>{
+      if (kw && kw.speed!==undefined) speed = kw.speed;
+      if (typeof steering==='object'){ kw=steering; steering = kw.steering||0; speed = kw.speed; }
+      if (speed!==undefined) base.speed = Math.abs(speed);
+      const f = steerFractions(steering);
+      const dir = (speed!==undefined && speed<0) ? -1 : 1;
+      base.continuous = { vL: f.vL*dir, vR: f.vR*dir };
+    },
+    start_tank: (left_speed=50, right_speed=50)=>{
+      const m = Math.max(Math.abs(left_speed),Math.abs(right_speed))||1;
+      base.continuous = { vL:left_speed/m, vR:right_speed/m };
+    },
+    stop: ()=>{ base.continuous = null; },
+    set_default_speed: (s)=>{ base.speed = Math.abs(s); },
+    set_stop_action: ()=>{},
+    set_motor_rotation: ()=>{},
+  };
+  return api;
+}
+function makeColorSensor(port){
+  return {
+    get_color: ()=>{ const c=getColourAt(...ptArr(frontSensorPoint())); return c.name; },
+    get_reflected_light: ()=>{ const fp=frontSensorPoint(); return onLine(fp.x,fp.y)||getColourAt(fp.x,fp.y).name==='black'?8:(getColourAt(fp.x,fp.y).name?55:95); },
+    get_ambient_light: ()=> 0,
+    get_rgb_intensity: ()=> [0,0,0,0],
+    wait_until_color: async (colour)=>{ while(getColourAt(...ptArr(frontSensorPoint())).name!==colour){ await sleepMs(30); } },
+    wait_for_new_color: async ()=>{ const start=getColourAt(...ptArr(frontSensorPoint())).name; while(getColourAt(...ptArr(frontSensorPoint())).name===start){ await sleepMs(30);} return getColourAt(...ptArr(frontSensorPoint())).name; },
+  };
+}
+function ptArr(p){ return [p.x, p.y]; }
+function makeDistanceSensor(port){
+  return {
+    get_distance_cm: (short_range)=>{ const d=Math.round(castRay(base.x,base.y,rad(base.heading))/PX_PER_CM); return d>=200?null:d; },
+    get_distance_percentage: ()=>{ const d=castRay(base.x,base.y,rad(base.heading))/PX_PER_CM; return Math.min(100, Math.round(d/2)); },
+    wait_for_distance_closer_than: async (cm)=>{ while(true){ const d=castRay(base.x,base.y,rad(base.heading))/PX_PER_CM; if (d<cm) break; await sleepMs(30);} },
+    wait_for_distance_farther_than: async (cm)=>{ while(true){ const d=castRay(base.x,base.y,rad(base.heading))/PX_PER_CM; if (d>cm) break; await sleepMs(30);} },
+    light_up: ()=>{}, light_up_all: ()=>{},
+  };
+}
+function makeForceSensor(port){
+  return {
+    is_pressed: ()=> forcePressed,
+    get_force_newton: ()=> forcePressed ? 10 : 0,
+    get_force_percentage: ()=> forcePressed ? 100 : 0,
+    wait_until_pressed: async ()=>{ while(!forcePressed){ await sleepMs(30); } },
+    wait_until_released: async ()=>{ while(forcePressed){ await sleepMs(30); } },
+  };
+}
+function makeMotor(port){
+  return {
+    run_for_degrees: async (degrees, speed=50)=>{ await spinMotor(degrees, speed); },
+    run_for_rotations: async (rot, speed=50)=>{ await spinMotor(rot*360, speed); },
+    run_for_seconds: async (sec, speed=50)=>{ await spinMotorTime(sec, speed); },
+    run_to_position: async (deg, direction, speed=50)=>{ const delta = deg - (motorF.pos%360); await spinMotor(delta, speed); },
+    start: (speed=50)=>{},
+    stop: ()=>{},
+    set_default_speed: ()=>{},
+    get_position: ()=> Math.round(motorF.pos%360),
+    get_degrees_counted: ()=> Math.round(motorF.pos),
+    reset_degrees_counted: ()=>{ motorF.pos=0; },
+    set_stop_action: ()=>{},
+  };
+}
+async function spinMotor(degrees, speed){
+  const steps = Math.max(1, Math.round(Math.abs(degrees)/ (simSpeed==='fast'?90:8)));
+  const per = degrees/steps;
+  for (let i=0;i<steps;i++){ checkAbort(); motorF.pos += per; integrateContinuous(); draw(); updateSensorDisplay(); await frameDelay(); }
+}
+async function spinMotorTime(sec, speed){
+  const end = performance.now() + sec*1000*(simSpeed==='fast'?0.06:1);
+  while (performance.now()<end){ checkAbort(); motorF.pos += speed*0.1; integrateContinuous(); draw(); updateSensorDisplay(); await frameDelay(); }
+}
+
+// spike.control helpers
+async function wait_for_seconds(s){ await sleepMs(s*1000); }
+async function wait_until(fn){
+  while (true){
+    let v = typeof fn==='function' ? fn() : fn;
+    if (v && typeof v.then==='function') v = await v;
+    if (v) break;
+    await sleepMs(30);
+  }
+}
+function makeTimer(){
+  let start = performance.now();
+  return { reset: ()=>{ start = performance.now(); }, now: ()=> (performance.now()-start)/1000 };
+}
+
+function buildModules(){
+  const spike = {
+    PrimeHub: makePrimeHub,
+    Motor: makeMotor,
+    MotorPair: makeMotorPair,
+    ColorSensor: makeColorSensor,
+    ColourSensor: makeColorSensor,
+    DistanceSensor: makeDistanceSensor,
+    ForceSensor: makeForceSensor,
+    LightMatrix: makeLightMatrix,
+    App: function(){ return { start_sound: async()=>{ beep(600,0.2); await sleepMs(200);}, play_sound: async()=>{ beep(600,0.2); await sleepMs(200);}, get_orientation:()=>'front' }; },
+  };
+  const control = {
+    wait_for_seconds, wait_until,
+    Timer: function(){ const t = makeTimer(); return { reset: t.reset, now: t.now }; },
+  };
+  const math = {
+    pi: Math.PI, e: Math.E, sqrt: Math.sqrt, floor: Math.floor, ceil: Math.ceil,
+    sin: Math.sin, cos: Math.cos, tan: Math.tan, atan2: Math.atan2, radians:(d)=>d*Math.PI/180,
+    degrees:(r)=>r*180/Math.PI, fabs: Math.abs, pow: Math.pow, fmod:(a,b)=>a%b,
+  };
+  const random = {
+    random: ()=> Math.random(),
+    randint: (a,b)=> Math.floor(Math.random()*(b-a+1))+a,
+    uniform: (a,b)=> a+Math.random()*(b-a),
+    choice: (arr)=> arr[Math.floor(Math.random()*arr.length)],
+    randrange: (a,b,c)=>{ if(b===undefined){b=a;a=0;} c=c||1; const n=Math.floor((b-a)/c); return a+Math.floor(Math.random()*n)*c; },
+  };
+  return { 'spike': spike, 'spike.control': control, 'math': math, 'random': random };
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RUN / STOP / RESET
+══════════════════════════════════════════════════════════════════ */
+function addLog(msg, type='info'){
+  const panel = document.getElementById('logPanel');
+  const div = document.createElement('div');
+  div.className = 'log-line log-'+type; div.textContent = msg;
+  panel.appendChild(div); panel.scrollTop = panel.scrollHeight;
+}
+function clearLog(){ document.getElementById('logPanel').innerHTML=''; }
+function setStatus(state,text){
+  document.getElementById('statusDot').className = 'status-dot '+state;
+  document.getElementById('statusText').textContent = text;
+  document.getElementById('statusLabel').textContent =
+    state==='running'?'Running':state==='done'?'Done':state==='error'?'Error':'Idle';
+}
+
+async function runCode(){
+  if (simRunning){ simAbort = true; return; }
+  clearLog();
+  resetBase(); matrixOff(); statusColour='white'; renderStatus();
+  buttons={left:false,right:false,center:false}; forcePressed=false;
+  document.getElementById('forceBtn').classList.remove('on');
+  simAbort=false; simRunning=true;
+  document.getElementById('btnRun').textContent='⏹ Stop';
+  setStatus('running','Program running…');
+  draw(); updateSensorDisplay();
+
+  const source = currentMode==='blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
+  try {
+    const res = await SpikePython.run(source, {
+      modules: buildModules(),
+      onOutput: (t)=> addLog(t, 'out'),
+      shouldStop: ()=> simAbort,
+    });
+    base.continuous=null;
+    if (res && res.stopped || simAbort){ addLog('⏹ Stopped.', 'info'); setStatus('','Stopped'); }
+    else { addLog('✓ Program finished.', 'ok'); setStatus('done','Program finished'); }
+  } catch(e){
+    base.continuous=null;
+    if (simAbort){ addLog('⏹ Stopped.', 'info'); setStatus('','Stopped'); }
+    else { addLog('✗ '+e.message, 'err'); setStatus('error', e.message); }
+  }
+  simRunning=false; simAbort=false;
+  document.getElementById('btnRun').textContent='▶ Run';
+  draw(); updateSensorDisplay();
+}
+
+function resetSim(){
+  simAbort = true;
+  setTimeout(()=>{
+    simRunning=false; simAbort=false;
+    resetBase(); matrixOff(); statusColour='white'; renderStatus();
+    buttons={left:false,right:false,center:false}; forcePressed=false;
+    document.getElementById('forceBtn').classList.remove('on');
+    document.getElementById('btnRun').textContent='▶ Run';
+    setStatus('','Ready — press Run to start');
+    clearLog(); addLog('# Console output appears here','info');
+    draw(); updateSensorDisplay();
+  }, 40);
+}
+function setSpeed(s){
+  simSpeed=s;
+  document.getElementById('btnSlow').classList.toggle('active', s==='slow');
+  document.getElementById('btnFast').classList.toggle('active', s==='fast');
+}
+function setButton(which,val){ buttons[which]=val; document.getElementById(which==='left'?'btnLeft':'btnRight').classList.toggle('pressed', val); }
+function setForce(val){ forcePressed=val; document.getElementById('forceBtn').classList.toggle('on', val); }
+
+/* ══════════════════════════════════════════════════════════════════
+   SAVE / LOAD
+══════════════════════════════════════════════════════════════════ */
+function saveProgram(){
+  const name = (document.getElementById('filenameInput')?.value||'spike-program').trim()||'spike-program';
+  const data = {
+    type:'spike-sorcerer-program', version:1, filename:name, mode:currentMode, mission:currentMission,
+    python: document.getElementById('codeInput').value,
+    blocksXml: blocklyWorkspace ? Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(blocklyWorkspace)) : null,
+  };
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=name.replace(/[^\w\-_.]/g,'_')+'.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  addLog('💾 Program saved.', 'ok');
+}
+function triggerLoadProgram(){ document.getElementById('loadFileInput').click(); }
+function loadProgramFromFile(ev){
+  const file = ev.target.files[0]; ev.target.value=''; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try {
+      const data = JSON.parse(reader.result);
+      if (data.type!=='spike-sorcerer-program') throw new Error('not a Spike Sorcerer file');
+      if (data.mission && data.mission!==currentMission) loadMission(data.mission);
+      if (typeof data.python==='string') document.getElementById('codeInput').value = data.python;
+      if (data.blocksXml){ initBlockly(); Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.utils.xml.textToDom(data.blocksXml), blocklyWorkspace); }
+      setMode(data.mode==='py'?'py':'blocks');
+      const ni = document.getElementById('filenameInput'); if(ni) ni.value = data.filename || file.name.replace(/\.json$/i,'');
+      addLog('📂 Program loaded.', 'ok');
+    } catch(e){ addLog('✗ Failed to load: '+e.message, 'err'); }
+  };
+  reader.readAsText(file);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PROGRAM PREAMBLE  (shared by Python starter + Blocks output)
+══════════════════════════════════════════════════════════════════ */
+const PREAMBLE =
+`from spike import PrimeHub, Motor, MotorPair, ColorSensor, DistanceSensor, ForceSensor
+from spike.control import wait_for_seconds
+import math, random
+
+hub = PrimeHub()
+motor_pair = MotorPair('A', 'B')
+color_sensor = ColorSensor('C')
+distance_sensor = DistanceSensor('D')
+force_sensor = ForceSensor('E')
+arm = Motor('F')
+`;
+
+const STARTERS = {
+  free: PREAMBLE + `
+# Free Play — drive a square and celebrate!
+hub.light_matrix.show_image('HAPPY')
+
+for side in range(4):
+    motor_pair.move(20)                       # forward 20 cm
+    motor_pair.move(90, 'degrees', steering=100)   # pivot right 90°
+
+hub.light_matrix.show_image('YES')
+hub.speaker.beep()
+print("Square complete!")
+`,
+  line: PREAMBLE + `
+# Line Track — follow the dark line with the colour sensor
+hub.status_light.on('cyan')
+
+for step in range(600):
+    reflection = color_sensor.get_reflected_light()
+    if reflection < 40:
+        # on the dark line — steer one way
+        motor_pair.start(steering=35, speed=30)
+    else:
+        # off the line — steer back
+        motor_pair.start(steering=-35, speed=30)
+    wait_for_seconds(0.05)
+
+motor_pair.stop()
+print("Lap done!")
+`,
+  slalom: PREAMBLE + `
+# Obstacle Slalom — use the distance sensor to avoid walls
+hub.light_matrix.show_image('ARROW_N')
+
+while True:
+    gap = distance_sensor.get_distance_cm()
+    if gap is None or gap > 18:
+        motor_pair.move(6)               # clear ahead — drive on
+    else:
+        motor_pair.move(45, 'degrees', steering=-100)  # wall! pivot left
+`,
+  colour: PREAMBLE + `
+# Colour Zones — drive out and report the colour found
+hub.light_matrix.show_image('TARGET')
+
+motor_pair.move(15)
+found = color_sensor.get_color()
+print("I am on:", found)
+
+if found == 'red':
+    hub.status_light.on('red')
+elif found == 'green':
+    hub.status_light.on('green')
+else:
+    hub.status_light.on('blue')
+`,
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   BLOCKLY  (blocks generate real SPIKE Python)
+══════════════════════════════════════════════════════════════════ */
+let blocklyWorkspace = null;
+let currentMode = 'blocks';
+const BLOCKLY_OK = typeof Blockly !== 'undefined' && !!Blockly.Python;
+
+function initBlockly(){
+  if (!BLOCKLY_OK || blocklyWorkspace) return;
+  const P = Blockly.Python;
+
+  Blockly.defineBlocksWithJsonArray([
+    // ── Movement ──
+    { type:'sp_move', message0:'drive %1 %2 cm', args0:[
+        {type:'field_dropdown',name:'DIR',options:[['forward','1'],['backward','-1']]},
+        {type:'field_number',name:'CM',value:20,min:0}],
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Drive straight.' },
+    { type:'sp_turn', message0:'turn %1 %2 degrees', args0:[
+        {type:'field_dropdown',name:'DIR',options:[['right','100'],['left','-100']]},
+        {type:'field_number',name:'DEG',value:90,min:0,max:360}],
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Pivot the driving base in place.' },
+    { type:'sp_steer', message0:'steer %1 for %2 cm at speed %3', args0:[
+        {type:'field_number',name:'STEER',value:0,min:-100,max:100},
+        {type:'field_number',name:'CM',value:20,min:0},
+        {type:'field_number',name:'SPD',value:50,min:1,max:100}],
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Steering: 0 straight, +right, −left.' },
+    { type:'sp_start', message0:'start driving steering %1 speed %2', args0:[
+        {type:'field_number',name:'STEER',value:0,min:-100,max:100},
+        {type:'field_number',name:'SPD',value:50,min:1,max:100}],
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Drive continuously until stopped.' },
+    { type:'sp_stop', message0:'stop driving',
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Stop the driving base.' },
+    { type:'sp_motor', message0:'run arm motor %1 degrees at speed %2', args0:[
+        {type:'field_number',name:'DEG',value:360},
+        {type:'field_number',name:'SPD',value:50,min:1,max:100}],
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Run the port-F motor.' },
+
+    // ── Hub / Display ──
+    { type:'sp_show_image', message0:'show image %1', args0:[
+        {type:'field_dropdown',name:'IMG',options:[['❤ heart','HEART'],['😀 happy','HAPPY'],['😢 sad','SAD'],['✓ yes','YES'],['✗ no','NO'],['↑ arrow up','ARROW_N'],['↓ arrow down','ARROW_S'],['→ arrow right','ARROW_E'],['← arrow left','ARROW_W'],['◆ diamond','DIAMOND'],['🎯 target','TARGET']]}],
+      previousStatement:null,nextStatement:null, colour:45, tooltip:'Show a picture on the 5×5 display.' },
+    { type:'sp_write', message0:'write %1', args0:[{type:'input_value',name:'TEXT'}],
+      previousStatement:null,nextStatement:null, colour:45, tooltip:'Scroll text across the display.' },
+    { type:'sp_matrix_off', message0:'turn off display',
+      previousStatement:null,nextStatement:null, colour:45, tooltip:'Clear the display.' },
+    { type:'sp_status_light', message0:'set status light %1', args0:[
+        {type:'field_dropdown',name:'COL',options:[['red','red'],['orange','orange'],['yellow','yellow'],['green','green'],['cyan','cyan'],['blue','blue'],['violet','violet'],['pink','pink'],['white','white'],['off','black']]}],
+      previousStatement:null,nextStatement:null, colour:45, tooltip:'Set the hub status light.' },
+    { type:'sp_beep', message0:'beep note %1 for %2 s', args0:[
+        {type:'field_number',name:'NOTE',value:60,min:44,max:123},
+        {type:'field_number',name:'SEC',value:0.5,min:0}],
+      previousStatement:null,nextStatement:null, colour:45, tooltip:'Play a beep.' },
+
+    // ── Sensors ──
+    { type:'sp_distance', message0:'distance (cm)', output:'Number', colour:120, tooltip:'Distance ahead in cm.' },
+    { type:'sp_colour', message0:'colour', output:'String', colour:120, tooltip:'Colour under the sensor.' },
+    { type:'sp_reflection', message0:'reflected light', output:'Number', colour:120, tooltip:'0 dark – 100 bright.' },
+    { type:'sp_force', message0:'force sensor pressed?', output:'Boolean', colour:120, tooltip:'Is the force sensor pressed?' },
+    { type:'sp_button', message0:'%1 button pressed?', args0:[
+        {type:'field_dropdown',name:'BTN',options:[['left','left'],['right','right']]}],
+      output:'Boolean', colour:120, tooltip:'Is a hub button pressed?' },
+    { type:'sp_yaw', message0:'yaw angle', output:'Number', colour:120, tooltip:'Heading since program start.' },
+
+    // ── Control ──
+    { type:'sp_wait', message0:'wait %1 seconds', args0:[{type:'field_number',name:'SEC',value:1,min:0}],
+      previousStatement:null,nextStatement:null, colour:280, tooltip:'Pause the program.' },
+    { type:'sp_wait_until', message0:'wait until %1', args0:[{type:'input_value',name:'COND',check:'Boolean'}],
+      previousStatement:null,nextStatement:null, colour:280, tooltip:'Wait until a condition is true.' },
+    { type:'sp_print', message0:'print %1', args0:[{type:'input_value',name:'MSG'}],
+      previousStatement:null,nextStatement:null, colour:160, tooltip:'Print to the console.' },
+  ]);
+
+  // ── Generators → Python ──
+  const ORDER_ATOM = Blockly.Python.ORDER_ATOMIC;
+  P.forBlock['sp_move']   = b => `motor_pair.move(${b.getFieldValue('DIR')==='-1'?'-':''}${b.getFieldValue('CM')})\n`;
+  P.forBlock['sp_turn']   = b => `motor_pair.move(${b.getFieldValue('DEG')}, 'degrees', steering=${b.getFieldValue('DIR')})\n`;
+  P.forBlock['sp_steer']  = b => `motor_pair.move(${b.getFieldValue('CM')}, 'cm', steering=${b.getFieldValue('STEER')})\n`;
+  P.forBlock['sp_start']  = b => `motor_pair.start(steering=${b.getFieldValue('STEER')}, speed=${b.getFieldValue('SPD')})\n`;
+  P.forBlock['sp_stop']   = () => `motor_pair.stop()\n`;
+  P.forBlock['sp_motor']  = b => `arm.run_for_degrees(${b.getFieldValue('DEG')}, ${b.getFieldValue('SPD')})\n`;
+  P.forBlock['sp_show_image'] = b => `hub.light_matrix.show_image('${b.getFieldValue('IMG')}')\n`;
+  P.forBlock['sp_write']  = b => `hub.light_matrix.write(${P.valueToCode(b,'TEXT',P.ORDER_NONE)||"''"})\n`;
+  P.forBlock['sp_matrix_off'] = () => `hub.light_matrix.off()\n`;
+  P.forBlock['sp_status_light'] = b => `hub.status_light.on('${b.getFieldValue('COL')}')\n`;
+  P.forBlock['sp_beep']   = b => `hub.speaker.beep(${b.getFieldValue('NOTE')}, ${b.getFieldValue('SEC')})\n`;
+  P.forBlock['sp_distance']   = () => ['distance_sensor.get_distance_cm()', ORDER_ATOM];
+  P.forBlock['sp_colour']     = () => ['color_sensor.get_color()', ORDER_ATOM];
+  P.forBlock['sp_reflection'] = () => ['color_sensor.get_reflected_light()', ORDER_ATOM];
+  P.forBlock['sp_force']      = () => ['force_sensor.is_pressed()', ORDER_ATOM];
+  P.forBlock['sp_button']     = b => [`hub.${b.getFieldValue('BTN')}_button.is_pressed()`, ORDER_ATOM];
+  P.forBlock['sp_yaw']        = () => ['hub.motion_sensor.get_yaw_angle()', ORDER_ATOM];
+  P.forBlock['sp_wait']   = b => `wait_for_seconds(${b.getFieldValue('SEC')})\n`;
+  P.forBlock['sp_wait_until'] = b => `wait_until(lambda: ${P.valueToCode(b,'COND',P.ORDER_NONE)||'True'})\n`;
+  P.forBlock['sp_print']  = b => `print(${P.valueToCode(b,'MSG',P.ORDER_NONE)||"''"})\n`;
+
+  const toolbox = { kind:'categoryToolbox', contents:[
+    { kind:'category', name:'🚗 Movement', colour:'#5b80a5', contents:[
+      {kind:'block',type:'sp_move'},{kind:'block',type:'sp_turn'},{kind:'block',type:'sp_steer'},
+      {kind:'block',type:'sp_start'},{kind:'block',type:'sp_stop'},{kind:'block',type:'sp_motor'} ]},
+    { kind:'category', name:'🟨 Hub', colour:'#a5924b', contents:[
+      {kind:'block',type:'sp_show_image'},
+      {kind:'block',type:'sp_write', inputs:{TEXT:{block:{type:'text',fields:{TEXT:'HI'}}}}},
+      {kind:'block',type:'sp_matrix_off'},{kind:'block',type:'sp_status_light'},{kind:'block',type:'sp_beep'} ]},
+    { kind:'category', name:'📡 Sensors', colour:'#5ba55b', contents:[
+      {kind:'block',type:'sp_distance'},{kind:'block',type:'sp_colour'},{kind:'block',type:'sp_reflection'},
+      {kind:'block',type:'sp_force'},{kind:'block',type:'sp_button'},{kind:'block',type:'sp_yaw'} ]},
+    { kind:'category', name:'⏱ Control', colour:'#a55ba5', contents:[
+      {kind:'block',type:'sp_wait'},{kind:'block',type:'sp_wait_until'} ]},
+    { kind:'sep' },
+    { kind:'category', name:'🔁 Loops', colour:'#0fbd8c', contents:[
+      {kind:'block',type:'controls_repeat_ext', inputs:{TIMES:{block:{type:'math_number',fields:{NUM:10}}}}},
+      {kind:'block',type:'controls_whileUntil'},
+      {kind:'block',type:'controls_for'} ]},
+    { kind:'category', name:'🔀 Logic', colour:'#4c97ff', contents:[
+      {kind:'block',type:'controls_if'},{kind:'block',type:'controls_ifelse'},
+      {kind:'block',type:'logic_compare'},{kind:'block',type:'logic_operation'},
+      {kind:'block',type:'logic_negate'},{kind:'block',type:'logic_boolean'} ]},
+    { kind:'category', name:'🔢 Math', colour:'#59c059', contents:[
+      {kind:'block',type:'math_number'},{kind:'block',type:'math_arithmetic'},
+      {kind:'block',type:'math_random_int'},{kind:'block',type:'math_modulo'} ]},
+    { kind:'category', name:'📦 Variables', colour:'#ff8c1a', custom:'VARIABLE' },
+    { kind:'category', name:'💬 Text', colour:'#ffbf00', contents:[
+      {kind:'block',type:'text'},{kind:'block',type:'text_join'},{kind:'block',type:'text_print'} ]},
+    { kind:'category', name:'💬 Output', colour:'#5ba58c', contents:[ {kind:'block',type:'sp_print'} ]},
+  ]};
+
+  const theme = Blockly.Theme.defineTheme('spike-dark', {
+    base: Blockly.Themes.Zelos,
+    componentStyles: {
+      workspaceBackgroundColour:'#080703', toolboxBackgroundColour:'#14110a',
+      toolboxForegroundColour:'#efe7cf', flyoutBackgroundColour:'#14110a',
+      flyoutForegroundColour:'#efe7cf', flyoutOpacity:1, scrollbarColour:'#544a2a',
+      scrollbarOpacity:0.7, insertionMarkerColour:'#facc15', insertionMarkerOpacity:0.4, cursorColour:'#facc15',
+    },
+  });
+
+  const div = document.getElementById('blocklyDiv');
+  blocklyWorkspace = Blockly.inject(div, {
+    toolbox, theme,
+    grid:{spacing:20,length:3,colour:'rgba(255,255,255,0.04)',snap:true},
+    zoom:{controls:true,wheel:true,startScale:0.85,maxScale:2,minScale:0.4,scaleSpeed:1.2},
+    trashcan:true, scrollbars:true, sounds:false, renderer:'zelos',
+  });
+  new ResizeObserver(()=>{ if(blocklyWorkspace) Blockly.svgResize(blocklyWorkspace); }).observe(div);
+  loadStarterBlocks();
+}
+
+function loadStarterBlocks(){
+  if (!blocklyWorkspace) return;
+  try { Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.utils.xml.textToDom(STARTER_BLOCKS), blocklyWorkspace); }
+  catch(e){ blocklyWorkspace.clear(); }
+}
+
+function getCodeFromBlocks(){
+  if (!blocklyWorkspace) return PREAMBLE;
+  const body = Blockly.Python.workspaceToCode(blocklyWorkspace);
+  return PREAMBLE + '\n' + body;
+}
+
+function setMode(mode){
+  if (mode==='blocks' && !BLOCKLY_OK) mode = 'py';   // graceful fallback if the block library is unavailable
+  currentMode = mode;
+  const py = document.getElementById('modePy'), bl = document.getElementById('modeBlocks');
+  const codeArea = document.getElementById('codeArea'), blockDiv = document.getElementById('blocklyDiv');
+  if (mode==='py'){
+    py.classList.add('active'); bl.classList.remove('active');
+    codeArea.style.display='block'; blockDiv.style.display='none';
+    // reflect current blocks into the Python view for reference
+    if (blocklyWorkspace && !document.getElementById('codeInput').value.trim())
+      document.getElementById('codeInput').value = getCodeFromBlocks();
+  } else {
+    bl.classList.add('active'); py.classList.remove('active');
+    codeArea.style.display='none'; blockDiv.style.display='flex';
+    initBlockly();
+    if (blocklyWorkspace) Blockly.svgResize(blocklyWorkspace);
+  }
+}
+
+const STARTER_BLOCKS = `<xml>
+  <block type="sp_show_image" x="24" y="24"><field name="IMG">HAPPY</field>
+    <next><block type="controls_repeat_ext">
+      <value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value>
+      <statement name="DO">
+        <block type="sp_move"><field name="DIR">1</field><field name="CM">20</field>
+          <next><block type="sp_turn"><field name="DIR">100</field><field name="DEG">90</field></block></next>
+        </block>
+      </statement>
+      <next><block type="sp_show_image"><field name="IMG">YES</field>
+        <next><block type="sp_beep"><field name="NOTE">60</field><field name="SEC">0.5</field></block></next>
+      </block></next>
+    </block></next>
+  </block>
+</xml>`;
+
+/* ══════════════════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════════════════ */
+// build the 5×5 matrix cells
+(function(){
+  const m = document.getElementById('matrix');
+  for (let i=0;i<25;i++){ const d=document.createElement('div'); d.className='px'; m.appendChild(d); }
+})();
+
+// wrap loadMission to also refresh starter Python
+const _origLoadMission = loadMission;
+window.loadMission = function(id){
+  _origLoadMission(id);
+  document.getElementById('codeInput').value = STARTERS[id] || STARTERS.free;
+};
+
+// Tab inserts 4 spaces
+document.getElementById('codeInput').addEventListener('keydown', e=>{
+  if (e.key==='Tab'){ e.preventDefault();
+    const s=e.target.selectionStart, v=e.target.value;
+    e.target.value = v.slice(0,s)+'    '+v.slice(e.target.selectionEnd);
+    e.target.selectionStart = e.target.selectionEnd = s+4;
+  }
+});
+// Ctrl/Cmd+R runs
+document.addEventListener('keydown', e=>{
+  if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='r'){ e.preventDefault(); runCode(); }
+});
+
+renderMatrix(); renderStatus();
+document.getElementById('codeInput').value = STARTERS.free;
+if (BLOCKLY_OK){
+  initBlockly();
+  loadMission('free');
+  setMode('blocks');
+} else {
+  // Block library couldn't load — run in Python-only mode
+  document.getElementById('modeBlocks').style.display = 'none';
+  loadMission('free');
+  setMode('py');
+  addLog('ℹ Block editor unavailable — using Python mode.', 'info');
+}
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v8'; // bumped from v4 → forces cache refresh
+const CACHE_NAME = 'magic-lab-v9'; // bumped from v8 → refresh for Spike Sorcerer
 
 const urlsToCache = [
   '/',
@@ -18,6 +18,8 @@ const urlsToCache = [
   '/math-magician/gr8/ch2.js',
   '/math-magician/gr8/ch3.js',
   '/math-magician/gr8/ch4.js',
+  '/spike-sorcerer/index.html',
+  '/spike-sorcerer/spike-python.js',
 
   // ── Phase 1 additions ──────────────────────────────────────
   '/auth.js',
