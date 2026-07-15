@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v16'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v16: renamed Spike Sorcerer -> Spike Spellcaster (new path)
+const CACHE_NAME = 'magic-lab-v17'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v17: gentler gyro turn_to fine-phase (wider deadband, softer nudges)
 
 const urlsToCache = [
   '/',

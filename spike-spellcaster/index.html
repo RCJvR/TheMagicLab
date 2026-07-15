@@ -1208,18 +1208,22 @@ async def turn_to(target, speed=200):
         motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
-    await runloop.sleep_ms(150)                      # let momentum settle before fine-tuning
+    await runloop.sleep_ms(200)                      # let momentum settle before fine-tuning
 
-    # Fine phase — short low-power nudges, stopping to settle between each one,
-    # so momentum can't carry it past the target and start a "wiggle".
-    for _ in range(15):
+    # Fine phase — very short low-power nudges, stopping to settle between
+    # each one, so momentum can't carry it past the target and start a
+    # "wiggle". Gentler and more patient than a continuous P-loop.
+    for i in range(20):
         error = norm(target - yaw())
-        if abs(error) <= 3:                          # deadband (°): widen if it still wiggles
+        if abs(error) <= 5:                          # deadband (°): widen if it still wiggles
             break
-        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=30)
-        await runloop.sleep_ms(60)
+        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=22)
+        await runloop.sleep_ms(35)
         motor_pair.stop(motor_pair.PAIR_1)
-        await runloop.sleep_ms(150)
+        await runloop.sleep_ms(220)
+    else:
+        print("turn_to: gave up", round(norm(target - yaw()), 1), "deg from target")
+    motor_pair.stop(motor_pair.PAIR_1)
 
 async def main():
     await runloop.sleep_ms(1000)     # keep the robot STILL so the gyro settles
@@ -1370,18 +1374,22 @@ async def turn_to(target, speed=200):
         motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
-    await runloop.sleep_ms(150)                   # let momentum settle before fine-tuning
+    await runloop.sleep_ms(200)                   # let momentum settle before fine-tuning
 
-    # Fine phase — short low-power nudges, stopping to settle between each one,
-    # so momentum can't carry it past the target and start a "wiggle".
-    for _ in range(15):
+    # Fine phase — very short low-power nudges, stopping to settle between
+    # each one, so momentum can't carry it past the target and start a
+    # "wiggle". Gentler and more patient than a continuous P-loop.
+    for i in range(20):
         error = norm(target - yaw())
-        if abs(error) <= 3:
+        if abs(error) <= 5:
             break
-        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=30)
-        await runloop.sleep_ms(60)
+        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=22)
+        await runloop.sleep_ms(35)
         motor_pair.stop(motor_pair.PAIR_1)
-        await runloop.sleep_ms(150)
+        await runloop.sleep_ms(220)
+    else:
+        print("turn_to: gave up", round(norm(target - yaw()), 1), "deg from target")
+    motor_pair.stop(motor_pair.PAIR_1)
 
 async def drive_straight(distance_deg, speed=300):
     heading = yaw()                              # hold whatever way we face now
@@ -1548,18 +1556,22 @@ async def turn_to(target, speed=200):
         motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=power)
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
-    await runloop.sleep_ms(150)                                # let momentum settle before fine-tuning
+    await runloop.sleep_ms(200)                                # let momentum settle before fine-tuning
 
-    # Fine phase — short low-power nudges, stopping to settle between each one,
-    # so momentum can't carry it past the target and start a "wiggle".
-    for _ in range(15):
+    # Fine phase — very short low-power nudges, stopping to settle between
+    # each one, so momentum can't carry it past the target and start a
+    # "wiggle". Gentler and more patient than a continuous P-loop.
+    for i in range(20):
         error = norm(target - yaw())
-        if abs(error) <= 3:                                    # deadband (°): widen if it still wiggles
+        if abs(error) <= 5:                                    # deadband (°): widen if it still wiggles
             break
-        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=30)
-        await runloop.sleep_ms(60)
+        motor_pair.move(motor_pair.PAIR_1, 100 if error > 0 else -100, velocity=22)
+        await runloop.sleep_ms(35)
         motor_pair.stop(motor_pair.PAIR_1)
-        await runloop.sleep_ms(150)
+        await runloop.sleep_ms(220)
+    else:
+        print("turn_to: gave up", round(norm(target - yaw()), 1), "deg from target")
+    motor_pair.stop(motor_pair.PAIR_1)
 
 async def turn_by(delta, speed=200):
     await turn_to(yaw() + delta, speed)                        # relative turn, no gyro reset
