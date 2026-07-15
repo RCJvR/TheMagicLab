@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v19'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v19: reordered home page cards into rainbow (ROYGBIV) order
+const CACHE_NAME = 'magic-lab-v20'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v20: Drawing Druid recoloured to sky blue; footer links match card order
 
 const urlsToCache = [
   '/',
