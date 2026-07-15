@@ -1371,15 +1371,21 @@ def follow_line(seconds):
 `;
 
 // Blocks on the LIVE HUB compile to the SPIKE 3 modular API + these async helpers.
-const HUB_BLOCK_PREAMBLE =
-`# Auto-generated from blocks for a real SPIKE Prime hub (firmware v3 · SPIKE 3 API).
-from hub import port, motion_sensor, light_matrix, button
-import runloop, motor, motor_pair, color_sensor, distance_sensor, force_sensor
+// Drive ports come from the "when program starts" block; imports are trimmed to
+// what the program actually uses so an unused module can't break the upload.
+function hubBlockPreamble(leftPort, rightPort, body){
+  body = body || '';
+  const imports = [
+    'from hub import port, motion_sensor, light_matrix',
+    'import runloop, motor, motor_pair, color_sensor, distance_sensor, force_sensor',
+  ];
+  if (/\bbutton\./.test(body)) imports.splice(1, 0, 'from hub import button');
+  return `# Auto-generated from blocks for a real SPIKE Prime hub (firmware v3 · SPIKE 3 API).
+${imports.join('\n')}
 
-# ── Your robot ──
-LEFT = port.A          # left drive motor
-RIGHT = port.B         # right drive motor
-ARM = port.F           # attachment motor
+# ── Your robot (drive ports set by the "when program starts" block) ──
+LEFT = port.${leftPort}
+RIGHT = port.${rightPort}
 WHEEL_CIRC_CM = 17.5   # measure YOUR wheel (circumference in cm) for accurate distance
 motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
 
@@ -1410,11 +1416,11 @@ async def drive_straight_cm(cm, speed=300):
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
 
-async def follow_line(seconds, target=50, kp=0.4, kd=2.5, base=250):
+async def follow_line(seconds, sensor, target=50, kp=0.4, kd=2.5, base=250):
     last = 0
     t = 0
     while t < seconds * 1000:
-        error = color_sensor.reflection(port.C) - target
+        error = color_sensor.reflection(sensor) - target
         steer = max(-100, min(100, int(kp * error + kd * (error - last))))
         motor_pair.move(motor_pair.PAIR_1, steer, velocity=base)
         last = error
@@ -1422,6 +1428,7 @@ async def follow_line(seconds, target=50, kp=0.4, kd=2.5, base=250):
         await runloop.sleep_ms(10)
     motor_pair.stop(motor_pair.PAIR_1)
 `;
+}
 
 const STARTERS = {
   free: PREAMBLE + `
@@ -1493,6 +1500,14 @@ function initBlockly(){
   const P = Blockly.Python;
 
   Blockly.defineBlocksWithJsonArray([
+    // ── Actions ──
+    { type:'sp_on_start', message0:'▶ when program starts %1 drive base:  left %2   right %3',
+      args0:[{type:'input_dummy'},
+             {type:'field_dropdown',name:'LEFT',options:[['A','A'],['B','B'],['C','C'],['D','D'],['E','E'],['F','F']]},
+             {type:'field_dropdown',name:'RIGHT',options:[['B','B'],['A','A'],['C','C'],['D','D'],['E','E'],['F','F']]}],
+      nextStatement:null, colour:340,
+      tooltip:'Program entry point. Set the two ports your driving-base motors are plugged into.' },
+
     // ── Movement ──
     { type:'sp_move', message0:'drive %1 %2 cm', args0:[
         {type:'field_dropdown',name:'DIR',options:[['forward','1'],['backward','-1']]},
@@ -1513,10 +1528,11 @@ function initBlockly(){
       previousStatement:null,nextStatement:null, colour:210, tooltip:'Drive continuously until stopped.' },
     { type:'sp_stop', message0:'stop driving',
       previousStatement:null,nextStatement:null, colour:210, tooltip:'Stop the driving base.' },
-    { type:'sp_motor', message0:'run arm motor %1 degrees at speed %2', args0:[
+    { type:'sp_motor', message0:'run motor %1 for %2 degrees at speed %3', args0:[
+        {type:'field_dropdown',name:'PORT',options:[['F','F'],['A','A'],['B','B'],['C','C'],['D','D'],['E','E']]},
         {type:'field_number',name:'DEG',value:360},
         {type:'field_number',name:'SPD',value:50,min:1,max:100}],
-      previousStatement:null,nextStatement:null, colour:210, tooltip:'Run the port-F motor.' },
+      previousStatement:null,nextStatement:null, colour:210, tooltip:'Run a single motor on the chosen port.' },
 
     // ── Hub / Display ──
     { type:'sp_show_image', message0:'show image %1', args0:[
@@ -1534,11 +1550,19 @@ function initBlockly(){
         {type:'field_number',name:'SEC',value:0.5,min:0}],
       previousStatement:null,nextStatement:null, colour:45, tooltip:'Play a beep.' },
 
-    // ── Sensors ──
-    { type:'sp_distance', message0:'distance (cm)', output:'Number', colour:120, tooltip:'Distance ahead in cm.' },
-    { type:'sp_colour', message0:'colour', output:'String', colour:120, tooltip:'Colour under the sensor.' },
-    { type:'sp_reflection', message0:'reflected light', output:'Number', colour:120, tooltip:'0 dark – 100 bright.' },
-    { type:'sp_force', message0:'force sensor pressed?', output:'Boolean', colour:120, tooltip:'Is the force sensor pressed?' },
+    // ── Sensors (choose the port each sensor is plugged into) ──
+    { type:'sp_distance', message0:'distance %1 (cm)',
+      args0:[{type:'field_dropdown',name:'PORT',options:[['D','D'],['A','A'],['B','B'],['C','C'],['E','E'],['F','F']]}],
+      output:'Number', colour:120, tooltip:'Distance ahead in cm.' },
+    { type:'sp_colour', message0:'colour %1',
+      args0:[{type:'field_dropdown',name:'PORT',options:[['C','C'],['A','A'],['B','B'],['D','D'],['E','E'],['F','F']]}],
+      output:'String', colour:120, tooltip:'Colour under the sensor.' },
+    { type:'sp_reflection', message0:'reflected light %1',
+      args0:[{type:'field_dropdown',name:'PORT',options:[['C','C'],['A','A'],['B','B'],['D','D'],['E','E'],['F','F']]}],
+      output:'Number', colour:120, tooltip:'0 dark – 100 bright.' },
+    { type:'sp_force', message0:'force %1 pressed?',
+      args0:[{type:'field_dropdown',name:'PORT',options:[['E','E'],['A','A'],['B','B'],['C','C'],['D','D'],['F','F']]}],
+      output:'Boolean', colour:120, tooltip:'Is the force sensor pressed?' },
     { type:'sp_button', message0:'%1 button pressed?', args0:[
         {type:'field_dropdown',name:'BTN',options:[['left','left'],['right','right']]}],
       output:'Boolean', colour:120, tooltip:'Is a hub button pressed?' },
@@ -1549,8 +1573,10 @@ function initBlockly(){
       previousStatement:null,nextStatement:null, colour:20, tooltip:'Turn to an absolute heading (0 = start). Gyro-controlled on the hub.' },
     { type:'sp_drive_cm', message0:'drive straight %1 cm', args0:[{type:'field_number',name:'CM',value:20,min:0}],
       previousStatement:null,nextStatement:null, colour:20, tooltip:'Straight drive; gyro-corrected on the hub.' },
-    { type:'sp_follow_line', message0:'follow line for %1 s', args0:[{type:'field_number',name:'SEC',value:5,min:0}],
-      previousStatement:null,nextStatement:null, colour:20, tooltip:'PID line-follow on the colour sensor (port C).' },
+    { type:'sp_follow_line', message0:'follow line for %1 s using %2', args0:[
+        {type:'field_number',name:'SEC',value:5,min:0},
+        {type:'field_dropdown',name:'PORT',options:[['C','C'],['A','A'],['B','B'],['D','D'],['E','E'],['F','F']]}],
+      previousStatement:null,nextStatement:null, colour:20, tooltip:'PID line-follow on the chosen colour sensor.' },
     { type:'sp_reset_gyro', message0:'reset gyro to 0',
       previousStatement:null,nextStatement:null, colour:20, tooltip:'Set the current heading as 0°.' },
     { type:'sp_gyro_yaw', message0:'gyro heading', output:'Number', colour:20, tooltip:'Current heading in degrees.' },
@@ -1597,10 +1623,11 @@ function initBlockly(){
       : `motor_pair.start(steering=${steer}, speed=${spd})\n`;
   };
   P.forBlock['sp_stop'] = () => onHub() ? `motor_pair.stop(motor_pair.PAIR_1)\n` : `motor_pair.stop()\n`;
+  P.forBlock['sp_on_start'] = () => '';   // entry point; the stack below it is the program
   P.forBlock['sp_motor'] = b => {
-    const deg=b.getFieldValue('DEG'), spd=b.getFieldValue('SPD');
+    const pt=b.getFieldValue('PORT'), deg=b.getFieldValue('DEG'), spd=b.getFieldValue('SPD');
     return onHub()
-      ? `await motor.run_for_degrees(ARM, ${deg}, ${spd}*10)\n`
+      ? `await motor.run_for_degrees(port.${pt}, ${deg}, ${spd}*10)\n`
       : `arm.run_for_degrees(${deg}, ${spd})\n`;
   };
   P.forBlock['sp_show_image'] = b => {
@@ -1620,17 +1647,17 @@ function initBlockly(){
   P.forBlock['sp_beep'] = b => onHub()
     ? `pass  # beep: sound API is firmware-dependent on the hub\n`
     : `hub.speaker.beep(${b.getFieldValue('NOTE')}, ${b.getFieldValue('SEC')})\n`;
-  P.forBlock['sp_distance']   = () => onHub()
-    ? ['distance_sensor.distance(port.D)', ORDER_ATOM]           // hub: millimetres, -1 = none
+  P.forBlock['sp_distance']   = b => onHub()
+    ? [`distance_sensor.distance(port.${b.getFieldValue('PORT')})`, ORDER_ATOM]   // hub: mm, -1 = none
     : ['distance_sensor.get_distance_cm()', ORDER_ATOM];
-  P.forBlock['sp_colour']     = () => onHub()
-    ? ['color_sensor.color(port.C)', ORDER_ATOM]                 // hub: a color constant (int)
+  P.forBlock['sp_colour']     = b => onHub()
+    ? [`color_sensor.color(port.${b.getFieldValue('PORT')})`, ORDER_ATOM]          // hub: colour constant (int)
     : ['color_sensor.get_color()', ORDER_ATOM];
-  P.forBlock['sp_reflection'] = () => onHub()
-    ? ['color_sensor.reflection(port.C)', ORDER_ATOM]
+  P.forBlock['sp_reflection'] = b => onHub()
+    ? [`color_sensor.reflection(port.${b.getFieldValue('PORT')})`, ORDER_ATOM]
     : ['color_sensor.get_reflected_light()', ORDER_ATOM];
-  P.forBlock['sp_force']      = () => onHub()
-    ? ['force_sensor.pressed(port.E)', ORDER_ATOM]
+  P.forBlock['sp_force']      = b => onHub()
+    ? [`force_sensor.pressed(port.${b.getFieldValue('PORT')})`, ORDER_ATOM]
     : ['force_sensor.is_pressed()', ORDER_ATOM];
   P.forBlock['sp_button']     = b => {
     const btn = b.getFieldValue('BTN');
@@ -1656,11 +1683,15 @@ function initBlockly(){
   // ── Accuracy blocks → call helpers defined in the preamble (async on the hub) ──
   P.forBlock['sp_turn_to']     = b => onHub() ? `await turn_to(${b.getFieldValue('DEG')})\n`        : `turn_to(${b.getFieldValue('DEG')})\n`;
   P.forBlock['sp_drive_cm']    = b => onHub() ? `await drive_straight_cm(${b.getFieldValue('CM')})\n` : `drive_straight_cm(${b.getFieldValue('CM')})\n`;
-  P.forBlock['sp_follow_line'] = b => onHub() ? `await follow_line(${b.getFieldValue('SEC')})\n`     : `follow_line(${b.getFieldValue('SEC')})\n`;
+  P.forBlock['sp_follow_line'] = b => onHub()
+    ? `await follow_line(${b.getFieldValue('SEC')}, port.${b.getFieldValue('PORT')})\n`
+    : `follow_line(${b.getFieldValue('SEC')})\n`;
   P.forBlock['sp_reset_gyro']  = () => onHub() ? `motion_sensor.reset_yaw(0)\n`                       : `hub.motion_sensor.reset_yaw_angle()\n`;
   P.forBlock['sp_gyro_yaw']    = () => onHub() ? ['yaw()', ORDER_ATOM]                                : ['hub.motion_sensor.get_yaw_angle()', ORDER_ATOM];
 
   const toolbox = { kind:'categoryToolbox', contents:[
+    { kind:'category', name:'🎬 Actions', colour:'#b45fb0', contents:[
+      {kind:'block',type:'sp_on_start'} ]},
     { kind:'category', name:'🚗 Movement', colour:'#5b80a5', contents:[
       {kind:'block',type:'sp_move'},{kind:'block',type:'sp_turn'},{kind:'block',type:'sp_steer'},
       {kind:'block',type:'sp_start'},{kind:'block',type:'sp_stop'},{kind:'block',type:'sp_motor'} ]},
@@ -1723,13 +1754,17 @@ function loadStarterBlocks(){
 
 function getCodeFromBlocks(){
   const hub = (runTarget === 'hub');
-  if (!blocklyWorkspace) return hub ? HUB_BLOCK_PREAMBLE : SIM_BLOCK_PREAMBLE;
+  if (!blocklyWorkspace) return hub ? hubBlockPreamble('A','B','') : SIM_BLOCK_PREAMBLE;
   const body = Blockly.Python.workspaceToCode(blocklyWorkspace);
+  // Drive ports from the "when program starts" block, if the student added one
+  let left = 'A', right = 'B';
+  const hat = blocklyWorkspace.getBlocksByType('sp_on_start', false)[0];
+  if (hat){ left = hat.getFieldValue('LEFT') || 'A'; right = hat.getFieldValue('RIGHT') || 'B'; }
   if (hub){
     // Wrap the generated statements inside `async def main():` (SPIKE 3 is async)
     const indented = body.split('\n').map(l => l.length ? '    ' + l : l).join('\n');
     const mainBody = body.trim().length ? indented : '    pass';
-    return HUB_BLOCK_PREAMBLE + '\nasync def main():\n' + mainBody + '\nrunloop.run(main())\n';
+    return hubBlockPreamble(left, right, body) + '\nasync def main():\n' + mainBody + '\nrunloop.run(main())\n';
   }
   return SIM_BLOCK_PREAMBLE + '\n' + body;
 }
@@ -1754,18 +1789,22 @@ function setMode(mode){
 }
 
 const STARTER_BLOCKS = `<xml>
-  <block type="sp_show_image" x="24" y="24"><field name="IMG">HAPPY</field>
-    <next><block type="controls_repeat_ext">
-      <value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value>
-      <statement name="DO">
-        <block type="sp_move"><field name="DIR">1</field><field name="CM">20</field>
-          <next><block type="sp_turn"><field name="DIR">100</field><field name="DEG">90</field></block></next>
-        </block>
-      </statement>
-      <next><block type="sp_show_image"><field name="IMG">YES</field>
-        <next><block type="sp_beep"><field name="NOTE">60</field><field name="SEC">0.5</field></block></next>
-      </block></next>
-    </block></next>
+  <block type="sp_on_start" x="24" y="24"><field name="LEFT">A</field><field name="RIGHT">B</field>
+    <next>
+      <block type="sp_show_image"><field name="IMG">HAPPY</field>
+        <next><block type="controls_repeat_ext">
+          <value name="TIMES"><block type="math_number"><field name="NUM">4</field></block></value>
+          <statement name="DO">
+            <block type="sp_move"><field name="DIR">1</field><field name="CM">20</field>
+              <next><block type="sp_turn"><field name="DIR">100</field><field name="DEG">90</field></block></next>
+            </block>
+          </statement>
+          <next><block type="sp_show_image"><field name="IMG">YES</field>
+            <next><block type="sp_beep"><field name="NOTE">60</field><field name="SEC">0.5</field></block></next>
+          </block></next>
+        </block></next>
+      </block>
+    </next>
   </block>
 </xml>`;
 
