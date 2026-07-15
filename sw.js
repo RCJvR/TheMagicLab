@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v18'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v18: single-phase turn_to (no nudge phase) + gentle drive_straight steer cap
+const CACHE_NAME = 'magic-lab-v19'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v19: reordered home page cards into rainbow (ROYGBIV) order
 
 const urlsToCache = [
   '/',
