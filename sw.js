@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v12'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v12: fix gyro-turn wiggle + heading-hold on drive-straight
+const CACHE_NAME = 'magic-lab-v13'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v13: Sync button + Run always uploads & runs latest code
 
 const urlsToCache = [
   '/',

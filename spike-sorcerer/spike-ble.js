@@ -361,7 +361,8 @@ class SpikeConnection {
     await this._request(msg.deviceNotificationRequest(intervalMs || 250), ID.DeviceNotificationResponse, 3000).catch(() => {});
   }
 
-  async runProgram(pySource, opts) {
+  // Upload a program to a slot WITHOUT starting it.
+  async uploadProgram(pySource, opts) {
     opts = opts || {};
     const slot = opts.slot || 0;
     const filename = opts.filename || 'program.py';
@@ -385,7 +386,13 @@ class SpikeConnection {
       progress(Math.min(1, (i + chunk.length) / total));
     }
     progress(1);
+    this._status('Upload complete');
+  }
 
+  // Upload a program, then start it.
+  async runProgram(pySource, opts) {
+    await this.uploadProgram(pySource, opts);
+    const slot = (opts && opts.slot) || 0;
     this._status('Starting program…');
     await this._request(msg.programFlow(false, slot), ID.ProgramFlowResponse, 4000);
     this._status('Program running');
@@ -410,6 +417,7 @@ const SpikeBLE = {
   getInfo: () => (_conn ? _conn.info : null),
   async connect(cb) { _conn = new SpikeConnection(); return _conn.connect(cb); },
   async disconnect() { if (_conn) await _conn.disconnect(); },
+  async uploadProgram(src, opts) { if (!_conn) throw new Error('not connected'); return _conn.uploadProgram(src, opts); },
   async runProgram(src, opts) { if (!_conn) throw new Error('not connected'); return _conn.runProgram(src, opts); },
   async stopProgram(opts) { if (!_conn) throw new Error('not connected'); return _conn.stopProgram(opts); },
   async enableTelemetry(ms) { if (_conn) return _conn.enableTelemetry(ms); },

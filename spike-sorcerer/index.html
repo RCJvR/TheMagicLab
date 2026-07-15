@@ -189,6 +189,8 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
         <button class="mode-btn" id="tgtHub" onclick="setTarget('hub')">🤖 Live Hub</button>
       </div>
       <button class="btn btn-run" id="btnRun" onclick="runCode()" title="Run (Ctrl+R)">▶ Run</button>
+      <button class="btn btn-reset" id="btnSync" onclick="syncToHub()" title="Upload the latest code to the hub without running it" style="opacity:0.35;">🔁 Sync</button>
+      <button class="btn btn-reset" id="btnStop" onclick="stopHub()" title="Stop the program currently running on the hub" style="opacity:0.35;">⏹ Stop</button>
       <button class="btn btn-reset" onclick="resetSim()">↺ Reset</button>
       <button class="btn btn-speed active" id="btnSlow" onclick="setSpeed('slow')" title="Real-time speed">🐢 Slow</button>
       <button class="btn btn-speed" id="btnFast" onclick="setSpeed('fast')" title="Fast forward">⚡ Fast</button>
@@ -964,8 +966,10 @@ function setTarget(t){
   document.getElementById('tgtHub').classList.toggle('active', t === 'hub');
   document.getElementById('btnSlow').style.opacity = t === 'hub' ? 0.35 : 1;
   document.getElementById('btnFast').style.opacity = t === 'hub' ? 0.35 : 1;
+  document.getElementById('btnSync').style.opacity = t === 'hub' ? 1 : 0.35;
+  document.getElementById('btnStop').style.opacity = t === 'hub' ? 1 : 0.35;
   const rb = document.getElementById('btnRun');
-  rb.title = t === 'hub' ? 'Upload & run on the connected hub (Ctrl+R)' : 'Run in the simulator (Ctrl+R)';
+  rb.title = t === 'hub' ? 'Upload & run the latest code on the hub (Ctrl+R)' : 'Run in the simulator (Ctrl+R)';
 }
 
 async function toggleHubConnection(){
@@ -1006,36 +1010,73 @@ function onHubDisconnect(){
   btn.textContent = '🔵 Connect Hub'; btn.style.background = 'rgba(59,130,246,0.10)';
   btn.style.color = '#93c5fd'; btn.style.borderColor = 'rgba(59,130,246,0.40)';
   btn.title = 'Connect a real SPIKE Prime hub over Bluetooth';
-  hubProgramRunning = false; document.getElementById('btnRun').textContent = '▶ Run';
+  hubProgramRunning = false;
   if (runTarget === 'hub') setTarget('sim');
 }
 
+// Read whatever program is currently in the editor (Python text or compiled from Blocks).
+function getCurrentSource(){
+  return currentMode === 'blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
+}
+
+// Run always uploads the LATEST code from the editor and starts it — even if
+// something is already running, it stops that first so you never end up
+// watching a stale program. Use the separate Stop button to just stop, or
+// Sync to just upload without running.
 async function runOnHub(){
   if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
-  if (hubProgramRunning){   // Run button acts as Stop while a program is running
-    try { await SpikeBLE.stopProgram({ slot: 0 }); addLog('⏹ Stop sent to hub.', 'info'); }
-    catch(e){ addLog('✗ ' + e.message, 'err'); }
-    return;
-  }
-  const source = currentMode === 'blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
+  const source = getCurrentSource();
   clearLog(); hubConsoleBuf = '';
   if (currentMode === 'blocks'){
     addLog('ℹ Blocks compiled to SPIKE 3 hub code (standard SPIKE wheel = 17.5 cm;', 'info');
     addLog('  edit WHEEL_CIRC_CM in Python view if your wheels differ).', 'info');
   }
+  if (hubProgramRunning){
+    addLog('⏹ Stopping the current program…', 'info');
+    try { await SpikeBLE.stopProgram({ slot: 0 }); } catch(e){ /* best-effort */ }
+    hubProgramRunning = false;
+  }
   addLog('⬆ Uploading program to hub…', 'info');
-  hubProgramRunning = true;
-  document.getElementById('btnRun').textContent = '⏹ Stop';
   setStatus('running', 'Uploading…');
   try {
     await SpikeBLE.runProgram(source, { slot: 0,
       onProgress: (p) => setStatus('running', 'Uploading ' + Math.round(p * 100) + '%…') });
+    hubProgramRunning = true;
     addLog('▶ Program started on the hub.', 'ok');
     setStatus('running', 'Program running on hub');
   } catch(e){
     addLog('✗ ' + e.message, 'err'); setStatus('error', e.message);
-    hubProgramRunning = false; document.getElementById('btnRun').textContent = '▶ Run';
+    hubProgramRunning = false;
   }
+}
+
+// Sync: upload the latest code to the hub WITHOUT running it.
+async function syncToHub(){
+  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
+  const source = getCurrentSource();
+  clearLog(); hubConsoleBuf = '';
+  if (hubProgramRunning){
+    addLog('⏹ Stopping the current program before syncing…', 'info');
+    try { await SpikeBLE.stopProgram({ slot: 0 }); } catch(e){ /* best-effort */ }
+    hubProgramRunning = false;
+  }
+  addLog('⬆ Syncing program to hub (not running it)…', 'info');
+  setStatus('running', 'Syncing…');
+  try {
+    await SpikeBLE.uploadProgram(source, { slot: 0,
+      onProgress: (p) => setStatus('running', 'Syncing ' + Math.round(p * 100) + '%…') });
+    addLog('✓ Synced — program saved to slot 0, not running.', 'ok');
+    setStatus('done', 'Synced to hub');
+  } catch(e){
+    addLog('✗ ' + e.message, 'err'); setStatus('error', e.message);
+  }
+}
+
+// Stop: stop whatever's running on the hub, without touching the upload.
+async function stopHub(){
+  if (!SpikeBLE.isConnected()){ addLog('⚠ Connect a hub first with “🔵 Connect Hub”.', 'err'); return; }
+  try { await SpikeBLE.stopProgram({ slot: 0 }); addLog('⏹ Stop sent to hub.', 'info'); }
+  catch(e){ addLog('✗ ' + e.message, 'err'); }
 }
 
 function onHubStatus(s){
@@ -1043,7 +1084,6 @@ function onHubStatus(s){
   if (s === 'Program stopped'){
     if (hubConsoleBuf){ addLog(hubConsoleBuf, 'out'); hubConsoleBuf = ''; }
     hubProgramRunning = false;
-    document.getElementById('btnRun').textContent = '▶ Run';
     setStatus('done', 'Program finished on hub');
   } else if (s === 'Program running'){
     setStatus('running', 'Program running on hub');
