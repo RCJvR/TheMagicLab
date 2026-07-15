@@ -1020,9 +1020,8 @@ async function runOnHub(){
   const source = currentMode === 'blocks' ? getCodeFromBlocks() : document.getElementById('codeInput').value;
   clearLog(); hubConsoleBuf = '';
   if (currentMode === 'blocks'){
-    addLog('⚠ Blocks generate the Simulator’s classic API, which usually will NOT', 'err');
-    addLog('  run on a firmware-v3 hub. For the hub, switch to Python and load a', 'info');
-    addLog('  hub template (the picker above). Uploading anyway…', 'info');
+    addLog('ℹ Blocks compiled to SPIKE 3 hub code (standard SPIKE wheel = 17.5 cm;', 'info');
+    addLog('  edit WHEEL_CIRC_CM in Python view if your wheels differ).', 'info');
   }
   addLog('⬆ Uploading program to hub…', 'info');
   hubProgramRunning = true;
@@ -1349,6 +1348,81 @@ force_sensor = ForceSensor('E')
 arm = Motor('F')
 `;
 
+// Blocks in the SIMULATOR use the classic `spike` API plus these helpers.
+const SIM_BLOCK_PREAMBLE = PREAMBLE + `
+# ── Accuracy helpers (idealised in the simulator) ──
+def turn_to(target):
+    err = target - hub.motion_sensor.get_yaw_angle()
+    if err > 0:
+        motor_pair.move(err, 'degrees', steering=100)
+    elif err < 0:
+        motor_pair.move(-err, 'degrees', steering=-100)
+
+def drive_straight_cm(cm):
+    motor_pair.move(cm)
+
+def follow_line(seconds):
+    steps = int(seconds * 20)
+    for _i in range(steps):
+        error = color_sensor.get_reflected_light() - 50
+        motor_pair.start(steering=int(error), speed=30)
+        wait_for_seconds(0.05)
+    motor_pair.stop()
+`;
+
+// Blocks on the LIVE HUB compile to the SPIKE 3 modular API + these async helpers.
+const HUB_BLOCK_PREAMBLE =
+`# Auto-generated from blocks for a real SPIKE Prime hub (firmware v3 · SPIKE 3 API).
+from hub import port, motion_sensor, light_matrix, button
+import runloop, motor, motor_pair, color_sensor, distance_sensor, force_sensor
+
+# ── Your robot ──
+LEFT = port.A          # left drive motor
+RIGHT = port.B         # right drive motor
+ARM = port.F           # attachment motor
+WHEEL_CIRC_CM = 17.5   # measure YOUR wheel (circumference in cm) for accurate distance
+motor_pair.pair(motor_pair.PAIR_1, LEFT, RIGHT)
+
+def yaw():
+    return motion_sensor.tilt_angles()[0] / 10   # decidegrees -> degrees
+
+async def turn_to(target, speed=200):
+    def norm(a):
+        return (a + 180) % 360 - 180
+    while abs(norm(target - yaw())) > 1:
+        error = norm(target - yaw())
+        steer = 100 if error > 0 else -100
+        v = max(40, min(speed, abs(error) * 8))
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=int(v))
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def turn_by(delta, speed=200):
+    motion_sensor.reset_yaw(0)
+    await turn_to(delta, speed)
+
+async def drive_straight_cm(cm, speed=300):
+    deg = int(cm / WHEEL_CIRC_CM * 360)
+    motor.reset_relative_position(LEFT, 0)
+    while abs(motor.relative_position(LEFT)) < deg:
+        steer = max(-100, min(100, int((0 - yaw()) * 2)))
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=speed)
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+
+async def follow_line(seconds, target=50, kp=0.4, kd=2.5, base=250):
+    last = 0
+    t = 0
+    while t < seconds * 1000:
+        error = color_sensor.reflection(port.C) - target
+        steer = max(-100, min(100, int(kp * error + kd * (error - last))))
+        motor_pair.move(motor_pair.PAIR_1, steer, velocity=base)
+        last = error
+        t += 10
+        await runloop.sleep_ms(10)
+    motor_pair.stop(motor_pair.PAIR_1)
+`;
+
 const STARTERS = {
   free: PREAMBLE + `
 # Free Play — drive a square and celebrate!
@@ -1470,6 +1544,17 @@ function initBlockly(){
       output:'Boolean', colour:120, tooltip:'Is a hub button pressed?' },
     { type:'sp_yaw', message0:'yaw angle', output:'Number', colour:120, tooltip:'Heading since program start.' },
 
+    // ── Accuracy (gyro / PID — works in the Simulator AND on the hub) ──
+    { type:'sp_turn_to', message0:'turn to heading %1 °', args0:[{type:'field_number',name:'DEG',value:90}],
+      previousStatement:null,nextStatement:null, colour:20, tooltip:'Turn to an absolute heading (0 = start). Gyro-controlled on the hub.' },
+    { type:'sp_drive_cm', message0:'drive straight %1 cm', args0:[{type:'field_number',name:'CM',value:20,min:0}],
+      previousStatement:null,nextStatement:null, colour:20, tooltip:'Straight drive; gyro-corrected on the hub.' },
+    { type:'sp_follow_line', message0:'follow line for %1 s', args0:[{type:'field_number',name:'SEC',value:5,min:0}],
+      previousStatement:null,nextStatement:null, colour:20, tooltip:'PID line-follow on the colour sensor (port C).' },
+    { type:'sp_reset_gyro', message0:'reset gyro to 0',
+      previousStatement:null,nextStatement:null, colour:20, tooltip:'Set the current heading as 0°.' },
+    { type:'sp_gyro_yaw', message0:'gyro heading', output:'Number', colour:20, tooltip:'Current heading in degrees.' },
+
     // ── Control ──
     { type:'sp_wait', message0:'wait %1 seconds', args0:[{type:'field_number',name:'SEC',value:1,min:0}],
       previousStatement:null,nextStatement:null, colour:280, tooltip:'Pause the program.' },
@@ -1479,33 +1564,109 @@ function initBlockly(){
       previousStatement:null,nextStatement:null, colour:160, tooltip:'Print to the console.' },
   ]);
 
-  // ── Generators → Python ──
+  // ── Generators → Python (TARGET-AWARE) ──
+  //   Simulator → classic `spike` API   |   Live Hub → SPIKE 3 modular async API
   const ORDER_ATOM = Blockly.Python.ORDER_ATOMIC;
-  P.forBlock['sp_move']   = b => `motor_pair.move(${b.getFieldValue('DIR')==='-1'?'-':''}${b.getFieldValue('CM')})\n`;
-  P.forBlock['sp_turn']   = b => `motor_pair.move(${b.getFieldValue('DEG')}, 'degrees', steering=${b.getFieldValue('DIR')})\n`;
-  P.forBlock['sp_steer']  = b => `motor_pair.move(${b.getFieldValue('CM')}, 'cm', steering=${b.getFieldValue('STEER')})\n`;
-  P.forBlock['sp_start']  = b => `motor_pair.start(steering=${b.getFieldValue('STEER')}, speed=${b.getFieldValue('SPD')})\n`;
-  P.forBlock['sp_stop']   = () => `motor_pair.stop()\n`;
-  P.forBlock['sp_motor']  = b => `arm.run_for_degrees(${b.getFieldValue('DEG')}, ${b.getFieldValue('SPD')})\n`;
-  P.forBlock['sp_show_image'] = b => `hub.light_matrix.show_image('${b.getFieldValue('IMG')}')\n`;
-  P.forBlock['sp_write']  = b => `hub.light_matrix.write(${P.valueToCode(b,'TEXT',P.ORDER_NONE)||"''"})\n`;
-  P.forBlock['sp_matrix_off'] = () => `hub.light_matrix.off()\n`;
-  P.forBlock['sp_status_light'] = b => `hub.status_light.on('${b.getFieldValue('COL')}')\n`;
-  P.forBlock['sp_beep']   = b => `hub.speaker.beep(${b.getFieldValue('NOTE')}, ${b.getFieldValue('SEC')})\n`;
-  P.forBlock['sp_distance']   = () => ['distance_sensor.get_distance_cm()', ORDER_ATOM];
-  P.forBlock['sp_colour']     = () => ['color_sensor.get_color()', ORDER_ATOM];
-  P.forBlock['sp_reflection'] = () => ['color_sensor.get_reflected_light()', ORDER_ATOM];
-  P.forBlock['sp_force']      = () => ['force_sensor.is_pressed()', ORDER_ATOM];
-  P.forBlock['sp_button']     = b => [`hub.${b.getFieldValue('BTN')}_button.is_pressed()`, ORDER_ATOM];
-  P.forBlock['sp_yaw']        = () => ['hub.motion_sensor.get_yaw_angle()', ORDER_ATOM];
-  P.forBlock['sp_wait']   = b => `wait_for_seconds(${b.getFieldValue('SEC')})\n`;
-  P.forBlock['sp_wait_until'] = b => `wait_until(lambda: ${P.valueToCode(b,'COND',P.ORDER_NONE)||'True'})\n`;
-  P.forBlock['sp_print']  = b => `print(${P.valueToCode(b,'MSG',P.ORDER_NONE)||"''"})\n`;
+  const onHub = () => runTarget === 'hub';
+  const HUB_IMG = { HEART:'IMAGE_HEART', HAPPY:'IMAGE_HAPPY', SAD:'IMAGE_SAD', YES:'IMAGE_YES',
+    NO:'IMAGE_NO', ARROW_N:'IMAGE_ARROW_N', ARROW_S:'IMAGE_ARROW_S', ARROW_E:'IMAGE_ARROW_E',
+    ARROW_W:'IMAGE_ARROW_W', DIAMOND:'IMAGE_DIAMOND', TARGET:'IMAGE_SQUARE' };
+
+  P.forBlock['sp_move'] = b => {
+    const back = b.getFieldValue('DIR')==='-1', cm = b.getFieldValue('CM');
+    return onHub()
+      ? `await motor_pair.move_for_degrees(motor_pair.PAIR_1, int(${cm}/WHEEL_CIRC_CM*360), 0, velocity=${back?-360:360})\n`
+      : `motor_pair.move(${back?'-':''}${cm})\n`;
+  };
+  P.forBlock['sp_turn'] = b => {
+    const left = b.getFieldValue('DIR')==='-100', deg = b.getFieldValue('DEG');
+    return onHub()
+      ? `await turn_by(${left?'-':''}${deg})\n`
+      : `motor_pair.move(${deg}, 'degrees', steering=${b.getFieldValue('DIR')})\n`;
+  };
+  P.forBlock['sp_steer'] = b => {
+    const steer=b.getFieldValue('STEER'), cm=b.getFieldValue('CM'), spd=b.getFieldValue('SPD');
+    return onHub()
+      ? `await motor_pair.move_for_degrees(motor_pair.PAIR_1, int(${cm}/WHEEL_CIRC_CM*360), ${steer}, velocity=${spd}*10)\n`
+      : `motor_pair.move(${cm}, 'cm', steering=${steer})\n`;
+  };
+  P.forBlock['sp_start'] = b => {
+    const steer=b.getFieldValue('STEER'), spd=b.getFieldValue('SPD');
+    return onHub()
+      ? `motor_pair.move(motor_pair.PAIR_1, ${steer}, velocity=${spd}*10)\n`
+      : `motor_pair.start(steering=${steer}, speed=${spd})\n`;
+  };
+  P.forBlock['sp_stop'] = () => onHub() ? `motor_pair.stop(motor_pair.PAIR_1)\n` : `motor_pair.stop()\n`;
+  P.forBlock['sp_motor'] = b => {
+    const deg=b.getFieldValue('DEG'), spd=b.getFieldValue('SPD');
+    return onHub()
+      ? `await motor.run_for_degrees(ARM, ${deg}, ${spd}*10)\n`
+      : `arm.run_for_degrees(${deg}, ${spd})\n`;
+  };
+  P.forBlock['sp_show_image'] = b => {
+    const img=b.getFieldValue('IMG');
+    return onHub()
+      ? `light_matrix.show_image(light_matrix.${HUB_IMG[img]||'IMAGE_HEART'})\n`
+      : `hub.light_matrix.show_image('${img}')\n`;
+  };
+  P.forBlock['sp_write'] = b => {
+    const t = P.valueToCode(b,'TEXT',P.ORDER_NONE)||"''";
+    return onHub() ? `await light_matrix.write(${t})\n` : `hub.light_matrix.write(${t})\n`;
+  };
+  P.forBlock['sp_matrix_off'] = () => onHub() ? `light_matrix.clear()\n` : `hub.light_matrix.off()\n`;
+  P.forBlock['sp_status_light'] = b => onHub()
+    ? `pass  # status light: firmware-dependent on the hub\n`
+    : `hub.status_light.on('${b.getFieldValue('COL')}')\n`;
+  P.forBlock['sp_beep'] = b => onHub()
+    ? `pass  # beep: sound API is firmware-dependent on the hub\n`
+    : `hub.speaker.beep(${b.getFieldValue('NOTE')}, ${b.getFieldValue('SEC')})\n`;
+  P.forBlock['sp_distance']   = () => onHub()
+    ? ['distance_sensor.distance(port.D)', ORDER_ATOM]           // hub: millimetres, -1 = none
+    : ['distance_sensor.get_distance_cm()', ORDER_ATOM];
+  P.forBlock['sp_colour']     = () => onHub()
+    ? ['color_sensor.color(port.C)', ORDER_ATOM]                 // hub: a color constant (int)
+    : ['color_sensor.get_color()', ORDER_ATOM];
+  P.forBlock['sp_reflection'] = () => onHub()
+    ? ['color_sensor.reflection(port.C)', ORDER_ATOM]
+    : ['color_sensor.get_reflected_light()', ORDER_ATOM];
+  P.forBlock['sp_force']      = () => onHub()
+    ? ['force_sensor.pressed(port.E)', ORDER_ATOM]
+    : ['force_sensor.is_pressed()', ORDER_ATOM];
+  P.forBlock['sp_button']     = b => {
+    const btn = b.getFieldValue('BTN');
+    return onHub()
+      ? [`(button.pressed(button.${btn==='left'?'LEFT':'RIGHT'}) > 0)`, ORDER_ATOM]
+      : [`hub.${btn}_button.is_pressed()`, ORDER_ATOM];
+  };
+  P.forBlock['sp_yaw'] = () => onHub()
+    ? ['yaw()', ORDER_ATOM]
+    : ['hub.motion_sensor.get_yaw_angle()', ORDER_ATOM];
+  P.forBlock['sp_wait'] = b => {
+    const s = b.getFieldValue('SEC');
+    return onHub() ? `await runloop.sleep_ms(int(${s}*1000))\n` : `wait_for_seconds(${s})\n`;
+  };
+  P.forBlock['sp_wait_until'] = b => {
+    const cond = P.valueToCode(b,'COND',P.ORDER_NONE)||'True';
+    return onHub()
+      ? `while not (${cond}):\n    await runloop.sleep_ms(10)\n`
+      : `wait_until(lambda: ${cond})\n`;
+  };
+  P.forBlock['sp_print'] = b => `print(${P.valueToCode(b,'MSG',P.ORDER_NONE)||"''"})\n`;
+
+  // ── Accuracy blocks → call helpers defined in the preamble (async on the hub) ──
+  P.forBlock['sp_turn_to']     = b => onHub() ? `await turn_to(${b.getFieldValue('DEG')})\n`        : `turn_to(${b.getFieldValue('DEG')})\n`;
+  P.forBlock['sp_drive_cm']    = b => onHub() ? `await drive_straight_cm(${b.getFieldValue('CM')})\n` : `drive_straight_cm(${b.getFieldValue('CM')})\n`;
+  P.forBlock['sp_follow_line'] = b => onHub() ? `await follow_line(${b.getFieldValue('SEC')})\n`     : `follow_line(${b.getFieldValue('SEC')})\n`;
+  P.forBlock['sp_reset_gyro']  = () => onHub() ? `motion_sensor.reset_yaw(0)\n`                       : `hub.motion_sensor.reset_yaw_angle()\n`;
+  P.forBlock['sp_gyro_yaw']    = () => onHub() ? ['yaw()', ORDER_ATOM]                                : ['hub.motion_sensor.get_yaw_angle()', ORDER_ATOM];
 
   const toolbox = { kind:'categoryToolbox', contents:[
     { kind:'category', name:'🚗 Movement', colour:'#5b80a5', contents:[
       {kind:'block',type:'sp_move'},{kind:'block',type:'sp_turn'},{kind:'block',type:'sp_steer'},
       {kind:'block',type:'sp_start'},{kind:'block',type:'sp_stop'},{kind:'block',type:'sp_motor'} ]},
+    { kind:'category', name:'🎯 Accuracy', colour:'#c08a3e', contents:[
+      {kind:'block',type:'sp_turn_to'},{kind:'block',type:'sp_drive_cm'},
+      {kind:'block',type:'sp_follow_line'},{kind:'block',type:'sp_reset_gyro'},{kind:'block',type:'sp_gyro_yaw'} ]},
     { kind:'category', name:'🟨 Hub', colour:'#a5924b', contents:[
       {kind:'block',type:'sp_show_image'},
       {kind:'block',type:'sp_write', inputs:{TEXT:{block:{type:'text',fields:{TEXT:'HI'}}}}},
@@ -1561,9 +1722,16 @@ function loadStarterBlocks(){
 }
 
 function getCodeFromBlocks(){
-  if (!blocklyWorkspace) return PREAMBLE;
+  const hub = (runTarget === 'hub');
+  if (!blocklyWorkspace) return hub ? HUB_BLOCK_PREAMBLE : SIM_BLOCK_PREAMBLE;
   const body = Blockly.Python.workspaceToCode(blocklyWorkspace);
-  return PREAMBLE + '\n' + body;
+  if (hub){
+    // Wrap the generated statements inside `async def main():` (SPIKE 3 is async)
+    const indented = body.split('\n').map(l => l.length ? '    ' + l : l).join('\n');
+    const mainBody = body.trim().length ? indented : '    pass';
+    return HUB_BLOCK_PREAMBLE + '\nasync def main():\n' + mainBody + '\nrunloop.run(main())\n';
+  }
+  return SIM_BLOCK_PREAMBLE + '\n' + body;
 }
 
 function setMode(mode){
