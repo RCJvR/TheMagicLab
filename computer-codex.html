@@ -151,6 +151,21 @@
     }
     .track-empty-back:hover { box-shadow: 0 5px 18px rgba(59,130,246,0.44); }
 
+    /* ── CAPS / IEB curriculum toggle (shown for CAT and IT only) ── */
+    .curriculum-toggle {
+      display: flex; gap: 4px; margin-top: 8px;
+      background: rgba(255,255,255,0.035); border: 1px solid var(--border2);
+      border-radius: 10px; padding: 3px;
+    }
+    .cur-pill {
+      flex: 1; font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 8px;
+      border-radius: 7px; border: none; background: none; color: var(--muted);
+      cursor: pointer; transition: all 140ms;
+    }
+    .cur-pill.active { background: rgba(59,130,246,0.18); color: #93c5fd; }
+    .cur-pill:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text2); }
+
     /* ── Collapsible unit groups ── */
     .unit-group { }
     .unit-header {
@@ -467,10 +482,15 @@
       <div id="sidebarHeader">
         <div class="sidebar-title">Subject</div>
         <div class="track-select-wrap">
-          <select id="trackSelect" class="track-select" onchange="switchTrack(this.value)">
-            <option value="coding">💻 Coding &amp; Robotics · Gr 8–9 IEB</option>
-            <option value="catit">🖥 CAT &amp; IT · Coming soon</option>
+          <select id="subjectSelect" class="track-select" onchange="onSubjectChange(this.value)">
+            <option value="coding">💻 Coding &amp; Robotics · Gr 8–9</option>
+            <option value="cat">🖥 CAT · Gr 10–12</option>
+            <option value="it">⌨️ IT · Gr 10–12</option>
           </select>
+        </div>
+        <div class="curriculum-toggle" id="curriculumToggle" style="display:none;">
+          <button class="cur-pill active" id="pillCaps" onclick="setCurriculum('caps')">CAPS</button>
+          <button class="cur-pill" id="pillIeb" onclick="setCurriculum('ieb')">IEB</button>
         </div>
       </div>
       <div id="sidebarList"></div>
@@ -4439,26 +4459,62 @@ function ethicsAnswer(btn, type) {
 ]; // end LESSONS
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SUBJECT TRACKS — Coding & Robotics (current) vs CAT & IT (coming soon)
+// SUBJECT TRACKS
+// Three subjects, kept strictly separate: Coding & Robotics (Gr 8–9, one
+// syllabus), CAT and IT (Gr 10–12, each split into CAPS and IEB — the two
+// examining bodies teach genuinely different content, so these are six
+// independent content buckets, never merged).
 // ═══════════════════════════════════════════════════════════════════════════
 
 const CODING_ROBOTICS_LESSONS = LESSONS;   // the 27 lessons defined above
-const CAT_IT_LESSONS = [];                 // CAT & IT theory — not written yet
+
+// CAT and IT content is not written yet — each is pending the official CAPS
+// / IEB source documents so the theory matches the real examined syllabus.
+// Populate these arrays (same lesson-object shape as CODING_ROBOTICS_LESSONS
+// above) once that content is ready; the empty-state UI disappears on its own
+// the moment an array is non-empty.
+const CAT_CAPS_LESSONS = [];
+const CAT_IEB_LESSONS  = [];
+const IT_CAPS_LESSONS  = [];
+const IT_IEB_LESSONS   = [];
 
 const TRACKS = {
   coding: {
     lessons: CODING_ROBOTICS_LESSONS,
     grade: 'Grade 8 – 9',
-    emptyTitle: null,
   },
-  catit: {
-    lessons: CAT_IT_LESSONS,
-    grade: 'Coming soon',
-    emptyTitle: 'CAT & IT content is on the way',
-    emptyBody: 'Computer Applications Technology and Information Technology theory for this subject hasn’t been written yet. Switch back to Coding &amp; Robotics to keep learning in the meantime.',
+  'cat-caps': {
+    lessons: CAT_CAPS_LESSONS,
+    grade: 'Grade 10 – 12 · CAPS',
+    emptyTitle: 'CAPS CAT content is on the way',
+    emptyBody: 'Computer Applications Technology (CAPS) theory hasn’t been written yet. Switch back to Coding &amp; Robotics to keep learning in the meantime.',
+  },
+  'cat-ieb': {
+    lessons: CAT_IEB_LESSONS,
+    grade: 'Grade 10 – 12 · IEB',
+    emptyTitle: 'IEB CAT content is on the way',
+    emptyBody: 'Computer Applications Technology (IEB) theory hasn’t been written yet. Switch back to Coding &amp; Robotics to keep learning in the meantime.',
+  },
+  'it-caps': {
+    lessons: IT_CAPS_LESSONS,
+    grade: 'Grade 10 – 12 · CAPS',
+    emptyTitle: 'CAPS IT content is on the way',
+    emptyBody: 'Information Technology (CAPS) theory hasn’t been written yet. Switch back to Coding &amp; Robotics to keep learning in the meantime.',
+  },
+  'it-ieb': {
+    lessons: IT_IEB_LESSONS,
+    grade: 'Grade 10 – 12 · IEB',
+    emptyTitle: 'IEB IT content is on the way',
+    emptyBody: 'Information Technology (IEB) theory hasn’t been written yet. Switch back to Coding &amp; Robotics to keep learning in the meantime.',
   },
 };
 let activeTrack = 'coding';
+let activeSubject = 'coding';       // 'coding' | 'cat' | 'it'
+let activeCurriculum = 'caps';      // 'caps' | 'ieb' — only meaningful for cat/it
+
+function trackKeyFor(subject, curriculum) {
+  return subject === 'coding' ? 'coding' : `${subject}-${curriculum}`;
+}
 
 function switchTrack(track) {
   if (!TRACKS[track]) return;
@@ -4469,12 +4525,42 @@ function switchTrack(track) {
   currentLesson = 0;
   const badge = document.getElementById('gradeBadge');
   if (badge) badge.textContent = TRACKS[track].grade;
-  const sel = document.getElementById('trackSelect');
-  if (sel) sel.value = track;
   buildSidebar();
   renderLesson();
 }
+
+// Subject dropdown changed (Coding & Robotics / CAT / IT).
+function onSubjectChange(subject) {
+  activeSubject = subject;
+  const toggle = document.getElementById('curriculumToggle');
+  if (toggle) toggle.style.display = subject === 'coding' ? 'none' : 'flex';
+  switchTrack(trackKeyFor(subject, activeCurriculum));
+}
+
+// CAPS/IEB pill clicked (only visible when subject is CAT or IT).
+function setCurriculum(curriculum) {
+  activeCurriculum = curriculum;
+  const capsPill = document.getElementById('pillCaps');
+  const iebPill  = document.getElementById('pillIeb');
+  if (capsPill) capsPill.classList.toggle('active', curriculum === 'caps');
+  if (iebPill)  iebPill.classList.toggle('active', curriculum === 'ieb');
+  switchTrack(trackKeyFor(activeSubject, curriculum));
+}
+
+// "Back to Coding & Robotics" button inside the empty-track panel.
+function backToCoding() {
+  activeSubject = 'coding';
+  const sel = document.getElementById('subjectSelect');
+  if (sel) sel.value = 'coding';
+  const toggle = document.getElementById('curriculumToggle');
+  if (toggle) toggle.style.display = 'none';
+  switchTrack('coding');
+}
+
 window.switchTrack = switchTrack;
+window.onSubjectChange = onSubjectChange;
+window.setCurriculum = setCurriculum;
+window.backToCoding = backToCoding;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // APP LOGIC
@@ -4583,7 +4669,7 @@ function renderLesson() {
         <div class="track-empty-icon">🚧</div>
         <h2>${t.emptyTitle}</h2>
         <p>${t.emptyBody || ''}</p>
-        <button class="track-empty-back" onclick="switchTrack('coding')">
+        <button class="track-empty-back" onclick="backToCoding()">
           <i data-lucide="arrow-left" style="width:13px;height:13px;"></i>
           Back to Coding &amp; Robotics
         </button>
