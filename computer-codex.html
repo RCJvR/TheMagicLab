@@ -166,6 +166,21 @@
     .cur-pill.active { background: rgba(59,130,246,0.18); color: #93c5fd; }
     .cur-pill:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text2); }
 
+    /* ── Grade filter (shown for CAT and IT only — filters the sidebar to one grade) ── */
+    .grade-toggle {
+      display: flex; gap: 4px; margin-top: 8px;
+      background: rgba(255,255,255,0.035); border: 1px solid var(--border2);
+      border-radius: 10px; padding: 3px;
+    }
+    .grade-pill {
+      flex: 1; font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.04em; text-transform: uppercase; padding: 6px 4px;
+      border-radius: 7px; border: none; background: none; color: var(--muted);
+      cursor: pointer; transition: all 140ms;
+    }
+    .grade-pill.active { background: rgba(17,217,143,0.18); color: #6ee7b7; }
+    .grade-pill:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text2); }
+
     /* ── Collapsible unit groups ── */
     .unit-group { }
     .unit-header {
@@ -542,6 +557,12 @@
         <div class="curriculum-toggle" id="curriculumToggle" style="display:none;">
           <button class="cur-pill active" id="pillCaps" onclick="setCurriculum('caps')">CAPS</button>
           <button class="cur-pill" id="pillIeb" onclick="setCurriculum('ieb')">IEB</button>
+        </div>
+        <div class="grade-toggle" id="gradeToggle" style="display:none;">
+          <button class="grade-pill active" id="pillGradeAll" onclick="setGradeFilter('all')">All</button>
+          <button class="grade-pill" id="pillGrade10" onclick="setGradeFilter('10')">Gr 10</button>
+          <button class="grade-pill" id="pillGrade11" onclick="setGradeFilter('11')">Gr 11</button>
+          <button class="grade-pill" id="pillGrade12" onclick="setGradeFilter('12')">Gr 12</button>
         </div>
       </div>
       <div id="sidebarList"></div>
@@ -17697,15 +17718,26 @@ const TRACKS = {
 let activeTrack = 'coding';
 let activeSubject = 'coding';       // 'coding' | 'cat' | 'it'
 let activeCurriculum = 'caps';      // 'caps' | 'ieb' — only meaningful for cat/it
+let activeGrade = 'all';            // 'all' | '10' | '11' | '12' — only meaningful for cat/it
 
 function trackKeyFor(subject, curriculum) {
   return subject === 'coding' ? 'coding' : `${subject}-${curriculum}`;
+}
+
+// CAT/IT unit headers say "Grade 11" / "Grade 12" explicitly; Grade 10 units
+// carry no grade prefix (they were the original, un-suffixed units), so
+// anything that doesn't match 11/12 is Grade 10.
+function gradeOf(les) {
+  const m = les.unit.match(/Grade (1[12])/);
+  return m ? m[1] : '10';
 }
 
 function switchTrack(track) {
   if (!TRACKS[track]) return;
   activeTrack = track;
   LESSONS = TRACKS[track].lessons;
+  activeGrade = 'all';
+  document.querySelectorAll('.grade-pill').forEach(b => b.classList.toggle('active', b.id === 'pillGradeAll'));
   _unitGroups = computeUnitGroups();
   _collapsedGroups = new Set(_unitGroups.map((_, gi) => gi));
   currentLesson = 0;
@@ -17720,6 +17752,8 @@ function onSubjectChange(subject) {
   activeSubject = subject;
   const toggle = document.getElementById('curriculumToggle');
   if (toggle) toggle.style.display = subject === 'coding' ? 'none' : 'flex';
+  const gradeToggle = document.getElementById('gradeToggle');
+  if (gradeToggle) gradeToggle.style.display = subject === 'coding' ? 'none' : 'flex';
   switchTrack(trackKeyFor(subject, activeCurriculum));
 }
 
@@ -17733,6 +17767,40 @@ function setCurriculum(curriculum) {
   switchTrack(trackKeyFor(activeSubject, curriculum));
 }
 
+// Grade pill clicked (All / Gr 10 / Gr 11 / Gr 12) — filters the sidebar to
+// one grade band without touching Next/Prev, which still walks the full track.
+function setGradeFilter(grade) {
+  activeGrade = grade;
+  document.getElementById('pillGradeAll').classList.toggle('active', grade === 'all');
+  document.getElementById('pillGrade10').classList.toggle('active', grade === '10');
+  document.getElementById('pillGrade11').classList.toggle('active', grade === '11');
+  document.getElementById('pillGrade12').classList.toggle('active', grade === '12');
+
+  // If the current lesson falls outside the newly selected grade, jump to
+  // the first lesson that matches so the reader lands somewhere sensible.
+  if (grade !== 'all' && LESSONS.length && gradeOf(LESSONS[currentLesson]) !== grade) {
+    const firstMatch = LESSONS.findIndex(les => gradeOf(les) === grade);
+    if (firstMatch !== -1) currentLesson = firstMatch;
+  }
+
+  // Expand every group in the selected grade, collapse the rest, so the
+  // filtered view opens ready to scan rather than needing further clicks.
+  // Picking "All" restores the normal collapsed-by-default view instead of
+  // blowing every group open at once.
+  _collapsedGroups = grade === 'all'
+    ? new Set(_unitGroups.map((_, gi) => gi))
+    : new Set(
+        _unitGroups
+          .map((g, gi) => ({ g, gi }))
+          .filter(({ g }) => gradeOf(LESSONS[g.lessons[0]]) !== grade)
+          .map(({ gi }) => gi)
+      );
+
+  buildSidebar();
+  renderLesson();
+  updateSidebarActive();
+}
+
 // "Back to Coding & Robotics" button inside the empty-track panel.
 function backToCoding() {
   activeSubject = 'coding';
@@ -17740,12 +17808,15 @@ function backToCoding() {
   if (sel) sel.value = 'coding';
   const toggle = document.getElementById('curriculumToggle');
   if (toggle) toggle.style.display = 'none';
+  const gradeToggle = document.getElementById('gradeToggle');
+  if (gradeToggle) gradeToggle.style.display = 'none';
   switchTrack('coding');
 }
 
 window.switchTrack = switchTrack;
 window.onSubjectChange = onSubjectChange;
 window.setCurriculum = setCurriculum;
+window.setGradeFilter = setGradeFilter;
 window.backToCoding = backToCoding;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -17787,7 +17858,11 @@ function buildSidebar() {
     return;
   }
 
+  let anyVisible = false;
   _unitGroups.forEach((group, gi) => {
+    // Grade filter (CAT/IT only) — skip whole units outside the selected grade.
+    if (activeGrade !== 'all' && gradeOf(LESSONS[group.lessons[0]]) !== activeGrade) return;
+    anyVisible = true;
     const isCollapsed = _collapsedGroups.has(gi);
     const doneCount   = group.lessons.filter(i => completed.has(i)).length;
 
@@ -17842,6 +17917,14 @@ function buildSidebar() {
     groupEl.appendChild(lessonsEl);
     list.appendChild(groupEl);
   });
+
+  if (!anyVisible) {
+    list.innerHTML = `
+      <div class="track-empty-sidebar">
+        <div style="font-size:22px;margin-bottom:8px;">🔍</div>
+        No lessons found for this grade.
+      </div>`;
+  }
 }
 
 // ── Render lesson ──────────────────────────────────────────────────────────
