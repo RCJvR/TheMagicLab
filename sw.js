@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v21'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v21: Model Mage — fix face-sketch/cut contamination on coincident-offset faces
+const CACHE_NAME = 'magic-lab-v22'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v22: Computer Codex — Coding&Robotics / CAT&IT subject track selector
 
 const urlsToCache = [
   '/',
