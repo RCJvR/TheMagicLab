@@ -53,11 +53,11 @@
     .code-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:340px}
     .code-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:10.5px;font-weight:700;cursor:pointer;transition:all 140ms}
     .code-btn:hover:not(:disabled){background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28);color:var(--text)}
-    .code-btn .code-num{font-family:var(--fm);font-size:16px;font-weight:800;color:var(--accent-light)}
+    .code-btn .recycle-icon{color:var(--accent-light)}
     .code-btn.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
-    .code-btn.correct .code-num{color:#86efac}
+    .code-btn.correct .recycle-icon{color:#86efac}
     .code-btn.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
-    .code-btn.wrong .code-num{color:#fca5a5}
+    .code-btn.wrong .recycle-icon{color:#fca5a5}
     .code-btn:disabled{cursor:default}
     .sort-feedback{width:100%;max-width:340px;min-height:70px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.65;display:none}
     .sort-feedback.show{display:block}
@@ -69,9 +69,20 @@
     .sort-score{font-family:var(--fm);font-size:12px;color:var(--muted)}
     .sim-info{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;font-size:12.5px;line-height:1.7;color:rgba(210,218,245,.78)}
     .sim-info strong{color:var(--accent-light)}
-    .code-ref{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-    .code-ref li{display:flex;gap:8px;align-items:baseline}
+    .code-ref{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .code-ref li{display:flex;gap:9px;align-items:center}
     .code-ref b{font-family:var(--fm);color:var(--accent-light);width:16px;flex-shrink:0}
+    .recycle-icon{flex-shrink:0;color:var(--accent-light)}
+    /* Systems diagram: input -> process -> output */
+    .sys-diagram{display:flex;align-items:stretch;gap:10px;margin:16px 0 20px;flex-wrap:wrap}
+    .sys-box{flex:1;min-width:150px;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 16px}
+    .sys-box-label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent-light);margin-bottom:8px}
+    .sys-box-text{font-size:13px;line-height:1.6;color:rgba(210,218,245,.85)}
+    .sys-arrow{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent);flex-shrink:0}
+    @media(max-width:640px){
+      .sys-diagram{flex-direction:column}
+      .sys-arrow{transform:rotate(90deg);padding:2px 0}
+    }
     /* Practice */
     .practice-wrap{max-width:640px}
     .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
@@ -176,15 +187,15 @@
     <h2>Types of plastics and recycling codes</h2>
     <p>Plastic products are marked with a small triangle made of three arrows, containing a number from 1 to 7. This is the <strong>plastic identification code</strong>, and it tells recyclers exactly what type of plastic the item is made from, so it can be sorted correctly.</p>
     <table class="compare-table">
-      <thead><tr><th>Code</th><th>Plastic</th><th>Common uses</th></tr></thead>
+      <thead><tr><th>Symbol</th><th>Code</th><th>Plastic</th><th>Common uses</th></tr></thead>
       <tbody>
-        <tr><td>1 — PET</td><td>Polyethylene terephthalate</td><td>Cooldrink and water bottles</td></tr>
-        <tr><td>2 — HDPE</td><td>High-density polyethylene</td><td>Milk bottles, shampoo bottles</td></tr>
-        <tr><td>3 — PVC</td><td>Polyvinyl chloride</td><td>Pipes, hoses, cable insulation</td></tr>
-        <tr><td>4 — LDPE</td><td>Low-density polyethylene</td><td>Plastic shopping bags, cling wrap</td></tr>
-        <tr><td>5 — PP</td><td>Polypropylene</td><td>Yoghurt tubs, bottle caps</td></tr>
-        <tr><td>6 — PS</td><td>Polystyrene</td><td>Disposable cups, foam packaging</td></tr>
-        <tr><td>7 — Other</td><td>Mixed / other plastics</td><td>Multi-layer packaging, some bottles</td></tr>
+        <tr><td id="symCode1"></td><td>1 — PET</td><td>Polyethylene terephthalate</td><td>Cooldrink and water bottles</td></tr>
+        <tr><td id="symCode2"></td><td>2 — HDPE</td><td>High-density polyethylene</td><td>Milk bottles, shampoo bottles</td></tr>
+        <tr><td id="symCode3"></td><td>3 — PVC</td><td>Polyvinyl chloride</td><td>Pipes, hoses, cable insulation</td></tr>
+        <tr><td id="symCode4"></td><td>4 — LDPE</td><td>Low-density polyethylene</td><td>Plastic shopping bags, cling wrap</td></tr>
+        <tr><td id="symCode5"></td><td>5 — PP</td><td>Polypropylene</td><td>Yoghurt tubs, bottle caps</td></tr>
+        <tr><td id="symCode6"></td><td>6 — PS</td><td>Polystyrene</td><td>Disposable cups, foam packaging</td></tr>
+        <tr><td id="symCode7"></td><td>7 — Other</td><td>Mixed / other plastics</td><td>Multi-layer packaging, some bottles</td></tr>
       </tbody>
     </table>
 
@@ -203,9 +214,22 @@
 
     <h2>Systems diagram: the plastics recycling project</h2>
     <p>Like any process, plastics recycling can be broken down into input &rarr; process &rarr; output:</p>
-    <div class="callout"><strong>INPUT:</strong> collected waste plastic, sorted by identification code &rarr;
-    <strong>PROCESS:</strong> cleaned, shredded into flakes, melted, then extruded and cut into uniform pellets &rarr;
-    <strong>OUTPUT:</strong> plastic pellets sold as raw material to manufacturers, who mould them into new products.</div>
+    <div class="sys-diagram">
+      <div class="sys-box">
+        <div class="sys-box-label">Input</div>
+        <div class="sys-box-text">Collected waste plastic, sorted by identification code</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-box">
+        <div class="sys-box-label">Process</div>
+        <div class="sys-box-text">Cleaned, shredded into flakes, melted, then extruded and cut into uniform pellets</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-box">
+        <div class="sys-box-label">Output</div>
+        <div class="sys-box-text">Plastic pellets sold as raw material to manufacturers, who mould them into new products</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -229,15 +253,7 @@
     </div>
     <div class="sim-info">
       <strong>Recycling code quick reference</strong>
-      <ul class="code-ref" style="margin-top:10px">
-        <li><b>1</b> PET — bottles</li>
-        <li><b>2</b> HDPE — milk/shampoo bottles</li>
-        <li><b>3</b> PVC — pipes, hoses</li>
-        <li><b>4</b> LDPE — bags, cling wrap</li>
-        <li><b>5</b> PP — tubs, bottle caps</li>
-        <li><b>6</b> PS — foam, disposable cups</li>
-        <li><b>7</b> Other — mixed plastics</li>
-      </ul>
+      <ul class="code-ref" id="codeRefList" style="margin-top:10px"></ul>
     </div>
   </div>
 </div>
@@ -277,6 +293,26 @@ function switchTab(id,btn){
   if(btn)btn.classList.add('active');
 }
 
+/* Generic recycling-code badge: three rotated arrow arcs around a number —
+   evokes the real "chasing arrows" symbol without reproducing its exact
+   trademarked triangular geometry. */
+function recycleIcon(num, size){
+  size = size || 26;
+  const arc = `<path d="M0,-13 A13,13 0 0,1 11.3,-6.5" /><path d="M11.3,-6.5 L5.6,-8.3 M11.3,-6.5 L8.7,-1" />`;
+  return `<svg class="recycle-icon" width="${size}" height="${size}" viewBox="-16 -16 32 32">
+    <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="rotate(0)">${arc}</g>
+      <g transform="rotate(120)">${arc}</g>
+      <g transform="rotate(240)">${arc}</g>
+    </g>
+    <text x="0" y="4" font-size="10" fill="currentColor" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-weight="700">${num}</text>
+  </svg>`;
+}
+for(let i=1;i<=7;i++){
+  const cell = document.getElementById('symCode'+i);
+  if(cell) cell.innerHTML = recycleIcon(i);
+}
+
 /* ═══════════════════════════════════════════════
    PLASTIC RECYCLING CODE SORTER
 ═══════════════════════════════════════════════ */
@@ -301,8 +337,12 @@ let itemIndex = 0, sortScore = 0, itemAnswered = false;
 function buildCodeGrid(){
   document.getElementById('codeGrid').innerHTML = CODES.map(c=>`
     <button class="code-btn" id="cbtn_${c.num}" onclick="chooseCode(${c.num})">
-      <span class="code-num">${c.num}</span>${c.abbr}
+      ${recycleIcon(c.num, 22)}${c.abbr}
     </button>`).join('');
+  document.getElementById('codeRefList').innerHTML = CODES.map(c=>{
+    const uses = {1:'bottles',2:'milk/shampoo bottles',3:'pipes, hoses',4:'bags, cling wrap',5:'tubs, bottle caps',6:'foam, disposable cups',7:'mixed plastics'}[c.num];
+    return `<li>${recycleIcon(c.num,20)}${c.abbr} — ${uses}</li>`;
+  }).join('');
 }
 function loadItem(){
   const it = ITEMS[itemIndex];

@@ -285,23 +285,29 @@ function resizeCanvas(){
   ctx.scale(devicePixelRatio, devicePixelRatio);
 }
 
-function gearRadius(teeth){ return 30 + teeth*3.2; }
+// Radius must be directly proportional to tooth count (no constant offset) —
+// otherwise the radius ratio between two gears doesn't match their tooth
+// ratio, and the rolling-contact rotation speed (based on tooth ratio) no
+// longer agrees with the actual pitch-circle geometry, so teeth drift out
+// of mesh as the gears turn (worse the more the sizes differ).
+function gearRadius(teeth){ return teeth * 5.2; }
 
 function drawGear(cx, cy, teeth, angle, color){
   const rBase = gearRadius(teeth);
-  const toothH = 8;
+  const toothH = 9;
+  const period = (Math.PI*2)/teeth;
+  const halfToothW = period*0.25; // symmetric tooth: half the period is tooth, half is gap
   ctx.save();
   ctx.translate(cx,cy);
   ctx.rotate(angle);
   ctx.beginPath();
   for(let i=0;i<teeth;i++){
-    const a0 = (i/teeth)*Math.PI*2;
-    const a1 = a0 + (Math.PI*2/teeth)*0.5;
-    const a2 = a0 + (Math.PI*2/teeth)*1.0;
-    ctx.lineTo(Math.cos(a0)*rBase, Math.sin(a0)*rBase);
-    ctx.lineTo(Math.cos(a0)*(rBase+toothH), Math.sin(a0)*(rBase+toothH));
-    ctx.lineTo(Math.cos(a1)*(rBase+toothH), Math.sin(a1)*(rBase+toothH));
-    ctx.lineTo(Math.cos(a2)*rBase, Math.sin(a2)*rBase);
+    const c = i*period;
+    const l = c-halfToothW, r = c+halfToothW;
+    ctx.lineTo(Math.cos(l)*rBase, Math.sin(l)*rBase);
+    ctx.lineTo(Math.cos(l)*(rBase+toothH), Math.sin(l)*(rBase+toothH));
+    ctx.lineTo(Math.cos(r)*(rBase+toothH), Math.sin(r)*(rBase+toothH));
+    ctx.lineTo(Math.cos(r)*rBase, Math.sin(r)*rBase);
   }
   ctx.closePath();
   ctx.fillStyle = color+'22';
@@ -322,26 +328,34 @@ function drawGearTrain(){
   let driverX, drivenX, idlerX, rIdler;
   if(idlerOn){
     rIdler = gearRadius(12);
-    const gap1 = rDriver + rIdler - 4, gap2 = rIdler + rDriven - 4;
+    // Pitch circles exactly tangent — their teeth (drawn outward from the
+    // pitch circle) naturally overlap into each other's gaps at the contact
+    // point; the bodies themselves should never overlap.
+    const gap1 = rDriver + rIdler, gap2 = rIdler + rDriven;
     const total = gap1+gap2;
     driverX = W/2 - total/2 + rDriver;
     idlerX = driverX + gap1;
     drivenX = idlerX + gap2;
   } else {
-    const gap = rDriver + rDriven - 4;
+    const gap = rDriver + rDriven;
     driverX = W/2 - gap/2;
     drivenX = W/2 + gap/2;
   }
   const driverSpeed = 0.014;
-  const drivenSpeed = driverSpeed * (driverTeeth/drivenTeeth);
   const drivenDir = idlerOn ? 1 : -1;
 
-  drawGear(driverX, cy, driverTeeth, driverAngle, '#fdba74');
+  // Every gear gets a constant half-tooth-pitch phase offset so a TOOTH on
+  // one gear always meets a GAP on its mesh partner instead of clashing
+  // head-on. Because all preset tooth counts are even and the three gears
+  // sit on one line, this single offset keeps every contact point aligned
+  // continuously as the train turns (not just at the start).
+  drawGear(driverX, cy, driverTeeth, driverAngle + Math.PI/driverTeeth, '#fdba74');
   if(idlerOn){
-    const idlerSpeed = -driverSpeed * (driverTeeth/12);
-    drawGear(idlerX, cy, 12, driverAngle*(driverTeeth/12)*-1, '#93c5fd');
+    const idlerAngle = driverAngle*(driverTeeth/12)*-1;
+    drawGear(idlerX, cy, 12, idlerAngle + Math.PI/12, '#93c5fd');
   }
-  drawGear(drivenX, cy, drivenTeeth, driverAngle*(driverTeeth/drivenTeeth)*drivenDir, '#fca5a5');
+  const drivenAngle = driverAngle*(driverTeeth/drivenTeeth)*drivenDir;
+  drawGear(drivenX, cy, drivenTeeth, drivenAngle + Math.PI/drivenTeeth, '#fca5a5');
 
   ctx.fillStyle='rgba(210,218,245,.6)';
   ctx.font='11px "JetBrains Mono",monospace';

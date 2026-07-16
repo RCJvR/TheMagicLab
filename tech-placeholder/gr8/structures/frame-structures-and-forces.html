@@ -45,8 +45,12 @@
     .compare-table tr:last-child td{border-bottom:none}
     /* Explore */
     .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .truss-set-toggle{display:flex;gap:8px;margin-bottom:18px;max-width:960px;flex-wrap:wrap}
+    .truss-set-btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all 140ms}
+    .truss-set-btn:hover{background:rgba(255,255,255,.07);color:var(--text)}
+    .truss-set-btn.active{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.35);color:var(--accent-light)}
     .truss-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
-    canvas{display:block;border-radius:8px;width:100%;cursor:pointer}
+    canvas{display:block;border-radius:8px;width:100%}
     .parts-list{display:flex;flex-direction:column;gap:5px}
     .part-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:9px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:rgba(210,218,245,.72);font-size:12px;font-weight:600;cursor:pointer;transition:all 140ms;text-align:left}
     .part-btn:hover{background:rgba(255,255,255,.06);color:var(--text)}
@@ -192,7 +196,11 @@
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Truss Force Explorer</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Click a member of the king post truss (or the list) to see whether it's in tension or compression, and why.</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Click a member of the truss (on the diagram, or the list) to see whether it's in tension or compression, and why.</p>
+  <div class="truss-set-toggle" id="trussSetToggle">
+    <button class="truss-set-btn active" id="tsb_roof" onclick="selectTrussSet('roof')">🏠 Roof truss (king post)</button>
+    <button class="truss-set-btn" id="tsb_bridge" onclick="selectTrussSet('bridge')">🌉 Bridge truss (cross-braced)</button>
+  </div>
   <div class="explore-layout">
     <div class="truss-canvas-wrap"><canvas id="trussCanvas" height="320"></canvas></div>
     <div>
@@ -238,30 +246,95 @@ function switchTab(id,btn){
 }
 
 /* ═══════════════════════════════════════════════
-   TRUSS FORCE EXPLORER — king post truss
+   TRUSS FORCE EXPLORER — roof (king post) + bridge (cross-braced)
 ═══════════════════════════════════════════════ */
-const PARTS = [
-  {id:'tiebeam', name:'Tie beam', force:'tension', color:'#93c5fd',
-   desc:'The horizontal base of the truss. It is pulled outward by the rafters pushing down and out, so it is in TENSION — it resists being stretched.'},
-  {id:'rafterL', name:'Rafter (left)', force:'compression', color:'#fca5a5',
-   desc:'The sloping top members carry the roof load down to the walls. They are squeezed along their length, so they are in COMPRESSION.'},
-  {id:'rafterR', name:'Rafter (right)', force:'compression', color:'#fca5a5',
-   desc:'Like the left rafter, this sloping member is squeezed by the roof load pressing down on it — it is in COMPRESSION.'},
-  {id:'kingpost', name:'King post', force:'tension', color:'#93c5fd',
-   desc:'The central vertical member hangs from the peak and pulls up on the middle of the tie beam, stopping it from sagging — it is in TENSION.'},
-  {id:'strutL', name:'Strut (left)', force:'compression', color:'#fca5a5',
-   desc:'Struts brace the rafters against the king post. They are pushed by the rafter, so they are in COMPRESSION (this is exactly why they are called "struts" — struts always resist pushing).'},
-  {id:'strutR', name:'Strut (right)', force:'compression', color:'#fca5a5',
-   desc:'Like the left strut, this diagonal brace is squeezed between the rafter and the king post — it is in COMPRESSION.'},
-];
+const TRUSS_SETS = {
+  roof: {
+    parts: [
+      {id:'tiebeam', name:'Tie beam', force:'tension', color:'#93c5fd',
+       desc:'The horizontal base of the truss. It is pulled outward by the rafters pushing down and out, so it is in TENSION — it resists being stretched.'},
+      {id:'rafterL', name:'Rafter (left)', force:'compression', color:'#fca5a5',
+       desc:'The sloping top members carry the roof load down to the walls. They are squeezed along their length, so they are in COMPRESSION.'},
+      {id:'rafterR', name:'Rafter (right)', force:'compression', color:'#fca5a5',
+       desc:'Like the left rafter, this sloping member is squeezed by the roof load pressing down on it — it is in COMPRESSION.'},
+      {id:'kingpost', name:'King post', force:'tension', color:'#93c5fd',
+       desc:'The central vertical member hangs from the peak and pulls up on the middle of the tie beam, stopping it from sagging — it is in TENSION.'},
+      {id:'strutL', name:'Strut (left)', force:'compression', color:'#fca5a5',
+       desc:'Struts brace the rafters against the king post. They are pushed by the rafter, so they are in COMPRESSION (this is exactly why they are called "struts" — struts always resist pushing).'},
+      {id:'strutR', name:'Strut (right)', force:'compression', color:'#fca5a5',
+       desc:'Like the left strut, this diagonal brace is squeezed between the rafter and the king post — it is in COMPRESSION.'},
+    ],
+    defaultId: 'tiebeam',
+    regions(W,H){
+      const cx = W/2, baseY = H*0.75, halfSpan = Math.min(W*0.38, 220), apexY = baseY - halfSpan*0.62;
+      return {
+        tiebeam: {a:[cx-halfSpan,baseY], b:[cx+halfSpan,baseY], width:8},
+        rafterL: {a:[cx-halfSpan,baseY], b:[cx,apexY], width:8},
+        rafterR: {a:[cx+halfSpan,baseY], b:[cx,apexY], width:8},
+        kingpost: {a:[cx,baseY], b:[cx,apexY], width:7},
+        strutL: {a:[cx-halfSpan*0.5,baseY-halfSpan*0.31], b:[cx,baseY-halfSpan*0.10], width:6},
+        strutR: {a:[cx+halfSpan*0.5,baseY-halfSpan*0.31], b:[cx,baseY-halfSpan*0.10], width:6},
+      };
+    },
+  },
+  bridge: {
+    parts: [
+      {id:'bottom1', name:'Bottom chord (left)', force:'tension', color:'#93c5fd',
+       desc:'The lower horizontal chord runs the full length of the bridge and is stretched by the load on the deck — it is in TENSION, just like the tie beam of a roof truss.'},
+      {id:'bottom2', name:'Bottom chord (right)', force:'tension', color:'#93c5fd',
+       desc:'Like the rest of the bottom chord, this section is stretched along its length by the load — it is in TENSION.'},
+      {id:'top1', name:'Top chord (left)', force:'compression', color:'#fca5a5',
+       desc:'The upper horizontal chord is squeezed along its length as it arches over the load — it is in COMPRESSION.'},
+      {id:'top2', name:'Top chord (right)', force:'compression', color:'#fca5a5',
+       desc:'Like the rest of the top chord, this section is squeezed along its length — it is in COMPRESSION.'},
+      {id:'diag1', name:'Diagonal (left end post)', force:'compression', color:'#fca5a5',
+       desc:'The sloping end post carries load straight down into the support, squeezing it — it is in COMPRESSION.'},
+      {id:'diag2', name:'Diagonal (rising to centre)', force:'tension', color:'#93c5fd',
+       desc:'This diagonal is stretched as it helps transfer the deck load up toward the top chord — it is in TENSION.'},
+      {id:'diag3', name:'Diagonal (falling from centre)', force:'tension', color:'#93c5fd',
+       desc:'Mirroring the diagonal on the other side, this member is also stretched — it is in TENSION.'},
+      {id:'diag4', name:'Diagonal (right end post)', force:'compression', color:'#fca5a5',
+       desc:'Like the left end post, this sloping member carries load down into the right-hand support — it is in COMPRESSION.'},
+    ],
+    defaultId: 'bottom1',
+    regions(W,H){
+      const cx = W/2, baseY = H*0.78, topY = H*0.30;
+      const halfSpan = Math.min(W*0.40, 240), quarter = halfSpan/2;
+      const bx0=cx-halfSpan, bx1=cx-quarter, bx2=cx+quarter, bx3=cx+halfSpan;
+      const tx1=cx-quarter, tx2=cx+quarter;
+      return {
+        bottom1: {a:[bx0,baseY], b:[bx1,baseY], width:8},
+        bottom2: {a:[bx2,baseY], b:[bx3,baseY], width:8},
+        top1: {a:[tx1,topY], b:[cx,topY], width:8},
+        top2: {a:[cx,topY], b:[tx2,topY], width:8},
+        diag1: {a:[bx0,baseY], b:[tx1,topY], width:6},
+        diag2: {a:[tx1,topY], b:[bx2,baseY], width:6},
+        diag3: {a:[bx1,baseY], b:[tx2,topY], width:6},
+        diag4: {a:[tx2,topY], b:[bx3,baseY], width:6},
+      };
+    },
+  },
+};
+let activeTrussSet = 'roof';
+let PARTS = TRUSS_SETS.roof.parts;
 let activePart = null;
+let hoverId = null;
+
+function selectTrussSet(key){
+  activeTrussSet = key;
+  PARTS = TRUSS_SETS[key].parts;
+  document.getElementById('tsb_roof').classList.toggle('active', key==='roof');
+  document.getElementById('tsb_bridge').classList.toggle('active', key==='bridge');
+  document.getElementById('trussCanvas').setAttribute('aria-label', key==='roof' ? 'Roof truss' : 'Bridge truss');
+  buildPartsList();
+}
 
 function buildPartsList(){
   document.getElementById('partsList').innerHTML = PARTS.map(p=>`
     <button class="part-btn" id="pb_${p.id}" onclick="selectPart('${p.id}')">
       <span class="part-dot" style="background:${p.color}"></span>${p.name}
     </button>`).join('');
-  selectPart('tiebeam');
+  selectPart(TRUSS_SETS[activeTrussSet].defaultId);
 }
 function selectPart(id){
   activePart = PARTS.find(p=>p.id===id);
@@ -271,7 +344,6 @@ function selectPart(id){
     <div class="part-name">${activePart.name}</div>
     <span class="part-force ${activePart.force}">${activePart.force}</span>
     <div class="part-desc">${activePart.desc}</div>`;
-  drawTruss();
 }
 
 const canvas = document.getElementById('trussCanvas');
@@ -280,19 +352,11 @@ let W,H;
 function resizeCanvas(){
   W = canvas.offsetWidth || 500; H = 320;
   canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawTruss();
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
 }
 
-const REGIONS = {};
-function computeRegions(){
-  const cx = W/2, baseY = H*0.75, halfSpan = Math.min(W*0.38, 220), apexY = baseY - halfSpan*0.62;
-  REGIONS.tiebeam = {a:[cx-halfSpan,baseY], b:[cx+halfSpan,baseY], width:8};
-  REGIONS.rafterL = {a:[cx-halfSpan,baseY], b:[cx,apexY], width:8};
-  REGIONS.rafterR = {a:[cx+halfSpan,baseY], b:[cx,apexY], width:8};
-  REGIONS.kingpost = {a:[cx,baseY], b:[cx,apexY], width:7};
-  REGIONS.strutL = {a:[cx-halfSpan*0.5,baseY-halfSpan*0.31], b:[cx,baseY-halfSpan*0.10], width:6};
-  REGIONS.strutR = {a:[cx+halfSpan*0.5,baseY-halfSpan*0.31], b:[cx,baseY-halfSpan*0.10], width:6};
+function currentRegions(){
+  return TRUSS_SETS[activeTrussSet].regions(W,H);
 }
 function lineHit(mx,my,a,b,tol){
   const dx=b[0]-a[0], dy=b[1]-a[1];
@@ -301,18 +365,31 @@ function lineHit(mx,my,a,b,tol){
   t = Math.max(0,Math.min(1,t));
   const px = a[0]+t*dx, py = a[1]+t*dy;
   const dist = Math.hypot(mx-px, my-py);
-  return dist <= tol;
+  return dist <= tol ? dist : null;
+}
+// Nearest member within tolerance wins, rather than the first checked —
+// prevents an accidental click near two close members always picking the same one.
+function hitTest(mx,my,tol){
+  const regions = currentRegions();
+  let best=null, bestDist=Infinity;
+  for (const id of Object.keys(regions)){
+    const r = regions[id];
+    const d = lineHit(mx,my,r.a,r.b,tol + r.width/2);
+    if (d!==null && d<bestDist){ bestDist=d; best=id; }
+  }
+  return best;
 }
 
 function drawTruss(){
   ctx.clearRect(0,0,W,H);
-  computeRegions();
-  Object.keys(REGIONS).forEach(id=>{
+  const regions = currentRegions();
+  Object.keys(regions).forEach(id=>{
     const p = PARTS.find(pp=>pp.id===id);
-    const r = REGIONS[id];
+    const r = regions[id];
     const isActive = activePart && activePart.id===id;
-    ctx.strokeStyle = isActive ? p.color : p.color+'66';
-    ctx.lineWidth = r.width + (isActive?2:0);
+    const isHover = hoverId===id && !isActive;
+    ctx.strokeStyle = isActive ? p.color : (isHover ? p.color+'AA' : p.color+'66');
+    ctx.lineWidth = r.width + (isActive?2:isHover?1:0);
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(r.a[0], r.a[1]);
@@ -329,14 +406,22 @@ function drawTruss(){
 canvas.addEventListener('click', e=>{
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX-rect.left, my = e.clientY-rect.top;
-  for (const id of Object.keys(REGIONS)){
-    if (lineHit(mx,my,REGIONS[id].a,REGIONS[id].b,14)){ selectPart(id); return; }
-  }
+  const hit = hitTest(mx,my,14);
+  if (hit) selectPart(hit);
 });
+canvas.addEventListener('mousemove', e=>{
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX-rect.left, my = e.clientY-rect.top;
+  const hit = hitTest(mx,my,14);
+  hoverId = hit;
+  canvas.style.cursor = hit ? 'pointer' : 'default';
+});
+canvas.addEventListener('mouseleave', ()=>{ hoverId=null; });
 
 window.addEventListener('resize', resizeCanvas);
 buildPartsList();
 resizeCanvas();
+drawTruss();
 
 /* ═══════════════════════════════════════════════
    PRACTICE

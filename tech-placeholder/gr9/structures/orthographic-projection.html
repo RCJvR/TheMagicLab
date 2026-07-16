@@ -171,7 +171,11 @@
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">3-View Explorer</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">This stepped L-shaped block is shown in isometric on the left. Click Front, Top or Side to see the matching first-angle orthographic view appear on the right.</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Pick an object below — it's shown in isometric on the left. Click Front, Top or Side to see the matching first-angle orthographic view appear on the right.</p>
+  <div class="view-btns" id="objectBtns" style="margin-bottom:16px">
+    <button class="view-btn active" id="ob_stepped" onclick="selectObject('stepped')"><i data-lucide="box" style="width:13px;height:13px"></i> Stepped block</button>
+    <button class="view-btn" id="ob_notched" onclick="selectObject('notched')"><i data-lucide="box" style="width:13px;height:13px"></i> Notched (U) block</button>
+  </div>
   <div class="explore-layout">
     <div class="truss-canvas-wrap"><canvas id="isoCanvas" height="320"></canvas></div>
     <div>
@@ -245,10 +249,14 @@ function isoProject(x,y,z,ox,oy){
   return [px,py];
 }
 function drawIsoBox(x0,x1,y0,y1,z0,z1,ox,oy,fill,edge){
-  // 8 corners
+  // 8 corners. With this projection, increasing x moves down-right and
+  // increasing y moves down-left, so the NEAR (visible) faces are the ones
+  // at the maximum x and maximum y — x1 and y1 — not x0/y0. Using y0 here
+  // used to draw the hidden far face on top of the box instead of the
+  // visible near face, which is what broke the whole silhouette.
   const c = (x,y,z)=>isoProject(x,y,z,ox,oy);
   const top = [c(x0,y0,z1),c(x1,y0,z1),c(x1,y1,z1),c(x0,y1,z1)];
-  const front = [c(x0,y0,z0),c(x1,y0,z0),c(x1,y0,z1),c(x0,y0,z1)];
+  const front = [c(x0,y1,z0),c(x1,y1,z0),c(x1,y1,z1),c(x0,y1,z1)];
   const side = [c(x1,y0,z0),c(x1,y1,z0),c(x1,y1,z1),c(x1,y0,z1)];
   [ {pts:top,shade:1.0}, {pts:front,shade:0.75}, {pts:side,shade:0.55} ].forEach(face=>{
     isoCtx.beginPath();
@@ -265,16 +273,14 @@ function drawIso(){
   isoCtx.clearRect(0,0,isoW,isoH);
   const ox = isoW*0.42, oy = isoH*0.68;
   const fill = s => `rgba(253,186,116,${0.10+0.55*s})`;
-  // base slab: 6 wide (x), 4 deep (y), 2 high (z)
-  drawIsoBox(0,6,0,4,0,2, ox,oy, fill, 'rgba(253,186,116,0.9)');
-  // raised step at back-left: 3 wide, 4 deep, sits on top from z2 to z4, spans x 0-3
-  drawIsoBox(0,3,0,4,2,4, ox,oy, fill, 'rgba(253,186,116,0.9)');
+  OBJECTS[currentObject].boxes.forEach(b=>{
+    drawIsoBox(b[0],b[1],b[2],b[3],b[4],b[5], ox,oy, fill, 'rgba(253,186,116,0.9)');
+  });
   isoCtx.fillStyle='rgba(210,218,245,.55)';
   isoCtx.font='11px "JetBrains Mono",monospace';
   isoCtx.fillText('Isometric sketch (not to scale)', 14, isoH-14);
 }
 window.addEventListener('resize', resizeIso);
-resizeIso();
 
 // Orthographic views drawn on a 2D grid (units -> px)
 const viewCanvas = document.getElementById('viewCanvas');
@@ -288,44 +294,97 @@ function resizeView(){
   drawSelectedView();
 }
 const VU = 22;
-const VIEWS = {
-  front:{
-    label:'FRONT VIEW',
-    desc:'Looking straight at the object from the front (along the y-axis). Shows the true width (6 units) and the stepped height profile: a 2-unit-high base with a further 2-unit step on the left, giving a 4-unit total height on that side.',
-    draw:(cx,cy)=>{
-      // outline: L-shape, width 6, base height 2, step (0-3) extra height to 4
-      const pts=[[0,0],[0,-2],[3,-2],[3,-4],[6,-4],[6,0]];
-      return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+// Two objects to explore, each built from axis-aligned boxes (matching the
+// isometric drawIsoBox calls) plus the matching hand-worked 2D outline for
+// each of the three orthographic views.
+const OBJECTS = {
+  stepped:{
+    label:'Stepped L-shaped block',
+    // base slab 6 wide x 4 deep x 2 high; raised step 3 wide x 4 deep sits
+    // on top from z2-4, spanning x 0-3 (the LEFT/low-x side).
+    boxes:[[0,6,0,4,0,2],[0,3,0,4,2,4]],
+    views:{
+      front:{
+        label:'FRONT VIEW',
+        desc:'Looking straight at the object from the front (along the y-axis). Shows the true width (6 units) and the stepped height profile: the LEFT side (0–3 units) is tall — a 2-unit base plus a 2-unit step, 4 units total — and the RIGHT side (3–6 units) is just the 2-unit base.',
+        draw:(cx,cy)=>{
+          // x 0-3 tall (4 units, base+step); x 3-6 short (2 units, base only)
+          const pts=[[0,0],[0,-4],[3,-4],[3,-2],[6,-2],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        }
+      },
+      top:{
+        label:'TOP VIEW (PLAN)',
+        desc:'Looking straight down from above. Shows true width (6) and depth (4). The dashed line at x=3 marks where the raised step\'s edge meets the lower base — a visible change of level, drawn where the top surface height changes.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-4],[6,-4],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        },
+        extraLine:(cx,cy)=>[[cx+3*VU,cy],[cx+3*VU,cy-4*VU]]
+      },
+      side:{
+        label:'SIDE (END) VIEW',
+        desc:'Looking at the object from the side (along the x-axis). Shows the true depth (4 units) and the tallest height reached anywhere along the object: 4 units, where the step is present.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-4],[4,-4],[4,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        }
+      }
     }
   },
-  top:{
-    label:'TOP VIEW (PLAN)',
-    desc:'Looking straight down from above. Shows true width (6) and depth (4). A dashed line marks where the raised step (0–3 units) meets the lower base — hidden in this view because you are looking down, not through, the step edge, but the change of level is conventionally shown as a solid line here since it is a visible top edge, with the step boundary drawn where the top surface changes height.',
-    draw:(cx,cy)=>{
-      const pts=[[0,0],[0,-4],[6,-4],[6,0]];
-      return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
-    },
-    extraLine:(cx,cy)=>[[cx+3*VU,cy],[cx+3*VU,cy-4*VU]]
-  },
-  side:{
-    label:'SIDE (END) VIEW',
-    desc:'Looking at the object from the side (along the x-axis). Shows true depth (4 units) and the same stepped height profile as the front view: 2 units for the base, rising to 4 units where the step is present.',
-    draw:(cx,cy)=>{
-      const pts=[[0,0],[0,-4],[4,-4],[4,0]];
-      return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+  notched:{
+    label:'Notched (U) block',
+    // Two towers (3 units tall) at x 0-2 and x 4-6, joined by a 1-unit-tall
+    // base spanning the full width — leaves a gap/notch in the middle top.
+    boxes:[[0,2,0,4,0,3],[4,6,0,4,0,3],[0,6,0,4,0,1]],
+    views:{
+      front:{
+        label:'FRONT VIEW',
+        desc:'Looking straight at the object from the front. Two tall towers (3 units, at 0–2 and 4–6 units) are joined by a low 1-unit-tall base, leaving a notch/gap between them at the top — giving a "U" outline read from above the gap.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-3],[2,-3],[2,-1],[4,-1],[4,-3],[6,-3],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        }
+      },
+      top:{
+        label:'TOP VIEW (PLAN)',
+        desc:'Looking straight down from above. Shows the true width (6) and depth (4) of the base footprint. Two dashed lines (at x=2 and x=4) mark where the towers\' edges meet the lower connecting base.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-4],[6,-4],[6,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        },
+        extraLine:(cx,cy)=>[[cx+2*VU,cy],[cx+2*VU,cy-4*VU]],
+        extraLine2:(cx,cy)=>[[cx+4*VU,cy],[cx+4*VU,cy-4*VU]]
+      },
+      side:{
+        label:'SIDE (END) VIEW',
+        desc:'Looking at the object from the side. Shows the true depth (4 units) and the tallest height reached anywhere along the object: 3 units, the height of the towers.',
+        draw:(cx,cy)=>{
+          const pts=[[0,0],[0,-3],[4,-3],[4,0]];
+          return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
+        }
+      }
     }
   }
 };
+let currentObject = 'stepped';
 let currentView = 'front';
+function selectObject(id){
+  currentObject = id;
+  document.querySelectorAll('#objectBtns .view-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('ob_'+id).classList.add('active');
+  drawIso();
+  drawSelectedView();
+}
 function selectView(id){
   currentView = id;
-  document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.view-btns:not(#objectBtns) .view-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('vb_'+id).classList.add('active');
   drawSelectedView();
 }
 function drawSelectedView(){
   viewCtx.clearRect(0,0,vW,vH);
-  const v = VIEWS[currentView];
+  const v = OBJECTS[currentObject].views[currentView];
   const cx = vW*0.28, cy = vH*0.80;
   const pts = v.draw(cx,cy);
   viewCtx.beginPath();
@@ -336,8 +395,8 @@ function drawSelectedView(){
   viewCtx.strokeStyle='#fdba74';
   viewCtx.lineWidth=2.5;
   viewCtx.stroke();
-  if(v.extraLine){
-    const [a,b] = v.extraLine(cx,cy);
+  [v.extraLine, v.extraLine2].filter(Boolean).forEach(fn=>{
+    const [a,b] = fn(cx,cy);
     viewCtx.save();
     viewCtx.setLineDash([6,4]);
     viewCtx.strokeStyle='rgba(253,186,116,0.6)';
@@ -347,7 +406,7 @@ function drawSelectedView(){
     viewCtx.lineTo(b[0],b[1]);
     viewCtx.stroke();
     viewCtx.restore();
-  }
+  });
   viewCtx.fillStyle='rgba(210,218,245,.55)';
   viewCtx.font='10px "JetBrains Mono",monospace';
   viewCtx.fillText(v.label, 12, 16);
@@ -357,6 +416,7 @@ function drawSelectedView(){
     <div class="part-desc">${v.desc}</div>`;
 }
 window.addEventListener('resize', resizeView);
+resizeIso();
 resizeView();
 selectView('front');
 

@@ -290,6 +290,12 @@ function drawToothedWheel(cx,cy,r,teeth,angle,color){
   ctx.beginPath(); ctx.arc(0,0,3,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
   ctx.restore();
 }
+// Radius proportional to teeth, so two meshed wheels' tooth pitch matches.
+function gearR(teeth){ return teeth*3.2; }
+// Constant offset that puts a tooth GAP at `targetAngle` (the direction
+// facing this gear's mesh partner) instead of a tooth tip, so the two
+// gears' teeth interlock instead of clashing head-on.
+function meshOffset(targetAngle, teeth){ return targetAngle - Math.PI/teeth; }
 
 function drawGear(){
   ctx.clearRect(0,0,W,H);
@@ -298,43 +304,71 @@ function drawGear(){
   rot += 0.012;
 
   if (activeGear.id === 'spur'){
-    drawToothedWheel(cx-70, cy, 46, 14, rot, color);
-    drawToothedWheel(cx+60, cy, 26, 9, -rot*(46/26), color);
+    const t1=14, t2=9, r1=gearR(t1), r2=gearR(t2), gap=r1+r2;
+    const x1 = cx-gap/2, x2 = cx+gap/2;
+    drawToothedWheel(x1, cy, r1, t1, rot + meshOffset(0,t1), color);
+    drawToothedWheel(x2, cy, r2, t2, -rot*(t1/t2) + meshOffset(Math.PI,t2), color);
     ctx.fillStyle='rgba(210,218,245,.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-    ctx.fillText('slower / more force', cx-70, cy+70);
-    ctx.fillText('faster / less force', cx+60, cy+50);
+    ctx.fillText('slower / more force', x1, cy+r1+22);
+    ctx.fillText('faster / less force', x2, cy+r2+22);
   } else if (activeGear.id === 'bevel'){
-    ctx.save(); ctx.translate(cx-40,cy); ctx.rotate(rot);
-    ctx.beginPath(); ctx.ellipse(0,0,42,20,0,0,Math.PI*2); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
+    ctx.save(); ctx.translate(cx-36,cy); ctx.rotate(rot);
+    ctx.beginPath(); ctx.ellipse(0,0,40,20,0,0,Math.PI*2); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
     ctx.restore();
-    ctx.save(); ctx.translate(cx+40,cy); ctx.rotate(Math.PI/2); ctx.rotate(-rot);
-    ctx.beginPath(); ctx.ellipse(0,0,42,20,0,0,Math.PI*2); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
+    ctx.save(); ctx.translate(cx+36,cy); ctx.rotate(Math.PI/2); ctx.rotate(-rot);
+    ctx.beginPath(); ctx.ellipse(0,0,40,20,0,0,Math.PI*2); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
     ctx.restore();
     ctx.fillStyle='rgba(210,218,245,.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
     ctx.fillText('90° axis change', cx, cy+70);
   } else if (activeGear.id === 'rack'){
-    drawToothedWheel(cx, cy-40, 34, 12, rot, color);
-    const offset = (Math.sin(rot*2)*40);
+    const teeth=12, r=gearR(teeth), pinionY = cy-40;
+    const rackTop = pinionY + r; // pitch circle tangent to the rack's top edge
+    drawToothedWheel(cx, pinionY, r, teeth, rot + meshOffset(Math.PI/2,teeth), color);
+    // Rack slides continuously, proportional to the pinion's rotation
+    // (arc length = radius x angle) instead of oscillating independently
+    // of it — this is what actually links rotary motion to linear motion.
+    const toothPitch = (2*Math.PI*r)/teeth;
+    const offset = (rot*r) % toothPitch;
     ctx.save();
     ctx.strokeStyle = color; ctx.lineWidth = 2;
-    ctx.strokeRect(cx-120, cy+10, 240, 20);
-    for(let x=-120+offset%20; x<120; x+=20){
-      ctx.beginPath(); ctx.moveTo(cx+x, cy+10); ctx.lineTo(cx+x, cy+30); ctx.stroke();
+    ctx.strokeRect(cx-120, rackTop, 240, 20);
+    ctx.beginPath();
+    ctx.rect(cx-120, rackTop, 240, 20);
+    ctx.clip();
+    for(let x=-130+(offset%toothPitch); x<130; x+=toothPitch){
+      ctx.beginPath(); ctx.moveTo(cx+x, rackTop); ctx.lineTo(cx+x, rackTop+20); ctx.stroke();
     }
     ctx.restore();
     ctx.fillStyle='rgba(210,218,245,.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-    ctx.fillText('rotary → linear motion', cx, cy+56);
+    ctx.fillText('rotary → linear motion', cx, rackTop+40);
   } else {
-    ctx.save(); ctx.translate(cx-50,cy); ctx.rotate(rot*4);
-    for(let i=0;i<10;i++){
-      const y = -40 + i*9;
-      ctx.beginPath(); ctx.ellipse(0,y,16,4,0,0,Math.PI*2); ctx.strokeStyle=color; ctx.lineWidth=2; ctx.stroke();
+    // Worm drawn as a horizontal cylinder (its axis runs left-right, into
+    // the worm wheel's rim) with a diagonal thread pattern that scrolls
+    // along its length to show rotation — a worm doesn't change outward
+    // shape as it spins, unlike a toothed wheel, so the shape itself must
+    // stay fixed while only the thread pattern animates.
+    const wheelR = gearR(16), wheelX = cx+50;
+    const wormR = 15, wormRight = wheelX-wheelR, wormLeft = wormRight-110;
+    ctx.save();
+    ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(wormLeft, cy-wormR); ctx.lineTo(wormRight, cy-wormR);
+    ctx.moveTo(wormLeft, cy+wormR); ctx.lineTo(wormRight, cy+wormR);
+    ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(wormLeft, cy, 5, wormR, 0, 0, Math.PI*2); ctx.stroke();
+    const pitch = 16;
+    ctx.beginPath();
+    ctx.rect(wormLeft, cy-wormR, wormRight-wormLeft, wormR*2);
+    ctx.clip();
+    const phase = (rot*40) % pitch;
+    for(let x = wormLeft - pitch + phase; x < wormRight+pitch; x += pitch){
+      ctx.beginPath(); ctx.moveTo(x, cy-wormR); ctx.lineTo(x+pitch*0.6, cy+wormR); ctx.stroke();
     }
     ctx.restore();
-    drawToothedWheel(cx+55, cy, 40, 16, rot*0.1, color);
+    drawToothedWheel(wheelX, cy, wheelR, 16, rot*0.1 + meshOffset(Math.PI,16), color);
     ctx.fillStyle='rgba(210,218,245,.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-    ctx.fillText('worm (fast)', cx-50, cy+58);
-    ctx.fillText('worm wheel (slow, strong)', cx+55, cy+58);
+    ctx.fillText('worm (fast)', (wormLeft+wormRight)/2, cy+40);
+    ctx.fillText('worm wheel (slow, strong)', wheelX, cy+wheelR+22);
   }
   requestAnimationFrame(drawGear);
 }

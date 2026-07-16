@@ -350,13 +350,17 @@ function drawLogicCircuit(){
     ctx.fillText('B', left+80, bottom+28);
   }
 
-  // cell on the left
+  // Cell — drawn INLINE in the left wire (which already runs from top to
+  // bottom), as one long thin plate (positive) and one short thick plate
+  // (negative), the standard symbol, instead of a disconnected stub.
   const midY2 = (top+bottom)/2;
-  ctx.strokeStyle='#fdba74'; ctx.lineWidth=4;
-  ctx.beginPath(); ctx.moveTo(left-10,midY2-16); ctx.lineTo(left-10,midY2+16); ctx.stroke();
-  ctx.lineWidth=2.5;
-  ctx.beginPath(); ctx.moveTo(left-10,midY2+26); ctx.lineTo(left-10,midY2+46); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(left,midY2); ctx.lineTo(left, top); ctx.moveTo(left,midY2); ctx.lineTo(left,bottom); ctx.stroke();
+  ctx.strokeStyle = 'rgba(210,218,245,.30)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(left, top); ctx.lineTo(left, bottom); ctx.stroke();
+  ctx.strokeStyle = '#fdba74'; ctx.lineCap = 'round';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(left-15,midY2-9); ctx.lineTo(left+15,midY2-9); ctx.stroke(); // long, thin = +
+  ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.moveTo(left-8,midY2+9); ctx.lineTo(left+8,midY2+9); ctx.stroke(); // short, thick = −
 
   // lamp on the right
   const lampY=(top+bottom)/2;

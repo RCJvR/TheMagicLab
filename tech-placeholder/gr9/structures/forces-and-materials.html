@@ -86,7 +86,14 @@
     .mat-select-row{display:flex;gap:14px;margin-bottom:20px;flex-wrap:wrap}
     .mat-select{display:flex;flex-direction:column;gap:6px}
     .mat-select label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--muted)}
-    .mat-select select{font-family:var(--fd);font-size:13.5px;font-weight:600;padding:9px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;min-width:160px}
+    /* appearance:none stops the browser substituting its own (often light)
+       native widget chrome for the closed box; option{} covers the open
+       list, which browsers always render with their own default background
+       regardless of appearance. Together these keep the whole control dark. */
+    .mat-select select{font-family:var(--fd);font-size:13.5px;font-weight:600;padding:9px 30px 9px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background-color:#1c2340;color:var(--text);cursor:pointer;min-width:160px;appearance:none;-webkit-appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23fdba74' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 11px center}
+    .mat-select select option{background:#161b2e;color:var(--text)}
     .bar-row{margin-bottom:16px}
     .bar-label{display:flex;justify-content:space-between;font-size:12px;color:rgba(210,218,245,.70);margin-bottom:5px}
     .bar-track{display:flex;flex-direction:column;gap:5px}

@@ -37,6 +37,10 @@
     .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
     .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
     .callout strong{color:var(--accent-light)}
+    /* Lesson-tab illustrative figures (static, non-interactive) */
+    .fig-wrap{background:#05070f;border:1px solid var(--border);border-radius:16px;padding:12px;margin:14px 0 20px;max-width:340px}
+    .fig-canvas{display:block;width:100%;border-radius:8px}
+    .fig-caption{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px}
     .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
     .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
     .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
@@ -134,15 +138,18 @@
     <p>A <strong>single fixed pulley</strong> is a wheel with a grooved rim, mounted in a fixed position (for example, bolted to a beam), with a rope running over it. Pulling down on one end of the rope lifts the load on the other end.</p>
     <p>A fixed pulley does <strong>not</strong> multiply force — the effort you apply equals the load you lift. Its only job is to <strong>change the direction</strong> of the pulling force, which is why a flagpole lets you raise a flag by pulling downward instead of climbing up.</p>
     <div class="key-fact">Single fixed pulley: Mechanical Advantage (MA) = 1. Direction changes, force does not.</div>
+    <div class="fig-wrap"><canvas class="fig-canvas" id="figFixed" height="260"></canvas><div class="fig-caption">Single fixed pulley — one rope section supports the load</div></div>
 
     <h2>The single moveable pulley</h2>
     <p>A <strong>single moveable pulley</strong> is attached directly to the load, so the pulley itself moves as the load is lifted. One end of the rope is fixed (often to the same beam or frame), the rope loops under the moveable pulley, and you pull on the free end.</p>
     <p>Because the load is now supported by <strong>two</strong> rope sections instead of one, you only need to pull with about half the force to lift it — giving <strong>MA &gt; 1</strong>. The trade-off is that you must pull the rope twice as far to raise the load the same distance.</p>
     <div class="key-fact">Single moveable pulley: MA = 2 (approximately). Effort ≈ half the load, but rope moves twice as far.</div>
+    <div class="fig-wrap"><canvas class="fig-canvas" id="figMoveable" height="260"></canvas><div class="fig-caption">Single moveable pulley — two rope sections support the load</div></div>
 
     <h2>Pulley block systems (block and tackle)</h2>
     <p>A <strong>block and tackle</strong> combines several fixed and moveable pulleys (mounted in "blocks") with one continuous rope threaded through them. The more <strong>load-bearing rope sections</strong> supporting the moveable block, the greater the mechanical advantage — each extra rope section shares the load between more strands.</p>
     <div class="callout"><strong>Rule of thumb:</strong> Mechanical Advantage ≈ the number of rope sections directly supporting the moveable pulley block. Two supporting ropes give MA ≈ 2; three supporting ropes give MA ≈ 3, and so on. This is how cranes and engine hoists lift loads far heavier than a person could pull directly.</div>
+    <div class="fig-wrap"><canvas class="fig-canvas" id="figBlock" height="260"></canvas><div class="fig-caption">2-pulley block and tackle — four rope sections support the moveable block</div></div>
     <table class="compare-table">
       <thead><tr><th>System</th><th>Load-bearing ropes</th><th>Approx. MA</th></tr></thead>
       <tbody>
@@ -168,11 +175,14 @@
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
   <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Pulley System Builder</h2>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Choose a pulley configuration to see how the ropes are arranged and how much effort force is needed to lift a 100 N load.</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Drag the slider to change the number of rope sections supporting the load, and see how more pulleys mean less effort — but more rope to pull.</p>
   <div class="explore-layout">
     <div class="truss-canvas-wrap"><canvas id="pulleyCanvas" height="340"></canvas></div>
     <div>
-      <div class="parts-list" id="partsList"></div>
+      <div class="slider-row" style="margin-bottom:14px">
+        <label style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:rgba(210,218,245,.78);margin-bottom:8px">Supporting rope sections <span id="ropeCountVal" style="font-family:var(--fm);color:var(--accent-light)">1</span></label>
+        <input type="range" id="ropeCount" min="1" max="6" value="1" step="1" oninput="selectRopeCount(this.value)" style="width:100%;accent-color:var(--accent)">
+      </div>
       <div class="part-info" id="partInfo"></div>
     </div>
   </div>
@@ -211,42 +221,44 @@ function switchTab(id,btn){
 }
 
 /* ═══════════════════════════════════════════════
-   PULLEY SYSTEM BUILDER
+   PULLEY SYSTEM BUILDER — N supporting rope sections
+   Generalised model: ceil(N/2) pulleys in the fixed
+   (top) block, floor(N/2) pulleys in the moveable
+   block attached to the load. N=1 is a single fixed
+   pulley (0 moveable pulleys); N=2 is a single
+   moveable pulley; N>=3 is a block-and-tackle.
 ═══════════════════════════════════════════════ */
 const LOAD_N = 100;
-const CONFIGS = [
-  {id:'fixed', name:'Single fixed pulley', ropes:1, ma:1, color:'#fdba74',
-   desc:'One pulley bolted in a fixed position. The rope goes over it once. Pulling down lifts the load up — direction changes but the effort needed equals the load.'},
-  {id:'moveable', name:'Single moveable pulley', ropes:2, ma:2, color:'#fb923c',
-   desc:'The pulley is attached to the load and moves with it. Two rope sections support the load, so the effort needed is about half the load. You must pull the rope twice as far.'},
-  {id:'block2', name:'2-pulley block and tackle (3 ropes)', ropes:3, ma:3, color:'#f97316',
-   desc:'A fixed block and a moveable block, with the rope threaded so 3 sections support the moveable block. MA ≈ 3 — a third of the effort is needed compared to lifting directly.'},
-  {id:'block3', name:'3-pulley block and tackle (4 ropes)', ropes:4, ma:4, color:'#ea580c',
-   desc:'More pulleys in each block mean more supporting rope sections — here 4 sections support the load. MA ≈ 4 — only a quarter of the effort is needed, but the rope must be pulled four times as far.'},
-];
-let activeConfig = null;
+const COLOR = '#fb923c';
+let ropeCount = 1;
 
-function buildPartsList(){
-  document.getElementById('partsList').innerHTML = CONFIGS.map(p=>`
-    <button class="part-btn" id="pb_${p.id}" onclick="selectConfig('${p.id}')">
-      <span class="part-dot" style="background:${p.color}"></span>${p.name}
-    </button>`).join('');
-  selectConfig('fixed');
+function nameFor(n){
+  if(n===1) return 'Single fixed pulley';
+  if(n===2) return 'Single moveable pulley';
+  return `Block and tackle (${n} rope sections)`;
 }
-function selectConfig(id){
-  activeConfig = CONFIGS.find(p=>p.id===id);
-  document.querySelectorAll('.part-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('pb_'+id).classList.add('active');
-  const effort = (LOAD_N/activeConfig.ma).toFixed(1);
+function descFor(n){
+  if(n===1) return 'One pulley bolted in a fixed position. The rope goes over it once. Pulling down lifts the load up — direction changes but the effort needed equals the load.';
+  if(n===2) return 'The pulley is attached to the load and moves with it. Two rope sections support the load, so the effort needed is about half the load. You must pull the rope twice as far.';
+  return `A fixed block (${Math.ceil(n/2)} pulley${Math.ceil(n/2)>1?'s':''}) and a moveable block (${Math.floor(n/2)} pulley${Math.floor(n/2)>1?'s':''}) attached to the load, with ${n} rope sections supporting the moveable block. MA ≈ ${n} — only 1/${n} of the effort is needed, but the rope must be pulled ${n}× as far.`;
+}
+function selectRopeCount(n){
+  ropeCount = parseInt(n,10);
+  document.getElementById('ropeCountVal').textContent = ropeCount;
+  const effort = (LOAD_N/ropeCount).toFixed(1);
   document.getElementById('partInfo').innerHTML = `
-    <div class="part-name">${activeConfig.name}</div>
-    <span class="part-force">MA ≈ ${activeConfig.ma}</span>
-    <div class="part-desc">${activeConfig.desc}</div>
+    <div class="part-name">${nameFor(ropeCount)}</div>
+    <span class="part-force">MA ≈ ${ropeCount}</span>
+    <div class="part-desc">${descFor(ropeCount)}</div>
     <div class="ma-readout">
       <div class="ma-box"><div class="ma-label">Load</div><div class="ma-val">${LOAD_N} N</div></div>
       <div class="ma-box"><div class="ma-label">Effort needed</div><div class="ma-val">${effort} N</div></div>
+    </div>
+    <div class="ma-readout">
+      <div class="ma-box"><div class="ma-label">Rope pulled to lift 1&nbsp;m</div><div class="ma-val">${ropeCount} m</div></div>
+      <div class="ma-box"><div class="ma-label">Load rises</div><div class="ma-val">1 m</div></div>
     </div>`;
-  drawPulleys();
+  drawPulleys(ctx, W, H, ropeCount);
 }
 
 const canvas = document.getElementById('pulleyCanvas');
@@ -256,97 +268,106 @@ function resizeCanvas(){
   W = canvas.offsetWidth || 500; H = 340;
   canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
   ctx.scale(devicePixelRatio, devicePixelRatio);
-  drawPulleys();
+  drawPulleys(ctx, W, H, ropeCount);
 }
 
-function drawPulley(cx,cy,r,color){
-  ctx.beginPath();
-  ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 3;
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(cx,cy,3,0,Math.PI*2);
-  ctx.fillStyle = color;
-  ctx.fill();
+function drawPulley(c,cx,cy,r,color){
+  c.beginPath();
+  c.arc(cx,cy,r,0,Math.PI*2);
+  c.strokeStyle = color;
+  c.lineWidth = 3;
+  c.stroke();
+  c.beginPath();
+  c.arc(cx,cy,3,0,Math.PI*2);
+  c.fillStyle = color;
+  c.fill();
 }
-function drawRope(x1,y1,x2,y2,color){
-  ctx.beginPath();
-  ctx.moveTo(x1,y1);
-  ctx.lineTo(x2,y2);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
-  ctx.stroke();
+function drawRope(c,x1,y1,x2,y2,color){
+  c.beginPath();
+  c.moveTo(x1,y1);
+  c.lineTo(x2,y2);
+  c.strokeStyle = color;
+  c.lineWidth = 2;
+  c.stroke();
 }
-function drawBeam(cx,topY){
-  ctx.fillStyle = 'rgba(255,255,255,.14)';
-  ctx.fillRect(cx-90, topY-10, 180, 10);
+function drawBeam(c,cx,topY){
+  c.fillStyle = 'rgba(255,255,255,.14)';
+  c.fillRect(cx-90, topY-10, 180, 10);
 }
-function drawLoadBox(cx,cy,color){
-  ctx.fillStyle = color+'33';
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
-  ctx.fillRect(cx-26,cy,52,34);
-  ctx.strokeRect(cx-26,cy,52,34);
-  ctx.fillStyle = '#fff';
-  ctx.font = '11px "JetBrains Mono",monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('100 N', cx, cy+21);
+function drawLoadBox(c,cx,cy,color){
+  c.fillStyle = color+'33';
+  c.strokeStyle = color;
+  c.lineWidth = 2;
+  c.fillRect(cx-26,cy,52,34);
+  c.strokeRect(cx-26,cy,52,34);
+  c.fillStyle = '#fff';
+  c.font = '11px "JetBrains Mono",monospace';
+  c.textAlign = 'center';
+  c.fillText('100 N', cx, cy+21);
 }
 
-function drawPulleys(){
-  ctx.clearRect(0,0,W,H);
-  if (!activeConfig) { requestAnimationFrame(drawPulleys); return; }
-  const cx = W/2, topY = 46, r = 16, color = activeConfig.color;
-  drawBeam(cx, topY);
+// Generic block-and-tackle renderer — used both by the live explorer canvas
+// and by the small static figures in the Lesson tab (same tested geometry).
+function drawPulleys(c,cw,ch,n){
+  c.clearRect(0,0,cw,ch);
+  const color = COLOR;
+  const cx = cw/2, topY = 40, r = 13, spacing = 26;
+  drawBeam(c,cx, topY);
 
-  if (activeConfig.id === 'fixed'){
-    drawPulley(cx, topY+r, r, color);
-    drawRope(cx-r, topY+r, cx-r, topY+150, color);
-    drawLoadBox(cx-r, topY+150, color);
-    drawRope(cx+r, topY+r, cx+70, topY+230, color);
-    ctx.fillStyle = 'rgba(210,218,245,.6)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-    ctx.fillText('Pull down here (effort)', cx+70, topY+248);
-  } else if (activeConfig.id === 'moveable'){
-    ctx.fillStyle='rgba(255,255,255,.14)'; ctx.fillRect(cx-60,topY-2,4,20); ctx.fillRect(cx+56,topY-2,4,20);
-    drawRope(cx-58, topY+18, cx-58, topY+150, color);
-    drawRope(cx+58, topY+18, cx+58, topY+80, color);
-    drawPulley(cx, topY+96, r, color);
-    drawRope(cx-58, topY+150, cx-16, topY+96, color);
-    drawRope(cx+58, topY+80, cx+16, topY+96, color);
-    drawLoadBox(cx, topY+112, color);
-    drawRope(cx-58, topY+150, cx-58, topY+230, color);
-    ctx.fillStyle = 'rgba(210,218,245,.6)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-    ctx.fillText('Pull down here (effort)', cx-58, topY+248);
-  } else {
-    const n = activeConfig.id==='block2' ? 3 : 4;
-    const spread = 22;
-    for(let i=0;i<Math.ceil(n/2);i++){
-      drawPulley(cx - spread/2 - i*20, topY+r, r*0.8, color);
-    }
-    const moveY = topY+130;
-    for(let i=0;i<Math.floor(n/2);i++){
-      drawPulley(cx - spread/2 - i*20, moveY, r*0.8, color);
-    }
-    // zig-zag rope lines
-    let lastX = cx-70, lastY = topY-2;
-    for(let i=0;i<n;i++){
-      const targetY = (i%2===0) ? moveY : topY+r;
-      const targetX = cx - 70 + i*14;
-      drawRope(lastX, lastY, targetX, targetY, color);
-      lastX = targetX; lastY = targetY;
-    }
-    drawLoadBox(cx-70+ (n-1)*7, moveY+16, color);
-    drawRope(lastX, lastY, cx+90, topY+240, color);
-    ctx.fillStyle = 'rgba(210,218,245,.6)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
-    ctx.fillText('Pull here (effort)', cx+90, topY+258);
+  const fixedCount = Math.ceil(n/2), moveableCount = Math.floor(n/2);
+  const fixedY = topY + r + 6;
+  const moveableY = fixedY + 130;
+  const xAt = (count,i,centerX) => count<=1 ? centerX : centerX - ((count-1)*spacing)/2 + i*spacing;
+
+  const fixedXs = [];
+  for(let i=0;i<fixedCount;i++){ const x=xAt(fixedCount,i,cx); fixedXs.push(x); drawPulley(c,x, fixedY, r, color); }
+  const moveXs = [];
+  for(let i=0;i<moveableCount;i++){ const x=xAt(moveableCount,i,cx); moveXs.push(x); drawPulley(c,x, moveableY, r, color); }
+
+  const loadY = (moveableCount>0 ? moveableY : fixedY) + 26;
+  const bottomY = moveableCount>0 ? moveableY : (loadY-6);
+
+  // N supporting strands, fanned out slightly so repeated wraps over the
+  // same pulley are still visible as distinct lines rather than overlapping.
+  for(let k=0;k<n;k++){
+    const jitter = (k - (n-1)/2) * 3;
+    const fx = fixedXs[k % fixedCount] + jitter;
+    const mx = (moveableCount>0 ? moveXs[k % moveableCount] : cx) + jitter;
+    drawRope(c,fx, fixedY, mx, bottomY, color);
   }
-  requestAnimationFrame(drawPulleys);
+  drawLoadBox(c,cx, loadY, color);
+
+  // Effort rope: exits the last fixed pulley down to the pull point.
+  const exitX = fixedXs[fixedXs.length-1];
+  const pullX = cx + 90, pullY = ch-40;
+  drawRope(c,exitX, fixedY, pullX, pullY, color);
+  c.fillStyle = 'rgba(210,218,245,.6)'; c.font='11px "JetBrains Mono",monospace'; c.textAlign='center';
+  c.fillText('Pull here (effort)', pullX, pullY+18);
 }
 
 window.addEventListener('resize', resizeCanvas);
-buildPartsList();
 resizeCanvas();
+selectRopeCount(1);
+
+// Static illustrative figures in the Lesson tab, using the same tested
+// drawPulleys() geometry as the interactive explorer above.
+function renderFigure(id, n){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const fw = el.offsetWidth || 300, fh = 260;
+  el.width = fw*devicePixelRatio; el.height = fh*devicePixelRatio;
+  const fctx = el.getContext('2d');
+  fctx.setTransform(1,0,0,1,0,0);
+  fctx.scale(devicePixelRatio, devicePixelRatio);
+  drawPulleys(fctx, fw, fh, n);
+}
+function renderAllFigures(){
+  renderFigure('figFixed', 1);
+  renderFigure('figMoveable', 2);
+  renderFigure('figBlock', 4);
+}
+window.addEventListener('resize', renderAllFigures);
+renderAllFigures();
 
 /* ═══════════════════════════════════════════════
    PRACTICE

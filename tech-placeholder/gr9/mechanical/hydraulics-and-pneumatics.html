@@ -37,6 +37,16 @@
     .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
     .callout{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
     .callout strong{color:var(--accent-light)}
+    /* Systems diagram: input -> process -> output */
+    .sys-diagram{display:flex;align-items:stretch;gap:10px;margin:16px 0 20px;flex-wrap:wrap}
+    .sys-box{flex:1;min-width:150px;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 16px}
+    .sys-box-label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--accent-light);margin-bottom:8px}
+    .sys-box-text{font-size:13px;line-height:1.6;color:rgba(210,218,245,.85)}
+    .sys-arrow{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent);flex-shrink:0}
+    @media(max-width:640px){
+      .sys-diagram{flex-direction:column}
+      .sys-arrow{transform:rotate(90deg);padding:2px 0}
+    }
     .key-fact{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:var(--accent-light);font-family:var(--fm)}
     .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
     .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
@@ -156,6 +166,22 @@
 
     <h2>Systems diagrams</h2>
     <p>A <strong>systems diagram</strong> describes how a device works by showing INPUT (what goes in — e.g. a person pumping a lever), PROCESS (what happens inside — e.g. oil is pushed from a small cylinder into a large cylinder through a one-way valve) and OUTPUT (the result — e.g. a heavy load is raised). Drawing a hydraulic jack as a systems diagram helps you explain the process clearly without needing full engineering drawings.</p>
+    <div class="sys-diagram">
+      <div class="sys-box">
+        <div class="sys-box-label">Input</div>
+        <div class="sys-box-text">Person pumps the small hand lever up and down</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-box">
+        <div class="sys-box-label">Process</div>
+        <div class="sys-box-text">Oil is pushed from the small piston, through a one-way valve, into the large piston</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-box">
+        <div class="sys-box-label">Output</div>
+        <div class="sys-box-text">The large piston rises, lifting the heavy load (e.g. a car)</div>
+      </div>
+    </div>
 
     <h2>Design evaluation: fitness-for-purpose</h2>
     <p>Once a solution (like a hydraulic jack) has been designed or chosen, it should be evaluated against a standard set of questions:</p>
@@ -329,9 +355,14 @@ function updatePress(){
   const mode = ma>1 ? 'force multiplication' : ma<1 ? 'force division' : 'no change';
   document.getElementById('pressExplain').innerHTML = `
     <div class="part-name">${mode.charAt(0).toUpperCase()+mode.slice(1)}</div>
-    <div class="part-desc">The output piston area is ${ma.toFixed(1)} times the input piston area, so the force is multiplied ${ma.toFixed(1)}× — but because the same volume of fluid moves through both cylinders, the input piston must travel ${ma.toFixed(1)}× further than the output piston moves. ${ma>1 ? 'This is how a hydraulic jack lifts a heavy load with a small hand force.' : ma<1 ? 'Here the small output piston moves further but with less force than the input.' : 'Equal-sized pistons transfer force and distance unchanged.'}</div>`;
+    <div class="part-desc">Pushing the input piston with ${fIn} N produces ${Math.round(forceOut)} N at the output. The output piston area is ${ma.toFixed(1)} times the input piston area, so the force is multiplied ${ma.toFixed(1)}× — but because the same volume of fluid moves through both cylinders, the input piston must travel ${ma.toFixed(1)}× further than the output piston moves. ${ma>1 ? 'This is how a hydraulic jack lifts a heavy load with a small hand force.' : ma<1 ? 'Here the small output piston moves further but with less force than the input.' : 'Equal-sized pistons transfer force and distance unchanged.'}</div>`;
 
-  drawPress(dIn, dOut, 0.5);
+  // Push the input piston further down as more force is dialled in, so the
+  // "Force applied at input" slider visibly does something in the diagram
+  // instead of only changing the numbers on the right.
+  const fMin = 10, fMax = 200;
+  const pushFrac = 0.15 + 0.7*((fIn-fMin)/(fMax-fMin));
+  drawPress(dIn, dOut, pushFrac);
 }
 window.addEventListener('resize', resizePress);
 resizePress();

@@ -70,7 +70,14 @@
     .band-picker{display:flex;flex-direction:column;gap:10px;margin-top:14px}
     .band-row{display:flex;align-items:center;gap:10px}
     .band-row label{font-size:11px;color:var(--muted);width:78px;flex-shrink:0}
-    .band-row select{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:7px 8px;color:#fff;font-size:12px}
+    /* appearance:none stops the browser substituting its own (often light)
+       native widget chrome for the closed box; option{} covers the open
+       list, which browsers always render with their own default background
+       regardless of appearance. Together these keep the whole control dark. */
+    .band-row select{flex:1;appearance:none;-webkit-appearance:none;background-color:#1c2340;border:1px solid var(--border);border-radius:8px;padding:7px 26px 7px 8px;color:#fff;font-size:12px;cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23fdba74' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 8px center}
+    .band-row select option{background:#161b2e;color:#fff}
     .resistor-value{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:12px;padding:14px 16px;margin-top:14px;text-align:center}
     .resistor-value .big{font-weight:900;font-size:26px;color:var(--accent-light)}
     /* Practice */

@@ -45,6 +45,8 @@
     .compare-table tr:last-child td{border-bottom:none}
     /* Explore */
     .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:960px}
+    .explore-layout.quiz-mode{grid-template-columns:1fr}
+    .explore-layout.quiz-mode .circuit-canvas-wrap{display:none}
     .circuit-canvas-wrap{background:#05070f;border:1px solid var(--border);border-radius:20px;padding:16px}
     canvas{display:block;border-radius:8px;width:100%}
     .explore-tools{display:flex;flex-direction:column;gap:10px}
@@ -65,6 +67,15 @@
     .symbol-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .symbol-opt{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px;cursor:pointer;transition:all 140ms}
     .symbol-opt:hover{background:rgba(249,115,22,.10);border-color:rgba(249,115,22,.28)}
+    /* Quiz mode uses the full explore width instead of the narrow 300px
+       sidebar column, and gets a bigger, more central layout to match. */
+    .quiz-mode #quizPanel{max-width:640px;margin:0 auto}
+    .quiz-mode .symbol-quiz{padding:28px;background:#05070f;border-radius:20px}
+    .quiz-mode .symbol-quiz-name{font-size:22px;margin-bottom:18px;text-align:center}
+    .quiz-mode .symbol-opts{grid-template-columns:1fr 1fr;gap:14px}
+    .quiz-mode .symbol-opt{padding:18px}
+    .quiz-mode .symbol-opt canvas{height:80px}
+    .quiz-mode .toggle-btn{display:flex;justify-content:center;width:100%;margin-top:16px}
     .symbol-opt.correct{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.4)}
     .symbol-opt.wrong{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35)}
     .symbol-opt canvas{width:100%;height:50px;pointer-events:none}
@@ -247,6 +258,9 @@ function setMode(m){
   document.getElementById('modeQuizBtn').classList.toggle('active', m==='quiz');
   document.getElementById('buildPanel').style.display = m==='build' ? 'block' : 'none';
   document.getElementById('quizPanel').style.display = m==='quiz' ? 'block' : 'none';
+  // The circuit canvas is only meaningful in build mode — hide it and let
+  // the quiz take the full width instead of leaving an empty black panel.
+  document.querySelector('.explore-layout').classList.toggle('quiz-mode', m==='quiz');
   if(m==='quiz'){ drawQuizSymbol(); }
   drawCircuit();
 }
@@ -307,13 +321,18 @@ function drawCircuit(){
   drawWire(right, bottom, left, bottom, wireColor); // bottom wire
   drawWire(left, bottom, left, top, wireColor);     // left wire (through cell)
 
-  // cell symbol (left-middle)
+  // Cell symbol — standard: one long thin plate (positive) and one short
+  // thick plate (negative), close together, set INLINE in the wire loop
+  // like every other component (never floating off to the side).
   const cellY = (top+bottom)/2;
-  ctx.strokeStyle = wireColor; ctx.lineWidth=4;
-  ctx.beginPath(); ctx.moveTo(left-14,cellY-16); ctx.lineTo(left-14,cellY+16); ctx.stroke();
+  ctx.strokeStyle = wireColor; ctx.lineCap='round';
   ctx.lineWidth=2.5;
-  ctx.beginPath(); ctx.moveTo(left-14,cellY+26); ctx.lineTo(left-14,cellY+46); ctx.stroke();
-  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px sans-serif'; ctx.fillText('cell', left-40, cellY+2);
+  ctx.beginPath(); ctx.moveTo(left-16,cellY-9); ctx.lineTo(left+16,cellY-9); ctx.stroke(); // long, thin = +
+  ctx.lineWidth=6;
+  ctx.beginPath(); ctx.moveTo(left-9,cellY+9); ctx.lineTo(left+9,cellY+9); ctx.stroke(); // short, thick = −
+  ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px sans-serif'; ctx.textAlign='left';
+  ctx.fillText('+', left+22, cellY-5); ctx.fillText('−', left+22, cellY+13);
+  ctx.fillText('cell', left-16, cellY-30);
 
   // switch symbol (top-middle) — gap with lever
   const midX = (left+right)/2;
@@ -365,7 +384,7 @@ const COMPONENTS = [
   {name:'Motor', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.font='bold 16px sans-serif';c.fillStyle='#fdba74';c.fillText('M',39,31);}},
 ];
 let quizIdx = 0;
-function makeSymbolCanvas(comp, isCorrectSlot){
+function makeSymbolCanvas(comp){
   const cv = document.createElement('canvas');
   cv.width=90; cv.height=50;
   const cc = cv.getContext('2d');
@@ -391,9 +410,14 @@ function drawQuizSymbol(){
     wrap.appendChild(makeSymbolCanvas(o));
     wrap.onclick=()=>{
       document.querySelectorAll('.symbol-opt').forEach(el=>el.style.pointerEvents='none');
-      wrap.classList.add(o.name===comp.name?'correct':'wrong');
-      if(o.name!==comp.name){
-        [...optsDiv.children].forEach(child=>{});
+      const isCorrect = o.name===comp.name;
+      wrap.classList.add(isCorrect?'correct':'wrong');
+      // If they picked wrong, reveal which option actually was correct —
+      // otherwise a wrong guess never tells you the right answer.
+      if(!isCorrect){
+        [...optsDiv.children].forEach((child,i)=>{
+          if(opts[i].name===comp.name) child.classList.add('correct');
+        });
       }
     };
     optsDiv.appendChild(wrap);
