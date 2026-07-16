@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v24'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v24: Computer Codex — real Grade 10 CAT/IT lesson content (CAPS + IEB)
+const CACHE_NAME = 'magic-lab-v25'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v25: Computer Codex — real Grade 11 CAT/IT lesson content (CAPS + IEB)
 
 const urlsToCache = [
   '/',
