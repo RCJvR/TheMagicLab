@@ -2,8 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v28'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v28: Computer Codex — grade-specific sidebar filter (All/Gr10/Gr11/Gr12) for CAT/IT tracks
+const CACHE_NAME = 'magic-lab-v29'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v29: Computer Codex — subject selector switched from a <select> dropdown to button pills
 
 const urlsToCache = [
   '/',

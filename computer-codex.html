@@ -109,19 +109,21 @@
     #sidebarList { flex: 1; overflow-y: auto; padding-bottom: 14px; }
 
     /* ── Subject / track selector ── */
-    .track-select-wrap { margin-top: 10px; position: relative; }
-    .track-select {
-      width: 100%; appearance: none; -webkit-appearance: none;
-      font-family: var(--font-body); font-size: 12.5px; font-weight: 700;
-      color: var(--text); background: var(--surface);
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 9px 30px 9px 11px; cursor: pointer; transition: all 140ms;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2393c5fd' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 11px center;
+    .subject-toggle {
+      display: flex; flex-direction: column; gap: 4px; margin-top: 10px;
     }
-    .track-select:hover { background-color: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
-    .track-select:focus { outline: none; border-color: rgba(59,130,246,0.45); }
-    .track-select option { background: var(--bg2); color: var(--text); }
+    .subject-pill {
+      display: flex; align-items: center; gap: 8px;
+      width: 100%; text-align: left; font-family: var(--font-body);
+      font-size: 12.5px; font-weight: 700; color: var(--text2);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 9px 11px; cursor: pointer; transition: all 140ms;
+    }
+    .subject-pill-icon { font-size: 14px; flex-shrink: 0; }
+    .subject-pill:hover { background-color: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.16); }
+    .subject-pill.active {
+      color: #fff; background: rgba(59,130,246,0.16); border-color: rgba(59,130,246,0.45);
+    }
 
     /* ── "Coming soon" empty-track state ── */
     .track-empty-sidebar {
@@ -547,12 +549,16 @@
     <nav id="sidebar">
       <div id="sidebarHeader">
         <div class="sidebar-title">Subject</div>
-        <div class="track-select-wrap">
-          <select id="subjectSelect" class="track-select" onchange="onSubjectChange(this.value)">
-            <option value="coding">💻 Coding &amp; Robotics · Gr 8–9</option>
-            <option value="cat">🖥 CAT · Gr 10–12</option>
-            <option value="it">⌨️ IT · Gr 10–12</option>
-          </select>
+        <div class="subject-toggle" id="subjectToggle">
+          <button class="subject-pill active" id="pillSubjectCoding" onclick="onSubjectChange('coding')">
+            <span class="subject-pill-icon">💻</span> Coding &amp; Robotics · Gr 8–9
+          </button>
+          <button class="subject-pill" id="pillSubjectCat" onclick="onSubjectChange('cat')">
+            <span class="subject-pill-icon">🖥</span> CAT · Gr 10–12
+          </button>
+          <button class="subject-pill" id="pillSubjectIt" onclick="onSubjectChange('it')">
+            <span class="subject-pill-icon">⌨️</span> IT · Gr 10–12
+          </button>
         </div>
         <div class="curriculum-toggle" id="curriculumToggle" style="display:none;">
           <button class="cur-pill active" id="pillCaps" onclick="setCurriculum('caps')">CAPS</button>
@@ -17747,9 +17753,12 @@ function switchTrack(track) {
   renderLesson();
 }
 
-// Subject dropdown changed (Coding & Robotics / CAT / IT).
+// Subject pill clicked (Coding & Robotics / CAT / IT).
 function onSubjectChange(subject) {
   activeSubject = subject;
+  document.getElementById('pillSubjectCoding').classList.toggle('active', subject === 'coding');
+  document.getElementById('pillSubjectCat').classList.toggle('active', subject === 'cat');
+  document.getElementById('pillSubjectIt').classList.toggle('active', subject === 'it');
   const toggle = document.getElementById('curriculumToggle');
   if (toggle) toggle.style.display = subject === 'coding' ? 'none' : 'flex';
   const gradeToggle = document.getElementById('gradeToggle');
@@ -17804,8 +17813,9 @@ function setGradeFilter(grade) {
 // "Back to Coding & Robotics" button inside the empty-track panel.
 function backToCoding() {
   activeSubject = 'coding';
-  const sel = document.getElementById('subjectSelect');
-  if (sel) sel.value = 'coding';
+  document.getElementById('pillSubjectCoding').classList.add('active');
+  document.getElementById('pillSubjectCat').classList.remove('active');
+  document.getElementById('pillSubjectIt').classList.remove('active');
   const toggle = document.getElementById('curriculumToggle');
   if (toggle) toggle.style.display = 'none';
   const gradeToggle = document.getElementById('gradeToggle');
