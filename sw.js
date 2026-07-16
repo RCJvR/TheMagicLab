@@ -2,10 +2,8 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v30'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v30: Tech Placeholder — fixed broken gear/truss/pulley/circuit diagrams,
-                                    // dropdown contrast, hydraulic press slider, added pulley/plastics visuals,
-                                    // replaced landing-page grade dropdown with filter buttons
+const CACHE_NAME = 'magic-lab-v31'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v31: Renamed "Tech Placeholder" to "The Tech Tower" everywhere it appears
 
 const urlsToCache = [
   '/',
