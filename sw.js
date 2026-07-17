@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v42'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v43'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -63,6 +63,13 @@ const CACHE_NAME = 'magic-lab-v42'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // being able to end once every question is exhausted. Confirms before
                                     // acting, then just flips the session to 'ended', which players already
                                     // pick up on their normal poll loop.
+                                    // v43: dashboard-teacher.html — fixed light-on-light <select> dropdown
+                                    // text on the Arena/assignment/class pickers. The .form-input box itself
+                                    // is dark-themed, but browsers render a <select>'s open option list with
+                                    // their own default (usually white) background while still inheriting
+                                    // the light --text color, making the options unreadable. Added explicit
+                                    // dark background + light text on `option` so the popup list matches
+                                    // the rest of the UI.
 
 const urlsToCache = [
   '/',
