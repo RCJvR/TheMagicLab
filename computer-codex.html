@@ -480,8 +480,21 @@
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
     .hidden { display: none !important; }
 
+    .mobile-nav-toggle { display: none; }
+    #sidebarBackdrop { display: none; }
     @media (max-width: 720px) {
-      #sidebar { display: none; }
+      .mobile-nav-toggle { display: inline-flex; }
+      #mainLayout { position: relative; }
+      #sidebar {
+        position: fixed; top: 0; left: 0; height: 100%; z-index: 210;
+        transform: translateX(-100%); transition: transform 220ms ease;
+        box-shadow: 12px 0 32px rgba(0,0,0,0.45);
+      }
+      #sidebar.mobile-open { transform: translateX(0); }
+      #sidebarBackdrop.mobile-open {
+        display: block; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.55); z-index: 205;
+      }
       #lessonScroll { padding: 22px 20px 18px; }
     }
     @media (max-width: 640px) {
@@ -528,6 +541,7 @@
   <!-- Header -->
   <header id="appHeader">
     <div class="hdr-left">
+      <button class="hdr-btn mobile-nav-toggle" id="mobileNavToggle" onclick="toggleMobileSidebar()" title="Menu" aria-label="Toggle lesson navigation" style="padding:6px 10px;">☰</button>
       <div class="app-icon">📚</div>
       <h1 class="app-title">Computer Codex</h1>
       <span class="grade-badge" id="gradeBadge">Grade 8 – 9</span>
@@ -544,6 +558,8 @@
 
   <!-- Main -->
   <div id="mainLayout">
+
+    <div id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
 
     <!-- Sidebar -->
     <nav id="sidebar">
@@ -17752,6 +17768,19 @@ function switchTrack(track) {
   buildSidebar();
   renderLesson();
 }
+
+// ── Mobile sidebar drawer ───────────────────────────────────────────────
+function toggleMobileSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('sidebarBackdrop').classList.toggle('mobile-open');
+}
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarBackdrop').classList.remove('mobile-open');
+}
+document.getElementById('sidebarList')?.addEventListener('click', function (e) {
+  if (e.target.closest('.lesson-item') && window.innerWidth <= 720) closeMobileSidebar();
+});
 
 // Subject pill clicked (Coding & Robotics / CAT / IT).
 function onSubjectChange(subject) {

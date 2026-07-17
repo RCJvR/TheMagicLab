@@ -2,9 +2,13 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v33'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v33: pitch.html — pricing made consistent: free during pilot (to
-                                    // mid-2027), R45/learner/term after, school packages on enquiry
+const CACHE_NAME = 'magic-lab-v34'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v34: pitch.html — mobile problem-stat overflow fix, tool card
+                                    // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
+                                    // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
+                                    // removed platform-wide, roadmap "player"/Supabase/pilot-location
+                                    // wording, gamification level list alignment fix. computer-codex.html
+                                    // — mobile sidebar nav drawer added
 
 const urlsToCache = [
   '/',
