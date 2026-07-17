@@ -39,6 +39,25 @@ body{
 }
 .arena-hero-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:400px;margin:0 auto;}
 
+/* ── Status bar: arena name, rank, last-5 history ── */
+.arena-statusbar{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:18px;padding:10px 14px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:12px;flex-wrap:wrap;
+}
+.arena-statusbar-title{font-weight:800;font-size:13px;color:var(--text2);text-align:left;flex:1;min-width:110px;}
+.arena-rank-badge{
+  font-family:var(--mono);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;
+  background:rgba(124,109,250,0.16);border:1px solid rgba(124,109,250,0.30);color:#c4baff;white-space:nowrap;
+}
+.arena-history{display:flex;gap:4px;align-items:center;}
+.arena-history-dot{
+  width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+}
+.arena-history-dot.correct{background:rgba(17,217,143,0.20);color:#6ee7b7;border:1px solid rgba(17,217,143,0.35);}
+.arena-history-dot.wrong{background:rgba(248,113,113,0.16);color:#fca5a5;border:1px solid rgba(248,113,113,0.30);}
+
 /* ── Join form ── */
 .form-field{width:100%;margin-bottom:14px;text-align:left;}
 .form-label{display:block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
@@ -102,6 +121,12 @@ body{
 <div class="wrap">
   <a href="dashboard-student.html" class="logo">🧙 The Magic Lab</a>
 
+  <div class="arena-statusbar hidden" id="arenaStatusBar">
+    <div class="arena-statusbar-title" id="arenaTitleLabel"></div>
+    <div class="arena-history" id="historyStrip"></div>
+    <div class="arena-rank-badge" id="rankBadge"></div>
+  </div>
+
   <!-- Join -->
   <div id="stateJoin">
     <div class="arena-hero">
@@ -162,11 +187,14 @@ body{
 <script src="games.js"></script>
 <script>
 const params = new URLSearchParams(location.search);
+const OPT_ICONS = ['🪄', '🔮', '⭐', '💎']; // wand / orb / star / gem — distinct silhouettes, matches arena-host.html
 let sessionId = null;
 let participantId = null;
 let pollTimer = null;
 let questionStartedLocal = null;
 let lastAnsweredIndex = -1;
+let answerHistory = []; // [{correct: bool}], most recent last, capped to 5
+let rankAtQuestionStart = null;
 
 function showState(name) {
   ['Join','Waiting','Question','Locked','Result','Ended'].forEach(s => {
@@ -192,9 +220,32 @@ async function onJoin() {
   sessionId = data.id;
   const me = await window.MagicLabGames.getMyParticipant(sessionId);
   participantId = me?.id;
+
+  document.getElementById('arenaTitleLabel').textContent = data.title || '';
+  document.getElementById('arenaStatusBar').classList.remove('hidden');
+
   showState('Waiting');
   poll();
   pollTimer = setInterval(poll, 1200);
+}
+
+function renderHistoryStrip() {
+  document.getElementById('historyStrip').innerHTML = answerHistory.map(h =>
+    `<div class="arena-history-dot ${h ? 'correct' : 'wrong'}">${h ? '✓' : '✗'}</div>`
+  ).join('');
+}
+
+function recordAnswer(correct) {
+  answerHistory.push(correct);
+  if (answerHistory.length > 5) answerHistory = answerHistory.slice(-5);
+  renderHistoryStrip();
+}
+
+async function updateRankBadge() {
+  const players = await window.MagicLabGames.getParticipants(sessionId);
+  const rank = players.findIndex(p => p.id === participantId) + 1;
+  rankAtQuestionStart = rank || null;
+  document.getElementById('rankBadge').textContent = rank ? `Going in: #${rank} of ${players.length}` : '';
 }
 
 async function poll() {
@@ -221,8 +272,13 @@ async function pollOnce() {
       document.getElementById('resultTitle').textContent = "Time's up!";
       document.getElementById('resultTitle').className = 'result-title wrong';
       document.getElementById('resultPoints').textContent = '+0 points';
-      document.getElementById('resultRank').textContent = '';
       lastAnsweredIndex = session.current_index;
+      recordAnswer(false);
+      const players = await window.MagicLabGames.getParticipants(sessionId);
+      const rank = players.findIndex(p => p.id === participantId) + 1;
+      document.getElementById('resultRank').textContent = rank
+        ? `Now: #${rank} of ${players.length}${rankAtQuestionStart ? ` (was #${rankAtQuestionStart} going in)` : ''}`
+        : '';
       showState('Result');
     }
   } else if (session.status === 'ended') {
@@ -235,12 +291,12 @@ function renderQuestion(session) {
   questionStartedLocal = session.current_index;
   const q = session.questions_public[session.current_index];
   document.getElementById('qProgress').textContent = `Question ${session.current_index + 1} of ${session.question_count}`;
-  const shapes = ['▲','◆','●','■'];
   document.getElementById('qOpts').innerHTML = q.opts.map((text, i) => `
     <button class="opt-tile c${i % 4}" onclick="onAnswer(${session.current_index}, ${i})">
-      <span class="opt-shape">${shapes[i % 4]}</span><span>${text}</span>
+      <span class="opt-shape">${OPT_ICONS[i % 4]}</span><span>${text}</span>
     </button>`).join('');
   window.__qStart = Date.now();
+  updateRankBadge(); // rank as of right now — i.e. before anyone's answered this question
   showState('Question');
 }
 
@@ -259,10 +315,13 @@ async function renderResult(result) {
   document.getElementById('resultTitle').textContent = result.correct ? 'Correct!' : 'Not quite';
   document.getElementById('resultTitle').className = 'result-title ' + (result.correct ? 'correct' : 'wrong');
   document.getElementById('resultPoints').textContent = `+${result.points} points`;
+  recordAnswer(result.correct);
 
   const players = await window.MagicLabGames.getParticipants(sessionId);
   const rank = players.findIndex(p => p.id === participantId) + 1;
-  document.getElementById('resultRank').textContent = rank ? `Rank #${rank} of ${players.length}` : '';
+  document.getElementById('resultRank').textContent = rank
+    ? `Now: #${rank} of ${players.length}${rankAtQuestionStart ? ` (was #${rankAtQuestionStart} going in)` : ''}`
+    : '';
   showState('Result');
 }
 

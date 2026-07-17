@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v40'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v41'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -49,6 +49,14 @@ const CACHE_NAME = 'magic-lab-v40'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // question straight to reveal once every joined player has answered,
                                     // instead of always waiting for the host to click Reveal or the timer
                                     // to run out.
+                                    // v41: arena.html gets a persistent status bar — the quiz's title,
+                                    // a rolling strip of the player's last 5 right/wrong answers, and a
+                                    // rank badge captured at the moment each question starts (so it's
+                                    // "where you stood going in," not the same number as the post-answer
+                                    // rank already shown on the result screen). Host and player answer
+                                    // tiles both swap the plain shapes (▲◆●■) for four themed icons —
+                                    // wand/orb/star/gem — chosen to stay silhouette-distinct at a glance
+                                    // the same way the shapes were, not just decorative.
 
 const urlsToCache = [
   '/',
