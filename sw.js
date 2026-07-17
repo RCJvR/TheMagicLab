@@ -2,9 +2,9 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v32'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v32: pitch.html — added The Tech Tower, Spike Spellcaster and Drawing
-                                    // Druid to the tools showcase (was missing all 3); tool count now 12
+const CACHE_NAME = 'magic-lab-v33'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v33: pitch.html — pricing made consistent: free during pilot (to
+                                    // mid-2027), R45/learner/term after, school packages on enquiry
 
 const urlsToCache = [
   '/',
