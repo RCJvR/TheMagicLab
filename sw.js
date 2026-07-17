@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v43'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v44'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -70,6 +70,15 @@ const CACHE_NAME = 'magic-lab-v43'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // the light --text color, making the options unreadable. Added explicit
                                     // dark background + light text on `option` so the popup list matches
                                     // the rest of the UI.
+                                    // v44: pitch.html gets an 8th, full-width feature cell in the platform
+                                    // features section covering The Arena — live quiz battles, question
+                                    // tiles, and a mini leaderboard demo, matching the visual language of
+                                    // the real product (same wand/orb/star/gem icons and colors as
+                                    // arena-host.html). "Twelve tools" claim is untouched — the Arena stays
+                                    // out of the tools-grid, same as its treatment on index.html. Roadmap's
+                                    // Phase 3 (Gamification Engine) description and tag list updated to
+                                    // list The Arena alongside XP/badges/streaks, since it shipped as part
+                                    // of that phase.
 
 const urlsToCache = [
   '/',
