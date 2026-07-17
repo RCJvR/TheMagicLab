@@ -1,10 +1,11 @@
 -- ============================================================
 -- THE MAGIC LAB — Supabase setup
--- Everything needed for the Assignments and Live Game features.
+-- Everything needed for the Assignments and Live Game (The Arena) features.
 --
 -- HOW TO RUN: Supabase Dashboard → your project → SQL Editor →
 -- New query → paste this whole file → Run. Safe to re-run — every
--- statement is idempotent (create-if-not-exists / create-or-replace).
+-- statement is idempotent (create-if-not-exists / create-or-replace /
+-- drop-if-exists-then-create for policies).
 --
 -- Assumes these tables already exist in your project (created earlier,
 -- not part of this file): profiles, classes, class_members,
@@ -102,7 +103,7 @@ create policy "Students read topics of visible assignments" on assignment_topics
 
 
 -- ══════════════════════════════════════════════════════════════════════
--- PART 2 — LIVE GAME (Kahoot-style)
+-- PART 2 — THE ARENA (Kahoot-style live game)
 -- ══════════════════════════════════════════════════════════════════════
 
 -- ============================================================
@@ -223,13 +224,29 @@ create policy "Host reads own session participants" on game_participants
 -- A participant can see the rest of the lobby/leaderboard for any session
 -- they've joined (name + score only — this is the intended public
 -- leaderboard, same as Kahoot showing everyone's rank).
+--
+-- This can't be a plain correlated subquery against game_participants
+-- itself (`exists (select 1 from game_participants gp2 where ...)`) — a
+-- policy on a table that queries that same table causes Postgres to
+-- re-apply the policy to evaluate the subquery, forever, and it errors
+-- out with infinite recursion (surfaces as a 500 from PostgREST on every
+-- read). Routing the membership check through a security-definer function
+-- runs that inner query as the function owner instead of the calling
+-- role, which breaks the recursive loop.
+create or replace function is_game_participant(p_session_id uuid, p_uid uuid)
+returns boolean
+language sql security definer stable
+as $$
+  select exists (
+    select 1 from game_participants
+    where session_id = p_session_id and student_id = p_uid
+  );
+$$;
+
+drop policy if exists "Participants read the lobby they're in" on game_participants;
 create policy "Participants read the lobby they're in" on game_participants
   for select
-  using (exists (
-    select 1 from game_participants gp2
-    where gp2.session_id = game_participants.session_id
-    and   gp2.student_id = auth.uid()
-  ));
+  using (is_game_participant(session_id, auth.uid()));
 
 -- ── game_answers ─────────────────────────────────────────────────────────
 -- Host-only read access (for the live "N of M answered" count and the
