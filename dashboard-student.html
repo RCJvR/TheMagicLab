@@ -307,6 +307,11 @@
       background: rgba(124,109,250,0.10); transition: all 140ms; flex-shrink: 0;
     }
     .assignment-item-link:hover { background: rgba(124,109,250,0.20); }
+    #assignments-panel.jump-highlight { animation: jump-highlight-fade 2.4s ease-out; border-radius: 16px; }
+    @keyframes jump-highlight-fade {
+      0%   { box-shadow: 0 0 0 3px rgba(245,158,11,0.55); background: rgba(245,158,11,0.08); }
+      100% { box-shadow: 0 0 0 3px rgba(245,158,11,0); background: rgba(245,158,11,0); }
+    }
 
     @media (max-width: 720px) {
       nav { padding: 14px 20px; }
@@ -563,6 +568,8 @@
 
       if (window.location.hash === '#assignments-panel') {
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        panel.classList.add('jump-highlight');
+        setTimeout(() => panel.classList.remove('jump-highlight'), 2500);
       }
 
       const feed = document.getElementById('assignments-feed');

@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v45'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v46'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -88,6 +88,14 @@ const CACHE_NAME = 'magic-lab-v45'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // notification, not just a link. Clicking it deep-links to
                                     // dashboard-student.html#assignments-panel, which now auto-scrolls to
                                     // the existing "My Assignments" list on arrival.
+                                    // v46: fixed a bug in the v45 homework bell — it set the nav pill
+                                    // visible for every logged-in student as soon as their assignment list
+                                    // loaded, before checking whether anything was actually pending, so it
+                                    // showed up even with zero homework and clicking it landed on a
+                                    // dashboard with nothing to see. Now the pill only renders at all when
+                                    // there's at least one not-yet-done assignment. Also added a brief
+                                    // highlight pulse on the "My Assignments" panel when arriving via the
+                                    // bell's deep link, so the destination is unmistakable.
 
 const urlsToCache = [
   '/',

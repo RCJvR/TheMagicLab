@@ -809,15 +809,15 @@
       }
       const assignments = await window.MagicLabAssignments.getMyAssignments().catch(() => []);
       const pending = assignments.filter(a => !a.done);
-      btn.style.display = '';
       if (!pending.length) {
-        badge.style.display = 'none';
+        btn.style.display = 'none';
         return;
       }
       const overdue = pending.some(a => a.overdue);
       badge.textContent = pending.length > 9 ? '9+' : String(pending.length);
       badge.classList.toggle('overdue', overdue);
       badge.style.display = 'inline-flex';
+      btn.style.display = '';
     }
     document.addEventListener('magiclab:auth:ready', _syncAssignmentsBell);
     document.addEventListener('magiclab:auth:change', _syncAssignmentsBell);
