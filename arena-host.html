@@ -227,6 +227,12 @@ async function renderQuestion() {
   const elapsed = (Date.now() - started) / 1000;
   const pct = Math.max(0, Math.min(100, 100 - (elapsed / session.question_seconds) * 100));
   document.getElementById('qTimerFill').style.width = pct + '%';
+
+  // Everyone's in — skip waiting out the timer and jump straight to reveal.
+  if (players.length > 0 && total >= players.length) {
+    await window.MagicLabGames.revealQuestion(sessionId);
+    await tick();
+  }
 }
 
 async function renderReveal() {

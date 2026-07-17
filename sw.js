@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v39'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v40'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -38,6 +38,17 @@ const CACHE_NAME = 'magic-lab-v39'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // index.html gets a dedicated Arena banner + footer link so it's
                                     // actually discoverable from the main hub instead of buried in the
                                     // dashboards.
+                                    // v40: fixed a live production bug — the game_participants RLS
+                                    // policy "Participants read the lobby they're in" queried
+                                    // game_participants from within a policy on game_participants itself,
+                                    // causing Postgres to recurse into itself and error out (500 on every
+                                    // read). Learners could join fine but the host never saw them. Fixed
+                                    // via a security-definer function (is_game_participant) — see
+                                    // game-schema.sql / supabase-setup.sql, already applied directly to
+                                    // the live database. Also: arena-host.html now auto-advances a
+                                    // question straight to reveal once every joined player has answered,
+                                    // instead of always waiting for the host to click Reveal or the timer
+                                    // to run out.
 
 const urlsToCache = [
   '/',
