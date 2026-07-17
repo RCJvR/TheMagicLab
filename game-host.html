@@ -1,0 +1,303 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c1a">
+<title>Live Game — Host — The Magic Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c1a; --bg2:#0d1226;
+  --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
+  --border:rgba(255,255,255,0.085); --border2:rgba(255,255,255,0.055);
+  --text:#e4e8f8; --text2:rgba(210,218,245,0.65); --muted:rgba(210,218,245,0.38);
+  --font:"Cabinet Grotesk",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--text);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 5% 3%, rgba(124,109,250,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 96% 6%, rgba(17,217,143,0.10) 0%, transparent 55%);
+  display:flex;flex-direction:column;
+}
+.wrap{flex:1;display:flex;flex-direction:column;max-width:1100px;margin:0 auto;padding:28px 32px 40px;width:100%;}
+.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--text2);text-decoration:none;}
+.game-title{font-weight:800;font-size:15px;color:var(--muted);}
+
+.state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.hidden{display:none !important;}
+
+/* ── Lobby ── */
+.join-code{
+  font-family:var(--mono);font-weight:800;font-size:clamp(56px,10vw,96px);letter-spacing:0.08em;
+  background:linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin:12px 0 4px;
+}
+.join-hint{font-size:14px;color:var(--muted);margin-bottom:28px;}
+.join-hint b{color:var(--text2);}
+.lobby-count{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:14px;}
+.lobby-players{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:700px;margin-bottom:32px;}
+.lobby-chip{
+  background:var(--surface);border:1px solid var(--border);border-radius:99px;
+  padding:8px 18px;font-size:14px;font-weight:700;color:var(--text2);
+}
+.btn-primary{
+  padding:14px 36px;border-radius:14px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#7c6dfa,#11d98f);color:#0a0e1c;
+  font-family:var(--font);font-size:16px;font-weight:800;letter-spacing:-0.01em;
+  box-shadow:0 6px 24px rgba(124,109,250,0.30);transition:all 160ms;
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(124,109,250,0.42);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-ghost{
+  padding:10px 22px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text2);cursor:pointer;font-family:var(--font);
+  font-size:13px;font-weight:700;transition:all 140ms;
+}
+.btn-ghost:hover{background:rgba(255,255,255,0.09);}
+
+/* ── Question ── */
+.q-progress{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:10px;}
+.q-timer-track{width:100%;max-width:480px;height:8px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;margin-bottom:20px;}
+.q-timer-fill{height:100%;background:linear-gradient(90deg,#7c6dfa,#11d98f);border-radius:99px;transition:width 200ms linear;}
+.q-text{font-weight:800;font-size:clamp(24px,3.4vw,38px);letter-spacing:-0.02em;line-height:1.25;max-width:820px;margin-bottom:32px;}
+.q-answered{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:20px;}
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:820px;}
+.opt-tile{
+  border-radius:16px;padding:22px 24px;font-size:16px;font-weight:700;color:#fff;text-align:left;
+  display:flex;align-items:center;gap:12px;min-height:76px;position:relative;overflow:hidden;
+}
+.opt-tile .opt-shape{font-size:20px;flex-shrink:0;}
+.opt-tile.c0{background:linear-gradient(135deg,#dc2626,#ef4444);}
+.opt-tile.c1{background:linear-gradient(135deg,#2563eb,#3b82f6);}
+.opt-tile.c2{background:linear-gradient(135deg,#ca8a04,#eab308);}
+.opt-tile.c3{background:linear-gradient(135deg,#16a34a,#22c55e);}
+.opt-tile.dimmed{opacity:0.35;}
+.opt-tile .opt-bar{position:absolute;inset:0;background:rgba(255,255,255,0.16);width:0%;transition:width 500ms ease;}
+.opt-tile .opt-count{margin-left:auto;font-family:var(--mono);font-size:14px;flex-shrink:0;position:relative;}
+.opt-tile.correct{outline:3px solid #fff;}
+.opt-tile .opt-label{position:relative;}
+
+/* ── Leaderboard / podium ── */
+.podium{display:flex;align-items:flex-end;gap:18px;margin-bottom:32px;}
+.podium-spot{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.podium-name{font-weight:800;font-size:15px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.podium-score{font-family:var(--mono);font-size:12px;color:var(--muted);}
+.podium-bar{width:110px;border-radius:12px 12px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-weight:900;font-size:22px;}
+.podium-spot.p1 .podium-bar{height:150px;background:linear-gradient(180deg,#fbbf24,#d97706);}
+.podium-spot.p2 .podium-bar{height:110px;background:linear-gradient(180deg,#cbd5e1,#94a3b8);}
+.podium-spot.p3 .podium-bar{height:80px;background:linear-gradient(180deg,#fb923c,#c2410c);}
+
+.leaderboard-list{width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;margin-bottom:28px;}
+.lb-row{
+  display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:10px 16px;
+}
+.lb-rank{font-family:var(--mono);font-size:13px;color:var(--muted);width:24px;flex-shrink:0;}
+.lb-name{flex:1;text-align:left;font-weight:700;font-size:14px;}
+.lb-score{font-family:var(--mono);font-size:13px;color:#6ee7b7;font-weight:700;}
+
+.btn-row{display:flex;gap:10px;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top-row">
+    <a href="dashboard-teacher.html" class="logo">🧙 The Magic Lab</a>
+    <span class="game-title" id="gameTitle"></span>
+  </div>
+
+  <!-- Loading -->
+  <div class="state" id="stateLoading"><p style="color:var(--muted);">Loading game…</p></div>
+
+  <!-- Lobby -->
+  <div class="state hidden" id="stateLobby">
+    <div style="font-size:14px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.1em;">Join code</div>
+    <div class="join-code" id="joinCodeDisplay">------</div>
+    <div class="join-hint">Learners go to <b>game-play.html</b> and enter this code</div>
+    <div class="lobby-count" id="lobbyCount">0 players joined</div>
+    <div class="lobby-players" id="lobbyPlayers"></div>
+    <button class="btn-primary" id="btnStart" onclick="onStart()" disabled>Start Game</button>
+  </div>
+
+  <!-- Question -->
+  <div class="state hidden" id="stateQuestion">
+    <div class="q-progress" id="qProgress"></div>
+    <div class="q-timer-track"><div class="q-timer-fill" id="qTimerFill" style="width:100%;"></div></div>
+    <div class="q-text" id="qText"></div>
+    <div class="q-answered" id="qAnswered"></div>
+    <div class="opt-grid" id="qOpts"></div>
+    <div class="btn-row">
+      <button class="btn-primary" id="btnReveal" onclick="onReveal()">Reveal Answer</button>
+    </div>
+  </div>
+
+  <!-- Reveal -->
+  <div class="state hidden" id="stateReveal">
+    <div class="q-progress" id="rProgress"></div>
+    <div class="q-text" id="rText"></div>
+    <div class="opt-grid" id="rOpts"></div>
+    <div class="btn-row">
+      <button class="btn-primary" id="btnNext" onclick="onNext()">Next Question</button>
+    </div>
+  </div>
+
+  <!-- Ended -->
+  <div class="state hidden" id="stateEnded">
+    <div style="font-weight:900;font-size:clamp(24px,3vw,34px);letter-spacing:-0.03em;margin-bottom:24px;">🏆 Final Results</div>
+    <div class="podium" id="podium"></div>
+    <div class="leaderboard-list" id="fullLeaderboard"></div>
+    <div class="btn-row">
+      <a href="dashboard-teacher.html" class="btn-ghost" style="text-decoration:none;">← Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script src="games.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const sessionId = params.get('session');
+const OPT_SHAPES = ['▲', '◆', '●', '■'];
+
+let session = null;
+let pollTimer = null;
+let lastRenderedStatus = null;
+let lastRenderedIndex = -1;
+
+function showState(name) {
+  ['Loading','Lobby','Question','Reveal','Ended'].forEach(s => {
+    document.getElementById('state' + s).classList.toggle('hidden', s !== name);
+  });
+}
+
+async function tick() {
+  try {
+    await tickOnce();
+  } catch (e) {
+    console.warn('[LiveGame] tick error:', e.message);
+  }
+}
+
+async function tickOnce() {
+  if (!sessionId) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'No game session specified.'; return; }
+  session = await window.MagicLabGames.getSession(sessionId);
+  if (!session) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'Game not found.'; return; }
+
+  document.getElementById('gameTitle').textContent = session.title;
+
+  if (session.status === 'lobby') await renderLobby();
+  else if (session.status === 'question') await renderQuestion();
+  else if (session.status === 'reveal') await renderReveal();
+  else if (session.status === 'ended') await renderEnded();
+}
+
+async function renderLobby() {
+  showState('Lobby');
+  document.getElementById('joinCodeDisplay').textContent = session.join_code;
+  const players = await window.MagicLabGames.getParticipants(sessionId);
+  document.getElementById('lobbyCount').textContent = `${players.length} player${players.length === 1 ? '' : 's'} joined`;
+  document.getElementById('lobbyPlayers').innerHTML = players.map(p => `<div class="lobby-chip">${p.display_name}</div>`).join('');
+  document.getElementById('btnStart').disabled = players.length === 0;
+}
+
+async function renderQuestion() {
+  showState('Question');
+  const q = session.questions_public[session.current_index];
+  document.getElementById('qProgress').textContent = `Question ${session.current_index + 1} of ${session.question_count}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qOpts').innerHTML = q.opts.map((text, i) => `
+    <div class="opt-tile c${i % 4}"><span class="opt-shape">${OPT_SHAPES[i % 4]}</span><span class="opt-label">${text}</span></div>
+  `).join('');
+
+  const players = await window.MagicLabGames.getParticipants(sessionId);
+  const { total } = await window.MagicLabGames.getAnswerBreakdown(sessionId, session.current_index, q.opts.length);
+  document.getElementById('qAnswered').textContent = `${total} of ${players.length} answered`;
+
+  const started = session.question_started_at ? new Date(session.question_started_at).getTime() : Date.now();
+  const elapsed = (Date.now() - started) / 1000;
+  const pct = Math.max(0, Math.min(100, 100 - (elapsed / session.question_seconds) * 100));
+  document.getElementById('qTimerFill').style.width = pct + '%';
+}
+
+async function renderReveal() {
+  showState('Reveal');
+  const q = session.questions_public[session.current_index];
+  document.getElementById('rProgress').textContent = `Question ${session.current_index + 1} of ${session.question_count} — Answer`;
+  document.getElementById('rText').textContent = q.q;
+
+  const { counts, total } = await window.MagicLabGames.getAnswerBreakdown(sessionId, session.current_index, q.opts.length);
+  const correctIndex = await window.MagicLabGames.getCorrectOptionIndex(sessionId, session.current_index);
+  document.getElementById('rOpts').innerHTML = q.opts.map((text, i) => {
+    const pct = total ? Math.round((counts[i] / total) * 100) : 0;
+    const isCorrect = i === correctIndex;
+    return `
+    <div class="opt-tile c${i % 4}${isCorrect ? ' correct' : ' dimmed'}">
+      <div class="opt-bar" style="width:${pct}%"></div>
+      <span class="opt-shape">${OPT_SHAPES[i % 4]}</span><span class="opt-label">${text}${isCorrect ? ' ✓' : ''}</span>
+      <span class="opt-count">${counts[i]} (${pct}%)</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('btnNext').textContent =
+    session.current_index + 1 >= session.question_count ? 'Show Final Results' : 'Next Question';
+}
+
+async function renderEnded() {
+  showState('Ended');
+  const players = await window.MagicLabGames.getParticipants(sessionId);
+  const top3 = players.slice(0, 3);
+  const order = [1, 0, 2]; // 2nd, 1st, 3rd for podium visual layout
+  document.getElementById('podium').innerHTML = order
+    .filter(i => top3[i])
+    .map(i => {
+      const p = top3[i];
+      const cls = i === 0 ? 'p1' : i === 1 ? 'p2' : 'p3';
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉';
+      return `<div class="podium-spot ${cls}">
+        <div class="podium-name">${p.display_name}</div>
+        <div class="podium-score">${(p.score || 0).toLocaleString()} pts</div>
+        <div class="podium-bar">${medal}</div>
+      </div>`;
+    }).join('');
+
+  document.getElementById('fullLeaderboard').innerHTML = players.map((p, i) => `
+    <div class="lb-row">
+      <span class="lb-rank">#${i + 1}</span>
+      <span class="lb-name">${p.display_name}</span>
+      <span class="lb-score">${(p.score || 0).toLocaleString()} pts</span>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:13px;">No players joined.</div>';
+
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+}
+
+async function onStart() {
+  document.getElementById('btnStart').disabled = true;
+  await window.MagicLabGames.startGame(sessionId);
+  await tick();
+}
+async function onReveal() {
+  await window.MagicLabGames.revealQuestion(sessionId);
+  await tick();
+}
+async function onNext() {
+  await window.MagicLabGames.nextQuestion(sessionId, session.current_index, session.question_count);
+  await tick();
+}
+
+document.addEventListener('magiclab:games:ready', () => {
+  tick();
+  pollTimer = setInterval(tick, 1500);
+});
+</script>
+</body>
+</html>

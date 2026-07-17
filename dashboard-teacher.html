@@ -549,6 +549,7 @@
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('classes', this)">🏫 My Classes</button>
       <button class="tab-btn" onclick="switchTab('assignments', this)">📝 Assignments</button>
+      <button class="tab-btn" onclick="switchTab('livegame', this)">🎮 Live Game</button>
       <button class="tab-btn" onclick="switchTab('training', this)">📚 Teacher Training</button>
     </div>
 
@@ -640,6 +641,59 @@
       </div>
 
     </div><!-- /tab-assignments -->
+
+
+    <!-- ═══ TAB: LIVE GAME ═══ -->
+    <div class="tab-panel" id="tab-livegame">
+
+      <div class="page-header">
+        <h1>Live Game</h1>
+        <p>Host a Kahoot-style round — pick a tool and topic, learners join with a code on their own device and compete for the top of the leaderboard.</p>
+      </div>
+
+      <div id="livegame-setup">
+        <div class="form-field" style="max-width:320px;">
+          <label class="form-label">Class (optional, for your records)</label>
+          <select class="form-input" id="lg-class"></select>
+        </div>
+        <div class="form-field" style="max-width:320px;">
+          <label class="form-label">Tool</label>
+          <select class="form-input" id="lg-tool" onchange="_populateGameQuestionPicker()"></select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Topics — pulled from each lesson's own Knowledge Check questions</label>
+          <input class="form-input" id="lg-topic-search" placeholder="Filter topics…" style="margin-bottom:8px;" oninput="_filterGameQuestionPicker()">
+          <div id="lg-topic-picker" class="lesson-picker"></div>
+          <div id="lg-question-count" class="lesson-picker-count">0 questions available from selected topics</div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <div class="form-field" style="max-width:180px;">
+            <label class="form-label">Number of questions</label>
+            <select class="form-input" id="lg-num-questions">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+          <div class="form-field" style="max-width:180px;">
+            <label class="form-label">Seconds per question</label>
+            <select class="form-input" id="lg-seconds">
+              <option value="10">10</option>
+              <option value="20" selected>20</option>
+              <option value="30">30</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Game title</label>
+          <input class="form-input" id="lg-title" placeholder="e.g. Unit 9 AI Quiz">
+        </div>
+        <button class="btn-primary" id="lg-launch-btn" style="padding:12px 26px;" onclick="launchGame()">🎮 Launch Game</button>
+        <div id="lg-msg" class="msg"></div>
+      </div>
+
+    </div><!-- /tab-livegame -->
 
 
     <!-- ═══ TAB: TRAINING ═══ -->
@@ -776,6 +830,8 @@
 <script src="xp.js"></script>
 <script src="lesson-catalog.js"></script>
 <script src="assignments.js"></script>
+<script src="question-bank.js"></script>
+<script src="games.js"></script>
 <script src="auth-modal.js"></script>
 
 <script>
@@ -1458,6 +1514,7 @@ async function _initDashboard() {
   document.getElementById('teacher-greeting').textContent = `Welcome back, ${name}`;
 
   await Promise.all([_loadClasses(), _loadTrainingProgress()]);
+  _populateGameToolPicker();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1658,7 +1715,7 @@ function _populateAssignmentClassPickers() {
   const opts = _classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
   const empty = '<option value="">No classes yet</option>';
 
-  ['assign-class-select', 'ca-class'].forEach(id => {
+  ['assign-class-select', 'ca-class', 'lg-class'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     const prev = el.value;
@@ -1888,6 +1945,112 @@ async function submitCreateAssignment() {
 document.getElementById('createAssignmentModal').addEventListener('click', e => {
   if (e.target === document.getElementById('createAssignmentModal')) closeCreateAssignmentModal();
 });
+
+// ══════════════════════════════════════════════════════════
+// LIVE GAME TAB
+// ══════════════════════════════════════════════════════════
+function _populateGameToolPicker() {
+  const select = document.getElementById('lg-tool');
+  if (!select || !window.ML_QUESTION_BANK) return;
+  select.innerHTML = Object.keys(window.ML_QUESTION_BANK)
+    .map(t => `<option value="${t}">${_toolLabel(t)}</option>`).join('');
+  _populateGameQuestionPicker();
+}
+
+function _populateGameQuestionPicker() {
+  const tool = document.getElementById('lg-tool').value;
+  const wrap = document.getElementById('lg-topic-picker');
+  const groups = window.ML_QUESTION_BANK?.[tool];
+  document.getElementById('lg-topic-search').value = '';
+
+  if (!groups || !groups.length) {
+    wrap.innerHTML = `<div class="lesson-picker-empty">No quiz questions available for this tool yet.</div>`;
+    _updateGameQuestionCount();
+    return;
+  }
+
+  wrap.innerHTML = groups.map((g, gi) => `
+    <div class="lesson-group" data-gi="${gi}">
+      <label class="lesson-group-hdr">
+        <input type="checkbox" onchange="_toggleGameQuestionGroup(this, ${gi})"> ${g.group}
+      </label>
+      ${g.lessons.map((l, li) => `
+        <label class="lesson-item-row" data-label="${l.title.toLowerCase()}">
+          <input type="checkbox" class="lg-topic-cb" data-gi="${gi}" data-li="${li}" onchange="_updateGameQuestionCount()">
+          ${l.title} <span style="color:var(--muted);font-size:11px;margin-left:4px;">(${l.questions.length}q)</span>
+        </label>`).join('')}
+    </div>`).join('');
+
+  _updateGameQuestionCount();
+}
+
+function _toggleGameQuestionGroup(groupCheckbox, gi) {
+  document.querySelectorAll(`.lg-topic-cb[data-gi="${gi}"]`).forEach(cb => {
+    if (!cb.closest('.lesson-item-row').classList.contains('hidden-filtered')) cb.checked = groupCheckbox.checked;
+  });
+  _updateGameQuestionCount();
+}
+
+function _filterGameQuestionPicker() {
+  const q = document.getElementById('lg-topic-search').value.trim().toLowerCase();
+  document.querySelectorAll('#lg-topic-picker .lesson-group').forEach(groupEl => {
+    let anyVisible = false;
+    groupEl.querySelectorAll('.lesson-item-row').forEach(row => {
+      const match = !q || row.dataset.label.includes(q);
+      row.classList.toggle('hidden-filtered', !match);
+      if (match) anyVisible = true;
+    });
+    groupEl.classList.toggle('hidden-filtered', !anyVisible);
+  });
+}
+
+function _selectedGameQuestions() {
+  const tool = document.getElementById('lg-tool').value;
+  const groups = window.ML_QUESTION_BANK?.[tool] || [];
+  const pool = [];
+  document.querySelectorAll('.lg-topic-cb:checked').forEach(cb => {
+    const gi = parseInt(cb.dataset.gi), li = parseInt(cb.dataset.li);
+    const lesson = groups[gi]?.lessons[li];
+    if (lesson) pool.push(...lesson.questions);
+  });
+  return pool;
+}
+
+function _updateGameQuestionCount() {
+  const count = _selectedGameQuestions().length;
+  document.getElementById('lg-question-count').textContent =
+    `${count} question${count === 1 ? '' : 's'} available from selected topics`;
+}
+
+async function launchGame() {
+  const classId = document.getElementById('lg-class').value || null;
+  const tool    = document.getElementById('lg-tool').value;
+  const title   = document.getElementById('lg-title').value.trim() || `${_toolLabel(tool)} Live Game`;
+  const numQuestions = parseInt(document.getElementById('lg-num-questions').value);
+  const seconds       = parseInt(document.getElementById('lg-seconds').value);
+  const btn = document.getElementById('lg-launch-btn');
+  const msg = document.getElementById('lg-msg');
+
+  const pool = _selectedGameQuestions();
+  if (!pool.length) { msg.textContent = 'Pick at least one topic.'; msg.className = 'msg err'; return; }
+
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  const questionSet = shuffled.slice(0, Math.min(numQuestions, shuffled.length));
+
+  btn.disabled = true; btn.textContent = 'Launching…';
+  const { data, error } = await window.MagicLabGames.createGameSession({
+    classId, tool, title, questionSet, questionSeconds: seconds
+  });
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = 'msg err';
+    btn.disabled = false; btn.textContent = '🎮 Launch Game';
+    return;
+  }
+
+  location.href = `game-host.html?session=${data.id}`;
+}
 
 function closeClassDetail() {
   document.getElementById('class-detail-wrap').style.display = 'none';
