@@ -30,6 +30,13 @@ body{
 .top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
 .logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--text2);text-decoration:none;}
 .game-title{font-weight:800;font-size:15px;color:var(--muted);}
+.top-row-right{display:flex;align-items:center;gap:14px;}
+.btn-end-quiz{
+  padding:8px 16px;border-radius:10px;border:1px solid rgba(248,113,113,0.35);
+  background:rgba(248,113,113,0.10);color:#fca5a5;cursor:pointer;
+  font-family:var(--font);font-size:12px;font-weight:700;transition:all 140ms;
+}
+.btn-end-quiz:hover{background:rgba(248,113,113,0.20);}
 
 .state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
 .hidden{display:none !important;}
@@ -113,7 +120,10 @@ body{
 <div class="wrap">
   <div class="top-row">
     <a href="dashboard-teacher.html" class="logo">🧙 The Magic Lab</a>
-    <span class="game-title" id="gameTitle"></span>
+    <div class="top-row-right">
+      <span class="game-title" id="gameTitle"></span>
+      <button class="btn-end-quiz hidden" id="btnEndQuiz" onclick="onEndQuiz()">End Quiz</button>
+    </div>
   </div>
 
   <!-- Loading -->
@@ -194,6 +204,7 @@ async function tickOnce() {
   if (!session) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'Arena not found.'; return; }
 
   document.getElementById('gameTitle').textContent = session.title;
+  document.getElementById('btnEndQuiz').classList.toggle('hidden', session.status === 'ended');
 
   if (session.status === 'lobby') await renderLobby();
   else if (session.status === 'question') await renderQuestion();
@@ -297,6 +308,11 @@ async function onReveal() {
 }
 async function onNext() {
   await window.MagicLabGames.nextQuestion(sessionId, session.current_index, session.question_count);
+  await tick();
+}
+async function onEndQuiz() {
+  if (!confirm('End this quiz now? Players will immediately see the final results.')) return;
+  await window.MagicLabGames.endGame(sessionId);
   await tick();
 }
 
