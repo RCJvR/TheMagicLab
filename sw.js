@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v44'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v45'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -79,6 +79,15 @@ const CACHE_NAME = 'magic-lab-v44'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // Phase 3 (Gamification Engine) description and tag list updated to
                                     // list The Arena alongside XP/badges/streaks, since it shipped as part
                                     // of that phase.
+                                    // v45: index.html gets a "🔔 Homework" nav pill for logged-in students,
+                                    // visible whenever they have any not-yet-done assignment (uses the
+                                    // existing assignments.js getMyAssignments() — no schema change), with
+                                    // a badge showing the pending count and turning red if any assignment
+                                    // is overdue. Hidden for teachers and logged-out visitors, and kept
+                                    // visible on mobile (unlike the other secondary nav pills) since it's a
+                                    // notification, not just a link. Clicking it deep-links to
+                                    // dashboard-student.html#assignments-panel, which now auto-scrolls to
+                                    // the existing "My Assignments" list on arrival.
 
 const urlsToCache = [
   '/',

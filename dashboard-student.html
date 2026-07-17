@@ -561,6 +561,10 @@
       }
       panel.style.display = 'block';
 
+      if (window.location.hash === '#assignments-panel') {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
       const feed = document.getElementById('assignments-feed');
       feed.innerHTML = assignments.map(a => {
         const meta = TOOL_META[a.tool];

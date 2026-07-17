@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="progress.js"></script>
+  <script defer src="assignments.js"></script>
   <script defer src="xp.js"></script>
   <script defer src="auth-modal.js"></script>
   <style>
@@ -96,6 +97,13 @@
       color: #c4baff;
     }
     .nav-pill-accent:hover { background: rgba(124,109,250,0.22); color: #ddd6fe; }
+    .nav-badge {
+      display: none; align-items: center; justify-content: center;
+      min-width: 16px; height: 16px; padding: 0 4px; margin-left: 7px;
+      border-radius: 99px; background: #f59e0b; color: #1a1206;
+      font-size: 10px; font-weight: 800; line-height: 1;
+    }
+    .nav-badge.overdue { background: #ef4444; color: #fff; }
 
     /* ── Hero ── */
     .hero {
@@ -370,7 +378,7 @@
       nav { flex-wrap: wrap; justify-content: center; gap: 10px; padding: 14px 16px; }
       .nav-logo { font-size: 17px; }
       .nav-right { flex-wrap: wrap; justify-content: center; }
-      .nav-right .nav-pill:not(.ml-auth-btn):not(.nav-pill-accent) { display: none; }
+      .nav-right .nav-pill:not(.ml-auth-btn):not(.nav-pill-accent):not(#nav-assignments-btn) { display: none; }
       .hero { padding: 56px 20px 40px; }
       .section-row { padding: 0 20px; }
       .cards-scroll { padding: 8px 20px 32px; }
@@ -388,6 +396,7 @@
     <div class="nav-right">
       <a href="pitch.html" class="nav-pill" style="border-color:rgba(245,166,35,0.35);background:rgba(245,166,35,0.10);color:#f5a623;">About</a>
       <a href="dashboard-student.html" class="nav-pill nav-pill-accent">📊 My Progress</a>
+      <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="nav-pill" style="display:none;border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.10);color:#fbbf24;">🔔 Homework<span id="nav-assignments-badge" class="nav-badge"></span></a>
       <a id="nav-teachers-btn" href="dashboard-teacher.html" class="nav-pill" style="display:none;border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.10);color:#67e8f9;">🎓 Teachers</a>
       <button class="nav-pill" onclick="window.MagicTutor?.open()" style="gap:6px;">✨ AI Tutor</button>
       <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
@@ -788,6 +797,31 @@
     document.addEventListener('magiclab:auth:ready', _syncTeachersBtn);
     document.addEventListener('magiclab:auth:change', _syncTeachersBtn);
     document.addEventListener('magiclab:nav:rendered', _syncTeachersBtn);
+
+    async function _syncAssignmentsBell() {
+      const btn = document.getElementById('nav-assignments-btn');
+      const badge = document.getElementById('nav-assignments-badge');
+      if (!btn || !badge) return;
+      const auth = window.MagicLabAuth;
+      if (!auth?.isLoggedIn() || !auth.isStudent() || !window.MagicLabAssignments) {
+        btn.style.display = 'none';
+        return;
+      }
+      const assignments = await window.MagicLabAssignments.getMyAssignments().catch(() => []);
+      const pending = assignments.filter(a => !a.done);
+      btn.style.display = '';
+      if (!pending.length) {
+        badge.style.display = 'none';
+        return;
+      }
+      const overdue = pending.some(a => a.overdue);
+      badge.textContent = pending.length > 9 ? '9+' : String(pending.length);
+      badge.classList.toggle('overdue', overdue);
+      badge.style.display = 'inline-flex';
+    }
+    document.addEventListener('magiclab:auth:ready', _syncAssignmentsBell);
+    document.addEventListener('magiclab:auth:change', _syncAssignmentsBell);
+    document.addEventListener('magiclab:assignments:ready', _syncAssignmentsBell);
   </script>
 
 </body>
