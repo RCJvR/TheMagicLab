@@ -549,7 +549,7 @@
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('classes', this)">🏫 My Classes</button>
       <button class="tab-btn" onclick="switchTab('assignments', this)">📝 Assignments</button>
-      <button class="tab-btn" onclick="switchTab('livegame', this)">🎮 Live Game</button>
+      <button class="tab-btn" onclick="switchTab('livegame', this)">🏟️ The Arena</button>
       <button class="tab-btn" onclick="switchTab('training', this)">📚 Teacher Training</button>
     </div>
 
@@ -643,12 +643,12 @@
     </div><!-- /tab-assignments -->
 
 
-    <!-- ═══ TAB: LIVE GAME ═══ -->
+    <!-- ═══ TAB: THE ARENA ═══ -->
     <div class="tab-panel" id="tab-livegame">
 
       <div class="page-header">
-        <h1>Live Game</h1>
-        <p>Host a Kahoot-style round — pick a tool and topic, learners join with a code on their own device and compete for the top of the leaderboard.</p>
+        <h1>The Arena</h1>
+        <p>Host a live quiz battle — pick a tool and topic, learners join with a code on their own device and compete for the top of the leaderboard.</p>
       </div>
 
       <div id="livegame-setup">
@@ -689,7 +689,7 @@
           <label class="form-label">Game title</label>
           <input class="form-input" id="lg-title" placeholder="e.g. Unit 9 AI Quiz">
         </div>
-        <button class="btn-primary" id="lg-launch-btn" style="padding:12px 26px;" onclick="launchGame()">🎮 Launch Game</button>
+        <button class="btn-primary" id="lg-launch-btn" style="padding:12px 26px;" onclick="launchGame()">🏟️ Launch Arena</button>
         <div id="lg-msg" class="msg"></div>
       </div>
 
@@ -2025,7 +2025,7 @@ function _updateGameQuestionCount() {
 async function launchGame() {
   const classId = document.getElementById('lg-class').value || null;
   const tool    = document.getElementById('lg-tool').value;
-  const title   = document.getElementById('lg-title').value.trim() || `${_toolLabel(tool)} Live Game`;
+  const title   = document.getElementById('lg-title').value.trim() || `${_toolLabel(tool)} Arena`;
   const numQuestions = parseInt(document.getElementById('lg-num-questions').value);
   const seconds       = parseInt(document.getElementById('lg-seconds').value);
   const btn = document.getElementById('lg-launch-btn');
@@ -2045,11 +2045,11 @@ async function launchGame() {
   if (error) {
     msg.textContent = error.message;
     msg.className = 'msg err';
-    btn.disabled = false; btn.textContent = '🎮 Launch Game';
+    btn.disabled = false; btn.textContent = '🏟️ Launch Arena';
     return;
   }
 
-  location.href = `game-host.html?session=${data.id}`;
+  location.href = `arena-host.html?session=${data.id}`;
 }
 
 function closeClassDetail() {

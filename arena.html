@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080c1a">
-<title>Live Game — The Magic Lab</title>
+<title>The Arena — The Magic Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="auth-modal.css">
@@ -30,6 +30,14 @@ body{
 .wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;max-width:520px;margin:0 auto;width:100%;}
 .hidden{display:none !important;}
 .logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--text2);text-decoration:none;margin-bottom:24px;display:inline-block;}
+.arena-hero{margin-bottom:28px;}
+.arena-hero-icon{font-size:44px;margin-bottom:10px;}
+.arena-hero-title{
+  font-weight:900;font-size:30px;letter-spacing:-0.03em;margin-bottom:8px;
+  background:linear-gradient(120deg,#fff 0%,#c4baff 50%,#6ee7b7 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.arena-hero-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:400px;margin:0 auto;}
 
 /* ── Join form ── */
 .form-field{width:100%;margin-bottom:14px;text-align:left;}
@@ -96,15 +104,20 @@ body{
 
   <!-- Join -->
   <div id="stateJoin">
+    <div class="arena-hero">
+      <div class="arena-hero-icon">🏟️</div>
+      <div class="arena-hero-title">The Arena</div>
+      <div class="arena-hero-sub">Live quiz battles. Answer fast, climb the leaderboard, see how you stack up against the rest of your class in real time.</div>
+    </div>
     <div class="form-field">
-      <label class="form-label">Game code</label>
+      <label class="form-label">Arena code</label>
       <input class="form-input" id="codeInput" maxlength="6" placeholder="ABC123">
     </div>
     <div class="form-field">
       <label class="form-label">Your name</label>
       <input class="form-input" id="nameInput" maxlength="24" placeholder="How should we show you on the leaderboard?">
     </div>
-    <button class="btn-primary" id="btnJoin" onclick="onJoin()">Join Game</button>
+    <button class="btn-primary" id="btnJoin" onclick="onJoin()">Enter the Arena</button>
     <div class="msg err" id="joinMsg"></div>
   </div>
 
@@ -112,7 +125,7 @@ body{
   <div class="hidden" id="stateWaiting">
     <div class="wait-icon">⏳</div>
     <div class="wait-title">You're in!</div>
-    <div class="wait-sub">Waiting for the host to start the game…</div>
+    <div class="wait-sub">Waiting for the host to start the round…</div>
   </div>
 
   <!-- Question -->
@@ -166,14 +179,14 @@ async function onJoin() {
   const name = document.getElementById('nameInput').value.trim();
   const msg  = document.getElementById('joinMsg');
   const btn  = document.getElementById('btnJoin');
-  if (!code) { msg.textContent = 'Enter the game code.'; return; }
+  if (!code) { msg.textContent = 'Enter the arena code.'; return; }
   if (!window.MagicLabAuth?.isLoggedIn()) { msg.textContent = 'Please sign in first.'; return; }
 
-  btn.disabled = true; btn.textContent = 'Joining…';
+  btn.disabled = true; btn.textContent = 'Entering…';
   const { data, error } = await window.MagicLabGames.joinGameSession(code, name);
   if (error) {
     msg.textContent = error.message;
-    btn.disabled = false; btn.textContent = 'Join Game';
+    btn.disabled = false; btn.textContent = 'Enter the Arena';
     return;
   }
   sessionId = data.id;
@@ -258,7 +271,7 @@ async function renderEnded() {
   const rank = players.findIndex(p => p.id === participantId) + 1;
   const me = players.find(p => p.id === participantId);
   document.getElementById('finalIcon').textContent = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '🏁';
-  document.getElementById('finalRank').textContent = rank ? `#${rank} of ${players.length}` : 'Game over';
+  document.getElementById('finalRank').textContent = rank ? `#${rank} of ${players.length}` : 'Arena closed';
   document.getElementById('finalScore').textContent = me ? `${(me.score || 0).toLocaleString()} points` : '';
   showState('Ended');
   if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }

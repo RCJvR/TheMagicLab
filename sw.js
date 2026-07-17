@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v38'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v39'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -31,6 +31,13 @@ const CACHE_NAME = 'magic-lab-v38'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // code, answer, live rank). Correct answers never reach a player's
                                     // client except via the scoped submit_game_answer() RPC result for the
                                     // question they just answered.
+                                    // v39: renamed the Live Game feature to "The Arena" throughout —
+                                    // game-host.html -> arena-host.html, game-play.html -> arena.html
+                                    // (now a proper branded landing page, not a bare join form), teacher
+                                    // dashboard tab and student dashboard join box relabelled, and
+                                    // index.html gets a dedicated Arena banner + footer link so it's
+                                    // actually discoverable from the main hub instead of buried in the
+                                    // dashboards.
 
 const urlsToCache = [
   '/',
@@ -64,8 +71,8 @@ const urlsToCache = [
   '/lesson-catalog.js',
   '/question-bank.js',
   '/games.js',
-  '/game-host.html',
-  '/game-play.html',
+  '/arena-host.html',
+  '/arena.html',
 
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',

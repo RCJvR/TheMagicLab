@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080c1a">
-<title>Live Game — Host — The Magic Lab</title>
+<title>The Arena — Host — The Magic Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -117,16 +117,16 @@ body{
   </div>
 
   <!-- Loading -->
-  <div class="state" id="stateLoading"><p style="color:var(--muted);">Loading game…</p></div>
+  <div class="state" id="stateLoading"><p style="color:var(--muted);">Loading arena…</p></div>
 
   <!-- Lobby -->
   <div class="state hidden" id="stateLobby">
     <div style="font-size:14px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.1em;">Join code</div>
     <div class="join-code" id="joinCodeDisplay">------</div>
-    <div class="join-hint">Learners go to <b>game-play.html</b> and enter this code</div>
+    <div class="join-hint">Learners go to <b>arena.html</b> and enter this code</div>
     <div class="lobby-count" id="lobbyCount">0 players joined</div>
     <div class="lobby-players" id="lobbyPlayers"></div>
-    <button class="btn-primary" id="btnStart" onclick="onStart()" disabled>Start Game</button>
+    <button class="btn-primary" id="btnStart" onclick="onStart()" disabled>Start Round</button>
   </div>
 
   <!-- Question -->
@@ -189,9 +189,9 @@ async function tick() {
 }
 
 async function tickOnce() {
-  if (!sessionId) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'No game session specified.'; return; }
+  if (!sessionId) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'No arena session specified.'; return; }
   session = await window.MagicLabGames.getSession(sessionId);
-  if (!session) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'Game not found.'; return; }
+  if (!session) { showState('Loading'); document.querySelector('#stateLoading p').textContent = 'Arena not found.'; return; }
 
   document.getElementById('gameTitle').textContent = session.title;
 

@@ -1,12 +1,12 @@
 // ============================================================
 // THE MAGIC LAB — games.js
-// Live Game (Kahoot-style) SDK — include after auth.js
+// The Arena (Kahoot-style) SDK — include after auth.js
 // Usage: <script src="auth.js"></script>
 //        <script src="games.js"></script>
 //
 // Requires the tables/functions created by game-schema.sql to exist in
 // Supabase. Host and player screens both poll (no Realtime channels) —
-// see game-host.html / game-play.html for the poll loops.
+// see arena-host.html / arena.html for the poll loops.
 // ============================================================
 
 document.addEventListener('magiclab:auth:ready', () => {
@@ -43,14 +43,14 @@ function _shuffle(arr) {
  * @param {string} opts.tool
  * @param {string} opts.title
  * @param {Array}  opts.questionSet — [{ q, opts: [{text, correct}] }], already
- *                 picked/capped by the caller (see game-host.html's question
+ *                 picked/capped by the caller (see arena-host.html's question
  *                 picker). Each question's own option order is shuffled here.
  * @param {number} [opts.questionSeconds=20]
  */
 async function createGameSession({ classId = null, tool, title, questionSet, questionSeconds = 20 }) {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return { error: { message: 'Not logged in' } };
-  if (!auth.isTeacher())   return { error: { message: 'Only teachers can host a game' } };
+  if (!auth.isTeacher())   return { error: { message: 'Only teachers can host an arena' } };
   if (!questionSet?.length) return { error: { message: 'Pick at least one question' } };
 
   const supabase   = auth._supabase();
@@ -203,8 +203,8 @@ async function joinGameSession(joinCode, displayName) {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return { error: { message: 'Not logged in' } };
   const session = await _findSessionByCode(joinCode);
-  if (!session) return { error: { message: 'Game not found — check the code' } };
-  if (session.status !== 'lobby') return { error: { message: 'This game has already started' } };
+  if (!session) return { error: { message: 'Arena not found — check the code' } };
+  if (session.status !== 'lobby') return { error: { message: 'This arena has already started' } };
 
   const supabase  = auth._supabase();
   const studentId = auth.getProfile()?.id ?? auth.getSession()?.user?.id;

@@ -1,6 +1,6 @@
 // ============================================================
 // THE MAGIC LAB — question-bank.js
-// Static bank of multiple-choice questions for the Live Game (Kahoot-style)
+// Static bank of multiple-choice questions for The Arena (Kahoot-style)
 // host flow, extracted from each tool's own Knowledge Check quiz content —
 // same questions students already see inline in the lessons, not new
 // content. Structure: window.ML_QUESTION_BANK[tool] = [ { group, lessons:
