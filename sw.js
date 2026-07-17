@@ -2,8 +2,9 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v31'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
-                                    // v31: Renamed "Tech Placeholder" to "The Tech Tower" everywhere it appears
+const CACHE_NAME = 'magic-lab-v32'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+                                    // v32: pitch.html — added The Tech Tower, Spike Spellcaster and Drawing
+                                    // Druid to the tools showcase (was missing all 3); tool count now 12
 
 const urlsToCache = [
   '/',
