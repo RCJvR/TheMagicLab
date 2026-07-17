@@ -108,6 +108,13 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0a0f2
 .mode-toggle{display:flex;gap:3px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:2px;}
 .mode-btn{font-family:var(--fd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;color:var(--muted);background:transparent;transition:all 140ms;letter-spacing:0.02em;}
 .mode-btn.active{background:rgba(249,115,22,0.20);color:#fdba74;}
+
+/* ── 2D/3D view slider ── */
+.view-slider{position:relative;display:flex;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.35);border-radius:99px;padding:2px;}
+.view-slider-thumb{position:absolute;top:2px;left:2px;width:calc(50% - 2px);height:calc(100% - 4px);background:rgba(99,102,241,0.45);border-radius:99px;transition:transform 220ms cubic-bezier(.4,0,.2,1);z-index:0;}
+.view-slider.is-3d .view-slider-thumb{transform:translateX(100%);}
+.view-slider-opt{position:relative;z-index:1;flex:1;border:none;background:transparent;cursor:pointer;font-family:var(--fd);font-size:11px;font-weight:700;padding:6px 14px;border-radius:99px;color:#a5b4fc;transition:color 150ms;line-height:1;white-space:nowrap;}
+.view-slider-opt.active{color:#fff;}
 #codeArea{display:none;}
 #blocklyDiv{flex:1;display:flex;flex-direction:column;}
 #blocklyDiv .blocklyMainBackground{fill:#060912 !important;}
@@ -169,7 +176,11 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
     <button class="nav-pill" id="btnSave" onclick="saveProgram()" title="Save program to a file">💾 Save</button>
     <button class="nav-pill" id="btnLoad" onclick="triggerLoadProgram()" title="Load program from a file">📂 Load</button>
     <input type="file" id="loadFileInput" accept="application/json,.json" style="display:none;" onchange="loadProgramFromFile(event)">
-    <button class="nav-pill" id="btn3d" onclick="toggle3D()" style="border-color:rgba(99,102,241,0.35);background:rgba(99,102,241,0.08);color:#a5b4fc;">⬡ 3D View</button>
+    <div class="view-slider" id="viewSlider" role="group" aria-label="2D or 3D view">
+      <div class="view-slider-thumb"></div>
+      <button class="view-slider-opt active" id="viewOpt2d" onclick="setView3D(false)">▦ 2D</button>
+      <button class="view-slider-opt" id="viewOpt3d" onclick="setView3D(true)">⬡ 3D</button>
+    </div>
     <a href="../index.html" class="nav-pill">← Home</a>
   </div>
 </nav>
@@ -1712,24 +1723,21 @@ function animate3D() {
   renderer3.render(scene3, camera3);
 }
 
-function toggle3D() {
-  view3D = !view3D;
-  const btn = document.getElementById('btn3d');
+function setView3D(is3D) {
+  view3D = is3D;
+  const slider = document.getElementById('viewSlider');
   const c2 = document.getElementById('arena');
   const c3 = document.getElementById('arena3d');
-  if (view3D) {
-    btn.textContent = '▦ 2D View';
-    btn.style.background = 'rgba(99,102,241,0.22)';
-    btn.style.color = '#c7d2fe';
+  slider.classList.toggle('is-3d', is3D);
+  document.getElementById('viewOpt2d').classList.toggle('active', !is3D);
+  document.getElementById('viewOpt3d').classList.toggle('active', is3D);
+  if (is3D) {
     c2.style.display = 'none';
     c3.style.display = 'block';
     init3D();
     build3DScene();
     animate3D();
   } else {
-    btn.textContent = '⬡ 3D View';
-    btn.style.background = 'rgba(99,102,241,0.08)';
-    btn.style.color = '#a5b4fc';
     c2.style.display = '';
     c3.style.display = 'none';
     if (animFrame3) { cancelAnimationFrame(animFrame3); animFrame3 = null; }

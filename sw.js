@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v36'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v37'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -21,6 +21,8 @@ const CACHE_NAME = 'magic-lab-v36'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // missing lesson_complete tracking to java-genie.html and web-wizard.html
                                     // (previously never fired, so assignments against those two tools could
                                     // never be marked done).
+                                    // v37: robot-realm/index.html — 2D/3D view button replaced with a
+                                    // sliding pill toggle (matches the JS/Blocks segmented control style).
 
 const urlsToCache = [
   '/',
