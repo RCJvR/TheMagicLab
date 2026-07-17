@@ -5038,7 +5038,12 @@ fileInput.addEventListener("change", e => {
   function closeTutorial() {
     overlay.classList.add('hidden');
     document.body.style.overflow = '';
-    if (cur === total - 1) resumeAt = null; // finished → restart next time
+    if (cur === total - 1) {
+      resumeAt = null; // finished → restart next time
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.JAVA_GENIE, 'lesson_complete', { grade: 8, topic: 'Turtle Graphics Tutorial' });
+      }
+    }
   }
 
   // ── Wire up buttons (once only) ─────────────────────────────────────────

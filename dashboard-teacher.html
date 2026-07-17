@@ -305,6 +305,27 @@
     .msg.ok{color:#6ee7b7;}.msg.err{color:#fca5a5;}
     textarea.form-input{resize:vertical;line-height:1.5;font-family:var(--font);}
 
+    /* ── Lesson picker ── */
+    .lesson-picker{
+      max-height:220px;overflow-y:auto;
+      background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.10);
+      border-radius:10px;padding:6px 4px;
+    }
+    .lesson-picker-empty{padding:16px 12px;font-size:13px;color:var(--muted);text-align:center;}
+    .lesson-group{margin-bottom:2px;}
+    .lesson-group-hdr{
+      display:flex;align-items:center;gap:8px;padding:7px 10px;cursor:pointer;
+      font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;
+      color:rgba(6,182,212,0.75);position:sticky;top:0;background:#0d1226;user-select:none;
+    }
+    .lesson-item-row{
+      display:flex;align-items:center;gap:8px;padding:5px 10px 5px 26px;cursor:pointer;
+      font-size:13px;color:var(--text2);border-radius:6px;
+    }
+    .lesson-item-row:hover{background:rgba(255,255,255,0.05);}
+    .lesson-item-row.hidden-filtered,.lesson-group.hidden-filtered{display:none;}
+    .lesson-picker-count{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px;}
+
     /* ── Assignments tab ── */
     .assign-toolbar{display:flex;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
     .assignment-card{
@@ -720,15 +741,17 @@
       </div>
       <div class="form-field">
         <label class="form-label">Tool</label>
-        <select class="form-input" id="ca-tool"></select>
+        <select class="form-input" id="ca-tool" onchange="_populateLessonPicker()"></select>
       </div>
       <div class="form-field">
         <label class="form-label">Title</label>
         <input class="form-input" id="ca-title" placeholder="e.g. Unit 3: Loops &amp; Conditions">
       </div>
       <div class="form-field">
-        <label class="form-label">Lesson titles (optional — one per line)</label>
-        <textarea class="form-input" id="ca-topics" rows="3" placeholder="Leave blank to assign the whole tool. Otherwise, paste exact lesson titles, one per line, to mark this done only once every listed lesson is complete."></textarea>
+        <label class="form-label">Lessons (optional — leave none checked to assign the whole tool)</label>
+        <input class="form-input" id="ca-lesson-search" placeholder="Filter lessons…" style="margin-bottom:8px;" oninput="_filterLessonPicker()">
+        <div id="ca-lesson-picker" class="lesson-picker"></div>
+        <div id="ca-lesson-count" class="lesson-picker-count">Whole tool — no specific lessons selected</div>
       </div>
       <div class="form-field">
         <label class="form-label">Instructions (optional)</label>
@@ -751,6 +774,7 @@
 <script src="auth.js"></script>
 <script src="progress.js"></script>
 <script src="xp.js"></script>
+<script src="lesson-catalog.js"></script>
 <script src="assignments.js"></script>
 <script src="auth-modal.js"></script>
 
@@ -1761,16 +1785,75 @@ function openCreateAssignmentModal() {
   document.getElementById('createAssignmentModal').classList.add('open');
   document.getElementById('ca-title').focus();
   document.getElementById('ca-msg').textContent = '';
+  _populateLessonPicker();
 }
 function closeCreateAssignmentModal() {
   document.getElementById('createAssignmentModal').classList.remove('open');
-  ['ca-title', 'ca-topics', 'ca-instructions', 'ca-due'].forEach(id => document.getElementById(id).value = '');
+  ['ca-title', 'ca-instructions', 'ca-due', 'ca-lesson-search'].forEach(id => document.getElementById(id).value = '');
 }
+
+// ── Lesson picker (populated from lesson-catalog.js) ────────────────────
+function _populateLessonPicker() {
+  const tool = document.getElementById('ca-tool').value;
+  const wrap = document.getElementById('ca-lesson-picker');
+  const groups = window.ML_LESSON_CATALOG?.[tool];
+
+  document.getElementById('ca-lesson-search').value = '';
+
+  if (!groups || !groups.length) {
+    wrap.innerHTML = `<div class="lesson-picker-empty">No lesson catalog for this tool yet — assignments will be tool-wide only.</div>`;
+    _updateLessonCount();
+    return;
+  }
+
+  wrap.innerHTML = groups.map((g, gi) => `
+    <div class="lesson-group" data-gi="${gi}">
+      <label class="lesson-group-hdr">
+        <input type="checkbox" onchange="_toggleLessonGroup(this, ${gi})"> ${g.group}
+      </label>
+      ${g.lessons.map((l, li) => `
+        <label class="lesson-item-row" data-label="${l.label.toLowerCase()}">
+          <input type="checkbox" class="ca-lesson-cb" data-gi="${gi}" value="${l.value.replace(/"/g, '&quot;')}" onchange="_updateLessonCount()">
+          ${l.label}
+        </label>`).join('')}
+    </div>`).join('');
+
+  _updateLessonCount();
+}
+
+function _toggleLessonGroup(groupCheckbox, gi) {
+  document.querySelectorAll(`.ca-lesson-cb[data-gi="${gi}"]`).forEach(cb => {
+    if (!cb.closest('.lesson-item-row').classList.contains('hidden-filtered')) cb.checked = groupCheckbox.checked;
+  });
+  _updateLessonCount();
+}
+
+function _filterLessonPicker() {
+  const q = document.getElementById('ca-lesson-search').value.trim().toLowerCase();
+  document.querySelectorAll('#ca-lesson-picker .lesson-group').forEach(groupEl => {
+    let anyVisible = false;
+    groupEl.querySelectorAll('.lesson-item-row').forEach(row => {
+      const match = !q || row.dataset.label.includes(q);
+      row.classList.toggle('hidden-filtered', !match);
+      if (match) anyVisible = true;
+    });
+    groupEl.classList.toggle('hidden-filtered', !anyVisible);
+  });
+}
+
+function _updateLessonCount() {
+  const checked = document.querySelectorAll('.ca-lesson-cb:checked').length;
+  const el = document.getElementById('ca-lesson-count');
+  el.textContent = checked
+    ? `${checked} lesson${checked > 1 ? 's' : ''} selected — done once every one is complete`
+    : 'Whole tool — no specific lessons selected';
+}
+
 async function submitCreateAssignment() {
   const classId      = document.getElementById('ca-class').value;
   const tool         = document.getElementById('ca-tool').value;
   const title        = document.getElementById('ca-title').value.trim();
-  const topics       = document.getElementById('ca-topics').value.split('\n').map(t => t.trim()).filter(Boolean);
+  const topics       = [...document.querySelectorAll('.ca-lesson-cb:checked')].map(cb => cb.value);
   const instructions = document.getElementById('ca-instructions').value.trim();
   const dueDate      = document.getElementById('ca-due').value;
   const btn = document.getElementById('ca-submit');

@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v35'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v36'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -14,6 +14,13 @@ const CACHE_NAME = 'magic-lab-v35'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // migration, teacher "Assignments" tab (create/list/delete, per-learner
                                     // completion drill-down), student "My Assignments" panel. Completion is
                                     // auto-detected from progress_events, no submission step.
+                                    // v36: lesson-catalog.js — real per-tool lesson catalogs (extracted
+                                    // from each tool's own lesson data, 488 entries across 7 tools) replace
+                                    // the free-text "type the exact lesson title" field in the assignment
+                                    // creation modal with a searchable, grouped checkbox picker. Added the
+                                    // missing lesson_complete tracking to java-genie.html and web-wizard.html
+                                    // (previously never fired, so assignments against those two tools could
+                                    // never be marked done).
 
 const urlsToCache = [
   '/',
@@ -44,6 +51,7 @@ const urlsToCache = [
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',
+  '/lesson-catalog.js',
 
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',

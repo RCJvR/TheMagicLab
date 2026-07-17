@@ -1712,7 +1712,12 @@ document.addEventListener('mouseup', () => {
   function close() {
     overlay.classList.add('hidden');
     document.body.style.overflow = '';
-    if (cur === total - 1) resumeAt = null;
+    if (cur === total - 1) {
+      resumeAt = null;
+      if (window.MagicLabProgress) {
+        MagicLabProgress.track(ML_TOOLS.WEB_WIZARD, 'lesson_complete', { grade: 8, topic: 'HTML & CSS Tutorial' });
+      }
+    }
   }
 
   learnBtn.addEventListener('click', open);
