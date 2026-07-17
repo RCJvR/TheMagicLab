@@ -303,6 +303,42 @@
     .btn-ghost:hover{background:rgba(255,255,255,0.09);}
     .msg{margin-top:10px;font-size:13px;font-weight:500;}
     .msg.ok{color:#6ee7b7;}.msg.err{color:#fca5a5;}
+    textarea.form-input{resize:vertical;line-height:1.5;font-family:var(--font);}
+
+    /* ── Assignments tab ── */
+    .assign-toolbar{display:flex;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
+    .assignment-card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;padding:20px 22px;margin-bottom:14px;
+    }
+    .assignment-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .assignment-title{font-weight:800;font-size:16px;letter-spacing:-0.02em;color:#fff;margin-bottom:4px;}
+    .assignment-meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .assignment-due{
+      font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;
+      background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.28);color:#f5a623;
+    }
+    .assignment-due.overdue{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.32);color:#fca5a5;}
+    .assignment-instructions{font-size:13px;color:var(--text2);line-height:1.6;margin-top:10px;}
+    .assignment-progress-row{display:flex;align-items:center;gap:10px;margin-top:14px;}
+    .assignment-progress-bar{flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;max-width:260px;}
+    .assignment-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teacher),var(--accent-2));}
+    .assignment-progress-label{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;}
+    .assignment-actions{display:flex;gap:8px;flex-shrink:0;}
+    .assign-detail-toggle{
+      background:none;border:1px solid var(--border2);border-radius:99px;
+      padding:5px 14px;font-size:12px;font-weight:600;color:var(--muted);
+      cursor:pointer;transition:all 130ms;font-family:var(--font);
+    }
+    .assign-detail-toggle:hover{color:var(--text);background:var(--surface);}
+    .assignment-student-list{margin-top:14px;padding-top:14px;border-top:1px solid var(--border2);display:none;}
+    .assignment-student-list.open{display:block;}
+    .assignment-student-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:6px 0;font-size:13px;color:var(--text2);
+    }
+    .assignment-student-done{color:#6ee7b7;font-size:12px;font-weight:600;}
+    .assignment-student-pending{color:var(--muted);font-size:12px;}
 
     /* ══════════════════════════════════════════
        TEACHER TRAINING SECTION
@@ -491,6 +527,7 @@
     <!-- Tab bar -->
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('classes', this)">🏫 My Classes</button>
+      <button class="tab-btn" onclick="switchTab('assignments', this)">📝 Assignments</button>
       <button class="tab-btn" onclick="switchTab('training', this)">📚 Teacher Training</button>
     </div>
 
@@ -555,6 +592,33 @@
       </div>
 
     </div><!-- /tab-classes -->
+
+
+    <!-- ═══ TAB: ASSIGNMENTS ═══ -->
+    <div class="tab-panel" id="tab-assignments">
+
+      <div class="page-header">
+        <h1>Assignments</h1>
+        <p>Set work for a class and see who's completed it — completion is detected automatically from lesson activity.</p>
+      </div>
+
+      <div class="assign-toolbar">
+        <div class="form-field" style="margin:0;min-width:220px;">
+          <label class="form-label">Class</label>
+          <select class="form-input" id="assign-class-select" onchange="_onAssignmentClassChange()"></select>
+        </div>
+        <button class="btn-primary" id="assign-new-btn" style="flex:0 0 auto;padding:10px 22px;" onclick="openCreateAssignmentModal()">+ New Assignment</button>
+      </div>
+
+      <div id="assignments-list">
+        <div class="empty-state">
+          <span class="empty-state-icon">📝</span>
+          <h3>No classes yet</h3>
+          <p>Create a class on the My Classes tab before setting assignments.</p>
+        </div>
+      </div>
+
+    </div><!-- /tab-assignments -->
 
 
     <!-- ═══ TAB: TRAINING ═══ -->
@@ -645,11 +709,49 @@
     </div>
   </div>
 
+  <!-- Create assignment modal -->
+  <div class="modal-overlay" id="createAssignmentModal">
+    <div class="modal-box" style="max-width:480px;">
+      <div class="modal-title">New assignment</div>
+      <div class="modal-sub">Completion is detected from your learners' lesson activity — no separate submission step needed.</div>
+      <div class="form-field">
+        <label class="form-label">Class</label>
+        <select class="form-input" id="ca-class"></select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Tool</label>
+        <select class="form-input" id="ca-tool"></select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Title</label>
+        <input class="form-input" id="ca-title" placeholder="e.g. Unit 3: Loops &amp; Conditions">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Lesson titles (optional — one per line)</label>
+        <textarea class="form-input" id="ca-topics" rows="3" placeholder="Leave blank to assign the whole tool. Otherwise, paste exact lesson titles, one per line, to mark this done only once every listed lesson is complete."></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Instructions (optional)</label>
+        <textarea class="form-input" id="ca-instructions" rows="2" placeholder="Anything learners should know"></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Due date (optional)</label>
+        <input class="form-input" type="date" id="ca-due">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeCreateAssignmentModal()">Cancel</button>
+        <button class="btn-primary" id="ca-submit" onclick="submitCreateAssignment()">Create Assignment</button>
+      </div>
+      <div id="ca-msg" class="msg"></div>
+    </div>
+  </div>
+
 </main>
 
 <script src="auth.js"></script>
 <script src="progress.js"></script>
 <script src="xp.js"></script>
+<script src="assignments.js"></script>
 <script src="auth-modal.js"></script>
 
 <script>
@@ -1340,6 +1442,7 @@ async function _initDashboard() {
 async function _loadClasses() {
   _classes = await window.MagicLabAuth.getMyClasses();
   _renderClassGrid();
+  _populateAssignmentClassPickers();
   await _updateStats();
 }
 
@@ -1521,6 +1624,187 @@ function _renderStudentTable(students, progress, classId) {
     </table>
     </div>`;
 }
+
+// ══════════════════════════════════════════════════════════
+// ASSIGNMENTS TAB
+// ══════════════════════════════════════════════════════════
+let _assignSelectedClassId = null;
+
+function _populateAssignmentClassPickers() {
+  const opts = _classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  const empty = '<option value="">No classes yet</option>';
+
+  ['assign-class-select', 'ca-class'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const prev = el.value;
+    el.innerHTML = _classes.length ? opts : empty;
+    if (_classes.some(c => c.id === prev)) el.value = prev;
+  });
+
+  if (!_classes.length) {
+    _assignSelectedClassId = null;
+    document.getElementById('assign-new-btn').disabled = true;
+    document.getElementById('assignments-list').innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">📝</span>
+        <h3>No classes yet</h3>
+        <p>Create a class on the My Classes tab before setting assignments.</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('assign-new-btn').disabled = false;
+  if (!_assignSelectedClassId || !_classes.some(c => c.id === _assignSelectedClassId)) {
+    _assignSelectedClassId = _classes[0].id;
+  }
+  document.getElementById('assign-class-select').value = _assignSelectedClassId;
+  _loadClassAssignmentsTab(_assignSelectedClassId);
+}
+
+function _onAssignmentClassChange() {
+  _assignSelectedClassId = document.getElementById('assign-class-select').value;
+  _loadClassAssignmentsTab(_assignSelectedClassId);
+}
+
+async function _loadClassAssignmentsTab(classId) {
+  if (!classId) return;
+  const wrap = document.getElementById('assignments-list');
+  wrap.innerHTML = `<div class="empty-state"><span class="empty-state-icon">⏳</span><h3>Loading assignments…</h3></div>`;
+  const assignments = await window.MagicLabAssignments.getClassAssignments(classId);
+  _renderAssignmentsList(assignments, classId);
+}
+
+function _renderAssignmentsList(assignments, classId) {
+  const wrap = document.getElementById('assignments-list');
+  if (!assignments.length) {
+    wrap.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">📝</span>
+        <h3>No assignments yet</h3>
+        <p>Click "+ New Assignment" to set the first one for this class.</p>
+      </div>`;
+    return;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  wrap.innerHTML = assignments.map(a => {
+    const pct = a.totalCount ? Math.round((a.completedCount / a.totalCount) * 100) : 0;
+    const overdue = a.due_date && a.due_date < today && a.completedCount < a.totalCount;
+    return `
+      <div class="assignment-card">
+        <div class="assignment-card-top">
+          <div>
+            <div class="assignment-title">${a.title}</div>
+            <div class="assignment-meta">
+              <span>${_toolLabel(a.tool)}</span>
+              ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : '<span>· whole tool</span>'}
+              ${a.due_date ? `<span class="assignment-due${overdue ? ' overdue' : ''}">Due ${_fmtDate(a.due_date)}</span>` : ''}
+            </div>
+          </div>
+          <div class="assignment-actions">
+            <button class="assign-detail-toggle" onclick="toggleAssignmentDetail('${a.id}')">Learners</button>
+            <button class="remove-btn" title="Delete assignment" onclick="confirmDeleteAssignment('${a.id}','${classId}','${a.title.replace(/'/g,"\\'")}')">✕</button>
+          </div>
+        </div>
+        ${a.instructions ? `<div class="assignment-instructions">${a.instructions}</div>` : ''}
+        <div class="assignment-progress-row">
+          <div class="assignment-progress-bar"><div class="assignment-progress-fill" style="width:${pct}%"></div></div>
+          <div class="assignment-progress-label">${a.completedCount}/${a.totalCount} done</div>
+        </div>
+        <div class="assignment-student-list" id="assign-students-${a.id}"></div>
+      </div>`;
+  }).join('');
+}
+
+function _toolLabel(tool) {
+  const names = {
+    'java-genie':'Java Genie', 'web-wizard':'Web Wizard', 'code-conjurer':'Code Conjurer',
+    'math-magician':'Math Magician', 'computer-codex':'Computer Codex',
+    'ai-oracle':'AI Oracle', 'drawing-druid':'Drawing Druid'
+  };
+  return names[tool] || tool;
+}
+
+async function toggleAssignmentDetail(assignmentId) {
+  const el = document.getElementById(`assign-students-${assignmentId}`);
+  if (!el) return;
+  if (el.classList.contains('open')) { el.classList.remove('open'); return; }
+
+  el.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px 0;">Loading…</div>';
+  el.classList.add('open');
+
+  const detail = await window.MagicLabAssignments.getAssignmentCompletion(assignmentId, _assignSelectedClassId);
+  if (!detail) { el.innerHTML = '<div style="font-size:12px;color:var(--muted);">Could not load learner list.</div>'; return; }
+
+  el.innerHTML = detail.students.map(s => `
+    <div class="assignment-student-row">
+      <span>${s.display_name || s.email?.split('@')[0] || 'Student'}</span>
+      ${s.done ? '<span class="assignment-student-done">✓ Done</span>' : '<span class="assignment-student-pending">Not yet</span>'}
+    </div>`).join('') || '<div style="font-size:12px;color:var(--muted);">No learners in this class.</div>';
+}
+
+function confirmDeleteAssignment(assignmentId, classId, title) {
+  if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
+  window.MagicLabAssignments.deleteAssignment(assignmentId).then(() => _loadClassAssignmentsTab(classId));
+}
+
+function openCreateAssignmentModal() {
+  if (!_classes.length) return;
+  const toolSelect = document.getElementById('ca-tool');
+  if (window.ML_TOOLS && !toolSelect.options.length) {
+    toolSelect.innerHTML = Object.values(window.ML_TOOLS)
+      .map(t => `<option value="${t}">${_toolLabel(t)}</option>`).join('');
+  }
+  document.getElementById('ca-class').value = _assignSelectedClassId || _classes[0].id;
+  document.getElementById('createAssignmentModal').classList.add('open');
+  document.getElementById('ca-title').focus();
+  document.getElementById('ca-msg').textContent = '';
+}
+function closeCreateAssignmentModal() {
+  document.getElementById('createAssignmentModal').classList.remove('open');
+  ['ca-title', 'ca-topics', 'ca-instructions', 'ca-due'].forEach(id => document.getElementById(id).value = '');
+}
+async function submitCreateAssignment() {
+  const classId      = document.getElementById('ca-class').value;
+  const tool         = document.getElementById('ca-tool').value;
+  const title        = document.getElementById('ca-title').value.trim();
+  const topics       = document.getElementById('ca-topics').value.split('\n').map(t => t.trim()).filter(Boolean);
+  const instructions = document.getElementById('ca-instructions').value.trim();
+  const dueDate      = document.getElementById('ca-due').value;
+  const btn = document.getElementById('ca-submit');
+  const msg = document.getElementById('ca-msg');
+
+  if (!classId || !tool || !title) { msg.textContent = 'Class, tool, and title are required.'; msg.className = 'msg err'; return; }
+
+  btn.disabled = true; btn.textContent = 'Creating…';
+  const { error } = await window.MagicLabAssignments.createAssignment({
+    classId, tool, title,
+    instructions: instructions || null,
+    dueDate: dueDate || null,
+    topics
+  });
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = 'msg err';
+    btn.disabled = false; btn.textContent = 'Create Assignment';
+    return;
+  }
+
+  msg.className = 'msg ok';
+  msg.textContent = '✓ Assignment created!';
+  btn.textContent = 'Done ✓';
+  _assignSelectedClassId = classId;
+  document.getElementById('assign-class-select').value = classId;
+  await _loadClassAssignmentsTab(classId);
+  setTimeout(() => { closeCreateAssignmentModal(); btn.disabled = false; btn.textContent = 'Create Assignment'; }, 1200);
+}
+
+document.getElementById('createAssignmentModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('createAssignmentModal')) closeCreateAssignmentModal();
+});
 
 function closeClassDetail() {
   document.getElementById('class-detail-wrap').style.display = 'none';

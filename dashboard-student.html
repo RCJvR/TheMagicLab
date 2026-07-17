@@ -283,6 +283,31 @@
     }
     .class-join-btn:hover { background: rgba(124,109,250,0.40); }
 
+    /* ── Assignments ── */
+    .assignment-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 20px; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+    }
+    .assignment-item.done { opacity: 0.6; }
+    .assignment-item-main { flex: 1; min-width: 200px; }
+    .assignment-item-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+    .assignment-item-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .assignment-item-due {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 2px 9px; border-radius: 99px;
+      background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.28); color: #f5a623;
+    }
+    .assignment-item-due.overdue { background: rgba(248,113,113,0.14); border-color: rgba(248,113,113,0.32); color: #fca5a5; }
+    .assignment-item-status { font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .assignment-item-status.done-status { color: #6ee7b7; }
+    .assignment-item-status.pending-status { color: var(--muted); }
+    .assignment-item-link {
+      text-decoration: none; font-size: 12px; font-weight: 700; color: #c4baff;
+      padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(124,109,250,0.30);
+      background: rgba(124,109,250,0.10); transition: all 140ms; flex-shrink: 0;
+    }
+    .assignment-item-link:hover { background: rgba(124,109,250,0.20); }
+
     @media (max-width: 720px) {
       nav { padding: 14px 20px; }
       main { padding: 28px 20px 60px; }
@@ -390,6 +415,12 @@
         <div id="class-join-msg" style="font-size:12px;color:#6ee7b7;display:none;width:100%;margin-top:4px;"></div>
       </div>
 
+      <!-- Assignments (students only) -->
+      <div id="assignments-panel" style="display:none;">
+        <div class="section-hdr">My Assignments</div>
+        <div id="assignments-feed"></div>
+      </div>
+
       <!-- Tool progress -->
       <div class="section-hdr">Progress by tool</div>
       <div class="tool-grid" id="tool-grid"></div>
@@ -408,6 +439,7 @@
   <script src="auth.js"></script>
   <script src="progress.js"></script>
   <script src="xp.js"></script>
+  <script src="assignments.js"></script>
   <script src="auth-modal.js"></script>
 
   <script>
@@ -489,12 +521,13 @@
       // Fetch all data — wrap every call so one failure can't blank the page
       const safe = (fn, fallback) => fn().catch(e => { console.warn('[Dashboard]', e); return fallback; });
 
-      const [stats, allProgress, recentEvents, badgeData, activityDates] = await Promise.all([
+      const [stats, allProgress, recentEvents, badgeData, activityDates, assignments] = await Promise.all([
         safe(() => window.MagicLabXP ? window.MagicLabXP.getPlayerStats() : Promise.resolve(null),    null),
         safe(() => window.MagicLabProgress.getAllProgress(),   []),
         safe(() => window.MagicLabProgress.getRecentEvents(20), []),
         safe(() => window.MagicLabXP ? window.MagicLabXP.getBadges() : Promise.resolve({ earned: [], all: [] }), { earned: [], all: [] }),
         safe(() => _getActivityDates(), new Set()),
+        safe(() => window.MagicLabAssignments ? window.MagicLabAssignments.getMyAssignments() : Promise.resolve([]), []),
       ]);
 
       console.log('[Dashboard] Data loaded — stats:', stats, 'progress rows:', allProgress.length);
@@ -502,9 +535,40 @@
       _renderHero(stats);
       _renderStats(stats, allProgress, badgeData);
       _renderStreak(stats, activityDates);
+      _renderAssignments(assignments, profile);
       _renderTools(allProgress);
       _renderBadges(badgeData);
       _renderFeed(recentEvents);
+    }
+
+    function _renderAssignments(assignments, profile) {
+      const panel = document.getElementById('assignments-panel');
+      if (profile?.role !== 'student' || !assignments.length) {
+        panel.style.display = 'none';
+        return;
+      }
+      panel.style.display = 'block';
+
+      const feed = document.getElementById('assignments-feed');
+      feed.innerHTML = assignments.map(a => {
+        const meta = TOOL_META[a.tool];
+        const url  = meta?.url || `${a.tool}.html`;
+        const name = meta?.name || a.tool;
+        return `
+          <div class="assignment-item${a.done ? ' done' : ''}">
+            <div class="assignment-item-main">
+              <div class="assignment-item-title">${a.title}</div>
+              <div class="assignment-item-meta">
+                <span>${a.className}</span>
+                <span>· ${name}</span>
+                ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : ''}
+                ${a.due_date ? `<span class="assignment-item-due${a.overdue ? ' overdue' : ''}">Due ${new Date(a.due_date).toLocaleDateString('en-ZA', { day:'numeric', month:'short' })}</span>` : ''}
+              </div>
+            </div>
+            <span class="assignment-item-status ${a.done ? 'done-status' : 'pending-status'}">${a.done ? '✓ Done' : 'Not yet'}</span>
+            <a href="${url}" class="assignment-item-link">Open →</a>
+          </div>`;
+      }).join('');
     }
 
     function _renderHero(stats) {

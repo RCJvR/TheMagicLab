@@ -2,13 +2,18 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v34'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v35'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
                                     // removed platform-wide, roadmap "player"/Supabase/pilot-location
                                     // wording, gamification level list alignment fix. computer-codex.html
                                     // — mobile sidebar nav drawer added
+                                    // v35: Computer Codex pitch card corrected to Grade 8-12/160 lessons.
+                                    // New assignments feature: assignments.js SDK, assignments-schema.sql
+                                    // migration, teacher "Assignments" tab (create/list/delete, per-learner
+                                    // completion drill-down), student "My Assignments" panel. Completion is
+                                    // auto-detected from progress_events, no submission step.
 
 const urlsToCache = [
   '/',
@@ -37,6 +42,8 @@ const urlsToCache = [
   '/quiz-engine.js',
   '/tool-welcome.js',
   '/dashboard-student.html',
+  '/dashboard-teacher.html',
+  '/assignments.js',
 
   // CDN resources
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
