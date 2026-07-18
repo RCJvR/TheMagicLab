@@ -475,22 +475,33 @@
     // immediately after auth:ready. xp.js is optional.
 
     let _loaded = false;
+    let _pollTicks = 0;
+    // assignments.js is required for correctness (so getMyAssignments() isn't
+    // silently skipped — see the v47 bug), but it shouldn't be a single point
+    // of failure for the whole dashboard: if it hasn't shown up after ~3s
+    // (network hiccup, blocked request, etc.), proceed without it rather than
+    // hang forever, same as every other data call on this page is wrapped to
+    // degrade instead of blanking the page.
     async function _once() {
       if (_loaded) return;
       if (!window.MagicLabAuth || !window.MagicLabProgress) return; // not ready yet — wait
+      if (!window.MagicLabAssignments && _pollTicks < 20) return;
       _loaded = true;
       await _tryLoad();
     }
 
-    document.addEventListener('magiclab:auth:ready',     _once);
-    document.addEventListener('magiclab:progress:ready', _once);
-    document.addEventListener('magiclab:xp:ready',       _once);
+    document.addEventListener('magiclab:auth:ready',        _once);
+    document.addEventListener('magiclab:progress:ready',    _once);
+    document.addEventListener('magiclab:xp:ready',           _once);
+    document.addEventListener('magiclab:assignments:ready', _once);
 
-    // Poll every 150ms until both globals exist — clears itself once done
+    // Poll every 150ms until loaded — keeps ticking (not just clearing on the
+    // first auth+progress sighting) so _pollTicks can actually reach the
+    // assignments.js timeout above; clears itself once _tryLoad has run.
     const _poll = setInterval(() => {
       if (_loaded) { clearInterval(_poll); return; }
+      _pollTicks++;
       if (window.MagicLabAuth && window.MagicLabProgress) {
-        clearInterval(_poll);
         _once();
       }
     }, 150);
@@ -544,10 +555,7 @@
         safe(() => window.MagicLabProgress.getRecentEvents(20), []),
         safe(() => window.MagicLabXP ? window.MagicLabXP.getBadges() : Promise.resolve({ earned: [], all: [] }), { earned: [], all: [] }),
         safe(() => _getActivityDates(), new Set()),
-        safe(() => {
-          console.log('[DEBUG-assignments] Promise.all call site — window.MagicLabAssignments exists:', !!window.MagicLabAssignments);
-          return window.MagicLabAssignments ? window.MagicLabAssignments.getMyAssignments() : Promise.resolve([]);
-        }, []),
+        safe(() => window.MagicLabAssignments ? window.MagicLabAssignments.getMyAssignments() : Promise.resolve([]), []),
       ]);
 
       console.log('[Dashboard] Data loaded — stats:', stats, 'progress rows:', allProgress.length);

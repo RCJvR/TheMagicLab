@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v47'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v48'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -102,6 +102,19 @@ const CACHE_NAME = 'magic-lab-v47'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // assignment (confirmed to exist in the DB, with correct RLS policies
                                     // and class membership) not showing up in a student's "My Assignments"
                                     // panel. To be removed once root-caused.
+                                    // v48: root-caused and fixed the v47 bug — dashboard-student.html's
+                                    // data-load trigger (_once/_tryLoad) only waited for
+                                    // window.MagicLabAuth and window.MagicLabProgress before firing, a
+                                    // readiness check written before assignments.js existed and never
+                                    // updated. Whichever of the auth/progress/xp "ready" events (or the
+                                    // fallback poll) won the race could fire before assignments.js had
+                                    // finished setting window.MagicLabAssignments, so getMyAssignments()
+                                    // was silently skipped — the assignment genuinely existed in the DB
+                                    // with correct RLS, but the client never asked. Now the trigger also
+                                    // waits for window.MagicLabAssignments (and its
+                                    // magiclab:assignments:ready event), with a ~3s poll-count timeout
+                                    // fallback so a slow or failed assignments.js can't hang the rest of
+                                    // the dashboard. Removed the temporary v47 debug logging.
 
 const urlsToCache = [
   '/',
