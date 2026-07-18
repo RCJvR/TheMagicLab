@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v46'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v47'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -96,6 +96,12 @@ const CACHE_NAME = 'magic-lab-v46'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // there's at least one not-yet-done assignment. Also added a brief
                                     // highlight pulse on the "My Assignments" panel when arriving via the
                                     // bell's deep link, so the destination is unmistakable.
+                                    // v47: temporary [DEBUG-assignments]-prefixed console logging added to
+                                    // assignments.js's getMyAssignments() and its call site in
+                                    // dashboard-student.html, to track down a live report of a real
+                                    // assignment (confirmed to exist in the DB, with correct RLS policies
+                                    // and class membership) not showing up in a student's "My Assignments"
+                                    // panel. To be removed once root-caused.
 
 const urlsToCache = [
   '/',

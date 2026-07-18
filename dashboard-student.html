@@ -544,7 +544,10 @@
         safe(() => window.MagicLabProgress.getRecentEvents(20), []),
         safe(() => window.MagicLabXP ? window.MagicLabXP.getBadges() : Promise.resolve({ earned: [], all: [] }), { earned: [], all: [] }),
         safe(() => _getActivityDates(), new Set()),
-        safe(() => window.MagicLabAssignments ? window.MagicLabAssignments.getMyAssignments() : Promise.resolve([]), []),
+        safe(() => {
+          console.log('[DEBUG-assignments] Promise.all call site — window.MagicLabAssignments exists:', !!window.MagicLabAssignments);
+          return window.MagicLabAssignments ? window.MagicLabAssignments.getMyAssignments() : Promise.resolve([]);
+        }, []),
       ]);
 
       console.log('[Dashboard] Data loaded — stats:', stats, 'progress rows:', allProgress.length);

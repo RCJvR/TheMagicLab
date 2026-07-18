@@ -136,18 +136,21 @@ async function deleteAssignment(assignmentId) {
  */
 async function getMyAssignments() {
   const auth = window.MagicLabAuth;
-  if (!auth?.isLoggedIn()) return [];
+  console.log('[DEBUG-assignments] getMyAssignments called. auth exists:', !!auth, 'isLoggedIn:', auth?.isLoggedIn());
+  if (!auth?.isLoggedIn()) { console.log('[DEBUG-assignments] bailing: not logged in'); return []; }
   const supabase = auth._supabase();
   const userId   = auth.getProfile()?.id ?? auth.getSession()?.user?.id;
-  if (!userId) return [];
+  console.log('[DEBUG-assignments] userId:', userId);
+  if (!userId) { console.log('[DEBUG-assignments] bailing: no userId'); return []; }
 
   const { data: memberships, error: memErr } = await supabase
     .from('class_members')
     .select('class_id, classes(name)')
     .eq('student_id', userId);
 
+  console.log('[DEBUG-assignments] class_members query result — memberships:', memberships, 'error:', memErr);
   if (memErr) { console.warn('[MagicLab] getMyAssignments membership error:', memErr.message); return []; }
-  if (!memberships?.length) return [];
+  if (!memberships?.length) { console.log('[DEBUG-assignments] bailing: memberships empty'); return []; }
 
   const classIds       = memberships.map(m => m.class_id);
   const classNameById  = Object.fromEntries(memberships.map(m => [m.class_id, m.classes?.name || 'Class']));
