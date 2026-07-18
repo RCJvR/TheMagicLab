@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v49'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v50'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -120,6 +120,12 @@ const CACHE_NAME = 'magic-lab-v49'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // section and the Join a class / Enter The Arena boxes, instead of
                                     // below them — a student's active homework should be one of the first
                                     // things they see, not something they scroll past.
+                                    // v50: dashboard-student.html — "My Assignments" now groups items
+                                    // into Overdue / Due Today / Upcoming / Completed (in that order,
+                                    // colour-coded dots, each with a count), instead of one flat list.
+                                    // No-due-date assignments fall under Upcoming; a completed assignment
+                                    // always shows under Completed even if its due date has passed. Empty
+                                    // groups are simply omitted.
 
 const urlsToCache = [
   '/',

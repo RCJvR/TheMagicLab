@@ -312,6 +312,18 @@
       0%   { box-shadow: 0 0 0 3px rgba(245,158,11,0.55); background: rgba(245,158,11,0.08); }
       100% { box-shadow: 0 0 0 3px rgba(245,158,11,0); background: rgba(245,158,11,0); }
     }
+    .assignment-group-label {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+      display: flex; align-items: center; gap: 7px; margin: 16px 0 8px;
+    }
+    .assignment-group-label:first-child { margin-top: 0; }
+    .assignment-group-count { opacity: 0.6; font-weight: 500; }
+    .assignment-group-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .assignment-group-dot.overdue  { background: #f87171; }
+    .assignment-group-dot.today    { background: #f5a623; }
+    .assignment-group-dot.upcoming { background: #7c6dfa; }
+    .assignment-group-dot.done     { background: #6ee7b7; }
 
     @media (max-width: 720px) {
       nav { padding: 14px 20px; }
@@ -583,26 +595,42 @@
         setTimeout(() => panel.classList.remove('jump-highlight'), 2500);
       }
 
+      const today = new Date().toISOString().slice(0, 10);
+      const groups = [
+        { label: 'Overdue',    dotClass: 'overdue',  items: assignments.filter(a => !a.done && a.due_date && a.due_date < today) },
+        { label: 'Due Today',  dotClass: 'today',    items: assignments.filter(a => !a.done && a.due_date === today) },
+        { label: 'Upcoming',   dotClass: 'upcoming', items: assignments.filter(a => !a.done && (!a.due_date || a.due_date > today)) },
+        { label: 'Completed',  dotClass: 'done',     items: assignments.filter(a => a.done) },
+      ];
+
       const feed = document.getElementById('assignments-feed');
-      feed.innerHTML = assignments.map(a => {
-        const meta = TOOL_META[a.tool];
-        const url  = meta?.url || `${a.tool}.html`;
-        const name = meta?.name || a.tool;
-        return `
-          <div class="assignment-item${a.done ? ' done' : ''}">
-            <div class="assignment-item-main">
-              <div class="assignment-item-title">${a.title}</div>
-              <div class="assignment-item-meta">
-                <span>${a.className}</span>
-                <span>· ${name}</span>
-                ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : ''}
-                ${a.due_date ? `<span class="assignment-item-due${a.overdue ? ' overdue' : ''}">Due ${new Date(a.due_date).toLocaleDateString('en-ZA', { day:'numeric', month:'short' })}</span>` : ''}
-              </div>
+      feed.innerHTML = groups.filter(g => g.items.length).map(g => `
+        <div class="assignment-group-label">
+          <span class="assignment-group-dot ${g.dotClass}"></span>${g.label}
+          <span class="assignment-group-count">(${g.items.length})</span>
+        </div>
+        ${g.items.map(_renderAssignmentItem).join('')}
+      `).join('');
+    }
+
+    function _renderAssignmentItem(a) {
+      const meta = TOOL_META[a.tool];
+      const url  = meta?.url || `${a.tool}.html`;
+      const name = meta?.name || a.tool;
+      return `
+        <div class="assignment-item${a.done ? ' done' : ''}">
+          <div class="assignment-item-main">
+            <div class="assignment-item-title">${a.title}</div>
+            <div class="assignment-item-meta">
+              <span>${a.className}</span>
+              <span>· ${name}</span>
+              ${a.topics.length ? `<span>· ${a.topics.length} lesson${a.topics.length > 1 ? 's' : ''}</span>` : ''}
+              ${a.due_date ? `<span class="assignment-item-due${a.overdue ? ' overdue' : ''}">Due ${new Date(a.due_date).toLocaleDateString('en-ZA', { day:'numeric', month:'short' })}</span>` : ''}
             </div>
-            <span class="assignment-item-status ${a.done ? 'done-status' : 'pending-status'}">${a.done ? '✓ Done' : 'Not yet'}</span>
-            <a href="${url}" class="assignment-item-link">Open →</a>
-          </div>`;
-      }).join('');
+          </div>
+          <span class="assignment-item-status ${a.done ? 'done-status' : 'pending-status'}">${a.done ? '✓ Done' : 'Not yet'}</span>
+          <a href="${url}" class="assignment-item-link">Open →</a>
+        </div>`;
     }
 
     function _renderHero(stats) {
