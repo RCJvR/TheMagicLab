@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Solid Geometry — Drawing Druid</title>
+<title>Loci — Drawing Druid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../print.css">
@@ -64,14 +64,16 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:12px;paddi
 .svg-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:18px;padding:18px;min-width:0;}
 .svg-card-title{font-size:13px;font-weight:800;color:#fde047;}
 .svg-wrap{background:#05070c;border:1px solid var(--border);border-radius:14px;padding:10px;margin:12px 0;}
-svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
+svg#lessonSvg{width:100%;height:420px;display:block;}
 
 /* Explore tab */
 .explore-intro{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:660px;margin-bottom:16px;}
-.explore-readout{font-family:var(--fm);font-size:12px;color:#fde047;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:12px;line-height:1.7;}
-.explore-controls{display:flex;align-items:center;gap:14px;margin-top:14px;}
-.explore-slider{flex:1;accent-color:#eab308;}
-.explore-slider-label{font-family:var(--fm);font-size:11px;color:var(--muted);white-space:nowrap;}
+.tool-card{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 22px;text-decoration:none;color:inherit;max-width:520px;transition:all 200ms;}
+.tool-card:hover{border-color:rgba(234,179,8,0.40);background:rgba(255,255,255,.06);}
+.tool-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,rgba(234,179,8,0.28),rgba(100,116,139,0.18));border:1px solid rgba(234,179,8,0.30);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.tool-title{font-weight:800;font-size:14.5px;color:#fff;margin-bottom:3px;}
+.tool-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.tool-arrow{margin-left:auto;color:#fde047;font-size:16px;flex-shrink:0;}
 
 /* Practice tab */
 .practice-wrap{max-width:640px;}
@@ -113,10 +115,10 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 
 <nav>
   <div class="nav-left">
-    <div class="app-icon">🔷</div>
+    <div class="app-icon">⚙️</div>
     <div>
       <div class="app-title">Drawing Druid</div>
-      <div class="app-sub">Chapter 5 · Solid Geometry</div>
+      <div class="app-sub">Chapter 12 · Loci</div>
     </div>
   </div>
   <div style="display:flex;gap:8px;">
@@ -126,9 +128,9 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 </nav>
 
 <div class="lesson-header">
-  <div class="chapter-tag">Grade 10 · Chapter 5</div>
-  <h1 class="lesson-title">Solid Geometry</h1>
-  <p class="lesson-sub">1st-angle orthographic views of prisms, pyramids, cylinders and cones — true shapes of oblique cuts, a cone frustum, and prismatic/pyramidal holes revealed by sectioning.</p>
+  <div class="chapter-tag">Grade 11-12 · Chapter 12</div>
+  <h1 class="lesson-title">Loci</h1>
+  <p class="lesson-sub">Cam displacement diagrams and profiles (wedge and roller followers, all three motion laws), the loci of points on a mechanism, and the helix — cams, mechanisms and helix are three separate SAGS "Loci" course drawings, all covered here.</p>
 </div>
 
 <div class="tabs">
@@ -160,17 +162,15 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <p class="explore-intro">This square prism is cut by a plane that slopes from the top-left corner down to a point on the right edge. Drag the slider to change how much the cut drops, and see how the TRUE SHAPE of the cut surface changes — even though the front-view outline barely changes.</p>
-  <div class="svg-card">
-    <span class="svg-card-title">True-Shape Explorer</span>
-    <div class="svg-wrap"><svg id="exploreSvg"></svg></div>
-    <div class="explore-controls">
-      <span class="explore-slider-label">Shallow cut</span>
-      <input type="range" class="explore-slider" id="dropSlider" min="5" max="55" value="30">
-      <span class="explore-slider-label">Steep cut</span>
+  <p class="explore-intro">The Lesson tab teaches the hand-drafting techniques behind cam profiles and mechanism loci. For the full interactive version — a live displacement diagram AND cam profile that redraw and animate as you build up any sequence of dwell/rise/fall segments, in any order, with any of the three motion laws — open the Cam &amp; Loci Simulator below.</p>
+  <a href="../tools/cam-loci.html" class="tool-card">
+    <div class="tool-icon">⚙️</div>
+    <div>
+      <div class="tool-title">Cam &amp; Loci Simulator</div>
+      <div class="tool-desc">Build any sequence of dwell, rise and fall segments — uniform velocity, SHM, or uniform acceleration/retardation on each — with a wedge or roller follower, animated live.</div>
     </div>
-    <div class="explore-readout" id="exploreReadout"></div>
-  </div>
+    <div class="tool-arrow">→</div>
+  </a>
 </div>
 
 <!-- PRACTICE -->
@@ -194,7 +194,7 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 <script defer src="../../xp.js"></script>
 <script src="../engine-geometry.js"></script>
 <script src="../engine.js"></script>
-<script src="solid-geometry.data.js"></script>
+<script src="loci.data.js"></script>
 <script>
 (function () {
   const G = window.ConstructionGeometry;
@@ -273,41 +273,9 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
   document.getElementById('prevStepBtn').onclick = () => { if (currentStep > 1) { currentStep--; renderLesson(); } };
   document.getElementById('nextStepBtn').onclick = () => { if (currentStep < currentModel().steps.length) { currentStep++; renderLesson(); } };
 
-  // ── Explore tab: true-shape explorer with a live drop slider ──
-  const S = 45, H = 70;
-  const FV_LEFT = 40, FV_TOP = 20;
-  const FV_RIGHT = FV_LEFT + S, FV_BOTTOM = FV_TOP + H;
-  const slider = document.getElementById('dropSlider');
-
-  function buildExploreModel(drop) {
-    const cutP1 = [FV_LEFT, FV_TOP];
-    const cutP2 = [FV_RIGHT, FV_TOP + drop];
-    const slopeLength = G.distance(cutP1, cutP2);
-    const TS_LEFT = FV_LEFT, TS_TOP = FV_BOTTOM + 25;
-    const reveals = [
-      { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
-      { kind: 'line', p1: cutP1, p2: cutP2, lineType: 'A' },
-      { kind: 'polygon', points: [[TS_LEFT, TS_TOP], [TS_LEFT + slopeLength, TS_TOP], [TS_LEFT + slopeLength, TS_TOP + S], [TS_LEFT, TS_TOP + S]], lineType: 'A' },
-      { kind: 'label', at: [TS_LEFT, TS_TOP - 6], text: 'TRUE SHAPE', size: 4.5, anchor: 'start', color: '#fde047' },
-      { kind: 'dimension', p1: [TS_LEFT, TS_TOP + S + 6], p2: [TS_LEFT + slopeLength, TS_TOP + S + 6], offset: 8, text: slopeLength.toFixed(1) },
-    ];
-    return { bounds: { w: 165, h: 195 }, steps: [{ id: 1, reveals }], _slopeLength: slopeLength, _drop: drop };
-  }
-
-  function renderExplore() {
-    const svg = document.getElementById('exploreSvg');
-    const drop = parseFloat(slider.value);
-    const model = buildExploreModel(drop);
-    CE.render(svg, model, { uptoStep: Infinity, mode: 'interactive' });
-    document.getElementById('exploreReadout').textContent =
-      'Drop = ' + drop.toFixed(0) + ' mm → true length of cut = √(' + S + '² + ' + drop.toFixed(0) + '²) = ' + model._slopeLength.toFixed(1) + ' mm. The true-shape rectangle is ' + model._slopeLength.toFixed(1) + ' × ' + S + ' mm — notice its length grows as the cut gets steeper, even though the front view barely changes.';
-  }
-
-  slider.addEventListener('input', renderExplore);
-
   // ── Practice tab ──
   function renderPractice() {
-    CE.wirePractice(document.getElementById('practiceWrap'), window.PRACTICE_QUESTIONS, { tool: 'drawing-druid', topic: 'solid-geometry' });
+    CE.wirePractice(document.getElementById('practiceWrap'), window.PRACTICE_QUESTIONS, { tool: 'drawing-druid', topic: 'loci' });
   }
 
   // ── Workbook tab ──
@@ -386,12 +354,10 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     if (btn) btn.classList.add('active');
-    if (id === 'explore') setTimeout(renderExplore, 30);
   }
   window.switchTab = switchTab;
 
   renderLesson();
-  renderExplore();
   renderPractice();
   renderWorkbookPreviews();
   buildPrintSheets();

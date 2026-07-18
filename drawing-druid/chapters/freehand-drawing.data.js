@@ -92,6 +92,28 @@
       answer: 0,
       explanation: 'Isometric drawing uses one vertical axis and two axes at 30° to the horizontal. A pre-printed 30° grid keeps those three directions consistent while you sketch, which is very hard to judge freehand with no guide at all.',
     },
+    {
+      text: 'When enlarging a freehand drawing by a given ratio (e.g. 2:1), what must be scaled by that same ratio?',
+      options: [
+        'The bounding block AND every one of its subdivisions, in both directions — so every proportion in the enlarged sketch matches the original exactly',
+        'Only the overall width — height can be estimated by eye',
+        'Only the line thickness, not the drawing itself',
+        'Nothing needs to scale evenly; freehand enlargements are always approximate',
+      ],
+      answer: 0,
+      explanation: 'Scaling the bounding block and its internal subdivisions by the same ratio in both directions is what keeps every proportion of the enlarged sketch identical to the original — just bigger.',
+    },
+    {
+      text: 'What is a "tangent arc" in the context of freehand sketching a rounded rectangle?',
+      options: [
+        'A curve that blends smoothly into a straight edge at the point where they meet, with no visible kink or corner',
+        'Any arc drawn without a guide',
+        'An arc that intentionally crosses over a straight line',
+        'A term that only applies to instrument (compass) drawing, never freehand',
+      ],
+      answer: 0,
+      explanation: 'A tangent arc meets a straight line smoothly, continuing its direction with no sudden change — the corner "blends" rather than creating a visible kink where the arc starts.',
+    },
   ];
 
   // ── Grid generators (Type C guide lines, reused by the raster/isometric sheets) ──
@@ -207,6 +229,63 @@
     ];
   }
 
+  // A flanged pipe coupling: two circular flanges (with bolt holes) joined by a short pipe — front view.
+  function pipeFlangeIcon(ox, oy) {
+    const cy = oy + 22, flangeR = 20, pipeR = 10, pipeLen = 30, boltR = 2.4;
+    const x1 = ox + flangeR, x2 = x1 + pipeLen;
+    const reveals = [
+      { kind: 'circle', center: [x1, cy], r: flangeR, lineType: 'A' },
+      { kind: 'circle', center: [x1, cy], r: pipeR, lineType: 'A' },
+      { kind: 'polygon', points: [[x1, cy - pipeR], [x2, cy - pipeR], [x2, cy + pipeR], [x1, cy + pipeR]], lineType: 'A' },
+      { kind: 'circle', center: [x2, cy], r: flangeR * 0.6, lineType: 'A' },
+      { kind: 'line', p1: [ox - 4, cy], p2: [x2 + flangeR * 0.6 + 4, cy], lineType: 'centre' },
+    ];
+    [-1, 1].forEach(s => reveals.push({ kind: 'circle', center: [x1, cy + s * (flangeR - 5)], r: boltR, lineType: 'A' }));
+    return reveals;
+  }
+
+  // A stepped round shaft: three diameters in one bar, front view with a centre line.
+  function steppedShaftIcon(ox, oy) {
+    const cy = oy + 18;
+    const segs = [{ w: 16, h: 26 }, { w: 24, h: 18 }, { w: 14, h: 10 }];
+    const reveals = [];
+    let x = ox;
+    segs.forEach(s => {
+      reveals.push({ kind: 'polygon', points: [[x, cy - s.h / 2], [x + s.w, cy - s.h / 2], [x + s.w, cy + s.h / 2], [x, cy + s.h / 2]], lineType: 'A' });
+      x += s.w;
+    });
+    reveals.push({ kind: 'line', p1: [ox - 4, cy], p2: [x + 4, cy], lineType: 'centre' });
+    return reveals;
+  }
+
+  // A hex bolt and nut, simplified side-view icon (see Mechanical Assemblies for the full construction).
+  function hexBoltIcon(ox, oy) {
+    const cy = oy + 18, headW = 20, headH = 10, shankW = 12, shankLen = 26, nutW = 18, nutH = 9;
+    const hx = ox + headW / 2;
+    return [
+      { kind: 'polygon', points: [[ox, oy], [ox + headW, oy], [ox + headW, oy + headH], [ox, oy + headH]], lineType: 'A' },
+      { kind: 'polygon', points: [[hx - shankW / 2, oy + headH], [hx + shankW / 2, oy + headH], [hx + shankW / 2, oy + headH + shankLen], [hx - shankW / 2, oy + headH + shankLen]], lineType: 'A' },
+      { kind: 'polygon', points: [[hx - nutW / 2, oy + headH + shankLen], [hx + nutW / 2, oy + headH + shankLen], [hx + nutW / 2, oy + headH + shankLen + nutH], [hx - nutW / 2, oy + headH + shankLen + nutH]], lineType: 'A' },
+      { kind: 'line', p1: [hx, oy - 4], p2: [hx, oy + headH + shankLen + nutH + 4], lineType: 'centre' },
+    ];
+  }
+
+  // A C-shaped mounting bracket with two fixing holes.
+  function mountingBracketIcon(ox, oy) {
+    const outer = [
+      [ox, oy], [ox + 40, oy], [ox + 40, oy + 10], [ox + 10, oy + 10],
+      [ox + 10, oy + 34], [ox + 40, oy + 34], [ox + 40, oy + 44], [ox, oy + 44],
+    ];
+    const h1 = [ox + 22, oy + 5], h2 = [ox + 22, oy + 39], holeR = 2.6;
+    return [
+      { kind: 'polygon', points: outer, lineType: 'A' },
+      { kind: 'circle', center: h1, r: holeR, lineType: 'A' },
+      { kind: 'circle', center: h2, r: holeR, lineType: 'A' },
+      { kind: 'line', p1: [h1[0] - holeR - 3, h1[1]], p2: [h1[0] + holeR + 3, h1[1]], lineType: 'centre' },
+      { kind: 'line', p1: [h2[0] - holeR - 3, h2[1]], p2: [h2[0] + holeR + 3, h2[1]], lineType: 'centre' },
+    ];
+  }
+
   // ── Workbook / print sheets ──
   const WORKBOOK_SHEETS = {};
 
@@ -254,7 +333,7 @@
 
   WORKBOOK_SHEETS['raster-grid'] = {
     id: 'raster-grid',
-    title: 'Raster Grid — Multi-View Sketching',
+    title: 'Raster Grid — Multi-View Sketching (Set 1)',
     workbookPrompt: 'Using the square grid, freehand-sketch each reference object as a front view AND a side view, counting grid squares to keep proportions accurate. Include centre lines and hidden detail where shown.',
     bounds: { w: 240, h: 190 },
     referenceBounds: { w: 150, h: 46 },
@@ -265,9 +344,22 @@
     }],
   };
 
+  WORKBOOK_SHEETS['raster-grid-2'] = {
+    id: 'raster-grid-2',
+    title: 'Raster Grid — Multi-View Sketching (Set 2)',
+    workbookPrompt: 'A second set of reference objects — freehand-sketch the stepped shaft as a single front view, and the flanged pipe coupling as front view AND side view, counting grid squares for proportion.',
+    bounds: { w: 240, h: 190 },
+    referenceBounds: { w: 150, h: 46 },
+    referenceReveals: [...steppedShaftIcon(4, 6), ...pipeFlangeIcon(70, 2)],
+    steps: [{
+      id: 1,
+      reveals: squareGridLines(240, 190, 10),
+    }],
+  };
+
   WORKBOOK_SHEETS['isometric-grid'] = {
     id: 'isometric-grid',
-    title: 'Isometric Grid — Pictorial Sketching',
+    title: 'Isometric Grid — Pictorial Sketching (Set 1)',
     workbookPrompt: 'Using the 30° isometric grid, freehand-sketch each reference object pictorially (in 3D), keeping every edge along one of the three grid directions: vertical, or 30° left/right.',
     bounds: { w: 240, h: 190 },
     referenceBounds: { w: 145, h: 40 },
@@ -278,7 +370,95 @@
     }],
   };
 
+  WORKBOOK_SHEETS['isometric-grid-2'] = {
+    id: 'isometric-grid-2',
+    title: 'Isometric Grid — Pictorial Sketching (Set 2)',
+    workbookPrompt: 'A second set of reference objects — freehand-sketch the hex bolt and the mounting bracket pictorially on the isometric grid, keeping every edge along one of the three axis directions.',
+    bounds: { w: 240, h: 190 },
+    referenceBounds: { w: 110, h: 60 },
+    referenceReveals: [...hexBoltIcon(4, 4), ...mountingBracketIcon(60, 8)],
+    steps: [{
+      id: 1,
+      reveals: isoGridLines(240, 190, 10),
+    }],
+  };
+
+  // ── Enlarging a freehand drawing (blocking-in, scaled by a given ratio) ──
+  (function () {
+    const REF_W = 30, REF_H = 22, RATIO = 2;
+    const refShape = [[0, REF_H], [0, REF_H * 0.4], [REF_W * 0.4, REF_H * 0.4], [REF_W * 0.4, 0], [REF_W, 0], [REF_W, REF_H]];
+    const referenceReveals = [
+      { kind: 'polygon', points: [[0, 0], [REF_W, 0], [REF_W, REF_H], [0, REF_H]], lineType: 'construction' },
+      { kind: 'line', p1: [REF_W / 2, 0], p2: [REF_W / 2, REF_H], lineType: 'construction' },
+      { kind: 'line', p1: [0, REF_H / 2], p2: [REF_W, REF_H / 2], lineType: 'construction' },
+      { kind: 'polyline', points: refShape, lineType: 'A' },
+      { kind: 'label', at: [0, -3], text: 'ORIGINAL', size: 4.5, anchor: 'start', color: '#fde047' },
+    ];
+    const BX = 25, BY = 15, BW = REF_W * RATIO, BH = REF_H * RATIO;
+    WORKBOOK_SHEETS['enlarging'] = {
+      id: 'enlarging',
+      title: 'Enlarging a Freehand Drawing (2:1)',
+      workbookPrompt: 'Block in the bounding rectangle and the same centre subdivisions shown, scaled up 2:1 from the original (already drawn for you at actual size). Then freehand-sketch the enlarged outline over your blocking guides, using the subdivisions to place each feature correctly.',
+      bounds: { w: 190, h: 130 },
+      referenceBounds: { w: REF_W + 6, h: REF_H + 10 },
+      referenceReveals,
+      steps: [{
+        id: 1,
+        reveals: [
+          { kind: 'polygon', points: [[BX, BY], [BX + BW, BY], [BX + BW, BY + BH], [BX, BY + BH]], lineType: 'construction' },
+          { kind: 'line', p1: [BX + BW / 2, BY], p2: [BX + BW / 2, BY + BH], lineType: 'construction' },
+          { kind: 'line', p1: [BX, BY + BH / 2], p2: [BX + BW, BY + BH / 2], lineType: 'construction' },
+          { kind: 'label', at: [BX, BY - 6], text: 'BLOCKED-IN AT 2:1 — SKETCH THE ENLARGED OUTLINE', size: 4.5, anchor: 'start', color: '#fde047' },
+          { kind: 'dimension', p1: [BX, BY + BH + 10], p2: [BX + BW, BY + BH + 10], offset: 6, text: BW.toFixed(0) },
+        ],
+      }],
+    };
+  })();
+
+  // ── Freehand circles & tangent arcs ──
+  (function () {
+    const targets = [{ c: [40, 45], r: 15 }, { c: [105, 55], r: 25 }, { c: [165, 38], r: 12 }];
+    const rectTangents = (() => {
+      const RX = 30, RY = 110, RW = 90, RH = 40, RAD = 12;
+      const reveals = [
+        { kind: 'line', p1: [RX + RAD, RY], p2: [RX + RW - RAD, RY], lineType: 'construction' },
+        { kind: 'line', p1: [RX + RAD, RY + RH], p2: [RX + RW - RAD, RY + RH], lineType: 'construction' },
+        { kind: 'line', p1: [RX, RY + RAD], p2: [RX, RY + RH - RAD], lineType: 'construction' },
+        { kind: 'line', p1: [RX + RW, RY + RAD], p2: [RX + RW, RY + RH - RAD], lineType: 'construction' },
+        { kind: 'label', at: [RX, RY - 5], text: 'ROUNDED RECTANGLE — BLEND EACH CORNER WITH A TANGENT ARC, R' + RAD, size: 4.2, anchor: 'start', color: '#fde047' },
+      ];
+      [[RX + RAD, RY + RAD], [RX + RW - RAD, RY + RAD], [RX + RAD, RY + RH - RAD], [RX + RW - RAD, RY + RH - RAD]].forEach(c => {
+        reveals.push({ kind: 'point', at: c, size: 1, color: '#94a3b8' });
+      });
+      return reveals;
+    })();
+    WORKBOOK_SHEETS['circles-arcs'] = {
+      id: 'circles-arcs',
+      title: 'Freehand Circles & Tangent Arcs',
+      workbookPrompt: 'Using the box method, freehand-sketch a circle inside each bounding square. Then sketch the rounded rectangle, blending each corner into a smooth tangent arc of the radius shown — a real freehand skill, not just circles in isolation.',
+      bounds: { w: 190, h: 160 },
+      referenceBounds: { w: 30, h: 30 },
+      referenceReveals: [
+        { kind: 'polygon', points: [[0, 0], [30, 0], [30, 30], [0, 30]], lineType: 'construction' },
+        { kind: 'circle', center: [15, 15], r: 15, lineType: 'A' },
+        { kind: 'line', p1: [15, -4], p2: [15, 34], lineType: 'centre' },
+        { kind: 'line', p1: [-4, 15], p2: [34, 15], lineType: 'centre' },
+      ],
+      steps: [{
+        id: 1,
+        reveals: [
+          ...targets.flatMap(t => ([
+            { kind: 'polygon', points: [[t.c[0] - t.r, t.c[1] - t.r], [t.c[0] + t.r, t.c[1] - t.r], [t.c[0] + t.r, t.c[1] + t.r], [t.c[0] - t.r, t.c[1] + t.r]], lineType: 'construction' },
+            { kind: 'line', p1: [t.c[0] - t.r - 3, t.c[1]], p2: [t.c[0] + t.r + 3, t.c[1]], lineType: 'centre' },
+            { kind: 'line', p1: [t.c[0], t.c[1] - t.r - 3], p2: [t.c[0], t.c[1] + t.r + 3], lineType: 'centre' },
+          ])),
+          ...rectTangents,
+        ],
+      }],
+    };
+  })();
+
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
   global.WORKBOOK_SHEETS = WORKBOOK_SHEETS;
-  global.WORKBOOK_ORDER = ['lettering', 'line-types', 'raster-grid', 'isometric-grid'];
+  global.WORKBOOK_ORDER = ['lettering', 'line-types', 'raster-grid', 'raster-grid-2', 'isometric-grid', 'isometric-grid-2', 'enlarging', 'circles-arcs'];
 })(window);

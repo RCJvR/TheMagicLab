@@ -317,6 +317,125 @@
     };
   })();
 
+  // ── 7. Ellipse — Concentric Circles Method ──
+  (function () {
+    const O = [100, 100], MAJOR_R = 45, MINOR_R = 25, N = 12, D2R = Math.PI / 180;
+    const outerPts = Array.from({ length: N }, (_, i) => {
+      const a = i * (360 / N) * D2R;
+      return [O[0] + MAJOR_R * Math.cos(a), O[1] + MAJOR_R * Math.sin(a)];
+    });
+    const innerPts = Array.from({ length: N }, (_, i) => {
+      const a = i * (360 / N) * D2R;
+      return [O[0] + MINOR_R * Math.cos(a), O[1] + MINOR_R * Math.sin(a)];
+    });
+    const ellipsePts = outerPts.map((p, i) => [p[0], innerPts[i][1]]);
+    const smoothEllipse = G.catmullRomExpand([...ellipsePts, ellipsePts[0]], 8);
+
+    CONSTRUCTIONS['ellipse-concentric-circles'] = {
+      id: 'ellipse-concentric-circles', title: 'Ellipse — Concentric Circles Method',
+      summary: 'Construct a true ellipse from its major and minor axes using two concentric circles, divided into 12 equal parts — no trammel or string needed.',
+      bounds: { w: 200, h: 180 },
+      workbookPrompt: 'Construct an ellipse with a 90 mm major axis and a 50 mm minor axis, using the concentric circles method. Divide both circles into 12 equal parts and show all construction lines.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'Draw two concentric circles at centre O: one with the major-axis radius (45 mm), one with the minor-axis radius (25 mm). Draw the horizontal major axis and vertical minor axis through O.',
+          measurement: { label: 'major R = 45 mm, minor R = 25 mm' },
+          calloutAt: O,
+          reveals: [
+            { kind: 'circle', center: O, r: MAJOR_R, lineType: 'construction' },
+            { kind: 'circle', center: O, r: MINOR_R, lineType: 'construction' },
+            { kind: 'line', p1: [O[0] - MAJOR_R - 5, O[1]], p2: [O[0] + MAJOR_R + 5, O[1]], lineType: 'centre' },
+            { kind: 'line', p1: [O[0], O[1] - MAJOR_R - 5], p2: [O[0], O[1] + MAJOR_R + 5], lineType: 'centre' },
+            { kind: 'point', at: O, label: 'O' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Divide both circles into 12 equal 30° divisions, using the same radial construction lines for both.',
+          calloutAt: outerPts[0],
+          reveals: Array.from({ length: N }, (_, i) => ({ kind: 'line', p1: O, p2: outerPts[i], lineType: 'construction' })),
+        },
+        {
+          id: 3,
+          instruction: 'From each point on the OUTER circle, drop a vertical line. From the matching point on the INNER circle, draw a horizontal line. Mark where each pair meets — that intersection is a point on the ellipse.',
+          calloutAt: ellipsePts[1],
+          reveals: [
+            ...outerPts.map((p, i) => ({ kind: 'line', p1: p, p2: [p[0], innerPts[i][1]], lineType: 'construction' })),
+            ...innerPts.map((p, i) => ({ kind: 'line', p1: p, p2: [outerPts[i][0], p[1]], lineType: 'construction' })),
+            ...ellipsePts.map(p => ({ kind: 'point', at: p, size: 1.2, color: '#f472b6' })),
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'Join the 12 points with a smooth curve — this is a true ellipse, not an approximation.',
+          calloutAt: [O[0], O[1] - MINOR_R - 8],
+          reveals: [
+            { kind: 'polyline', points: smoothEllipse, lineType: 'A' },
+            { kind: 'dimension', p1: [O[0] - MAJOR_R, O[1] + MINOR_R + 14], p2: [O[0] + MAJOR_R, O[1] + MINOR_R + 14], offset: 6, text: (MAJOR_R * 2).toFixed(0) },
+          ],
+        },
+      ],
+    };
+  })();
+
+  // ── 8. Tangent Arc Blend — Rounded-End Link ──
+  (function () {
+    const CY = 100, LEFT_CX = 45, RIGHT_CX = 135, HALF_W = 15, HOLE_R = 6;
+    CONSTRUCTIONS['tangent-arc-link'] = {
+      id: 'tangent-arc-link', title: 'Tangent Arc Blend — Rounded-End Link',
+      summary: 'Construct a rounded-end connecting link — the classic "tangent arc" mechanical outline, where two straight sides blend smoothly into semicircular ends of equal radius.',
+      bounds: { w: 200, h: 140 },
+      workbookPrompt: 'Construct a rounded-end link: two mounting holes 90 mm apart, arm width 30 mm. Show the guide circles, the tangent straight sides, and the two end arcs. Correct tangent construction must be shown at all times.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'Draw the centre line and mark the two hole centres, 90 mm apart.',
+          measurement: { label: 'centres = 90 mm apart' },
+          calloutAt: [(LEFT_CX + RIGHT_CX) / 2, CY],
+          reveals: [
+            { kind: 'line', p1: [LEFT_CX - 8, CY], p2: [RIGHT_CX + 8, CY], lineType: 'centre' },
+            { kind: 'point', at: [LEFT_CX, CY], label: 'A' },
+            { kind: 'point', at: [RIGHT_CX, CY], label: 'B' },
+            { kind: 'dimension', p1: [LEFT_CX, CY - HALF_W - 20], p2: [RIGHT_CX, CY - HALF_W - 20], offset: 0, text: (RIGHT_CX - LEFT_CX).toFixed(0) },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'At each centre, draw the mounting hole AND a construction circle of radius equal to half the arm\'s width (15 mm) — this guide circle is what the straight sides and end caps will be tangent to.',
+          measurement: { label: 'arm half-width = 15 mm' },
+          calloutAt: [LEFT_CX, CY],
+          reveals: [
+            { kind: 'circle', center: [LEFT_CX, CY], r: HOLE_R, lineType: 'A' },
+            { kind: 'circle', center: [RIGHT_CX, CY], r: HOLE_R, lineType: 'A' },
+            { kind: 'circle', center: [LEFT_CX, CY], r: HALF_W, lineType: 'construction' },
+            { kind: 'circle', center: [RIGHT_CX, CY], r: HALF_W, lineType: 'construction' },
+          ],
+        },
+        {
+          id: 3,
+          instruction: 'Because both guide circles share the same radius, the tangent sides are simply straight lines parallel to the centre line, offset by exactly that radius — draw both.',
+          calloutAt: [(LEFT_CX + RIGHT_CX) / 2, CY - HALF_W],
+          reveals: [
+            { kind: 'line', p1: [LEFT_CX, CY - HALF_W], p2: [RIGHT_CX, CY - HALF_W], lineType: 'A' },
+            { kind: 'line', p1: [LEFT_CX, CY + HALF_W], p2: [RIGHT_CX, CY + HALF_W], lineType: 'A' },
+            { kind: 'right-angle-marker', at: [LEFT_CX, CY - HALF_W], rotationDeg: 180 },
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'Complete the outline with the two end arcs — the OUTER half of each guide circle, facing away from the body. The straight sides now blend smoothly into the arcs with no visible kink: a true tangent join.',
+          calloutAt: [LEFT_CX - HALF_W, CY],
+          reveals: [
+            { kind: 'arc-construction', center: [LEFT_CX, CY], r: HALF_W, startDeg: 90, endDeg: 270, lineType: 'A' },
+            { kind: 'arc-construction', center: [RIGHT_CX, CY], r: HALF_W, startDeg: -90, endDeg: 90, lineType: 'A' },
+            { kind: 'dimension', p1: [LEFT_CX, CY + HALF_W + 10], p2: [LEFT_CX, CY - HALF_W - 10], offset: 0, text: (HALF_W * 2).toFixed(0) },
+          ],
+        },
+      ],
+    };
+  })();
+
   // ── Practice questions ──
   const PRACTICE_QUESTIONS = [
     {
@@ -355,9 +474,31 @@
       answer: 0,
       explanation: 'Pitch is the vertical distance the helix rises for one complete 360° turn — the spacing between coils of a spring or thread.',
     },
+    {
+      text: 'In the concentric-circles method for constructing an ellipse, how is each point on the ellipse found?',
+      options: [
+        'From the same division angle, take the X-coordinate off the major-axis (outer) circle and the Y-coordinate off the minor-axis (inner) circle',
+        'By averaging the two circles\' radii at each angle',
+        'By projecting only from the outer circle',
+        'The two circles are only a decoration and are not used to plot any points',
+      ],
+      answer: 0,
+      explanation: 'Dropping a vertical from the outer-circle point and a horizontal from the matching inner-circle point, and marking their intersection, produces a mathematically exact ellipse point at every division.',
+    },
+    {
+      text: 'Two circles of EQUAL radius are to be joined by a straight tangent line on each side (e.g. a rounded-end link). Where do those tangent lines lie relative to the line joining the two centres?',
+      options: [
+        'Parallel to it, offset by exactly the shared radius on each side',
+        'Perpendicular to it, at the midpoint',
+        'At 45° to the centre line',
+        'There is no fixed relationship — it depends on the distance between the centres',
+      ],
+      answer: 0,
+      explanation: 'Because both circles share the same radius, the common tangent lines run exactly parallel to the line joining their centres, offset by that radius — no external-point tangent construction is needed for this case.',
+    },
   ];
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
-  global.CONSTRUCTION_ORDER = ['bisect-line', 'bisect-angle', 'tangent-external', 'hexagon-in-circle', 'pentagon-in-circle', 'helix-spring'];
+  global.CONSTRUCTION_ORDER = ['bisect-line', 'bisect-angle', 'tangent-external', 'hexagon-in-circle', 'pentagon-in-circle', 'helix-spring', 'ellipse-concentric-circles', 'tangent-arc-link'];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);

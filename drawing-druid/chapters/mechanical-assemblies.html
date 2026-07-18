@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Solid Geometry — Drawing Druid</title>
+<title>Mechanical Assemblies — Drawing Druid</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../print.css">
@@ -69,9 +69,9 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 /* Explore tab */
 .explore-intro{font-size:13.5px;color:var(--muted);line-height:1.8;max-width:660px;margin-bottom:16px;}
 .explore-readout{font-family:var(--fm);font-size:12px;color:#fde047;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:12px;line-height:1.7;}
-.explore-controls{display:flex;align-items:center;gap:14px;margin-top:14px;}
-.explore-slider{flex:1;accent-color:#eab308;}
-.explore-slider-label{font-family:var(--fm);font-size:11px;color:var(--muted);white-space:nowrap;}
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.toggle-btn{font-family:var(--fd);font-size:12px;font-weight:700;padding:9px 16px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--muted);cursor:pointer;transition:all 140ms;}
+.toggle-btn.active{background:rgba(234,179,8,0.16);border-color:rgba(234,179,8,0.40);color:#fde047;}
 
 /* Practice tab */
 .practice-wrap{max-width:640px;}
@@ -113,10 +113,10 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 
 <nav>
   <div class="nav-left">
-    <div class="app-icon">🔷</div>
+    <div class="app-icon">🔩</div>
     <div>
       <div class="app-title">Drawing Druid</div>
-      <div class="app-sub">Chapter 5 · Solid Geometry</div>
+      <div class="app-sub">Chapter 11 · Mechanical Assemblies</div>
     </div>
   </div>
   <div style="display:flex;gap:8px;">
@@ -126,9 +126,9 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 </nav>
 
 <div class="lesson-header">
-  <div class="chapter-tag">Grade 10 · Chapter 5</div>
-  <h1 class="lesson-title">Solid Geometry</h1>
-  <p class="lesson-sub">1st-angle orthographic views of prisms, pyramids, cylinders and cones — true shapes of oblique cuts, a cone frustum, and prismatic/pyramidal holes revealed by sectioning.</p>
+  <div class="chapter-tag">Grade 11-12 · Chapter 11</div>
+  <h1 class="lesson-title">Mechanical Assemblies</h1>
+  <p class="lesson-sub">3rd-angle assembly drawings built from detail components — hexagonal bolts and nuts, simplified thread convention, correct sectioning of fasteners, and a numbered parts list.</p>
 </div>
 
 <div class="tabs">
@@ -160,14 +160,15 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 
 <!-- EXPLORE -->
 <div class="tab-panel" id="tab-explore">
-  <p class="explore-intro">This square prism is cut by a plane that slopes from the top-left corner down to a point on the right edge. Drag the slider to change how much the cut drops, and see how the TRUE SHAPE of the cut surface changes — even though the front-view outline barely changes.</p>
+  <p class="explore-intro">The same plate with an internal pocket, drawn four different ways. Toggle between the sectioning conventions used on mechanical assembly drawings and see how each one shows (or hides) the internal detail.</p>
   <div class="svg-card">
-    <span class="svg-card-title">True-Shape Explorer</span>
+    <span class="svg-card-title">Sectioning Explorer</span>
     <div class="svg-wrap"><svg id="exploreSvg"></svg></div>
-    <div class="explore-controls">
-      <span class="explore-slider-label">Shallow cut</span>
-      <input type="range" class="explore-slider" id="dropSlider" min="5" max="55" value="30">
-      <span class="explore-slider-label">Steep cut</span>
+    <div class="toggle-row" id="sectionToggle">
+      <button class="toggle-btn active" data-mode="none">Non-sectional</button>
+      <button class="toggle-btn" data-mode="full">Full-sectional</button>
+      <button class="toggle-btn" data-mode="half">Half-sectional</button>
+      <button class="toggle-btn" data-mode="part">Part-sectional</button>
     </div>
     <div class="explore-readout" id="exploreReadout"></div>
   </div>
@@ -181,7 +182,7 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 <!-- WORKBOOK -->
 <div class="tab-panel" id="tab-workbook">
   <div class="wb-wrap">
-    <p class="wb-intro">Each exercise below prints as a full-scale A3 sheet — the same format used in EGD practical assessments. The reference thumbnail shows the completed drawing; redraw it full-size on paper using correct line types and true measurements. Use your printer's "Actual Size" setting (not "Fit to Page").</p>
+    <p class="wb-intro">Each exercise below prints as a full-scale A3 sheet — the same format used in EGD practical assessments. The reference thumbnail shows the completed drawing; redraw it full-size on paper using correct line types, hatching and dimensions. Use your printer's "Actual Size" setting (not "Fit to Page").</p>
     <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:15px;height:15px"></i> Print Workbook (A3)</button>
     <div class="wb-grid" id="workbookPreviewGrid"></div>
   </div>
@@ -194,7 +195,7 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
 <script defer src="../../xp.js"></script>
 <script src="../engine-geometry.js"></script>
 <script src="../engine.js"></script>
-<script src="solid-geometry.data.js"></script>
+<script src="mechanical-assemblies.data.js"></script>
 <script>
 (function () {
   const G = window.ConstructionGeometry;
@@ -273,41 +274,92 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
   document.getElementById('prevStepBtn').onclick = () => { if (currentStep > 1) { currentStep--; renderLesson(); } };
   document.getElementById('nextStepBtn').onclick = () => { if (currentStep < currentModel().steps.length) { currentStep++; renderLesson(); } };
 
-  // ── Explore tab: true-shape explorer with a live drop slider ──
-  const S = 45, H = 70;
-  const FV_LEFT = 40, FV_TOP = 20;
-  const FV_RIGHT = FV_LEFT + S, FV_BOTTOM = FV_TOP + H;
-  const slider = document.getElementById('dropSlider');
+  // ── Explore tab: sectioning-convention toggle ──
+  const BL = 20, BT = 20, BR = 110, BB = 80;
+  const CX = 65, CY = 50;
+  const PL = 50, PT = 35, PR = 80, PB = 65; // pocket bounds
 
-  function buildExploreModel(drop) {
-    const cutP1 = [FV_LEFT, FV_TOP];
-    const cutP2 = [FV_RIGHT, FV_TOP + drop];
-    const slopeLength = G.distance(cutP1, cutP2);
-    const TS_LEFT = FV_LEFT, TS_TOP = FV_BOTTOM + 25;
-    const reveals = [
-      { kind: 'polygon', points: [[FV_LEFT, FV_TOP], [FV_RIGHT, FV_TOP], [FV_RIGHT, FV_BOTTOM], [FV_LEFT, FV_BOTTOM]], lineType: 'A' },
-      { kind: 'line', p1: cutP1, p2: cutP2, lineType: 'A' },
-      { kind: 'polygon', points: [[TS_LEFT, TS_TOP], [TS_LEFT + slopeLength, TS_TOP], [TS_LEFT + slopeLength, TS_TOP + S], [TS_LEFT, TS_TOP + S]], lineType: 'A' },
-      { kind: 'label', at: [TS_LEFT, TS_TOP - 6], text: 'TRUE SHAPE', size: 4.5, anchor: 'start', color: '#fde047' },
-      { kind: 'dimension', p1: [TS_LEFT, TS_TOP + S + 6], p2: [TS_LEFT + slopeLength, TS_TOP + S + 6], offset: 8, text: slopeLength.toFixed(1) },
+  function hatchRect(x0, y0, w, h, spacing) {
+    const lines = [];
+    for (let k = -h; k <= w + 0.01; k += spacing) {
+      const vLo = Math.max(0, -k), vHi = Math.min(h, w - k);
+      if (vHi <= vLo) continue;
+      const u1 = vLo + k, v1 = vLo, u2 = vHi + k, v2 = vHi;
+      lines.push({ kind: 'line', p1: [x0 + u1, y0 + v1], p2: [x0 + u2, y0 + v2], lineType: 'B' });
+    }
+    return lines;
+  }
+  function frameHatch(xL, yT, xR, yB, pl, pt, pr, pb) {
+    return [
+      ...hatchRect(xL, yT, pl - xL, yB - yT, 4),
+      ...hatchRect(pr, yT, xR - pr, yB - yT, 4),
+      ...hatchRect(pl, yT, pr - pl, pt - yT, 4),
+      ...hatchRect(pl, pb, pr - pl, yB - pb, 4),
     ];
-    return { bounds: { w: 165, h: 195 }, steps: [{ id: 1, reveals }], _slopeLength: slopeLength, _drop: drop };
+  }
+  function breakZigzag(x, yTop, yBot, amp, n) {
+    const pts = []; const step = (yBot - yTop) / n;
+    for (let i = 0; i <= n; i++) {
+      const y = yTop + step * i;
+      const dx = (i === 0 || i === n) ? 0 : (i % 2 === 0 ? -amp : amp);
+      pts.push([x + dx, y]);
+    }
+    return pts;
   }
 
-  function renderExplore() {
+  const EXPLAIN = {
+    none: 'NON-SECTIONAL: nothing is cut away, so the internal pocket cannot be seen directly — it is shown as HIDDEN detail (a dashed outline).',
+    full: 'FULL-SECTIONAL: an imaginary cutting plane slices all the way through the part. All solid material the plane passes through is hatched; the pocket is empty, so it is left unhatched.',
+    half: 'HALF-SECTIONAL: the cutting plane only removes one half. That half is drawn in section (hatched, showing true internal shape); the other half is left as a normal exterior view — no line is drawn at the centre, since the split is implied.',
+    part: 'PART-SECTIONAL (local/broken-out section): only a small local area is "broken out" and hatched, bounded by an irregular break line (B-weight). Everywhere else the pocket remains hidden detail — useful when you only need to clarify one feature.',
+  };
+
+  function buildExploreModel(mode) {
+    const reveals = [
+      { kind: 'polygon', points: [[BL, BT], [BR, BT], [BR, BB], [BL, BB]], lineType: 'A' },
+      { kind: 'line', p1: [CX, BT - 6], p2: [CX, BB + 6], lineType: 'centre' },
+    ];
+    if (mode === 'none') {
+      reveals.push({ kind: 'polygon', points: [[PL, PT], [PR, PT], [PR, PB], [PL, PB]], lineType: 'hidden' });
+    } else if (mode === 'full') {
+      reveals.push(...frameHatch(BL, BT, BR, BB, PL, PT, PR, PB));
+      reveals.push({ kind: 'polygon', points: [[PL, PT], [PR, PT], [PR, PB], [PL, PB]], lineType: 'A' });
+    } else if (mode === 'half') {
+      reveals.push(...hatchRect(BL, BT, PL - BL, BB - BT, 4));
+      reveals.push(...hatchRect(PL, BT, CX - PL, PT - BT, 4));
+      reveals.push(...hatchRect(PL, PB, CX - PL, BB - PB, 4));
+      reveals.push({ kind: 'line', p1: [PL, PT], p2: [PL, PB], lineType: 'A' });
+      reveals.push({ kind: 'line', p1: [PL, PT], p2: [CX, PT], lineType: 'A' });
+      reveals.push({ kind: 'line', p1: [PL, PB], p2: [CX, PB], lineType: 'A' });
+    } else if (mode === 'part') {
+      const breakX = 58;
+      reveals.push(...hatchRect(BL + 20, PT, PL - (BL + 20), PB - PT, 4));
+      reveals.push({ kind: 'line', p1: [PL, PT], p2: [PL, PB], lineType: 'A' });
+      reveals.push({ kind: 'polyline', points: breakZigzag(breakX, PT - 8, PB + 8, 2.5, 8), lineType: 'B' });
+      reveals.push({ kind: 'polygon', points: [[PL, PT], [PR, PT], [PR, PB], [PL, PB]], lineType: 'hidden' });
+    }
+    return { bounds: { w: 140, h: 105 }, steps: [{ id: 1, reveals }] };
+  }
+
+  function renderExplore(mode) {
     const svg = document.getElementById('exploreSvg');
-    const drop = parseFloat(slider.value);
-    const model = buildExploreModel(drop);
+    const model = buildExploreModel(mode);
     CE.render(svg, model, { uptoStep: Infinity, mode: 'interactive' });
-    document.getElementById('exploreReadout').textContent =
-      'Drop = ' + drop.toFixed(0) + ' mm → true length of cut = √(' + S + '² + ' + drop.toFixed(0) + '²) = ' + model._slopeLength.toFixed(1) + ' mm. The true-shape rectangle is ' + model._slopeLength.toFixed(1) + ' × ' + S + ' mm — notice its length grows as the cut gets steeper, even though the front view barely changes.';
+    document.getElementById('exploreReadout').textContent = EXPLAIN[mode];
   }
 
-  slider.addEventListener('input', renderExplore);
+  let currentMode = 'none';
+  document.getElementById('sectionToggle').addEventListener('click', (e) => {
+    const btn = e.target.closest('.toggle-btn');
+    if (!btn) return;
+    currentMode = btn.dataset.mode;
+    document.querySelectorAll('#sectionToggle .toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderExplore(currentMode);
+  });
 
   // ── Practice tab ──
   function renderPractice() {
-    CE.wirePractice(document.getElementById('practiceWrap'), window.PRACTICE_QUESTIONS, { tool: 'drawing-druid', topic: 'solid-geometry' });
+    CE.wirePractice(document.getElementById('practiceWrap'), window.PRACTICE_QUESTIONS, { tool: 'drawing-druid', topic: 'mechanical-assemblies' });
   }
 
   // ── Workbook tab ──
@@ -386,12 +438,12 @@ svg#lessonSvg,svg#exploreSvg{width:100%;height:420px;display:block;}
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     if (btn) btn.classList.add('active');
-    if (id === 'explore') setTimeout(renderExplore, 30);
+    if (id === 'explore') setTimeout(() => renderExplore(currentMode), 30);
   }
   window.switchTab = switchTab;
 
   renderLesson();
-  renderExplore();
+  renderExplore(currentMode);
   renderPractice();
   renderWorkbookPreviews();
   buildPrintSheets();

@@ -48,6 +48,10 @@ select{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--borde
 .seg-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:8px;}
 .seg-card .seg-title{font-size:10.5px;font-weight:700;color:#cbd5e1;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .seg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.seg-title select{width:auto;padding:5px 6px;font-size:10.5px;}
+.seg-move,.seg-remove{flex-shrink:0;width:20px;height:20px;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--muted);cursor:pointer;font-size:11px;line-height:1;padding:0;}
+.seg-move:hover:not(:disabled),.seg-remove:hover:not(:disabled){background:rgba(255,255,255,0.09);color:var(--text);}
+.seg-move:disabled,.seg-remove:disabled{opacity:.3;cursor:default;}
 .dwell-info{font-size:10.5px;color:var(--muted);font-family:var(--fm);background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 10px;line-height:1.6;}
 .toggle-row{display:flex;gap:6px;}
 .toggle-btn{flex:1;font-family:var(--fd);font-size:11px;font-weight:700;padding:7px 8px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--muted);cursor:pointer;transition:all 140ms;}
@@ -112,11 +116,6 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
     </div>
 
     <div class="ctrl-group">
-      <div class="ctrl-label">Total lift <span class="val" id="vLift">30 mm</span></div>
-      <input type="range" id="lift" min="5" max="60" value="30" step="1">
-    </div>
-
-    <div class="ctrl-group">
       <div class="ctrl-label">Direction of rotation</div>
       <div class="toggle-row">
         <button class="toggle-btn active" id="dirCW" onclick="setDirection(1)">↻ Clockwise</button>
@@ -136,36 +135,15 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
       <input type="range" id="rollerRadius" min="3" max="18" value="8" step="1">
     </div>
 
-    <div class="seg-card">
-      <div class="seg-title"><span class="seg-dot" style="background:#eab308"></span>Rise</div>
-      <div class="row2" style="margin-bottom:8px;">
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div><input type="number" id="riseAngle" value="120" min="10" max="340"></div>
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Motion</div>
-          <select id="riseMotion"><option value="uniform">Uniform velocity</option><option value="shm">Harmonic (SHM)</option></select>
-        </div>
-      </div>
+    <div class="ctrl-group">
+      <div class="ctrl-label">Motion segments</div>
+      <div id="segmentList"></div>
+      <button type="button" class="btn" id="addSegmentBtn" style="width:100%;justify-content:center;background:rgba(255,255,255,0.05);color:var(--text);">+ Add segment</button>
     </div>
 
-    <div class="seg-card">
-      <div class="seg-title"><span class="seg-dot" style="background:#64748b"></span>Dwell (top)</div>
-      <div class="row2">
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div><input type="number" id="dwell1Angle" value="60" min="0" max="200"></div>
-        <div></div>
-      </div>
-    </div>
-
-    <div class="seg-card">
-      <div class="seg-title"><span class="seg-dot" style="background:#38bdf8"></span>Fall</div>
-      <div class="row2">
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div><input type="number" id="fallAngle" value="120" min="10" max="340"></div>
-        <div><div class="ctrl-label" style="margin-bottom:4px;">Motion</div>
-          <select id="fallMotion"><option value="uniform">Uniform velocity</option><option value="shm">Harmonic (SHM)</option></select>
-        </div>
-      </div>
-    </div>
-
-    <div class="dwell-info" id="dwell2Info">Dwell (bottom): 60°</div>
-    <div class="warn-box" id="angleWarn">⚠ Rise + Dwell + Fall must total 360° or less.</div>
+    <div class="dwell-info" id="totalInfo"></div>
+    <div class="warn-box" id="angleWarn">⚠ Segment angles must total exactly 360°.</div>
+    <div class="warn-box" id="closureWarn">⚠ This profile doesn't close — displacement at 360° doesn't match displacement at 0°, so the cam surface will have a discontinuity.</div>
 
   </div>
 
@@ -200,7 +178,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
     <div class="info-strip">
       <span class="legend-dot" style="background:#eab308"></span><strong>Rise</strong> — follower moves away from the cam centre &nbsp;
       <span class="legend-dot" style="background:#64748b"></span><strong>Dwell</strong> — follower stationary &nbsp;
-      <span class="legend-dot" style="background:#38bdf8"></span><strong>Fall</strong> — follower returns towards the cam centre. Uniform velocity gives a straight-line displacement graph (constant speed, abrupt direction change); harmonic motion (SHM) gives a smooth sine-based curve (gradual acceleration/deceleration).
+      <span class="legend-dot" style="background:#38bdf8"></span><strong>Fall</strong> — follower returns towards the cam centre. Uniform velocity gives a straight-line displacement graph (constant speed, abrupt direction change); harmonic motion (SHM) gives a smooth sine-based curve (gradual acceleration/deceleration throughout); uniform acceleration/retardation gives two parabolic curves joined at the segment's mid-point — constant acceleration for the first half, constant deceleration for the second half. Segments can be added, removed and reordered freely — a real cam can dwell, rise, dwell, rise again and fall in any sequence, not just one rise-dwell-fall cycle.
     </div>
   </div>
 
@@ -212,13 +190,18 @@ canvas{position:absolute;inset:0;width:100%;height:100%;}
 ══════════════════════════════ */
 let params = {
   baseRadius: 30,
-  lift: 30,
   direction: 1,       // 1 = CW, -1 = CCW
   follower: 'wedge',  // 'wedge' | 'roller'
   rollerRadius: 8,
-  riseAngle: 120, riseMotion: 'uniform',
-  dwell1Angle: 60,
-  fallAngle: 120, fallMotion: 'uniform',
+  // Arbitrary ordered sequence of motion segments — any number of rise/dwell/fall segments,
+  // in any order. Each rise/fall carries its own lift DELTA (not an absolute target), so
+  // segments chain automatically: dwell-rise-dwell-rise-dwell-fall-dwell all just works.
+  segments: [
+    { type: 'rise', angle: 120, motion: 'uniform', lift: 30 },
+    { type: 'dwell', angle: 60 },
+    { type: 'fall', angle: 120, motion: 'uniform', lift: 30 },
+    { type: 'dwell', angle: 60 },
+  ],
 };
 
 let angle = 0;         // current cam rotation, degrees
@@ -244,17 +227,28 @@ function fitCanvas(c){
    DISPLACEMENT MODEL
 ══════════════════════════════ */
 function segments(){
-  const d2 = Math.max(0, 360 - params.riseAngle - params.dwell1Angle - params.fallAngle);
-  let start = 0;
+  let start = 0, from = 0;
   const segs = [];
-  segs.push({type:'rise', start, len:params.riseAngle, motion:params.riseMotion, from:0, to:params.lift});
-  start += params.riseAngle;
-  segs.push({type:'dwell', start, len:params.dwell1Angle, from:params.lift, to:params.lift});
-  start += params.dwell1Angle;
-  segs.push({type:'fall', start, len:params.fallAngle, motion:params.fallMotion, from:params.lift, to:0});
-  start += params.fallAngle;
-  segs.push({type:'dwell', start, len:d2, from:0, to:0});
-  return {segs, d2};
+  params.segments.forEach(s => {
+    const len = Math.max(0, s.angle || 0);
+    if(s.type === 'dwell'){
+      segs.push({type:'dwell', start, len, from, to:from});
+    } else {
+      const delta = Math.max(0, s.lift || 0) * (s.type === 'rise' ? 1 : -1);
+      const to = from + delta;
+      segs.push({type:s.type, start, len, motion:s.motion, from, to});
+      from = to;
+    }
+    start += len;
+  });
+  return {segs, total:start, endDisplacement:from};
+}
+
+function peakLift(){
+  const {segs} = segments();
+  let peak = 0;
+  segs.forEach(s => { peak = Math.max(peak, s.from, s.to); });
+  return Math.max(peak, 1);
 }
 
 function displacementAt(theta){
@@ -266,6 +260,12 @@ function displacementAt(theta){
       const t = (theta - seg.start) / seg.len;
       if(seg.type === 'dwell') return seg.from;
       if(seg.motion === 'uniform') return seg.from + (seg.to - seg.from) * t;
+      if(seg.motion === 'uar'){
+        // Uniform acceleration/retardation (parabolic motion): constant accel for the first
+        // half of the segment, constant decel for the second half — C1-continuous at t=0.5.
+        const frac = t <= 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t);
+        return seg.from + (seg.to - seg.from) * frac;
+      }
       return seg.from + (seg.to - seg.from) * 0.5 * (1 - Math.cos(Math.PI * t));
     }
   }
@@ -287,8 +287,10 @@ function buildProfile(){
   if(params.follower === 'wedge'){
     profilePoints = pitch.map(p => ({theta:p.theta, r:p.r, surfaceR:p.r}));
   } else {
-    // Roller follower: offset the pitch curve outward by the roller radius
-    // along the local normal (finite-difference tangent approximation).
+    // Roller follower: the roller's CENTRE traces the pitch curve (p.r) — that's the
+    // displacement convention. The roller rides on the OUTSIDE of the actual cam body, so the
+    // physical surface the cam is machined to sits INWARD (toward the axis) by the roller
+    // radius, along the local normal (finite-difference tangent approximation).
     const rr = params.rollerRadius;
     profilePoints = pitch.map((p, i) => {
       const prev = pitch[(i - 1 + N) % N], next = pitch[(i + 1) % N];
@@ -300,9 +302,9 @@ function buildProfile(){
       let tx = b.x - a.x, ty = b.y - a.y;
       const tlen = Math.hypot(tx, ty) || 1;
       tx /= tlen; ty /= tlen;
-      // outward normal (rotate tangent -90°); ensure it points away from centre
+      // inward normal (rotate tangent -90°); ensure it points toward the centre
       let nx = ty, ny = -tx;
-      if(nx * c.x + ny * c.y < 0){ nx = -nx; ny = -ny; }
+      if(nx * c.x + ny * c.y > 0){ nx = -nx; ny = -ny; }
       const sx = c.x + nx * rr, sy = c.y + ny * rr;
       const surfaceR = Math.hypot(sx, sy);
       return {theta:p.theta, r:p.r, surfaceR};
@@ -318,7 +320,7 @@ function drawDisplacement(){
   dctx.clearRect(0,0,w,h);
   const padL = 40, padR = 14, padT = 14, padB = 26;
   const plotW = w - padL - padR, plotH = h - padT - padB;
-  const maxY = Math.max(10, params.lift) * 1.15;
+  const maxY = Math.max(10, peakLift()) * 1.15;
 
   const X = (deg) => padL + (deg/360) * plotW;
   const Y = (mm) => padT + plotH - (mm/maxY) * plotH;
@@ -378,7 +380,7 @@ function drawCamProfile(){
   const {w, h} = fitCanvas(camCanvas);
   cctx.clearRect(0,0,w,h);
   const cx = w/2, cy = h/2 + 10;
-  const maxR = params.baseRadius + params.lift + (params.follower==='roller'?params.rollerRadius:0);
+  const maxR = params.baseRadius + peakLift() + (params.follower==='roller'?params.rollerRadius:0);
   const scale = Math.min(w, h-40) / (2*maxR) * 0.82;
 
   // The contact point (theta === current shaft angle) must always sit at "up" (12 o'clock),
@@ -443,8 +445,6 @@ function drawCamProfile(){
   cctx.closePath(); cctx.fill();
 
   // follower (fixed at top, 12 o'clock)
-  const followerR = params.baseRadius + params.lift + 18;
-  const topY = cy - followerR*scale;
   cctx.strokeStyle = '#f87171'; cctx.lineWidth = 2.5;
   if(params.follower === 'wedge'){
     const contactR = (params.baseRadius + displacementAt(angle)) * scale;
@@ -459,14 +459,19 @@ function drawCamProfile(){
     cctx.lineTo(cx+5, cy-contactR-2-8);
     cctx.stroke();
   } else {
-    const contactR = (params.baseRadius + displacementAt(angle) + params.rollerRadius) * scale;
+    // Roller centre sits ON the pitch curve (no + rollerRadius here — that was the bug: it
+    // pushed the roller's centre out beyond the pitch curve instead of ON it, and the circle
+    // below was drawn off-centre to compensate, making the roller look like it rode INSIDE the
+    // cam surface instead of straddling it from outside).
+    const contactR = (params.baseRadius + displacementAt(angle)) * scale;
+    const rollerRpx = params.rollerRadius * scale;
     cctx.beginPath();
-    cctx.moveTo(cx, cy - contactR - params.rollerRadius*scale - 22);
-    cctx.lineTo(cx, cy - contactR - params.rollerRadius*scale);
+    cctx.moveTo(cx, cy - contactR - rollerRpx - 22);
+    cctx.lineTo(cx, cy - contactR - rollerRpx);
     cctx.stroke();
     cctx.fillStyle = 'rgba(248,113,113,0.16)';
     cctx.beginPath();
-    cctx.arc(cx, cy - contactR + params.rollerRadius*scale, params.rollerRadius*scale, 0, Math.PI*2);
+    cctx.arc(cx, cy - contactR, rollerRpx, 0, Math.PI*2);
     cctx.fill(); cctx.stroke();
   }
 }
@@ -474,25 +479,102 @@ function drawCamProfile(){
 /* ══════════════════════════════
    UI WIRING
 ══════════════════════════════ */
+function segColor(type){
+  return type === 'rise' ? '#eab308' : type === 'fall' ? '#38bdf8' : '#64748b';
+}
+
+function renderSegmentList(){
+  const wrap = document.getElementById('segmentList');
+  wrap.innerHTML = '';
+  params.segments.forEach((seg, i) => {
+    const isDwell = seg.type === 'dwell';
+    const card = document.createElement('div');
+    card.className = 'seg-card';
+    card.innerHTML = `
+      <div class="seg-title">
+        <span class="seg-dot" style="background:${segColor(seg.type)}"></span>
+        <select data-i="${i}" data-field="type" style="flex:1;">
+          <option value="rise" ${seg.type==='rise'?'selected':''}>Rise</option>
+          <option value="dwell" ${seg.type==='dwell'?'selected':''}>Dwell</option>
+          <option value="fall" ${seg.type==='fall'?'selected':''}>Fall</option>
+        </select>
+        <button type="button" class="seg-move" data-i="${i}" data-dir="-1" title="Move up" ${i===0?'disabled':''}>↑</button>
+        <button type="button" class="seg-move" data-i="${i}" data-dir="1" title="Move down" ${i===params.segments.length-1?'disabled':''}>↓</button>
+        <button type="button" class="seg-remove" data-i="${i}" title="Remove segment" ${params.segments.length<=1?'disabled':''}>✕</button>
+      </div>
+      <div class="row2" ${isDwell ? '' : 'style="margin-bottom:8px;"'}>
+        <div><div class="ctrl-label" style="margin-bottom:4px;">Angle (°)</div>
+          <input type="number" data-i="${i}" data-field="angle" value="${seg.angle}" min="1" max="359">
+        </div>
+        ${isDwell ? '<div></div>' : `<div><div class="ctrl-label" style="margin-bottom:4px;">Lift (mm)</div>
+          <input type="number" data-i="${i}" data-field="lift" value="${seg.lift||0}" min="0" max="200"></div>`}
+      </div>
+      ${isDwell ? '' : `<div><div class="ctrl-label" style="margin-bottom:4px;">Motion</div>
+        <select data-i="${i}" data-field="motion">
+          <option value="uniform" ${seg.motion==='uniform'?'selected':''}>Uniform velocity</option>
+          <option value="shm" ${seg.motion==='shm'?'selected':''}>Harmonic (SHM)</option>
+          <option value="uar" ${seg.motion==='uar'?'selected':''}>Uniform accel/retard</option>
+        </select></div>`}
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+document.getElementById('segmentList').addEventListener('input', (e) => {
+  const i = +e.target.dataset.i, field = e.target.dataset.field;
+  if(field !== 'angle' && field !== 'lift') return;
+  params.segments[i][field] = Math.max(0, +e.target.value || 0);
+  syncParamsFromUI();
+});
+document.getElementById('segmentList').addEventListener('change', (e) => {
+  const i = +e.target.dataset.i, field = e.target.dataset.field;
+  if(field === 'motion'){
+    params.segments[i].motion = e.target.value;
+    syncParamsFromUI();
+  } else if(field === 'type'){
+    const seg = params.segments[i];
+    seg.type = e.target.value;
+    if(seg.type === 'dwell'){ delete seg.lift; delete seg.motion; }
+    else { if(seg.lift == null) seg.lift = 20; if(seg.motion == null) seg.motion = 'uniform'; }
+    renderSegmentList();
+    syncParamsFromUI();
+  }
+});
+document.getElementById('segmentList').addEventListener('click', (e) => {
+  const removeBtn = e.target.closest('.seg-remove');
+  const moveBtn = e.target.closest('.seg-move');
+  if(removeBtn && params.segments.length > 1){
+    params.segments.splice(+removeBtn.dataset.i, 1);
+    renderSegmentList();
+    syncParamsFromUI();
+  } else if(moveBtn){
+    const i = +moveBtn.dataset.i, j = i + (+moveBtn.dataset.dir);
+    if(j < 0 || j >= params.segments.length) return;
+    [params.segments[i], params.segments[j]] = [params.segments[j], params.segments[i]];
+    renderSegmentList();
+    syncParamsFromUI();
+  }
+});
+document.getElementById('addSegmentBtn').addEventListener('click', () => {
+  params.segments.push({type:'dwell', angle:30});
+  renderSegmentList();
+  syncParamsFromUI();
+});
+
 function syncParamsFromUI(){
   params.baseRadius = +document.getElementById('baseRadius').value;
-  params.lift = +document.getElementById('lift').value;
-  params.riseAngle = Math.max(0, +document.getElementById('riseAngle').value || 0);
-  params.dwell1Angle = Math.max(0, +document.getElementById('dwell1Angle').value || 0);
-  params.fallAngle = Math.max(0, +document.getElementById('fallAngle').value || 0);
-  params.riseMotion = document.getElementById('riseMotion').value;
-  params.fallMotion = document.getElementById('fallMotion').value;
   params.rollerRadius = +document.getElementById('rollerRadius').value;
 
   document.getElementById('vBase').textContent = params.baseRadius + ' mm';
-  document.getElementById('vLift').textContent = params.lift + ' mm';
   document.getElementById('vRoller').textContent = params.rollerRadius + ' mm';
 
-  const sum = params.riseAngle + params.dwell1Angle + params.fallAngle;
-  const warn = document.getElementById('angleWarn');
-  if(sum > 360){ warn.classList.add('show'); } else { warn.classList.remove('show'); }
-  const {d2} = segments();
-  document.getElementById('dwell2Info').textContent = `Dwell (bottom): ${d2.toFixed(0)}°  (auto-calculated so the cycle totals 360°)`;
+  const {total, endDisplacement} = segments();
+  const angleWarn = document.getElementById('angleWarn');
+  angleWarn.classList.toggle('show', Math.round(total) !== 360);
+  const closureWarn = document.getElementById('closureWarn');
+  closureWarn.classList.toggle('show', Math.abs(endDisplacement) > 0.05);
+  document.getElementById('totalInfo').textContent =
+    `Total: ${total.toFixed(0)}° · ends at ${endDisplacement.toFixed(1)} mm displacement · peak lift ${peakLift().toFixed(1)} mm`;
 
   buildProfile();
   redraw();
@@ -520,7 +602,7 @@ function setFollower(type){
   syncParamsFromUI();
 }
 
-['baseRadius','lift','riseAngle','dwell1Angle','fallAngle','riseMotion','fallMotion','rollerRadius'].forEach(id=>{
+['baseRadius','rollerRadius'].forEach(id=>{
   document.getElementById(id).addEventListener('input', syncParamsFromUI);
 });
 
@@ -551,6 +633,7 @@ function loop(t){
 
 window.addEventListener('resize', redraw);
 
+renderSegmentList();
 syncParamsFromUI();
 </script>
 </body>
