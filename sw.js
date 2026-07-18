@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v48'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v49'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -115,6 +115,11 @@ const CACHE_NAME = 'magic-lab-v48'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // magiclab:assignments:ready event), with a ~3s poll-count timeout
                                     // fallback so a slow or failed assignments.js can't hang the rest of
                                     // the dashboard. Removed the temporary v47 debug logging.
+                                    // v49: dashboard-student.html — moved the "My Assignments" panel to
+                                    // sit right after the profile/XP stats summary, above the Streak
+                                    // section and the Join a class / Enter The Arena boxes, instead of
+                                    // below them — a student's active homework should be one of the first
+                                    // things they see, not something they scroll past.
 
 const urlsToCache = [
   '/',
