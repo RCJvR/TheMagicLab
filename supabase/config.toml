@@ -1,0 +1,15 @@
+# THE MAGIC LAB — Supabase CLI config
+# Run `supabase link --project-ref hrnodxqvyxzhfexkzeji` (the ref from the
+# SUPABASE_URL in auth.js) before deploying functions from this repo.
+project_id = "themagiclab"
+
+# PayFast calls this one directly — it's never carrying a Supabase user
+# session, so the platform's default JWT check must be off for it, or
+# every legitimate ITN gets rejected with 401 before our code even runs.
+[functions.payfast-notify]
+verify_jwt = false
+
+# payfast-create-checkout keeps the default (verify_jwt = true) since it's
+# only ever called by a signed-in browser session.
+[functions.payfast-create-checkout]
+verify_jwt = true

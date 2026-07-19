@@ -398,6 +398,7 @@
       <a href="dashboard-student.html" class="nav-pill nav-pill-accent">📊 My Progress</a>
       <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="nav-pill" style="display:none;border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.10);color:#fbbf24;">🔔 Homework<span id="nav-assignments-badge" class="nav-badge"></span></a>
       <a id="nav-teachers-btn" href="dashboard-teacher.html" class="nav-pill" style="display:none;border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.10);color:#67e8f9;">🎓 Teachers</a>
+      <a id="nav-upgrade-btn" href="pricing.html" class="nav-pill" style="display:none;border-color:rgba(124,109,250,0.35);background:rgba(124,109,250,0.10);color:#c4baff;">⚡ Upgrade to Pro</a>
       <button class="nav-pill" onclick="window.MagicTutor?.open()" style="gap:6px;">✨ AI Tutor</button>
       <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
     </div>
@@ -797,6 +798,17 @@
     document.addEventListener('magiclab:auth:ready', _syncTeachersBtn);
     document.addEventListener('magiclab:auth:change', _syncTeachersBtn);
     document.addEventListener('magiclab:nav:rendered', _syncTeachersBtn);
+
+    function _syncUpgradeBtn() {
+      const btn = document.getElementById('nav-upgrade-btn');
+      if (!btn) return;
+      const profile = window.MagicLabAuth?.getProfile();
+      const showUpgrade = profile && profile.package !== 'pro' && profile.package !== 'school';
+      btn.style.display = showUpgrade ? '' : 'none';
+    }
+    document.addEventListener('magiclab:auth:ready', _syncUpgradeBtn);
+    document.addEventListener('magiclab:auth:change', _syncUpgradeBtn);
+    document.addEventListener('magiclab:nav:rendered', _syncUpgradeBtn);
 
     async function _syncAssignmentsBell() {
       const btn = document.getElementById('nav-assignments-btn');
