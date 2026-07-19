@@ -824,5 +824,36 @@
     document.addEventListener('magiclab:assignments:ready', _syncAssignmentsBell);
   </script>
 
+  <!-- ── Bounce-back from a login-gated tool page ──
+       Gated pages (require-auth.js) redirect here with
+       ?auth=required&next=<original path> when the visitor isn't signed
+       in. We open the sign-in modal automatically and send them back to
+       `next` once they're authenticated. -->
+  <script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    if (params.get('auth') !== 'required') return;
+
+    const next = params.get('next');
+    // Only ever redirect to a same-site relative path — never let an
+    // attacker-controlled `next` value bounce a visitor off-site.
+    const safeNext = (next && next.startsWith('/') && !next.startsWith('//')) ? next : null;
+
+    document.addEventListener('magiclab:auth:ready', ({ detail }) => {
+      if (detail.profile) {
+        if (safeNext) location.replace(safeNext);
+      } else {
+        window.MagicLabModal?.open('signin');
+        const sub = document.getElementById('ml-modal-sub');
+        if (sub) sub.textContent = 'Sign in to continue to that tool.';
+      }
+    }, { once: true });
+
+    document.addEventListener('magiclab:auth:change', ({ detail }) => {
+      if (detail.profile && safeNext) location.replace(safeNext);
+    });
+  })();
+  </script>
+
 </body>
 </html>
