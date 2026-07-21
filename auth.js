@@ -109,7 +109,10 @@ function _fallbackProfile(user) {
     display_name: user.user_metadata?.display_name || user.email.split('@')[0],
     role:         user.user_metadata?.role || 'student',
     grade:        null,
-    package:      'free'
+    package:      'free',
+    school:       null,
+    province:     null,
+    subjects:     null
   };
 }
 
@@ -122,8 +125,10 @@ function _fallbackProfile(user) {
  * @param {string} displayName
  * @param {'student'|'teacher'} role
  * @param {number|null} grade  — required for students
+ * @param {{school?: string, province?: string, subjects?: string}} extra
+ *   — all optional. `subjects` only applies to teachers.
  */
-async function signUp(email, password, displayName, role = 'student', grade = null) {
+async function signUp(email, password, displayName, role = 'student', grade = null, extra = {}) {
   const { data, error } = await _supabase.auth.signUp({
     email,
     password,
@@ -133,11 +138,16 @@ async function signUp(email, password, displayName, role = 'student', grade = nu
   });
   if (error) return { error };
 
-  // Update grade if student
-  if (role === 'student' && grade && data.user) {
+  const updates = {};
+  if (role === 'student' && grade) updates.grade = grade;
+  if (extra.school)   updates.school   = extra.school;
+  if (extra.province) updates.province = extra.province;
+  if (role === 'teacher' && extra.subjects) updates.subjects = extra.subjects;
+
+  if (Object.keys(updates).length && data.user) {
     await _supabase
       .from('profiles')
-      .update({ grade })
+      .update(updates)
       .eq('id', data.user.id);
   }
 

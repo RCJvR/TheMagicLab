@@ -72,6 +72,35 @@
         </div>
       </div>
 
+      <!-- Subjects taught — only shows for teachers -->
+      <div id="ml-subjects-section" style="display:none;">
+        <div class="ml-field">
+          <label class="ml-label" for="ml-signup-subjects">Subject(s) you teach <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+          <input class="ml-input" id="ml-signup-subjects" type="text" placeholder="e.g. Mathematics, Physical Sciences">
+        </div>
+      </div>
+
+      <div class="ml-field">
+        <label class="ml-label" for="ml-signup-school">School <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+        <input class="ml-input" id="ml-signup-school" type="text" placeholder="e.g. Westerford High School" autocomplete="organization">
+      </div>
+
+      <div class="ml-field">
+        <label class="ml-label" for="ml-signup-province">Province <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+        <select class="ml-input" id="ml-signup-province">
+          <option value="">Select province…</option>
+          <option>Eastern Cape</option>
+          <option>Free State</option>
+          <option>Gauteng</option>
+          <option>KwaZulu-Natal</option>
+          <option>Limpopo</option>
+          <option>Mpumalanga</option>
+          <option>Northern Cape</option>
+          <option>North West</option>
+          <option>Western Cape</option>
+        </select>
+      </div>
+
       <button class="ml-submit" id="ml-btn-signup">Create Account</button>
       <div class="ml-msg ml-msg-error"  id="ml-signup-err"></div>
       <div class="ml-msg ml-msg-success" id="ml-signup-ok"></div>
@@ -92,6 +121,7 @@
   const formSignin    = () => document.getElementById('ml-form-signin');
   const formSignup    = () => document.getElementById('ml-form-signup');
   const gradeSection  = () => document.getElementById('ml-grade-section');
+  const subjectsSection = () => document.getElementById('ml-subjects-section');
   const signinErr     = () => document.getElementById('ml-signin-err');
   const signinOk      = () => document.getElementById('ml-signin-ok');
   const signupErr     = () => document.getElementById('ml-signup-err');
@@ -134,6 +164,7 @@
       document.querySelectorAll('#ml-role-row .ml-role-btn').forEach(b => b.classList.remove('ml-selected'));
       btn.classList.add('ml-selected');
       gradeSection().style.display = _selectedRole === 'student' ? '' : 'none';
+      subjectsSection().style.display = _selectedRole === 'teacher' ? '' : 'none';
     });
   });
 
@@ -188,6 +219,9 @@
     const name     = document.getElementById('ml-signup-name').value.trim();
     const email    = document.getElementById('ml-signup-email').value.trim();
     const password = document.getElementById('ml-signup-password').value;
+    const school   = document.getElementById('ml-signup-school').value.trim();
+    const province = document.getElementById('ml-signup-province').value;
+    const subjects = document.getElementById('ml-signup-subjects').value.trim();
 
     if (!name || !email || !password) { _showErr(signupErr(), 'Please fill in all fields.'); return; }
     if (password.length < 8)          { _showErr(signupErr(), 'Password must be at least 8 characters.'); return; }
@@ -198,7 +232,8 @@
     btn.disabled = true; btn.textContent = 'Creating account…';
     const { error } = await window.MagicLabAuth.signUp(
       email, password, name, _selectedRole,
-      _selectedRole === 'student' ? _selectedGrade : null
+      _selectedRole === 'student' ? _selectedGrade : null,
+      { school, province, subjects: _selectedRole === 'teacher' ? subjects : null }
     );
     btn.disabled = false; btn.textContent = 'Create Account';
 
