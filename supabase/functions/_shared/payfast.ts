@@ -21,7 +21,13 @@ export const PAYFAST_HOST = PAYFAST_MODE === "live" ? "www.payfast.co.za" : "san
 // PAYFAST_MODE=live`) before going live.
 export const PAYFAST_MERCHANT_ID = Deno.env.get("PAYFAST_MERCHANT_ID") ?? "10000100";
 export const PAYFAST_MERCHANT_KEY = Deno.env.get("PAYFAST_MERCHANT_KEY") ?? "46f0cd694581a";
-export const PAYFAST_PASSPHRASE = Deno.env.get("PAYFAST_PASSPHRASE") ?? "";
+// The shared sandbox account's passphrase is jt7NOE43FZPn (published in
+// PayFast's own docs). Subscriptions ALWAYS require passphrase-signed
+// requests, so an empty default breaks sandbox checkout with
+// "Generated signature does not match submitted signature". In live
+// mode there is no safe default — the secret must be set explicitly.
+export const PAYFAST_PASSPHRASE = Deno.env.get("PAYFAST_PASSPHRASE") ??
+  (PAYFAST_MODE === "live" ? "" : "jt7NOE43FZPn");
 
 // Valid PayFast source hosts, per their own ITN security-check reference
 // code. Used for a best-effort source-host check on the notify webhook.
