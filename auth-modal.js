@@ -318,8 +318,10 @@
         target.className = 'ml-user-chip';
         target.onclick = null;
         target.innerHTML = `
-          <div class="ml-user-avatar">${initials}</div>
-          <span>${profile.display_name || profile.email.split('@')[0]}</span>
+          <a href="/account.html" title="My Account" style="display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;">
+            <div class="ml-user-avatar">${initials}</div>
+            <span>${profile.display_name || profile.email.split('@')[0]}</span>
+          </a>
           <button class="ml-signout-btn" id="ml-signout-btn">Sign out</button>`;
         // Wire sign-out separately so it doesn't rely on inline onclick
         const soBtn = target.querySelector('#ml-signout-btn');

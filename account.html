@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080c1a">
+  <title>My Account — The Magic Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="auth-modal.css">
+  <script defer src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+  <script defer src="auth-modal.js"></script>
+  <style>
+    :root {
+      --bg:#080c1a; --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
+      --border:rgba(255,255,255,0.085); --text:#e4e8f8; --text2:rgba(210,218,245,0.65);
+      --muted:rgba(210,218,245,0.38); --accent-1:#7c6dfa; --accent-2:#11d98f;
+      --fd:"Cabinet Grotesk",sans-serif; --fm:"JetBrains Mono",monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: var(--fd); font-size: 15px; background: var(--bg); color: var(--text);
+      min-height: 100vh; -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 5% 3%, rgba(124,109,250,0.16) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 96% 6%, rgba(17,217,143,0.10) 0%, transparent 55%);
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 52px; border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-weight: 900; font-size: 22px; letter-spacing: -0.03em;
+      background: linear-gradient(120deg, #fff 0%, #c4baff 50%, #6ee7b7 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      text-decoration: none;
+    }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-pill {
+      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 99px;
+      border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+      text-decoration: none; transition: all 140ms; cursor: pointer; font-family: var(--fd);
+    }
+    .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+
+    main { max-width: 680px; margin: 0 auto; padding: 44px 24px 80px; }
+    h1 { font-weight: 900; font-size: 30px; letter-spacing: -0.03em; margin-bottom: 6px; }
+    .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 28px; margin-bottom: 24px;
+    }
+    .card h2 {
+      font-weight: 800; font-size: 17px; letter-spacing: -0.02em; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* Read-only detail rows */
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 14px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+    .detail-value { color: var(--text2); text-align: right; word-break: break-all; }
+    .plan-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 700;
+    }
+    .plan-free { background: rgba(210,218,245,0.10); border: 1px solid rgba(210,218,245,0.20); color: var(--text2); }
+    .plan-paid { background: rgba(17,217,143,0.13); border: 1px solid rgba(17,217,143,0.35); color: #6ee7b7; }
+    .upgrade-link { font-size: 12px; color: #c4baff; text-decoration: none; font-weight: 700; margin-left: 10px; }
+    .upgrade-link:hover { text-decoration: underline; }
+
+    /* Payment history */
+    .pay-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;
+    }
+    .pay-row:last-child { border-bottom: none; }
+    .pay-date { font-family: var(--fm); font-size: 12px; color: var(--muted); }
+    .pay-amount { font-weight: 700; }
+    .pay-status { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 9px; border-radius: 6px; }
+    .pay-status.complete  { background: rgba(17,217,143,0.13);  color: #6ee7b7; }
+    .pay-status.pending   { background: rgba(245,166,35,0.13);  color: #fcd34d; }
+    .pay-status.cancelled { background: rgba(210,218,245,0.10); color: var(--muted); }
+    .pay-status.failed    { background: rgba(239,68,68,0.13);   color: #fca5a5; }
+    .pay-empty { color: var(--muted); font-size: 13px; }
+
+    .cancel-note { margin-top: 16px; font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .cancel-note a { color: #a89ffc; text-decoration: none; }
+    .cancel-note a:hover { text-decoration: underline; }
+
+    .save-btn {
+      width: 100%; padding: 13px; border-radius: 12px; border: none; cursor: pointer;
+      background: linear-gradient(135deg, #5b50d6, #0fa874); color: #fff;
+      font-family: var(--fd); font-size: 14px; font-weight: 700; margin-top: 6px;
+      box-shadow: 0 4px 18px rgba(91,80,214,0.32); transition: all 160ms;
+    }
+    .save-btn:hover { box-shadow: 0 6px 26px rgba(91,80,214,0.48); transform: translateY(-1px); }
+    .save-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 16px; }
+      main { padding: 24px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-pill">← All Tools</a>
+      <a href="dashboard-student.html" class="nav-pill" id="nav-dash-link">📊 My Progress</a>
+      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+    </div>
+  </nav>
+
+  <main>
+    <h1>My Account</h1>
+    <p class="page-sub">View your account details and keep your profile up to date.</p>
+
+    <!-- ── Account details (read-only) ── -->
+    <div class="card">
+      <h2>🪪 Account details</h2>
+      <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value" id="acc-email">—</span></div>
+      <div class="detail-row"><span class="detail-label">Role</span><span class="detail-value" id="acc-role">—</span></div>
+      <div class="detail-row"><span class="detail-label">Plan</span><span class="detail-value" id="acc-plan">—</span></div>
+      <div class="detail-row"><span class="detail-label">Member since</span><span class="detail-value" id="acc-since">—</span></div>
+    </div>
+
+    <!-- ── Edit profile ── -->
+    <div class="card">
+      <h2>✏️ Edit my details</h2>
+
+      <div class="ml-field">
+        <label class="ml-label" for="edit-name">Display name</label>
+        <input class="ml-input" id="edit-name" type="text" placeholder="Your name">
+      </div>
+
+      <div id="edit-grade-section" style="display:none;">
+        <label class="ml-label" style="margin-bottom:8px;">Grade</label>
+        <div class="ml-grade-row" id="edit-grade-row"></div>
+      </div>
+
+      <div id="edit-subjects-section" style="display:none;">
+        <div class="ml-field">
+          <label class="ml-label" for="edit-subjects">Subject(s) you teach</label>
+          <input class="ml-input" id="edit-subjects" type="text" placeholder="e.g. Mathematics, Physical Sciences">
+        </div>
+      </div>
+
+      <div class="ml-field">
+        <label class="ml-label" for="edit-school">School</label>
+        <input class="ml-input" id="edit-school" type="text" placeholder="e.g. Westerford High School">
+      </div>
+
+      <div class="ml-field">
+        <label class="ml-label" for="edit-province">Province</label>
+        <select class="ml-input" id="edit-province">
+          <option value="">Select province…</option>
+          <option>Eastern Cape</option>
+          <option>Free State</option>
+          <option>Gauteng</option>
+          <option>KwaZulu-Natal</option>
+          <option>Limpopo</option>
+          <option>Mpumalanga</option>
+          <option>Northern Cape</option>
+          <option>North West</option>
+          <option>Western Cape</option>
+        </select>
+      </div>
+
+      <button class="save-btn" id="save-btn">Save changes</button>
+      <div class="ml-msg ml-msg-error"   id="save-err"></div>
+      <div class="ml-msg ml-msg-success" id="save-ok"></div>
+    </div>
+
+    <!-- ── Payment history ── -->
+    <div class="card">
+      <h2>💳 Payment history</h2>
+      <div id="pay-list"><p class="pay-empty">Loading…</p></div>
+      <p class="cancel-note" id="cancel-note" style="display:none;">
+        To cancel or change your subscription, email
+        <a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a>
+        and we'll sort it out — cancellations take effect at the end of the paid month.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    let _selectedGrade = null;
+
+    function _fillDetails(profile) {
+      const session = window.MagicLabAuth.getSession();
+      document.getElementById('acc-email').textContent = profile.email || session?.user?.email || '—';
+      document.getElementById('acc-role').textContent =
+        profile.role === 'teacher' ? '👩‍🏫 Teacher' : '🎓 Student' + (profile.grade ? ` · Gr ${profile.grade}` : '');
+
+      const planEl = document.getElementById('acc-plan');
+      const pkg = profile.package || 'free';
+      const isPaid = pkg === 'pro' || pkg === 'school';
+      planEl.innerHTML = `<span class="plan-badge ${isPaid ? 'plan-paid' : 'plan-free'}">${isPaid ? '✓ ' : ''}${pkg.charAt(0).toUpperCase() + pkg.slice(1)}</span>` +
+        (isPaid ? '' : '<a class="upgrade-link" href="pricing.html">Upgrade →</a>');
+
+      const created = session?.user?.created_at;
+      document.getElementById('acc-since').textContent = created
+        ? new Date(created).toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })
+        : '—';
+
+      // Teachers' progress link points at their own dashboard instead
+      if (profile.role === 'teacher') {
+        const dash = document.getElementById('nav-dash-link');
+        dash.href = 'dashboard-teacher.html';
+        dash.textContent = '🎓 My Classes';
+      }
+    }
+
+    function _fillForm(profile) {
+      document.getElementById('edit-name').value     = profile.display_name || '';
+      document.getElementById('edit-school').value   = profile.school || '';
+      document.getElementById('edit-province').value = profile.province || '';
+
+      if (profile.role === 'student') {
+        const row = document.getElementById('edit-grade-row');
+        row.innerHTML = [8,9,10,11,12].map(g =>
+          `<button type="button" class="ml-grade-btn" data-grade="${g}">Gr ${g}</button>`).join('');
+        _selectedGrade = profile.grade || null;
+        row.querySelectorAll('.ml-grade-btn').forEach(btn => {
+          if (parseInt(btn.dataset.grade) === _selectedGrade) btn.classList.add('ml-selected');
+          btn.addEventListener('click', () => {
+            _selectedGrade = parseInt(btn.dataset.grade);
+            row.querySelectorAll('.ml-grade-btn').forEach(b => b.classList.remove('ml-selected'));
+            btn.classList.add('ml-selected');
+          });
+        });
+        document.getElementById('edit-grade-section').style.display = '';
+      } else {
+        document.getElementById('edit-subjects').value = profile.subjects || '';
+        document.getElementById('edit-subjects-section').style.display = '';
+      }
+    }
+
+    async function _fillPayments() {
+      const listEl = document.getElementById('pay-list');
+      try {
+        const client = window.MagicLabAuth._supabase();
+        const { data, error } = await client
+          .from('payments')
+          .select('amount, status, created_at')
+          .order('created_at', { ascending: false })
+          .limit(24);
+        if (error) throw error;
+        if (!data?.length) {
+          listEl.innerHTML = '<p class="pay-empty">No payments yet — you\'re on the free plan.</p>';
+          return;
+        }
+        listEl.innerHTML = data.map(p => `
+          <div class="pay-row">
+            <span class="pay-date">${new Date(p.created_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+            <span class="pay-amount">R${Number(p.amount).toFixed(2)}</span>
+            <span class="pay-status ${p.status}">${p.status}</span>
+          </div>`).join('');
+        if (data.some(p => p.status === 'complete')) {
+          document.getElementById('cancel-note').style.display = '';
+        }
+      } catch (e) {
+        listEl.innerHTML = '<p class="pay-empty">Couldn\'t load payment history right now.</p>';
+      }
+    }
+
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('save-btn');
+      const err = document.getElementById('save-err');
+      const ok  = document.getElementById('save-ok');
+      err.classList.remove('ml-show'); ok.classList.remove('ml-show');
+
+      const profile = window.MagicLabAuth.getProfile();
+      const name = document.getElementById('edit-name').value.trim();
+      if (!name) {
+        err.textContent = 'Display name can\'t be empty.';
+        err.classList.add('ml-show');
+        return;
+      }
+
+      const updates = {
+        display_name: name,
+        school:   document.getElementById('edit-school').value.trim() || null,
+        province: document.getElementById('edit-province').value || null
+      };
+      if (profile.role === 'student' && _selectedGrade) updates.grade = _selectedGrade;
+      if (profile.role === 'teacher') updates.subjects = document.getElementById('edit-subjects').value.trim() || null;
+
+      btn.disabled = true; btn.textContent = 'Saving…';
+      const { error } = await window.MagicLabAuth.updateProfile(updates);
+      btn.disabled = false; btn.textContent = 'Save changes';
+
+      if (error) {
+        err.textContent = error.message || 'Could not save — please try again.';
+        err.classList.add('ml-show');
+      } else {
+        ok.textContent = '✓ Saved!';
+        ok.classList.add('ml-show');
+        _fillDetails(window.MagicLabAuth.getProfile());
+        setTimeout(() => ok.classList.remove('ml-show'), 3000);
+      }
+    });
+
+    document.addEventListener('magiclab:auth:ready', ({ detail: { profile } }) => {
+      if (!profile) return; // require-auth.js handles the redirect
+      _fillDetails(profile);
+      _fillForm(profile);
+      _fillPayments();
+    });
+  </script>
+
+</body>
+</html>
