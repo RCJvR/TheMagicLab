@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v50'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v51'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -126,6 +126,13 @@ const CACHE_NAME = 'magic-lab-v50'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // No-due-date assignments fall under Upcoming; a completed assignment
                                     // always shows under Completed even if its due date has passed. Empty
                                     // groups are simply omitted.
+                                    // v51: sign-in is now required on every tool/lesson page
+                                    // (require-auth.js + pre-paint hide, fail-closed), signup gains
+                                    // optional School/Province and teacher Subjects fields, and PayFast
+                                    // R45/mo Pro checkout ships (pricing.html, payment.js,
+                                    // payment-success/cancelled pages, Upgrade nav pill, Edge Functions
+                                    // + payments schema on Supabase). Sandbox-signed with the shared
+                                    // sandbox passphrase; live needs PAYFAST_* secrets.
 
 const urlsToCache = [
   '/',
@@ -147,9 +154,12 @@ const urlsToCache = [
 
   // ── Phase 1 additions ──────────────────────────────────────
   '/auth.js',
+  '/require-auth.js',
   '/progress.js',
   '/auth-modal.js',
   '/auth-modal.css',
+  '/payment.js',
+  '/pricing.html',
   '/xp.js',
   '/quiz-engine.js',
   '/tool-welcome.js',
