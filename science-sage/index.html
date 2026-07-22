@@ -70,31 +70,40 @@
     .strand-topic{display:flex;align-items:center;gap:9px;font-size:12.5px;color:rgba(210,218,245,0.65);padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:background 150ms;text-decoration:none;color:inherit}
     .strand-topic:hover{background:rgba(255,255,255,0.08);color:var(--text)}
     .strand-topic-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .strand-badge{font-family:var(--font-mono);font-size:9px;font-weight:600;padding:2px 7px;border-radius:99px;margin-left:auto;flex-shrink:0}
+    .topic-visited{margin-left:auto;flex-shrink:0;font-size:11px;font-weight:700;color:#86efac}
+    .topic-hidden{display:none!important}
+    .topics-toggle{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:8px 12px;border-radius:10px;border:1px dashed rgba(255,255,255,0.14);background:none;color:var(--muted);cursor:pointer;transition:all 150ms;text-align:center}
+    .topics-toggle:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+    .hero-features{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:18px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.04em;color:rgba(210,218,245,0.55)}
+    .continue-wrap{padding:0 52px;margin:0 0 24px}
+    .continue-wrap:empty{display:none}
+    .continue-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);text-decoration:none;transition:all 150ms}
+    .continue-card:hover{background:rgba(34,197,94,0.14);border-color:rgba(34,197,94,0.40)}
+    .continue-label{font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:#86efac;margin-bottom:2px}
+    .continue-title{font-weight:700;font-size:14px;color:#fff}
+    .continue-arrow{margin-left:auto;color:#86efac;font-size:16px}
+    .grade-section{display:none}
+    .grade-section.active{display:block}
     .strand-matter::before{background:radial-gradient(ellipse at 0% 0%,rgba(96,165,250,0.14),transparent 65%)}
     .strand-matter:hover{border-color:rgba(96,165,250,0.45)}
     .strand-matter .strand-icon{background:linear-gradient(135deg,rgba(96,165,250,0.28),rgba(168,85,247,0.14));border:1px solid rgba(96,165,250,0.28)}
     .strand-matter .strand-tag{background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.22);color:#93c5fd}
     .strand-matter .strand-topic-dot{background:#60a5fa}
-    .strand-matter .strand-badge{background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.20);color:#93c5fd}
     .strand-energy::before{background:radial-gradient(ellipse at 0% 0%,rgba(251,191,36,0.14),transparent 65%)}
     .strand-energy:hover{border-color:rgba(251,191,36,0.45)}
     .strand-energy .strand-icon{background:linear-gradient(135deg,rgba(251,191,36,0.28),rgba(245,166,35,0.14));border:1px solid rgba(251,191,36,0.28)}
     .strand-energy .strand-tag{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.22);color:#fcd34d}
     .strand-energy .strand-topic-dot{background:#fbbf24}
-    .strand-energy .strand-badge{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.20);color:#fcd34d}
     .strand-earth::before{background:radial-gradient(ellipse at 0% 0%,rgba(251,146,60,0.12),transparent 65%)}
     .strand-earth:hover{border-color:rgba(251,146,60,0.45)}
     .strand-earth .strand-icon{background:linear-gradient(135deg,rgba(251,146,60,0.26),rgba(34,197,94,0.14));border:1px solid rgba(251,146,60,0.28)}
     .strand-earth .strand-tag{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.22);color:#fdba74}
     .strand-earth .strand-topic-dot{background:#fb923c}
-    .strand-earth .strand-badge{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.20);color:#fdba74}
     .strand-life::before{background:radial-gradient(ellipse at 0% 0%,rgba(34,197,94,0.14),transparent 65%)}
     .strand-life:hover{border-color:rgba(34,197,94,0.45)}
     .strand-life .strand-icon{background:linear-gradient(135deg,rgba(34,197,94,0.28),rgba(163,230,53,0.14));border:1px solid rgba(34,197,94,0.28)}
     .strand-life .strand-tag{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.22);color:#86efac}
     .strand-life .strand-topic-dot{background:#22c55e}
-    .strand-life .strand-badge{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.20);color:#86efac}
     .strand-soon{opacity:.45;cursor:default}
     .strand-soon:hover{transform:none !important;box-shadow:none !important}
     .soon-pill{position:absolute;top:14px;right:14px;font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;padding:3px 9px;border-radius:99px;background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.28);color:#f5a623}
@@ -104,13 +113,11 @@
     .strand-phys .strand-icon{background:linear-gradient(135deg,rgba(96,165,250,0.28),rgba(168,85,247,0.18));border:1px solid rgba(147,197,253,0.28)}
     .strand-phys .strand-tag{background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.22);color:#bfdbfe}
     .strand-phys .strand-topic-dot{background:#60a5fa}
-    .strand-phys .strand-badge{background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.20);color:#bfdbfe}
     .strand-chem::before{background:radial-gradient(ellipse at 0% 0%,rgba(192,132,252,0.14),transparent 65%)}
     .strand-chem:hover{border-color:rgba(192,132,252,0.45)}
     .strand-chem .strand-icon{background:linear-gradient(135deg,rgba(192,132,252,0.28),rgba(96,165,250,0.14));border:1px solid rgba(192,132,252,0.28)}
     .strand-chem .strand-tag{background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.22);color:#e9d5ff}
     .strand-chem .strand-topic-dot{background:#c084fc}
-    .strand-chem .strand-badge{background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.20);color:#e9d5ff}
     .ieb-badge{font-family:var(--font-mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:99px;background:rgba(251,191,36,0.14);border:1px solid rgba(251,191,36,0.30);color:#fcd34d;letter-spacing:0.06em;flex-shrink:0}
     .ieb-only{display:none}
     .ieb-active .ieb-only{display:flex}
@@ -118,7 +125,7 @@
     .cur-pill.active{background:rgba(255,255,255,0.09);color:#fff}
     footer{margin-top:auto;padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
     .footer-copy{font-size:13px;color:rgba(210,218,245,0.28)}
-    @media(max-width:640px){nav{padding:16px 20px}.hero{padding:48px 20px 36px}.pathway{margin:0 20px 36px}.section-row{padding:0 20px}.strands{padding:0 20px 40px;grid-template-columns:1fr}footer{padding:20px}}
+    @media(max-width:640px){nav{padding:16px 20px}.hero{padding:48px 20px 36px}.pathway{margin:0 20px 36px}.section-row{padding:0 20px}.strands{padding:0 20px 40px;grid-template-columns:1fr}.continue-wrap{padding:0 20px}.path-dropdown{margin:0 20px 36px}footer{padding:20px}}
   </style>
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
@@ -135,8 +142,11 @@
   <section class="hero">
     <div class="hero-tag"><span class="hero-tag-dot"></span>Natural, Life &amp; Physical Sciences · CAPS · Gr 7–12</div>
     <h1>Discover the world<br>through <em>science.</em></h1>
-    <p class="hero-sub">CAPS-aligned Natural Sciences (Gr 7–9), Life Sciences (Gr 10–12), and Physical Sciences (Gr 10–12), with NSC and IEB curriculum support. Every lesson has theory, an interactive simulation, MCQ practice, and written workbook questions.</p>
+    <p class="hero-sub">CAPS-aligned science for Grades 7–12 — Natural, Life &amp; Physical Sciences, with NSC and IEB support.</p>
+    <div class="hero-features"><span>📖 Theory</span><span>⚗️ Simulation</span><span>✅ Practice</span><span>✏️ Workbook</span></div>
   </section>
+
+  <div class="continue-wrap" data-continue-slot></div>
 
   <div class="path-dropdown" id="pathDropdown">
     <button class="path-trigger" onclick="togglePathMenu(event)">
@@ -161,6 +171,7 @@
     </div>
   </div>
 
+  <div class="grade-section" id="section-grade7">
   <!-- GRADE 7 -->
   <div class="section-row" id="grade7">
     <span class="section-label" style="color:#86efac;">
@@ -177,7 +188,7 @@
       </div>
       <div><div class="strand-title">Biodiversity &amp; Classification</div><p class="strand-desc">The five kingdoms and the incredible variety of life on Earth — from micro-organisms to complex animals and plants.</p></div>
       <div class="strand-topics">
-        <a href="gr7/life/biodiversity.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity &amp; classification<span class="strand-badge">Lesson</span></a>
+        <a href="gr7/life/biodiversity.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity &amp; classification</a>
       </div>
     </div>
 
@@ -187,7 +198,7 @@
       </div>
       <div><div class="strand-title">Properties, Mixtures &amp; Acids</div><p class="strand-desc">What materials are made of, how mixtures are separated, and the difference between acids, bases and neutrals.</p></div>
       <div class="strand-topics">
-        <a href="gr7/matter/separating-mixtures.html" class="strand-topic"><span class="strand-topic-dot"></span>Separating mixtures<span class="strand-badge">Lesson</span></a>
+        <a href="gr7/matter/separating-mixtures.html" class="strand-topic"><span class="strand-topic-dot"></span>Separating mixtures</a>
       </div>
     </div>
 
@@ -197,7 +208,7 @@
       </div>
       <div><div class="strand-title">Energy Forms &amp; Heat Transfer</div><p class="strand-desc">Kinetic and potential energy, conservation of energy, conduction, convection and radiation. Renewable energy sources.</p></div>
       <div class="strand-topics">
-        <a href="gr7/energy/energy-forms.html" class="strand-topic"><span class="strand-topic-dot"></span>Forms of energy (KE &amp; PE)<span class="strand-badge">Lesson</span></a>
+        <a href="gr7/energy/energy-forms.html" class="strand-topic"><span class="strand-topic-dot"></span>Forms of energy (KE &amp; PE)</a>
       </div>
     </div>
 
@@ -207,12 +218,14 @@
       </div>
       <div><div class="strand-title">Earth–Sun–Moon System</div><p class="strand-desc">How Earth's tilt causes seasons, how the Moon creates tides, and the history of our understanding of astronomy.</p></div>
       <div class="strand-topics">
-        <a href="gr7/earth/seasons.html" class="strand-topic"><span class="strand-topic-dot"></span>Seasons &amp; Earth's tilt<span class="strand-badge">Lesson</span></a>
-        <a href="gr7/earth/earth-moon.html" class="strand-topic"><span class="strand-topic-dot"></span>Moon, gravity &amp; tides<span class="strand-badge">Lesson</span></a>
+        <a href="gr7/earth/seasons.html" class="strand-topic"><span class="strand-topic-dot"></span>Seasons &amp; Earth's tilt</a>
+        <a href="gr7/earth/earth-moon.html" class="strand-topic"><span class="strand-topic-dot"></span>Moon, gravity &amp; tides</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade8">
   <!-- GRADE 8 -->
   <div class="section-row" id="grade8" style="margin-top:0;">
     <span class="section-label" style="color:#93c5fd;">
@@ -230,9 +243,9 @@
       </div>
       <div><div class="strand-title">Photosynthesis, Ecosystems &amp; Micro-organisms</div><p class="strand-desc">How plants make food, the complex web of life in ecosystems, and the tiny organisms that rule our world.</p></div>
       <div class="strand-topics">
-        <a href="gr8/life/photosynthesis.html" class="strand-topic"><span class="strand-topic-dot"></span>Photosynthesis &amp; respiration<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/life/ecosystems.html" class="strand-topic"><span class="strand-topic-dot"></span>Ecosystems &amp; food webs<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/life/microorganisms.html" class="strand-topic"><span class="strand-topic-dot"></span>Micro-organisms<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/life/photosynthesis.html" class="strand-topic"><span class="strand-topic-dot"></span>Photosynthesis &amp; respiration</a>
+        <a href="gr8/life/ecosystems.html" class="strand-topic"><span class="strand-topic-dot"></span>Ecosystems &amp; food webs</a>
+        <a href="gr8/life/microorganisms.html" class="strand-topic"><span class="strand-topic-dot"></span>Micro-organisms</a>
       </div>
     </div>
 
@@ -241,14 +254,14 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚗️</div><span class="strand-tag">Matter &amp; Materials · T2</span>
       </div>
-      <div><div class="strand-title">Atoms, Particle Model &amp; Reactions</div><p class="strand-desc">From subatomic particles to the periodic table, through the particle model of matter, metals &amp; non-metals, and into your first chemical reactions.</p></div>
+      <div><div class="strand-title">Atoms, Particle Model &amp; Reactions</div><p class="strand-desc">From subatomic particles all the way to your first chemical reactions.</p></div>
       <div class="strand-topics">
-        <a href="gr8/matter/atoms.html" class="strand-topic"><span class="strand-topic-dot"></span>The atom &amp; atomic models<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/matter/periodic-table.html" class="strand-topic"><span class="strand-topic-dot"></span>The periodic table<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/matter/compounds-mixtures.html" class="strand-topic"><span class="strand-topic-dot"></span>Compounds &amp; mixtures<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/matter/particle-model.html" class="strand-topic"><span class="strand-topic-dot"></span>Particle model of matter<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/matter/metals-non-metals.html" class="strand-topic"><span class="strand-topic-dot"></span>Metals &amp; non-metals<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/matter/chemical-reactions.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical reactions<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/matter/atoms.html" class="strand-topic"><span class="strand-topic-dot"></span>The atom &amp; atomic models</a>
+        <a href="gr8/matter/periodic-table.html" class="strand-topic"><span class="strand-topic-dot"></span>The periodic table</a>
+        <a href="gr8/matter/compounds-mixtures.html" class="strand-topic"><span class="strand-topic-dot"></span>Compounds &amp; mixtures</a>
+        <a href="gr8/matter/particle-model.html" class="strand-topic"><span class="strand-topic-dot"></span>Particle model of matter</a>
+        <a href="gr8/matter/metals-non-metals.html" class="strand-topic"><span class="strand-topic-dot"></span>Metals &amp; non-metals</a>
+        <a href="gr8/matter/chemical-reactions.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical reactions</a>
       </div>
     </div>
 
@@ -257,13 +270,13 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚡</div><span class="strand-tag">Energy &amp; Change · T3</span>
       </div>
-      <div><div class="strand-title">Electricity, Light &amp; Static</div><p class="strand-desc">Static electricity, series and parallel circuits, the national electricity grid, visible light spectrum, reflection, refraction and more.</p></div>
+      <div><div class="strand-title">Electricity, Light &amp; Static</div><p class="strand-desc">How charge, current, light and sound carry energy through our world.</p></div>
       <div class="strand-topics">
-        <a href="gr8/energy/static-electricity.html" class="strand-topic"><span class="strand-topic-dot"></span>Static electricity<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/energy/electricity.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/energy/electricity-grid.html" class="strand-topic"><span class="strand-topic-dot"></span>Energy &amp; the national electricity grid<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/energy/light.html" class="strand-topic"><span class="strand-topic-dot"></span>Visible light<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/energy/sound.html" class="strand-topic"><span class="strand-topic-dot"></span>Sound as energy<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/energy/static-electricity.html" class="strand-topic"><span class="strand-topic-dot"></span>Static electricity</a>
+        <a href="gr8/energy/electricity.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits</a>
+        <a href="gr8/energy/electricity-grid.html" class="strand-topic"><span class="strand-topic-dot"></span>Energy &amp; the national electricity grid</a>
+        <a href="gr8/energy/light.html" class="strand-topic"><span class="strand-topic-dot"></span>Visible light</a>
+        <a href="gr8/energy/sound.html" class="strand-topic"><span class="strand-topic-dot"></span>Sound as energy</a>
       </div>
     </div>
 
@@ -274,13 +287,15 @@
       </div>
       <div><div class="strand-title">Solar System, Galaxies &amp; Telescopes</div><p class="strand-desc">Journey through our solar system, beyond it into the Milky Way, and learn how telescopes like SALT and the SKA reveal the universe.</p></div>
       <div class="strand-topics">
-        <a href="gr8/earth/solar-system.html" class="strand-topic"><span class="strand-topic-dot"></span>The solar system<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/earth/beyond-solar-system.html" class="strand-topic"><span class="strand-topic-dot"></span>Beyond the solar system<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/earth/telescopes.html" class="strand-topic"><span class="strand-topic-dot"></span>Telescopes &amp; constellations<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/earth/solar-system.html" class="strand-topic"><span class="strand-topic-dot"></span>The solar system</a>
+        <a href="gr8/earth/beyond-solar-system.html" class="strand-topic"><span class="strand-topic-dot"></span>Beyond the solar system</a>
+        <a href="gr8/earth/telescopes.html" class="strand-topic"><span class="strand-topic-dot"></span>Telescopes &amp; constellations</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade9">
   <!-- GRADE 9 -->
   <div class="section-row" id="grade9" style="margin-top:0;">
     <span class="section-label" style="color:#fde68a;">
@@ -296,14 +311,14 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🌿</div><span class="strand-tag">Life &amp; Living · T1</span>
       </div>
-      <div><div class="strand-title">Cells, Reproduction &amp; Genetics</div><p class="strand-desc">Cell structure, nutrients and digestion, body systems, plant and animal reproduction, genetics, and heredity.</p></div>
+      <div><div class="strand-title">Cells, Reproduction &amp; Genetics</div><p class="strand-desc">From single cells to whole body systems — and how life passes on its genes.</p></div>
       <div class="strand-topics">
-        <a href="gr9/life/cells.html" class="strand-topic"><span class="strand-topic-dot"></span>Cell structure &amp; function<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/life/nutrients.html" class="strand-topic"><span class="strand-topic-dot"></span>Nutrients &amp; digestion<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/life/systems-human-body.html" class="strand-topic"><span class="strand-topic-dot"></span>Systems in the human body<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/life/reproduction-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in plants<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/life/reproduction-animals.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in animals<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/life/genetics.html" class="strand-topic"><span class="strand-topic-dot"></span>Genetics &amp; heredity<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/life/cells.html" class="strand-topic"><span class="strand-topic-dot"></span>Cell structure &amp; function</a>
+        <a href="gr9/life/nutrients.html" class="strand-topic"><span class="strand-topic-dot"></span>Nutrients &amp; digestion</a>
+        <a href="gr9/life/systems-human-body.html" class="strand-topic"><span class="strand-topic-dot"></span>Systems in the human body</a>
+        <a href="gr9/life/reproduction-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in plants</a>
+        <a href="gr9/life/reproduction-animals.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in animals</a>
+        <a href="gr9/life/genetics.html" class="strand-topic"><span class="strand-topic-dot"></span>Genetics &amp; heredity</a>
       </div>
     </div>
 
@@ -314,10 +329,10 @@
       </div>
       <div><div class="strand-title">Atoms, Bonding &amp; Reactions</div><p class="strand-desc">Atomic structure, electron arrangement, chemical bonding, acids and bases, and types of chemical reactions.</p></div>
       <div class="strand-topics">
-        <a href="gr9/matter/atoms-electrons.html" class="strand-topic"><span class="strand-topic-dot"></span>Atoms &amp; electron arrangement<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/matter/chemical-bonding.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical bonding<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/matter/acids-bases.html" class="strand-topic"><span class="strand-topic-dot"></span>Acids, bases &amp; pH scale<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/matter/types-of-reactions.html" class="strand-topic"><span class="strand-topic-dot"></span>Types of chemical reactions<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/matter/atoms-electrons.html" class="strand-topic"><span class="strand-topic-dot"></span>Atoms &amp; electron arrangement</a>
+        <a href="gr9/matter/chemical-bonding.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical bonding</a>
+        <a href="gr9/matter/acids-bases.html" class="strand-topic"><span class="strand-topic-dot"></span>Acids, bases &amp; pH scale</a>
+        <a href="gr9/matter/types-of-reactions.html" class="strand-topic"><span class="strand-topic-dot"></span>Types of chemical reactions</a>
       </div>
     </div>
 
@@ -326,14 +341,14 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚡</div><span class="strand-tag">Energy &amp; Change · T3</span>
       </div>
-      <div><div class="strand-title">Forces, Circuits &amp; Electricity Supply</div><p class="strand-desc">Forces, magnetism, waves &amp; the EM spectrum, electromagnetic induction, electric cells &amp; resistance, circuits, and the national electricity supply system.</p></div>
+      <div><div class="strand-title">Forces, Circuits &amp; Electricity Supply</div><p class="strand-desc">How forces, magnetism and electricity power the world around you.</p></div>
       <div class="strand-topics">
-        <a href="gr9/energy/forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Forces<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/energy/magnetism.html" class="strand-topic"><span class="strand-topic-dot"></span>Magnetism &amp; forces<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/energy/waves.html" class="strand-topic"><span class="strand-topic-dot"></span>Waves &amp; EM spectrum<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/energy/electromagnetic-induction.html" class="strand-topic"><span class="strand-topic-dot"></span>Electromagnetic induction<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/energy/electric-circuits.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric cells, resistance &amp; circuits<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/energy/national-electricity-supply.html" class="strand-topic"><span class="strand-topic-dot"></span>National electricity supply system<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/energy/forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Forces</a>
+        <a href="gr9/energy/magnetism.html" class="strand-topic"><span class="strand-topic-dot"></span>Magnetism &amp; forces</a>
+        <a href="gr9/energy/waves.html" class="strand-topic"><span class="strand-topic-dot"></span>Waves &amp; EM spectrum</a>
+        <a href="gr9/energy/electromagnetic-induction.html" class="strand-topic"><span class="strand-topic-dot"></span>Electromagnetic induction</a>
+        <a href="gr9/energy/electric-circuits.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric cells, resistance &amp; circuits</a>
+        <a href="gr9/energy/national-electricity-supply.html" class="strand-topic"><span class="strand-topic-dot"></span>National electricity supply system</a>
       </div>
     </div>
 
@@ -342,19 +357,21 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🌍</div><span class="strand-tag">Earth &amp; Beyond · T4</span>
       </div>
-      <div><div class="strand-title">Earth Systems, Lithosphere &amp; Stars</div><p class="strand-desc">Earth as a system, the atmosphere, climate change, the lithosphere &amp; mining of mineral resources, geological history, and the life cycle of stars.</p></div>
+      <div><div class="strand-title">Earth Systems, Lithosphere &amp; Stars</div><p class="strand-desc">Our planet as a system — from the atmosphere and lithosphere to the life cycle of stars.</p></div>
       <div class="strand-topics">
-        <a href="gr9/earth/earth-as-a-system.html" class="strand-topic"><span class="strand-topic-dot"></span>The Earth as a system<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/earth/atmosphere.html" class="strand-topic"><span class="strand-topic-dot"></span>Earth's atmosphere<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/earth/climate-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Climate change &amp; global warming<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/earth/lithosphere-mining.html" class="strand-topic"><span class="strand-topic-dot"></span>Lithosphere &amp; mining of mineral resources<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/earth/geological-history.html" class="strand-topic"><span class="strand-topic-dot"></span>Fossils &amp; geological history<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/earth/life-cycle-of-stars.html" class="strand-topic"><span class="strand-topic-dot"></span>Birth, life &amp; death of a star<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/earth/earth-as-a-system.html" class="strand-topic"><span class="strand-topic-dot"></span>The Earth as a system</a>
+        <a href="gr9/earth/atmosphere.html" class="strand-topic"><span class="strand-topic-dot"></span>Earth's atmosphere</a>
+        <a href="gr9/earth/climate-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Climate change &amp; global warming</a>
+        <a href="gr9/earth/lithosphere-mining.html" class="strand-topic"><span class="strand-topic-dot"></span>Lithosphere &amp; mining of mineral resources</a>
+        <a href="gr9/earth/geological-history.html" class="strand-topic"><span class="strand-topic-dot"></span>Fossils &amp; geological history</a>
+        <a href="gr9/earth/life-cycle-of-stars.html" class="strand-topic"><span class="strand-topic-dot"></span>Birth, life &amp; death of a star</a>
       </div>
     </div>
 
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade10-life">
   <!-- GRADE 10 Life Sciences -->
   <div class="section-row" id="grade10-life" style="margin-top:16px;">
     <span class="section-label" style="color:#86efac;">
@@ -372,10 +389,10 @@
       </div>
       <div><div class="strand-title">Chemistry of Life &amp; Cells</div><p class="strand-desc">Inorganic and organic compounds, the cell as the unit of life, cell division, and plant and animal tissues.</p></div>
       <div class="strand-topics">
-        <a href="gr10/life/chemistry-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemistry of life<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/life/cell-structure.html" class="strand-topic"><span class="strand-topic-dot"></span>The cell — structure &amp; function<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/life/cell-division-mitosis.html" class="strand-topic"><span class="strand-topic-dot"></span>Cell division — mitosis<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/life/plant-animal-tissues.html" class="strand-topic"><span class="strand-topic-dot"></span>Plant &amp; animal tissues<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/life/chemistry-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemistry of life</a>
+        <a href="gr10/life/cell-structure.html" class="strand-topic"><span class="strand-topic-dot"></span>The cell — structure &amp; function</a>
+        <a href="gr10/life/cell-division-mitosis.html" class="strand-topic"><span class="strand-topic-dot"></span>Cell division — mitosis</a>
+        <a href="gr10/life/plant-animal-tissues.html" class="strand-topic"><span class="strand-topic-dot"></span>Plant &amp; animal tissues</a>
       </div>
     </div>
 
@@ -386,9 +403,9 @@
       </div>
       <div><div class="strand-title">Support &amp; Transport Systems</div><p class="strand-desc">Support and transport systems in plants and animals, and the transport system in mammals.</p></div>
       <div class="strand-topics">
-        <a href="gr10/life/transport-in-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Support &amp; transport in plants<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/life/support-systems-animals.html" class="strand-topic"><span class="strand-topic-dot"></span>Support systems in animals<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/life/transport-in-mammals.html" class="strand-topic"><span class="strand-topic-dot"></span>Transport system in mammals<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/life/transport-in-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Support &amp; transport in plants</a>
+        <a href="gr10/life/support-systems-animals.html" class="strand-topic"><span class="strand-topic-dot"></span>Support systems in animals</a>
+        <a href="gr10/life/transport-in-mammals.html" class="strand-topic"><span class="strand-topic-dot"></span>Transport system in mammals</a>
       </div>
     </div>
 
@@ -399,7 +416,7 @@
       </div>
       <div><div class="strand-title">Biosphere to Ecosystems</div><p class="strand-desc">Biosphere to ecosystems — energy flow, nutrient cycles, and ecological relationships.</p></div>
       <div class="strand-topics">
-        <a href="gr10/life/biosphere-ecosystems.html" class="strand-topic"><span class="strand-topic-dot"></span>Biosphere to ecosystems<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/life/biosphere-ecosystems.html" class="strand-topic"><span class="strand-topic-dot"></span>Biosphere to ecosystems</a>
       </div>
     </div>
 
@@ -410,12 +427,14 @@
       </div>
       <div><div class="strand-title">Classification &amp; History of Life</div><p class="strand-desc">Biodiversity and classification, and the history of life on Earth.</p></div>
       <div class="strand-topics">
-        <a href="gr10/life/biodiversity-classification.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity &amp; classification<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/life/history-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>History of life on Earth<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/life/biodiversity-classification.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity &amp; classification</a>
+        <a href="gr10/life/history-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>History of life on Earth</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade10-phys">
   <!-- GRADE 10 Physical Sciences -->
   <div class="section-row" id="grade10-phys" style="margin-top:16px;">
     <span class="section-label" style="color:#93c5fd;">
@@ -442,12 +461,12 @@
       </div>
       <div><div class="strand-title">Motion, Energy &amp; Waves</div><p class="strand-desc">Vectors, kinematics, energy conservation, wave properties, electrostatics, and electric circuits.</p></div>
       <div class="strand-topics">
-        <a href="gr10/physics/vectors-scalars.html" class="strand-topic"><span class="strand-topic-dot"></span>Vectors &amp; scalars<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/physics/motion-1d.html" class="strand-topic"><span class="strand-topic-dot"></span>Motion in one dimension<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/physics/energy.html" class="strand-topic"><span class="strand-topic-dot"></span>Energy &amp; conservation<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/physics/waves-sound-light.html" class="strand-topic"><span class="strand-topic-dot"></span>Waves, sound &amp; light<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/physics/electrostatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrostatics<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/physics/circuits.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/physics/vectors-scalars.html" class="strand-topic"><span class="strand-topic-dot"></span>Vectors &amp; scalars</a>
+        <a href="gr10/physics/motion-1d.html" class="strand-topic"><span class="strand-topic-dot"></span>Motion in one dimension</a>
+        <a href="gr10/physics/energy.html" class="strand-topic"><span class="strand-topic-dot"></span>Energy &amp; conservation</a>
+        <a href="gr10/physics/waves-sound-light.html" class="strand-topic"><span class="strand-topic-dot"></span>Waves, sound &amp; light</a>
+        <a href="gr10/physics/electrostatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrostatics</a>
+        <a href="gr10/physics/circuits.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits</a>
       </div>
     </div>
 
@@ -456,22 +475,24 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚗️</div><span class="strand-tag">Chemistry · Matter &amp; Materials</span>
       </div>
-      <div><div class="strand-title">Atoms, Bonding &amp; Reactions</div><p class="strand-desc">Classification of matter, atomic structure, the periodic table, chemical bonding, intermolecular forces, physical &amp; chemical change, representing reactions, reactions in solution, stoichiometry, and the hydrosphere.</p></div>
+      <div><div class="strand-title">Atoms, Bonding &amp; Reactions</div><p class="strand-desc">The building blocks of chemistry — from classifying matter to stoichiometry.</p></div>
       <div class="strand-topics">
-        <a href="gr10/chemistry/classification-matter.html" class="strand-topic"><span class="strand-topic-dot"></span>Classification of matter<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/atomic-structure.html" class="strand-topic"><span class="strand-topic-dot"></span>Atomic structure<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/periodic-table.html" class="strand-topic"><span class="strand-topic-dot"></span>The periodic table<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/chemical-bonding.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical bonding<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/intermolecular-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Intermolecular forces<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/physical-chemical-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Physical &amp; chemical change<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/representing-chemical-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Representing chemical change<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/reactions-aqueous-solution.html" class="strand-topic"><span class="strand-topic-dot"></span>Reactions in aqueous solution<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/stoichiometry.html" class="strand-topic"><span class="strand-topic-dot"></span>Stoichiometry<span class="strand-badge">Lesson</span></a>
-        <a href="gr10/chemistry/hydrosphere.html" class="strand-topic"><span class="strand-topic-dot"></span>The hydrosphere<span class="strand-badge">Lesson</span></a>
+        <a href="gr10/chemistry/classification-matter.html" class="strand-topic"><span class="strand-topic-dot"></span>Classification of matter</a>
+        <a href="gr10/chemistry/atomic-structure.html" class="strand-topic"><span class="strand-topic-dot"></span>Atomic structure</a>
+        <a href="gr10/chemistry/periodic-table.html" class="strand-topic"><span class="strand-topic-dot"></span>The periodic table</a>
+        <a href="gr10/chemistry/chemical-bonding.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical bonding</a>
+        <a href="gr10/chemistry/intermolecular-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Intermolecular forces</a>
+        <a href="gr10/chemistry/physical-chemical-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Physical &amp; chemical change</a>
+        <a href="gr10/chemistry/representing-chemical-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Representing chemical change</a>
+        <a href="gr10/chemistry/reactions-aqueous-solution.html" class="strand-topic"><span class="strand-topic-dot"></span>Reactions in aqueous solution</a>
+        <a href="gr10/chemistry/stoichiometry.html" class="strand-topic"><span class="strand-topic-dot"></span>Stoichiometry</a>
+        <a href="gr10/chemistry/hydrosphere.html" class="strand-topic"><span class="strand-topic-dot"></span>The hydrosphere</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade11-life">
   <!-- GRADE 11 Life Sciences -->
   <div class="section-row" id="grade11-life" style="margin-top:16px;">
     <span class="section-label" style="color:#86efac;">
@@ -489,10 +510,10 @@
       </div>
       <div><div class="strand-title">Biodiversity of Microorganisms, Plants &amp; Animals</div><p class="strand-desc">Classification and roles of microorganisms, and the diversity of plants and animals.</p></div>
       <div class="strand-topics">
-        <a href="gr11/life/microorganisms-classification.html" class="strand-topic"><span class="strand-topic-dot"></span>Classification of micro-organisms<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/biodiversity-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity of plants<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/reproduction-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in plants<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/biodiversity-animals.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity of animals<span class="strand-badge">Lesson</span></a>
+        <a href="gr11/life/microorganisms-classification.html" class="strand-topic"><span class="strand-topic-dot"></span>Classification of micro-organisms</a>
+        <a href="gr11/life/biodiversity-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity of plants</a>
+        <a href="gr11/life/reproduction-plants.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in plants</a>
+        <a href="gr11/life/biodiversity-animals.html" class="strand-topic"><span class="strand-topic-dot"></span>Biodiversity of animals</a>
       </div>
     </div>
 
@@ -503,11 +524,11 @@
       </div>
       <div><div class="strand-title">Photosynthesis, Nutrition &amp; Respiration</div><p class="strand-desc">Photosynthesis, animal nutrition, respiration, gas exchange, and excretion.</p></div>
       <div class="strand-topics">
-        <a href="gr11/life/photosynthesis.html" class="strand-topic"><span class="strand-topic-dot"></span>Photosynthesis<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/animal-nutrition.html" class="strand-topic"><span class="strand-topic-dot"></span>Animal nutrition<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/respiration.html" class="strand-topic"><span class="strand-topic-dot"></span>Respiration<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/gas-exchange.html" class="strand-topic"><span class="strand-topic-dot"></span>Gas exchange<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/excretion.html" class="strand-topic"><span class="strand-topic-dot"></span>Excretion<span class="strand-badge">Lesson</span></a>
+        <a href="gr11/life/photosynthesis.html" class="strand-topic"><span class="strand-topic-dot"></span>Photosynthesis</a>
+        <a href="gr11/life/animal-nutrition.html" class="strand-topic"><span class="strand-topic-dot"></span>Animal nutrition</a>
+        <a href="gr11/life/respiration.html" class="strand-topic"><span class="strand-topic-dot"></span>Respiration</a>
+        <a href="gr11/life/gas-exchange.html" class="strand-topic"><span class="strand-topic-dot"></span>Gas exchange</a>
+        <a href="gr11/life/excretion.html" class="strand-topic"><span class="strand-topic-dot"></span>Excretion</a>
       </div>
     </div>
 
@@ -518,12 +539,14 @@
       </div>
       <div><div class="strand-title">Population Ecology &amp; Human Impact</div><p class="strand-desc">Population ecology, and human impact on the environment (current crises).</p></div>
       <div class="strand-topics">
-        <a href="gr11/life/population-ecology.html" class="strand-topic"><span class="strand-topic-dot"></span>Population ecology<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/life/human-impact-environment.html" class="strand-topic"><span class="strand-topic-dot"></span>Human impact on the environment<span class="strand-badge">Lesson</span></a>
+        <a href="gr11/life/population-ecology.html" class="strand-topic"><span class="strand-topic-dot"></span>Population ecology</a>
+        <a href="gr11/life/human-impact-environment.html" class="strand-topic"><span class="strand-topic-dot"></span>Human impact on the environment</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade11-phys">
   <!-- GRADE 11 Physical Sciences -->
   <div class="section-row" id="grade11-phys" style="margin-top:16px;">
     <span class="section-label" style="color:#d8b4fe;">
@@ -547,16 +570,16 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚡</div><span class="strand-tag">Physics · Mechanics &amp; Electricity</span>
       </div>
-      <div><div class="strand-title">Forces, Momentum &amp; Fields</div><p class="strand-desc">2D vectors, Newton's laws applied, momentum and impulse, work-energy theorem, electrostatics, circuits, electromagnetic induction, and optical phenomena.</p></div>
+      <div><div class="strand-title">Forces, Momentum &amp; Fields</div><p class="strand-desc">Newton's laws, momentum, energy and electricity — the mechanics core of FET physics.</p></div>
       <div class="strand-topics">
-        <a href="gr11/physics/vectors-2d.html" class="strand-topic"><span class="strand-topic-dot"></span>Vectors in 2D<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/newtons-laws.html" class="strand-topic"><span class="strand-topic-dot"></span>Newton's laws applied<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/momentum-impulse.html" class="strand-topic"><span class="strand-topic-dot"></span>Momentum &amp; impulse<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/work-energy-power.html" class="strand-topic"><span class="strand-topic-dot"></span>Work, energy &amp; power<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/electrostatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrostatics<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/electric-circuits.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/electromagnetic-induction.html" class="strand-topic"><span class="strand-topic-dot"></span>Electromagnetic induction<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/physics/optical-phenomena.html" class="strand-topic"><span class="strand-topic-dot"></span>Optical phenomena &amp; EM radiation<span class="strand-badge">Lesson</span></a>
+        <a href="gr11/physics/vectors-2d.html" class="strand-topic"><span class="strand-topic-dot"></span>Vectors in 2D</a>
+        <a href="gr11/physics/newtons-laws.html" class="strand-topic"><span class="strand-topic-dot"></span>Newton's laws applied</a>
+        <a href="gr11/physics/momentum-impulse.html" class="strand-topic"><span class="strand-topic-dot"></span>Momentum &amp; impulse</a>
+        <a href="gr11/physics/work-energy-power.html" class="strand-topic"><span class="strand-topic-dot"></span>Work, energy &amp; power</a>
+        <a href="gr11/physics/electrostatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrostatics</a>
+        <a href="gr11/physics/electric-circuits.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits</a>
+        <a href="gr11/physics/electromagnetic-induction.html" class="strand-topic"><span class="strand-topic-dot"></span>Electromagnetic induction</a>
+        <a href="gr11/physics/optical-phenomena.html" class="strand-topic"><span class="strand-topic-dot"></span>Optical phenomena &amp; EM radiation</a>
       </div>
     </div>
 
@@ -565,19 +588,21 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚗️</div><span class="strand-tag">Chemistry · Reactions &amp; Equilibrium</span>
       </div>
-      <div><div class="strand-title">Energy, Rates &amp; Equilibrium</div><p class="strand-desc">Intermolecular forces, quantitative chemistry, acids and bases, redox reactions, energy changes, reaction rates, and chemical equilibrium.</p></div>
+      <div><div class="strand-title">Energy, Rates &amp; Equilibrium</div><p class="strand-desc">Why reactions happen, how fast they go, and where they settle.</p></div>
       <div class="strand-topics">
-        <a href="gr11/chemistry/intermolecular-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Intermolecular forces &amp; properties<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/chemistry/stoichiometry.html" class="strand-topic"><span class="strand-topic-dot"></span>Quantitative aspects<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/chemistry/acids-bases.html" class="strand-topic"><span class="strand-topic-dot"></span>Acids &amp; bases<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/chemistry/redox.html" class="strand-topic"><span class="strand-topic-dot"></span>Redox reactions<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/chemistry/energy-chemical-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Energy &amp; chemical change<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/chemistry/rate-of-reaction.html" class="strand-topic"><span class="strand-topic-dot"></span>Rate of reaction<span class="strand-badge">Lesson</span></a>
-        <a href="gr11/chemistry/chemical-equilibrium.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical equilibrium<span class="strand-badge">Lesson</span></a>
+        <a href="gr11/chemistry/intermolecular-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Intermolecular forces &amp; properties</a>
+        <a href="gr11/chemistry/stoichiometry.html" class="strand-topic"><span class="strand-topic-dot"></span>Quantitative aspects</a>
+        <a href="gr11/chemistry/acids-bases.html" class="strand-topic"><span class="strand-topic-dot"></span>Acids &amp; bases</a>
+        <a href="gr11/chemistry/redox.html" class="strand-topic"><span class="strand-topic-dot"></span>Redox reactions</a>
+        <a href="gr11/chemistry/energy-chemical-change.html" class="strand-topic"><span class="strand-topic-dot"></span>Energy &amp; chemical change</a>
+        <a href="gr11/chemistry/rate-of-reaction.html" class="strand-topic"><span class="strand-topic-dot"></span>Rate of reaction</a>
+        <a href="gr11/chemistry/chemical-equilibrium.html" class="strand-topic"><span class="strand-topic-dot"></span>Chemical equilibrium</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade12-life">
   <!-- GRADE 12 Life Sciences -->
   <div class="section-row" id="grade12-life" style="margin-top:16px;">
     <span class="section-label" style="color:#86efac;">
@@ -595,8 +620,8 @@
       </div>
       <div><div class="strand-title">DNA, Meiosis &amp; Inheritance</div><p class="strand-desc">DNA as the code of life, protein synthesis, and how meiosis produces genetically varied gametes.</p></div>
       <div class="strand-topics">
-        <a href="gr12/life/dna-code-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>DNA — the code of life<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/meiosis.html" class="strand-topic"><span class="strand-topic-dot"></span>Meiosis<span class="strand-badge">Lesson</span></a>
+        <a href="gr12/life/dna-code-of-life.html" class="strand-topic"><span class="strand-topic-dot"></span>DNA — the code of life</a>
+        <a href="gr12/life/meiosis.html" class="strand-topic"><span class="strand-topic-dot"></span>Meiosis</a>
       </div>
     </div>
 
@@ -605,14 +630,14 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🍃</div><span class="strand-tag">Life Processes in Plants &amp; Animals · T2</span>
       </div>
-      <div><div class="strand-title">Reproduction, Response &amp; Regulation</div><p class="strand-desc">Reproduction in vertebrates and humans, how the nervous and endocrine systems respond to the environment, homeostasis, and plant responses.</p></div>
+      <div><div class="strand-title">Reproduction, Response &amp; Regulation</div><p class="strand-desc">How humans and plants reproduce, sense their world, and keep it in balance.</p></div>
       <div class="strand-topics">
-        <a href="gr12/life/reproduction-vertebrates.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in vertebrates<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/human-reproduction.html" class="strand-topic"><span class="strand-topic-dot"></span>Human reproduction<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/nervous-system-senses.html" class="strand-topic"><span class="strand-topic-dot"></span>Nervous system &amp; senses<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/human-endocrine-system.html" class="strand-topic"><span class="strand-topic-dot"></span>Human endocrine system<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/homeostasis.html" class="strand-topic"><span class="strand-topic-dot"></span>Homeostasis<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/plant-responses.html" class="strand-topic"><span class="strand-topic-dot"></span>Responding to the environment — plants<span class="strand-badge">Lesson</span></a>
+        <a href="gr12/life/reproduction-vertebrates.html" class="strand-topic"><span class="strand-topic-dot"></span>Reproduction in vertebrates</a>
+        <a href="gr12/life/human-reproduction.html" class="strand-topic"><span class="strand-topic-dot"></span>Human reproduction</a>
+        <a href="gr12/life/nervous-system-senses.html" class="strand-topic"><span class="strand-topic-dot"></span>Nervous system &amp; senses</a>
+        <a href="gr12/life/human-endocrine-system.html" class="strand-topic"><span class="strand-topic-dot"></span>Human endocrine system</a>
+        <a href="gr12/life/homeostasis.html" class="strand-topic"><span class="strand-topic-dot"></span>Homeostasis</a>
+        <a href="gr12/life/plant-responses.html" class="strand-topic"><span class="strand-topic-dot"></span>Responding to the environment — plants</a>
       </div>
     </div>
 
@@ -623,13 +648,15 @@
       </div>
       <div><div class="strand-title">Evolution &amp; Genetics</div><p class="strand-desc">Darwinism and natural selection, the evidence for evolution and human evolution, and Mendelian genetics and inheritance.</p></div>
       <div class="strand-topics">
-        <a href="gr12/life/darwinism-natural-selection.html" class="strand-topic"><span class="strand-topic-dot"></span>Darwinism &amp; natural selection<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/evolution-human-evolution.html" class="strand-topic"><span class="strand-topic-dot"></span>Evolution — evidence &amp; human evolution<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/life/genetics-inheritance.html" class="strand-topic"><span class="strand-topic-dot"></span>Genetics &amp; inheritance<span class="strand-badge">Lesson</span></a>
+        <a href="gr12/life/darwinism-natural-selection.html" class="strand-topic"><span class="strand-topic-dot"></span>Darwinism &amp; natural selection</a>
+        <a href="gr12/life/evolution-human-evolution.html" class="strand-topic"><span class="strand-topic-dot"></span>Evolution — evidence &amp; human evolution</a>
+        <a href="gr12/life/genetics-inheritance.html" class="strand-topic"><span class="strand-topic-dot"></span>Genetics &amp; inheritance</a>
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="grade-section" id="section-grade12-phys">
   <!-- GRADE 12 Physical Sciences -->
   <div class="section-row" id="grade12-phys" style="margin-top:16px;">
     <span class="section-label" style="color:#f9a8d4;">
@@ -653,13 +680,13 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚡</div><span class="strand-tag">Physics · Mechanics &amp; Electricity</span>
       </div>
-      <div><div class="strand-title">Projectiles, Waves &amp; Electrodynamics</div><p class="strand-desc">Vertical projectile motion, Doppler effect, AC generators and motors, internal resistance circuits, and optical phenomena including the photoelectric effect.</p></div>
+      <div><div class="strand-title">Projectiles, Waves &amp; Electrodynamics</div><p class="strand-desc">From projectiles to the photoelectric effect — the matric physics essentials.</p></div>
       <div class="strand-topics">
-        <a href="gr12/physics/vertical-projectile.html" class="strand-topic"><span class="strand-topic-dot"></span>Vertical projectile motion<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/physics/doppler-effect.html" class="strand-topic"><span class="strand-topic-dot"></span>The Doppler effect<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/physics/electrodynamics.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrodynamics<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/physics/electric-circuits-gr12.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits — internal resistance<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/physics/photoelectric-effect.html" class="strand-topic"><span class="strand-topic-dot"></span>Optical phenomena &amp; photoelectric effect<span class="strand-badge">Lesson</span></a>
+        <a href="gr12/physics/vertical-projectile.html" class="strand-topic"><span class="strand-topic-dot"></span>Vertical projectile motion</a>
+        <a href="gr12/physics/doppler-effect.html" class="strand-topic"><span class="strand-topic-dot"></span>The Doppler effect</a>
+        <a href="gr12/physics/electrodynamics.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrodynamics</a>
+        <a href="gr12/physics/electric-circuits-gr12.html" class="strand-topic"><span class="strand-topic-dot"></span>Electric circuits — internal resistance</a>
+        <a href="gr12/physics/photoelectric-effect.html" class="strand-topic"><span class="strand-topic-dot"></span>Optical phenomena &amp; photoelectric effect</a>
       </div>
     </div>
 
@@ -668,45 +695,76 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚗️</div><span class="strand-tag">Chemistry · Organic &amp; Electrochemistry</span>
       </div>
-      <div><div class="strand-title">Organic Chemistry &amp; Electrochemistry</div><p class="strand-desc">Organic molecules, IUPAC naming, organic reactions, electrochemistry with galvanic and electrolytic cells, quantitative acids &amp; bases, and the chemical industry.</p></div>
+      <div><div class="strand-title">Organic Chemistry &amp; Electrochemistry</div><p class="strand-desc">Carbon compounds, electrochemical cells, and chemistry at industrial scale.</p></div>
       <div class="strand-topics">
-        <a href="gr12/chemistry/organic-chemistry.html" class="strand-topic"><span class="strand-topic-dot"></span>Organic chemistry — structure &amp; naming<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/chemistry/organic-reactions.html" class="strand-topic"><span class="strand-topic-dot"></span>Organic reactions<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/chemistry/electrochemistry.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrochemistry<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/chemistry/acids-bases-gr12.html" class="strand-topic"><span class="strand-topic-dot"></span>Acids &amp; bases — quantitative<span class="strand-badge">Lesson</span></a>
-        <a href="gr12/chemistry/chemical-industry.html" class="strand-topic"><span class="strand-topic-dot"></span>The chemical industry<span class="strand-badge">Lesson</span></a>
+        <a href="gr12/chemistry/organic-chemistry.html" class="strand-topic"><span class="strand-topic-dot"></span>Organic chemistry — structure &amp; naming</a>
+        <a href="gr12/chemistry/organic-reactions.html" class="strand-topic"><span class="strand-topic-dot"></span>Organic reactions</a>
+        <a href="gr12/chemistry/electrochemistry.html" class="strand-topic"><span class="strand-topic-dot"></span>Electrochemistry</a>
+        <a href="gr12/chemistry/acids-bases-gr12.html" class="strand-topic"><span class="strand-topic-dot"></span>Acids &amp; bases — quantitative</a>
+        <a href="gr12/chemistry/chemical-industry.html" class="strand-topic"><span class="strand-topic-dot"></span>The chemical industry</a>
       </div>
     </div>
+  </div>
   </div>
 
   <footer>
     <span class="footer-copy">🔬 Science Sage · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
   </footer>
 
+  <script src="../topic-memory.js"></script>
   <script>
-    lucide.createIcons();
+    const refreshIcons=()=>{try{lucide.createIcons();}catch(_){}};
+    refreshIcons();
 
     function togglePathMenu(e){
       e.stopPropagation();
       document.getElementById('pathDropdown').classList.toggle('open');
     }
-    function selectPath(e,id,label,icon){
-      e.preventDefault();
-      const target=document.getElementById(id);
-      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
-      document.getElementById('pathCurrent').textContent=label;
-      const iconColor=getComputedStyle(e.currentTarget).getPropertyValue('--pc').trim();
+
+    // One learning path visible at a time — the dropdown filters, it doesn't scroll.
+    const PATH_META={
+      'grade7':      {label:'Grade 7 · Natural Sciences',  icon:'flask-conical', color:'#4ade80'},
+      'grade8':      {label:'Grade 8 · Natural Sciences',  icon:'flask-conical', color:'#60a5fa'},
+      'grade9':      {label:'Grade 9 · Natural Sciences',  icon:'flask-conical', color:'#fbbf24'},
+      'grade10-life':{label:'Grade 10 · Life Sciences',    icon:'leaf', color:'#4ade80'},
+      'grade10-phys':{label:'Grade 10 · Physical Sciences',icon:'zap',  color:'#60a5fa'},
+      'grade11-life':{label:'Grade 11 · Life Sciences',    icon:'leaf', color:'#34d399'},
+      'grade11-phys':{label:'Grade 11 · Physical Sciences',icon:'zap',  color:'#c084fc'},
+      'grade12-life':{label:'Grade 12 · Life Sciences',    icon:'leaf', color:'#4ade80'},
+      'grade12-phys':{label:'Grade 12 · Physical Sciences',icon:'zap',  color:'#f472b6'}
+    };
+    function applyPath(id,persist=true){
+      if(!PATH_META[id]) id='grade7';
+      document.querySelectorAll('.grade-section').forEach(s=>s.classList.toggle('active',s.id==='section-'+id));
+      const meta=PATH_META[id];
+      document.getElementById('pathCurrent').textContent=meta.label;
       const iconWrap=document.getElementById('pathTriggerIcon');
-      iconWrap.style.color=iconColor;
-      iconWrap.style.background=iconColor.startsWith('#')?iconColor+'24':iconColor;
-      iconWrap.innerHTML=`<i data-lucide="${icon}" style="width:17px;height:17px;"></i>`;
-      lucide.createIcons();
+      iconWrap.style.color=meta.color;
+      iconWrap.style.background=meta.color+'24';
+      iconWrap.innerHTML=`<i data-lucide="${meta.icon}" style="width:17px;height:17px;"></i>`;
+      refreshIcons();
+      if(persist){try{localStorage.setItem('scienceSagePath',id);}catch(_){}}
+    }
+    function selectPath(e,id){
+      e.preventDefault();
+      applyPath(id);
       document.getElementById('pathDropdown').classList.remove('open');
     }
+    const savedPath=localStorage.getItem('scienceSagePath');
+    applyPath(savedPath||'grade7',!!savedPath);
+    // First visit: default to the learner's own grade once their profile loads.
+    document.addEventListener('magiclab:auth:ready',()=>{
+      if(localStorage.getItem('scienceSagePath')) return;
+      const g=parseInt(window.MagicLabAuth?.getProfile?.()?.grade,10);
+      if(g>=7&&g<=9) applyPath('grade'+g,false);
+      else if(g>=10&&g<=12) applyPath('grade'+g+'-life',false);
+    });
     document.addEventListener('click', e=>{
       const dd=document.getElementById('pathDropdown');
       if(dd && !dd.contains(e.target)) dd.classList.remove('open');
     });
+
+    TopicMemory.init({key:'science-sage'});
 
     function setCurr12(mode){
       const nsc=mode==='nsc';
