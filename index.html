@@ -16,6 +16,7 @@
   <script defer src="assignments.js"></script>
   <script defer src="xp.js"></script>
   <script defer src="auth-modal.js"></script>
+  <script defer src="payment.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -802,7 +803,8 @@
       const btn = document.getElementById('nav-upgrade-btn');
       if (!btn) return;
       const profile = window.MagicLabAuth?.getProfile();
-      const showUpgrade = profile && profile.package !== 'pro' && profile.package !== 'school';
+      const showUpgrade = window.MagicLabPayments?.live &&
+        profile && profile.package !== 'pro' && profile.package !== 'school';
       btn.style.display = showUpgrade ? '' : 'none';
     }
     document.addEventListener('magiclab:auth:ready', _syncUpgradeBtn);

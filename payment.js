@@ -10,7 +10,17 @@
 // ============================================================
 
 (function () {
+  // ── Feature flag ───────────────────────────────────────────
+  // Payments aren't open to the public yet. While false, every
+  // upgrade entry point (nav pill, account-page link, pricing-page
+  // button) hides or disables itself, and upgrade() refuses to run.
+  // Flip to true when the live PayFast credentials are in place.
+  const PAYMENTS_LIVE = false;
+
   async function upgrade() {
+    if (!PAYMENTS_LIVE) {
+      return { error: "Payments aren't open yet — check back soon!" };
+    }
     const auth = window.MagicLabAuth;
     if (!auth?.isLoggedIn()) {
       window.MagicLabModal?.open('signin');
@@ -70,5 +80,5 @@
     form.submit();
   }
 
-  window.MagicLabPayments = { upgrade };
+  window.MagicLabPayments = { upgrade, live: PAYMENTS_LIVE };
 })();

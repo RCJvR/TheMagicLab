@@ -105,8 +105,18 @@
       if (profile?.package === 'pro' || profile?.package === 'school') {
         btn.outerHTML = '<div class="already-badge">✓ You already have full access</div>';
         if (msg) msg.textContent = '';
+        return;
+      }
+      if (!window.MagicLabPayments?.live) {
+        btn.disabled = true;
+        btn.textContent = '💳 Payments launching soon';
+        if (msg) {
+          msg.className = 'plan-msg';
+          msg.textContent = "We're putting the final touches on secure payments — the Pro plan opens shortly.";
+        }
       }
     }
+    document.addEventListener('DOMContentLoaded', _syncPlanCard);
     document.addEventListener('magiclab:auth:ready', _syncPlanCard);
     document.addEventListener('magiclab:auth:change', _syncPlanCard);
 

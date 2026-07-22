@@ -12,6 +12,7 @@
   <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
   <script defer src="auth-modal.js"></script>
+  <script defer src="payment.js"></script>
   <style>
     :root {
       --bg:#080c1a; --surface:rgba(255,255,255,0.048); --surface2:rgba(255,255,255,0.032);
@@ -207,7 +208,7 @@
       const pkg = profile.package || 'free';
       const isPaid = pkg === 'pro' || pkg === 'school';
       planEl.innerHTML = `<span class="plan-badge ${isPaid ? 'plan-paid' : 'plan-free'}">${isPaid ? '✓ ' : ''}${pkg.charAt(0).toUpperCase() + pkg.slice(1)}</span>` +
-        (isPaid ? '' : '<a class="upgrade-link" href="pricing.html">Upgrade →</a>');
+        (isPaid || !window.MagicLabPayments?.live ? '' : '<a class="upgrade-link" href="pricing.html">Upgrade →</a>');
 
       const created = session?.user?.created_at;
       document.getElementById('acc-since').textContent = created
