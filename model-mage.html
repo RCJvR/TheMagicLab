@@ -931,6 +931,91 @@ function drawSpline(pts, isPreview) {
 let rafId = null;
 function scheduleRender() {
   if (!rafId) rafId = requestAnimationFrame(()=>{ rafId=null; render(); });
+  scheduleAutosave();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// AUTOSAVE — last work state survives refresh / accidental navigation
+// ════════════════════════════════════════════════════════════════════
+// Reuses the exact v2 format of the Save/Load-to-file feature, stored
+// in localStorage instead of a download. Saves are debounced and hang
+// off the three funnels every state change already flows through
+// (scheduleRender, renderFeatureTree, scheduleExtrude), plus a final
+// flush on beforeunload. Restore runs at boot in place of
+// initFeatureTree() when a non-empty autosave exists.
+
+const AUTOSAVE_KEY = 'magiclab-model-mage-autosave';
+let _autosaveTimer = null;
+
+function _doAutosave() {
+  try {
+    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({
+      version: 2,
+      filename: document.getElementById('filename-input')?.value || '',
+      featureTree,
+      activeSketchId,
+      savedAt: Date.now()
+    }));
+  } catch (e) { /* storage full or blocked — autosave is best-effort */ }
+}
+
+function scheduleAutosave() {
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer = setTimeout(_doAutosave, 800);
+}
+
+window.addEventListener('beforeunload', _doAutosave);
+
+function tryRestoreAutosave() {
+  try {
+    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (data.version !== 2 || !Array.isArray(data.featureTree)) return false;
+    // Only restore if there's actually something drawn — a saved blank
+    // canvas should behave like a normal fresh start.
+    const hasContent = data.featureTree.some(f =>
+      (f.type === 'sketch' && f.entities?.length) || f.type === 'datum');
+    if (!hasContent) return false;
+
+    featureTree = data.featureTree;
+    nextFeatId = Math.max(...featureTree.map(f => parseInt(f.id.split('-')[1]) || 0), 0) + 1;
+    activeSketchId =
+      (data.activeSketchId && featureTree.some(f => f.id === data.activeSketchId && f.type === 'sketch'))
+        ? data.activeSketchId
+        : (featureTree.find(f => f.type === 'sketch')?.id ?? null);
+    const fi = document.getElementById('filename-input');
+    if (fi && data.filename) fi.value = data.filename;
+    return true;
+  } catch (e) { return false; }
+}
+
+function discardAutosaveAndStartFresh() {
+  try { localStorage.removeItem(AUTOSAVE_KEY); } catch (e) {}
+  initFeatureTree();
+  const fi = document.getElementById('filename-input');
+  if (fi) fi.value = 'sketch';
+  selection = null;
+  renderFeatureTree(); scheduleRender(); scheduleExtrude();
+  document.getElementById('mm-restore-toast')?.remove();
+}
+
+function showRestoreToast() {
+  const t = document.createElement('div');
+  t.id = 'mm-restore-toast';
+  t.style.cssText =
+    'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9000;' +
+    'display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;' +
+    'background:#141a33;border:1px solid rgba(124,109,250,0.40);color:#e4e8f8;' +
+    'font-size:13px;box-shadow:0 12px 40px rgba(0,0,0,0.5);';
+  t.innerHTML = '↩︎ Restored your last drawing' +
+    '<button id="mm-restore-fresh" style="padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);' +
+    'background:rgba(255,255,255,0.07);color:#e4e8f8;font-size:12px;font-weight:600;cursor:pointer;">Start fresh</button>' +
+    '<button id="mm-restore-close" style="background:none;border:none;color:rgba(228,232,248,0.5);cursor:pointer;font-size:14px;padding:0 2px;">✕</button>';
+  document.body.appendChild(t);
+  document.getElementById('mm-restore-fresh').addEventListener('click', discardAutosaveAndStartFresh);
+  document.getElementById('mm-restore-close').addEventListener('click', () => t.remove());
+  setTimeout(() => t.remove(), 12000);
 }
 
 function render() {
@@ -1810,6 +1895,7 @@ function scheduleExtrude() {
   clearTimeout(extTimer);
   const hasAny = featureTree.some(f => f.type==='sketch' && getAllProfiles(f).length > 0);
   if (hasAny) extTimer = setTimeout(doExtrude, 300);
+  scheduleAutosave();
 }
 
 function doExtrude() {
@@ -2871,6 +2957,7 @@ function migrateV1(legacyEntities) {
 }
 
 function renderFeatureTree() {
+  scheduleAutosave();
   const list = document.getElementById('feat-list');
   if (!list) return;
   list.innerHTML = '';
@@ -3095,7 +3182,12 @@ document.getElementById('btn-clear-stl').addEventListener('click', () => {
 // ════════════════════════════════════════════════════════════════════
 
 updateHint();
-initFeatureTree();
+if (tryRestoreAutosave()) {
+  showRestoreToast();
+  scheduleExtrude(); // rebuild the 3D solid from the restored tree (queued if worker isn't ready yet)
+} else {
+  initFeatureTree();
+}
 renderFeatureTree();
 scheduleRender();
 
