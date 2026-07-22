@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v51'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v52'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -133,6 +133,14 @@ const CACHE_NAME = 'magic-lab-v51'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // payment-success/cancelled pages, Upgrade nav pill, Edge Functions
                                     // + payments schema on Supabase). Sandbox-signed with the shared
                                     // sandbox passphrase; live needs PAYFAST_* secrets.
+                                    // v52: de-densified the Science Sage, Tech Tower and Math Magician
+                                    // index pages — Science Sage shows one grade/path at a time (the
+                                    // dropdown now filters instead of scrolling, persisted per browser),
+                                    // long topic lists collapse behind "Show all N topics", the repeated
+                                    // "Lesson" badges are gone, and both Science Sage and Tech Tower get
+                                    // a "Continue where you left off" card + visited-lesson ticks via the
+                                    // new shared topic-memory.js (localStorage only). Math Magician's
+                                    // landing reframes "N chapters" tags as phase labels.
 
 const urlsToCache = [
   '/',
@@ -163,6 +171,7 @@ const urlsToCache = [
   '/xp.js',
   '/quiz-engine.js',
   '/tool-welcome.js',
+  '/topic-memory.js',
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',

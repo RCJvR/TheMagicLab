@@ -45,11 +45,19 @@
     .strand-topic{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;font-size:12.5px;color:rgba(210,218,245,.75);text-decoration:none;transition:all 140ms}
     .strand-topic:hover{background:rgba(249,115,22,.08);color:var(--text)}
     .strand-topic-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
-    .strand-badge{margin-left:auto;font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-light);background:rgba(249,115,22,.10);padding:2px 8px;border-radius:99px}
+    .topic-visited{margin-left:auto;flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent-light)}
+    .hero-features{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-family:var(--fm);font-size:11px;letter-spacing:.04em;color:rgba(210,218,245,.55)}
+    .continue-wrap{padding:0 52px;margin:0 0 24px}
+    .continue-wrap:empty{display:none}
+    .continue-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);text-decoration:none;transition:all 150ms}
+    .continue-card:hover{background:rgba(249,115,22,.14);border-color:rgba(249,115,22,.40)}
+    .continue-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--accent-light);margin-bottom:2px}
+    .continue-title{font-weight:700;font-size:14px;color:#fff}
+    .continue-arrow{margin-left:auto;color:var(--accent-light);font-size:16px}
     footer{padding:32px 52px;border-top:1px solid var(--border);text-align:center}
     .footer-copy{font-size:12px;color:var(--muted)}
     @media(max-width:640px){
-      nav,.hero,.grade-filter,.section-row,.strands{padding-left:20px;padding-right:20px}
+      nav,.hero,.grade-filter,.section-row,.strands,.continue-wrap{padding-left:20px;padding-right:20px}
       .grade-filter{margin-left:20px;margin-right:20px}
     }
   </style>
@@ -65,8 +73,11 @@
   <section class="hero">
     <div class="hero-tag"><span class="hero-tag-dot"></span>Technology · CAPS · Gr 8–9</div>
     <h1>Design it. Build it.<br>Make it <em>work.</em></h1>
-    <p class="hero-sub">CAPS-aligned Technology for Grades 8 and 9 — Structures, Mechanical Systems &amp; Control, Electrical &amp; Electronic Systems, and Processing. Every lesson has theory, an interactive simulation, MCQ practice, and printable workbook questions.</p>
+    <p class="hero-sub">CAPS-aligned Technology for Grades 8 and 9 — Structures, Mechanical, Electrical &amp; Processing.</p>
+    <div class="hero-features"><span>📖 Theory</span><span>⚗️ Simulation</span><span>✅ Practice</span><span>✏️ Workbook</span></div>
   </section>
+
+  <div class="continue-wrap" data-continue-slot></div>
 
   <div class="grade-filter" id="gradeFilter">
     <button class="grade-filter-btn active" id="gfb_8" onclick="selectGrade('8')"><i data-lucide="graduation-cap" style="width:15px;height:15px;"></i> Grade 8</button>
@@ -88,9 +99,9 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🏗️</div><span class="strand-tag">Structures · Term 1</span>
       </div>
-      <div><div class="strand-title">Frame Structures &amp; Forces</div><p class="strand-desc">Structural members, tension/compression/torsion/shear, triangulation, beams, bridges, arches, cantilevers, and why structures fail.</p></div>
+      <div><div class="strand-title">Frame Structures &amp; Forces</div><p class="strand-desc">Why bridges stand up, how forces act on frames — and why structures fail.</p></div>
       <div class="strand-topics">
-        <a href="gr8/structures/frame-structures-and-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Frame structures &amp; forces<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/structures/frame-structures-and-forces.html" class="strand-topic"><span class="strand-topic-dot"></span>Frame structures &amp; forces</a>
       </div>
     </div>
 
@@ -98,10 +109,10 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚙️</div><span class="strand-tag">Mechanical Systems · Term 3</span>
       </div>
-      <div><div class="strand-title">Simple Machines, Gears &amp; Mechanical Advantage</div><p class="strand-desc">Wedges, wheel &amp; axle, gears, cams, cranks, and calculating mechanical advantage for levers and gear systems.</p></div>
+      <div><div class="strand-title">Simple Machines, Gears &amp; Mechanical Advantage</div><p class="strand-desc">How simple machines multiply force — and how to calculate the advantage.</p></div>
       <div class="strand-topics">
-        <a href="gr8/mechanical/simple-machines-and-gears.html" class="strand-topic"><span class="strand-topic-dot"></span>Simple machines &amp; gears<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/mechanical/mechanical-advantage-calculations.html" class="strand-topic"><span class="strand-topic-dot"></span>Mechanical advantage calculations<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/mechanical/simple-machines-and-gears.html" class="strand-topic"><span class="strand-topic-dot"></span>Simple machines &amp; gears</a>
+        <a href="gr8/mechanical/mechanical-advantage-calculations.html" class="strand-topic"><span class="strand-topic-dot"></span>Mechanical advantage calculations</a>
       </div>
     </div>
 
@@ -109,9 +120,9 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">♻️</div><span class="strand-tag">Processing · Term 2</span>
       </div>
-      <div><div class="strand-title">The Impact of Technology</div><p class="strand-desc">Positive and negative impacts of technology, packaging design, and bias in technology — mining case studies.</p></div>
+      <div><div class="strand-title">The Impact of Technology</div><p class="strand-desc">Weighing technology's positive and negative impacts on people and the planet.</p></div>
       <div class="strand-topics">
-        <a href="gr8/processing/impact-of-technology.html" class="strand-topic"><span class="strand-topic-dot"></span>The impact of technology<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/processing/impact-of-technology.html" class="strand-topic"><span class="strand-topic-dot"></span>The impact of technology</a>
       </div>
     </div>
 
@@ -119,10 +130,10 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🔌</div><span class="strand-tag">Electrical Systems · Term 4</span>
       </div>
-      <div><div class="strand-title">Circuits, Electricity Generation &amp; Logic Gates</div><p class="strand-desc">Circuit components &amp; symbols, electrochemical cells, generating electricity for the nation, the national grid, and AND/OR logic gates.</p></div>
+      <div><div class="strand-title">Circuits, Electricity Generation &amp; Logic Gates</div><p class="strand-desc">From circuit symbols to the national grid — and your first logic gates.</p></div>
       <div class="strand-topics">
-        <a href="gr8/electrical/circuits-and-cells.html" class="strand-topic"><span class="strand-topic-dot"></span>Circuits &amp; electrochemical cells<span class="strand-badge">Lesson</span></a>
-        <a href="gr8/electrical/generating-electricity-and-logic-gates.html" class="strand-topic"><span class="strand-topic-dot"></span>Generating electricity &amp; logic gates<span class="strand-badge">Lesson</span></a>
+        <a href="gr8/electrical/circuits-and-cells.html" class="strand-topic"><span class="strand-topic-dot"></span>Circuits &amp; electrochemical cells</a>
+        <a href="gr8/electrical/generating-electricity-and-logic-gates.html" class="strand-topic"><span class="strand-topic-dot"></span>Generating electricity &amp; logic gates</a>
       </div>
     </div>
   </div>
@@ -143,10 +154,10 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🏗️</div><span class="strand-tag">Structures · Term 1</span>
       </div>
-      <div><div class="strand-title">Orthographic Projection, Forces &amp; Materials</div><p class="strand-desc">First-angle orthographic projection (front/top/side views), and forces &amp; material properties in construction.</p></div>
+      <div><div class="strand-title">Orthographic Projection, Forces &amp; Materials</div><p class="strand-desc">Draw like an engineer, and choose materials that can take the load.</p></div>
       <div class="strand-topics">
-        <a href="gr9/structures/orthographic-projection.html" class="strand-topic"><span class="strand-topic-dot"></span>First-angle orthographic projection<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/structures/forces-and-materials.html" class="strand-topic"><span class="strand-topic-dot"></span>Forces &amp; material properties<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/structures/orthographic-projection.html" class="strand-topic"><span class="strand-topic-dot"></span>First-angle orthographic projection</a>
+        <a href="gr9/structures/forces-and-materials.html" class="strand-topic"><span class="strand-topic-dot"></span>Forces &amp; material properties</a>
       </div>
     </div>
 
@@ -154,11 +165,11 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">⚙️</div><span class="strand-tag">Mechanical Systems · Term 2</span>
       </div>
-      <div><div class="strand-title">Hydraulics, Pulleys &amp; Advanced Gears</div><p class="strand-desc">Pascal's principle, hydraulic presses &amp; jacks, pulley systems, mechanical control systems, bevel/rack-and-pinion/worm gears.</p></div>
+      <div><div class="strand-title">Hydraulics, Pulleys &amp; Advanced Gears</div><p class="strand-desc">Fluid power and clever gearing — the systems that move heavy things.</p></div>
       <div class="strand-topics">
-        <a href="gr9/mechanical/hydraulics-and-pneumatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Hydraulics &amp; pneumatics<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/mechanical/pulleys-and-control-systems.html" class="strand-topic"><span class="strand-topic-dot"></span>Pulleys &amp; control systems<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/mechanical/advanced-gear-systems.html" class="strand-topic"><span class="strand-topic-dot"></span>Advanced gear systems<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/mechanical/hydraulics-and-pneumatics.html" class="strand-topic"><span class="strand-topic-dot"></span>Hydraulics &amp; pneumatics</a>
+        <a href="gr9/mechanical/pulleys-and-control-systems.html" class="strand-topic"><span class="strand-topic-dot"></span>Pulleys &amp; control systems</a>
+        <a href="gr9/mechanical/advanced-gear-systems.html" class="strand-topic"><span class="strand-topic-dot"></span>Advanced gear systems</a>
       </div>
     </div>
 
@@ -166,10 +177,10 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">🔌</div><span class="strand-tag">Electrical/Electronic Systems · Term 3</span>
       </div>
-      <div><div class="strand-title">Ohm's Law, Resistors &amp; Electronic Sensors</div><p class="strand-desc">Quantitative Ohm's Law, resistor colour codes, diodes/LEDs/transistors, and sensors — LDR, thermistor, capacitors.</p></div>
+      <div><div class="strand-title">Ohm's Law, Resistors &amp; Electronic Sensors</div><p class="strand-desc">Ohm's Law in numbers, and the components that let circuits sense the world.</p></div>
       <div class="strand-topics">
-        <a href="gr9/electrical/ohms-law-and-resistors.html" class="strand-topic"><span class="strand-topic-dot"></span>Ohm's Law &amp; resistor colour codes<span class="strand-badge">Lesson</span></a>
-        <a href="gr9/electrical/electronic-components-and-sensors.html" class="strand-topic"><span class="strand-topic-dot"></span>Electronic components &amp; sensors<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/electrical/ohms-law-and-resistors.html" class="strand-topic"><span class="strand-topic-dot"></span>Ohm's Law &amp; resistor colour codes</a>
+        <a href="gr9/electrical/electronic-components-and-sensors.html" class="strand-topic"><span class="strand-topic-dot"></span>Electronic components &amp; sensors</a>
       </div>
     </div>
 
@@ -177,9 +188,9 @@
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
         <div class="strand-icon">♻️</div><span class="strand-tag">Processing · Term 4</span>
       </div>
-      <div><div class="strand-title">Preserving Materials &amp; Working with Plastics</div><p class="strand-desc">Preserving metals (painting, galvanising, electroplating) and food, plastic types &amp; recycling codes.</p></div>
+      <div><div class="strand-title">Preserving Materials &amp; Working with Plastics</div><p class="strand-desc">Keeping materials useful for longer — from galvanising steel to recycling plastics.</p></div>
       <div class="strand-topics">
-        <a href="gr9/processing/preserving-materials-and-plastics.html" class="strand-topic"><span class="strand-topic-dot"></span>Preserving materials &amp; plastics<span class="strand-badge">Lesson</span></a>
+        <a href="gr9/processing/preserving-materials-and-plastics.html" class="strand-topic"><span class="strand-topic-dot"></span>Preserving materials &amp; plastics</a>
       </div>
     </div>
   </div>
@@ -189,15 +200,21 @@
     <span class="footer-copy">🔧 The Tech Tower · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg</span>
   </footer>
 
+  <script src="../topic-memory.js"></script>
   <script>
-    lucide.createIcons();
+    const refreshIcons=()=>{try{lucide.createIcons();}catch(_){}};
+    refreshIcons();
 
     function selectGrade(grade){
       document.getElementById('gfb_8').classList.toggle('active', grade==='8');
       document.getElementById('gfb_9').classList.toggle('active', grade==='9');
       document.getElementById('gradeSection8').style.display = grade==='8' ? 'block' : 'none';
       document.getElementById('gradeSection9').style.display = grade==='9' ? 'block' : 'none';
+      try{localStorage.setItem('techTowerGrade',grade);}catch(_){}
     }
+    if(localStorage.getItem('techTowerGrade')==='9') selectGrade('9');
+
+    TopicMemory.init({key:'tech-tower'});
   </script>
   <script src="/contact-button.js" defer></script>
 </body>
