@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+<script src="../work-autosave.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -1239,6 +1240,40 @@ await main();
 let blocklyWorkspace = null;
 let currentMode = 'blocks'; // 'js' | 'blocks'
 
+// ── Autosave last program, restore on load ──────────────────────────────────
+const RR_DEFAULT_JS = document.getElementById('codeInput').value; // captured before any autosave restore can overwrite it
+const rrAutosave = WorkAutosave.init({
+  key: 'robot-realm',
+  getState: () => ({
+    mode: currentMode,
+    map: currentMap,
+    js: document.getElementById('codeInput').value,
+    blocksXml: blocklyWorkspace ? Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(blocklyWorkspace)) : null,
+  }),
+  hasContent: (data) => {
+    const hasJs = typeof data.js === 'string' && data.js.trim() && data.js !== RR_DEFAULT_JS;
+    const hasBlocks = typeof data.blocksXml === 'string' && /<block\b/.test(data.blocksXml);
+    return hasJs || hasBlocks;
+  },
+  restore: (data) => {
+    if (data.map && data.map !== currentMap) loadMap(data.map);
+    if (typeof data.js === 'string') document.getElementById('codeInput').value = data.js;
+    if (data.blocksXml) {
+      initBlockly();
+      const dom = Blockly.utils.xml.textToDom(data.blocksXml);
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(dom, blocklyWorkspace);
+    }
+    setMode(data.mode === 'js' ? 'js' : 'blocks');
+  },
+  discard: () => {
+    document.getElementById('codeInput').value = RR_DEFAULT_JS;
+    if (blocklyWorkspace) blocklyWorkspace.clear();
+    loadMap('empty');
+    setMode('blocks');
+  },
+  toastLabel: 'Restored your last program'
+});
+
 function initBlockly() {
   if (blocklyWorkspace) return;
 
@@ -1385,6 +1420,7 @@ function initBlockly() {
     sounds: false,
     renderer: 'zelos',
   });
+  blocklyWorkspace.addChangeListener(() => rrAutosave.scheduleAutosave());
 
   // Keep Blockly sized to its container
   new ResizeObserver(() => {
@@ -1770,7 +1806,9 @@ document.getElementById('codeInput').addEventListener('keydown', e => {
     e.target.value = v.slice(0,s) + '  ' + v.slice(e.target.selectionEnd);
     e.target.selectionStart = e.target.selectionEnd = s + 2;
   }
+  rrAutosave.scheduleAutosave();
 });
+document.getElementById('codeInput').addEventListener('input', () => rrAutosave.scheduleAutosave());
 
 // Ctrl+R / Cmd+R runs the program instead of reloading the page
 document.addEventListener('keydown', e => {
@@ -1781,8 +1819,12 @@ document.addEventListener('keydown', e => {
 });
 
 // Initial load
-initBlockly();
-loadMap('empty');
+if (rrAutosave.tryRestore()) {
+  rrAutosave.showToast();
+} else {
+  initBlockly();
+  loadMap('empty');
+}
 </script>
   <script src="/contact-button.js" defer></script>
 </body>

@@ -50,6 +50,13 @@
     .grade-progress-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-light));transition:width 500ms ease}
     .grade-progress-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:6px}
     .grade-progress.done .grade-progress-label{color:#6ee7b7}
+    .continue-wrap{max-width:1180px;width:100%;margin:0 auto;padding:0 52px 20px;box-sizing:border-box}
+    .continue-wrap:empty{display:none}
+    .continue-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);text-decoration:none;transition:all 150ms}
+    .continue-card:hover{background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.40)}
+    .continue-label{font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:var(--accent-light);margin-bottom:2px}
+    .continue-title{font-weight:700;font-size:14px;color:#fff}
+    .continue-arrow{margin-left:auto;color:var(--accent-light);font-size:16px}
     footer{margin-top:auto;padding:28px 52px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center}
     #view-dropdown{z-index:5}
     .footer-copy{font-size:13px;color:rgba(210,218,245,0.28)}
@@ -99,6 +106,8 @@
   </section>
 
   <div class="symbols"><span>∑</span><span>π</span><span>√</span><span>∞</span><span>∫</span><span>±</span><span>≠</span><span>≤</span><span>≥</span><span>∝</span></div>
+
+  <div class="continue-wrap" data-continue-slot></div>
 
   <div class="view-toggle-row">
     <div class="view-toggle">
@@ -224,6 +233,36 @@
     }
     document.addEventListener('magiclab:progress:ready', renderGradeProgress);
     if(window.MagicLabProgress) renderGradeProgress();
+
+    // ── Continue where you left off — most recent completed topic ──────────
+    async function renderContinueCard(){
+      if(!window.MagicLabProgress) return;
+      const slot = document.querySelector('[data-continue-slot]');
+      if(!slot || slot.childElementCount) return;
+      const events = await MagicLabProgress.getRecentEvents(20);
+      const last = events.find(e => e.tool==='math-magician' && e.event_type==='lesson_complete' && e.grade);
+      if(!last) return;
+      const card = document.createElement('a');
+      card.className = 'continue-card';
+      card.href = `gr${last.grade}/index.html`;
+      const text = document.createElement('div');
+      const label = document.createElement('div');
+      label.className = 'continue-label';
+      label.textContent = 'Continue where you left off';
+      const title = document.createElement('div');
+      title.className = 'continue-title';
+      title.textContent = `Grade ${last.grade}` + (last.topic ? ` · ${last.topic}` : ' Maths');
+      text.appendChild(label);
+      text.appendChild(title);
+      const arrow = document.createElement('span');
+      arrow.className = 'continue-arrow';
+      arrow.textContent = '→';
+      card.appendChild(text);
+      card.appendChild(arrow);
+      slot.appendChild(card);
+    }
+    document.addEventListener('magiclab:progress:ready', renderContinueCard);
+    if(window.MagicLabProgress) renderContinueCard();
   </script>
   <script src="/contact-button.js" defer></script>
 </body>

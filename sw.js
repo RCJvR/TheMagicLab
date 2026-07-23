@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v54'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v55'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -162,6 +162,25 @@ const CACHE_NAME = 'magic-lab-v54'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // corrected the gr8 "all done" message, which said "completed all of
                                     // Chapter 1!" even though that branch only fires after the true last
                                     // topic in the whole course.
+                                    // v55: two related features, ported from the tools that pioneered
+                                    // them. "Continue where you left off" (Science Sage / Tech Tower's
+                                    // pattern) now also covers Math Magician (a per-grade "Continue"
+                                    // card on the landing page using getRecentEvents()), Computer Codex
+                                    // and AI Oracle (a dismissible toast offering to jump back to the
+                                    // last lesson viewed — new progress.js-independent localStorage
+                                    // keys, since neither tool changes URL per lesson), and Drawing
+                                    // Druid (topic-memory.js generalized with a configurable
+                                    // `linkSelector` so it works on Drawing Druid's flat .chapter-card
+                                    // links, not just Science Sage's nested .strand-topic lists).
+                                    // Separately, Model Mage's "autosave last work state and restore on
+                                    // load" pattern is now factored out into a shared work-autosave.js
+                                    // engine and applied to Java Genie, Code Conjurer, Web Wizard (all
+                                    // three: the codeEditor textarea's content), and Robot Realm /
+                                    // Spike Spellcaster (mode + map/mission + JS/Python + Blockly XML,
+                                    // reusing each tool's existing saveProgram()/loadProgramFromFile()
+                                    // payload shape). Same restore-with-dismissible-toast UX as Model
+                                    // Mage throughout; "Start fresh" always clears back to the tool's
+                                    // normal blank boot state.
 
 const urlsToCache = [
   '/',
@@ -193,6 +212,7 @@ const urlsToCache = [
   '/quiz-engine.js',
   '/tool-welcome.js',
   '/topic-memory.js',
+  '/work-autosave.js',
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',

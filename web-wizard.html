@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="work-autosave.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
@@ -1352,6 +1353,7 @@ const examples = {
 
 // ── DOM refs ──────────────────────────────────────────────────────────────────
 const codeEditor        = document.getElementById('codeEditor');
+const WW_DEFAULT_CODE   = codeEditor.value; // captured before any autosave restore can overwrite it
 const highlightLayer    = document.getElementById('highlightLayer');
 const lineNumbers       = document.getElementById('lineNumbers');
 const lineNumbersToggle = document.getElementById('lineNumbersToggle');
@@ -1469,7 +1471,18 @@ let lineNumbersVisible = true;
 function updateLineNumbers() {
   const lines = codeEditor.value.split('\n').length;
   lineNumbers.innerHTML = Array.from({length: lines}, (_, i) => i+1).join('<br>');
+  wwAutosave.scheduleAutosave();
 }
+
+// ── Autosave last program, restore on load ──────────────────────────────────
+const wwAutosave = WorkAutosave.init({
+  key: 'web-wizard',
+  getState: () => ({ code: codeEditor.value }),
+  hasContent: (data) => typeof data.code === 'string' && data.code.trim() && data.code !== WW_DEFAULT_CODE,
+  restore: (data) => { codeEditor.value = data.code; updateLineNumbers(); updateHighlight(); },
+  discard: () => { codeEditor.value = WW_DEFAULT_CODE; updateLineNumbers(); updateHighlight(); },
+  toastLabel: 'Restored your last page'
+});
 
 function toggleLineNumbers() {
   lineNumbersVisible = !lineNumbersVisible;
@@ -1804,6 +1817,7 @@ document.addEventListener('mouseup', () => {
 })();
 
 // ── Init ──────────────────────────────────────────────────────────────────────
+if (wwAutosave.tryRestore()) wwAutosave.showToast();
 updateLineNumbers();
 updateHighlight();
 charCount.textContent = codeEditor.value.length + ' chars';

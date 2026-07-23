@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="work-autosave.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
@@ -1086,6 +1087,7 @@ search_sort:
 
 // ── DOM refs ─────────────────────────────────────────────────────────────
 const codeEditor        = document.getElementById('codeEditor');
+const CC_DEFAULT_CODE   = codeEditor.value; // captured before any autosave restore can overwrite it
 const highlightLayer    = document.getElementById('highlightLayer');
 const lineNumbers       = document.getElementById('lineNumbers');
 const lineNumbersToggle = document.getElementById('lineNumbersToggle');
@@ -1160,7 +1162,18 @@ let lineNumbersVisible = true;
 function updateLineNumbers() {
   const n = codeEditor.value.split('\n').length;
   lineNumbers.innerHTML = Array.from({length:n},(_,i)=>i+1).join('<br>');
+  ccAutosave.scheduleAutosave();
 }
+
+// ── Autosave last program, restore on load ──────────────────────────────────
+const ccAutosave = WorkAutosave.init({
+  key: 'code-conjurer',
+  getState: () => ({ code: codeEditor.value }),
+  hasContent: (data) => typeof data.code === 'string' && data.code.trim() && data.code !== CC_DEFAULT_CODE,
+  restore: (data) => { codeEditor.value = data.code; updateLineNumbers(); updateHighlight(); },
+  discard: () => { codeEditor.value = CC_DEFAULT_CODE; updateLineNumbers(); updateHighlight(); },
+  toastLabel: 'Restored your last program'
+});
 function toggleLineNumbers() {
   lineNumbersVisible = !lineNumbersVisible;
   lineNumbers.style.display = lineNumbersVisible ? '' : 'none';
@@ -2012,6 +2025,7 @@ document.addEventListener('keydown', e => {
 
 
 // ── Init ──────────────────────────────────────────────────────────────────
+if (ccAutosave.tryRestore()) ccAutosave.showToast();
 updateLineNumbers();
 updateHighlight();
 lucide.createIcons();

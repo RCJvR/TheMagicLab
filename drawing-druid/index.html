@@ -47,6 +47,14 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:12px;paddi
 .chapter-title{font-weight:800;font-size:15.5px;letter-spacing:-0.02em;color:#fff;line-height:1.25;}
 .chapter-desc{font-size:12.5px;line-height:1.6;color:rgba(214,218,235,.55);flex:1;}
 .chapter-btn{font-size:12px;font-weight:700;color:#fde047;display:flex;align-items:center;gap:5px;}
+.topic-visited{position:absolute;bottom:16px;right:18px;font-size:13px;font-weight:700;color:#fde047;}
+.continue-wrap{padding:0 40px 24px;}
+.continue-wrap:empty{display:none;}
+.continue-card{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.25);text-decoration:none;transition:all 150ms;max-width:640px;}
+.continue-card:hover{background:rgba(234,179,8,0.14);border-color:rgba(234,179,8,0.40);}
+.continue-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;color:#fde047;margin-bottom:2px;}
+.continue-title{font-weight:700;font-size:14px;color:#fff;}
+.continue-arrow{margin-left:auto;color:#fde047;font-size:16px;}
 .soon-pill{position:absolute;top:16px;right:16px;font-family:var(--fm);font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:rgba(148,163,184,0.14);border:1px solid rgba(148,163,184,0.28);color:#cbd5e1;}
 .grade-pill{position:absolute;top:16px;right:16px;font-family:var(--fm);font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px;white-space:nowrap;}
 .grade-pill.gr10{background:rgba(100,116,139,0.18);border:1px solid rgba(100,116,139,0.42);color:#cbd5e1;}
@@ -79,6 +87,7 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:12px;paddi
 </style>
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
+<script defer src="../topic-memory.js"></script>
 </head>
 <body>
 
@@ -98,6 +107,8 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:12px;paddi
   <h1>Engineering Graphics &amp; Design</h1>
   <p>A full CAPS/SAGS-aligned EGD curriculum — step-by-step construction lessons, interactive tools, practice questions, and printable A3 workbook sheets for every drawing discipline.</p>
 </div>
+
+<div class="continue-wrap" data-continue-slot></div>
 
 <div class="section-row">
   <span class="section-label">Chapters</span>
@@ -291,6 +302,11 @@ nav{display:flex;align-items:center;justify-content:space-between;gap:12px;paddi
 </div>
 
 <script defer src="wip-notice.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    TopicMemory.init({ key: 'drawing-druid', linkSelector: '.chapter-card' });
+  });
+</script>
   <script src="/contact-button.js" defer></script>
 </body>
 </html>

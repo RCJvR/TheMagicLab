@@ -322,6 +322,7 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 
 <script src="spike-python.js"></script>
 <script src="spike-ble.js"></script>
+<script src="../work-autosave.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════════
    SPIKE SPELLCASTER — Simulator
@@ -1638,6 +1639,39 @@ let blocklyWorkspace = null;
 let currentMode = 'blocks';
 const BLOCKLY_OK = typeof Blockly !== 'undefined' && !!Blockly.Python;
 
+// ── Autosave last program, restore on load ──────────────────────────────────
+const SS_DEFAULT_PY = STARTERS.free; // matches what boot assigns codeInput.value to when nothing is restored
+const ssAutosave = WorkAutosave.init({
+  key: 'spike-spellcaster',
+  getState: () => ({
+    mode: currentMode,
+    mission: currentMission,
+    python: document.getElementById('codeInput').value,
+    blocksXml: blocklyWorkspace ? Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(blocklyWorkspace)) : null,
+  }),
+  hasContent: (data) => {
+    const hasPy = typeof data.python === 'string' && data.python.trim() && data.python !== SS_DEFAULT_PY;
+    const hasBlocks = typeof data.blocksXml === 'string' && /<block\b/.test(data.blocksXml);
+    return hasPy || hasBlocks;
+  },
+  restore: (data) => {
+    if (data.mission && data.mission !== currentMission) loadMission(data.mission);
+    if (typeof data.python === 'string') document.getElementById('codeInput').value = data.python;
+    if (data.blocksXml) {
+      initBlockly();
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.utils.xml.textToDom(data.blocksXml), blocklyWorkspace);
+    }
+    setMode(data.mode === 'py' ? 'py' : 'blocks');
+  },
+  discard: () => {
+    document.getElementById('codeInput').value = SS_DEFAULT_PY;
+    if (blocklyWorkspace) loadStarterBlocks();
+    loadMission('free');
+    setMode(BLOCKLY_OK ? 'blocks' : 'py');
+  },
+  toastLabel: 'Restored your last program'
+});
+
 function initBlockly(){
   if (!BLOCKLY_OK || blocklyWorkspace) return;
   const P = Blockly.Python;
@@ -1886,6 +1920,7 @@ function initBlockly(){
     trashcan:true, scrollbars:true, sounds:false, renderer:'zelos',
   });
   new ResizeObserver(()=>{ if(blocklyWorkspace) Blockly.svgResize(blocklyWorkspace); }).observe(div);
+  blocklyWorkspace.addChangeListener(() => ssAutosave.scheduleAutosave());
   loadStarterBlocks();
 }
 
@@ -1974,7 +2009,9 @@ document.getElementById('codeInput').addEventListener('keydown', e=>{
     e.target.value = v.slice(0,s)+'    '+v.slice(e.target.selectionEnd);
     e.target.selectionStart = e.target.selectionEnd = s+4;
   }
+  ssAutosave.scheduleAutosave();
 });
+document.getElementById('codeInput').addEventListener('input', () => ssAutosave.scheduleAutosave());
 // Ctrl/Cmd+R runs
 document.addEventListener('keydown', e=>{
   if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='r'){ e.preventDefault(); runCode(); }
@@ -1982,7 +2019,9 @@ document.addEventListener('keydown', e=>{
 
 renderMatrix(); renderStatus();
 document.getElementById('codeInput').value = STARTERS.free;
-if (BLOCKLY_OK){
+if (ssAutosave.tryRestore()) {
+  ssAutosave.showToast();
+} else if (BLOCKLY_OK){
   initBlockly();
   loadMission('free');
   setMode('blocks');

@@ -1786,9 +1786,46 @@ function goLesson(idx) {
   checkUnitCompletion();
 
   currentLesson = idx;
+  saveLastLesson(idx);
   renderLesson();
   updateUI();
   document.getElementById('lessonScroll').scrollTop = 0;
+}
+
+// ── Continue where you left off ─────────────────────────────────────────────
+// Separate from `completed` (which tracks finished lessons) — this just
+// remembers the last lesson viewed, per browser, so a returning visitor
+// can jump back without re-clicking through everything they've already
+// seen. Unlike goLesson(), jumpToLesson() does NOT mark the lesson you're
+// leaving as complete — it's a plain "go look at this" navigation, used
+// only by the continue toast below, not by the Prev/Next flow.
+const AO_LAST_KEY = 'ai-oracle:lastLesson';
+function saveLastLesson(idx) {
+  try { localStorage.setItem(AO_LAST_KEY, String(idx)); } catch (e) {}
+}
+function jumpToLesson(idx) {
+  if (idx < 0 || idx >= LESSONS.length) return;
+  currentLesson = idx;
+  renderLesson();
+  updateUI();
+  document.getElementById('lessonScroll').scrollTop = 0;
+}
+function showContinueToast(idx) {
+  const t = document.createElement('div');
+  t.id = 'ao-continue-toast';
+  t.style.cssText =
+    'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9000;' +
+    'display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;' +
+    'background:#141a33;border:1px solid rgba(124,109,250,0.40);color:#e4e8f8;' +
+    'font-family:system-ui,sans-serif;font-size:13px;box-shadow:0 12px 40px rgba(0,0,0,0.5);max-width:calc(100vw - 32px);';
+  t.innerHTML = `↩︎ Continue where you left off: <strong>${LESSONS[idx].title}</strong>` +
+    '<button id="ao-continue-go" style="padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);' +
+    'background:rgba(255,255,255,0.07);color:#e4e8f8;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">Resume</button>' +
+    '<button id="ao-continue-close" style="background:none;border:none;color:rgba(228,232,248,0.5);cursor:pointer;font-size:14px;padding:0 2px;">✕</button>';
+  document.body.appendChild(t);
+  document.getElementById('ao-continue-go').addEventListener('click', () => { jumpToLesson(idx); t.remove(); });
+  document.getElementById('ao-continue-close').addEventListener('click', () => t.remove());
+  setTimeout(() => t.remove(), 12000);
 }
 
 function nextLesson() {
@@ -2221,6 +2258,14 @@ checkUnitCompletion();
 
 renderLesson();
 updateUI();
+
+// Offer to resume the last lesson viewed, if it's not the one already showing.
+(() => {
+  const saved = parseInt(localStorage.getItem(AO_LAST_KEY), 10);
+  if (Number.isInteger(saved) && saved >= 0 && saved < LESSONS.length && saved !== currentLesson) {
+    showContinueToast(saved);
+  }
+})();
 
 // ── Mobile sidebar ────────────────────────────────────────────────────────────
 function toggleSidebar() {
