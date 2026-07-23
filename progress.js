@@ -12,7 +12,8 @@ document.addEventListener('magiclab:auth:ready', () => {
     getToolProgress,
     getAllProgress,
     getRecentEvents,
-    getLessonHistory
+    getLessonHistory,
+    getLessonHistoryByGrade
   };
   document.dispatchEvent(new CustomEvent('magiclab:progress:ready'));
 });
@@ -197,4 +198,35 @@ async function getLessonHistory(tool) {
 
   if (error) console.warn('[MagicLab] getLessonHistory error:', error.message);
   return new Set((data ?? []).map(r => r.topic));
+}
+
+// Same as getLessonHistory, but bucketed by the `grade` recorded on each
+// event instead of merged into one set — lets a landing page show
+// per-grade completion without loading that grade's own topic manifest.
+// Returns { [grade]: Set(topic) }, keyed by grade as a string.
+async function getLessonHistoryByGrade(tool) {
+  if (!window.MagicLabAuth?.isLoggedIn()) return {};
+  const supabase = window.MagicLabAuth._supabase();
+  const profile  = window.MagicLabAuth.getProfile();
+  const session  = window.MagicLabAuth.getSession();
+  const userId   = profile?.id ?? session?.user?.id;
+  if (!userId) return {};
+
+  const { data, error } = await supabase
+    .from('progress_events')
+    .select('topic, grade')
+    .eq('user_id', userId)
+    .eq('tool', tool)
+    .eq('event_type', 'lesson_complete')
+    .not('topic', 'is', null)
+    .not('grade', 'is', null);
+
+  if (error) { console.warn('[MagicLab] getLessonHistoryByGrade error:', error.message); return {}; }
+
+  const byGrade = {};
+  (data ?? []).forEach(r => {
+    const g = String(r.grade);
+    (byGrade[g] ??= new Set()).add(r.topic);
+  });
+  return byGrade;
 }

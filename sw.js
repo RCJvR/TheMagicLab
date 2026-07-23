@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v52'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v53'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -141,6 +141,13 @@ const CACHE_NAME = 'magic-lab-v52'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // a "Continue where you left off" card + visited-lesson ticks via the
                                     // new shared topic-memory.js (localStorage only). Math Magician's
                                     // landing reframes "N chapters" tags as phase labels.
+                                    // v53: math-magician/index.html grade cards now show real per-grade
+                                    // progress (X/Y topics + %, CTA swaps to "Continue"/"Review again")
+                                    // pulled from Supabase via a new progress.js helper,
+                                    // getLessonHistoryByGrade(tool) — buckets lesson_complete history by
+                                    // the `grade` already recorded on each event, so the landing page
+                                    // doesn't need to load every grade's chapter manifest. Cards with no
+                                    // completions yet render exactly as before (no bar, "Start learning").
 
 const urlsToCache = [
   '/',
