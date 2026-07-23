@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v56'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v57'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -211,6 +211,19 @@ const CACHE_NAME = 'magic-lab-v56'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // 5 that existed when it was written; the old 5-tools badge keeps its
                                     // id and criteria unchanged (just relabeled "Well-Rounded") so no
                                     // already-earned badge is affected. 27 -> 36 total badges.
+                                    // v57: dashboard-student.html's "Progress by Tool" grid only ever
+                                    // had cards for the original 5 tracked tools — added the other 7
+                                    // (AI Oracle, Drawing Druid, Science Sage, Tech Tower, Robot Realm,
+                                    // Spike Spellcaster, Model Mage) now that v56 wired up their
+                                    // tracking. Each card's "total" denominator matches the same
+                                    // verified content-size numbers used for that tool's badge in v56.
+                                    // Spike Spellcaster has no lesson curriculum to count (its badge is
+                                    // code_runs-based too) — _renderTools() gained a small metric branch
+                                    // so its card shows "X / 20 runs" with Runs as the primary stat
+                                    // instead of always reading "0 lessons" no matter how much it's used.
+                                    // Also gave a few cards more accurate unit labels than the generic
+                                    // "lessons" (Drawing Druid: constructions, Robot Realm: challenges,
+                                    // Model Mage: models).
 
 const urlsToCache = [
   '/',

@@ -476,11 +476,18 @@
 
   <script>
     const TOOL_META = {
-      'java-genie':     { icon:'🧞', name:'Java Genie',       url:'java-genie.html',           color:'#5b50d6', bg:'rgba(91,80,214,0.18)',  total:12 },
-      'web-wizard':     { icon:'🌐', name:'Web Wizard',       url:'web-wizard.html',           color:'#0776a0', bg:'rgba(7,118,160,0.18)',   total:10 },
-      'code-conjurer':  { icon:'📜', name:'Code Conjurer',    url:'code-conjurer.html',        color:'#b31540', bg:'rgba(179,21,64,0.18)',   total:18 },
-      'math-magician':  { icon:'🔢', name:'Math Magician',    url:'math-magician/index.html',  color:'#d4920e', bg:'rgba(212,146,14,0.18)',  total:19 },
-      'computer-codex': { icon:'💻', name:'Computer Codex',   url:'computer-codex.html',       color:'#3d5068', bg:'rgba(61,80,104,0.18)',   total:25 },
+      'java-genie':        { icon:'🧞', name:'Java Genie',        url:'java-genie.html',              color:'#5b50d6', bg:'rgba(91,80,214,0.18)',   total:12 },
+      'web-wizard':        { icon:'🌐', name:'Web Wizard',        url:'web-wizard.html',              color:'#0776a0', bg:'rgba(7,118,160,0.18)',   total:10 },
+      'code-conjurer':     { icon:'📜', name:'Code Conjurer',     url:'code-conjurer.html',           color:'#b31540', bg:'rgba(179,21,64,0.18)',   total:18 },
+      'math-magician':     { icon:'🔢', name:'Math Magician',     url:'math-magician/index.html',     color:'#d4920e', bg:'rgba(212,146,14,0.18)',  total:19 },
+      'computer-codex':    { icon:'💻', name:'Computer Codex',    url:'computer-codex.html',          color:'#3d5068', bg:'rgba(61,80,104,0.18)',   total:25 },
+      'ai-oracle':         { icon:'🔮', name:'AI Oracle',         url:'ai-oracle.html',               color:'#a855f7', bg:'rgba(168,85,247,0.18)',  total:18  },
+      'drawing-druid':     { icon:'🪶', name:'Drawing Druid',     url:'drawing-druid/index.html',     color:'#eab308', bg:'rgba(234,179,8,0.18)',   total:134, unit:'constructions' },
+      'science-sage':      { icon:'🔬', name:'Science Sage',      url:'science-sage/index.html',      color:'#22c55e', bg:'rgba(34,197,94,0.18)',   total:108 },
+      'tech-tower':        { icon:'🔧', name:'The Tech Tower',    url:'tech-placeholder/index.html',  color:'#f97316', bg:'rgba(249,115,22,0.18)',  total:14  },
+      'robot-realm':       { icon:'🤖', name:'Robot Realm',       url:'robot-realm/index.html',       color:'#ef4444', bg:'rgba(239,68,68,0.18)',   total:4,   unit:'challenges' },
+      'spike-spellcaster': { icon:'🧱', name:'Spike Spellcaster', url:'spike-spellcaster/index.html', color:'#facc15', bg:'rgba(250,204,21,0.18)',  total:20,  metric:'code_runs' },
+      'model-mage':        { icon:'🧊', name:'Model Mage',        url:'model-mage.html',              color:'#14b8a6', bg:'rgba(20,184,166,0.18)',  total:10,  unit:'models' },
     };
 
     // ── Readiness guard ──────────────────────────────────────
@@ -721,12 +728,18 @@
       grid.innerHTML = Object.keys(TOOL_META).map(toolId => {
         const meta = TOOL_META[toolId];
         const row  = map[toolId] || {};
-        const done = row.topics_complete || row.lessons_complete || 0;
+        const runs = row.code_runs || 0;
+
+        // Sandbox tools with no fixed lesson curriculum (Spike Spellcaster)
+        // track progress by programs run instead — same card, different metric.
+        const isRunsBased = meta.metric === 'code_runs';
+        const done = isRunsBased ? runs : (row.topics_complete || row.lessons_complete || 0);
+        const unit = meta.unit || (isRunsBased ? 'runs' : 'lessons');
         const pct  = Math.min(100, Math.round((done / meta.total) * 100));
+
         const qCorr = row.quiz_correct || 0;
         const qTot  = row.quiz_total   || 0;
         const qAcc  = qTot > 0 ? Math.round((qCorr / qTot) * 100) : null;
-        const runs  = row.code_runs    || 0;
         const last  = row.last_active
           ? new Date(row.last_active).toLocaleDateString('en-ZA', { month: 'short', day: 'numeric' })
           : null;
@@ -740,11 +753,11 @@
             <div class="tc-bar-outer">
               <div class="tc-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${meta.color},var(--accent-2))"></div>
             </div>
-            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${done} / ${meta.total} lessons${pct > 0 ? ` · ${pct}%` : ''}</div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${done} / ${meta.total} ${unit}${pct > 0 ? ` · ${pct}%` : ''}</div>
             <div class="tc-stats">
-              <div><div class="tc-stat-val">${done}</div><div class="tc-stat-lbl">Lessons</div></div>
+              <div><div class="tc-stat-val">${done}</div><div class="tc-stat-lbl">${isRunsBased ? 'Runs' : 'Lessons'}</div></div>
               ${qAcc !== null ? `<div><div class="tc-stat-val">${qAcc}%</div><div class="tc-stat-lbl">Quiz</div></div>` : ''}
-              ${runs ? `<div><div class="tc-stat-val">${runs}</div><div class="tc-stat-lbl">Runs</div></div>` : ''}
+              ${!isRunsBased && runs ? `<div><div class="tc-stat-val">${runs}</div><div class="tc-stat-lbl">Runs</div></div>` : ''}
             </div>
             <a href="${meta.url}" class="tc-launch">${done > 0 ? 'Continue →' : 'Start →'}</a>
           </div>`;
