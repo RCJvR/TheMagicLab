@@ -891,20 +891,27 @@ function renderQuestion() {
       });
     }
     const pct = ts.total > 0 ? Math.round((ts.correct / ts.total) * 100) : 0;
-    const nextId = currentTopicId + 1;
+    // Find this topic's actual position in the flat array, then advance
+    // by ONE POSITION — not by id+1. Topic ids are namespaced per chapter
+    // (101-109, 201-210, ... 1701-1705), so "currentTopicId + 1" can land
+    // on a topic belonging to a totally different chapter (or a non-existent
+    // id) once you cross a chapter boundary.
+    const curIdx  = TOPICS.findIndex(t2 => t2.id === currentTopicId);
+    const hasNext = curIdx !== -1 && curIdx + 1 < TOPICS.length;
+    const nextTopic = hasNext ? TOPICS[curIdx + 1] : null;
     practicePanel.innerHTML = `
       <div class="complete-banner">
         <h2>Topic complete! 🎉</h2>
         <p>You scored <strong style="color:#fcd34d">${ts.correct} / ${ts.total}</strong> (${pct}%) on <em>${t.name}</em>.</p>
-        ${nextId < TOPICS.length
+        ${nextTopic
           ? `<button class="lesson-next-btn" id="nextTopicBtn">
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-              Next topic: ${TOPICS[nextId].name}
+              Next topic: ${nextTopic.name}
              </button>`
-          : `<p style="color:#6ee7b7;font-size:15px;font-weight:600;">🏆 You've completed all of Chapter 1!</p>`}
+          : `<p style="color:#6ee7b7;font-size:15px;font-weight:600;">🏆 You've completed all topics!</p>`}
       </div>`;
-    if (nextId < TOPICS.length) {
-      document.getElementById('nextTopicBtn').addEventListener('click', () => selectTopic(nextId));
+    if (nextTopic) {
+      document.getElementById('nextTopicBtn').addEventListener('click', () => selectTopic(nextTopic.id));
     }
     lucide.createIcons();
     return;

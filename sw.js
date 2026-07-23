@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v53'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v54'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -148,6 +148,20 @@ const CACHE_NAME = 'magic-lab-v53'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // the `grade` already recorded on each event, so the landing page
                                     // doesn't need to load every grade's chapter manifest. Cards with no
                                     // completions yet render exactly as before (no bar, "Start learning").
+                                    // v54: fixed math-magician/gr8/index.html's "Next topic" button —
+                                    // it computed nextId as currentTopicId+1 (a raw topic id, e.g. 101→102)
+                                    // and then used that NUMBER AS AN ARRAY INDEX into the flattened
+                                    // TOPICS list (TOPICS[nextId]), instead of searching for the topic
+                                    // whose id equals nextId. Since ids are namespaced per chapter
+                                    // (101-109, 201-210, ... 1701-1705) but TOPICS is a flat 107-item
+                                    // array, TOPICS[102] was actually the 103rd item overall — Chapter
+                                    // 17's exam-focus topic — so finishing Chapter 1's very first lesson
+                                    // offered "Next topic: Ch 17 Exam focus". Grades 9-12 already carry
+                                    // the correct fix (find the topic's real array position, advance by
+                                    // one position); gr8 just never got the same fix backported. Also
+                                    // corrected the gr8 "all done" message, which said "completed all of
+                                    // Chapter 1!" even though that branch only fires after the true last
+                                    // topic in the whole course.
 
 const urlsToCache = [
   '/',
