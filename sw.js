@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v57'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v58'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -224,6 +224,17 @@ const CACHE_NAME = 'magic-lab-v57'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // Also gave a few cards more accurate unit labels than the generic
                                     // "lessons" (Drawing Druid: constructions, Robot Realm: challenges,
                                     // Model Mage: models).
+                                    // v58: fixed the original 5 tool cards' progress totals, which
+                                    // predated v56/v57 and never matched what topics_complete can
+                                    // actually reach — Java Genie/Web Wizard only ever fire one
+                                    // lesson_complete event (tutorial finished) but showed "X / 12" and
+                                    // "X / 10", permanently capping out around 8-10% even at 100% done;
+                                    // Code Conjurer/Math Magician/Computer Codex showed totals lower
+                                    // than their real lesson counts too. Now uses the exact same
+                                    // verified numbers as each tool's badge threshold in xp.js (1, 1, 21,
+                                    // 282, 160) — Java Genie and Web Wizard also get unit:'tutorial'
+                                    // instead of the generic "lessons" label, matching their badge
+                                    // descriptions ("Complete the ... tutorial").
 
 const urlsToCache = [
   '/',
