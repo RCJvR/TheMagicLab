@@ -43,8 +43,19 @@
   };
 
   // ── BADGE DEFINITIONS ────────────────────────────────────
-  // criteria.type options: 'xp', 'level', 'streak', 'lessons',
-  //   'tool_complete', 'tools_used', 'quiz_perfect', 'code_runs'
+  // criteria.type options:
+  //   'xp', 'level', 'streak', 'lessons', 'quiz_perfect', 'code_runs'
+  //     — generic totals, summed/counted across every tool.
+  //   'tools_used'    — distinct tools with any recorded activity.
+  //   'tool_lessons'  — { tool, value }: that tool's own topics_complete
+  //                     count (from tool_progress) has reached value.
+  //                     Used both for "complete everything in this tool"
+  //                     badges (value = the tool's real total) and for
+  //                     count-based ones where there's no fixed curriculum
+  //                     (e.g. Model Mage's exported-model count).
+  //   'tool_code_runs' — { tool, value }: that tool's own code_runs count
+  //                     has reached value. Used for tools where "ran a
+  //                     program" is the meaningful signal, not a lesson.
   const BADGES = [
     // ── First steps ──
     { id: 'first_lesson',      icon: '🌱', name: 'First Steps',       desc: 'Complete your first lesson',                     criteria: { type: 'lessons',      value: 1   } },
@@ -78,16 +89,31 @@
     { id: 'first_run',         icon: '🚀', name: 'First Run',         desc: 'Run your first program',                         criteria: { type: 'code_runs',    value: 1   } },
     { id: 'fifty_runs',        icon: '⚙️', name: 'Code Machine',      desc: 'Run 50 programs',                                criteria: { type: 'code_runs',    value: 50  } },
 
-    // ── Tool-specific ──
-    { id: 'tool_java',         icon: '🧞', name: 'Genie Freed',       desc: 'Complete all Java Genie lessons',                criteria: { type: 'tool_complete', value: 'java-genie'     } },
-    { id: 'tool_web',          icon: '🌐', name: 'Web Wizard',        desc: 'Complete all Web Wizard lessons',                criteria: { type: 'tool_complete', value: 'web-wizard'     } },
-    { id: 'tool_conjurer',     icon: '📜', name: 'Fully Conjured',    desc: 'Complete all Code Conjurer lessons',             criteria: { type: 'tool_complete', value: 'code-conjurer'  } },
-    { id: 'tool_math',         icon: '🔢', name: 'Mathemagician',     desc: 'Complete all Math Magician topics',              criteria: { type: 'tool_complete', value: 'math-magician'  } },
-    { id: 'tool_codex',        icon: '💻', name: 'Digital Native',    desc: 'Complete all Computer Codex lessons',            criteria: { type: 'tool_complete', value: 'computer-codex' } },
+    // ── Tool-specific — one per tool, all 12 covered ──
+    // Thresholds are each tool's real content size (verified against its
+    // own lesson/topic data), not an arbitrary round number, so "Complete
+    // all X" is always literally true. The two sandbox tools without a
+    // fixed curriculum (Spike Spellcaster, Model Mage) use a meaningful
+    // engagement count instead of "all".
+    { id: 'tool_java',         icon: '🧞', name: 'Genie Freed',        desc: 'Complete the Java Genie tutorial',               criteria: { type: 'tool_lessons',   tool: 'java-genie',        value: 1   } },
+    { id: 'tool_web',          icon: '🌐', name: 'Web Wizard',         desc: 'Complete the Web Wizard tutorial',               criteria: { type: 'tool_lessons',   tool: 'web-wizard',        value: 1   } },
+    { id: 'tool_conjurer',     icon: '📜', name: 'Fully Conjured',     desc: 'Complete all 21 Code Conjurer lessons',          criteria: { type: 'tool_lessons',   tool: 'code-conjurer',     value: 21  } },
+    { id: 'tool_math',         icon: '🔢', name: 'Mathemagician',      desc: 'Complete all Math Magician topics',              criteria: { type: 'tool_lessons',   tool: 'math-magician',     value: 282 } },
+    { id: 'tool_codex',        icon: '💻', name: 'Digital Native',     desc: 'Complete all Computer Codex lessons',            criteria: { type: 'tool_lessons',   tool: 'computer-codex',    value: 160 } },
+    { id: 'tool_oracle',       icon: '🔮', name: "Oracle's Apprentice",desc: 'Complete all AI Oracle lessons',                 criteria: { type: 'tool_lessons',   tool: 'ai-oracle',         value: 18  } },
+    { id: 'tool_drawing',      icon: '📐', name: 'Master Draughtsman', desc: 'Complete all Drawing Druid constructions',       criteria: { type: 'tool_lessons',   tool: 'drawing-druid',     value: 134 } },
+    { id: 'tool_science',      icon: '🔬', name: 'Renaissance Mind',   desc: 'Complete all Science Sage lessons',              criteria: { type: 'tool_lessons',   tool: 'science-sage',      value: 108 } },
+    { id: 'tool_tech',         icon: '🔧', name: 'Tech Titan',         desc: 'Complete all Tech Tower lessons',                criteria: { type: 'tool_lessons',   tool: 'tech-tower',        value: 14  } },
+    { id: 'tool_robot',        icon: '🤖', name: 'Realm Conqueror',    desc: 'Complete all 4 Robot Realm challenges',          criteria: { type: 'tool_lessons',   tool: 'robot-realm',       value: 4   } },
+    { id: 'tool_spike',        icon: '🐝', name: 'Spike Sorcerer',     desc: 'Run 20 programs in Spike Spellcaster',           criteria: { type: 'tool_code_runs', tool: 'spike-spellcaster', value: 20  } },
+    { id: 'tool_model',        icon: '🧊', name: 'Model Maker',        desc: 'Export 10 models from Model Mage',               criteria: { type: 'tool_lessons',   tool: 'model-mage',        value: 10  } },
 
-    // ── Exploration ──
-    { id: 'three_tools',       icon: '🗺️', name: 'Explorer',          desc: 'Use 3 different tools',                          criteria: { type: 'tools_used',   value: 3 } },
-    { id: 'five_tools',        icon: '🌍', name: 'All-Rounder',       desc: 'Use all 5 tools',                                criteria: { type: 'tools_used',   value: 5 } },
+    // ── Exploration — using tools_used, a count of distinct tools with
+    // any recorded activity at all (12 tools now report progress) ──
+    { id: 'three_tools',       icon: '🗺️', name: 'Explorer',          desc: 'Use 3 different tools',                          criteria: { type: 'tools_used',   value: 3  } },
+    { id: 'five_tools',        icon: '🧭', name: 'Well-Rounded',      desc: 'Use 5 different tools',                          criteria: { type: 'tools_used',   value: 5  } },
+    { id: 'eight_tools',       icon: '🎪', name: 'Multi-Talented',    desc: 'Use 8 different tools',                          criteria: { type: 'tools_used',   value: 8  } },
+    { id: 'twelve_tools',      icon: '🌍', name: 'All-Rounder',       desc: 'Use all 12 tools',                               criteria: { type: 'tools_used',   value: 12 } },
   ];
 
   // ── DERIVED FUNCTIONS ─────────────────────────────────────
@@ -236,25 +262,24 @@
       const totalRuns     = progress.reduce((s, r) => s + (r.code_runs || 0), 0);
       const perfectCount  = events.filter(e => e.event_type === 'quiz_perfect').length;
       const toolsUsed     = new Set(progress.map(r => r.tool)).size;
-      const toolsComplete = new Set(
-        progress.filter(r => r.all_complete).map(r => r.tool)
-      );
+      const progressByTool = new Map(progress.map(r => [r.tool, r]));
 
       const newBadges = [];
 
       for (const badge of BADGES) {
         if (earnedIds.has(badge.id)) continue; // already earned
-        const { type, value } = badge.criteria;
+        const { type, value, tool } = badge.criteria;
         let earned = false;
 
-        if (type === 'xp'           && totalXP >= value)            earned = true;
-        if (type === 'level'        && levelInfo.level >= value)    earned = true;
-        if (type === 'streak'       && streak >= value)             earned = true;
-        if (type === 'lessons'      && totalLessons >= value)       earned = true;
-        if (type === 'code_runs'    && totalRuns >= value)          earned = true;
-        if (type === 'quiz_perfect' && perfectCount >= value)       earned = true;
-        if (type === 'tools_used'   && toolsUsed >= value)         earned = true;
-        if (type === 'tool_complete'&& toolsComplete.has(value))   earned = true;
+        if (type === 'xp'             && totalXP >= value)                                              earned = true;
+        if (type === 'level'          && levelInfo.level >= value)                                      earned = true;
+        if (type === 'streak'         && streak >= value)                                               earned = true;
+        if (type === 'lessons'        && totalLessons >= value)                                         earned = true;
+        if (type === 'code_runs'      && totalRuns >= value)                                            earned = true;
+        if (type === 'quiz_perfect'   && perfectCount >= value)                                         earned = true;
+        if (type === 'tools_used'     && toolsUsed >= value)                                             earned = true;
+        if (type === 'tool_lessons'   && (progressByTool.get(tool)?.topics_complete || 0) >= value)      earned = true;
+        if (type === 'tool_code_runs' && (progressByTool.get(tool)?.code_runs || 0) >= value)            earned = true;
 
         if (earned) newBadges.push({ user_id: userId, badge_id: badge.id });
       }

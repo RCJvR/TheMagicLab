@@ -148,6 +148,7 @@ canvas#arena{border-radius:12px;border:1px solid var(--border);background:#0d0b0
 </style>
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
+<script defer src="../progress.js"></script>
 </head>
 <body>
 
@@ -920,7 +921,12 @@ async function runCode(){
     });
     base.continuous=null;
     if (res && res.stopped || simAbort){ addLog('⏹ Stopped.', 'info'); setStatus('','Stopped'); }
-    else { addLog('✓ Program finished.', 'ok'); setStatus('done','Program finished'); }
+    else {
+      addLog('✓ Program finished.', 'ok'); setStatus('done','Program finished');
+      window.MagicLabProgress?.track(window.ML_TOOLS?.SPIKE_SPELLCASTER || 'spike-spellcaster', 'code_run', {
+        metadata: { mission: currentMission, mode: currentMode }
+      });
+    }
   } catch(e){
     base.continuous=null;
     if (simAbort){ addLog('⏹ Stopped.', 'info'); setStatus('','Stopped'); }

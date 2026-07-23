@@ -245,6 +245,7 @@
 <style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
 <script defer src="auth.js"></script>
 <script defer src="require-auth.js"></script>
+<script defer src="progress.js"></script>
 </head>
 <body>
 
@@ -2874,6 +2875,10 @@ document.getElementById('btn-stl').addEventListener('click', ()=>{
     download:`model-mage-sketch_h${extH}mm.stl`,
   });
   a.click(); URL.revokeObjectURL(a.href);
+  window.MagicLabProgress?.track(window.ML_TOOLS?.MODEL_MAGE || 'model-mage', 'lesson_complete', {
+    topic: 'Model Exported',
+    metadata: { filename: document.getElementById('filename-input')?.value || '' }
+  });
 });
 
 // ════════════════════════════════════════════════════════════════════

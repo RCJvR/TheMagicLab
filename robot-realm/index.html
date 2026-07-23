@@ -163,6 +163,7 @@ canvas#arena3d{position:absolute;inset:0;margin:auto;border-radius:12px;border:1
 </style>
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
+<script defer src="../progress.js"></script>
 </head>
 <body>
 
@@ -911,6 +912,9 @@ async function runCode() {
     if (!simAbort) {
       addLog('✓ Program finished.', 'ok');
       setStatus('done', 'Program finished');
+      window.MagicLabProgress?.track(window.ML_TOOLS?.ROBOT_REALM || 'robot-realm', 'code_run', {
+        metadata: { map: currentMap, mode: currentMode }
+      });
     } else {
       addLog('⏹ Stopped by user.', 'info');
       setStatus('', 'Stopped');
@@ -966,6 +970,12 @@ function showScore() {
   document.getElementById('scoreOverlay').style.display = 'flex';
   addLog(`🏁 Goal! Score: ${score} pts | Time: ${elapsed.toFixed(1)}s | Hits: ${collisionCount}`, 'ok');
   setStatus('done', `Goal reached — Score: ${score}`);
+  const MAP_NAMES = { maze: 'Labyrinth Challenge', chicane: 'Chicane', asteroids: 'Asteroid Field', squeeze: 'Tight Squeeze' };
+  window.MagicLabProgress?.track(window.ML_TOOLS?.ROBOT_REALM || 'robot-realm', 'lesson_complete', {
+    topic: MAP_NAMES[currentMap] || currentMap,
+    score,
+    metadata: { map: currentMap, mode: currentMode }
+  });
 }
 
 function dismissScore() {

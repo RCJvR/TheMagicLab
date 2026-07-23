@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v55'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v56'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -181,6 +181,36 @@ const CACHE_NAME = 'magic-lab-v55'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // payload shape). Same restore-with-dismissible-toast UX as Model
                                     // Mage throughout; "Start fresh" always clears back to the tool's
                                     // normal blank boot state.
+                                    // v56: badges/achievements now cover all 12 tools, not just the 5 the
+                                    // system launched with. Previously 5 of 12 tools (Science Sage, Tech
+                                    // Tower, Spike Spellcaster, Robot Realm, Model Mage) never called
+                                    // MagicLabProgress.track() at all, so no amount of use could ever
+                                    // count toward a tools_used badge — instrumented all five: Science
+                                    // Sage (117 lesson files) + Tech Tower (14) via a new shared
+                                    // lesson-progress-observer.js that watches each lesson's existing
+                                    // .score-banner element for the 'show' class (DOM-driven rather than
+                                    // tied to each hand-written lesson's own quiz variable names, which
+                                    // vary — answers.every(...) vs answered.every(Boolean) vs others);
+                                    // Robot Realm (lesson_complete on reaching a map's goal, code_run on
+                                    // every finished run); Spike Spellcaster (code_run on every finished
+                                    // run — no win-condition exists there to hang lesson_complete off of);
+                                    // Model Mage (lesson_complete on every successful STL export). Also
+                                    // rewrote the badge criteria system: the old 'tool_complete' type
+                                    // depended on an opaque all_complete flag with no visibility into how
+                                    // (or whether) it's configured per tool server-side, so all 12
+                                    // tool-specific badges now use new 'tool_lessons'/'tool_code_runs'
+                                    // types instead — a plain topics_complete/code_runs threshold this
+                                    // client fully controls, verified against each tool's real content
+                                    // size (e.g. Math Magician's 282 topics, Drawing Druid's 134
+                                    // constructions, Robot Realm's 4 real challenge maps) so "Complete
+                                    // all X" is always literally true. Added 7 new tool badges (AI
+                                    // Oracle, Drawing Druid, Science Sage, Tech Tower, Spike Spellcaster,
+                                    // Robot Realm, Model Mage) alongside the existing 5. The
+                                    // tools-used ladder grew from two badges (3, 5) to four (3, 5, 8, 12)
+                                    // — All-Rounder now genuinely requires all 12 tools instead of the
+                                    // 5 that existed when it was written; the old 5-tools badge keeps its
+                                    // id and criteria unchanged (just relabeled "Well-Rounded") so no
+                                    // already-earned badge is affected. 27 -> 36 total badges.
 
 const urlsToCache = [
   '/',
@@ -213,6 +243,7 @@ const urlsToCache = [
   '/tool-welcome.js',
   '/topic-memory.js',
   '/work-autosave.js',
+  '/lesson-progress-observer.js',
   '/dashboard-student.html',
   '/dashboard-teacher.html',
   '/assignments.js',

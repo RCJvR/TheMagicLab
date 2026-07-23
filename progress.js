@@ -19,13 +19,18 @@ document.addEventListener('magiclab:auth:ready', () => {
 });
 
 const TOOLS = {
-  JAVA_GENIE:      'java-genie',
-  WEB_WIZARD:      'web-wizard',
-  CODE_CONJURER:   'code-conjurer',
-  MATH_MAGICIAN:   'math-magician',
-  COMPUTER_CODEX:  'computer-codex',
-  AI_ORACLE:       'ai-oracle',
-  DRAWING_DRUID:   'drawing-druid'
+  JAVA_GENIE:        'java-genie',
+  WEB_WIZARD:        'web-wizard',
+  CODE_CONJURER:     'code-conjurer',
+  MATH_MAGICIAN:     'math-magician',
+  COMPUTER_CODEX:    'computer-codex',
+  AI_ORACLE:         'ai-oracle',
+  DRAWING_DRUID:     'drawing-druid',
+  SCIENCE_SAGE:      'science-sage',
+  TECH_TOWER:        'tech-tower',
+  SPIKE_SPELLCASTER: 'spike-spellcaster',
+  ROBOT_REALM:       'robot-realm',
+  MODEL_MAGE:        'model-mage'
 };
 window.ML_TOOLS = TOOLS;
 
