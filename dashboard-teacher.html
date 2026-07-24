@@ -2426,11 +2426,24 @@ document.getElementById('help-chat-input')?.addEventListener('keydown', e => {
 // ══════════════════════════════════════════════════════════
 // SHARED UI
 // ══════════════════════════════════════════════════════════
+let _helpListPollTimer = null;
+
 function switchTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
+
+  // The help thread list is otherwise only fetched once, at initial page
+  // load — without this, a message a student sends after that never shows
+  // up for the teacher until a full page reload. Poll while the tab is
+  // open so new threads/messages appear without needing to leave and
+  // come back.
+  if (_helpListPollTimer) { clearInterval(_helpListPollTimer); _helpListPollTimer = null; }
+  if (name === 'help' && window.MagicLabHelpChat) {
+    _loadHelpThreads();
+    _helpListPollTimer = setInterval(_loadHelpThreads, 8000);
+  }
 }
 
 function _fmtDate(iso) {
