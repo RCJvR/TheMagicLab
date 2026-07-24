@@ -57,7 +57,7 @@
     .toggle-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px 16px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:12px;cursor:pointer;transition:all 150ms;font-family:var(--fd)}
     .toggle-btn:hover{background:rgba(251,146,60,.18)}
     .phase-label{font-size:12px;font-weight:700;color:#fff;margin-bottom:4px}
-    .phase-sub{font-size:11px;color:var(--muted);line-height:1.5}
+    .phase-sub{font-size:11px;color:var(--muted);line-height:1.5;min-height:33px}
     .practice-wrap{max-width:640px}
     .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
     .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
@@ -322,36 +322,42 @@ function getPhaseInfo(angleDeg){
   return PHASE_DATA[0];
 }
 
-function drawPhaseDisp(angleDeg){
+// Shared illumination renderer — draws the Moon disc with the correct lit
+// crescent/gibbous shape for a given orbit angle. Used by both the orbit view
+// and the mini phase-chart so the two stay visually consistent.
+function drawMoonDisc(context, cx, cy, r, angleDeg){
   const a = ((angleDeg % 360) + 360) % 360;
-  const r = 36, cx = 40, cy = 40;
-  pCtx.clearRect(0,0,80,80);
-  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
-  pCtx.fillStyle='#2a2a3a'; pCtx.fill();
-  pCtx.save();
-  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2); pCtx.clip();
-  pCtx.fillStyle='#e8d5a3';
-  pCtx.beginPath();
+  context.beginPath(); context.arc(cx,cy,r,0,Math.PI*2);
+  context.fillStyle='#2a2a3a'; context.fill();
+  context.save();
+  context.beginPath(); context.arc(cx,cy,r,0,Math.PI*2); context.clip();
+  context.fillStyle='#e8d5a3';
+  context.beginPath();
   if(a <= 180){
     // Waxing: right half lit; terminator shifts from right (new) through centre (quarter) to left (full)
     const termX = r * Math.cos(a * Math.PI / 180);
-    pCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2,false); // CW right arc top→bottom
+    context.arc(cx,cy,r,-Math.PI/2,Math.PI/2,false); // CW right arc top→bottom
     for(let t=Math.PI/2;t>-Math.PI/2-0.01;t-=0.04){
-      pCtx.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
+      context.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
     }
   } else {
     // Waning: left half lit; terminator shifts from left (full) through centre (last quarter) to right (new)
     const termX = -r * Math.cos(a * Math.PI / 180);
-    pCtx.arc(cx,cy,r,-Math.PI/2,Math.PI/2,true); // CCW left arc top→bottom
+    context.arc(cx,cy,r,-Math.PI/2,Math.PI/2,true); // CCW left arc top→bottom
     for(let t=Math.PI/2;t>-Math.PI/2-0.01;t-=0.04){
-      pCtx.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
+      context.lineTo(cx + termX * Math.cos(t), cy + r * Math.sin(t));
     }
   }
-  pCtx.closePath();
-  pCtx.fill();
-  pCtx.restore();
-  pCtx.beginPath(); pCtx.arc(cx,cy,r,0,Math.PI*2);
-  pCtx.strokeStyle='rgba(255,255,255,0.15)'; pCtx.lineWidth=1; pCtx.stroke();
+  context.closePath();
+  context.fill();
+  context.restore();
+  context.beginPath(); context.arc(cx,cy,r,0,Math.PI*2);
+  context.strokeStyle='rgba(255,255,255,0.15)'; context.lineWidth=1; context.stroke();
+}
+
+function drawPhaseDisp(angleDeg){
+  pCtx.clearRect(0,0,80,80);
+  drawMoonDisc(pCtx, 40, 40, 36, angleDeg);
 }
 
 function drawStars(ctx, W, H, stars){
@@ -398,45 +404,9 @@ function drawMoonPhaseView(W,H){
   ctx.fillStyle='rgba(255,220,50,0.5)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
   ctx.fillText('☀ Sun →',sunX-20,sunY-8);
 
-  // Moon shadow line from Earth toward moon direction (shows terminator concept)
-  // Draw Moon
+  // Draw Moon — shares the same illumination renderer as the mini phase chart
   const moonR = 16;
-  // Moon body dark
-  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2);
-  ctx.fillStyle='#2a2a3a'; ctx.fill();
-  // Lit portion — Sun is always to the right (+X direction in canvas = angle 0)
-  // The phase angle: 0 = new (moon at right = same side as sun in this orientation)
-  // Actually moon at angle 0 is to the RIGHT of earth, same side as sun → new moon
-  // At angle 180 = to left of earth, opposite sun → full moon
-  const phaseAngle = mAngleRad; // angle of moon from earth
-  ctx.save();
-  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2); ctx.clip();
-  // Illumination: lit from Sun direction (angle 0 = right)
-  // cos(phaseAngle) = how much the terminator is skewed
-  const xs = -Math.cos(phaseAngle);
-  if(Math.cos(phaseAngle) <= 0){
-    // Right side lit (moon on right half of orbit or new → first quarter)
-    ctx.beginPath();
-    ctx.arc(mx,my,moonR,-Math.PI/2,Math.PI/2);
-    for(let t=Math.PI/2;t<=3*Math.PI/2;t+=0.05){
-      const ex = mx + xs * moonR * Math.cos(t - Math.PI);
-      const ey = my + moonR * Math.sin(t);
-      if(t===Math.PI/2) ctx.moveTo(ex,ey); else ctx.lineTo(ex,ey);
-    }
-    ctx.fillStyle='#e8d5a3'; ctx.fill();
-  } else {
-    ctx.beginPath();
-    ctx.arc(mx,my,moonR,Math.PI/2,3*Math.PI/2);
-    for(let t=-Math.PI/2;t<=Math.PI/2;t+=0.05){
-      const ex = mx + xs * moonR * Math.cos(t);
-      const ey = my + moonR * Math.sin(t);
-      if(t===-Math.PI/2) ctx.moveTo(ex,ey); else ctx.lineTo(ex,ey);
-    }
-    ctx.fillStyle='#e8d5a3'; ctx.fill();
-  }
-  ctx.restore();
-  ctx.beginPath(); ctx.arc(mx,my,moonR,0,Math.PI*2);
-  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1; ctx.stroke();
+  drawMoonDisc(ctx, mx, my, moonR, moonAngle);
   // Moon label
   ctx.fillStyle='rgba(210,218,245,0.7)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
   ctx.fillText('Moon',mx,my+moonR+12);
@@ -553,6 +523,12 @@ function startCanvas(){
   canvasStarted = true;
   resizeMoonCanvas();
   requestAnimationFrame(loop);
+  // Watches the canvas's own rendered size (not just window resize) so the
+  // pixel buffer can't drift out of sync with its CSS size — e.g. when a
+  // scrollbar toggles because sidebar text wraps differently between phases.
+  if('ResizeObserver' in window){
+    new ResizeObserver(()=>{ if(canvasStarted) resizeMoonCanvas(); }).observe(moonCanvas);
+  }
 }
 
 window.addEventListener('resize',()=>{ if(canvasStarted) resizeMoonCanvas(); });
