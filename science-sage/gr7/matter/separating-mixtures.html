@@ -62,9 +62,9 @@
     .controls{display:flex;flex-direction:column;gap:14px}
     .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
     .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-    select.ctrl-select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);font-family:var(--fd);font-size:13px;padding:9px 12px;border-radius:10px;outline:none;cursor:pointer;margin-bottom:8px}
+    select.ctrl-select{width:100%;background:#0d1225;border:1px solid rgba(96,165,250,.30);color:var(--text);font-family:var(--fd);font-size:13px;padding:9px 12px;border-radius:10px;outline:none;cursor:pointer;margin-bottom:8px}
     select.ctrl-select option{background:#0d1225;color:var(--text)}
-    select.ctrl-select:focus{border-color:rgba(96,165,250,.4)}
+    select.ctrl-select:focus{border-color:rgba(96,165,250,.6)}
     .run-btn{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(96,165,250,.35);background:rgba(96,165,250,.10);color:#93c5fd;font-family:var(--fd);font-size:13px;font-weight:700;cursor:pointer;transition:all 140ms}
     .run-btn:hover{background:rgba(96,165,250,.20)}
     .anim-desc{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.65;margin-top:10px}
@@ -452,242 +452,258 @@ function drawFiltration(t, p) {
   drawLabel(ctx, 220, 40,  'Mixture poured in');
 }
 
+// Deterministic pseudo-random in [0,1), stable across frames for a given seed
+// (so e.g. salt crystals don't jitter — only the count of visible ones grows).
+function pseudoRandom(seed) {
+  const x = Math.sin(seed * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
 /* ── EVAPORATION ── */
 function drawEvaporation(t, p) {
-  // Original artwork only used the bottom half of the canvas — scale the
-  // graphics (not the labels, which are already safely positioned) up to
-  // use more of the vertical space, instead of leaving the top half empty.
-  ctx.save();
-  ctx.translate(0, -75);
-  ctx.scale(1.2, 1.25);
-  // Evaporating dish
-  ctx.beginPath();
-  ctx.ellipse(220, 260, 110, 30, 0, 0, Math.PI*2);
-  ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill();
-  ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
+  const cx = 220, cy = 250, rx = 150, ry = 32;
 
-  // Tripod / stand lines
+  // Tripod / stand lines (drawn first, behind the dish)
   ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(140,270); ctx.lineTo(160,320); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(300,270); ctx.lineTo(280,320); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(140,320); ctx.lineTo(300,320); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx-70,cy+18); ctx.lineTo(cx-55,318); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx+70,cy+18); ctx.lineTo(cx+55,318); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx-55,318); ctx.lineTo(cx+55,318); ctx.stroke();
 
-  // Flame
+  // Flame — kept well clear of the dish above it (dish bottom edge is at cy+ry=282)
   const flicker = Math.sin(t*0.25)*3;
   ctx.beginPath();
-  ctx.moveTo(220, 320);
-  ctx.bezierCurveTo(200+flicker, 305, 210, 290, 220, 300+flicker*0.5);
-  ctx.bezierCurveTo(230, 290, 240-flicker, 305, 220, 320);
-  const fGrad = ctx.createRadialGradient(220,315,2,220,310,18);
+  ctx.moveTo(cx, 318);
+  ctx.bezierCurveTo(cx-14+flicker, 305, cx-8, 295, cx, 300+flicker*0.5);
+  ctx.bezierCurveTo(cx+8, 295, cx+14-flicker, 305, cx, 318);
+  const fGrad = ctx.createRadialGradient(cx,314,2,cx,306,18);
   fGrad.addColorStop(0,'#fbbf24'); fGrad.addColorStop(0.5,'#f97316'); fGrad.addColorStop(1,'rgba(239,68,68,0)');
   ctx.fillStyle=fGrad; ctx.fill();
 
-  // Water level (decreasing)
-  const waterH = Math.max(0, (1-p) * 38);
+  // Evaporating dish
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Water level (decreasing as it evaporates)
+  const waterH = Math.max(0, (1-p) * 24);
   ctx.save();
-  ctx.beginPath(); ctx.ellipse(220,260,108,28,0,0,Math.PI*2); ctx.clip();
+  ctx.beginPath(); ctx.ellipse(cx,cy,rx-3,ry-3,0,0,Math.PI*2); ctx.clip();
   ctx.fillStyle='rgba(96,165,250,0.18)';
-  ctx.fillRect(112,260-waterH+10,216,waterH);
+  ctx.fillRect(cx-rx, cy-waterH+8, rx*2, waterH);
   ctx.restore();
 
-  // Salt crystals appearing
-  const crystalCount = Math.floor(p * 18);
+  // Salt crystals — small circles that randomly appear (not a fixed grid)
+  // as the water evaporates, scattered across the dish basin.
+  const crystalCount = Math.floor(p * 42);
   for(let i=0;i<crystalCount;i++){
-    const cx2 = 150 + (i%6)*16 + 4;
-    const cy2 = 262 + Math.floor(i/6)*6;
-    ctx.fillStyle='rgba(255,255,255,0.80)';
-    ctx.fillRect(cx2-3,cy2-3,6,6);
+    const ang = pseudoRandom(i*7+1) * Math.PI*2;
+    const rad = Math.sqrt(pseudoRandom(i*7+2)) * 0.82;
+    const px = cx + Math.cos(ang) * (rx-14) * rad;
+    const py = cy + Math.sin(ang) * (ry-8) * rad;
+    const r = 1.3 + pseudoRandom(i*7+3) * 2;
+    ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${0.65 + pseudoRandom(i*7+4)*0.3})`;
+    ctx.fill();
   }
 
-  // Steam particles
-  for(let i=0;i<8;i++){
-    const age = (t*1.5 + i*45) % 300;
-    if(age < 200) {
-      const sx = 180 + i*9 + Math.sin(age*0.05 + i)*18;
-      const sy = 240 - age * 0.7;
-      const alpha = 1 - age/200;
-      ctx.beginPath(); ctx.arc(sx, sy, 4+age*0.025, 0, Math.PI*2);
-      ctx.fillStyle=`rgba(180,210,255,${alpha*0.4})`; ctx.fill();
+  // Steam particles rising from the dish
+  for(let i=0;i<10;i++){
+    const age = (t*1.5 + i*38) % 260;
+    if(age < 220) {
+      const sx = cx - 90 + i*20 + Math.sin(age*0.05 + i)*16;
+      const sy = cy - 30 - age * 0.85;
+      if(sy < 20) continue;
+      const alpha = 1 - age/220;
+      ctx.beginPath(); ctx.arc(sx, sy, 4+age*0.02, 0, Math.PI*2);
+      ctx.fillStyle=`rgba(180,210,255,${alpha*0.45})`; ctx.fill();
     }
   }
 
-  ctx.restore();
-  drawLabel(ctx, 310, 190, 'Steam escaping');
-  drawLabel(ctx, 310, 260, 'Salt crystals form');
-  drawLabel(ctx, 60,  260, 'Salt water');
-  drawLabel(ctx, 220, 340, 'Heat source');
+  drawLabel(ctx, 340, 130, 'Steam escaping');
+  drawLabel(ctx, 340, 235, 'Salt crystals form');
+  drawLabel(ctx, 30,  235, 'Salt water');
+  drawLabel(ctx, cx-32, 340, 'Heat source');
 }
 
 /* ── DISTILLATION ── */
 function drawDistillation(t, p, mix) {
-  // Original artwork sat in a short horizontal band — scale the graphics
-  // (not the labels) up to use more of the vertical space.
-  ctx.save();
-  ctx.translate(-34, -175);
-  ctx.scale(1.05, 1.5);
+  const fcx = 120, fcy = 220, fr = 60;   // flask centre/radius
+  const neckL = 148, neckR = 176, neckTop = 115, neckBottom = fcy - Math.sqrt(fr*fr - (neckR-fcx)*(neckR-fcx)) + 2;
+  const tubeY = 118;                     // horizontal condenser line
+  const bendX = 340, bendY = 118;
+  const dripX = 384, dripY = 172;        // where the tube empties into the beaker
+  const beakerL = 358, beakerR = 428, beakerTop = 172, beakerBot = 298;
+
   // Flask
   ctx.beginPath();
-  ctx.arc(145, 240, 65, 0, Math.PI*2);
+  ctx.arc(fcx, fcy, fr, 0, Math.PI*2);
   ctx.fillStyle='rgba(96,165,250,0.08)'; ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
 
-  // Flask neck
-  ctx.beginPath();
-  ctx.moveTo(128,178); ctx.lineTo(128,145); ctx.lineTo(165,145); ctx.lineTo(165,178); ctx.stroke();
-  // Tube going right (condenser)
-  ctx.beginPath();
-  ctx.moveTo(165,145); ctx.lineTo(310,145); ctx.lineTo(340,200); ctx.stroke();
-  // Condenser jacket
-  ctx.beginPath();
-  ctx.moveTo(165,140); ctx.lineTo(310,140); ctx.strokeStyle='rgba(96,165,250,0.4)'; ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(165,150); ctx.lineTo(310,150); ctx.stroke();
-  // Collection beaker
-  ctx.beginPath();
-  ctx.moveTo(315,200); ctx.lineTo(315,290); ctx.lineTo(385,290); ctx.lineTo(385,200);
-  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.stroke();
-
-  // Liquid in flask (decreasing)
-  const flaskLiqH = (0.4 + (1-p)*0.35) * 90;
+  // Liquid in flask (decreasing as it boils off)
+  const flaskLiqH = (0.35 + (1-p)*0.35) * 78;
   ctx.save();
-  ctx.beginPath(); ctx.arc(145,240,63,0,Math.PI*2); ctx.clip();
-  ctx.fillStyle = mix==='alcohol_water' ? 'rgba(168,85,247,0.20)' : 'rgba(96,165,250,0.20)';
-  ctx.fillRect(82,240+63-flaskLiqH, 126, flaskLiqH);
+  ctx.beginPath(); ctx.arc(fcx,fcy,fr-2,0,Math.PI*2); ctx.clip();
+  ctx.fillStyle = mix==='alcohol_water' ? 'rgba(168,85,247,0.22)' : 'rgba(96,165,250,0.22)';
+  ctx.fillRect(fcx-fr, fcy+fr-flaskLiqH, fr*2, flaskLiqH);
   ctx.restore();
 
-  // Flame
+  // Flask neck, rising above the liquid's clip so it isn't overdrawn
+  ctx.beginPath();
+  ctx.moveTo(neckL,neckBottom); ctx.lineTo(neckL,neckTop);
+  ctx.lineTo(neckR,neckTop); ctx.lineTo(neckR,neckBottom);
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
+
+  // Condenser tube: neck -> horizontal run -> diagonal drop into the beaker
+  ctx.beginPath();
+  ctx.moveTo(neckR, tubeY); ctx.lineTo(bendX, bendY); ctx.lineTo(dripX, dripY);
+  ctx.strokeStyle='rgba(255,255,255,0.35)'; ctx.lineWidth=3; ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(neckR, tubeY-7); ctx.lineTo(bendX, bendY-7);
+  ctx.strokeStyle='rgba(96,165,250,0.35)'; ctx.lineWidth=1; ctx.stroke();
+
+  // Collection beaker
+  ctx.beginPath();
+  ctx.moveTo(beakerL,beakerTop); ctx.lineTo(beakerL,beakerBot);
+  ctx.lineTo(beakerR,beakerBot); ctx.lineTo(beakerR,beakerTop);
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
+
+  // Flame + stand — kept clearly below the flask (flask bottom is fcy+fr=280)
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(fcx-40,fcy+fr-8); ctx.lineTo(fcx-24,330); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(fcx+40,fcy+fr-8); ctx.lineTo(fcx+24,330); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(fcx-24,330); ctx.lineTo(fcx+24,330); ctx.stroke();
   const fl = Math.sin(t*0.28)*3;
   ctx.beginPath();
-  ctx.moveTo(145,308); ctx.bezierCurveTo(130+fl,295,135,280,145,290+fl*0.4);
-  ctx.bezierCurveTo(155,280,160-fl,295,145,308);
-  const fG2 = ctx.createRadialGradient(145,302,2,145,295,18);
+  ctx.moveTo(fcx,328); ctx.bezierCurveTo(fcx-13+fl,313,fcx-8,300,fcx,308+fl*0.4);
+  ctx.bezierCurveTo(fcx+8,300,fcx+13-fl,313,fcx,328);
+  const fG2 = ctx.createRadialGradient(fcx,322,2,fcx,312,18);
   fG2.addColorStop(0,'#fbbf24'); fG2.addColorStop(0.5,'#f97316'); fG2.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=fG2; ctx.fill();
 
-  // Vapour in tube (animated bubble moving right)
-  const bpos = ((t*1.2) % 200);
-  if(bpos < 175) {
-    const bx = 165 + bpos;
-    const by = 145;
-    ctx.beginPath(); ctx.arc(bx, by, 5, 0, Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.fill();
+  // Vapour bubble — travels exactly along the tube path (neck → bend → drip
+  // point), so it never appears to fly past the condenser's actual outlet.
+  const seg1 = bendX - neckR;
+  const seg2 = Math.hypot(dripX-bendX, dripY-bendY);
+  const total = seg1 + seg2;
+  const bpos = (t*1.3) % (total + 50);
+  if(bpos < total) {
+    let bx, by;
+    if(bpos <= seg1) { bx = neckR + bpos; by = tubeY; }
+    else { const f = (bpos-seg1)/seg2; bx = bendX + f*(dripX-bendX); by = bendY + f*(dripY-bendY); }
+    ctx.beginPath(); ctx.arc(bx, by, 4, 0, Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fill();
   }
 
-  // Condensate collecting
-  const collectH = p * 60;
+  // Condensate collecting in the beaker
+  const collectH = p * (beakerBot-beakerTop-14);
   ctx.fillStyle = 'rgba(96,165,250,0.25)';
-  ctx.fillRect(317, 290-collectH, 66, collectH);
+  ctx.fillRect(beakerL+2, beakerBot-collectH, (beakerR-beakerL)-4, collectH);
 
-  ctx.restore();
-  drawLabel(ctx, 55,  240, 'Heated flask');
-  drawLabel(ctx, 215, 125, 'Condenser (cooled)');
-  drawLabel(ctx, 335, 300, 'Distillate');
+  drawLabel(ctx, 30,  fcy-10, 'Heated flask');
+  drawLabel(ctx, 220, 100, 'Condenser (cooled)');
+  drawLabel(ctx, beakerL-14, 316, 'Distillate');
   const lowerBP = mix === 'alcohol_water' ? 'alcohol (78°C)' : 'water (100°C)';
-  drawLabel(ctx, 55, 280, `Lower b.p.: ${lowerBP}`);
+  drawLabel(ctx, 30, fcy+16, `Lower b.p.: ${lowerBP}`);
 }
 
 /* ── MAGNETIC SEPARATION ── */
 function drawMagnetic(t, p) {
-  // Original artwork was compressed into a narrow horizontal band —
-  // scale the graphics (not the labels) up to use more of the canvas.
-  ctx.save();
-  ctx.translate(-55, -202);
-  ctx.scale(1.15, 1.6);
-  // Container / dish
+  const contL = 70, contR = 370, contTop = 210, contBot = 300;
+  const magnetY = 168;
+  const magnetX = 105 + p * 225; // sweeps left to right across the container
+
+  // Container (open-top dish holding the mixture)
   ctx.beginPath();
-  ctx.moveTo(100, 220); ctx.lineTo(100, 300); ctx.lineTo(340, 300); ctx.lineTo(340, 220);
+  ctx.moveTo(contL, contTop); ctx.lineTo(contL, contBot);
+  ctx.lineTo(contR, contBot); ctx.lineTo(contR, contTop);
   ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
 
-  // Sand particles (static)
-  for(let i=0;i<30;i++){
-    const sx = 115 + (i%10)*22 + Math.sin(i*3.1)*4;
-    const sy = 265 + Math.floor(i/10)*12;
+  // Sand — non-magnetic, stays completely still the whole time
+  const SAND_N = 26;
+  for(let i=0;i<SAND_N;i++){
+    const sx = 92 + (i%13)*21 + Math.sin(i*3.1)*4;
+    const sy = 262 + Math.floor(i/13)*18;
     ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI*2);
     ctx.fillStyle='#c4a882'; ctx.fill();
   }
 
-  // Magnet position (moves left to right)
-  const magnetX = 110 + p * 180;
-  const magnetY = 170;
-  // Magnet body
+  // Magnet (drawn after sand, before filings, so lifted filings sit on top of it)
   ctx.fillStyle = '#ef4444';
-  ctx.fillRect(magnetX - 20, magnetY, 40, 25);
+  ctx.fillRect(magnetX - 20, magnetY, 40, 22);
   ctx.fillStyle = '#3b82f6';
-  ctx.fillRect(magnetX - 20, magnetY + 25, 40, 20);
+  ctx.fillRect(magnetX - 20, magnetY + 22, 40, 18);
   ctx.fillStyle = '#fff';
   ctx.font = 'bold 11px "JetBrains Mono"';
   ctx.textAlign = 'center';
-  ctx.fillText('N', magnetX, magnetY+17);
-  ctx.fillText('S', magnetX, magnetY+40);
+  ctx.fillText('N', magnetX, magnetY+16);
+  ctx.fillText('S', magnetX, magnetY+36);
+  ctx.textAlign = 'left';
 
-  // Magnetic field lines
-  for(let i=0;i<5;i++){
-    const fy = magnetY+45 + i*8;
-    const alpha = 0.3 - i*0.05;
-    ctx.beginPath();
-    ctx.arc(magnetX, fy, 12+i*6, 0, Math.PI*2);
-    ctx.strokeStyle=`rgba(248,113,113,${alpha})`; ctx.lineWidth=1; ctx.stroke();
-  }
-
-  // Iron filings attracted to magnet (move toward it)
-  for(let i=0;i<18;i++){
-    const origX = 120 + (i%9)*22;
-    const origY = 255 + Math.floor(i/9)*14;
-    const influence = Math.max(0, 1 - Math.abs(origX - magnetX) / 100);
-    const attracted = Math.min(influence * p * 2, influence);
-    const ix = origX + (magnetX - origX) * attracted * 0.85;
-    const iy = origY - (origY - magnetY - 45) * attracted * 0.75;
+  // Iron filings — magnetic. Once the sweeping magnet gets within capture
+  // range of a filing it "sticks" and is carried along with the magnet from
+  // then on (its target position tracks magnetX), instead of being pulled
+  // back down once the magnet moves past — matching how a real magnet lifts
+  // and carries filings rather than just brushing over them.
+  const FILING_N = 18;
+  const captureR = 45, liftSpan = 85;
+  for(let i=0;i<FILING_N;i++){
+    const origX = 100 + (i%9)*28 + Math.sin(i*2.3)*3;
+    const origY = 268 + Math.floor(i/9)*16;
+    const advance = Math.max(0, Math.min(1, (magnetX - (origX - captureR)) / liftSpan));
+    const clusterX = magnetX + (i%4 - 1.5) * 8;
+    const clusterY = magnetY + 40 + Math.floor(i/4) * 8;
+    const ix = lerp(origX, clusterX, advance);
+    const iy = lerp(origY, clusterY, advance);
     ctx.beginPath(); ctx.arc(ix, iy, 4, 0, Math.PI*2);
-    ctx.fillStyle=`rgba(148,163,184,${0.6 + attracted*0.4})`; ctx.fill();
+    ctx.fillStyle=`rgba(148,163,184,${0.65 + advance*0.35})`; ctx.fill();
   }
 
-  ctx.restore();
-  ctx.textAlign='left';
-  drawLabel(ctx, 310, 175, 'Magnet');
-  drawLabel(ctx, 80,  260, 'Sand stays');
-  drawLabel(ctx, 80,  330, '(non-magnetic)');
-  drawLabel(ctx, 220, 150, 'Iron filings lifted');
+  drawLabel(ctx, contL, 40, 'Magnet sweeps across the mixture →');
+  drawLabel(ctx, 300, 100, 'Iron filings lifted');
+  drawLabel(ctx, contL, contBot+22, 'Sand stays behind (non-magnetic)');
 }
 
 /* ── CHROMATOGRAPHY ── */
 function drawChromatography(t, p) {
-  // Original artwork sat in a narrow vertical column — scale the graphics
-  // (not the labels) up to use more of the canvas width.
-  ctx.save();
-  ctx.translate(-145, -33);
-  ctx.scale(1.5, 1.05);
+  const stripL = 180, stripR = 280, stripTop = 45, stripBot = 300;
+  const beakerL = 140, beakerR = 320, beakerTop = 300, beakerBot = 345;
+  const midX = (stripL+stripR)/2;
+
   // Paper strip
   ctx.fillStyle = 'rgba(251,191,36,0.08)';
-  ctx.fillRect(170, 60, 100, 280);
+  ctx.fillRect(stripL, stripTop, stripR-stripL, stripBot-stripTop);
   ctx.strokeStyle = 'rgba(251,191,36,0.4)'; ctx.lineWidth=1.5;
-  ctx.strokeRect(170, 60, 100, 280);
+  ctx.strokeRect(stripL, stripTop, stripR-stripL, stripBot-stripTop);
 
-  // Solvent level rising
-  const solventY = 340 - p * 220;
+  // Solvent level rising up the paper
+  const solventY = stripBot - p * (stripBot-stripTop-30);
   ctx.fillStyle = 'rgba(96,165,250,0.12)';
-  ctx.fillRect(170, solventY, 100, 340-solventY);
+  ctx.fillRect(stripL, solventY, stripR-stripL, stripBot-solventY);
 
   // Solvent front line
   ctx.beginPath();
-  ctx.moveTo(170, solventY); ctx.lineTo(270, solventY);
+  ctx.moveTo(stripL, solventY); ctx.lineTo(stripR, solventY);
   ctx.strokeStyle = 'rgba(96,165,250,0.6)'; ctx.lineWidth=1; ctx.stroke();
 
   // Starting spot
-  ctx.beginPath(); ctx.arc(220, 330, 7, 0, Math.PI*2);
+  ctx.beginPath(); ctx.arc(midX, stripBot-10, 6, 0, Math.PI*2);
   ctx.fillStyle='rgba(50,50,50,0.7)'; ctx.fill();
 
   // Dye bands (3 colours, different travel distances)
   const colours = ['#f97316','#22c55e','#a855f7'];
   const speeds = [0.55, 0.78, 0.35]; // fraction of solvent travel
+  const travelSpan = stripBot-10 - (stripTop+20);
   colours.forEach((col, ci) => {
-    const bandY = 330 - p * 220 * speeds[ci];
-    const travelled = Math.max(0, 330 - bandY);
+    const bandY = (stripBot-10) - p * travelSpan * speeds[ci];
+    const travelled = Math.max(0, (stripBot-10) - bandY);
     if(travelled > 4) {
-      // Band
-      const bw = 40 + ci*8;
+      const bw = 36 + ci*7;
       ctx.beginPath();
-      ctx.ellipse(220, bandY, bw/2, 6, 0, 0, Math.PI*2);
-      ctx.fillStyle = col.replace(')',',0.65)').replace('rgb','rgba');
+      ctx.ellipse(midX, bandY, bw/2, 5, 0, 0, Math.PI*2);
       ctx.fillStyle = col + 'aa';
       ctx.fill();
       ctx.strokeStyle = col; ctx.lineWidth=1; ctx.stroke();
@@ -696,75 +712,73 @@ function drawChromatography(t, p) {
 
   // Beaker with solvent
   ctx.beginPath();
-  ctx.moveTo(130,300); ctx.lineTo(130,350); ctx.lineTo(310,350); ctx.lineTo(310,300);
+  ctx.moveTo(beakerL,beakerTop); ctx.lineTo(beakerL,beakerBot);
+  ctx.lineTo(beakerR,beakerBot); ctx.lineTo(beakerR,beakerTop);
   ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
   ctx.fillStyle='rgba(96,165,250,0.10)';
-  ctx.fillRect(132, 330, 176, 18);
+  ctx.fillRect(beakerL+2, beakerBot-16, (beakerR-beakerL)-4, 16);
 
-  ctx.restore();
-  drawLabel(ctx, 280, 330, 'Start spot');
-  drawLabel(ctx, 280, solventY-5, 'Solvent front');
-  drawLabel(ctx, 70,  280, 'Solvent');
-  drawLabel(ctx, 280, 130, 'Separated dye bands');
+  drawLabel(ctx, stripR+15, stripBot-10, 'Start spot');
+  drawLabel(ctx, stripR+15, solventY-5, 'Solvent front');
+  drawLabel(ctx, 30,  beakerTop+20, 'Solvent');
+  drawLabel(ctx, stripR+15, stripTop+30, 'Separated');
+  drawLabel(ctx, stripR+15, stripTop+44, 'dye bands');
 }
 
 /* ── SIEVING ── */
 function drawSieving(t, p) {
-  // Original artwork sat in a compact block — scale the graphics (not
-  // the labels) up to use more of the canvas.
-  ctx.save();
-  ctx.translate(-103, -132);
-  ctx.scale(1.3, 1.5);
-  // Sieve frame
+  const meshL = 70, meshR = 370, meshTop = 100, meshBot = 122;
+  const contL = 110, contR = 330, contBot = 320;
+
+  // Sieve frame + mesh lines
   ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=2;
-  ctx.strokeRect(110, 140, 220, 20);
-  // Sieve mesh lines
+  ctx.strokeRect(meshL, meshTop, meshR-meshL, meshBot-meshTop);
   ctx.lineWidth=1;
-  for(let i=0;i<22;i++){
-    const sx = 120 + i*9;
-    ctx.beginPath(); ctx.moveTo(sx,140); ctx.lineTo(sx,160); ctx.stroke();
+  for(let sx=meshL+10; sx<meshR; sx+=15){
+    ctx.beginPath(); ctx.moveTo(sx,meshTop); ctx.lineTo(sx,meshBot); ctx.stroke();
   }
 
-  // Container below
+  // Container below the mesh
   ctx.lineWidth=2;
   ctx.beginPath();
-  ctx.moveTo(140,160); ctx.lineTo(140,300); ctx.lineTo(300,300); ctx.lineTo(300,160);
+  ctx.moveTo(contL,meshBot); ctx.lineTo(contL,contBot);
+  ctx.lineTo(contR,contBot); ctx.lineTo(contR,meshBot);
   ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.stroke();
 
-  // Gravel on sieve (stays on top)
-  for(let i=0;i<12;i++){
-    const gx = 125 + (i%6)*30 + Math.sin(i*2.1)*5;
-    const gy = 120 + Math.floor(i/6)*12;
-    const gr = 9 + (i%3)*3;
+  // Gravel resting on top of the mesh — fixed, non-overlapping spacing/radii
+  const gravelX = [95,130,165,200,235,270,305,340];
+  const gravelR = [11,15,9,13,17,10,14,12];
+  gravelX.forEach((gx,i)=>{
+    const gr = gravelR[i];
+    const gy = meshTop - 1 - gr;
     ctx.beginPath(); ctx.arc(gx, gy, gr, 0, Math.PI*2);
-    ctx.fillStyle=`rgba(148,163,184,${0.5+i%3*0.1})`; ctx.fill();
+    ctx.fillStyle=`rgba(148,163,184,${0.55+ (i%3)*0.08})`; ctx.fill();
     ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
-  }
+  });
 
-  // Sand falling through (fine particles)
-  for(let i=0;i<28;i++){
-    const phase = (t*1.2 + i*12) % 280;
-    if(phase > 0 && phase < 180) {
-      const sx = 120 + (i%9)*22;
-      const sy = 162 + phase * 0.6;
-      if(sy < 295) {
+  // Sand falling through the mesh (fine particles)
+  for(let i=0;i<30;i++){
+    const phase = (t*1.2 + i*11) % 260;
+    if(phase > 0 && phase < 170) {
+      const sx = contL+10 + (i%11)*19;
+      const sy = meshBot + phase * 0.75;
+      if(sy < contBot-4) {
         ctx.beginPath(); ctx.arc(sx, sy, 2.5, 0, Math.PI*2);
-        ctx.fillStyle=`rgba(196,168,130,${0.7 - phase/280})`; ctx.fill();
+        ctx.fillStyle=`rgba(196,168,130,${0.75 - phase/260})`; ctx.fill();
       }
     }
   }
 
-  // Sand collecting at bottom
-  const sandH = p * 80;
-  ctx.fillStyle='rgba(196,168,130,0.35)';
-  ctx.fillRect(142, 300-sandH, 156, sandH);
+  // Sand collecting at the bottom of the container
+  const sandH = p * (contBot-meshBot-6);
+  ctx.fillStyle='rgba(196,168,130,0.4)';
+  ctx.fillRect(contL+2, contBot-sandH, (contR-contL)-4, sandH);
 
-  ctx.restore();
-  drawLabel(ctx, 340, 150, 'Sieve mesh');
-  drawLabel(ctx, 60,  120, 'Gravel stays');
-  drawLabel(ctx, 60,  145, 'on top');
-  drawLabel(ctx, 310, 280, 'Fine sand');
-  drawLabel(ctx, 310, 295, 'falls through');
+  drawLabel(ctx, meshR+8, meshTop+16, 'Sieve mesh');
+  drawLabel(ctx, meshL-8, 55, 'Gravel stays');
+  drawLabel(ctx, meshL-8, 70, 'on top');
+  drawLabel(ctx, contR+8, 270, 'Fine sand');
+  drawLabel(ctx, contR+8, 285, 'falls through');
 }
 
 function drawLabel(ctx2, x, y, text) {

@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v59'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v60'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -251,6 +251,35 @@ const CACHE_NAME = 'magic-lab-v59'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // diagram. Each function's shape/particle drawing is now wrapped in
                                     // a scale-up transform (restored before its text labels are drawn,
                                     // so label size/position is unaffected) to fill the canvas properly.
+                                    // v60: v59's scale-up transform on separating-mixtures.html turned
+                                    // out to clip content off-canvas in places (Sieving's gravel,
+                                    // Chromatography's beaker) and didn't touch the underlying physics,
+                                    // so the follow-up report ("particles aren't behaving the way they
+                                    // would in the real experiment") was still valid. Rewrote all 5
+                                    // non-Filtration diagrams with native (untransformed) coordinates
+                                    // and real behaviour fixes: Evaporation's salt is now small circles
+                                    // that appear at random (deterministic per-crystal, so they don't
+                                    // reshuffle every frame) instead of a fixed grid of squares, and its
+                                    // flame no longer overlaps the dish; Distillation's flame no longer
+                                    // overlaps the flask, and the vapour bubble now travels exactly along
+                                    // the bent condenser-tube path instead of in a straight line that flew
+                                    // past the actual tube outlet; Magnetic Separation's iron filings now
+                                    // "stick" to the magnet once it sweeps within range and are carried
+                                    // along with it for the rest of the animation (previously they were a
+                                    // pure function of instantaneous distance, so they fell back down the
+                                    // moment the magnet moved on) while the sand never moves; Sieving's
+                                    // gravel now rests on the mesh at fixed non-overlapping positions
+                                    // instead of the clipped, overlapping cluster v59 produced.
+                                    // .ctrl-select also swapped its translucent background/near-invisible
+                                    // border for the solid-background, visible-border style every other
+                                    // tool's dropdowns use (math-magician, model-mage, spike-spellcaster),
+                                    // since the translucent version read as visually inconsistent even
+                                    // with its v59 option-background fix. Separately, gr8/life/
+                                    // ecosystems.html's Savanna Food Web Builder drew each organism's
+                                    // emoji icon without resetting fillStyle after the node circle's
+                                    // low-alpha fill — canvas applies that leftover ~13% alpha to the
+                                    // icon glyph too, so every organism rendered almost invisibly faint.
+                                    // Reset fillStyle to full-opacity white before drawing each icon.
 
 const urlsToCache = [
   '/',

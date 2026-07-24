@@ -472,8 +472,11 @@ function drawWeb(ts){
     wctx.strokeStyle = n.tcolor + (isSelected?'ff':'99');
     wctx.lineWidth = isSelected ? 2.5 : 1.5;
     wctx.stroke();
-    // Icon
+    // Icon — fillStyle was left at the circle's low-alpha fill colour above,
+    // which (for colour-emoji glyphs) makes the icon render almost invisibly
+    // faint. Reset to full-alpha white before drawing it.
     wctx.shadowBlur = 0;
+    wctx.fillStyle = '#fff';
     wctx.font = `${n.id==='sun'?20:16}px serif`;
     wctx.textAlign='center'; wctx.textBaseline='middle';
     wctx.fillText(n.icon, n.x, n.y - 2);
