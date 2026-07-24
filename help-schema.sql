@@ -166,6 +166,12 @@ $$;
 -- get_or_create_help_thread_as_teacher below), and its resolved state.
 -- Used to badge the class list, not to render the roster itself — see
 -- get_teacher_class_roster for the per-class, all-learners view.
+--
+-- Dropped first because this version added has_asked/resolved columns —
+-- Postgres refuses CREATE OR REPLACE when a function's return columns
+-- change shape (error 42P13), even though the body-only changes above
+-- and below are fine with plain CREATE OR REPLACE.
+drop function if exists get_teacher_help_threads();
 create or replace function get_teacher_help_threads()
 returns table (
   thread_id        uuid,
