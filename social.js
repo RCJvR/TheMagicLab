@@ -13,8 +13,8 @@
 
 document.addEventListener('magiclab:auth:ready', () => {
   window.MagicLabSocial = {
-    getMyClassmates,
-    sendFriendRequest,
+    getMyFriendCode,
+    addFriendByCode,
     acceptFriendRequest,
     removeFriendship,
     getFriends,
@@ -32,37 +32,27 @@ function _uid() {
   return auth?.getProfile()?.id ?? auth?.getSession()?.user?.id ?? null;
 }
 
-/**
- * Every classmate across every class the current student belongs to,
- * annotated with friendship state: 'none' | 'pending' | 'accepted', plus
- * whether the current user was the one who sent a pending request.
- */
-async function getMyClassmates() {
+/** The current user's own friend code, generating one on first call. */
+async function getMyFriendCode() {
   const auth = window.MagicLabAuth;
-  if (!auth?.isLoggedIn()) return [];
-  const { data, error } = await auth._supabase().rpc('get_my_classmates');
-  if (error) { console.warn('[MagicLab] getMyClassmates error:', error.message); return []; }
-  return (data || []).map(r => ({
-    id: r.id,
-    displayName: r.display_name,
-    grade: r.grade,
-    friendshipId: r.friendship_id,
-    status: r.friendship_status || 'none',
-    isRequester: r.is_requester,
-  }));
+  if (!auth?.isLoggedIn()) return null;
+  const { data, error } = await auth._supabase().rpc('get_or_create_my_friend_code');
+  if (error) { console.warn('[MagicLab] getMyFriendCode error:', error.message); return null; }
+  return data;
 }
 
-async function sendFriendRequest(addresseeId) {
+/**
+ * Sends a friend request to whoever owns `code`. Only succeeds if that
+ * learner shares a class with the caller — the RPC returns a specific
+ * error message otherwise (wrong code, not classmates, already friends).
+ */
+async function addFriendByCode(code) {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return { error: { message: 'Not logged in' } };
-  const requesterId = _uid();
-  if (!requesterId) return { error: { message: 'Not logged in' } };
-  const { data, error } = await auth._supabase()
-    .from('friendships')
-    .insert({ requester_id: requesterId, addressee_id: addresseeId })
-    .select()
-    .single();
-  return { data, error };
+  const { data, error } = await auth._supabase().rpc('send_friend_request_by_code', { p_code: code });
+  if (error) return { error };
+  if (data?.error) return { error: { message: data.error } };
+  return { data };
 }
 
 async function acceptFriendRequest(friendshipId) {

@@ -527,8 +527,20 @@
         <div id="friend-requests-wrap" style="display:none;"></div>
         <div class="section-sub-label">My friends</div>
         <div id="friends-list-wrap"></div>
-        <div class="section-sub-label">Classmates</div>
-        <div id="classmates-wrap"></div>
+
+        <div class="section-sub-label">Add a friend</div>
+        <div class="friend-card" style="justify-content:space-between;">
+          <div>
+            <div class="friend-sub" style="margin-bottom:3px;">Your friend code — share it with a classmate</div>
+            <div class="friend-name" id="my-friend-code" style="font-family:var(--font-mono);letter-spacing:0.1em;font-size:15px;">——————</div>
+          </div>
+          <button class="friend-btn" id="copy-friend-code-btn">Copy</button>
+        </div>
+        <div class="class-input-row" style="margin-top:8px;">
+          <input class="class-input" id="add-friend-code-input" placeholder="ABC123" maxlength="8">
+          <button class="class-join-btn" id="add-friend-code-btn">Add Friend</button>
+        </div>
+        <div id="add-friend-msg" style="font-size:12px;margin-top:6px;display:none;"></div>
 
         <div class="section-hdr" style="margin-top:36px;">
           Lesson Invites
@@ -980,6 +992,21 @@
       });
       lucide.createIcons();
 
+      // Add-friend-by-code wiring
+      document.getElementById('add-friend-code-btn')?.addEventListener('click', _addFriendByCode);
+      document.getElementById('add-friend-code-input')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') _addFriendByCode();
+      });
+      document.getElementById('copy-friend-code-btn')?.addEventListener('click', () => {
+        const code = document.getElementById('my-friend-code').textContent;
+        if (!code || code === '——————') return;
+        navigator.clipboard?.writeText(code);
+        const btn = document.getElementById('copy-friend-code-btn');
+        const old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = old; }, 1200);
+      });
+
       // Invite modal wiring
       document.getElementById('invite-modal-close')?.addEventListener('click', closeInviteModal);
       document.getElementById('invite-modal-overlay')?.addEventListener('click', e => {
@@ -1022,16 +1049,16 @@
     let _myFriends = [];
 
     async function _loadSocial() {
-      const [classmates, friends, incoming, invites] = await Promise.all([
-        window.MagicLabSocial.getMyClassmates(),
+      const [code, friends, incoming, invites] = await Promise.all([
+        window.MagicLabSocial.getMyFriendCode(),
         window.MagicLabSocial.getFriends(),
         window.MagicLabSocial.getPendingIncoming(),
         window.MagicLabSocial.getMyLessonInvites(),
       ]);
       _myFriends = friends;
+      document.getElementById('my-friend-code').textContent = code || '——————';
       _renderFriendRequests(incoming);
       _renderFriendsList(friends);
-      _renderClassmates(classmates);
       _renderLessonInvites(invites);
     }
 
@@ -1052,7 +1079,7 @@
     function _renderFriendsList(friends) {
       const wrap = document.getElementById('friends-list-wrap');
       if (!friends.length) {
-        wrap.innerHTML = '<p class="empty-hint">No friends yet — add a classmate below to get started.</p>';
+        wrap.innerHTML = '<p class="empty-hint">No friends yet — share your friend code below to get started.</p>';
         return;
       }
       wrap.innerHTML = friends.map(f => `
@@ -1064,29 +1091,22 @@
         </div>`).join('');
     }
 
-    function _renderClassmates(classmates) {
-      const wrap = document.getElementById('classmates-wrap');
-      const addable = classmates.filter(c => c.status === 'none' || (c.status === 'pending' && c.isRequester));
-      if (!addable.length) {
-        wrap.innerHTML = '<p class="empty-hint">No more classmates to add right now.</p>';
-        return;
-      }
-      wrap.innerHTML = addable.map(c => `
-        <div class="friend-card">
-          <div class="friend-avatar">${_initials(c.displayName)}</div>
-          <div class="friend-name">${_esc(c.displayName)}${c.grade ? ` <span class="friend-sub">· Gr ${c.grade}</span>` : ''}</div>
-          ${c.status === 'pending'
-            ? `<button class="friend-btn" disabled>Pending…</button>`
-            : `<button class="friend-btn primary" onclick="_sendFriendReq('${c.id}', this)">Add Friend</button>`}
-        </div>`).join('');
-    }
-
-    async function _sendFriendReq(id, btn) {
-      btn.disabled = true; btn.textContent = 'Sending…';
-      const { error } = await window.MagicLabSocial.sendFriendRequest(id);
-      if (error) { alert(error.message); btn.disabled = false; btn.textContent = 'Add Friend'; return; }
+    async function _addFriendByCode() {
+      const input = document.getElementById('add-friend-code-input');
+      const msg   = document.getElementById('add-friend-msg');
+      const code  = input.value.trim();
+      if (!code) return;
+      const btn = document.getElementById('add-friend-code-btn');
+      btn.disabled = true; btn.textContent = 'Adding…';
+      const { error } = await window.MagicLabSocial.addFriendByCode(code);
+      btn.disabled = false; btn.textContent = 'Add Friend';
+      msg.style.display = 'block';
+      if (error) { msg.style.color = '#f87171'; msg.textContent = error.message; return; }
+      msg.style.color = '#6ee7b7'; msg.textContent = 'Friend request sent!';
+      input.value = '';
       await _loadSocial();
     }
+
     async function _acceptFriendReq(friendshipId) {
       await window.MagicLabSocial.acceptFriendRequest(friendshipId);
       await _loadSocial();

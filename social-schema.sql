@@ -17,6 +17,10 @@
 -- PART 1 — FRIENDSHIPS
 -- ══════════════════════════════════════════════════════════════════════
 
+-- Each learner's personal, persistent code for sharing with a friend
+-- so they can add each other — see send_friend_request_by_code() below.
+alter table profiles add column if not exists friend_code text unique;
+
 create table if not exists friendships (
   id            uuid primary key default gen_random_uuid(),
   requester_id  uuid not null references profiles(id) on delete cascade,
@@ -93,34 +97,80 @@ create policy "Either side removes a friendship" on friendships
   for delete
   using (requester_id = auth.uid() or addressee_id = auth.uid());
 
--- Student-facing classmate directory: every classmate across every class
--- the caller belongs to, annotated with the current friendship state so
--- the UI can render one button per person (Add / Pending / Accept / Friends).
--- Security-definer so it can read classmates' profiles, which the caller
--- has no direct SELECT grant on.
-create or replace function get_my_classmates()
-returns table (
-  id                uuid,
-  display_name      text,
-  grade             int,
-  friendship_id     uuid,
-  friendship_status text,
-  is_requester      boolean
-)
-language sql security definer stable
+drop function if exists get_my_classmates();
+
+-- Returns the caller's own friend code, generating a unique one on first
+-- call. Security-definer only so the generation loop can check
+-- collisions across every profile, not because the caller can't see
+-- their own row — profiles are self-readable already.
+create or replace function get_or_create_my_friend_code()
+returns text
+language plpgsql security definer
 as $$
-  select distinct
-    p.id, p.display_name, p.grade,
-    f.id as friendship_id,
-    f.status as friendship_status,
-    (f.requester_id = auth.uid()) as is_requester
-  from profiles p
-  join class_members cm_them on cm_them.student_id = p.id
-  join class_members cm_me   on cm_me.class_id = cm_them.class_id and cm_me.student_id = auth.uid()
-  left join friendships f
-    on (f.requester_id = auth.uid() and f.addressee_id = p.id)
-    or (f.requester_id = p.id and f.addressee_id = auth.uid())
-  where p.id <> auth.uid();
+declare
+  v_code text;
+begin
+  select friend_code into v_code from profiles where id = auth.uid();
+  if v_code is not null then
+    return v_code;
+  end if;
+
+  loop
+    v_code := upper(substr(md5(random()::text || clock_timestamp()::text), 1, 6));
+    exit when not exists (select 1 from profiles where friend_code = v_code);
+  end loop;
+
+  update profiles set friend_code = v_code where id = auth.uid();
+  return v_code;
+end;
+$$;
+
+-- Looks up a learner by the friend code they shared, and sends a friend
+-- request if the two share a class. Returns jsonb — either
+-- {"success": true} or {"error": "<message>"} — rather than raising, so
+-- the client can show a specific, friendly reason (wrong code, not
+-- classmates, already friends, etc.) instead of a generic failure.
+-- Security-definer so it can look up the code across every profile.
+create or replace function send_friend_request_by_code(p_code text)
+returns jsonb
+language plpgsql security definer
+as $$
+declare
+  v_target_id uuid;
+  v_code      text := upper(trim(p_code));
+begin
+  if v_code = '' then
+    return jsonb_build_object('error', 'Enter a friend code.');
+  end if;
+
+  select id into v_target_id from profiles where friend_code = v_code;
+  if v_target_id is null then
+    return jsonb_build_object('error', 'No learner found with that code.');
+  end if;
+
+  if v_target_id = auth.uid() then
+    return jsonb_build_object('error', 'That''s your own code.');
+  end if;
+
+  if not same_class(auth.uid(), v_target_id) then
+    return jsonb_build_object('error', 'You can only add friends from a class you share with them.');
+  end if;
+
+  if are_friends(auth.uid(), v_target_id) then
+    return jsonb_build_object('error', 'You''re already friends.');
+  end if;
+
+  if exists (
+    select 1 from friendships
+    where (requester_id = auth.uid() and addressee_id = v_target_id)
+       or (requester_id = v_target_id and addressee_id = auth.uid())
+  ) then
+    return jsonb_build_object('error', 'A friend request is already pending with this learner.');
+  end if;
+
+  insert into friendships (requester_id, addressee_id) values (auth.uid(), v_target_id);
+  return jsonb_build_object('success', true);
+end;
 $$;
 
 
