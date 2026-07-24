@@ -97,6 +97,34 @@
     .tab-btn:hover:not(.active){color:var(--text2);}
     .tab-panel{display:none;}
     .tab-panel.active{display:block;}
+    .help-tab-badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:16px;height:16px;padding:0 4px;margin-left:6px;border-radius:99px;
+      background:#ef4444;color:#fff;font-size:10px;font-weight:800;
+    }
+
+    /* ── Help chat ── */
+    .help-thread-card{cursor:pointer;}
+    .help-thread-unread{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:18px;height:18px;padding:0 5px;border-radius:99px;
+      background:#ef4444;color:#fff;font-size:11px;font-weight:800;
+    }
+    .help-chat-box{
+      display:flex;flex-direction:column;height:420px;
+      border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.15);
+    }
+    .help-chat-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
+    .help-msg{max-width:70%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.4;}
+    .help-msg.mine{align-self:flex-end;background:rgba(6,182,212,0.22);color:var(--text);border-bottom-right-radius:3px;}
+    .help-msg.theirs{align-self:flex-start;background:rgba(255,255,255,0.06);color:var(--text2);border-bottom-left-radius:3px;}
+    .help-msg-time{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px;opacity:0.7;}
+    .help-chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border2);}
+    .help-chat-send{
+      padding:0 20px;border-radius:10px;border:none;flex-shrink:0;
+      background:linear-gradient(135deg,#0891b2,#0e7490);
+      color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--font);
+    }
 
     /* ── Page header ── */
     .page-header{margin-bottom:32px;}
@@ -554,6 +582,7 @@
       <button class="tab-btn" onclick="switchTab('assignments', this)">📝 Assignments</button>
       <button class="tab-btn" onclick="switchTab('livegame', this)">🏟️ The Arena</button>
       <button class="tab-btn" onclick="switchTab('training', this)">📚 Teacher Training</button>
+      <button class="tab-btn" onclick="switchTab('help', this)">💬 Help Requests<span id="help-tab-badge" class="help-tab-badge" style="display:none;"></span></button>
     </div>
 
     <!-- ═══ TAB: CLASSES ═══ -->
@@ -754,6 +783,40 @@
 
     </div><!-- /tab-training -->
 
+
+    <!-- ═══ TAB: HELP REQUESTS ═══ -->
+    <div class="tab-panel" id="tab-help">
+
+      <div class="page-header">
+        <h1>Help Requests</h1>
+        <p>Messages from learners asking for help, across every class you teach.</p>
+      </div>
+
+      <div id="help-threads-wrap">
+        <div class="class-grid" id="help-thread-grid"></div>
+      </div>
+
+      <div id="help-thread-detail-wrap" style="display:none;">
+        <div class="class-detail">
+          <div class="class-detail-header">
+            <div>
+              <div class="class-detail-title" id="help-detail-title">Learner</div>
+              <div class="class-detail-meta" id="help-detail-meta"></div>
+            </div>
+            <button class="back-btn" onclick="closeHelpThread()">← All requests</button>
+          </div>
+          <div class="help-chat-box" id="help-chat-panel">
+            <div class="help-chat-messages" id="help-chat-messages"></div>
+            <div class="help-chat-input-row">
+              <input type="text" class="form-input" id="help-chat-input" placeholder="Type a reply…" maxlength="1000" style="margin:0;">
+              <button class="help-chat-send" id="help-chat-send">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tab-help -->
+
   </div><!-- /teacher-dash -->
 
   <!-- Create class modal -->
@@ -834,6 +897,7 @@
 <script src="xp.js"></script>
 <script src="lesson-catalog.js"></script>
 <script src="assignments.js"></script>
+<script src="help-chat.js"></script>
 <script src="question-bank.js"></script>
 <script src="games.js"></script>
 <script src="auth-modal.js"></script>
@@ -1519,6 +1583,7 @@ async function _initDashboard() {
 
   await Promise.all([_loadClasses(), _loadTrainingProgress()]);
   _populateGameToolPicker();
+  _waitFor(() => window.MagicLabHelpChat).then(_loadHelpThreads).catch(() => {});
 }
 
 // ══════════════════════════════════════════════════════════
@@ -2243,6 +2308,120 @@ function _updateTrainingProgress() {
   document.getElementById('ao-prog').textContent =
     `${aoMods.filter(m=>_completedModules.has(m.id)).length} / ${aoMods.length} modules`;
 }
+
+// ══════════════════════════════════════════════════════════
+// HELP REQUESTS TAB
+// ══════════════════════════════════════════════════════════
+let _helpThreads      = [];
+let _openHelpThreadId = null;
+let _helpPollTimer    = null;
+
+// Polls `check` until it returns truthy or `timeoutMs` elapses — used for
+// scripts (help-chat.js) that attach their public API asynchronously
+// after 'magiclab:auth:ready'.
+function _waitFor(check, timeoutMs = 5000) {
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+    (function poll() {
+      const v = check();
+      if (v) return resolve(v);
+      if (Date.now() - start > timeoutMs) return reject(new Error('timeout waiting for readiness'));
+      setTimeout(poll, 150);
+    })();
+  });
+}
+
+function _escT(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function _loadHelpThreads() {
+  _helpThreads = await window.MagicLabHelpChat.getTeacherHelpThreads();
+  _renderHelpThreadGrid();
+
+  const totalUnread = _helpThreads.reduce((s, t) => s + (t.unreadCount || 0), 0);
+  const badge = document.getElementById('help-tab-badge');
+  if (totalUnread > 0) { badge.textContent = totalUnread; badge.style.display = 'inline-flex'; }
+  else badge.style.display = 'none';
+}
+
+function _renderHelpThreadGrid() {
+  const grid = document.getElementById('help-thread-grid');
+  if (!_helpThreads.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <span class="empty-state-icon">💬</span>
+        <h3>No help requests yet</h3>
+        <p>When a learner messages you for help from their dashboard, it'll show up here.</p>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = _helpThreads.map(t => `
+    <div class="class-card help-thread-card" onclick="openHelpThread('${t.threadId}')">
+      <div class="class-card-header">
+        <div class="class-icon">🙋</div>
+        ${t.unreadCount > 0 ? `<span class="help-thread-unread">${t.unreadCount}</span>` : ''}
+      </div>
+      <div class="class-name">${_escT(t.studentName)}</div>
+      <div class="class-meta">${_escT(t.className)} · ${_fmtDate(t.lastMessageAt)}</div>
+    </div>`).join('');
+}
+
+async function openHelpThread(threadId) {
+  const t = _helpThreads.find(x => x.threadId === threadId);
+  if (!t) return;
+  _openHelpThreadId = threadId;
+
+  document.getElementById('help-threads-wrap').style.display = 'none';
+  document.getElementById('help-thread-detail-wrap').style.display = 'block';
+  document.getElementById('help-detail-title').textContent = t.studentName;
+  document.getElementById('help-detail-meta').textContent  = t.className;
+
+  await _refreshHelpMessages();
+  await window.MagicLabHelpChat.markThreadRead(threadId);
+  await _loadHelpThreads();
+
+  if (_helpPollTimer) clearInterval(_helpPollTimer);
+  _helpPollTimer = setInterval(_refreshHelpMessages, 4000);
+}
+
+function closeHelpThread() {
+  _openHelpThreadId = null;
+  if (_helpPollTimer) clearInterval(_helpPollTimer);
+  document.getElementById('help-thread-detail-wrap').style.display = 'none';
+  document.getElementById('help-threads-wrap').style.display = 'block';
+  _loadHelpThreads();
+}
+
+async function _refreshHelpMessages() {
+  if (!_openHelpThreadId) return;
+  const messages = await window.MagicLabHelpChat.getThreadMessages(_openHelpThreadId);
+  const myId = window.MagicLabAuth.getProfile()?.id ?? window.MagicLabAuth.getSession()?.user?.id;
+  const box  = document.getElementById('help-chat-messages');
+  const wasAtBottom = box.scrollTop + box.clientHeight >= box.scrollHeight - 30;
+  box.innerHTML = messages.length
+    ? messages.map(m => `
+        <div class="help-msg ${m.sender_id === myId ? 'mine' : 'theirs'}">
+          ${_escT(m.body)}
+          <div class="help-msg-time">${new Date(m.created_at).toLocaleString('en-ZA', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}</div>
+        </div>`).join('')
+    : '<p style="font-size:13px;color:var(--muted);">No messages yet.</p>';
+  if (wasAtBottom) box.scrollTop = box.scrollHeight;
+}
+
+async function _sendHelpReply() {
+  const input = document.getElementById('help-chat-input');
+  const body  = input.value.trim();
+  if (!body || !_openHelpThreadId) return;
+  input.value = '';
+  await window.MagicLabHelpChat.sendHelpMessage(_openHelpThreadId, body);
+  await _refreshHelpMessages();
+}
+
+document.getElementById('help-chat-send')?.addEventListener('click', _sendHelpReply);
+document.getElementById('help-chat-input')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') _sendHelpReply();
+});
 
 // ══════════════════════════════════════════════════════════
 // SHARED UI

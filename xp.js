@@ -114,6 +114,15 @@
     { id: 'five_tools',        icon: '🧭', name: 'Well-Rounded',      desc: 'Use 5 different tools',                          criteria: { type: 'tools_used',   value: 5  } },
     { id: 'eight_tools',       icon: '🎪', name: 'Multi-Talented',    desc: 'Use 8 different tools',                          criteria: { type: 'tools_used',   value: 8  } },
     { id: 'twelve_tools',      icon: '🌍', name: 'All-Rounder',       desc: 'Use all 12 tools',                               criteria: { type: 'tools_used',   value: 12 } },
+
+    // ── Duo (co-op with a friend) — awarded server-side by the
+    // trg_lesson_complete_duo trigger in social-schema.sql, not by
+    // _checkAndAwardBadges below, since earning these depends on a
+    // friend's progress the caller has no RLS grant to read directly.
+    // Defined here only so the dashboard can show their icon/name/desc.
+    { id: 'duo_1',    icon: '🤝', name: 'Study Buddies', desc: 'Complete an invited lesson together with a friend', criteria: { type: 'duo_lessons', value: 1  } },
+    { id: 'duo_5',    icon: '👯', name: 'Study Squad',   desc: 'Complete 5 lessons together with friends',          criteria: { type: 'duo_lessons', value: 5  } },
+    { id: 'duo_15',   icon: '🎓', name: 'Study Circle',  desc: 'Complete 15 lessons together with friends',         criteria: { type: 'duo_lessons', value: 15 } },
   ];
 
   // ── DERIVED FUNCTIONS ─────────────────────────────────────
