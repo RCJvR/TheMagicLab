@@ -125,6 +125,27 @@
       background:linear-gradient(135deg,#0891b2,#0e7490);
       color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--font);
     }
+    .help-filter-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+    .filter-pill{
+      padding:7px 16px;border-radius:99px;border:1px solid var(--border);
+      background:var(--surface);color:var(--muted);
+      font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 140ms;
+    }
+    .filter-pill:hover{color:var(--text2);}
+    .filter-pill.active{border-color:rgba(6,182,212,0.40);background:rgba(6,182,212,0.14);color:#67e8f9;}
+    .roster-item{
+      display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:8px;
+      border-radius:12px;background:var(--surface);border:1px solid var(--border);
+      cursor:pointer;transition:border-color 140ms;
+    }
+    .roster-item:hover{border-color:rgba(6,182,212,0.35);}
+    .roster-avatar{
+      width:32px;height:32px;border-radius:50%;flex-shrink:0;
+      background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;
+    }
+    .roster-name{font-weight:700;font-size:13px;color:var(--text);flex:1;}
+    .roster-status{font-family:var(--mono);font-size:11px;color:var(--muted);flex-shrink:0;}
 
     /* ── Page header ── */
     .page-header{margin-bottom:32px;}
@@ -789,13 +810,34 @@
 
       <div class="page-header">
         <h1>Help Requests</h1>
-        <p>Messages from learners asking for help, across every class you teach.</p>
+        <p>Messages from learners, grouped by class.</p>
       </div>
 
-      <div id="help-threads-wrap">
-        <div class="class-grid" id="help-thread-grid"></div>
+      <!-- Level 1: classes -->
+      <div id="help-class-list-wrap">
+        <div class="class-grid" id="help-class-grid"></div>
       </div>
 
+      <!-- Level 2: one class's roster, filtered -->
+      <div id="help-roster-wrap" style="display:none;">
+        <div class="class-detail">
+          <div class="class-detail-header">
+            <div>
+              <div class="class-detail-title" id="help-roster-class-name">Class</div>
+              <div class="class-detail-meta">Help requests</div>
+            </div>
+            <button class="back-btn" onclick="closeHelpRoster()">← All classes</button>
+          </div>
+          <div class="help-filter-row">
+            <button class="filter-pill active" data-filter="asked" onclick="_setHelpFilter('asked', this)">Asked a question</button>
+            <button class="filter-pill" data-filter="all" onclick="_setHelpFilter('all', this)">All learners</button>
+            <button class="filter-pill" data-filter="resolved" onclick="_setHelpFilter('resolved', this)">Resolved</button>
+          </div>
+          <div id="help-roster-list"></div>
+        </div>
+      </div>
+
+      <!-- Level 3: chat with one learner -->
       <div id="help-thread-detail-wrap" style="display:none;">
         <div class="class-detail">
           <div class="class-detail-header">
@@ -803,7 +845,10 @@
               <div class="class-detail-title" id="help-detail-title">Learner</div>
               <div class="class-detail-meta" id="help-detail-meta"></div>
             </div>
-            <button class="back-btn" onclick="closeHelpThread()">← All requests</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="back-btn" id="help-resolve-btn" onclick="_toggleResolved()">✓ Mark resolved</button>
+              <button class="back-btn" onclick="closeHelpThread()">← Back</button>
+            </div>
           </div>
           <div class="help-chat-box" id="help-chat-panel">
             <div class="help-chat-messages" id="help-chat-messages"></div>
@@ -2312,9 +2357,20 @@ function _updateTrainingProgress() {
 // ══════════════════════════════════════════════════════════
 // HELP REQUESTS TAB
 // ══════════════════════════════════════════════════════════
-let _helpThreads      = [];
-let _openHelpThreadId = null;
-let _helpPollTimer    = null;
+// Three levels: class grid -> per-class roster (filtered: asked / all /
+// resolved) -> one learner's chat. A learner only ever appears under
+// "Asked a question" (the roster's default filter) once they've actually
+// sent a message — "All learners" shows the whole class regardless, so a
+// teacher can also reach out first.
+let _helpThreads       = [];   // flat, all classes — feeds the class-grid badges
+let _helpRoster        = [];   // roster for the currently open class
+let _helpFilter         = 'asked';
+let _openHelpClassId   = null;
+let _openHelpClassName = null;
+let _openHelpStudentId = null;
+let _openHelpThreadId  = null;
+let _openHelpResolved  = false;
+let _helpMsgPollTimer  = null;
 
 // Polls `check` until it returns truthy or `timeoutMs` elapses — used for
 // scripts (help-chat.js) that attach their public API asynchronously
@@ -2334,63 +2390,173 @@ function _waitFor(check, timeoutMs = 5000) {
 function _escT(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+function _initialsT(name) {
+  return (name || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
 
 async function _loadHelpThreads() {
   _helpThreads = await window.MagicLabHelpChat.getTeacherHelpThreads();
-  _renderHelpThreadGrid();
+  _renderHelpClassGrid();
 
-  const totalUnread = _helpThreads.reduce((s, t) => s + (t.unreadCount || 0), 0);
+  const totalUnread = _helpThreads
+    .filter(t => t.hasAsked && !t.resolved)
+    .reduce((s, t) => s + (t.unreadCount || 0), 0);
   const badge = document.getElementById('help-tab-badge');
   if (totalUnread > 0) { badge.textContent = totalUnread; badge.style.display = 'inline-flex'; }
   else badge.style.display = 'none';
+
+  // Keep an open roster live too, so a new message updates it in place.
+  if (_openHelpClassId && document.getElementById('help-roster-wrap').style.display !== 'none') {
+    _loadHelpRoster(_openHelpClassId);
+  }
 }
 
-function _renderHelpThreadGrid() {
-  const grid = document.getElementById('help-thread-grid');
-  if (!_helpThreads.length) {
+function _renderHelpClassGrid() {
+  const grid = document.getElementById('help-class-grid');
+  if (!_classes.length) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1;">
-        <span class="empty-state-icon">💬</span>
-        <h3>No help requests yet</h3>
-        <p>When a learner messages you for help from their dashboard, it'll show up here.</p>
+        <span class="empty-state-icon">🏫</span>
+        <h3>No classes yet</h3>
+        <p>Create a class on the My Classes tab first.</p>
       </div>`;
     return;
   }
-  grid.innerHTML = _helpThreads.map(t => `
-    <div class="class-card help-thread-card" onclick="openHelpThread('${t.threadId}')">
-      <div class="class-card-header">
-        <div class="class-icon">🙋</div>
-        ${t.unreadCount > 0 ? `<span class="help-thread-unread">${t.unreadCount}</span>` : ''}
-      </div>
-      <div class="class-name">${_escT(t.studentName)}</div>
-      <div class="class-meta">${_escT(t.className)} · ${_fmtDate(t.lastMessageAt)}</div>
+  grid.innerHTML = _classes.map(c => {
+    const inClass = _helpThreads.filter(t => t.classId === c.id);
+    const asked   = inClass.filter(t => t.hasAsked && !t.resolved);
+    const resolved = inClass.filter(t => t.resolved);
+    const unread  = asked.reduce((s, t) => s + (t.unreadCount || 0), 0);
+    return `
+      <div class="class-card help-thread-card" onclick="openHelpRoster('${c.id}')">
+        <div class="class-card-header">
+          <div class="class-icon">💬</div>
+          ${unread > 0 ? `<span class="help-thread-unread">${unread}</span>` : ''}
+        </div>
+        <div class="class-name">${_escT(c.name)}</div>
+        <div class="class-meta">${asked.length} asked · ${resolved.length} resolved</div>
+      </div>`;
+  }).join('');
+}
+
+async function openHelpRoster(classId) {
+  const cls = _classes.find(c => c.id === classId);
+  if (!cls) return;
+  _openHelpClassId   = classId;
+  _openHelpClassName = cls.name;
+  _helpFilter = 'asked';
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.toggle('active', b.dataset.filter === 'asked'));
+
+  document.getElementById('help-class-list-wrap').style.display = 'none';
+  document.getElementById('help-roster-wrap').style.display = 'block';
+  document.getElementById('help-roster-class-name').textContent = cls.name;
+
+  await _loadHelpRoster(classId);
+}
+
+async function _loadHelpRoster(classId) {
+  _helpRoster = await window.MagicLabHelpChat.getTeacherClassRoster(classId);
+  _renderHelpRoster();
+}
+
+function _setHelpFilter(filter, btn) {
+  _helpFilter = filter;
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  _renderHelpRoster();
+}
+
+function _renderHelpRoster() {
+  const list = document.getElementById('help-roster-list');
+  let rows = _helpRoster;
+  if (_helpFilter === 'asked')    rows = rows.filter(r => r.hasAsked && !r.resolved);
+  if (_helpFilter === 'resolved') rows = rows.filter(r => r.resolved);
+  // 'all' — no filter, every learner in the class
+
+  if (!rows.length) {
+    const hint = _helpFilter === 'asked'    ? 'No open questions in this class right now.'
+               : _helpFilter === 'resolved' ? 'No resolved requests yet.'
+               :                              'No learners in this class yet.';
+    list.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon">💬</span>
+        <h3>Nothing here</h3>
+        <p>${hint}</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = rows.map(r => `
+    <div class="roster-item" onclick="openHelpThreadFromRoster('${r.studentId}')">
+      <div class="roster-avatar">${_initialsT(r.studentName)}</div>
+      <div class="roster-name">${_escT(r.studentName)}</div>
+      <div class="roster-status">${
+        r.resolved ? '✓ Resolved'
+        : r.hasAsked ? (r.lastMessageAt ? _fmtDate(r.lastMessageAt) : 'Asked a question')
+        : 'No messages yet'
+      }</div>
+      ${r.unreadCount > 0 ? `<span class="help-thread-unread">${r.unreadCount}</span>` : ''}
     </div>`).join('');
 }
 
-async function openHelpThread(threadId) {
-  const t = _helpThreads.find(x => x.threadId === threadId);
-  if (!t) return;
-  _openHelpThreadId = threadId;
+function closeHelpRoster() {
+  _openHelpClassId = null;
+  document.getElementById('help-roster-wrap').style.display = 'none';
+  document.getElementById('help-class-list-wrap').style.display = 'block';
+}
 
-  document.getElementById('help-threads-wrap').style.display = 'none';
+async function openHelpThreadFromRoster(studentId) {
+  const r = _helpRoster.find(x => x.studentId === studentId);
+  if (!r) return;
+  _openHelpStudentId = studentId;
+  _openHelpThreadId  = r.threadId || null;
+  _openHelpResolved  = !!r.resolved;
+
+  document.getElementById('help-roster-wrap').style.display = 'none';
   document.getElementById('help-thread-detail-wrap').style.display = 'block';
-  document.getElementById('help-detail-title').textContent = t.studentName;
-  document.getElementById('help-detail-meta').textContent  = t.className;
+  document.getElementById('help-detail-title').textContent = r.studentName;
+  document.getElementById('help-detail-meta').textContent  = _openHelpClassName;
+  _updateResolveBtn();
 
-  await _refreshHelpMessages();
-  await window.MagicLabHelpChat.markThreadRead(threadId);
+  if (_helpMsgPollTimer) clearInterval(_helpMsgPollTimer);
+
+  if (_openHelpThreadId) {
+    await _refreshHelpMessages();
+    await window.MagicLabHelpChat.markThreadRead(_openHelpThreadId);
+    _helpMsgPollTimer = setInterval(_refreshHelpMessages, 4000);
+  } else {
+    // No thread yet — this learner hasn't asked anything and the teacher
+    // hasn't reached out either. Don't create one just for browsing; that
+    // only happens once a first message is actually sent (see _sendHelpReply).
+    document.getElementById('help-chat-messages').innerHTML =
+      '<p style="font-size:13px;color:var(--muted);">No messages yet — send one to start the conversation.</p>';
+  }
+
   await _loadHelpThreads();
+}
 
-  if (_helpPollTimer) clearInterval(_helpPollTimer);
-  _helpPollTimer = setInterval(_refreshHelpMessages, 4000);
+function _updateResolveBtn() {
+  const btn = document.getElementById('help-resolve-btn');
+  if (!btn) return;
+  btn.textContent = _openHelpResolved ? '↺ Reopen' : '✓ Mark resolved';
+  btn.style.display = _openHelpThreadId ? '' : 'none';
+}
+
+async function _toggleResolved() {
+  if (!_openHelpThreadId) return;
+  _openHelpResolved = !_openHelpResolved;
+  _updateResolveBtn();
+  await window.MagicLabHelpChat.setThreadResolved(_openHelpThreadId, _openHelpResolved);
+  await _loadHelpThreads();
 }
 
 function closeHelpThread() {
-  _openHelpThreadId = null;
-  if (_helpPollTimer) clearInterval(_helpPollTimer);
+  if (_helpMsgPollTimer) clearInterval(_helpMsgPollTimer);
+  _openHelpThreadId  = null;
+  _openHelpStudentId = null;
   document.getElementById('help-thread-detail-wrap').style.display = 'none';
-  document.getElementById('help-threads-wrap').style.display = 'block';
-  _loadHelpThreads();
+  document.getElementById('help-roster-wrap').style.display = 'block';
+  if (_openHelpClassId) _loadHelpRoster(_openHelpClassId);
 }
 
 async function _refreshHelpMessages() {
@@ -2412,8 +2578,16 @@ async function _refreshHelpMessages() {
 async function _sendHelpReply() {
   const input = document.getElementById('help-chat-input');
   const body  = input.value.trim();
-  if (!body || !_openHelpThreadId) return;
+  if (!body || !_openHelpStudentId) return;
   input.value = '';
+
+  if (!_openHelpThreadId) {
+    const { data, error } = await window.MagicLabHelpChat.openHelpThreadAsTeacher(_openHelpStudentId, _openHelpClassId);
+    if (error) { alert(error.message); return; }
+    _openHelpThreadId = data.threadId;
+    _updateResolveBtn();
+    _helpMsgPollTimer = setInterval(_refreshHelpMessages, 4000);
+  }
   await window.MagicLabHelpChat.sendHelpMessage(_openHelpThreadId, body);
   await _refreshHelpMessages();
 }

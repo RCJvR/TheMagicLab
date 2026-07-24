@@ -16,8 +16,15 @@ create table if not exists help_threads (
   class_id         uuid not null references classes(id) on delete cascade,
   created_at       timestamptz not null default now(),
   last_message_at  timestamptz not null default now(),
+  resolved         boolean not null default false,
+  resolved_at      timestamptz,
   unique (student_id, class_id)
 );
+
+-- Added after the initial version of this file — safe on a table that
+-- already has rows, since existing threads default to unresolved.
+alter table help_threads add column if not exists resolved boolean not null default false;
+alter table help_threads add column if not exists resolved_at timestamptz;
 
 create table if not exists help_messages (
   id          uuid primary key default gen_random_uuid(),
@@ -75,12 +82,21 @@ create policy "Participants send thread messages" on help_messages
 
 -- Keeps help_threads.last_message_at current for sorting the teacher's
 -- inbox, without needing an UPDATE policy on help_threads for either side.
+-- Also reopens a thread the teacher had marked resolved if the student
+-- writes again — a teacher's own message never reopens it.
 create or replace function touch_help_thread()
 returns trigger
 language plpgsql security definer
 as $$
+declare
+  v_student_id uuid;
 begin
-  update help_threads set last_message_at = NEW.created_at where id = NEW.thread_id;
+  select student_id into v_student_id from help_threads where id = NEW.thread_id;
+  update help_threads set
+    last_message_at = NEW.created_at,
+    resolved    = case when NEW.sender_id = v_student_id then false else resolved end,
+    resolved_at = case when NEW.sender_id = v_student_id then null  else resolved_at end
+  where id = NEW.thread_id;
   return NEW;
 end;
 $$;
@@ -144,9 +160,12 @@ begin
 end;
 $$;
 
--- Teacher-facing inbox: every thread across the teacher's classes, with
--- the student's name and an unread count (messages from the student not
--- yet marked read). Security-definer so it can read student profile names.
+-- Teacher-facing: every thread across the teacher's classes, with the
+-- student's name, an unread count, whether the student has actually sent
+-- a message (a thread can exist with zero messages — see
+-- get_or_create_help_thread_as_teacher below), and its resolved state.
+-- Used to badge the class list, not to render the roster itself — see
+-- get_teacher_class_roster for the per-class, all-learners view.
 create or replace function get_teacher_help_threads()
 returns table (
   thread_id        uuid,
@@ -155,19 +174,104 @@ returns table (
   student_id       uuid,
   student_name     text,
   last_message_at  timestamptz,
-  unread_count     bigint
+  unread_count     bigint,
+  has_asked        boolean,
+  resolved         boolean
 )
 language sql security definer stable
 as $$
   select
     t.id, t.class_id, c.name, t.student_id, p.display_name, t.last_message_at,
     (select count(*) from help_messages m
-       where m.thread_id = t.id and m.sender_id = t.student_id and m.read_at is null)
+       where m.thread_id = t.id and m.sender_id = t.student_id and m.read_at is null),
+    exists (select 1 from help_messages m where m.thread_id = t.id and m.sender_id = t.student_id),
+    t.resolved
   from help_threads t
   join classes c  on c.id = t.class_id
   join profiles p on p.id = t.student_id
   where t.teacher_id = auth.uid()
   order by t.last_message_at desc;
+$$;
+
+-- Teacher-facing roster for one class: every student in the class — not
+-- just those with a thread — annotated with whether they've asked a
+-- question, its resolved state, unread count, and last activity. This is
+-- the single source for the "Asked a question" / "All learners" /
+-- "Resolved" filters in the UI (filtered client-side).
+create or replace function get_teacher_class_roster(p_class_id uuid)
+returns table (
+  student_id       uuid,
+  student_name     text,
+  thread_id        uuid,
+  has_asked        boolean,
+  resolved         boolean,
+  unread_count     bigint,
+  last_message_at  timestamptz
+)
+language sql security definer stable
+as $$
+  select
+    p.id,
+    p.display_name,
+    t.id,
+    coalesce(exists (select 1 from help_messages m where m.thread_id = t.id and m.sender_id = p.id), false),
+    coalesce(t.resolved, false),
+    coalesce((select count(*) from help_messages m
+                where m.thread_id = t.id and m.sender_id = p.id and m.read_at is null), 0),
+    t.last_message_at
+  from class_members cm
+  join profiles p on p.id = cm.student_id
+  left join help_threads t on t.student_id = p.id and t.class_id = cm.class_id
+  where cm.class_id = p_class_id
+    and exists (select 1 from classes c where c.id = p_class_id and c.teacher_id = auth.uid())
+  order by (t.last_message_at is null) asc, t.last_message_at desc nulls last, p.display_name asc;
+$$;
+
+-- Teacher-facing: find or create a (student, class) thread from the
+-- teacher's side, so a teacher can proactively message a learner from
+-- the "All learners" view who hasn't asked anything yet. Deliberately
+-- not called just to open an empty chat panel — the UI only calls this
+-- when the teacher actually sends a first message, so browsing "All
+-- learners" doesn't itself create data.
+create or replace function get_or_create_help_thread_as_teacher(p_student_id uuid, p_class_id uuid)
+returns uuid
+language plpgsql security definer
+as $$
+declare
+  v_thread_id uuid;
+begin
+  if not exists (select 1 from classes where id = p_class_id and teacher_id = auth.uid()) then
+    raise exception 'not your class';
+  end if;
+  if not exists (select 1 from class_members where class_id = p_class_id and student_id = p_student_id) then
+    raise exception 'student is not a member of this class';
+  end if;
+
+  select id into v_thread_id from help_threads
+    where student_id = p_student_id and class_id = p_class_id;
+
+  if v_thread_id is null then
+    insert into help_threads (student_id, teacher_id, class_id)
+    values (p_student_id, auth.uid(), p_class_id)
+    returning id into v_thread_id;
+  end if;
+
+  return v_thread_id;
+end;
+$$;
+
+-- Teacher-facing: mark a thread resolved or reopen it. A student writing
+-- again after this reopens it automatically — see touch_help_thread above.
+create or replace function mark_help_thread_resolved(p_thread_id uuid, p_resolved boolean)
+returns void
+language plpgsql security definer
+as $$
+begin
+  update help_threads set
+    resolved    = p_resolved,
+    resolved_at = case when p_resolved then now() else null end
+  where id = p_thread_id and teacher_id = auth.uid();
+end;
 $$;
 
 -- Marks every message in a thread not sent by the caller as read. Callable

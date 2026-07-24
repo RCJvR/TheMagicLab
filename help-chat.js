@@ -18,6 +18,9 @@ document.addEventListener('magiclab:auth:ready', () => {
     sendHelpMessage,
     markThreadRead,
     getTeacherHelpThreads,
+    getTeacherClassRoster,
+    openHelpThreadAsTeacher,
+    setThreadResolved,
   };
   document.dispatchEvent(new CustomEvent('magiclab:helpchat:ready'));
 });
@@ -78,7 +81,11 @@ async function markThreadRead(threadId) {
   if (error) console.warn('[MagicLab] markThreadRead error:', error.message);
 }
 
-/** Teacher-facing: every help thread across the teacher's classes, newest activity first. */
+/**
+ * Teacher-facing: every help thread across the teacher's classes, newest
+ * activity first. Used to badge the class list — see getTeacherClassRoster
+ * for the per-class, all-learners view the Help Requests tab renders.
+ */
 async function getTeacherHelpThreads() {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return [];
@@ -88,5 +95,48 @@ async function getTeacherHelpThreads() {
     threadId: r.thread_id, classId: r.class_id, className: r.class_name,
     studentId: r.student_id, studentName: r.student_name,
     lastMessageAt: r.last_message_at, unreadCount: r.unread_count,
+    hasAsked: r.has_asked, resolved: r.resolved,
   }));
+}
+
+/**
+ * Teacher-facing: every student in a class, whether or not they have a
+ * thread yet, annotated with hasAsked/resolved/unreadCount/lastMessageAt.
+ * threadId is null for a student who hasn't messaged and the teacher
+ * hasn't reached out to yet.
+ */
+async function getTeacherClassRoster(classId) {
+  const auth = window.MagicLabAuth;
+  if (!auth?.isLoggedIn()) return [];
+  const { data, error } = await auth._supabase().rpc('get_teacher_class_roster', { p_class_id: classId });
+  if (error) { console.warn('[MagicLab] getTeacherClassRoster error:', error.message); return []; }
+  return (data || []).map(r => ({
+    studentId: r.student_id, studentName: r.student_name, threadId: r.thread_id,
+    hasAsked: r.has_asked, resolved: r.resolved,
+    unreadCount: r.unread_count, lastMessageAt: r.last_message_at,
+  }));
+}
+
+/**
+ * Teacher-facing: find or create the thread for a student who hasn't
+ * messaged yet, so the teacher can reach out first. Returns the thread id.
+ */
+async function openHelpThreadAsTeacher(studentId, classId) {
+  const auth = window.MagicLabAuth;
+  if (!auth?.isLoggedIn()) return { error: { message: 'Not logged in' } };
+  const { data, error } = await auth._supabase().rpc('get_or_create_help_thread_as_teacher', {
+    p_student_id: studentId, p_class_id: classId,
+  });
+  if (error) return { error };
+  return { data: { threadId: data } };
+}
+
+/** Teacher-facing: mark a thread resolved (true) or reopen it (false). */
+async function setThreadResolved(threadId, resolved) {
+  const auth = window.MagicLabAuth;
+  if (!auth?.isLoggedIn()) return { error: { message: 'Not logged in' } };
+  const { error } = await auth._supabase().rpc('mark_help_thread_resolved', {
+    p_thread_id: threadId, p_resolved: resolved,
+  });
+  return { error };
 }
