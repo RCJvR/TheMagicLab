@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v58'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v59'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -235,6 +235,22 @@ const CACHE_NAME = 'magic-lab-v58'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // 282, 160) — Java Genie and Web Wizard also get unit:'tutorial'
                                     // instead of the generic "lessons" label, matching their badge
                                     // descriptions ("Complete the ... tutorial").
+                                    // v59: fixed two bugs reported in Science Sage's Explore-tab
+                                    // simulators. (1) White-on-white <select> dropdowns — 8 lesson
+                                    // files (gr7 separating-mixtures, gr8 compounds-mixtures, gr9
+                                    // chemical-bonding/atoms-electrons/genetics, gr10 chemical-bonding,
+                                    // gr11 energy-chemical-change/intermolecular-forces) styled their
+                                    // closed select box but never their open <option> list, so browsers
+                                    // fell back to a default white background under the inherited light
+                                    // text colour. Added explicit dark option backgrounds, matching the
+                                    // pattern already used elsewhere (dashboard-teacher.html, v43).
+                                    // (2) gr7 separating-mixtures.html's canvas diagrams for
+                                    // Evaporation, Distillation, Magnetic Separation, Chromatography and
+                                    // Sieving only ever drew into a small sub-region of the 440x360
+                                    // canvas, leaving large empty margins compared to the Filtration
+                                    // diagram. Each function's shape/particle drawing is now wrapped in
+                                    // a scale-up transform (restored before its text labels are drawn,
+                                    // so label size/position is unaffected) to fill the canvas properly.
 
 const urlsToCache = [
   '/',
