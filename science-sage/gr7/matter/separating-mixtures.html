@@ -414,13 +414,29 @@ function drawFiltration(t, p) {
   ctx.strokeStyle = 'rgba(251,191,36,0.5)';
   ctx.lineWidth = 1.5; ctx.stroke();
 
-  // Sand particles accumulating on filter paper (residue)
-  const sandCount = Math.floor(p * 22);
-  for(let i=0;i<sandCount;i++){
-    const rx = 165 + (i % 8)*10 + Math.sin(i*1.7)*4;
-    const ry = 160 + Math.floor(i/8)*8;
-    ctx.beginPath(); ctx.arc(rx, ry, 5, 0, Math.PI*2);
-    ctx.fillStyle = '#c4a882'; ctx.fill();
+  // Sand particles accumulating on the filter paper (residue) — the paper is
+  // a V-shaped cone (apex at 220,195, widening up to 140,65 / 300,65), so the
+  // pile must taper to match it instead of using a fixed-width grid, which
+  // pushed sand outside the paper (and even outside the funnel) near the top.
+  const paperLeftX  = y => 140 + (y-65) * 80/130;
+  const paperRightX = y => 300 - (y-65) * 80/130;
+  const sandRows = [
+    {y:183, n:3}, {y:174, n:5}, {y:165, n:6}, {y:156, n:6}, {y:147, n:6},
+  ];
+  const sandTotal = sandRows.reduce((a,r)=>a+r.n,0);
+  const sandCount = Math.floor(p * sandTotal);
+  let sandDrawn = 0;
+  outer:
+  for(const row of sandRows){
+    const left = paperLeftX(row.y) + 6, right = paperRightX(row.y) - 6;
+    for(let i=0;i<row.n;i++){
+      if(sandDrawn >= sandCount) break outer;
+      const frac = row.n===1 ? 0.5 : i/(row.n-1);
+      const rx = left + frac*(right-left) + Math.sin(i*2.3+row.y)*2;
+      ctx.beginPath(); ctx.arc(rx, row.y, 5, 0, Math.PI*2);
+      ctx.fillStyle = '#c4a882'; ctx.fill();
+      sandDrawn++;
+    }
   }
 
   // Water dripping through (filtrate)
@@ -669,8 +685,12 @@ function drawMagnetic(t, p) {
 
 /* ── CHROMATOGRAPHY ── */
 function drawChromatography(t, p) {
-  const stripL = 180, stripR = 280, stripTop = 45, stripBot = 300;
-  const beakerL = 140, beakerR = 320, beakerTop = 300, beakerBot = 345;
+  const stripL = 180, stripR = 280, stripTop = 45;
+  const beakerL = 140, beakerR = 320, beakerTop = 295, beakerBot = 345;
+  const fluidH = 26;                      // solvent depth in the beaker
+  const fluidY = beakerBot - fluidH;      // solvent surface inside the beaker
+  const stripBot = fluidY + 12;           // paper dips a little below the surface
+  const spotY = fluidY - 16;              // spot sits above the solvent — never submerged
   const midX = (stripL+stripR)/2;
 
   // Paper strip
@@ -679,8 +699,8 @@ function drawChromatography(t, p) {
   ctx.strokeStyle = 'rgba(251,191,36,0.4)'; ctx.lineWidth=1.5;
   ctx.strokeRect(stripL, stripTop, stripR-stripL, stripBot-stripTop);
 
-  // Solvent level rising up the paper
-  const solventY = stripBot - p * (stripBot-stripTop-30);
+  // Solvent front rises up the paper starting from the beaker's solvent surface
+  const solventY = fluidY - p * (fluidY - (stripTop+20));
   ctx.fillStyle = 'rgba(96,165,250,0.12)';
   ctx.fillRect(stripL, solventY, stripR-stripL, stripBot-solventY);
 
@@ -690,16 +710,16 @@ function drawChromatography(t, p) {
   ctx.strokeStyle = 'rgba(96,165,250,0.6)'; ctx.lineWidth=1; ctx.stroke();
 
   // Starting spot
-  ctx.beginPath(); ctx.arc(midX, stripBot-10, 6, 0, Math.PI*2);
+  ctx.beginPath(); ctx.arc(midX, spotY, 6, 0, Math.PI*2);
   ctx.fillStyle='rgba(50,50,50,0.7)'; ctx.fill();
 
   // Dye bands (3 colours, different travel distances)
   const colours = ['#f97316','#22c55e','#a855f7'];
   const speeds = [0.55, 0.78, 0.35]; // fraction of solvent travel
-  const travelSpan = stripBot-10 - (stripTop+20);
+  const travelSpan = spotY - (stripTop+20);
   colours.forEach((col, ci) => {
-    const bandY = (stripBot-10) - p * travelSpan * speeds[ci];
-    const travelled = Math.max(0, (stripBot-10) - bandY);
+    const bandY = spotY - p * travelSpan * speeds[ci];
+    const travelled = Math.max(0, spotY - bandY);
     if(travelled > 4) {
       const bw = 36 + ci*7;
       ctx.beginPath();
@@ -710,17 +730,18 @@ function drawChromatography(t, p) {
     }
   });
 
-  // Beaker with solvent
+  // Beaker with solvent — the paper's bottom edge (stripBot) dips below fluidY,
+  // so the paper is actually sitting in the solvent, not just resting on the rim.
   ctx.beginPath();
   ctx.moveTo(beakerL,beakerTop); ctx.lineTo(beakerL,beakerBot);
   ctx.lineTo(beakerR,beakerBot); ctx.lineTo(beakerR,beakerTop);
   ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=2; ctx.stroke();
-  ctx.fillStyle='rgba(96,165,250,0.10)';
-  ctx.fillRect(beakerL+2, beakerBot-16, (beakerR-beakerL)-4, 16);
+  ctx.fillStyle='rgba(96,165,250,0.16)';
+  ctx.fillRect(beakerL+2, fluidY, (beakerR-beakerL)-4, beakerBot-fluidY-2);
 
-  drawLabel(ctx, stripR+15, stripBot-10, 'Start spot');
+  drawLabel(ctx, stripR+15, spotY, 'Start spot');
   drawLabel(ctx, stripR+15, solventY-5, 'Solvent front');
-  drawLabel(ctx, 30,  beakerTop+20, 'Solvent');
+  drawLabel(ctx, 30,  fluidY+16, 'Solvent');
   drawLabel(ctx, stripR+15, stripTop+30, 'Separated');
   drawLabel(ctx, stripR+15, stripTop+44, 'dye bands');
 }

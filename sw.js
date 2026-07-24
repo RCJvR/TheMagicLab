@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v60'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v61'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -280,6 +280,20 @@ const CACHE_NAME = 'magic-lab-v60'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // low-alpha fill — canvas applies that leftover ~13% alpha to the
                                     // icon glyph too, so every organism rendered almost invisibly faint.
                                     // Reset fillStyle to full-opacity white before drawing each icon.
+                                    // v61: two more separating-mixtures.html Explore diagram fixes.
+                                    // Filtration's sand residue was drawn in a fixed-width grid that
+                                    // ignored the filter paper's actual V-shaped cone, so sand piled up
+                                    // outside the paper (sometimes even outside the funnel) near the top
+                                    // rows. Sand now piles in rows whose width is computed from the
+                                    // paper's actual left/right edges at that height, so it always stays
+                                    // inside the cone and tapers correctly toward the apex. Chromatography's
+                                    // solvent was only a shallow 16px puddle in a 45px-tall beaker, and the
+                                    // paper strip's bottom edge stopped exactly at the beaker's rim instead
+                                    // of dipping into it — so the paper never actually touched the solvent.
+                                    // Deepened the solvent and extended the paper down into it, with the
+                                    // starting spot repositioned to sit just above the solvent surface
+                                    // (as it must in the real experiment, or the spot would wash away
+                                    // immediately instead of separating into bands).
 
 const urlsToCache = [
   '/',
