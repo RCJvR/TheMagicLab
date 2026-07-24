@@ -81,42 +81,32 @@ async function removeFriendship(friendshipId) {
 /**
  * Accepted friends, with each row shaped like a classmate for reuse in
  * the "invite a friend" picker: { id, displayName, friendshipId }.
+ * Goes through the get_my_friends RPC rather than a client-side embedded
+ * select (friendships -> profiles), because profiles RLS doesn't grant
+ * one student blanket read access to an arbitrary other student's row —
+ * the embedded select silently came back null and the UI fell back to a
+ * generic "Classmate" label.
  */
 async function getFriends() {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return [];
-  const userId = _uid();
-  if (!userId) return [];
-  const supabase = auth._supabase();
-  const { data, error } = await supabase
-    .from('friendships')
-    .select('id, requester_id, addressee_id, requester:requester_id(id,display_name), addressee:addressee_id(id,display_name)')
-    .eq('status', 'accepted')
-    .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`);
+  const { data, error } = await auth._supabase().rpc('get_my_friends');
   if (error) { console.warn('[MagicLab] getFriends error:', error.message); return []; }
-  return (data || []).map(r => {
-    const isRequester = r.requester_id === userId;
-    const friend = isRequester ? r.addressee : r.requester;
-    return { id: friend?.id, displayName: friend?.display_name || 'Classmate', friendshipId: r.id };
-  });
+  return (data || []).map(r => ({
+    id: r.friend_id, displayName: r.display_name || 'Classmate', friendshipId: r.friendship_id,
+  }));
 }
 
 /** Incoming pending friend requests (someone else asked to be friends). */
 async function getPendingIncoming() {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return [];
-  const userId = _uid();
-  if (!userId) return [];
-  const { data, error } = await auth._supabase()
-    .from('friendships')
-    .select('id, created_at, requester:requester_id(id,display_name)')
-    .eq('status', 'pending')
-    .eq('addressee_id', userId);
+  const { data, error } = await auth._supabase().rpc('get_my_pending_friend_requests');
   if (error) { console.warn('[MagicLab] getPendingIncoming error:', error.message); return []; }
   return (data || []).map(r => ({
-    friendshipId: r.id,
-    id: r.requester?.id,
-    displayName: r.requester?.display_name || 'Classmate',
+    friendshipId: r.friendship_id,
+    id: r.requester_id,
+    displayName: r.display_name || 'Classmate',
     createdAt: r.created_at,
   }));
 }
@@ -165,26 +155,24 @@ async function removeLessonInvite(inviteId) {
 /**
  * All lesson invites involving the current user, split into incoming
  * (pending, need a response), and mine (sent or accepted, with the
- * other person's name and current status attached).
+ * other person's name and current status attached). Goes through the
+ * get_my_lesson_invites RPC for the same reason getFriends does — a
+ * client-side embedded select can't read the other participant's profile.
  */
 async function getMyLessonInvites() {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return { incoming: [], mine: [] };
   const userId = _uid();
   if (!userId) return { incoming: [], mine: [] };
-  const { data, error } = await auth._supabase()
-    .from('lesson_invites')
-    .select('id, tool, topic, status, created_at, completed_at, inviter_id, invitee_id, inviter:inviter_id(id,display_name), invitee:invitee_id(id,display_name)')
-    .order('created_at', { ascending: false });
+  const { data, error } = await auth._supabase().rpc('get_my_lesson_invites');
   if (error) { console.warn('[MagicLab] getMyLessonInvites error:', error.message); return { incoming: [], mine: [] }; }
 
   const rows = (data || []).map(r => {
     const isInviter = r.inviter_id === userId;
-    const other = isInviter ? r.invitee : r.inviter;
     return {
       id: r.id, tool: r.tool, topic: r.topic, status: r.status,
       createdAt: r.created_at, completedAt: r.completed_at,
-      isInviter, otherName: other?.display_name || 'Classmate',
+      isInviter, otherName: (isInviter ? r.invitee_name : r.inviter_name) || 'Classmate',
     };
   });
 
