@@ -2,7 +2,7 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v61'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v62'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language
@@ -294,6 +294,12 @@ const CACHE_NAME = 'magic-lab-v61'; // BUMP ON EVERY DEPLOY — cache-first SW s
                                     // starting spot repositioned to sit just above the solvent surface
                                     // (as it must in the real experiment, or the spot would wash away
                                     // immediately instead of separating into bands).
+                                    // v62: Filtration now shows sand still suspended in the mixture
+                                    // near the top of the funnel — varied grain sizes, each settling out
+                                    // of suspension onto the residue pile at its own deterministic point
+                                    // in the animation — instead of the residue simply appearing at the
+                                    // bottom with nothing visibly in transit above it. The pile itself
+                                    // still ends up in the same place (the lower part of the paper cone).
 
 const urlsToCache = [
   '/',

@@ -439,6 +439,23 @@ function drawFiltration(t, p) {
     }
   }
 
+  // Sand still suspended in the mixture, higher up in the funnel — varied
+  // grain sizes, each settling out of suspension (and onto the pile above)
+  // at its own deterministic point in the animation, so the top thins out
+  // as more of the pile below fills in.
+  const SUSPENDED_N = 16;
+  for(let i=0;i<SUSPENDED_N;i++){
+    const settleAt = 0.12 + pseudoRandom(i*5+1) * 0.8;
+    if(p >= settleAt) continue;
+    const py = 78 + pseudoRandom(i*5+2) * 55;
+    const left = paperLeftX(py) + 10, right = paperRightX(py) - 10;
+    const px = left + pseudoRandom(i*5+3) * (right-left) + Math.sin(t*0.03 + i)*3;
+    const r = 1.5 + pseudoRandom(i*5+4) * 3.5;
+    ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(196,168,130,${0.35 + pseudoRandom(i*5+5)*0.35})`;
+    ctx.fill();
+  }
+
   // Water dripping through (filtrate)
   const dropsDone = Math.floor(p * 14);
   for(let i=0;i<dropsDone;i++){
