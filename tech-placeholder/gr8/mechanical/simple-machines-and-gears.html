@@ -349,18 +349,25 @@ function drawGearTrain(){
   const driverSpeed = 0.014;
   const drivenDir = idlerOn ? 1 : -1;
 
-  // Every gear gets a constant half-tooth-pitch phase offset so a TOOTH on
-  // one gear always meets a GAP on its mesh partner instead of clashing
-  // head-on. Because all preset tooth counts are even and the three gears
-  // sit on one line, this single offset keeps every contact point aligned
-  // continuously as the train turns (not just at the start).
+  // Giving every gear the SAME half-tooth-pitch phase offset puts a GAP at
+  // world-angle-0 on every gear's own axis — so at each mesh point, both
+  // partners present a gap to each other (tangential root-to-root, no
+  // interlock) instead of one presenting a tooth into the other's gap.
+  // The offset must instead ALTERNATE along the chain: the driver has it,
+  // the next gear in the train (idler if fitted, else driven) must not, and
+  // the gear after that (driven, only when an idler is fitted) has it again
+  // — so a tooth always meets a gap at every contact point. Because all
+  // preset tooth counts are even and the three gears sit on one line, this
+  // alternating pattern keeps every contact point aligned continuously as
+  // the train turns (not just at the start).
   drawGear(driverX, cy, driverTeeth, driverAngle + Math.PI/driverTeeth, '#fdba74');
   if(idlerOn){
     const idlerAngle = driverAngle*(driverTeeth/12)*-1;
-    drawGear(idlerX, cy, 12, idlerAngle + Math.PI/12, '#93c5fd');
+    drawGear(idlerX, cy, 12, idlerAngle, '#93c5fd');
   }
   const drivenAngle = driverAngle*(driverTeeth/drivenTeeth)*drivenDir;
-  drawGear(drivenX, cy, drivenTeeth, drivenAngle + Math.PI/drivenTeeth, '#fca5a5');
+  const drivenPhase = idlerOn ? Math.PI/drivenTeeth : 0;
+  drawGear(drivenX, cy, drivenTeeth, drivenAngle + drivenPhase, '#fca5a5');
 
   ctx.fillStyle='rgba(210,218,245,.6)';
   ctx.font='11px "JetBrains Mono",monospace';
