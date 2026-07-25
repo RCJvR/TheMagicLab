@@ -367,21 +367,31 @@ function drawLever(effortArm, loadArm){
 // Radius proportional to teeth (no constant offset, no cap) — keeps the
 // visual size ratio between two gears matching their actual tooth ratio.
 function gearRadius(teeth){ return teeth * 2.6; }
-// Constant angular offset that puts a tooth GAP exactly at `targetAngle`
-// (the direction facing this gear's mesh partner) instead of a tooth tip,
-// so the two gears' teeth interlock rather than clash head-on.
-function meshOffset(targetAngle, teeth){ return targetAngle - Math.PI/teeth; }
+// Each tooth is centered at local angle i*period (see drawGearShape), so a
+// tooth already sits at local angle 0 — passing targetAngle straight
+// through (meshOffsetTooth) puts a TOOTH there. meshOffsetGap shifts by
+// half a tooth-pitch instead, putting a GAP there. A meshing pair needs ONE
+// of each: using the same one for both (as this used to) makes both gears
+// present a gap to each other at the contact point instead of one gear's
+// tooth nesting into the other's gap.
+function meshOffsetTooth(targetAngle){ return targetAngle; }
+function meshOffsetGap(targetAngle, teeth){ return targetAngle - Math.PI/teeth; }
 function drawGearShape(cx,cy,teeth,color,angle){
+  // rBase is the PITCH (tangency) radius used to position this gear against
+  // its mesh partner — teeth must straddle it (root below, tip above), not
+  // sit entirely outside it, otherwise a tooth tip only ever reaches the
+  // shared tangent circle and never actually pokes into the partner's gap.
   const rBase = gearRadius(teeth), toothH=7;
+  const rootR = rBase-toothH, tipR = rBase+toothH;
   const period = (Math.PI*2)/teeth, halfToothW = period*0.25;
   ctx.save(); ctx.translate(cx,cy); ctx.rotate(angle);
   ctx.beginPath();
   for(let i=0;i<teeth;i++){
     const c=i*period, l=c-halfToothW, r=c+halfToothW;
-    ctx.lineTo(Math.cos(l)*rBase, Math.sin(l)*rBase);
-    ctx.lineTo(Math.cos(l)*(rBase+toothH), Math.sin(l)*(rBase+toothH));
-    ctx.lineTo(Math.cos(r)*(rBase+toothH), Math.sin(r)*(rBase+toothH));
-    ctx.lineTo(Math.cos(r)*rBase, Math.sin(r)*rBase);
+    ctx.lineTo(Math.cos(l)*rootR, Math.sin(l)*rootR);
+    ctx.lineTo(Math.cos(l)*tipR, Math.sin(l)*tipR);
+    ctx.lineTo(Math.cos(r)*tipR, Math.sin(r)*tipR);
+    ctx.lineTo(Math.cos(r)*rootR, Math.sin(r)*rootR);
   }
   ctx.closePath();
   ctx.fillStyle=color+'22'; ctx.strokeStyle=color; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
@@ -393,8 +403,8 @@ function drawGears(driverTeeth, drivenTeeth){
   const cy = H/2;
   const gap = rDriver+rDriven; // pitch circles exactly tangent, no body overlap
   const driverX = W/2 - gap/2, drivenX = W/2 + gap/2;
-  drawGearShape(driverX, cy, driverTeeth, '#fdba74', meshOffset(0, driverTeeth));
-  drawGearShape(drivenX, cy, drivenTeeth, '#fca5a5', meshOffset(Math.PI, drivenTeeth));
+  drawGearShape(driverX, cy, driverTeeth, '#fdba74', meshOffsetTooth(0));
+  drawGearShape(drivenX, cy, drivenTeeth, '#fca5a5', meshOffsetGap(Math.PI, drivenTeeth));
   ctx.fillStyle='rgba(210,218,245,.6)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
   ctx.fillText('DRIVER ('+driverTeeth+'T)', driverX, cy+rDriver+20);
   ctx.fillText('DRIVEN ('+drivenTeeth+'T)', drivenX, cy+rDriven+20);

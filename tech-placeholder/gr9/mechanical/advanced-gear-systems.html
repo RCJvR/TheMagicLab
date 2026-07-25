@@ -281,7 +281,11 @@ function drawToothedWheel(cx,cy,r,teeth,angle,color){
   for(let i=0;i<teeth;i++){
     const a0 = (i/teeth)*Math.PI*2;
     const a1 = a0 + (Math.PI*2/teeth)*0.5;
-    const rOut = r, rIn = r*0.82;
+    // r is the PITCH (tangency) radius used to position this wheel against
+    // its mesh partner — teeth must straddle it (root below, tip above), not
+    // sit entirely inside it, otherwise a tooth tip only ever reaches the
+    // shared tangent circle and never actually pokes into the partner's gap.
+    const rOut = r*1.09, rIn = r*0.91;
     ctx.lineTo(Math.cos(a0)*rOut, Math.sin(a0)*rOut);
     ctx.lineTo(Math.cos(a1)*rOut, Math.sin(a1)*rOut);
     const a2 = a0 + (Math.PI*2/teeth);
@@ -297,10 +301,16 @@ function drawToothedWheel(cx,cy,r,teeth,angle,color){
 }
 // Radius proportional to teeth, so two meshed wheels' tooth pitch matches.
 function gearR(teeth){ return teeth*3.2; }
-// Constant offset that puts a tooth GAP at `targetAngle` (the direction
-// facing this gear's mesh partner) instead of a tooth tip, so the two
-// gears' teeth interlock instead of clashing head-on.
-function meshOffset(targetAngle, teeth){ return targetAngle - Math.PI/teeth; }
+// Each tooth occupies the FIRST half of its period slot [0, period/2] in
+// this wheel's own local frame (see drawToothedWheel), so a tooth is
+// centered at local angle period/4 and a gap at local angle 3*period/4.
+// meshOffsetTooth places a TOOTH center at targetAngle; meshOffsetGap places
+// a GAP center there instead. A meshing pair must use ONE of each — using
+// the same one for both (as this used to) puts a tooth/gap EDGE at the
+// contact point on both wheels identically, so they clash on one side of
+// the contact and leave open air on the other, instead of nesting.
+function meshOffsetTooth(targetAngle, teeth){ return targetAngle - Math.PI/(2*teeth); }
+function meshOffsetGap(targetAngle, teeth){ return targetAngle - (3*Math.PI)/(2*teeth); }
 
 function drawGear(){
   ctx.clearRect(0,0,W,H);
@@ -311,8 +321,8 @@ function drawGear(){
   if (activeGear.id === 'spur'){
     const t1=14, t2=9, r1=gearR(t1), r2=gearR(t2), gap=r1+r2;
     const x1 = cx-gap/2, x2 = cx+gap/2;
-    drawToothedWheel(x1, cy, r1, t1, rot + meshOffset(0,t1), color);
-    drawToothedWheel(x2, cy, r2, t2, -rot*(t1/t2) + meshOffset(Math.PI,t2), color);
+    drawToothedWheel(x1, cy, r1, t1, rot + meshOffsetTooth(0,t1), color);
+    drawToothedWheel(x2, cy, r2, t2, -rot*(t1/t2) + meshOffsetGap(Math.PI,t2), color);
     ctx.fillStyle='rgba(210,218,245,.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
     ctx.fillText('slower / more force', x1, cy+r1+22);
     ctx.fillText('faster / less force', x2, cy+r2+22);
@@ -328,7 +338,7 @@ function drawGear(){
   } else if (activeGear.id === 'rack'){
     const teeth=12, r=gearR(teeth), pinionY = cy-40;
     const rackTop = pinionY + r; // pitch circle tangent to the rack's top edge
-    drawToothedWheel(cx, pinionY, r, teeth, rot + meshOffset(Math.PI/2,teeth), color);
+    drawToothedWheel(cx, pinionY, r, teeth, rot + meshOffsetTooth(Math.PI/2,teeth), color);
     // Rack slides continuously, proportional to the pinion's rotation
     // (arc length = radius x angle) instead of oscillating independently
     // of it — this is what actually links rotary motion to linear motion.
@@ -370,7 +380,7 @@ function drawGear(){
       ctx.beginPath(); ctx.moveTo(x, cy-wormR); ctx.lineTo(x+pitch*0.6, cy+wormR); ctx.stroke();
     }
     ctx.restore();
-    drawToothedWheel(wheelX, cy, wheelR, 16, rot*0.1 + meshOffset(Math.PI,16), color);
+    drawToothedWheel(wheelX, cy, wheelR, 16, rot*0.1 + meshOffsetTooth(Math.PI,16), color);
     ctx.fillStyle='rgba(210,218,245,.55)'; ctx.font='11px "JetBrains Mono",monospace'; ctx.textAlign='center';
     ctx.fillText('worm (fast)', (wormLeft+wormRight)/2, cy+40);
     ctx.fillText('worm wheel (slow, strong)', wheelX, cy+wheelR+22);
