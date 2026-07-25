@@ -298,8 +298,15 @@ function resizeCanvas(){
 function gearRadius(teeth){ return teeth * 5.2; }
 
 function drawGear(cx, cy, teeth, angle, color){
+  // rBase is the PITCH circle radius — the circle that's tangent to the
+  // mating gear's pitch circle at the mesh point (see drawGearTrain). Teeth
+  // must straddle that line (root below it, tip above it), not sit entirely
+  // outside it: a tooth's tip needs to reach all the way down to the mating
+  // gear's ROOT circle for the teeth to actually interlock, not just poke a
+  // sliver past the tangent point.
   const rBase = gearRadius(teeth);
   const toothH = 9;
+  const rootR = rBase - toothH, tipR = rBase + toothH;
   const period = (Math.PI*2)/teeth;
   const halfToothW = period*0.25; // symmetric tooth: half the period is tooth, half is gap
   ctx.save();
@@ -309,10 +316,10 @@ function drawGear(cx, cy, teeth, angle, color){
   for(let i=0;i<teeth;i++){
     const c = i*period;
     const l = c-halfToothW, r = c+halfToothW;
-    ctx.lineTo(Math.cos(l)*rBase, Math.sin(l)*rBase);
-    ctx.lineTo(Math.cos(l)*(rBase+toothH), Math.sin(l)*(rBase+toothH));
-    ctx.lineTo(Math.cos(r)*(rBase+toothH), Math.sin(r)*(rBase+toothH));
-    ctx.lineTo(Math.cos(r)*rBase, Math.sin(r)*rBase);
+    ctx.lineTo(Math.cos(l)*rootR, Math.sin(l)*rootR);
+    ctx.lineTo(Math.cos(l)*tipR, Math.sin(l)*tipR);
+    ctx.lineTo(Math.cos(r)*tipR, Math.sin(r)*tipR);
+    ctx.lineTo(Math.cos(r)*rootR, Math.sin(r)*rootR);
   }
   ctx.closePath();
   ctx.fillStyle = color+'22';
@@ -320,9 +327,9 @@ function drawGear(cx, cy, teeth, angle, color){
   ctx.lineWidth = 2;
   ctx.fill();
   ctx.stroke();
-  ctx.beginPath(); ctx.arc(0,0,rBase*0.28,0,Math.PI*2);
+  ctx.beginPath(); ctx.arc(0,0,rootR*0.28,0,Math.PI*2);
   ctx.fillStyle = '#05070f'; ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(rBase*0.28,0); ctx.strokeStyle=color; ctx.lineWidth=3; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(rootR*0.28,0); ctx.strokeStyle=color; ctx.lineWidth=3; ctx.stroke();
   ctx.restore();
 }
 
@@ -333,9 +340,10 @@ function drawGearTrain(){
   let driverX, drivenX, idlerX, rIdler;
   if(idlerOn){
     rIdler = gearRadius(12);
-    // Pitch circles exactly tangent — their teeth (drawn outward from the
-    // pitch circle) naturally overlap into each other's gaps at the contact
-    // point; the bodies themselves should never overlap.
+    // Pitch circles exactly tangent — since each gear's teeth straddle its
+    // own pitch circle (root below it, tip above it), a tooth tip reaches
+    // exactly to the mating gear's root circle at the contact point instead
+    // of just grazing its pitch line.
     const gap1 = rDriver + rIdler, gap2 = rIdler + rDriven;
     const total = gap1+gap2;
     driverX = W/2 - total/2 + rDriver;
