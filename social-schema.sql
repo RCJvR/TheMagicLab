@@ -173,6 +173,52 @@ begin
 end;
 $$;
 
+-- The caller's accepted friends, with each friend's display name
+-- resolved server-side. A plain client-side embedded select
+-- (friendships -> profiles) silently comes back with a null profile —
+-- and the UI falls back to a generic "Classmate" label — because
+-- profiles RLS doesn't grant one student blanket read access to an
+-- arbitrary other student's row; it's only readable through specific
+-- paths like the teacher-student relationship. Security-definer sidesteps
+-- that, same as get_or_create_my_friend_code and the class-code lookup
+-- above. The WHERE clause is what keeps this safe to run as the function
+-- owner — it still only ever returns the caller's own friendships.
+create or replace function get_my_friends()
+returns table (
+  friendship_id uuid,
+  friend_id     uuid,
+  display_name  text
+)
+language sql security definer stable
+as $$
+  select
+    f.id,
+    case when f.requester_id = auth.uid() then f.addressee_id else f.requester_id end,
+    p.display_name
+  from friendships f
+  join profiles p
+    on p.id = case when f.requester_id = auth.uid() then f.addressee_id else f.requester_id end
+  where f.status = 'accepted'
+    and (f.requester_id = auth.uid() or f.addressee_id = auth.uid());
+$$;
+
+-- Incoming pending friend requests, with the requester's name resolved
+-- the same way as get_my_friends above.
+create or replace function get_my_pending_friend_requests()
+returns table (
+  friendship_id uuid,
+  requester_id  uuid,
+  display_name  text,
+  created_at    timestamptz
+)
+language sql security definer stable
+as $$
+  select f.id, f.requester_id, p.display_name, f.created_at
+  from friendships f
+  join profiles p on p.id = f.requester_id
+  where f.status = 'pending' and f.addressee_id = auth.uid();
+$$;
+
 
 -- ══════════════════════════════════════════════════════════════════════
 -- PART 2 — LESSON INVITES (async co-op) + DUO BADGES
@@ -301,3 +347,31 @@ drop trigger if exists trg_lesson_complete_duo on progress_events;
 create trigger trg_lesson_complete_duo
   after insert on progress_events
   for each row execute function handle_lesson_complete_for_invites();
+
+-- Every lesson invite involving the caller, with both participants'
+-- names resolved server-side — same reasoning as get_my_friends above,
+-- since a client-side embedded select on lesson_invites -> profiles hits
+-- the same profiles-RLS gap for the other participant's row.
+create or replace function get_my_lesson_invites()
+returns table (
+  id            uuid,
+  tool          text,
+  topic         text,
+  status        text,
+  created_at    timestamptz,
+  completed_at  timestamptz,
+  inviter_id    uuid,
+  invitee_id    uuid,
+  inviter_name  text,
+  invitee_name  text
+)
+language sql security definer stable
+as $$
+  select li.id, li.tool, li.topic, li.status, li.created_at, li.completed_at,
+         li.inviter_id, li.invitee_id, pi.display_name, pe.display_name
+  from lesson_invites li
+  join profiles pi on pi.id = li.inviter_id
+  join profiles pe on pe.id = li.invitee_id
+  where li.inviter_id = auth.uid() or li.invitee_id = auth.uid()
+  order by li.created_at desc;
+$$;
