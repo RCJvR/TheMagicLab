@@ -277,6 +277,14 @@ begin
     resolved    = p_resolved,
     resolved_at = case when p_resolved then now() else null end
   where id = p_thread_id and teacher_id = auth.uid();
+
+  -- Without this, a p_thread_id that doesn't exist (or belongs to another
+  -- teacher) updates zero rows but still "succeeds" with no error — the
+  -- caller's optimistic UI state then has no way to know it never actually
+  -- applied and silently drifts from the real DB state.
+  if not found then
+    raise exception 'Thread not found, or you are not the assigned teacher for it';
+  end if;
 end;
 $$;
 

@@ -118,12 +118,27 @@ async function getPendingIncoming() {
  * @param {string} tool   — one of window.ML_TOOLS
  * @param {string} topic  — exact string as it appears in window.ML_LESSON_CATALOG
  */
+/** True if `topic` is a real, assignable lesson for `tool` per window.ML_LESSON_CATALOG. */
+function _isKnownTopic(tool, topic) {
+  const groups = window.ML_LESSON_CATALOG?.[tool];
+  if (!groups) return false;
+  return groups.some(g => (g.lessons || []).some(l => l.value === topic));
+}
+
 async function sendLessonInvite(inviteeId, tool, topic) {
   const auth = window.MagicLabAuth;
   if (!auth?.isLoggedIn()) return { error: { message: 'Not logged in' } };
   const inviterId = _uid();
   if (!inviterId) return { error: { message: 'Not logged in' } };
   if (!inviteeId || !tool || !topic) return { error: { message: 'inviteeId, tool, and topic are required' } };
+  // Guard against a tool/topic pair that could never match a completion
+  // (handle_lesson_complete_for_invites only fires on real progress_events),
+  // which would otherwise leave the invite stuck "pending" forever with no
+  // explanation to either side. The normal UI only ever offers catalog
+  // values via its dropdowns — this mainly protects direct SDK callers.
+  if (!_isKnownTopic(tool, topic)) {
+    return { error: { message: `"${topic}" isn't a recognised lesson for that tool, so this invite could never be completed.` } };
+  }
   const { data, error } = await auth._supabase()
     .from('lesson_invites')
     .insert({ inviter_id: inviterId, invitee_id: inviteeId, tool, topic })

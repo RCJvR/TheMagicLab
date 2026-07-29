@@ -170,6 +170,15 @@ begin
 
   insert into friendships (requester_id, addressee_id) values (auth.uid(), v_target_id);
   return jsonb_build_object('success', true);
+exception
+  -- The pending-request check above and this insert aren't atomic: two
+  -- concurrent requests for the same pair (e.g. both users click "add" on
+  -- each other within milliseconds) can both pass the check and race to
+  -- insert, so the second hits ux_friendship_pair. Catch that here and
+  -- return the same friendly message the pre-check gives, instead of
+  -- letting the raw unique-violation reach the client.
+  when unique_violation then
+    return jsonb_build_object('error', 'A friend request is already pending with this learner.');
 end;
 $$;
 
@@ -236,6 +245,20 @@ create table if not exists lesson_invites (
   completed_at  timestamptz,
   check (inviter_id <> invitee_id)
 );
+
+-- `tool` must be one of the real product slugs (kept in sync with the
+-- TOOLS map in progress.js) — otherwise handle_lesson_complete_for_invites
+-- below can never match a completion against it, and the invite is stuck
+-- "pending" forever with no way for either side to know why. This is a
+-- coarse DB-level backstop; sendLessonInvite() in social.js does the
+-- finer-grained check against the actual lesson catalog before insert.
+alter table lesson_invites drop constraint if exists chk_lesson_invites_known_tool;
+alter table lesson_invites add constraint chk_lesson_invites_known_tool
+  check (tool in (
+    'java-genie','web-wizard','code-conjurer','math-magician','computer-codex',
+    'ai-oracle','drawing-druid','science-sage','tech-tower','spike-spellcaster',
+    'robot-realm','model-mage'
+  ));
 
 create index if not exists idx_lesson_invites_inviter on lesson_invites(inviter_id);
 create index if not exists idx_lesson_invites_invitee on lesson_invites(invitee_id);

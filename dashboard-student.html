@@ -1091,28 +1091,40 @@
         </div>`).join('');
     }
 
+    // Shared feedback slot for every social action, not just "add friend" —
+    // accept/decline/remove used to discard their {error} entirely, so a
+    // stale click (e.g. the other side already cancelled/declined) did
+    // nothing with no indication why. Reusing this one element keeps it
+    // simple rather than adding a message slot per action.
+    function _showSocialMsg(text, isError) {
+      const msg = document.getElementById('add-friend-msg');
+      msg.style.display = 'block';
+      msg.style.color = isError ? '#f87171' : '#6ee7b7';
+      msg.textContent = text;
+    }
+
     async function _addFriendByCode() {
       const input = document.getElementById('add-friend-code-input');
-      const msg   = document.getElementById('add-friend-msg');
       const code  = input.value.trim();
       if (!code) return;
       const btn = document.getElementById('add-friend-code-btn');
       btn.disabled = true; btn.textContent = 'Adding…';
       const { error } = await window.MagicLabSocial.addFriendByCode(code);
       btn.disabled = false; btn.textContent = 'Add Friend';
-      msg.style.display = 'block';
-      if (error) { msg.style.color = '#f87171'; msg.textContent = error.message; return; }
-      msg.style.color = '#6ee7b7'; msg.textContent = 'Friend request sent!';
+      if (error) { _showSocialMsg(error.message, true); return; }
+      _showSocialMsg('Friend request sent!', false);
       input.value = '';
       await _loadSocial();
     }
 
     async function _acceptFriendReq(friendshipId) {
-      await window.MagicLabSocial.acceptFriendRequest(friendshipId);
+      const { error } = await window.MagicLabSocial.acceptFriendRequest(friendshipId);
+      if (error) _showSocialMsg("Couldn't accept that request — it may already have been withdrawn.", true);
       await _loadSocial();
     }
     async function _removeFriendship(friendshipId) {
-      await window.MagicLabSocial.removeFriendship(friendshipId);
+      const { error } = await window.MagicLabSocial.removeFriendship(friendshipId);
+      if (error) _showSocialMsg('Something went wrong — please try again.', true);
       await _loadSocial();
     }
 
@@ -1147,11 +1159,13 @@
     }
 
     async function _acceptInvite(id) {
-      await window.MagicLabSocial.acceptLessonInvite(id);
+      const { error } = await window.MagicLabSocial.acceptLessonInvite(id);
+      if (error) _showSocialMsg("Couldn't accept that invite — it may already have been withdrawn.", true);
       await _loadSocial();
     }
     async function _removeInvite(id) {
-      await window.MagicLabSocial.removeLessonInvite(id);
+      const { error } = await window.MagicLabSocial.removeLessonInvite(id);
+      if (error) _showSocialMsg('Something went wrong — please try again.', true);
       await _loadSocial();
     }
 
@@ -1205,6 +1219,7 @@
     // ── Ask your teacher for help ─────────────────────────────
     let _helpThreadId  = null;
     let _helpPollTimer = null;
+    let _sendingHelpMsg = false;
 
     async function _initHelpChat() {
       const teachers = await window.MagicLabHelpChat.getMyTeachers();
@@ -1257,9 +1272,19 @@
     async function _sendHelpMsg() {
       const input = document.getElementById('help-chat-input');
       const body  = input.value.trim();
-      if (!body || !_helpThreadId) return;
+      // _sendingHelpMsg guards against a fast double-click or double-Enter
+      // firing the same message twice — the button disable below covers
+      // click, but Enter goes through this same function so the flag is
+      // what actually blocks the second call, on a slow connection.
+      if (!body || !_helpThreadId || _sendingHelpMsg) return;
+      _sendingHelpMsg = true;
+      const btn = document.getElementById('help-chat-send');
+      if (btn) btn.disabled = true;
       input.value = '';
-      await window.MagicLabHelpChat.sendHelpMessage(_helpThreadId, body);
+      const { error } = await window.MagicLabHelpChat.sendHelpMessage(_helpThreadId, body);
+      if (error) input.value = body; // send failed — don't silently lose what they typed
+      _sendingHelpMsg = false;
+      if (btn) btn.disabled = false;
       await _refreshHelpMessages();
     }
   </script>

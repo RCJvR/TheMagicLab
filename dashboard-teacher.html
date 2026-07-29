@@ -2544,9 +2544,21 @@ function _updateResolveBtn() {
 
 async function _toggleResolved() {
   if (!_openHelpThreadId) return;
-  _openHelpResolved = !_openHelpResolved;
+  const btn = document.getElementById('help-resolve-btn');
+  const previous = _openHelpResolved;
+  _openHelpResolved = !previous;
   _updateResolveBtn();
-  await window.MagicLabHelpChat.setThreadResolved(_openHelpThreadId, _openHelpResolved);
+  if (btn) btn.disabled = true; // block a fast double-click racing two toggles
+  const { error } = await window.MagicLabHelpChat.setThreadResolved(_openHelpThreadId, _openHelpResolved);
+  if (btn) btn.disabled = false;
+  if (error) {
+    // The RPC never actually applied it — revert the optimistic flip so the
+    // button doesn't show a state that doesn't match what's saved.
+    _openHelpResolved = previous;
+    _updateResolveBtn();
+    alert("Couldn't update that thread — please try again.");
+    return;
+  }
   await _loadHelpThreads();
 }
 
@@ -2575,20 +2587,36 @@ async function _refreshHelpMessages() {
   if (wasAtBottom) box.scrollTop = box.scrollHeight;
 }
 
+let _sendingHelpReply = false;
 async function _sendHelpReply() {
   const input = document.getElementById('help-chat-input');
   const body  = input.value.trim();
-  if (!body || !_openHelpStudentId) return;
+  // Guards a fast double-click/double-Enter sending the same reply twice —
+  // there's no server-side dedupe on help_messages, so without this a slow
+  // connection can post the identical message body twice.
+  if (!body || !_openHelpStudentId || _sendingHelpReply) return;
+  _sendingHelpReply = true;
+  const btn = document.getElementById('help-chat-send');
+  if (btn) btn.disabled = true;
   input.value = '';
 
   if (!_openHelpThreadId) {
     const { data, error } = await window.MagicLabHelpChat.openHelpThreadAsTeacher(_openHelpStudentId, _openHelpClassId);
-    if (error) { alert(error.message); return; }
+    if (error) {
+      alert(error.message);
+      input.value = body;
+      _sendingHelpReply = false;
+      if (btn) btn.disabled = false;
+      return;
+    }
     _openHelpThreadId = data.threadId;
     _updateResolveBtn();
     _helpMsgPollTimer = setInterval(_refreshHelpMessages, 4000);
   }
-  await window.MagicLabHelpChat.sendHelpMessage(_openHelpThreadId, body);
+  const { error } = await window.MagicLabHelpChat.sendHelpMessage(_openHelpThreadId, body);
+  if (error) input.value = body; // send failed — don't silently lose what they typed
+  _sendingHelpReply = false;
+  if (btn) btn.disabled = false;
   await _refreshHelpMessages();
 }
 
