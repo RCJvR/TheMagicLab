@@ -17,7 +17,7 @@
   const path = location.pathname;
   let tool = null;
   if (path.includes('/science-sage/'))     tool = 'science-sage';
-  else if (path.includes('/tech-placeholder/')) tool = 'tech-tower';
+  else if (path.includes('/tech-tower/')) tool = 'tech-tower';
   if (!tool) return; // not one of the pages this script is meant for
 
   const gradeMatch = path.match(/\/gr(\d+)\//);

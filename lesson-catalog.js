@@ -13,7 +13,7 @@
 // reaches and closes the last slide (see the lesson_complete track()
 // calls added to those two files).
 //
-// Not included: robot-realm, science-sage, model-mage, tech-placeholder,
+// Not included: robot-realm, science-sage, model-mage, tech-tower,
 // spike-spellcaster — these tools don't yet call progress.js's track()
 // with lesson_complete events, so there is nothing here to pick from
 // until that's added.
