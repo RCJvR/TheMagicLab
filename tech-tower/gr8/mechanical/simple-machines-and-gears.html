@@ -248,6 +248,11 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // The gear canvas has offsetWidth 0 while its tab panel is display:none,
+  // so the very first resizeCanvas() call (at page load, before any tab
+  // switch) falls back to a hardcoded default width instead of the real
+  // one. Re-measure now that the Explore panel is actually visible.
+  if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
 }
 
 /* ═══════════════════════════════════════════════
@@ -295,7 +300,13 @@ function resizeCanvas(){
 // ratio, and the rolling-contact rotation speed (based on tooth ratio) no
 // longer agrees with the actual pitch-circle geometry, so teeth drift out
 // of mesh as the gears turn (worse the more the sizes differ).
-function gearRadius(teeth){ return teeth * 5.2; }
+// renderScale is recomputed once per frame in drawGearTrain() to shrink
+// every gear by the same factor when the driver/idler/driven combination
+// would otherwise be wider than the canvas — scaling everything uniformly
+// keeps the tooth-ratio-to-radius-ratio relationship intact (see above),
+// unlike clamping radii individually, which would break the mesh geometry.
+let renderScale = 1;
+function gearRadius(teeth){ return teeth * 5.2 * renderScale; }
 
 function drawGear(cx, cy, teeth, angle, color){
   // rBase is the PITCH circle radius — the circle that's tangent to the
@@ -305,7 +316,7 @@ function drawGear(cx, cy, teeth, angle, color){
   // gear's ROOT circle for the teeth to actually interlock, not just poke a
   // sliver past the tangent point.
   const rBase = gearRadius(teeth);
-  const toothH = 9;
+  const toothH = 9 * renderScale;
   const rootR = rBase - toothH, tipR = rBase + toothH;
   const period = (Math.PI*2)/teeth;
   const halfToothW = period*0.25; // symmetric tooth: half the period is tooth, half is gap
@@ -335,6 +346,17 @@ function drawGear(cx, cy, teeth, angle, color){
 
 function drawGearTrain(){
   ctx.clearRect(0,0,W,H);
+  // Check whether the train fits the canvas at full size; if not, shrink
+  // every gear by the same factor instead of overflowing the canvas edge
+  // (see renderScale comment on gearRadius above).
+  renderScale = 1;
+  const naturalDriver = gearRadius(driverTeeth), naturalDriven = gearRadius(drivenTeeth);
+  const naturalIdler = idlerOn ? gearRadius(12) : 0;
+  const naturalToothH = 9;
+  const naturalSpan = 2*(naturalDriver+naturalDriven+naturalIdler+naturalToothH);
+  const available = W - 40; // side margin so teeth/labels don't touch the edge
+  if(available > 0 && naturalSpan > available) renderScale = available/naturalSpan;
+
   const rDriver = gearRadius(driverTeeth), rDriven = gearRadius(drivenTeeth);
   const cy = H/2;
   let driverX, drivenX, idlerX, rIdler;
@@ -344,15 +366,23 @@ function drawGearTrain(){
     // own pitch circle (root below it, tip above it), a tooth tip reaches
     // exactly to the mating gear's root circle at the contact point instead
     // of just grazing its pitch line.
-    const gap1 = rDriver + rIdler, gap2 = rIdler + rDriven;
-    const total = gap1+gap2;
-    driverX = W/2 - total/2 + rDriver;
-    idlerX = driverX + gap1;
-    drivenX = idlerX + gap2;
+    //
+    // Centering: the visual assembly runs from (driverX - rDriver) on the
+    // left to (drivenX + rDriven) on the right. Centering driverX/drivenX
+    // around W/2 (as this used to) only centers the train when rDriver
+    // equals rDriven — with unequal gear sizes that leaves the wider gear's
+    // side overhanging the canvas edge. Solving for the driverX that puts
+    // the actual left/right extremes' midpoint at W/2 gives driverX =
+    // W/2 - rIdler - rDriven (the sum of every OTHER gear's radius),
+    // regardless of how the three sizes compare.
+    driverX = W/2 - rIdler - rDriven;
+    idlerX = driverX + rDriver + rIdler;
+    drivenX = idlerX + rIdler + rDriven;
   } else {
-    const gap = rDriver + rDriven;
-    driverX = W/2 - gap/2;
-    drivenX = W/2 + gap/2;
+    // Same reasoning as above without the idler: driverX = W/2 - rDriven
+    // centers the train's true visual extent regardless of size mismatch.
+    driverX = W/2 - rDriven;
+    drivenX = driverX + rDriver + rDriven;
   }
   const driverSpeed = 0.014;
   const drivenDir = idlerOn ? 1 : -1;
