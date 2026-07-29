@@ -49,6 +49,7 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "Is x = 4 a solution to <span class='math'>3x − 5 = 7</span>?", options: ["Yes, LHS = 7 ✓", "No, LHS = 8", "No, LHS = 6", "Yes, LHS = 6"], answer: 0, topic: "Equations" },
         { type: "mc", text: "'Five less than three times a number is 16.' Which equation represents this?", options: ["3x + 5 = 16", "5 − 3x = 16", "3x − 5 = 16", "3(x − 5) = 16"], answer: 2, topic: "Equations" },
         { type: "input", text: "Verify: is x = 5 a solution to <span class='math'>4x − 3 = 17</span>? Type 'yes' or 'no'.", answer: "yes", topic: "Equations" },
+        { type: "input", text: "'If a number is increased by 6 and then doubled, the result is 3 less than 5 times the number.' Find the number.", answer: "5", topic: "Equations" },
       ]
     },
     {
@@ -87,6 +88,7 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "Solve by inspection: <span class='math'>x/4 = 6</span>", options: ["2", "10", "24", "18"], answer: 2, topic: "Equations" },
         { type: "input", text: "Solve by inspection: <span class='math'>3x + 2 = 14</span>", answer: "4", topic: "Equations" },
         { type: "mc", text: "Which value of x satisfies <span class='math'>2x − 3 = 11</span>?", options: ["4", "5", "7", "8"], answer: 2, topic: "Equations" },
+        { type: "input", text: "If <span class='math'>x + 9 = 16</span> (solve by inspection) and <span class='math'>3x − y = 15</span>, find y.", answer: "6", topic: "Equations" },
       ]
     },
     {
@@ -203,6 +205,7 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Solve: <span class='math'>3x + 12 = 0</span>", answer: "-4", topic: "Equations" },
         { type: "mc", text: "Solve: <span class='math'>−2x + 10 = 4</span>", options: ["7", "3", "−7", "−3"], answer: 1, topic: "Equations" },
         { type: "input", text: "Solve: <span class='math'>x/5 − 2 = 3</span>", answer: "25", topic: "Equations" },
+        { type: "input", text: "Solve: <span class='math'>2(x/3 + 4) = 18</span>", answer: "15", topic: "Equations" },
       ]
     },
     {
@@ -246,6 +249,7 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Solve: <span class='math'>2(3x − 1) = 4x + 8</span>", answer: "5", topic: "Equations" },
         { type: "mc", text: "Solve: <span class='math'>6x − 7 = 2x + 5</span>", options: ["1", "2", "3", "4"], answer: 2, topic: "Equations" },
         { type: "input", text: "Solve: <span class='math'>3(x − 2) = 2(x + 1)</span>", answer: "8", topic: "Equations" },
+        { type: "input", text: "Solve: <span class='math'>2(x − 3) − (x − 4) = 3(x − 4)</span>", answer: "5", topic: "Equations" },
       ]
     },
     {
@@ -293,6 +297,7 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "A rectangle has length 2x and width x − 1. Its perimeter is 34 cm. Find x.", answer: "6", topic: "Word problems" },
         { type: "mc", text: "I think of a number, multiply by 4 and subtract 9. The result equals the number plus 6. What is the number?", options: ["3", "4", "5", "6"], answer: 2, topic: "Word problems" },
         { type: "input", text: "Two friends share R 180. One gets R 20 more than the other. How much does the smaller share receive? (R)", answer: "80", topic: "Word problems" },
+        { type: "input", text: "In 5 years, Lindiwe will be twice as old as she was 3 years ago. How old is she now?", answer: "11", topic: "Word problems" },
       ]
     },
     {
@@ -326,6 +331,7 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "The perimeter of an equilateral triangle is 45 cm. Each side = 3x − 1. Find x.", answer: "6", topic: "Mixed" },
         { type: "mc", text: "Solve: <span class='math'>4(x + 3) = 2(2x + 6)</span>", options: ["x = 0", "x = 3", "No solution — infinitely many solutions", "x = 6"], answer: 2, topic: "Mixed" },
         { type: "input", text: "A number is multiplied by 6, then 11 is subtracted. The result is 3 more than twice the number. Find the number.", answer: "7", topic: "Mixed" },
+        { type: "input", text: "A rectangle's perimeter is 5 times its width. The length is 9 cm more than the width. Find the width (in cm).", answer: "18", topic: "Mixed" },
       ]
     }
   ],

@@ -109,6 +109,8 @@ MathMagician.registerChapter(3, {
       { type: "input", text: "Evaluate <span class='math'>(−3)⁴</span>", answer: "81", topic: "Exponents" },
       { type: "mc", text: "Which has a negative value?", options: ["(−5)²", "(−2)⁴", "(−3)³", "(−1)¹⁰⁰"], answer: 2, topic: "Exponents" },
       { type: "input", text: "Evaluate <span class='math'>10³</span>", answer: "1000", topic: "Exponents" },
+      { type: "input", text: "Determine which is greater, <span class='math'>2⁸</span> or <span class='math'>3⁵</span>, and calculate by how much.", answer: "13", topic: "Exponents" },
+      { type: "mc", text: "A quantity starts at 3 and doubles 6 times in a row. Which expression gives the final value?", options: ["3 × 2⁶", "3⁶ × 2", "6 × 2³", "2 × 3⁶"], answer: 0, topic: "Exponents" },
     ]
   },
   {
@@ -229,6 +231,8 @@ MathMagician.registerChapter(3, {
       { type: "mc", text: "Simplify <span class='math'>x⁴ × x³ ÷ x²</span>", options: ["x⁵", "x⁹", "x²⁴", "x⁻⁵"], answer: 0, topic: "Laws of exponents" },
       { type: "input", text: "Evaluate <span class='math'>(2²)³</span>", answer: "64", topic: "Laws of exponents" },
       { type: "mc", text: "Simplify <span class='math'>(2 × 3)³</span>", options: ["2³ + 3³", "6³", "2 × 3³", "5³"], answer: 1, topic: "Laws of exponents" },
+      { type: "input", text: "Simplify <span class='math'>(2³ × 2⁴)² ÷ 2¹⁰</span> and give the numeric answer.", answer: "16", topic: "Laws of exponents" },
+      { type: "input", text: "If <span class='math'>2ˣ = 32</span> and <span class='math'>3ʸ = 81</span>, calculate <span class='math'>x + y</span>.", answer: "9", topic: "Laws of exponents" },
     ]
   },
   {
@@ -274,6 +278,8 @@ MathMagician.registerChapter(3, {
       { type: "input", text: "Calculate: <span class='math'>4² ÷ 2³ × (−1)⁴</span>", answer: "2", topic: "Mixed ops" },
       { type: "mc", text: "Simplify: <span class='math'>2³ × 2² − (2²)²</span>", options: ["−6", "16", "−3", "32"], answer: 1, topic: "Mixed ops" },
       { type: "input", text: "Calculate: <span class='math'>5² − (−2)³ × 3</span>", answer: "49", topic: "Mixed ops" },
+      { type: "input", text: "Calculate: <span class='math'>(−2)³ × 3² − (−4)² ÷ 2</span>", answer: "-80", topic: "Mixed ops" },
+      { type: "input", text: "A square has side length <span class='math'>2³</span> cm. A cube has edge length <span class='math'>2²</span> cm. Calculate (square's area) − (cube's volume).", answer: "0", topic: "Mixed ops" },
     ]
   },
   {
@@ -351,6 +357,8 @@ MathMagician.registerChapter(3, {
       { type: "mc", text: "Which is correct scientific notation for <span class='math'>0.00042</span>?", options: ["4.2 × 10⁻³", "4.2 × 10⁻⁴", "42 × 10⁻⁵", "0.42 × 10⁻³"], answer: 1, topic: "Scientific notation" },
       { type: "input", text: "Write <span class='math'>7 250 000</span> in scientific notation (use format like 7.25e6 or 7.25 × 10^6)", answer: "7.25 × 10^6", topic: "Scientific notation" },
       { type: "mc", text: "The distance from Earth to the Sun is about <span class='math'>1.5 × 10⁸</span> km. What is this as an ordinary number?", options: ["1 500 000", "15 000 000", "150 000 000", "1 500 000 000"], answer: 2, topic: "Scientific notation" },
+      { type: "input", text: "Light travels at <span class='math'>3 × 10⁸</span> m/s. Calculate how far light travels in 5 seconds. Give your answer in scientific notation (e.g. 1.5 × 10^9)", answer: "1.5 × 10^9", topic: "Scientific notation" },
+      { type: "input", text: "A virus is <span class='math'>5 × 10⁻⁸</span> m wide and a bacterium is <span class='math'>2 × 10⁻⁶</span> m wide. How many times wider is the bacterium than the virus?", answer: "40", topic: "Scientific notation" },
     ]
   },
   {
@@ -385,6 +393,7 @@ MathMagician.registerChapter(3, {
       { type: "input", text: "Simplify: <span class='math'>x⁶ × x² ÷ (x²)³</span> (give as x^n)", answer: "x^2", topic: "Laws" },
       { type: "mc", text: "Which is the largest: <span class='math'>2⁷</span>, <span class='math'>3⁵</span>, <span class='math'>4⁴</span>, <span class='math'>5³</span>?", options: ["3⁵ = 243", "4⁴ = 256", "2⁷ = 128", "5³ = 125"], answer: 1, topic: "Mixed" },
       { type: "input", text: "The mass of a proton is <span class='math'>1.67 × 10⁻²⁷</span> kg. Write the decimal form (use e notation, e.g. 1.67e-27)", answer: "1.67e-27", topic: "Scientific notation" },
+      { type: "input", text: "Simplify and evaluate: <span class='math'>[(3²)² ÷ 3²] × (−1)⁵ + 2⁰</span>", answer: "-8", topic: "Mixed" },
     ]
   }
   ],

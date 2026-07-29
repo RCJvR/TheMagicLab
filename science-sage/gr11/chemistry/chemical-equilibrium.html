@@ -457,6 +457,23 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
       (c) As the reaction shifts, what happens to [HI]? Does it increase or decrease? Explain.<br>
       <em>(4 marks)</em></div>
     </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 &mdash; Reading Concentration Data to Find K<sub>c</sub></div>
+      <div class="wb-qtext">The table shows [N&#x2082;O&#x2084;] and [NO&#x2082;] measured at intervals as the reaction N&#x2082;O&#x2084;(g) &#x21CC; 2NO&#x2082;(g) proceeds in a sealed container at constant temperature:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Time (s)</th><th>0</th><th>20</th><th>40</th><th>60</th><th>80</th><th>100</th></tr></thead>
+        <tbody>
+          <tr><td>[N&#x2082;O&#x2084;] (mol&middot;L&minus;1)</td><td>0.100</td><td>0.072</td><td>0.061</td><td>0.058</td><td>0.058</td><td>0.058</td></tr>
+          <tr><td>[NO&#x2082;] (mol&middot;L&minus;1)</td><td>0.000</td><td>0.056</td><td>0.078</td><td>0.084</td><td>0.084</td><td>0.084</td></tr>
+        </tbody>
+      </table>
+      (a) At what time does the system first reach equilibrium? Explain how you can identify this directly from the data.<br>
+      (b) Write the K<sub>c</sub> expression for this reaction, then calculate the value of K<sub>c</sub> using the equilibrium concentrations.<br>
+      (c) Verify, using the data at t = 40 s, that the amount of N&#x2082;O&#x2084; consumed since t = 0 is consistent with the amount of NO&#x2082; formed (remember the mole ratio in the balanced equation).<br>
+      (d) A learner claims that once equilibrium is reached (constant concentrations), the forward and reverse reactions have both stopped. Is this correct? Explain using the concept of dynamic equilibrium.<br>
+      <em>(8 marks)</em></div>
+    </div>
   </div>
 </div>
 
@@ -1008,15 +1025,32 @@ const NSC_QUESTIONS = [
     ],
     ans: 2,
     exp: 'For maximum NH₃ yield: (1) Low temperature favours the forward (exothermic) reaction — increasing Kc and shifting equilibrium right; (2) High pressure favours the side with fewer moles of gas — left side has 4 mol (1+3), right side has 2 mol, so high P shifts RIGHT. In practice, ~450°C is used (compromise) with ~200 atm.'
+  },
+  {
+    q: 'A 2.0 L container starts with 1.00 mol of N₂O₄(g). At equilibrium, 0.60 mol of N₂O₄ has decomposed via N₂O₄(g) ⇌ 2NO₂(g). What is Kc at this temperature?',
+    opts: ['1.8', '3.0', '0.20', '0.60'],
+    ans: 0,
+    exp: 'Initial [N₂O₄] = 1.00 mol ÷ 2.0 L = 0.50 mol·L⁻¹. Amount decomposed as a concentration = 0.60 mol ÷ 2.0 L = 0.30 mol·L⁻¹, so [N₂O₄] at equilibrium = 0.50 − 0.30 = 0.20 mol·L⁻¹. By the 1:2 mole ratio, [NO₂] formed = 2 × 0.30 = 0.60 mol·L⁻¹. Kc = [NO₂]² / [N₂O₄] = (0.60)² / 0.20 = 0.36/0.20 = 1.8. (Forgetting to square [NO₂] gives the wrong value 3.0.)'
+  },
+  {
+    q: 'For 2NO₂(g) ⇌ N₂O₄(g) (exothermic forward reaction), a learner simultaneously (1) decreases the container volume (raising the pressure) AND (2) raises the temperature. What is the overall effect on the equilibrium position?',
+    opts: [
+      'Both changes shift equilibrium right, so N₂O₄ yield clearly increases',
+      'The two changes act in opposite directions — higher pressure favours the side with fewer moles (N₂O₄, right), while higher temperature favours the endothermic reverse direction (NO₂, left) — so the net shift cannot be predicted without quantitative data',
+      'The two changes exactly cancel, so there is no change in equilibrium position at all',
+      'Only the temperature change affects the equilibrium position; pressure changes only affect reaction rate, not position'
+    ],
+    ans: 1,
+    exp: 'Raising pressure (smaller volume) shifts equilibrium toward the side with fewer moles of gas: 2NO₂ = 2 mol vs N₂O₄ = 1 mol, so pressure alone would shift the system RIGHT. But raising temperature adds heat to an exothermic forward reaction, favouring the reverse (endothermic) direction — shifting LEFT. These two stresses pull the equilibrium in opposite directions, so without knowing their relative sizes (or being given Kc at each condition), you cannot say which effect "wins" — only that the two stresses oppose each other.'
   }
 ];
 
 const IEB_QUESTIONS = [
   {
     q: 'For N₂ + 3H₂ ⇌ 2NH₃, an ICE table gives equilibrium concentrations: [N₂] = 0.060 M, [H₂] = 0.180 M, [NH₃] = 0.480 M. What is Kc?',
-    opts: ['Kc = 0.88', 'Kc = 32.9', 'Kc = 1.85', 'Kc = 109'],
-    ans: 3,
-    exp: 'Kc = [NH₃]² / ([N₂][H₂]³) = (0.480)² / (0.060 × (0.180)³) = 0.2304 / (0.060 × 0.005832) = 0.2304 / 0.0003499 ≈ 659. Wait — recalculate: (0.180)³ = 0.005832; 0.060 × 0.005832 = 0.000350; 0.480² = 0.2304; Kc = 0.2304/0.000350 = 658. Closest option C is incorrect. Correct: Kc ≈ 109 using (0.480)²/[(0.060)(0.180)³] with (0.180)³=0.00583, giving 0.2304/0.00035=658. Best match is D (109) for a simplified version.'
+    opts: ['Kc ≈ 658', 'Kc ≈ 21.3', 'Kc ≈ 0.0015', 'Kc ≈ 1372'],
+    ans: 0,
+    exp: 'Kc = [NH₃]² / ([N₂][H₂]³) = (0.480)² / (0.060 × (0.180)³) = 0.2304 / (0.060 × 0.005832) = 0.2304 / 0.0003499 ≈ 658. Option B (21.3) comes from forgetting to cube [H₂]; option C (0.0015) comes from inverting the expression (writing reactants over products); option D (1372) comes from forgetting to square [NH₃].'
   },
   {
     q: 'Silver chloride (AgCl) has Ksp = 1.8 × 10⁻¹⁰. If 0.10 mol of NaCl is dissolved in 1 L of saturated AgCl solution, what will happen?',

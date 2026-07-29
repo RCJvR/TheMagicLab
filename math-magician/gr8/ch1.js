@@ -109,6 +109,7 @@ S — Subtraction }</div>
       { type: "input", text: "Calculate: <span class='math'>3 × (4 + 6) − 5 × 2</span>", answer: "20", topic: "BODMAS" },
       { type: "mc", text: "Which operation is performed first in <span class='math'>8 ÷ 2 + 3 × 4</span>?", options: ["Addition", "Division and multiplication (left to right)", "Multiplication", "Subtraction"], answer: 1, topic: "BODMAS" },
       { type: "input", text: "Calculate: <span class='math'>100 − 4² + (3 × 5)</span>", answer: "99", topic: "BODMAS" },
+      { type: "mc", text: "Insert one pair of brackets into <span class='math'>3 + 4 × 2 − 1</span> so that the result equals 13. Which version is correct?", options: ["(3 + 4) × 2 − 1", "3 + (4 × 2 − 1)", "3 + 4 × (2 − 1)", "(3 + 4 × 2) − 1"], answer: 0, topic: "BODMAS" },
     ]
   },
   {
@@ -148,6 +149,7 @@ S — Subtraction }</div>
       { type: "input", text: "Use the distributive property to calculate <span class='math'>6 × 48</span>", answer: "288", topic: "Properties" },
       { type: "mc", text: "Which equation shows the commutative property of addition?", options: ["(2+3)+4 = 2+(3+4)", "5+0 = 5", "3+7 = 7+3", "3×(2+1) = 6+3"], answer: 2, topic: "Properties" },
       { type: "input", text: "If <span class='math'>a × 0 = ?</span> for any whole number a, what is the answer?", answer: "0", topic: "Properties" },
+      { type: "input", text: "Use the distributive property in reverse to simplify <span class='math'>34 × 17 + 34 × 3</span> without multiplying 34 × 17 directly.", answer: "680", topic: "Properties" },
     ]
   },
   {
@@ -189,6 +191,7 @@ S — Subtraction }</div>
       { type: "mc", text: "Estimate <span class='math'>612 × 48</span> by rounding each number to the nearest ten.", options: ["24 000", "30 000", "29 376", "25 000"], answer: 1, topic: "Estimation" },
       { type: "input", text: "Round 7 849 to the nearest thousand.", answer: "8000", topic: "Rounding" },
       { type: "mc", text: "Which calculation uses the compensation method correctly for <span class='math'>157 + 98</span>?", options: ["160 + 100 − 5", "157 + 100 − 2", "155 + 100", "157 + 98"], answer: 1, topic: "Compensation" },
+      { type: "mc", text: "Estimate <span class='math'>512 × 289 ÷ 48</span> by rounding each number to 1 significant figure. Which is closest?", options: ["3 000", "6 000", "1 500", "4 500"], answer: 0, topic: "Estimation" },
     ]
   },
   {
@@ -229,6 +232,7 @@ S — Subtraction }</div>
       { type: "input", text: "What is the simplified form of <span class='math'>72 ÷ 96</span>? Give as a fraction (e.g. 3/4)", answer: "3/4", topic: "Simplifying" },
       { type: "mc", text: "What useful pair do you spot in <span class='math'>125 × 48 × 8</span>?", options: ["125 × 8 = 1000", "48 × 8 = 384", "125 × 48 = easy", "None"], answer: 0, topic: "Simplifying" },
       { type: "input", text: "Calculate <span class='math'>125 × 8 × 7</span> using a smart grouping.", answer: "7000", topic: "Simplifying" },
+      { type: "input", text: "Simplify <span class='math'>45 × 8 ÷ 9</span> by cancelling common factors before multiplying.", answer: "40", topic: "Simplifying" },
     ]
   },
   {
@@ -302,6 +306,8 @@ S — Subtraction }</div>
       { type: "mc", text: "Which of the following is a prime number?", options: ["51", "57", "59", "55"], answer: 2, topic: "Primes" },
       { type: "mc", text: "How many factors does 28 have?", options: ["4", "5", "6", "7"], answer: 2, topic: "Factors" },
       { type: "input", text: "Write the prime factorisation of 60 (e.g. 2x2x3x5)", answer: "2x2x3x5", topic: "Prime factors" },
+      { type: "input", text: "Use prime factorisation to find the LCM of 90 and 126.", answer: "630", topic: "HCF/LCM" },
+      { type: "input", text: "Two warning lights flash every 18 seconds and every 24 seconds. They flash together at exactly 08:00:00. After how many seconds will they next flash together?", answer: "72", topic: "HCF/LCM" },
     ]
   },
   {

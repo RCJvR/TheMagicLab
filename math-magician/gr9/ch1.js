@@ -71,6 +71,8 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "Convert 0,<span class='math'>\\overline{27}</span> to a fraction. Give the numerator if the fraction is in simplest form over 99.", answer: "3", topic: "Number Systems" },
         { type: "mc", text: "Which statement is FALSE?", options: ["All naturals are integers", "All integers are rational", "All irrationals are real", "All rationals are integers"], answer: 3, topic: "Number Systems" },
         { type: "input", text: "Write 0,<span class='math'>\\overline{142857}</span> as a fraction (give the denominator).", answer: "7", topic: "Number Systems" },
+        { type: "input", text: "Calculate 0,<span class='math'>\\overline{18}</span> + 0,2 and give the answer as a single fraction a/b in simplest form (write it as a/b).", answer: "21/55", altAnswers: ["21​/​55"], topic: "Number Systems" },
+        { type: "mc", text: "Consider the product <span class='math'>√2 × √8</span>. What can you conclude?", options: ["It is irrational, since irrational × irrational is always irrational", "It is rational, equal to 4", "It is irrational, equal to √16", "It cannot be simplified"], answer: 1, topic: "Number Systems" },
       ]
     },
     {
@@ -140,6 +142,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "Which equation shows inverse proportion between x and y?", options: ["y = 3x", "y = x + 3", "y = 3/x", "y = x�"], answer: 2, topic: "Ratios" },
         { type: "input", text: "A car travels 390 km on 30 litres. Calculate fuel consumption in km per litre.", answer: "13", topic: "Rates" },
         { type: "mc", text: "If y is directly proportional to x and y = 18 when x = 6, find y when x = 10.", options: ["30", "60", "3", "108"], answer: 0, topic: "Ratios" },
+        { type: "input", text: "A recipe needs flour, sugar and butter in the ratio 5 : 2 : 3. You have 800 g of flour (enough for a full batch) but only 250 g of butter. How many more grams of butter do you need to buy?", answer: "230", topic: "Ratios" },
+        { type: "input", text: "12 workers can build a wall in 18 days. They work for 6 days, then 4 workers leave the job. Using the fact that total worker-days stays constant, calculate the total number of days (from the start) needed to finish the wall.", answer: "24", topic: "Rates" },
       ]
     },
     {
@@ -210,6 +214,8 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "Calculate compound interest on R 8 000 at 10% p.a. for 2 years. Give total amount.", answer: "9680", topic: "Finance" },
         { type: "mc", text: "If 1 GBP = R 23, how many rands for �150?", options: ["R 3 350", "R 3 400", "R 3 450", "R 3 500"], answer: 2, topic: "Finance" },
         { type: "input", text: "A TV costs R 3 500. You pay a 20% deposit and 12 monthly instalments of R 260. What is the total hire purchase cost?", answer: "3820", topic: "Finance" },
+        { type: "input", text: "A jacket has a marked (VAT-inclusive) price of R 690. In a sale it is discounted by 20% off the marked price. Of the new sale price, how much (in rand) is the VAT portion (VAT is 15%)? Round to the nearest rand.", answer: "72", topic: "Finance" },
+        { type: "input", text: "A fridge costs R 9 000 cash. On hire purchase you pay a 15% deposit and then 24 monthly instalments of R 350. How much MORE (in rand) do you pay overall on hire purchase compared to the cash price?", answer: "750", topic: "Finance" },
       ]
     },
   ],

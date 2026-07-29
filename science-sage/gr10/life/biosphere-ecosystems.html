@@ -165,7 +165,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
     </div>
     <div id="questions"></div>
@@ -182,6 +182,19 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Define producer, consumer, and decomposer, and give an example of each.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain why energy decreases at each successive trophic level in a food chain.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain why food chains rarely have more than four or five levels.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (5 marks)</div><div class="wb-qtext">A field study measured the energy stored at each trophic level of a grassland ecosystem over one year:
+      <table class="symbols-table" style="margin:12px 0 14px;width:100%;border-collapse:collapse">
+        <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Trophic level</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Energy (kJ/m²/year)</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 10px">Producers</td><td style="padding:6px 10px">20 000</td></tr>
+          <tr><td style="padding:6px 10px">Primary consumers</td><td style="padding:6px 10px">2 200</td></tr>
+          <tr><td style="padding:6px 10px">Secondary consumers</td><td style="padding:6px 10px">190</td></tr>
+          <tr><td style="padding:6px 10px">Tertiary consumers</td><td style="padding:6px 10px">18</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the percentage of energy transferred from producers to primary consumers. Show your working. (2)<br>
+      (b) Calculate the percentage of energy transferred from secondary consumers to tertiary consumers. (2)<br>
+      (c) Are the percentages you calculated exactly 10% at every step? Explain why the "10% rule" is described as an average rather than an exact law. (1)</div></div>
   </div>
 </div>
 
@@ -241,6 +254,7 @@ const QUESTIONS=[
   {text:'Approximately what percentage of energy is transferred from one trophic level to the next?',opts:['100%','50%','10%','1%'],ans:2,exp:'On average, only about 10% of the energy at one trophic level is transferred to the next — the rest is lost, mostly as heat.'},
   {text:'Why are top predators (tertiary consumers) always far less numerous than producers?',opts:['They reproduce more slowly','Only a tiny fraction of the original energy captured by producers remains by that level','They eat less food','They live longer'],ans:1,exp:'Because energy decreases at each trophic level, only a small fraction of the original energy remains by the top of the food chain, limiting how many top predators an ecosystem can support.'},
   {text:'What role do decomposers play in an ecosystem?',opts:['They produce their own food','They break down dead organisms and waste, returning nutrients to the ecosystem','They are always the largest organisms','They only live in water'],ans:1,exp:'Decomposers break down dead organic matter and waste, recycling nutrients back into the ecosystem for producers to use again.'},
+  {text:'Producers in a grassland ecosystem capture 100 000 kJ of energy. If approximately 10% of energy is transferred from each trophic level to the next, how much energy is available to the tertiary consumers (the fourth trophic level)?',opts:['10 000 kJ','1 000 kJ','100 kJ','10 kJ'],ans:2,exp:'This requires applying the 10% rule three times in sequence, not just once: producers (100 000 kJ) → primary consumers (100 000 × 0.10 = 10 000 kJ) → secondary consumers (10 000 × 0.10 = 1 000 kJ) → tertiary consumers (1 000 × 0.10 = 100 kJ). Each transfer loses 90% of the energy, mostly as heat, so the losses compound across the food chain.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

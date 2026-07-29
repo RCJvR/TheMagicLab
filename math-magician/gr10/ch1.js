@@ -132,6 +132,20 @@ MathMagician.registerChapter(1, {
           text: "Simplify: √(3 × 75)",
           answer: "15",
           topic: "Real numbers & surds"
+        },
+        {
+          type: "input",
+          text: "Simplify fully: √8 + √50 − √18 (simplest surd form)",
+          answer: "4√2",
+          altAnswers: ["4sqrt2", "4√(2)"],
+          topic: "Real numbers & surds"
+        },
+        {
+          type: "input",
+          text: "A square tile has an area of 200 cm². Determine its side length in simplest surd form (in cm).",
+          answer: "10√2",
+          altAnswers: ["10sqrt2", "10√2 cm"],
+          topic: "Real numbers & surds"
         }
       ]
     },
@@ -330,6 +344,20 @@ MathMagician.registerChapter(1, {
           options: ["(a − 2)³", "(a − 2)(a² + 2a + 4)", "(a − 2)(a² − 2a + 4)", "(a + 2)(a² − 4)"],
           answer: 1,
           topic: "Products & factorisation"
+        },
+        {
+          type: "mc",
+          text: "Factorise completely (hint: group in pairs first): x³ − x² − 4x + 4",
+          options: ["(x − 1)(x − 2)(x + 2)", "(x − 1)(x² − 4x)", "(x − 2)²(x + 1)", "(x + 1)(x − 2)²"],
+          answer: 0,
+          topic: "Products & factorisation"
+        },
+        {
+          type: "input",
+          text: "Simplify completely: (2x² − x − 6)/(4x² − 9)",
+          answer: "(x-2)/(2x-3)",
+          altAnswers: ["(x−2)/(2x−3)"],
+          topic: "Products & factorisation"
         }
       ]
     },
@@ -408,6 +436,13 @@ MathMagician.registerChapter(1, {
           type: "input",
           text: "Expand (x + 3)(2x² − x + 5) and give the constant term.",
           answer: "15",
+          topic: "Multiplying binomials by trinomials"
+        },
+        {
+          type: "input",
+          text: "Expand and simplify: (x + 2)(x² − 3x + 1) − (x − 1)(x² + x − 2). Give the coefficient of x² in the simplified answer.",
+          answer: "-1",
+          altAnswers: ["−1"],
           topic: "Multiplying binomials by trinomials"
         }
       ]
@@ -550,6 +585,13 @@ MathMagician.registerChapter(1, {
           options: ["Recognise 64 = 4³ and x³y³ = (xy)³, apply sum of cubes", "Take out a common factor of x", "It cannot be factorised", "Recognise it as a difference of squares"],
           answer: 0,
           topic: "Sum and difference of cubes"
+        },
+        {
+          type: "mc",
+          text: "Factorise completely: 3x³ − 3",
+          options: ["3(x − 1)(x² + x + 1)", "3(x − 1)³", "(3x − 3)(x² + x + 1)", "3(x + 1)(x² − x + 1)"],
+          answer: 0,
+          topic: "Sum and difference of cubes"
         }
       ]
     },
@@ -630,6 +672,13 @@ MathMagician.registerChapter(1, {
           type: "input",
           text: "Simplify (2x³ + 2)/(x + 1) and give the constant term of the simplified expression.",
           answer: "2",
+          topic: "Algebraic fractions with cube denominators"
+        },
+        {
+          type: "input",
+          text: "Simplify completely: (x³ + 1)/(x² − 1)",
+          answer: "(x²-x+1)/(x-1)",
+          altAnswers: ["(x^2-x+1)/(x-1)", "(x² − x + 1)/(x − 1)"],
           topic: "Algebraic fractions with cube denominators"
         }
       ]

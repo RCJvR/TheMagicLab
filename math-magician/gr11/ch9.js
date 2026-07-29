@@ -115,6 +115,19 @@ MathMagician.registerChapter(9, {
           options: ["Find interest rates", "Compare money at different points in time at the same point", "Calculate monthly payments", "Draw graphs of exponential growth"],
           answer: 1,
           topic: "Depreciation & timelines"
+        },
+        {
+          type: "input",
+          text: "A machine bought for R180 000 depreciates on the reducing-balance method at 18% p.a. Determine the first full year in which its value drops below R60 000.",
+          answer: "6",
+          topic: "Depreciation & timelines"
+        },
+        {
+          type: "input",
+          text: "A truck is bought for R350 000 and depreciates on the reducing-balance method. After 3 years it is worth R255 150. Determine the annual rate of depreciation (as a %).",
+          answer: "10%",
+          altAnswers: ["10", "10 %"],
+          topic: "Depreciation & timelines"
         }
       ]
     },
@@ -251,6 +264,20 @@ MathMagician.registerChapter(9, {
           options: ["Less interest earned", "The same interest", "More interest earned", "The effective rate decreases"],
           answer: 2,
           topic: "Nominal & effective interest rates"
+        },
+        {
+          type: "input",
+          text: "Compare: Option A pays 9% p.a. compounded monthly. Determine the effective annual rate of Option A (to 2 decimal places, as a %).",
+          answer: "9.38",
+          altAnswers: ["9.38%"],
+          topic: "Nominal & effective interest rates"
+        },
+        {
+          type: "input",
+          text: "An investment compounded quarterly has an effective annual rate of 8.24%. Determine the nominal annual rate, correct to 2 decimal places (as a %).",
+          answer: "8.00",
+          altAnswers: ["8", "8%", "8.00%"],
+          topic: "Nominal & effective interest rates"
         }
       ]
     },
@@ -360,6 +387,19 @@ MathMagician.registerChapter(9, {
           type: "input",
           text: "R8 000 is invested at 12% p.a. compounded quarterly for 6 months, then a further R2 000 is deposited. Find the balance immediately after the deposit (to the nearest rand).",
           answer: "10488",
+          topic: "Multi-stage investments with timelines"
+        },
+        {
+          type: "input",
+          text: "R40 000 is invested at 8% p.a. compounded semi-annually for 2 years. At the end of year 2, R15 000 is withdrawn, and the remaining balance grows at 6% p.a. compounded monthly for a further 18 months. Find the final value (to the nearest rand).",
+          answer: "34781",
+          topic: "Multi-stage investments with timelines"
+        },
+        {
+          type: "input",
+          text: "Thabo invests R25 000 at 9% p.a. compounded monthly. Naledi invests R25 000 at a nominal annual rate compounded quarterly. After 3 years, both investments are worth exactly the same amount. Determine Naledi's nominal annual rate, correct to 2 decimal places (as a %).",
+          answer: "9.07",
+          altAnswers: ["9.07%"],
           topic: "Multi-stage investments with timelines"
         }
       ]
@@ -494,6 +534,19 @@ MathMagician.registerChapter(9, {
           text: "An investment must reach at least R50 000 from R30 000 at 10% p.a. If n works out to 5.36 years, and interest is only credited at full-year intervals, the minimum whole number of years needed is:",
           options: ["5", "6", "5.36", "5.5"],
           answer: 1,
+          topic: "Solving for n and i"
+        },
+        {
+          type: "input",
+          text: "R18 000 grows to R30 000 at 8.5% p.a. compounded annually. Determine how many years this takes, correct to 2 decimal places.",
+          answer: "6.26",
+          topic: "Solving for n and i"
+        },
+        {
+          type: "input",
+          text: "A machine depreciates on the reducing-balance method from R500 000 to R230 000 in 6 years. Determine the annual rate of depreciation, correct to 2 decimal places (as a %).",
+          answer: "12.14",
+          altAnswers: ["12.14%"],
           topic: "Solving for n and i"
         }
       ]

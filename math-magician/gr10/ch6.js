@@ -315,6 +315,12 @@ MathMagician.registerChapter(6, {
           options: ["y ≥ 3", "y ≤ 3", "y ≥ 2", "all real numbers"],
           answer: 0,
           topic: "Linear, quadratic & hyperbolic functions"
+        },
+        {
+          type: "input",
+          text: "A parabola has x-intercepts at x = −1 and x = 3, and a y-intercept of −6. Find the value of a in y = a(x+1)(x−3).",
+          answer: "2",
+          topic: "Linear, quadratic & hyperbolic functions"
         }
       ]
     },
@@ -669,6 +675,12 @@ MathMagician.registerChapter(6, {
           options: ["They are the same graph", "One is a reflection of the other in the y-axis", "One is a reflection in the x-axis", "One is a vertical stretch of the other"],
           answer: 1,
           topic: "Exponential & trig functions"
+        },
+        {
+          type: "input",
+          text: "An exponential function y = ab^x + 2 passes through (0; 5) and (1; 11). Find the value of b.",
+          answer: "3",
+          topic: "Exponential & trig functions"
         }
       ]
     },
@@ -760,6 +772,13 @@ MathMagician.registerChapter(6, {
           text: "In the function y = x² , the input x = −3 and x = 3 both give y = 9. Is y = x² still a valid function?",
           options: ["Yes — each input still gives only one output", "No — two inputs cannot share an output", "Only for positive x", "Only if x is restricted to integers"],
           answer: 0,
+          topic: "The concept of a function"
+        },
+        {
+          type: "mc",
+          text: "Which of the following equations does NOT represent y as a function of x?",
+          options: ["y = x² + 1", "x = y²", "y = 2x − 3", "y = |x|"],
+          answer: 1,
           topic: "The concept of a function"
         }
       ]
@@ -916,6 +935,13 @@ MathMagician.registerChapter(6, {
           answer: "-3",
           altAnswers: ["−3"],
           topic: "Effect of parameters a and q"
+        },
+        {
+          type: "input",
+          text: "For y = −3(x+2)² + 7, the point (0; y) lies on the graph. Using the axis of symmetry, find the x-value of the other point on the graph with the same y-value.",
+          answer: "-4",
+          altAnswers: ["−4"],
+          topic: "Effect of parameters a and q"
         }
       ]
     }
@@ -959,6 +985,16 @@ MathMagician.registerChapter(6, {
           { label: "a", text: "Use the asymptote to find q.", marks: 1 },
           { label: "b", text: "Find a and b.", marks: 4 }
         ]
+      },
+      {
+        number: 5,
+        text: "The table below gives values of a quadratic function y = f(x):<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>x</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>y</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>8</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>8</td></tr></table>",
+        parts: [
+          { label: "a", text: "State the turning point of the function, reading directly from the table.", marks: 1 },
+          { label: "b", text: "State the equation of the axis of symmetry.", marks: 1 },
+          { label: "c", text: "Use the turning point and one other point from the table to determine the equation of f(x) in the form y = a(x−p)² + q.", marks: 4 },
+          { label: "d", text: "Use the table to calculate the average gradient between x = −1 and x = 2.", marks: 3 }
+        ]
       }
     ],
     answers: {
@@ -982,6 +1018,12 @@ MathMagician.registerChapter(6, {
       4: {
         a: "q = 3",
         b: "a+3=5 → a=2; 2b+3=11 → b=4; y=2·4^x+3"
+      },
+      5: {
+        a: "Turning point (1, −1) — the smallest y-value in the table, with matching y-values on either side",
+        b: "x = 1",
+        c: "Using vertex (1,−1) and point (4,8): 8 = a(4−1)²−1 → 9=9a → a=1; y=(x−1)²−1",
+        d: "Average gradient = (f(2)−f(−1))/(2−(−1)) = (0−3)/3 = −1"
       }
     }
   }

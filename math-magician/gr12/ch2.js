@@ -89,7 +89,9 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "The inverse of y = 2ˣ is:", options: ["y = x²", "y = log₂(x)", "y = 2⁻ˣ", "y = ½ˣ"], answer: 1, topic: "Inverse functions" },
         { type: "input", text: "Evaluate: log₂(32)", answer: "5", topic: "Inverse functions" },
         { type: "mc", text: "The graph of f⁻¹ is obtained from f by reflecting in:", options: ["The x-axis", "The y-axis", "The line y = x", "The origin"], answer: 2, topic: "Inverse functions" },
-        { type: "mc", text: "log(100) + log(10) = ", options: ["2", "3", "log(1000)", "Both B and C"], answer: 3, topic: "Inverse functions" }
+        { type: "mc", text: "log(100) + log(10) = ", options: ["2", "3", "log(1000)", "Both B and C"], answer: 3, topic: "Inverse functions" },
+        { type: "input", text: "If f(x) = 4x − 3 and h(x) = f⁻¹(x), determine the value of x for which h(2x + 5) = 6.", answer: "8", topic: "Inverse functions" },
+        { type: "input", text: "Solve for x: log₃(x) = 2log₃(5) − log₃(x)", answer: "5", topic: "Inverse functions" }
       ]
     },
     {
@@ -207,7 +209,9 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "Solve: 2ˣ = 50. Give x to 2 decimal places.", answer: "5.64", altAnswers: ["5,64"], topic: "Logarithmic functions & equations" },
         { type: "mc", text: "Solve: log₃(x − 1) = 2", options: ["x = 10", "x = 7", "x = 9", "x = 5"], answer: 0, topic: "Logarithmic functions & equations" },
         { type: "mc", text: "The vertical asymptote of y = log(x + 2) is:", options: ["x = 0", "x = 2", "x = −2", "y = 0"], answer: 2, topic: "Logarithmic functions & equations" },
-        { type: "mc", text: "log(a²b³) expressed using log a and log b:", options: ["2log a + 3log b", "5log(ab)", "6log(ab)", "log a² + log b³ only"], answer: 0, topic: "Logarithmic functions & equations" }
+        { type: "mc", text: "log(a²b³) expressed using log a and log b:", options: ["2log a + 3log b", "5log(ab)", "6log(ab)", "log a² + log b³ only"], answer: 0, topic: "Logarithmic functions & equations" },
+        { type: "input", text: "Solve for x: log₂(x) + log₂(x + 6) = 4", answer: "2", topic: "Logarithmic functions & equations" },
+        { type: "input", text: "An investment of R12 500 grows at 11% p.a. compounded annually. Determine the minimum number of full years for the investment to exceed R30 000.", answer: "9", topic: "Logarithmic functions & equations" }
       ]
     },
     {
@@ -311,7 +315,9 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "To make f(x) = x² one-to-one, a valid domain restriction is:", options: ["x ∈ ℝ", "x ≥ 0", "x ≠ 0", "x < 0 or x > 0"], answer: 1, topic: "Restricting domains for inverses" },
         { type: "input", text: "f(x) = x² restricted to x ≥ 0. Find f⁻¹(x).", answer: "√x", altAnswers: ["sqrt(x)", "x^0.5", "x^(1/2)"], topic: "Restricting domains for inverses" },
         { type: "mc", text: "Which test determines if a graph represents a one-to-one function?", options: ["Vertical line test", "Horizontal line test", "Origin symmetry test", "Intercept test"], answer: 1, topic: "Restricting domains for inverses" },
-        { type: "mc", text: "For f(x) = x², restricted to x ≤ 0, the inverse is:", options: ["f⁻¹(x) = √x", "f⁻¹(x) = −√x", "f⁻¹(x) = x²", "No inverse exists"], answer: 1, topic: "Restricting domains for inverses" }
+        { type: "mc", text: "For f(x) = x², restricted to x ≤ 0, the inverse is:", options: ["f⁻¹(x) = √x", "f⁻¹(x) = −√x", "f⁻¹(x) = x²", "No inverse exists"], answer: 1, topic: "Restricting domains for inverses" },
+        { type: "input", text: "f(x) = (x + 3)² for x ≥ −3. Determine f⁻¹(x).", answer: "√x − 3", altAnswers: ["√x-3", "sqrt(x)-3", "sqrt(x) - 3", "x^0.5 - 3", "x^0.5-3"], topic: "Restricting domains for inverses" },
+        { type: "input", text: "g(x) = 2(x − 1)² + 4 for x ≤ 1. Determine g⁻¹(x).", answer: "1 − √((x − 4)/2)", altAnswers: ["1-√((x-4)/2)", "1-sqrt((x-4)/2)", "1 - sqrt((x-4)/2)"], topic: "Restricting domains for inverses" }
       ]
     },
     {
@@ -423,7 +429,9 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "For 0 < b < 1, the graph of y = bˣ is:", options: ["Increasing", "Decreasing", "Constant", "A straight line"], answer: 1, topic: "Graphing exponential & logarithmic functions" },
         { type: "mc", text: "Reflecting f(x) = 3ˣ in the y-axis gives the function:", options: ["y = −3ˣ", "y = 3⁻ˣ", "y = log₃x", "y = 3ˣ⁻¹"], answer: 1, topic: "Graphing exponential & logarithmic functions" },
         { type: "input", text: "y = log_b(x) has a vertical asymptote at x = ___.", answer: "0", topic: "Graphing exponential & logarithmic functions" },
-        { type: "mc", text: "The graphs of y = bˣ and y = log_b(x) are reflections of each other in the line:", options: ["x = 0", "y = 0", "y = x", "y = −x"], answer: 2, topic: "Graphing exponential & logarithmic functions" }
+        { type: "mc", text: "The graphs of y = bˣ and y = log_b(x) are reflections of each other in the line:", options: ["x = 0", "y = 0", "y = x", "y = −x"], answer: 2, topic: "Graphing exponential & logarithmic functions" },
+        { type: "input", text: "Determine the inverse of f(x) = 2ˣ⁺¹.", answer: "log₂(x) − 1", altAnswers: ["log2(x)-1", "log_2(x) - 1", "log₂x − 1", "log₂(x)-1"], topic: "Graphing exponential & logarithmic functions" },
+        { type: "input", text: "The graph of y = log₃(x) is reflected in the line y = x, then shifted 2 units down to form h(x). Write down h(x).", answer: "3ˣ − 2", altAnswers: ["3^x - 2", "3^x-2"], topic: "Graphing exponential & logarithmic functions" }
       ]
     }
   ],
@@ -443,12 +451,19 @@ MathMagician.registerChapter(2, {
       { number: 3, text: "How long (in years, to 1 decimal place) does it take R8 000 to double at 9.5% p.a. compound interest?", parts: [
         { label: "a", text: "Set up the equation.", marks: 2 },
         { label: "b", text: "Solve using logarithms.", marks: 3 }
+      ]},
+      { number: 4, text: "The table below gives values of a function of the form y = a·bˣ:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>x</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>y</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>10</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>20</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>40</td></tr></table>", parts: [
+        { label: "a", text: "Use the table to determine the values of a and b.", marks: 3 },
+        { label: "b", text: "Hence write down f⁻¹(x), the inverse of y = a·bˣ, in logarithmic form.", marks: 3 },
+        { label: "c", text: "Use your equation to predict the value of y when x = 5.", marks: 2 },
+        { label: "d", text: "Write down the equation of the horizontal asymptote of the graph of y = a·bˣ.", marks: 1 }
       ]}
     ],
     answers: {
       1: { a: "x=y²−4→y²=x+4→y=√(x+4); domain x≥−4", b: "Parabola and square root reflection", c: "f⁻¹(5)=√9=3" },
       2: { a: "log₂(x(x−2))=3→x(x−2)=8→x²−2x−8=0→(x−4)(x+2)=0→x=4 (reject x=−2)", b: "(2x−1)log3=log7→x=(log7/log3+1)/2≈1.386", c: "x²−5x=6→x²−5x−6=0→x=6 or x=−1 (check both: x=−1→log(6)✓; x=6→log(6)✓ both valid)" },
-      3: { a: "16000=8000(1.095)ⁿ→(1.095)ⁿ=2", b: "n=log2/log1.095≈7.6 years" }
+      3: { a: "16000=8000(1.095)ⁿ→(1.095)ⁿ=2", b: "n=log2/log1.095≈7.6 years" },
+      4: { a: "a = 5 (the y-value at x = 0). Ratio between consecutive y-values: 10/5 = 20/10 = 40/20 = 2, so b = 2. Thus y = 5·2ˣ.", b: "Swap x and y: x = 5·2ʸ → 2ʸ = x/5 → y = log₂(x/5). So f⁻¹(x) = log₂(x/5).", c: "y = 5·2⁵ = 5×32 = 160", d: "y = 0" }
     }
   }
 });

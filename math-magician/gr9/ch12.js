@@ -81,6 +81,8 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Two parallel lines are cut by a transversal. One co-interior angle is 65�. Find the other.", answer: "115", topic: "Lines" },
         { type: "mc", text: "Which angle pair are equal when formed by parallel lines and a transversal?", options: ["Co-interior", "Corresponding", "Supplementary", "Adjacent"], answer: 1, topic: "Lines" },
         { type: "mc", text: "Angles of 3x� and (x + 40)� are vertically opposite. Find x.", options: ["20", "10", "15", "35"], answer: 0, topic: "Lines" },
+        { type: "input", text: "Two angles on a straight line are in the ratio 5 : 7. Calculate the size of the smaller angle (in degrees).", answer: "75", topic: "Lines" },
+        { type: "input", text: "Four angles around a point are (2x)°, (3x)°, (4x)° and 90°. Find x.", answer: "30", topic: "Lines" },
       ]
     },
     {
@@ -171,6 +173,8 @@ MathMagician.registerChapter(12, {
         { type: "mc", text: "Co-interior angles sum to 180�. This is a reason to conclude:", options: ["Angles are equal", "Lines are perpendicular", "Lines are parallel", "Angles are complementary"], answer: 2, topic: "Lines" },
         { type: "input", text: "Corresponding angles are (5x + 15)� and (3x + 45)�. Find x.", answer: "15", topic: "Lines" },
         { type: "mc", text: "Which COMPLETE reason would you use for alternate interior angles?", options: ["Alt. ?s", "Alt. int. ?s, AB ? CD", "Equal angles", "Z-pattern"], answer: 1, topic: "Lines" },
+        { type: "input", text: "Two co-interior angles are (2x + 10)° and (3x - 30)°. Find x.", answer: "40", topic: "Lines" },
+        { type: "input", text: "Two lines are cut by a transversal so that one pair of co-interior angles are 118° and 62° (confirming the two lines are parallel). A third line, parallel to the first, forms a corresponding angle of (2x + 10)° with the transversal (corresponding to the 118° angle). Find x.", answer: "54", topic: "Lines" },
       ]
     },
   ],

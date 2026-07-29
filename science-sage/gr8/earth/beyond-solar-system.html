@@ -197,7 +197,7 @@
 
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
-    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 8</span></div>
     <div id="q-container"></div>
   </div>
 </div>
@@ -211,6 +211,16 @@
     <div class="wb-card"><div class="wb-q">4. Name the three main types of galaxies and briefly describe the shape of each. Give an example of each type.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">5. Write the size hierarchy from smallest to largest, starting with "planet" and ending with "observable universe". Name at least 6 levels.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">6. What are the Magellanic Clouds and why are they significant to observers in South Africa? How far away are they?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. The table below gives the approximate distance of four objects from Earth in light years.<br><br>
+      <table class="scale-table"><thead><tr><th>Object</th><th>Distance (light years)</th></tr></thead><tbody>
+      <tr><td>Alpha Centauri</td><td>4.3</td></tr>
+      <tr><td>Sirius</td><td>8.6</td></tr>
+      <tr><td>Betelgeuse</td><td>640</td></tr>
+      <tr><td>Deneb</td><td>2 600</td></tr>
+      </tbody></table><br>
+      (a) Calculate how many times farther Deneb is from Earth than Alpha Centauri is (round to the nearest whole number). Show your working.<br>
+      (b) Human writing systems developed roughly 5 000 years ago. Using the table, explain whether the light you see from Deneb tonight left before or after writing was invented, and by roughly how many years.<br>
+      (c) Explain why the brightness of a star in the night sky cannot, on its own, tell you how far away it is.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
   </div>
 </div>
 
@@ -414,9 +424,11 @@ const QS=[
   {q:"Our solar system is located in which galaxy?",opts:["Andromeda","Magellanic Cloud","The Milky Way","The observable universe"],ans:2,fb:"Our solar system (the Sun and everything orbiting it) is located in the Milky Way galaxy, about 26 000 light years from the galactic centre."},
   {q:"The Milky Way is best described as:",opts:["An elliptical galaxy","A barred spiral galaxy","An irregular galaxy","A globular cluster"],ans:1,fb:"The Milky Way is a barred spiral galaxy with a central bar-shaped region and spiral arms extending outward."},
   {q:"What are the Magellanic Clouds?",opts:["Clouds of gas inside the Milky Way","Two irregular dwarf galaxies visible from the Southern Hemisphere","Two types of nebulae","Star clusters near the Sun"],ans:1,fb:"The Large and Small Magellanic Clouds are two irregular dwarf galaxies that orbit the Milky Way. They are visible to the naked eye from the Southern Hemisphere, including South Africa."},
-  {q:"When you observe a star that is 1000 light years away, you are seeing:",opts:["The star as it is right now","The star as it was 1000 years ago","A reflection of the star","An artist's impression"],ans:1,fb:"Light from a star 1000 ly away takes 1000 years to reach us. You are seeing how the star looked 1000 years ago — you are looking back in time!"}
+  {q:"When you observe a star that is 1000 light years away, you are seeing:",opts:["The star as it is right now","The star as it was 1000 years ago","A reflection of the star","An artist's impression"],ans:1,fb:"Light from a star 1000 ly away takes 1000 years to reach us. You are seeing how the star looked 1000 years ago — you are looking back in time!"},
+  {q:"Star A is 650 light years from Earth and Star B is 1200 light years from Earth. Tonight, both appear equally bright in the sky. Which statement correctly explains what you are actually seeing?",opts:["Both stars looked exactly like this tonight, in real time, because they appear equally bright","You are seeing Star A as it was 650 years ago and Star B as it was 1200 years ago — the two images are 550 years apart in the stars' history, not from the same moment","Since Star B's light is older, Star B must be a younger star than Star A","Equal brightness proves the two stars are the same true distance from Earth"],ans:1,fb:"Light-travel time depends only on distance, so each star's image shows it as it was when that light left it — not 'now'. Star A's light left 650 years ago and Star B's light left 1200 years ago, a gap of 1200 − 650 = 550 years, even though both signals arrive together tonight. Brightness in the sky depends on both true luminosity and distance, so it cannot be used alone to compare distances."},
+  {q:"The Milky Way's diameter is about 100 000 light years. If a spacecraft could travel at one-tenth the speed of light (0.1c), roughly how many years would it take to cross the entire galaxy?",opts:["10 000 years","100 000 years","1 000 000 years","10 000 000 years"],ans:2,fb:"Time = distance ÷ speed. Since the distance is already given in light years, dividing by a fraction of light speed means: 100 000 ly ÷ 0.1c = 1 000 000 years. Travelling at just one-tenth the speed of light, a one-way crossing of the Milky Way would take a million years — showing just how vast even our own galaxy is."}
 ];
-let scores=new Array(6).fill(null);
+let scores=new Array(8).fill(null);
 function renderQ(){
   const c=document.getElementById('q-container');c.innerHTML='';
   QS.forEach((q,i)=>{
@@ -431,7 +443,7 @@ function answer(qi,oi,btn){
   if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
   else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
 }
-function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
 renderQ();
 </script>
   <script src="/contact-button.js" defer></script>

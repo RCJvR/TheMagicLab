@@ -38,6 +38,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "A square has perimeter 52 cm. Find its side length.", answer: "13", topic: "Perimeter" },
         { type: "mc", text: "A trapezium has parallel sides 8 cm and 12 cm, and a height of 5 cm. What is its area?", options: ["50 cm²", "100 cm²", "40 cm²", "48 cm²"], answer: 0, topic: "Area" },
         { type: "input", text: "A triangle has sides 13 cm, 14 cm, and 15 cm. Find the perimeter.", answer: "42", topic: "Perimeter" },
+        { type: "input", text: "A rectangular field is 3 times as long as it is wide. Its perimeter is 96 m. Find the length of the field in m.", answer: "36", topic: "Perimeter" },
+        { type: "input", text: "A garden path is a rectangle 12 m by 6 m with a semicircle (radius 3 m) attached along one 6 m side. Calculate the total outer perimeter of the shape (the joined 6 m edge is not counted). Use π = 3.142, give your answer to 2 d.p.", answer: "39.43", topic: "Perimeter" },
       ]
     },
     {
@@ -116,6 +118,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "A trapezium has parallel sides 8 cm and 14 cm, and perpendicular height 5 cm. Find its area.", answer: "55", topic: "Area" },
         { type: "mc", text: "A parallelogram has base 12 cm and height 7 cm. Find its area.", options: ["38 cm²", "42 cm²", "84 cm²", "19 cm²"], answer: 2, topic: "Area" },
         { type: "input", text: "Find the area of a rectangle with length 3.5 m and breadth 2.4 m.", answer: "8.4", topic: "Area" },
+        { type: "input", text: "A composite shape is a rectangle 10 cm by 6 cm with a right-angled triangle (base 6 cm, height 4 cm) attached along one 6 cm side. Calculate the total area.", answer: "72", topic: "Area" },
+        { type: "input", text: "A circular pizza has radius 15 cm and is cut into 8 equal slices. Calculate the area of one slice, correct to 2 decimal places. (Use π = 3.142)", answer: "88.37", topic: "Area" },
       ]
     },
     {
@@ -146,6 +150,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "A triangle has area 45 cm² and base 10 cm. Find the perpendicular height.", answer: "9", topic: "Area" },
         { type: "mc", text: "A square has perimeter 36 cm. Find its area.", options: ["9 cm²", "81 cm²", "36 cm²", "144 cm²"], answer: 1, topic: "Area" },
         { type: "input", text: "A parallelogram has area 91 cm² and height 7 cm. Find the base.", answer: "13", topic: "Area" },
+        { type: "input", text: "A trapezium has area 88 cm² and parallel sides of 10 cm and 12 cm. Find the perpendicular height.", answer: "8", topic: "Area" },
+        { type: "input", text: "A circular garden has area 201.088 m² (use π = 3.142). A path of uniform width 1 m is built around it. Find the new combined area of the garden and path together, correct to 3 decimal places.", answer: "254.502", topic: "Area" },
       ]
     },
     {
@@ -186,6 +192,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "Convert 2.4 km to metres.", answer: "2400", topic: "Conversions" },
         { type: "mc", text: "A field measures 300 m × 200 m. Express its area in hectares.", options: ["6 ha", "60 ha", "600 ha", "0.6 ha"], answer: 0, topic: "Conversions" },
         { type: "input", text: "Convert 85 000 mm² to cm².", answer: "850", topic: "Conversions" },
+        { type: "input", text: "A rectangular plot measures 0.05 km by 300 m. Convert both to metres and calculate the area of the plot in hectares.", answer: "1.5", topic: "Conversions" },
+        { type: "input", text: "A rectangular tile has area 450 cm². If 200 identical tiles are needed to cover a floor exactly, calculate the floor's area in m².", answer: "9", topic: "Conversions" },
       ]
     },
     {
@@ -218,6 +226,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "A rectangle has perimeter 60 cm and length 18 cm. Find its area.", answer: "216", topic: "Mixed" },
         { type: "mc", text: "Convert 2.75 m² to cm².", options: ["275 cm²", "2 750 cm²", "27 500 cm²", "275 000 cm²"], answer: 2, topic: "Mixed" },
         { type: "input", text: "A circle has circumference 62.84 cm. Find its area. (Use π = 3.142)", answer: "314.2", topic: "Mixed" },
+        { type: "input", text: "A rectangular garden 15 m by 9 m has a square flower bed of side 3 m cut from one corner. Calculate the remaining area.", answer: "126", topic: "Mixed" },
+        { type: "input", text: "A running track has two straight sections of 100 m each and two semicircular ends of radius 30 m. Calculate the total distance around the track. Use π = 3.142, give your answer to 2 d.p.", answer: "388.52", topic: "Mixed" },
       ]
     },
   ],

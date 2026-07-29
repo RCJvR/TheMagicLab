@@ -284,7 +284,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div style="font-size:14px;color:var(--muted)">NSC Practice complete! Review your answers below.</div>
     </div>
 
@@ -366,6 +366,32 @@
       <div class="feedback bad" id="fb-q6-bad">E = P × t. Convert 2 hours to seconds: 2 × 3600 = 7200 s. E = 1500 × 7200 = 10 800 000 J.</div>
     </div>
 
+    <div class="q-card">
+      <div class="q-num">Question 7 — Mixed Circuit &amp; Power (Analysis)</div>
+      <div class="q-text">A 12 V battery is connected to a 4 Ω resistor (R₁) in series with a parallel combination of R₂ = 6 Ω and R₃ = 12 Ω. Calculate the power dissipated in R₁.</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">A</span>18 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q7')"><span class="opt-letter">B</span>9 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">C</span>4.5 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">D</span>12 W</button>
+      </div>
+      <div class="feedback ok" id="fb-q7-ok">Correct! First find the parallel equivalent of R₂ and R₃: 1/Rₚ = 1/6 + 1/12 = 3/12 → Rₚ = 4 Ω. Total resistance = R₁ + Rₚ = 4 + 4 = 8 Ω. Total current: I = V/R = 12/8 = 1.5 A. Since R₁ is in series, this full 1.5 A flows through it: P = I²R₁ = 1.5² × 4 = 9 W.</div>
+      <div class="feedback bad" id="fb-q7-bad">Work through it step by step: (1) parallel equivalent of R₂ and R₃: 1/Rₚ = 1/6 + 1/12 = 3/12 → Rₚ = 4 Ω. (2) Total circuit resistance = R₁ + Rₚ = 4 + 4 = 8 Ω. (3) Total (and series) current I = V/R = 12/8 = 1.5 A. (4) Power in R₁: P = I²R₁ = 1.5² × 4 = 9 W.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 8 — Internal Resistance &amp; Power (Analysis)</div>
+      <div class="q-text">A battery has an EMF of 24 V and an internal resistance of 2 Ω. When connected to an external resistor, a current of 3 A flows. Calculate the power dissipated in the EXTERNAL resistor only (not the total power supplied by the battery).</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">A</span>72 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">B</span>18 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q8')"><span class="opt-letter">C</span>54 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">D</span>24 W</button>
+      </div>
+      <div class="feedback ok" id="fb-q8-ok">Correct! Terminal voltage (the voltage actually available to the external resistor) = ε − Ir = 24 − (3×2) = 18 V. Power dissipated in the external resistor = V_terminal × I = 18 × 3 = 54 W. Note this is less than the total power supplied by the EMF (ε×I = 72 W) — the missing 18 W (= I²r = 3²×2) is "lost" heating the battery's own internal resistance.</div>
+      <div class="feedback bad" id="fb-q8-bad">Don't just use P = εI (that gives the TOTAL power supplied, 72 W). First find the terminal voltage: V_terminal = ε − Ir = 24 − (3×2) = 18 V. This is the voltage actually across the external resistor. Power in the external resistor = V_terminal × I = 18 × 3 = 54 W. The remaining 18 W (I²r) is dissipated inside the battery itself.</div>
+    </div>
+
     <!-- IEB Practice -->
     <div class="ieb-practice" id="ieb-practice-section">
       <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB Extension Practice <span class="ieb-badge">IEB ONLY</span></div>
@@ -429,6 +455,25 @@
       <div class="wb-qnum">Question 5 — Power Relationships</div>
       <div class="wb-qtext">A 60 Ω resistor is connected to a 12 V power supply.<br>(a) Calculate the current through the resistor.<br>(b) Calculate the power dissipated using P = V²/R.<br>(c) Verify your answer using P = I²R.<br>(d) If the voltage is doubled to 24 V, by what factor does the power increase? Explain using the formula.</div>
     </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 — V–I Data Table: Ohmic vs Non-Ohmic</div>
+      <div class="wb-qtext">A learner sets up a circuit to investigate two conductors: a fixed resistor (Conductor A) and a light bulb filament (Conductor B). For each conductor, the learner varies the voltage and records the current:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Voltage (V)</th><th>Current through A (A)</th><th>Current through B (A)</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>0.40</td><td>0.50</td></tr>
+          <tr><td>4</td><td>0.80</td><td>0.72</td></tr>
+          <tr><td>6</td><td>1.20</td><td>0.86</td></tr>
+          <tr><td>8</td><td>1.60</td><td>0.96</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the resistance of Conductor A at each of the four voltage readings. Show your working.<br>
+      (b) Calculate the resistance of Conductor B at each of the four voltage readings.<br>
+      (c) State, with a reason based on your calculations, which conductor is ohmic and which is non-ohmic.<br>
+      (d) If Conductor A's data were plotted as a V–I graph (V on the y-axis, I on the x-axis), calculate the gradient of the line between (0 A, 0 V) and (1.60 A, 8 V), and state what physical quantity this gradient represents.<br>
+      (e) Explain, in terms of what happens inside the filament, why Conductor B's resistance changes as the voltage increases.</div>
+    </div>
   </div>
 </div>
 
@@ -454,7 +499,7 @@
     btn.classList.add(correct?'correct':'wrong');
     const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
     if(fb)fb.classList.add('show');
-    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===6){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/6';}}
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===8){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/8';}}
   }
 
   // ---- CIRCUIT SIMULATION ----

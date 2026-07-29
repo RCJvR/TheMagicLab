@@ -217,7 +217,7 @@
 <!-- PRACTICE -->
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
-    <div class="score-bar"><span class="score-label">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div class="score-bar"><span class="score-label">Score</span><span class="score-val" id="score">0 / 8</span></div>
     <div id="q-container"></div>
   </div>
 </div>
@@ -232,6 +232,18 @@
     <div class="wb-card"><div class="wb-q">4. Explain why waterborne diseases are so dangerous. What can people do to prevent them?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">5. What is the role of decomposers in an ecosystem? How does this link to nutrient cycling?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">6. Explain why viruses are not considered to be truly living organisms, even though they can reproduce.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. A single bacterium is placed in a nutrient-rich dish and divides by binary fission every 20 minutes. The table below shows the population at certain times.<br><br>
+      <table class="disease-table"><thead><tr><th>Time (minutes)</th><th>Number of bacteria</th></tr></thead><tbody>
+      <tr><td>0</td><td>1</td></tr>
+      <tr><td>20</td><td>2</td></tr>
+      <tr><td>40</td><td>4</td></tr>
+      <tr><td>60</td><td>?</td></tr>
+      <tr><td>80</td><td>?</td></tr>
+      <tr><td>100</td><td>32</td></tr>
+      </tbody></table><br>
+      (a) Fill in the missing values for 60 minutes and 80 minutes. Show the pattern you used. (2)<br>
+      (b) Describe, in your own words, the pattern of growth shown by this data (what happens to the population every 20 minutes?). (1)<br>
+      (c) If, at 100 minutes, the bacteria used up all the available nutrients in the dish, predict and explain what would happen to this growth pattern afterwards. (2)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
   </div>
 </div>
 
@@ -429,10 +441,12 @@ const QS=[
   {q:"Which of the following is an example of a USEFUL micro-organism?",opts:["HIV virus","Yeast (for bread making)","Plasmodium","Mycobacterium"],ans:1,fb:"Yeast is a fungus used in bread making — it ferments sugar and releases CO₂, making dough rise."},
   {q:"Why are decomposers important in an ecosystem?",opts:["They produce oxygen","They break down dead matter and recycle nutrients","They carry out photosynthesis","They control animal populations"],ans:1,fb:"Decomposers (bacteria and fungi) break down dead organisms, releasing nutrients back into the soil for plants to use."},
   {q:"Why are viruses NOT considered truly living organisms?",opts:["They are too small","They cannot reproduce on their own — they need a host cell","They do not move","They do not respire"],ans:1,fb:"Viruses cannot reproduce independently — they must hijack the machinery of a host cell to make copies of themselves."},
-  {q:"Louis Pasteur's greatest contribution to microbiology was:",opts:["Discovering penicillin","Proving the germ theory of disease","Inventing the microscope","Discovering DNA"],ans:1,fb:"Pasteur proved that micro-organisms cause disease (germ theory) and developed pasteurisation to kill bacteria in food."}
+  {q:"Louis Pasteur's greatest contribution to microbiology was:",opts:["Discovering penicillin","Proving the germ theory of disease","Inventing the microscope","Discovering DNA"],ans:1,fb:"Pasteur proved that micro-organisms cause disease (germ theory) and developed pasteurisation to kill bacteria in food."},
+  {q:"Under warm, nutrient-rich conditions, many bacteria divide by binary fission roughly every 20 minutes. If a single bacterium begins dividing every 20 minutes, approximately how many bacteria would be present after 2 hours, assuming all of them survive and keep dividing?",opts:["12","64","120","240"],ans:1,fb:"2 hours = 120 minutes, so the bacterium divides 120 ÷ 20 = 6 times. Starting from 1 cell and doubling 6 times gives 2⁶ = 64 bacteria (1→2→4→8→16→32→64). This is why bacterial infections can multiply so rapidly if left untreated — exponential growth means numbers increase very quickly once conditions are favourable."},
+  {q:"A community draws its drinking water from a river just downstream of a leaking sewage pipe. Several children develop severe watery diarrhoea, and a doctor identifies Vibrio cholerae bacteria in their stool samples, confirming cholera. Based on how cholera spreads, which action would most directly address the SOURCE of this outbreak?",opts:["Distributing mosquito nets to all households","Repairing the leaking sewage pipe and ensuring the river water is boiled or purified before drinking","Prescribing antibiotics without changing anything about the water supply","Advising people to avoid coughing near each other"],ans:1,fb:"Cholera (Vibrio cholerae) spreads through water contaminated with human waste — not through mosquitoes (that's malaria) or air droplets (that's TB and flu). Since the sewage leak is contaminating the drinking water, the outbreak will keep happening as long as people drink untreated water from that source. Repairing the leak and purifying the water addresses the actual route of transmission, unlike mosquito nets or advice about coughing, which target completely different diseases."}
 ];
 
-let scores=new Array(6).fill(null);
+let scores=new Array(8).fill(null);
 function renderQ(){
   const c=document.getElementById('q-container');
   c.innerHTML='';
@@ -463,7 +477,7 @@ function answer(qi,oi,btn){
 }
 function updateScore(){
   const s=scores.filter(x=>x===1).length;
-  document.getElementById('score').textContent=s+' / 6';
+  document.getElementById('score').textContent=s+' / 8';
 }
 renderQ();
 </script>

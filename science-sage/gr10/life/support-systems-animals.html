@@ -203,6 +203,18 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (2 marks)</div><div class="wb-qtext">Name the two main divisions of the human skeleton.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (5 marks)</div><div class="wb-qtext">List FIVE functions of the human skeleton.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Distinguish between a ligament and a tendon.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">The skeleton acts as a mineral store, particularly for calcium. A laboratory tests three bone samples from different animals and records their mass and calcium content:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Sample</th><th>Bone mass (g)</th><th>Calcium content (% of bone mass)</th></tr></thead>
+      <tbody>
+        <tr><td>Human femur sample</td><td>200</td><td>25%</td></tr>
+        <tr><td>Bird wing bone sample</td><td>15</td><td>18%</td></tr>
+        <tr><td>Fish rib sample</td><td>5</td><td>12%</td></tr>
+      </tbody>
+    </table>
+    (a) Calculate the mass of calcium, in grams, stored in each of the three bone samples. Show your working. (3)<br>
+    (b) Using the concept of mineral storage, explain why bones are described as a calcium "reserve" for the body. (2)<br>
+    (c) Bird bones are typically lighter and less dense than mammal bones. Suggest one reason why this might be an advantage for a bird. (1)</div></div>
   </div>
 </div>
 
@@ -305,6 +317,8 @@ const QUESTIONS=[
   {text:'Which tissue connects muscle to bone?',opts:['Ligament','Cartilage','Tendon','Epidermis'],ans:2,exp:'Tendons connect muscle to bone, allowing the force of muscle contraction to move the bone.'},
   {text:'Which of these is NOT a function of the human skeleton?',opts:['Protection of organs','Storage of minerals','Photosynthesis','Movement'],ans:2,exp:'Photosynthesis is a plant process, not a function of the skeleton. The skeleton supports, protects, enables movement, stores minerals, and even plays a role in hearing.'},
   {text:'Which skeleton type grows along with the animal\'s body, without needing to be shed?',opts:['Exoskeleton','Endoskeleton','Hydrostatic skeleton','None of these'],ans:1,exp:'An endoskeleton, like that of humans and fish, grows with the body — unlike an exoskeleton, which must be moulted.'},
+  {text:'(Analysis) A palaeontologist studies two fossilised animals. Animal A shows a rigid, jointed outer casing surrounding its body, with no trace of an internal skeleton. Animal B shows an internal framework of bone, with no outer casing. Based on skeleton type alone, which statement correctly predicts a limitation each animal would have faced while alive?',opts:['Animal A has an endoskeleton and would have grown continuously without ever shedding it','Animal A has an exoskeleton and would have needed to periodically moult to grow larger; Animal B has an endoskeleton and could keep growing without moulting','Both animals have hydrostatic skeletons and needed fluid pressure to move','Animal B\'s internal skeleton would have provided no support for movement'],ans:1,exp:'A rigid outer casing with joints, and no internal skeleton, is the signature of an exoskeleton — this must be moulted periodically to allow growth, leaving the animal briefly vulnerable. An internal bony framework with no outer casing is an endoskeleton, which grows continuously with the body and never needs to be shed.'},
+  {text:'(Analysis) During a rugby tackle, a player\'s knee is forced sideways. This tears the tissue holding the femur and tibia bones together at the knee joint, but the tissue attaching the hamstring muscle to the bone remains undamaged. Which tissue was most likely torn?',opts:['Tendon, because it connects muscle to bone','Ligament, because it connects bone to bone','Cartilage, because it produces synovial fluid','Epidermis, because it covers the skin'],ans:1,exp:'Ligaments connect bone to bone and hold joints together; tendons connect muscle to bone. Since the muscle-to-bone attachment (tendon) was undamaged but the bone-to-bone connection at the joint was torn, the injured tissue must be a ligament — this is exactly the mechanism behind a real ACL (ligament) tear in the knee.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -322,7 +336,7 @@ function answer(qi,oi){
   if(answered.every(Boolean)){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    document.getElementById('scoreMsg').textContent=score<=3?'Keep at it — revisit the lesson!':score<=5?'Good work — check the explanations.':'Well done!';
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

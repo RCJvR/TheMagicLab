@@ -323,6 +323,23 @@ input[type=range]{flex:1;accent-color:#2dd4bf;cursor:pointer}
       <em>(6 marks)</em></div>
     </div>
 
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 &mdash; Reading Yield/Rate Data at Different Temperatures</div>
+      <div class="wb-qtext">A plant technician records the NH<sub>3</sub> percentage yield and relative reaction rate for the Haber process at a constant pressure of 200 atm, at different reactor temperatures:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Temperature (&deg;C)</th><th>350</th><th>400</th><th>450</th><th>500</th><th>550</th></tr></thead>
+        <tbody>
+          <tr><td>NH<sub>3</sub> yield (%)</td><td>37</td><td>25</td><td>16</td><td>10</td><td>6.0</td></tr>
+          <tr><td>Relative rate (a.u.)</td><td>1</td><td>4</td><td>10</td><td>22</td><td>45</td></tr>
+        </tbody>
+      </table>
+      (a) Describe the trend in NH<sub>3</sub> yield as temperature increases from 350&deg;C to 550&deg;C. Use Le Chatelier&rsquo;s Principle to explain why this trend occurs for an exothermic reaction.<br>
+      (b) Describe the trend in relative rate over the same temperature range. Explain why rate increases with temperature, in terms of particle collisions and activation energy.<br>
+      (c) Using BOTH columns of the table, explain why 450&deg;C (not 350&deg;C or 550&deg;C) is chosen as the industrial compromise temperature.<br>
+      (d) A reactor feeds in 500 kg of N<sub>2</sub> gas (M = 28 g&middot;mol<sup>&minus;1</sup>). Calculate the theoretical mass of NH<sub>3</sub> (M = 17 g&middot;mol<sup>&minus;1</sup>) if all the N<sub>2</sub> reacted completely. Then use the 450&deg;C yield (16%) from the table to calculate the actual mass of NH<sub>3</sub> produced.<br><br>
+      <em>(10 marks)</em></div>
+    </div>
+
   </div>
 </div>
 
@@ -550,6 +567,28 @@ const NSC_QUESTIONS = [
     opts: ['Electrolysis of water (splitting H₂O with electricity)','Steam reforming of natural gas (methane) to give CO + H₂, then water-gas shift to give CO₂ + H₂','Fractional distillation of air','Reduction of metal oxides with carbon'],
     ans: 1,
     exp: 'The most economical source of H₂ for the Haber process is steam reforming of natural gas: CH₄ + H₂O → CO + 3H₂ (at ~800°C with Ni catalyst), followed by the water-gas shift reaction: CO + H₂O → CO₂ + H₂. This is cheaper than electrolysis of water. N₂ is obtained by fractional distillation of liquefied air (not H₂). Research into "green hydrogen" from renewable-powered electrolysis is ongoing.'
+  },
+  {
+    q: 'Both the Haber process (N₂ + 3H₂ ⇌ 2NH₃, 4 mol gas → 2 mol gas) and the Contact process step (2SO₂ + O₂ ⇌ 2SO₃, 3 mol gas → 2 mol gas) are exothermic and both would, in theory, benefit from higher pressure. Yet industrially the Haber process uses ~200 atm while the Contact process uses only ~1–2 atm. What best explains this difference?',
+    opts: [
+      'The larger drop in gas moles (4→2) in the Haber process means pressure has a bigger effect on its yield, and Haber\'s single-pass yield is much lower to start with; the Contact process already reaches ~98% yield at 450°C, so paying for high-pressure vessels brings little extra benefit',
+      'SO₃ is a liquid at reaction temperature so pressure cannot affect its equilibrium at all',
+      'Ammonia is far denser than sulfur trioxide, so only the Haber process is affected by Le Chatelier\'s Principle',
+      'The Contact process is endothermic, so pressure changes do not shift its equilibrium'
+    ],
+    ans: 0,
+    exp: 'Le Chatelier\'s Principle applies to both reactions, but the ECONOMIC case for extra pressure differs. The Haber process has a bigger mole-of-gas decrease (4→2, Δn=2) than the Contact process (3→2, Δn=1), so pressure moves its equilibrium further; and unlike the Contact process (already ~98% yield at atmospheric pressure and 450°C), Haber\'s single-pass yield is only ~15–25%, so the extra yield from high pressure is worth the cost of reinforced vessels. Both reactions are exothermic (SO₃ is not a liquid at 450°C, and NH₃ is a gas at reactor conditions) — the difference is a cost-benefit judgement, not a difference in whether Le Chatelier applies.'
+  },
+  {
+    q: 'A plant increases the pressure in the Haber process reactor from 200 atm to 350 atm while keeping temperature at 450°C. Which statement correctly describes the effect on yield and on Kc?',
+    opts: [
+      'Yield of NH₃ increases (fewer moles of gas favoured, Le Chatelier), but Kc stays the same because Kc depends only on temperature, not on pressure',
+      'Yield of NH₃ increases and Kc also increases, because more product is being formed',
+      'Neither yield nor Kc changes — pressure only affects the rate of reaction',
+      'Yield decreases because higher pressure compresses the gases and slows molecular collisions'
+    ],
+    ans: 0,
+    exp: 'Increasing pressure shifts the equilibrium POSITION toward the side with fewer moles of gas (here, more NH₃ forms) — this raises the yield. However, Kc is a function of temperature ONLY. Since temperature is unchanged (450°C), Kc stays exactly the same even though more product now exists at the new equilibrium. This is a key distinction: changing concentration or pressure moves WHERE equilibrium lies, but only changing temperature changes the VALUE of Kc itself.'
   }
 ];
 

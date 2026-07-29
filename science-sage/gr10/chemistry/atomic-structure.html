@@ -317,7 +317,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div style="font-size:14px;color:var(--muted)">NSC Practice complete! Review your answers below.</div>
     </div>
 
@@ -397,6 +397,19 @@
       </div>
       <div class="feedback ok" id="fb-q6-ok">Correct! Sodium produces a characteristic bright yellow-orange flame. This is caused by electrons in Na atoms being excited and emitting photons at ≈589 nm (yellow) as they return to ground state.</div>
       <div class="feedback bad" id="fb-q6-bad">Flame colours: Na⁺ = yellow, K⁺ = lilac, Li⁺ = crimson, Cu²⁺ = blue-green, Ca²⁺ = brick red. The bright yellow-orange is the signature of sodium.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Question 7 — Isotopic Abundance from Ar (Analysis)</div>
+      <div class="q-text">Copper occurs naturally as two isotopes: ⁶³Cu (isotopic mass 62.93 u) and ⁶⁵Cu (isotopic mass 64.93 u). The periodic table gives copper's relative atomic mass as 63.55 u. What percentage of naturally occurring copper atoms are ⁶³Cu?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">A</span>50%</button>
+        <button class="mc-opt" onclick="answer(this,true,'q7')"><span class="opt-letter">B</span>69%</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">C</span>31%</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">D</span>75%</button>
+      </div>
+      <div class="feedback ok" id="fb-q7-ok">Correct! Let x = fraction of ⁶³Cu, so (1−x) = fraction of ⁶⁵Cu. Ar = 62.93x + 64.93(1−x) = 63.55. Expanding: 64.93 − 2x = 63.55, so 2x = 1.38, x = 0.69. So 69% of copper atoms are ⁶³Cu (and 31% are ⁶⁵Cu) — this matches copper's real isotopic composition.</div>
+      <div class="feedback bad" id="fb-q7-bad">Set up a weighted-average equation with x = fraction of ⁶³Cu: 62.93x + 64.93(1−x) = 63.55. This simplifies to 64.93 − 2x = 63.55, so x = 1.38/2 = 0.69, i.e. 69% ⁶³Cu and 31% ⁶⁵Cu. Unlike a simple Ar calculation, here you must rearrange to find an unknown abundance rather than compute Ar directly.</div>
     </div>
 
     <!-- IEB Practice -->
@@ -480,6 +493,22 @@
       • Explain what limitation led to the next model<br><br>
       Conclude by explaining why scientific models change over time.</div>
     </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 — Reading a Mass Spectrum Data Table</div>
+      <div class="wb-qtext">A mass spectrometer analyses a sample of pure magnesium and records the following data for its three naturally occurring isotopes:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Isotope</th><th>Isotopic mass (u)</th><th>Relative abundance (%)</th></tr></thead>
+        <tbody>
+          <tr><td>²⁴Mg</td><td>23.99</td><td>78.99</td></tr>
+          <tr><td>²⁵Mg</td><td>24.99</td><td>10.00</td></tr>
+          <tr><td>²⁶Mg</td><td>25.98</td><td>11.01</td></tr>
+        </tbody>
+      </table>
+      (a) State the number of protons and neutrons in an atom of each isotope.<br>
+      (b) Use the data in the table to calculate the relative atomic mass (Ar) of magnesium. Show your working to 2 decimal places.<br>
+      (c) Compare your answer to (b) with the value listed on the periodic table (24.31). Comment on the agreement.<br>
+      (d) Explain why ²⁴Mg contributes far more to the final Ar value than ²⁶Mg does, even though their isotopic masses are similar.</div>
+    </div>
   </div>
 </div>
 
@@ -505,7 +534,7 @@
     btn.classList.add(correct?'correct':'wrong');
     const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
     if(fb)fb.classList.add('show');
-    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===6){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/6';}}
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===7){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/7';}}
   }
 
   // --- SIMULATION ---

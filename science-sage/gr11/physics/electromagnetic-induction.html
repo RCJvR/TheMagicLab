@@ -285,7 +285,7 @@
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
     <div class="score-banner" id="score-banner">
-      <div class="score-big" id="score-big">0/6</div>
+      <div class="score-big" id="score-big">0/8</div>
       <div style="font-size:13px;color:var(--muted)">NSC questions answered correctly</div>
     </div>
     <div id="nsc-qs"></div>
@@ -305,6 +305,17 @@
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">A bar magnet is moved toward a circular coil so that the North pole enters from the right. (a) State whether the flux through the coil is increasing or decreasing. (b) Using Lenz's Law, determine the direction of the induced current in the coil (clockwise or anticlockwise when viewed from the right). (c) Draw a diagram showing the induced magnetic poles on the faces of the coil and explain why this opposes the motion of the magnet.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">A step-up transformer has 500 primary turns and 2 000 secondary turns. The primary is connected to a 230 V AC supply. (a) Calculate the secondary voltage. (b) If a 40 Ω load is connected to the secondary, calculate the secondary current and primary current. (c) Verify that power is conserved (P_primary = P_secondary).</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">Explain why high-voltage transmission lines are used to carry electricity over long distances. In your answer: (a) state the relationship between transmission voltage and current, (b) explain the effect on power losses in the cable using the formula P = I²R, and (c) give one disadvantage of very high voltage transmission.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6</div><div class="wb-qtext">A bar magnet is pushed steadily towards a 60-turn coil, then held stationary just inside it. The magnetic flux through ONE turn of the coil was recorded at four instants:<br><br>
+    <table class="symbols-table" style="max-width:480px">
+      <tr><th>Time (s)</th><th>Flux per turn, Φ (Wb)</th></tr>
+      <tr><td>0.00</td><td>0.010</td></tr>
+      <tr><td>0.05</td><td>0.030</td></tr>
+      <tr><td>0.10</td><td>0.055</td></tr>
+      <tr><td>0.15</td><td>0.055</td></tr>
+    </table><br>
+    (a) Calculate the rate of change of flux, ΔΦ/Δt, between t = 0.00 s and t = 0.10 s. (2 marks)<br>
+    (b) Using N = 60, calculate the magnitude of the induced EMF during this interval. (2 marks)<br>
+    (c) Explain, referring to the data, why the induced EMF is zero between t = 0.10 s and t = 0.15 s, even though the flux itself is still 0.055 Wb (not zero) throughout this period. (2 marks)</div></div>
   </div>
 </div>
 
@@ -639,7 +650,9 @@ const NSC_QS = [
   {q: "Which of the following changes will NOT increase the induced EMF in a coil?", opts: ["Using more turns of wire","Moving the magnet faster","Using a stronger magnet","Increasing the resistance of the coil"], ans: 3, fb: "EMF = NΔΦ/Δt. More turns (N), faster movement (smaller Δt), and stronger magnet (larger ΔΦ) all increase the EMF. Resistance affects current (I = ε/R), not the induced EMF itself."},
   {q: "An AC generator produces a peak EMF of 340 V at 50 Hz. At what position of the coil is the EMF zero?", opts: ["When the coil is parallel to the magnetic field","When the coil is perpendicular to the magnetic field","When the coil rotates at maximum speed","At the start of each cycle only"], ans: 1, fb: "ε = NBAω sinωt. EMF = 0 when sinωt = 0, i.e., when the coil plane is perpendicular to B (normal is parallel to B). At this position, flux is maximum but its rate of change is zero."},
   {q: "A step-up transformer has a turns ratio of 1:10. If the primary voltage is 240 V, what is the secondary voltage?", opts: ["24 V","240 V","2 400 V","24 000 V"], ans: 2, fb: "Vs/Vp = Ns/Np → Vs = Vp × (Ns/Np) = 240 × 10 = 2 400 V."},
-  {q: "Why are transformers used to transmit electrical power at high voltage over long distances?", opts: ["High voltage allows more energy storage in the cables","High voltage reduces the current, which reduces I²R power losses in cables","High voltage increases the speed of transmission","High voltage makes the cables lighter"], ans: 1, fb: "P = IV. For a given power, doubling V halves I. Power lost in cables = I²R. Halving I reduces losses by a factor of 4. This makes long-distance transmission far more efficient."}
+  {q: "Why are transformers used to transmit electrical power at high voltage over long distances?", opts: ["High voltage allows more energy storage in the cables","High voltage reduces the current, which reduces I²R power losses in cables","High voltage increases the speed of transmission","High voltage makes the cables lighter"], ans: 1, fb: "P = IV. For a given power, doubling V halves I. Power lost in cables = I²R. Halving I reduces losses by a factor of 4. This makes long-distance transmission far more efficient."},
+  {q: "A generator coil of 100 turns and cross-sectional area 0.02 m² rotates at an angular velocity of 20 rad/s in a uniform magnetic field of 0.3 T. The coil is connected to a 50 Ω resistor. Calculate the peak current supplied to the resistor.", opts: ["0.24 A","12 A","2.4 A","0.024 A"], ans: 0, fb: "First find the peak EMF: ε_peak = NBAω = 100 × 0.3 × 0.02 × 20 = 12 V. Then apply Ohm's Law to the resistor: I_peak = ε_peak/R = 12 ÷ 50 = 0.24 A. This kind of question links the generator EMF equation to basic circuit theory — you need both formulas, not just one, to reach the final answer."},
+  {q: "A straight metal rod of length 0.5 m slides at a constant velocity of 4 m/s along two parallel rails, perpendicular to a uniform magnetic field of 0.6 T. The rails are connected by a 2 Ω resistor. Calculate the current flowing through the resistor.", opts: ["0.6 A","1.2 A","4.8 A","0.3 A"], ans: 0, fb: "As the rod slides, it sweeps out area at a rate of Lv every second, so the flux through the circuit changes at a rate ΔΦ/Δt = B(Lv) = BLv. This gives the induced (motional) EMF directly: ε = BLv = 0.6 × 0.5 × 4 = 1.2 V. Applying Ohm's Law: I = ε/R = 1.2 ÷ 2 = 0.6 A. A sliding rod on rails is just another way of changing the flux through a circuit — the same underlying principle (Faraday's Law) as a magnet moving through a coil."}
 ];
 
 const IEB_QS = [

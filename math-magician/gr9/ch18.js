@@ -300,13 +300,23 @@ MathMagician.registerChapter(18, {
               { label: "c)", text: "Sketch an appropriate line of best fit.", marks: 2 },
             ]
           },
+          {
+            num: "3",
+            text: "The frequency table below shows the time (in minutes) that 40 learners spent on homework one evening:<br>0–10 (f=5), 10–20 (f=9), 20–30 (f=14), 30–40 (f=8), 40–50 (f=4)",
+            parts: [
+              { label: "a)", text: "Write down the modal class.", marks: 2 },
+              { label: "b)", text: "Estimate the mean time spent on homework, using class midpoints.", marks: 3 },
+              { label: "c)", text: "What percentage of the 40 learners spent 30 minutes or more on homework?", marks: 3 },
+              { label: "d)", text: "If this data were drawn as a histogram, how many touching bars would it have?", marks: 1 },
+            ]
+          },
         ]
       },
       {
         name: "Bias and reliability",
         questions: [
           {
-            num: "3",
+            num: "4",
             text: "A magazine claims '95% of teenagers love social media', based on an online poll of 40 of the magazine's own social media followers.",
             parts: [
               { label: "a)", text: "Identify two problems with how this data was collected.", marks: 4 },
@@ -329,13 +339,17 @@ MathMagician.registerChapter(18, {
           { num: "Q2a", ans: "Scatter plot with 6 points plotted as described", note: "x = hours exercise, y = heart rate" },
           { num: "Q2b", ans: "Negative correlation — as exercise hours increase, heart rate decreases", note: "" },
           { num: "Q2c", ans: "A line sloping downward from left to right through the middle of the points", note: "" },
+          { num: "Q3a", ans: "20–30 (the modal class)", note: "Highest frequency is 14, in the 20–30 class" },
+          { num: "Q3b", ans: "Estimated mean = 24.25 minutes", note: "(5×5+9×15+14×25+8×35+4×45)÷40 = 970÷40 = 24.25" },
+          { num: "Q3c", ans: "30%", note: "(8+4)/40 × 100 = 12/40 × 100 = 30%" },
+          { num: "Q3d", ans: "5 bars", note: "One touching bar per class interval; 5 class intervals" },
         ]
       },
       {
         name: "Bias and reliability",
         answers: [
-          { num: "Q3a", ans: "The sample (magazine's own followers) is not representative of all teenagers; the sample size (40) is small; followers likely already like social media, biasing the result", note: "Any two reasonable issues" },
-          { num: "Q3b", ans: "Use a random or systematic sample drawn from a broad, representative population of teenagers, with a larger sample size", note: "" },
+          { num: "Q4a", ans: "The sample (magazine's own followers) is not representative of all teenagers; the sample size (40) is small; followers likely already like social media, biasing the result", note: "Any two reasonable issues" },
+          { num: "Q4b", ans: "Use a random or systematic sample drawn from a broad, representative population of teenagers, with a larger sample size", note: "" },
         ]
       },
     ]

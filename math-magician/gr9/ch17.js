@@ -74,6 +74,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "How many vertices does an octahedron have?", options: ["8", "12", "6", "4"], answer: 2, topic: "3D Shapes" },
         { type: "mc", text: "Which solid has all faces as equilateral triangles?", options: ["Cube", "Tetrahedron", "Dodecahedron", "Both A and B"], answer: 1, topic: "3D Shapes" },
         { type: "input", text: "A polyhedron has 10 faces and 15 edges. Find the number of vertices using Euler's formula.", answer: "7", topic: "3D Shapes" },
+        { type: "input", text: "A polyhedron has twice as many edges as faces (E = 2F), and 10 vertices. Use Euler's formula to find the number of faces, F.", answer: "8", topic: "3D Shapes" },
+        { type: "input", text: "For a prism with an n-sided polygon base, F = n + 2, V = 2n and E = 3n (check: this matches a triangular prism with n=3 and a hexagonal prism with n=6). Use this pattern to find the number of edges of a prism with a 9-sided (nonagonal) base.", answer: "27", topic: "3D Shapes" },
       ]
     },
     {
@@ -166,6 +168,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "The net of a square pyramid has:", options: ["4 squares + 1 triangle", "1 square + 4 triangles", "5 triangles", "4 triangles + 2 squares"], answer: 1, topic: "3D Shapes" },
         { type: "mc", text: "If you cut a sphere through its centre, the cross-section is:", options: ["An ellipse", "A great circle", "A hemisphere", "A semicircle"], answer: 1, topic: "3D Shapes" },
         { type: "mc", text: "The rectangle in the net of a cylinder has width equal to:", options: ["2r", "pr", "2pr", "pr�"], answer: 2, topic: "3D Shapes" },
+        { type: "input", text: "A cylinder's net has a rectangle whose width equals the circumference of the circular base. The base has radius 7 cm (use p ≈ 22/7) and the cylinder's height is 12 cm. Find the area of the rectangular part of the net (in cm²).", answer: "528", topic: "3D Shapes" },
+        { type: "input", text: "A square pyramid's net consists of a square base of side 8 cm and 4 congruent triangles, each with base 8 cm and slant height 10 cm. Find the total area of the net (in cm²).", answer: "224", topic: "3D Shapes" },
       ]
     },
   ],

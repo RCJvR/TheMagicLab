@@ -112,7 +112,8 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "Arithmetic sequence: T₃ = 11 and T₇ = 27. Find d.", answer: "4", topic: "Arithmetic & geometric sequences" },
         { type: "mc", text: "A geometric sequence has T₂ = 6 and T₅ = 48. Find r.", options: ["2", "3", "4", "8"], answer: 0, topic: "Arithmetic & geometric sequences" },
         { type: "mc", text: "Which sequence is geometric? ", options: ["1, 3, 5, 7, …", "2, 6, 18, 54, …", "1, 4, 9, 16, …", "3, 6, 9, 12, …"], answer: 1, topic: "Arithmetic & geometric sequences" },
-        { type: "input", text: "Geometric: a = 5, r = −2. Find T₄.", answer: "-40", altAnswers: ["−40"], topic: "Arithmetic & geometric sequences" }
+        { type: "input", text: "Geometric: a = 5, r = −2. Find T₄.", answer: "-40", altAnswers: ["−40"], topic: "Arithmetic & geometric sequences" },
+        { type: "input", text: "The 3rd term of a geometric sequence is 20 and the 6th term is 160. Find the first term a.", answer: "5", topic: "Arithmetic & geometric sequences" }
       ]
     },
     {
@@ -241,7 +242,8 @@ MathMagician.registerChapter(1, {
         { type: "input", text: "Geometric series: a = 3, r = 2, n = 5. Find S₅.", answer: "93", topic: "Series — arithmetic, geometric & infinite" },
         { type: "mc", text: "Infinite geometric series: a = 12, r = ⅓. Find S∞.", options: ["18", "24", "36", "6"], answer: 0, topic: "Series — arithmetic, geometric & infinite" },
         { type: "mc", text: "Σᵢ₌₁⁴ (3i) = ", options: ["30", "24", "36", "42"], answer: 0, topic: "Series — arithmetic, geometric & infinite" },
-        { type: "mc", text: "For which value of r does an infinite geometric series converge?", options: ["r = 1", "r = −2", "r = 0.8", "r = −1.1"], answer: 2, topic: "Series — arithmetic, geometric & infinite" }
+        { type: "mc", text: "For which value of r does an infinite geometric series converge?", options: ["r = 1", "r = −2", "r = 0.8", "r = −1.1"], answer: 2, topic: "Series — arithmetic, geometric & infinite" },
+        { type: "input", text: "The sum of the first n terms of an arithmetic series is Sₙ = 4n² + 3n. Find the 5th term (T₅).", answer: "39", topic: "Series — arithmetic, geometric & infinite" }
       ]
     },
     {
@@ -324,7 +326,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "The series 4 + 9 + 14 + … + 49 written in sigma notation (with Tₙ = 5n − 1) is:", options: ["Σₙ₌₁¹⁰ (5n − 1)", "Σₙ₌₁⁹ (5n − 1)", "Σₙ₌₀⁹ (5n − 1)", "Σₙ₌₁⁴⁹ (5n − 1)"], answer: 0, topic: "Sigma notation & number patterns" },
         { type: "input", text: "A quadratic number pattern has first differences 4, 7, 10, … Find the second difference.", answer: "3", topic: "Sigma notation & number patterns" },
         { type: "mc", text: "How many terms are in Σₖ₌₅¹² Tₖ?", options: ["7", "8", "12", "17"], answer: 1, topic: "Sigma notation & number patterns" },
-        { type: "mc", text: "Find the largest n such that 3 + 7 + 11 + … (n terms) < 200.", options: ["9", "10", "11", "12"], answer: 0, topic: "Sigma notation & number patterns" }
+        { type: "mc", text: "Find the largest n such that 3 + 7 + 11 + … (n terms) < 200.", options: ["9", "10", "11", "12"], answer: 0, topic: "Sigma notation & number patterns" },
+        { type: "input", text: "A quadratic number pattern has terms T₁ = 2, T₂ = 7, T₃ = 16, T₄ = 29. Use second differences to find T₅.", answer: "46", topic: "Sigma notation & number patterns" }
       ]
     },
     {
@@ -418,7 +421,8 @@ MathMagician.registerChapter(1, {
         { type: "mc", text: "The condition for an infinite geometric series to converge is:", options: ["r > 1", "r < 0", "−1 < r < 1", "r = 0"], answer: 2, topic: "Deriving series formulae & applications" },
         { type: "input", text: "Express 0,555... as a fraction using the infinite geometric series (a=0.5, r=0.1).", answer: "5/9", topic: "Deriving series formulae & applications" },
         { type: "mc", text: "As n → ∞ with −1 < r < 1, rⁿ approaches:", options: ["1", "r", "0", "∞"], answer: 2, topic: "Deriving series formulae & applications" },
-        { type: "input", text: "Express 0,181818... as a fraction in simplest form.", answer: "2/11", topic: "Deriving series formulae & applications" }
+        { type: "input", text: "Express 0,181818... as a fraction in simplest form.", answer: "2/11", topic: "Deriving series formulae & applications" },
+        { type: "input", text: "A geometric series has a = 9 and S∞ = 12. Find r.", answer: "1/4", topic: "Deriving series formulae & applications" }
       ]
     }
   ],
@@ -442,13 +446,23 @@ MathMagician.registerChapter(1, {
       { number: 4, text: "A ball is dropped from 10 m. Each bounce reaches 60% of the previous height.", parts: [
         { label: "a", text: "Write the sequence of bounce heights.", marks: 2 },
         { label: "b", text: "Find the total distance travelled (including all up and down bounces).", marks: 4 }
+      ]},
+      { number: 5, text: "A savings account balance is recorded at the end of each year, as shown in the table below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Year (n)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Balance (R)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1 050,00</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1 102,50</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1 157,63</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1 215,51</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1 276,28</td></tr></table>", parts: [
+        { label: "a", text: "Using two consecutive balances from the table, determine the common ratio r.", marks: 2 },
+        { label: "b", text: "Write down the general term Tₙ for this sequence in the form Tₙ = a·rⁿ.", marks: 2 },
+        { label: "c", text: "Use your formula to predict the balance at the end of year 10 (to the nearest cent).", marks: 3 }
       ]}
     ],
     answers: {
       1: { a: "d=(44−19)/5=5; a=19−3(5)=4", b: "T₂₀=4+19(5)=99", c: "S₂₀=20/2·(8+95)=10·103=1030" },
       2: { a: "r²=54/6=9→r=3; a=6/3=2", b: "S₆=2(3⁶−1)/2=728", c: "r=3>1 → diverges, no infinite sum" },
       3: { a: "3, 7, 11, … arithmetic series, a=3, d=4", b: "S₁₀=10/2·(6+36)=210" },
-      4: { a: "6, 3.6, 2.16, … geometric r=0.6", b: "Down: 10+10(0.6)+10(0.6)²+…=10/(1−0.6)=25m; Up: same starting from 6m=6/(1−0.6)=15m; Total=10+2(15)=40m" }
+      4: { a: "6, 3.6, 2.16, … geometric r=0.6", b: "Down: 10+10(0.6)+10(0.6)²+…=10/(1−0.6)=25m; Up: same starting from 6m=6/(1−0.6)=15m; Total=10+2(15)=40m" },
+      5: {
+        a: "r = 1102,50 ÷ 1050,00 = 1,05",
+        b: "a = 1000 (the deposit before interest); Tₙ = 1000(1,05)ⁿ",
+        c: "T₁₀ = 1000(1,05)¹⁰ ≈ R1 628,89"
+      }
     }
   }
 });

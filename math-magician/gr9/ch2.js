@@ -116,6 +116,8 @@ MathMagician.registerChapter(2, {
         { type: "input", text: "Calculate: (-48) � (-6)", answer: "8", topic: "Integers" },
         { type: "mc", text: "Which is greater: -3� or (-3)�?", options: ["-3�", "(-3)�", "They are equal", "Cannot compare"], answer: 1, topic: "Integers" },
         { type: "input", text: "Calculate: -2 + (-5) � 3 - (-4)", answer: "-13", topic: "Integers" },
+        { type: "input", text: "Calculate: [(-3)� - (-2)�] � [(-5) + 6]", answer: "17", topic: "Integers" },
+        { type: "input", text: "The temperature at midnight was -4°C. It fell by 3°C every hour for the next 5 hours, then rose by 2°C every hour for the next 3 hours. What was the temperature (in °C) at the end of this period?", answer: "-13", topic: "Integers" },
       ]
     },
     {
@@ -192,6 +194,8 @@ MathMagician.registerChapter(2, {
         { type: "mc", text: "Which of these is NOT a perfect square?", options: ["81", "100", "150", "144"], answer: 2, topic: "Integers" },
         { type: "input", text: "Calculate: -v169", answer: "-13", topic: "Integers" },
         { type: "mc", text: "v(-9) is:", options: ["-3", "3", "undefined (not real)", "�3"], answer: 2, topic: "Integers" },
+        { type: "input", text: "Calculate: ∛(-64) + √225 - (-3)²", answer: "2", topic: "Integers" },
+        { type: "input", text: "A cube-shaped box has a volume of 512 cm³. Calculate the length of one side of the box (in cm).", answer: "8", topic: "Integers" },
       ]
     },
   ],

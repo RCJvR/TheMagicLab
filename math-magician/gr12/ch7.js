@@ -94,7 +94,8 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "x² + y² = 49. Does point (3, 6) lie on, inside, or outside the circle?", options: ["On", "Inside", "Outside", "Cannot determine"], answer: 1, topic: "Equation of a circle" },
         { type: "input", text: "Write the equation of a circle with centre (−1, 4) and radius 3.", answer: "(x+1)²+(y-4)²=9", altAnswers: ["(x+1)² + (y-4)² = 9"], topic: "Equation of a circle" },
         { type: "mc", text: "x² + y² − 4x + 6y − 12 = 0 in standard form:", options: ["(x−2)²+(y+3)²=25", "(x+2)²+(y−3)²=25", "(x−2)²+(y+3)²=16", "(x−4)²+(y+6)²=12"], answer: 0, topic: "Equation of a circle" },
-        { type: "mc", text: "A circle has centre (0, 0) and passes through (5, 12). Its radius is:", options: ["17", "13", "7", "√17"], answer: 1, topic: "Equation of a circle" }
+        { type: "mc", text: "A circle has centre (0, 0) and passes through (5, 12). Its radius is:", options: ["17", "13", "7", "√17"], answer: 1, topic: "Equation of a circle" },
+        { type: "input", text: "A circle passes through A(1; 2) and B(1; −4), and its centre lies on the line y = x − 2. Find the centre of the circle. Give just the x-coordinate.", answer: "1", topic: "Equation of a circle" }
       ]
     },
     {
@@ -192,7 +193,8 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "To confirm a line is tangent to a circle, the discriminant when substituted must equal:", options: ["0", "1", "> 0", "< 0"], answer: 0, topic: "Tangent to a circle" },
         { type: "mc", text: "Circle: x² + y² = 10. Tangent at (1, 3):", options: ["x + 3y = 10", "3x + y = 10", "x + 3y = 10 and 3x + y = 10", "x − 3y = 10"], answer: 0, topic: "Tangent to a circle" },
         { type: "mc", text: "Circle centre (2, −1), point P(5, 3) on circle. Gradient of radius CP:", options: ["3/4", "4/3", "−3/4", "−4/3"], answer: 1, topic: "Tangent to a circle" },
-        { type: "input", text: "Tangent at (0, 4) on circle x² + (y−1)² = 9. What is the gradient of the tangent?", answer: "0", topic: "Tangent to a circle" }
+        { type: "input", text: "Tangent at (0, 4) on circle x² + (y−1)² = 9. What is the gradient of the tangent?", answer: "0", topic: "Tangent to a circle" },
+        { type: "mc", text: "Circle: x² + y² = 20. Is the line y = 2x − 10 a tangent, a secant, or does it miss the circle?", options: ["Tangent (touches at (4; −2))", "Secant (two intersection points)", "Misses the circle entirely", "Passes through the centre"], answer: 0, topic: "Tangent to a circle" }
       ]
     },
     {
@@ -292,7 +294,8 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "AB is a chord of a circle with centre O. M is the midpoint of AB. The relationship between OM and AB is:", options: ["OM ∥ AB", "OM ⊥ AB", "OM = AB", "No fixed relationship"], answer: 1, topic: "Lines, chords & circles" },
         { type: "input", text: "A chord is at perpendicular distance 3 units from the centre of a circle of radius 5. Find the chord length.", answer: "8", topic: "Lines, chords & circles" },
         { type: "mc", text: "Substituting a line into a circle's equation gives 2x² − 4x + 6 = 0. Since Δ &lt; 0, the line:", options: ["Is a tangent", "Is a secant with two points", "Does not intersect the circle", "Passes through the centre"], answer: 2, topic: "Lines, chords & circles" },
-        { type: "mc", text: "Circle x² + y² = 25. Line y = 7 − x meets it at two points. The x-coordinates satisfy:", options: ["2x² − 14x + 24 = 0", "x² − 7x + 24 = 0", "2x² − 14x + 49 = 0", "x² + 7x − 24 = 0"], answer: 0, topic: "Lines, chords & circles" }
+        { type: "mc", text: "Circle x² + y² = 25. Line y = 7 − x meets it at two points. The x-coordinates satisfy:", options: ["2x² − 14x + 24 = 0", "x² − 7x + 24 = 0", "2x² − 14x + 49 = 0", "x² + 7x − 24 = 0"], answer: 0, topic: "Lines, chords & circles" },
+        { type: "input", text: "A chord of the circle x² + y² = 50 has midpoint (3; 4). Find the equation of the line containing this chord, in the form 3x + 4y = k (state k).", answer: "25", topic: "Lines, chords & circles" }
       ]
     },
     {
@@ -376,7 +379,8 @@ MathMagician.registerChapter(7, {
         { type: "mc", text: "PA and PB are tangents from external point P to a circle, touching at A and B. Which statement is true?", options: ["PA ≠ PB in general", "PA = PB always", "PA ∥ PB", "∠PAB = 90°"], answer: 1, topic: "Tangents from an external point" },
         { type: "input", text: "Find c &gt; 0: y = x + c is tangent to x² + y² = 8.", answer: "4", topic: "Tangents from an external point" },
         { type: "mc", text: "To find tangents to a circle parallel to a given line, you:", options: ["Use the same gradient and solve Δ=0 for the y-intercept", "Use a perpendicular gradient", "Find the centre only", "Use the midpoint of the line"], answer: 0, topic: "Tangents from an external point" },
-        { type: "mc", text: "Circle x² + y² = 20. Tangents parallel to y = 2x are y = 2x + c. The two values of c are:", options: ["±5", "±10", "±20", "±4"], answer: 1, topic: "Tangents from an external point" }
+        { type: "mc", text: "Circle x² + y² = 20. Tangents parallel to y = 2x are y = 2x + c. The two values of c are:", options: ["±5", "±10", "±20", "±4"], answer: 1, topic: "Tangents from an external point" },
+        { type: "input", text: "Find the equations of the tangents to x² + y² = 25 that are parallel to the line 3x + 4y = 7, in the form 3x + 4y = k. Give the positive value of k.", answer: "25", topic: "Tangents from an external point" }
       ]
     }
   ],

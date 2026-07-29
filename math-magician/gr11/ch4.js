@@ -118,6 +118,20 @@ MathMagician.registerChapter(4, {
           options: ["y = x + 5", "y = −x + 3", "y = x − 3", "y = −x + 5"],
           answer: 1,
           topic: "Equation of a line & inclination"
+        },
+        {
+          type: "mc",
+          text: "A line has an angle of inclination of 150°. The equation of a line perpendicular to it, passing through (0; 4), is:",
+          options: ["y = √3x + 4", "y = −√3x + 4", "y = (1/√3)x + 4", "y = −(1/√3)x + 4"],
+          answer: 0,
+          topic: "Equation of a line & inclination"
+        },
+        {
+          type: "input",
+          text: "A line passes through A(−2; 1) with an angle of inclination of 135°. Find the x-coordinate where this line cuts the x-axis.",
+          answer: "-1",
+          altAnswers: ["−1"],
+          topic: "Equation of a line & inclination"
         }
       ]
     },
@@ -260,6 +274,20 @@ MathMagician.registerChapter(4, {
           options: ["3", "7", "−3", "1"],
           answer: 0,
           topic: "Parallel, perpendicular & complex problems"
+        },
+        {
+          type: "mc",
+          text: "△ABC has A(−3; 2), B(5; −2), C(1; 6). The equation of the perpendicular bisector of AB is:",
+          options: ["y = 2x − 2", "y = 2x + 2", "y = −½x + 2", "y = −2x + 2"],
+          answer: 0,
+          topic: "Parallel, perpendicular & complex problems"
+        },
+        {
+          type: "input",
+          text: "△ABC has A(−1; −2), B(3; 6), C(5; 5). Calculate the gradients of BA and BC, and hence state the value of m_BA × m_BC (this shows whether angle B = 90°).",
+          answer: "-1",
+          altAnswers: ["−1"],
+          topic: "Parallel, perpendicular & complex problems"
         }
       ]
     },
@@ -371,6 +399,18 @@ MathMagician.registerChapter(4, {
           options: ["90°", "0°", "180°", "Cannot be determined"],
           answer: 0,
           topic: "Angle between two lines"
+        },
+        {
+          type: "input",
+          text: "Line 1 passes through (1;2) and (4;8). Line 2 passes through (0;5) and (3;−1). Find the angle between the two lines, to the nearest degree.",
+          answer: "53",
+          topic: "Angle between two lines"
+        },
+        {
+          type: "input",
+          text: "Triangle PQR has P(0;0), Q(6;0), R(2;4). Find the size of angle QPR, to the nearest degree.",
+          answer: "63",
+          topic: "Angle between two lines"
         }
       ]
     }
@@ -396,7 +436,7 @@ MathMagician.registerChapter(4, {
           { label: "a", text: "Find the midpoint M of BC.", marks: 1 },
           { label: "b", text: "Find the equation of the median AM.", marks: 3 },
           { label: "c", text: "Find the equation of the altitude from B to AC.", marks: 4 },
-          { label: "d", text: "Show that the diagonals AB and MC bisect each other (i.e. show their midpoints coincide).", marks: 3 }
+          { label: "d", text: "Calculate the length of the median AM (leave your answer in simplest surd form).", marks: 3 }
         ]
       }
     ],
@@ -412,7 +452,7 @@ MathMagician.registerChapter(4, {
         a: "M = (5; 2)",
         b: "m=(2−1)/(5−(−2))=1/7; y−1=(1/7)(x+2) → y=(1/7)x+9/7",
         c: "m_AC=(−1−1)/(6−(−2))=−1/4; m_alt=4; y−5=4(x−4) → y=4x−11",
-        d: "Midpoint AB=((−2+4)/2,(1+5)/2)=(1,3); Midpoint MC=((5+4)/2... wait, D should be checking something different — verify with coordinates"
+        d: "AM = √[(5−(−2))² + (2−1)²] = √(49+1) = √50 = 5√2"
       }
     }
   }

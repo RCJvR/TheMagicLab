@@ -132,6 +132,8 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "What type of angle measures exactly 90°? (one word)", answer: "right", topic: "Angles" },
         { type: "mc", text: "Which angle range describes a reflex angle?", options: ["0° to 90°", "90° to 180°", "180° to 360°", "Equal to 180°"], answer: 2, topic: "Angles" },
         { type: "input", text: "An angle measures 47°. What type of angle is it? (one word)", answer: "acute", topic: "Angles" },
+        { type: "input", text: "An angle and its reflex angle together form a full revolution around a point. If the reflex angle is 5 times the size of the smaller angle, find the size of the smaller angle in degrees.", answer: "60", topic: "Angles" },
+        { type: "input", text: "Four angles around a point are in the ratio 1 : 2 : 3 : 4. Find the size of the largest angle.", answer: "144", topic: "Angles" },
       ]
     },
     {
@@ -271,6 +273,8 @@ MathMagician.registerChapter(9, {
         { type: "input", text: "Three angles around a point are 95°, 130°, and x°. Find x.", answer: "135", topic: "Angle relationships" },
         { type: "mc", text: "Which reason explains why vertically opposite angles are equal?", options: ["Angles around a point", "Both pairs are supplementary to the same angle", "Angles on a straight line", "Corresponding angles"], answer: 1, topic: "Angle relationships" },
         { type: "input", text: "Two lines are perpendicular. One angle formed is x°. What is x?", answer: "90", topic: "Angle relationships" },
+        { type: "input", text: "Two adjacent angles on a straight line are (4x + 10)° and (2x + 20)°. Solve for x, then find the size of the larger angle.", answer: "110", topic: "Angle relationships" },
+        { type: "input", text: "Five angles meet at a point. Four of them measure 55°, 68°, 92°, and 75°. Calculate the fifth angle.", answer: "70", topic: "Angle relationships" },
       ]
     },
     {
@@ -538,6 +542,8 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "Which angle pair forms a Z-shape with parallel lines?", options: ["Corresponding", "Co-interior", "Alternate interior", "Vertically opposite"], answer: 2, topic: "Parallel lines" },
         { type: "mc", text: "AB ∥ CD. An alternate interior angle at AB is 55°. What is the alternate interior angle at CD?", options: ["125°", "55°", "90°", "305°"], answer: 1, topic: "Parallel lines" },
         { type: "input", text: "Two lines are cut by a transversal. Corresponding angles are 3x + 10 and 5x − 20 degrees. The lines are parallel. Find x.", answer: "15", topic: "Parallel lines" },
+        { type: "input", text: "AB ∥ CD. Alternate interior angles are (2x + 18)° and (4x − 30)°. Solve for x, then state the size of each angle.", answer: "66", topic: "Parallel lines" },
+        { type: "input", text: "AB ∥ CD. Two co-interior angles formed by a transversal are (3x + 15)° and (2x + 25)°. Find x, then state whether the angle (3x + 15)° is acute, right, or obtuse. (Give the angle value in degrees)", answer: "99", topic: "Parallel lines" },
       ]
     },
     {
@@ -578,6 +584,8 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "AB ∥ CD. A transversal makes an angle of 48° with AB (above, left). What is the alternate interior angle at CD?", options: ["132°", "48°", "42°", "90°"], answer: 1, topic: "Mixed" },
         { type: "input", text: "Two lines intersect. One angle is (2x + 15)° and its vertically opposite angle is (3x − 10)°. Find x.", answer: "25", topic: "Mixed" },
         { type: "mc", text: "Which set of angle relationships applies ONLY when lines are parallel?", options: ["Vertically opposite and straight-line angles", "Corresponding, alternate, and co-interior angles", "Angles around a point", "Supplementary and complementary angles"], answer: 1, topic: "Mixed" },
+        { type: "input", text: "Three angles on a straight line are (x + 15)°, (2x + 25)°, and (3x + 20)°. Solve for x, then state the size of the largest angle.", answer: "80", topic: "Mixed" },
+        { type: "input", text: "Two parallel lines are cut by a transversal. One angle is 3x° and its corresponding angle on the other line is (2x + 25)°. Find x, then state the size of the angle. Is it acute or obtuse? (Give the angle value)", answer: "75", topic: "Mixed" },
       ]
     }
   ],

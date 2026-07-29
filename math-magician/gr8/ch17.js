@@ -94,6 +94,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "P(an event) = 0.7. What is P(not the event)?", options: ["0.7", "0.3", "1.7", "0.07"], answer: 1, topic: "Probability" },
         { type: "mc", text: "Which probability value is impossible?", options: ["0", "0.5", "1", "1.2"], answer: 3, topic: "Probability" },
         { type: "input", text: "A spinner has 8 equal sections: 3 yellow, 2 red, 3 blue. P(not yellow) = ? (fraction)", answer: "5/8", topic: "Probability" },
+        { type: "input", text: "A bag contains only red, blue, and green balls (20 balls total). P(red) = 2/5 and P(blue) = 3/10. How many green balls are there?", answer: "6", topic: "Probability" },
+        { type: "input", text: "In a game, P(winning) = 0.15 and P(drawing) = 0.35. If you play 40 games, how many times would you expect to lose (neither win nor draw)?", answer: "20", topic: "Probability" },
       ]
     },
     {
@@ -170,6 +172,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "A bag has 3 shirts (red, blue, green) and 2 hats (cap, beanie). How many outfit combinations?", options: ["5", "6", "9", "3"], answer: 1, topic: "Sample space" },
         { type: "input", text: "Two dice are rolled. How many outcomes are in the sample space?", answer: "36", topic: "Sample space" },
         { type: "mc", text: "Two coins are flipped. P(at least one head) = ?", options: ["1/4", "1/2", "2/4", "3/4"], answer: 3, topic: "Sample space" },
+        { type: "input", text: "Three coins are flipped together. What is P(exactly two heads)? (fraction)", answer: "3/8", topic: "Sample space" },
+        { type: "input", text: "A restaurant offers 3 starters, 4 mains, and 2 desserts. A critic randomly picks one full 3-course combination. What is P(the meal includes one specific main course)? (fraction)", answer: "1/4", topic: "Sample space" },
       ]
     },
     {
@@ -248,6 +252,8 @@ MathMagician.registerChapter(17, {
         { type: "mc", text: "As the number of trials increases, experimental probability:", options: ["Moves further from theoretical", "Gets closer to theoretical probability", "Stays the same", "Becomes exactly equal immediately"], answer: 1, topic: "Relative frequency" },
         { type: "input", text: "A coin is flipped 200 times. Heads appears 95 times. What is the experimental P(heads) as a decimal?", answer: "0.475", topic: "Relative frequency" },
         { type: "mc", text: "Experimental P(red) from a spinner = 0.42 after 50 spins. Theoretical P(red) = 0.40. The best explanation is:", options: ["The spinner is biased", "The theoretical probability is wrong", "The difference is likely due to chance with only 50 trials", "Red is more likely than theory predicts"], answer: 2, topic: "Relative frequency" },
+        { type: "input", text: "A spinner is spun 150 times. It lands on blue 54 times. Calculate the experimental probability of blue as a percentage.", answer: "36", topic: "Relative frequency" },
+        { type: "input", text: "A quality-control tester checks 400 lightbulbs and finds 12 are faulty. Based on this rate, estimate how many faulty bulbs would be expected in a batch of 5 000.", answer: "150", topic: "Relative frequency" },
       ]
     },
     {
@@ -326,6 +332,8 @@ G ─────────┤
         { type: "input", text: "A spinner has 3 sections: red, blue, green. It is spun twice. How many outcomes are in the sample space?", answer: "9", topic: "Tree diagrams" },
         { type: "mc", text: "Two coins are flipped. What is P(at least one tail)?", options: ["1/4", "1/2", "3/4", "1"], answer: 2, topic: "Tree diagrams" },
         { type: "mc", text: "A tree diagram for flipping a coin and rolling a die has how many end branches?", options: ["6", "8", "12", "2"], answer: 2, topic: "Tree diagrams" },
+        { type: "input", text: "A bag has 3 red and 2 blue balls. A ball is drawn, noted, replaced, then a second ball is drawn. Using a tree diagram approach, calculate P(both balls are the same colour). (fraction)", answer: "13/25", topic: "Tree diagrams" },
+        { type: "input", text: "A family has 3 children. Assuming each child is equally likely to be a boy or girl, use a tree diagram approach to find P(at least 2 girls). (fraction)", answer: "1/2", topic: "Tree diagrams" },
       ]
     },
     {
@@ -366,6 +374,8 @@ G ─────────┤
         { type: "input", text: "Two coins are flipped. What is P(both heads)? (fraction)", answer: "1/4", topic: "Mixed" },
         { type: "mc", text: "A spinner is spun 80 times. Red appears 28 times. Experimental P(red) is closest to:", options: ["0.25", "0.30", "0.35", "0.40"], answer: 2, topic: "Mixed" },
         { type: "input", text: "P(winning a game) = 0.35. What is P(not winning)?", answer: "0.65", topic: "Mixed" },
+        { type: "input", text: "A bag has 4 red, 6 blue, and 5 green balls. A ball is drawn at random. Calculate P(red or green) as a simplified fraction.", answer: "3/5", topic: "Mixed" },
+        { type: "input", text: "Two dice are rolled together. Using the 36-outcome sample space, calculate P(the sum of the two dice is 7). (fraction)", answer: "1/6", topic: "Mixed" },
       ]
     },
   ],

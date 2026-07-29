@@ -115,6 +115,12 @@ MathMagician.registerChapter(9, {
           text: "R6 000 grows to R7 500 with simple interest over 5 years. Find i (as a %).",
           answer: "5",
           topic: "Simple & compound interest"
+        },
+        {
+          type: "input",
+          text: "R12 000 is invested and grows to R16 325.87 after 4 years of compound interest. Find the annual interest rate (as a %).",
+          answer: "8",
+          topic: "Simple & compound interest"
         }
       ]
     },
@@ -295,6 +301,13 @@ MathMagician.registerChapter(9, {
           text: "If ¥1 = R0.12, convert R6 000 to yen.",
           answer: "50000",
           topic: "Exchange rates & hire purchase"
+        },
+        {
+          type: "input",
+          text: "A textbook costs £45 in the UK. The same book costs R950 in South Africa. Given £1 = R19.50, calculate how much cheaper (in rand) it is to buy the book in the UK.",
+          answer: "72.50",
+          altAnswers: ["72.5", "R72.50"],
+          topic: "Exchange rates & hire purchase"
         }
       ]
     },
@@ -417,6 +430,12 @@ MathMagician.registerChapter(9, {
           type: "input",
           text: "A city has 50 000 people and grows at 2.5% p.a. Find the population after 5 years (nearest whole number).",
           answer: "56591",
+          topic: "Inflation & population growth"
+        },
+        {
+          type: "input",
+          text: "A town's population was 15 000 four years ago and grew at a constant annual rate to reach 16 882,63 today. Find the annual growth rate (as a %).",
+          answer: "3",
           topic: "Inflation & population growth"
         }
       ]
@@ -569,6 +588,12 @@ MathMagician.registerChapter(9, {
           answer: "10.0",
           altAnswers: ["10", "10,0"],
           topic: "Solving for rate or time period"
+        },
+        {
+          type: "input",
+          text: "Find the number of years (smallest whole number) it takes for R9 000 to grow to at least R13 500 at 9% p.a. compound interest.",
+          answer: "5",
+          topic: "Solving for rate or time period"
         }
       ]
     }
@@ -610,6 +635,15 @@ MathMagician.registerChapter(9, {
           { label: "a", text: "Convert R25 000 to Australian dollars.", marks: 2 },
           { label: "b", text: "A product costs A$340. What is the rand price?", marks: 2 }
         ]
+      },
+      {
+        number: 5,
+        text: "An investment of R8 000 grows over time as shown in the table below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Year (n)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Amount (R)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>8 000,00</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>8 640,00</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>9 331,20</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>10 077,70</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>10 883,91</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>11 754,62</td></tr></table>",
+        parts: [
+          { label: "a", text: "Using two consecutive values from the table, show that the growth is compound and determine the annual interest rate.", marks: 3 },
+          { label: "b", text: "Use the rate found in (a) to calculate the amount after 6 years (not shown in the table).", marks: 2 },
+          { label: "c", text: "In which year (n) does the investment first exceed R11 000?", marks: 2 }
+        ]
       }
     ],
     answers: {
@@ -631,6 +665,11 @@ MathMagician.registerChapter(9, {
       4: {
         a: "25000×0.085 = A$2 125",
         b: "340 ÷ 0.085 = R4 000"
+      },
+      5: {
+        a: "8640,00/8000,00 = 1,08 and 9331,20/8640,00 = 1,08 — a constant ratio confirms compound growth; rate i = 8%",
+        b: "A = 8000(1,08)⁶ = R12 694,99",
+        c: "Year 4 gives R10 883,91 (below R11 000) and year 5 gives R11 754,62 (above R11 000), so the investment first exceeds R11 000 in year 5"
       }
     }
   }

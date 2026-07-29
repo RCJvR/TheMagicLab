@@ -207,7 +207,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -224,6 +224,15 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain, in your own words, why electricity is transmitted over long distances at very high voltage rather than at the voltage used in homes.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Describe the difference between what a step-up transformer does and what a step-down transformer does.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">What is load shedding, and why does it happen? Suggest TWO ways a household can reduce its electricity usage to help ease pressure on the grid.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (4 marks)</div><div class="wb-qtext">The table below shows the approximate current needed to deliver the <em>same</em> amount of power (100 MW) along a transmission line, at three different voltages.<br><br>
+      <table class="symbols-table"><thead><tr><th>Transmission voltage</th><th>Approx. current needed to deliver 100 MW</th></tr></thead><tbody>
+      <tr><td>11 kV</td><td>≈ 9 090 A</td></tr>
+      <tr><td>132 kV</td><td>≈ 758 A</td></tr>
+      <tr><td>400 kV</td><td>≈ 250 A</td></tr>
+      </tbody></table><br>
+      (a) Using the table, calculate roughly how many times higher the current is at 11 kV than at 400 kV, for the same power delivered. Show your working. (1)<br>
+      (b) Based on the lesson's key idea that heat loss in a cable increases sharply as current increases, which of these three voltages would waste the LEAST energy as heat over a long transmission line? (1)<br>
+      (c) Explain why a power company would choose to transmit electricity at 400 kV instead of simply sending it straight from the power station at 11 kV. (2)</div></div>
   </div>
 </div>
 
@@ -281,6 +290,8 @@ const QUESTIONS=[
   {text:'What happens at a substation?',opts:['Electricity is generated','A step-down transformer reduces the voltage for safer distribution','Coal is burned to produce steam','Electricity is converted into light energy'],ans:1,exp:'Substations contain step-down transformers that reduce the very high transmission voltage down to a safer level before it is distributed to homes and businesses.'},
   {text:'What is the standard voltage supplied to homes in South Africa?',opts:['400 kV','11 kV','230 V','1000 V'],ans:2,exp:'After being stepped down through substations and local transformers, South African homes receive electricity at a standard voltage of 230 V.'},
   {text:'What is "load shedding"?',opts:['A method of generating extra electricity','Planned power cuts used when demand for electricity exceeds available supply','A type of renewable energy','The process of stepping up voltage'],ans:1,exp:'Load shedding is a planned, controlled reduction in electricity supply to certain areas, used to prevent the entire grid from failing when demand outstrips the available supply.'},
+  {text:'Two transmission lines deliver exactly the same amount of electrical power over the same distance. Line A operates at 400 kV and Line B operates at 11 kV. Which line loses more energy as heat, and why?',opts:['Line A, because higher voltage always produces more heat in a cable','Line B, because delivering the same power at a much lower voltage requires a much higher current, and heat loss in a cable increases sharply as current rises','Both lines lose exactly the same amount of heat, since the power delivered is equal','Neither line loses any heat, because transmission cables have no resistance'],ans:1,exp:'For a fixed amount of power, a lower voltage means a much higher current is needed to deliver it. Since heat lost in a cable depends strongly on the current flowing through it, Line B (at only 11 kV) would need a far higher current than Line A (at 400 kV) to deliver the same power — and would waste far more energy as heat. This is exactly why power stations step voltage up so high before transmission.'},
+  {text:'On a very cold winter evening, millions of households switch on electric heaters and geysers at roughly the same time. Which of the following best explains why this specific situation increases the risk of load shedding, even though every power station is working normally?',opts:['Cold weather physically damages the transmission cables, reducing how much electricity they can carry','The sudden, combined demand from so many high-power appliances switching on at once can exceed what the power stations and grid are able to safely generate and deliver at that moment','Electric heaters convert electrical energy to heat less efficiently when it is cold outside, wasting more electricity','Step-up transformers stop working correctly in cold temperatures'],ans:1,exp:'Load shedding happens when demand for electricity outstrips the supply the grid can safely deliver at that moment — not because of equipment failure. Geysers and heaters are among the biggest users of electricity in a home, so when millions of them switch on together on a cold evening, total demand can spike sharply and exceed available supply, forcing controlled cuts to protect the whole system.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

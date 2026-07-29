@@ -244,7 +244,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
     </div>
     <div id="questions"></div>
@@ -261,6 +261,18 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">List THREE structures found in a plant cell but NOT in an animal cell. Explain the function of each.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Which organelle is called the "powerhouse" of the cell? Describe what it does.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain why cells are microscopic in size. Use the term "surface area to volume ratio" in your answer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">Four cube-shaped "model cells" have different side lengths. For a cube, surface area SA = 6 × side², and volume V = side³.
+      <table class="compare-table" style="margin:12px 0">
+        <thead><tr><th>Side length</th><th>1 mm</th><th>2 mm</th><th>3 mm</th><th>4 mm</th></tr></thead>
+        <tbody>
+          <tr><td>Surface area (mm²)</td><td>6</td><td>24</td><td>54</td><td>96</td></tr>
+          <tr><td>Volume (mm³)</td><td>1</td><td>8</td><td>27</td><td>64</td></tr>
+          <tr><td>SA : V ratio</td><td>6</td><td>3</td><td>2</td><td>1.5</td></tr>
+        </tbody>
+      </table>
+      (a) Describe the pattern in the SA:V ratio as the cube's side length increases. (2 marks)<br>
+      (b) A real cell needs to absorb oxygen and nutrients through its surface (membrane) fast enough to supply its entire volume of cytoplasm. Using the table, explain why a cell with a side length of 4 mm would struggle to survive, while a cell with a side length of 1 mm would not. (2 marks)<br>
+      (c) Explain how this pattern supports the idea that cells must stay microscopic in size. (2 marks)</div></div>
   </div>
 </div>
 
@@ -520,6 +532,8 @@ const QUESTIONS=[
   {text:'Where is DNA found in the cell?',opts:['Cytoplasm','Mitochondria','Ribosome','Nucleus'],ans:3,exp:'DNA is found in the nucleus, wound around proteins into structures called chromosomes. The nucleus is therefore the "control centre" that directs all cell activities.'},
   {text:'Which organelle is responsible for making proteins?',opts:['Vacuole','Ribosome','Chloroplast','Centriole'],ans:1,exp:'Ribosomes are tiny structures that assemble proteins from amino acids, following instructions coded in DNA (via messenger RNA). They are found in all cells.'},
   {text:'What is the function of chloroplasts?',opts:['Cellular respiration','Cell division','Protein synthesis','Photosynthesis'],ans:3,exp:'Chloroplasts contain chlorophyll and capture light energy to convert CO₂ and water into glucose — this is photosynthesis. They are only found in plant cells and algae.'},
+  {text:'Four cube-shaped "model cells" have side lengths of 1 mm, 2 mm, 3 mm, and 4 mm. Using SA = 6 × side² and V = side³, their surface-area-to-volume ratios work out to 6, 3, 2, and 1.5. Which model cell would struggle MOST to get enough oxygen to its centre, and why?', opts:['The 1 mm cube, because it is the smallest','The 4 mm cube, because its low surface-area-to-volume ratio leaves relatively little membrane area to serve its large internal volume','All four cubes exchange oxygen equally well, since ratio does not affect exchange','The 2 mm cube, because it is the average size'], ans:1, exp:'As a cube grows larger, its surface-area-to-volume ratio drops (6 → 3 → 2 → 1.5). A bigger cell has proportionally LESS membrane surface available to exchange oxygen, nutrients and waste for the volume of cytoplasm it must service — so the 4 mm cube (lowest ratio) would struggle most. This is exactly why real cells stay microscopic.'},
+  {text:'A student examines an unknown cell under a microscope and observes THREE features together: a rigid rectangular outline, a large fluid-filled sac filling most of the interior, and small green disc-shaped structures scattered inside. What type of cell is this, and which single feature would have been enough on its own to identify it?', opts:['Animal cell; the rigid outline alone is enough evidence','Plant cell; any ONE of the three features (cell wall, large vacuole, or chloroplasts) is on its own enough evidence, since none of them occur in animal cells','Plant cell; only the combination of all three features together can prove it is a plant cell','It cannot be determined without also seeing a nucleus'], ans:1, exp:'A cell wall, a large vacuole, and chloroplasts are each found ONLY in plant cells — none appear in animal cells at all. That means spotting just ONE of these three features is already enough, on its own, to identify the cell as a plant cell; you do not need all three together.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

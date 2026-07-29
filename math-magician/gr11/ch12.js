@@ -243,6 +243,20 @@ MathMagician.registerChapter(12, {
           text: "Objective function P = 4x + 3y at corner point (5, 8). Find P.",
           answer: "44",
           topic: "Setting up linear programming problems"
+        },
+        {
+          type: "mc",
+          text: "A factory makes chairs (x) and benches (y). Each chair uses 3 kg of wood and 2 hours of labour; each bench uses 5 kg of wood and 4 hours of labour. There are 60 kg of wood and 44 hours of labour available. Which pair of constraints correctly models the wood and labour limits?",
+          options: ["3x + 5y ≤ 60 and 2x + 4y ≤ 44", "5x + 3y ≤ 60 and 4x + 2y ≤ 44", "3x + 5y ≤ 44 and 2x + 4y ≤ 60", "3x + 2y ≤ 60 and 5x + 4y ≤ 44"],
+          answer: 0,
+          topic: "Setting up linear programming problems"
+        },
+        {
+          type: "input",
+          text: "Using the constraints 3x + 5y ≤ 60 and 2x + 4y ≤ 44, find the coordinates (x ; y) where the two boundary lines 3x + 5y = 60 and 2x + 4y = 44 intersect.",
+          answer: "(10 ; 6)",
+          altAnswers: ["(10;6)", "10;6", "x=10, y=6"],
+          topic: "Setting up linear programming problems"
         }
       ]
     },
@@ -491,6 +505,18 @@ MathMagician.registerChapter(12, {
           text: "If the feasible region is unbounded, a maximum value of P may:",
           options: ["Always exist", "Never exist", "Not exist", "Equal zero"],
           answer: 2,
+          topic: "Optimisation — solving LP problems"
+        },
+        {
+          type: "input",
+          text: "Corner points of a feasible region are (0,0), (0,10), (8,6), (12,0). Maximise P = 6x + 5y. Find the maximum value of P.",
+          answer: "78",
+          topic: "Optimisation — solving LP problems"
+        },
+        {
+          type: "input",
+          text: "A company makes products A (x units) and B (y units), profit R40 per unit of A and R55 per unit of B. Constraints give a feasible region with corner points (0;2), (0;10), (12;2). Find the maximum profit.",
+          answer: "590",
           topic: "Optimisation — solving LP problems"
         }
       ]

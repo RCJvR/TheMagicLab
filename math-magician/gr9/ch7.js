@@ -94,6 +94,8 @@ MathMagician.registerChapter(7, {
         { type: "input", text: "Add: 2/x + 3/(2x). Give the numerator.", answer: "7", topic: "Algebra" },
         { type: "mc", text: "Which value of x must be excluded from (3x)/(x - 5)?", options: ["3", "0", "5", "-5"], answer: 2, topic: "Algebra" },
         { type: "mc", text: "Simplify: (x� - 4)/(x - 2) for x ? 2", options: ["x + 2", "x - 2", "x� + 2", "2"], answer: 0, topic: "Algebra" },
+        { type: "mc", text: "Simplify: (x + 5)² - (x - 3)(x + 3)", options: ["10x + 34", "10x + 16", "8x + 34", "10x - 34"], answer: 0, topic: "Algebra" },
+        { type: "input", text: "Simplify: 5/(3x) - 1/(4x) + 1/(6x), writing the answer as a single fraction over a denominator of 12x. Give the numerator.", answer: "19", topic: "Algebra" },
       ]
     },
   ],

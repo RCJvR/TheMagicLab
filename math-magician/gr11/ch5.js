@@ -277,6 +277,12 @@ MathMagician.registerChapter(5, {
           options: ["y = 3", "y = 1", "y = 2", "x = 1"],
           answer: 1,
           topic: "Quadratic, hyperbolic & exponential functions"
+        },
+        {
+          type: "input",
+          text: "A hyperbola y = a/(x−p) + q has asymptotes x = 3 and y = −2, and passes through (5; −1). Find a.",
+          answer: "2",
+          topic: "Quadratic, hyperbolic & exponential functions"
         }
       ]
     },
@@ -539,6 +545,12 @@ MathMagician.registerChapter(5, {
           options: ["x = 90°", "x = 60°", "x = 120°", "x = 30°"],
           answer: 1,
           topic: "Trigonometric functions — period, amplitude & phase shift"
+        },
+        {
+          type: "input",
+          text: "A function y = a·cos(bx) + q has amplitude 3, period 180°, and passes through (0°; 7). Given a &gt; 0, find q.",
+          answer: "4",
+          topic: "Trigonometric functions — period, amplitude & phase shift"
         }
       ]
     },
@@ -704,6 +716,13 @@ MathMagician.registerChapter(5, {
           options: ["y > −2", "y < −2", "y ≥ −2", "y ∈ ℝ"],
           answer: 0,
           topic: "Sketching functions: intercepts, domain & range"
+        },
+        {
+          type: "input",
+          text: "A parabola y = a(x−p)² + q has turning point (2; −8) and passes through (5; 1). Find a, then use it to determine the y-intercept.",
+          answer: "-4",
+          altAnswers: ["−4"],
+          topic: "Sketching functions: intercepts, domain & range"
         }
       ]
     }
@@ -737,6 +756,15 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "Find a.", marks: 3 },
           { label: "c", text: "Write the equation of the function.", marks: 1 }
         ]
+      },
+      {
+        number: 4,
+        text: "A hyperbola has horizontal asymptote y = 1. Some of its (x; y) values are given in the table below (note: one x-value between 1 and 3 is missing because the function is undefined there):<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>x</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>y</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−5</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>7</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td></tr></table>",
+        parts: [
+          { label: "a", text: "The values jump sharply between x = 1 and x = 3. State the x-value of the vertical asymptote (where the function is undefined).", marks: 1 },
+          { label: "b", text: "Using the asymptotes from (a) and the given y = 1, and the point (3; 7) from the table, find the value of a in y = a/(x−p) + q.", marks: 3 },
+          { label: "c", text: "Use your equation to predict the y-value at x = 8 (not shown in the table).", marks: 2 }
+        ]
       }
     ],
     answers: {
@@ -754,6 +782,11 @@ MathMagician.registerChapter(5, {
         a: "p=2; q=−1",
         b: "0=a/(4−2)−1→1=a/2→a=2",
         c: "y=2/(x−2)−1"
+      },
+      4: {
+        a: "x = 2 (the function is undefined there — vertical asymptote)",
+        b: "7 = a/(3−2) + 1 → 7 = a + 1 → a = 6",
+        c: "y = 6/(8−2) + 1 = 6/6 + 1 = 2"
       }
     }
   }

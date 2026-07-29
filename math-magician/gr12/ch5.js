@@ -90,7 +90,9 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "If p(3) = 0, then which is a factor of p(x)?", options: ["(x + 3)", "(x − 3)", "(3x − 1)", "(x · 3)"], answer: 1, topic: "Remainder & factor theorems" },
         { type: "input", text: "p(x) = 2x³ − 3x² + x − 4. Find p(2).", answer: "2", topic: "Remainder & factor theorems" },
         { type: "mc", text: "To find a factor of x³ + x² − 4x − 4, test integer factors of:", options: ["1", "4", "−4", "Both B and C"], answer: 3, topic: "Remainder & factor theorems" },
-        { type: "mc", text: "x³ − 6x² + 11x − 6 = (x−1)(x−2)(x−3). The sum of the roots is:", options: ["6", "11", "−6", "−11"], answer: 0, topic: "Remainder & factor theorems" }
+        { type: "mc", text: "x³ − 6x² + 11x − 6 = (x−1)(x−2)(x−3). The sum of the roots is:", options: ["6", "11", "−6", "−11"], answer: 0, topic: "Remainder & factor theorems" },
+        { type: "mc", text: "Solve for x: x³ + 2x² − 5x − 6 = 0", options: ["x = −3, −1, 2", "x = −1, 1, 6", "x = 1, 2, 3", "x = −2, 1, 3"], answer: 0, topic: "Remainder & factor theorems" },
+        { type: "input", text: "p(x) = x³ − 2x² + 3x − 5. R₁ is the remainder when p(x) is divided by (x − 3), and R₂ is the remainder when p(x) is divided by (x + 1). Calculate R₁ − R₂.", answer: "24", topic: "Remainder & factor theorems" }
       ]
     },
     {
@@ -193,7 +195,9 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "If a cubic has a double root at x = 2 and another root at x = −1, it could be:", options: ["(x−2)²(x+1)", "(x+2)²(x−1)", "(x−2)(x+1)²", "(x+2)(x−1)²"], answer: 0, topic: "Cubic polynomials — sketching & solving" },
         { type: "mc", text: "y = −2x³ + … End behaviour:", options: ["Falls left, rises right", "Rises left, falls right", "Falls both sides", "Rises both sides"], answer: 1, topic: "Cubic polynomials — sketching & solving" },
         { type: "input", text: "p(x) = x³ + px² − x − 6 and (x+2) is a factor. Find p.", answer: "2", topic: "Cubic polynomials — sketching & solving" },
-        { type: "mc", text: "A cubic equation can have at most how many real roots?", options: ["1", "2", "3", "4"], answer: 2, topic: "Cubic polynomials — sketching & solving" }
+        { type: "mc", text: "A cubic equation can have at most how many real roots?", options: ["1", "2", "3", "4"], answer: 2, topic: "Cubic polynomials — sketching & solving" },
+        { type: "mc", text: "Solve for x: 2x³ − x² − 5x − 2 = 0", options: ["x = −1, −½, 2", "x = 1, ½, −2", "x = −1, 2, 5", "x = 1, −2, −5"], answer: 0, topic: "Cubic polynomials — sketching & solving" },
+        { type: "input", text: "x³ − x² − 4x + 4 = 0 has roots p < q < r. Calculate the value of p·q·r.", answer: "-4", altAnswers: ["−4"], topic: "Cubic polynomials — sketching & solving" }
       ]
     },
     {
@@ -283,7 +287,9 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "p(x) = x³ − px + 4 leaves remainder 10 when divided by (x − 3). Which equation finds p?", options: ["27 − 3p + 4 = 10", "27 + 3p + 4 = 10", "9 − 3p + 4 = 10", "3 − p + 4 = 10"], answer: 0, topic: "Finding unknown coefficients" },
         { type: "input", text: "Using p(x) = x³ − px + 4 with remainder 10 at x = 3 (27 − 3p + 4 = 10), find p.", answer: "7", topic: "Finding unknown coefficients" },
         { type: "mc", text: "If a polynomial has TWO unknown coefficients, how many known factor/remainder conditions do you generally need?", options: ["One", "Two", "Three", "None — one is always enough"], answer: 1, topic: "Finding unknown coefficients" },
-        { type: "input", text: "p(x) = x³ + ax² + bx − 6. (x−1) and (x−2) are factors, giving a+b=5 and 2a+b=−1. Find a.", answer: "-6", altAnswers: ["−6"], topic: "Finding unknown coefficients" }
+        { type: "input", text: "p(x) = x³ + ax² + bx − 6. (x−1) and (x−2) are factors, giving a+b=5 and 2a+b=−1. Find a.", answer: "-6", altAnswers: ["−6"], topic: "Finding unknown coefficients" },
+        { type: "mc", text: "p(x) = x³ + ax² + bx − 4. (x − 1) is a factor, and p(x) leaves a remainder of −6 when divided by (x + 1). Determine a and b.", options: ["a = 1, b = 2", "a = 2, b = 1", "a = −1, b = 4", "a = 3, b = 0"], answer: 0, topic: "Finding unknown coefficients" },
+        { type: "mc", text: "p(x) = 3x³ + kx² + 4, and (x − 2) is a factor. Determine k, and hence find all three roots of p(x) = 0.", options: ["k = −7; roots: −⅔, 1, 2", "k = 7; roots: ⅔, −1, −2", "k = −7; roots: −1, 2, 3", "k = 4; roots: −2, 1, 2"], answer: 0, topic: "Finding unknown coefficients" }
       ]
     },
     {
@@ -376,7 +382,9 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "y = (x+2)(x−1)² has x-intercepts at:", options: ["x = −2 only", "x = −2 (crosses) and x = 1 (touches)", "x = 2 and x = −1", "x = −2 and x = 1, both crossing"], answer: 1, topic: "Sketching cubic graphs from key features" },
         { type: "input", text: "y = a(x+2)(x−1)² passes through (0; 8). Find a.", answer: "4", topic: "Sketching cubic graphs from key features" },
         { type: "mc", text: "A cubic with a > 0 and only one real root (no repeated roots) will:", options: ["Fall left, rise right, crossing the x-axis exactly once", "Rise left, fall right", "Touch the x-axis twice", "Have no y-intercept"], answer: 0, topic: "Sketching cubic graphs from key features" },
-        { type: "mc", text: "The maximum number of turning points a cubic graph can have is:", options: ["1", "2", "3", "0"], answer: 1, topic: "Sketching cubic graphs from key features" }
+        { type: "mc", text: "The maximum number of turning points a cubic graph can have is:", options: ["1", "2", "3", "0"], answer: 1, topic: "Sketching cubic graphs from key features" },
+        { type: "input", text: "The graph of a cubic has x-intercepts at x = −3 and x = 2 (double root), and a y-intercept at (0; −24). Determine the value of a in y = a(x+3)(x−2)².", answer: "-2", altAnswers: ["−2"], topic: "Sketching cubic graphs from key features" },
+        { type: "input", text: "A cubic graph has a double root at x = −1, a single root at x = 3, and passes through the point (1; −16). Determine the value of a in y = a(x+1)²(x−3).", answer: "2", topic: "Sketching cubic graphs from key features" }
       ]
     }
   ],
@@ -397,12 +405,19 @@ MathMagician.registerChapter(5, {
       { number: 3, text: "kx³ − 3x² + 2x + 4 has remainder 12 when divided by (x − 2). Find k.", parts: [
         { label: "a", text: "Apply the remainder theorem.", marks: 2 },
         { label: "b", text: "Solve for k.", marks: 2 }
+      ]},
+      { number: 4, text: "The table below gives values of p(x) = x³ − 3x² − x + 3 for several values of x:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>x</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>p(x)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−15</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>15</td></tr></table>", parts: [
+        { label: "a", text: "Use the table to write down the x-intercepts of the graph of p.", marks: 2 },
+        { label: "b", text: "Write down the y-intercept.", marks: 1 },
+        { label: "c", text: "Hence write p(x) in fully factorised form.", marks: 2 },
+        { label: "d", text: "Describe the end behaviour of the graph, referring to the table values at x = −2 and x = 4.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "p(2)=16+4−26+6=0 ✓", b: "p(x)=(x−2)(2x²+5x−3)=(x−2)(2x−1)(x+3)", c: "x=2, x=½, x=−3" },
       2: { a: "Test x=2: 8−4−16+12=0 ✓; divide: (x−2)(x²+x−6)=(x−2)(x+3)(x−2)=(x−2)²(x+3); x=2(double),x=−3", b: "(0,12)", c: "a=1>0: falls left, rises right", d: "Touches x-axis at 2, cuts at −3, y-int at 12" },
-      3: { a: "p(2)=8k−12+4+4=8k−4=12", b: "8k=16→k=2" }
+      3: { a: "p(2)=8k−12+4+4=8k−4=12", b: "8k=16→k=2" },
+      4: { a: "x = −1, 1, 3 (the values of x where p(x) = 0 in the table)", b: "(0; 3)", c: "p(x) = (x+1)(x−1)(x−3)", d: "Leading coefficient a = 1 > 0, so the graph falls to the left and rises to the right — confirmed by the table: p(−2) = −15 (very negative as x decreases) and p(4) = 15 (positive and increasing as x increases)." }
     }
   }
 });

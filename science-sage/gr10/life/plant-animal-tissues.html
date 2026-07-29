@@ -192,6 +192,19 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Distinguish between xylem and phloem in terms of what they transport and their cell structure.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Where is meristematic tissue found, and why is this location important for plant growth?</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Arrange the following in order from simplest to most complex: organ, cell, tissue, organism, organ system.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">A learner examines three plant tissues under a light microscope and measures the diameter of each cell/vessel as it appears in the eyepiece, at the magnification shown:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Tissue</th><th>Image diameter measured (mm)</th><th>Magnification used</th></tr></thead>
+      <tbody>
+        <tr><td>Parenchyma cell</td><td>15</td><td>×150</td></tr>
+        <tr><td>Xylem vessel</td><td>8</td><td>×100</td></tr>
+        <tr><td>Sclerenchyma fibre</td><td>5</td><td>×200</td></tr>
+      </tbody>
+    </table>
+    Use the formula: Actual size = Image size ÷ Magnification (remember 1 mm = 1000 μm).<br>
+    (a) Calculate the actual diameter, in micrometres (μm), of the parenchyma cell. (2)<br>
+    (b) Calculate the actual diameter, in micrometres (μm), of the xylem vessel and the sclerenchyma fibre. (2)<br>
+    (c) The sclerenchyma fibre has by far the smallest actual diameter of the three. Suggest why a narrow lumen (internal space) with very thick surrounding walls suits sclerenchyma's role in the plant. (2)</div></div>
   </div>
 </div>
 
@@ -324,6 +337,8 @@ const QUESTIONS=[
   {text:'Which tissue is dead at maturity but provides strong, permanent support?',opts:['Collenchyma','Parenchyma','Sclerenchyma','Phloem'],ans:2,exp:'Sclerenchyma cells develop very thick, hardened (lignified) walls and are dead at maturity, leaving behind rigid support structures.'},
   {text:'What is the correct order from simplest to most complex level of organisation?',opts:['Organ, cell, tissue, organism','Cell, tissue, organ, organism','Tissue, cell, organism, organ','Organism, organ, tissue, cell'],ans:1,exp:'The correct hierarchy is: cell → tissue → organ → organ system → organism.'},
   {text:'Which tissue transports manufactured food (sugars) and is made of living cells?',opts:['Xylem','Phloem','Sclerenchyma','Meristem'],ans:1,exp:'Phloem consists of living cells (sieve tubes with companion cells) that transport sugars made during photosynthesis to the rest of the plant.'},
+  {text:'(Analysis) A student examines a stem cross-section and finds a tissue made of dead cells joined end-to-end into long, hollow tubes with thick, hardened (lignified) walls running vertically through the stem. Which combination of functions does this tissue most likely provide?',opts:['Transport of manufactured sugars only','Transport of water and minerals, AND structural support, at the same time','Active cell division for growth','Protection against water loss at the plant surface'],ans:1,exp:'This description matches xylem. Because its dead, hollow cells have thick, lignified walls, xylem does two jobs at once: it transports water and dissolved minerals up the plant, and its rigid walls also provide structural support to the stem — a good example of how a tissue\'s structure suits more than one function.'},
+  {text:'(Analysis) A germinating seedling\'s stem relies mainly on collenchyma for support while it is still elongating, but as the stem matures and stops growing in length, sclerenchyma tissue develops and takes over much of the supportive role. Why is collenchyma, rather than sclerenchyma, better suited to supporting a young, still-growing stem?',opts:['Collenchyma cells are dead, which allows the stem to bend easily','Collenchyma cells are living, with only unevenly thickened (not fully rigid) walls, so the stem can still bend and continue elongating — rigid, dead sclerenchyma would restrict further growth','Sclerenchyma tissue cannot form in young plants under any circumstances','Collenchyma is chemically identical to sclerenchyma but just found in a different location'],ans:1,exp:'Collenchyma cells are alive and their walls are only unevenly thickened (thicker at the corners), so they give support while still allowing some flexibility and further cell elongation. Sclerenchyma cells are dead at maturity with fully rigid, lignified walls — ideal for permanent support once growth in that region has stopped, but they would prevent the stem from continuing to elongate if laid down too early.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -341,7 +356,7 @@ function answer(qi,oi){
   if(answered.every(Boolean)){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    document.getElementById('scoreMsg').textContent=score<=3?'Keep at it — revisit the lesson!':score<=5?'Good work — check the explanations.':'Well done!';
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

@@ -143,6 +143,19 @@ MathMagician.registerChapter(12, {
           options: ["60°", "120°", "180°", "110°"],
           answer: 1,
           topic: "Proofs & conjectures"
+        },
+        {
+          type: "input",
+          text: "AB ∥ CD. Transversal EF cuts AB at G and CD at H, with ∠AGE = 128°. Find ∠GHC.",
+          answer: "52",
+          altAnswers: ["52°"],
+          topic: "Proofs & conjectures"
+        },
+        {
+          type: "input",
+          text: "AB ∥ CD. Transversal EF cuts AB at G and CD at H, so that ∠EGB = (3x + 10)° and ∠GHC = (2x + 30)° are co-interior angles. Find x.",
+          answer: "28",
+          topic: "Proofs & conjectures"
         }
       ]
     },
@@ -260,6 +273,18 @@ MathMagician.registerChapter(12, {
           text: "In a proof, which reason justifies: ∠ABC = ∠ADC in a parallelogram?",
           options: ["Alternate angles", "Vertically opposite angles", "Opposite angles of a parallelogram", "Corresponding angles"],
           answer: 2,
+          topic: "Proving parallelogram properties"
+        },
+        {
+          type: "input",
+          text: "In parallelogram ABCD, ∠A = (2x + 15)° and ∠B = (3x − 5)° are co-interior (consecutive) angles. Find x.",
+          answer: "34",
+          topic: "Proving parallelogram properties"
+        },
+        {
+          type: "input",
+          text: "Quadrilateral PQRS has PQ = 3x − 2, QR = 2x + 6, RS = x + 14, SP = 4x − 10. Given that PQRS is a parallelogram (so PQ = RS and QR = SP), find x.",
+          answer: "8",
           topic: "Proving parallelogram properties"
         }
       ]
@@ -382,6 +407,18 @@ MathMagician.registerChapter(12, {
           options: ["△PQR ≡ △XYZ by SAS", "The triangles are similar but not necessarily congruent", "Nothing can be concluded", "△PQR ≡ △XYZ by SSS"],
           answer: 0,
           topic: "Congruency proofs"
+        },
+        {
+          type: "input",
+          text: "In △ABC and △DEF, AB = DE, BC = EF, and ∠B = ∠E, so △ABC ≡ △DEF (SAS). If AB = 3x + 1 and DE = 5x − 9, find x.",
+          answer: "5",
+          topic: "Congruency proofs"
+        },
+        {
+          type: "input",
+          text: "Right triangles ABC and DEF are congruent by RHS (right angles at B and E). The hypotenuses AC = DF = 13, and AB = 5. Use the Theorem of Pythagoras in △ABC to find BC, and hence state EF.",
+          answer: "12",
+          topic: "Congruency proofs"
         }
       ]
     },
@@ -461,6 +498,18 @@ MathMagician.registerChapter(12, {
           text: "In a rider, every statement in the proof must be followed by:",
           options: ["A diagram", "A reason (theorem or given fact)", "A measurement", "A repeat of the RTP"],
           answer: 1,
+          topic: "Mixed riders with quadrilaterals"
+        },
+        {
+          type: "input",
+          text: "EFGH is a parallelogram with EF = 24. M is on EF and N is on GH such that EM = GN = 9. Find MF (the remaining part of EF).",
+          answer: "15",
+          topic: "Mixed riders with quadrilaterals"
+        },
+        {
+          type: "input",
+          text: "PQRS is a parallelogram with diagonals intersecting at O, so PO = OR. If PO = 2x + 3 and OR = 5x − 9, find the length of the full diagonal PR.",
+          answer: "22",
           topic: "Mixed riders with quadrilaterals"
         }
       ]

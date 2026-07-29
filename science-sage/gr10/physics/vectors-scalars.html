@@ -300,7 +300,7 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="score-banner">
-      <div class="score-big" id="score-val">0/6</div>
+      <div class="score-big" id="score-val">0/8</div>
       <div><div style="font-weight:700;color:#fff;margin-bottom:4px">Quiz Complete</div><div style="font-size:13px;color:var(--muted)">Review your answers above.</div></div>
     </div>
     <div id="practice-nsc"></div>
@@ -319,6 +319,19 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">A force of 12 N acts at 30° above the horizontal. Calculate its horizontal and vertical components. Round to two decimal places.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">Two forces act on an object: <strong>F₁</strong> = 6 N East and <strong>F₂</strong> = 8 N North. Using the component method, find the magnitude and direction of the resultant force. Draw the tail-to-head vector diagram.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">Three vectors are added: <strong>P</strong> = 4 N at 0°, <strong>Q</strong> = 3 N at 90°, <strong>R</strong> = 5 N at 180°. Show whether these vectors form a closed vector diagram or not. Calculate the magnitude and direction of the resultant.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 — Force Table (three non-axis-aligned forces)</div><div class="wb-qtext">Three ropes pull on a ring, with magnitudes and directions (measured anticlockwise from the positive x-axis) recorded below:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Force</th><th>Magnitude (N)</th><th>Angle from +x-axis</th></tr></thead>
+        <tbody>
+          <tr><td>F₁</td><td>12</td><td>0°</td></tr>
+          <tr><td>F₂</td><td>9</td><td>120°</td></tr>
+          <tr><td>F₃</td><td>15</td><td>250°</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the x-component and y-component of each force. Round each to two decimal places.<br>
+      (b) Calculate ΣFₓ and ΣFᵧ (the sum of all x-components and all y-components).<br>
+      (c) Calculate the magnitude of the resultant force, R = √(ΣFₓ² + ΣFᵧ²).<br>
+      (d) Calculate the direction of the resultant, θ = arctan(ΣFᵧ / ΣFₓ), and state which quadrant it lies in (use the signs of ΣFₓ and ΣFᵧ to decide).</div></div>
   </div>
 </div>
 
@@ -520,7 +533,9 @@ const nscQs=[
   {q:"Which notation correctly represents the MAGNITUDE of a vector F?",opts:["F (in bold)","→F","|F|","F̃"],ans:2,exp:"|F| (vertical bars) denotes the magnitude of vector F. Bold F or →F denote the vector itself."},
   {q:"Two forces act on an object: 6 N East and 8 N North. What is the magnitude of the resultant?",opts:["14 N","10 N","2 N","7 N"],ans:1,exp:"Using Pythagoras: R = √(6² + 8²) = √(36 + 64) = √100 = 10 N."},
   {q:"A force of 20 N acts at 30° to the horizontal. What is its horizontal component?",opts:["10 N","17.3 N","20 N","11.5 N"],ans:1,exp:"Fₓ = F cos θ = 20 × cos 30° = 20 × 0.866 ≈ 17.3 N."},
-  {q:"Three vectors form a CLOSED vector diagram. This means the resultant is:",opts:["Equal to the largest vector","Double the first vector","Zero","Undefined"],ans:2,exp:"A closed vector diagram means the head of the last vector meets the tail of the first — the resultant is zero, meaning the vectors are in equilibrium."}
+  {q:"Three vectors form a CLOSED vector diagram. This means the resultant is:",opts:["Equal to the largest vector","Double the first vector","Zero","Undefined"],ans:2,exp:"A closed vector diagram means the head of the last vector meets the tail of the first — the resultant is zero, meaning the vectors are in equilibrium."},
+  {q:"(Analysis) Three equal forces of 10 N each act on a ring, at angles of 0°, 120°, and 240° measured from the positive x-axis. What is the magnitude of the resultant force?",opts:["30 N","10 N","0 N","17.3 N"],ans:2,exp:"Resolving into components: ΣFₓ = 10cos0° + 10cos120° + 10cos240° = 10(1 − 0.5 − 0.5) = 0. ΣFᵧ = 10sin0° + 10sin120° + 10sin240° = 10(0 + 0.866 − 0.866) = 0. Since both component sums are zero, the resultant is 0 N. Three equal vectors spaced 120° apart always form a closed, symmetric (equilateral) vector triangle — a shortcut worth recognising rather than always grinding through the full calculation."},
+  {q:"(Analysis) A cyclist rides 3 km North, then 4 km East, then 3 km South, ending the ride. What are the total DISTANCE travelled and the magnitude of the resultant DISPLACEMENT?",opts:["Distance = 10 km; displacement = 4 km East","Distance = 4 km; displacement = 10 km East","Distance = 10 km; displacement = 10 km East","Distance = 4 km; displacement = 4 km East"],ans:0,exp:"Distance is a scalar — simply add up every leg regardless of direction: 3 + 4 + 3 = 10 km. Displacement is a vector — the North and South legs are equal and opposite, so they cancel exactly (net north-south displacement = 0), leaving only the 4 km East leg. Resultant displacement = 4 km East. This shows why distance and displacement can give very different answers for the same journey."}
 ];
 
 const iebQs=[

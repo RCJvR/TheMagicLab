@@ -120,6 +120,18 @@ MathMagician.registerChapter(11, {
           options: ["Increases by 5", "Stays the same", "Decreases by 5", "Doubles"],
           answer: 1,
           topic: "Histograms, ogives & standard deviation"
+        },
+        {
+          type: "input",
+          text: "Find the standard deviation of the data set 5, 7, 7, 9, 12, correct to 2 decimal places.",
+          answer: "2.37",
+          topic: "Histograms, ogives & standard deviation"
+        },
+        {
+          type: "input",
+          text: "A data set of 8 values has a mean of 12. Seven of the values are 9, 10, 11, 13, 14, 15, 16. Find the 8th value.",
+          answer: "8",
+          topic: "Histograms, ogives & standard deviation"
         }
       ]
     },
@@ -251,6 +263,12 @@ MathMagician.registerChapter(11, {
           options: ["Mode", "Median", "Mean", "All equal"],
           answer: 2,
           topic: "Skewness, outliers & data interpretation"
+        },
+        {
+          type: "input",
+          text: "For the data set 12, 15, 18, 20, 22, 24, 60: find Q1, Q3, and the IQR, then state whether 60 is an outlier using the 1.5×IQR rule. Answer 'yes' or 'no'.",
+          answer: "yes",
+          topic: "Skewness, outliers & data interpretation"
         }
       ]
     },
@@ -370,6 +388,12 @@ MathMagician.registerChapter(11, {
           options: ["Unusual in Dataset A, ordinary in Dataset B", "Unusual in both", "Ordinary in both", "Unusual in Dataset B, ordinary in Dataset A"],
           answer: 0,
           topic: "Comparing datasets with standard deviation"
+        },
+        {
+          type: "input",
+          text: "Class P scores: 50, 52, 54, 56, 58. Class Q scores: 20, 40, 54, 68, 88. Both classes have the same mean (54). Calculate σ for each class and find σ_Q − σ_P, correct to 2 decimal places.",
+          answer: "20.43",
+          topic: "Comparing datasets with standard deviation"
         }
       ]
     },
@@ -485,6 +509,18 @@ MathMagician.registerChapter(11, {
           options: ["Compute x̄ and σ directly without manual summation", "Draw a histogram automatically", "Skip the need for a mean altogether", "Convert frequencies into percentages only"],
           answer: 0,
           topic: "Standard deviation from a frequency table"
+        },
+        {
+          type: "input",
+          text: "A frequency table has value 4 (freq 3), value 10 (freq x), value 13 (freq 2), and the mean of all the data is 8. Find x.",
+          answer: "1",
+          topic: "Standard deviation from a frequency table"
+        },
+        {
+          type: "input",
+          text: "Frequency table: value 4 (freq 3), value 10 (freq 1), value 13 (freq 2). Find the standard deviation, correct to 2 decimal places.",
+          answer: "4.12",
+          topic: "Standard deviation from a frequency table"
         }
       ]
     }
@@ -512,6 +548,16 @@ MathMagician.registerChapter(11, {
           { label: "c", text: "Draw the ogive and estimate the median from it.", marks: 4 },
           { label: "d", text: "Estimate the percentage of learners who spend more than 70 minutes.", marks: 2 }
         ]
+      },
+      {
+        number: 3,
+        text: "An ogive (cumulative frequency curve) has been plotted for the ages of 60 runners in a marathon, passing through the following points (upper class boundary ; cumulative frequency):",
+        parts: [
+          { label: "", text: "(10 ; 0), (20 ; 4), (30 ; 14), (40 ; 32), (50 ; 48), (60 ; 56), (70 ; 60)", marks: 0 },
+          { label: "a", text: "Using the ogive, estimate the median age. (Read off where cumulative frequency = 30, interpolating between the two nearest plotted points.)", marks: 3 },
+          { label: "b", text: "Estimate Q1 and Q3 from the ogive (read off at cumulative frequency = 15 and 45), and hence the IQR.", marks: 4 },
+          { label: "c", text: "Estimate the number of runners older than 50.", marks: 2 }
+        ]
       }
     ],
     answers: {
@@ -526,6 +572,11 @@ MathMagician.registerChapter(11, {
         b: "Cum freq: 3, 11, 25, 35, 40",
         c: "Plot (20,3),(40,11),(60,25),(80,35),(100,40); median at cum freq 20 → read off ≈ 53 min",
         d: "At 70 min: read cum freq ≈ 30; remaining = 40−30=10; 10/40=25%"
+      },
+      3: {
+        a: "n=60, median position = 30th value. 30 lies between (30;14) and (40;32): fraction=(30−14)/(32−14)=16/18; median ≈ 30 + (16/18)×10 ≈ 38.9 years",
+        b: "Q1 position=15th value, between (30;14) and (40;32): fraction=(15−14)/18=1/18; Q1 ≈ 30 + (1/18)×10 ≈ 30.6. Q3 position=45th value, between (40;32) and (50;48): fraction=(45−32)/16=13/16; Q3 ≈ 40 + (13/16)×10 ≈ 48.1. IQR ≈ 48.1 − 30.6 = 17.5",
+        c: "Cumulative frequency at 50 is 48, so runners older than 50 = 60 − 48 = 12"
       }
     }
   }

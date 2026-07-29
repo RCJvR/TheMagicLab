@@ -138,6 +138,18 @@ MathMagician.registerChapter(3, {
           options: ["−4", "−7", "20", "−1"],
           answer: 0,
           topic: "Linear sequences"
+        },
+        {
+          type: "input",
+          text: "A linear sequence has T₄ = 22 and T₁₀ = 58. Find T₁₅.",
+          answer: "88",
+          topic: "Linear sequences"
+        },
+        {
+          type: "input",
+          text: "For the sequence with Tₙ = 5n − 3, find the smallest value of n for which Tₙ > 500.",
+          answer: "101",
+          topic: "Linear sequences"
         }
       ]
     },
@@ -287,6 +299,19 @@ MathMagician.registerChapter(3, {
           type: "input",
           text: "Tₙ = an + b. Given T₂ = 9 and T₅ = 18. Find a.",
           answer: "3",
+          topic: "Patterns in context"
+        },
+        {
+          type: "input",
+          text: "A pattern of hexagonal tiles is built: Stage 1 uses 6 tiles, Stage 2 uses 11 tiles, Stage 3 uses 16 tiles. How many tiles are needed for Stage 12?",
+          answer: "61",
+          topic: "Patterns in context"
+        },
+        {
+          type: "mc",
+          text: "The terms of a linear sequence, plotted as points (n, Tₙ), lie on a straight line passing through (2, 9) and (5, 21). What is Tₙ?",
+          options: ["4n + 1", "4n − 3", "3n + 3", "4n + 5"],
+          answer: 0,
           topic: "Patterns in context"
         }
       ]

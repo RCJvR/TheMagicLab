@@ -288,7 +288,7 @@ select option{background:#1a1f35}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div>
         <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
         <div style="font-size:13px;color:var(--muted)">NSC Practice Questions</div>
@@ -373,6 +373,19 @@ select option{background:#1a1f35}
       <div class="feedback" id="fb6">Both possible new combinations, NaNO₃ and KCl, are soluble according to the solubility rules (all nitrates soluble; most chlorides soluble). Since no insoluble product can form, all four ion types — Na⁺, Cl⁻, K⁺, NO₃⁻ — simply remain dissolved together with no visible change.</div>
     </div>
 
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Question 7 &nbsp;<span style="color:var(--muted);font-weight:400">(Analysis)</span></div>
+      <div class="q-text">A learner mixes equal volumes of three solutions together in one beaker: silver nitrate (AgNO₃), barium chloride (BaCl₂), and potassium sulfate (K₂SO₄). Using the solubility rules, which precipitate(s) will form?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>Only AgCl forms</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>Only BaSO₄ forms</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>Both AgCl and BaSO₄ form as separate precipitates</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>No precipitate forms — all the ions are spectator ions</button>
+      </div>
+      <div class="feedback" id="fb7">With three solutions mixed, you must check every possible new ion pairing, not just one. Ag⁺ (from AgNO₃) pairs with Cl⁻ (from BaCl₂): most chlorides are soluble EXCEPT those of Ag⁺, Pb²⁺, and Hg₂²⁺ — so AgCl is insoluble and precipitates. Separately, Ba²⁺ (from BaCl₂) pairs with SO₄²⁻ (from K₂SO₄): most sulfates are soluble EXCEPT those of Ba²⁺, Pb²⁺, and Ca²⁺ — so BaSO₄ is also insoluble and precipitates. K⁺ and NO₃⁻ remain as spectator ions throughout. Because two separate insoluble combinations exist among the six possible ion pairings, two different precipitates form at once.</div>
+    </div>
+
     <!-- IEB Practice Questions -->
     <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
       <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
@@ -453,6 +466,25 @@ select option{background:#1a1f35}
       <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
     </div>
 
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 — Interpreting a Results Table</div>
+      <div class="wb-qtext">A learner mixes pairs of solutions in four test tubes and records the results:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Test tube</th><th>Solutions mixed</th><th>Observation</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>AgNO₃(aq) + NaCl(aq)</td><td>White precipitate forms</td></tr>
+          <tr><td>2</td><td>AgNO₃(aq) + NaBr(aq)</td><td>Pale yellow precipitate forms</td></tr>
+          <tr><td>3</td><td>BaCl₂(aq) + Na₂SO₄(aq)</td><td>White precipitate forms</td></tr>
+          <tr><td>4</td><td>BaCl₂(aq) + NaNO₃(aq)</td><td>No visible change</td></tr>
+        </tbody>
+      </table>
+      (a) Name the precipitate formed in test tubes 1, 2, and 3.<br>
+      (b) Write the net ionic equation for the reaction in test tube 3.<br>
+      (c) Using the solubility rules, explain why test tube 4 shows no visible change.<br>
+      (d) Identify the spectator ion(s) present in test tube 1.<br>
+      (e) Based on the pattern across test tubes 1–3, what general rule can you state about compounds containing Ag⁺ or Ba²⁺ ions and certain negative ions?</div>
+    </div>
+
   </div>
 </div>
 
@@ -475,7 +507,7 @@ function switchTab(id,btn){
 }
 
 // ===== PRACTICE =====
-const correctAnswers = {1:1, 2:1, 3:2, 4:1, 5:1, 6:2, i1:2, i2:1};
+const correctAnswers = {1:1, 2:1, 3:2, 4:1, 5:1, 6:2, 7:2, i1:2, i2:1};
 const answered = {};
 let score = 0;
 
@@ -504,11 +536,11 @@ function checkAns(qNum, chosenIdx, fbId){
 
   fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
 
-  const nscDone = [1,2,3,4,5,6].every(k => answered[k]);
+  const nscDone = [1,2,3,4,5,6,7].every(k => answered[k]);
   if(nscDone){
     const banner = document.getElementById('scoreBanner');
     banner.classList.add('show');
-    document.getElementById('scoreNum').textContent = score + '/6';
+    document.getElementById('scoreNum').textContent = score + '/7';
   }
 }
 

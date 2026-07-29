@@ -40,6 +40,11 @@
     .callout strong{color:#86efac}
     .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#86efac;text-align:center}
     .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
     /* Explore */
     .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
     .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
@@ -191,7 +196,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
     </div>
     <div id="questions"></div>
@@ -208,6 +213,19 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Explain how you would investigate the effect of light intensity on the rate of photosynthesis using pondweed.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Explain why chlorophyll is essential for photosynthesis.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Explain THREE reasons why photosynthesis is important to life on Earth.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">A lamp was placed at different distances from a piece of pondweed, and the number of oxygen bubbles released was counted over one minute at each distance:<br><br>
+    <table class="compare-table" style="max-width:480px">
+      <thead><tr><th>Distance from lamp (cm)</th><th>Bubbles per minute</th></tr></thead>
+      <tbody>
+        <tr><td>10</td><td>48</td></tr>
+        <tr><td>20</td><td>12</td></tr>
+        <tr><td>30</td><td>5</td></tr>
+        <tr><td>40</td><td>3</td></tr>
+      </tbody>
+    </table><br>
+    (a) Describe the trend in bubble count as the distance from the lamp increases. (1 mark)<br>
+    (b) The distance of 40 cm is four times the distance of 10 cm. Calculate the ratio of bubble counts between 10 cm and 40 cm, and show that this is consistent with the inverse square law relationship between light intensity and distance from a light source (intensity &prop; 1&divide;distance&sup2;). (3 marks)<br>
+    (c) Explain why counting oxygen bubbles is used here as an indirect measure of the rate of photosynthesis. (2 marks)</div></div>
   </div>
 </div>
 
@@ -311,6 +329,8 @@ const QUESTIONS=[
   {text:'Which of these would you expect to increase the rate of photosynthesis, up to a point?',opts:['Decreasing light intensity','Increasing CO₂ concentration','Removing all water','Covering the plant completely'],ans:1,exp:'Increasing CO₂ concentration (up to a point) increases the rate of photosynthesis, since carbon dioxide is a required raw material.'},
   {text:'What happens to the rate of photosynthesis at very high temperatures?',opts:['It keeps increasing indefinitely','It decreases, as enzymes involved begin to denature','It stays exactly the same','Photosynthesis only happens at high temperatures'],ans:1,exp:'Like other enzyme-driven processes, photosynthesis slows down at very high temperatures as the enzymes involved start to denature.'},
   {text:'Why is photosynthesis important for life on Earth?',opts:['It only matters to the plant itself','It releases oxygen and produces food that sustains most food chains','It removes oxygen from the atmosphere','It has no effect on other organisms'],ans:1,exp:'Photosynthesis releases the oxygen most organisms need for respiration and produces the food base for almost every food chain on Earth.'},
+  {text:'A researcher keeps a plant at a constant, LOW CO₂ concentration and steadily increases the light intensity shining on it, but the rate of photosynthesis does not increase at all. What does this show, according to the principle of limiting factors?',opts:['Light intensity never affects the rate of photosynthesis','CO₂ concentration — not light intensity — is now the factor limiting the rate; only increasing the CO₂ supply would raise the rate further','The plant has permanently stopped photosynthesising','Temperature is always the only limiting factor, regardless of the experiment'],ans:1,exp:'The principle of limiting factors states that the rate of a process depends on whichever required factor is in shortest supply at that moment — increasing any OTHER factor will not speed the process up. Since raising the light intensity here produced no change in rate, light can no longer be what is holding photosynthesis back; the low, fixed CO₂ concentration must now be capping the rate instead. To increase the rate further, the researcher would need to increase the CO₂ concentration, not the light intensity.'},
+  {text:'A student collects the oxygen gas released by pondweed in a graduated tube, recording the total volume every 2 minutes: 0 cm³ (0 min), 1.2 cm³ (2 min), 2.4 cm³ (4 min), 3.6 cm³ (6 min), 4.8 cm³ (8 min). Calculate the rate of oxygen production.',opts:['0.6 cm³/min','4.8 cm³/min','1.2 cm³/min','0.15 cm³/min'],ans:0,exp:'Rate is the gradient of volume against time: total change in volume ÷ total change in time = 4.8 cm³ ÷ 8 min = 0.6 cm³/min. (Checking against the intervals: 0.6 cm³/min × 2 min = 1.2 cm³ per interval, matching the steady, evenly-spaced readings — confirming this is a constant rate of oxygen production, and therefore of photosynthesis, under these constant conditions.)'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

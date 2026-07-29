@@ -272,7 +272,7 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="score-banner">
-      <div class="score-big" id="score-val">0/6</div>
+      <div class="score-big" id="score-val">0/8</div>
       <div><div style="font-weight:700;color:#fff;margin-bottom:4px">Quiz Complete</div><div style="font-size:13px;color:var(--muted)">Review your answers above.</div></div>
     </div>
     <div id="practice-nsc"></div>
@@ -291,6 +291,19 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">A 60 kg rollercoaster car starts from rest at the top of a 25 m hill. It reaches the bottom with a speed of 18 m·s⁻¹. (a) Calculate the ME at the top (take bottom as reference, h = 0). (b) Calculate the ME at the bottom. (c) How much energy was lost to friction? (d) What average friction force acted if the slope length was 30 m?</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">A pendulum bob of mass 200 g swings from a height of 0.45 m above its lowest point. Assuming no energy loss: (a) calculate the speed at the lowest point. (b) Explain why the speed at the lowest point does not depend on the mass of the bob.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">An electric motor draws 800 W of power to lift boxes at a rate of one 10 kg box per 5 seconds through a height of 3 m. (a) Calculate the useful power output. (b) Calculate the efficiency of the motor. (c) Where does the "lost" energy go?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 — Energy Data Table</div><div class="wb-qtext">A 400 kg roller coaster car is timed at three points along a track using photogates, giving the following height and speed data:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Point</th><th>Height above ground (m)</th><th>Speed (m·s⁻¹)</th></tr></thead>
+        <tbody>
+          <tr><td>A (top, starts from rest)</td><td>15</td><td>0</td></tr>
+          <tr><td>B</td><td>8</td><td>11</td></tr>
+          <tr><td>C (bottom)</td><td>0</td><td>16</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the GPE, KE, and total mechanical energy (ME) at each of the three points. Show your working.<br>
+      (b) Calculate how much mechanical energy was lost between point A and point B, and between point B and point C.<br>
+      (c) Based on your answers to (b), is more energy lost to friction in the first or second section of track (A→B or B→C)? Suggest one possible reason for this difference (e.g. track shape, speed, contact time).<br>
+      (d) Explain why the car's total mechanical energy decreases along the track, even though no external force is added.</div></div>
   </div>
 </div>
 
@@ -509,7 +522,9 @@ const nscQs=[
   {q:"A 3 kg object is held 6 m above the ground. What is its GPE? (g = 9.8 m·s⁻²)",opts:["176.4 J","18 J","88.2 J","58.8 J"],ans:0,exp:"GPE = mgh = 3 × 9.8 × 6 = 176.4 J."},
   {q:"A ball of mass 2 kg is dropped from 5 m (no air resistance). What is its speed just before hitting the ground?",opts:["9.8 m·s⁻¹","7 m·s⁻¹","9.9 m·s⁻¹","14 m·s⁻¹"],ans:2,exp:"Conservation of ME: mgh = ½mv² → v = √(2gh) = √(2 × 9.8 × 5) = √98 ≈ 9.9 m·s⁻¹."},
   {q:"The net work done on an object is 120 J. Its initial KE was 30 J. What is its final KE?",opts:["90 J","150 J","120 J","30 J"],ans:1,exp:"Work-energy theorem: Wnet = ΔKE → KE_f = KE_i + Wnet = 30 + 120 = 150 J."},
-  {q:"An engine does 6 000 J of work in 30 s. What is its power output?",opts:["180 000 W","200 W","2 000 W","600 W"],ans:1,exp:"P = W/t = 6000/30 = 200 W."}
+  {q:"An engine does 6 000 J of work in 30 s. What is its power output?",opts:["180 000 W","200 W","2 000 W","600 W"],ans:1,exp:"P = W/t = 6000/30 = 200 W."},
+  {q:"(Analysis) A 5 kg sled starts from rest at the top of a 10 m high slope. Friction acts throughout the slide. The sled reaches the bottom with a speed of 12 m·s⁻¹. How much mechanical energy was lost to friction?",opts:["490 J","360 J","130 J","850 J"],ans:2,exp:"Initial ME (all GPE, since it starts from rest) = mgh = 5 × 9.8 × 10 = 490 J. Final ME (all KE at the bottom, taking h=0 there) = ½mv² = ½ × 5 × 12² = 360 J. Energy lost to friction = ME_initial − ME_final = 490 − 360 = 130 J. This combines the conservation formula with the idea that when friction is present, mechanical energy is NOT conserved — the 'missing' energy became heat."},
+  {q:"(Analysis) A 1 000 kg car travelling at 20 m·s⁻¹ brakes and comes to a complete stop over a distance of 50 m. Using the work-energy theorem, calculate the magnitude of the average braking force.",opts:["400 N","4 000 N","10 000 N","200 000 N"],ans:1,exp:"Initial KE = ½mv² = ½ × 1000 × 20² = 200 000 J. To stop, the net work done on the car must equal the change in KE: Wnet = ΔKE = 0 − 200 000 = −200 000 J. Since W = F·d, the magnitude of the braking force is F = 200 000 ÷ 50 = 4 000 N. This links the work-energy theorem to a real braking scenario instead of a direct KE calculation."}
 ];
 
 const iebQs=[

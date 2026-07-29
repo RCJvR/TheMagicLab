@@ -244,7 +244,7 @@
 
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
-    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 8</span></div>
     <div id="q-container"></div>
   </div>
 </div>
@@ -258,6 +258,20 @@
     <div class="wb-card"><div class="wb-q">4. A loaf of bread and a brick of the same size do not have the same mass. Explain this using the particle model of matter, referring to the concept of density.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">5. Why does a metal bridge have small gaps built into it at regular intervals? Explain using the concept of expansion and contraction.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">6. Explain why pumping more air into a bicycle tyre increases the pressure inside it. Use the particle model in your answer.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. The table shows the mass and volume of four different blocks of material.
+      <table class="compare-table" style="margin:10px 0">
+        <thead><tr><th>Block</th><th>Mass (g)</th><th>Volume (cm&sup3;)</th></tr></thead>
+        <tbody>
+          <tr><td>A &mdash; Cork</td><td>24</td><td>100</td></tr>
+          <tr><td>B &mdash; Wood</td><td>70</td><td>100</td></tr>
+          <tr><td>C &mdash; Iron</td><td>790</td><td>100</td></tr>
+          <tr><td>D &mdash; Aluminium</td><td>270</td><td>100</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the density (mass &divide; volume) of each block, in g/cm&sup3;.<br>
+      (b) Rank the four materials from LEAST dense to MOST dense.<br>
+      (c) Water has a density of 1 g/cm&sup3;. Using your answers to (a), which of these materials would FLOAT if placed in water? Explain your reasoning.<br>
+      (d) Using the particle model of matter, explain why the iron block has a much higher density than the cork block, even though both blocks have exactly the same volume (100 cm&sup3;).</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
   </div>
 </div>
 
@@ -398,9 +412,11 @@ const QS=[
   {q:"When a solid melts, what happens to the particles?",opts:["Particles gain energy and break free of fixed positions, sliding past each other","Particles lose energy and slow down","Particles disappear","Particles shrink"],ans:0,fb:"Melting occurs when particles gain enough energy to break out of their fixed positions and slide past each other — the solid becomes a liquid."},
   {q:"Ice floats on water because:",opts:["Ice is warmer","Ice particles are lighter","Ice is less dense than liquid water","Ice is magnetic"],ans:2,fb:"This is a notable exception — ice (solid water) is less dense than liquid water, so it floats. Most solids are denser than their liquid form."},
   {q:"When you pump more air into a tyre, the pressure inside increases because:",opts:["The tyre gets warmer","There are more particles, causing more collisions with the tyre walls","The air gets heavier","The tyre expands"],ans:1,fb:"Pressure in a gas results from particles colliding with the container walls. More particles = more collisions = higher pressure."},
-  {q:"A metal bridge has gaps (expansion joints) built into it to allow for:",opts:["Water drainage","Decoration","Expansion and contraction as temperature changes","Wind movement"],ans:2,fb:"Metals expand when heated and contract when cooled. Expansion joints prevent buckling in summer and cracking in winter."}
+  {q:"A metal bridge has gaps (expansion joints) built into it to allow for:",opts:["Water drainage","Decoration","Expansion and contraction as temperature changes","Wind movement"],ans:2,fb:"Metals expand when heated and contract when cooled. Expansion joints prevent buckling in summer and cracking in winter."},
+  {q:"An iron block and a styrofoam block are exactly the same size (same volume), yet the iron block has a much greater mass. What is the BEST explanation, using the particle model?",opts:["Iron is magnetic, and magnetism adds extra mass to the block","Iron's particles are packed much more closely together and are individually more massive, so more mass fits into the same volume","Styrofoam particles move faster, which somehow reduces its mass","Both blocks actually have the same mass, since they have the same volume"],ans:1,fb:"Density depends on how much mass is packed into a given volume. Iron's particles are heavier individually AND packed much more tightly than styrofoam's, so a block of iron contains far more mass in the exact same space — this is why it is so much denser (and heavier for its size) than styrofoam."},
+  {q:"A bottle of perfume is opened across a room. On a hot day, the smell spreads across the room noticeably faster than it does on a cold day. What is the BEST explanation, using the particle model?",opts:["Heat makes the perfume particles heavier, so they sink and spread faster along the floor","On a hot day, the perfume particles (and the air particles they diffuse through) have more kinetic energy and move faster, so diffusion happens more quickly","Cold air completely blocks smells from moving through it","Perfume only evaporates into a gas on hot days, so there is no smell at all on cold days"],ans:1,fb:"Heating particles gives them more kinetic energy, so they move faster (this is also why materials expand when heated). Since diffusion is simply the random movement of particles spreading out, faster-moving particles diffuse through the air more quickly. This is why the same drop of perfume spreads noticeably faster through a warm room than a cold one."}
 ];
-let scores=new Array(6).fill(null);
+let scores=new Array(QS.length).fill(null);
 function renderQ(){
   const c=document.getElementById('q-container');c.innerHTML='';
   QS.forEach((q,i)=>{
@@ -415,7 +431,7 @@ function answer(qi,oi,btn){
   if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
   else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
 }
-function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / '+QS.length;}
 renderQ();
 </script>
   <script src="/contact-button.js" defer></script>

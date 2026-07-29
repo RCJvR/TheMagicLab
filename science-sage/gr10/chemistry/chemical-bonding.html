@@ -399,6 +399,32 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
       <div class="feedback" id="fb6"></div>
     </div>
 
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Question 7 · 3 marks</div>
+      <div class="q-text">Magnesium oxide (MgO) conducts electricity when melted, but tetrachloromethane (CCl₄, EN: C = 2.5, Cl = 3.0) does not conduct electricity even when it is a liquid. What is the BEST explanation for this difference?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,7,'A')"><span class="opt-letter">A</span>MgO is denser than CCl₄</button>
+        <button class="mc-opt" onclick="answer(this,7,'B')"><span class="opt-letter">B</span>ΔEN for C–Cl is 0.5, in the covalent range, so CCl₄ is made of neutral molecules with no free ions; MgO's ΔEN of 2.3 makes it ionic, with mobile ions once melted</button>
+        <button class="mc-opt" onclick="answer(this,7,'C')"><span class="opt-letter">C</span>CCl₄ has a lower boiling point than MgO</button>
+        <button class="mc-opt" onclick="answer(this,7,'D')"><span class="opt-letter">D</span>Both compounds are ionic, but the ions in MgO are smaller</button>
+      </div>
+      <div class="feedback" id="fb7"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <div class="q-num">Question 8 · 3 marks</div>
+      <div class="q-text">Phosphorus trichloride (PCl₃) has a central P atom with 5 valence electrons, bonded to 3 Cl atoms. Using VSEPR theory, what is PCl₃'s shape and polarity?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,8,'A')"><span class="opt-letter">A</span>3 of P's electrons form bonding pairs and 2 remain as a lone pair — the same arrangement as N in NH₃ — giving a trigonal pyramidal, polar molecule</button>
+        <button class="mc-opt" onclick="answer(this,8,'B')"><span class="opt-letter">B</span>All 5 of P's electrons form bonding pairs, giving a trigonal planar, non-polar molecule</button>
+        <button class="mc-opt" onclick="answer(this,8,'C')"><span class="opt-letter">C</span>PCl₃ is ionic because P and Cl have different electronegativities</button>
+        <button class="mc-opt" onclick="answer(this,8,'D')"><span class="opt-letter">D</span>PCl₃ has no lone pairs since chlorine is a non-metal</button>
+      </div>
+      <div class="feedback" id="fb8"></div>
+    </div>
+
     <!-- IEB PRACTICE -->
     <div class="ieb-practice" id="iebPractice">
       <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:16px;">IEB Extension Questions</div>
@@ -466,6 +492,24 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
       <div class="wb-qnum">Question 5</div>
       <div class="wb-qtext">Compare ionic and metallic bonding: (a) describe the nature of the bond in each case &nbsp; (b) give two physical properties that differ between ionic and metallic substances and explain why &nbsp; (c) name one example of each type.</div>
     </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6</div>
+      <div class="wb-qtext">
+        The table shows melting point and electrical conductivity data measured for three unknown substances, P, Q and R.
+        <table class="symbols-table" style="margin:12px 0 14px">
+          <thead><tr><th>Substance</th><th>Melting point (°C)</th><th>Conducts as a solid?</th><th>Conducts molten or dissolved?</th></tr></thead>
+          <tbody>
+            <tr><td>P</td><td>801</td><td>No</td><td>Yes</td></tr>
+            <tr><td>Q</td><td>−114</td><td>No</td><td>No</td></tr>
+            <tr><td>R</td><td>1085</td><td>Yes</td><td>Yes</td></tr>
+          </tbody>
+        </table>
+        (a) Using only the data in the table, identify the type of bonding (ionic, covalent, or metallic) present in each of P, Q and R.<br>
+        (b) For each substance, justify your answer by referring to the conductivity pattern in the table.<br>
+        (c) P is actually sodium chloride and R is actually copper. Explain, in terms of the particles present in each, why R conducts electricity even as a solid, while P only conducts once molten or dissolved.
+      </div>
+    </div>
   </div>
 </div>
 
@@ -494,7 +538,7 @@ function switchTab(id,btn){
 /* ============================================================
    PRACTICE LOGIC
    ============================================================ */
-const ANSWERS={1:'C',2:'D',3:'D',4:'B',5:'C',6:'C',i1:'C',i2:'B'};
+const ANSWERS={1:'C',2:'D',3:'D',4:'B',5:'C',6:'C',7:'B',8:'A',i1:'C',i2:'B'};
 const FEEDBACK={
   1:'ΔEN = 3.0 − 0.9 = 2.1, which is greater than 1.7. This large difference means Na transfers an electron to Cl, forming an ionic bond.',
   2:'CH₄ has 4 bonding pairs and 0 lone pairs around carbon — this gives a perfect tetrahedral shape with 109.5° bond angles.',
@@ -502,6 +546,8 @@ const FEEDBACK={
   4:'Delocalised electrons can move freely through the metal lattice, carrying charge. This is why metals are excellent electrical conductors.',
   5:'CO₂ is linear (180°). The two C=O dipoles point in exactly opposite directions and cancel each other out, giving a net dipole moment of zero — a non-polar molecule.',
   6:'When NH₃ donates its lone pair of electrons to the empty orbital of H⁺, a dative (coordinate) covalent bond forms. Both electrons come from nitrogen. The resulting NH₄⁺ is a tetrahedral ion.',
+  7:'ΔEN for C–Cl = 3.0 − 2.5 = 0.5, which falls in the 0.4–1.7 polar covalent range, so CCl₄ is a molecular substance with no ions to carry charge, in the liquid state or otherwise. ΔEN for Mg–O = 3.5 − 1.2 = 2.3 (&gt; 1.7), so MgO is ionic — its ions are locked in a lattice when solid (no conduction) but become mobile and can carry charge once melted.',
+  8:'Phosphorus has 5 valence electrons. Three are used to form single bonds to the 3 Cl atoms, leaving 1 lone pair on P — exactly the same electron-domain arrangement (3 bonding pairs + 1 lone pair) as nitrogen in NH₃. This gives a trigonal pyramidal shape. Because the lone pair breaks the symmetry, the individual P–Cl bond dipoles do not cancel, so PCl₃ is a polar molecule — just like NH₃.',
   i1:'SO₃ is a classic resonance example. Three equivalent Lewis structures can be drawn (with the double bond to each oxygen in turn). The real molecule is a resonance hybrid — all S–O bonds have equal length (bond order ~1.33) and equal strength. This is confirmed experimentally.',
   i2:'Formal charge = valence e⁻ − lone pair e⁻ − ½(bonding e⁻). For C: 4 − 0 − ½(8) = 0. For each O: 6 − 4 − ½(4) = 0. All formal charges are zero, confirming the double-bond Lewis structure is the best representation of CO₂.'
 };

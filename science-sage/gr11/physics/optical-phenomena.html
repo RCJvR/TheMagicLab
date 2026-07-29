@@ -269,7 +269,7 @@
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
     <div class="score-banner" id="score-banner">
-      <div class="score-big" id="score-big">0/6</div>
+      <div class="score-big" id="score-big">0/8</div>
       <div style="font-size:13px;color:var(--muted)">NSC questions answered correctly</div>
     </div>
     <div id="nsc-qs"></div>
@@ -289,6 +289,17 @@
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">UV light of frequency 1.2 × 10¹⁵ Hz shines on a metal surface with work function 3.8 × 10⁻¹⁹ J. (a) Calculate the maximum kinetic energy of photoelectrons. (b) If the intensity of the UV light is doubled but the frequency remains the same, describe and explain what happens to: (i) the number of electrons emitted per second, and (ii) the maximum kinetic energy of each emitted electron.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">Arrange the following electromagnetic waves in order of increasing energy per photon, and give one use for each: (a) gamma rays, (b) radio waves, (c) infrared radiation, (d) X-rays, (e) visible light. Explain the connection between frequency and energy per photon.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">A hot gas of hydrogen emits light at specific wavelengths (an emission spectrum). When cool hydrogen gas is placed in front of a white light source, an absorption spectrum is observed. (a) Explain why emission and absorption spectra occur at the same wavelengths. (b) How do scientists use spectra to identify elements in distant stars? (c) What does the spacing between spectral lines tell us about the energy levels in an atom?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6</div><div class="wb-qtext">In a photoelectric effect experiment on an unknown metal, light of different frequencies (all above the threshold) was shone on the metal, and the maximum kinetic energy of the ejected photoelectrons was measured:<br><br>
+    <table class="symbols-table" style="max-width:480px">
+      <tr><th>Frequency, f (×10¹⁴ Hz)</th><th>Ek(max) (×10⁻¹⁹ J)</th></tr>
+      <tr><td>6.0</td><td>0.66</td></tr>
+      <tr><td>8.0</td><td>1.99</td></tr>
+      <tr><td>10.0</td><td>3.31</td></tr>
+      <tr><td>12.0</td><td>4.64</td></tr>
+    </table><br>
+    (a) Using the first and last data points, calculate the gradient of a graph of Ek(max) (y-axis) against f (x-axis). Which physical constant does this gradient represent? (3 marks)<br>
+    (b) Using your gradient and any one data point, calculate the x-intercept of the graph (i.e. the threshold frequency f₀ for this metal). (2 marks)<br>
+    (c) Hence calculate the work function W of this metal. (2 marks)</div></div>
   </div>
 </div>
 
@@ -626,7 +637,9 @@ const NSC_QS = [
   {q: "UV light is shone onto a metal surface with a threshold frequency of 8 × 10¹⁴ Hz. The UV has a frequency of 6 × 10¹⁴ Hz. What is observed?", opts: ["Electrons are emitted with high kinetic energy","Electrons are emitted with zero kinetic energy","No electrons are emitted, regardless of the intensity","Electrons are emitted only if the intensity is high enough"], ans: 2, fb: "Since f (6×10¹⁴) < f₀ (8×10¹⁴), no electrons are emitted — no matter how intense the light. Increasing intensity increases photon number but not photon energy."},
   {q: "Which correctly describes what happens when the intensity of light (above threshold frequency) is increased in a photoelectric experiment?", opts: ["The kinetic energy of emitted electrons increases","The number of electrons emitted per second increases","The threshold frequency decreases","The work function decreases"], ans: 1, fb: "Intensity = number of photons per second. More photons → more collisions with electrons → more electrons emitted per second. But each photon still has the same energy (hf), so Ek(max) = hf − W is unchanged."},
   {q: "Which region of the electromagnetic spectrum has the shortest wavelength and highest energy per photon?", opts: ["Radio waves","Infrared","Ultraviolet","Gamma rays"], ans: 3, fb: "Gamma rays have the highest frequency, shortest wavelength, and therefore the highest energy per photon (E = hf). They are the most penetrating form of EM radiation."},
-  {q: "The bright-line emission spectrum of sodium shows two closely spaced yellow lines. These lines appear because:", opts: ["Sodium reflects only yellow light","Electrons in sodium atoms drop from higher to lower energy levels, emitting photons of specific energy","Yellow light is absorbed and re-emitted continuously","The temperature of sodium determines its colour"], ans: 1, fb: "When electrons fall from higher to lower energy levels, they emit photons with energy E = ΔE = hf. Sodium's electron transitions correspond to yellow photons (~589 nm). Each element has unique energy levels → unique spectral fingerprint."}
+  {q: "The bright-line emission spectrum of sodium shows two closely spaced yellow lines. These lines appear because:", opts: ["Sodium reflects only yellow light","Electrons in sodium atoms drop from higher to lower energy levels, emitting photons of specific energy","Yellow light is absorbed and re-emitted continuously","The temperature of sodium determines its colour"], ans: 1, fb: "When electrons fall from higher to lower energy levels, they emit photons with energy E = ΔE = hf. Sodium's electron transitions correspond to yellow photons (~589 nm). Each element has unique energy levels → unique spectral fingerprint."},
+  {q: "Light of wavelength 250 nm shines on a metal with a work function of 3.0 × 10⁻¹⁹ J. Calculate the maximum speed of the ejected photoelectrons. (mass of electron = 9.11 × 10⁻³¹ kg)", opts: ["1.04 × 10⁶ m·s⁻¹","2.09 × 10⁶ m·s⁻¹","4.96 × 10⁻¹⁹ m·s⁻¹","8.74 × 10¹¹ m·s⁻¹"], ans: 0, fb: "This needs three steps chained together. First, find the frequency: f = c/λ = (3×10⁸)/(250×10⁻⁹) = 1.2×10¹⁵ Hz. Then the photon energy: E = hf = (6.63×10⁻³⁴)(1.2×10¹⁵) = 7.96×10⁻¹⁹ J. Then the maximum kinetic energy: Ek(max) = hf − W = 7.96×10⁻¹⁹ − 3.0×10⁻¹⁹ = 4.96×10⁻¹⁹ J. Finally, since Ek = ½mv², rearrange to v = √(2Ek/m) = √(2 × 4.96×10⁻¹⁹ ÷ 9.11×10⁻³¹) ≈ 1.04 × 10⁶ m·s⁻¹. This links the photoelectric equation to the kinematics equation for kinetic energy — a common multi-concept NSC exam question."},
+  {q: "A graph of Ek(max) (y-axis) against frequency f (x-axis) is plotted for photoelectrons ejected from a particular metal, using light of various frequencies above the threshold. What do the GRADIENT and the x-INTERCEPT of this straight-line graph represent?", opts: ["Gradient = Planck's constant h; x-intercept = the threshold frequency f₀", "Gradient = the work function W; x-intercept = Planck's constant h", "Gradient = the threshold frequency f₀; x-intercept = the work function W", "Gradient = the speed of light c; x-intercept = the work function W"], ans: 0, fb: "Rearranging Ek(max) = hf − W = hf − hf₀ into the straight-line form y = mx + c: here y = Ek(max), x = f, the gradient m = h (Planck's constant), and the y-intercept c = −W (negative of the work function). Setting Ek(max) = 0 to find the x-intercept gives 0 = hf₀ − W, i.e. f = f₀ — the threshold frequency. This is exactly how Millikan experimentally confirmed Einstein's photoelectric equation and obtained an accurate value for Planck's constant, by measuring the gradient of this graph for several different metals."}
 ];
 
 const IEB_QS = [

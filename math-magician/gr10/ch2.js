@@ -139,6 +139,18 @@ MathMagician.registerChapter(2, {
           answer: "9/4",
           altAnswers: ["2.25", "2,25"],
           topic: "Exponent laws"
+        },
+        {
+          type: "input",
+          text: "Simplify without a calculator: 16^(−1/4) × 8^(2/3) ÷ 2^(−1)",
+          answer: "4",
+          topic: "Exponent laws"
+        },
+        {
+          type: "input",
+          text: "If 2^x = 5 and 2^y = 20, determine the value of 2^(y−x) without finding x or y individually.",
+          answer: "4",
+          topic: "Exponent laws"
         }
       ]
     },
@@ -286,6 +298,18 @@ MathMagician.registerChapter(2, {
           options: ["k² − 4k + 3 = 0", "k − 4k + 3 = 0", "k² + 4k − 3 = 0", "2k² − 4k + 3 = 0"],
           answer: 0,
           topic: "Exponential equations"
+        },
+        {
+          type: "input",
+          text: "Solve for x: 3^(x+1) + 3^(x−1) = 30",
+          answer: "2",
+          topic: "Exponential equations"
+        },
+        {
+          type: "input",
+          text: "A colony of bacteria doubles every hour, modelled by P(t) = 8 × 2^t, where P is the population (in bacteria) after t hours. After how many hours will the population reach 512?",
+          answer: "6",
+          topic: "Exponential equations"
         }
       ]
     },
@@ -371,6 +395,19 @@ MathMagician.registerChapter(2, {
           text: "Simplify: (4^x · 8)/2^(2x+1). Give the answer as an integer.",
           answer: "4",
           topic: "Simplifying complex exponential expressions"
+        },
+        {
+          type: "input",
+          text: "Simplify: (5^(x+1) + 5^(x+2)) ÷ (6 × 5^x)",
+          answer: "5",
+          topic: "Simplifying complex exponential expressions"
+        },
+        {
+          type: "input",
+          text: "Simplify: (2^(2x+1) − 2^(2x−1)) ÷ 2^(2x)",
+          answer: "3/2",
+          altAnswers: ["1.5", "1,5"],
+          topic: "Simplifying complex exponential expressions"
         }
       ]
     },
@@ -449,6 +486,19 @@ MathMagician.registerChapter(2, {
           type: "mc",
           text: "Solve: x^(2/3) = 9",
           options: ["x = 27", "x = 3", "x = 18", "x = 729"],
+          answer: 0,
+          topic: "Advanced exponential equations"
+        },
+        {
+          type: "input",
+          text: "Solve for x: 4^x − 2^(x+2) − 32 = 0",
+          answer: "3",
+          topic: "Advanced exponential equations"
+        },
+        {
+          type: "mc",
+          text: "Solve: (x − 1)^(2/3) = 4",
+          options: ["x = 9 or x = −7", "x = 9 only", "x = ±8", "x = 8 or x = −9"],
           answer: 0,
           topic: "Advanced exponential equations"
         }

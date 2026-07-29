@@ -173,7 +173,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
     </div>
     <div id="questions"></div>
@@ -190,6 +190,19 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Describe what happens during fertilisation in a flowering plant, and what the ovule and ovary each develop into.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Name THREE methods of seed dispersal, with an example adaptation for each.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Explain the difference between sexual and asexual (vegetative) reproduction in plants, in terms of genetic variation in the offspring.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">A researcher sowed 100 seeds from the same tree species at each of four distances from a parent tree, and recorded how many seedlings survived after one month:<br><br>
+    <table class="compare-table" style="max-width:520px">
+      <thead><tr><th>Distance from parent tree (m)</th><th>Seeds sown</th><th>Seedlings survived</th></tr></thead>
+      <tbody>
+        <tr><td>0.5</td><td>100</td><td>8</td></tr>
+        <tr><td>2</td><td>100</td><td>35</td></tr>
+        <tr><td>5</td><td>100</td><td>62</td></tr>
+        <tr><td>10</td><td>100</td><td>68</td></tr>
+      </tbody>
+    </table><br>
+    (a) Calculate the percentage seedling survival at each of the four distances. Show your working. (3 marks)<br>
+    (b) Describe the trend shown by the data as distance from the parent tree increases. (1 mark)<br>
+    (c) Suggest a reason, in terms of competition for resources, why seedling survival is much lower close to the parent tree. (2 marks)</div></div>
   </div>
 </div>
 
@@ -307,6 +320,8 @@ const QUESTIONS=[
   {text:'What is the key genetic difference between sexual and asexual (vegetative) reproduction in plants?',opts:['Sexual reproduction produces genetically identical offspring','Asexual reproduction produces genetically varied offspring','Sexual reproduction produces genetically varied offspring; asexual produces identical offspring','There is no genetic difference'],ans:2,exp:'Sexual reproduction (via pollination and fertilisation) produces genetically varied offspring, while asexual/vegetative reproduction produces offspring genetically identical to the parent.'},
   {text:'Which of these is an example of a vegetative (asexual) reproductive structure?',opts:['A flower','A seed','A bulb','A fruit'],ans:2,exp:'A bulb is a vegetative structure that can grow into a new, genetically identical plant without pollination or fertilisation. Runners, tubers, and rhizomes are other examples.'},
   {text:'Why is seed dispersal important?',opts:['It has no real benefit','It reduces competition for resources and helps colonise new areas','It prevents germination','It only happens in animals'],ans:1,exp:'Dispersing seeds away from the parent plant reduces competition for light, water, and nutrients, and allows the species to colonise new areas.'},
+  {text:'A farmer plants 200 seeds from last season\'s harvest, and 140 germinate. She also plants 200 seeds from a batch that has been stored for 3 years, and only 60 germinate. Calculate the germination percentage of each batch, and determine which has the higher viability.',opts:['Last season\'s batch: 70%; 3-year-old batch: 30% — last season\'s batch has much higher viability','Last season\'s batch: 30%; 3-year-old batch: 70% — the older batch has higher viability','Both batches have identical viability of 50%','Germination percentage cannot be calculated from this information'],ans:0,exp:'Germination percentage = (number germinated ÷ number planted) × 100. For last season\'s batch: (140 ÷ 200) × 100 = 70%. For the 3-year-old batch: (60 ÷ 200) × 100 = 30%. The much lower viability of the older batch reflects a real biological process — as seeds age in storage, embryos gradually die and stored food reserves break down, so fewer seeds remain capable of germinating. This is why seeds are generally most viable when fresh, or need cool, dry storage conditions to stay viable for longer.'},
+  {text:'A self-pollinating plant population and a closely related cross-pollinating plant population both encounter a new fungal disease. Which population is more likely to contain individuals that survive, and why?',opts:['The self-pollinating population, because self-pollination guarantees fertilisation success','The cross-pollinating population, because combining genetic material from two different parents produces more genetically varied offspring, increasing the chance that some individuals happen to carry gene combinations giving disease resistance','Both populations are equally likely to survive, since pollination method has no effect on genetic variation','Neither population can survive a new disease, regardless of pollination method'],ans:1,exp:'Cross-pollination combines sex cells from two different parent plants, so offspring inherit new combinations of alleles from both — producing much greater genetic variation than self-pollination, where both sex cells come from the same individual and offspring tend to closely resemble that one parent. Greater genetic variation means a cross-pollinating population is more likely to already contain some individuals with a chance combination of genes that happens to confer resistance to a new disease, allowing at least part of the population to survive and reproduce. This is one of the key advantages of sexual reproduction and cross-pollination over self-pollination.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

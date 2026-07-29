@@ -285,7 +285,7 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="score-banner">
-      <div class="score-big" id="score-val">0/6</div>
+      <div class="score-big" id="score-val">0/8</div>
       <div><div style="font-weight:700;color:#fff;margin-bottom:4px">Quiz Complete</div><div style="font-size:13px;color:var(--muted)">Review your answers above.</div></div>
     </div>
     <div id="practice-nsc"></div>
@@ -304,6 +304,17 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">A stone is dropped from a bridge 44.1 m above a river (take downward as positive, u = 0). Calculate: (a) the time to hit the water, (b) the velocity just before impact.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">A ball is thrown vertically upward at 19.6 m·s⁻¹ from ground level. Take upward as positive. Calculate: (a) the maximum height reached, (b) the time to reach maximum height, (c) the total time in the air before returning to the same level.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">A car travelling at 25 m·s⁻¹ brakes and decelerates at 5 m·s⁻²  until it stops. (a) How long does braking take? (b) How far does the car travel while braking? (c) Sketch a neat x-t graph for the entire braking motion.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 — Position-Time Data Table</div><div class="wb-qtext">A trolley is released from rest at the top of a ramp. Its position is recorded every second:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Time (s)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+        <tbody>
+          <tr><td>Displacement (m)</td><td>0</td><td>2</td><td>8</td><td>18</td><td>32</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the trolley's average velocity between t = 1 s and t = 2 s. Show your working.<br>
+      (b) Calculate the average velocity between t = 3 s and t = 4 s.<br>
+      (c) Treating your answer to (a) as the instantaneous velocity at the midpoint t = 1.5 s, and your answer to (b) as the instantaneous velocity at t = 3.5 s, calculate the trolley's acceleration using a = Δv/Δt.<br>
+      (d) The trolley starts from rest (u = 0). Using your acceleration from (c) in the equation s = ut + ½at², check whether it correctly predicts the displacement recorded at t = 4 s. Show your working and comment on the agreement.</div></div>
   </div>
 </div>
 
@@ -516,7 +527,9 @@ const nscQs=[
   {q:"A car decelerates from 30 m·s⁻¹ to rest in 10 s. What is the acceleration?",opts:["+3 m·s⁻²","−3 m·s⁻²","−0.33 m·s⁻²","+0.33 m·s⁻²"],ans:1,exp:"a = (v − u)/t = (0 − 30)/10 = −3 m·s⁻². The negative sign indicates deceleration (opposing motion)."},
   {q:"Which equation of motion is used when time is NOT known?",opts:["v = u + at","s = ut + ½at²","v² = u² + 2as","s = ½(u+v)t"],ans:2,exp:"v² = u² + 2as does not contain t. It is useful when time is not given and not required."},
   {q:"A stone is dropped from rest (u = 0, g = 9.8 m·s⁻² downward). What is its speed after 3 s?",opts:["29.4 m·s⁻¹","9.8 m·s⁻¹","3 m·s⁻¹","44.1 m·s⁻¹"],ans:0,exp:"v = u + gt = 0 + 9.8 × 3 = 29.4 m·s⁻¹ downward."},
-  {q:"On a v-t graph, what does the area under the line from t = 0 to t = 4 s represent?",opts:["Speed at t = 4 s","Acceleration","Displacement","Distance only if v > 0 the whole time"],ans:2,exp:"The area under a v-t graph always equals displacement (not just distance). Displacement can be negative if v < 0."}
+  {q:"On a v-t graph, what does the area under the line from t = 0 to t = 4 s represent?",opts:["Speed at t = 4 s","Acceleration","Displacement","Distance only if v > 0 the whole time"],ans:2,exp:"The area under a v-t graph always equals displacement (not just distance). Displacement can be negative if v < 0."},
+  {q:"(Analysis) A v-t graph shows velocity decreasing in a straight line from 8 m·s⁻¹ at t=0 s, crossing zero at t=4 s, down to −4 m·s⁻¹ at t=6 s. What is the object's total DISPLACEMENT from t=0 s to t=6 s?",opts:["20 m","16 m","12 m","4 m"],ans:2,exp:"Split the area into two triangles either side of the zero-crossing. From t=0 to 4 s: area = ½ × base × height = ½ × 4 × 8 = 16 m (positive, since v > 0). From t=4 to 6 s: area = ½ × 2 × (−4) = −4 m (negative, since v < 0 here — the object has reversed direction). Total displacement = 16 + (−4) = 12 m. (Note: the total DISTANCE travelled would be 16 + 4 = 20 m — displacement and distance differ once the object reverses direction.)"},
+  {q:"(Analysis) A ball is thrown vertically upward at 24.5 m·s⁻¹ from ground level (take upward as positive, g = −9.8 m·s⁻²). Using the equations of motion directly (without first finding the time to reach maximum height), calculate the ball's velocity 3 seconds after being thrown, and state its direction.",opts:["24.5 m·s⁻¹ upward","4.9 m·s⁻¹ downward","4.9 m·s⁻¹ upward","29.4 m·s⁻¹ downward"],ans:1,exp:"Using v = u + at directly: v = 24.5 + (−9.8)(3) = 24.5 − 29.4 = −4.9 m·s⁻¹. The negative sign (with upward taken as positive) means the ball is moving at 4.9 m·s⁻¹ downward. This makes sense: the ball reaches its highest point at t = u/g = 24.5/9.8 = 2.5 s, so by t = 3 s it has already turned around and is falling back down — you don't need to find the peak time separately to apply v = u + at."}
 ];
 
 const iebQs=[

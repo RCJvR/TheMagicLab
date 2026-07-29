@@ -70,6 +70,7 @@ MathMagician.registerChapter(19, {
         { type: "mc", text: "As the number of trials in an experiment increases, relative frequency generally:", options: ["Moves further from the theoretical probability", "Gets closer to the theoretical probability", "Becomes exactly 1", "Has no relationship to theoretical probability"], answer: 1, topic: "Probability" },
         { type: "input", text: "A spinner is spun 250 times; red appears 62 times. What is the relative frequency of red, as a decimal (round to 2 dp)?", answer: "0.25", topic: "Probability" },
         { type: "mc", text: "A coin is flipped 20 times giving 16 heads. A learner concludes 'this coin is definitely biased.' The best response is:", options: ["Agree — 16/20 proves it is biased", "20 trials is a small sample; more trials are needed before concluding bias", "Relative frequency must always equal 0.5", "The result is impossible"], answer: 1, topic: "Probability" },
+        { type: "input", text: "A bag of sweets is tested by drawing with replacement 500 times; a red sweet is drawn 175 times. If a large batch actually contains 2 000 sweets and the true proportion of red matches this relative frequency, estimate how many red sweets are in the batch.", answer: "700", topic: "Probability" },
       ]
     },
     {
@@ -150,6 +151,7 @@ MathMagician.registerChapter(19, {
         { type: "input", text: "Table: Row 1 = {8, 12}, Row 2 = {10, 20}. What is the grand total?", answer: "50", topic: "Two-way tables" },
         { type: "mc", text: "Using the transport example (Boys: Bus 12, Walk 8; Girls: Bus 10, Walk 20; total 50), what is P(boy who takes the bus)?", options: ["12/20", "12/50", "22/50", "20/50"], answer: 1, topic: "Two-way tables" },
         { type: "input", text: "In a two-way table, Column A total = 22 and grand total = 50. What is P(Column A), as a decimal (2 dp)?", answer: "0.44", topic: "Two-way tables" },
+        { type: "input", text: "In a survey of 80 learners: Sport & Bus = 15, Sport & Walk = 25, No Sport & Bus = 10, No Sport & Walk = 30. Of the learners who play sport, what fraction walk to school? (as a fraction, e.g. 2/3)", answer: "5/8", topic: "Two-way tables" },
       ]
     },
   ],
@@ -166,6 +168,15 @@ MathMagician.registerChapter(19, {
               { label: "a)", text: "State the theoretical probability of spinning a 3.", marks: 1 },
               { label: "b)", text: "Calculate the relative frequency of spinning a 3 from the experiment.", marks: 2 },
               { label: "c)", text: "Compare the two values and comment on whether the spinner appears fair.", marks: 2 },
+            ]
+          },
+          {
+            num: "2",
+            text: "A fair six-sided die is rolled 120 times. The results are recorded in the frequency table below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Face</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>6</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Frequency</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>18</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>22</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>19</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>17</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>24</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>20</td></tr></table>",
+            parts: [
+              { label: "a)", text: "Calculate the relative frequency of rolling a 5, as a fraction in simplest form.", marks: 2 },
+              { label: "b)", text: "Which face was rolled the least number of times, and what is its relative frequency (round to 3 decimal places)?", marks: 2 },
+              { label: "c)", text: "The theoretical probability of any single face is 1/6 ≈ 0,167. Compare this to the relative frequencies found in (a) and (b), and comment on whether the die appears fair.", marks: 2 },
             ]
           },
         ]
@@ -196,6 +207,9 @@ MathMagician.registerChapter(19, {
           { num: "Q1a", ans: "P(3) = 1/5 = 0.2", note: "5 equally likely sections" },
           { num: "Q1b", ans: "Relative frequency = 52/200 = 0.26", note: "" },
           { num: "Q1c", ans: "0.26 is reasonably close to 0.20; with 200 trials some difference is expected by chance — the spinner is probably fair but could be checked with more trials", note: "Accept reasoned answers" },
+          { num: "Q2a", ans: "24/120 = 1/5 = 0,2", note: "Reading the table: frequency for face 5 is 24" },
+          { num: "Q2b", ans: "Face 4, least rolled (17 times); relative frequency = 17/120 ≈ 0,142", note: "17/120 = 0.14166..." },
+          { num: "Q2c", ans: "Both 0,2 (face 5) and 0,142 (face 4) are reasonably close to the theoretical 0,167 for a fair die — the small differences are consistent with normal chance variation over 120 trials, so the die appears fair", note: "Accept reasoned answers referencing the Law of Large Numbers" },
         ]
       },
       {

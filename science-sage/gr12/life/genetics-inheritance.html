@@ -224,6 +224,19 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (3 marks)</div><div class="wb-qtext">Distinguish between incomplete dominance and codominance, giving an example of each.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Explain why X-linked recessive disorders (such as red-green colour blindness) are more common in males than in females.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain what is meant by a "carrier" of a genetic disorder.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · Reading Real Cross Data (6 marks)</div><div class="wb-qtext">A learner grows 400 pea plants from a Tt &times; Tt cross (T = tall, dominant; t = short, recessive) and records the phenotype of every plant:
+      <table class="compare-table" style="margin:10px 0">
+        <thead><tr><th>Phenotype</th><th>Number of plants observed</th></tr></thead>
+        <tbody>
+          <tr><td>Tall</td><td>289</td></tr>
+          <tr><td>Short</td><td>111</td></tr>
+          <tr><td>Total</td><td>400</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the observed ratio of tall to short plants (as a decimal, tall &divide; short).<br>
+      (b) State the THEORETICAL phenotype ratio expected for a Tt &times; Tt cross, and use it to calculate the expected NUMBER of tall and short plants out of 400.<br>
+      (c) Compare your answers to (a) and (b). Are the observed results reasonably consistent with Mendelian inheritance?<br>
+      (d) Give one reason why the observed numbers might not match the theoretical ratio EXACTLY, even though the underlying genetics (and the 3:1 ratio) is correct.</div></div>
   </div>
 </div>
 
@@ -329,6 +342,8 @@ const QUESTIONS=[
   {text:'Red (RR) snapdragons crossed with white (WW) snapdragons produce pink (RW) offspring. What form of inheritance is this?',opts:['Codominance','Sex-linked inheritance','Incomplete dominance','Simple dominant/recessive inheritance'],ans:2,exp:'This is incomplete dominance — the heterozygous phenotype (pink) is a blend, intermediate between the two homozygous phenotypes (red and white).'},
   {text:'Why are X-linked recessive disorders like colour blindness more common in males than females?',opts:['Males have two X chromosomes','A male only needs one copy of the recessive allele (on his single X) to be affected, while a female needs two copies','Females cannot carry X-linked alleles','Colour blindness is not linked to any chromosome'],ans:1,exp:'Males (XY) only have one X chromosome, so a single recessive allele on it will be expressed. Females (XX) need the recessive allele on both X chromosomes to show the condition.'},
   {text:'A female with genotype X^A X^a for an X-linked recessive condition, who does not show symptoms, is best described as a:',opts:['Homozygous dominant','Carrier','Homozygous recessive','Unaffected non-carrier'],ans:1,exp:'A heterozygous female (X^A X^a) does not show the recessive condition herself, but carries the recessive allele and can pass it on to her offspring — she is a carrier.'},
+  {text:'A colour-blind man (X^b Y) has children with a woman who is a carrier for colour blindness (X^B X^b). What proportion of their DAUGHTERS are expected to be colour blind?',opts:['0%','25%','50%','100%'],ans:2,exp:'Every daughter gets her father\'s X chromosome (X^b, since he is colour blind) plus one of her mother\'s two X chromosomes (X^B or X^b, each with 50% probability). So daughters are either X^B X^b (carrier, unaffected) or X^b X^b (colour blind) in a 1:1 ratio — 50% of daughters are expected to be colour blind. (Sons, by contrast, get their father\'s Y chromosome and mother\'s X, so their colour-blindness depends only on which X the mother contributes.)'},
+  {text:'In a particular family, a genetic disorder is much more common in males than females, and every affected father is observed to pass the condition to ALL of his daughters (as carriers) but to NONE of his sons directly. What is the most likely explanation?',opts:['The disorder is autosomal dominant','The disorder is X-linked recessive — sons get their only X chromosome from their mother, so an affected father cannot pass the condition directly to sons, but every daughter receives his X (and becomes at least a carrier)','The disorder is caused entirely by environmental factors, not genes','The disorder is Y-linked, so it should instead pass from every father to every son'],ans:1,exp:'This pattern is the signature of X-linked recessive inheritance. A father passes his Y chromosome to all his sons and his X chromosome to all his daughters. So a son\'s X chromosome (and therefore whether he is affected) comes only from his mother — never his father. Every daughter, however, receives the father\'s (affected) X chromosome, making her at least a carrier. This "no father-to-son transmission, but father-to-all-daughters transmission" pattern is a classic way pedigrees reveal X-linked recessive conditions.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

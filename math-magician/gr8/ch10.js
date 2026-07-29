@@ -124,6 +124,8 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "An isosceles triangle has an apex angle of 50°. What is each base angle?", answer: "65", topic: "Triangles" },
         { type: "mc", text: "Which type of triangle has all angles equal to 60°?", options: ["Isosceles", "Scalene", "Equilateral", "Right-angled"], answer: 2, topic: "Triangles" },
         { type: "input", text: "In △ABC, â = 3x, b̂ = 2x, ĉ = x. Find x.", answer: "30", topic: "Triangles" },
+        { type: "input", text: "The angles of a triangle are in the ratio 5 : 6 : 7. Find the size of the smallest angle.", answer: "50", topic: "Triangles" },
+        { type: "input", text: "An isosceles triangle has each base angle exactly twice the size of the apex angle. Find the size of the apex angle.", answer: "36", topic: "Triangles" },
       ]
     },
     {
@@ -193,6 +195,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Which quadrilateral has diagonals that are equal in length AND bisect each other at right angles?", options: ["Rectangle", "Rhombus", "Square", "Kite"], answer: 2, topic: "Quadrilaterals" },
         { type: "input", text: "A rhombus has one angle of 54°. What is the opposite angle?", answer: "54", topic: "Quadrilaterals" },
         { type: "mc", text: "Which shape has exactly ONE pair of parallel sides?", options: ["Parallelogram", "Rhombus", "Trapezium", "Rectangle"], answer: 2, topic: "Quadrilaterals" },
+        { type: "input", text: "A kite has two right angles that are opposite each other, and its other two angles are x° and (x + 40)°. Find x.", answer: "70", topic: "Quadrilaterals" },
+        { type: "input", text: "Kite ABCD has AB = AD and CB = CD, with diagonal AC as its axis of symmetry. In triangle ABC, ∠BAC = 35° and ∠BCA = 55°. Calculate ∠ABC, then use the kite's symmetry to state the size of ∠ADC.", answer: "90", topic: "Quadrilaterals" },
       ]
     },
     {
@@ -231,6 +235,7 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "In △ABC, ∠A = 50°. ABCD is a parallelogram and BD is a diagonal. Find ∠ABD if ∠ADB = 70°.", answer: "60", topic: "Mixed" },
         { type: "mc", text: "In rhombus ABCD with diagonal AC, if ∠BAC = 34°, what is ∠BCA?", options: ["34°", "56°", "68°", "112°"], answer: 0, topic: "Mixed" },
         { type: "input", text: "The angles of a quadrilateral are in the ratio 2:3:4:3. Find the largest angle.", answer: "120", topic: "Mixed" },
+        { type: "input", text: "ABCD is a parallelogram with diagonal AC drawn. ∠DAC = 42° and ∠ACD = 38°. Find ∠ADC first, then use the properties of a parallelogram to find ∠ABC.", answer: "100", topic: "Mixed" },
       ]
     },
     {
@@ -429,6 +434,8 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "△ABC ≅ △DEF. If AB = 9 cm, what is DE in cm?", answer: "9", topic: "Congruence" },
         { type: "mc", text: "Which is NOT a valid triangle congruence condition?", options: ["SSS", "SAS", "AAA", "RHS"], answer: 2, topic: "Congruence" },
         { type: "mc", text: "Two right-angled triangles have equal hypotenuses and one equal leg. Which condition applies?", options: ["SSS", "SAS", "AAS", "RHS"], answer: 3, topic: "Congruence" },
+        { type: "input", text: "In triangles ABC and DEF, AB = (3x − 2) cm and DE = (x + 8) cm are corresponding sides known to be equal. Solve for x, then state the length of AB in cm.", answer: "13", topic: "Congruence" },
+        { type: "input", text: "△ABC ≅ △DEF by SSS, with AB = (2x + 3) cm corresponding to DE = (4x − 7) cm, and AC = (3x − 1) cm corresponding to DF = (2x + 4) cm. Use the AB/DE pair to solve for x.", answer: "5", topic: "Congruence" },
       ]
     },
     {
@@ -593,6 +600,8 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "△PQR ∼ △XYZ. PQ = 8, XY = 12, QR = 10. Find YZ.", answer: "15", topic: "Similarity" },
         { type: "mc", text: "What is the minimum condition to prove two triangles similar?", options: ["SSS", "Two pairs of equal angles (AA)", "SAS", "One pair of equal sides"], answer: 1, topic: "Similarity" },
         { type: "input", text: "Two similar rectangles have lengths 6 cm and 9 cm. If the smaller has width 4 cm, find the larger width in cm.", answer: "6", topic: "Similarity" },
+        { type: "input", text: "Two similar polygons have a perimeter ratio of 3 : 7. The perimeter of the smaller polygon is 18 cm. Calculate the perimeter of the larger polygon in cm.", answer: "42", topic: "Similarity" },
+        { type: "input", text: "Two similar triangles have an area ratio of 4 : 25. The shortest side of the smaller triangle is 6 cm. Find the length of the corresponding side of the larger triangle in cm.", answer: "15", topic: "Similarity" },
       ]
     },
     {
@@ -625,6 +634,8 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "A quadrilateral has angles x, 2x, 3x, and 4x. Find the largest angle.", answer: "144", topic: "Mixed" },
         { type: "mc", text: "△ABC ∼ △PQR. AB = 5, PQ = 15, area of △ABC = 12 cm². Find area of △PQR.", options: ["36 cm²", "108 cm²", "180 cm²", "48 cm²"], answer: 1, topic: "Mixed" },
         { type: "input", text: "In a rhombus, one angle is 3x and the adjacent angle is (x + 60)°. Find x.", answer: "30", topic: "Mixed" },
+        { type: "input", text: "The angles of a triangle are in the ratio 2 : 3 : 4. Find the size of the smallest angle.", answer: "40", topic: "Mixed" },
+        { type: "input", text: "△ABC ∼ △DEF with area ratio 9 : 16 (ABC : DEF). The perimeter of △DEF is 48 cm. Calculate the perimeter of △ABC.", answer: "36", topic: "Mixed" },
       ]
     },
   ],

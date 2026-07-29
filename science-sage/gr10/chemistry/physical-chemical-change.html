@@ -282,7 +282,7 @@ select option{background:#1a1f35}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div>
         <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
         <div style="font-size:13px;color:var(--muted)">NSC Practice Questions</div>
@@ -365,6 +365,19 @@ select option{background:#1a1f35}
         <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>Because they always release light</button>
       </div>
       <div class="feedback" id="fb6">Chemical changes rearrange atoms into new bonds, forming genuinely new substances. Simply reversing the physical conditions (e.g. cooling) cannot "unmake" these new substances, which is why chemical changes are generally difficult or impossible to reverse.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Question 7 &nbsp;<span style="color:var(--muted);font-weight:400">(2 marks, Analysis)</span></div>
+      <div class="q-text">A learner burns a strip of magnesium ribbon in a Bunsen flame. It burns with a brilliant white light and forms a fine white ash (magnesium oxide). The learner then tries melting the white ash, hoping to re-form the shiny metal ribbon, but it stays a white powder no matter how much it is heated. Which combination of observations gives the STRONGEST evidence that this is a chemical change?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>Light was produced, and that alone always proves a chemical change</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>A new substance with clearly different properties formed (white powder instead of shiny grey metal), and the change could not be reversed simply by re-heating or re-melting it</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>The reaction happened quickly</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>The flame was very hot</button>
+      </div>
+      <div class="feedback" id="fb7">Speed and temperature are not reliable evidence of a chemical change (physical changes can also be fast or hot). The strongest evidence combines two things: (1) the product (white magnesium oxide powder) has completely different properties from the reactant (shiny grey magnesium metal), and (2) attempting to reverse the change by simple physical means (melting) does not recover the original substance — because the atoms have formed new chemical bonds with oxygen, not just changed state.</div>
     </div>
 
     <!-- IEB Practice Questions -->
@@ -451,6 +464,22 @@ select option{background:#1a1f35}
       <div style="margin-top:14px;height:110px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
     </div>
 
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 — Mass and Density Data Through a Physical Change</div>
+      <div class="wb-qtext">A learner measures a 90.0 g block of ice, allows it to melt completely into liquid water at 0°C, and measures the resulting volume:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>State</th><th>Mass (g)</th><th>Volume (cm³)</th></tr></thead>
+        <tbody>
+          <tr><td>Ice (solid)</td><td>90.0</td><td>98.0</td></tr>
+          <tr><td>Water (liquid, after melting)</td><td>90.0</td><td>90.0</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the density of the ice and the density of the water, showing your working.<br>
+      (b) The mass stayed exactly the same (90.0 g) before and after melting. What law does this illustrate, and why does it confirm that melting is a physical change?<br>
+      (c) Explain why the volume decreased even though no mass was lost — refer to the arrangement of water molecules in ice compared to liquid water.<br>
+      (d) Use your answer to (a) to explain why ice floats on liquid water.</div>
+    </div>
+
   </div>
 </div>
 
@@ -472,7 +501,7 @@ function switchTab(id,btn){
 }
 
 // ===== PRACTICE =====
-const correctAnswers = {1:1, 2:1, 3:2, 4:2, 5:1, 6:1, i1:1, i2:0};
+const correctAnswers = {1:1, 2:1, 3:2, 4:2, 5:1, 6:1, 7:1, i1:1, i2:0};
 const answered = {};
 let score = 0;
 
@@ -501,11 +530,11 @@ function checkAns(qNum, chosenIdx, fbId){
 
   fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
 
-  const nscDone = [1,2,3,4,5,6].every(k => answered[k]);
+  const nscDone = [1,2,3,4,5,6,7].every(k => answered[k]);
   if(nscDone){
     const banner = document.getElementById('scoreBanner');
     banner.classList.add('show');
-    document.getElementById('scoreNum').textContent = score + '/6';
+    document.getElementById('scoreNum').textContent = score + '/7';
   }
 }
 

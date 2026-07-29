@@ -129,6 +129,19 @@ MathMagician.registerChapter(2, {
           options: ["Non-real", "Equal", "Rational unequal", "Irrational unequal"],
           answer: 2,
           topic: "Completing the square, formula & nature of roots"
+        },
+        {
+          type: "mc",
+          text: "For which value(s) of k does x² + (k − 2)x + 4 = 0 have real roots?",
+          options: ["k ≥ 6 or k ≤ −2", "−2 ≤ k ≤ 6", "k = 6 only", "k ≥ 6 only"],
+          answer: 0,
+          topic: "Completing the square, formula & nature of roots"
+        },
+        {
+          type: "input",
+          text: "Find the positive value of p for which px² − 4x + p = 0 (p ≠ 0) has equal roots.",
+          answer: "2",
+          topic: "Completing the square, formula & nature of roots"
         }
       ]
     },
@@ -289,6 +302,20 @@ MathMagician.registerChapter(2, {
           answer: "-20",
           altAnswers: ["−20"],
           topic: "Quadratic inequalities & simultaneous equations"
+        },
+        {
+          type: "mc",
+          text: "Solve for x: x(x + 2) ≤ 3(2x − 1)",
+          options: ["1 ≤ x ≤ 3", "x ≤ 1 or x ≥ 3", "−1 ≤ x ≤ 3", "x ≤ 3 only"],
+          answer: 0,
+          topic: "Quadratic inequalities & simultaneous equations"
+        },
+        {
+          type: "mc",
+          text: "Solve simultaneously: y = x − 1 and x² + y² = 25. What are the two solution points?",
+          options: ["(4 ; 3) and (−3 ; −4)", "(4 ; 3) and (3 ; 4)", "(5 ; 4) and (−4 ; −5)", "(3 ; 2) and (−2 ; −3)"],
+          answer: 0,
+          topic: "Quadratic inequalities & simultaneous equations"
         }
       ]
     },
@@ -401,6 +428,19 @@ MathMagician.registerChapter(2, {
           type: "mc",
           text: "Which method is most efficient for x² − 3x − 10 = 0?",
           options: ["Factorisation: (x−5)(x+2)=0", "Quadratic formula only", "Completing the square only", "Graphing only"],
+          answer: 0,
+          topic: "Quadratic formula & derivation"
+        },
+        {
+          type: "input",
+          text: "Rearrange into standard form and solve using the quadratic formula: 3x² = 5x + 2. Give the positive root.",
+          answer: "2",
+          topic: "Quadratic formula & derivation"
+        },
+        {
+          type: "mc",
+          text: "Using completing the square, the turning point of y = 3x² − 12x + 7 is at:",
+          options: ["(2 ; −5)", "(2 ; 5)", "(−2 ; −5)", "(4 ; 7)"],
           answer: 0,
           topic: "Quadratic formula & derivation"
         }
@@ -521,6 +561,18 @@ MathMagician.registerChapter(2, {
           text: "Why must both roots of a word-problem quadratic be checked against the context?",
           options: ["Because negative or non-integer roots may not make physical sense", "Because the discriminant might be negative", "Because factorisation can be wrong", "Because quadratics always have two valid answers"],
           answer: 0,
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "input",
+          text: "A minibus travels 300 km at a constant average speed. Had the speed been 10 km/h faster, the trip would have taken 1 hour less. Determine the minibus's original average speed (in km/h).",
+          answer: "50",
+          topic: "Solving problems with quadratic equations"
+        },
+        {
+          type: "input",
+          text: "A rectangular photo is 4 cm longer than it is wide. A frame of uniform width 2 cm is placed around it, and the extra area covered by the frame is 96 cm². Find the width of the photo (in cm).",
+          answer: "8",
           topic: "Solving problems with quadratic equations"
         }
       ]

@@ -102,7 +102,7 @@ MathMagician.registerChapter(7, {
                   out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Ext. angle = sum of two non-adjacent interior angles</span><br>'
                     +'<span style="color:rgba(221,225,240,0.50);">'+a+'° = '+b+'° + 2nd non-adjacent angle</span><br>'
                     +'<span style="color:#6ee7b7;">2nd non-adjacent angle = '+other+'°</span><br>'
-                    +'<span style="color:rgba(221,225,240,0.50);">3rd interior angle (adjacent to ext.) = 180°−'+a+'° = '+third+'° ← wait, = </span><span style="color:#fcd34d;">'+(180-a)+'°</span>';
+                    +'<span style="color:rgba(221,225,240,0.50);">3rd interior angle (adjacent to ext. angle, forming a linear pair) = 180° − '+a+'° = </span><span style="color:#fcd34d;">'+third+'°</span>';
                 }
               }
               document.getElementById('g10c7mode').addEventListener('change',()=>{updateLabels();});
@@ -149,6 +149,19 @@ MathMagician.registerChapter(7, {
           text: "In an isosceles triangle with two equal angles of 52°, the third angle is:",
           options: ["76°", "128°", "52°", "104°"],
           answer: 0,
+          topic: "Triangles"
+        },
+        {
+          type: "input",
+          text: "△ABC ||| △DEF and the ratio of their areas is 9:25 (Area ABC : Area DEF). If BC = 12, find EF.",
+          answer: "20",
+          topic: "Triangles"
+        },
+        {
+          type: "input",
+          text: "In isosceles △ABC with AB = AC, the exterior angle at C is 130°. Find the size of ∠A.",
+          answer: "80",
+          altAnswers: ["80°"],
           topic: "Triangles"
         }
       ]
@@ -298,6 +311,18 @@ MathMagician.registerChapter(7, {
           options: ["20", "10", "5", "Cannot determine"],
           answer: 1,
           topic: "Quadrilaterals & midpoint theorem"
+        },
+        {
+          type: "input",
+          text: "In △XYZ, D and E are the midpoints of XY and XZ. DE = 2x + 1 and YZ = 5x − 4. Find YZ.",
+          answer: "26",
+          topic: "Quadrilaterals & midpoint theorem"
+        },
+        {
+          type: "input",
+          text: "Rectangle ABCD has diagonals AC = 3x − 2 and BD = x + 10. Using the fact that a rectangle's diagonals are equal, find AC.",
+          answer: "16",
+          topic: "Quadrilaterals & midpoint theorem"
         }
       ]
     },
@@ -383,6 +408,20 @@ MathMagician.registerChapter(7, {
           text: "To disprove the conjecture 'every trapezium has equal diagonals', you need:",
           options: ["Just one counter-example", "At least three counter-examples", "A general proof", "It cannot be disproved"],
           answer: 0,
+          topic: "Special quadrilaterals — kite & trapezium"
+        },
+        {
+          type: "input",
+          text: "In kite ABCD (AB = AD, CB = CD), ∠A = 70° and ∠B = ∠D = 115°. Find ∠C (using the angle sum of a quadrilateral).",
+          answer: "60",
+          altAnswers: ["60°"],
+          topic: "Special quadrilaterals — kite & trapezium"
+        },
+        {
+          type: "input",
+          text: "In trapezium PQRS, PQ ∥ SR. ∠P = (2x + 10)° and ∠S = (3x − 5)° are co-interior angles. Find ∠P.",
+          answer: "80",
+          altAnswers: ["80°"],
           topic: "Special quadrilaterals — kite & trapezium"
         }
       ]
@@ -472,6 +511,19 @@ MathMagician.registerChapter(7, {
           type: "input",
           text: "In rhombus PQRS, diagonal PR = 16 and diagonal QS = 12. The diagonals intersect at O. Find PO (half of PR).",
           answer: "8",
+          topic: "Special quadrilaterals — parallelogram family"
+        },
+        {
+          type: "input",
+          text: "A rhombus has diagonals of length 16 cm and 12 cm. Find the length of one side of the rhombus.",
+          answer: "10",
+          altAnswers: ["10 cm"],
+          topic: "Special quadrilaterals — parallelogram family"
+        },
+        {
+          type: "input",
+          text: "Rectangle PQRS has diagonals PR = 5x − 3 and QS = 2x + 12. Find PR.",
+          answer: "22",
           topic: "Special quadrilaterals — parallelogram family"
         }
       ]

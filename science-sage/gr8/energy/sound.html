@@ -262,7 +262,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -280,6 +280,14 @@
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Compare the speed of sound in air, water, and steel. Which is fastest and which is slowest? Explain, in terms of particle spacing, why sound travels faster in solids than in gases.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Define <em>ultrasound</em> and give TWO practical applications of ultrasound technology in modern life.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">A ship uses SONAR to measure the depth of the ocean. It sends out an ultrasound pulse and receives the echo 0.6 s later. If the speed of sound in seawater is 1 500 m/s, calculate the depth of the ocean at that point. Show all working.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 7 · (5 marks)</div><div class="wb-qtext">A tuning fork vibrates at a constant frequency of 500 Hz. The table below gives the speed of sound in three different media.<br><br>
+      <table class="symbols-table"><thead><tr><th>Medium</th><th>Speed of sound (m/s)</th><th>Wavelength at 500 Hz (m)</th></tr></thead><tbody>
+      <tr><td>Air (20°C)</td><td>340</td><td>?</td></tr>
+      <tr><td>Water</td><td>1 480</td><td>?</td></tr>
+      <tr><td>Steel</td><td>5 100</td><td>?</td></tr>
+      </tbody></table><br>
+      (a) Use λ = v ÷ f to calculate the missing wavelength for each medium. Show your working for all three. (3)<br>
+      (b) The frequency of the tuning fork (500 Hz) does not change as the sound moves between media. Explain, using your answers to (a), why the wavelength is so much longer in steel than in air. (2)</div></div>
   </div>
 </div>
 
@@ -510,6 +518,18 @@ const QUESTIONS = [
     opts: ['3 000 m', '750 m', '1 500 m', '6 000 m'],
     ans: 2,
     exp: 'The pulse travels down and back, so the one-way distance = (v × t) ÷ 2 = (1500 × 2) ÷ 2 = 1 500 m. Remember to divide by 2 because the pulse must travel to the bottom and back.'
+  },
+  {
+    text: 'A student claps her hands 8 m from a large wall. Sound travels at 340 m/s in air, and the lesson states that a distinct echo needs the reflecting surface to be at least ~17 m away (so the returning sound arrives at least 0.1 s after the original). Will the student hear a distinct, separate echo?',
+    opts: ['Yes, because any hard wall always produces a clear echo', 'No — the round trip is 16 m, giving a delay of about 0.047 s, which is less than the 0.1 s needed for the ear to separate the original sound from its reflection', 'Yes, because 8 m is more than half of 17 m', 'No, because sound cannot reflect off flat walls, only curved surfaces'],
+    ans: 1,
+    exp: 'The sound must travel to the wall AND back: round-trip distance = 2 × 8 m = 16 m. Time delay = distance ÷ speed = 16 ÷ 340 ≈ 0.047 s. Since this is less than the 0.1 s the ear needs to perceive two separate sounds, the reflection arrives too soon after the original clap — the two blend together and no distinct echo is heard, even though the sound does still reflect off the wall.'
+  },
+  {
+    text: 'A sonar pulse travels through seawater (speed ≈ 1 480 m/s) and reflects off the steel hull of a sunken ship (speed of sound in steel ≈ 5 100 m/s). As the wave crosses from water into the steel, its frequency stays the same. What happens to its wavelength, and why?',
+    opts: ['The wavelength decreases, because faster media always squeeze waves into a shorter wavelength', 'The wavelength increases, because frequency stays constant while speed increases when entering steel, and λ = v ÷ f', 'The wavelength stays exactly the same, since only amplitude changes between media', 'The wavelength cannot change unless the frequency also changes'],
+    ans: 1,
+    exp: 'The wave equation λ = v ÷ f shows wavelength depends on both speed and frequency. When a wave crosses into a new medium, its frequency (set by the source) stays the same, but its speed changes according to the new medium\'s properties. Since sound travels much faster in steel (~5100 m/s) than in water (~1480 m/s), and f is unchanged, λ = v ÷ f must increase — the wavelength stretches out inside the steel.'
   }
 ];
 

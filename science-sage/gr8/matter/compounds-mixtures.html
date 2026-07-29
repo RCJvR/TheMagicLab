@@ -253,7 +253,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -271,6 +271,9 @@
     <div class="wb-q"><div class="wb-qnum">Question 4 · (4 marks)</div><div class="wb-qtext">Classify each of the following as an element, compound, or mixture. Give a reason for each answer: (a) pure iron (Fe), (b) carbon dioxide (CO₂), (c) seawater, (d) pure gold (Au).</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">List FOUR signs that a chemical change has taken place. Then decide: is dissolving salt in water a physical change or a chemical change? Explain your answer.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (4 marks)</div><div class="wb-qtext">Air is described as a homogeneous mixture. (a) Name THREE gases found in air and give approximate percentages for each. (b) Explain why air is classified as a mixture rather than a compound. (c) Name the industrial process used to separate the gases in air.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 7 · (4 marks)</div><div class="wb-qtext">Liquid air is warmed slowly so its gases can be separated. The table below shows the boiling point of each gas.
+      <table class="compare-table"><tr><th>Gas</th><th>Boiling point (°C)</th></tr><tr><td>Nitrogen (N₂)</td><td>−196</td></tr><tr><td>Argon (Ar)</td><td>−186</td></tr><tr><td>Oxygen (O₂)</td><td>−183</td></tr></table>
+      (a) Using the data, which gas boils off FIRST as the liquid air warms up? Explain your answer. (b) Calculate the temperature difference, in °C, between the boiling points of nitrogen and oxygen. (c) Name this separation process, and explain why it is able to separate the gases even though air is a homogeneous mixture.</div></div>
   </div>
 </div>
 
@@ -552,6 +555,8 @@ const QUESTIONS = [
   {text:'Sodium chloride (NaCl) can be separated from salt water by evaporation. This tells you that salt water is a:',opts:['Compound, because chemical bonds must be broken','Mixture, because it can be separated by a physical method','Element, because sodium and chloride are both present','Compound, because it has a fixed composition'],ans:1,exp:'If a substance can be separated by a physical method (like evaporation), it is a mixture, not a compound. Compounds can only be separated by chemical reactions, not physical processes.'},
   {text:'Which of the following is an ELEMENT?',opts:['Carbon dioxide (CO₂)','Bronze (copper + tin alloy)','Pure sulfur (S₈)','Methane (CH₄)'],ans:2,exp:'Pure sulfur (S₈) is an element — it contains only one type of atom (sulfur). CO₂ and CH₄ are compounds; bronze is a mixture (alloy). Note: S₈ is the molecular form sulfur naturally takes, but it is still an element.'},
   {text:'Iron (Fe) and sulfur (S) are mixed together in a beaker. No heating occurs. What is the result?',opts:['A compound called iron sulfide (FeS) is formed','A mixture of iron and sulfur is formed','An element is formed because both are on the periodic table','A chemical reaction occurs and gas is produced'],ans:1,exp:'Simply mixing iron and sulfur without heating produces a heterogeneous mixture — you can still see the yellow sulfur and grey iron separately, and they can be separated with a magnet. No chemical bonds are formed.'},
+  {text:'A beaker contains sand, salt, and water all mixed together. A student wants to recover all THREE substances separately, using only physical methods. Which sequence of steps will work?',opts:['Evaporate the whole mixture first, then try to filter what remains','Filter the mixture to remove the sand, then evaporate/distil the filtrate to separate the salt from the water','Add a magnet to remove the sand, then filter the salt out of the water','Filter the mixture twice — first for the salt, then for the water'],ans:1,exp:'Sand is insoluble, so filtering first removes it, leaving a filtrate of salt water. Evaporating (or better, distilling, to also recover the water) then separates the dissolved salt from the water. Filtration cannot remove dissolved salt because salt particles pass through the filter paper along with the water — only evaporation/distillation can separate a solution.'},
+  {text:'The Law of Definite Proportions states that pure water (H₂O) always contains hydrogen and oxygen in a fixed mass ratio of 1:8. A student breaks down three unknown liquid samples and measures these hydrogen:oxygen mass ratios — Sample 1 = 1:8, Sample 2 = 1:9, Sample 3 = 2:16. Which sample(s) are consistent with being pure water?',opts:['Sample 1 only','Sample 2 only','Sample 3 only','Samples 1 and 3'],ans:3,exp:'Sample 3\'s ratio of 2:16 simplifies to 1:8 (divide both numbers by 2), matching the fixed ratio required for pure water — so Samples 1 and 3 are both consistent. Sample 2\'s ratio of 1:9 does NOT match 1:8, so it cannot be pure water; it likely contains an impurity or was measured incorrectly. This is exactly what the Law of Definite Proportions predicts: a compound always has the same ratio by mass, no matter the sample size.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -576,7 +581,7 @@ function answer(qi,oi){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
     const msgs=['Keep studying — re-read the lesson.','Good effort — review the explanations.','Well done! A solid understanding.','Excellent! You\'ve mastered compounds and mixtures.'];
-    document.getElementById('scoreMsg').textContent=score<=2?msgs[0]:score<=4?msgs[1]:score===5?msgs[2]:msgs[3];
+    document.getElementById('scoreMsg').textContent=score<=3?msgs[0]:score<=5?msgs[1]:score<=7?msgs[2]:msgs[3];
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

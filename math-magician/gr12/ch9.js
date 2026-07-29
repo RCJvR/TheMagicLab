@@ -103,7 +103,9 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "The regression line always passes through:", options: ["The origin", "The median point", "The mean point (x̄, ȳ)", "The point (0, a)"], answer: 2, topic: "Scatter plots & regression" },
         { type: "mc", text: "Predicting y for x = 50 when data ranges from x = 10 to 40 is:", options: ["Interpolation", "Extrapolation", "Correlation", "Regression"], answer: 1, topic: "Scatter plots & regression" },
         { type: "input", text: "Regression line: ŷ = 3.2 + 1.5x. Predict y when x = 4.", answer: "9.2", altAnswers: ["9,2"], topic: "Scatter plots & regression" },
-        { type: "mc", text: "The least squares line minimises:", options: ["The sum of residuals", "The sum of squared residuals", "The product of x and y", "The range of y"], answer: 1, topic: "Scatter plots & regression" }
+        { type: "mc", text: "The least squares line minimises:", options: ["The sum of residuals", "The sum of squared residuals", "The product of x and y", "The range of y"], answer: 1, topic: "Scatter plots & regression" },
+        { type: "input", text: "A dataset of 5 points has: Σx = 20, Σy = 50, Σxy = 220, Σx² = 90, n = 5. Calculate the gradient b of the least squares regression line.", answer: "2", topic: "Scatter plots & regression" },
+        { type: "mc", text: "The regression line for a dataset is ŷ = 12 + 2.5x, based on data with x between 3 and 15. A predicted value of 57 was read off this line. What x-value was used, and is this prediction an interpolation or extrapolation?", options: ["x = 18; extrapolation (18 is outside the data range)", "x = 18; interpolation (18 is within the data range)", "x = 22.8; extrapolation", "x = 8; interpolation"], answer: 0, topic: "Scatter plots & regression" }
       ]
     },
     {
@@ -193,7 +195,9 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "r = 0.6 means what percentage of variation in y is explained by x?", options: ["60%", "36%", "0.6%", "6%"], answer: 1, topic: "Correlation coefficient" },
         { type: "mc", text: "Which r-value shows the weakest correlation?", options: ["r = 0.9", "r = −0.85", "r = 0.3", "r = −0.95"], answer: 2, topic: "Correlation coefficient" },
         { type: "mc", text: "A study finds r = 0.88 between hours of study and test scores. This means:", options: ["Studying causes good scores", "Strong positive linear association between the variables", "More study always leads to better scores", "The relationship is exactly linear"], answer: 1, topic: "Correlation coefficient" },
-        { type: "input", text: "r = 0.75. Find r² as a percentage (%).", answer: "56.25", altAnswers: ["56,25"], topic: "Correlation coefficient" }
+        { type: "input", text: "r = 0.75. Find r² as a percentage (%).", answer: "56.25", altAnswers: ["56,25"], topic: "Correlation coefficient" },
+        { type: "input", text: "For a dataset: n = 5, Σx = 20, Σy = 50, Σxy = 220, Σx² = 90, Σy² = 560. Calculate the correlation coefficient r, to 2 decimal places.", answer: "0.82", altAnswers: ["0,82"], topic: "Correlation coefficient" },
+        { type: "mc", text: "If a constant amount is added to every y-value in a dataset (e.g. 10 marks added to every test score), the correlation coefficient r between x and y:", options: ["Increases", "Decreases", "Stays exactly the same", "Becomes undefined"], answer: 2, topic: "Correlation coefficient" }
       ]
     },
     {
@@ -278,7 +282,9 @@ MathMagician.registerChapter(9, {
         { type: "mc", text: "In a symmetric distribution, we expect:", options: ["Mean far from median", "Mean ≈ median ≈ mode", "Mode &gt; mean always", "No mode exists"], answer: 1, topic: "Symmetric & skewed data" },
         { type: "mc", text: "On a box-and-whisker plot, a long whisker on the left of the median indicates:", options: ["Positive skew", "Negative skew", "Symmetry", "An error in the data"], answer: 1, topic: "Symmetric & skewed data" },
         { type: "input", text: "A distribution has mean = 40, median = 40, mode = 40. How many of the three measures are equal (as a number)?", answer: "3", topic: "Symmetric & skewed data" },
-        { type: "mc", text: "Salary data for a company is usually strongly positively skewed. This means:", options: ["Most salaries are high, with a few very low", "Most salaries are low to moderate, with a few very high pulling the mean up", "All salaries are the same", "The median is greater than the mean"], answer: 1, topic: "Symmetric & skewed data" }
+        { type: "mc", text: "Salary data for a company is usually strongly positively skewed. This means:", options: ["Most salaries are high, with a few very low", "Most salaries are low to moderate, with a few very high pulling the mean up", "All salaries are the same", "The median is greater than the mean"], answer: 1, topic: "Symmetric & skewed data" },
+        { type: "mc", text: "A dataset has median = 50 and mode = 58. The distribution is known to be negatively skewed. Which of the following is a plausible value for the mean?", options: ["45", "50", "55", "60"], answer: 0, topic: "Symmetric & skewed data" },
+        { type: "mc", text: "A box plot has: Minimum = 10, Q1 = 42, Median = 48, Q3 = 50, Maximum = 52. Describe the skewness of the distribution.", options: ["Positively skewed", "Negatively skewed", "Symmetric", "Cannot be determined from this data"], answer: 1, topic: "Symmetric & skewed data" }
       ]
     }
   ],
@@ -297,11 +303,18 @@ MathMagician.registerChapter(9, {
         { label: "a", text: "What does r = 0.72 suggest about the relationship?", marks: 2 },
         { label: "b", text: "Suggest a confounding variable that could explain this correlation.", marks: 2 },
         { label: "c", text: "Why is it incorrect to conclude that bigger feet cause higher IQ?", marks: 2 }
+      ]},
+      { number: 3, text: "The five-number summary for a class's test scores (out of 65) is: Minimum = 32, Q1 = 45, Median = 58, Q3 = 62, Maximum = 65. The mean of the dataset is 50.", parts: [
+        { label: "a", text: "Calculate the length of the lower whisker (Minimum to Q1) and the upper whisker (Q3 to Maximum).", marks: 2 },
+        { label: "b", text: "Compare the length of the box on each side of the median (Q1 to Median vs Median to Q3).", marks: 2 },
+        { label: "c", text: "Hence describe the skewness of the distribution.", marks: 2 },
+        { label: "d", text: "Does the given mean of 50 support your answer in (c)? Explain by comparing the mean and median.", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "Points plotted correctly", b: "x̄=28/6≈4.67; ȳ=372/6=62", c: "Use calculator: ŷ ≈ 33.4 + 6.13x", d: "r≈0.999 (very strong positive linear correlation)", e: "ŷ ≈ 33.4 + 6.13(7) ≈ 33.4 + 42.9 ≈ 76.3; interpolation (7 is within range 2–8)" },
-      2: { a: "Moderate to strong positive linear association", b: "Age — older children have both larger feet and higher IQ due to development", c: "Correlation does not imply causation — a third variable (age) drives both" }
+      2: { a: "Moderate to strong positive linear association", b: "Age — older children have both larger feet and higher IQ due to development", c: "Correlation does not imply causation — a third variable (age) drives both" },
+      3: { a: "Lower whisker = 45−32 = 13; Upper whisker = 65−62 = 3 — the lower whisker is much longer", b: "Q1 to Median = 58−45 = 13; Median to Q3 = 62−58 = 4 — the lower half of the box is also longer", c: "Both the whisker and box are longer on the lower (left) side, so the distribution is negatively skewed (skewed left) — a tail of low scores", d: "Yes: mean (50) < median (58), which matches the expected order mean < median for a negatively skewed distribution, confirming the skew" }
     }
   }
 });

@@ -57,6 +57,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Which is a trinomial?", options: ["5x²", "3x − 4", "x² + 2x − 1", "7"], answer: 2, topic: "Expressions" },
         { type: "mc", text: "What is the constant term in <span class='math'>3x² − 5x + 9</span>?", options: ["3", "−5", "9", "x"], answer: 2, topic: "Expressions" },
         { type: "input", text: "'The product of 4 and y, decreased by 6' as an expression:", answer: "4y-6", topic: "Expressions" },
+        { type: "input", text: "Write as an expression: 'Subtract twice y from the square of x, then add 5'", answer: "x^2-2y+5", topic: "Expressions" },
+        { type: "input", text: "A number trick: think of a number x, double it, add 6, divide by 2, then subtract the original number x. Write this as a simplified expression in x — what single number does it always give?", answer: "3", topic: "Expressions" },
       ]
     },
     {
@@ -98,6 +100,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "Which terms in <span class='math'>4a² + 3b − 2a² + b + 6</span> are like terms with <span class='math'>4a²</span>? (answer: -2a^2)", answer: "-2a^2", topic: "Expressions" },
         { type: "mc", text: "Are <span class='math'>3xy</span> and <span class='math'>5yx</span> like terms?", options: ["No — different order", "Yes — multiplication is commutative", "No — different coefficients", "Only if x = y"], answer: 1, topic: "Expressions" },
         { type: "mc", text: "Which expression has no like terms to collect?", options: ["3x + 5x − 2", "4x² + 3x − x²", "2a + 3b + 4c", "5y − 2y + 1"], answer: 2, topic: "Expressions" },
+        { type: "input", text: "Simplify by collecting like terms: <span class='math'>5x² + 3xy − 2x² + 4xy − x²</span>. What is the coefficient of xy in the answer?", answer: "7", topic: "Expressions" },
+        { type: "input", text: "<span class='math'>3x²y</span> and <span class='math'>3xy²</span> are NOT like terms. Simplify <span class='math'>3x²y + 2xy² − x²y + 5xy²</span> by collecting only the true like terms. What is the coefficient of xy² in the simplified answer?", answer: "7", topic: "Expressions" },
       ]
     },
     {
@@ -144,6 +148,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Simplify: <span class='math'>3x² + 5x − 2 − (x² − 3x + 4)</span>", options: ["2x² + 8x − 6", "2x² + 2x − 6", "4x² + 2x + 2", "2x² + 8x + 2"], answer: 0, topic: "Expressions" },
         { type: "input", text: "Simplify: <span class='math'>(6y² − 4y + 3) − (2y² + y − 8)</span>. What is the constant term?", answer: "11", topic: "Expressions" },
         { type: "mc", text: "What is <span class='math'>−(−3x + 5)</span>?", options: ["−3x + 5", "3x + 5", "3x − 5", "−3x − 5"], answer: 2, topic: "Expressions" },
+        { type: "input", text: "Simplify: <span class='math'>(5x² − 3x + 7) − (2x² − x − 4) + (x² + 2x)</span>. What is the constant term in the answer?", answer: "11", topic: "Expressions" },
+        { type: "input", text: "A rectangle has length <span class='math'>(3x + 2)</span> and width <span class='math'>(x − 1)</span>. A second rectangle has length <span class='math'>(2x − 3)</span> and width <span class='math'>(x + 4)</span>. Write and simplify an expression for the sum of the two perimeters. What is the coefficient of x?", answer: "14", topic: "Expressions" },
       ]
     },
     {
@@ -194,6 +200,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Expand and simplify: <span class='math'>4x(x − 2) + 3x(x + 1)</span>", options: ["7x² − 5x", "7x² − 5", "7x² + 5x", "x² − 5x"], answer: 0, topic: "Expressions" },
         { type: "input", text: "Simplify: <span class='math'>2x² × 3x × 4</span>", answer: "24x^3", topic: "Expressions" },
         { type: "mc", text: "Expand: <span class='math'>−2x(x² − 3x + 5)</span>", options: ["−2x³ − 6x² − 10x", "−2x³ + 6x² − 10x", "2x³ − 6x² + 10x", "−2x³ + 6x² + 10x"], answer: 1, topic: "Expressions" },
+        { type: "input", text: "Expand and simplify: <span class='math'>3x(2x − 5) − 2x(x + 4)</span>. What is the coefficient of x in the answer?", answer: "-23", topic: "Expressions" },
+        { type: "input", text: "A rectangle has length <span class='math'>2x</span> and width <span class='math'>(x + 3)</span>. Write an expression for its area, then calculate the area when x = 4.", answer: "56", topic: "Expressions" },
       ]
     },
     {
@@ -246,6 +254,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "Simplify: <span class='math'>(12y³ − 8y² + 4y) ÷ 4y</span>. What is the constant term?", answer: "1", topic: "Division" },
         { type: "mc", text: "Simplify: <span class='math'>18x³y² ÷ 6xy</span>", options: ["3x²y", "3x²y²", "12x²y", "3xy"], answer: 0, topic: "Division" },
         { type: "input", text: "Simplify: <span class='math'>(10a³b − 15a²b²) ÷ 5ab</span>. What is the coefficient of the second term?", answer: "-3", topic: "Division" },
+        { type: "input", text: "Simplify: <span class='math'>(18x⁴ − 12x³ + 6x²) ÷ 6x²</span>. What is the coefficient of x in the answer?", answer: "-2", topic: "Division" },
+        { type: "input", text: "A rectangle has area <span class='math'>(12x³ + 8x²)</span> and width <span class='math'>4x²</span>. Determine an expression for its length, then find the length when x = 2.", answer: "8", topic: "Division" },
       ]
     },
     {
@@ -334,6 +344,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "If p = −3, what is <span class='math'>(p + 2)²</span>?", options: ["1", "−1", "25", "−25"], answer: 0, topic: "Substitution" },
         { type: "input", text: "If x = 4, evaluate <span class='math'>x³ − 2x² + x</span>", answer: "36", topic: "Substitution" },
         { type: "mc", text: "The formula for the area of a trapezium is <span class='math'>A = ½(a+b)h</span>. If a=5, b=9, h=4, then A = ?", options: ["28", "56", "18", "36"], answer: 0, topic: "Substitution" },
+        { type: "input", text: "If x = −2 and y = 3, evaluate <span class='math'>2x²y − 3xy + y²</span>", answer: "51", topic: "Substitution" },
+        { type: "input", text: "A rectangle has length <span class='math'>(x + 4)</span> and width <span class='math'>(x − 1)</span>. Write a simplified expression for its perimeter <span class='math'>P = 2(l + w)</span>, then evaluate P when x = 5.", answer: "26", topic: "Substitution" },
       ]
     },
     {
@@ -368,6 +380,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "If a = −1 and b = 3, evaluate <span class='math'>2a² − ab + b²</span>", answer: "14", topic: "Mixed" },
         { type: "mc", text: "Simplify: <span class='math'>(3x² + x − 5) − (x² − 3x + 2)</span>", options: ["2x² − 2x − 3", "2x² + 4x − 7", "4x² + 4x − 7", "2x² + 4x − 3"], answer: 1, topic: "Mixed" },
         { type: "input", text: "Expand: <span class='math'>−4x(2x² − 3x + 1)</span>. What is the coefficient of x²?", answer: "12", topic: "Mixed" },
+        { type: "input", text: "Simplify: <span class='math'>2x(x − 3) − (x² − 5x + 6)</span>. What is the constant term?", answer: "-6", topic: "Mixed" },
+        { type: "input", text: "A number trick: think of a number x, add 4, multiply by 3, subtract 12, then divide by 3. Simplify the expression algebraically — what do you always get back?", answer: "x", topic: "Mixed" },
       ]
     }
   ],

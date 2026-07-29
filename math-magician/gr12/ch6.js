@@ -102,7 +102,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "Differentiate: y = 5x³ − 2x + 8", options: ["15x² − 2", "5x² − 2x", "15x² − 2x + 8", "15x³ − 2"], answer: 0, topic: "Limits, first principles & rules" },
         { type: "input", text: "f(x) = x⁴ − 3x². Find f'(2).", answer: "20", topic: "Limits, first principles & rules" },
         { type: "mc", text: "dy/dx of y = 4/x²:", options: ["−8/x³", "8x", "−8x³", "4x⁻¹"], answer: 0, topic: "Limits, first principles & rules" },
-        { type: "mc", text: "Differentiate: f(x) = (2x − 1)²", options: ["2(2x−1)", "4(2x−1)", "4x − 2", "Both B and C"], answer: 1, topic: "Limits, first principles & rules" }
+        { type: "mc", text: "Differentiate: f(x) = (2x − 1)²", options: ["2(2x−1)", "4(2x−1)", "4x − 2", "Both B and C"], answer: 1, topic: "Limits, first principles & rules" },
+        { type: "input", text: "If f(x) = 3x² − x, use first principles (or the power rule) to determine f'(x), then evaluate f'(−2).", answer: "-13", altAnswers: ["−13"], topic: "Limits, first principles & rules" }
       ]
     },
     {
@@ -207,7 +208,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "f''(x) = −6 at a stationary point means:", options: ["Minimum", "Maximum", "Point of inflection", "Cannot determine"], answer: 1, topic: "Tangents, curve sketching & optimisation" },
         { type: "input", text: "f(x) = x² − 4x + 3. Find the x-coordinate of the minimum.", answer: "2", topic: "Tangents, curve sketching & optimisation" },
         { type: "mc", text: "Tangent to y = x² at x = 3 has gradient:", options: ["9", "6", "3", "12"], answer: 1, topic: "Tangents, curve sketching & optimisation" },
-        { type: "mc", text: "A box with square base of side x and height h has volume 500 = x²h. To minimise surface area, the first step is to:", options: ["Differentiate SA immediately", "Express h in terms of x using V=500", "Set SA = 0", "Differentiate V"], answer: 1, topic: "Tangents, curve sketching & optimisation" }
+        { type: "mc", text: "A box with square base of side x and height h has volume 500 = x²h. To minimise surface area, the first step is to:", options: ["Differentiate SA immediately", "Express h in terms of x using V=500", "Set SA = 0", "Differentiate V"], answer: 1, topic: "Tangents, curve sketching & optimisation" },
+        { type: "input", text: "Find the y-intercept of the tangent to f(x) = x² − 6x + 5 at the point where the gradient of the tangent is 4.", answer: "-20", altAnswers: ["−20"], topic: "Tangents, curve sketching & optimisation" }
       ]
     },
     {
@@ -315,7 +317,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "For s(t) = t³ − 6t² + 9t, the acceleration function a(t) is:", options: ["6t − 12", "3t² − 12t + 9", "6t", "12"], answer: 0, topic: "Rates of change & calculus of motion" },
         { type: "mc", text: "The average rate of change of f(x) = x² between x = 1 and x = 4 is:", options: ["5", "15", "3", "16"], answer: 0, topic: "Rates of change & calculus of motion" },
         { type: "mc", text: "If v(t) &lt; 0 for an object moving along a line, this means the object is:", options: ["Speeding up", "Moving in the negative direction", "At rest", "Accelerating positively"], answer: 1, topic: "Rates of change & calculus of motion" },
-        { type: "input", text: "s(t) = t² − 8t + 20. Find the minimum displacement (the value of s at the stationary point).", answer: "4", topic: "Rates of change & calculus of motion" }
+        { type: "input", text: "s(t) = t² − 8t + 20. Find the minimum displacement (the value of s at the stationary point).", answer: "4", topic: "Rates of change & calculus of motion" },
+        { type: "input", text: "s(t) = 2t³ − 15t² + 24t describes the displacement (m) of an object for t ≥ 0. Find the acceleration at t = 3 seconds (in m/s²).", answer: "6", topic: "Rates of change & calculus of motion" }
       ]
     },
     {
@@ -423,7 +426,8 @@ MathMagician.registerChapter(6, {
         { type: "mc", text: "On the graph of f'(x), an x-intercept corresponds to which feature of f(x)?", options: ["A y-intercept", "A turning point", "An asymptote", "A point of inflection only"], answer: 1, topic: "Cubic graphs: full analysis & interpretation" },
         { type: "mc", text: "If f'(x) &gt; 0 for all x &lt; 1 and f'(x) &lt; 0 for all x &gt; 1, then at x = 1, f has a:", options: ["Local minimum", "Local maximum", "Point of inflection", "x-intercept"], answer: 1, topic: "Cubic graphs: full analysis & interpretation" },
         { type: "input", text: "f(x) = x³ − 12x. Find the x-value(s) where f is at a local minimum (give the positive value).", answer: "2", topic: "Cubic graphs: full analysis & interpretation" },
-        { type: "mc", text: "A cubic with a &gt; 0 has turning points at x = −1 (max) and x = 3 (min). f is decreasing on:", options: ["x &lt; −1", "−1 &lt; x &lt; 3", "x &gt; 3", "All real x"], answer: 1, topic: "Cubic graphs: full analysis & interpretation" }
+        { type: "mc", text: "A cubic with a &gt; 0 has turning points at x = −1 (max) and x = 3 (min). f is decreasing on:", options: ["x &lt; −1", "−1 &lt; x &lt; 3", "x &gt; 3", "All real x"], answer: 1, topic: "Cubic graphs: full analysis & interpretation" },
+        { type: "input", text: "A cubic function f has derivative f'(x) = 6x² − 6x − 36. Find the positive x-coordinate of its stationary point.", answer: "3", topic: "Cubic graphs: full analysis & interpretation" }
       ]
     }
   ],
@@ -450,13 +454,23 @@ MathMagician.registerChapter(6, {
         { label: "a", text: "Write the area A in terms of x (width perpendicular to wall).", marks: 2 },
         { label: "b", text: "Find the dimensions that maximise A.", marks: 4 },
         { label: "c", text: "Find the maximum area.", marks: 1 }
+      ]},
+      { number: 5, text: "The table below gives values of f'(x), the derivative of a cubic function f(x), at several x-values:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>x</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>f'(x)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>36</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>15</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−9</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−12</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−9</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>15</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>36</td></tr></table>", parts: [
+        { label: "a", text: "Using the table, identify the x-values of the stationary (turning) points of f(x).", marks: 2 },
+        { label: "b", text: "State the interval(s) where f(x) is increasing, based on the sign of f'(x) in the table.", marks: 3 },
+        { label: "c", text: "Given that f'(x) = 3x² − 6x − 9, confirm your answer to (a) algebraically by solving f'(x) = 0.", marks: 3 }
       ]}
     ],
     answers: {
       1: { a: "f'(x)=lim[h→0][f(x+h)−f(x)]/h", b: "f(x+h)=2(x+h)²−3=2x²+4xh+2h²−3; diff=4xh+2h²", c: "lim=(4x+2h)→4x; f'(x)=4x" },
       2: { a: "15x⁴−12x²+7", b: "g=x−x⁻¹→g'=1+x⁻²=1+1/x²", c: "h=(x²+4x+4)(x−1)=x³+3x²−4→h'=3x²+6x" },
-      3: { a: "y-int:(0,27); f(x)=(x−3)²(x+3) nope... factor: f(3)=27−27−27+27=0; f(x)=(x−3)(x²−9)... test: (x−3)²(x+3)? Check: x-ints at x=3(double) and x=−3", b: "f'=3x²−6x−9=3(x²−2x−3)=3(x−3)(x+1)=0→x=3,x=−1; f(3)=0(min,f''=12>0); f(−1)=32(max,f''=−12<0)", c: "f''=6x−6=0→x=1; f(1)=16; inflection (1,16)", d: "Rising cubic, max(−1,32), min(3,0), cuts x at −3 and touches at 3" },
-      4: { a: "2x+y=120→y=120−2x; A=x(120−2x)=120x−2x²", b: "A'=120−4x=0→x=30m; y=60m", c: "A=30×60=1800 m²" }
+      3: { a: "y-int: (0,27). x-ints: f(3)=27−27−27+27=0, so (x−3) is a factor; dividing gives f(x)=(x−3)(x²−9)=(x−3)²(x+3). x-ints at x=3 (double root — curve touches the x-axis) and x=−3 (curve crosses the x-axis)", b: "f'=3x²−6x−9=3(x²−2x−3)=3(x−3)(x+1)=0→x=3,x=−1; f(3)=0(min,f''=12>0); f(−1)=32(max,f''=−12<0)", c: "f''=6x−6=0→x=1; f(1)=16; inflection (1,16)", d: "Rising cubic, max(−1,32), min(3,0), cuts x at −3 and touches at 3" },
+      4: { a: "2x+y=120→y=120−2x; A=x(120−2x)=120x−2x²", b: "A'=120−4x=0→x=30m; y=60m", c: "A=30×60=1800 m²" },
+      5: {
+        a: "f'(x) = 0 at x = −1 and x = 3 (the table shows f'(x) crossing zero at these x-values)",
+        b: "f'(x) &gt; 0 for x &lt; −1 and for x &gt; 3, so f(x) is increasing on x &lt; −1 and x &gt; 3",
+        c: "3x²−6x−9=0 → x²−2x−3=0 → (x−3)(x+1)=0 → x=3 or x=−1, confirming (a)"
+      }
     }
   }
 });

@@ -202,7 +202,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
     </div>
     <div id="questions"></div>
@@ -220,6 +220,20 @@
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain the difference between how animal cells and plant cells complete cytokinesis.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Give THREE reasons why mitosis is important to living organisms.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (2 marks)</div><div class="wb-qtext">Explain, in your own words, what cancer is and why it occurs.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 7 · (5 marks)</div><div class="wb-qtext">A learner examines a prepared slide of an onion root tip under a microscope and counts 200 cells, recording which phase each one is in:
+      <table class="symbols-table" style="margin:12px 0 14px;width:100%;border-collapse:collapse">
+        <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Phase</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Number of cells observed</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 10px">Interphase</td><td style="padding:6px 10px">162</td></tr>
+          <tr><td style="padding:6px 10px">Prophase</td><td style="padding:6px 10px">20</td></tr>
+          <tr><td style="padding:6px 10px">Metaphase</td><td style="padding:6px 10px">8</td></tr>
+          <tr><td style="padding:6px 10px">Anaphase</td><td style="padding:6px 10px">6</td></tr>
+          <tr><td style="padding:6px 10px">Telophase</td><td style="padding:6px 10px">4</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the percentage of the 200 cells observed in each phase. (2)<br>
+      (b) If the complete cell cycle for this root tip takes 24 hours, use your percentage for prophase to estimate how many hours a cell typically spends in prophase. (2)<br>
+      (c) Explain why counting the number of cells "caught" in each phase at a single moment in time can be used to estimate how long that phase actually lasts. (1)</div></div>
   </div>
 </div>
 
@@ -442,6 +456,7 @@ const QUESTIONS=[
   {text:'How does cytokinesis differ in plant cells compared to animal cells?',opts:['Plant cells form a cell plate; animal cells pinch inward','Animal cells form a cell plate; plant cells pinch inward','Both form a cell plate','Neither divides the cytoplasm'],ans:0,exp:'Because plant cells have a rigid cell wall, they cannot pinch inward like animal cells — instead, a new cell plate forms and develops into a dividing wall.'},
   {text:'Which of the following is NOT a reason mitosis is important?',opts:['Growth','Repair of damaged tissue','Asexual reproduction in simple organisms','Producing genetically varied offspring'],ans:3,exp:'Mitosis produces genetically identical daughter cells — it does not create genetic variation (that happens through meiosis and sexual reproduction, studied in later grades).'},
   {text:'What best describes cancer?',opts:['A virus that destroys cells','Uncontrolled cell division and growth','A type of chromosome','A phase of the cell cycle'],ans:1,exp:'Cancer occurs when the normal control of the cell cycle breaks down, causing cells to divide uncontrollably and form a tumour.'},
+  {text:'A typical dividing human cell spends 23 hours in interphase and only 1 hour total in mitosis and cytokinesis combined, out of a 24-hour cell cycle. If a tissue sample under a microscope contains 500 cells at a random moment in time, roughly how many of them would you expect to see actively dividing (in mitosis or cytokinesis)?',opts:['500 cells','250 cells','100 cells','About 21 cells'],ans:3,exp:'This combines two ideas: reading time-based proportions from the cycle, and applying that proportion to a cell count. The fraction of the cycle spent dividing is 1 hour ÷ 24 hours ≈ 4.2%. Applying this fraction to the sample: 500 × 0.042 ≈ 21 cells. Because a randomly captured snapshot of cells is equally likely to catch a cell at any point in its cycle, the proportion of cells seen actively dividing mirrors the proportion of TIME spent dividing — this is the same logic real biologists use to estimate phase durations from microscope counts (the "mitotic index").'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

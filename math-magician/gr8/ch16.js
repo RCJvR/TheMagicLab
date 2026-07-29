@@ -80,6 +80,8 @@ MathMagician.registerChapter(16, {
         { type: "input", text: "Data set: 3, 5, 3, 7, 3, 5, 7, 5, 3. What is the frequency of 3?", answer: "4", topic: "Data" },
         { type: "mc", text: "Which type of data would suit a grouped frequency table best?", options: ["Favourite colours of 10 learners", "Ages of 100 adults ranging from 18 to 75", "Number of pets owned (0 to 4)", "Days of the week"], answer: 1, topic: "Data" },
         { type: "input", text: "A frequency table shows values 2, 4, 6, 8 with frequencies 5, 3, 6, 6. What is the total number of data values?", answer: "20", topic: "Data" },
+        { type: "input", text: "A survey of 20 learners' number of siblings gives frequencies: 0 → 5, 1 → 8, 2 → 4, 3 → x. If all frequencies must sum to 20, find x.", answer: "3", topic: "Data" },
+        { type: "mc", text: "A teacher wants to summarise 40 learners' favourite subjects (categorical data) using a graph. Which of these would be an INCORRECT choice?", options: ["Bar graph — categories compared with separated bars", "Pie chart — shows proportions of each subject", "Histogram — because histograms require continuous numerical data grouped into intervals, not categories", "Frequency table — organises counts per category"], answer: 2, topic: "Data" },
       ]
     },
     {
@@ -154,6 +156,8 @@ MathMagician.registerChapter(16, {
         { type: "input", text: "Data: 5, 8, 5, 3, 5, 9, 8. What is the mode?", answer: "5", topic: "Central tendency" },
         { type: "mc", text: "A data set has mean 14 with 5 values. A 6th value of 14 is added. What is the new mean?", options: ["14", "13", "15", "Cannot determine"], answer: 0, topic: "Central tendency" },
         { type: "input", text: "Data: 2, 6, 10, 14, 18. What is the range?", answer: "16", topic: "Central tendency" },
+        { type: "input", text: "A set of 6 numbers has a mean of 15. Five of the numbers are 12, 14, 16, 18, and 10. Find the sixth number.", answer: "20", topic: "Central tendency" },
+        { type: "input", text: "The mean of 8 numbers is 22. One number, 46, is removed. What is the mean of the remaining 7 numbers, to 2 decimal places?", answer: "18.57", topic: "Central tendency" },
       ]
     },
     {
@@ -233,6 +237,8 @@ MathMagician.registerChapter(16, {
         { type: "mc", text: "In a stem-and-leaf plot, the entry 4 | 2 5 8 represents:", options: ["4, 5, 8", "42, 45, 48", "24, 54, 84", "4.2, 4.5, 4.8"], answer: 1, topic: "Graphs" },
         { type: "mc", text: "What distinguishes a histogram from a bar graph?", options: ["Histograms use circles", "Histogram bars touch (continuous data)", "Bar graphs can't show frequencies", "They are identical"], answer: 1, topic: "Graphs" },
         { type: "input", text: "Four categories have frequencies 6, 9, 12, 3. What is the total?", answer: "30", topic: "Graphs" },
+        { type: "input", text: "A pie chart shows 4 categories with angles 144°, 90°, 72°, and x°. Find x, then state what percentage of the total this represents.", answer: "15", topic: "Graphs" },
+        { type: "input", text: "A bar graph has 4 categories totalling 90 units. Category A = 24 units and category B = 18 units. The remaining two categories, C and D, have equal frequency. Find the frequency of category C.", answer: "24", topic: "Graphs" },
       ]
     },
     {
@@ -303,6 +309,8 @@ MathMagician.registerChapter(16, {
         { type: "input", text: "Data: 3, 5, 5, 6, 7, 40. What is the median?", answer: "5.5", topic: "Interpretation" },
         { type: "mc", text: "Test scores over 5 weeks: 40, 55, 62, 70, 68. The general trend is:", options: ["Decreasing", "No trend", "Increasing then slightly decreasing", "Constant"], answer: 2, topic: "Interpretation" },
         { type: "mc", text: "Which would NOT make a graph misleading?", options: ["Starting y-axis at 50", "3D effects on a bar chart", "Leaving out a title", "Labelling both axes clearly"], answer: 3, topic: "Interpretation" },
+        { type: "input", text: "Data set: 4, 6, 6, 8, 9, 47. Calculate the mean (to 2 d.p.).", answer: "13.33", topic: "Interpretation" },
+        { type: "input", text: "A shop records daily sales (in Rand) for a week: 800, 850, 900, 820, 780, 3200, 830. Identify the outlier and calculate the mean sales WITHOUT it (round to the nearest Rand).", answer: "830", topic: "Interpretation" },
       ]
     },
     {
@@ -337,6 +345,8 @@ MathMagician.registerChapter(16, {
         { type: "input", text: "A pie chart category has 18 out of 72 values. What is the sector angle in degrees?", answer: "90", topic: "Mixed" },
         { type: "mc", text: "Which graph best shows the distribution of 50 learners' heights?", options: ["Pie chart", "Line graph", "Histogram", "Double bar graph"], answer: 2, topic: "Mixed" },
         { type: "input", text: "Data: 3, 3, 5, 7, 9, 11, 11. List both modes separated by a comma.", answer: "3,11", topic: "Mixed" },
+        { type: "input", text: "A data set of 7 values has mean 20. Six of the values are 15, 18, 22, 25, 19, and 21. Find the seventh value.", answer: "20", topic: "Mixed" },
+        { type: "input", text: "A pie chart shows sport preferences: Soccer 40%, Rugby 25%, Cricket x%, Netball 15%, Other 10%. If 200 learners were surveyed, find x, then calculate how many learners chose Cricket.", answer: "20", topic: "Mixed" },
       ]
     },
   ],
@@ -390,6 +400,16 @@ MathMagician.registerChapter(16, {
               { label: "c)", text: "Which measure — mean or median — better represents the data? Explain.", marks: 2 },
             ]
           },
+          {
+            num: "5",
+            text: "The double bar graph data below shows the number of learners in each mark range for two Grade 8 classes on the same test:<br><br><table style='border-collapse:collapse;font-family:JetBrains Mono,monospace;font-size:13px;'><tr><th style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>Mark range</th><th style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>8A</th><th style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>8B</th></tr><tr><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>50–59</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr><tr><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>60–69</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>8</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>6</td></tr><tr><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>70–79</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>10</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>9</td></tr><tr><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>80–89</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>6</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>7</td></tr><tr><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>90–99</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 12px;border:1px solid rgba(255,255,255,0.15);'>3</td></tr></table>",
+            parts: [
+              { label: "a)", text: "How many learners are in class 8A in total?", marks: 1 },
+              { label: "b)", text: "Which mark range has exactly the same number of learners in both classes?", marks: 1 },
+              { label: "c)", text: "Calculate the total number of learners (both classes combined) who scored 80 or above.", marks: 2 },
+              { label: "d)", text: "What percentage of class 8B scored in the 70–79 range? (to 1 d.p.)", marks: 2 },
+            ]
+          },
         ]
       },
     ]
@@ -420,6 +440,10 @@ MathMagician.registerChapter(16, {
           { num: "Q4a", ans: "Outliers: 12 and 90", note: "Both far from the 25–32 cluster" },
           { num: "Q4b", ans: "With all 8: mean=34.6; without 12 and 90: mean=29.2", note: "277÷8=34.6; 175÷6=29.2" },
           { num: "Q4c", ans: "Median (≈29.5) better represents the data", note: "Mean distorted by outliers 12 and 90" },
+          { num: "Q5a", ans: "30 learners", note: "3+8+10+6+3 = 30" },
+          { num: "Q5b", ans: "90–99 (3 learners in both classes)", note: "Only range where 8A and 8B match exactly" },
+          { num: "Q5c", ans: "19 learners", note: "8A: 6+3=9; 8B: 7+3=10; total = 9+10 = 19" },
+          { num: "Q5d", ans: "30.0%", note: "9÷30×100 = 30%" },
         ]
       },
     ]

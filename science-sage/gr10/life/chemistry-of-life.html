@@ -242,6 +242,21 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (5 marks)</div><div class="wb-qtext">Name the three categories of carbohydrates based on size, and give ONE example of each. State the main function of carbohydrates in the body.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the basic structure of a lipid molecule and explain the difference between a saturated and an unsaturated fat.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (5 marks)</div><div class="wb-qtext">Using the lock-and-key model, explain how an enzyme works. In your answer, explain what happens to enzyme activity when the temperature rises far above the optimum, using the term "denaturation".</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (7 marks)</div><div class="wb-qtext">The enzyme catalase breaks down hydrogen peroxide into water and oxygen gas. A learner collects the oxygen gas produced by the same amount of catalase at two different temperatures and records the following data:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Time (s)</th><th>Volume O₂ at 37°C (cm³)</th><th>Volume O₂ at 60°C (cm³)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>20</td><td>10</td><td>3</td></tr>
+        <tr><td>40</td><td>18</td><td>4</td></tr>
+        <tr><td>60</td><td>24</td><td>4</td></tr>
+        <tr><td>80</td><td>24</td><td>4</td></tr>
+      </tbody>
+    </table>
+    (a) Calculate the average rate of oxygen production (in cm³/s) during the first 40 seconds at 37°C. Show your working.<br>
+    (b) Calculate the average rate of oxygen production (in cm³/s) during the first 40 seconds at 60°C.<br>
+    (c) Using your answers to (a) and (b), and the concept of denaturation, explain why the rate at 60°C is so much lower than at 37°C.<br>
+    (d) Explain why the volume of O₂ stops increasing after 60 seconds at 37°C, even though the enzyme has not denatured.</div></div>
   </div>
 </div>
 
@@ -397,6 +412,8 @@ const QUESTIONS=[
   {text:'A lipid molecule is made up of one glycerol molecule bonded to how many fatty acid chains?',opts:['1','2','3','4'],ans:2,exp:'A lipid (fat/oil) consists of 1 glycerol molecule joined to 3 fatty acid chains.'},
   {text:'What are proteins built from?',opts:['Fatty acids','Amino acids','Monosaccharides','Nucleotides'],ans:1,exp:'Proteins are chains of amino acids. The sequence of amino acids determines the protein\'s shape and function.'},
   {text:'According to the lock-and-key model, what happens when an enzyme denatures?',opts:['It speeds up the reaction even more','Its active site changes shape and no longer fits the substrate','It turns into a carbohydrate','It becomes a better catalyst'],ans:1,exp:'Denaturation changes the enzyme\'s 3D shape, including its active site. Since the substrate no longer fits, the enzyme can no longer catalyse the reaction.'},
+  {text:'(Analysis) A researcher analyses two unknown biomolecules. Molecule P is built only from carbon, hydrogen and oxygen atoms. Molecule Q is built from carbon, hydrogen, oxygen and nitrogen, with a small amount of sulfur. Which biomolecule is Q most likely to be?',opts:['A carbohydrate, like molecule P','A lipid, like molecule P','A protein','Water'],ans:2,exp:'Carbohydrates and lipids are both built only from C, H and O — that fits molecule P. Proteins are the biomolecule that additionally contains nitrogen (from their amino acid building blocks), and some proteins also contain sulfur (e.g. in the amino acid cysteine). Nucleic acids also contain nitrogen but characteristically contain phosphorus, not sulfur, so the sulfur clue points to a protein rather than DNA/RNA.'},
+  {text:'(Analysis) Enzyme X has an optimum temperature of 37°C and only begins to denature once temperature exceeds 50°C. A patient with a fever has a body temperature of 40°C. What is the best prediction for the rate of the reaction catalysed by enzyme X at 40°C compared to at 37°C?',opts:['The rate is much higher, because higher temperatures always speed up enzymes','The rate has dropped to zero, because the enzyme has denatured','The rate is slightly lower than at the optimum, but the enzyme has not yet denatured since 40°C is still well below 50°C','The rate is identical, because temperature only affects denatured enzymes'],ans:2,exp:'37°C is enzyme X\'s optimum — the temperature of maximum reaction rate. Moving away from the optimum to 40°C causes a small drop in rate (molecules and active site fit are no longer perfectly matched), but denaturation only begins at 50°C, so the enzyme\'s shape is still intact at 40°C. This is why a moderate fever slows some enzyme-controlled reactions slightly without stopping them — it is a genuinely dangerous fever (well above 40°C) that risks denaturing enzymes.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -414,7 +431,7 @@ function answer(qi,oi){
   if(answered.every(Boolean)){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':score===5?'Well done!':'Perfect score! You know your biomolecules!';
+    document.getElementById('scoreMsg').textContent=score<=3?'Keep at it — revisit the lesson!':score<=5?'Good work — check the explanations.':score===QUESTIONS.length?'Perfect score! You know your biomolecules!':'Well done!';
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

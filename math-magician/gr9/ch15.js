@@ -94,6 +94,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "A rectangular prism has l = 8, w = 5, h = 3 cm. Find the surface area.", answer: "158", topic: "Surface Area" },
         { type: "mc", text: "The lateral surface area of a cylinder (just the curved side, not the ends) with r = 4 cm, h = 6 cm is:", options: ["150,72 cm�", "100,48 cm�", "50,24 cm�", "75,36 cm�"], answer: 0, topic: "Surface Area" },
         { type: "input", text: "Find the surface area of a sphere with radius 6 cm. (Use p � 3,14; give to nearest whole number)", answer: "452", topic: "Surface Area" },
+        { type: "input", text: "The surface area of a cube is 216 cm². Find the side length (in cm).", answer: "6", topic: "Surface Area" },
+        { type: "input", text: "A cylinder has surface area 314 cm² and radius 5 cm. Using p ≈ 3,14, find its height (in cm).", answer: "5", topic: "Surface Area" },
       ]
     },
     {
@@ -173,6 +175,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "Find the volume of a cone with r = 6 cm and h = 9 cm. (Use p � 3,14; give to nearest whole number)", answer: "339", topic: "Volume" },
         { type: "mc", text: "A sphere has radius 4 cm. Its volume (p � 3,14) is approximately:", options: ["200,96 cm�", "267,95 cm�", "803,84 cm�", "134,04 cm�"], answer: 1, topic: "Volume" },
         { type: "input", text: "A triangular prism has a right-triangle base with legs 6 cm and 8 cm. Its length is 15 cm. Find the volume.", answer: "360", topic: "Volume" },
+        { type: "input", text: "A rectangular prism has a volume of 480 cm³. Its length is 10 cm and its width is 6 cm. Find its height (in cm).", answer: "8", topic: "Volume" },
+        { type: "input", text: "A cylindrical tank has a volume of 6 280 cm³ and a height of 20 cm. Using p ≈ 3,14, find its radius (in cm).", answer: "10", topic: "Volume" },
       ]
     },
   ],

@@ -73,6 +73,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Convert 17/5 to a mixed number (write as a b/c, e.g. 3 2/5).", answer: "3 2/5", topic: "Fractions" },
         { type: "mc", text: "Which fraction is equivalent to 2/3?", options: ["4/9", "6/9", "6/12", "4/6"], answer: 3, topic: "Fractions" },
         { type: "input", text: "What is the GCF of 36 and 48?", answer: "12", topic: "Fractions" },
+        { type: "input", text: "Convert 47/6 to a mixed number, then state only the whole-number part.", answer: "7", topic: "Fractions" },
+        { type: "input", text: "24/32 and 30/40 both simplify to the same fraction in simplest form. What is that simplest form (write as a/b)?", answer: "3/4", topic: "Fractions" },
       ]
     },
     {
@@ -111,6 +113,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Calculate 2½ + 1¾. Give answer as a mixed number (e.g. 4 1/4).", answer: "4 1/4", topic: "Fractions" },
         { type: "mc", text: "What is the LCD of 4, 6, and 8?", options: ["48", "24", "12", "16"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Calculate 5/6 − 3/4. Give as a simplified fraction (a/b).", answer: "1/12", topic: "Fractions" },
+        { type: "input", text: "Calculate 2⅓ − 1½ + ¾. Give as a mixed number (e.g. 1 7/12).", answer: "1 7/12", topic: "Fractions" },
+        { type: "input", text: "A recipe needs 2¾ cups of flour, but you only have a ⅔ cup scoop. How many full scoops can you use before you'd go over 2¾ cups?", answer: "4", topic: "Fractions" },
       ]
     },
     {
@@ -150,6 +154,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Find ¾ of 48.", answer: "36", topic: "Fractions" },
         { type: "mc", text: "Calculate 5/6 × 3/10.", options: ["8/16", "15/60", "1/4", "1/3"], answer: 2, topic: "Fractions" },
         { type: "input", text: "Calculate 2⅓ × 1½. Give as a mixed number.", answer: "3 1/2", topic: "Fractions" },
+        { type: "input", text: "Calculate 2⅖ × 1⅚. Give as a mixed number.", answer: "4 2/5", topic: "Fractions" },
+        { type: "input", text: "A tank is ⅗ full of water. ⅔ of that water is then used. What fraction of the full tank's capacity was used? Give as a simplified fraction.", answer: "2/5", topic: "Fractions" },
       ]
     },
     {
@@ -187,6 +193,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "What is the reciprocal of 5/8? (write as a/b)", answer: "8/5", topic: "Fractions" },
         { type: "mc", text: "Calculate 4 ÷ 2/3.", options: ["8/3", "6", "2/12", "3"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Calculate 7/8 ÷ 7/4. Simplify your answer.", answer: "1/2", topic: "Fractions" },
+        { type: "input", text: "Calculate 3⅗ ÷ 1⅘. Give as a whole number or simplified fraction.", answer: "2", topic: "Fractions" },
+        { type: "input", text: "A ribbon is 5 m long. It is cut into pieces that are each ¾ m long. How many full pieces can be cut?", answer: "6", topic: "Fractions" },
       ]
     },
     {
@@ -222,6 +230,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Calculate (2/3)³. Write as a/b.", answer: "8/27", topic: "Fractions" },
         { type: "mc", text: "Calculate ∛(27/64).", options: ["9/16", "3/4", "27/64", "3/8"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Calculate √(4/9) + (1/2)². Write as a simplified fraction.", answer: "11/12", topic: "Fractions" },
+        { type: "input", text: "Calculate (2/3)² + √(1/4) − (1/2)³. Write as a simplified fraction.", answer: "59/72", topic: "Fractions" },
+        { type: "input", text: "Given that √(9/16) = 3/4, calculate 2 × √(9/16) − (1/2)². Give as a mixed number or simplified fraction.", answer: "5/4", topic: "Fractions" },
       ]
     },
     {
@@ -257,6 +267,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Calculate 1½ × 2/3 + ¼. Give as a simplified fraction.", answer: "5/4", topic: "Fractions" },
         { type: "mc", text: "Calculate 3/4 ÷ 1/2 − 1/4.", options: ["1", "1¼", "1½", "¾"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Calculate √(1/4) + (1/3)³. Write as a simplified fraction.", answer: "55/108", topic: "Fractions" },
+        { type: "input", text: "Calculate: (1/2)² + 2/3 ÷ 1/6 − 1/4. Give as a whole number or simplified fraction.", answer: "4", topic: "Fractions" },
+        { type: "input", text: "Calculate: [1½ + 2¼] ÷ [1/2 × 3/2] − 1. Give as a whole number or simplified fraction.", answer: "4", topic: "Fractions" },
       ]
     },
     {
@@ -291,6 +303,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Express 400 m as a fraction of 2 km. Simplify.", answer: "1/5", topic: "Fractions" },
         { type: "mc", text: "In a class of 32 learners, 20 are girls. What fraction are boys?", options: ["5/8", "3/8", "5/16", "5/12"], answer: 1, topic: "Fractions" },
         { type: "input", text: "Express 750 g as a fraction of 2 kg. Simplify.", answer: "3/8", topic: "Fractions" },
+        { type: "input", text: "A recipe uses 350 g of flour out of a 2 kg bag. What fraction of the bag is used? Simplify.", answer: "7/40", topic: "Fractions" },
+        { type: "input", text: "In a school of 480 learners, ⅜ are in the Foundation Phase and the rest are shared equally between the Intermediate and Senior Phases. How many learners are in the Senior Phase?", answer: "150", topic: "Fractions" },
       ]
     },
     {
@@ -323,6 +337,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Calculate 20% of R350.", answer: "70", topic: "Fractions" },
         { type: "mc", text: "Express 24 out of 40 as a percentage.", options: ["48%", "50%", "60%", "64%"], answer: 2, topic: "Fractions" },
         { type: "input", text: "A shirt costs R180. It is discounted by 15%. What is the discount amount in Rand?", answer: "27", topic: "Fractions" },
+        { type: "input", text: "A test has 40 questions. A learner answers 34 correctly. Express this as a percentage, then determine how many more correct answers were needed to reach 90%.", answer: "2", topic: "Fractions" },
+        { type: "input", text: "In a survey of 240 people, 40% prefer tea and ⅓ prefer coffee. The rest prefer neither. How many people prefer neither?", answer: "64", topic: "Fractions" },
       ]
     },
     {
@@ -385,6 +401,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "A salary of R12 000 is increased by 8%. What is the new salary?", answer: "12960", topic: "Fractions" },
         { type: "mc", text: "A TV costs R2 400 after a 25% discount. What was the original price?", options: ["R3 000", "R3 100", "R3 200", "R2 900"], answer: 2, topic: "Fractions" },
         { type: "input", text: "A value increases from 150 to 180. What is the percentage increase?", answer: "20", topic: "Fractions" },
+        { type: "input", text: "A population of 8 000 increases by 15% in year one, then decreases by 10% in year two. Find the population at the end of year two.", answer: "8280", topic: "Fractions" },
+        { type: "input", text: "A price of R500 is increased by 20% and then decreased by 20%. What is the final price?", answer: "480", topic: "Fractions" },
       ]
     },
     {
@@ -418,6 +436,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "A jacket is R640 after a 20% increase. What was the original price?", answer: "533.33", topic: "Mixed" },
         { type: "mc", text: "Calculate 1½ + 2/3 × ¾.", options: ["2", "2 1/4", "1 3/4", "2 5/12"], answer: 0, topic: "Mixed" },
         { type: "input", text: "Express 35 minutes as a percentage of 1 hour. Give as a %.", answer: "58.33", topic: "Mixed" },
+        { type: "input", text: "Calculate: 2⅗ ÷ (1½ − ¾). Give as a mixed number.", answer: "3 7/15", topic: "Mixed" },
+        { type: "input", text: "A shop increases a R450 item by 20%, then later offers a 20% discount on the new price. What is the final price in Rand?", answer: "432", topic: "Mixed" },
       ]
     },
   ],

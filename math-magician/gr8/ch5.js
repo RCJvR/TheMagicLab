@@ -130,6 +130,8 @@ MathMagician.registerChapter(5, {
         { type: "input", text: "A flow diagram has output 19 with rule: multiply by 2, then add 5. What was the input?", answer: "7", topic: "Functions" },
         { type: "mc", text: "Which describes the flow diagram <span class='math'>x → ×3 → +4 → y</span>?", options: ["y = 4x + 3", "y = 3x + 4", "y = 3(x + 4)", "y = x + 7"], answer: 1, topic: "Functions" },
         { type: "input", text: "Complete the table for rule <span class='math'>y = 2x + 1</span>. When x = 6, y = ?", answer: "13", topic: "Functions" },
+        { type: "input", text: "A flow diagram: <span class='math'>x → [+5] → [×3] → y</span>. If y = 36, what was the input x?", answer: "7", topic: "Functions" },
+        { type: "input", text: "Diagram A: <span class='math'>x → [×4] → [+2] → y</span>. Diagram B: <span class='math'>x → [×2] → [+14] → y</span>. For what value of x do both diagrams give the same output y?", answer: "6", topic: "Functions" },
       ]
     },
     {
@@ -171,6 +173,8 @@ y  |  1   3   5   7   9</div>
         { type: "mc", text: "What rule fits: x = 1,2,3,4 → y = 3,5,7,9?", options: ["y = x + 2", "y = 2x + 1", "y = 3x", "y = x + 3"], answer: 1, topic: "Functions" },
         { type: "input", text: "For <span class='math'>y = 5x − 2</span>, find x when y = 23.", answer: "5", topic: "Functions" },
         { type: "mc", text: "A table: x = 2,4,6,8 → y = 7,13,19,25. What is the rule?", options: ["y = 3x + 1", "y = 2x + 3", "y = 6x − 5", "y = 3x − 2"], answer: 0, topic: "Functions" },
+        { type: "input", text: "A table shows x = 2, 5, 8 → y = 9, 18, 27. Determine the rule, then find y when x = 20.", answer: "63", topic: "Functions" },
+        { type: "input", text: "A table shows x = 1, 2, 4 → y = 5, 9, 17 (note: the x-values are not evenly spaced). Determine the rule y = mx + c, then find y when x = 10.", answer: "41", topic: "Functions" },
       ]
     },
     {
@@ -218,6 +222,8 @@ y  |  2   5   8  11  14</div>
         { type: "mc", text: "The formula <span class='math'>y = 4x + 1</span> in words is:", options: ["Add 4 to the input then add 1", "Multiply input by 4 then add 1", "Multiply input by 1 then add 4", "Add 1 to 4 times"], answer: 1, topic: "Functions" },
         { type: "input", text: "A pool holds 1 000 litres. It drains at 25 litres per minute. Volume after t minutes: V = 1000 − 25t. How many minutes to empty? (V = 0)", answer: "40", topic: "Functions" },
         { type: "mc", text: "Which word formula matches <span class='math'>y = 10 − 3x</span>?", options: ["Multiply input by 10, subtract 3", "Subtract the input from 10, multiply by 3", "Multiply input by 3, subtract from 10", "Add 3 to input, subtract from 10"], answer: 2, topic: "Functions" },
+        { type: "input", text: "A furniture rental company charges a R 250 deposit plus R 85 per week. Write the formula for cost C after w weeks, then calculate the cost of renting for 12 weeks. (R)", answer: "1270", topic: "Functions" },
+        { type: "input", text: "Shop A charges a R 150 deposit plus R 20 per day to hire a bicycle. Shop B charges R 35 per day with no deposit. After how many days is the total cost the same for both shops?", answer: "10", topic: "Functions" },
       ]
     },
     {
@@ -256,6 +262,8 @@ y  |  2   5   8  11  14</div>
         { type: "mc", text: "For <span class='math'>y = 2x + 10</span>, which is the same relationship?", options: ["x = (y + 10) ÷ 2", "x = (y − 10) ÷ 2", "x = 2y − 10", "x = y ÷ 2 + 10"], answer: 1, topic: "Functions" },
         { type: "input", text: "A formula is <span class='math'>y = 6x − 12</span>. Write in factored form as <span class='math'>y = 6(x − ?)</span>. What goes in the bracket?", answer: "2", topic: "Functions" },
         { type: "mc", text: "If <span class='math'>y = 4x − 8</span>, what is x when y = 20?", options: ["3", "5", "7", "12"], answer: 2, topic: "Functions" },
+        { type: "input", text: "Given <span class='math'>y = 4x + 20</span>, write in factored form <span class='math'>y = 4(x + a)</span> and hence find x when y = 4.", answer: "-4", topic: "Functions" },
+        { type: "input", text: "Relationship 1 is <span class='math'>y = 2x + 6</span>. Relationship 2 is <span class='math'>y = 3x − 9</span>. Find the value of x for which both relationships give the same y.", answer: "15", topic: "Functions" },
       ]
     },
     {
@@ -288,6 +296,8 @@ y  |  2   5   8  11  14</div>
         { type: "mc", text: "A cell phone plan costs R 99/month plus R 1,50 per SMS. The formula is C = 1,5n + 99. How many SMSs were sent if the bill is R 159?", options: ["30", "40", "50", "60"], answer: 1, topic: "Mixed" },
         { type: "input", text: "Make x the subject of <span class='math'>y = 7x − 14</span>. Find x when y = 0.", answer: "2", topic: "Mixed" },
         { type: "mc", text: "Which table matches <span class='math'>y = 2x − 3</span>?", options: ["x:1,2,3 → y:−1,1,3", "x:1,2,3 → y:1,3,5", "x:1,2,3 → y:2,4,6", "x:1,2,3 → y:−2,0,2"], answer: 0, topic: "Mixed" },
+        { type: "input", text: "A cellphone plan costs R 120/month plus R 2 per minute over the free allowance. If a customer's bill was R 156, how many minutes over the allowance were used?", answer: "18", topic: "Mixed" },
+        { type: "input", text: "Plan A costs R 80 plus R 3 per GB of data. Plan B costs R 50 plus R 4,50 per GB. For how many GB of data are the two plans the same total price?", answer: "20", topic: "Mixed" },
       ]
     }
   ],

@@ -168,6 +168,18 @@ MathMagician.registerChapter(1, {
           options: ["24", "12", "16", "18"],
           answer: 0,
           topic: "Rational exponents & surd operations"
+        },
+        {
+          type: "input",
+          text: "Simplify: (√7 + √3)² − (√7 − √3)²",
+          answer: "4√21",
+          topic: "Rational exponents & surd operations"
+        },
+        {
+          type: "input",
+          text: "Simplify to a single rational number: (3 − √5)/(3 + √5) + (3 + √5)/(3 − √5)",
+          answer: "7",
+          topic: "Rational exponents & surd operations"
         }
       ]
     },
@@ -312,6 +324,19 @@ MathMagician.registerChapter(1, {
           text: "Solve: √(x² − 5) = 2",
           options: ["x = 3", "x = ±3", "x = 9", "x = ±√9"],
           answer: 1,
+          topic: "Surd equations & exponential applications"
+        },
+        {
+          type: "input",
+          text: "Solve for x: √(x + 7) − √(x − 5) = 2. (Isolate one surd, square, simplify, then square again — check your answer.)",
+          answer: "9",
+          topic: "Surd equations & exponential applications"
+        },
+        {
+          type: "input",
+          text: "A car worth R250 000 depreciates on the reducing-balance method, A = P(1 − r)ⁿ. After 3 years it is worth R128 000. Find the annual rate of depreciation r, as a percentage.",
+          answer: "20%",
+          altAnswers: ["20", "20 %"],
           topic: "Surd equations & exponential applications"
         }
       ]
@@ -461,6 +486,19 @@ MathMagician.registerChapter(1, {
           type: "input",
           text: "Solve for x: x^(2/3) = 4. Give the positive value of x.",
           answer: "8",
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "input",
+          text: "Solve for x by writing both sides as powers of the same base: 4^(x+1) = 8^(x−1)",
+          answer: "5",
+          topic: "Laws of exponents & exponential equations"
+        },
+        {
+          type: "input",
+          text: "Solve for x: 2^(2x) − 5(2ˣ) + 4 = 0. (Hint: let y = 2ˣ, giving a quadratic in y.) Give both solutions separated by 'or'.",
+          answer: "0 or 2",
+          altAnswers: ["x = 0 or x = 2", "0 or x=2"],
           topic: "Laws of exponents & exponential equations"
         }
       ]

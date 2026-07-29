@@ -93,6 +93,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "A square has perimeter 52 cm. Find the side length.", answer: "13", topic: "Perimeter" },
         { type: "mc", text: "The perimeter of a semicircle with radius 5 cm is approximately:", options: ["15,7 cm", "25,7 cm", "10 cm", "20 cm"], answer: 1, topic: "Perimeter" },
         { type: "input", text: "A triangle has sides 13 cm, 14 cm and 15 cm. What is the perimeter?", answer: "42", topic: "Perimeter" },
+        { type: "input", text: "A rectangular field has a perimeter of 84 m. Its length is 6 m more than twice its width. Find the width (in m).", answer: "12", topic: "Perimeter" },
+        { type: "input", text: "A wire of length 90 cm is bent into the shape of a rectangle where the length is twice the width. Find the width (in cm).", answer: "15", topic: "Perimeter" },
       ]
     },
     {
@@ -175,6 +177,8 @@ MathMagician.registerChapter(14, {
         { type: "input", text: "Find the area of a circle with radius 6 cm. (Use p � 3,14; give to nearest whole number)", answer: "113", topic: "Area" },
         { type: "mc", text: "A rhombus has diagonals 12 cm and 16 cm. Its area is:", options: ["192 cm�", "96 cm�", "48 cm�", "72 cm�"], answer: 1, topic: "Area" },
         { type: "input", text: "A rectangle is 14 cm � 9 cm. A circle of diameter 6 cm is cut from it. Find the remaining area. (Use p � 3,14)", answer: "98", topic: "Area" },
+        { type: "input", text: "A garden path 2 m wide surrounds a rectangular lawn 10 m by 6 m on all sides. Find the area of the path (in m²).", answer: "80", topic: "Area" },
+        { type: "input", text: "A circle has an area of 78,5 cm². Using p ≈ 3,14, find its radius (in cm).", answer: "5", topic: "Area" },
       ]
     },
   ],

@@ -87,6 +87,8 @@ MathMagician.registerChapter(4, {
       { type: "mc", text: "The general term of a sequence is <span class='math'>Tₙ = 3n − 1</span>. What is T₅?", options: ["14", "12", "16", "10"], answer: 0, topic: "Patterns" },
       { type: "input", text: "A sequence has a = 4 and d = 5. What is the 10th term?", answer: "49", topic: "Patterns" },
       { type: "mc", text: "Which is the general term for <span class='math'>6, 10, 14, 18, …</span>?", options: ["Tₙ = 4n + 2", "Tₙ = 4n + 6", "Tₙ = 2n + 4", "Tₙ = 6n − 4"], answer: 0, topic: "Patterns" },
+      { type: "input", text: "In an arithmetic sequence, T₄ = 22 and T₉ = 47. Determine the first term.", answer: "7", topic: "Patterns" },
+      { type: "input", text: "Chairs are stacked in rows: the front row has 1 chair, and each row behind has 3 more chairs than the row in front of it. If the last row has 40 chairs, how many rows are there?", answer: "14", topic: "Patterns" },
     ]
   },
   {
@@ -192,6 +194,8 @@ MathMagician.registerChapter(4, {
       { type: "mc", text: "Which sequence is geometric?", options: ["2, 5, 8, 11, …", "3, 6, 12, 24, …", "1, 4, 9, 16, …", "10, 7, 4, 1, …"], answer: 1, topic: "Patterns" },
       { type: "input", text: "A geometric sequence has first term 5 and common ratio 3. What is the 4th term?", answer: "135", topic: "Patterns" },
       { type: "mc", text: "Squares made from toothpicks follow: 4, 7, 10, … What is the 8th term?", options: ["22", "25", "28", "31"], answer: 1, topic: "Patterns" },
+      { type: "input", text: "In a geometric sequence, T₂ = 12 and T₃ = 36. Calculate the 5th term.", answer: "324", topic: "Patterns" },
+      { type: "input", text: "A bacteria colony starts with 5 bacteria and doubles every hour. After how many full hours will the colony first exceed 1000 bacteria?", answer: "8", topic: "Patterns" },
     ]
   },
   {
@@ -334,6 +338,8 @@ MathMagician.registerChapter(4, {
       { type: "input", text: "A dot pattern has rule Tₙ = 3n + 2. How many dots in figure 8?", answer: "26", topic: "Visual patterns" },
       { type: "mc", text: "Which term of the matchstick squares pattern (Tₙ = 3n + 1) equals 31?", options: ["n = 9", "n = 10", "n = 11", "n = 12"], answer: 1, topic: "Visual patterns" },
       { type: "input", text: "Tiles are arranged in an L-shape. Figure 1 has 3 tiles, figure 2 has 5, figure 3 has 7. How many tiles in figure 12?", answer: "25", topic: "Visual patterns" },
+      { type: "input", text: "A hexagon-tile pattern has figure 1 = 6 tiles, figure 2 = 11 tiles, figure 3 = 16 tiles. Find the general term and use it to calculate how many tiles are in figure 30.", answer: "151", topic: "Visual patterns" },
+      { type: "input", text: "A tiling pattern follows Tₙ = 4n + 3. A learner has exactly 79 tiles. Which figure number can they build exactly, with no tiles left over?", answer: "19", topic: "Visual patterns" },
     ]
   },
   {
@@ -365,6 +371,8 @@ MathMagician.registerChapter(4, {
       { type: "mc", text: "The 5th term of a sequence is 23 and d = 4. What is the 1st term?", options: ["3", "7", "11", "5"], answer: 1, topic: "Patterns" },
       { type: "input", text: "A geometric sequence: 1, 3, 9, 27, … What is the 6th term?", answer: "243", topic: "Patterns" },
       { type: "mc", text: "Which general term gives the sequence <span class='math'>5, 8, 11, 14, …</span>?", options: ["Tₙ = 3n + 2", "Tₙ = 2n + 3", "Tₙ = 3n + 1", "Tₙ = n + 4"], answer: 0, topic: "Patterns" },
+      { type: "input", text: "An arithmetic sequence has T₃ = 17 and T₆ = 32. Determine Tₙ, then calculate T₂₀.", answer: "102", topic: "Patterns" },
+      { type: "input", text: "Sequence A (arithmetic) is <span class='math'>3, 7, 11, 15, 19, 23</span>. Sequence B (geometric) is <span class='math'>2, 4, 8, 16, 32, 64</span>. For which term number n does sequence B's value first become greater than sequence A's value?", answer: "4", topic: "Patterns" },
     ]
   }
   ],

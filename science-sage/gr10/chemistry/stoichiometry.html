@@ -322,7 +322,7 @@ select option{background:#1a1f35}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div>
         <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
         <div style="font-size:13px;color:var(--muted)">NSC Practice Questions</div>
@@ -405,6 +405,32 @@ select option{background:#1a1f35}
         <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>160%</button>
       </div>
       <div class="feedback" id="fb6">% yield = (actual/theoretical) × 100 = (5/8) × 100 = 62.5%. The percentage yield is always ≤ 100% because reactions rarely go to completion with no losses.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Question 7 &nbsp;<span style="color:var(--muted);font-weight:400">(3 marks)</span></div>
+      <div class="q-text">12.0 g of magnesium reacts with 40.0 g of oxygen gas: 2Mg + O₂ → 2MgO. [M(Mg) = 24, M(O₂) = 32, M(MgO) = 40] What mass of MgO is produced?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>20.0 g</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>33.3 g</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>100 g</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>12.0 g</button>
+      </div>
+      <div class="feedback" id="fb7">First find moles: n(Mg) = 12.0/24 = 0.5 mol; n(O₂) = 40.0/32 = 1.25 mol. The equation needs Mg:O₂ = 2:1, so 0.5 mol Mg only needs 0.25 mol O₂ — oxygen is in large excess, so Mg is the LIMITING reagent. Using the Mg:MgO = 2:2 = 1:1 ratio, n(MgO) = 0.5 mol, so mass = 0.5 × 40 = 20.0 g. (Using O₂ instead, without checking which reagent is limiting, wrongly gives 100 g.)</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <div class="q-num">Question 8 &nbsp;<span style="color:var(--muted);font-weight:400">(3 marks)</span></div>
+      <div class="q-text">A hydrocarbon has empirical formula CH₂ and a molar mass of 84 g·mol⁻¹. What is its molecular formula?</div>
+      <div class="mc-options" id="q8opts">
+        <button class="mc-opt" onclick="checkAns(8,0,8)"><span class="opt-letter">A</span>C₆H₁₂</button>
+        <button class="mc-opt" onclick="checkAns(8,1,8)"><span class="opt-letter">B</span>C₄H₈</button>
+        <button class="mc-opt" onclick="checkAns(8,2,8)"><span class="opt-letter">C</span>CH₂</button>
+        <button class="mc-opt" onclick="checkAns(8,3,8)"><span class="opt-letter">D</span>C₈H₁₆</button>
+      </div>
+      <div class="feedback" id="fb8">Empirical formula mass of CH₂ = 12 + 2(1) = 14 g·mol⁻¹. Divide the actual molar mass by this: 84 ÷ 14 = 6. Multiply every subscript in the empirical formula by 6: C₍₁×₆₎H₍₂×₆₎ = C₆H₁₂ (molar mass 6×12 + 12×1 = 84 ✓). C₄H₈ (mass 56) and C₈H₁₆ (mass 112) don't match the given molar mass.</div>
     </div>
 
     <!-- IEB Practice Questions -->
@@ -490,6 +516,26 @@ select option{background:#1a1f35}
       <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
     </div>
 
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6</div>
+      <div class="wb-qtext">
+        A learner titrates 25.0 mL samples of NaOH solution against 0.100 mol·L⁻¹ HCl. The burette readings recorded are:
+        <table class="symbols-table" style="margin:12px 0 14px">
+          <thead><tr><th></th><th>Rough</th><th>Titre 1</th><th>Titre 2</th><th>Titre 3</th></tr></thead>
+          <tbody>
+            <tr><td>Final reading (mL)</td><td>24.60</td><td>23.45</td><td>23.40</td><td>23.42</td></tr>
+            <tr><td>Initial reading (mL)</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+            <tr><td>Volume HCl used (mL)</td><td>24.60</td><td>23.45</td><td>23.40</td><td>23.42</td></tr>
+          </tbody>
+        </table>
+        (a) Concordant titres are readings that agree with each other to within 0.10 mL. Which titre(s) should be excluded from the average, and why?<br>
+        (b) Calculate the average volume of HCl used, using only the concordant titres.<br>
+        (c) Calculate n(HCl) used, then use the equation NaOH + HCl → NaCl + H₂O to calculate n(NaOH).<br>
+        (d) Calculate the concentration of the NaOH solution.
+      </div>
+      <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
   </div>
 </div>
 
@@ -512,7 +558,7 @@ function switchTab(id,btn){
 }
 
 // ===== PRACTICE =====
-const correctAnswers = {1:1, 2:2, 3:1, 4:1, 5:3, 6:1, i1:1, i2:1};
+const correctAnswers = {1:1, 2:2, 3:1, 4:1, 5:3, 6:1, 7:0, 8:0, i1:1, i2:1};
 const answered = {};
 let score = 0;
 
@@ -546,11 +592,11 @@ function checkAns(qNum, chosenIdx, fbId){
   fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
 
   // Check if all NSC answered
-  const nscDone = [1,2,3,4,5,6].every(k => answered[k]);
+  const nscDone = [1,2,3,4,5,6,7,8].every(k => answered[k]);
   if(nscDone){
     const banner = document.getElementById('scoreBanner');
     banner.classList.add('show');
-    document.getElementById('scoreNum').textContent = score + '/6';
+    document.getElementById('scoreNum').textContent = score + '/8';
   }
 }
 

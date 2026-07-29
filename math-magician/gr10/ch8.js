@@ -228,6 +228,12 @@ MathMagician.registerChapter(8, {
           options: ["y₂ − y₁", "(y₁ + y₂)/2", "√(y₂ − y₁)", "y₁ · y₂"],
           answer: 1,
           topic: "Distance & midpoint"
+        },
+        {
+          type: "input",
+          text: "The midpoint of AB is M(3; −2). If A is (7; 1), find B, then calculate the distance MB.",
+          answer: "5",
+          topic: "Distance & midpoint"
         }
       ]
     },
@@ -493,6 +499,13 @@ MathMagician.registerChapter(8, {
           options: ["Perpendicular", "Parallel", "The same line", "Intersecting at right angles"],
           answer: 1,
           topic: "Gradient of a line"
+        },
+        {
+          type: "input",
+          text: "Line AB has gradient 2/3 and passes through A(3; 1). Line CD is perpendicular to AB and passes through C(0; 5). Find the y-coordinate of the point where CD crosses the line x = 6.",
+          answer: "-4",
+          altAnswers: ["−4"],
+          topic: "Gradient of a line"
         }
       ]
     },
@@ -647,6 +660,13 @@ MathMagician.registerChapter(8, {
           options: ["7", "5", "4", "6"],
           answer: 0,
           topic: "Equation of a line"
+        },
+        {
+          type: "input",
+          text: "Find the equation of the line that passes through the point of intersection of y = 2x − 1 and y = −x + 5, and is parallel to y = 3x + 2. Give your answer in the form y = 3x + c (state c).",
+          answer: "-3",
+          altAnswers: ["−3"],
+          topic: "Equation of a line"
         }
       ]
     },
@@ -784,6 +804,13 @@ MathMagician.registerChapter(8, {
           options: ["Diagonals are equal", "One angle is 90°", "All four sides are equal in length", "Diagonals are parallel"],
           answer: 2,
           topic: "Analytical geometry of quadrilaterals"
+        },
+        {
+          type: "mc",
+          text: "A(1;1), B(5;3), C(7;7), D(3;5). Using gradients, determine whether ABCD is a rectangle.",
+          options: ["Yes, it is a rectangle", "No — it is a parallelogram but not a rectangle", "No — it is only a trapezium", "No — it is not a special quadrilateral at all"],
+          answer: 1,
+          topic: "Analytical geometry of quadrilaterals"
         }
       ]
     }
@@ -837,7 +864,7 @@ MathMagician.registerChapter(8, {
       3: {
         a: "m_AB=(2−0)/(4−0)=1/2; m_DC=(−4−(−2))/(2−6)=−2/−4=1/2 → AB∥DC",
         b: "AB=√20=2√5; DC=√20=2√5 → AB = DC = √20",
-        c: "Parallelogram (one pair of ∥ and equal sides) — actually rhombus if all sides equal; check AD and BC"
+        c: "Parallelogram — one pair of opposite sides (AB, DC) is both parallel and equal, which is sufficient to prove a parallelogram. It is in fact a square: AD = BC = √20 (all four sides equal) and AB is perpendicular to BC (AB·BC = 0), so all angles are 90°."
       }
     }
   }

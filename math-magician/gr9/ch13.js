@@ -1,4 +1,4 @@
-// Math Magician � Grade 9, Chapter 13 data
+// Math Magician — Grade 9, Chapter 13 data
 // Pythagoras' Theorem
 
 MathMagician.registerChapter(13, {
@@ -7,37 +7,37 @@ MathMagician.registerChapter(13, {
       id: 25,
       chapter: 13,
       name: "Pythagoras' theorem",
-      fullName: "Pythagoras' theorem � finding sides",
+      fullName: "Pythagoras' theorem — finding sides",
       lesson: {
         heading: "Pythagoras' theorem",
-        sub: "Chapter 13 � Topic 1",
+        sub: "Chapter 13 · Topic 1",
         body: `
           <p><strong>Pythagoras' theorem</strong> states that in any right-angled triangle, the square of the hypotenuse equals the sum of the squares of the other two sides.</p>
           <div class="def-box">
-            <div class="def-box-title">?? The theorem</div>
+            <div class="def-box-title">📖 The theorem</div>
             <p>
-              In ?ABC with right angle at C:<br>
-              <span class="math">c� = a� + b�</span><br>
+              In △ABC with right angle at C:<br>
+              <span class="math">c² = a² + b²</span><br>
               where c is the hypotenuse (side opposite the right angle).<br><br>
-              <strong>To find hypotenuse:</strong> <span class="math">c = v(a� + b�)</span><br>
-              <strong>To find a shorter side:</strong> <span class="math">a = v(c� - b�)</span>
+              <strong>To find hypotenuse:</strong> <span class="math">c = √(a² + b²)</span><br>
+              <strong>To find a shorter side:</strong> <span class="math">a = √(c² - b²)</span>
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Worked examples</div>
-            <div class="example-step"><span class="step-num">1</span><span>a = 6, b = 8: c = v(36 + 64) = v100 = 10</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>c = 13, b = 5: a = v(169 - 25) = v144 = 12</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>a = 7, b = 11: c = v(49 + 121) = v170 � 13,04</span></div>
-            <div class="example-step"><span class="step-num">4</span><span>Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25) � memorise these!</span></div>
+            <div class="example-box-title">✏️ Worked examples</div>
+            <div class="example-step"><span class="step-num">1</span><span>a = 6, b = 8: c = √(36 + 64) = √100 = 10</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>c = 13, b = 5: a = √(169 - 25) = √144 = 12</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>a = 7, b = 11: c = √(49 + 121) = √170 ≈ 13,04</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25) — memorise these!</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>Always identify the hypotenuse first � it's 
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Always identify the hypotenuse first — it's always opposite the right angle and always the longest side.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Pythagoras Solver</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Leave one field blank. Enter any two sides and the third is calculated.</p>
             <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side a</label><input id="pyA" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side b</label><input id="pyB" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Hypotenuse c</label><input id="pyC" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side a</label><input id="pyA" type="number" placeholder="—" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side b</label><input id="pyB" type="number" placeholder="—" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Hypotenuse c</label><input id="pyC" type="number" placeholder="—" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
               <button id="pyBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
             </div>
             <div id="pyOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
@@ -51,24 +51,24 @@ MathMagician.registerChapter(13, {
               var el=document.getElementById('pyOut');
               if(blanks!==1){el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>';return;}
               var res,step1,step2;
-              if(isNaN(c)){res=Math.sqrt(a*a+b*b);step1='c\xb2 = '+a+'\xb2 + '+b+'\xb2 = '+(a*a+b*b);step2='c = \u221a'+(a*a+b*b)+' = '+f(res);document.getElementById('pyC').value=f(res);}
-              else if(isNaN(b)){res=Math.sqrt(c*c-a*a);step1='b\xb2 = '+c+'\xb2 \u2212 '+a+'\xb2 = '+(c*c-a*a);step2='b = \u221a'+(c*c-a*a)+' = '+f(res);document.getElementById('pyB').value=f(res);}
-              else{res=Math.sqrt(c*c-b*b);step1='a\xb2 = '+c+'\xb2 \u2212 '+b+'\xb2 = '+(c*c-b*b);step2='a = \u221a'+(c*c-b*b)+' = '+f(res);document.getElementById('pyA').value=f(res);}
+              if(isNaN(c)){res=Math.sqrt(a*a+b*b);step1='c\xb2 = '+a+'\xb2 + '+b+'\xb2 = '+(a*a+b*b);step2='c = √'+(a*a+b*b)+' = '+f(res);document.getElementById('pyC').value=f(res);}
+              else if(isNaN(b)){res=Math.sqrt(c*c-a*a);step1='b\xb2 = '+c+'\xb2 − '+a+'\xb2 = '+(c*c-a*a);step2='b = √'+(c*c-a*a)+' = '+f(res);document.getElementById('pyB').value=f(res);}
+              else{res=Math.sqrt(c*c-b*b);step1='a\xb2 = '+c+'\xb2 − '+b+'\xb2 = '+(c*c-b*b);step2='a = √'+(c*c-b*b)+' = '+f(res);document.getElementById('pyA').value=f(res);}
               el.innerHTML='<div style="color:rgba(221,225,240,0.60);">'+step1+'</div><div><strong style="color:#6ee7b7;">'+step2+'</strong></div>';
             }
             document.getElementById('pyBtn').addEventListener('click',solve);
             ['pyA','pyB','pyC'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
           })();
           </script>
-        always opposite the right angle and always the longest side.</span></div>
         `
       },
       questions: [
         { type: "input", text: "In a right triangle, legs are 9 cm and 12 cm. Find the hypotenuse.", answer: "15", topic: "Pythagoras" },
-        { type: "mc", text: "The hypotenuse is 17 cm and one leg is 8 cm. The other leg is:", options: ["9 cm", "15 cm", "v225 = 15 cm", "v353 cm"], answer: 1, topic: "Pythagoras" },
-        { type: "input", text: "Calculate: v(5� + 12�)", answer: "13", topic: "Pythagoras" },
+        { type: "mc", text: "The hypotenuse is 17 cm and one leg is 8 cm. The other leg is:", options: ["9 cm", "15 cm", "√225 = 15 cm", "√353 cm"], answer: 1, topic: "Pythagoras" },
+        { type: "input", text: "Calculate: √(5² + 12²)", answer: "13", topic: "Pythagoras" },
         { type: "mc", text: "Is a triangle with sides 9, 40, 41 a right triangle?", options: ["Yes", "No", "Cannot determine", "Only if angles given"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "A ladder 10 m long leans against a wall. The foot is 6 m from the wall. How high up the wall does it reach?", answer: "8", topic: "Pythagoras" },
+        { type: "input", text: "A right triangle has legs in the ratio 5:12. If the hypotenuse is 39 cm, find the perimeter of the triangle (in cm).", answer: "90", topic: "Pythagoras" },
       ]
     },
     {
@@ -78,32 +78,32 @@ MathMagician.registerChapter(13, {
       fullName: "Applications of Pythagoras' theorem",
       lesson: {
         heading: "Applications of Pythagoras' theorem",
-        sub: "Chapter 13 � Topic 2",
+        sub: "Chapter 13 · Topic 2",
         body: `
           <p>Pythagoras' theorem applies in many real-world contexts and in more complex geometric problems.</p>
           <div class="def-box">
-            <div class="def-box-title">?? Common applications</div>
+            <div class="def-box-title">📖 Common applications</div>
             <p>
-              <strong>Diagonal of a rectangle:</strong> d = v(l� + b�)<br>
+              <strong>Diagonal of a rectangle:</strong> d = √(l² + b²)<br>
               <strong>Height of isosceles triangle:</strong> split into two right triangles<br>
-              <strong>Distance between two points:</strong> d = v[(x2-x1)� + (y2-y1)�]<br>
-              <strong>Converse (testing for right angle):</strong> if a� + b� = c�, the triangle is right-angled.
+              <strong>Distance between two points:</strong> d = √[(x2-x1)² + (y2-y1)²]<br>
+              <strong>Converse (testing for right angle):</strong> if a² + b² = c², the triangle is right-angled.
             </p>
           </div>
           <div class="example-box">
-            <div class="example-box-title">?? Worked examples</div>
-            <div class="example-step"><span class="step-num">1</span><span>Diagonal of 5 cm � 12 cm rectangle: d = v(25 + 144) = v169 = 13 cm</span></div>
-            <div class="example-step"><span class="step-num">2</span><span>Isosceles triangle: base = 16 cm, equal sides = 10 cm. Height: h = v(10� - 8�) = v(100 - 64) = v36 = 6 cm</span></div>
-            <div class="example-step"><span class="step-num">3</span><span>Distance: A(1;2) to B(4;6): d = v(9+16) = v25 = 5 units</span></div>
+            <div class="example-box-title">✏️ Worked examples</div>
+            <div class="example-step"><span class="step-num">1</span><span>Diagonal of 5 cm × 12 cm rectangle: d = √(25 + 144) = √169 = 13 cm</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Isosceles triangle: base = 16 cm, equal sides = 10 cm. Height: h = √(10² - 8²) = √(100 - 64) = √36 = 6 cm</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Distance: A(1;2) to B(4;6): d = √(9+16) = √25 = 5 units</span></div>
           </div>
-          <div class="tip-box"><span class="tip-icon">??</span><span>In isosceles triangle problems, 
+          <div class="tip-box"><span class="tip-icon">💡</span><span>In isosceles triangle problems, the altitude from the apex bisects the base, creating two identical right triangles.</span></div>
           <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
             <div class="def-box-title" style="color:#a5b4fc;">&#127918; Try it &#8212; Pythagoras Solver</div>
             <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Leave one field blank. Enter any two sides and the third is calculated.</p>
             <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side a</label><input id="pyA2" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side b</label><input id="pyB2" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
-              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Hypotenuse c</label><input id="pyC2" type="number" placeholder="\u2014" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side a</label><input id="pyA2" type="number" placeholder="—" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Side b</label><input id="pyB2" type="number" placeholder="—" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Hypotenuse c</label><input id="pyC2" type="number" placeholder="—" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
               <button id="pyBtn2" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Solve</button>
             </div>
             <div id="pyOut2" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
@@ -117,24 +117,24 @@ MathMagician.registerChapter(13, {
               var el=document.getElementById('pyOut2');
               if(blanks!==1){el.innerHTML='<span style="color:#fca5a5;">Leave exactly one field blank.</span>';return;}
               var res,step1,step2;
-              if(isNaN(c)){res=Math.sqrt(a*a+b*b);step1='c\xb2 = '+a+'\xb2 + '+b+'\xb2 = '+(a*a+b*b);step2='c = \u221a'+(a*a+b*b)+' = '+f(res);document.getElementById('pyC2').value=f(res);}
-              else if(isNaN(b)){res=Math.sqrt(c*c-a*a);step1='b\xb2 = '+c+'\xb2 \u2212 '+a+'\xb2 = '+(c*c-a*a);step2='b = \u221a'+(c*c-a*a)+' = '+f(res);document.getElementById('pyB2').value=f(res);}
-              else{res=Math.sqrt(c*c-b*b);step1='a\xb2 = '+c+'\xb2 \u2212 '+b+'\xb2 = '+(c*c-b*b);step2='a = \u221a'+(c*c-b*b)+' = '+f(res);document.getElementById('pyA2').value=f(res);}
+              if(isNaN(c)){res=Math.sqrt(a*a+b*b);step1='c\xb2 = '+a+'\xb2 + '+b+'\xb2 = '+(a*a+b*b);step2='c = √'+(a*a+b*b)+' = '+f(res);document.getElementById('pyC2').value=f(res);}
+              else if(isNaN(b)){res=Math.sqrt(c*c-a*a);step1='b\xb2 = '+c+'\xb2 − '+a+'\xb2 = '+(c*c-a*a);step2='b = √'+(c*c-a*a)+' = '+f(res);document.getElementById('pyB2').value=f(res);}
+              else{res=Math.sqrt(c*c-b*b);step1='a\xb2 = '+c+'\xb2 − '+b+'\xb2 = '+(c*c-b*b);step2='a = √'+(c*c-b*b)+' = '+f(res);document.getElementById('pyA2').value=f(res);}
               el.innerHTML='<div style="color:rgba(221,225,240,0.60);">'+step1+'</div><div><strong style="color:#6ee7b7;">'+step2+'</strong></div>';
             }
             document.getElementById('pyBtn2').addEventListener('click',solve);
             ['pyA2','pyB2','pyC2'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')solve();});});
           })();
           </script>
-        the altitude from the apex bisects the base, creating two identical right triangles.</span></div>
         `
       },
       questions: [
         { type: "input", text: "Find the diagonal of a rectangle with length 24 cm and width 7 cm.", answer: "25", topic: "Pythagoras" },
-        { type: "mc", text: "An isosceles triangle has equal sides of 13 cm and a base of 10 cm. Its height is:", options: ["12 cm", "8 cm", "10 cm", "v119 cm"], answer: 0, topic: "Pythagoras" },
+        { type: "mc", text: "An isosceles triangle has equal sides of 13 cm and a base of 10 cm. Its height is:", options: ["12 cm", "8 cm", "10 cm", "√119 cm"], answer: 0, topic: "Pythagoras" },
         { type: "input", text: "Find the distance between points (0;0) and (3;4).", answer: "5", topic: "Pythagoras" },
-        { type: "mc", text: "A triangle has sides 7, 24, 25. Is it right-angled?", options: ["Yes, 7�+24�=625=25�", "No", "Yes, 7+24=25", "Cannot tell"], answer: 0, topic: "Pythagoras" },
-        { type: "input", text: "A square has diagonal 10v2 cm. Find the side length of the square.", answer: "10", topic: "Pythagoras" },
+        { type: "mc", text: "A triangle has sides 7, 24, 25. Is it right-angled?", options: ["Yes, 7²+24²=625=25²", "No", "Yes, 7+24=25", "Cannot tell"], answer: 0, topic: "Pythagoras" },
+        { type: "input", text: "A square has diagonal 10√2 cm. Find the side length of the square.", answer: "10", topic: "Pythagoras" },
+        { type: "input", text: "A rectangular field is 21 m by 20 m. How many fewer metres does a farmer walk by cutting diagonally across the field, compared to walking along the two sides?", answer: "12", topic: "Pythagoras" },
       ]
     },
   ],
@@ -142,7 +142,7 @@ MathMagician.registerChapter(13, {
     chapter: 13, chapterName: "Pythagoras' Theorem",
     topics: [
       {
-        name: "Pythagoras � Finding Sides",
+        name: "Pythagoras — Finding Sides",
         questions: [
           {
             num: "1",
@@ -179,23 +179,23 @@ MathMagician.registerChapter(13, {
     ]
   },
   answerKey: {
-    chapter: 13, chapterName: "Chapter 13 � Pythagoras' Theorem",
+    chapter: 13, chapterName: "Chapter 13 — Pythagoras' Theorem",
     topics: [
       {
-        name: "Pythagoras � Finding Sides",
+        name: "Pythagoras — Finding Sides",
         answers: [
-          { num: "Q1a", ans: "25 cm", note: "v(225+400) = v625 = 25" },
-          { num: "Q1b", ans: "24 cm", note: "v(676-100) = v576 = 24" },
-          { num: "Q1c", ans: "v130 cm � 11,4 cm", note: "v(49+81) = v130" },
+          { num: "Q1a", ans: "25 cm", note: "√(225+400) = √625 = 25" },
+          { num: "Q1b", ans: "24 cm", note: "√(676-100) = √576 = 24" },
+          { num: "Q1c", ans: "√130 cm ≈ 11,4 cm", note: "√(49+81) = √130" },
         ]
       },
       {
         name: "Applications",
         answers: [
-          { num: "Q2a", ans: "34 m", note: "v(900+256) = v1156 = 34" },
+          { num: "Q2a", ans: "34 m", note: "√(900+256) = √1156 = 34" },
           { num: "Q2b", ans: "17 m", note: "Half of 34 m" },
-          { num: "Q3a", ans: "6v3 � 10,39 cm", note: "h = v(12� - 6�) = v(144-36) = v108 = 6v3" },
-          { num: "Q3b", ans: "36v3 � 62,35 cm�", note: "A = � � 12 � 6v3 = 36v3" },
+          { num: "Q3a", ans: "6√3 ≈ 10,39 cm", note: "h = √(12² - 6²) = √(144-36) = √108 = 6√3" },
+          { num: "Q3b", ans: "36√3 ≈ 62,35 cm²", note: "A = ½ × 12 × 6√3 = 36√3" },
         ]
       },
     ]

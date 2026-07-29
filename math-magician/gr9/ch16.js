@@ -116,6 +116,8 @@ MathMagician.registerChapter(16, {
         { type: "mc", text: "Point (-2; 4) reflected in the y-axis gives:", options: ["(2; 4)", "(-2; -4)", "(4; -2)", "(-4; 2)"], answer: 0, topic: "Transformations" },
         { type: "mc", text: "Reflecting (3; 7) over the line y = x gives:", options: ["(3; 7)", "(-3; -7)", "(7; 3)", "(-7; -3)"], answer: 2, topic: "Transformations" },
         { type: "input", text: "Point A(-1; 4) is translated 3 right and 2 down. What is the x-coordinate of A'?", answer: "2", topic: "Transformations" },
+        { type: "input", text: "Point A(2; -5) is first translated by (-3; 6), and the resulting point is then reflected in the y-axis. What is the x-coordinate of the final image?", answer: "1", topic: "Transformations" },
+        { type: "input", text: "A point P is reflected in the x-axis, giving the image (7; -3). What was the y-coordinate of the original point P?", answer: "3", topic: "Transformations" },
       ]
     },
     {
@@ -200,6 +202,8 @@ MathMagician.registerChapter(16, {
         { type: "mc", text: "Enlarging (3; -4) by scale factor 2 from the origin gives:", options: ["(6; -8)", "(1,5; -2)", "(5; -6)", "(6; 4)"], answer: 0, topic: "Transformations" },
         { type: "input", text: "If a triangle of area 9 cm� is enlarged by scale factor 3, what is the area of the image?", answer: "81", topic: "Transformations" },
         { type: "mc", text: "Reducing a shape by scale factor 0,5 multiplies its perimeter by:", options: ["0,25", "0,5", "2", "4"], answer: 1, topic: "Transformations" },
+        { type: "input", text: "Point B(-2; 5) is rotated 90° clockwise about the origin, and the image is then enlarged by scale factor 3 from the origin. What is the x-coordinate of the final image?", answer: "15", topic: "Transformations" },
+        { type: "input", text: "A shape is enlarged from the origin by scale factor 4, producing an image with area 320 cm². Find the area of the original shape (in cm²).", answer: "20", topic: "Transformations" },
       ]
     },
   ],

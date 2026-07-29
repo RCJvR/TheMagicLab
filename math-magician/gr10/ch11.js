@@ -136,6 +136,20 @@ MathMagician.registerChapter(11, {
           options: ["h = 8·tan60°", "h = 8·sin60°", "h = 8/tan60°", "h = 8·cos60°"],
           answer: 0,
           topic: "2D trig problems"
+        },
+        {
+          type: "input",
+          text: "From a point 25 m from the base of a tower, the angle of elevation to the top is 38°. Find the height of the tower, correct to 2 decimal places.",
+          answer: "19.53",
+          altAnswers: ["19,53"],
+          topic: "2D trig problems"
+        },
+        {
+          type: "input",
+          text: "A vertical pole 12 m tall casts a horizontal shadow of 9 m. Find the angle of elevation of the sun, correct to 1 decimal place.",
+          answer: "53.1",
+          altAnswers: ["53,1", "53.1°"],
+          topic: "2D trig problems"
         }
       ]
     },
@@ -241,6 +255,13 @@ MathMagician.registerChapter(11, {
           type: "input",
           text: "In a right triangle, which ratio relates the opposite side to the hypotenuse?",
           answer: "sin",
+          topic: "Multi-triangle problems"
+        },
+        {
+          type: "input",
+          text: "From A, the angle of elevation to the top of a tower is 50°. From B, 15 m further from the tower along the same line, the angle is 30°. Find the height of the tower, correct to 2 decimal places.",
+          answer: "16.80",
+          altAnswers: ["16.8", "16,80", "16,8"],
           topic: "Multi-triangle problems"
         }
       ]
@@ -355,6 +376,20 @@ MathMagician.registerChapter(11, {
           options: ["The North lines are perpendicular", "The North lines are parallel", "The towns are the same distance from the equator", "Bearings are always less than 180°"],
           answer: 1,
           topic: "Bearings & navigation problems"
+        },
+        {
+          type: "input",
+          text: "A hiker walks 18 km on a bearing of 060°, then 24 km on a bearing of 150° (a right-angle turn). Find the direct distance from the start to the final point.",
+          answer: "30",
+          altAnswers: ["30 km", "30.0"],
+          topic: "Bearings & navigation problems"
+        },
+        {
+          type: "input",
+          text: "A ship sails 45 km on a bearing of 090°, then 28 km on a bearing of 000°. Find the bearing of the final position from the start point, to the nearest degree.",
+          answer: "058",
+          altAnswers: ["58", "058°", "58°"],
+          topic: "Bearings & navigation problems"
         }
       ]
     },
@@ -460,6 +495,13 @@ MathMagician.registerChapter(11, {
           text: "From the top of a cliff, the angle of depression to a boat is 25° and to a second boat further out is 12°. To find the distance between the boats, you should:",
           options: ["Subtract the two horizontal distances found separately", "Add the two angles", "Use only the closer boat's data", "Multiply the two tangent ratios"],
           answer: 0,
+          topic: "Mixed 2D trigonometry applications"
+        },
+        {
+          type: "input",
+          text: "From the top of a 36 m tower, the angle of depression to the base of a nearby building is 32°, and the angle of elevation to the top of the same building is 18°. Find the total height of the building, correct to 2 decimal places.",
+          answer: "54.72",
+          altAnswers: ["54,72"],
           topic: "Mixed 2D trigonometry applications"
         }
       ]

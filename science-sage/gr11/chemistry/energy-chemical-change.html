@@ -348,7 +348,7 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
         <strong style="color:#fff;display:block;margin-bottom:2px">Quiz complete!</strong>
         Review the explanations to strengthen your understanding.
@@ -410,6 +410,27 @@ input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
       (b) Draw and label two potential energy diagrams on the same axes: one without a catalyst and one with MnO&#x2082; as catalyst. Indicate E<sub>a</sub> and &Delta;H on both diagrams.<br>
       (c) Explain, using the concept of activation energy, why adding MnO&#x2082; speeds up the reaction.<br>
       (d) After the reaction is complete, would you expect to find MnO&#x2082; in the products? Explain. <em>(6 marks)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 &mdash; Reading a Calorimetry Graph (Data Table)</div>
+      <div class="wb-qtext">A learner investigates the endothermic dissolving of ammonium nitrate (NH&#x2084;NO&#x2083;) by adding 5.60 g of the solid to 50 g of water at 22.0&deg;C in a polystyrene cup. Because stirring and dissolving take time, the first reliable thermometer reading is only taken 1 minute after mixing. Temperature is then recorded every minute as the mixture slowly warms back toward room temperature:<br><br>
+      <table class="symbols-table" style="max-width:420px">
+        <thead><tr><th>Time after mixing (min)</th><th>Temperature (&deg;C)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>14.0</td></tr>
+          <tr><td>2</td><td>14.6</td></tr>
+          <tr><td>3</td><td>15.2</td></tr>
+          <tr><td>4</td><td>15.8</td></tr>
+          <tr><td>5</td><td>16.4</td></tr>
+        </tbody>
+      </table><br>
+      (a) Plot temperature (y-axis) against time (x-axis) for t = 1 to 5 minutes, and draw the best-fit straight line through the points.<br>
+      (b) Calculate the gradient of this line (in &deg;C&middot;min&minus;1). What does this gradient represent physically?<br>
+      (c) The mixture actually reached its lowest temperature at t = 0 (the instant of mixing), before any readings could be taken. Use the gradient from (b) to extrapolate the line back to t = 0 and determine this lowest (corrected) temperature.<br>
+      (d) Hence calculate the corrected temperature change, &Delta;T, for the experiment (using the initial temperature of 22.0&deg;C).<br>
+      (e) Calculate Q, the heat absorbed by the water (M(NH&#x2084;NO&#x2083;) = 80 g&middot;mol&minus;1; c<sub>water</sub> = 4.18 J&middot;g&minus;1&middot;&deg;C&minus;1; assume the mass of solution &asymp; mass of water = 50 g).<br>
+      (f) Calculate the number of moles of NH&#x2084;NO&#x2083; used, and hence the experimental &Delta;H (in kJ&middot;mol&minus;1) for the dissolving process. Explain why extrapolating back to t = 0 gives a more accurate &Delta;H than simply using the lowest measured temperature (14.0&deg;C) directly. <em>(8 marks)</em></div>
     </div>
   </div>
 </div>
@@ -853,6 +874,18 @@ const NSC_QUESTIONS = [
     opts: ['2508 J', '1254 J', '100.3 J', '5016 J'],
     ans: 0,
     exp: 'Q = mcΔT = 50 g × 4.18 J·g⁻¹·°C⁻¹ × 12.0°C = 2508 J. Note: we use the mass of water (50 g), not the mass of NaOH. The temperature increases, confirming an exothermic process.'
+  },
+  {
+    q: 'Given: (1) S(s) + O₂(g) → SO₂(g) ΔH₁ = −297 kJ·mol⁻¹, and (2) 2SO₂(g) + O₂(g) → 2SO₃(g) ΔH₂ = −198 kJ·mol⁻¹. Using Hess\'s Law, what is ΔH for S(s) + 3/2 O₂(g) → SO₃(g)?',
+    opts: ['−396 kJ·mol⁻¹', '−495 kJ·mol⁻¹', '−99 kJ·mol⁻¹', '−297 kJ·mol⁻¹'],
+    ans: 0,
+    exp: 'The target equation contains only 1 mol SO₃ and no SO₂, so halve equation (2): SO₂(g) + ½O₂(g) → SO₃(g), ΔH = ½ × (−198) = −99 kJ·mol⁻¹. Adding this to equation (1) — [S + O₂ → SO₂] + [SO₂ + ½O₂ → SO₃] — the SO₂ cancels, leaving S + 3/2 O₂ → SO₃ with ΔH = −297 + (−99) = −396 kJ·mol⁻¹. Simply adding ΔH₁ and ΔH₂ without halving (giving −495 kJ·mol⁻¹) ignores that equation (2) must be scaled to match the 1 mol SO₃ in the target equation.'
+  },
+  {
+    q: 'A potential energy diagram for a reaction shows the reactants at 150 kJ, the activated complex (peak) at 230 kJ, and the products at 80 kJ, all measured on the same relative energy scale. What is the activation energy of the REVERSE reaction?',
+    opts: ['150 kJ', '80 kJ', '70 kJ', '230 kJ'],
+    ans: 0,
+    exp: 'Ea(reverse) is measured from the products up to the peak (activated complex): 230 − 80 = 150 kJ. For comparison, Ea(forward) = peak − reactants = 230 − 150 = 80 kJ, and ΔH = products − reactants = 80 − 150 = −70 kJ. Since Ea(reverse) > Ea(forward), this confirms the forward reaction is exothermic, consistent with the negative ΔH.'
   }
 ];
 

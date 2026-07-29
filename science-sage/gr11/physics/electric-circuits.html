@@ -268,7 +268,7 @@
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
     <div class="score-banner" id="score-banner">
-      <div class="score-big" id="score-big">0/6</div>
+      <div class="score-big" id="score-big">0/8</div>
       <div style="font-size:13px;color:var(--muted)">NSC questions answered correctly</div>
     </div>
     <div id="nsc-qs"></div>
@@ -288,6 +288,15 @@
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">In the circuit from Question 2, calculate the power dissipated in each of R₁, R₂, and R₃. Which resistor dissipates the most power? Explain why, using the relevant power formula.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">A 2 kW electric heater runs for 3 hours per day for 30 days. (a) Calculate the energy consumed in joules. (b) If electricity costs R2.50 per kWh, calculate the total cost.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">A battery of unknown EMF and internal resistance is connected to a 10 Ω resistor. The terminal voltage is 8.0 V and the current is 0.8 A. (a) Calculate the internal resistance. (b) When connected to a 5 Ω resistor instead, predict the new current and terminal voltage. (c) Explain why the terminal voltage is lower when a smaller resistance is used.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 — Finding EMF and r from Measured Data</div><div class="wb-qtext">A learner varies the external resistor connected to a battery and measures the current drawn and the resulting terminal voltage each time:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Current I (A)</th><th>0.5</th><th>1.0</th><th>1.5</th><th>2.0</th></tr></thead>
+        <tbody><tr><td>Terminal voltage V (V)</td><td>8.5</td><td>7.0</td><td>5.5</td><td>4.0</td></tr></tbody>
+      </table>
+      (a) Calculate the change in V for each 0.5 A increase in I. What does this confirm about the relationship between V and I?<br>
+      (b) Using any two rows of the table, calculate the internal resistance r of the battery (the magnitude of the gradient of V vs I).<br>
+      (c) Using your value of r and one row of data, calculate the EMF of the battery (the value V would have at I = 0).<br>
+      (d) Using the pattern in the table (not just the EMF/r equation), predict the terminal voltage when I = 3.0 A.</div></div>
   </div>
 </div>
 
@@ -624,12 +633,14 @@ function drawResistor(ctx, x1, y1, x2, y2, label, color) {
 
 // ── Practice questions ─────────────────────────────────────────────
 const NSC_QS = [
-  {q: "A battery has an EMF of 12 V and internal resistance of 2 Ω. When connected to an external resistor, the terminal voltage is 10 V. What is the external resistance?", opts: ["1 Ω","5 Ω","10 Ω","12 Ω"], ans: 1, fb: "Lost volts = Ir → 12 − 10 = 2 V. So I = 2/2 = 1 A. V_terminal = IR_ext → 10 = 1 × R_ext → R_ext = 10 Ω. Wait — re-check: I = (ε − V_t)/r = 2/2 = 1 A. R_ext = V_t/I = 10/1 = 10 Ω."},
+  {q: "A battery has an EMF of 12 V and internal resistance of 2 Ω. When connected to an external resistor, the terminal voltage is 10 V. What is the external resistance?", opts: ["1 Ω","5 Ω","10 Ω","12 Ω"], ans: 2, fb: "Lost volts = ε − V_t = 12 − 10 = 2 V. Current I = (lost volts)/r = 2/2 = 1 A. R_ext = V_t/I = 10/1 = 10 Ω."},
   {q: "A battery (ε = 9 V, r = 1 Ω) is short-circuited (the terminals are connected directly). What is the short-circuit current?", opts: ["0 A","1 A","9 A","∞"], ans: 2, fb: "Short circuit: R_ext = 0. I = ε/(r + 0) = 9/1 = 9 A. The terminal voltage drops to 0 V."},
   {q: "In a series-parallel circuit, R₁ = 4 Ω is in series with R₂ = 6 Ω ∥ R₃ = 12 Ω. What is the total external resistance?", opts: ["4 Ω","8 Ω","16 Ω","22 Ω"], ans: 1, fb: "R_parallel = (6 × 12)/(6 + 12) = 72/18 = 4 Ω. R_total = R₁ + R_parallel = 4 + 4 = 8 Ω."},
   {q: "Which of the following correctly states Kirchhoff's Current Law?", opts: ["The sum of potential differences around a loop equals zero","The sum of currents entering a node equals the sum leaving it","Current is the same in parallel branches","Voltage drops equal voltage rises in a series circuit"], ans: 1, fb: "KCL: The algebraic sum of all currents at a node equals zero, or equivalently: ΣI_in = ΣI_out. This follows from conservation of charge."},
   {q: "A 6 Ω and a 3 Ω resistor are connected in parallel and carry the same voltage of 12 V. Which resistor dissipates more power?", opts: ["The 6 Ω resistor","The 3 Ω resistor","They dissipate the same power","Not enough information"], ans: 1, fb: "P = V²/R. With the same V: P_3Ω = 144/3 = 48 W; P_6Ω = 144/6 = 24 W. The 3 Ω resistor dissipates more power."},
-  {q: "A 1 500 W kettle is used for 5 minutes. How much electrical energy does it consume?", opts: ["7 500 J","75 000 J","450 000 J","450 kJ"], ans: 3, fb: "E = Pt = 1500 × (5 × 60) = 1500 × 300 = 450 000 J = 450 kJ. (Note: options C and D are the same value — 450 000 J = 450 kJ, so both C and D are correct.)"}
+  {q: "A 1 500 W kettle is used for 5 minutes. How much electrical energy does it consume?", opts: ["7 500 J","75 000 J","450 000 J","90 000 J"], ans: 2, fb: "E = Pt = 1500 × (5 × 60) = 1500 × 300 = 450 000 J. (7 500 J mistakenly uses t = 5 s instead of converting to seconds; 75 000 J mistakenly uses t = 50 s; 90 000 J mistakenly uses only t = 60 s, i.e. 1 minute.)"},
+  {q: "A 12 V battery (negligible internal resistance) is connected to R₁ = 2 Ω in series with a parallel combination of R₂ = 6 Ω and R₃ = 3 Ω. What is the current through R₃?", opts: ["2 A","3 A","4 A","1.5 A"], ans: 0, fb: "First combine the parallel pair: R_parallel = (6×3)/(6+3) = 18/9 = 2 Ω. Total circuit resistance = R₁ + R_parallel = 2 + 2 = 4 Ω. Total current from the battery: I = ε/R_total = 12/4 = 3 A. This 3 A splits between R₂ and R₃ — it does NOT split evenly, it splits in inverse proportion to resistance. The voltage across the parallel section is V = I×R_parallel = 3×2 = 6 V (same across both branches). So I(R₃) = V/R₃ = 6/3 = 2 A (and I(R₂) = 6/6 = 1 A, which correctly adds up to the total 3 A)."},
+  {q: "A voltmeter connected directly across a battery's terminals (open circuit, no external resistor) reads 9.0 V. When a 10 Ω resistor is connected across the terminals, the reading drops to 7.5 V. What is the battery's internal resistance?", opts: ["2 Ω","0.75 Ω","1.5 Ω","12 Ω"], ans: 0, fb: "With an open circuit, no current flows, so there is no voltage drop across the internal resistance — the voltmeter reads the full EMF: ε = 9.0 V. Once the 10 Ω resistor is connected, current flows: I = V_terminal/R = 7.5/10 = 0.75 A. The 'lost volts' across the internal resistance = ε − V_terminal = 9.0 − 7.5 = 1.5 V. So r = (lost volts)/I = 1.5/0.75 = 2 Ω."}
 ];
 
 const IEB_QS = [

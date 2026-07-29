@@ -131,6 +131,18 @@ MathMagician.registerChapter(14, {
           answer: "0.2",
           altAnswers: ["0,2"],
           topic: "Probability basics & Venn diagrams"
+        },
+        {
+          type: "input",
+          text: "In a class of 40, x learners play chess only, 2x play soccer only, 6 play both, and 4 play neither. Find x.",
+          answer: "10",
+          topic: "Probability basics & Venn diagrams"
+        },
+        {
+          type: "input",
+          text: "In a survey of 60 people, 35 like coffee (C), 28 like tea (T), and 10 like neither. Find n(C ∩ T).",
+          answer: "13",
+          topic: "Probability basics & Venn diagrams"
         }
       ]
     },
@@ -310,6 +322,20 @@ MathMagician.registerChapter(14, {
           options: ["Rolling a 3 and rolling an odd number", "Drawing a red card and drawing a king", "Rolling an even number and rolling a 4", "Getting heads and getting tails on one coin flip"],
           answer: 3,
           topic: "Mutually exclusive & complementary events"
+        },
+        {
+          type: "input",
+          text: "A biased coin has P(heads) = 0.3. It is tossed 3 times. Find P(at least one heads), correct to 3 decimal places.",
+          answer: "0.657",
+          altAnswers: ["0,657"],
+          topic: "Mutually exclusive & complementary events"
+        },
+        {
+          type: "input",
+          text: "P(A) = 0.45, P(B) = 0.35, and A and B are mutually exclusive. Find P(A' ∩ B').",
+          answer: "0.2",
+          altAnswers: ["0,2", "0.20", "0,20"],
+          topic: "Mutually exclusive & complementary events"
         }
       ]
     },
@@ -413,6 +439,19 @@ MathMagician.registerChapter(14, {
           text: "Which best describes theoretical probability?",
           options: ["Based on counting equally likely outcomes", "Based only on past experimental data", "Always equal to relative frequency", "Only applies to coins and dice"],
           answer: 0,
+          topic: "Relative frequency vs theoretical probability"
+        },
+        {
+          type: "input",
+          text: "A die is rolled 40 times in the morning, landing on 6 nine times, then rolled 60 times in the afternoon, landing on 6 eleven times. Find the overall relative frequency of rolling a 6 for the whole day, as a decimal to 2 decimal places.",
+          answer: "0.20",
+          altAnswers: ["0,20", "0.2", "0,2"],
+          topic: "Relative frequency vs theoretical probability"
+        },
+        {
+          type: "input",
+          text: "A fair spinner has 5 equal sectors. It is spun 200 times. Find the expected (theoretical) number of times it lands on a particular sector.",
+          answer: "40",
           topic: "Relative frequency vs theoretical probability"
         }
       ]
@@ -529,6 +568,19 @@ MathMagician.registerChapter(14, {
           options: ["Female only", "Pass only", "The intersection of Female and Pass", "The complement of Female"],
           answer: 2,
           topic: "Two-way tables"
+        },
+        {
+          type: "input",
+          text: "A two-way table has: Male & Pass = 24, Male & Fail = x, Female & Pass = 18, Female & Fail = 12. If the total surveyed is 70, find x.",
+          answer: "16",
+          topic: "Two-way tables"
+        },
+        {
+          type: "input",
+          text: "In a two-way table, 45 of the 80 learners surveyed are in the 'Sport' column, and 20 of these 45 are also in the 'Instrument' row. Find P(No instrument AND Sport), as a fraction in simplest form.",
+          answer: "5/16",
+          altAnswers: ["0.3125", "0,3125"],
+          topic: "Two-way tables"
         }
       ]
     }
@@ -564,6 +616,17 @@ MathMagician.registerChapter(14, {
           { label: "a", text: "Find P(rain on both days).", marks: 2 },
           { label: "b", text: "Find P(at least one day with rain).", marks: 3 }
         ]
+      },
+      {
+        number: 4,
+        text: "The two-way table below shows the results of a survey of 120 learners on whether they play a musical instrument (Instrument) and whether they play a sport (Sport):<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'></th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Sport</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>No Sport</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Total</th></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Instrument</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>18</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>12</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>30</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>No Instrument</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>54</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>36</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>90</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Total</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>72</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>48</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>120</td></tr></table>",
+        parts: [
+          { label: "a", text: "Read from the table: how many learners play both an instrument and a sport?", marks: 1 },
+          { label: "b", text: "Find P(plays a sport).", marks: 2 },
+          { label: "c", text: "Find P(plays an instrument AND a sport).", marks: 2 },
+          { label: "d", text: "Use the addition rule, with values read from the table, to find P(plays an instrument OR a sport).", marks: 3 },
+          { label: "e", text: "Find P(plays neither).", marks: 1 }
+        ]
       }
     ],
     answers: {
@@ -583,6 +646,13 @@ MathMagician.registerChapter(14, {
       3: {
         a: "0.35×0.35=0.1225",
         b: "1−P(no rain)²=1−(0.65)²=1−0.4225=0.5775"
+      },
+      4: {
+        a: "18 (the Instrument-and-Sport cell)",
+        b: "P(Sport) = 72/120 = 3/5 = 0.6",
+        c: "P(Instrument ∩ Sport) = 18/120 = 3/20 = 0.15",
+        d: "P(Instrument) = 30/120 = 0.25; P(Instrument ∪ Sport) = P(Instrument)+P(Sport)−P(Instrument∩Sport) = 0.25+0.6−0.15 = 0.7",
+        e: "P(neither) = 36/120 = 0.3"
       }
     }
   }

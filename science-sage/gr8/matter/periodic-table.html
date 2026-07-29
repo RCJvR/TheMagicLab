@@ -274,7 +274,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -292,6 +292,9 @@
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">List THREE differences between metals and non-metals. Give one example of each from the periodic table.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain the trend in reactivity as you move DOWN Group 1 (alkali metals). Why does reactivity increase?</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (3 marks)</div><div class="wb-qtext">Silicon (Si) is described as a metalloid. (a) What does metalloid mean? (b) In which group and period is silicon? (c) Give one important modern use of silicon and explain why its semi-conducting properties make it suitable for this use.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 7 · (4 marks)</div><div class="wb-qtext">The table below shows the melting point of four Period 3 elements.
+      <table class="compare-table"><tr><th>Element</th><th>Group</th><th>Melting point (°C)</th></tr><tr><td>Sodium (Na)</td><td>1</td><td>98</td></tr><tr><td>Aluminium (Al)</td><td>13</td><td>660</td></tr><tr><td>Silicon (Si)</td><td>14</td><td>1414</td></tr><tr><td>Chlorine (Cl)</td><td>17</td><td>−101</td></tr></table>
+      (a) Using the data, which of these four elements is a gas at room temperature (20 °C)? Justify your answer. (b) Calculate the difference in melting point between silicon and sodium. (c) Silicon has by far the highest melting point in the table, yet it is classified as a metalloid rather than a metal. Explain how this is possible, referring to silicon's position on the periodic table.</div></div>
   </div>
 </div>
 
@@ -605,6 +608,8 @@ const QUESTIONS = [
   {text:'Which group of elements is described as "completely unreactive" because they have full outer electron shells?',opts:['Group 1 — Alkali metals','Group 17 — Halogens','Group 18 — Noble gases','Group 2 — Alkaline earth metals'],ans:2,exp:'Noble gases (Group 18) have full outer shells and do not need to gain or lose electrons, making them almost completely unreactive (inert).'},
   {text:'As you move DOWN Group 1 (the alkali metals), what happens to reactivity?',opts:['Reactivity decreases','Reactivity stays the same','Reactivity increases','Reactivity becomes zero'],ans:2,exp:'Going down Group 1, the valence electron is in a higher shell, further from the nucleus and more easily removed. This makes the element more reactive. Caesium is more reactive than lithium.'},
   {text:'Silicon (Si) is best described as a:',opts:['Reactive non-metal','Transition metal','Metalloid (semi-metal)','Noble gas'],ans:2,exp:'Silicon sits on the "staircase" boundary between metals and non-metals in the periodic table. It has properties of both — it is a semiconductor, which is why it is used in computer chips.'},
+  {text:'An unknown element Q has the electron configuration 2,8,7. Based ONLY on this configuration, which conclusion is best supported?',opts:['It is in Period 2 with 8 valence electrons, making it a noble gas','It is in Period 3 with 7 valence electrons, making it a very reactive non-metal (likely a halogen)','It is in Period 3 with 2 valence electrons, making it an unreactive metal','It is in Period 7 with 3 valence electrons, making it a metalloid'],ans:1,exp:'There are 3 numbers in the configuration (2,8,7), so element Q has 3 electron shells — Period 3. The LAST number (7) is the valence electron count, giving Group 17 — the halogens. Halogens are very reactive non-metals, needing just 1 more electron to complete their outer shell. This configuration actually matches chlorine (2,8,7).'},
+  {text:'Using the periodic trends described in this lesson (metal reactivity increases DOWN a group; non-metal reactivity increases UP a group), which of these four elements is the single MOST reactive overall?',opts:['Lithium (Li) — Group 1, Period 2','Francium (Fr) — Group 1, Period 7','Fluorine (F) — Group 17, Period 2','Iodine (I) — Group 17, Period 5'],ans:2,exp:'Comparing within each family first: francium is more reactive than lithium (metal reactivity increases down Group 1), and fluorine is more reactive than iodine (non-metal reactivity increases up Group 17). Comparing the two most-reactive candidates, fluorine is considered the single most reactive element of all — it reacts violently with almost everything, including glass and water.'},
 ];
 let score=0, answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -629,7 +634,7 @@ function answer(qi,oi){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
     const msgs=['Keep studying — re-read the lesson.','Good effort — review the explanations.','Well done! A solid understanding.','Excellent! You\'ve mastered the periodic table.'];
-    document.getElementById('scoreMsg').textContent=score<=2?msgs[0]:score<=4?msgs[1]:score===5?msgs[2]:msgs[3];
+    document.getElementById('scoreMsg').textContent=score<=3?msgs[0]:score<=5?msgs[1]:score<=7?msgs[2]:msgs[3];
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

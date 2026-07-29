@@ -219,6 +219,19 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">State FOUR factors that affect the rate of transpiration, and explain how EACH one affects the rate.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Name the instrument used to measure the rate of water uptake in a leafy shoot.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Explain what annual rings in a tree trunk can tell us, and why they form.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">A learner uses a potometer to measure the rate of water uptake by a leafy shoot, by tracking how far an air bubble moves along a calibrated scale over time. The experiment is repeated with a fan blowing air gently over the leaves:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Time (min)</th><th>Bubble distance, still air (mm)</th><th>Bubble distance, with fan (mm)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>5</td><td>12</td><td>25</td></tr>
+        <tr><td>10</td><td>24</td><td>50</td></tr>
+        <tr><td>15</td><td>36</td><td>74</td></tr>
+      </tbody>
+    </table>
+    (a) Calculate the rate of water uptake, in mm/min, in still air between 0 and 10 minutes. Show your working. (2)<br>
+    (b) Calculate the rate of water uptake, in mm/min, with the fan running, between 0 and 10 minutes. Show your working. (2)<br>
+    (c) Using the concept of transpiration, explain why the rate with the fan is so much higher than in still air. (2)</div></div>
   </div>
 </div>
 
@@ -335,6 +348,8 @@ const QUESTIONS=[
   {text:'What instrument is used to measure the rate of water uptake by a leafy shoot?',opts:['Barometer','Potometer','Thermometer','Hygrometer'],ans:1,exp:'A potometer measures how quickly a leafy shoot draws up water, giving an indirect measure of transpiration rate.'},
   {text:'Why does high humidity REDUCE the rate of transpiration?',opts:['It closes the stomata completely','It reduces the concentration gradient for water evaporation','It cools the leaf down','It increases wind speed'],ans:1,exp:'When the air is already humid, there is less of a concentration gradient between the leaf surface and the air, so water evaporates more slowly.'},
   {text:'What can annual growth rings in a tree trunk tell scientists?',opts:['The tree\'s exact species only','The tree\'s age and clues about past climate conditions','The direction of the wind','The pH of the soil'],ans:1,exp:'Each ring generally represents one year of secondary growth; counting rings reveals age, and their width can indicate past growing conditions.'},
+  {text:'(Analysis) A gardener wants to reduce water loss from a newly transplanted seedling during a hot, dry, windy day. Based on the four factors that affect transpiration rate, which combination of actions would be MOST effective?',opts:['Move the seedling to a shadier, more humid spot, sheltered from wind','Place the seedling in direct sun and let the wind blow over it freely','Water only the leaves, to increase humidity right at the leaf surface','Increase the temperature of the soil around the roots'],ans:0,exp:'Transpiration rate rises with higher temperature, higher light intensity, lower humidity, and stronger wind. To minimise water loss, you want the opposite of all four: shade (lower light and temperature), higher humidity, and shelter from wind — exactly option A, which addresses several factors at once rather than just one.'},
+  {text:'(Analysis) A farmer removes a complete ring of bark — which contains the phloem but not the deeper xylem — all the way around a tree trunk (a practice called "ring-barking" or girdling). Predict what is most likely to happen to the tree over the following weeks, and why.',opts:['The tree dies immediately, because water can no longer move up the xylem','The roots gradually starve and die, because the phloem — which carries sugars made in the leaves down to the roots — has been cut, even though the xylem still carries water upward for a while','Nothing happens, because plants do not need phloem to survive','The leaves wilt immediately, because phloem is what carries water up to them'],ans:1,exp:'Xylem (deeper in the trunk) keeps transporting water upward for a time even after ring-barking, so the leaves do not wilt immediately. But phloem (in the ring of bark that was removed) is what translocates sugars made during photosynthesis down to the roots. With phloem cut, the roots can no longer receive sugars, so they gradually run out of energy and die — even though the tree may look healthy above ground for a while.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -352,7 +367,7 @@ function answer(qi,oi){
   if(answered.every(Boolean)){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    document.getElementById('scoreMsg').textContent=score<=3?'Keep at it — revisit the lesson!':score<=5?'Good work — check the explanations.':'Well done!';
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

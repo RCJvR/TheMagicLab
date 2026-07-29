@@ -232,7 +232,7 @@
 
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
-    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 8</span></div>
     <div id="q-container"></div>
   </div>
 </div>
@@ -246,6 +246,7 @@
     <div class="wb-card"><div class="wb-q">3. Describe where metals, non-metals and metalloids are found on the periodic table. (3 marks)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">4. Chlorine is used to purify drinking water and oxygen is essential for respiration. Explain why each of these non-metals is important in everyday life. (4 marks)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">5. A learner says "all metals are hard, shiny solids at room temperature." Give TWO exceptions that show this statement is not always true, and explain each one. (4 marks)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. The table below gives melting point, electrical conductivity, and appearance data for three elements.<br><table class="props-table"><thead><tr><th>Element</th><th>Melting point (°C)</th><th>Conducts electricity?</th><th>Appearance</th></tr></thead><tbody><tr><td>Aluminium (Al)</td><td>660</td><td>Yes</td><td>Shiny, silvery</td></tr><tr><td>Sulfur (S)</td><td>115</td><td>No</td><td>Dull, yellow</td></tr><tr><td>Silicon (Si)</td><td>1414</td><td>Only partially / when treated</td><td>Shiny, grey</td></tr></tbody></table>Using ONLY the evidence in the table (not the element names): (a) Classify each element as a metal, a non-metal, or a metalloid, and justify EACH classification with specific evidence from the table. (b) Calculate the difference in melting point between silicon and sulfur. (6 marks)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
   </div>
 </div>
 
@@ -324,9 +325,11 @@ const QS=[
   {q:"On the periodic table, non-metals are mostly found:",opts:["On the far left","In the centre","In the upper right-hand corner","Scattered randomly with no pattern"],ans:2,fb:"Non-metals cluster in the upper right-hand corner of the periodic table, with metals covering the left and centre."},
   {q:"Elements like silicon, which show properties of BOTH metals and non-metals, are called:",opts:["Isotopes","Metalloids","Alloys","Compounds"],ans:1,fb:"Metalloids sit along the zigzag staircase line on the periodic table and have a mix of metallic and non-metallic properties."},
   {q:"Which property makes aluminium foil useful for wrapping food?",opts:["It is a poor conductor of heat","It is malleable and can be rolled into thin, flexible sheets","It is brittle","It has a very low melting point"],ans:1,fb:"Aluminium's malleability allows it to be rolled into very thin sheets without cracking, and it also resists corrosion — perfect for foil."},
-  {q:"Which non-metal is used to disinfect and purify drinking water?",opts:["Sulfur","Carbon","Chlorine","Helium"],ans:2,fb:"Chlorine is added to water supplies in controlled amounts to kill harmful microorganisms and make water safe to drink."}
+  {q:"Which non-metal is used to disinfect and purify drinking water?",opts:["Sulfur","Carbon","Chlorine","Helium"],ans:2,fb:"Chlorine is added to water supplies in controlled amounts to kill harmful microorganisms and make water safe to drink."},
+  {q:"A learner is given an unlabelled grey solid. Tests show: it conducts electricity well, and it can be hammered into a thin sheet without cracking — but it is NOT attracted to a magnet. Which conclusion is BEST supported by this evidence?",opts:["It cannot be a metal, because all metals are magnetic","It is a metal — magnetism is not a required metal property, and good conductivity plus malleability are classic metal traits","It is a non-metal because it is not magnetic","It is a metalloid because it partly conducts electricity"],ans:1,fb:"Only a few metals (iron, cobalt, nickel) are magnetic — magnetism is NOT a general metallic property. Good electrical conductivity and malleability (being hammered into a sheet without shattering) are the defining metal properties, so this sample is a metal — just a non-magnetic one, like aluminium, tin, or lead."},
+  {q:"Pure silicon is a poor conductor of electricity at room temperature, but engineers add tiny amounts of other elements to it ('doping') to build computer chips. Why is silicon, a metalloid, particularly suited to this compared to a typical metal or non-metal?",opts:["Because it is a metal and therefore already conducts electricity perfectly","Because as a metalloid, its conductivity can be controlled and adjusted — unlike a metal (always conducts well) or most non-metals (rarely conduct)","Because it never conducts electricity under any conditions, which protects the chip","Because it is the only element on the periodic table that is malleable"],ans:1,fb:"Metalloids like silicon sit between metals and non-metals in behaviour — their conductivity is intermediate and can be switched or adjusted (e.g. by doping), unlike a typical metal (always a good conductor) or a typical non-metal (rarely conducts at all). This adjustable 'semiconductor' behaviour is exactly why silicon is essential in computer chips."}
 ];
-let scores=new Array(6).fill(null);
+let scores=new Array(QS.length).fill(null);
 function renderQ(){
   const c=document.getElementById('q-container');c.innerHTML='';
   QS.forEach((q,i)=>{
@@ -341,7 +344,7 @@ function answer(qi,oi,btn){
   if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
   else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
 }
-function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / '+QS.length;}
 renderQ();
 </script>
   <script src="/contact-button.js" defer></script>

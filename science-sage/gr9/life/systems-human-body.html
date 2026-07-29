@@ -267,6 +267,19 @@
     b) Name the main nitrogenous waste product removed from the blood by this organ.<br>
     c) Explain why useful substances such as glucose are reabsorbed back into the blood rather than being excreted.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (4 marks)</div><div class="wb-qtext">A learner runs a 400 m race. Using the digestive, respiratory, circulatory and excretory systems, explain how these FOUR systems work together to supply the learner's leg muscles with what they need and remove the waste produced. Refer to specific substances (glucose, oxygen, carbon dioxide, urea) in your answer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (5 marks)</div><div class="wb-qtext">A sports scientist measures a learner's heart rate and breathing rate at four different activity levels:<br><br>
+    <table class="symbols-table">
+      <thead><tr><th>Activity</th><th>Heart rate (bpm)</th><th>Breathing rate (breaths/min)</th></tr></thead>
+      <tbody>
+        <tr><td>Resting</td><td>72</td><td>15</td></tr>
+        <tr><td>Walking</td><td>100</td><td>20</td></tr>
+        <tr><td>Running</td><td>165</td><td>34</td></tr>
+        <tr><td>Sprinting</td><td>185</td><td>45</td></tr>
+      </tbody>
+    </table>
+    a) Calculate the percentage increase in heart rate from resting to sprinting. Show your working.<br><br>
+    b) Describe the relationship between heart rate and breathing rate shown in the table as activity level increases.<br><br>
+    c) Explain, referring to the respiratory AND circulatory systems, why BOTH heart rate and breathing rate need to rise together during intense exercise rather than just one of them increasing on its own.</div></div>
   </div>
 </div>
 
@@ -523,6 +536,28 @@ const QUESTIONS = [
     opts: ['Digestive system', 'Respiratory system', 'Circulatory system', 'Excretory system'],
     ans: 2,
     exp: 'The digestive system absorbs glucose into the blood, but it is the circulatory system that transports the glucose (along with oxygen from the respiratory system) to the muscle cells where it is needed for energy release.'
+  },
+  {
+    text: 'A learner\'s resting heart rate is 70 beats per minute (bpm). Immediately after a sprint it rises to 168 bpm. What is the percentage increase in heart rate, and which TWO body systems must work harder to meet the muscles\' sudden increase in demand?',
+    opts: [
+      '40% increase; digestive and excretory systems',
+      '140% increase; respiratory and circulatory systems',
+      '40% increase; respiratory and circulatory systems',
+      '140% increase; digestive and excretory systems'
+    ],
+    ans: 1,
+    exp: 'Percentage increase = (168 − 70) ÷ 70 × 100 = 140%. During a sprint, muscles need much more oxygen and glucose delivered quickly and much more carbon dioxide removed. The respiratory system must breathe faster and deeper to bring in more oxygen, while the circulatory system must pump faster (raising heart rate) to carry that oxygen — and glucose already absorbed by the digestive system — to the working muscles.'
+  },
+  {
+    text: 'A patient\'s kidneys stop working properly and can no longer filter urea out of the blood. Based on how body systems are interdependent, what would you expect to happen?',
+    opts: [
+      'Urea would build up in the blood, and because the circulatory system carries blood to every organ, this waste would start to affect cells throughout the whole body, not just near the kidneys',
+      'The digestive system would automatically start breaking urea down into a harmless substance instead',
+      'The respiratory system would immediately take over excretion of urea through the lungs',
+      'There would be no effect on the rest of the body, since urea is only a problem for the kidneys themselves'
+    ],
+    ans: 0,
+    exp: 'Because the circulatory system connects every organ system by continuously moving blood throughout the body, a failure in one system\'s waste removal does not stay local — urea that isn\'t filtered out simply keeps circulating in the blood and reaches every tissue, becoming toxic throughout the body. This is exactly why the exam tip above stresses tracing a substance through the circulatory system: interdependence means a breakdown in one system has consequences everywhere blood travels.'
   }
 ];
 
@@ -561,7 +596,8 @@ function answer(qi, oi) {
     const banner = document.getElementById('scoreBanner');
     banner.classList.add('show');
     document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Keep at it — revisit the lesson!' : score <= 4 ? 'Good effort — check the explanations.' : score === 5 ? 'Well done!' : 'Perfect score! Excellent work.';
+    const total = QUESTIONS.length;
+    document.getElementById('scoreMsg').textContent = score <= Math.ceil(total * 0.35) ? 'Keep at it — revisit the lesson!' : score <= Math.ceil(total * 0.7) ? 'Good effort — check the explanations.' : score === total ? 'Perfect score! Excellent work.' : 'Well done!';
     banner.scrollIntoView({ behavior: 'smooth' });
   }
 }

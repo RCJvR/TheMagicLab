@@ -118,6 +118,19 @@ MathMagician.registerChapter(10, {
           answer: "11.5",
           altAnswers: ["11,5"],
           topic: "Measures of central tendency"
+        },
+        {
+          type: "input",
+          text: "The mean of 6 numbers is 15. Five of the numbers are 12, 18, 9, 20, and 14. Find the sixth number.",
+          answer: "17",
+          topic: "Measures of central tendency"
+        },
+        {
+          type: "input",
+          text: "A grouped frequency table has class intervals 0–9 (freq 2), 10–19 (freq 6), 20–29 (freq 8), 30–39 (freq 4). Estimate the mean using midpoints.",
+          answer: "21.5",
+          altAnswers: ["21,5"],
+          topic: "Measures of central tendency"
         }
       ]
     },
@@ -256,6 +269,20 @@ MathMagician.registerChapter(10, {
           text: "Which measure of dispersion uses squared deviations?",
           options: ["Range", "IQR", "Standard deviation", "Variance"],
           answer: 3,
+          topic: "Dispersion & five-number summary"
+        },
+        {
+          type: "input",
+          text: "Data (ordered): 3, 6, 9, 10, 14, 18, 21, 25, 30 (n = 9). Find the IQR.",
+          answer: "15.5",
+          altAnswers: ["15,5"],
+          topic: "Dispersion & five-number summary"
+        },
+        {
+          type: "mc",
+          text: "A data set has Min=5, Q1=10, Median=15, Q3=20, Max=50. Using the 1.5×IQR rule, is 50 a suspected outlier?",
+          options: ["Yes — 50 is above the upper fence of 35", "No — 50 is below the upper fence", "Cannot be determined", "Only the minimum can ever be an outlier"],
+          answer: 0,
           topic: "Dispersion & five-number summary"
         }
       ]
@@ -415,6 +442,19 @@ MathMagician.registerChapter(10, {
           options: ["Class A has a higher mean", "Class A's marks are more consistent (less spread in the middle 50%)", "Class A has more learners", "Class A has a higher maximum"],
           answer: 1,
           topic: "Box-and-whisker diagrams"
+        },
+        {
+          type: "input",
+          text: "A box plot shows Min=8, Q1=15, Median=19, Q3=27, Max=40. Using the 1.5×IQR rule, calculate the upper outlier fence.",
+          answer: "45",
+          topic: "Box-and-whisker diagrams"
+        },
+        {
+          type: "mc",
+          text: "A box plot shows Min=20, Q1=30, Median=33, Q3=50, Max=90. Is the distribution positively skewed, negatively skewed, or symmetric?",
+          options: ["Positively skewed (median close to Q1, long right whisker)", "Negatively skewed (median close to Q3, long left whisker)", "Roughly symmetric", "Cannot be determined from a box plot"],
+          answer: 0,
+          topic: "Box-and-whisker diagrams"
         }
       ]
     },
@@ -503,6 +543,19 @@ MathMagician.registerChapter(10, {
           options: ["The data is symmetric", "A few very high salaries (outliers) are pulling the mean up", "The median was used instead", "There is no variation in salaries"],
           answer: 1,
           topic: "Interpreting statistics in context"
+        },
+        {
+          type: "input",
+          text: "Ages of employees at a small business: 22, 24, 25, 26, 28, 30, 62. Calculate by how much the mean exceeds the median.",
+          answer: "5",
+          topic: "Interpreting statistics in context"
+        },
+        {
+          type: "mc",
+          text: "Two classes wrote the same test: Class X has mean=68 and range=12. Class Y has mean=68 and range=40. Which class's marks are more tightly clustered around the mean?",
+          options: ["Class X", "Class Y", "Both equally clustered", "Cannot be determined"],
+          answer: 0,
+          topic: "Interpreting statistics in context"
         }
       ]
     }
@@ -529,6 +582,17 @@ MathMagician.registerChapter(10, {
           { label: "b", text: "Identify the modal class.", marks: 1 },
           { label: "c", text: "How many members are there in total?", marks: 1 }
         ]
+      },
+      {
+        number: 3,
+        text: "Two Grade 10 classes wrote the same test (marks out of 100). Their five-number summaries are given below:",
+        parts: [
+          { label: "", text: "| | Class A | Class B |\n| Min | 40 | 30 |\n| Q1 | 50 | 45 |\n| Median | 54 | 60 |\n| Q3 | 70 | 75 |\n| Max | 95 | 90 |", marks: 0 },
+          { label: "a", text: "Calculate the IQR for each class.", marks: 2 },
+          { label: "b", text: "For Class A, compare the distance from Q1 to the median with the distance from the median to Q3, and compare the length of each whisker. What does this suggest about the skewness of Class A's marks?", marks: 3 },
+          { label: "c", text: "Which class's marks are more consistent (a smaller spread in the middle 50%)? Justify your answer using the IQR values.", marks: 2 },
+          { label: "d", text: "Class B's median sits exactly halfway between Q1 and Q3, and both whiskers are the same length. Describe the shape of Class B's distribution.", marks: 2 }
+        ]
       }
     ],
     answers: {
@@ -542,6 +606,12 @@ MathMagician.registerChapter(10, {
         a: "Midpoints: 14.5,24.5,34.5,44.5,54.5; Mean=(4×14.5+11×24.5+9×34.5+5×44.5+1×54.5)/30 = (58+269.5+310.5+222.5+54.5)/30 = 914.5/30 ≈ 30.5",
         b: "Modal class: 20–29",
         c: "30 members"
+      },
+      3: {
+        a: "Class A: IQR=70−50=20; Class B: IQR=75−45=30",
+        b: "Median−Q1=54−50=4, Q3−Median=70−54=16 (median much closer to Q1); left whisker=50−40=10, right whisker=95−70=25 (right whisker far longer) → Class A's marks are positively skewed (skewed right)",
+        c: "Class A — its IQR (20) is smaller than Class B's (30), so the middle 50% of Class A's marks are less spread out",
+        d: "Class B's distribution is roughly symmetric (median equidistant from Q1 and Q3, whiskers of equal length)"
       }
     }
   }

@@ -107,6 +107,10 @@
     .score-banner.show{display:flex;align-items:center;gap:16px}
     .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
 
+    .data-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .data-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .data-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .data-table tr:last-child td{border-bottom:none}
     .wb-wrap{max-width:680px}
     .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
     .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
@@ -279,7 +283,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -297,6 +301,20 @@
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain how chromatography separates different dyes in a mixture of ink. In your answer, explain what causes the dyes to travel different distances up the paper.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">South Africa faces water shortages. Explain how distillation can be used to obtain fresh drinking water from seawater. In your answer, state the physical property that makes distillation work for this mixture.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (4 marks)</div><div class="wb-qtext">For each mixture below, state the most appropriate separation technique and explain the physical property difference that makes it work: (a) muddy water, (b) a mixture of ethanol and water, (c) copper coins mixed with iron nails, (d) a mixture of gravel and fine sand.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 7 · (5 marks)</div><div class="wb-qtext">
+      The table below gives the approximate boiling point ranges of the fractions collected when crude oil is separated in a fractionating column using fractional distillation:
+      <table class="data-table">
+        <thead><tr><th>Fraction</th><th>Approx. boiling range (°C)</th><th>Collected at column height</th></tr></thead>
+        <tbody>
+          <tr><td>Refinery gas</td><td>below 25</td><td>Very top</td></tr>
+          <tr><td>Petrol</td><td>35 – 75</td><td>Near top</td></tr>
+          <tr><td>Paraffin (kerosene)</td><td>150 – 250</td><td>Middle</td></tr>
+          <tr><td>Diesel</td><td>200 – 350</td><td>Lower-middle</td></tr>
+          <tr><td>Bitumen</td><td>above 350</td><td>Bottom</td></tr>
+        </tbody>
+      </table>
+      (a) Using the table, explain why refinery gas is collected at the very top of the column while bitumen is collected at the bottom. (b) A learner claims: "The fraction with the lowest boiling point must be the heaviest." Use the data in the table to explain why this is incorrect. (c) A sample of liquid has a boiling point of approximately 300°C. Using the table, predict which fraction it belongs to and roughly where in the column it would be collected.
+    </div></div>
   </div>
 </div>
 
@@ -925,6 +943,8 @@ const QUESTIONS = [
   {text:'Which physical property difference is used in MAGNETIC SEPARATION?',opts:['Particle size','Boiling point','Solubility','Magnetic properties'],ans:3,exp:'Magnetic separation relies on the fact that some materials (like iron) are attracted to magnets while others (like sand or copper) are not. The magnet pulls out the magnetic component, leaving the non-magnetic one behind.'},
   {text:'Crude oil is a mixture of many different hydrocarbons. Which technique is used industrially to separate crude oil into petrol, diesel, and jet fuel?',opts:['Filtration','Magnetic separation','Fractional distillation','Chromatography'],ans:2,exp:'Fractional distillation separates liquids with different boiling points. Crude oil components (fractions) have different boiling points — they evaporate at different temperatures and are collected separately in a fractionating column. Petrol boils at ~35–75°C, diesel at ~200–350°C.'},
   {text:'A mixture of coarse gravel and fine sand is shaken through a mesh. Which technique is this, and what physical property makes it work?',opts:['Filtration — difference in solubility','Sieving — difference in particle size','Distillation — difference in boiling point','Evaporation — difference in volatility'],ans:1,exp:'This is sieving. The mesh has holes large enough for fine sand to pass through but small enough to hold back larger gravel pieces. The key property is particle size — larger particles are retained, smaller ones pass through.'},
+  {text:'A learner has a mixture of iron filings, sand, and salt all stirred into water — the salt has fully dissolved, but the sand and iron filings have not. What is the correct order of steps to recover all three components separately?',opts:['Filtration first (separates the insoluble sand+iron residue from the dissolved salt in the filtrate), then a magnet on the dried residue to pull out the iron filings, and finally evaporation of the filtrate to recover the salt','Magnetic separation first while everything is still wet, then filtration, then evaporation','Evaporation first to boil away all the water, then a magnet, then filtration','Chromatography first to separate the mixture, then sieving, then filtration'],ans:0,exp:'A magnet cannot effectively separate iron filings from sand while both are clumped together in water, and it cannot touch the dissolved salt at all. The correct order is: (1) filter the mixture — the insoluble sand and iron filings are trapped together as the residue, while the dissolved salt passes through in the filtrate; (2) dry the residue and run a magnet over it to pull out the iron filings, leaving the sand; (3) evaporate the filtrate to recover the salt, since salt can only be separated from a solution by removing the solvent.'},
+  {text:'A mixture contains three liquids with boiling points 65°C, 100°C, and 156°C. When this mixture is separated by fractional distillation, in what order are the liquids collected?',opts:['156°C first, then 100°C, then 65°C — because heavier liquids rise to the top of the column first','65°C first, then 100°C, then 156°C — because the liquid with the lowest boiling point evaporates first and reaches the top of the fractionating column first','All three are collected at exactly the same time, since they are heated together','Order cannot be predicted from boiling point alone'],ans:1,exp:'In fractional distillation, the mixture is heated and the liquid with the LOWEST boiling point evaporates first, rises furthest up the fractionating column, and is condensed and collected first. As the temperature is gradually increased, liquids with progressively higher boiling points evaporate and are collected in turn. So the order collected is 65°C, then 100°C, then 156°C.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

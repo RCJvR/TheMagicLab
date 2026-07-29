@@ -211,7 +211,7 @@
 
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
-    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 8</span></div>
     <div id="q-container"></div>
   </div>
 </div>
@@ -225,6 +225,18 @@
     <div class="wb-card"><div class="wb-q">4. State the law of reflection and draw a ray diagram to illustrate it. Label the normal, angle of incidence, and angle of reflection.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">5. What is refraction? A ray of light travels from air into a glass block at an angle. In which direction does it bend? What happens when it exits the glass back into air?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">6. Explain how a triangular prism disperses white light into the visible spectrum. Why does violet light bend more than red light?</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. A learner uses a ray box and a plane mirror to test the law of reflection. She measures the angle of incidence and the angle of reflection (both from the normal) for four different trials.<br><br>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+      <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Trial</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Angle of incidence</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Angle of reflection</th></tr></thead>
+      <tbody>
+      <tr><td style="padding:6px 10px">1</td><td style="padding:6px 10px">20°</td><td style="padding:6px 10px">20°</td></tr>
+      <tr><td style="padding:6px 10px">2</td><td style="padding:6px 10px">35°</td><td style="padding:6px 10px">35°</td></tr>
+      <tr><td style="padding:6px 10px">3</td><td style="padding:6px 10px">50°</td><td style="padding:6px 10px">48°</td></tr>
+      <tr><td style="padding:6px 10px">4</td><td style="padding:6px 10px">65°</td><td style="padding:6px 10px">65°</td></tr>
+      </tbody></table><br>
+      (a) Based on Trials 1, 2 and 4, state the law of reflection in your own words. (2)<br>
+      (b) Which trial does NOT fit this pattern? (1)<br>
+      (c) Suggest ONE possible reason for the unexpected result in that trial (think about possible sources of experimental error, not a new law of physics). (1)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
   </div>
 </div>
 
@@ -450,9 +462,11 @@ const QS=[
   {q:"The law of reflection states that:",opts:["The angle of incidence is twice the angle of reflection","The angle of incidence equals the angle of reflection","Light always reflects at 90°","Rough surfaces always reflect more than smooth surfaces"],ans:1,fb:"The law of reflection: angle of incidence = angle of reflection. Both are measured from the normal to the surface."},
   {q:"When light travels from air into glass at an angle, it bends:",opts:["Away from the normal","Toward the normal","Along the normal","It does not bend"],ans:1,fb:"When light enters a denser medium (like glass), it slows down and bends toward the normal. This is refraction."},
   {q:"A prism disperses white light into its component colours because:",opts:["The glass absorbs some colours","Different colours of light refract by different amounts","The prism reflects some colours","All colours travel at different speeds in air"],ans:1,fb:"Different frequencies (colours) of light refract by different amounts in glass. Violet refracts most, red refracts least — this disperses white light into the spectrum."},
-  {q:"An opaque object placed between a light source and a wall will:",opts:["Refract the light around it","Create a shadow on the wall","Reflect all the light back","Transmit the light through it"],ans:1,fb:"Opaque objects do not allow light to pass through them. The area behind the object — blocked from the light source — creates a shadow."}
+  {q:"An opaque object placed between a light source and a wall will:",opts:["Refract the light around it","Create a shadow on the wall","Reflect all the light back","Transmit the light through it"],ans:1,fb:"Opaque objects do not allow light to pass through them. The area behind the object — blocked from the light source — creates a shadow."},
+  {q:"A green T-shirt (which reflects only green light and absorbs all other colours) is illuminated with a pure red light in a dark room — no other colours of light are present. What colour will the T-shirt appear, and why?",opts:["Green, because the T-shirt's true colour never changes regardless of the light shining on it","Red, because the T-shirt reflects whatever colour of light is shining on it","Black (or very dark), because there is no green light present for the shirt to reflect, and the red light that IS present gets absorbed by the shirt rather than reflected","White, because mixing red light with a coloured object always produces white light"],ans:2,fb:"A coloured object can only reflect colours of light that are actually shining on it. The green T-shirt normally reflects green and absorbs every other colour, including red. Under pure red light, there is no green light available to reflect, and the red light that does hit the shirt is absorbed rather than reflected — so almost no light reaches your eye, and the shirt appears black or very dark, even though nothing is 'wrong' with the shirt itself."},
+  {q:"A pencil in a glass of water appears bent exactly at the water's surface — the part above the water looks normal, but the submerged part looks shifted sideways. Which explanation correctly accounts for this?",opts:["Reflection occurs at the water surface, bouncing the image of the pencil sideways","Refraction occurs where light from the submerged part of the pencil crosses from water into air, bending the rays and shifting where that part of the pencil appears to be — light from the part above water never crosses this boundary, so it looks normal","The water chemically changes the colour and shape of the light hitting the pencil","The curved glass container acts like a lens and distorts only the bottom half of the image"],ans:1,fb:"Refraction happens specifically at the boundary between two media of different density. Light from the submerged part of the pencil must cross from water into air to reach your eye, and it bends at that boundary — shifting the apparent position of that part of the pencil. Light from the part of the pencil above the water travels straight through air the whole way, crossing no boundary, so it is not bent and appears in its true position. This mismatch at the surface is what creates the 'bent pencil' illusion."}
 ];
-let scores=new Array(6).fill(null);
+let scores=new Array(8).fill(null);
 function renderQ(){
   const c=document.getElementById('q-container');c.innerHTML='';
   QS.forEach((q,i)=>{
@@ -467,7 +481,7 @@ function answer(qi,oi,btn){
   if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
   else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
 }
-function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
 renderQ();
 </script>
   <script src="/contact-button.js" defer></script>

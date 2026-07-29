@@ -76,6 +76,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Write 2?� as a fraction:", options: ["-8", "1/6", "1/8", "-1/8"], answer: 2, topic: "Exponents" },
         { type: "input", text: "Simplify: (2�)4 � 28 � give the answer as a power of 2 (exponent only).", answer: "4", topic: "Exponents" },
         { type: "mc", text: "What is (7xy�z)� equal to?", options: ["0", "7", "1", "xyz"], answer: 2, topic: "Exponents" },
+        { type: "input", text: "Simplify (2x²y⁻¹)³ ÷ (4x⁴y⁻²) and give the coefficient of the simplified answer.", answer: "2", topic: "Exponents" },
+        { type: "input", text: "If 3 raised to the power (x + 1) equals 81, solve for x.", answer: "3", topic: "Exponents" },
       ]
     },
     {

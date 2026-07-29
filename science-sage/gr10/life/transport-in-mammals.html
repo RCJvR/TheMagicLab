@@ -199,6 +199,17 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (6 marks)</div><div class="wb-qtext">Complete a table comparing arteries, veins, and capillaries in terms of wall thickness, presence of valves, and function.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">Define "cardiac cycle" and explain what heart rate (pulse) measures.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Name THREE treatments for heart and circulatory disease.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">A learner measures their pulse by counting the number of beats felt over a 15-second period, both at rest and immediately after 2 minutes of skipping:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Condition</th><th>Beats counted in 15 s</th></tr></thead>
+      <tbody>
+        <tr><td>Resting</td><td>18</td></tr>
+        <tr><td>Immediately after exercise</td><td>42</td></tr>
+      </tbody>
+    </table>
+    (a) Calculate the learner's heart rate, in beats per minute (bpm), for each condition. Show your working. (2)<br>
+    (b) Calculate the percentage increase in heart rate from resting to immediately after exercise. Show your working. (2)<br>
+    (c) Using the concept of the body's oxygen demand, explain why heart rate increases during exercise. (2)</div></div>
   </div>
 </div>
 
@@ -329,6 +340,8 @@ const QUESTIONS=[
   {text:'Where does the exchange of oxygen, nutrients, and waste with body tissues take place?',opts:['Arteries','Veins','Capillaries','The heart'],ans:2,exp:'Capillaries are tiny, one-cell-thick vessels where the exchange of substances between blood and body tissues occurs.'},
   {text:'What is the pulmonary circuit?',opts:['Heart to the rest of the body and back','Heart to the lungs and back','Heart to the kidneys and back','Lungs to the rest of the body directly'],ans:1,exp:'The pulmonary circuit carries blood from the heart to the lungs (to pick up oxygen) and back to the heart.'},
   {text:'Which of these is a treatment for heart disease?',opts:['Chemotherapy','Pacemaker','Antibiotics','Vaccination'],ans:1,exp:'A pacemaker is a device that helps regulate heart rhythm, and is one of several treatments for heart disease (along with stents, bypass surgery, and valve replacements).'},
+  {text:'(Analysis) Blood leaving the right side of the heart travels to the lungs through the pulmonary artery, even though this vessel carries deoxygenated blood. Why is this vessel still correctly classified as an "artery"?',opts:['Arteries are defined only by carrying oxygenated blood, so this is an exception to the rule','Arteries are defined by the direction blood flows — away from the heart — regardless of whether the blood is oxygenated or deoxygenated','The pulmonary artery is technically a vein that is named incorrectly','Arteries can only be found in the systemic circuit, so the pulmonary artery does not count'],ans:1,exp:'"Artery" and "vein" are defined by the direction of blood flow relative to the heart, not by oxygen content. Arteries carry blood AWAY from the heart (the pulmonary artery carries deoxygenated blood to the lungs), while veins carry blood TOWARD the heart (the pulmonary vein carries oxygenated blood back from the lungs) — the one exception most people expect is actually the rule once you focus on direction, not oxygen level.'},
+  {text:'(Analysis) A patient has damaged capillaries in their lung tissue, greatly reducing the surface area available for gas exchange there. Their heart and all other blood vessels remain structurally normal. What direct consequence would you expect for the systemic circuit?',opts:['Blood would stop flowing through the systemic circuit entirely','Less oxygen would be picked up by blood passing through the lungs, so less oxygen would be delivered to body tissues via the systemic circuit','The heart would stop pumping blood entirely','Blood would begin flowing outside of the blood vessels, becoming an open circulatory system'],ans:1,exp:'Capillaries in the lungs are where oxygen is picked up by the blood (gas exchange) during the pulmonary circuit. If their surface area is reduced, less oxygen loads onto the blood there — meaning the blood then delivered to body tissues via the systemic circuit carries less oxygen, even though the heart and vessels themselves are undamaged.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -346,7 +359,7 @@ function answer(qi,oi){
   if(answered.every(Boolean)){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    document.getElementById('scoreMsg').textContent=score<=3?'Keep at it — revisit the lesson!':score<=5?'Good work — check the explanations.':'Well done!';
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

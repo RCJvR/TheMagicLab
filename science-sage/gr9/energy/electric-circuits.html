@@ -240,7 +240,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -262,6 +262,14 @@
     a) A fuse<br>
     b) A circuit breaker</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (3 marks)</div><div class="wb-qtext">Explain why it is dangerous to use an electrical appliance with wet hands or near water. Refer to the electrical properties of water in your answer, and describe TWO safe practices for using electricity at home.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (5 marks)</div><div class="wb-qtext">A learner builds circuits using different numbers of identical 1.5 V cells connected in series, and measures the total voltage with a voltmeter each time:
+      <table class="symbols-table" style="margin:12px 0">
+        <thead><tr><th>Number of cells in series</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+        <tbody><tr><td><strong>Total voltage measured (V)</strong></td><td>1.5</td><td>3.0</td><td>4.5</td><td>6.0</td></tr></tbody>
+      </table>
+      (a) Describe the pattern shown in the table. (1 mark)<br>
+      (b) Using the pattern, predict the total voltage for 7 cells connected correctly in series. Show your method. (2 marks)<br>
+      (c) If one of those 7 cells were inserted backwards (reversed polarity), what would the new total voltage be? Show your working. (2 marks)</div></div>
   </div>
 </div>
 
@@ -542,6 +550,23 @@ const QUESTIONS = [
     ],
     ans: 1,
     exp: 'Water (especially with dissolved minerals/salts) conducts electricity far more easily than dry skin. Wet hands lower the body\'s resistance, allowing more current to pass through — greatly increasing the risk of a dangerous or fatal shock.'
+  },
+  {
+    text: 'A torch uses four identical 1.5 V cells connected in series. If one of the cells is accidentally inserted backwards (reversed polarity), what is the net voltage now driving the circuit?',
+    opts: ['6 V — all four cells still add normally', '4.5 V — the reversed cell simply does nothing', '3 V — the reversed cell subtracts its voltage instead of adding it', '0 V — the circuit cannot work at all'],
+    ans: 2,
+    exp: 'With all 4 cells correctly oriented, voltages add: 4 × 1.5 V = 6 V. A reversed cell opposes the others instead of adding to them, so its voltage is effectively subtracted: 3 × 1.5 V (correct cells) − 1 × 1.5 V (reversed cell) = 4.5 V − 1.5 V = 3 V. The bulb would glow dimmer, not fail completely, since the net voltage is still positive.'
+  },
+  {
+    text: 'Two identical bulbs are connected in series with a battery. A learner replaces the connecting wire between them with a much longer AND thinner wire of the same material. What effect will this have, and why?',
+    opts: [
+      'No effect at all, since connecting wires never have any resistance',
+      'The bulbs will glow brighter, because a longer, thinner wire increases the current',
+      'The bulbs will glow dimmer, because a longer AND thinner wire has higher resistance, which reduces the current flowing through the single series path',
+      'The circuit will break completely, because wires cannot be longer than a bulb\'s wires'
+    ],
+    ans: 2,
+    exp: 'Both length and thickness affect resistance: a longer wire and a thinner wire each increase resistance on their own, so combining both changes increases the total resistance in the circuit substantially. In a series circuit, current is the same throughout the single path, so higher total resistance reduces that current — dimming every bulb in the loop, not just the one nearest the new wire.'
   }
 ];
 

@@ -273,7 +273,7 @@
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
     <div class="score-banner show" id="score-banner">
-      <div class="score-big" id="score-big">0/6</div>
+      <div class="score-big" id="score-big">0/8</div>
       <div style="font-size:13px;color:var(--muted)">NSC questions answered correctly</div>
     </div>
     <div id="nsc-qs"></div>
@@ -293,6 +293,17 @@
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">Two parallel plates are separated by 0.02 m and connected to a 120 V supply. (a) Calculate the electric field strength between the plates. (b) A proton (charge = 1.6 × 10⁻¹⁹ C, mass = 1.67 × 10⁻²⁷ kg) is released from rest near the positive plate. Calculate the force on the proton and its acceleration.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">How much work is done moving an electron (charge = −1.6 × 10⁻¹⁹ C) through a potential difference of 500 V? State whether energy is gained or lost by the electron, and explain why.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">A parallel plate capacitor has plates of area 0.04 m² separated by 0.005 m. (a) Calculate the capacitance using C = ε₀A/d (ε₀ = 8.85 × 10⁻¹² F·m⁻¹). (b) If connected to a 12 V battery, calculate the charge stored and the energy stored in the capacitor.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6</div><div class="wb-qtext">A small test charge q = 2 × 10⁻⁶ C is placed at increasing distances from a fixed point charge Q, and the electrostatic force it experiences is measured:<br><br>
+    <table class="symbols-table" style="max-width:480px">
+      <tr><th>Distance, r (m)</th><th>Force, F (N)</th></tr>
+      <tr><td>0.1</td><td>3.6</td></tr>
+      <tr><td>0.2</td><td>0.9</td></tr>
+      <tr><td>0.3</td><td>0.4</td></tr>
+      <tr><td>0.4</td><td>0.225</td></tr>
+    </table><br>
+    (a) Calculate the value of F × r² for each row of the table. What do you notice about these values, and what does this confirm about the relationship between F and r? (2 marks)<br>
+    (b) Using k = 9 × 10⁹ N·m²·C⁻², your answer to (a), and Coulomb's Law F = kQq/r², calculate the magnitude of the fixed charge Q. (3 marks)<br>
+    (c) Predict the force this test charge would experience at r = 0.5 m. (1 mark)</div></div>
   </div>
 </div>
 
@@ -535,7 +546,9 @@ const NSC_QS = [
   {q: "A positive test charge is placed between a positive charge on the left and a negative charge on the right. In which direction does the electric field point at the test charge's location?", opts: ["To the left","To the right","Upward","The field is zero"], ans: 1, fb: "The field from the positive charge (left) points away from it — to the right. The field from the negative charge (right) points toward it — also to the right. Both contributions point right."},
   {q: "Two parallel plates are separated by 0.05 m and have a potential difference of 200 V between them. What is the electric field strength between the plates?", opts: ["10 N·C⁻¹","40 N·C⁻¹","400 N·C⁻¹","4 000 N·C⁻¹"], ans: 3, fb: "E = V/d = 200/0.05 = 4 000 N·C⁻¹."},
   {q: "How much work is done moving a charge of +2 µC through a potential difference of 50 V?", opts: ["25 µJ","100 µJ","1 mJ","2.5 mJ"], ans: 1, fb: "W = qV = (2×10⁻⁶)(50) = 100×10⁻⁶ J = 100 µJ."},
-  {q: "Which statement correctly describes electric field lines?", opts: ["They can cross each other at points of high field strength","They start on negative charges and end on positive charges","Their density at a point is proportional to the electric field strength","They are parallel to the surface of a conductor"], ans: 2, fb: "Field lines never cross. They start on positive charges and end on negative charges. The density (closeness) of field lines represents field strength. Field lines are always perpendicular (not parallel) to conductor surfaces."}
+  {q: "Which statement correctly describes electric field lines?", opts: ["They can cross each other at points of high field strength","They start on negative charges and end on positive charges","Their density at a point is proportional to the electric field strength","They are parallel to the surface of a conductor"], ans: 2, fb: "Field lines never cross. They start on positive charges and end on negative charges. The density (closeness) of field lines represents field strength. Field lines are always perpendicular (not parallel) to conductor surfaces."},
+  {q: "Two point charges lie on the x-axis: Q₁ = +8 µC at x = 0, and Q₂ = +2 µC at x = 0.6 m. At what point between them will the net electric field be zero?", opts: ["0.4 m from Q₁ (0.2 m from Q₂)","0.3 m from Q₁ (the midpoint)","0.2 m from Q₁ (0.4 m from Q₂)","0.6 m from Q₁ (at Q₂ itself)"], ans: 0, fb: "For the fields to cancel at distance x from Q₁ (so 0.6−x from Q₂), the magnitudes must be equal: kQ₁/x² = kQ₂/(0.6−x)². Substituting: 8/x² = 2/(0.6−x)², so 4(0.6−x)² = x², giving 2(0.6−x) = x, so 1.2 = 3x, and x = 0.4 m. Checking: E from Q₁ = (9×10⁹)(8×10⁻⁶)/(0.4)² = 450 000 N·C⁻¹, and E from Q₂ = (9×10⁹)(2×10⁻⁶)/(0.2)² = 450 000 N·C⁻¹ — equal, confirming the point. Because Q₁ is four times larger than Q₂, the equilibrium point sits closer to the SMALLER charge (Q₂), not at the midpoint — a common mistake is assuming equal charges are needed for the point to be exactly in the middle."},
+  {q: "A parallel-plate capacitor of capacitance 4 µF is charged by a 12 V battery, then disconnected and instead connected to a 6 V battery (the capacitance stays the same). By what factor does the energy stored in the capacitor change?", opts: ["It decreases to 1/4 of the original value","It decreases to 1/2 of the original value","It stays exactly the same","It increases to 2 times the original value"], ans: 0, fb: "Charge stored is Q = CV, so halving V (from 12 V to 6 V) halves Q: from (4×10⁻⁶)(12) = 48 µC down to (4×10⁻⁶)(6) = 24 µC. But energy stored is U = ½CV² — it depends on V SQUARED, not V. So halving V means the energy changes by a factor of (1/2)² = 1/4: from ½(4×10⁻⁶)(12)² = 288 µJ down to ½(4×10⁻⁶)(6)² = 72 µJ, and indeed 72 ÷ 288 = 1/4. It's a common error to assume energy simply halves along with the voltage — because of the squared relationship, it actually drops much further."}
 ];
 
 const IEB_QS = [

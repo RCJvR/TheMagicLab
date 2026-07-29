@@ -251,6 +251,23 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
     <div class="wb-q"><div class="wb-qnum">Question 3</div><div class="wb-qtext">Using the activity series (K, Na, Ca, Mg, Al, Zn, Fe, Ni, Sn, Pb, H, Cu, Ag, Au), explain why zinc can displace copper from copper sulfate solution but copper cannot displace zinc from zinc sulfate solution. Write the balanced equation for the zinc/copper sulfate reaction.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4</div><div class="wb-qtext">Distinguish between exothermic and endothermic reactions. Give two examples of each. Explain what happens to the temperature of the surroundings during each type and why.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5</div><div class="wb-qtext">A learner grinds a calcium carbonate (marble) chip into a fine powder before adding it to hydrochloric acid. The reaction produces CO₂ gas.<br>(a) Write the balanced equation for this reaction and classify its type.<br>(b) Explain why the powdered marble reacts faster than the whole chip.<br>(c) Name two other factors that could increase the rate of this reaction and explain the reason for each.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6</div><div class="wb-qtext">A learner reacts the SAME MASS of marble chips with excess hydrochloric acid in two separate experiments — one using large chips, one using powdered marble — and measures the volume of CO₂ gas collected at 20-second intervals:<br><br>
+    <table class="symbols-table">
+      <thead><tr><th>Time (s)</th><th>Gas volume — large chips (cm³)</th><th>Gas volume — powdered marble (cm³)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>20</td><td>10</td><td>35</td></tr>
+        <tr><td>40</td><td>22</td><td>58</td></tr>
+        <tr><td>60</td><td>33</td><td>60</td></tr>
+        <tr><td>80</td><td>45</td><td>60</td></tr>
+        <tr><td>100</td><td>55</td><td>60</td></tr>
+        <tr><td>120</td><td>60</td><td>60</td></tr>
+      </tbody>
+    </table>
+    (a) Plot both sets of data on the same set of axes (gas volume on the y-axis, time on the x-axis) to draw two rate-of-reaction graphs.<br><br>
+    (b) At what time does each experiment stop producing gas (reach its maximum volume)?<br><br>
+    (c) Both experiments eventually produce the SAME total volume of gas (60 cm³). Explain why the final volume is the same even though the reactions happen at different rates.<br><br>
+    (d) Using the idea of surface area and particle collisions, explain why the powdered marble reaches its maximum gas volume so much faster than the large chips.</div></div>
   </div>
 </div>
 
@@ -487,6 +504,8 @@ const questions=[
   {q:'AgNO₃ + NaCl → AgCl + NaNO₃. What type of reaction is this?',opts:['Synthesis','Decomposition','Single displacement','Double displacement'],ans:3,exp:'Two compounds (AgNO₃ and NaCl) exchange ions to form two new compounds (AgCl and NaNO₃). This is double displacement.'},
   {q:'Which of the following is an exothermic reaction?',opts:['Photosynthesis','Decomposition of CaCO₃','Combustion of methane','Dissolving ammonium nitrate in water'],ans:2,exp:'Combustion releases energy as heat. Photosynthesis, decomposition of CaCO₃, and dissolving NH₄NO₃ are endothermic.'},
   {q:'A student increases the temperature of a reaction. What effect does this have on reaction rate?',opts:['It decreases because particles slow down','It increases because particles collide more frequently and with more energy','It has no effect on rate','It stops the reaction'],ans:1,exp:'Higher temperature gives particles more kinetic energy, leading to more frequent and more energetic collisions, increasing the reaction rate.'},
+  {q:'A learner reacts 5.6 g of iron with 3.2 g of sulfur in a sealed container. After the reaction, the solid product (iron sulfide) is weighed and found to be 8.8 g. Does this data support the Law of Conservation of Mass, and what type of reaction is this?',opts:['No — some mass appears to have been lost during the reaction','Yes — the total mass of reactants (5.6 g + 3.2 g = 8.8 g) equals the mass of the product (8.8 g), confirming no mass was gained or lost; this is also a synthesis reaction, since two elements combined to form one compound','No — a synthesis reaction should always produce less total mass than the reactants','Yes, but only because sulfur must have reacted with oxygen from the air instead of iron'],ans:1,exp:'Adding the mass of the reactants (5.6 g of iron + 3.2 g of sulfur = 8.8 g) gives exactly the mass of the product (8.8 g of iron sulfide). This confirms the Law of Conservation of Mass — in a sealed container, matter is neither created nor destroyed, just rearranged into a new substance. Since two elements (Fe and S) combined to form a single compound (FeS), this is also a synthesis reaction.'},
+  {q:'A learner balances the equation for aluminium reacting with oxygen as: 2Al + O₂ → Al₂O₃, then checks it by counting atoms: Left side = 2 Al, 2 O; Right side = 2 Al, 3 O. Is this equation correctly balanced, and if not, what is the correct balanced equation?',opts:['Yes, it is balanced — having 2 oxygen atoms on one side and 3 on the other is close enough','No — the oxygen atoms do not match (2 vs 3). The correctly balanced equation is 4Al + 3O₂ → 2Al₂O₃, giving 4 Al and 6 O atoms on both sides','No — the aluminium atoms do not match. The correct equation is Al + O₂ → AlO₂','Yes, because subscripts can always be adjusted to balance an equation'],ans:1,exp:'The equation is NOT balanced — the Law of Conservation of Mass requires the exact same number of each type of atom on both sides, so "close enough" is never acceptable. Since subscripts define the formula of a substance and can never be changed, only coefficients can be adjusted: 4Al + 3O₂ → 2Al₂O₃ gives 4 Al atoms and 3×2 = 6 O atoms on the left, matching 2×2 = 4 Al atoms and 2×3 = 6 O atoms on the right.'},
 ];
 
 let score=0,answered=0;
@@ -521,7 +540,7 @@ function answer(qi,oi){
     const b=document.getElementById('score-banner');
     b.classList.add('show');
     document.getElementById('score-val').textContent=`${score}/${questions.length}`;
-    document.getElementById('score-msg').textContent=score===questions.length?'Perfect score!':score>=4?'Great work!':'Keep reviewing the lesson.';
+    document.getElementById('score-msg').textContent=score===questions.length?'Perfect score!':score>=Math.ceil(questions.length*0.65)?'Great work!':'Keep reviewing the lesson.';
   }
 }
 

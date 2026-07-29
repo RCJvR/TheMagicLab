@@ -79,6 +79,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "For f(x) = 5x + 2, find x if f(x) = 32.", answer: "6", topic: "Functions" },
         { type: "mc", text: "Which set of ordered pairs represents a function?", options: ["{(1;2),(2;3),(1;4)}", "{(1;2),(2;2),(3;2)}", "{(1;2),(1;3),(1;4)}", "None of these"], answer: 1, topic: "Functions" },
         { type: "input", text: "Complete the table for y = 2x - 1: when x = 0, y = ?", answer: "-1", topic: "Functions" },
+        { type: "input", text: "If f(x) = 2x² - 3x + 1, calculate f(-2) - f(1).", answer: "15", topic: "Functions" },
+        { type: "input", text: "A linear function f(x) = mx + c passes through the points (1;7) and (3;15). Calculate f(10).", answer: "43", topic: "Functions" },
       ]
     },
     {
@@ -163,6 +165,8 @@ MathMagician.registerChapter(6, {
         { type: "input", text: "For y = 12/x, calculate y when x = 4.", answer: "3", topic: "Functions" },
         { type: "mc", text: "For y = 2x + 5, the gradient is:", options: ["5", "2", "7", "-5"], answer: 1, topic: "Functions" },
         { type: "mc", text: "The function y = 4/x is a:", options: ["Linear function", "Parabola", "Hyperbola", "Exponential"], answer: 2, topic: "Functions" },
+        { type: "input", text: "The graph of y = k/x passes through the point (3;8). Determine k, then use it to calculate y when x = 6.", answer: "4", topic: "Functions" },
+        { type: "input", text: "A parabola y = ax² has its turning point at the origin and passes through the point (2;12). Determine a, then calculate y when x = -3.", answer: "27", topic: "Functions" },
       ]
     },
   ],
@@ -203,6 +207,16 @@ MathMagician.registerChapter(6, {
               { label: "b)", text: "In which quadrant does the other branch of the hyperbola lie?", marks: 2 },
             ]
           },
+          {
+            num: "4",
+            text: "The graph of a straight line passes through the points (0;5), (2;9), (4;13) and (6;17), as read off the graph.",
+            parts: [
+              { label: "a)", text: "Use any two points from the table to calculate the gradient of the line.", marks: 2 },
+              { label: "b)", text: "Write down the equation of the line in the form y = mx + c.", marks: 2 },
+              { label: "c)", text: "Use your equation to determine y when x = 10.", marks: 2 },
+              { label: "d)", text: "Use your equation to determine the value of x for which y = 33.", marks: 2 },
+            ]
+          },
         ]
       },
     ]
@@ -226,6 +240,10 @@ MathMagician.registerChapter(6, {
           { num: "Q2d", ans: "x = 2", note: "2x-4=0 ? x=2" },
           { num: "Q3a", ans: "y: 12, 6, 4, 3, 2, 1", note: "y=12/x" },
           { num: "Q3b", ans: "Third quadrant", note: "negative x and negative y" },
+          { num: "Q4a", ans: "Gradient = 2", note: "m = (9-5)/(2-0) = 4/2 = 2" },
+          { num: "Q4b", ans: "y = 2x + 5", note: "c = 5 (value of y when x = 0); check with (4;13): 2(4)+5=13 ✓" },
+          { num: "Q4c", ans: "y = 25", note: "y = 2(10) + 5 = 25" },
+          { num: "Q4d", ans: "x = 14", note: "33 = 2x + 5 → 2x = 28 → x = 14" },
         ]
       },
     ]

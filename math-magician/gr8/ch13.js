@@ -85,6 +85,7 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "Find the hypotenuse if a = 9 and b = 12. Give exact answer.", answer: "15", topic: "Pythagoras" },
         { type: "mc", text: "Is a triangle with sides 6, 8, 10 right-angled?", options: ["No", "Yes — 6²+8²=10²", "Yes — but only by coincidence", "Cannot tell"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "Find the missing leg: hypotenuse = 26, one leg = 24.", answer: "10", topic: "Pythagoras" },
+        { type: "mc", text: "A right triangle has legs in the ratio 3:4 and a hypotenuse of 30 cm. Find the length of the longer leg.", options: ["18 cm", "20 cm", "24 cm", "25 cm"], answer: 2, topic: "Pythagoras" },
       ]
     },
     {
@@ -121,6 +122,7 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "A triangle has base 16 cm. The perpendicular height from apex is 6 cm. Find the equal sides if it is isosceles. (Each slant side in cm)", answer: "10", topic: "Pythagoras" },
         { type: "mc", text: "Pythagoras' theorem can ONLY be applied to:", options: ["Any triangle", "Right-angled triangles", "Isosceles triangles", "Equilateral triangles"], answer: 1, topic: "Pythagoras" },
         { type: "input", text: "An equilateral triangle has side 8 cm. Calculate the height to 2 decimal places.", answer: "6.93", topic: "Pythagoras" },
+        { type: "input", text: "An isosceles triangle has a perimeter of 36 cm and a base of 10 cm. Find its height in cm.", answer: "12", topic: "Pythagoras" },
       ]
     },
     {
@@ -156,6 +158,7 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "Find the distance between points A(0, 0) and B(5, 12).", answer: "13", topic: "Pythagoras" },
         { type: "mc", text: "A square has diagonal 10 cm. What is its side length? (Leave in surd form if needed)", options: ["5 cm", "5√2 cm", "√50 cm", "Both B and C"], answer: 3, topic: "Pythagoras" },
         { type: "input", text: "Find the distance between A(1, 3) and B(4, 7). Round to 2 decimal places.", answer: "5", topic: "Pythagoras" },
+        { type: "input", text: "A ladder needs to reach a window 12 m up a wall. The base of the ladder must be placed 5 m from the wall. Hardware stores only sell ladders in whole-metre lengths. What is the shortest ladder length (in whole metres) that will reach the window?", answer: "13", topic: "Pythagoras" },
       ]
     },
     {
@@ -188,6 +191,7 @@ MathMagician.registerChapter(13, {
         { type: "input", text: "An isosceles triangle has equal sides 15 cm and base 18 cm. Find the height from the apex.", answer: "12", topic: "Mixed" },
         { type: "mc", text: "A 13 m wire runs from the top of a 5 m pole to the ground. How far from the base of the pole does it anchor?", options: ["8 m", "12 m", "18 m", "√144 m"], answer: 1, topic: "Mixed" },
         { type: "input", text: "Find the distance between A(−2, 1) and B(3, 13). Give exact answer.", answer: "13", topic: "Mixed" },
+        { type: "input", text: "A rectangular garden is 24 m long. Its diagonal path measures 26 m. Find the total length of fencing needed to enclose the garden's perimeter AND build the diagonal path (in m).", answer: "94", topic: "Mixed" },
       ]
     },
   ],

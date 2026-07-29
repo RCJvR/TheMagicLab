@@ -170,6 +170,13 @@ MathMagician.registerChapter(6, {
           options: ["−sin30°", "cos30°", "sin30°", "−cos30°"],
           answer: 2,
           topic: "Trig identities & reduction formulae"
+        },
+        {
+          type: "mc",
+          text: "Simplify: sin(180° − x) · cos(−x) / sin(90° + x)",
+          options: ["sinx", "cosx", "tanx", "1"],
+          answer: 0,
+          topic: "Trig identities & reduction formulae"
         }
       ]
     },
@@ -331,6 +338,12 @@ MathMagician.registerChapter(6, {
           options: ["AAS", "SAS or SSS", "ASA", "AAA"],
           answer: 1,
           topic: "Sine rule, cosine rule & area rule"
+        },
+        {
+          type: "input",
+          text: "In triangle ABC, a = 10, c = 8, and A = 75°. Use the sine rule to find angle C (to the nearest degree).",
+          answer: "51",
+          topic: "Sine rule, cosine rule & area rule"
         }
       ]
     },
@@ -476,6 +489,12 @@ MathMagician.registerChapter(6, {
           text: "Solve cosθ = 0,5 for the smallest positive θ in [0°; 360°] (in degrees).",
           answer: "60",
           topic: "Solving trigonometric equations"
+        },
+        {
+          type: "input",
+          text: "Solve for θ: 2cos²θ − 3cosθ + 1 = 0. Give the smallest positive solution in (0°; 360°), in degrees.",
+          answer: "60",
+          topic: "Solving trigonometric equations"
         }
       ]
     }
@@ -508,6 +527,15 @@ MathMagician.registerChapter(6, {
           { label: "b", text: "Calculate AC using the cosine rule.", marks: 3 },
           { label: "c", text: "Find angle A using the sine rule.", marks: 3 }
         ]
+      },
+      {
+        number: 4,
+        text: "Two surveyors stand at points A and B, 120 m apart along a straight riverbank. Both sight a tree T on the opposite bank. The measured angles from the baseline AB are recorded below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Point</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Angle to T (from AB)</th></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>A</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>52°</td></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>B</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>61°</td></tr></table>",
+        parts: [
+          { label: "a", text: "Calculate the size of angle ATB (the angle at the tree).", marks: 2 },
+          { label: "b", text: "Use the sine rule to calculate the distance AT (to 2 decimal places).", marks: 4 },
+          { label: "c", text: "Hence calculate the perpendicular distance from the tree to the baseline AB — the width of the river (to 2 decimal places).", marks: 3 }
+        ]
       }
     ],
     answers: {
@@ -524,6 +552,11 @@ MathMagician.registerChapter(6, {
         a: "Area = ½(9)(7)sin110° ≈ ½(63)(0.9397) ≈ 29.6 cm²",
         b: "AC²=81+49−2(9)(7)cos110°=130−126cos110°≈130+43.1≈173.1 → AC≈13.2 cm",
         c: "sinA/7 = sin110°/13.2 → sinA≈0.498 → A≈29.9°"
+      },
+      4: {
+        a: "T̂ = 180° − 52° − 61° = 67°",
+        b: "AT/sinB = AB/sinT → AT = 120×sin61°/sin67° ≈ 120×0,8746/0,9205 ≈ 114,02 m",
+        c: "width = AT×sin52° ≈ 114,02×0,7880 ≈ 89,85 m"
       }
     }
   }

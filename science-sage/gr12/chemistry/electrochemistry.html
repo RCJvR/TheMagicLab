@@ -320,6 +320,19 @@ canvas{display:block;border-radius:10px;background:#040710;width:100%}
       <em>(6 marks)</em></div>
     </div>
 
+    <div class="wb-q">
+      <div class="wb-qnum">Question 5 &mdash; Reading Electroplating Data</div>
+      <div class="wb-qtext">A learner electroplates copper from a CuSO<sub>4</sub> solution (Cu<sup>2+</sup> + 2e<sup>&minus;</sup> &rarr; Cu; M(Cu) = 64 g&middot;mol<sup>&minus;1</sup>) for a fixed time of 25 minutes, using different currents:
+      <table class="symbols-table" style="margin:10px 0">
+        <thead><tr><th>Current I (A)</th><th>0.5</th><th>1.0</th><th>1.5</th><th>2.0</th></tr></thead>
+        <tbody><tr><td>Mass of Cu deposited (g)</td><td>0.25</td><td>0.50</td><td>0.75</td><td>1.00</td></tr></tbody>
+      </table>
+      (a) Calculate mass &divide; I for each column. What does this (approximately constant) value confirm about the relationship between mass deposited and current, at fixed time?<br>
+      (b) Using F = 96 485 C&middot;mol<sup>&minus;1</sup> and the I = 1.0 A data point, calculate n(Cu) deposited, then n(e<sup>&minus;</sup>) passed, then the charge Q. Show that this charge is consistent with a plating time of about 25 minutes at 1.0 A.<br>
+      (c) Using the pattern in the table (not a fresh calculation from F), predict the mass of copper that would be deposited by a current of 3.0 A over the same 25 minutes.<br><br>
+      <em>(6 marks)</em></div>
+    </div>
+
   </div>
 </div>
 
@@ -640,6 +653,28 @@ const NSC_QUESTIONS = [
     opts: ['Both convert electrical energy to chemical energy','Galvanic cells produce electrical energy from spontaneous reactions; electrolytic cells use electrical energy to drive non-spontaneous reactions','Both require an external power supply','Electrolytic cells are always more efficient than galvanic cells'],
     ans: 1,
     exp: 'Galvanic (voltaic) cells: spontaneous redox reaction → electrical energy (E°cell > 0). Examples: batteries, fuel cells. Electrolytic cells: external electrical energy → drives non-spontaneous reaction (E°cell < 0). Examples: electrolysis, electroplating, electrorefining. The key distinction is spontaneous vs non-spontaneous reaction.'
+  },
+  {
+    q: 'Using E°(Ag⁺/Ag) = +0.80 V and E°(Cu²⁺/Cu) = +0.34 V, is the reaction Ag(s) + Cu²⁺(aq) → Ag⁺(aq) + Cu(s) spontaneous as written?',
+    opts: [
+      'No — as written, Ag is oxidised (anode) and Cu²⁺ is reduced (cathode), so E°cell = E°cathode − E°anode = 0.34 − 0.80 = −0.46 V; this direction is non-spontaneous. The reverse reaction, Cu(s) + 2Ag⁺(aq) → Cu²⁺(aq) + 2Ag(s), is the spontaneous one',
+      'Yes — E°cell = 0.80 − 0.34 = +0.46 V, so the reaction proceeds as written',
+      'Yes, because Ag has a higher standard reduction potential than Cu, so it always reacts spontaneously',
+      'No reaction occurs in either direction because both species are metals'
+    ],
+    ans: 0,
+    exp: 'You must identify which species is oxidised and which is reduced in the equation AS WRITTEN. Here Ag(s) → Ag⁺ + e⁻ is oxidation (Ag is the anode), and Cu²⁺ + 2e⁻ → Cu(s) is reduction (Cu is the cathode). E°cell = E°cathode − E°anode = 0.34 − 0.80 = −0.46 V — negative, so this reaction is NOT spontaneous. A higher reduction potential only means a species is more easily reduced (a better oxidising agent); it does not mean that species reacting as an oxidising agent (being reduced) is automatic in every equation — you must check which half-reaction is written as oxidation vs reduction. The spontaneous direction here is actually the reverse: Cu reduces Ag⁺.'
+  },
+  {
+    q: 'The same quantity of charge is passed through two separate electrolytic cells: one with AgNO₃ (Ag⁺ + e⁻ → Ag, M = 108 g·mol⁻¹) and one with CuSO₄ (Cu²⁺ + 2e⁻ → Cu, M = 64 g·mol⁻¹). Which cell deposits a GREATER mass of metal, and why?',
+    opts: [
+      'The AgNO₃ cell — each mole of Ag only needs 1 mole of electrons (vs 2 for Cu), so per mole of electrons Ag deposits 108 g while Cu only deposits 64/2 = 32 g',
+      'The CuSO₄ cell — copper always deposits more mass because its molar mass to electron ratio is more efficient',
+      'Both cells deposit exactly equal masses, since the same charge (and therefore the same number of electrons) passes through both',
+      'The AgNO₃ cell deposits less mass because silver ions require more energy to reduce'
+    ],
+    ans: 0,
+    exp: 'For a given charge Q, moles of electrons n(e⁻) = Q/F is the SAME in both cells. But moles of metal deposited = n(e⁻)/(electrons needed per ion). For Ag (1 e⁻ per ion): n(Ag) = n(e⁻); mass = n(e⁻) × 108. For Cu (2 e⁻ per ion): n(Cu) = n(e⁻)/2; mass = (n(e⁻)/2) × 64 = n(e⁻) × 32. Since 108 > 32, the same charge deposits almost 3.4× more mass of silver than copper — a smaller molar mass does NOT automatically mean more mass deposited, because the number of electrons needed per ion also matters.'
   }
 ];
 

@@ -37,6 +37,8 @@ MathMagician.registerChapter(2, {
       { type: "input", text: "Count back in 5s from 10. What is the 5th term?", answer: "-10", topic: "Integers" },
       { type: "mc", text: "Which set contains only integers?", options: ["−3, 0, 1.5, 4", "−5, −2, 0, 7", "0, ½, 1, 2", "1, 2, 3, 3.3"], answer: 1, topic: "Integers" },
       { type: "input", text: "What integer is 6 steps to the left of 2 on the number line?", answer: "-4", topic: "Integers" },
+      { type: "mc", text: "A number pattern starts at 15 and decreases by 4 each term: <span class='math'>15, 11, 7, 3, −1, …</span> Which term number is the first negative term?", options: ["3rd", "4th", "5th", "6th"], answer: 2, topic: "Integers" },
+      { type: "input", text: "The temperature is 5°C and drops by 3°C every hour. After how many full hours will the temperature first be below −10°C?", answer: "6", topic: "Integers" },
     ]
   },
   {
@@ -119,6 +121,8 @@ MathMagician.registerChapter(2, {
       { type: "mc", text: "Arrange in descending order: <span class='math'>−4, 7, −9, 1, 0</span>", options: ["7, 1, 0, −4, −9", "−9, −4, 0, 1, 7", "7, −9, 1, 0, −4", "0, 1, 7, −4, −9"], answer: 0, topic: "Integers" },
       { type: "input", text: "What is the smallest integer in this set: {−3, 5, −10, 2, −1}?", answer: "-10", topic: "Integers" },
       { type: "mc", text: "Which is true?", options: ["−100 > −50", "−50 > −100", "−100 = −50", "Cannot compare"], answer: 1, topic: "Integers" },
+      { type: "input", text: "Five cities recorded these temperatures: Cape Town 18°C, Moscow −12°C, Reykjavik −4°C, Dubai 41°C, Oslo −9°C. Find the difference between the warmest and the coldest temperature.", answer: "53", topic: "Integers" },
+      { type: "mc", text: "Which list correctly orders these bank balances from most in debt to least in debt: −R450, R200, −R1200, R50?", options: ["−R1200, −R450, R50, R200", "R200, R50, −R450, −R1200", "−R450, −R1200, R50, R200", "R50, R200, −R450, −R1200"], answer: 0, topic: "Integers" },
     ]
   },
   {
@@ -157,6 +161,8 @@ MathMagician.registerChapter(2, {
       { type: "input", text: "Calculate: <span class='math'>(−15) + (+15)</span>", answer: "0", topic: "Integers" },
       { type: "mc", text: "What is <span class='math'>(+6) + (−11) + (+3)</span>?", options: ["−2", "2", "−8", "8"], answer: 0, topic: "Integers" },
       { type: "input", text: "The temperature is −4°C. It rises 9°C. What is the new temperature?", answer: "5", topic: "Integers" },
+      { type: "input", text: "A hiker starts at 120 m above sea level, descends into a valley by 340 m, then climbs 185 m. What is her final height relative to sea level? (Use a negative number if below sea level.)", answer: "-35", topic: "Integers" },
+      { type: "mc", text: "A bank account balance is −R850. A deposit of R320 is made, then a withdrawal of R95 occurs. What is the new balance?", options: ["−R625", "−R665", "R625", "−R1265"], answer: 0, topic: "Integers" },
     ]
   },
   {
@@ -194,6 +200,8 @@ MathMagician.registerChapter(2, {
       { type: "input", text: "Calculate: <span class='math'>(−7) − (−7)</span>", answer: "0", topic: "Integers" },
       { type: "mc", text: "Which expression equals <span class='math'>−5 − (−9)</span>?", options: ["−5 + (−9)", "−5 + 9", "5 − 9", "−14"], answer: 1, topic: "Integers" },
       { type: "input", text: "Calculate: <span class='math'>2 − 15</span>", answer: "-13", topic: "Integers" },
+      { type: "input", text: "Day 1 had a high of 8°C and a low of −15°C. Day 2 had a high of −2°C and a low of −20°C. How much bigger is Day 1's temperature range (high − low) than Day 2's range?", answer: "5", topic: "Integers" },
+      { type: "mc", text: "What is <span class='math'>−8 − (−3) − 5</span>?", options: ["−10", "−16", "6", "0"], answer: 0, topic: "Integers" },
     ]
   },
   {
@@ -271,6 +279,8 @@ MathMagician.registerChapter(2, {
       { type: "mc", text: "What is the sign of <span class='math'>(−2) × (−3) × (−1) × (−4)</span>?", options: ["Negative", "Positive", "Zero", "Cannot tell"], answer: 1, topic: "Integers" },
       { type: "input", text: "Calculate: <span class='math'>(−3)²</span>  (hint: −3 × −3)", answer: "9", topic: "Integers" },
       { type: "mc", text: "Which gives a negative result?", options: ["(−4)²", "(−2) × (−6)", "(+3) × (−2)", "(−1) × (−1) × (−1) × (−1)"], answer: 2, topic: "Integers" },
+      { type: "input", text: "A scuba diver starts at the surface (0 m) and descends at 6 m per minute for 7 minutes, then ascends at 4 m per minute for 3 minutes. What is her final depth relative to the surface? (Use a negative number for below the surface.)", answer: "-30", topic: "Integers" },
+      { type: "mc", text: "If <span class='math'>a × b × c × d</span> is negative, and <span class='math'>a</span>, <span class='math'>c</span>, and <span class='math'>d</span> are all negative integers, what must be true about <span class='math'>b</span>?", options: ["b must be positive", "b must be negative", "b must be zero", "b could be any sign"], answer: 0, topic: "Integers" },
     ]
   },
   {
@@ -308,6 +318,8 @@ MathMagician.registerChapter(2, {
       { type: "mc", text: "What is <span class='math'>(+56) ÷ (−8)</span>?", options: ["7", "−7", "48", "−48"], answer: 1, topic: "Integers" },
       { type: "input", text: "Calculate: <span class='math'>(−72) ÷ (+8)</span>", answer: "-9", topic: "Integers" },
       { type: "mc", text: "Which expression gives a positive answer?", options: ["(−20) ÷ (+5)", "(+30) ÷ (−6)", "(−24) ÷ (−4)", "(−10) ÷ (+2)"], answer: 2, topic: "Integers" },
+      { type: "input", text: "A company's total profit over 4 months was −R2 400 (a loss), spread evenly across the months. In the 5th month, the company made a profit of R3 000. What is the new average monthly profit/loss over all 5 months?", answer: "120", topic: "Integers" },
+      { type: "mc", text: "Which expression also equals <span class='math'>(−6) × (−8) ÷ (−4)</span>?", options: ["(−48) ÷ 4", "48 ÷ 4", "(−24) ÷ (−2)", "(−12) ÷ (−1)"], answer: 0, topic: "Integers" },
     ]
   },
   {
@@ -341,6 +353,8 @@ MathMagician.registerChapter(2, {
       { type: "mc", text: "Is subtraction commutative? E.g. does <span class='math'>(−5) − 3 = 3 − (−5)</span>?", options: ["Yes, always", "No — they give different results", "Only for negative numbers", "Only when one number is zero"], answer: 1, topic: "Properties" },
       { type: "input", text: "Use the distributive property: <span class='math'>(−4) × (6 + (−2))</span>", answer: "-16", topic: "Properties" },
       { type: "mc", text: "<span class='math'>[(−2) × (−3)] × (−5)</span> equals <span class='math'>(−2) × [(−3) × (−5)]</span>. Which property is this?", options: ["Commutative", "Distributive", "Associative", "Identity"], answer: 2, topic: "Properties" },
+      { type: "input", text: "Use the distributive property to calculate <span class='math'>(−7) × 23</span> by writing 23 as <span class='math'>(20 + 3)</span>.", answer: "-161", topic: "Properties" },
+      { type: "mc", text: "Which calculation shows that division is NOT associative, using 24, 4, and 2?", options: ["(24÷4)÷2 = 3 and 24÷(4÷2) = 12, so they are not equal", "(24÷4)÷2 = 12 and 24÷(4÷2) = 3, so they are not equal", "(24÷4)÷2 = 24÷(4÷2) = 6, so they are equal", "Division is always associative, like addition"], answer: 0, topic: "Properties" },
     ]
   },
   {
@@ -408,6 +422,8 @@ MathMagician.registerChapter(2, {
       { type: "input", text: "Calculate: <span class='math'>(−2)³</span>", answer: "-8", topic: "Powers & roots" },
       { type: "mc", text: "Which is undefined (not a real number)?", options: ["√64", "∛(−8)", "√(−9)", "(−3)²"], answer: 2, topic: "Powers & roots" },
       { type: "input", text: "Calculate: <span class='math'>√144</span>", answer: "12", topic: "Powers & roots" },
+      { type: "input", text: "Calculate: <span class='math'>√169 − ∛(−27) + (−2)⁴</span>", answer: "32", topic: "Powers & roots" },
+      { type: "input", text: "A square painting has an area of 225 cm². A cubic gift box has a volume of 512 cm³. What is the sum of the painting's side length and the box's side length?", answer: "23", topic: "Powers & roots" },
     ]
   },
   {
@@ -616,6 +632,8 @@ MathMagician.registerChapter(2, {
       { type: "mc", text: "What is <span class='math'>−5² + (−3)²</span>?", options: ["−16", "4", "−34", "34"], answer: 1, topic: "Mixed ops" },
       { type: "input", text: "Calculate: <span class='math'>[(−6) ÷ 2] × (−3) − (−1)</span>", answer: "10", topic: "Mixed ops" },
       { type: "mc", text: "Calculate <span class='math'>(−2) × 3 − (−4) × (−2)</span>", options: ["−14", "−2", "2", "14"], answer: 0, topic: "Mixed ops" },
+      { type: "input", text: "Calculate: <span class='math'>(−6 + 2)² − (−3)³ ÷ 3</span>", answer: "25", topic: "Mixed ops" },
+      { type: "mc", text: "Without calculating the full value, what is the sign of <span class='math'>(−2)⁵ × (−3)² ÷ (−6)</span>?", options: ["Positive", "Negative", "Zero", "Cannot be determined"], answer: 0, topic: "Mixed ops" },
     ]
   },
   {
@@ -649,6 +667,7 @@ MathMagician.registerChapter(2, {
       { type: "input", text: "Calculate: <span class='math'>√36 − (−2)² × 3 + (−18) ÷ (−3)</span>", answer: "0", topic: "Mixed" },
       { type: "mc", text: "The temperature dropped from 3°C to −8°C. By how many degrees did it drop?", options: ["5°C", "11°C", "−11°C", "−5°C"], answer: 1, topic: "Mixed" },
       { type: "input", text: "Calculate: <span class='math'>(−1)¹⁰⁰</span>  (hint: even power of −1)", answer: "1", topic: "Powers" },
+      { type: "input", text: "A submarine starts at −85 m (85 m below the surface). It rises 3 m every minute for 12 minutes, then dives 4 m every minute for the next 5 minutes. Compared to its starting depth, how many metres higher is it now?", answer: "16", topic: "Mixed" },
     ]
   }
   ],

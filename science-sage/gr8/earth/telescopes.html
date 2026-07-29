@@ -218,7 +218,7 @@
 
 <div id="tab-practice" class="tab-panel">
   <div class="practice-wrap">
-    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 6</span></div>
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Score</span><span class="score-val" id="score">0 / 8</span></div>
     <div id="q-container"></div>
   </div>
 </div>
@@ -232,6 +232,17 @@
     <div class="wb-card"><div class="wb-q">4. Explain why the Hubble Space Telescope can produce clearer images than a telescope of the same size on Earth's surface.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">5. What is a constellation? Describe the Southern Cross (Crux) and explain how it is useful for navigation in the Southern Hemisphere.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
     <div class="wb-card"><div class="wb-q">6. Discuss the astronomical knowledge of the San people. Give one example of how a star or star cluster was used in daily life.</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. The table below compares three telescopes mentioned in this lesson.<br><br>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+      <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Telescope</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Type</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Primary mirror / dish size</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Location</th></tr></thead>
+      <tbody>
+      <tr><td style="padding:6px 10px">SALT</td><td style="padding:6px 10px">Optical (ground)</td><td style="padding:6px 10px">11 m × 9.8 m mirror</td><td style="padding:6px 10px">Sutherland, South Africa</td></tr>
+      <tr><td style="padding:6px 10px">Hubble</td><td style="padding:6px 10px">Optical/UV (space)</td><td style="padding:6px 10px">2.4 m mirror</td><td style="padding:6px 10px">Earth orbit</td></tr>
+      <tr><td style="padding:6px 10px">MeerKAT</td><td style="padding:6px 10px">Radio</td><td style="padding:6px 10px">64 dishes, 13.5 m each</td><td style="padding:6px 10px">Karoo, South Africa</td></tr>
+      </tbody></table><br>
+      (a) SALT's primary mirror is about 11 m across. Calculate roughly how many times wider this is than Hubble's 2.4 m mirror. (1)<br>
+      (b) A wider mirror collects more light. Despite SALT collecting far more light per instant than Hubble, explain why Hubble can still take clearer images of very faint, distant objects. (2)<br>
+      (c) MeerKAT uses 64 separate dishes working together instead of one giant dish. Suggest one advantage of this design over a single huge dish of the same total collecting area. (1)</div><textarea class="wb-area" placeholder="Your answer…"></textarea></div>
   </div>
 </div>
 
@@ -373,9 +384,11 @@ const QS=[
   {q:"Why can the Hubble Space Telescope see more clearly than a ground-based telescope of the same size?",opts:["It is closer to the stars","It is above Earth's atmosphere, so there is no atmospheric distortion","It uses radio waves","It is bigger than any ground-based telescope"],ans:1,fb:"Earth's atmosphere distorts light (causing stars to 'twinkle') and blocks some wavelengths. Hubble orbits above the atmosphere, so it gets sharp, undistorted images."},
   {q:"What is a constellation?",opts:["A group of stars that are physically close to each other in space","A type of galaxy","A group of stars that appear to form a pattern in the sky as seen from Earth","A type of nebula"],ans:2,fb:"A constellation is a group of stars that appear to form a pattern as seen from Earth. The stars are not necessarily close to each other — they just look close from our viewpoint."},
   {q:"The Southern Cross (Crux) is useful for navigation because:",opts:["It is the brightest star in the sky","Its long axis points toward the South Celestial Pole","It rises exactly in the east","It is always directly overhead in South Africa"],ans:1,fb:"The long axis of Crux (from Gacrux to Acrux) points toward the South Celestial Pole, which is close to true south. This can be used for navigation in the Southern Hemisphere."},
-  {q:"The San people of South Africa have traditionally used the Pleiades star cluster (Selemela) to:",opts:["Navigate at sea","Mark the time to plant crops","Predict the weather","Identify the direction of the wind"],ans:1,fb:"The Pleiades (Selemela) traditionally signal the time to plant crops. Many indigenous cultures used astronomical observations to guide seasonal agricultural activities."}
+  {q:"The San people of South Africa have traditionally used the Pleiades star cluster (Selemela) to:",opts:["Navigate at sea","Mark the time to plant crops","Predict the weather","Identify the direction of the wind"],ans:1,fb:"The Pleiades (Selemela) traditionally signal the time to plant crops. Many indigenous cultures used astronomical observations to guide seasonal agricultural activities."},
+  {q:"Astronomers want to study a distant galaxy that is heavily hidden behind thick clouds of cosmic dust when viewed in visible light. Which type of telescope would be most effective for this task, and why?",opts:["An optical telescope, because visible light is always the most detailed way to observe galaxies","An infrared telescope, because infrared radiation can pass through dust clouds that block visible light","A radio telescope, because radio waves are blocked by dust and this would confirm the dust is there","Any telescope would work equally well since dust does not affect any type of radiation"],ans:1,fb:"Visible light is easily scattered and absorbed by dust, which is why the galaxy appears hidden to an optical telescope. Infrared radiation has a longer wavelength than visible light and can pass through dust clouds largely unaffected, letting instruments like the James Webb Space Telescope reveal galaxies and star-forming regions that optical telescopes cannot see."},
+  {q:"A research team needs to continuously monitor a pulsar for several months, including during the day and through thick cloud cover. Based on what you know about how different telescopes work, which would be the best choice?",opts:["An optical telescope, since pulsars are best seen in visible light","SALT, because it is the largest optical telescope in the Southern Hemisphere","A radio telescope such as MeerKAT, because radio waves pass through clouds and can be detected day or night","A space telescope, because pulsars can only be observed from orbit"],ans:2,fb:"Radio telescopes like MeerKAT detect radio waves, which pass straight through cloud cover and daylight without being blocked or washed out — unlike optical telescopes, which need dark, clear skies. This makes radio telescopes ideal for long, uninterrupted observation campaigns, such as tracking a pulsar's regular radio pulses over months."}
 ];
-let scores=new Array(6).fill(null);
+let scores=new Array(8).fill(null);
 function renderQ(){
   const c=document.getElementById('q-container');c.innerHTML='';
   QS.forEach((q,i)=>{
@@ -390,7 +403,7 @@ function answer(qi,oi,btn){
   if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Correct! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
   else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Not quite. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
 }
-function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
 renderQ();
 </script>
   <script src="/contact-button.js" defer></script>

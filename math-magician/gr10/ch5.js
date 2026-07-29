@@ -163,6 +163,13 @@ MathMagician.registerChapter(5, {
           text: "Evaluate: cos 60° ÷ tan 60°",
           answer: "√3/6",
           topic: "Trig ratios & special angles"
+        },
+        {
+          type: "input",
+          text: "Evaluate (no calculator): sin 60° · cos 60° + cos²30°",
+          answer: "(√3+3)/4",
+          altAnswers: ["1.18", "1,18"],
+          topic: "Trig ratios & special angles"
         }
       ]
     },
@@ -303,6 +310,12 @@ MathMagician.registerChapter(5, {
           options: ["−½", "√3/2", "½", "−√3/2"],
           answer: 2,
           topic: "Trig equations & Cartesian plane"
+        },
+        {
+          type: "input",
+          text: "Solve for θ ∈ [0°; 360°]: 2sinθ + 1 = 0. Give the smaller solution.",
+          answer: "210",
+          topic: "Trig equations & Cartesian plane"
         }
       ]
     },
@@ -398,6 +411,13 @@ MathMagician.registerChapter(5, {
           answer: "22.98",
           altAnswers: ["22.99", "23.0", "23"],
           topic: "Solving right-angled triangles"
+        },
+        {
+          type: "input",
+          text: "From point A, the angle of elevation to the top of a tower is 30°. From point B, 20 m closer to the tower on the same straight line, the angle of elevation is 50°. Find the height of the tower (2 d.p.).",
+          answer: "22.40",
+          altAnswers: ["22.4"],
+          topic: "Solving right-angled triangles"
         }
       ]
     },
@@ -488,6 +508,12 @@ MathMagician.registerChapter(5, {
           options: ["1", "0", "θ", "2sinθcosθ"],
           answer: 0,
           topic: "Reciprocal ratios & trig identities"
+        },
+        {
+          type: "input",
+          text: "Given 5cosθ − 3 = 0 and θ is acute, find tanθ as a fraction.",
+          answer: "4/3",
+          topic: "Reciprocal ratios & trig identities"
         }
       ]
     }
@@ -530,6 +556,15 @@ MathMagician.registerChapter(5, {
           { label: "b", text: "cos θ = −1/2", marks: 3 },
           { label: "c", text: "2tan θ + 2 = 0", marks: 4 }
         ]
+      },
+      {
+        number: 5,
+        text: "A surveyor stands at three different points along a straight line from the base of a tall building and measures the angle of elevation to the top at each point. The results are recorded below: <br>Distance from building: 10 m, angle of elevation 71,6°.<br>Distance from building: 20 m, angle of elevation 56,3°.<br>Distance from building: 30 m, angle of elevation 45,0°.",
+        parts: [
+          { label: "a", text: "Using the reading at 30 m, calculate the height of the building.", marks: 2 },
+          { label: "b", text: "Using the reading at 10 m, calculate the height of the building. Is it consistent with your answer to (a)?", marks: 3 },
+          { label: "c", text: "Using the height found above, predict the angle of elevation that would be measured from a point 15 m from the building (2 d.p.).", marks: 3 }
+        ]
       }
     ],
     answers: {
@@ -552,6 +587,11 @@ MathMagician.registerChapter(5, {
         a: "θ = 60° or 120°",
         b: "θ = 120° or 240°",
         c: "tan θ = −1 → θ = 135° or 315°"
+      },
+      5: {
+        a: "tan45° = h/30 → h = 30×tan45° = 30 m",
+        b: "tan71,6° = h/10 → h = 10×tan71,6° ≈ 30 m — yes, consistent with (a)",
+        c: "tanθ = 30/15 = 2 → θ = tan⁻¹(2) ≈ 63,43°"
       }
     }
   }

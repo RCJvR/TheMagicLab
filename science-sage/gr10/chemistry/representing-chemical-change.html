@@ -297,7 +297,7 @@ select option{background:#1a1f35}
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div>
         <div style="font-weight:700;font-size:15px;color:#e9d5ff">Quiz Complete</div>
         <div style="font-size:13px;color:var(--muted)">NSC Practice Questions</div>
@@ -382,6 +382,19 @@ select option{background:#1a1f35}
       <div class="feedback" id="fb6">This is single displacement: zinc (a more reactive metal) displaces copper from copper sulfate solution, following the pattern A + BC → AC + B.</div>
     </div>
 
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Question 7 &nbsp;<span style="color:var(--muted);font-weight:400">(Analysis)</span></div>
+      <div class="q-text">Magnesium reacts completely with oxygen gas to form magnesium oxide: 2Mg + O₂ → 2MgO. 12.0 g of magnesium reacts completely with 8.0 g of oxygen gas, with no leftover reactant of either kind. What mass of magnesium oxide forms, and what type of reaction is this?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>4.0 g; decomposition</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>20.0 g; synthesis</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>12.0 g; single displacement</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>8.0 g; combustion</button>
+      </div>
+      <div class="feedback" id="fb7">This combines two ideas. First, the Law of Conservation of Mass: since no reactant is left over, the total mass of products must equal the total mass of reactants — 12.0 g Mg + 8.0 g O₂ = 20.0 g MgO. Second, reaction classification: two elements (Mg and O₂) combine to form a single compound (MgO), which is the definition of a synthesis (combination) reaction — not decomposition (one → many), single displacement (element swaps into a compound), or combustion (though burning magnesium does release light, "combustion" specifically refers to reaction with oxygen releasing heat/light and is usually reserved for fuels containing carbon and hydrogen).</div>
+    </div>
+
     <!-- IEB Practice Questions -->
     <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
       <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
@@ -460,6 +473,22 @@ select option{background:#1a1f35}
       <div style="margin-top:14px;height:90px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
     </div>
 
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 — Testing Conservation of Mass Experimentally</div>
+      <div class="wb-qtext">A learner reacts marble chips (calcium carbonate) with hydrochloric acid: CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g). The reaction is carried out twice on an electronic balance — once in an open flask, and once in a flask sealed with a balloon over the mouth to trap any gas produced:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Setup</th><th>Initial mass (g)</th><th>Final mass (g)</th></tr></thead>
+        <tbody>
+          <tr><td>Open flask</td><td>65.20</td><td>63.85</td></tr>
+          <tr><td>Sealed flask (with balloon)</td><td>65.20</td><td>65.20</td></tr>
+        </tbody>
+      </table>
+      (a) Calculate the apparent mass change for the open flask.<br>
+      (b) Explain, in terms of the reaction equation, why the open flask appears to lose mass.<br>
+      (c) Explain why the sealed flask shows no change in mass, and state which setup correctly demonstrates the Law of Conservation of Mass.<br>
+      (d) Based on your answer to (a), calculate the mass of CO₂ gas produced in the reaction.</div>
+    </div>
+
   </div>
 </div>
 
@@ -481,7 +510,7 @@ function switchTab(id,btn){
 }
 
 // ===== PRACTICE =====
-const correctAnswers = {1:1, 2:1, 3:2, 4:1, 5:1, 6:2, i1:0, i2:0};
+const correctAnswers = {1:1, 2:1, 3:2, 4:1, 5:1, 6:2, 7:1, i1:0, i2:0};
 const answered = {};
 let score = 0;
 
@@ -510,11 +539,11 @@ function checkAns(qNum, chosenIdx, fbId){
 
   fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
 
-  const nscDone = [1,2,3,4,5,6].every(k => answered[k]);
+  const nscDone = [1,2,3,4,5,6,7].every(k => answered[k]);
   if(nscDone){
     const banner = document.getElementById('scoreBanner');
     banner.classList.add('show');
-    document.getElementById('scoreNum').textContent = score + '/6';
+    document.getElementById('scoreNum').textContent = score + '/7';
   }
 }
 

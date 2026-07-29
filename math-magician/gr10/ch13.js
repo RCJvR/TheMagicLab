@@ -152,6 +152,19 @@ MathMagician.registerChapter(13, {
           text: "Cylinder r = 3 cm, h = 7 cm. Find the curved surface area in terms of π.",
           answer: "42π",
           topic: "Area & surface area"
+        },
+        {
+          type: "input",
+          text: "A cylinder has total surface area 220π cm² and radius 5 cm. Find its height.",
+          answer: "17",
+          topic: "Area & surface area"
+        },
+        {
+          type: "input",
+          text: "A trapezium-shaped garden has parallel sides 8 m and 14 m, and height 6 m. A circular fountain of radius 2 m is built inside it. Find the remaining area of the garden, correct to 2 decimal places.",
+          answer: "53.43",
+          altAnswers: ["53,43"],
+          topic: "Area & surface area"
         }
       ]
     },
@@ -289,6 +302,19 @@ MathMagician.registerChapter(13, {
           type: "input",
           text: "A rectangular box is 4×3×5 cm. Find its volume.",
           answer: "60",
+          topic: "Volume & scale factor"
+        },
+        {
+          type: "input",
+          text: "A cone has volume 100π cm³ and height 12 cm. Find its radius.",
+          answer: "5",
+          topic: "Volume & scale factor"
+        },
+        {
+          type: "input",
+          text: "Two similar solids have volumes 27 cm³ and 125 cm³. Find the ratio of their corresponding lengths, in simplest form (smaller : larger).",
+          answer: "3:5",
+          altAnswers: ["3/5"],
           topic: "Volume & scale factor"
         }
       ]
@@ -430,6 +456,19 @@ MathMagician.registerChapter(13, {
           options: ["The curved cylinder surface", "The bottom circular base", "The flat circle where the hemisphere meets the cylinder", "The curved hemisphere surface"],
           answer: 2,
           topic: "Composite solids"
+        },
+        {
+          type: "input",
+          text: "A composite solid is a cylinder (r=4, h=9) with a cone (r=4, height=3) on top. Find the total volume in terms of π.",
+          answer: "160π",
+          topic: "Composite solids"
+        },
+        {
+          type: "input",
+          text: "A composite solid is a cylinder (r=3, h=10) with a hemisphere (r=3) on top. Find the total surface area (curved cylinder + flat bottom base + curved hemisphere, excluding the internal join), correct to 2 decimal places.",
+          answer: "273.32",
+          altAnswers: ["273,32"],
+          topic: "Composite solids"
         }
       ]
     },
@@ -545,6 +584,19 @@ MathMagician.registerChapter(13, {
           type: "input",
           text: "A square pyramid has base 6 cm and total surface area 96 cm². Given the base area is 36 cm², find the total lateral (triangular faces) area.",
           answer: "60",
+          topic: "Pyramids and cones in depth"
+        },
+        {
+          type: "input",
+          text: "A triangular pyramid has an equilateral triangle base with side 8 cm, and perpendicular height 10 cm. Find its volume, correct to 2 decimal places.",
+          answer: "92.38",
+          altAnswers: ["92,38"],
+          topic: "Pyramids and cones in depth"
+        },
+        {
+          type: "input",
+          text: "A cone has volume 150π cm³ and radius 5 cm. Find its height.",
+          answer: "18",
           topic: "Pyramids and cones in depth"
         }
       ]

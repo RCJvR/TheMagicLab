@@ -102,7 +102,9 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Two similar triangles have sides in ratio 3:5. Ratio of their areas:", options: ["3:5", "9:25", "27:125", "6:10"], answer: 1, topic: "Proportion, polygons & triangle theorems" },
         { type: "input", text: "In △XYZ, MN ∥ YZ, XM = 4, MY = 8, XN = 3. Find NZ.", answer: "6", topic: "Proportion, polygons & triangle theorems" },
         { type: "mc", text: "The converse of BPT states: if AD/DB = AE/EC in △ABC, then:", options: ["A, D, B are collinear", "DE ∥ BC", "DE = BC/2", "△ADE is equilateral"], answer: 1, topic: "Proportion, polygons & triangle theorems" },
-        { type: "mc", text: "Similar solids have volumes in ratio 8:27. Their surface areas are in ratio:", options: ["2:3", "4:9", "8:27", "16:81"], answer: 1, topic: "Proportion, polygons & triangle theorems" }
+        { type: "mc", text: "Similar solids have volumes in ratio 8:27. Their surface areas are in ratio:", options: ["2:3", "4:9", "8:27", "16:81"], answer: 1, topic: "Proportion, polygons & triangle theorems" },
+        { type: "input", text: "In △ABC, D is on AB and E is on AC with DE ∥ BC. AD = x + 2, DB = x − 1, AE = x + 5, EC = x + 1. Determine the value of x.", answer: "7", topic: "Proportion, polygons & triangle theorems" },
+        { type: "input", text: "In △ABC, DE ∥ BC with AD = 4 and DB = 6. The area of △ADE is 20 cm². Determine the area of quadrilateral DBCE.", answer: "105", topic: "Proportion, polygons & triangle theorems" }
       ]
     },
     {
@@ -191,7 +193,9 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Which is sufficient to prove triangles similar?", options: ["SSA", "AAA", "SAS proportional", "Both B and C"], answer: 3, topic: "Similarity & Pythagorean theorem proofs" },
         { type: "mc", text: "In right △ABC (right angle C), altitude CD meets AB at D. Then △ACD ||| △ABC with correspondence:", options: ["A↔A, C↔B, D↔C", "A↔A, C↔C, D↔B", "C↔A, D↔C, A↔B", "A↔A, CD↔BC, AD↔AC"], answer: 0, topic: "Similarity & Pythagorean theorem proofs" },
         { type: "input", text: "In the Pythagorean proof: AC² = AB · AD. If AB = 25 and AD = 9, find AC.", answer: "15", topic: "Similarity & Pythagorean theorem proofs" },
-        { type: "mc", text: "△ABC ||| △PQR. If area of △ABC = 18 cm² and AB/PQ = 1/2, area of △PQR =", options: ["36 cm²", "72 cm²", "9 cm²", "4.5 cm²"], answer: 1, topic: "Similarity & Pythagorean theorem proofs" }
+        { type: "mc", text: "△ABC ||| △PQR. If area of △ABC = 18 cm² and AB/PQ = 1/2, area of △PQR =", options: ["36 cm²", "72 cm²", "9 cm²", "4.5 cm²"], answer: 1, topic: "Similarity & Pythagorean theorem proofs" },
+        { type: "input", text: "In right △ABC (right angle at C), altitude CD meets AB at D, with AD = 3 and DB = 12. Calculate AC (using AC² = AB · AD), leaving your answer in simplest surd form.", answer: "3√5", altAnswers: ["3sqrt5", "3√(5)", "sqrt(45)", "√45"], topic: "Similarity & Pythagorean theorem proofs" },
+        { type: "input", text: "△ABC ||| △DEF. The area of △ABC is 45 cm² and the area of △DEF is 20 cm². If BC = 12 cm, determine the length of EF.", answer: "8", topic: "Similarity & Pythagorean theorem proofs" }
       ]
     },
     {
@@ -287,7 +291,9 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "A square and a non-square rectangle both have all angles equal to 90°. Are they necessarily similar?", options: ["Yes, always", "No — sides must also be proportional", "Yes, if perimeters are equal", "Only if they are congruent"], answer: 1, topic: "Similar polygons & scale factor problems" },
         { type: "input", text: "Two similar hexagons have corresponding sides 4 cm and 10 cm. Find the scale factor (large ÷ small).", answer: "2.5", altAnswers: ["2,5", "5/2"], topic: "Similar polygons & scale factor problems" },
         { type: "mc", text: "Similar figures have scale factor 3. If the smaller has area 12 cm², the larger has area:", options: ["36 cm²", "108 cm²", "15 cm²", "324 cm²"], answer: 1, topic: "Similar polygons & scale factor problems" },
-        { type: "mc", text: "For polygons with more than 3 sides, which statement is TRUE?", options: ["Equal angles alone guarantees similarity", "Proportional sides alone guarantees similarity", "Both equal angles AND proportional sides are needed", "Neither condition is ever required"], answer: 2, topic: "Similar polygons & scale factor problems" }
+        { type: "mc", text: "For polygons with more than 3 sides, which statement is TRUE?", options: ["Equal angles alone guarantees similarity", "Proportional sides alone guarantees similarity", "Both equal angles AND proportional sides are needed", "Neither condition is ever required"], answer: 2, topic: "Similar polygons & scale factor problems" },
+        { type: "input", text: "Two similar trapezoids have areas 32 cm² and 200 cm². If the shorter parallel side of the smaller trapezoid is 5 cm, find the corresponding side of the larger trapezoid.", answer: "12.5", altAnswers: ["12,5"], topic: "Similar polygons & scale factor problems" },
+        { type: "input", text: "Two similar cylinders (similar solids) have volumes 27 cm³ and 216 cm³. If the surface area of the smaller cylinder is 54 cm², find the surface area of the larger cylinder.", answer: "216", topic: "Similar polygons & scale factor problems" }
       ]
     }
   ],

@@ -164,6 +164,18 @@ MathMagician.registerChapter(8, {
           options: ["Supplementary", "Complementary", "Equal", "Related by factor of 2"],
           answer: 2,
           topic: "Circle theorems"
+        },
+        {
+          type: "input",
+          text: "AB is a diameter of a circle, and C is a point on the circle with ∠BAC = 35°. Find ∠ABC.",
+          answer: "55",
+          topic: "Circle theorems"
+        },
+        {
+          type: "input",
+          text: "O is the centre of a circle. Chord AB subtends ∠AOB = 100° at the centre. D is a point on the minor arc AB. Find ∠ADB (the angle subtended by AB at D, on the minor arc).",
+          answer: "130",
+          topic: "Circle theorems"
         }
       ]
     },
@@ -302,6 +314,18 @@ MathMagician.registerChapter(8, {
           options: ["Bisects the chord", "Is equal to the radius", "Bisects the chord angle", "Is tangent to the chord"],
           answer: 0,
           topic: "Tangent theorems & chord proofs"
+        },
+        {
+          type: "input",
+          text: "PA and PB are tangents from external point P to a circle with centre O, touching at A and B. ∠APB = 50°. Find ∠AOB. (Hint: OAPB has two right angles, at A and B.)",
+          answer: "130",
+          topic: "Tangent theorems & chord proofs"
+        },
+        {
+          type: "input",
+          text: "From external point P, tangent PT = 12 cm touches a circle at T. Secant PAB (A nearer to P) cuts the circle with PA = 8 cm. Using PT² = PA × PB, find the length of AB.",
+          answer: "10",
+          topic: "Tangent theorems & chord proofs"
         }
       ]
     },
@@ -418,6 +442,18 @@ MathMagician.registerChapter(8, {
           options: ["They are equidistant from the centre", "They intersect inside the circle", "They subtend different angles at the centre", "One must be a diameter"],
           answer: 0,
           topic: "Chord, radius & distance calculations"
+        },
+        {
+          type: "input",
+          text: "Two parallel chords AB = 16 cm and CD = 12 cm lie on the same side of the centre O of a circle with radius 10 cm. Find the distance between the two chords.",
+          answer: "2",
+          topic: "Chord, radius & distance calculations"
+        },
+        {
+          type: "input",
+          text: "A circular pond has diameter 34 m. A straight wooden bridge (a chord) crosses the pond with its two ends 30 m apart. Find the perpendicular distance from the centre of the pond to the bridge, in metres.",
+          answer: "8",
+          topic: "Chord, radius & distance calculations"
         }
       ]
     },
@@ -533,6 +569,13 @@ MathMagician.registerChapter(8, {
           type: "input",
           text: "In a rider, ∠BAC = 40° (angle at circumference on arc BC) and ∠ACD = 25° (angle at circumference on arc AD, with ABCD cyclic and diagonals meeting inside). Using the exterior angle of triangle formed by the diagonals, find the angle between chords AC and BD, on the side containing ∠BAC and ∠ACD (i.e. the exterior angle of the triangle formed).",
           answer: "65",
+          topic: "Circle geometry riders"
+        },
+        {
+          type: "input",
+          text: "PQ is a diameter of a circle with centre O, and R is a point on the circle such that PR = RQ. If ∠RPQ = 2y, determine the value of y. (Hint: combine the semicircle theorem with the isosceles triangle PRQ.)",
+          answer: "22.5",
+          altAnswers: ["22,5"],
           topic: "Circle geometry riders"
         }
       ]

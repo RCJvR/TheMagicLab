@@ -111,6 +111,8 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Can you construct a triangle with sides 3 cm, 4 cm, 8 cm?", options: ["Yes", "No � triangle inequality fails", "Yes � it's a right triangle", "Only with a protractor"], answer: 1, topic: "Constructions" },
         { type: "mc", text: "To construct a square inscribed in a circle, you draw:", options: ["4 equal arcs from any point", "Two perpendicular diameters", "A tangent at 4 points", "4 arcs from the centre"], answer: 1, topic: "Constructions" },
         { type: "mc", text: "In a SAS construction, the 'S' on either side of 'A' stands for:", options: ["Sum", "Side", "Segment", "Symmetry"], answer: 1, topic: "Constructions" },
+        { type: "input", text: "A triangle has one angle of 40°. Of the remaining two angles, one is 3 times the size of the other. Calculate the size of the smaller of the two remaining angles.", answer: "35", topic: "Constructions" },
+        { type: "input", text: "The interior angle of a regular polygon is 156°. Using the interior angle formula, determine the number of sides of the polygon.", answer: "15", topic: "Constructions" },
       ]
     },
   ],

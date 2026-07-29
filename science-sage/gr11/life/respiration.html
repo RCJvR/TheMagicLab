@@ -175,7 +175,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations above.</div></div>
     </div>
     <div id="questions"></div>
@@ -192,6 +192,21 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Compare aerobic and anaerobic respiration in terms of oxygen requirement, product formed, and relative energy released.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Explain why muscles produce lactic acid during intense exercise, and how this relates to muscle fatigue.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Give ONE industrial use of anaerobic respiration (fermentation) by yeast.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (6 marks)</div><div class="wb-qtext">Two students, A and B, performed the same strenuous exercise. Their pulse rate was then recorded every minute during recovery:<br><br>
+    <table class="compare-table" style="max-width:520px">
+      <thead><tr><th>Time after exercise stopped (min)</th><th>Student A pulse (bpm)</th><th>Student B pulse (bpm)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>160</td><td>165</td></tr>
+        <tr><td>1</td><td>140</td><td>150</td></tr>
+        <tr><td>2</td><td>120</td><td>138</td></tr>
+        <tr><td>3</td><td>100</td><td>128</td></tr>
+        <tr><td>4</td><td>85</td><td>120</td></tr>
+        <tr><td>5</td><td>72</td><td>112</td></tr>
+      </tbody>
+    </table><br>
+    (a) Calculate the total decrease in pulse rate, from 0 to 5 minutes, for each student. (2 marks)<br>
+    (b) Calculate each student's average rate of recovery (decrease in bpm per minute) over this 5-minute period. Show your working. (2 marks)<br>
+    (c) Based on the data, which student is likely to be more physically fit? Explain your answer. (2 marks)</div></div>
   </div>
 </div>
 
@@ -299,6 +314,8 @@ const QUESTIONS=[
   {text:'Why does the body switch to anaerobic respiration during intense exercise?',opts:['Because it prefers anaerobic respiration','Because oxygen supply cannot keep up with the muscles\' demand','Because glucose runs out','Because carbon dioxide levels are too low'],ans:1,exp:'During intense exercise, the muscles need energy faster than the blood can deliver oxygen, so cells switch to anaerobic respiration.'},
   {text:'What by-product of respiration is produced by ALL living organisms?',opts:['Oxygen','Carbon dioxide','Lactic acid only','Starch'],ans:1,exp:'Carbon dioxide is produced as a waste product of respiration by all living organisms, whether respiring aerobically or anaerobically.'},
   {text:'Which industrial processes rely on anaerobic respiration (fermentation) by yeast?',opts:['Photosynthesis and respiration','Beer brewing and bread making','Water purification','Antibiotic resistance testing'],ans:1,exp:'Yeast carries out anaerobic respiration (fermentation), which is used industrially in beer brewing and bread making.'},
+  {text:'Aerobic respiration of one glucose molecule yields approximately 36 ATP molecules, while anaerobic respiration (lactic acid fermentation) yields only about 2 ATP molecules per glucose. Calculate approximately how many times more ATP aerobic respiration produces per glucose molecule compared to anaerobic respiration.',opts:['About 18 times more','About 2 times more','About 36 times more','About 0.06 times more (i.e. less)'],ans:0,exp:'Dividing the ATP yields gives the ratio: 36 ÷ 2 = 18. So aerobic respiration extracts roughly 18 times more usable energy (as ATP) from each glucose molecule than anaerobic respiration does. This huge difference exists because aerobic respiration fully oxidises glucose all the way to carbon dioxide and water via the Krebs cycle and oxidative phosphorylation in the mitochondria, while anaerobic respiration only partially breaks glucose down to lactic acid, releasing a much smaller fraction of the energy stored in the glucose molecule.'},
+  {text:'A runner\'s breathing rate is recorded: 15 breaths/min at rest, rising to 32 breaths/min during a sprint, and STILL 26 breaths/min two minutes after the sprint ends, only returning to 15 breaths/min after several more minutes. What does this raised breathing rate after exercise has stopped mainly reflect?',opts:['The lungs permanently growing larger from the exercise','The body repaying an "oxygen debt" — extra oxygen is needed to break down the lactic acid that built up during anaerobic respiration, and to replenish oxygen and energy reserves used during the sprint','A random change with no link to the exercise just performed','The heart pumping less blood than it did at rest'],ans:1,exp:'During the sprint, oxygen supply to the muscles could not keep up with demand, so muscle cells respired anaerobically, building up lactic acid. Once exercise stops, the body needs extra oxygen — above the normal resting requirement — to help break down/convert this accumulated lactic acid and restore oxygen and energy reserves in the muscles. This continued need for extra oxygen is called the "oxygen debt", and explains why breathing rate stays elevated for some time after exercise ends, only gradually returning to the resting rate as the debt is repaid.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){

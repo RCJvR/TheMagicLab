@@ -174,6 +174,20 @@ MathMagician.registerChapter(4, {
           options: ["x = ½ or x = −3", "x = 3 or x = −½", "x = ½ or x = 3", "x = −3 or x = 3"],
           answer: 0,
           topic: "Linear & quadratic equations"
+        },
+        {
+          type: "mc",
+          text: "Solve for x, giving your answer in simplest surd form: x² − 6x + 2 = 0",
+          options: ["x = 3 ± √7", "x = 3 ± √2", "x = −3 ± √7", "x = 6 ± √7"],
+          answer: 0,
+          topic: "Linear & quadratic equations"
+        },
+        {
+          type: "mc",
+          text: "Solve for x: x + 6/x = 5",
+          options: ["x = 2 or x = 3", "x = −2 or x = −3", "x = 1 or x = 6", "x = 5 or x = 1"],
+          answer: 0,
+          topic: "Linear & quadratic equations"
         }
       ]
     },
@@ -324,6 +338,19 @@ MathMagician.registerChapter(4, {
           options: ["h = 3V/(πr²)", "h = V/(3πr²)", "h = 3πr²/V", "h = πr²/(3V)"],
           answer: 0,
           topic: "Word problems & inequalities"
+        },
+        {
+          type: "input",
+          text: "Make x the subject of the formula: (2x + 3)/(x − 1) = k",
+          answer: "(k+3)/(k-2)",
+          altAnswers: ["x=(k+3)/(k-2)", "(k + 3)/(k − 2)"],
+          topic: "Word problems & inequalities"
+        },
+        {
+          type: "input",
+          text: "The sum of three consecutive integers is at most 51. Find the largest possible value of the smallest integer.",
+          answer: "16",
+          topic: "Word problems & inequalities"
         }
       ]
     },
@@ -408,6 +435,19 @@ MathMagician.registerChapter(4, {
           type: "input",
           text: "Two numbers have a sum of 15 and their difference is 3. Find the larger number.",
           answer: "9",
+          topic: "Simultaneous equations — deeper practice"
+        },
+        {
+          type: "mc",
+          text: "Solve simultaneously: y = 2x − 3 and y = x² − 4x + 1. Give the x-values in simplest surd form.",
+          options: ["x = 3 ± √5", "x = 3 ± √3", "x = −3 ± √5", "x = 2 ± √5"],
+          answer: 0,
+          topic: "Simultaneous equations — deeper practice"
+        },
+        {
+          type: "input",
+          text: "Solve simultaneously: x/2 − y/3 = 2 and x + y = 9. Find x.",
+          answer: "6",
           topic: "Simultaneous equations — deeper practice"
         }
       ]
@@ -494,6 +534,18 @@ MathMagician.registerChapter(4, {
           text: "The product of two consecutive positive integers is 132. Find the smaller integer.",
           answer: "11",
           topic: "Word problems in context"
+        },
+        {
+          type: "input",
+          text: "The product of two numbers is 90. One number is 3 more than twice the other. Find the smaller number.",
+          answer: "6",
+          topic: "Word problems in context"
+        },
+        {
+          type: "input",
+          text: "Two consecutive even numbers have a product of 168. Find the larger number.",
+          answer: "14",
+          topic: "Word problems in context"
         }
       ]
     }
@@ -535,6 +587,15 @@ MathMagician.registerChapter(4, {
           { label: "a", text: "Define variables and write two equations.", marks: 3 },
           { label: "b", text: "Solve and state your answer in context.", marks: 4 }
         ]
+      },
+      {
+        number: 5,
+        text: "The table below gives values of two functions, f(x) = x + 1 and g(x) = x² − 2x − 3, for x = −2 to x = 4:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>x</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>f(x)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>g(x)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−4</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>−3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5</td></tr></table>",
+        parts: [
+          { label: "a", text: "Read from the table: for which value(s) of x does f(x) = g(x)?", marks: 2 },
+          { label: "b", text: "Confirm algebraically that these x-values solve the simultaneous equations y = x + 1 and y = x² − 2x − 3.", marks: 4 },
+          { label: "c", text: "Write down the corresponding intersection points as coordinate pairs.", marks: 2 }
+        ]
       }
     ],
     answers: {
@@ -556,6 +617,11 @@ MathMagician.registerChapter(4, {
       4: {
         a: "Let p=pies, c=cooldrinks; p+c=35, 12p+8c=348",
         b: "p=17, c=18"
+      },
+      5: {
+        a: "x = −1 and x = 4 (the rows where f(x) and g(x) match)",
+        b: "x+1=x²−2x−3 → x²−3x−4=0 → (x−4)(x+1)=0 → x=4 or x=−1",
+        c: "(−1, 0) and (4, 5)"
       }
     }
   }

@@ -90,6 +90,8 @@ MathMagician.registerChapter(5, {
         { type: "mc", text: "A pattern of squares uses tiles: 1 square = 1, 2 in a row = 4, 3 = 9. This is:", options: ["Arithmetic", "Geometric (multiplication)", "Square numbers", "Fibonacci"], answer: 2, topic: "Patterns" },
         { type: "input", text: "For a dot pattern where T? = n� + 1, find T6.", answer: "37", topic: "Patterns" },
         { type: "mc", text: "Pattern positions show 4, 9, 16, 25 dots. What is T10?", options: ["100", "101", "121", "36"], answer: 2, topic: "Patterns" },
+        { type: "input", text: "A sequence has general term T? = 3n� - 2. For which value of n is T? = 73?", answer: "5", topic: "Patterns" },
+        { type: "input", text: "Pattern A has general term T? = 5n - 2. Pattern B has general term T? = 3n + 8. For which value of n do the two patterns give equal terms?", answer: "5", topic: "Patterns" },
       ]
     },
   ],

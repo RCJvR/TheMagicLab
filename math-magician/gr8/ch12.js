@@ -34,6 +34,8 @@ MathMagician.registerChapter(12, {
         { type: "mc", text: "Which is largest?", options: ["0.409", "0.49", "0.4", "0.041"], answer: 1, topic: "Decimals" },
         { type: "input", text: "Convert 3/8 to a decimal.", answer: "0.375", topic: "Decimals" },
         { type: "mc", text: "Order from smallest to largest: 0.3, 0.03, 0.303, 0.033", options: ["0.3, 0.03, 0.303, 0.033", "0.03, 0.033, 0.3, 0.303", "0.033, 0.03, 0.3, 0.303", "0.03, 0.3, 0.033, 0.303"], answer: 1, topic: "Decimals" },
+        { type: "input", text: "Write 9/20 as a decimal, and state whether it is greater than, less than, or equal to 0.45. (Answer with the decimal value)", answer: "0.45", topic: "Decimals" },
+        { type: "mc", text: "Which lists these values in order from smallest to largest: 0.6, 5/8, 0.65, 7/10?", options: ["0.6, 5/8, 0.65, 7/10", "5/8, 0.6, 0.65, 7/10", "0.6, 0.65, 5/8, 7/10", "7/10, 0.65, 5/8, 0.6"], answer: 0, topic: "Decimals" },
       ]
     },
     {
@@ -69,6 +71,8 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Calculate 7.3 + 2.98 − 4.156.", answer: "6.124", topic: "Decimals" },
         { type: "mc", text: "A plank is 3.4 m. Two pieces of 0.75 m and 1.285 m are cut off. What remains?", options: ["1.365 m", "1.375 m", "1.465 m", "1.475 m"], answer: 0, topic: "Decimals" },
         { type: "input", text: "Calculate 100 − 34.567.", answer: "65.433", topic: "Decimals" },
+        { type: "input", text: "A plumber has a 12.5 m pipe. He uses 3.75 m, then 2.9 m, then joins on another 1.65 m length. What is the final total length of pipe in m?", answer: "7.5", topic: "Decimals" },
+        { type: "input", text: "Three friends' heights are 1.58 m, 1.62 m, and 1.71 m. A fourth friend's height equals the average of the other three (rounded to 2 d.p.) plus 0.05 m. Find the fourth friend's height in m.", answer: "1.69", topic: "Decimals" },
       ]
     },
     {
@@ -138,6 +142,8 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Calculate 0.04 × 0.3.", answer: "0.012", topic: "Decimals" },
         { type: "mc", text: "Calculate 4.5 ÷ 0.009.", options: ["5", "500", "50", "0.5"], answer: 1, topic: "Decimals" },
         { type: "input", text: "Calculate 1.2 × 3.4 − 0.08.", answer: "4", topic: "Decimals" },
+        { type: "input", text: "A rectangular garden measures 4.5 m by 3.2 m. Calculate its area, then determine how many 0.8 m² paving slabs are needed to cover it exactly.", answer: "18", topic: "Decimals" },
+        { type: "input", text: "A car uses 6.4 litres of fuel to travel 76.8 km. At this rate, how many litres are needed to travel 300 km?", answer: "25", topic: "Decimals" },
       ]
     },
     {
@@ -171,6 +177,8 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Calculate (0.2)³.", answer: "0.008", topic: "Decimals" },
         { type: "mc", text: "Calculate ∛0.027.", options: ["0.03", "0.3", "3", "0.003"], answer: 1, topic: "Decimals" },
         { type: "input", text: "Calculate (1.2)² − √0.64.", answer: "0.64", topic: "Decimals" },
+        { type: "input", text: "Calculate (0.6)² + (0.2)³ − √0.01.", answer: "0.268", topic: "Decimals" },
+        { type: "input", text: "A square tile has area 0.49 m². A cube-shaped box has volume 0.125 m³. Find the tile's side length and the box's edge length, then calculate the sum of these two lengths in m.", answer: "1.2", topic: "Decimals" },
       ]
     },
     {
@@ -210,6 +218,8 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Estimate 9.87 × 4.12 by rounding each to the nearest whole number.", answer: "40", topic: "Decimals" },
         { type: "mc", text: "Round 25.449 to 1 decimal place.", options: ["25.4", "25.5", "25.45", "26.0"], answer: 0, topic: "Decimals" },
         { type: "input", text: "Between which two consecutive whole numbers does √45 lie?", answer: "6 and 7", topic: "Decimals" },
+        { type: "input", text: "A quantity of 2.3846 kg must be rounded to the nearest 0.05 kg for packaging. What package size (in kg) would be used?", answer: "2.4", topic: "Decimals" },
+        { type: "input", text: "Estimate 48.7 × 5.12 ÷ 9.89 by rounding each number to 1 significant figure.", answer: "25", topic: "Decimals" },
       ]
     },
     {
@@ -243,6 +253,8 @@ MathMagician.registerChapter(12, {
         { type: "input", text: "Round 0.08653 to 3 significant figures.", answer: "0.0865", topic: "Mixed" },
         { type: "mc", text: "Calculate 6.3 ÷ 0.09.", options: ["0.7", "7", "70", "700"], answer: 2, topic: "Mixed" },
         { type: "input", text: "Estimate then calculate (2.95 + 4.08) × 1.97. Round answer to 2 d.p.", answer: "13.85", topic: "Mixed" },
+        { type: "input", text: "Calculate (0.5)³ + (1.4)² − √0.25.", answer: "1.585", topic: "Mixed" },
+        { type: "input", text: "A tank is filled at a rate of 3.6 litres per 0.4 minutes. At this rate, how many litres are added in 5 minutes?", answer: "45", topic: "Mixed" },
       ]
     },
   ],

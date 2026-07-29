@@ -120,6 +120,12 @@ MathMagician.registerChapter(10, {
           options: ["Independent", "Dependent", "Mutually exclusive", "Complementary"],
           answer: 1,
           topic: "Independent & dependent events"
+        },
+        {
+          type: "input",
+          text: "A box contains 5 red and 3 blue marbles. Two marbles are drawn without replacement. Find P(at least one red), as a fraction.",
+          answer: "25/28",
+          topic: "Independent & dependent events"
         }
       ]
     },
@@ -252,6 +258,13 @@ MathMagician.registerChapter(10, {
           options: ["Add all branches with at least one", "1 − P(none at all)", "Multiply all probabilities", "Use the addition rule once"],
           answer: 1,
           topic: "Venn diagrams, tree diagrams & contingency tables"
+        },
+        {
+          type: "input",
+          text: "Of 200 students, 90 study Maths, 70 study Science, and 130 study at least one of the two subjects. Find P(a student studies both Maths and Science), as a decimal.",
+          answer: "0.15",
+          altAnswers: ["0,15"],
+          topic: "Venn diagrams, tree diagrams & contingency tables"
         }
       ]
     },
@@ -362,6 +375,12 @@ MathMagician.registerChapter(10, {
           text: "If every region of a completed 3-circle Venn diagram is added together, the total should equal:",
           options: ["n(S), the size of the sample space", "P(A∩B∩C)", "1", "n(A) + n(B) + n(C)"],
           answer: 0,
+          topic: "Venn diagrams for three events"
+        },
+        {
+          type: "input",
+          text: "A survey of 150 learners found: 60 play chess, 55 play checkers, 50 play cards. 15 play chess and cards, 8 play checkers and cards, 8 play all three, and 10 play none of the three sports. Find how many learners play chess only.",
+          answer: "43",
           topic: "Venn diagrams for three events"
         }
       ]
@@ -477,6 +496,12 @@ MathMagician.registerChapter(10, {
           text: "A 4-digit PIN (0-9, no repetition) is chosen at random. What is the probability it is exactly '1234' (as a fraction with denominator equal to the total number of PINs, give just the denominator)?",
           answer: "5040",
           topic: "Fundamental counting principle"
+        },
+        {
+          type: "input",
+          text: "A password consists of 3 letters (A–Z, no repetition) followed by 2 digits (0–9, repetition allowed). How many different passwords are possible?",
+          answer: "1560000",
+          topic: "Fundamental counting principle"
         }
       ]
     }
@@ -504,6 +529,15 @@ MathMagician.registerChapter(10, {
           { label: "c", text: "Find P(high SM use) × P(good results).", marks: 2 },
           { label: "d", text: "Are social media use and academic results independent? Justify.", marks: 2 }
         ]
+      },
+      {
+        number: 3,
+        text: "A factory has two machines producing bolts. The data is summarised in the table below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Machine</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>% of production</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>% defective</th></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>A</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>60%</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>5%</td></tr><tr><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>B</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>40%</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>8%</td></tr></table>",
+        parts: [
+          { label: "a", text: "Draw a tree diagram using this data and find P(Machine A AND defective).", marks: 3 },
+          { label: "b", text: "Find the overall probability that a randomly selected bolt is defective.", marks: 3 },
+          { label: "c", text: "Given that a bolt is found to be defective, find the probability it came from Machine B (to 3 decimal places).", marks: 3 }
+        ]
       }
     ],
     answers: {
@@ -518,6 +552,11 @@ MathMagician.registerChapter(10, {
         b: "115/200=0.575",
         c: "(100/200)×(115/200)=0.5×0.575=0.2875",
         d: "0.225≠0.2875 → NOT independent (high SM use correlates with poorer results)"
+      },
+      3: {
+        a: "P(A)=0,6 branching to defective(0,05)/not(0,95); P(B)=0,4 branching to defective(0,08)/not(0,92). P(A∩defective)=0,6×0,05=0,03",
+        b: "P(defective)=0,6×0,05+0,4×0,08=0,03+0,032=0,062",
+        c: "P(B|defective)=P(B∩defective)/P(defective)=0,032/0,062≈0,516"
       }
     }
   }

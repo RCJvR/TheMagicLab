@@ -73,6 +73,8 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "Factorise 15a�b� - 10ab�. What is the coefficient of the HCF?", answer: "5", topic: "Factorisation" },
         { type: "mc", text: "Factorise by grouping: px - qx + py - qy", options: ["(p - q)(x + y)", "(p + q)(x - y)", "(p - q)(x - y)", "(x + y)(p + q)"], answer: 0, topic: "Factorisation" },
         { type: "mc", text: "Which expression has (2x - y) as a factor?", options: ["4x� + y�", "4x� - y�", "2x� - y", "4x - 2y"], answer: 1, topic: "Factorisation" },
+        { type: "mc", text: "Factorise fully: 4x(x + 3) - 8(x + 3)", options: ["4(x + 3)(x - 2)", "4(x + 3)(x + 2)", "(x + 3)(4x - 8)", "(4x - 8)(x - 3)"], answer: 0, topic: "Factorisation" },
+        { type: "mc", text: "Factorise fully: 24x³y² - 36x²y³ + 60x⁴y", options: ["12x²y(2xy - 3y² + 5x²)", "12xy(2x²y - 3xy² + 5x³)", "6x²y(4xy - 6y² + 10x²)", "12x²y(2xy + 3y² - 5x²)"], answer: 0, topic: "Factorisation" },
       ]
     },
     {
@@ -146,6 +148,8 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Factorise: x� - 3x - 18", options: ["(x - 9)(x + 2)", "(x + 3)(x - 6)", "(x - 3)(x + 6)", "(x - 6)(x + 3)"], answer: 3, topic: "Factorisation" },
         { type: "input", text: "Factorise: 3x� - 48. What is the constant in one of the linear factors? (give positive value)", answer: "4", topic: "Factorisation" },
         { type: "mc", text: "Factorise completely: 2x� - 2x - 24", options: ["2(x - 4)(x + 3)", "2(x + 4)(x - 3)", "(2x - 6)(x + 4)", "2(x - 4)(x - 3)"], answer: 0, topic: "Factorisation" },
+        { type: "input", text: "Factorise fully: 5x² - 5x - 60. Give the constant term in the linear factor with the smaller absolute value (give a positive number).", answer: "3", topic: "Factorisation" },
+        { type: "mc", text: "Factorise fully: x² - 25 + x(x + 5)", options: ["(x + 5)(2x - 5)", "(x - 5)(2x + 5)", "2(x + 5)(x - 5)", "(2x + 5)(x - 5)"], answer: 0, topic: "Factorisation" },
       ]
     },
   ],

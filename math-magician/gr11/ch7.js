@@ -152,6 +152,18 @@ MathMagician.registerChapter(7, {
           options: ["The curved cylinder surface", "The flat circular face shared between them", "The bottom circle", "None — all surfaces are included"],
           answer: 1,
           topic: "Surface area of complex solids"
+        },
+        {
+          type: "input",
+          text: "A cone (r = 5 cm, h = 12 cm) is joined base-to-base with a hemisphere of the same radius. Find the total surface area of the combined solid, in terms of π.",
+          answer: "115π",
+          topic: "Surface area of complex solids"
+        },
+        {
+          type: "input",
+          text: "A sphere of radius 5 cm is removed from the centre of a solid cube of side 10 cm, leaving a spherical cavity. Find the TOTAL exposed surface area (outer cube faces plus the inner spherical cavity), correct to 2 decimal places.",
+          answer: "914.16",
+          topic: "Surface area of complex solids"
         }
       ]
     },
@@ -298,6 +310,19 @@ MathMagician.registerChapter(7, {
           answer: "113.10",
           altAnswers: ["113.1"],
           topic: "Volume & the effect of scale factor k"
+        },
+        {
+          type: "mc",
+          text: "A cylinder's radius is doubled and its height is halved. By what factor does its volume change?",
+          options: ["×2", "×1 (unchanged)", "×4", "×½"],
+          answer: 0,
+          topic: "Volume & the effect of scale factor k"
+        },
+        {
+          type: "input",
+          text: "A sphere and a cone have equal volumes. The cone has r = 6 cm and h = 8 cm. Find the radius of the sphere, correct to 2 decimal places.",
+          answer: "4.16",
+          topic: "Volume & the effect of scale factor k"
         }
       ]
     },
@@ -429,6 +454,18 @@ MathMagician.registerChapter(7, {
           options: ["48 kℓ", "480 kℓ", "4.8 kℓ", "12 kℓ"],
           answer: 0,
           topic: "Composite shapes in context"
+        },
+        {
+          type: "input",
+          text: "A closed cylindrical tank (r = 1.4 m, h = 2.5 m) must be painted on the outside (top, bottom, and curved surface). Paint covers 6 m² per litre. Using π ≈ 3.142, find the minimum whole number of litres of paint needed.",
+          answer: "6",
+          topic: "Composite shapes in context"
+        },
+        {
+          type: "input",
+          text: "A water reservoir is shaped like a cone with the point facing down, top radius 3 m and height 4 m. It is filled with water to a depth of 2 m (measured from the point). Find the volume of water, in terms of π (use similar triangles to find the water surface radius first).",
+          answer: "1.5π",
+          topic: "Composite shapes in context"
         }
       ]
     },
@@ -539,6 +576,18 @@ MathMagician.registerChapter(7, {
           text: "A ladder leans against a cylindrical water tower of radius 3 m, touching the ground 8 m from the base. What must you compute first before finding any surface area involving the ladder's length?",
           options: ["The ladder's length using Pythagoras/trigonometry", "The tower's volume", "The tower's surface area", "The tower's circumference"],
           answer: 0,
+          topic: "Measurement with trigonometry"
+        },
+        {
+          type: "input",
+          text: "A right pyramid has a square base of side 10 cm. Each triangular face makes an angle of 68° with the base. Find the height of the pyramid, correct to 2 decimal places. (Hint: use the apothem — half the base side.)",
+          answer: "12.38",
+          topic: "Measurement with trigonometry"
+        },
+        {
+          type: "input",
+          text: "A conical tent has base radius 3.5 m, and the canvas makes an angle of 55° with the ground. Find the area of canvas needed (curved surface area only), correct to 2 decimal places.",
+          answer: "67.10",
           topic: "Measurement with trigonometry"
         }
       ]

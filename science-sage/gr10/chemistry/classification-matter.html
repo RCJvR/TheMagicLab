@@ -266,7 +266,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/7</div>
       <div style="font-size:14px;color:var(--muted)">NSC Practice complete! Review your answers below.</div>
     </div>
 
@@ -348,6 +348,19 @@
       <div class="feedback bad" id="fb-q6-bad">First find the volume: V = 3 × 4 × 5 = 60 cm³. Then ρ = m/V = 540 g ÷ 60 cm³ = 9 g/cm³.</div>
     </div>
 
+    <div class="q-card">
+      <div class="q-num">Question 7 — Multi-Step Separation (Analysis)</div>
+      <div class="q-text">A learner is given a mixture of iron filings, sand, and common salt (NaCl), and needs to recover all three components separately. Which sequence of steps achieves this?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">A</span>Filtration first, then evaporation, then use a magnet</button>
+        <button class="mc-opt" onclick="answer(this,true,'q7')"><span class="opt-letter">B</span>Use a magnet to remove the iron filings; add water to dissolve the salt, then filter off the sand; evaporate the filtrate to recover the salt</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">C</span>Evaporate the whole mixture, then filter, then use a magnet</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">D</span>Use chromatography to separate all three components at once</button>
+      </div>
+      <div class="feedback ok" id="fb-q7-ok">Correct! Each step must exploit a different property. Iron is the only magnetic component, so remove it first with a magnet (dry, works on the mixed solid). Adding water dissolves only the salt (sand is insoluble), so filtering now separates solid sand from the salt solution. Finally, evaporating the filtrate leaves the dry salt behind. Doing the steps in a different order fails — e.g. a magnet can't pull iron out of a wet slurry as cleanly, and you can't filter salt out of solution because it's dissolved.</div>
+      <div class="feedback bad" id="fb-q7-bad">Work from the property that is easiest to isolate first: iron filings are magnetic, so a magnet removes them from the dry solid mixture immediately. Then add water — salt dissolves, sand does not — so filtration now separates solid sand from the salt solution. Evaporating the remaining filtrate drives off the water and leaves solid salt behind. Each technique targets one property (magnetism → solubility → volatility of water) in a logical order.</div>
+    </div>
+
     <!-- IEB Practice -->
     <div class="ieb-practice" id="ieb-practice-section">
       <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB Extension Practice <span class="ieb-badge">IEB ONLY</span></div>
@@ -421,6 +434,25 @@
       <div class="wb-qnum">Question 5 — Classification Flowchart</div>
       <div class="wb-qtext">Draw a fully labelled classification flowchart for matter. Your flowchart must include: matter → pure substance / mixture → element / compound / homogeneous mixture / heterogeneous mixture. For each final category, provide two examples and state two identifying features. Use questions like "Is the composition uniform?" and "Can it be broken down chemically?" as decision points.</div>
     </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Question 6 — Identifying Metals from Density Data</div>
+      <div class="wb-qtext">A learner measures the mass and volume of four unknown metal samples in the lab:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Sample</th><th>Mass (g)</th><th>Volume (cm³)</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>54.0</td><td>20.0</td></tr>
+          <tr><td>B</td><td>44.8</td><td>5.00</td></tr>
+          <tr><td>C</td><td>170.1</td><td>15.0</td></tr>
+          <tr><td>D</td><td>118.05</td><td>15.0</td></tr>
+        </tbody>
+      </table>
+      Reference densities: aluminium = 2.70 g/cm³, iron = 7.87 g/cm³, copper = 8.96 g/cm³, lead = 11.34 g/cm³.<br><br>
+      (a) Calculate the density of each sample, showing your working.<br>
+      (b) Using the reference densities, identify the metal in each sample.<br>
+      (c) Is density an intensive or extensive property? Explain how this data table demonstrates that classification.<br>
+      (d) If sample A were cut in half, what would happen to its mass, volume, and density? Explain.</div>
+    </div>
   </div>
 </div>
 
@@ -445,7 +477,7 @@
     btn.classList.add(correct?'correct':'wrong');
     const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
     if(fb)fb.classList.add('show');
-    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===6){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/6';}}
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===7){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/7';}}
   }
 
   // ---- SIMULATION ----

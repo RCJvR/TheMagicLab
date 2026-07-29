@@ -91,6 +91,8 @@ MathMagician.registerChapter(11, {
         { type: "mc", text: "Which quadrilateral has diagonals that bisect each other at 90�?", options: ["Rectangle", "Trapezium", "Rhombus", "Kite"], answer: 2, topic: "2D Shapes" },
         { type: "input", text: "The exterior angle of a triangle is 115�. One non-adjacent interior angle is 60�. Find the other non-adjacent interior angle.", answer: "55", topic: "2D Shapes" },
         { type: "mc", text: "Which statement about a parallelogram is FALSE?", options: ["Opposite sides are equal", "Opposite angles are equal", "All angles are 90�", "Diagonals bisect each other"], answer: 2, topic: "2D Shapes" },
+        { type: "input", text: "In triangle PQR, angle P = (3x + 5)°, angle Q = 2x°, and angle R = (4x - 5)°. Find x.", answer: "20", topic: "2D Shapes" },
+        { type: "input", text: "The angles of a quadrilateral are in the ratio 2 : 3 : 4 : 6. Calculate the size of the largest angle (in degrees).", answer: "144", topic: "2D Shapes" },
       ]
     },
     {
@@ -165,6 +167,8 @@ MathMagician.registerChapter(11, {
         { type: "input", text: "Two similar triangles have a scale factor of 3. If the smaller triangle has area 8 cm�, what is the area of the larger triangle?", answer: "72", topic: "2D Shapes" },
         { type: "mc", text: "?ABC ||| ?DEF with AB = 4, DE = 6 and BC = 5. Find EF.", options: ["7,5", "3,33", "7", "10"], answer: 0, topic: "2D Shapes" },
         { type: "mc", text: "The SAS congruence condition requires:", options: ["Two sides equal only", "Two angles and a side equal", "Two sides AND the INCLUDED angle equal", "Two sides and any angle equal"], answer: 2, topic: "2D Shapes" },
+        { type: "input", text: "Two similar triangles have areas 18 cm² and 50 cm². If the perimeter of the smaller triangle is 24 cm, find the perimeter of the larger triangle (in cm).", answer: "40", topic: "2D Shapes" },
+        { type: "input", text: "Triangle ABC is similar to triangle DEF, with triangle DEF the larger one. The ratio of their areas is 4 : 9. If the shortest side of triangle ABC is 6 cm, find the length of the corresponding shortest side of triangle DEF (in cm).", answer: "9", topic: "2D Shapes" },
       ]
     },
   ],

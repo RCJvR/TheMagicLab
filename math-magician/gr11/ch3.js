@@ -127,6 +127,20 @@ MathMagician.registerChapter(3, {
           options: ["2", "4", "3", "1"],
           answer: 0,
           topic: "Quadratic sequences"
+        },
+        {
+          type: "input",
+          text: "Determine the general term Tₙ of the quadratic sequence 5, 12, 23, 38, 57, …",
+          answer: "2n² + n + 2",
+          altAnswers: ["2n²+n+2", "Tₙ = 2n² + n + 2"],
+          topic: "Quadratic sequences"
+        },
+        {
+          type: "input",
+          text: "A quadratic sequence has T₁ = 4, T₂ = 9, and a second difference of 4. Determine Tₙ.",
+          answer: "2n² − n + 3",
+          altAnswers: ["2n²-n+3", "2n² - n + 3", "Tₙ = 2n² − n + 3"],
+          topic: "Quadratic sequences"
         }
       ]
     },
@@ -261,6 +275,20 @@ MathMagician.registerChapter(3, {
           text: "Tₙ = n² + 4n. Find the value of n for which Tₙ = 96.",
           answer: "8",
           topic: "Working with quadratic sequences"
+        },
+        {
+          type: "input",
+          text: "A quadratic sequence has Tₙ = n² − 8n + 15. Determine which term number(s) of the sequence equal zero.",
+          answer: "3 and 5",
+          altAnswers: ["n = 3 and n = 5", "5 and 3", "n=3 and n=5"],
+          topic: "Working with quadratic sequences"
+        },
+        {
+          type: "mc",
+          text: "Sequence A: 2, 6, 12, 20, 30, … Sequence B: 3, 9, 27, 81, 243, … Which correctly classifies them?",
+          options: ["A is quadratic, B is geometric", "Both are quadratic", "A is geometric, B is quadratic", "Both are linear"],
+          answer: 0,
+          topic: "Working with quadratic sequences"
         }
       ]
     },
@@ -366,6 +394,18 @@ MathMagician.registerChapter(3, {
           text: "A tournament sequence of matches is 3, 6, 10, 15, 21, … What is the second difference?",
           options: ["1", "2", "3", "0"],
           answer: 0,
+          topic: "Quadratic patterns in context"
+        },
+        {
+          type: "input",
+          text: "The nth diagram in a tiling pattern uses Tₙ = n² + n tiles. Determine which diagram number uses exactly 132 tiles.",
+          answer: "11",
+          topic: "Quadratic patterns in context"
+        },
+        {
+          type: "input",
+          text: "The number of seats in the first 5 rows of a stadium section is 20, 26, 34, 44, 56. Assuming the pattern continues quadratically, determine the general term Tₙ and hence the number of seats in row 8.",
+          answer: "104",
           topic: "Quadratic patterns in context"
         }
       ]

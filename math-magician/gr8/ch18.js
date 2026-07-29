@@ -115,6 +115,8 @@ MathMagician.registerChapter(18, {
         { type: "mc", text: "Point (4 ; -3) is reflected in the x-axis. The image is:", options: ["(-4 ; -3)", "(4 ; 3)", "(-4 ; 3)", "(4 ; -3)"], answer: 1, topic: "Transformations" },
         { type: "mc", text: "Point (-2 ; 6) is reflected in the y-axis. The image is:", options: ["(2 ; 6)", "(-2 ; -6)", "(2 ; -6)", "(6 ; -2)"], answer: 0, topic: "Transformations" },
         { type: "mc", text: "After a translation, which properties of a shape stay exactly the same?", options: ["Only the size", "Shape, size AND orientation", "Only the orientation", "Nothing stays the same"], answer: 1, topic: "Transformations" },
+        { type: "input", text: "Point A is translated 5 units right and 3 units down, giving image A'(7 ; -1). Find the y-coordinate of the original point A.", answer: "2", topic: "Transformations" },
+        { type: "input", text: "Point P(-2 ; 3) is first reflected in the x-axis, then translated 4 units right and 1 unit up. What are the final coordinates? (write as x,y)", answer: "2,-2", topic: "Transformations" },
       ]
     },
     {
@@ -200,6 +202,8 @@ MathMagician.registerChapter(18, {
         { type: "input", text: "A shape with side length 5 cm is enlarged by scale factor 4. What is the new side length in cm?", answer: "20", topic: "Transformations" },
         { type: "mc", text: "A scale factor of 0,5 will make a shape:", options: ["Bigger", "Smaller", "The same size", "Turn upside down"], answer: 1, topic: "Transformations" },
         { type: "mc", text: "Which transformation changes the SIZE of a shape but keeps its shape (all angles) the same?", options: ["Translation", "Reflection", "Rotation", "Enlargement"], answer: 3, topic: "Transformations" },
+        { type: "input", text: "A shape is enlarged by scale factor k. Its area increases from 12 cm² to 108 cm². Determine the scale factor k used for the side lengths.", answer: "3", topic: "Transformations" },
+        { type: "input", text: "Point B(4 ; -2) is first rotated 90° anticlockwise about the origin, then the resulting point is enlarged by scale factor 3 from the origin. Find the final coordinates. (write as x,y)", answer: "6,12", topic: "Transformations" },
       ]
     },
   ],

@@ -240,7 +240,7 @@
 <div class="tab-panel" id="tab-practice">
   <div class="practice-wrap">
     <div class="score-banner" id="scoreBanner">
-      <div class="score-big" id="scoreNum">0/6</div>
+      <div class="score-big" id="scoreNum">0/8</div>
       <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Review the explanations for any you missed.</div></div>
     </div>
     <div id="questions"></div>
@@ -258,6 +258,18 @@
     <div class="wb-q"><div class="wb-qnum">Question 4 · (3 marks)</div><div class="wb-qtext">Describe the energy transformations that occur in a coal-fired power station, starting with chemical energy in coal and ending with electrical energy delivered to your home. Include at least three steps in your chain.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Explain the difference between energy <em>transfer</em> and energy <em>transformation</em>. Give one example of each from everyday life.</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 6 · (3 marks)</div><div class="wb-qtext">A pendulum bob reaches a maximum height of 0.4 m above its lowest point. Its mass is 0.5 kg. (a) Calculate the maximum gravitational potential energy. (b) What is the maximum kinetic energy of the bob? (c) At what point in the swing does the bob have maximum kinetic energy? Explain why.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 7 · (6 marks)</div><div class="wb-qtext">
+      A group of learners release a 0.6 kg toy car from rest at different heights on a ramp and use a sensor to record its speed at the bottom of each run:
+      <table class="symbols-table" style="margin:12px 0">
+        <thead><tr><th>Height released, h (m)</th><th>GPE at top (J)</th><th>Speed at bottom, v (m/s)</th><th>KE at bottom (J)</th></tr></thead>
+        <tbody>
+          <tr><td>0.20</td><td>?</td><td>1.9</td><td>?</td></tr>
+          <tr><td>0.40</td><td>?</td><td>2.7</td><td>?</td></tr>
+          <tr><td>0.60</td><td>?</td><td>3.3</td><td>?</td></tr>
+        </tbody>
+      </table>
+      Use g = 10 N/kg. (a) Copy and complete the table by calculating the GPE at the top and the KE at the bottom for each trial. (b) For each trial, the KE at the bottom is slightly less than the GPE at the top. Calculate what percentage of the GPE was converted to KE in the 0.60 m trial. (c) Using the Law of Conservation of Energy, explain what happened to the energy that was "lost" — where did it go? (d) Assuming the same percentage loss continues, predict the car's speed at the bottom if it were released from a height of 0.80 m.
+    </div></div>
   </div>
 </div>
 
@@ -480,6 +492,23 @@ const QUESTIONS = [
     opts: ['12 J', '18 J', '36 J', '6 J'],
     ans: 1,
     exp: 'KE = ½ × m × v² = ½ × 4 × 3² = ½ × 4 × 9 = 18 J. Remember to square the velocity first!'
+  },
+  {
+    text: 'A 2 kg ball is held at a height of 5 m and then dropped. Ignoring air resistance, use the Law of Conservation of Energy to find its speed just before it hits the ground (g = 10 N/kg).',
+    opts: ['5 m/s', '10 m/s', '50 m/s', '100 m/s'],
+    ans: 1,
+    exp: 'First find the GPE at the top: GPE = mgh = 2 × 10 × 5 = 100 J. By conservation of energy, all of this becomes KE just before landing: KE = 100 J. Since KE = ½mv², we get 100 = ½ × 2 × v², so v² = 100 and v = 10 m/s. This combines two formulas in one problem — always find the energy first, then solve for the unknown quantity.'
+  },
+  {
+    text: 'A pendulum bob is released from a height of 0.60 m above its lowest point. Because of friction at the pivot and air resistance, it only swings up to a height of 0.52 m on the other side before momentarily stopping. Which statement correctly explains this using the Law of Conservation of Energy?',
+    opts: [
+      'The Law of Conservation of Energy has been broken, since the total energy decreased',
+      'Energy was destroyed by friction and air resistance as the bob swung',
+      'Some of the gravitational potential energy was transformed into thermal energy and sound energy, which dissipated into the surroundings — the total energy (including the dissipated energy) is still conserved',
+      'The pendulum bob lost some of its mass during the swing, so less energy was needed'
+    ],
+    ans: 2,
+    exp: 'Energy is never created or destroyed — it can only be transferred or transformed. The "missing" energy (equivalent to the drop from 0.60 m to 0.52 m) was not lost from the universe; it was transformed into thermal energy (from friction at the pivot) and sound energy (from air resistance), which spread out into the surroundings. If you could measure every form of energy, including this dissipated heat and sound, the total would still be exactly conserved.'
   }
 ];
 

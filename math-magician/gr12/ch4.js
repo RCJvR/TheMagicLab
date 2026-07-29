@@ -92,7 +92,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "sin(2θ) expressed differently:", options: ["sin²θ − cos²θ", "2sinθcosθ", "cos²θ − sin²θ", "2cos²θ − 1"], answer: 1, topic: "Compound angle identities" },
         { type: "mc", text: "Exact value of cos 15° = cos(45° − 30°):", options: ["(√6+√2)/4", "(√6−√2)/4", "(√3+1)/4", "(√3−1)/4"], answer: 0, topic: "Compound angle identities" },
         { type: "mc", text: "cos(2x) in terms of sinx only:", options: ["2cos²x−1", "1−2sin²x", "cos²x−sin²x", "2sinxcosx"], answer: 1, topic: "Compound angle identities" },
-        { type: "input", text: "If sinα = 3/5 (α acute), find sin(2α).", answer: "24/25", topic: "Compound angle identities" }
+        { type: "input", text: "If sinα = 3/5 (α acute), find sin(2α).", answer: "24/25", topic: "Compound angle identities" },
+        { type: "input", text: "If sinA = 3/5 and cosB = 12/13, with A and B both acute, find sin(A+B) as a fraction.", answer: "56/65", topic: "Compound angle identities" }
       ]
     },
     {
@@ -189,7 +190,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Solve sin(x − 20°) = ½ for x ∈ [0°; 360°]. The solutions are:", options: ["x = 50° and 130°", "x = 50° and 170°", "x = 70° and 130°", "x = 90° and 70°"], answer: 1, topic: "Trig equations & 3D applications" },
         { type: "mc", text: "In a 3D problem, the angle of elevation from A to the top T of a vertical tower BT is found using:", options: ["tan(angle) = BT/AB", "The cosine rule in 3D", "Two separate 2D right triangles", "The sine rule directly in 3D"], answer: 0, topic: "Trig equations & 3D applications" },
         { type: "mc", text: "Solve: 2sin²x − sinx − 1 = 0 for x ∈ [0°; 360°]", options: ["x = 90°, 210°, 330°", "x = 90°, 210°, 270°", "x = 30°, 150°, 270°", "x = 270°, 210°, 330°"], answer: 0, topic: "Trig equations & 3D applications" },
-        { type: "input", text: "sin(x + 45°) = −1 for x ∈ [0°; 360°]. Find x.", answer: "225", altAnswers: ["225°"], topic: "Trig equations & 3D applications" }
+        { type: "input", text: "sin(x + 45°) = −1 for x ∈ [0°; 360°]. Find x.", answer: "225", altAnswers: ["225°"], topic: "Trig equations & 3D applications" },
+        { type: "mc", text: "Solve for x ∈ [0°; 360°]: cos2x = sinx", options: ["x = 30°, 150°, 270°", "x = 30°, 150° only", "x = 60°, 300°, 90°", "x = 90°, 270°"], answer: 0, topic: "Trig equations & 3D applications" }
       ]
     },
     {
@@ -281,7 +283,8 @@ MathMagician.registerChapter(4, {
         { type: "input", text: "Triangle with a = 6, b = 9, included angle C = 60°. Find the area (2 dp).", answer: "23.38", altAnswers: ["23,38"], topic: "Sine, cosine & area rules in 2D and 3D" },
         { type: "mc", text: "In a typical 3D tower problem, after finding a horizontal side using the sine or cosine rule, the height is usually found using:", options: ["The area rule", "Right-triangle trig (e.g. tan)", "The compound angle identities", "Another cosine rule application"], answer: 1, topic: "Sine, cosine & area rules in 2D and 3D" },
         { type: "input", text: "Triangle with sides a = 6, b = 8, c = 10. Use the cosine rule to find angle C (opposite side c), to the nearest degree.", answer: "90", topic: "Sine, cosine & area rules in 2D and 3D" },
-        { type: "mc", text: "The sine rule states a/sinA = b/sinB = c/sinC. This ratio also equals:", options: ["2R (R = circumradius)", "The triangle's area", "a + b + c", "The perimeter divided by 2"], answer: 0, topic: "Sine, cosine & area rules in 2D and 3D" }
+        { type: "mc", text: "The sine rule states a/sinA = b/sinB = c/sinC. This ratio also equals:", options: ["2R (R = circumradius)", "The triangle's area", "a + b + c", "The perimeter divided by 2"], answer: 0, topic: "Sine, cosine & area rules in 2D and 3D" },
+        { type: "input", text: "TP is a vertical tower. Q is a point on the ground with angle of elevation to T equal to 42°. R is another point on the ground with QR = 60 m, angle PQR = 130°, and angle QRP = 30°. Find the height of the tower TP (2 d.p.).", answer: "78.98", altAnswers: ["78,98"], topic: "Sine, cosine & area rules in 2D and 3D" }
       ]
     },
     {
@@ -386,7 +389,8 @@ MathMagician.registerChapter(4, {
         { type: "mc", text: "Simplify: sin2A/(1 + cos2A)", options: ["tanA", "cotA", "sinA", "2tanA"], answer: 0, topic: "Proving trigonometric identities" },
         { type: "mc", text: "(cosA − sinA)² simplifies to:", options: ["1 + sin2A", "1 − sin2A", "cos2A", "1 − 2cos2A"], answer: 1, topic: "Proving trigonometric identities" },
         { type: "input", text: "Simplify (sinA + cosA)² − 1 in terms of a double angle.", answer: "sin2A", altAnswers: ["sin(2A)"], topic: "Proving trigonometric identities" },
-        { type: "mc", text: "Which identity is NOT a valid form of cos2A?", options: ["cos²A − sin²A", "1 − 2sin²A", "2cos²A − 1", "2cosA·sinA"], answer: 3, topic: "Proving trigonometric identities" }
+        { type: "mc", text: "Which identity is NOT a valid form of cos2A?", options: ["cos²A − sin²A", "1 − 2sin²A", "2cos²A − 1", "2cosA·sinA"], answer: 3, topic: "Proving trigonometric identities" },
+        { type: "input", text: "Simplify (1 − cos2A)/sin2A to a single trig ratio.", answer: "tanA", altAnswers: ["tan A", "tan(A)"], topic: "Proving trigonometric identities" }
       ]
     }
   ],

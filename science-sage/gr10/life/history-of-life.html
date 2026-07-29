@@ -190,6 +190,18 @@
     <div class="wb-q"><div class="wb-qnum">Question 3 · (4 marks)</div><div class="wb-qtext">Describe TWO of the five mass extinctions, including approximately when each occurred and what caused it (according to current hypotheses).</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 4 · (2 marks)</div><div class="wb-qtext">What is meant by the "sixth extinction"?</div></div>
     <div class="wb-q"><div class="wb-qnum">Question 5 · (2 marks)</div><div class="wb-qtext">Give an example of South Africa's fossil record mentioned in this lesson.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Question 6 · (7 marks)</div><div class="wb-qtext">The table below summarises the approximate start and end times of each geological era, based on the dates given in this lesson:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Era</th><th>Approx. start (Mya)</th><th>Approx. end (Mya)</th></tr></thead>
+      <tbody>
+        <tr><td>Paleozoic</td><td>541</td><td>250</td></tr>
+        <tr><td>Mesozoic</td><td>250</td><td>65</td></tr>
+        <tr><td>Cenozoic</td><td>65</td><td>0 (present)</td></tr>
+      </tbody>
+    </table>
+    (a) Calculate the duration, in millions of years, of each of the three eras. Show your working. (3)<br>
+    (b) Calculate what percentage of the total time since the start of the Paleozoic era (541 Mya to present) is made up by the Cenozoic era. Round your answer to one decimal place. (2)<br>
+    (c) The Permian extinction (~250 Mya) killed off approximately 90% of all species alive at the time. If scientists estimate there were about 200 000 species alive just before this event, calculate approximately how many species survived. (2)</div></div>
   </div>
 </div>
 
@@ -303,6 +315,8 @@ const QUESTIONS=[
   {text:'What is the leading hypothesis for the cause of the Cretaceous extinction (65 Mya), which wiped out the dinosaurs?',opts:['A disease pandemic','A giant meteorite impact','Overhunting by early humans','A drop in oxygen levels'],ans:1,exp:'The leading hypothesis for the Cretaceous extinction is a giant meteorite impact, though volcanism is also discussed for other extinction events.'},
   {text:'What is meant by the "sixth extinction"?',opts:['The sixth era of Earth\'s history','The current, elevated rate of species extinction largely driven by human activity','A mass extinction from 250 million years ago','An extinction event only affecting plants'],ans:1,exp:'The "sixth extinction" refers to the current, unusually high rate of species extinction, largely attributed to human activity.'},
   {text:'Over roughly what time period did significant evolutionary changes related to humans occur in Africa?',opts:['The last 4 million years','The last 4,000 years','The last 400 million years','The last 40 years'],ans:0,exp:'Significant evolutionary changes leading to modern humans occurred over the last four million years, according to the fossil record in Africa.'},
+  {text:'(Analysis) The Paleozoic era ran from ~541 Mya to ~250 Mya, the Mesozoic era ran from ~250 Mya to ~65 Mya, and the Cenozoic era has run from ~65 Mya to today. Based on these dates, which era has lasted the longest?',opts:['Mesozoic (185 million years)','Paleozoic (291 million years)','Cenozoic (65 million years, so far)','All three eras have lasted exactly the same length of time'],ans:1,exp:'Duration = start − end. Paleozoic: 541−250 = 291 million years. Mesozoic: 250−65 = 185 million years. Cenozoic: 65−0 = 65 million years so far (and still ongoing). Of these, the completed Paleozoic era was by far the longest.'},
+  {text:'(Analysis) The Permian extinction (~250 Mya) killed roughly 90% of all species, making it the largest of the five mass extinctions. The Cretaceous extinction (~65 Mya) wiped out many species, including the dinosaurs, but was less severe than the Permian event. Roughly how many millions of years separate these two extinctions, and which one destroyed a larger percentage of species?',opts:['185 million years apart; the Permian extinction destroyed a larger percentage of species','315 million years apart; the Cretaceous extinction destroyed a larger percentage of species','185 million years apart; the Cretaceous extinction destroyed a larger percentage of species','65 million years apart; both destroyed the same percentage of species'],ans:0,exp:'Time between the two events = 250 − 65 = 185 million years. The Permian extinction (~90% of species) was the most severe of all five mass extinctions, more severe than the Cretaceous extinction that ended the (non-bird) dinosaurs.'},
 ];
 let score=0,answered=new Array(QUESTIONS.length).fill(false);
 function buildPractice(){
@@ -320,7 +334,7 @@ function answer(qi,oi){
   if(answered.every(Boolean)){
     const banner=document.getElementById('scoreBanner');banner.classList.add('show');
     document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
-    document.getElementById('scoreMsg').textContent=score<=2?'Keep at it — revisit the lesson!':score<=4?'Good work — check the explanations.':'Well done!';
+    document.getElementById('scoreMsg').textContent=score<=3?'Keep at it — revisit the lesson!':score<=5?'Good work — check the explanations.':'Well done!';
     banner.scrollIntoView({behavior:'smooth'});
   }
 }

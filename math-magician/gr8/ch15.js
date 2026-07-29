@@ -38,6 +38,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "A cube has surface area 294 cm². Find its side length.", answer: "7", topic: "Surface Area" },
         { type: "mc", text: "A rectangular box is 10 × 6 × 4 cm. How many cm² of cardboard is needed to make it?", options: ["240 cm²", "248 cm²", "208 cm²", "480 cm²"], answer: 1, topic: "Surface Area" },
         { type: "input", text: "Find the surface area of a rectangular prism with l = 9, b = 5, h = 3.", answer: "174", topic: "Surface Area" },
+        { type: "input", text: "A rectangular prism has surface area 190 cm², length 7 cm, and breadth 5 cm. Find the height.", answer: "5", topic: "Surface Area" },
+        { type: "input", text: "A cube-shaped box (side 8 cm) is covered with wrapping paper, with a 10% extra allowance for overlaps. Calculate the total area of wrapping paper needed, to the nearest cm².", answer: "422", topic: "Surface Area" },
       ]
     },
     {
@@ -75,6 +77,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "A triangular prism has triangular area 15 cm², triangular perimeter 18 cm, and length 7 cm. Find the surface area.", answer: "156", topic: "Surface Area" },
         { type: "mc", text: "How many faces does a triangular prism have?", options: ["3", "4", "5", "6"], answer: 2, topic: "Surface Area" },
         { type: "input", text: "A triangular prism has triangle base 10 cm, height 6 cm, three sides 10, 8, 8 cm, and length 15 cm. Find the surface area.", answer: "570", topic: "Surface Area" },
+        { type: "input", text: "A triangular prism has a right-angled triangle cross-section with legs 9 cm and 12 cm (hypotenuse 15 cm) and length 20 cm. Find the surface area.", answer: "828", topic: "Surface Area" },
+        { type: "input", text: "Two triangular prisms have identical triangular cross-sections (area 20 cm², perimeter 24 cm) but different lengths: Prism A is 10 cm long and Prism B is 15 cm long. Calculate the difference between their surface areas.", answer: "120", topic: "Surface Area" },
       ]
     },
     {
@@ -144,6 +148,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "Convert 2 500 cm³ to litres.", answer: "2.5", topic: "Volume" },
         { type: "mc", text: "A fish tank is 60 cm × 30 cm × 40 cm. How many litres does it hold?", options: ["72 ℓ", "720 ℓ", "7 200 ℓ", "7.2 ℓ"], answer: 0, topic: "Volume" },
         { type: "input", text: "A rectangular prism has volume 360 cm³, length 12 cm, and breadth 5 cm. Find the height.", answer: "6", topic: "Volume" },
+        { type: "input", text: "A rectangular fish tank is 80 cm by 40 cm by 50 cm. It is filled to 75% of its capacity. How many litres of water does it contain?", answer: "120", topic: "Volume" },
+        { type: "input", text: "A cube-shaped water tank has volume 8 000 litres. Find the length of one side of the tank in metres.", answer: "2", topic: "Volume" },
       ]
     },
     {
@@ -180,6 +186,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "Convert 4 500 cm³ to litres.", answer: "4.5", topic: "Volume" },
         { type: "mc", text: "A triangular prism has volume 630 cm³ and triangular cross-section area 42 cm². Find its length.", options: ["15 cm", "12 cm", "18 cm", "25 cm"], answer: 0, topic: "Volume" },
         { type: "input", text: "A tent is shaped like a triangular prism. Triangle base = 4 m, height = 3 m, length = 6 m. Find its volume in m³.", answer: "36", topic: "Volume" },
+        { type: "input", text: "A triangular prism has a right-angled triangular cross-section with legs 9 cm and 12 cm, and length 25 cm. Find the volume in litres.", answer: "1.35", topic: "Volume" },
+        { type: "input", text: "A chocolate bar (triangular prism) has volume 300 cm³ and its triangular cross-section has area 25 cm². The bar is cut into 4 equal-length pieces along its length. Find the length of each piece in cm.", answer: "3", topic: "Volume" },
       ]
     },
     {
@@ -215,6 +223,8 @@ MathMagician.registerChapter(15, {
         { type: "mc", text: "A shape has volume 40 cm³. Its dimensions are halved. What is the new volume?", options: ["20 cm³", "10 cm³", "5 cm³", "80 cm³"], answer: 2, topic: "Scale" },
         { type: "input", text: "A cube has volume 27 cm³. Its side is doubled. Find the new volume.", answer: "216", topic: "Scale" },
         { type: "mc", text: "A cube has side 3 cm. Its dimensions are doubled to 6 cm. By what factor does the surface area increase?", options: ["2", "4", "6", "8"], answer: 1, topic: "Scale" },
+        { type: "input", text: "A cube has volume 64 cm³. Its dimensions are scaled up so that the new volume is 1 728 cm³. By what factor k were the side lengths multiplied?", answer: "3", topic: "Scale" },
+        { type: "input", text: "A rectangular prism has surface area 150 cm² and volume 125 cm³. All its dimensions are scaled by a factor of 2. Calculate the new volume in cm³.", answer: "1000", topic: "Scale" },
       ]
     },
     {
@@ -246,6 +256,8 @@ MathMagician.registerChapter(15, {
         { type: "input", text: "A rectangular prism is 8 × 5 × 4 cm. If all dimensions are doubled, find the new volume.", answer: "2560", topic: "Mixed" },
         { type: "mc", text: "A box 15 × 12 × 8 cm is filled with water. How many litres does it hold?", options: ["14.4 ℓ", "1.44 ℓ", "144 ℓ", "0.144 ℓ"], answer: 0, topic: "Mixed" },
         { type: "input", text: "A triangular prism has triangle area 30 cm² and length 14 cm. Find its volume.", answer: "420", topic: "Mixed" },
+        { type: "input", text: "A cube-shaped box has surface area 150 cm². Calculate its volume.", answer: "125", topic: "Mixed" },
+        { type: "input", text: "A rectangular container (20 cm × 15 cm × 10 cm) is to be filled with smaller cubes of side 5 cm. How many small cubes fit exactly inside the container?", answer: "24", topic: "Mixed" },
       ]
     },
   ],

@@ -84,6 +84,8 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Two angles are supplementary. One angle is 115°. What is the other?", options: ["75°", "65°", "25°", "155°"], answer: 1, topic: "Notation" },
         { type: "mc", text: "In △PQR, the side opposite vertex P is:", options: ["PQ", "PR", "QR", "PQR"], answer: 2, topic: "Notation" },
         { type: "input", text: "An angle is 3 times its complement. Find the angle in degrees.", answer: "67.5", topic: "Notation" },
+        { type: "input", text: "Two complementary angles are in the ratio 2 : 3. Find the size of the larger angle.", answer: "54", topic: "Notation" },
+        { type: "input", text: "An angle's supplement is 4 times its complement. Find the angle in degrees.", answer: "60", topic: "Notation" },
       ]
     },
     {
@@ -129,6 +131,8 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "The perpendicular bisector of AB passes through the midpoint M. If AB = 8.4 cm, what is AM in cm?", answer: "4.2", topic: "Constructions" },
         { type: "mc", text: "Which tools are used for geometric constructions?", options: ["Protractor and ruler", "Compass and ruler", "Compass and protractor", "Ruler and set square only"], answer: 1, topic: "Constructions" },
         { type: "mc", text: "After constructing a perpendicular bisector, what should you NOT do?", options: ["Label the midpoint", "Draw the line through both arc intersections", "Erase the construction arcs", "Check that the angle is 90°"], answer: 2, topic: "Constructions" },
+        { type: "input", text: "M is the midpoint of AB on its perpendicular bisector. AM = (3x − 1) cm and MB = (x + 7) cm. Solve for x, then calculate the length of AB in cm.", answer: "22", topic: "Constructions" },
+        { type: "input", text: "Points A and B are 10 cm apart. Point P lies on the perpendicular bisector of AB so that PA = 13 cm. Use the Pythagorean theorem to calculate the distance from P to the midpoint of AB.", answer: "12", topic: "Constructions" },
       ]
     },
     {
@@ -173,6 +177,8 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "If you bisect a 90° angle, what is the size of each resulting angle?", answer: "45", topic: "Constructions" },
         { type: "mc", text: "When bisecting ∠BAC, arcs are drawn from P and Q. What must be true about the compass setting for both arcs?", options: ["It must change each time", "It must be equal for both", "It doesn't matter", "It must be wider than AB"], answer: 1, topic: "Constructions" },
         { type: "input", text: "What angle do you get if you construct two adjacent 60° angles?", answer: "120", topic: "Constructions" },
+        { type: "input", text: "You construct a 60° angle, then bisect it, then bisect the result again. What is the size of the final angle?", answer: "15", topic: "Constructions" },
+        { type: "mc", text: "Which combination of constructible angles adds up to 105°?", options: ["60° + 45°", "90° + 30°", "60° + 30°", "45° + 45°"], answer: 0, topic: "Constructions" },
       ]
     },
     {
@@ -218,6 +224,8 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "Why does AAA not give a unique triangle?", options: ["All angles are equal", "Many triangles of different sizes can have the same angles", "It requires a protractor", "The sides cannot be calculated"], answer: 1, topic: "Constructions" },
         { type: "input", text: "In an ASA construction, how many angles are given? (write the number)", answer: "2", topic: "Constructions" },
         { type: "mc", text: "Which construction case applies when you know a right angle, the hypotenuse, and one leg?", options: ["SAS", "SSS", "ASA", "RHS"], answer: 3, topic: "Constructions" },
+        { type: "input", text: "△ABC is constructed using SAS with AB = 9 cm, ∠B = 40°, BC = 6 cm. After measuring, ∠A = 95°. Use the angle sum of a triangle to calculate ∠C.", answer: "45", topic: "Constructions" },
+        { type: "input", text: "A learner wants to construct a triangle (SSS) with two sides of 4 cm and 5 cm. Using the triangle inequality, what is the largest possible whole-number length (in cm) for the third side?", answer: "8", topic: "Constructions" },
       ]
     },
     {
@@ -266,6 +274,8 @@ MathMagician.registerChapter(8, {
         { type: "input", text: "A rhombus has a side of 5 cm. What is the length of each of the other three sides in cm?", answer: "5", topic: "Constructions" },
         { type: "mc", text: "Which quadrilateral has diagonals that bisect each other at 90°?", options: ["Rectangle", "Trapezium", "Rhombus", "Parallelogram"], answer: 2, topic: "Constructions" },
         { type: "mc", text: "Minimum how many measurements are needed to uniquely construct a general quadrilateral?", options: ["3", "4", "5", "6"], answer: 2, topic: "Constructions" },
+        { type: "input", text: "Rectangle ABCD has AB = 8 cm and BC = 6 cm. Use the theorem of Pythagoras to calculate the length of diagonal AC in cm.", answer: "10", topic: "Constructions" },
+        { type: "input", text: "A rhombus has diagonals of 16 cm and 12 cm that bisect each other at right angles. Calculate the length of one side of the rhombus in cm.", answer: "10", topic: "Constructions" },
       ]
     },
     {
@@ -306,6 +316,8 @@ MathMagician.registerChapter(8, {
         { type: "mc", text: "To construct a 45° angle, you first construct a:", options: ["60° angle and bisect it", "90° angle and bisect it", "30° angle", "120° angle and subtract 75°"], answer: 1, topic: "Mixed" },
         { type: "mc", text: "In constructing △ABC (SSS), you set the compass to BC and place it at B. What do you draw?", options: ["A straight line", "An arc to locate vertex C", "The perpendicular bisector", "The angle at B"], answer: 1, topic: "Mixed" },
         { type: "input", text: "A quadrilateral is split into two triangles by a diagonal. How many triangles are formed?", answer: "2", topic: "Mixed" },
+        { type: "input", text: "Two angles are complementary. The larger angle is 6° less than 3 times the smaller. Find the size of the larger angle.", answer: "66", topic: "Mixed" },
+        { type: "input", text: "A triangle has ∠A = 2x, ∠B = (3x − 10)°, and ∠C = (x + 40)°. Use the angle sum of a triangle to find x, then state the size of the largest angle.", answer: "65", topic: "Mixed" },
       ]
     },
   ],

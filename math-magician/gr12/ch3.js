@@ -102,7 +102,9 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "A sinking fund formula finds:", options: ["The future value", "The payment needed to reach a future value", "The interest rate", "The number of periods"], answer: 1, topic: "Future value annuities" },
         { type: "mc", text: "Payments at the END of each period is called:", options: ["Annuity due", "Ordinary annuity", "Perpetuity", "Deferred annuity"], answer: 1, topic: "Future value annuities" },
         { type: "input", text: "Using F = x[(1+i)ⁿ−1]/i with x=500, i=0.01, n=3: find F.", answer: "1515.05", altAnswers: ["1515"], topic: "Future value annuities" },
-        { type: "mc", text: "To accumulate R100 000 in 10 years at 8% p.a. compounded annually, the annual payment x satisfies:", options: ["100000 = x[(1.08)¹⁰−1]/0.08", "x = 100000·0.08/[(1.08)¹⁰−1]", "Both A and B", "Neither"], answer: 2, topic: "Future value annuities" }
+        { type: "mc", text: "To accumulate R100 000 in 10 years at 8% p.a. compounded annually, the annual payment x satisfies:", options: ["100000 = x[(1.08)¹⁰−1]/0.08", "x = 100000·0.08/[(1.08)¹⁰−1]", "Both A and B", "Neither"], answer: 2, topic: "Future value annuities" },
+        { type: "input", text: "Sipho saves R1 500 at the end of each month for 8 years in an account earning 8.4% p.a. compounded monthly. Calculate the future value of his savings (nearest rand).", answer: "204337", altAnswers: ["204336", "204336.62"], topic: "Future value annuities" },
+        { type: "input", text: "Monthly savings of R1 000 (end of month, 6% p.a. compounded monthly) are made towards a target of R80 000. What is the minimum number of months required?", answer: "68", topic: "Future value annuities" }
       ]
     },
     {
@@ -183,7 +185,9 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "The present value formula is used to:", options: ["Find how much to save", "Find the loan amount that corresponds to given repayments", "Find the future value of savings", "Find compound interest"], answer: 1, topic: "Present value annuities & loan repayments" },
         { type: "mc", text: "After 5 years of a 20-year loan with monthly payments x, the outstanding balance uses:", options: ["n = 20 and k = 60", "n−k = 180 remaining payments", "x and the original principal only", "The future value formula"], answer: 1, topic: "Present value annuities & loan repayments" },
         { type: "input", text: "P = 10000, i = 0.01 per month, n = 12. Find x (monthly payment) to nearest rand. Use x = Pi/[1−(1.01)⁻¹²]. Answer ≈", answer: "889", topic: "Present value annuities & loan repayments" },
-        { type: "mc", text: "Total interest paid on a loan = ", options: ["Principal × rate × time", "Total repayments − original loan amount", "Monthly payment × n", "Future value − present value"], answer: 1, topic: "Present value annuities & loan repayments" }
+        { type: "mc", text: "Total interest paid on a loan = ", options: ["Principal × rate × time", "Total repayments − original loan amount", "Monthly payment × n", "Future value − present value"], answer: 1, topic: "Present value annuities & loan repayments" },
+        { type: "input", text: "A loan of R450 000 is repaid with equal monthly instalments over 15 years at 12% p.a. compounded monthly. Calculate the outstanding balance immediately after the 100th payment (nearest rand).", answer: "296438", altAnswers: ["296437", "296437.82"], topic: "Present value annuities & loan repayments" },
+        { type: "input", text: "A loan of R200 000 at 13% p.a. compounded monthly is repaid with monthly instalments of R3 000. Determine the minimum number of monthly payments required to settle the loan.", answer: "119", topic: "Present value annuities & loan repayments" }
       ]
     },
     {
@@ -287,7 +291,9 @@ MathMagician.registerChapter(3, {
         { type: "input", text: "R50 000 grows by simple interest at 8% p.a. for 3 years. Find A.", answer: "62000", topic: "Simple & compound growth vs decay" },
         { type: "mc", text: "A population grows from 50 000 to 65 000 in 5 years under compound growth. Which equation finds the rate i?", options: ["65000 = 50000(1+i)⁵", "65000 = 50000(1+5i)", "50000 = 65000(1+i)⁵", "i = (65000−50000)/5"], answer: 0, topic: "Simple & compound growth vs decay" },
         { type: "mc", text: "Annuity formulae differ from single-sum growth/decay formulae because annuities involve:", options: ["A once-off lump sum", "A series of equal regular payments", "No interest at all", "Only simple interest"], answer: 1, topic: "Simple & compound growth vs decay" },
-        { type: "input", text: "Equipment worth R120 000 depreciates by compound decay at 20% p.a. Find its value after 2 years (nearest rand).", answer: "76800", topic: "Simple & compound growth vs decay" }
+        { type: "input", text: "Equipment worth R120 000 depreciates by compound decay at 20% p.a. Find its value after 2 years (nearest rand).", answer: "76800", topic: "Simple & compound growth vs decay" },
+        { type: "input", text: "A car bought for R320 000 depreciates on a reducing-balance (compound decay) basis. After 5 years its book value is R140 000. Calculate the annual rate of depreciation, to 1 decimal place (%).", answer: "15.2", altAnswers: ["15,2"], topic: "Simple & compound growth vs decay" },
+        { type: "input", text: "R25 000 is invested for 3 years at 9% p.a. simple interest, then the accumulated amount is reinvested for a further 4 years at 9% p.a. compound interest. Calculate the final value (nearest rand).", answer: "44818", altAnswers: ["44817", "44817.72"], topic: "Simple & compound growth vs decay" }
       ]
     },
     {
@@ -375,7 +381,9 @@ MathMagician.registerChapter(3, {
         { type: "mc", text: "9% p.a. compounded monthly gives an effective annual rate of approximately:", options: ["9%", "9.38%", "9.75%", "10.2%"], answer: 1, topic: "Comparing investment & loan options" },
         { type: "mc", text: "Before comparing two investment rates fairly, you should first:", options: ["Multiply both by the term", "Convert both to the same effective annual rate", "Always choose the higher nominal rate", "Ignore compounding frequency"], answer: 1, topic: "Comparing investment & loan options" },
         { type: "mc", text: "A pyramid scheme is unsustainable because:", options: ["It pays no interest at all", "Returns are paid from new investors' money, not real profit", "It always uses compound interest", "It is illegal to advertise"], answer: 1, topic: "Comparing investment & loan options" },
-        { type: "input", text: "Find the effective annual rate for 12% p.a. compounded quarterly, to 2 decimal places (%).", answer: "12.55", altAnswers: ["12,55"], topic: "Comparing investment & loan options" }
+        { type: "input", text: "Find the effective annual rate for 12% p.a. compounded quarterly, to 2 decimal places (%).", answer: "12.55", altAnswers: ["12,55"], topic: "Comparing investment & loan options" },
+        { type: "mc", text: "Bank A offers 10.4% p.a. compounded quarterly. Bank B offers 10.3% p.a. compounded monthly. Which offers the better effective annual rate?", options: ["Bank A", "Bank B", "They are equal", "Cannot be determined without more information"], answer: 0, topic: "Comparing investment & loan options" },
+        { type: "input", text: "Using the effective annual rate formula, calculate the effective annual rate for Bank A (10.4% p.a. compounded quarterly), to 2 decimal places (%).", answer: "10.81", altAnswers: ["10,81"], topic: "Comparing investment & loan options" }
       ]
     }
   ],
@@ -396,12 +404,19 @@ MathMagician.registerChapter(3, {
       { number: 3, text: "A company needs to replace machinery costing R500 000 in 6 years. They set up a sinking fund paying equal annual amounts at 8% p.a. compounded annually.", parts: [
         { label: "a", text: "Find the annual payment required.", marks: 3 },
         { label: "b", text: "How much less would be needed if the interest rate were 10%?", marks: 3 }
+      ]},
+      { number: 4, text: "The value of an investment, recorded at the end of each year, is shown in the table below:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Year (n)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>0</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>1</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>2</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>3</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>4</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Value (R)</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>10 000.00</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>10 800.00</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>11 664.00</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>12 597.12</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>13 604.89</td></tr></table>", parts: [
+        { label: "a", text: "Using two consecutive values from the table, determine the annual compound growth rate.", marks: 2 },
+        { label: "b", text: "Write down the value of the initial investment (at year 0).", marks: 1 },
+        { label: "c", text: "Hence write the general formula for the value after n years, in the form A = P(1+i)ⁿ.", marks: 2 },
+        { label: "d", text: "Use your formula to predict the value at the end of year 8 (nearest rand).", marks: 2 }
       ]}
     ],
     answers: {
       1: { a: "F=800·[(1.006)¹²⁰−1]/0.006≈800·173.08≈R138 464", b: "800×120=R96 000", c: "138464−96000=R42 464" },
       2: { a: "Loan=0.8×1800000=R1 440 000", b: "i=0.105/12=0.00875; n=300; x=1440000×0.00875/[1−(1.00875)⁻³⁰⁰]≈R13 786/month", c: "Balance=13786·[1−(1.00875)⁻²⁴⁰]/0.00875≈R1 345 000", d: "Total paid=13786×300=R4 135 800; Interest=4135800−1440000≈R2 695 800" },
-      3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.5869≈R68 138", b: "x at 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.7716≈R64 802; saves R68138−R64802=R3 336" }
+      3: { a: "x=500000×0.08/[(1.08)⁶−1]=500000×0.08/0.5869≈R68 138", b: "x at 10%: 500000×0.10/[(1.10)⁶−1]=500000×0.10/0.7716≈R64 802; saves R68138−R64802=R3 336" },
+      4: { a: "i = 10800/10000 − 1 = 0.08, confirmed with 11664/10800 − 1 = 0.08 → i = 8% p.a.", b: "P = R10 000 (the value at n = 0)", c: "A = 10000(1.08)ⁿ", d: "A = 10000(1.08)⁸ ≈ R18 509.30" }
     }
   }
 });

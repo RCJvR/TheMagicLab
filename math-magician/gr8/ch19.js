@@ -110,6 +110,8 @@ MathMagician.registerChapter(19, {
         { type: "input", text: "How many flat faces does a cube have?", answer: "6", topic: "3D Shapes" },
         { type: "mc", text: "Which solid has no flat faces, edges or vertices at all?", options: ["Cone", "Cylinder", "Sphere", "Cube"], answer: 2, topic: "3D Shapes" },
         { type: "input", text: "A triangular pyramid (tetrahedron) has how many vertices?", answer: "4", topic: "3D Shapes" },
+        { type: "input", text: "A polyhedron has 10 faces and 16 vertices. Use Euler's formula (F + V − E = 2) to determine how many edges it has.", answer: "24", topic: "3D Shapes" },
+        { type: "input", text: "A prism has a regular polygon base with n sides, giving it 3n edges in total (n on each base, plus n connecting edges). If this prism has 24 edges, how many sides does its base polygon have?", answer: "8", topic: "3D Shapes" },
       ]
     },
     {
@@ -224,6 +226,8 @@ MathMagician.registerChapter(19, {
         { type: "mc", text: "The net of a square pyramid includes:", options: ["5 triangles", "1 square + 4 triangles", "4 squares + 1 triangle", "2 squares + 3 triangles"], answer: 1, topic: "3D Shapes" },
         { type: "input", text: "How many separate pieces (faces) make up the net of a triangular pyramid (tetrahedron)?", answer: "4", topic: "3D Shapes" },
         { type: "mc", text: "When checking if a net is correct, what must be true about the matching edges when folded?", options: ["They can be any length", "They must be the same length so they meet exactly", "Only some need to match", "Edges never need to match"], answer: 1, topic: "3D Shapes" },
+        { type: "input", text: "A pentagonal prism has 2 pentagon ends joined by 5 rectangles. Determine its number of faces (F), vertices (V), and edges (E), and verify Euler's formula. What is E?", answer: "15", topic: "3D Shapes" },
+        { type: "input", text: "A net for a hexagonal prism is made of 2 congruent regular hexagons (combined area 41.6 cm²) and 6 congruent rectangles, each 4 cm by 10 cm. Calculate the total area of the net.", answer: "281.6", topic: "3D Shapes" },
       ]
     },
   ],

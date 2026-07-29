@@ -119,7 +119,9 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "Evaluate: 6!/4!", answer: "30", topic: "Fundamental counting principle & factorial notation" },
         { type: "mc", text: "How many ways can 5 people sit in a row?", options: ["25", "120", "60", "5"], answer: 1, topic: "Fundamental counting principle & factorial notation" },
         { type: "mc", text: "₇P₂ = ", options: ["21", "42", "14", "49"], answer: 1, topic: "Fundamental counting principle & factorial notation" },
-        { type: "mc", text: "6 people in a row, with A and B always at the ends. How many arrangements?", options: ["48", "24", "12", "96"], answer: 0, topic: "Fundamental counting principle & factorial notation" }
+        { type: "mc", text: "6 people in a row, with A and B always at the ends. How many arrangements?", options: ["48", "24", "12", "96"], answer: 0, topic: "Fundamental counting principle & factorial notation" },
+        { type: "input", text: "How many distinct 5-letter arrangements can be made from the letters of the word MOUSE if the arrangement must start with a vowel and end with a consonant? (All letters are distinct; vowels: O, U, E; consonants: M, S.)", answer: "36", topic: "Fundamental counting principle & factorial notation" },
+        { type: "input", text: "5 different books are arranged on a shelf. In how many ways can this be done if two specific books must NOT be next to each other?", answer: "72", topic: "Fundamental counting principle & factorial notation" }
       ]
     },
     {
@@ -220,7 +222,9 @@ MathMagician.registerChapter(10, {
         { type: "mc", text: "Choosing a team of 5 from 12 players (order irrelevant):", options: ["₁₂P₅", "₁₂C₅", "12×5", "12!/5!"], answer: 1, topic: "Combinations & probability applications" },
         { type: "input", text: "From 10 books, choose 3 (order doesn't matter). How many ways?", answer: "120", topic: "Combinations & probability applications" },
         { type: "mc", text: "Deck of 52 cards. P(5-card hand with all hearts):", options: ["₁₃C₅/₅₂C₅", "13/52", "₁₃P₅/₅₂P₅", "5/52"], answer: 0, topic: "Combinations & probability applications" },
-        { type: "mc", text: "From 5 boys and 3 girls, choose 4. P(exactly 2 boys and 2 girls)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Both A and C"], answer: 0, topic: "Combinations & probability applications" }
+        { type: "mc", text: "From 5 boys and 3 girls, choose 4. P(exactly 2 boys and 2 girls)?", options: ["₅C₂·₃C₂/₈C₄", "₅P₂·₃P₂/₈P₄", "10/70", "Both A and C"], answer: 0, topic: "Combinations & probability applications" },
+        { type: "input", text: "A team of 4 is chosen from 7 boys and 5 girls. How many teams contain at least 3 boys?", answer: "210", topic: "Combinations & probability applications" },
+        { type: "input", text: "A bag contains 6 red and 4 blue marbles. If 3 marbles are drawn at random without replacement, find P(at least 2 red), as a fraction in lowest terms.", answer: "2/3", altAnswers: ["0.6666666667", "0,67", "0.67"], topic: "Combinations & probability applications" }
       ]
     },
     {
@@ -317,7 +321,9 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "P(A) = 0.7. Find P(not A).", answer: "0.3", altAnswers: ["0,3"], topic: "Revision: probability identities & Venn diagrams" },
         { type: "mc", text: "Events A and B satisfy P(A) = 0.5, P(B) = 0.4, P(A and B) = 0.2. Are they independent?", options: ["Yes, since P(A)×P(B) = 0.2 = P(A and B)", "No, since P(A and B) ≠ 0", "Cannot be determined", "Yes, all events are independent"], answer: 0, topic: "Revision: probability identities & Venn diagrams" },
         { type: "mc", text: "In a Venn diagram, 40 people total, n(S) = 22, n(T) = 20, n(S and T) = 8. How many are in NEITHER S nor T?", options: ["6", "10", "34", "14"], answer: 0, topic: "Revision: probability identities & Venn diagrams" },
-        { type: "input", text: "P(rain) = 0.3 on each of 2 independent days. Find P(rain on both days).", answer: "0.09", altAnswers: ["0,09", "9/100"], topic: "Revision: probability identities & Venn diagrams" }
+        { type: "input", text: "P(rain) = 0.3 on each of 2 independent days. Find P(rain on both days).", answer: "0.09", altAnswers: ["0,09", "9/100"], topic: "Revision: probability identities & Venn diagrams" },
+        { type: "input", text: "In a survey of 50 learners, 28 study Mathematics (M), 24 study Physical Sciences (P), and 10 study neither subject. How many learners study BOTH M and P?", answer: "12", topic: "Revision: probability identities & Venn diagrams" },
+        { type: "input", text: "P(A) = x, P(B) = 2x, and A and B are mutually exclusive with P(A or B) = 0.6. Determine x.", answer: "0.2", altAnswers: ["0,2", "1/5"], topic: "Revision: probability identities & Venn diagrams" }
       ]
     },
     {
@@ -418,7 +424,8 @@ MathMagician.registerChapter(10, {
         { type: "input", text: "Bag has 3 red, 2 blue (5 total). Draw 2 without replacement. Find P(both red) as a fraction in lowest terms (e.g. 3/10).", answer: "3/10", altAnswers: ["0.3", "0,3"], topic: "Tree diagrams, tables & dependent events" },
         { type: "mc", text: "A two-way table is most useful for finding:", options: ["ₙCᵣ values", "Conditional probabilities from two categorical variables", "Factorials", "The correlation coefficient"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
         { type: "mc", text: "With replacement, drawing twice from a bag of 4 red and 6 blue balls means the events are:", options: ["Dependent", "Independent", "Mutually exclusive", "Impossible"], answer: 1, topic: "Tree diagrams, tables & dependent events" },
-        { type: "input", text: "A coin is tossed twice (independent). Find P(exactly one head) as a fraction.", answer: "1/2", altAnswers: ["0.5", "0,5"], topic: "Tree diagrams, tables & dependent events" }
+        { type: "input", text: "A coin is tossed twice (independent). Find P(exactly one head) as a fraction.", answer: "1/2", altAnswers: ["0.5", "0,5"], topic: "Tree diagrams, tables & dependent events" },
+        { type: "input", text: "A bag contains 4 red and 6 blue balls. Three balls are drawn without replacement. Find P(all three red), as a fraction in lowest terms.", answer: "1/30", altAnswers: ["0.0333", "0,03"], topic: "Tree diagrams, tables & dependent events" }
       ]
     }
   ],
@@ -443,13 +450,20 @@ MathMagician.registerChapter(10, {
         { label: "a", text: "How many arrangements are there?", marks: 1 },
         { label: "b", text: "How many have P and R next to each other?", marks: 3 },
         { label: "c", text: "What is the probability that the arrangement starts with a vowel?", marks: 3 }
+      ]},
+      { number: 5, text: "A survey of 200 learners recorded whether they play a sport and whether they play a musical instrument. The two-way table below shows the results:<br><table style='border-collapse:collapse;font-family:monospace;font-size:12px;margin-top:6px;'><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'></th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Instrument</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>No instrument</th><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Total</th></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Sport</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>38</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>82</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>120</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>No sport</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>22</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>58</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>80</td></tr><tr><th style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>Total</th><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>60</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>140</td><td style='padding:4px 10px;border:1px solid rgba(255,255,255,0.15);'>200</td></tr></table>", parts: [
+        { label: "a", text: "Determine P(plays a sport).", marks: 1 },
+        { label: "b", text: "Determine P(plays an instrument | plays a sport).", marks: 2 },
+        { label: "c", text: "Determine P(plays a sport AND plays an instrument).", marks: 1 },
+        { label: "d", text: "Are the events 'plays a sport' and 'plays an instrument' independent? Justify by comparing P(sport)×P(instrument) with P(sport and instrument).", marks: 3 }
       ]}
     ],
     answers: {
       1: { a: "10⁴=10000", b: "10×9×8×7=5040", c: "1×9×8×7=504 (first digit fixed as 5, remaining 3 from remaining 9 digits)" },
       2: { a: "STATISTICS: S×3,T×3,A×1,I×2,C×1 → 10!/(3!3!2!)=50400", b: "Fix S at start and end (only 2 S's left... wait 3 S's → fix S at ends: choose 2 of 3 S's for ends=1 way since they're identical; arrange remaining 8 letters (S×1,T×3,A×1,I×2,C×1): 8!/(1!3!1!2!1!)=3360" },
       3: { a: "₁₄C₅=2002", b: "₈C₃×₆C₂=56×15=840", c: "P(4W1M)+P(5W)=(₆C₄×₈C₁+₆C₅)/2002=(15×8+6)/2002=126/2002=9/143" },
-      4: { a: "7!=5040", b: "Treat PR as unit: 6! arrangements × 2(PR or RP)=1440", c: "Vowels:O,U=2; P(starts with vowel)=2×6!/7!=2/7" }
+      4: { a: "7!=5040", b: "Treat PR as unit: 6! arrangements × 2(PR or RP)=1440", c: "Vowels:O,U=2; P(starts with vowel)=2×6!/7!=2/7" },
+      5: { a: "P(sport) = 120/200 = 0.6", b: "P(instrument | sport) = n(sport and instrument)/n(sport) = 38/120 = 19/60 ≈ 0.3167", c: "P(sport and instrument) = 38/200 = 0.19", d: "P(sport)×P(instrument) = 0.6 × (60/200) = 0.6 × 0.3 = 0.18. This does NOT equal P(sport and instrument) = 0.19, so the events are NOT independent (they are dependent)." }
     }
   }
 });
