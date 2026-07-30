@@ -159,6 +159,10 @@
     .wire-line:hover{stroke:#fff;stroke-width:3.5;}
     .wire-line.selected{stroke:#fff!important;stroke-width:3.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
     .wire-preview{stroke:var(--accent2);stroke-width:2;stroke-dasharray:5,4;opacity:0.65;fill:none;pointer-events:none;}
+    .sel-handle{fill:#1f2937;stroke:var(--accent2);stroke-width:1.5;cursor:pointer;}
+    .sel-handle:hover{fill:var(--accent2);}
+    .sel-handle:hover + .sel-handle-icon{fill:#1a1206;}
+    .sel-handle-icon{font-size:11px;fill:var(--accent2);text-anchor:middle;font-weight:700;}
     .wire-waypoint{fill:#fff;opacity:0.85;pointer-events:none;}
     .comp-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--text2);text-anchor:middle;pointer-events:none;}
     .comp-value{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:var(--accent2);text-anchor:middle;pointer-events:none;font-weight:700;}
@@ -884,10 +888,27 @@ let liveMouseCtrl = false; // was Ctrl held at that mouse position (axis-lock)
 
 function newId(){ return 'c'+(nextId++); }
 
+/* Rotation/mirror are applied in local (unplaced) space in a fixed order —
+   mirror first, then rotate — around the component's own bounding-box
+   centre. The SVG render transform on the component's <g> (see
+   renderComponent) applies the exact same order so the clickable pin-dots
+   (drawn in local coordinates, rotated by the browser) land exactly on
+   top of the logical positions computed here. */
+function localPinPos(def, pin, rotation, mirrored){
+  const w = def.w*GRID, h = def.h*GRID, cx = w/2, cy = h/2;
+  let px = pin.dx*GRID, py = pin.dy*GRID;
+  if (mirrored) px = 2*cx - px;
+  const rot = ((rotation||0)%360+360)%360;
+  if (rot===90){ const rx=px-cx, ry=py-cy; px = cx-ry; py = cy+rx; }
+  else if (rot===180){ px = 2*cx-px; py = 2*cy-py; }
+  else if (rot===270){ const rx=px-cx, ry=py-cy; px = cx+ry; py = cy-rx; }
+  return { x:px, y:py };
+}
 function pinWorldPos(comp, pinId){
   const def = COMPONENT_DEFS[comp.type];
   const pin = def.pins.find(p=>p.id===pinId);
-  return { x: comp.x + pin.dx*GRID, y: comp.y + pin.dy*GRID };
+  const local = localPinPos(def, pin, comp.rotation, comp.mirrored);
+  return { x: comp.x + local.x, y: comp.y + local.y };
 }
 
 /* ─── connection key helpers ─── */
@@ -967,9 +988,16 @@ function wireEndpointPos(end){
   return pinWorldPos(comp, end.pinId);
 }
 
+function componentTransform(c, def){
+  const w = def.w*GRID, h = def.h*GRID, cx = w/2, cy = h/2;
+  let tf = `translate(${c.x},${c.y})`;
+  if (c.rotation) tf += ` rotate(${c.rotation},${cx},${cy})`;
+  if (c.mirrored) tf += ` translate(${2*cx},0) scale(-1,1)`;
+  return tf;
+}
 function renderComponent(c){
   const def = COMPONENT_DEFS[c.type];
-  const g = el('g',{class:'comp-group'+(selected===c.id?' selected':''), transform:`translate(${c.x},${c.y})`});
+  const g = el('g',{class:'comp-group'+(selected===c.id?' selected':''), transform:componentTransform(c, def)});
   g.dataset.id = c.id;
   const bodyWrap = el('g',{class:'comp-body'});
   def.render(bodyWrap, c);
@@ -993,6 +1021,41 @@ function renderComponent(c){
 
   svg.appendChild(g);
   c._el = g;
+
+  if (selected===c.id) renderSelectionHandles(c, def);
+}
+
+/* Word-style selection handles: a rotate "wand" above the component and a
+   mirror button beside it. Positioned in world space using the component's
+   centre (which rotation pivots around, so it doesn't move) and its
+   post-rotation bounding box (width/height swap at 90°/270°). Each click
+   steps in fixed 90° increments / flips — matches the R/M keyboard
+   shortcuts so there's one mental model, not a free-drag angle to fight
+   with pins that only really make sense at 0/90/180/270. */
+function renderSelectionHandles(c, def){
+  const w = def.w*GRID, h = def.h*GRID;
+  const rot = ((c.rotation||0)%360+360)%360;
+  const effW = (rot===90||rot===270) ? h : w, effH = (rot===90||rot===270) ? w : h;
+  const worldCx = c.x + w/2, worldCy = c.y + h/2;
+  const topY = worldCy - effH/2;
+  const handleY = topY - 26;
+
+  const g = el('g',{class:'selection-handles'});
+  g.appendChild(line(worldCx, topY-4, worldCx, handleY+9, 'rgba(255,255,255,0.55)', 1.4));
+  const rotHandle = el('circle',{cx:worldCx, cy:handleY, r:9, class:'sel-handle rotate-handle'});
+  const rotIcon = text(worldCx, handleY+3.5, '⟳', 'sel-handle-icon', 11);
+  rotHandle.addEventListener('click', (e)=>{ e.stopPropagation(); c.rotation = ((c.rotation||0)+90)%360; scheduleRender(); });
+  rotIcon.style.pointerEvents = 'none';
+  g.appendChild(rotHandle); g.appendChild(rotIcon);
+
+  const mirrorX = worldCx + effW/2 + 16, mirrorY = worldCy;
+  const mirrorHandle = el('circle',{cx:mirrorX, cy:mirrorY, r:9, class:'sel-handle mirror-handle'});
+  const mirrorIcon = text(mirrorX, mirrorY+3.5, '⇋', 'sel-handle-icon', 10);
+  mirrorHandle.addEventListener('click', (e)=>{ e.stopPropagation(); c.mirrored = !c.mirrored; scheduleRender(); });
+  mirrorIcon.style.pointerEvents = 'none';
+  g.appendChild(mirrorHandle); g.appendChild(mirrorIcon);
+
+  svg.appendChild(g);
 }
 
 function updatePinConnectionStyles(){
@@ -1110,12 +1173,24 @@ document.getElementById('circuit-svg').addEventListener('click', (e)=>{
   }
 });
 
+const LED_COLOR_KEYS = ['red','green','yellow','blue','white']; // matches LED_COLORS / the colour <select> order, 1-5 on the number row
 window.addEventListener('keydown', (e)=>{
-  if ((e.key==='Delete'||e.key==='Backspace') && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
+  if (document.activeElement.tagName==='INPUT' || document.activeElement.tagName==='TEXTAREA') return;
+  if (e.key==='Delete'||e.key==='Backspace'){
     if (selected) removeComponent(selected);
     else if (selectedWireId){ removeWire(selectedWireId); selectedWireId=null; renderPropPanel(); }
+    return;
   }
-  if (e.key==='Escape') { cancelWiring(); }
+  if (e.key==='Escape') { cancelWiring(); return; }
+  if (!selected) return;
+  const c = components.find(x=>x.id===selected);
+  if (!c) return;
+  if (e.key==='r' || e.key==='R'){ c.rotation = ((c.rotation||0)+(e.shiftKey?-90:90)+360)%360; scheduleRender(); return; }
+  if (e.key==='m' || e.key==='M'){ c.mirrored = !c.mirrored; scheduleRender(); return; }
+  if (e.key>='1' && e.key<='5' && c.props && c.props.color!==undefined){
+    const col = LED_COLOR_KEYS[+e.key-1];
+    if (col){ c.props.color = col; scheduleRender(); renderPropPanel(); }
+  }
 });
 
 /* ─── toolbar: click-to-place (simplest reliable interaction) ─── */
@@ -1196,6 +1271,10 @@ function renderPropPanel(){
   if (!c){ panel.innerHTML = ''; return; }
   const def = COMPONENT_DEFS[c.type];
   let html = `<div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">${def.icon} ${def.label}</div>`;
+  html += `<div class="btn-row" style="margin-bottom:12px;">
+      <button class="mini-btn" id="btnRotateSel" style="flex:1;" title="Keyboard shortcut: R">⟳ Rotate</button>
+      <button class="mini-btn" id="btnMirrorSel" style="flex:1;${c.mirrored?'background:rgba(245,158,11,.18);color:var(--accent2);':''}" title="Keyboard shortcut: M">⇋ Mirror</button>
+    </div>`;
   (def.props||[]).forEach(p=>{
     const val = c.props[p.key];
     if (p.type==='select'){
@@ -1227,6 +1306,8 @@ function renderPropPanel(){
     });
   });
   document.getElementById('btnDelSel').addEventListener('click', ()=>removeComponent(c.id));
+  document.getElementById('btnRotateSel').addEventListener('click', ()=>{ c.rotation = ((c.rotation||0)+90)%360; scheduleRender(); });
+  document.getElementById('btnMirrorSel').addEventListener('click', ()=>{ c.mirrored = !c.mirrored; scheduleRender(); renderPropPanel(); });
 }
 
 /* ═══════════════════════════════════════════════════════════════
