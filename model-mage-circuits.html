@@ -163,9 +163,9 @@
     .bb-col-label{font-family:'JetBrains Mono',monospace;fill:#9c9478;text-anchor:middle;pointer-events:none;}
     .bb-row-label{font-family:'JetBrains Mono',monospace;fill:#9c9478;text-anchor:middle;font-weight:700;pointer-events:none;}
     .bb-rail-sym{font-family:'JetBrains Mono',monospace;font-weight:800;text-anchor:middle;pointer-events:none;}
-    .wire-line{stroke:#fbbf24;stroke-width:2.5;fill:none;cursor:pointer;}
-    .wire-line:hover{stroke:#fff;stroke-width:3.5;}
-    .wire-line.selected{stroke:#fff!important;stroke-width:3.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
+    .wire-line{stroke:#fbbf24;stroke-width:3.5;fill:none;cursor:pointer;}
+    .wire-line:hover{stroke:#fff;stroke-width:4.5;}
+    .wire-line.selected{stroke:#fff!important;stroke-width:4.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
     .wire-preview{stroke:var(--accent2);stroke-width:2;stroke-dasharray:5,4;opacity:0.65;fill:none;pointer-events:none;}
     .placement-ghost{opacity:0.5;pointer-events:none;}
     .sel-handle{fill:#1f2937;stroke:var(--accent2);stroke-width:1.5;cursor:pointer;}
@@ -969,7 +969,9 @@ const boardHoles = []; // {x,y,bus}
 // circuit can be wired entirely with direct pin-to-pin wires (buildUnionFind
 // unions wire endpoints regardless of whether either end is a hole). Toggled
 // via the Placement toolbar button and selectable/removable like a part.
-let breadboardPresent = true;
+// Starts absent: the board should be something you choose to add, not
+// something that's just there whether you asked for it or not.
+let breadboardPresent = false;
 const ROW_LETTERS_TOP = ['a','b','c','d','e'], ROW_LETTERS_BOT = ['f','g','h','i','j'];
 /* Single source of truth for the board's vertical layout — buildBreadboard()
    (hole positions) and renderBreadboard() (background/labels/rails) used to
@@ -1397,6 +1399,7 @@ document.getElementById('circuit-svg').addEventListener('click', (e)=>{
 });
 
 const LED_COLOR_KEYS = ['red','green','yellow','blue','white']; // matches LED_COLORS / the colour <select> order, 1-5 on the number row
+const WIRE_COLOR_KEYS = ['#ef4444','#111827','#eab308','#22c55e','#3b82f6','#f8fafc','#f97316','#a855f7','#9ca3af']; // red,black,yellow,green,blue,white,orange,purple,grey — 1-9
 window.addEventListener('keydown', (e)=>{
   if (document.activeElement.tagName==='INPUT' || document.activeElement.tagName==='TEXTAREA') return;
   if (e.key==='Delete'||e.key==='Backspace'){
@@ -1410,6 +1413,12 @@ window.addEventListener('keydown', (e)=>{
     placingType = null; placingPreviewPos = null;
     document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
     scheduleRender();
+    return;
+  }
+  if (selectedWireId && e.key>='1' && e.key<='9'){
+    const w = wires.find(x=>x.id===selectedWireId);
+    const col = WIRE_COLOR_KEYS[+e.key-1];
+    if (w && col){ w.color = col; scheduleRender(); renderPropPanel(); }
     return;
   }
   if (!selected) return;
@@ -1536,7 +1545,7 @@ function renderPropPanel(){
       <div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">🔌 Wire</div>
       <div class="prop-row"><div class="prop-lbl"><span>Colour</span></div>
         <input type="color" id="wireColorInput" value="${w.color||'#fbbf24'}" style="width:100%;height:30px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;"></div>
-      <p class="empty-hint">${bendCount ? bendCount+' routing point'+(bendCount>1?'s':'')+' along this wire.' : 'Tip: while drawing a wire, click empty board space to bend it around other parts — hold Ctrl to snap that bend perfectly horizontal or vertical.'}</p>
+      <p class="empty-hint">${bendCount ? bendCount+' routing point'+(bendCount>1?'s':'')+' along this wire.' : 'Tip: while drawing a wire, click empty board space to bend it around other parts — hold Ctrl to snap that bend perfectly horizontal or vertical.'} Press 1–9 to set its colour without opening the picker.</p>
       <button class="del-btn" id="btnDelWire">Delete wire</button>`;
     document.getElementById('wireColorInput').addEventListener('input', (e)=>{ w.color = e.target.value; scheduleRender(); });
     document.getElementById('btnDelWire').addEventListener('click', ()=>{ removeWire(w.id); selectedWireId=null; renderPropPanel(); });
