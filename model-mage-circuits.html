@@ -33,9 +33,11 @@
     .nav-link:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
 
     .toolbar{flex-shrink:0;background:rgba(10,15,32,0.95);border-bottom:1px solid var(--border);
-             display:flex;align-items:center;padding:6px 10px;gap:4px;}
-    #compScroll{flex:1;display:flex;align-items:center;gap:4px;overflow-x:auto;min-width:0;}
-    .toolbar-actions{flex-shrink:0;display:flex;align-items:center;gap:6px;padding-left:8px;}
+             display:flex;flex-direction:column;padding:8px 10px;gap:6px;max-height:300px;overflow-y:auto;}
+    #compScroll{display:flex;flex-direction:column;gap:3px;}
+    .comp-cat-row{display:flex;align-items:center;gap:4px;}
+    .comp-cat-strip{display:flex;align-items:center;gap:4px;overflow-x:auto;flex:1;min-width:0;}
+    .toolbar-actions{flex-shrink:0;display:flex;align-items:center;gap:6px;}
     .examples-sel{height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--border);
               background:var(--surface);color:var(--text);font-size:0.76rem;font-weight:600;
               cursor:pointer;font-family:inherit;}
@@ -49,7 +51,7 @@
     .comp-btn .ci{font-size:18px;line-height:1;}
     .tb-sep{width:1px;height:32px;background:var(--border);margin:0 6px;flex-shrink:0;}
     .comp-cat-label{font-size:0.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-                    color:var(--muted);flex-shrink:0;padding:0 6px 0 2px;white-space:nowrap;
+                    color:var(--muted);flex-shrink:0;white-space:nowrap;width:64px;
                     display:flex;align-items:center;height:52px;}
     .run-btn{height:36px;padding:0 16px;border-radius:8px;border:none;font-weight:700;font-size:0.8rem;
               cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;flex-shrink:0;}
@@ -215,7 +217,6 @@
 </div>
 
 <div class="toolbar">
-  <div id="compScroll"><!-- populated by JS from COMPONENT_DEFS --></div>
   <div class="toolbar-actions">
     <select class="examples-sel" id="examplesSel">
       <option value="">Load example circuit…</option>
@@ -227,6 +228,7 @@
     <div class="tb-sep"></div>
     <button class="run-btn go" id="btn-run"><i data-lucide="play"></i> Run</button>
   </div>
+  <div id="compScroll"><!-- populated by JS from COMPONENT_DEFS, one row per category --></div>
 </div>
 
 <div class="main">
@@ -1320,9 +1322,11 @@ Object.keys(COMPONENT_DEFS).forEach(type=>{
 });
 CATEGORY_ORDER.forEach(cat=>{
   if (!byCategory[cat] && cat!=='placement') return;
+  const row = el2('div', {class:'comp-cat-row'});
   const label = el2('div', {class:'comp-cat-label'});
   label.textContent = CATEGORY_LABELS[cat];
-  compScroll.appendChild(label);
+  row.appendChild(label);
+  const strip = el2('div', {class:'comp-cat-strip'});
   if (cat==='placement'){
     // the breadboard isn't a draggable part like everything else here —
     // it's a single optional fixture, toggled on/off rather than placed
@@ -1330,7 +1334,7 @@ CATEGORY_ORDER.forEach(cat=>{
     boardBtn.innerHTML = `<span class="ci">🍞</span><span>Breadboard</span>`;
     if (breadboardPresent) boardBtn.classList.add('active');
     boardBtn.addEventListener('click', toggleBreadboard);
-    compScroll.appendChild(boardBtn);
+    strip.appendChild(boardBtn);
   }
   (byCategory[cat]||[]).forEach(type=>{
     const def = COMPONENT_DEFS[type];
@@ -1342,9 +1346,10 @@ CATEGORY_ORDER.forEach(cat=>{
       btn.classList.add('active');
       placingType = type;
     });
-    compScroll.appendChild(btn);
+    strip.appendChild(btn);
   });
-  compScroll.appendChild(el2('div', {class:'tb-sep'}));
+  row.appendChild(strip);
+  compScroll.appendChild(row);
 });
 function el2(tag, attrs){ const e=document.createElement(tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
 
