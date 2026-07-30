@@ -104,6 +104,47 @@
     .mini-btn:hover{background:rgba(255,255,255,.08);color:var(--text);}
     .btn-row{display:flex;gap:6px;margin-top:8px;}
 
+    /* Tutorials modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;
+                   justify-content:center;z-index:100;}
+    .modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;width:min(640px,92vw);
+               max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.5);}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;
+                  border-bottom:1px solid var(--border);flex-shrink:0;}
+    .modal-header h2{font-size:16px;font-weight:800;color:#fff;}
+    .modal-close{background:none;border:none;color:var(--text2);font-size:16px;cursor:pointer;
+                 padding:4px 9px;border-radius:8px;font-family:inherit;}
+    .modal-close:hover{background:rgba(255,255,255,.08);color:#fff;}
+    .modal-body{padding:20px 22px;overflow-y:auto;}
+    .tut-list{display:grid;gap:10px;}
+    .tut-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;
+             text-align:left;cursor:pointer;color:inherit;display:flex;gap:12px;align-items:flex-start;
+             font-family:inherit;width:100%;}
+    .tut-card:hover{border-color:var(--accent);background:rgba(245,158,11,.08);}
+    .tut-icon{font-size:22px;flex-shrink:0;line-height:1.3;}
+    .tut-title{font-weight:700;font-size:14px;color:#fff;margin-bottom:3px;}
+    .tut-desc{font-size:12px;color:var(--text2);line-height:1.5;}
+    .tut-steps-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:6px;}
+    .tut-back-link{background:none;border:none;color:var(--text2);font-size:12px;cursor:pointer;
+                   margin-bottom:14px;padding:0;font-family:inherit;}
+    .tut-back-link:hover{color:#fff;}
+    .tut-step-progress{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent2);margin-bottom:10px;}
+    .tut-step-title{font-size:16px;font-weight:800;color:#fff;margin-bottom:12px;}
+    .tut-step-body{font-size:13.5px;color:var(--text2);line-height:1.8;}
+    .tut-step-body b{color:#fff;}
+    .tut-step-body code{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:4px;
+                        font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent2);}
+    .tut-step-body pre{background:#05070f;border:1px solid var(--border);border-radius:8px;padding:10px 12px;
+                       overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#d1d5db;margin:10px 0;}
+    .tut-step-body ul,.tut-step-body ol{padding-left:20px;margin:8px 0;}
+    .tut-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;
+               border-top:1px solid var(--border);gap:10px;flex-shrink:0;}
+    .tut-btn{padding:8px 16px;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;
+            border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;}
+    .tut-btn:hover{background:rgba(255,255,255,.08);}
+    .tut-btn.primary{background:linear-gradient(120deg,var(--accent),var(--accent2));border:none;color:#1a1206;}
+    .tut-btn:disabled{opacity:0.35;cursor:not-allowed;}
+
     /* SVG component styling */
     .comp-group{cursor:grab;}
     .comp-group.dragging{cursor:grabbing;opacity:0.85;}
@@ -132,6 +173,7 @@
 <header>
   <a class="logo" href="model-mage.html"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(251,191,36,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><circle cx="14" cy="14" r="2" fill="rgba(245,158,11,0.90)"/></svg> Model Mage <span style="opacity:.5;font-weight:600;">· Circuits</span></a>
   <div class="hdr-right">
+    <button class="mini-btn" id="btn-tutorials">🎓 Tutorials</button>
     <button class="mini-btn" id="btn-save">💾 Save</button>
     <button class="mini-btn" id="btn-load">📂 Load</button>
     <input type="file" id="file-load" accept=".json,application/json" style="display:none">
@@ -139,6 +181,24 @@
     <a class="nav-link" href="model-mage.html">← Model Mage</a>
   </div>
 </header>
+
+<div class="modal-overlay" id="tutorialOverlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="tutorialModalTitle">Tutorials</h2>
+      <button class="modal-close" id="tutorialClose">✕</button>
+    </div>
+    <div class="modal-body" id="tutorialModalBody"></div>
+    <div class="tut-footer" id="tutorialFooter" style="display:none;">
+      <button class="tut-btn" id="tutSolution">Show finished circuit</button>
+      <div style="display:flex;gap:8px;">
+        <button class="tut-btn" id="tutPrev">← Back</button>
+        <button class="tut-btn primary" id="tutNext">Next →</button>
+        <button class="tut-btn primary" id="tutFinish" style="display:none;">Done ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="toolbar">
   <div id="compScroll"><!-- populated by JS from COMPONENT_DEFS --></div>
@@ -1724,6 +1784,341 @@ document.getElementById('examplesSel').addEventListener('change', (e)=>{
   if (components.length && !confirm('Load this example? It will replace what\'s currently on the board.')) { e.target.value=''; return; }
   loadCircuitData(EXAMPLE_CIRCUITS[key]);
   e.target.value = '';
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   TUTORIALS — guided, step-by-step builds for Gr8/9 Coding &
+   Robotics. Each tutorial is instructions only (the student places
+   and wires parts themselves); "solution" is the finished circuit
+   they can load to check their work or see it running.
+═══════════════════════════════════════════════════════════════ */
+const TUTORIALS = [
+  {
+    id:'addingLight', icon:'💡', title:'Adding a Light',
+    desc:'Build your very first circuit — a battery, switch, resistor and LED — with no code at all.',
+    steps:[
+      { title:'Place a battery', body:`Click <b>Battery</b> in the toolbar, then click anywhere on the breadboard to drop it. Click the battery afterwards and set its voltage to <b>6V</b> in the panel on the right.` },
+      { title:'Add a switch', body:`Click <b>Switch</b> in the toolbar, then click just to the right of the battery to place it. This will let you turn the circuit on and off.` },
+      { title:'Add a resistor', body:`Click <b>Resistor</b>, then place it after the switch. An LED can only take a small amount of current — without a resistor in the way, too much would flow and burn it out instantly. Leave it at the default <b>220Ω</b>.` },
+      { title:'Add an LED', body:`Click <b>LED</b>, then place it after the resistor. An LED has two legs: <b>A</b> (anode, the leg current flows in) and <b>K</b> (cathode, the leg it flows out of) — current only flows one way through an LED.` },
+      { title:'Wire it all up', body:`Click one pin, then click another to draw a wire between them:
+        <ul>
+          <li>Battery <b>+</b> → Switch (either leg)</li>
+          <li>Switch (other leg) → Resistor <b>a</b></li>
+          <li>Resistor <b>b</b> → LED <b>A</b></li>
+          <li>LED <b>K</b> → Battery <b>−</b></li>
+        </ul>
+        Click empty board space in between clicks if you want to bend a wire around another part.` },
+      { title:'Close the switch and run', body:`Click the switch on the board so it shows <b>ON</b> (green), then press the green <b>Run</b> button in the toolbar. The LED should light up! Click the switch again while it's running to turn the light on and off.` },
+    ],
+    solution:{ code:'', components:[
+      {id:'c1', type:'battery', x:100, y:460, props:{voltage:6}},
+      {id:'c2', type:'switch', x:220, y:470, props:{closed:true}},
+      {id:'c3', type:'resistor', x:320, y:470, props:{ohms:220}},
+      {id:'c4', type:'led', x:420, y:460, props:{color:'red'}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c1',pinId:'+'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w3', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
+      {id:'w4', from:{kind:'pin',compId:'c4',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'-'}},
+    ]},
+  },
+  {
+    id:'multimeter', icon:'📏', title:'Testing a Circuit with a Multimeter',
+    desc:'Learn where to place a voltmeter and an ammeter, and what each one actually tells you.',
+    steps:[
+      { title:'Build a basic circuit', body:`Place a <b>Battery</b> (6V), a <b>Switch</b> (closed), a <b>Resistor</b> (220Ω) and an <b>LED</b>, and wire them in a loop just like in the "Adding a Light" tutorial: Battery+ → Switch → Resistor → LED(A) → LED(K) → Battery−.` },
+      { title:'Measure voltage across the LED', body:`Place a <b>Voltmeter</b>. Wire one of its leads to the LED's <b>A</b> pin and the other to the LED's <b>K</b> pin — a voltmeter is always wired <b>in parallel</b> (alongside) the part you're measuring, never breaking the circuit.` },
+      { title:'Read the voltage', body:`Press <b>Run</b>. The voltmeter should settle close to <b>1.8V</b> — that's the red LED's forward voltage, the fixed voltage it always drops once it's lit, no matter what resistor you use.` },
+      { title:'Measure current through the circuit', body:`Stop the simulation. Place an <b>Ammeter</b>. Unlike a voltmeter, an ammeter has to be wired <b>in series</b> — it needs the current to physically flow through it. Delete the wire between the Resistor and the LED, then wire: Resistor <b>b</b> → Ammeter <b>+</b>, Ammeter <b>−</b> → LED <b>A</b>.` },
+      { title:'Read the current', body:`Press <b>Run</b> again. The ammeter shows how many milliamps are actually flowing around the loop. Click the Resistor and change its value — Run again and watch the ammeter change too, while the voltmeter barely moves. That's the resistor controlling ("limiting") the current while the LED's own voltage stays fixed.` },
+    ],
+    solution:{ code:'', components:[
+      {id:'c1', type:'battery', x:80, y:460, props:{voltage:6}},
+      {id:'c2', type:'switch', x:200, y:470, props:{closed:true}},
+      {id:'c3', type:'resistor', x:300, y:470, props:{ohms:220}},
+      {id:'c4', type:'ammeter', x:420, y:470, props:{}},
+      {id:'c5', type:'led', x:520, y:460, props:{color:'red'}},
+      {id:'c6', type:'voltmeter', x:520, y:560, props:{}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c1',pinId:'+'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w3', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c4',pinId:'+'}},
+      {id:'w4', from:{kind:'pin',compId:'c4',pinId:'-'}, to:{kind:'pin',compId:'c5',pinId:'a'}},
+      {id:'w5', from:{kind:'pin',compId:'c5',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'-'}},
+      {id:'w6', from:{kind:'pin',compId:'c6',pinId:'+'}, to:{kind:'pin',compId:'c5',pinId:'a'}},
+      {id:'w7', from:{kind:'pin',compId:'c6',pinId:'-'}, to:{kind:'pin',compId:'c5',pinId:'c'}},
+    ]},
+  },
+  {
+    id:'blinky', icon:'🧠', title:'Blinky — Blink an LED with Code',
+    desc:'Your first program: control an LED from the microcontroller instead of just wiring it to a battery.',
+    steps:[
+      { title:'Place a microcontroller', body:`Click <b>Microcontroller</b> in the toolbar and drop it on the board. This is your programmable board — it has digital pins <b>D0–D13</b>, analog pins <b>A0–A5</b>, and <b>5V</b>/<b>GND</b> power pins.` },
+      { title:'Add a resistor and LED', body:`Place a <b>Resistor</b> (220Ω) and an <b>LED</b> near the microcontroller.` },
+      { title:'Wire it up', body:`Wire: Microcontroller <b>D13</b> → Resistor <b>a</b>; Resistor <b>b</b> → LED <b>A</b>; LED <b>K</b> → Microcontroller <b>GND</b>.` },
+      { title:'Look at the code', body:`The code box on the right already has a blink sketch:<pre>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(500);
+  digitalWrite(13, LOW);
+  delay(500);
+}</pre><code>pinMode(13, OUTPUT)</code> tells pin 13 to act as an output. <code>digitalWrite</code> turns it on (HIGH) or off (LOW), and <code>delay(500)</code> pauses for 500 milliseconds each time.` },
+      { title:'Run it', body:`Press the toolbar <b>Run</b> button to power the board, then press <b>Run code</b> underneath the code box. Watch the LED blink on and off every half second.` },
+      { title:'Challenge', body:`Change both <code>delay(500)</code> lines to <code>delay(100)</code> and press <b>Run code</b> again. The LED should blink noticeably faster — you're controlling timing entirely from code now.` },
+    ],
+    solution:{ code:`void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(500);
+  digitalWrite(13, LOW);
+  delay(500);
+}`, components:[
+      {id:'c1', type:'mcu', x:380, y:480, props:{}},
+      {id:'c2', type:'resistor', x:260, y:480, props:{ohms:470}},
+      {id:'c3', type:'led', x:360, y:580, props:{color:'red'}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c1',pinId:'D13'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w3', from:{kind:'pin',compId:'c3',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+    ]},
+  },
+  {
+    id:'pushButton', icon:'🔘', title:'Push-Button Controlled LED',
+    desc:'Read a button in code and use it to control an LED — your first digital input.',
+    steps:[
+      { title:'Place the parts', body:`Place a <b>Microcontroller</b>, a <b>Push Button</b>, a <b>Resistor</b> (220Ω or 470Ω) and an <b>LED</b>.` },
+      { title:'Wire the button', body:`Wire one leg of the button to <b>D2</b>, and the other leg to <b>GND</b>.` },
+      { title:'Wire the LED', body:`Wire: <b>D13</b> → Resistor <b>a</b>; Resistor <b>b</b> → LED <b>A</b>; LED <b>K</b> → <b>GND</b>.` },
+      { title:'Replace the code', body:`Clear the code box and paste this in:<pre>void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int pressed = digitalRead(2);
+  digitalWrite(13, pressed == 0 ? HIGH : LOW);
+}</pre><code>INPUT_PULLUP</code> keeps pin 2 reading HIGH normally, and pulls it LOW only when the button connects it straight to GND — that's why the code checks for <code>pressed == 0</code> to mean "the button is being held down".` },
+      { title:'Run and press the button', body:`Press <b>Run</b>, then <b>Run code</b>. Click and hold the push button on the board — the LED should light up while you hold it, and turn off the moment you let go.` },
+    ],
+    solution:{ code:`void setup() {
+  pinMode(2, INPUT_PULLUP);
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int pressed = digitalRead(2);
+  digitalWrite(13, pressed == 0 ? HIGH : LOW);
+}`, components:[
+      {id:'c1', type:'mcu', x:400, y:460, props:{}},
+      {id:'c2', type:'button', x:220, y:460, props:{pressed:false}},
+      {id:'c3', type:'resistor', x:300, y:560, props:{ohms:470}},
+      {id:'c4', type:'led', x:400, y:560, props:{color:'red'}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c2',pinId:'a'}, to:{kind:'pin',compId:'c1',pinId:'D2'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w3', from:{kind:'pin',compId:'c1',pinId:'D13'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w4', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
+      {id:'w5', from:{kind:'pin',compId:'c4',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+    ]},
+  },
+  {
+    id:'ldrNightLight', icon:'🌙', title:'Night Light with an LDR',
+    desc:'Use a light sensor and analogRead() to make an LED that switches itself on in the dark.',
+    steps:[
+      { title:'Build a light-sensing divider', body:`Place a <b>Microcontroller</b>, an <b>LDR</b> (light sensor) and a <b>Resistor</b> (10kΩ). Wire: Microcontroller <b>5V</b> → LDR <b>a</b>; LDR <b>b</b> → Resistor <b>a</b> <i>and also</i> → Microcontroller <b>A0</b>; Resistor <b>b</b> → <b>GND</b>. This "voltage divider" produces a voltage at A0 that changes with how much light hits the LDR.` },
+      { title:'Add the LED', body:`Place another <b>Resistor</b> (470Ω) and an <b>LED</b>. Wire: <b>D13</b> → Resistor <b>a</b>; Resistor <b>b</b> → LED <b>A</b>; LED <b>K</b> → <b>GND</b>.` },
+      { title:'Write the code', body:`<pre>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int light = analogRead(0);
+  if (light < 400) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}</pre><code>analogRead(0)</code> reads A0 as a number from 0 (0V) to 1023 (5V). A low number means the divider's voltage dropped, which happens when the LDR's resistance rises — i.e. when it's dark.` },
+      { title:'Test it', body:`Press <b>Run</b> and <b>Run code</b>. Click the LDR on the board and drag its <b>Light level</b> slider down toward 0% to simulate darkness — the LED should switch on by itself. Slide it back up and the LED turns off again.` },
+    ],
+    solution:{ code:`void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  int light = analogRead(0);
+  if (light < 400) {
+    digitalWrite(13, HIGH);
+  } else {
+    digitalWrite(13, LOW);
+  }
+}`, components:[
+      {id:'c1', type:'mcu', x:400, y:460, props:{}},
+      {id:'c2', type:'ldr', x:220, y:460, props:{light:50}},
+      {id:'c3', type:'resistor', x:220, y:560, props:{ohms:10000}},
+      {id:'c4', type:'resistor', x:300, y:620, props:{ohms:470}},
+      {id:'c5', type:'led', x:400, y:620, props:{color:'red'}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c1',pinId:'5V'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w3', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c1',pinId:'A0'}},
+      {id:'w4', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+      {id:'w5', from:{kind:'pin',compId:'c1',pinId:'D13'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
+      {id:'w6', from:{kind:'pin',compId:'c4',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'a'}},
+      {id:'w7', from:{kind:'pin',compId:'c5',pinId:'c'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+    ]},
+  },
+  {
+    id:'rgbMixing', icon:'🌈', title:'RGB Colour Mixing',
+    desc:'Drive the three channels of an RGB LED separately and mix colours with analogWrite().',
+    steps:[
+      { title:'Place the parts', body:`Place a <b>Microcontroller</b>, an <b>RGB LED</b>, and three separate <b>Resistors</b> (220Ω each) — one per colour channel. An RGB LED needs its own resistor on every channel, just like a normal LED needs one.` },
+      { title:'Wire each channel', body:`Wire: <b>D9</b> → Resistor1 <b>a</b> → Resistor1 <b>b</b> → RGB LED <b>R</b>; <b>D10</b> → Resistor2 → RGB LED <b>G</b>; <b>D11</b> → Resistor3 → RGB LED <b>B</b>. Then wire RGB LED <b>−</b> (the shared leg) → Microcontroller <b>GND</b>.` },
+      { title:'Write the code', body:`<pre>void setup() {
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+}
+
+void loop() {
+  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(10, 255); analogWrite(11, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
+  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
+}</pre><code>analogWrite(pin, value)</code> takes a value from 0–255 and outputs a proportional voltage — you must call <code>pinMode(pin, OUTPUT)</code> first, same as digitalWrite.` },
+      { title:'Run it', body:`Press <b>Run</b> and <b>Run code</b>. Watch the RGB LED cycle through red, green, blue, then a mixed magenta — that last one is red and blue both lit at once.` },
+    ],
+    solution:{ code:`void setup() {
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+}
+
+void loop() {
+  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(10, 255); analogWrite(11, 0);   delay(1000);
+  analogWrite(9, 0);   analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
+  analogWrite(9, 255); analogWrite(10, 0);   analogWrite(11, 255); delay(1000);
+}`, components:[
+      {id:'c1', type:'mcu', x:420, y:460, props:{}},
+      {id:'c2', type:'resistor', x:220, y:560, props:{ohms:220}},
+      {id:'c3', type:'resistor', x:300, y:560, props:{ohms:220}},
+      {id:'c4', type:'resistor', x:380, y:560, props:{ohms:220}},
+      {id:'c5', type:'rgbled', x:300, y:640, props:{}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c1',pinId:'D9'}, to:{kind:'pin',compId:'c2',pinId:'a'}},
+      {id:'w2', from:{kind:'pin',compId:'c2',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'r'}},
+      {id:'w3', from:{kind:'pin',compId:'c1',pinId:'D10'}, to:{kind:'pin',compId:'c3',pinId:'a'}},
+      {id:'w4', from:{kind:'pin',compId:'c3',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'g'}},
+      {id:'w5', from:{kind:'pin',compId:'c1',pinId:'D11'}, to:{kind:'pin',compId:'c4',pinId:'a'}},
+      {id:'w6', from:{kind:'pin',compId:'c4',pinId:'b'}, to:{kind:'pin',compId:'c5',pinId:'b'}},
+      {id:'w7', from:{kind:'pin',compId:'c5',pinId:'gnd'}, to:{kind:'pin',compId:'c1',pinId:'GND'}},
+    ]},
+  },
+  {
+    id:'servoSweep', icon:'🕹️', title:'Servo Sweep',
+    desc:'Move a servo motor to different angles from code using analogWrite().',
+    steps:[
+      { title:'Place the parts', body:`Place a <b>Microcontroller</b> and a <b>Servo Motor</b>.` },
+      { title:'Wire it up', body:`Wire: Microcontroller <b>5V</b> → Servo <b>V</b>; <b>GND</b> → Servo <b>G</b>; <b>D9</b> → Servo <b>S</b>.` },
+      { title:'Write the code', body:`<pre>void setup() {
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+  analogWrite(9, 0);   delay(600);
+  analogWrite(9, 128); delay(600);
+  analogWrite(9, 255); delay(600);
+}</pre>The servo turns to an angle proportional to the voltage on its signal pin — 0 is one end, 255 is the other, and 128 is the middle.` },
+      { title:'Run it', body:`Press <b>Run</b> and <b>Run code</b>. Watch the servo horn sweep between its three positions every 600 milliseconds.` },
+    ],
+    solution:{ code:`void setup() {
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+  analogWrite(9, 0);   delay(600);
+  analogWrite(9, 128); delay(600);
+  analogWrite(9, 255); delay(600);
+}`, components:[
+      {id:'c1', type:'mcu', x:380, y:460, props:{}},
+      {id:'c2', type:'servo', x:260, y:560, props:{}},
+    ], wires:[
+      {id:'w1', from:{kind:'pin',compId:'c1',pinId:'5V'}, to:{kind:'pin',compId:'c2',pinId:'vcc'}},
+      {id:'w2', from:{kind:'pin',compId:'c1',pinId:'GND'}, to:{kind:'pin',compId:'c2',pinId:'gnd'}},
+      {id:'w3', from:{kind:'pin',compId:'c1',pinId:'D9'}, to:{kind:'pin',compId:'c2',pinId:'sig'}},
+    ]},
+  },
+];
+
+let tutState = { tutorial:null, step:0 };
+function openTutorials(){
+  tutState = { tutorial:null, step:0 };
+  renderTutorialModal();
+  document.getElementById('tutorialOverlay').style.display = 'flex';
+}
+function closeTutorials(){ document.getElementById('tutorialOverlay').style.display = 'none'; }
+document.getElementById('btn-tutorials').addEventListener('click', openTutorials);
+document.getElementById('tutorialClose').addEventListener('click', closeTutorials);
+document.getElementById('tutorialOverlay').addEventListener('click', (e)=>{ if (e.target.id==='tutorialOverlay') closeTutorials(); });
+
+function renderTutorialModal(){
+  const body = document.getElementById('tutorialModalBody');
+  const titleEl = document.getElementById('tutorialModalTitle');
+  const footer = document.getElementById('tutorialFooter');
+  if (!tutState.tutorial){
+    titleEl.textContent = 'Tutorials';
+    footer.style.display = 'none';
+    body.innerHTML = '<div class="tut-list">' + TUTORIALS.map((t,i)=>`
+      <button class="tut-card" data-idx="${i}">
+        <span class="tut-icon">${t.icon}</span>
+        <span>
+          <div class="tut-title">${t.title}</div>
+          <div class="tut-desc">${t.desc}</div>
+          <div class="tut-steps-count">${t.steps.length} steps</div>
+        </span>
+      </button>`).join('') + '</div>';
+    body.querySelectorAll('.tut-card').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        tutState = { tutorial: TUTORIALS[+btn.dataset.idx], step:0 };
+        renderTutorialModal();
+      });
+    });
+    return;
+  }
+  const t = tutState.tutorial, s = t.steps[tutState.step];
+  titleEl.textContent = t.icon + ' ' + t.title;
+  footer.style.display = 'flex';
+  body.innerHTML = `
+    <button class="tut-back-link" id="tutBackToList">← All tutorials</button>
+    <div class="tut-step-progress">STEP ${tutState.step+1} OF ${t.steps.length}</div>
+    <div class="tut-step-title">${s.title}</div>
+    <div class="tut-step-body">${s.body}</div>
+  `;
+  document.getElementById('tutBackToList').addEventListener('click', ()=>{ tutState = {tutorial:null, step:0}; renderTutorialModal(); });
+  document.getElementById('tutPrev').disabled = tutState.step===0;
+  document.getElementById('tutNext').style.display = tutState.step < t.steps.length-1 ? '' : 'none';
+  document.getElementById('tutFinish').style.display = tutState.step === t.steps.length-1 ? '' : 'none';
+}
+document.getElementById('tutPrev').addEventListener('click', ()=>{
+  if (tutState.tutorial && tutState.step>0){ tutState.step--; renderTutorialModal(); }
+});
+document.getElementById('tutNext').addEventListener('click', ()=>{
+  if (tutState.tutorial && tutState.step < tutState.tutorial.steps.length-1){ tutState.step++; renderTutorialModal(); }
+});
+document.getElementById('tutFinish').addEventListener('click', closeTutorials);
+document.getElementById('tutSolution').addEventListener('click', ()=>{
+  if (!tutState.tutorial) return;
+  if (components.length && !confirm('Load the finished circuit for this tutorial? It will replace what\'s currently on the board.')) return;
+  loadCircuitData(tutState.tutorial.solution);
+  closeTutorials();
 });
 
 function loadCircuitData(data){
