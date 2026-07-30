@@ -1050,7 +1050,7 @@ function renderBreadboard(){
   });
 
   for (const h of boardHoles){
-    const c = el('circle',{cx:h.x, cy:h.y, r:2.6, class:'bb-hole'});
+    const c = el('circle',{cx:h.x, cy:h.y, r:4, class:'bb-hole'});
     if (h.rail) c.setAttribute('fill', h.color+'55');
     c.dataset.bus = h.bus;
     c.addEventListener('click', (e)=>{ e.stopPropagation(); onHoleClick(h); });
@@ -1120,7 +1120,7 @@ function renderComponent(c){
   g.appendChild(bodyWrap);
 
   for (const pin of def.pins){
-    const dot = el('circle',{cx:pin.dx*GRID, cy:pin.dy*GRID, r:4, class:'pin-dot'});
+    const dot = el('circle',{cx:pin.dx*GRID, cy:pin.dy*GRID, r:6, class:'pin-dot'});
     dot.dataset.pin = pin.id;
     dot.addEventListener('click', (e)=>{ e.stopPropagation(); onPinClick(c.id, pin.id); });
     g.appendChild(dot);
@@ -1617,11 +1617,18 @@ function solveCircuit(){
       if (b.kind==='resistor'){
         stampG(b.na, b.nb, 1/Math.max(b.ohms,0.0001));
       } else if (b.kind==='capacitor'){
+        // Backward-Euler companion model: a conductance dt/C in parallel
+        // with a current source representing the cap's remembered voltage
+        // — structurally the same "na should end up higher than nb by some
+        // V" shape as the LED/transistor companion models below, and
+        // stampI's convention needs the same negation for the same reason
+        // (positive i here would make the capacitor charge toward the
+        // NEGATIVE of its previous voltage instead of holding/approaching it).
         const dt = 0.02, R = Math.max(1, dt/(b.uf*1e-6));
         const gEq = 1/R;
         const prevV = b.comp._capV||0;
         stampG(b.na, b.nb, gEq);
-        stampI(b.na, b.nb, gEq*prevV);
+        stampI(b.na, b.nb, -gEq*prevV);
       } else if (b.kind==='led'){
         const col = LED_COLORS[b.vfColor || b.comp.props.color];
         const state = ledState.get(b.subKey || b.comp.id) || 'off';
@@ -1974,8 +1981,8 @@ const EXAMPLE_CIRCUITS = {
     code: '',
     components: [
       {id:'c1', type:'battery', x:80, y:650, props:{voltage:6}},
-      {id:'c2', type:'thermistor', x:180, y:650, props:{temp:25, type:'+t'}},
-      {id:'c3', type:'potentiometer', x:260, y:650, props:{maxOhms:10000, wiperPos:50}},
+      {id:'c2', type:'thermistor', x:180, y:650, props:{temp:25, type:'-t'}},
+      {id:'c3', type:'potentiometer', x:260, y:650, props:{maxOhms:1000, wiperPos:50}},
       {id:'c4', type:'resistor', x:180, y:720, props:{ohms:1000}},
       {id:'c5', type:'transistor', x:380, y:700, props:{}},
       {id:'c6', type:'buzzer', x:380, y:600, props:{}},
