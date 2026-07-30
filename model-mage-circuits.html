@@ -48,6 +48,9 @@
     .comp-btn.active{background:rgba(245,158,11,0.18);color:var(--accent2);border-color:rgba(245,158,11,0.4);}
     .comp-btn .ci{font-size:18px;line-height:1;}
     .tb-sep{width:1px;height:32px;background:var(--border);margin:0 6px;flex-shrink:0;}
+    .comp-cat-label{font-size:0.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+                    color:var(--muted);flex-shrink:0;padding:0 6px 0 2px;white-space:nowrap;
+                    display:flex;align-items:center;height:52px;}
     .run-btn{height:36px;padding:0 16px;border-radius:8px;border:none;font-weight:700;font-size:0.8rem;
               cursor:pointer;display:flex;align-items:center;gap:7px;font-family:inherit;flex-shrink:0;}
     .run-btn.go{background:linear-gradient(120deg,#10b981,#34d399);color:#04120f;}
@@ -153,8 +156,12 @@
     .pin-dot:hover{fill:var(--accent2);}
     .pin-dot.connected{fill:#22c55e;}
     .pin-dot.wiring-from{fill:var(--accent2);stroke:var(--accent2);}
-    .bb-hole{fill:#1a1f33;stroke:#0a0e1f;stroke-width:0.5;}
+    .bb-hole{fill:#1a1f33;stroke:#0a0e1f;stroke-width:0.5;cursor:pointer;}
     .bb-hole:hover{fill:#33405c;}
+    .bb-hole.bus-highlight{fill:#fbbf24!important;filter:drop-shadow(0 0 3px rgba(251,191,36,0.85));}
+    .bb-col-label{font-family:'JetBrains Mono',monospace;fill:#9c9478;text-anchor:middle;pointer-events:none;}
+    .bb-row-label{font-family:'JetBrains Mono',monospace;fill:#9c9478;text-anchor:middle;font-weight:700;pointer-events:none;}
+    .bb-rail-sym{font-family:'JetBrains Mono',monospace;font-weight:800;text-anchor:middle;pointer-events:none;}
     .wire-line{stroke:#fbbf24;stroke-width:2.5;fill:none;cursor:pointer;}
     .wire-line:hover{stroke:#fff;stroke-width:3.5;}
     .wire-line.selected{stroke:#fff!important;stroke-width:3.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
@@ -327,7 +334,7 @@ function setZoom(z){
 ─────────────────────────────────────────────────────────────── */
 const COMPONENT_DEFS = {
   battery: {
-    label:'Battery', icon:'🔋', w:3, h:1.4,
+    label:'Battery', icon:'🔋', w:3, h:1.4, category:'power',
     pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:3, dy:0.7}],
     defaultProps:{voltage:6},
     props:[{key:'voltage', label:'Voltage (V)', type:'select', options:[1.5,3,4.5,6,9,12]}],
@@ -350,7 +357,7 @@ const COMPONENT_DEFS = {
     isSource:true,
   },
   battery9v: {
-    label:'9V Battery', icon:'🔋', w:2.6, h:2.3,
+    label:'9V Battery', icon:'🔋', w:2.6, h:2.3, category:'power',
     pins:[{id:'+', dx:0.85, dy:0},{id:'-', dx:1.75, dy:0}],
     defaultProps:{voltage:9},
     render(g,c){
@@ -372,7 +379,7 @@ const COMPONENT_DEFS = {
     isSource:true,
   },
   switch: {
-    label:'Switch', icon:'🔘', w:2.5, h:1,
+    label:'Switch', icon:'🔘', w:2.5, h:1, category:'input',
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.5, dy:0.5}],
     defaultProps:{closed:false},
     render(g,c){
@@ -391,7 +398,7 @@ const COMPONENT_DEFS = {
     onClick(c){ c.props.closed = !c.props.closed; },
   },
   button: {
-    label:'Push Button', icon:'⏺', w:2, h:1,
+    label:'Push Button', icon:'⏺', w:2, h:1, category:'input',
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2, dy:0.5}],
     defaultProps:{pressed:false},
     render(g,c){
@@ -409,7 +416,7 @@ const COMPONENT_DEFS = {
     onUp(c){ c.props.pressed = false; },
   },
   resistor: {
-    label:'Resistor', icon:'🟫', w:3, h:1,
+    label:'Resistor', icon:'🟫', w:3, h:1, category:'passive',
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:3, dy:0.5}],
     defaultProps:{ohms:220},
     props:[{key:'ohms', label:'Resistance (Ω)', type:'select', options:[100,220,330,470,1000,2200,4700,10000,20000]}],
@@ -429,7 +436,7 @@ const COMPONENT_DEFS = {
     },
   },
   led: {
-    label:'LED', icon:'💡', w:1.6, h:1.6,
+    label:'LED', icon:'💡', w:1.6, h:1.6, category:'output',
     pins:[{id:'a', dx:0.3, dy:1.6},{id:'c', dx:1.3, dy:1.6}],
     defaultProps:{color:'red'},
     props:[{key:'color', label:'Colour', type:'select', options:['red','green','yellow','blue','white']}],
@@ -458,7 +465,7 @@ const COMPONENT_DEFS = {
     isNonlinear:true,
   },
   buzzer: {
-    label:'Buzzer', icon:'🔊', w:2, h:2,
+    label:'Buzzer', icon:'🔊', w:2, h:2, category:'output',
     pins:[{id:'+', dx:0.4, dy:2},{id:'-', dx:1.6, dy:2}],
     defaultProps:{},
     render(g,c){
@@ -484,7 +491,7 @@ const COMPONENT_DEFS = {
     fixedResistance:42,
   },
   ldr: {
-    label:'LDR', icon:'👁', w:2.2, h:1,
+    label:'LDR', icon:'👁', w:2.2, h:1, category:'input',
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.2, dy:0.5}],
     defaultProps:{light:50},
     props:[{key:'light', label:'Light level (%)', type:'range', min:0, max:100}],
@@ -515,7 +522,7 @@ const COMPONENT_DEFS = {
     },
   },
   thermistor: {
-    label:'Thermistor', icon:'🌡', w:2.2, h:1,
+    label:'Thermistor', icon:'🌡', w:2.2, h:1, category:'input',
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.2, dy:0.5}],
     defaultProps:{temp:25, type:'+t'},
     props:[
@@ -539,7 +546,7 @@ const COMPONENT_DEFS = {
     },
   },
   potentiometer: {
-    label:'Potentiometer', icon:'🎛', w:2.4, h:1.4,
+    label:'Potentiometer', icon:'🎛', w:2.4, h:1.4, category:'input',
     pins:[{id:'a', dx:0, dy:1.4},{id:'wiper', dx:1.2, dy:0},{id:'b', dx:2.4, dy:1.4}],
     defaultProps:{maxOhms:10000, wiperPos:50},
     props:[
@@ -564,7 +571,7 @@ const COMPONENT_DEFS = {
     isPot:true,
   },
   capacitor: {
-    label:'Capacitor', icon:'⏸', w:1.2, h:1.4,
+    label:'Capacitor', icon:'⏸', w:1.2, h:1.4, category:'passive',
     pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:1.2, dy:0.7}],
     defaultProps:{uf:100},
     props:[{key:'uf', label:'Capacitance (µF)', type:'select', options:[1,10,100,470,1000,4700]}],
@@ -582,7 +589,7 @@ const COMPONENT_DEFS = {
     isCapacitor:true,
   },
   transistor: {
-    label:'NPN Transistor', icon:'⏚', w:1.8, h:2,
+    label:'NPN Transistor', icon:'⏚', w:1.8, h:2, category:'passive',
     pins:[{id:'b', dx:0, dy:1}, {id:'c', dx:1.2, dy:0}, {id:'e', dx:1.2, dy:2}],
     defaultProps:{},
     render(g,c){
@@ -606,7 +613,7 @@ const COMPONENT_DEFS = {
     isTransistor:true,
   },
   mcu: {
-    label:'Microcontroller', icon:'🧠', w:8, h:5,
+    label:'Microcontroller', icon:'🧠', w:8, h:5, category:'control',
     pins:(() => {
       const p = [];
       for (let i=0;i<=13;i++) p.push({id:'D'+i, dx: 7 - i*0.5, dy:0});
@@ -645,7 +652,7 @@ const COMPONENT_DEFS = {
     isMcu:true,
   },
   dcmotor: {
-    label:'DC Motor', icon:'⚙️', w:2.2, h:2.2,
+    label:'DC Motor', icon:'⚙️', w:2.2, h:2.2, category:'output',
     pins:[{id:'+', dx:0, dy:2.2},{id:'-', dx:2.2, dy:2.2}],
     defaultProps:{},
     render(g,c){
@@ -667,7 +674,7 @@ const COMPONENT_DEFS = {
     fixedResistance:25,
   },
   rgbled: {
-    label:'RGB LED', icon:'🌈', w:2.4, h:1.8,
+    label:'RGB LED', icon:'🌈', w:2.4, h:1.8, category:'output',
     pins:[{id:'r', dx:0, dy:1.8},{id:'g', dx:0.8, dy:1.8},{id:'b', dx:1.6, dy:1.8},{id:'gnd', dx:2.4, dy:1.8}],
     defaultProps:{},
     render(g,c){
@@ -693,7 +700,7 @@ const COMPONENT_DEFS = {
     isRgbLed:true,
   },
   servo: {
-    label:'Servo Motor', icon:'🕹️', w:2.4, h:2,
+    label:'Servo Motor', icon:'🕹️', w:2.4, h:2, category:'output',
     pins:[{id:'vcc', dx:0, dy:2},{id:'gnd', dx:1.2, dy:2},{id:'sig', dx:2.4, dy:2}],
     defaultProps:{},
     render(g,c){
@@ -723,7 +730,7 @@ const COMPONENT_DEFS = {
     isServo:true,
   },
   ultrasonic: {
-    label:'Ultrasonic Sensor', icon:'📡', w:3, h:1.6,
+    label:'Ultrasonic Sensor', icon:'📡', w:3, h:1.6, category:'input',
     pins:[{id:'vcc', dx:0, dy:1.6},{id:'trig', dx:1, dy:1.6},{id:'echo', dx:2, dy:1.6},{id:'gnd', dx:3, dy:1.6}],
     defaultProps:{distance:50},
     props:[{key:'distance', label:'Object distance (cm)', type:'range', min:2, max:400}],
@@ -747,14 +754,14 @@ const COMPONENT_DEFS = {
     isUltrasonic:true,
   },
   voltmeter: {
-    label:'Voltmeter', icon:'📏', w:3.4, h:2.4,
+    label:'Voltmeter', icon:'📏', w:3.4, h:2.4, category:'tools',
     pins:[{id:'+', dx:0.5, dy:2.4},{id:'-', dx:2.9, dy:2.4}],
     defaultProps:{},
     render(g,c){ renderMeterBody(g,c,'V','#16a34a'); },
     isMeter:'voltage', highImpedance:true,
   },
   ammeter: {
-    label:'Ammeter', icon:'🧭', w:3.4, h:2.4,
+    label:'Ammeter', icon:'🧭', w:3.4, h:2.4, category:'tools',
     pins:[{id:'+', dx:0.5, dy:2.4},{id:'-', dx:2.9, dy:2.4}],
     defaultProps:{},
     render(g,c){ renderMeterBody(g,c,'A','#dc2626'); },
@@ -877,7 +884,15 @@ function resistorBands(ohms){
    - rails: `rail-top-pos`, `rail-top-neg`, `rail-bot-pos`, `rail-bot-neg`
 ═══════════════════════════════════════════════════════════════ */
 const boardHoles = []; // {x,y,bus}
+// The breadboard is an optional convenience, not a required fixture — a
+// circuit can be wired entirely with direct pin-to-pin wires (buildUnionFind
+// unions wire endpoints regardless of whether either end is a hole). Toggled
+// via the Placement toolbar button and selectable/removable like a part.
+let breadboardPresent = true;
+const ROW_LETTERS_TOP = ['a','b','c','d','e'], ROW_LETTERS_BOT = ['f','g','h','i','j'];
 function buildBreadboard(){
+  boardHoles.length = 0;
+  if (!breadboardPresent) return BOARD_Y;
   const railRows = [
     {dy:-2, bus:'rail-top-pos', color:'#ef4444'},
     {dy:-1, bus:'rail-top-neg', color:'#3b82f6'},
@@ -890,13 +905,13 @@ function buildBreadboard(){
   });
   for (let row=0; row<BOARD_ROWS_TOP; row++){
     for (let col=0; col<BOARD_COLS; col++){
-      boardHoles.push({x:BOARD_X+col*GRID, y:BOARD_Y+row*GRID, bus:'col'+col+'-top'});
+      boardHoles.push({x:BOARD_X+col*GRID, y:BOARD_Y+row*GRID, bus:'col'+col+'-top', col, rowLetter:ROW_LETTERS_TOP[row]});
     }
   }
   const botY0 = BOARD_Y + BOARD_ROWS_TOP*GRID + RAIL_GAP*1.4;
   for (let row=0; row<BOARD_ROWS_BOT; row++){
     for (let col=0; col<BOARD_COLS; col++){
-      boardHoles.push({x:BOARD_X+col*GRID, y:botY0+row*GRID, bus:'col'+col+'-bot'});
+      boardHoles.push({x:BOARD_X+col*GRID, y:botY0+row*GRID, bus:'col'+col+'-bot', col, rowLetter:ROW_LETTERS_BOT[row]});
     }
   }
   const railRows2 = [
@@ -912,6 +927,14 @@ function buildBreadboard(){
   return botY0 + BOARD_ROWS_BOT*GRID + 3*GRID;
 }
 let boardBottomY = buildBreadboard();
+function toggleBreadboard(){
+  breadboardPresent = !breadboardPresent;
+  boardBottomY = buildBreadboard();
+  if (!breadboardPresent && selected==='__breadboard__'){ selected=null; renderPropPanel(); }
+  const btn = document.getElementById('btn-breadboard-toggle');
+  if (btn) btn.classList.toggle('active', breadboardPresent);
+  scheduleRender();
+}
 
 function nearestHole(x,y){
   let best=null, bd=Infinity;
@@ -977,25 +1000,66 @@ function renderAll(){
   svg.setAttribute('width', Math.max(totalW, 1100));
   svg.setAttribute('height', Math.max(totalH, 700));
 
-  // breadboard backing
-  const bgW = BOARD_COLS*GRID + 20, bgH = boardBottomY - BOARD_Y + 20;
-  const boardBg = rect(BOARD_X-30, BOARD_Y-50, bgW, bgH, 10, '#e8e3d5');
-  boardBg.setAttribute('class', 'board-bg');
-  svg.appendChild(boardBg);
-  svg.appendChild(el('line',{x1:BOARD_X-20,y1:BOARD_Y+BOARD_ROWS_TOP*GRID+RAIL_GAP*0.7,x2:BOARD_X+BOARD_COLS*GRID+10,y2:BOARD_Y+BOARD_ROWS_TOP*GRID+RAIL_GAP*0.7,stroke:'#c9c2ab','stroke-width':1}));
-
-  for (const h of boardHoles){
-    const c = el('circle',{cx:h.x, cy:h.y, r:2.6, class:'bb-hole'});
-    if (h.rail) c.setAttribute('fill', h.color+'55');
-    c.addEventListener('click', (e)=>{ e.stopPropagation(); onHoleClick(h); });
-    svg.appendChild(c);
-  }
+  if (breadboardPresent) renderBreadboard();
 
   for (const w of wires) renderWire(w);
   for (const c of components) renderComponent(c);
   updatePinConnectionStyles();
   renderWirePreview();
   applyZoomTransform();
+}
+
+/* Realistic breadboard: cream perforated body, a centre trench between the
+   two 5-row strips (real boards have a physical gap there so DIP chips can
+   straddle it), printed column numbers/row letters, and continuous red/blue
+   rail stripes with +/- end markers — modelled on an actual half+ breadboard
+   rather than an abstract dot grid. Hovering any hole highlights every other
+   hole on the same strip/rail, since that's the part that's easy to
+   misjudge by eye (which holes are actually the same electrical node). */
+function renderBreadboard(){
+  const bgW = BOARD_COLS*GRID + 20, bgH = boardBottomY - BOARD_Y + 20;
+  const boardBg = rect(BOARD_X-30, BOARD_Y-50, bgW, bgH, 10, '#ece7d8');
+  boardBg.setAttribute('class', 'board-bg');
+  boardBg.addEventListener('click', (e)=>{ e.stopPropagation(); selectComponent('__breadboard__'); });
+  svg.appendChild(boardBg);
+
+  const trenchY = BOARD_Y+BOARD_ROWS_TOP*GRID+RAIL_GAP*0.7;
+  svg.appendChild(rect(BOARD_X-20, trenchY-3, BOARD_COLS*GRID+10, 6, 2, '#d8d2bd'));
+  svg.appendChild(el('line',{x1:BOARD_X-20,y1:trenchY,x2:BOARD_X+BOARD_COLS*GRID+10,y2:trenchY,stroke:'#b8b09a','stroke-width':1}));
+
+  for (let col=5; col<BOARD_COLS; col+=5){
+    svg.appendChild(text(BOARD_X+col*GRID, BOARD_Y-38, String(col), 'bb-col-label', 7));
+    svg.appendChild(text(BOARD_X+col*GRID, boardBottomY-6, String(col), 'bb-col-label', 7));
+  }
+  const botY0 = BOARD_Y + BOARD_ROWS_TOP*GRID + RAIL_GAP*1.4;
+  ROW_LETTERS_TOP.forEach((letter,i)=> svg.appendChild(text(BOARD_X-14, BOARD_Y+i*GRID+3, letter, 'bb-row-label', 7)));
+  ROW_LETTERS_BOT.forEach((letter,i)=> svg.appendChild(text(BOARD_X-14, botY0+i*GRID+3, letter, 'bb-row-label', 7)));
+
+  const railStripes = [
+    {y:BOARD_Y-2*GRID, color:'#dc2626', sym:'+'},
+    {y:BOARD_Y-1*GRID, color:'#2563eb', sym:'–'},
+    {y:botY0+BOARD_ROWS_BOT*GRID+GRID, color:'#dc2626', sym:'+'},
+    {y:botY0+BOARD_ROWS_BOT*GRID+2*GRID, color:'#2563eb', sym:'–'},
+  ];
+  railStripes.forEach(r=>{
+    svg.appendChild(el('line',{x1:BOARD_X-10,y1:r.y,x2:BOARD_X+BOARD_COLS*GRID,y2:r.y,stroke:r.color,'stroke-width':1.5,opacity:0.55}));
+    const sym = text(BOARD_X-22, r.y+3, r.sym, 'bb-rail-sym', 9);
+    sym.setAttribute('fill', r.color);
+    svg.appendChild(sym);
+  });
+
+  for (const h of boardHoles){
+    const c = el('circle',{cx:h.x, cy:h.y, r:2.6, class:'bb-hole'});
+    if (h.rail) c.setAttribute('fill', h.color+'55');
+    c.dataset.bus = h.bus;
+    c.addEventListener('click', (e)=>{ e.stopPropagation(); onHoleClick(h); });
+    c.addEventListener('mouseenter', ()=>highlightBus(h.bus, true));
+    c.addEventListener('mouseleave', ()=>highlightBus(h.bus, false));
+    svg.appendChild(c);
+  }
+}
+function highlightBus(bus, on){
+  svg.querySelectorAll(`.bb-hole[data-bus="${CSS.escape(bus)}"]`).forEach(hole=>hole.classList.toggle('bus-highlight', on));
 }
 
 function renderWire(w){
@@ -1228,7 +1292,8 @@ const LED_COLOR_KEYS = ['red','green','yellow','blue','white']; // matches LED_C
 window.addEventListener('keydown', (e)=>{
   if (document.activeElement.tagName==='INPUT' || document.activeElement.tagName==='TEXTAREA') return;
   if (e.key==='Delete'||e.key==='Backspace'){
-    if (selected) removeComponent(selected);
+    if (selected==='__breadboard__'){ if (breadboardPresent) toggleBreadboard(); }
+    else if (selected) removeComponent(selected);
     else if (selectedWireId){ removeWire(selectedWireId); selectedWireId=null; renderPropPanel(); }
     return;
   }
@@ -1246,17 +1311,40 @@ window.addEventListener('keydown', (e)=>{
 
 /* ─── toolbar: click-to-place (simplest reliable interaction) ─── */
 const compScroll = document.getElementById('compScroll');
+const CATEGORY_ORDER = ['placement','power','input','output','control','passive','tools'];
+const CATEGORY_LABELS = {placement:'Placement', power:'Power', input:'Input', output:'Output', control:'Control', passive:'Parts', tools:'Tools'};
+const byCategory = {};
 Object.keys(COMPONENT_DEFS).forEach(type=>{
-  const def = COMPONENT_DEFS[type];
-  const btn = el2('button', {class:'comp-btn', title:'Click, then click the board to place a '+def.label});
-  btn.innerHTML = `<span class="ci">${def.icon}</span><span>${def.label}</span>`;
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
-    if (placingType===type){ placingType=null; return; }
-    btn.classList.add('active');
-    placingType = type;
+  const cat = COMPONENT_DEFS[type].category || 'passive';
+  (byCategory[cat] = byCategory[cat]||[]).push(type);
+});
+CATEGORY_ORDER.forEach(cat=>{
+  if (!byCategory[cat] && cat!=='placement') return;
+  const label = el2('div', {class:'comp-cat-label'});
+  label.textContent = CATEGORY_LABELS[cat];
+  compScroll.appendChild(label);
+  if (cat==='placement'){
+    // the breadboard isn't a draggable part like everything else here —
+    // it's a single optional fixture, toggled on/off rather than placed
+    const boardBtn = el2('button', {class:'comp-btn', id:'btn-breadboard-toggle', title:'Show or hide the breadboard'});
+    boardBtn.innerHTML = `<span class="ci">🍞</span><span>Breadboard</span>`;
+    if (breadboardPresent) boardBtn.classList.add('active');
+    boardBtn.addEventListener('click', toggleBreadboard);
+    compScroll.appendChild(boardBtn);
+  }
+  (byCategory[cat]||[]).forEach(type=>{
+    const def = COMPONENT_DEFS[type];
+    const btn = el2('button', {class:'comp-btn', title:'Click, then click the board to place a '+def.label});
+    btn.innerHTML = `<span class="ci">${def.icon}</span><span>${def.label}</span>`;
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
+      if (placingType===type){ placingType=null; return; }
+      btn.classList.add('active');
+      placingType = type;
+    });
+    compScroll.appendChild(btn);
   });
-  compScroll.appendChild(btn);
+  compScroll.appendChild(el2('div', {class:'tb-sep'}));
 });
 function el2(tag, attrs){ const e=document.createElement(tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
 
@@ -1303,6 +1391,14 @@ document.getElementById('zoomReset').addEventListener('click', ()=>setZoom(1));
 ═══════════════════════════════════════════════════════════════ */
 function renderPropPanel(){
   const panel = document.getElementById('propPanel');
+  if (selected==='__breadboard__'){
+    panel.innerHTML = `
+      <div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">🍞 Breadboard</div>
+      <p class="empty-hint">A breadboard is optional — you can wire parts directly to each other's pins instead. Holes in the same row (or the same power rail) are already connected to each other; hover a hole to see which ones.</p>
+      <button class="del-btn" id="btnRemoveBoard">Remove breadboard</button>`;
+    document.getElementById('btnRemoveBoard').addEventListener('click', ()=>{ toggleBreadboard(); selected=null; renderPropPanel(); });
+    return;
+  }
   if (selectedWireId){
     const w = wires.find(x=>x.id===selectedWireId);
     if (!w){ panel.innerHTML = ''; return; }
