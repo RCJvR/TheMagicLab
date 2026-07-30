@@ -402,6 +402,73 @@ const COMPONENT_DEFS = {
     },
     isMcu:true,
   },
+  dcmotor: {
+    label:'DC Motor', icon:'⚙️', w:2.2, h:2.2,
+    pins:[{id:'+', dx:0, dy:2.2},{id:'-', dx:2.2, dy:2.2}],
+    defaultProps:{},
+    render(g,c){
+      g.appendChild(circleShape(1.1*GRID, 1.1*GRID, 20, '#374151'));
+      g.appendChild(el('circle',{cx:1.1*GRID, cy:1.1*GRID, r:20, fill:'none', stroke:'#9ca3af','stroke-width':2}));
+      const angle = c._spinAngle||0;
+      g.appendChild(line(1.1*GRID,1.1*GRID, 1.1*GRID+16*Math.cos(angle), 1.1*GRID+16*Math.sin(angle), '#fbbf24', 3));
+      g.appendChild(text(1.1*GRID,-6,'DC Motor','comp-label'));
+    },
+    fixedResistance:25,
+  },
+  rgbled: {
+    label:'RGB LED', icon:'🌈', w:2.4, h:1.8,
+    pins:[{id:'r', dx:0, dy:1.8},{id:'g', dx:0.8, dy:1.8},{id:'b', dx:1.6, dy:1.8},{id:'gnd', dx:2.4, dy:1.8}],
+    defaultProps:{},
+    render(g,c){
+      const gr=c._glowR||0, gg=c._glowG||0, gb=c._glowB||0;
+      const mixed = `rgb(${Math.round(255*gr)},${Math.round(255*gg)},${Math.round(255*gb)})`;
+      const totalGlow = Math.max(gr,gg,gb);
+      if (totalGlow>0.05) g.appendChild(circleShape(1.2*GRID,0.7*GRID,14+totalGlow*10,mixed,totalGlow*0.7));
+      g.appendChild(circleShape(1.2*GRID,0.7*GRID,10, totalGlow>0.05?mixed:'#4b5563'));
+      g.appendChild(el('circle',{cx:1.2*GRID,cy:0.7*GRID,r:10,fill:'none',stroke:'#9ca3af','stroke-width':1}));
+      g.appendChild(text(1.2*GRID,-6,'RGB LED','comp-label'));
+      g.appendChild(text(0,1.8*GRID+11,'R','comp-value',7));
+      g.appendChild(text(0.8*GRID,1.8*GRID+11,'G','comp-value',7));
+      g.appendChild(text(1.6*GRID,1.8*GRID+11,'B','comp-value',7));
+      g.appendChild(text(2.4*GRID,1.8*GRID+11,'–','comp-value',7));
+    },
+    isRgbLed:true,
+  },
+  servo: {
+    label:'Servo Motor', icon:'🕹️', w:2.4, h:2,
+    pins:[{id:'vcc', dx:0, dy:2},{id:'gnd', dx:1.2, dy:2},{id:'sig', dx:2.4, dy:2}],
+    defaultProps:{},
+    render(g,c){
+      const angle = c._angle==null ? 90 : c._angle;
+      g.appendChild(rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID,4,'#1f2937','#6b7280'));
+      const rad = (angle-90)*Math.PI/180;
+      const cx=1.2*GRID, cy=0.9*GRID;
+      g.appendChild(line(cx,cy,cx+22*Math.sin(rad),cy-22*Math.cos(rad),'#fbbf24',3));
+      g.appendChild(circleShape(cx,cy,4,'#9ca3af'));
+      g.appendChild(text(1.2*GRID,-6,`Servo (${Math.round(angle)}°)`,'comp-label'));
+      g.appendChild(text(0,2*GRID+11,'V','comp-value',7));
+      g.appendChild(text(1.2*GRID,2*GRID+11,'G','comp-value',7));
+      g.appendChild(text(2.4*GRID,2*GRID+11,'S','comp-value',7));
+    },
+    isServo:true,
+  },
+  ultrasonic: {
+    label:'Ultrasonic Sensor', icon:'📡', w:3, h:1.6,
+    pins:[{id:'vcc', dx:0, dy:1.6},{id:'trig', dx:1, dy:1.6},{id:'echo', dx:2, dy:1.6},{id:'gnd', dx:3, dy:1.6}],
+    defaultProps:{distance:50},
+    props:[{key:'distance', label:'Object distance (cm)', type:'range', min:2, max:400}],
+    render(g,c){
+      g.appendChild(rect(0,0,3*GRID,1.4*GRID,6,'#1e293b','#60a5fa'));
+      g.appendChild(circleShape(0.9*GRID,0.7*GRID,10,'#334155'));
+      g.appendChild(circleShape(2.1*GRID,0.7*GRID,10,'#334155'));
+      g.appendChild(text(1.5*GRID,-6,`Ultrasonic (${Math.round(c.props.distance)}cm)`,'comp-label'));
+      g.appendChild(text(0,1.6*GRID+11,'V','comp-value',7));
+      g.appendChild(text(1*GRID,1.6*GRID+11,'T','comp-value',7));
+      g.appendChild(text(2*GRID,1.6*GRID+11,'E','comp-value',7));
+      g.appendChild(text(3*GRID,1.6*GRID+11,'G','comp-value',7));
+    },
+    isUltrasonic:true,
+  },
   voltmeter: {
     label:'Voltmeter', icon:'📏', w:2, h:1.4,
     pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:2, dy:0.7}],
@@ -834,6 +901,16 @@ function solveCircuit(){
       branches.push({ comp:c, kind:'transistor', nb:pinKey(c.id,'b'), nc:pinKey(c.id,'c'), ne:pinKey(c.id,'e') });
       continue;
     }
+    if (c.type==='rgbled'){
+      // Three independent LED branches sharing the common cathode pin —
+      // each needs its own on/off state (subKey) since they turn on at
+      // different currents/voltages depending on colour (vfColor).
+      branches.push({ comp:c, kind:'led', na:pinKey(c.id,'r'), nb:pinKey(c.id,'gnd'), subKey:c.id+'_r', vfColor:'red' });
+      branches.push({ comp:c, kind:'led', na:pinKey(c.id,'g'), nb:pinKey(c.id,'gnd'), subKey:c.id+'_g', vfColor:'green' });
+      branches.push({ comp:c, kind:'led', na:pinKey(c.id,'b'), nb:pinKey(c.id,'gnd'), subKey:c.id+'_b', vfColor:'blue' });
+      continue;
+    }
+    if (c.type==='servo' || c.type==='ultrasonic') continue; // logical components only — see simTick for how their pins are read
     if (def.pins.length===2){
       const na = pinKey(c.id, def.pins[0].id), nb = pinKey(c.id, def.pins[1].id);
       if (def.isSource) branches.push({ comp:c, kind:'vsource', v:c.props.voltage, na, nb });
@@ -926,21 +1003,31 @@ function solveCircuit(){
         stampG(b.na, b.nb, gEq);
         stampI(b.na, b.nb, gEq*prevV);
       } else if (b.kind==='led'){
-        const col = LED_COLORS[b.comp.props.color];
-        const state = ledState.get(b.comp.id) || 'off';
+        const col = LED_COLORS[b.vfColor || b.comp.props.color];
+        const state = ledState.get(b.subKey || b.comp.id) || 'off';
         if (state==='on'){
-          // companion model: small series resistance + Vf source, approximated as a resistor to a virtual offset via current injection
+          // Companion model: small series resistance + Vf source. stampI's
+          // sign convention withdraws current from na and injects it at nb
+          // — that's backwards for a diode, where na (anode) must end up
+          // HIGHER than nb (cathode) by Vf. Without the minus sign here,
+          // solving the isolated branch gives Va-Vb = -Vf instead of +Vf:
+          // the diode "turns on" into the wrong polarity, the convergence
+          // check (which expects a POSITIVE Va-Vb to confirm "on") always
+          // sees a negative value and immediately flips it back to "off"
+          // next iteration — the LED never actually lights.
           const Ron = 12;
           stampG(b.na,b.nb,1/Ron);
-          stampI(b.na,b.nb, col.vf/Ron);
+          stampI(b.na,b.nb, -col.vf/Ron);
         } else {
           stampG(b.na,b.nb, 1/2000000);
         }
       } else if (b.kind==='transistor'){
         const state = transState.get(b.comp.id) || 'cutoff';
-        // base-emitter behaves like a diode (small fixed drop when conducting)
+        // base-emitter behaves like a diode (small fixed drop when
+        // conducting) — same sign fix as the LED above: Vb must end up
+        // higher than Ve by ~0.6V, not lower.
         const baseState = ledState.get('t_'+b.comp.id+'_be') || 'off';
-        if (baseState==='on'){ stampG(b.nb,b.ne,1/22); stampI(b.nb,b.ne,0.6/22); } else { stampG(b.nb,b.ne,1/2000000); }
+        if (baseState==='on'){ stampG(b.nb,b.ne,1/22); stampI(b.nb,b.ne,-0.6/22); } else { stampG(b.nb,b.ne,1/2000000); }
         if (state==='sat'){ stampG(b.nc,b.ne,1/8); } else { stampG(b.nc,b.ne,1/5000000); }
       } else if (b.kind==='vsource'){
         const idx = vsIdx.get(b);
@@ -972,11 +1059,12 @@ function solveCircuit(){
     for (const b of branches){
       if (b.kind==='led'){
         const va = voltages.get(uf.find(b.na))||0, vb = voltages.get(uf.find(b.nb))||0;
-        const col = LED_COLORS[b.comp.props.color];
-        const wasOn = ledState.get(b.comp.id)==='on';
+        const col = LED_COLORS[b.vfColor || b.comp.props.color];
+        const stateKey = b.subKey || b.comp.id;
+        const wasOn = ledState.get(stateKey)==='on';
         const threshold = col.vf * (wasOn ? 0.8 : 0.9);
         const newState = (va-vb) > threshold ? 'on' : 'off';
-        if (ledState.get(b.comp.id)!==newState){ ledState.set(b.comp.id,newState); changed=true; }
+        if (ledState.get(stateKey)!==newState){ ledState.set(stateKey,newState); changed=true; }
       }
       if (b.kind==='transistor'){
         const vb = voltages.get(uf.find(b.nb))||0, ve = voltages.get(uf.find(b.ne))||0;
@@ -1042,6 +1130,33 @@ function simTick(){
       const na = uf.find(pinKey(c.id,'+')), nb = uf.find(pinKey(c.id,'-'));
       c._capV = (voltages.get(na)||0) - (voltages.get(nb)||0);
     }
+    if (c.type==='dcmotor'){
+      const na = uf.find(pinKey(c.id,'+')), nb = uf.find(pinKey(c.id,'-'));
+      const v = (voltages.get(na)||0) - (voltages.get(nb)||0);
+      c._current = v/25; // signed — direction flips if wired reversed
+      // Spin rate proportional to current, not just a fixed on/off spin —
+      // a gentle trickle current shouldn't spin it as fast as full voltage.
+      c._spinAngle = (c._spinAngle||0) + c._current*0.6;
+    }
+    if (c.type==='rgbled'){
+      const gnd = uf.find(pinKey(c.id,'gnd'));
+      ['r','g','b'].forEach((ch, i)=>{
+        const colorName = ['red','green','blue'][i];
+        const col = LED_COLORS[colorName];
+        const pn = uf.find(pinKey(c.id,ch));
+        const v = (voltages.get(pn)||0) - (voltages.get(gnd)||0);
+        const current = v>col.vf*0.9 ? Math.max(0,(v-col.vf)/12) : 0;
+        const glowKey = '_glow'+ch.toUpperCase();
+        c[glowKey] = (c[glowKey]||0)*0.7 + Math.min(1,current*30)*0.3;
+      });
+    }
+    if (c.type==='servo'){
+      const node = uf.find(pinKey(c.id,'sig'));
+      const v = voltages.get(node);
+      // Only move if the signal pin is actually driven by something —
+      // an unwired servo shouldn't visually snap to a default angle.
+      if (v!=null) c._angle = Math.max(0, Math.min(180, (v/5)*180));
+    }
     if (def.isMeter==='voltage'){
       const na = uf.find(pinKey(c.id,'+')), nb = uf.find(pinKey(c.id,'-'));
       c._reading = (voltages.get(na)||0) - (voltages.get(nb)||0);
@@ -1104,7 +1219,9 @@ function preprocessArduino(src){
     // forgotten: the rest of the statements after it in loop() all run in
     // the same synchronous burst, so e.g. a blink's ON and OFF writes both
     // happen before the next frame ever renders — the LED never visibly lights.
-    .replace(/(?<!await\s)\bdelay\s*\(/g, 'await delay(');
+    .replace(/(?<!await\s)\bdelay\s*\(/g, 'await delay(')
+    .replace(/(?<!await\s)\bdelayMicroseconds\s*\(/g, 'await delayMicroseconds(')
+    .replace(/(?<!await\s)\bpulseIn\s*\(/g, 'await pulseIn(');
 }
 
 function logSerial(msg){
@@ -1128,7 +1245,7 @@ async function runUserCode(){
   `;
   let compiled;
   try {
-    const factory = new Function('pinMode','digitalWrite','digitalRead','analogRead','analogWrite','delay','millis','Serial', wrapped);
+    const factory = new Function('pinMode','digitalWrite','digitalRead','analogRead','analogWrite','delay','delayMicroseconds','pulseIn','millis','Serial', wrapped);
     const api = {
       pinMode:(pin, mode)=>{ mcuState.pinModes['D'+pin]=mode; },
       digitalWrite:(pin, val)=>{ mcuState.pinValues['D'+pin] = val ? 5 : 0; },
@@ -1136,10 +1253,32 @@ async function runUserCode(){
       analogRead:(pin)=>{ const v = mcuState.pinReadings['A'+pin]||0; return Math.round((v/5)*1023); },
       analogWrite:(pin, val)=>{ mcuState.pinValues['D'+pin] = (val/255)*5; },
       delay:(ms)=> new Promise(res=>setTimeout(res, Math.max(0, ms))),
+      // Real microsecond-scale timing isn't meaningful on a browser's
+      // event loop (setTimeout can't resolve that finely), so this just
+      // yields a tick rather than genuinely waiting `us` microseconds.
+      delayMicroseconds:(us)=> new Promise(res=>setTimeout(res, 0)),
+      // pulseIn measures a real echo pulse's duration on real hardware.
+      // We can't time a microsecond-scale pulse through setTimeout either,
+      // so instead of simulating the trigger/echo pulse itself, this looks
+      // up whichever Ultrasonic Sensor's echo pin is wired to `pin` and
+      // computes the duration a real HC-SR04 would report directly from
+      // its configured distance (duration_us = distance_cm * 58, the
+      // standard speed-of-sound conversion) — after a short real-time
+      // pause standing in for "the sensor taking a reading". Functionally
+      // correct for code that then does distance = duration/58.0, even
+      // though no real pulse is timed internally.
+      pulseIn:(pin, state)=>{
+        const mcuNode = pinKey(mcu.id, 'D'+pin);
+        const uf = buildUnionFind();
+        const sensor = components.find(c => c.type==='ultrasonic' && uf.find(pinKey(c.id,'echo'))===uf.find(mcuNode));
+        if (!sensor) return new Promise(res=>setTimeout(()=>res(0), 40)); // floating pin — real pulseIn also times out
+        const durationUs = sensor.props.distance * 58;
+        return new Promise(res=>setTimeout(()=>res(durationUs), Math.min(50, durationUs/1000)));
+      },
       millis:()=> Date.now(),
       Serial:{ print:(m)=>logSerial(String(m)), println:(m)=>logSerial(String(m)) },
     };
-    compiled = factory(api.pinMode, api.digitalWrite, api.digitalRead, api.analogRead, api.analogWrite, api.delay, api.millis, api.Serial);
+    compiled = factory(api.pinMode, api.digitalWrite, api.digitalRead, api.analogRead, api.analogWrite, api.delay, api.delayMicroseconds, api.pulseIn, api.millis, api.Serial);
   } catch(e){
     document.getElementById('codeErr').textContent = 'Syntax error: ' + e.message;
     return;
