@@ -58,10 +58,17 @@
     .canvas-wrap{flex:1;position:relative;overflow:auto;background:#05081a;
                  background-image:radial-gradient(circle,rgba(255,255,255,0.035) 1px,transparent 1px);
                  background-size:20px 20px;}
-    #circuit-svg{position:absolute;top:0;left:0;cursor:default;}
+    #svgScaleBox{position:absolute;top:0;left:0;transform-origin:0 0;}
+    #circuit-svg{display:block;cursor:default;transform-origin:0 0;}
     .canvas-hint{position:absolute;bottom:10px;left:10px;background:rgba(10,15,32,0.9);border:1px solid var(--border);
                  border-radius:8px;padding:8px 12px;font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:320px;pointer-events:none;}
     .canvas-hint b{color:var(--text);}
+    .zoom-controls{position:absolute;bottom:10px;right:10px;display:flex;align-items:center;gap:2px;
+                   background:rgba(10,15,32,0.9);border:1px solid var(--border);border-radius:8px;padding:4px;}
+    .zoom-btn{width:26px;height:26px;border-radius:6px;border:none;background:var(--surface);color:var(--text);
+              font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+    .zoom-btn:hover{background:rgba(255,255,255,.14);}
+    .zoom-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);width:38px;text-align:center;}
 
     .right-panel{width:300px;flex-shrink:0;display:flex;flex-direction:column;
                  border-left:1px solid var(--border);background:var(--bg2);overflow-y:auto;}
@@ -109,6 +116,9 @@
     .bb-hole:hover{fill:#33405c;}
     .wire-line{stroke:#fbbf24;stroke-width:2.5;fill:none;cursor:pointer;}
     .wire-line:hover{stroke:#fff;stroke-width:3.5;}
+    .wire-line.selected{stroke:#fff!important;stroke-width:3.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
+    .wire-preview{stroke:var(--accent2);stroke-width:2;stroke-dasharray:5,4;opacity:0.65;fill:none;pointer-events:none;}
+    .wire-waypoint{fill:#fff;opacity:0.85;pointer-events:none;}
     .comp-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--text2);text-anchor:middle;pointer-events:none;}
     .comp-value{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:var(--accent2);text-anchor:middle;pointer-events:none;font-weight:700;}
 
@@ -147,8 +157,16 @@
 
 <div class="main">
   <div class="canvas-wrap" id="canvasWrap">
-    <svg id="circuit-svg"></svg>
-    <div class="canvas-hint"><b>How to build:</b> drag a part from the toolbar onto the board. Click one pin, then click another to draw a wire. Click a part to edit it in the panel. Press Delete to remove the selected part.</div>
+    <div id="svgScaleBox">
+      <svg id="circuit-svg"></svg>
+    </div>
+    <div class="canvas-hint"><b>How to build:</b> drag a part from the toolbar onto the board. Click one pin, then click another to draw a wire — click empty board space in between to bend the cable and keep routing tidy (hold Ctrl to snap that bend to horizontal/vertical). Click a part or wire to edit it in the panel. Press Delete to remove the selected part or wire.</div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
+      <span class="zoom-pct" id="zoomPct">100%</span>
+      <button class="zoom-btn" id="zoomIn" title="Zoom in">+</button>
+      <button class="zoom-btn" id="zoomReset" title="Reset zoom">⤾</button>
+    </div>
   </div>
   <div class="right-panel">
     <div class="panel-sec">
@@ -194,7 +212,10 @@ void loop() {
 ═══════════════════════════════════════════════════════════════ */
 
 const GRID = 20; // px per breadboard hole / grid unit
-const BOARD_COLS = 40;
+// Board width fills whatever the canvas viewport actually has available
+// (never fewer columns than the original fixed 40, so existing saved
+// circuits built at smaller window sizes still fit).
+let BOARD_COLS = Math.max(40, Math.floor((window.innerWidth - 300 - 80) / GRID));
 const BOARD_ROWS_TOP = 5;   // rows a-e
 const BOARD_ROWS_BOT = 5;   // rows f-j
 const BOARD_X = 40, BOARD_Y = 140; // top-left of the terminal-strip area in SVG space
@@ -206,6 +227,28 @@ function el(tag, attrs) {
   const e = document.createElementNS(SVGNS, tag);
   for (const k in attrs) e.setAttribute(k, attrs[k]);
   return e;
+}
+
+/* ─── zoom: CSS-scale the SVG inside a sized wrapper so canvas-wrap's
+   native scrollbars stay correct at any zoom level ─── */
+let zoomLevel = 1;
+const ZOOM_MIN = 0.4, ZOOM_MAX = 2.5;
+function clientToSvgPos(e){
+  const r = document.getElementById('svgScaleBox').getBoundingClientRect();
+  return { x:(e.clientX-r.left)/zoomLevel, y:(e.clientY-r.top)/zoomLevel };
+}
+function applyZoomTransform(){
+  svg.style.transform = `scale(${zoomLevel})`;
+  const box = document.getElementById('svgScaleBox');
+  const w = parseFloat(svg.getAttribute('width'))||0, h = parseFloat(svg.getAttribute('height'))||0;
+  box.style.width = (w*zoomLevel)+'px';
+  box.style.height = (h*zoomLevel)+'px';
+}
+function setZoom(z){
+  zoomLevel = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+  applyZoomTransform();
+  const pctEl = document.getElementById('zoomPct');
+  if (pctEl) pctEl.textContent = Math.round(zoomLevel*100)+'%';
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -222,7 +265,7 @@ const COMPONENT_DEFS = {
     defaultProps:{voltage:6},
     props:[{key:'voltage', label:'Voltage (V)', type:'select', options:[1.5,3,4.5,6,9,12]}],
     render(g,c){
-      const w=c.w*GRID, h=c.h*GRID;
+      const w=3*GRID, h=1.4*GRID;
       g.appendChild(line(0,h/2,6,h/2,'url(#metalGrad)',2));
       g.appendChild(line(w-6,h/2,w,h/2,'url(#metalGrad)',2));
       const body = rect(3,1,w-6,h-2,4,'url(#battGrad)','#0a0c10');
@@ -252,7 +295,7 @@ const COMPONENT_DEFS = {
       const lever = line(0.55*GRID,midY, on?1.95*GRID:1.0*GRID, on?midY-2:midY-11, on?'#34d399':'#f87171',3.5);
       g.appendChild(lever);
       g.appendChild(circleShape(0.55*GRID,midY,2.5,'url(#metalKnob)'));
-      g.appendChild(text(c.w*GRID/2,-6, on?'Switch: ON':'Switch: OFF','comp-label'));
+      g.appendChild(text(2.5*GRID/2,-6, on?'Switch: ON':'Switch: OFF','comp-label'));
     },
     onClick(c){ c.props.closed = !c.props.closed; },
   },
@@ -771,9 +814,13 @@ let components = [];   // {id, type, x, y, props, _pinEls:[], _el, _glow, _curre
 let wires = [];        // {id, from:{compId|hole, pinId}, to:{...}, _el}
 let nextId = 1;
 let selected = null;
+let selectedWireId = null;
 let running = false;
 let simTimer = null;
 let wiringFrom = null; // {kind:'pin'|'hole', compId, pinId, x, y}
+let wiringWaypoints = []; // confirmed bend points {x,y} for the wire in progress
+let liveMousePos = null;  // current mouse position (SVG space) while wiring, for the rubber-band preview
+let liveMouseCtrl = false; // was Ctrl held at that mouse position (axis-lock)
 
 function newId(){ return 'c'+(nextId++); }
 
@@ -800,28 +847,58 @@ function renderAll(){
 
   // breadboard backing
   const bgW = BOARD_COLS*GRID + 20, bgH = boardBottomY - BOARD_Y + 20;
-  svg.appendChild(rect(BOARD_X-30, BOARD_Y-50, bgW, bgH, 10, '#e8e3d5'));
+  const boardBg = rect(BOARD_X-30, BOARD_Y-50, bgW, bgH, 10, '#e8e3d5');
+  boardBg.setAttribute('class', 'board-bg');
+  svg.appendChild(boardBg);
   svg.appendChild(el('line',{x1:BOARD_X-20,y1:BOARD_Y+BOARD_ROWS_TOP*GRID+RAIL_GAP*0.7,x2:BOARD_X+BOARD_COLS*GRID+10,y2:BOARD_Y+BOARD_ROWS_TOP*GRID+RAIL_GAP*0.7,stroke:'#c9c2ab','stroke-width':1}));
 
   for (const h of boardHoles){
     const c = el('circle',{cx:h.x, cy:h.y, r:2.6, class:'bb-hole'});
     if (h.rail) c.setAttribute('fill', h.color+'55');
-    c.addEventListener('click', ()=>onHoleClick(h));
+    c.addEventListener('click', (e)=>{ e.stopPropagation(); onHoleClick(h); });
     svg.appendChild(c);
   }
 
   for (const w of wires) renderWire(w);
   for (const c of components) renderComponent(c);
   updatePinConnectionStyles();
+  renderWirePreview();
+  applyZoomTransform();
 }
 
 function renderWire(w){
   const p1 = wireEndpointPos(w.from), p2 = wireEndpointPos(w.to);
   if (!p1||!p2) return;
-  const midY = (p1.y+p2.y)/2;
-  const path = el('path',{d:`M${p1.x},${p1.y} C${p1.x},${midY} ${p2.x},${midY} ${p2.x},${p2.y}`, class:'wire-line'});
-  path.addEventListener('click', (e)=>{ e.stopPropagation(); removeWire(w.id); });
+  const pts = [p1, ...(w.waypoints||[]), p2];
+  const d = 'M'+pts.map(p=>`${p.x},${p.y}`).join(' L ');
+  const path = el('path',{d, class:'wire-line'+(selectedWireId===w.id?' selected':'')});
+  if (w.color) path.setAttribute('style', `stroke:${w.color}`);
+  path.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    selectedWireId = w.id; selected = null;
+    renderPropPanel(); scheduleRender();
+  });
   svg.appendChild(path);
+}
+
+/* live rubber-band preview while a wire is being drawn: dashed line from
+   the starting pin through any confirmed bend points to the current mouse
+   position, so the student can see the cable's path before committing it */
+function renderWirePreview(){
+  if (!wiringFrom) return;
+  const pts = [{x:wiringFrom.x,y:wiringFrom.y}, ...wiringWaypoints];
+  pts.forEach((p,i)=>{ if (i>0) svg.appendChild(el('circle',{cx:p.x,cy:p.y,r:3,class:'wire-waypoint'})); });
+  if (liveMousePos){
+    const origin = pts[pts.length-1];
+    let lp = liveMousePos;
+    if (liveMouseCtrl){
+      const dx = Math.abs(lp.x-origin.x), dy = Math.abs(lp.y-origin.y);
+      lp = dx>dy ? {x:lp.x, y:origin.y} : {x:origin.x, y:lp.y};
+    }
+    pts.push(lp);
+  }
+  const d = 'M'+pts.map(p=>`${p.x},${p.y}`).join(' L ');
+  svg.appendChild(el('path',{d, class:'wire-preview'}));
 }
 function wireEndpointPos(end){
   if (end.kind==='hole') return {x:end.x, y:end.y};
@@ -893,6 +970,7 @@ function addComponent(type, x, y){
 
 function selectComponent(id){
   selected = id;
+  selectedWireId = null;
   scheduleRender();
   renderPropPanel();
 }
@@ -912,13 +990,10 @@ function removeWire(id){
 
 let dragState = null;
 function startDrag(comp, e){
-  const wrapRect = document.getElementById('canvasWrap').getBoundingClientRect();
-  const scrollX = document.getElementById('canvasWrap').scrollLeft;
-  const scrollY = document.getElementById('canvasWrap').scrollTop;
   dragState = { comp, startX: e.clientX, startY: e.clientY, origX: comp.x, origY: comp.y };
   function onMove(ev){
     if (!dragState) return;
-    const dx = ev.clientX - dragState.startX, dy = ev.clientY - dragState.startY;
+    const dx = (ev.clientX - dragState.startX)/zoomLevel, dy = (ev.clientY - dragState.startY)/zoomLevel;
     dragState.comp.x = Math.round((dragState.origX+dx)/(GRID/2))*(GRID/2);
     dragState.comp.y = Math.round((dragState.origY+dy)/(GRID/2))*(GRID/2);
     scheduleRender();
@@ -932,11 +1007,17 @@ function startDrag(comp, e){
   window.addEventListener('mouseup', onUp);
 }
 
+function cancelWiring(){
+  wiringFrom = null; wiringWaypoints = []; liveMousePos = null;
+  scheduleRender();
+}
 function onPinClick(compId, pinId){
   const comp = components.find(c=>c.id===compId);
   const pos = pinWorldPos(comp, pinId);
   if (!wiringFrom){
     wiringFrom = { kind:'pin', compId, pinId, x:pos.x, y:pos.y };
+    wiringWaypoints = [];
+    scheduleRender();
   } else {
     finishWire({ kind:'pin', compId, pinId, x:pos.x, y:pos.y });
   }
@@ -944,31 +1025,37 @@ function onPinClick(compId, pinId){
 function onHoleClick(hole){
   if (!wiringFrom){
     wiringFrom = { kind:'hole', x:hole.x, y:hole.y, bus:hole.bus };
+    wiringWaypoints = [];
+    scheduleRender();
   } else {
     finishWire({ kind:'hole', x:hole.x, y:hole.y, bus:hole.bus });
   }
 }
 function finishWire(to){
   if (wiringFrom.kind===to.kind && wiringFrom.kind==='pin' && wiringFrom.compId===to.compId && wiringFrom.pinId===to.pinId){
-    wiringFrom = null; return;
+    cancelWiring(); return;
   }
-  wires.push({ id:newId(), from:wiringFrom, to });
-  wiringFrom = null;
+  wires.push({ id:newId(), from:wiringFrom, to, waypoints:wiringWaypoints });
+  wiringFrom = null; wiringWaypoints = []; liveMousePos = null;
   scheduleRender();
 }
 
 document.getElementById('circuit-svg').addEventListener('click', (e)=>{
-  if (e.target.id==='circuit-svg' || e.target.tagName==='rect'){
-    if (wiringFrom){ wiringFrom = null; return; }
-    selected = null; renderPropPanel(); scheduleRender();
+  if (e.target.id==='circuit-svg' || e.target.classList.contains('board-bg')){
+    // while wiring, this same click also bubbles to canvasWrap's handler,
+    // which drops a bend point there instead of cancelling — cancelling a
+    // wire in progress is Escape's job now, so a stray click can't lose routing
+    if (wiringFrom) return;
+    selected = null; selectedWireId = null; renderPropPanel(); scheduleRender();
   }
 });
 
 window.addEventListener('keydown', (e)=>{
-  if ((e.key==='Delete'||e.key==='Backspace') && selected && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
-    removeComponent(selected);
+  if ((e.key==='Delete'||e.key==='Backspace') && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
+    if (selected) removeComponent(selected);
+    else if (selectedWireId){ removeWire(selectedWireId); selectedWireId=null; renderPropPanel(); }
   }
-  if (e.key==='Escape') { wiringFrom = null; }
+  if (e.key==='Escape') { cancelWiring(); }
 });
 
 /* ─── toolbar: click-to-place (simplest reliable interaction) ─── */
@@ -989,21 +1076,61 @@ function el2(tag, attrs){ const e=document.createElement(tag); for(const k in at
 
 let placingType = null;
 document.getElementById('canvasWrap').addEventListener('click', (e)=>{
+  if (wiringFrom){
+    // clicked bare board space mid-wire (pins/holes stop propagation before
+    // this fires) — drop a bend point here instead of placing a component
+    if (e.target.classList && (e.target.classList.contains('pin-dot') || e.target.classList.contains('bb-hole'))) return;
+    const origin = wiringWaypoints.length ? wiringWaypoints[wiringWaypoints.length-1] : {x:wiringFrom.x, y:wiringFrom.y};
+    let pt = clientToSvgPos(e);
+    if (e.ctrlKey){
+      const dx = Math.abs(pt.x-origin.x), dy = Math.abs(pt.y-origin.y);
+      pt = dx>dy ? {x:pt.x, y:origin.y} : {x:origin.x, y:pt.y};
+    }
+    pt = { x:Math.round(pt.x/(GRID/2))*(GRID/2), y:Math.round(pt.y/(GRID/2))*(GRID/2) };
+    wiringWaypoints.push(pt);
+    scheduleRender();
+    return;
+  }
   if (!placingType) return;
-  const wrap = document.getElementById('canvasWrap');
-  const r = wrap.getBoundingClientRect();
-  const x = e.clientX - r.left + wrap.scrollLeft;
-  const y = e.clientY - r.top + wrap.scrollTop;
-  addComponent(placingType, x, y);
+  const pos = clientToSvgPos(e);
+  addComponent(placingType, pos.x, pos.y);
   placingType = null;
   document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
 });
+document.getElementById('canvasWrap').addEventListener('mousemove', (e)=>{
+  if (!wiringFrom) return;
+  liveMousePos = clientToSvgPos(e);
+  liveMouseCtrl = e.ctrlKey;
+  scheduleRender();
+});
+document.getElementById('canvasWrap').addEventListener('wheel', (e)=>{
+  if (!e.ctrlKey) return;
+  e.preventDefault();
+  setZoom(zoomLevel + (e.deltaY<0 ? 0.1 : -0.1));
+}, {passive:false});
+document.getElementById('zoomIn').addEventListener('click', ()=>setZoom(zoomLevel+0.1));
+document.getElementById('zoomOut').addEventListener('click', ()=>setZoom(zoomLevel-0.1));
+document.getElementById('zoomReset').addEventListener('click', ()=>setZoom(1));
 
 /* ═══════════════════════════════════════════════════════════════
    PROPERTY PANEL
 ═══════════════════════════════════════════════════════════════ */
 function renderPropPanel(){
   const panel = document.getElementById('propPanel');
+  if (selectedWireId){
+    const w = wires.find(x=>x.id===selectedWireId);
+    if (!w){ panel.innerHTML = ''; return; }
+    const bendCount = (w.waypoints||[]).length;
+    panel.innerHTML = `
+      <div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">🔌 Wire</div>
+      <div class="prop-row"><div class="prop-lbl"><span>Colour</span></div>
+        <input type="color" id="wireColorInput" value="${w.color||'#fbbf24'}" style="width:100%;height:30px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;"></div>
+      <p class="empty-hint">${bendCount ? bendCount+' routing point'+(bendCount>1?'s':'')+' along this wire.' : 'Tip: while drawing a wire, click empty board space to bend it around other parts — hold Ctrl to snap that bend perfectly horizontal or vertical.'}</p>
+      <button class="del-btn" id="btnDelWire">Delete wire</button>`;
+    document.getElementById('wireColorInput').addEventListener('input', (e)=>{ w.color = e.target.value; scheduleRender(); });
+    document.getElementById('btnDelWire').addEventListener('click', ()=>{ removeWire(w.id); selectedWireId=null; renderPropPanel(); });
+    return;
+  }
   if (!selected){ panel.innerHTML = '<p class="empty-hint">Click a component on the board to see and edit its properties here.</p>'; return; }
   const c = components.find(x=>x.id===selected);
   if (!c){ panel.innerHTML = ''; return; }
@@ -1124,7 +1251,7 @@ function solveCircuit(){
       else if (def.highImpedance) branches.push({ comp:c, kind:'resistor', ohms:10000000, na, nb });
       else if (def.fixedResistance!=null) branches.push({ comp:c, kind:'resistor', ohms:def.fixedResistance, na, nb });
       else if (def.resistanceFn) branches.push({ comp:c, kind:'resistor', ohms:def.resistanceFn(c), na, nb });
-      else branches.push({ comp:c, kind:'resistor', ohms:220, na, nb });
+      else branches.push({ comp:c, kind:'resistor', ohms:c.props.ohms||220, na, nb });
     }
   }
   // microcontroller pins: OUTPUT -> voltage source to GND-node; INPUT/INPUT_PULLUP -> high impedance (or pulled up)
