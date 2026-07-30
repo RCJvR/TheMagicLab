@@ -2,7 +2,16 @@
 // THE MAGIC LAB — sw.js  (updated for Phase 1)
 // ============================================================
 
-const CACHE_NAME = 'magic-lab-v62'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+const CACHE_NAME = 'magic-lab-v63'; // BUMP ON EVERY DEPLOY — cache-first SW serves stale pages otherwise
+// v63: Model Mage is now a landing page choosing between two workshops —
+// the existing parametric CAD tool (moved to model-mage-cad.html) and a
+// new Circuit Simulator (model-mage-circuits.html): a breadboard editor
+// with a real (simplified) circuit solver — Modified Nodal Analysis with
+// fixed-point iteration for the LED/transistor's nonlinear behaviour —
+// plus a simulated microcontroller board running Arduino-flavoured code
+// (type keywords stripped, executed as real async JS so delay() actually
+// paces setup()/loop() in wall-clock time, the same technique Robot Realm
+// uses for its own code runner).
                                     // v34: pitch.html — mobile problem-stat overflow fix, tool card
                                     // fact-checks (Science Sage Gr7-12, Model Mage AI claims removed,
                                     // Web Wizard/Computer Codex/AI Oracle accuracy), AI Tutor language

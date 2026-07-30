@@ -1,0 +1,3203 @@
+<!doctype html>
+<!-- © 2026 Ruhan Janse van Rensburg. All rights reserved. -->
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Mage — Computer-Aided Design</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d4f4a'/%3E%3Cpath d='M32 10 L52 20 L52 44 L32 54 L12 44 L12 20 Z' fill='none' stroke='rgba(153%2C246%2C228%2C0.80)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='32' y1='10' x2='32' y2='32' stroke='rgba(153%2C246%2C228%2C0.55)' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='52' y2='20' stroke='rgba(153%2C246%2C228%2C0.40)' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='32' y1='32' x2='12' y2='20' stroke='rgba(153%2C246%2C228%2C0.40)' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='4' fill='rgba(245%2C158%2C11%2C0.90)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"}}</script>
+  <style>
+    :root {
+      --bg:#080c1a; --bg2:#0d1226;
+      --surface:rgba(255,255,255,0.048); --border:rgba(255,255,255,0.085);
+      --text:#e4e8f8; --text2:rgba(210,218,245,0.65);
+      --accent:#14b8a6; --accent2:#2dd4bf;
+      --blue:#3b82f6; --green:#10b981; --red:#ef4444;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);
+         height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+
+    header{flex-shrink:0;background:var(--bg2);border-bottom:1px solid var(--border);
+           display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 20px;gap:12px;}
+    .logo{font-weight:900;font-size:clamp(17px,2vw,24px);letter-spacing:-0.03em;color:var(--accent2);display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap;}
+    .hdr-center{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;}
+    .hdr-right{display:flex;align-items:center;gap:6px;justify-content:flex-end;min-width:0;flex-wrap:wrap;}
+    .nav-link{background:var(--surface);border:1px solid var(--border);color:var(--text2);
+              font-size:0.76rem;font-weight:600;padding:6px 14px;border-radius:99px;
+              text-decoration:none;transition:color 120ms,border-color 120ms;}
+    .nav-link:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+    .nav-link.accent{background:rgba(20,184,166,0.15);border-color:rgba(20,184,166,0.4);color:var(--accent2);}
+
+    .toolbar{height:40px;flex-shrink:0;background:rgba(10,15,32,0.95);border-bottom:1px solid var(--border);
+             display:flex;align-items:center;padding:0 8px;gap:2px;}
+    .tb-sep{width:1px;height:20px;background:var(--border);margin:0 5px;}
+    .tb-btn{height:28px;padding:0 9px;border-radius:5px;border:1px solid transparent;
+            background:none;color:var(--text2);font-size:0.76rem;font-weight:600;
+            cursor:pointer;display:flex;align-items:center;gap:5px;
+            font-family:inherit;transition:background 100ms,color 100ms;}
+    .tb-btn:hover{background:var(--surface);color:var(--text);}
+    .tb-btn.active{background:rgba(217,119,6,0.18);color:var(--accent2);border-color:rgba(217,119,6,0.4);}
+    .tb-btn.construct-on{background:rgba(59,130,246,0.18);color:var(--blue);border-color:rgba(59,130,246,0.4);}
+    .tb-btn svg{width:13px;height:13px;flex-shrink:0;}
+    .snap-sel{height:26px;padding:0 7px;border-radius:5px;border:1px solid var(--border);
+              background:#111827;color:#e4e8f8;font-size:0.74rem;cursor:pointer;font-family:inherit;}
+    .snap-sel option{background:#111827;color:#e4e8f8;}
+    .snap-sel:focus{outline:none;border-color:rgba(255,255,255,0.20);}
+    .tb-label{font-size:0.73rem;color:var(--text2);padding-left:4px;}
+
+    .main{flex:1;display:flex;overflow:hidden;}
+
+    .sketch-panel{flex:1;position:relative;background:#05081a;overflow:hidden;}
+    #sk{display:block;width:100%;height:100%;touch-action:none;}
+    .sk-overlay{position:absolute;top:8px;left:8px;background:rgba(10,15,32,0.88);
+                border:1px solid var(--border);border-radius:7px;padding:5px 10px;
+                font-size:0.70rem;font-weight:600;color:var(--text2);}
+    .hint-box{position:absolute;bottom:8px;left:8px;background:rgba(10,15,32,0.88);
+              border:1px solid var(--border);border-radius:7px;padding:7px 11px;
+              font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:280px;}
+    .hint-box b{color:var(--text);}
+
+    /* ── 3D mode ── */
+    .main.mode-3d .sketch-panel{flex:0;width:0;min-width:0;overflow:hidden;}
+    .main.mode-3d .right-panel{flex:1;width:auto;min-width:0;}
+    /* compact horizontal control strip */
+    .main.mode-3d .ext-panel{display:flex;flex-direction:row;align-items:center;
+      gap:18px;padding:7px 14px;border-bottom:1px solid var(--border);}
+    .main.mode-3d .ext-panel .panel-title{display:none;}
+    .main.mode-3d .ext-panel .pr{flex:1;margin:0;display:flex;align-items:center;gap:8px;}
+    .main.mode-3d .ext-panel .pr-lbl{margin:0;white-space:nowrap;font-size:0.70rem;}
+    .main.mode-3d .ext-panel .pr-val{font-size:0.70rem;}
+    .main.mode-3d .ext-panel input[type=range]{margin:0;}
+    .main.mode-3d .ext-panel > div:last-child{flex-shrink:0;}
+
+    /* Length popup */
+    #len-popup{position:absolute;display:none;align-items:center;gap:4px;
+               background:rgba(10,15,32,0.97);border:1px solid rgba(217,119,6,0.6);
+               border-radius:7px;padding:4px 8px;z-index:100;pointer-events:auto;}
+    #len-popup input{width:72px;height:24px;padding:0 6px;border-radius:4px;
+                     border:1px solid rgba(217,119,6,0.4);background:rgba(255,255,255,0.07);
+                     color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.8rem;
+                     outline:none;}
+    #len-popup input:focus{border-color:rgba(217,119,6,0.8);}
+    #len-popup .lp-unit{font-size:0.70rem;color:var(--text2);}
+
+    .right-panel{width:300px;flex-shrink:0;display:flex;flex-direction:column;
+                 border-left:1px solid var(--border);background:var(--bg2);}
+
+    .ext-panel{padding:13px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+    .panel-title{font-size:0.68rem;font-weight:700;color:var(--text2);
+                 letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+    .pr{margin-bottom:8px;}
+    .pr-lbl{display:flex;justify-content:space-between;align-items:center;
+            font-size:0.76rem;color:var(--text2);margin-bottom:4px;}
+    .pr-val{font-family:'JetBrains Mono',monospace;font-size:0.74rem;font-weight:700;color:var(--accent2);}
+    input[type=range]{width:100%;accent-color:var(--accent2);}
+
+    /* ── Constraint panel ── */
+    .cst-panel{padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:none;}
+    .cst-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+    .cst-lbl{font-size:0.73rem;color:var(--text2);width:46px;flex-shrink:0;}
+    .cst-inp{flex:1;height:24px;padding:0 7px;border-radius:5px;
+             border:1px solid var(--border);background:rgba(255,255,255,0.06);
+             color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.74rem;}
+    .cst-inp:focus{outline:none;border-color:rgba(217,119,6,0.5);}
+    .cst-unit{font-size:0.70rem;color:var(--text2);width:20px;}
+    .cst-btn{height:24px;padding:0 9px;border-radius:5px;border:1px solid var(--border);
+             background:var(--surface);color:var(--text2);font-size:0.72rem;font-weight:600;
+             cursor:pointer;font-family:inherit;white-space:nowrap;}
+    .cst-btn:hover{background:rgba(217,119,6,0.15);color:var(--accent2);border-color:rgba(217,119,6,0.4);}
+    .cst-quick-row{display:flex;gap:5px;margin-top:2px;}
+    .cst-quick{flex:1;height:22px;border-radius:5px;border:1px solid var(--border);
+               background:var(--surface);color:var(--text2);font-size:0.70rem;font-weight:600;
+               cursor:pointer;font-family:inherit;}
+    .cst-quick:hover{background:rgba(59,130,246,0.15);color:var(--blue);border-color:rgba(59,130,246,0.4);}
+
+    #vp3d{flex:1;position:relative;background:#04060f;overflow:hidden;}
+    .vp-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;
+                    align-items:center;justify-content:center;gap:8px;pointer-events:none;}
+    .vp-ph-icon{font-size:2.2rem;opacity:0.2;}
+    .vp-ph-text{font-size:0.74rem;color:var(--text2);opacity:0.45;text-align:center;line-height:1.6;}
+    .vp-badge{position:absolute;top:8px;left:8px;background:rgba(4,6,15,0.88);
+              border:1px solid var(--border);border-radius:6px;padding:3px 9px;
+              font-size:0.68rem;font-weight:600;color:var(--text2);}
+    .vp-hint{position:absolute;bottom:4px;left:8px;font-size:0.62rem;color:rgba(210,218,245,0.3);}
+    .btn-stl{position:absolute;bottom:10px;right:10px;height:30px;padding:0 13px;
+             border-radius:6px;background:rgba(217,119,6,0.9);border:none;
+             color:#fff;font-weight:700;font-size:0.73rem;font-family:inherit;
+             cursor:pointer;opacity:0;pointer-events:none;transition:opacity 200ms;}
+    .btn-stl.show{opacity:1;pointer-events:auto;}
+
+    .edge-mode-btn{height:22px;padding:0 8px;border:none;background:none;
+      color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;}
+    .edge-mode-btn.active{background:rgba(20,184,166,0.2);color:var(--accent2);}
+    .feat-panel{width:200px;flex-shrink:0;border-right:1px solid var(--border);
+      background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
+    .feat-panel-title{font-size:0.68rem;font-weight:700;color:var(--text2);
+      letter-spacing:.09em;text-transform:uppercase;padding:10px 12px 6px;
+      border-bottom:1px solid var(--border);flex-shrink:0;}
+    .feat-list{flex:1;overflow-y:auto;padding:4px 0;}
+    .feat-node{display:flex;align-items:center;gap:7px;padding:5px 12px;
+      cursor:pointer;font-size:0.73rem;color:var(--text2);
+      border-left:2px solid transparent;user-select:none;}
+    .feat-node:hover{background:var(--surface);color:var(--text);}
+    .feat-node.active{background:rgba(217,119,6,0.12);border-left-color:var(--accent);color:var(--accent2);}
+    .feat-node.extrude-node{padding-left:26px;}
+    .feat-node-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .feat-node-op{font-size:0.60rem;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0;}
+    .feat-node-op.op-new {background:rgba(16,185,129,0.2);color:var(--green);}
+    .feat-node-op.op-fuse{background:rgba(59,130,246,0.2);color:var(--blue);}
+    .feat-node-op.op-cut {background:rgba(239,68,68,0.2);color:var(--red);}
+    .feat-node.datum-node{border-left-color:rgba(245,158,11,0.7);color:rgba(245,200,80,0.9);}
+    .feat-node.datum-node:hover{background:rgba(245,158,11,0.08);}
+    .feat-node.sketch-under-datum{padding-left:24px;}
+    .feat-node.extrude-under-datum{padding-left:38px;}
+    .pr-num-inp{width:52px;height:22px;padding:0 5px;border-radius:4px;border:1px solid var(--border);
+                background:#111827;color:#e4e8f8;font-size:0.74rem;font-family:inherit;text-align:right;}
+    .pr-num-inp:focus{outline:none;border-color:rgba(255,255,255,0.30);}
+    .pr-unit{font-size:0.68rem;color:var(--text2);flex-shrink:0;}
+    .op-toggle{display:none;gap:0;border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:10px;}
+    .op-toggle.visible{display:flex;}
+    .op-btn{flex:1;height:24px;padding:0 8px;border:none;background:none;color:var(--text2);font-size:0.70rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 120ms;}
+    .op-btn.active.add{background:rgba(59,130,246,0.25);color:var(--blue);}
+    .op-btn.active.cut{background:rgba(239,68,68,0.20);color:var(--red);}
+    .feat-add-sketch{margin:6px 10px 8px;padding:5px 0;border-radius:5px;
+      border:1px dashed var(--border);background:none;color:var(--text2);
+      font-size:0.72rem;font-weight:600;cursor:pointer;font-family:inherit;width:calc(100% - 20px);}
+    .feat-add-sketch:hover{border-color:var(--accent);color:var(--accent2);}
+    .main.mode-3d .feat-panel{display:none;}
+    .statusbar{height:26px;flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);
+               display:flex;align-items:center;padding:0 12px;gap:14px;
+               font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text2);}
+    .statusbar .sep{width:1px;height:12px;background:var(--border);}
+
+    /* ── Mobile layout ── */
+    @media (max-width: 768px) {
+      body { height: 100dvh; }
+      header { grid-template-columns: 1fr; justify-items: center; padding: 8px 10px; gap: 6px; }
+      .logo, .hdr-center, .hdr-right { justify-content: center; }
+      .logo { font-size: 0.85rem; }
+      #filename-input { width: 80px; }
+      .hdr-right { gap: 6px; }
+      .nav-link { font-size: 0.70rem; padding: 3px 8px; }
+
+      .toolbar {
+        overflow-x: auto; overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; gap: 3px;
+      }
+      .toolbar::-webkit-scrollbar { display: none; }
+      .tb-btn { white-space: nowrap; flex-shrink: 0; }
+      .tb-sep { flex-shrink: 0; }
+
+      .main { flex-direction: column; overflow: auto; }
+      .main.mode-3d { flex-direction: column; }
+
+      .feat-panel {
+        width: 100%; height: auto; max-height: 140px;
+        border-right: none; border-bottom: 1px solid var(--border);
+        flex-direction: row; overflow: hidden;
+      }
+      .feat-panel-title { writing-mode: horizontal-tb; white-space: nowrap; padding: 8px 12px; }
+      .feat-list { flex: 1; overflow-x: auto; overflow-y: hidden;
+        display: flex; flex-direction: row; padding: 4px; }
+      .feat-node { flex-shrink: 0; white-space: nowrap; }
+      .feat-add-sketch { width: auto; margin: 6px; flex-shrink: 0; }
+
+      .sketch-panel { min-height: 55vh; }
+      #sk { width: 100%; height: 100%; }
+
+      .right-panel {
+        width: 100%; flex-shrink: 0;
+        border-left: none; border-top: 1px solid var(--border);
+        flex-direction: row; flex-wrap: wrap;
+      }
+      .ext-panel { flex: 1; min-width: 180px; border-bottom: none; border-right: 1px solid var(--border); }
+      .cst-panel { flex: 1; min-width: 180px; border-bottom: none; }
+      #vp3d { min-height: 55vh; }
+
+      .main.mode-3d .right-panel { flex-direction: column; }
+      .main.mode-3d .ext-panel {
+        flex-direction: column; align-items: stretch;
+        gap: 0; padding: 13px 14px; border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .main.mode-3d .ext-panel .panel-title { display: block; }
+      .main.mode-3d .ext-panel .pr {
+        flex: none; margin-bottom: 8px;
+        display: block; align-items: unset; gap: 0;
+      }
+      .main.mode-3d .ext-panel .pr-lbl {
+        display: flex; justify-content: space-between;
+        margin-bottom: 4px; white-space: normal;
+      }
+      .main.mode-3d .ext-panel input[type=range] { width: 100%; margin: 0; }
+
+      .statusbar { display: none; }
+    }
+  </style>
+
+
+<style>.app-footer{flex-shrink:0;height:26px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:rgba(210,218,245,0.26);border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.15);letter-spacing:0.02em;}</style>
+<script defer src="auth.js"></script>
+<script defer src="require-auth.js"></script>
+<script defer src="progress.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(153,246,228,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><line x1="14" y1="3" x2="14" y2="14" stroke="rgba(153,246,228,0.55)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="24" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><line x1="14" y1="14" x2="4" y2="8.5" stroke="rgba(153,246,228,0.40)" stroke-width="1.4" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="rgba(20,184,166,0.90)"/></svg> Model Mage <span style="opacity:.5;font-weight:600;">· CAD</span></div>
+  <div class="hdr-center">
+    <input type="text" id="filename-input" value="sketch"
+      style="height:26px;padding:0 8px;border-radius:5px;border:1px solid var(--border);
+      background:var(--surface);color:var(--text);font-family:'JetBrains Mono',monospace;
+      font-size:0.74rem;width:110px;" title="Filename (without extension)">
+    <span style="font-size:0.72rem;color:var(--text2);">.json</span>
+    <button class="tb-btn" id="btn-save" title="Save sketch">💾 Save</button>
+    <button class="tb-btn" id="btn-load" title="Load sketch">📂 Load</button>
+    <input type="file" id="file-load" accept=".json,application/json" style="display:none">
+  </div>
+  <div class="hdr-right">
+    <a class="nav-link accent" href="model-mage-shapes.html">⬡ 3D Models →</a>
+    <a class="nav-link" href="model-mage.html">← Model Mage</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <!-- Drawing tools -->
+  <button class="tb-btn active" id="tool-line" title="Single Line segment (L)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="13" x2="13" y2="1"/></svg>
+    Line
+  </button>
+  <button class="tb-btn" id="tool-polyline" title="Polyline / chained (P)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,13 5,4 9,9 13,1"/></svg>
+    Polyline
+  </button>
+  <button class="tb-btn" id="tool-rect" title="Rectangle (R)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="12" height="8" rx="1.5"/></svg>
+    Rect
+  </button>
+  <button class="tb-btn" id="tool-circle" title="Circle (C)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/></svg>
+    Circle
+  </button>
+  <button class="tb-btn" id="tool-arc" title="Arc — 3-point (A)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 12 Q7 1 12 12"/></svg>
+    Arc
+  </button>
+  <button class="tb-btn" id="tool-polygon" title="Polygon (G)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><polygon points="7,1 13,5 11,12 3,12 1,5"/></svg>
+    Polygon
+  </button>
+  <button class="tb-btn" id="tool-spline" title="Spline — Catmull-Rom (S)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 11 C3 2,5 11,7 7 S11 1,13 4"/></svg>
+    Spline
+  </button>
+  <!-- Edit Points tool -->
+  <button class="tb-btn" id="tool-edit" title="Edit Points — drag vertices (E)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="3" cy="11" r="2"/><circle cx="11" cy="3" r="2"/><line x1="4.4" y1="9.6" x2="9.6" y2="4.4"/><circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg>
+    Edit
+  </button>
+  <!-- Construction mode toggle -->
+  <button class="tb-btn" id="btn-construct" title="Construction mode — entities are reference-only (X)">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2.5,2"><line x1="1" y1="13" x2="13" y2="1"/></svg>
+    Const
+  </button>
+  <!-- Polygon sides picker -->
+  <span class="tb-label" id="poly-sides-lbl" style="display:none">Sides</span>
+  <input type="number" class="snap-sel" id="poly-sides" value="6" min="3" max="64" style="display:none;width:52px">
+  <!-- Rect sub-mode -->
+  <select class="snap-sel" id="rect-submode" style="display:none;width:140px" title="Rectangle type">
+    <option value="corner">Corner to Corner</option>
+    <option value="center">From Center</option>
+    <option value="rounded">Rounded Corners</option>
+  </select>
+  <span class="tb-label" id="rect-radius-lbl" style="display:none">r =</span>
+  <input type="number" class="snap-sel" id="rect-radius" value="5" min="0.5" max="100" step="0.5" style="display:none;width:58px" title="Corner radius (mm)">
+  <span class="tb-label" id="rect-radius-unit" style="display:none">mm</span>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
+  <button class="tb-btn" id="btn-clear" title="Clear sketch">✕ Clear</button>
+  <div class="tb-sep"></div>
+  <div style="margin-left:auto"></div>
+  <button class="tb-btn" id="btn-mode-3d" title="Switch to 3D view">⬡ View 3D</button>
+  <div class="tb-sep"></div>
+  <span class="tb-label">Grid snap</span>
+  <select class="snap-sel" id="snap-sel">
+    <option value="1">1 mm</option>
+    <option value="2">2 mm</option>
+    <option value="5" selected>5 mm</option>
+    <option value="10">10 mm</option>
+    <option value="25">25 mm</option>
+    <option value="0">Off</option>
+  </select>
+</div>
+
+<div class="main">
+
+  <div class="feat-panel" id="feat-panel">
+    <div class="feat-panel-title">Feature Tree</div>
+    <div class="feat-list" id="feat-list"></div>
+    <button class="feat-add-sketch" id="btn-add-sketch">+ Sketch</button>
+  </div>
+
+  <div class="sketch-panel">
+    <canvas id="sk"></canvas>
+    <div class="sk-overlay">Sketch · XY Plane</div>
+    <div class="hint-box" id="hint-box">
+      <b>Line tool</b><br>
+      Click start · Click end · type length<br>
+      <b>Ctrl</b>: freeform · Click label to edit
+    </div>
+    <!-- Length popup -->
+    <div id="len-popup">
+      <input type="number" id="len-input" step="0.1" min="0.1">
+      <span class="lp-unit">mm</span>
+    </div>
+  </div>
+
+  <div class="right-panel">
+
+    <div class="ext-panel">
+      <div class="panel-title">Extrude</div>
+      <div class="op-toggle" id="op-toggle">
+        <button class="op-btn add" id="btn-op-add">Add ↑</button>
+        <button class="op-btn cut active" id="btn-op-cut">Cut ↓</button>
+      </div>
+      <div class="pr">
+        <div class="pr-lbl">
+          <span id="lbl-h">Height</span>
+          <span style="display:flex;align-items:center;gap:4px">
+            <input type="number" id="v-h" class="pr-num-inp" value="40" min="1" max="1000" step="1">
+            <span class="pr-unit">mm</span>
+          </span>
+        </div>
+        <input type="range" id="s-h" min="1" max="1000" value="40">
+      </div>
+      <div class="pr">
+        <div class="pr-lbl">
+          <span style="display:flex;gap:0;border:1px solid var(--border);border-radius:5px;overflow:hidden;flex-shrink:0">
+            <button id="btn-fillet-mode" class="edge-mode-btn active" title="Fillet">Fillet</button>
+            <button id="btn-chamfer-mode" class="edge-mode-btn" title="Chamfer">Chamfer</button>
+          </span>
+          <span style="display:flex;align-items:center;gap:4px">
+            <input type="number" id="v-edge" class="pr-num-inp" value="0" min="0" max="50" step="0.5">
+            <span class="pr-unit">mm</span>
+          </span>
+        </div>
+        <input type="range" id="s-edge" min="0" max="50" value="0" step="0.5">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+        <span id="rebuild-status" style="font-size:0.68rem;color:var(--text2)"></span>
+        <button id="btn-rebuild" style="background:none;border:none;color:var(--text2);font-size:0.70rem;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0">↺ Rebuild</button>
+      </div>
+    </div>
+
+    <!-- Constraint panel — shown on label click -->
+    <div class="cst-panel" id="cst-panel">
+      <div class="panel-title">Constrain — <span id="cst-label">Segment</span></div>
+      <div class="cst-row" id="cst-len-row">
+        <span class="cst-lbl">Length</span>
+        <input type="number" class="cst-inp" id="cst-len" step="0.1" min="0.1">
+        <span class="cst-unit">mm</span>
+        <button class="cst-btn" id="btn-cst-len">Set</button>
+      </div>
+      <div class="cst-row" id="cst-ang-row">
+        <span class="cst-lbl">Angle</span>
+        <input type="number" class="cst-inp" id="cst-ang" step="1" min="-360" max="360">
+        <span class="cst-unit">°</span>
+        <button class="cst-btn" id="btn-cst-ang">Set</button>
+      </div>
+      <!-- Circle radius row (shown instead of angle when circle selected) -->
+      <div class="cst-row" id="cst-rad-row" style="display:none">
+        <span class="cst-lbl">Radius</span>
+        <input type="number" class="cst-inp" id="cst-rad" step="0.1" min="0.1">
+        <span class="cst-unit">mm</span>
+        <button class="cst-btn" id="btn-cst-rad">Set</button>
+      </div>
+      <div class="cst-quick-row" id="cst-quick-row">
+        <button class="cst-quick" id="btn-cst-h">Horizontal</button>
+        <button class="cst-quick" id="btn-cst-v">Vertical</button>
+        <button class="cst-quick" id="btn-cst-p">∥ Parallel prev</button>
+      </div>
+    </div>
+
+    <div id="vp3d">
+      <div class="vp-placeholder" id="vp-ph">
+        <div class="vp-ph-icon">⬡</div>
+        <div class="vp-ph-text">Draw a closed profile<br>to auto-extrude</div>
+      </div>
+      <div class="vp-badge" id="vp-badge" style="display:none">replicad · OpenCascade WASM</div>
+      <div class="vp-hint">Left: orbit · Right: pan · Scroll: zoom · 1/3/7: views · F: focus</div>
+      <div style="position:absolute;bottom:8px;right:8px;display:flex;gap:5px;">
+        <button class="btn-stl" id="btn-face-sketch" style="position:static">✏ Sketch Face</button>
+        <button class="btn-stl" id="btn-stl" style="position:static">↓ Export STL</button>
+        <button class="btn-stl" id="btn-load-stl" style="position:static">↑ Import STL</button>
+        <button class="btn-stl" id="btn-clear-stl" style="position:static;display:none">✕ Clear STL</button>
+      </div>
+      <input type="file" id="file-load-stl" accept=".stl" style="display:none">
+    </div>
+
+  </div>
+</div>
+
+<div class="statusbar">
+  <span>X <b id="st-x">0.0</b> mm</span>
+  <span>Y <b id="st-y">0.0</b> mm</span>
+  <div class="sep"></div>
+  <span id="st-snap">Snap 5 mm</span>
+  <div class="sep"></div>
+  <span id="st-info">Ready — select a drawing tool</span>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLExporter }   from 'three/addons/exporters/STLExporter.js';
+
+// ════════════════════════════════════════════════════════════════════
+// WORKER
+// ════════════════════════════════════════════════════════════════════
+
+const _wSrc = `
+import Module from 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/replicad_single.js';
+import { setOC, draw, drawRectangle, drawCircle } from 'https://cdn.jsdelivr.net/npm/replicad@0.23.1/dist/replicad.js';
+const OC_BASE = 'https://cdn.jsdelivr.net/npm/replicad-opencascadejs@0.23.0/src/';
+let ready = false;
+const boot = (async () => {
+  self.postMessage({ type:'status', msg:'Loading OpenCascade WASM…' });
+  const oc = await Module({ locateFile: p => OC_BASE + p });
+  setOC(oc); ready = true;
+  self.postMessage({ type:'ready' });
+})();
+self.onmessage = async ({ data }) => {
+  if (data.type !== 'build') return;
+  if (!ready) { await boot; }
+  try {
+    const profileList = data.profiles
+      ?? [{ profile:data.profile, height:data.height, operation:'new',
+            filletR:data.filletR||0, chamferR:data.chamferR||0,
+            planeName:'XY', planeOffset:0 }];
+    let solid = null;
+    for (const item of profileList) {
+      try {
+        const ns = item.normalSign ?? 1;
+        // Replicad's XZ plane has normal = -Y (opposite convention to XY and YZ planes).
+        // Flip the effective direction for XZ so cuts/fuses go the right way on Y-axis faces.
+        const pf = (item.planeName||'XY') === 'XZ' ? -1 : 1;
+        let effectiveH;
+        if (item.operation === 'cut') {
+          effectiveH = -ns * pf * Math.abs(item.height);
+        } else if (item.operation === 'fuse') {
+          effectiveH = ns * pf * Math.abs(item.height);
+        } else {
+          effectiveH = item.height; // 'new' — plain extrude, no flip
+        }
+        const s = makeSolid(item.profile, effectiveH, item.filletR||0, item.chamferR||0,
+                            item.planeName||'XY', item.planeOffset||0);
+        if (!solid || item.operation === 'new') {
+          solid = solid ? solid.fuse(s) : s;
+        } else if (item.operation === 'fuse') {
+          solid = solid.fuse(s);
+        } else if (item.operation === 'cut') {
+          solid = solid.cut(s);
+        }
+      } catch(opErr) {
+        // Skip this operation so a bad cut/fuse doesn't abort the whole build
+        console.warn('[ModelMage] skipping op', item.operation, opErr?.message || opErr);
+      }
+    }
+    const m = solid.mesh({ tolerance:0.04, angularTolerance:10 });
+    const v = m.vertices  instanceof Float32Array ? m.vertices  : new Float32Array(m.vertices);
+    const n = m.normals   instanceof Float32Array ? m.normals   : new Float32Array(m.normals);
+    const t = m.triangles instanceof Uint32Array  ? m.triangles : new Uint32Array(m.triangles);
+    self.postMessage({ type:'mesh', v, n, t }, [v.buffer, n.buffer, t.buffer]);
+  } catch(e) {
+    const msg = e?.message || e?.toString?.() || JSON.stringify(e) || 'unknown error';
+    self.postMessage({ type:'err', msg });
+  }
+};
+function _planeTranslate(cx, cy, planeName) {
+  if (planeName === 'YZ') return [0, cx, cy];
+  if (planeName === 'XZ') return [cx, 0, cy];
+  return [cx, cy, 0]; // XY default
+}
+
+function makeSolid(p, h, filletR, chamferR, planeName='XY', planeOffset=0) {
+  let solid;
+  if (p.type === 'circle') {
+    solid = drawCircle(p.r).sketchOnPlane(planeName, planeOffset).extrude(h)
+      .translate(_planeTranslate(p.cx, p.cy, planeName));
+  } else if (p.type === 'rect') {
+    const rw=Math.abs(p.w), rh=Math.abs(p.h), cx=p.x+p.w/2, cy=p.y+p.h/2;
+    if (p.cornerR && p.cornerR > 0) {
+      const r = Math.min(p.cornerR, rw*0.45, rh*0.45);
+      const hw=rw/2, hh=rh/2, tx=hw-r, ty=hh-r;
+      const N=8, rpts=[];
+      const corners=[[-tx,-ty,Math.PI,Math.PI*3/2],[tx,-ty,Math.PI*3/2,Math.PI*2],[tx,ty,0,Math.PI/2],[-tx,ty,Math.PI/2,Math.PI]];
+      corners.forEach(([cx2,cy2,a0,a1],ci)=>{
+        for(let i=(ci===0?0:1);i<=N;i++){const a=a0+(a1-a0)*i/N;rpts.push([cx2+r*Math.cos(a),cy2+r*Math.sin(a)]);}
+      });
+      let sk=draw(rpts[0]);
+      for(let i=1;i<rpts.length;i++) sk=sk.lineTo(rpts[i]);
+      solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h)
+        .translate(_planeTranslate(cx, cy, planeName));
+    } else {
+      solid = drawRectangle(rw, rh).sketchOnPlane(planeName, planeOffset).extrude(h)
+        .translate(_planeTranslate(cx, cy, planeName));
+    }
+  } else if (p.type === 'arc') {
+    let sk = draw(p.p1).threePointsArc(p.pmid, p.p2).lineTo(p.p1);
+    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
+  } else if (p.type === 'spline') {
+    const pts = p.points;
+    if (pts.length < 3) throw new Error('Need at least 3 spline points');
+    // Approximate Catmull-Rom spline as a dense polyline (avoids splineTo API uncertainty)
+    const STEPS = 24;
+    const approx = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[Math.max(0, i - 1)];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[Math.min(pts.length - 1, i + 2)];
+      for (let j = 0; j < STEPS; j++) {
+        const t = j / STEPS, t2 = t*t, t3 = t2*t;
+        approx.push([
+          0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+          0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3),
+        ]);
+      }
+    }
+    approx.push(pts[pts.length - 1]);
+    let sk = draw(approx[0]);
+    for (let i = 1; i < approx.length; i++) sk = sk.lineTo(approx[i]);
+    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
+  } else {
+    const pts = p.points;
+    if (pts.length < 3) throw new Error('Need at least 3 points');
+    let sk = draw(pts[0]);
+    for (let i = 1; i < pts.length; i++) sk = sk.lineTo(pts[i]);
+    solid = sk.close().sketchOnPlane(planeName, planeOffset).extrude(h);
+  }
+  if (filletR > 0) {
+    const safeR = Math.min(filletR, h*0.45);
+    try { solid = solid.fillet(safeR); } catch(e) {
+      try { solid = solid.fillet(safeR*0.5); } catch(_) {}
+    }
+  } else if (chamferR > 0) {
+    const safeC = Math.min(chamferR, h*0.45);
+    try { solid = solid.chamfer(safeC); } catch(e) {}
+  }
+  return solid;
+}
+`;
+
+const worker = new Worker(
+  URL.createObjectURL(new Blob([_wSrc], { type:'text/javascript' })),
+  { type:'module' }
+);
+let workerReady = false;
+let pendingBuild = null;
+
+worker.onmessage = ({ data }) => {
+  if (data.type === 'ready') {
+    workerReady = true;
+    if (pendingBuild) { worker.postMessage(pendingBuild); pendingBuild = null; }
+  } else if (data.type === 'mesh') {
+    applyMesh(data.v, data.n, data.t);
+    setRebuildStatus('done');
+  } else if (data.type === 'err') {
+    console.warn('[ModelMage]', data.msg);
+    setRebuildStatus('error', data.msg);
+  }
+};
+worker.onerror = e => { console.error('[ModelMage] Worker:', e.message); setRebuildStatus('error', e.message); };
+
+// ════════════════════════════════════════════════════════════════════
+// SKETCH STATE
+// ════════════════════════════════════════════════════════════════════
+
+let tool       = 'line';  // 'line' | 'polyline' | 'rect' | 'circle' | 'arc' | 'polygon' | 'spline'
+let entities   = []; // legacy ref — use ents()
+let gridSnap   = 5;
+let linePoints = [];      // used by line, polyline
+let rectStart  = null;
+let rectSubMode = 'corner'; // 'corner' | 'center' | 'rounded'
+let rectCornerR = 5; // stored corner radius for 'rounded' mode (matches input default)
+let circleCenter = null;
+
+// Arc tool state
+let arcPts = []; // 0,1 or 2 points placed so far
+
+// Polygon tool state
+let polyCenter = null;
+let polySides  = 6;
+
+// Spline tool state
+let splinePts = [];
+
+// Construction mode global toggle
+let constructionMode = false;
+
+// View
+let panX = 0, panY = 0, zoom = 4;
+let isPanning = false, panStart0 = {x:0,y:0}, panOrig = {x:0,y:0};
+
+// Mouse / modifier state
+let mouse = { x:0, y:0 };
+let ctrlHeld = false, shiftHeld = false, spaceHeld = false;
+
+// Object snap (OSNAP) — active when Space is held
+let activeOSnap = null; // { x, y, type: 'mid'|'center'|'quad' } or null
+
+// Extrude
+let extH = 40;
+let filletR = 0;
+let chamferR = 0;
+let extTimer = null;
+let hasAutoSwitchedTo3d = false;
+
+// ── Feature tree ─────────────────────────────────────────────────
+let featureTree = [];
+let activeSketchId = null;
+let nextFeatId = 1;
+function newId(p) { return `${p}-${nextFeatId++}`; }
+function activeSketch() { return featureTree.find(f => f.id === activeSketchId); }
+function ents() { return activeSketch()?.entities ?? []; }
+
+// Selection (for constraint panel) — set by label clicks
+let selection = null;
+
+// Drag state
+let dragState = null; // { entityIdx, ptIdx, isRect, isCircle, isArc(ptKey), isSpline } or null
+let dragStarted = false; // prevents click from firing after a drag
+
+// Label hits — rebuilt each render frame
+let labelHits = [];
+
+// Hover label index (-1 = none)
+let hoverLabelIdx = -1;
+
+// Pending single-segment info for len-popup
+let pendingLenEdit = null;
+
+// ════════════════════════════════════════════════════════════════════
+// REBUILD STATUS
+// ════════════════════════════════════════════════════════════════════
+
+function setRebuildStatus(state, msg) {
+  const el = document.getElementById('rebuild-status');
+  if (state === 'building') { el.textContent = 'Building…'; el.style.color = 'var(--text2)'; }
+  else if (state === 'done') { el.textContent = '✓ Done'; el.style.color = 'var(--green)'; }
+  else if (state === 'error') { el.textContent = '⚠ ' + (msg || 'Error'); el.style.color = 'var(--red)'; }
+  else { el.textContent = ''; }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// LEN POPUP
+// ════════════════════════════════════════════════════════════════════
+
+const lenPopup  = document.getElementById('len-popup');
+const lenInput  = document.getElementById('len-input');
+
+function showLenPopup(screenX, screenY, currentLen, onApply) {
+  lenPopup._onApply = onApply;
+  lenInput.value = currentLen.toFixed(currentLen < 10 ? 2 : 1);
+  lenPopup.style.left = (screenX + 10) + 'px';
+  lenPopup.style.top  = (screenY - 16) + 'px';
+  lenPopup.style.display = 'flex';
+  requestAnimationFrame(() => { lenInput.focus(); lenInput.select(); });
+}
+
+function hideLenPopup() {
+  lenPopup.style.display = 'none';
+  lenPopup._onApply = null;
+  pendingLenEdit = null;
+}
+
+lenInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const v = parseFloat(lenInput.value);
+    if (v > 0 && lenPopup._onApply) lenPopup._onApply(v);
+    hideLenPopup();
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    hideLenPopup();
+  }
+  e.stopPropagation();
+});
+
+lenInput.addEventListener('click', e => e.stopPropagation());
+
+// ════════════════════════════════════════════════════════════════════
+// CANVAS
+// ════════════════════════════════════════════════════════════════════
+
+const sk  = document.getElementById('sk');
+const ctx = sk.getContext('2d');
+function W() { return sk.offsetWidth; }
+function H() { return sk.offsetHeight; }
+function ox() { return W()/2 + panX; }
+function oy() { return H()/2 + panY; }
+function wtoc(wx,wy) { return [ox()+wx*zoom, oy()-wy*zoom]; }
+function ctow(sx,sy) { return [(sx-ox())/zoom, (oy()-sy)/zoom]; }
+
+function applyAngleSnap(wx, wy) {
+  const refPts = tool === 'polyline' ? linePoints : (tool === 'line' ? linePoints : []);
+  if (refPts.length === 0) return [wx, wy];
+  const last = refPts[refPts.length-1];
+  const dx = wx-last[0], dy = wy-last[1];
+  const dist = Math.hypot(dx, dy);
+  if (dist < 1e-6) return [wx, wy];
+  const rawAngle = Math.atan2(dy, dx);
+  const snapAngle = Math.round(rawAngle / (Math.PI/12)) * (Math.PI/12);
+  return [last[0] + dist*Math.cos(snapAngle), last[1] + dist*Math.sin(snapAngle)];
+}
+
+function getOSnapCandidates() {
+  const cands = [];
+  for (const e of ents()) {
+    if (e.construction) continue;
+    if (e.type === 'polyline') {
+      // Edge midpoints
+      const nSeg = e.closed ? e.points.length : e.points.length - 1;
+      for (let i = 0; i < nSeg; i++) {
+        const p1 = e.points[i], p2 = e.points[(i+1) % e.points.length];
+        cands.push({ x:(p1[0]+p2[0])/2, y:(p1[1]+p2[1])/2, type:'mid' });
+      }
+      // Centroid (for closed polygons)
+      if (e.closed && e.points.length >= 3) {
+        const cx = e.points.reduce((s,p)=>s+p[0],0)/e.points.length;
+        const cy = e.points.reduce((s,p)=>s+p[1],0)/e.points.length;
+        cands.push({ x:cx, y:cy, type:'center' });
+      }
+    }
+    if (e.type === 'rect') {
+      // Center
+      cands.push({ x:e.x+e.w/2, y:e.y+e.h/2, type:'center' });
+      // Edge midpoints
+      cands.push({ x:e.x+e.w/2, y:e.y,        type:'mid' });
+      cands.push({ x:e.x+e.w/2, y:e.y+e.h,    type:'mid' });
+      cands.push({ x:e.x,       y:e.y+e.h/2,  type:'mid' });
+      cands.push({ x:e.x+e.w,   y:e.y+e.h/2,  type:'mid' });
+    }
+    if (e.type === 'circle') {
+      cands.push({ x:e.cx,     y:e.cy,     type:'center' });
+      cands.push({ x:e.cx+e.r, y:e.cy,     type:'quad' });
+      cands.push({ x:e.cx-e.r, y:e.cy,     type:'quad' });
+      cands.push({ x:e.cx,     y:e.cy+e.r, type:'quad' });
+      cands.push({ x:e.cx,     y:e.cy-e.r, type:'quad' });
+    }
+    if (e.type === 'arc') {
+      const g = arcGeom(e.p1, e.pmid, e.p2);
+      if (g) {
+        cands.push({ x:g.cx, y:g.cy, type:'center' });
+        // Arc midpoint (angle halfway between start and end going the right way)
+        let midA = (g.startAngle + g.endAngle) / 2;
+        if (!g.ccw && g.endAngle > g.startAngle) midA += Math.PI;
+        cands.push({ x:g.cx+g.r*Math.cos(midA), y:g.cy+g.r*Math.sin(midA), type:'mid' });
+      }
+      // Chord midpoint
+      cands.push({ x:(e.p1[0]+e.p2[0])/2, y:(e.p1[1]+e.p2[1])/2, type:'mid' });
+    }
+    if (e.type === 'spline' && e.points.length >= 2) {
+      // Approx midpoint: midpoint of points array midpoint
+      const mid = Math.floor(e.points.length / 2);
+      cands.push({ x:e.points[mid][0], y:e.points[mid][1], type:'mid' });
+    }
+  }
+  return cands;
+}
+
+function snapPt(wx, wy) {
+  if (ctrlHeld) { activeOSnap = null; return [wx, wy]; }
+
+  // OSNAP (Space held) — check midpoints, centres, quadrants
+  if (spaceHeld) {
+    const cands = getOSnapCandidates();
+    const [rx,ry] = wtoc(wx, wy);
+    let best = null, bestD = 30; // 30px threshold
+    for (const c of cands) {
+      const [cx,cy] = wtoc(c.x, c.y);
+      const d = Math.hypot(cx-rx, cy-ry);
+      if (d < bestD) { bestD = d; best = c; }
+    }
+    if (best) { activeOSnap = best; return [best.x, best.y]; }
+    activeOSnap = null;
+    // Fall through to normal snaps when no candidate nearby
+  } else {
+    activeOSnap = null;
+  }
+
+  // 1. Point snap — nearest vertex within 20px screen
+  const SNAP_PX = 20;
+  let best = null, bestD = SNAP_PX;
+  for (const pt of allPoints()) {
+    const [sx,sy] = wtoc(pt[0],pt[1]);
+    const [rx,ry] = wtoc(wx,wy);
+    const d = Math.hypot(sx-rx, sy-ry);
+    if (d < bestD) { bestD = d; best = pt; }
+  }
+  if (best) return [best[0], best[1]];
+
+  // 2. Shift + line/polyline = 15° angle snap
+  if (shiftHeld && (tool === 'polyline' || tool === 'line') && linePoints.length > 0)
+    return applyAngleSnap(wx, wy);
+
+  // 3. Grid snap
+  if (gridSnap > 0) return [
+    Math.round(wx/gridSnap)*gridSnap,
+    Math.round(wy/gridSnap)*gridSnap,
+  ];
+  return [wx, wy];
+}
+
+function allPoints() {
+  const pts = [];
+  for (const e of ents()) {
+    if (e.type === 'polyline') e.points.forEach(p => pts.push(p));
+    else if (e.type === 'rect') {
+      pts.push([e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]);
+    } else if (e.type === 'circle') pts.push([e.cx,e.cy]);
+    else if (e.type === 'arc') pts.push(e.p1, e.pmid, e.p2);
+    else if (e.type === 'spline') e.points.forEach(p => pts.push(p));
+  }
+  linePoints.forEach(p => pts.push(p));
+  arcPts.forEach(p => pts.push(p));
+  splinePts.forEach(p => pts.push(p));
+  return pts;
+}
+
+function resize() {
+  const dpr = devicePixelRatio;
+  sk.width  = sk.offsetWidth*dpr;
+  sk.height = sk.offsetHeight*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  scheduleRender();
+}
+new ResizeObserver(resize).observe(sk);
+
+// ════════════════════════════════════════════════════════════════════
+// ARC GEOMETRY HELPER
+// ════════════════════════════════════════════════════════════════════
+
+function arcGeom(p1, pmid, p2) {
+  const [ax,ay]=p1,[bx,by]=pmid,[cx,cy]=p2;
+  const D = 2*(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by));
+  if (Math.abs(D)<1e-10) return null;
+  const ux=((ax*ax+ay*ay)*(by-cy)+(bx*bx+by*by)*(cy-ay)+(cx*cx+cy*cy)*(ay-by))/D;
+  const uy=((ax*ax+ay*ay)*(cx-bx)+(bx*bx+by*by)*(ax-cx)+(cx*cx+cy*cy)*(bx-ax))/D;
+  const r=Math.hypot(ax-ux,ay-uy);
+  const a1=Math.atan2(ay-uy,ax-ux);
+  const am=Math.atan2(by-uy,bx-ux);
+  const a2=Math.atan2(cy-uy,cx-ux);
+  function norm(a){return((a%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);}
+  const n1=norm(a1),nm=norm(am),n2=norm(a2);
+  let ccw;
+  if (n1<n2) ccw = nm>n1 && nm<n2;
+  else ccw = nm>n1 || nm<n2;
+  return { cx:ux, cy:uy, r, startAngle:a1, endAngle:a2, ccw };
+}
+
+// ════════════════════════════════════════════════════════════════════
+// SPLINE DRAWING HELPER (Catmull-Rom)
+// ════════════════════════════════════════════════════════════════════
+
+function drawSpline(pts, isPreview) {
+  if (pts.length < 2) return;
+  ctx.beginPath();
+  const [sx,sy]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx,sy);
+  for (let i=0; i<pts.length-1; i++) {
+    const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+    const [s1x,s1y]=wtoc(p1[0],p1[1]),[s2x,s2y]=wtoc(p2[0],p2[1]);
+    const [s0x,s0y]=wtoc(p0[0],p0[1]),[s3x,s3y]=wtoc(p3[0],p3[1]);
+    ctx.bezierCurveTo(
+      s1x+(s2x-s0x)/6, s1y+(s2y-s0y)/6,
+      s2x-(s3x-s1x)/6, s2y-(s3y-s1y)/6,
+      s2x, s2y
+    );
+  }
+  ctx.stroke();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════════════
+
+let rafId = null;
+function scheduleRender() {
+  if (!rafId) rafId = requestAnimationFrame(()=>{ rafId=null; render(); });
+  scheduleAutosave();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// AUTOSAVE — last work state survives refresh / accidental navigation
+// ════════════════════════════════════════════════════════════════════
+// Reuses the exact v2 format of the Save/Load-to-file feature, stored
+// in localStorage instead of a download. Saves are debounced and hang
+// off the three funnels every state change already flows through
+// (scheduleRender, renderFeatureTree, scheduleExtrude), plus a final
+// flush on beforeunload. Restore runs at boot in place of
+// initFeatureTree() when a non-empty autosave exists.
+
+const AUTOSAVE_KEY = 'magiclab-model-mage-autosave';
+let _autosaveTimer = null;
+
+function _doAutosave() {
+  try {
+    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify({
+      version: 2,
+      filename: document.getElementById('filename-input')?.value || '',
+      featureTree,
+      activeSketchId,
+      savedAt: Date.now()
+    }));
+  } catch (e) { /* storage full or blocked — autosave is best-effort */ }
+}
+
+function scheduleAutosave() {
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer = setTimeout(_doAutosave, 800);
+}
+
+window.addEventListener('beforeunload', _doAutosave);
+
+function tryRestoreAutosave() {
+  try {
+    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (data.version !== 2 || !Array.isArray(data.featureTree)) return false;
+    // Only restore if there's actually something drawn — a saved blank
+    // canvas should behave like a normal fresh start.
+    const hasContent = data.featureTree.some(f =>
+      (f.type === 'sketch' && f.entities?.length) || f.type === 'datum');
+    if (!hasContent) return false;
+
+    featureTree = data.featureTree;
+    nextFeatId = Math.max(...featureTree.map(f => parseInt(f.id.split('-')[1]) || 0), 0) + 1;
+    activeSketchId =
+      (data.activeSketchId && featureTree.some(f => f.id === data.activeSketchId && f.type === 'sketch'))
+        ? data.activeSketchId
+        : (featureTree.find(f => f.type === 'sketch')?.id ?? null);
+    const fi = document.getElementById('filename-input');
+    if (fi && data.filename) fi.value = data.filename;
+    return true;
+  } catch (e) { return false; }
+}
+
+function discardAutosaveAndStartFresh() {
+  try { localStorage.removeItem(AUTOSAVE_KEY); } catch (e) {}
+  initFeatureTree();
+  const fi = document.getElementById('filename-input');
+  if (fi) fi.value = 'sketch';
+  selection = null;
+  renderFeatureTree(); scheduleRender(); scheduleExtrude();
+  document.getElementById('mm-restore-toast')?.remove();
+}
+
+function showRestoreToast() {
+  const t = document.createElement('div');
+  t.id = 'mm-restore-toast';
+  t.style.cssText =
+    'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9000;' +
+    'display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;' +
+    'background:#141a33;border:1px solid rgba(124,109,250,0.40);color:#e4e8f8;' +
+    'font-size:13px;box-shadow:0 12px 40px rgba(0,0,0,0.5);';
+  t.innerHTML = '↩︎ Restored your last drawing' +
+    '<button id="mm-restore-fresh" style="padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);' +
+    'background:rgba(255,255,255,0.07);color:#e4e8f8;font-size:12px;font-weight:600;cursor:pointer;">Start fresh</button>' +
+    '<button id="mm-restore-close" style="background:none;border:none;color:rgba(228,232,248,0.5);cursor:pointer;font-size:14px;padding:0 2px;">✕</button>';
+  document.body.appendChild(t);
+  document.getElementById('mm-restore-fresh').addEventListener('click', discardAutosaveAndStartFresh);
+  document.getElementById('mm-restore-close').addEventListener('click', () => t.remove());
+  setTimeout(() => t.remove(), 12000);
+}
+
+function render() {
+  labelHits = []; // reset each frame
+  const cW=W(), cH=H();
+  ctx.clearRect(0,0,cW,cH);
+  drawGrid(cW,cH);
+  drawFaceUnderlay();
+  drawCommitted();
+  drawSelection();
+  drawInProgress();
+  drawSnapIndicator();
+}
+
+function drawGrid(cW,cH) {
+  const minor = gridSnap>0 ? gridSnap : 5;
+  const major = minor*5;
+  const [wx0]=ctow(0,0), [wx1]=ctow(cW,0);
+  const [,wy0]=ctow(0,cH), [,wy1]=ctow(0,0);
+
+  ctx.strokeStyle='rgba(20,30,65,0.95)'; ctx.lineWidth=0.5; ctx.beginPath();
+  const gx0=Math.floor(wx0/minor)*minor, gy0=Math.floor(wy0/minor)*minor;
+  for (let gx=gx0; gx<=wx1+minor; gx+=minor) {
+    if (Math.abs(gx%major)<0.01||gx===0) continue;
+    const [sx]=wtoc(gx,0); ctx.moveTo(sx,0); ctx.lineTo(sx,cH);
+  }
+  for (let gy=gy0; gy<=wy1+minor; gy+=minor) {
+    if (Math.abs(gy%major)<0.01||gy===0) continue;
+    const [,sy]=wtoc(0,gy); ctx.moveTo(0,sy); ctx.lineTo(cW,sy);
+  }
+  ctx.stroke();
+
+  ctx.strokeStyle='rgba(35,55,115,0.95)'; ctx.lineWidth=1; ctx.beginPath();
+  const gmx0=Math.floor(wx0/major)*major, gmy0=Math.floor(wy0/major)*major;
+  for (let gx=gmx0; gx<=wx1+major; gx+=major) {
+    if (gx===0) continue; const [sx]=wtoc(gx,0); ctx.moveTo(sx,0); ctx.lineTo(sx,cH);
+  }
+  for (let gy=gmy0; gy<=wy1+major; gy+=major) {
+    if (gy===0) continue; const [,sy]=wtoc(0,gy); ctx.moveTo(0,sy); ctx.lineTo(cW,sy);
+  }
+  ctx.stroke();
+
+  ctx.strokeStyle='rgba(80,110,210,0.7)'; ctx.lineWidth=1.5; ctx.setLineDash([5,5]); ctx.beginPath();
+  const [axX]=wtoc(0,0); ctx.moveTo(axX,0); ctx.lineTo(axX,cH);
+  const [,axY]=wtoc(0,0); ctx.moveTo(0,axY); ctx.lineTo(cW,axY);
+  ctx.stroke(); ctx.setLineDash([]);
+
+  const [ox2,oy2]=wtoc(0,0);
+  ctx.fillStyle='rgba(120,150,255,0.85)';
+  ctx.beginPath(); ctx.arc(ox2,oy2,3.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(120,150,255,0.5)';
+  ctx.font='10px JetBrains Mono,monospace';
+  ctx.fillText('0',ox2+5,oy2-5);
+  if (zoom>=2) {
+    ctx.fillStyle='rgba(100,130,200,0.4)';
+    ctx.font='10px JetBrains Mono,monospace';
+    ctx.fillText(`${major} mm`,6,cH-6);
+  }
+}
+
+function drawCommitted() {
+  for (let ei=0; ei<ents().length; ei++) drawEntity(ents()[ei], false, ei);
+}
+
+function drawEntity(e, preview, entityIdx) {
+  const isConstruct = e.construction === true;
+
+  ctx.save();
+  if (isConstruct) {
+    ctx.globalAlpha = 0.4;
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = 'rgba(160,190,255,0.85)';
+    ctx.fillStyle = 'rgba(160,190,255,0.05)';
+  } else {
+    ctx.strokeStyle = preview ? 'rgba(245,158,11,0.85)' : 'rgba(160,190,255,1)';
+    ctx.fillStyle   = preview ? 'rgba(245,158,11,0.08)' : 'rgba(160,190,255,0.07)';
+  }
+  ctx.lineWidth = 1.8;
+
+  if (e.type === 'polyline') {
+    const pts = e.points;
+    if (pts.length < 2) { ctx.restore(); return; }
+    ctx.beginPath();
+    const [sx,sy]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx,sy);
+    for (let i=1; i<pts.length; i++) { const [sx2,sy2]=wtoc(pts[i][0],pts[i][1]); ctx.lineTo(sx2,sy2); }
+    if (e.closed) {
+      ctx.closePath();
+      if (!isConstruct) ctx.fill();
+    }
+    ctx.stroke();
+
+    if (!isConstruct) {
+      for (let i=0; i<pts.length; i++) {
+        const j=(i+1)%pts.length;
+        if (j===0&&!e.closed) continue;
+        dimLabel(pts[i], pts[j], entityIdx, i);
+      }
+    }
+    pts.forEach(p=>vertex(p));
+  }
+
+  if (e.type === 'rect') {
+    const {x,y,w,h}=e;
+    const [sx,sy]=wtoc(x,y);
+    ctx.beginPath();
+    if (e.cornerR && e.cornerR > 0) {
+      const r = Math.min(e.cornerR * zoom, Math.abs(w*zoom)/2, Math.abs(h*zoom)/2);
+      const x2=sx, y2=sy-h*zoom; // top-left in canvas
+      ctx.moveTo(x2+r, y2);
+      ctx.lineTo(x2+w*zoom-r, y2);  ctx.arcTo(x2+w*zoom,y2,       x2+w*zoom,y2+r, r);
+      ctx.lineTo(x2+w*zoom,   y2+h*zoom-r); ctx.arcTo(x2+w*zoom,y2+h*zoom, x2+w*zoom-r,y2+h*zoom, r);
+      ctx.lineTo(x2+r,        y2+h*zoom);   ctx.arcTo(x2,        y2+h*zoom, x2,         y2+h*zoom-r, r);
+      ctx.lineTo(x2,          y2+r);        ctx.arcTo(x2,        y2,        x2+r,       y2, r);
+      ctx.closePath();
+    } else {
+      ctx.rect(sx,sy,w*zoom,-h*zoom);
+    }
+    if (!isConstruct) ctx.fill();
+    ctx.stroke();
+    if (!isConstruct && entityIdx !== undefined) {
+      dimLabel([x,y],[x+w,y], entityIdx, 0);
+      dimLabel([x+w,y],[x+w,y+h], entityIdx, 1);
+    } else if (!isConstruct) {
+      dimLabel([x,y],[x+w,y], -1, 0);
+      dimLabel([x+w,y],[x+w,y+h], -1, 1);
+    }
+    [[x,y],[x+w,y],[x+w,y+h],[x,y+h]].forEach(p=>vertex(p));
+  }
+
+  if (e.type === 'circle') {
+    const [sx,sy]=wtoc(e.cx,e.cy);
+    ctx.beginPath(); ctx.arc(sx,sy,e.r*zoom,0,Math.PI*2);
+    if (!isConstruct) ctx.fill();
+    ctx.stroke();
+    if (!isConstruct) {
+      dimLabel([e.cx,e.cy],[e.cx+e.r,e.cy], entityIdx !== undefined ? entityIdx : -1, 0);
+    }
+    vertex([e.cx,e.cy]);
+  }
+
+  if (e.type === 'arc') {
+    const g = arcGeom(e.p1, e.pmid, e.p2);
+    if (g) {
+      const [scx,scy]=wtoc(g.cx,g.cy);
+      ctx.beginPath();
+      ctx.arc(scx, scy, g.r*zoom, g.startAngle, g.endAngle, !g.ccw);
+      ctx.stroke();
+    }
+    if (!isConstruct) {
+      vertex(e.p1); vertex(e.pmid); vertex(e.p2);
+    }
+  }
+
+  if (e.type === 'spline') {
+    const pts = e.points;
+    if (pts.length >= 2) {
+      drawSpline(pts, preview);
+      if (!isConstruct) {
+        pts.forEach(p => vertex(p));
+      }
+    }
+  }
+
+  ctx.restore();
+}
+
+function drawSelection() {
+  if (!selection) return;
+  const ei = selection.entityIdx;
+  const e  = ents()[ei];
+  if (!e) return;
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(245,158,11,1)';
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = 'rgba(245,158,11,0.5)';
+  ctx.shadowBlur = 6;
+
+  if (selection.isCircle && e.type === 'circle') {
+    const [sx,sy]=wtoc(e.cx,e.cy);
+    ctx.beginPath(); ctx.arc(sx,sy,e.r*zoom,0,Math.PI*2); ctx.stroke();
+  } else if (e.type === 'polyline') {
+    const si = selection.segIdx;
+    const p1 = e.points[si];
+    const p2 = e.points[(si+1)%e.points.length];
+    const [s1x,s1y]=wtoc(p1[0],p1[1]);
+    const [s2x,s2y]=wtoc(p2[0],p2[1]);
+    ctx.beginPath(); ctx.moveTo(s1x,s1y); ctx.lineTo(s2x,s2y); ctx.stroke();
+    ctx.fillStyle='rgba(245,158,11,1)'; ctx.shadowBlur=0;
+    [[s1x,s1y],[s2x,s2y]].forEach(([x,y])=>{
+      ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
+    });
+  } else if (selection.isRect && e.type === 'rect') {
+    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+    const si=selection.segIdx;
+    const [s1x,s1y]=wtoc(corners[si][0],corners[si][1]);
+    const [s2x,s2y]=wtoc(corners[(si+1)%4][0],corners[(si+1)%4][1]);
+    ctx.beginPath(); ctx.moveTo(s1x,s1y); ctx.lineTo(s2x,s2y); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function vertex(pt, nearDrag) {
+  const [sx,sy]=wtoc(pt[0],pt[1]);
+  ctx.save();
+  ctx.fillStyle = nearDrag ? 'rgba(245,158,11,0.9)' : 'rgba(200,220,255,0.9)';
+  ctx.beginPath(); ctx.arc(sx,sy,nearDrag ? 5 : 3,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+// dimLabel — records hit entry for label click detection
+function dimLabel(p1, p2, entityIdx, segIdx) {
+  const [sx1,sy1]=wtoc(p1[0],p1[1]);
+  const [sx2,sy2]=wtoc(p2[0],p2[1]);
+  const mx=(sx1+sx2)/2, my=(sy1+sy2)/2;
+  const dx=sx2-sx1, dy=sy2-sy1;
+  const len=Math.hypot(dx,dy);
+  if (len<30) return;
+  const nx=-dy/len*13, ny=dx/len*13;
+  const lx=mx+nx, ly=my+ny;
+  const wlen=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+  const isHovered = hoverLabelIdx >= 0 && labelHits.length === hoverLabelIdx;
+
+  ctx.save();
+  ctx.font='10px JetBrains Mono,monospace';
+  ctx.fillStyle = isHovered ? 'rgba(245,158,11,0.95)' : 'rgba(130,170,255,0.75)';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(wlen.toFixed(wlen<10?2:1)+' mm', lx, ly);
+  ctx.restore();
+
+  labelHits.push({ lx, ly, entityIdx, segIdx, wlen, p1:[p1[0],p1[1]], p2:[p2[0],p2[1]] });
+}
+
+function hitLabel(sx, sy) {
+  const LABEL_R = 14;
+  for (let i=0; i<labelHits.length; i++) {
+    const h = labelHits[i];
+    if (Math.hypot(sx-h.lx, sy-h.ly) < LABEL_R) return i;
+  }
+  return -1;
+}
+
+function drawInProgress() {
+  const mx=mouse.x, my=mouse.y;
+
+  // polyline in-progress
+  if (tool==='polyline' && linePoints.length>0) {
+    ctx.strokeStyle='rgba(245,158,11,0.85)'; ctx.lineWidth=1.8;
+    ctx.beginPath();
+    const [sx0,sy0]=wtoc(linePoints[0][0],linePoints[0][1]); ctx.moveTo(sx0,sy0);
+    for (let i=1; i<linePoints.length; i++) {
+      const [sx,sy]=wtoc(linePoints[i][0],linePoints[i][1]); ctx.lineTo(sx,sy);
+    }
+    const [msx,msy]=wtoc(mx,my); ctx.lineTo(msx,msy);
+    ctx.stroke();
+
+    if (linePoints.length>=3 && isNearFirst(mx,my)) {
+      ctx.strokeStyle='rgba(16,185,129,0.9)'; ctx.lineWidth=2;
+      const [fx,fy]=wtoc(linePoints[0][0],linePoints[0][1]);
+      ctx.beginPath(); ctx.moveTo(msx,msy); ctx.lineTo(fx,fy); ctx.stroke();
+      ctx.beginPath(); ctx.arc(fx,fy,9,0,Math.PI*2); ctx.stroke();
+    }
+    dimLabel(linePoints[linePoints.length-1],[mx,my], -1, -1);
+    linePoints.forEach(p=>vertex(p));
+  }
+
+  // single-line in-progress
+  if (tool==='line' && linePoints.length===1) {
+    ctx.strokeStyle = constructionMode ? 'rgba(160,190,255,0.4)' : 'rgba(245,158,11,0.85)';
+    ctx.lineWidth=1.8;
+    if (constructionMode) ctx.setLineDash([6,4]);
+    ctx.beginPath();
+    const [sx0,sy0]=wtoc(linePoints[0][0],linePoints[0][1]); ctx.moveTo(sx0,sy0);
+    const [msx,msy]=wtoc(mx,my); ctx.lineTo(msx,msy);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    dimLabel(linePoints[0],[mx,my], -1, -1);
+    vertex(linePoints[0]);
+  }
+
+  if (tool==='rect' && rectStart) {
+    let rx, ry, rw, rh;
+    if (rectSubMode === 'center') {
+      const hw = Math.abs(mx - rectStart.x), hh = Math.abs(my - rectStart.y);
+      rx = rectStart.x - hw; ry = rectStart.y - hh; rw = hw*2; rh = hh*2;
+    } else {
+      rx = Math.min(rectStart.x,mx); ry = Math.min(rectStart.y,my);
+      rw = Math.abs(mx-rectStart.x);  rh = Math.abs(my-rectStart.y);
+    }
+    drawEntity({type:'rect',x:rx,y:ry,w:rw,h:rh,construction:constructionMode}, true, undefined);
+    // anchor dot
+    const [ax,ay]=wtoc(rectStart.x,rectStart.y);
+    ctx.fillStyle='#2dd4bf'; ctx.beginPath(); ctx.arc(ax,ay,4,0,Math.PI*2); ctx.fill();
+  }
+
+  if (tool==='circle' && circleCenter) {
+    const r=Math.hypot(mx-circleCenter.x,my-circleCenter.y);
+    drawEntity({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}, true, undefined);
+    // anchor dot at center
+    const [cx2,cy2]=wtoc(circleCenter.x,circleCenter.y);
+    ctx.fillStyle='#2dd4bf'; ctx.beginPath(); ctx.arc(cx2,cy2,4,0,Math.PI*2); ctx.fill();
+  }
+
+  // Arc in-progress: click1=start, click2=end, move=bend, click3=commit
+  if (tool==='arc') {
+    if (arcPts.length===1) {
+      // Show chord from start to cursor
+      ctx.strokeStyle='rgba(245,158,11,0.5)'; ctx.lineWidth=1.4; ctx.setLineDash([4,4]);
+      ctx.beginPath();
+      const [s0x,s0y]=wtoc(arcPts[0][0],arcPts[0][1]);
+      const [msx,msy]=wtoc(mx,my);
+      ctx.moveTo(s0x,s0y); ctx.lineTo(msx,msy); ctx.stroke();
+      ctx.setLineDash([]);
+      vertex(arcPts[0]);
+      dimLabel(arcPts[0],[mx,my],-1,-1);
+    } else if (arcPts.length===2) {
+      // arcPts[0]=start, arcPts[1]=end, cursor=midpoint on arc
+      const pmid = [mx, my];
+      const g = arcGeom(arcPts[0], pmid, arcPts[1]);
+      ctx.save(); ctx.strokeStyle='rgba(245,158,11,0.85)'; ctx.lineWidth=1.8; ctx.setLineDash([]);
+      if (g) {
+        const [scx,scy]=wtoc(g.cx,g.cy);
+        ctx.beginPath(); ctx.arc(scx,scy,g.r*zoom,g.startAngle,g.endAngle,!g.ccw); ctx.stroke();
+      } else {
+        // Collinear: fallback to straight line
+        const [s0x,s0y]=wtoc(arcPts[0][0],arcPts[0][1]);
+        const [s1x,s1y]=wtoc(arcPts[1][0],arcPts[1][1]);
+        ctx.beginPath(); ctx.moveTo(s0x,s0y); ctx.lineTo(s1x,s1y); ctx.stroke();
+      }
+      // Show chord to end as guide
+      ctx.strokeStyle='rgba(245,158,11,0.3)'; ctx.lineWidth=1; ctx.setLineDash([3,4]);
+      const [s1x,s1y]=wtoc(arcPts[1][0],arcPts[1][1]);
+      const [msx2,msy2]=wtoc(mx,my);
+      ctx.beginPath(); ctx.moveTo(msx2,msy2); ctx.lineTo(s1x,s1y); ctx.stroke();
+      ctx.restore();
+      arcPts.forEach(p=>vertex(p));
+    }
+  }
+
+  // Polygon in-progress
+  if (tool==='polygon' && polyCenter) {
+    const r = Math.hypot(mx-polyCenter.x, my-polyCenter.y);
+    if (r > 0.5) {
+      const n = polySides;
+      const baseAngle = Math.atan2(my-polyCenter.y, mx-polyCenter.x);
+      const pts = [];
+      for (let i=0; i<n; i++) {
+        const a = baseAngle + (2*Math.PI*i/n);
+        pts.push([polyCenter.x + r*Math.cos(a), polyCenter.y + r*Math.sin(a)]);
+      }
+      ctx.save();
+      ctx.strokeStyle = constructionMode ? 'rgba(160,190,255,0.4)' : 'rgba(245,158,11,0.85)';
+      if (constructionMode) ctx.setLineDash([6,4]);
+      ctx.lineWidth=1.8;
+      ctx.beginPath();
+      const [sx0,sy0]=wtoc(pts[0][0],pts[0][1]); ctx.moveTo(sx0,sy0);
+      for (let i=1; i<pts.length; i++) { const [sx,sy]=wtoc(pts[i][0],pts[i][1]); ctx.lineTo(sx,sy); }
+      ctx.closePath(); ctx.stroke();
+      ctx.restore();
+
+      // Label sides near center
+      const [cx,cy]=wtoc(polyCenter.x, polyCenter.y);
+      ctx.save();
+      ctx.font='11px JetBrains Mono,monospace';
+      ctx.fillStyle='rgba(245,158,11,0.75)';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(`${n} sides`, cx, cy);
+      ctx.restore();
+    }
+    vertex([polyCenter.x, polyCenter.y]);
+  }
+
+  // Spline in-progress
+  if (tool==='spline' && splinePts.length>0) {
+    const previewPts = [...splinePts, [mx,my]];
+    ctx.save();
+    ctx.strokeStyle = constructionMode ? 'rgba(160,190,255,0.5)' : 'rgba(245,158,11,0.85)';
+    if (constructionMode) ctx.setLineDash([6,4]);
+    ctx.lineWidth=1.8;
+    drawSpline(previewPts, true);
+    ctx.restore();
+    splinePts.forEach(p=>vertex(p));
+  }
+}
+
+function drawSnapIndicator() {
+  const [csx,csy]=wtoc(mouse.x,mouse.y);
+
+  // Edit tool: drag-near highlights
+  if (tool === 'edit') {
+    const DRAG_R=10;
+    for (const e of ents()) {
+      const pts = getEntityVertices(e);
+      for (const p of pts) {
+        const [px,py]=wtoc(p[0],p[1]);
+        if (Math.hypot(csx-px,csy-py)<DRAG_R) {
+          vertex(p, true);
+        }
+      }
+    }
+  }
+
+  // Drawing tools: show yellow square when snapped onto an existing vertex
+  if (tool !== 'edit' && !activeOSnap) {
+    const SNAP_PX = 20;
+    let snapTarget = null;
+    for (const pt of allPoints()) {
+      const [px,py] = wtoc(pt[0],pt[1]);
+      const d = Math.hypot(csx-px, csy-py);
+      if (d < SNAP_PX) { snapTarget = [px,py]; break; }
+    }
+    if (snapTarget) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(245,158,11,1)';
+      ctx.lineWidth = 1.8;
+      ctx.strokeRect(snapTarget[0]-7, snapTarget[1]-7, 14, 14);
+      ctx.fillStyle = 'rgba(245,158,11,0.12)';
+      ctx.fillRect(snapTarget[0]-7, snapTarget[1]-7, 14, 14);
+      ctx.fillStyle = 'rgba(245,158,11,0.9)';
+      ctx.font = '9px JetBrains Mono,monospace';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText('Endpt', snapTarget[0]+11, snapTarget[1]+1);
+      ctx.restore();
+    }
+  }
+
+  // OSNAP marker — shown when Space is held and a snap candidate is locked
+  if (activeOSnap) {
+    const [osx,osy] = wtoc(activeOSnap.x, activeOSnap.y);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(16,185,129,1)';
+    ctx.fillStyle   = 'rgba(16,185,129,0.18)';
+    ctx.lineWidth = 1.8;
+    if (activeOSnap.type === 'mid') {
+      // Triangle pointing up
+      ctx.beginPath();
+      ctx.moveTo(osx,    osy-11);
+      ctx.lineTo(osx+10, osy+6);
+      ctx.lineTo(osx-10, osy+6);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    } else if (activeOSnap.type === 'center') {
+      // Circle with cross
+      ctx.beginPath(); ctx.arc(osx,osy,9,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(osx-5,osy); ctx.lineTo(osx+5,osy);
+      ctx.moveTo(osx,osy-5); ctx.lineTo(osx,osy+5);
+      ctx.stroke();
+    } else if (activeOSnap.type === 'quad') {
+      // Diamond
+      ctx.beginPath();
+      ctx.moveTo(osx,    osy-10);
+      ctx.lineTo(osx+8,  osy);
+      ctx.lineTo(osx,    osy+10);
+      ctx.lineTo(osx-8,  osy);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
+    // Label
+    ctx.fillStyle = 'rgba(16,185,129,0.9)';
+    ctx.font = '9px JetBrains Mono,monospace';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    const labels = { mid:'Mid', center:'Cen', quad:'Quad' };
+    ctx.fillText(labels[activeOSnap.type] || '', osx+14, osy+1);
+    ctx.restore();
+    return; // skip normal crosshair when OSNAP is active
+  }
+
+  ctx.strokeStyle = ctrlHeld ? 'rgba(16,185,129,0.6)' : 'rgba(245,158,11,0.45)';
+  ctx.lineWidth=1; ctx.beginPath();
+  ctx.moveTo(csx-8,csy); ctx.lineTo(csx+8,csy);
+  ctx.moveTo(csx,csy-8); ctx.lineTo(csx,csy+8);
+  ctx.stroke();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// DRAGGABLE POINTS HELPERS
+// ════════════════════════════════════════════════════════════════════
+
+function getEntityVertices(e) {
+  if (e.type === 'polyline') return e.points.map(p=>p);
+  if (e.type === 'rect') return [[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+  if (e.type === 'circle') return [[e.cx,e.cy]];
+  if (e.type === 'arc') return [e.p1, e.pmid, e.p2];
+  if (e.type === 'spline') return e.points.map(p=>p);
+  return [];
+}
+
+function findNearVertex(sx, sy) {
+  const DRAG_R = 10;
+  for (let ei=ents().length-1; ei>=0; ei--) {
+    const e = ents()[ei];
+    if (e.type === 'polyline') {
+      for (let pi=0; pi<e.points.length; pi++) {
+        const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi };
+      }
+    } else if (e.type === 'rect') {
+      const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+      for (let pi=0; pi<4; pi++) {
+        const [px,py]=wtoc(corners[pi][0], corners[pi][1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi, isRect:true };
+      }
+    } else if (e.type === 'circle') {
+      const [px,py]=wtoc(e.cx, e.cy);
+      if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isCircle:true };
+    } else if (e.type === 'arc') {
+      const arcKs = [['p1',e.p1],['pmid',e.pmid],['p2',e.p2]];
+      for (const [key,pt] of arcKs) {
+        const [px,py]=wtoc(pt[0],pt[1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:0, isArc:true, ptKey:key };
+      }
+    } else if (e.type === 'spline') {
+      for (let pi=0; pi<e.points.length; pi++) {
+        const [px,py]=wtoc(e.points[pi][0], e.points[pi][1]);
+        if (Math.hypot(sx-px, sy-py) < DRAG_R) return { entityIdx:ei, ptIdx:pi, isSpline:true };
+      }
+    }
+  }
+  return null;
+}
+
+function applyDragMove(ds, wx, wy) {
+  const e = ents()[ds.entityIdx];
+  if (ds.isCircle && e.type==='circle') {
+    e.cx = wx; e.cy = wy;
+  } else if (ds.isRect && e.type==='rect') {
+    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+    corners[ds.ptIdx] = [wx, wy];
+    const opp = corners[(ds.ptIdx+2)%4];
+    e.x = Math.min(wx, opp[0]);
+    e.y = Math.min(wy, opp[1]);
+    e.w = Math.abs(wx - opp[0]);
+    e.h = Math.abs(wy - opp[1]);
+  } else if (ds.isArc && e.type==='arc') {
+    e[ds.ptKey] = [wx, wy];
+  } else if (ds.isSpline && e.type==='spline') {
+    e.points[ds.ptIdx] = [wx, wy];
+  } else if (e.type==='polyline') {
+    e.points[ds.ptIdx] = [wx, wy];
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// HIT TESTING
+// ════════════════════════════════════════════════════════════════════
+
+function ptSegDist(px,py,x1,y1,x2,y2) {
+  const dx=x2-x1, dy=y2-y1, lenSq=dx*dx+dy*dy;
+  if (lenSq<1e-10) return Math.hypot(px-x1,py-y1);
+  const t=Math.max(0,Math.min(1,((px-x1)*dx+(py-y1)*dy)/lenSq));
+  return Math.hypot(px-(x1+t*dx),py-(y1+t*dy));
+}
+
+// ════════════════════════════════════════════════════════════════════
+// CONSTRAINT PANEL
+// ════════════════════════════════════════════════════════════════════
+
+function updateConstraintPanel() {
+  const panel=document.getElementById('cst-panel');
+  if (!selection) { panel.style.display='none'; return; }
+  panel.style.display='block';
+  const e=ents()[selection.entityIdx];
+  if (!e) { panel.style.display='none'; return; }
+  const lenRow=document.getElementById('cst-len-row');
+  const angRow=document.getElementById('cst-ang-row');
+  const radRow=document.getElementById('cst-rad-row');
+  const quickRow=document.getElementById('cst-quick-row');
+
+  if (selection.isCircle && e.type==='circle') {
+    document.getElementById('cst-label').textContent='Circle';
+    lenRow.style.display='none';
+    angRow.style.display='none';
+    radRow.style.display='';
+    quickRow.style.display='none';
+    document.getElementById('cst-rad').value=e.r.toFixed(2);
+    return;
+  }
+
+  lenRow.style.display=''; angRow.style.display=''; radRow.style.display='none';
+  quickRow.style.display='';
+
+  if (e.type==='polyline') {
+    const si=selection.segIdx;
+    const p1=e.points[si], p2=e.points[(si+1)%e.points.length];
+    const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+    const ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0])*180/Math.PI;
+    document.getElementById('cst-label').textContent=`Seg ${si+1}→${(si+1)%e.points.length+1}`;
+    document.getElementById('cst-len').value=len.toFixed(2);
+    document.getElementById('cst-ang').value=ang.toFixed(1);
+    document.getElementById('btn-cst-p').style.display = si>0 ? '' : 'none';
+  } else if (selection.isRect && e.type==='rect') {
+    const corners=[[e.x,e.y],[e.x+e.w,e.y],[e.x+e.w,e.y+e.h],[e.x,e.y+e.h]];
+    const si=selection.segIdx;
+    const p1=corners[si], p2=corners[(si+1)%4];
+    const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+    const ang=Math.atan2(p2[1]-p1[1],p2[0]-p1[0])*180/Math.PI;
+    document.getElementById('cst-label').textContent=si%2===0?'Width edge':'Height edge';
+    document.getElementById('cst-len').value=len.toFixed(2);
+    document.getElementById('cst-ang').value=ang.toFixed(1);
+    document.getElementById('btn-cst-p').style.display='none';
+  }
+}
+
+function applyLengthConstraint() {
+  if (!selection) return;
+  const newLen=parseFloat(document.getElementById('cst-len').value);
+  if (!newLen||newLen<=0) return;
+  const e=ents()[selection.entityIdx];
+  if (e.type==='polyline') {
+    const si=selection.segIdx;
+    const p1=e.points[si];
+    const ni=(si+1)%e.points.length;
+    const p2=e.points[ni];
+    const dx=p2[0]-p1[0], dy=p2[1]-p1[1];
+    const cur=Math.hypot(dx,dy);
+    if (cur<1e-10) return;
+    const s=newLen/cur;
+    e.points[ni]=[p1[0]+dx*s, p1[1]+dy*s];
+  } else if (selection.isRect && e.type==='rect') {
+    const si=selection.segIdx;
+    if (si===0||si===2) e.w=newLen; else e.h=newLen;
+  }
+  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
+}
+
+function applyAngleConstraint(forceDeg) {
+  if (!selection) return;
+  const deg = forceDeg !== undefined ? forceDeg : parseFloat(document.getElementById('cst-ang').value);
+  if (isNaN(deg)) return;
+  const rad=deg*Math.PI/180;
+  const e=ents()[selection.entityIdx];
+  if (e.type==='polyline') {
+    const si=selection.segIdx;
+    const p1=e.points[si];
+    const ni=(si+1)%e.points.length;
+    const p2=e.points[ni];
+    const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+    e.points[ni]=[p1[0]+len*Math.cos(rad), p1[1]+len*Math.sin(rad)];
+  }
+  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
+}
+
+function applyRadiusConstraint() {
+  if (!selection||!selection.isCircle) return;
+  const r=parseFloat(document.getElementById('cst-rad').value);
+  if (!r||r<=0) return;
+  ents()[selection.entityIdx].r=r;
+  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
+}
+
+function applyParallelToPrev() {
+  if (!selection) return;
+  const e=ents()[selection.entityIdx];
+  if (e.type!=='polyline') return;
+  const si=selection.segIdx;
+  if (si<=0) return;
+  const prev1=e.points[si-1], prev2=e.points[si];
+  const prevAngle=Math.atan2(prev2[1]-prev1[1], prev2[0]-prev1[0]);
+  const p1=e.points[si];
+  const ni=(si+1)%e.points.length;
+  const p2=e.points[ni];
+  const len=Math.hypot(p2[0]-p1[0],p2[1]-p1[1]);
+  e.points[ni]=[p1[0]+len*Math.cos(prevAngle), p1[1]+len*Math.sin(prevAngle)];
+  scheduleRender(); scheduleExtrude(); updateConstraintPanel();
+}
+
+document.getElementById('btn-cst-len').addEventListener('click', applyLengthConstraint);
+document.getElementById('btn-cst-ang').addEventListener('click', ()=>applyAngleConstraint());
+document.getElementById('btn-cst-rad').addEventListener('click', applyRadiusConstraint);
+document.getElementById('btn-cst-h').addEventListener('click', ()=>applyAngleConstraint(0));
+document.getElementById('btn-cst-v').addEventListener('click', ()=>applyAngleConstraint(90));
+document.getElementById('btn-cst-p').addEventListener('click', applyParallelToPrev);
+document.getElementById('cst-len').addEventListener('keydown', e=>{ if(e.key==='Enter') applyLengthConstraint(); });
+document.getElementById('cst-ang').addEventListener('keydown', e=>{ if(e.key==='Enter') applyAngleConstraint(); });
+document.getElementById('cst-rad').addEventListener('keydown', e=>{ if(e.key==='Enter') applyRadiusConstraint(); });
+
+// ════════════════════════════════════════════════════════════════════
+// CLOSE DETECTION
+// ════════════════════════════════════════════════════════════════════
+
+function isNearFirst(wx, wy) {
+  if (linePoints.length<3) return false;
+  const [sx1,sy1]=wtoc(linePoints[0][0],linePoints[0][1]);
+  const [sx2,sy2]=wtoc(wx,wy);
+  return Math.hypot(sx1-sx2,sy1-sy2)<14;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// PROFILE / EXTRUDE
+// ════════════════════════════════════════════════════════════════════
+
+// Expand a spline entity to dense Catmull-Rom polyline points
+function catmullRomExpand(pts, steps=20) {
+  const result = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+    for (let j=0; j<steps; j++) {
+      const t=j/steps, t2=t*t, t3=t2*t;
+      result.push([
+        0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+        0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3),
+      ]);
+    }
+  }
+  result.push(pts[pts.length-1]);
+  return result;
+}
+
+function entityEndpts(e) {
+  const p = e.points;
+  return [p[0], p[p.length-1]];
+}
+
+function stitchSegments(segs) {
+  const EPS = 0.6;
+  const pool = segs.map(s => ({
+    pts: s.type==='spline' ? catmullRomExpand(s.points) : s.points.slice(),
+  }));
+
+  function tryStitch(startIdx) {
+    const used = new Array(pool.length).fill(false);
+    const chain = pool[startIdx].pts.slice();
+    used[startIdx] = true;
+    for (let iter = 0; iter < pool.length - 1; iter++) {
+      const tail = chain[chain.length - 1];
+      let found = false;
+      for (let j = 0; j < pool.length; j++) {
+        if (used[j]) continue;
+        const s = pool[j].pts[0], e2 = pool[j].pts[pool[j].pts.length - 1];
+        if (Math.hypot(tail[0]-s[0], tail[1]-s[1]) < EPS) {
+          chain.push(...pool[j].pts.slice(1)); used[j] = true; found = true; break;
+        }
+        if (Math.hypot(tail[0]-e2[0], tail[1]-e2[1]) < EPS) {
+          chain.push(...pool[j].pts.slice().reverse().slice(1)); used[j] = true; found = true; break;
+        }
+      }
+      if (!found) return null;
+    }
+    const head = chain[0], tail2 = chain[chain.length - 1];
+    if (Math.hypot(tail2[0]-head[0], tail2[1]-head[1]) < EPS && chain.length >= 4) {
+      return {type:'polyline', points: chain.slice(0, -1), closed: true};
+    }
+    return null;
+  }
+
+  for (let i = 0; i < pool.length; i++) {
+    const result = tryStitch(i);
+    if (result) return result;
+  }
+  return null;
+}
+
+function getAllProfiles(sketch) {
+  if (!sketch) return [];
+  const es = sketch.entities.filter(e => !e.construction);
+  const profiles = [];
+  const usedIdx = new Set();
+
+  // Pass 1: natively-closed shapes (rect, circle, arc, closed polyline)
+  for (let i = 0; i < es.length; i++) {
+    const e = es[i];
+    if (e.type==='polyline'&&e.closed&&e.points.length>=3) { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='rect'&&e.w>0&&e.h>0)               { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='circle'&&e.r>0)                    { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    else if (e.type==='arc'&&e.p1&&e.pmid&&e.p2)          { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+    // splines deferred — try stitching first
+  }
+
+  // Pass 2: stitch open segments (polylines + splines) into closed loops
+  const EPS = 0.6;
+  const openSegs = es.map((e,i)=>({e,i})).filter(({e,i})=>(
+    (e.type==='polyline'&&!e.closed&&e.points.length>=2) ||
+    (e.type==='spline'&&e.points&&e.points.length>=2)
+  )&&!usedIdx.has(i));
+
+  if (openSegs.length >= 2) {
+    function connects(a,b){
+      const[a0,a1]=entityEndpts(a.e),[b0,b1]=entityEndpts(b.e);
+      return Math.hypot(a1[0]-b0[0],a1[1]-b0[1])<EPS||Math.hypot(a1[0]-b1[0],a1[1]-b1[1])<EPS
+          || Math.hypot(a0[0]-b0[0],a0[1]-b0[1])<EPS||Math.hypot(a0[0]-b1[0],a0[1]-b1[1])<EPS;
+    }
+    const visited=new Set();
+    for (let i=0;i<openSegs.length;i++){
+      if(visited.has(i)) continue;
+      const comp=[i],queue=[i]; visited.add(i);
+      while(queue.length){
+        const cur=queue.shift();
+        for(let j=0;j<openSegs.length;j++){
+          if(!visited.has(j)&&connects(openSegs[cur],openSegs[j])){ visited.add(j); comp.push(j); queue.push(j); }
+        }
+      }
+      if(comp.length>=2){
+        const stitched=stitchSegments(comp.map(k=>openSegs[k].e));
+        if(stitched){
+          profiles.push({profile:stitched,srcIdx:-1});
+          comp.forEach(k=>usedIdx.add(openSegs[k].i));
+        }
+      }
+    }
+  }
+
+  // Pass 3: standalone splines not consumed by stitching
+  for (let i = 0; i < es.length; i++) {
+    if (usedIdx.has(i)) continue;
+    const e = es[i];
+    if (e.type==='spline'&&e.points&&e.points.length>=3) { profiles.push({profile:e,srcIdx:i}); usedIdx.add(i); }
+  }
+
+  return profiles;
+}
+
+function getProfile() {
+  return getAllProfiles(activeSketch())[0]?.profile ?? null;
+}
+
+function planeFromSketch(sketch) {
+  if (!sketch || typeof sketch.plane==='string')
+    return {planeName: sketch?.plane||'XY', planeOffset:0};
+  const map={Z:'XY',Y:'XZ',X:'YZ'};
+  return {planeName:map[sketch.plane.axis]||'XY', planeOffset:sketch.plane.offset};
+}
+
+function syncExtrudeNodes() {
+  const sk = activeSketch();
+  if (!sk) return;
+  const profs = getAllProfiles(sk);
+  const existing = featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
+  for (let i = existing.length; i < profs.length; i++) {
+    featureTree.push({
+      id:newId('ex'), type:'extrude',
+      name: i===0?'Extrude 1':`Extrude ${i+1}`,
+      sketchId:activeSketchId, profileIdx:i,
+      operation: i===0 ? (sk.datumId ? 'cut' : 'new') : (sk.datumId ? 'cut' : 'fuse'),
+      height:extH, filletR, chamferR
+    });
+  }
+  if (existing.length > profs.length) {
+    const keep=new Set(profs.map((_,i)=>i));
+    featureTree=featureTree.filter(f=>
+      f.type!=='extrude'||f.sketchId!==activeSketchId||keep.has(f.profileIdx));
+  }
+  renderFeatureTree();
+}
+
+function collectExtrudePayload() {
+  // Sync extrude nodes for the active sketch so newly drawn profiles get nodes
+  if (activeSketch()) syncExtrudeNodes();
+
+  const items = [];
+  for (const node of featureTree) {
+    if (node.type !== 'extrude') continue;
+    const sk = featureTree.find(f => f.id === node.sketchId);
+    if (!sk) continue;
+    const profs = getAllProfiles(sk);
+    const entry = profs[node.profileIdx];
+    if (!entry) continue;
+    const { planeName, planeOffset } = planeFromSketch(sk);
+    // normalSign: +1 if the face's outward normal is in the positive axis direction.
+    // Needed so cut operations extrude into the solid, not away from it.
+    const normalSign = (typeof sk.plane === 'object' ? sk.plane.normalSign : null) ?? 1;
+    items.push({
+      profile:   entry.profile,
+      height:    node.height,
+      operation: node.operation,
+      filletR:   node.filletR,
+      chamferR:  node.chamferR,
+      planeName,
+      planeOffset,
+      normalSign,
+    });
+  }
+  return items;
+}
+
+function scheduleExtrude() {
+  clearTimeout(extTimer);
+  const hasAny = featureTree.some(f => f.type==='sketch' && getAllProfiles(f).length > 0);
+  if (hasAny) extTimer = setTimeout(doExtrude, 300);
+  scheduleAutosave();
+}
+
+function doExtrude() {
+  const profiles = collectExtrudePayload();
+  if (!profiles.length) return;
+  setRebuildStatus('building');
+  const msg = {type:'build', profiles};
+  if (workerReady) worker.postMessage(msg);
+  else pendingBuild = msg;
+}
+
+window.doExtrude = doExtrude;
+
+// ════════════════════════════════════════════════════════════════════
+// LEN POPUP APPLY HELPER
+// ════════════════════════════════════════════════════════════════════
+
+function applyLenToEntity(entityIdx, segIdx, newLen) {
+  const e = ents()[entityIdx];
+  if (!e || e.type !== 'polyline') return;
+  const p1 = e.points[segIdx];
+  const ni = (segIdx+1) % e.points.length;
+  const p2 = e.points[ni];
+  const dx = p2[0]-p1[0], dy = p2[1]-p1[1];
+  const cur = Math.hypot(dx, dy);
+  if (cur < 1e-10) return;
+  const s = newLen/cur;
+  e.points[ni] = [p1[0]+dx*s, p1[1]+dy*s];
+  scheduleRender(); scheduleExtrude();
+}
+
+// ════════════════════════════════════════════════════════════════════
+// CONSTRUCTION MODE TOGGLE
+// ════════════════════════════════════════════════════════════════════
+
+function toggleConstructionMode() {
+  constructionMode = !constructionMode;
+  const btn = document.getElementById('btn-construct');
+  btn.classList.toggle('construct-on', constructionMode);
+  scheduleRender();
+}
+
+document.getElementById('btn-construct').addEventListener('click', toggleConstructionMode);
+
+// ════════════════════════════════════════════════════════════════════
+// POLYGON SIDES PICKER
+// ════════════════════════════════════════════════════════════════════
+
+document.getElementById('poly-sides').addEventListener('input', function() {
+  polySides = Math.max(3, Math.min(64, parseInt(this.value)||6));
+  scheduleRender();
+});
+
+document.getElementById('rect-submode').addEventListener('change', function() {
+  rectSubMode = this.value;
+  rectStart = null; // reset anchor on mode change
+  const showRR = (rectSubMode === 'rounded');
+  document.getElementById('rect-radius-lbl').style.display  = showRR ? '' : 'none';
+  document.getElementById('rect-radius').style.display      = showRR ? '' : 'none';
+  document.getElementById('rect-radius-unit').style.display = showRR ? '' : 'none';
+  scheduleRender();
+});
+
+document.getElementById('rect-radius').addEventListener('input', function() {
+  rectCornerR = Math.max(0, parseFloat(this.value)||0);
+  scheduleRender();
+});
+
+// ════════════════════════════════════════════════════════════════════
+// TOOLS
+// ════════════════════════════════════════════════════════════════════
+
+function setTool(t) {
+  linePoints=[]; rectStart=null; circleCenter=null;
+  arcPts=[]; polyCenter=null; splinePts=[];
+  hideLenPopup();
+  tool=t;
+  document.querySelectorAll('.tb-btn[id^="tool-"]').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('tool-'+t);
+  if (btn) btn.classList.add('active');
+
+  // Show/hide polygon sides picker
+  const showPoly = (t === 'polygon');
+  document.getElementById('poly-sides-lbl').style.display = showPoly ? '' : 'none';
+  document.getElementById('poly-sides').style.display = showPoly ? '' : 'none';
+
+  // Show/hide rect sub-mode selector
+  const showRect = (t === 'rect');
+  document.getElementById('rect-submode').style.display = showRect ? '' : 'none';
+  const showRR = showRect && rectSubMode === 'rounded';
+  document.getElementById('rect-radius-lbl').style.display  = showRR ? '' : 'none';
+  document.getElementById('rect-radius').style.display      = showRR ? '' : 'none';
+  document.getElementById('rect-radius-unit').style.display = showRR ? '' : 'none';
+
+  updateHint();
+  scheduleRender();
+}
+window.setTool = setTool;
+
+function updateHint() {
+  const hints = {
+    line:     '<b>Line tool (L)</b><br>Click start → click end → type exact length<br><b>Ctrl</b>: freeform · Click label to edit',
+    polyline: '<b>Polyline tool (P)</b><br>Click to add points · Click first point to close (≥3 pts)<br><b>Shift</b>: 15° snap · <b>Ctrl</b>: freeform<br>Double-click: end open · Right-click/Esc: cancel',
+    rect:     '<b>Rectangle tool (R)</b><br>Click and drag to draw<br><b>Ctrl</b>: freeform (no snap)',
+    circle:   '<b>Circle tool (C)</b><br>Click: set centre · Click again: set radius<br><b>Ctrl</b>: freeform',
+    arc:      '<b>Arc tool (A)</b><br>Click 1: start · Click 2: through-point · Click 3: end<br>Three-point arc',
+    polygon:  '<b>Polygon tool (G)</b><br>Click 1: set centre · Click 2: set radius/rotation<br>Adjust sides in toolbar',
+    spline:   '<b>Spline tool (S)</b><br>Click to add control points<br>Double-click: end · Right-click/Esc: cancel',
+    edit:     '<b>Edit Points (E)</b><br>Hover a vertex → drag to reposition<br>Click label to constrain · Esc: back to Line',
+  };
+  document.getElementById('hint-box').innerHTML = hints[tool]||'';
+}
+
+function undoLast() {
+  hideLenPopup();
+  if (splinePts.length>0) { splinePts.pop(); scheduleRender(); return; }
+  if (arcPts.length>0) { arcPts.pop(); scheduleRender(); return; }
+  if (linePoints.length>0) { linePoints.pop(); scheduleRender(); return; }
+  if (ents().length>0) { ents().pop(); selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree(); }
+}
+window.undoLast = undoLast;
+
+function clearAll() {
+  if(activeSketch()) activeSketch().entities = [];
+  linePoints=[]; rectStart=null; circleCenter=null;
+  arcPts=[]; polyCenter=null; splinePts=[];
+  hideLenPopup();
+  hasAutoSwitchedTo3d = false;
+  selection=null; updateConstraintPanel(); scheduleRender(); renderFeatureTree();
+}
+window.clearAll = clearAll;
+
+// ════════════════════════════════════════════════════════════════════
+// WIRE UP TOOLBAR BUTTONS
+// ════════════════════════════════════════════════════════════════════
+
+document.getElementById('tool-line').addEventListener('click',    ()=>setTool('line'));
+document.getElementById('tool-polyline').addEventListener('click',()=>setTool('polyline'));
+document.getElementById('tool-rect').addEventListener('click',    ()=>setTool('rect'));
+document.getElementById('tool-circle').addEventListener('click',  ()=>setTool('circle'));
+document.getElementById('tool-arc').addEventListener('click',     ()=>setTool('arc'));
+document.getElementById('tool-polygon').addEventListener('click', ()=>setTool('polygon'));
+document.getElementById('tool-spline').addEventListener('click',  ()=>setTool('spline'));
+document.getElementById('tool-edit').addEventListener('click',    ()=>setTool('edit'));
+document.getElementById('btn-undo').addEventListener('click',     ()=>undoLast());
+document.getElementById('btn-clear').addEventListener('click',    ()=>clearAll());
+document.getElementById('btn-rebuild').addEventListener('click',  ()=>doExtrude());
+
+document.getElementById('snap-sel').addEventListener('change', function() {
+  gridSnap = +this.value;
+  document.getElementById('st-snap').textContent = gridSnap>0 ? `Snap ${gridSnap} mm` : 'Snap off';
+  scheduleRender();
+});
+
+document.getElementById('s-h').addEventListener('input', function() {
+  extH = +this.value;
+  document.getElementById('v-h').value = this.value;
+  // Update the selected extrude node (and all nodes from the same sketch).
+  // Fall back to activeSketchId so the slider works before any node is clicked.
+  const ep = document.querySelector('.ext-panel');
+  const activeNode = featureTree.find(f => f.id === ep.dataset.activeExtrudeId);
+  const targetSketchId = activeNode ? activeNode.sketchId : activeSketchId;
+  featureTree.filter(f => f.type==='extrude' && f.sketchId===targetSketchId)
+    .forEach(n => { n.height = extH; });
+  renderFeatureTree();
+  scheduleExtrude();
+});
+
+let edgeMode = 'fillet'; // 'fillet' | 'chamfer'
+
+document.getElementById('btn-fillet-mode').addEventListener('click', () => {
+  edgeMode = 'fillet';
+  document.getElementById('btn-fillet-mode').classList.add('active');
+  document.getElementById('btn-chamfer-mode').classList.remove('active');
+  document.getElementById('s-edge').max = 50;
+  filletR = +document.getElementById('s-edge').value;
+  chamferR = 0;
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.filletR=filletR;n.chamferR=0;});
+  renderFeatureTree();
+  scheduleExtrude();
+});
+document.getElementById('btn-chamfer-mode').addEventListener('click', () => {
+  edgeMode = 'chamfer';
+  document.getElementById('btn-chamfer-mode').classList.add('active');
+  document.getElementById('btn-fillet-mode').classList.remove('active');
+  document.getElementById('s-edge').max = 20;
+  chamferR = +document.getElementById('s-edge').value;
+  filletR = 0;
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.filletR=0;n.chamferR=chamferR;});
+  renderFeatureTree();
+  scheduleExtrude();
+});
+document.getElementById('s-edge').addEventListener('input', function() {
+  const v = +this.value;
+  document.getElementById('v-edge').value = v;
+  if (edgeMode === 'fillet') { filletR = v; chamferR = 0; }
+  else { chamferR = v; filletR = 0; }
+  // Write back to all extrude nodes for the active sketch so sliders always take effect
+  featureTree.filter(f=>f.type==='extrude'&&f.sketchId===activeSketchId)
+    .forEach(n=>{n.filletR=filletR;n.chamferR=chamferR;});
+  renderFeatureTree();
+  scheduleExtrude();
+});
+
+
+// Number inputs → drive sliders (and trigger the same update logic)
+document.getElementById('v-h').addEventListener('change', function() {
+  const v = Math.max(1, Math.min(1000, parseFloat(this.value) || 1));
+  this.value = v;
+  const sl = document.getElementById('s-h');
+  sl.value = v;
+  sl.dispatchEvent(new Event('input'));
+});
+document.getElementById('v-edge').addEventListener('change', function() {
+  const max = edgeMode === 'chamfer' ? 20 : 50;
+  const v = Math.max(0, Math.min(max, parseFloat(this.value) || 0));
+  this.value = v;
+  const sl = document.getElementById('s-edge');
+  sl.value = v;
+  sl.dispatchEvent(new Event('input'));
+});
+
+// ════════════════════════════════════════════════════════════════════
+// MOUSE EVENTS
+// ════════════════════════════════════════════════════════════════════
+
+function evXY(e) {
+  const r=sk.getBoundingClientRect();
+  return {x:e.clientX-r.left, y:e.clientY-r.top};
+}
+
+sk.addEventListener('mousemove', e => {
+  ctrlHeld  = e.ctrlKey;
+  shiftHeld = e.shiftKey;
+  // spaceHeld tracked via keydown/keyup — don't override here
+  const {x,y}=evXY(e);
+  const [wx,wy]=ctow(x,y);
+  const [sx,sy]=snapPt(wx,wy);
+
+  // Drag move
+  if (dragState) {
+    applyDragMove(dragState, sx, sy);
+    mouse={x:sx,y:sy};
+    scheduleRender();
+    document.getElementById('st-x').textContent=sx.toFixed(1);
+    document.getElementById('st-y').textContent=sy.toFixed(1);
+    sk.style.cursor='grabbing';
+    return;
+  }
+
+  mouse={x:sx,y:sy};
+  document.getElementById('st-x').textContent=sx.toFixed(1);
+  document.getElementById('st-y').textContent=sy.toFixed(1);
+  const snapLabel = ctrlHeld ? 'Freeform'
+    : spaceHeld ? (activeOSnap ? `OSNAP · ${activeOSnap.type}` : 'OSNAP · scanning…')
+    : (shiftHeld&&(tool==='polyline'||tool==='line')&&linePoints.length>0
+      ? 'Angle snap 15°'
+      : (gridSnap>0?`Snap ${gridSnap} mm`:'Snap off'));
+  document.getElementById('st-snap').textContent=snapLabel;
+
+  if (isPanning) {
+    panX=panOrig.x+(x-panStart0.x);
+    panY=panOrig.y+(y-panStart0.y);
+  }
+
+  const prevHover = hoverLabelIdx;
+  hoverLabelIdx = hitLabel(x, y);
+  if (hoverLabelIdx >= 0) {
+    sk.style.cursor = 'pointer';
+  } else if (tool === 'edit') {
+    const nearV = findNearVertex(x, y);
+    sk.style.cursor = nearV ? 'grab' : 'default';
+  } else {
+    sk.style.cursor = 'crosshair';
+  }
+  if (hoverLabelIdx !== prevHover) scheduleRender();
+  else scheduleRender();
+});
+
+sk.addEventListener('mousedown', e => {
+  if (e.button===1 || (e.button===0 && e.altKey)) {
+    isPanning=true;
+    panStart0={x:e.offsetX,y:e.offsetY};
+    panOrig={x:panX,y:panY};
+    e.preventDefault(); return;
+  }
+  if (e.button!==0) return;
+
+  const {x,y}=evXY(e);
+
+  // Drag only active in Edit tool
+  const nearV = tool === 'edit' ? findNearVertex(x, y) : null;
+  if (nearV) {
+    dragState = nearV;
+    dragStarted = true;
+    sk.style.cursor = 'grabbing';
+    e.preventDefault();
+    return;
+  }
+  dragStarted = false;
+
+  // rect and circle use two-click (set anchor on click, not mousedown)
+});
+
+sk.addEventListener('mouseup', e => {
+  if (e.button===1||isPanning) { isPanning=false; return; }
+  if (e.button!==0) return;
+
+  // End drag
+  if (dragState) {
+    dragState = null;
+    sk.style.cursor = 'crosshair';
+    scheduleExtrude();
+    return;
+  }
+
+  // rect commits on click, not mouseup
+});
+
+sk.addEventListener('click', e => {
+  if (e.button!==0) return;
+
+  // If a drag just ended, suppress this click
+  if (dragStarted) { dragStarted = false; return; }
+
+  const {x,y}=evXY(e);
+
+  // Label click check
+  const li = hitLabel(x, y);
+  if (li >= 0) {
+    const hit = labelHits[li];
+    if (hit.entityIdx >= 0) {
+      const ent = ents()[hit.entityIdx];
+      if (ent) {
+        if (ent.type === 'circle') {
+          selection = { entityIdx: hit.entityIdx, isCircle: true };
+        } else if (ent.type === 'rect') {
+          selection = { entityIdx: hit.entityIdx, isRect: true, segIdx: hit.segIdx };
+        } else {
+          selection = { entityIdx: hit.entityIdx, segIdx: hit.segIdx };
+        }
+        updateConstraintPanel();
+        scheduleRender();
+      }
+    }
+    showLenPopup(hit.lx, hit.ly, hit.wlen, (newLen) => {
+      if (hit.entityIdx >= 0) {
+        applyLenToEntity(hit.entityIdx, hit.segIdx, newLen);
+        updateConstraintPanel();
+      }
+    });
+    return;
+  }
+
+  // ── Rect: two-click ──────────────────────────────────────────────
+  if (tool==='rect') {
+    if (!rectStart) {
+      rectStart = {x:mouse.x, y:mouse.y};
+      scheduleRender(); return;
+    } else {
+      let rx, ry, rw, rh;
+      if (rectSubMode === 'center') {
+        const hw=Math.abs(mouse.x-rectStart.x), hh=Math.abs(mouse.y-rectStart.y);
+        rx=rectStart.x-hw; ry=rectStart.y-hh; rw=hw*2; rh=hh*2;
+      } else {
+        rx=Math.min(rectStart.x,mouse.x); ry=Math.min(rectStart.y,mouse.y);
+        rw=Math.abs(mouse.x-rectStart.x); rh=Math.abs(mouse.y-rectStart.y);
+      }
+      if (rw>0.5&&rh>0.5) {
+        const ent = {type:'rect',x:rx,y:ry,w:rw,h:rh,construction:constructionMode};
+        if (rectSubMode==='rounded' && rectCornerR>0) ent.cornerR = rectCornerR;
+        activeSketch().entities.push(ent);
+        scheduleExtrude();
+      }
+      rectStart=null; scheduleRender(); return;
+    }
+  }
+
+  // ── Circle: two-click (center → edge) ────────────────────────────
+  if (tool==='circle') {
+    if (!circleCenter) {
+      circleCenter = {x:mouse.x, y:mouse.y};
+      scheduleRender(); return;
+    } else {
+      const r=Math.hypot(mouse.x-circleCenter.x,mouse.y-circleCenter.y);
+      if (r>0.5) { activeSketch().entities.push({type:'circle',cx:circleCenter.x,cy:circleCenter.y,r,construction:constructionMode}); scheduleExtrude(); }
+      circleCenter=null; scheduleRender(); return;
+    }
+  }
+
+  // Arc tool — click 1: start, click 2: end, click 3: midpoint on arc (defines bend)
+  if (tool==='arc') {
+    arcPts.push([mouse.x, mouse.y]);
+    if (arcPts.length===3) {
+      const [p1, p2, pmid] = arcPts; // start, end, then bend point
+      activeSketch().entities.push({type:'arc', p1, pmid, p2, construction:constructionMode});
+      arcPts = [];
+      scheduleExtrude();
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Polygon tool — 2 clicks (center then radius)
+  if (tool==='polygon') {
+    if (!polyCenter) {
+      polyCenter = {x:mouse.x, y:mouse.y};
+    } else {
+      const r = Math.hypot(mouse.x-polyCenter.x, mouse.y-polyCenter.y);
+      if (r > 0.5) {
+        const n = polySides;
+        const baseAngle = Math.atan2(mouse.y-polyCenter.y, mouse.x-polyCenter.x);
+        const pts = [];
+        for (let i=0; i<n; i++) {
+          const a = baseAngle + (2*Math.PI*i/n);
+          pts.push([polyCenter.x + r*Math.cos(a), polyCenter.y + r*Math.sin(a)]);
+        }
+        activeSketch().entities.push({type:'polyline', points:pts, closed:true, construction:constructionMode});
+        scheduleExtrude();
+      }
+      polyCenter = null;
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Spline tool — multi-click
+  if (tool==='spline') {
+    splinePts.push([mouse.x, mouse.y]);
+    scheduleRender();
+    return;
+  }
+
+  // Single Line tool
+  if (tool==='line') {
+    if (linePoints.length===0) {
+      linePoints.push([mouse.x,mouse.y]);
+    } else {
+      const p1 = linePoints[0];
+      const p2 = [mouse.x, mouse.y];
+      const ei = ents().length;
+      activeSketch().entities.push({type:'polyline', points:[p1,p2], closed:false, construction:constructionMode});
+      linePoints = [];
+      scheduleExtrude();
+      const [sx2,sy2]=wtoc(p2[0],p2[1]);
+      const wlen = Math.hypot(p2[0]-p1[0], p2[1]-p1[1]);
+      if (!constructionMode) {
+        showLenPopup(sx2, sy2, wlen, (newLen) => {
+          applyLenToEntity(ei, 0, newLen);
+        });
+      }
+    }
+    scheduleRender();
+    return;
+  }
+
+  // Polyline tool
+  if (tool==='polyline') {
+    if (linePoints.length>=3&&isNearFirst(mouse.x,mouse.y)) {
+      activeSketch().entities.push({type:'polyline',points:[...linePoints],closed:true,construction:constructionMode});
+      linePoints=[]; scheduleExtrude();
+    } else {
+      linePoints.push([mouse.x,mouse.y]);
+    }
+    scheduleRender();
+    return;
+  }
+});
+
+sk.addEventListener('dblclick', e => {
+  // End spline on double-click
+  if (tool==='spline' && splinePts.length>=2) {
+    // Remove the duplicate point added by the second click of dblclick
+    if (splinePts.length > 2) splinePts.pop();
+    activeSketch().entities.push({type:'spline', points:[...splinePts], construction:constructionMode});
+    splinePts = [];
+    scheduleExtrude();
+    scheduleRender();
+    return;
+  }
+  if (tool==='polyline'&&linePoints.length>=2) {
+    linePoints.pop();
+    activeSketch().entities.push({type:'polyline',points:[...linePoints],closed:false,construction:constructionMode});
+    linePoints=[]; scheduleRender();
+  }
+});
+
+sk.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  if (tool==='polyline'||tool==='line') {
+    linePoints=[]; circleCenter=null; scheduleRender();
+  }
+  if (tool==='spline') {
+    splinePts=[]; scheduleRender();
+  }
+  if (tool==='arc') {
+    arcPts=[]; scheduleRender();
+  }
+  if (tool==='polygon') {
+    polyCenter=null; scheduleRender();
+  }
+});
+
+sk.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor=e.deltaY>0?0.85:1.18;
+  const {x,y}=evXY(e);
+  // pivot around the cursor in canvas-centre-relative coords
+  const cx=x-W()/2, cy=y-H()/2;
+  panX=cx+(panX-cx)*factor;
+  panY=cy+(panY-cy)*factor;
+  zoom=Math.max(0.2,Math.min(zoom*factor,80));
+  scheduleRender();
+}, {passive:false});
+
+// ════════════════════════════════════════════════════════════════════
+// KEYBOARD
+// ════════════════════════════════════════════════════════════════════
+
+let vpHovered = false;
+document.getElementById('vp3d').addEventListener('mouseenter', ()=>vpHovered=true);
+document.getElementById('vp3d').addEventListener('mouseleave', ()=>vpHovered=false);
+
+window.addEventListener('keyup', e => {
+  if (e.key === ' ') { spaceHeld = false; activeOSnap = null; scheduleRender(); }
+});
+
+window.addEventListener('keydown', e => {
+  const inp = document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'SELECT';
+
+  // Space = OSNAP mode (works even over inputs would be confusing, so skip when input focused)
+  if (e.key === ' ' && !inp) { e.preventDefault(); spaceHeld = true; scheduleRender(); return; }
+
+  if (!inp) {
+    if (e.key==='Escape' && _faceHoverPlane) {
+      _faceHoverPlane=null; _clearFaceHighlight(); renderer.domElement.style.cursor='';
+      document.getElementById('st-info').textContent='';
+      return;
+    }
+    if (e.key==='Escape') {
+      hideLenPopup();
+      linePoints=[]; rectStart=null; circleCenter=null;
+      arcPts=[]; polyCenter=null; splinePts=[];
+      scheduleRender();
+    }
+    if (e.key==='l'||e.key==='L') setTool('line');
+    if (e.key==='p'||e.key==='P') setTool('polyline');
+    if (e.key==='r'||e.key==='R') setTool('rect');
+    if (e.key==='c'||e.key==='C') setTool('circle');
+    if (e.key==='a'||e.key==='A') setTool('arc');
+    if (e.key==='g'||e.key==='G') setTool('polygon');
+    if (e.key==='s'||e.key==='S') setTool('spline');
+    if (e.key==='e'||e.key==='E') setTool('edit');
+    if (e.key==='x'||e.key==='X') toggleConstructionMode();
+    if (e.key==='Delete') { if (ents().length>0){ ents().pop(); scheduleRender(); } }
+
+    // Arrow key pan (2D canvas)
+    const PAN=30;
+    if (e.key==='ArrowLeft')  { panX+=PAN; scheduleRender(); e.preventDefault(); }
+    if (e.key==='ArrowRight') { panX-=PAN; scheduleRender(); e.preventDefault(); }
+    if (e.key==='ArrowUp')    { panY+=PAN; scheduleRender(); e.preventDefault(); }
+    if (e.key==='ArrowDown')  { panY-=PAN; scheduleRender(); e.preventDefault(); }
+  }
+
+  if ((e.ctrlKey||e.metaKey)&&e.key==='z') { e.preventDefault(); undoLast(); }
+
+  // 3D view shortcuts
+  if (!inp) {
+    if (e.key==='1') setView({pos:[0,80,350],tgt:[0,30,0]});
+    if (e.key==='3') setView({pos:[350,80,0],tgt:[0,30,0]});
+    if (e.key==='7') setView({pos:[0,350,1],tgt:[0,0,0]});
+    if (e.key==='0') setView({pos:[160,120,160],tgt:[0,20,0]});
+    if (e.key==='f'||e.key==='F') fitView();
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════
+// THREE.JS — 3D VIEWPORT
+// ════════════════════════════════════════════════════════════════════
+
+const vpEl=document.getElementById('vp3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.setClearColor(0x04060f);
+vpEl.appendChild(renderer.domElement);
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(42,1,0.1,5000);
+camera.position.set(160,120,160);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.dampingFactor=0.08;
+controls.screenSpacePanning=true;
+controls.panSpeed=1.5;
+controls.zoomSpeed=1.2;
+controls.minDistance=5;
+controls.maxDistance=2000;
+controls.target.set(0,20,0);
+controls.mouseButtons={
+  LEFT:  THREE.MOUSE.ROTATE,
+  MIDDLE:THREE.MOUSE.DOLLY,
+  RIGHT: THREE.MOUSE.PAN,
+};
+controls.update();
+
+scene.add(new THREE.AmbientLight(0xffffff,0.5));
+const sun=new THREE.DirectionalLight(0xfffaf0,1.4);
+sun.position.set(120,200,100);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{near:1,far:700,left:-220,right:220,top:220,bottom:-220});
+scene.add(sun);
+const fillA=new THREE.DirectionalLight(0xa0b8ff,0.4); fillA.position.set(-80,60,-80); scene.add(fillA);
+const fillB=new THREE.DirectionalLight(0xffd080,0.25); fillB.position.set(0,-30,120); scene.add(fillB);
+scene.add(new THREE.GridHelper(600,30,0x1e2a50,0x111828));
+
+const modelGroup=new THREE.Group();
+modelGroup.rotation.x=-Math.PI/2;
+scene.add(modelGroup);
+
+const mat=new THREE.MeshStandardMaterial({color:0xb0c8e4,roughness:0.28,metalness:0.06});
+const wireMat=new THREE.MeshBasicMaterial({color:0x14b8a6,wireframe:true,transparent:true,opacity:0.05});
+const _faceHlMat=new THREE.MeshBasicMaterial({color:0x14b8a6,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthTest:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});
+var modelMesh=null, wireMesh=null, lastGeo=null;
+var _faceHlMesh=null;
+
+function applyMesh(verts,norms,tris) {
+  if (modelMesh) { modelGroup.remove(modelMesh); modelGroup.remove(wireMesh); }
+  if (lastGeo) lastGeo.dispose();
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(verts,3));
+  geo.setAttribute('normal',  new THREE.BufferAttribute(norms,3));
+  geo.setIndex(new THREE.BufferAttribute(tris,1));
+  lastGeo=geo;
+  modelMesh=new THREE.Mesh(geo,mat); modelMesh.castShadow=true; modelGroup.add(modelMesh);
+  wireMesh=new THREE.Mesh(geo,wireMat); modelGroup.add(wireMesh);
+  document.getElementById('vp-ph').style.display='none';
+  document.getElementById('vp-badge').style.display='';
+  document.getElementById('btn-stl').classList.add('show');
+  // Auto-switch to 3D view only on the very first build
+  if (!hasAutoSwitchedTo3d) {
+    hasAutoSwitchedTo3d = true;
+    setMode3d(true);
+  }
+}
+
+function setView({pos,tgt}) {
+  camera.position.set(...pos);
+  controls.target.set(...tgt);
+  controls.update();
+}
+
+function fitView() {
+  if (!modelMesh) return;
+  const box=new THREE.Box3().setFromObject(modelGroup);
+  const center=new THREE.Vector3(), size=new THREE.Vector3();
+  box.getCenter(center); box.getSize(size);
+  const maxDim=Math.max(size.x,size.y,size.z)||100;
+  const dist=maxDim*2.2;
+  const dir=new THREE.Vector3().subVectors(camera.position,controls.target).normalize();
+  camera.position.copy(center.clone().addScaledVector(dir,dist));
+  controls.target.copy(center);
+  camera.near=dist*0.001; camera.far=dist*20;
+  camera.updateProjectionMatrix();
+  controls.update();
+}
+
+function resize3D() {
+  const W2=vpEl.clientWidth, H2=vpEl.clientHeight;
+  renderer.setSize(W2,H2);
+  camera.aspect=W2/H2;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize3D).observe(vpEl);
+
+(function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene,camera);
+})();
+
+// ════════════════════════════════════════════════════════════════════
+// FACE SKETCHING
+// ════════════════════════════════════════════════════════════════════
+
+// ── Face hover state ─────────────────────────────────────────────
+let _faceHoverPlane = null;
+let _faceMDownPos = null;
+
+// modelGroup.rotation.x = -π/2 maps replicad axes → Three.js world axes:
+//   replicad  Z-up  → Three.js  +Y  (top/bottom faces)
+//   replicad  X     → Three.js  +X  (left/right faces)
+//   replicad  Y     → Three.js  -Z  (front/back faces)
+// So we check Three.js world-space normals accordingly.
+function detectAxisPlane(worldNormal, hitPoint) {
+  const TOL = Math.cos(Math.PI / 36); // 5° tolerance
+  const invMat = new THREE.Matrix4().copy(modelGroup.matrixWorld).invert();
+  const localPt = hitPoint.clone().applyMatrix4(invMat); // replicad local coords
+
+  const checks = [
+    { axis:'Z', dir: new THREE.Vector3( 0, 1, 0), normalSign:+1 }, // replicad +Z top
+    { axis:'Z', dir: new THREE.Vector3( 0,-1, 0), normalSign:-1 }, // replicad -Z bottom
+    { axis:'X', dir: new THREE.Vector3( 1, 0, 0), normalSign:+1 }, // replicad +X right
+    { axis:'X', dir: new THREE.Vector3(-1, 0, 0), normalSign:-1 }, // replicad -X left
+    { axis:'Y', dir: new THREE.Vector3( 0, 0,-1), normalSign:+1 }, // replicad +Y front
+    { axis:'Y', dir: new THREE.Vector3( 0, 0, 1), normalSign:-1 }, // replicad -Y back
+  ];
+  for (const { axis, dir, normalSign } of checks) {
+    if (worldNormal.dot(dir) >= TOL) {
+      const offset = axis==='Z' ? localPt.z : axis==='Y' ? localPt.y : localPt.x;
+      // seedPoint: the exact point clicked, in replicad local space. Used to
+      // re-locate which specific (connected) face was meant — several faces
+      // across the model can share the same axis+offset (e.g. two stacked
+      // boxes of the same width both have a left face at the same X), so
+      // offset alone doesn't uniquely identify a face.
+      return { axis, offset: parseFloat(offset.toFixed(2)), normalSign,
+               seedPoint: [localPt.x, localPt.y, localPt.z] };
+    }
+  }
+  return null;
+}
+
+function _raycastFace(clientX, clientY) {
+  if (!modelMesh) return null;
+  const rect = renderer.domElement.getBoundingClientRect();
+  const ndc = new THREE.Vector2(
+    ((clientX - rect.left) / rect.width)  * 2 - 1,
+   -((clientY - rect.top)  / rect.height) * 2 + 1
+  );
+  const rc = new THREE.Raycaster();
+  rc.setFromCamera(ndc, camera);
+  const hits = rc.intersectObject(modelMesh);
+  if (!hits.length) return null;
+  const hit = hits[0];
+  const normal = hit.face.normal.clone().transformDirection(modelGroup.matrixWorld).normalize();
+  const plane = detectAxisPlane(normal, hit.point);
+  return plane ? { plane, hit } : null;
+}
+
+// Extract triangles from the model geometry that belong to the hovered face.
+// Positions in the buffer are in replicad local space (Z-up).
+//
+// Matching by axis+offset alone isn't enough: several PHYSICALLY SEPARATE
+// faces can share the same coordinate (e.g. two boxes stacked in Z with the
+// same width both have a left face at the same X). So after finding every
+// coplanar triangle, we flood-fill out from the triangle nearest to
+// plane.seedPoint (the point actually clicked) across shared edges, and
+// keep only that connected region — i.e. the one real face the user meant.
+// Falls back to the old "all coplanar triangles" behaviour when no seed
+// point is available (e.g. a datum plane saved before this fix existed).
+function _extractFaceTriangles(plane) {
+  if (!modelMesh) return null;
+  const geo = modelMesh.geometry;
+  const pos = geo.attributes.position.array;
+  const nor = geo.attributes.normal.array;
+  const idx = geo.index.array;
+  const TOL_POS = 0.8; // mm — loose enough to catch all tris on a flat face
+  const TOL_NRM = 0.94; // cos(~20°) — triangle must face the right direction
+  const nTris = idx.length / 3;
+  const coplanar = [];
+  for (let t = 0; t < nTris; t++) {
+    const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
+    const nx=(nor[a]+nor[b]+nor[c])/3, ny=(nor[a+1]+nor[b+1]+nor[c+1])/3, nz=(nor[a+2]+nor[b+2]+nor[c+2])/3;
+    const nl=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
+    const cx=(pos[a]+pos[b]+pos[c])/3, cy=(pos[a+1]+pos[b+1]+pos[c+1])/3, cz=(pos[a+2]+pos[b+2]+pos[c+2])/3;
+    let ok=false;
+    if      (plane.axis==='Z') ok = Math.abs(nz/nl)>TOL_NRM && Math.abs(cz-plane.offset)<TOL_POS;
+    else if (plane.axis==='X') ok = Math.abs(nx/nl)>TOL_NRM && Math.abs(cx-plane.offset)<TOL_POS;
+    else                       ok = Math.abs(ny/nl)>TOL_NRM && Math.abs(cy-plane.offset)<TOL_POS;
+    if (ok) coplanar.push(t);
+  }
+  if (!coplanar.length) return null;
+
+  let selected = coplanar;
+  if (plane.seedPoint) {
+    const [sx, sy, sz] = plane.seedPoint;
+    // Nearest coplanar triangle (by centroid) to the point actually clicked.
+    let seedTri = coplanar[0], bestD = Infinity;
+    for (const t of coplanar) {
+      const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
+      const cx=(pos[a]+pos[b]+pos[c])/3, cy=(pos[a+1]+pos[b+1]+pos[c+1])/3, cz=(pos[a+2]+pos[b+2]+pos[c+2])/3;
+      const d = (cx-sx)**2 + (cy-sy)**2 + (cz-sz)**2;
+      if (d < bestD) { bestD = d; seedTri = t; }
+    }
+    // Edge-adjacency flood-fill, restricted to the coplanar set.
+    const vKey = vi => `${pos[vi*3].toFixed(3)},${pos[vi*3+1].toFixed(3)},${pos[vi*3+2].toFixed(3)}`;
+    const edgeKey = (p,q) => p<q ? `${p}|${q}` : `${q}|${p}`;
+    const edgeToTris = new Map();
+    for (const t of coplanar) {
+      const i = t*3, va=vKey(idx[i]), vb=vKey(idx[i+1]), vc=vKey(idx[i+2]);
+      for (const [p,q] of [[va,vb],[vb,vc],[vc,va]]) {
+        const k = edgeKey(p,q);
+        if (!edgeToTris.has(k)) edgeToTris.set(k, []);
+        edgeToTris.get(k).push(t);
+      }
+    }
+    const visited = new Set([seedTri]);
+    const queue = [seedTri];
+    while (queue.length) {
+      const t = queue.pop();
+      const i = t*3, va=vKey(idx[i]), vb=vKey(idx[i+1]), vc=vKey(idx[i+2]);
+      for (const [p,q] of [[va,vb],[vb,vc],[vc,va]]) {
+        for (const other of edgeToTris.get(edgeKey(p,q)) || []) {
+          if (!visited.has(other)) { visited.add(other); queue.push(other); }
+        }
+      }
+    }
+    selected = [...visited];
+  }
+
+  const out = [];
+  for (const t of selected) {
+    const i = t*3, a = idx[i]*3, b = idx[i+1]*3, c = idx[i+2]*3;
+    out.push(pos[a],pos[a+1],pos[a+2], pos[b],pos[b+1],pos[b+2], pos[c],pos[c+1],pos[c+2]);
+  }
+  return out.length ? new Float32Array(out) : null;
+}
+
+function _showFaceHighlight(plane) {
+  _clearFaceHighlight();
+  const verts = _extractFaceTriangles(plane);
+  if (!verts) return;
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+  _faceHlMesh = new THREE.Mesh(g, _faceHlMat);
+  modelGroup.add(_faceHlMesh);
+}
+function _clearFaceHighlight() {
+  if (_faceHlMesh) { modelGroup.remove(_faceHlMesh); _faceHlMesh.geometry.dispose(); _faceHlMesh=null; }
+}
+
+// ── Face underlay: projects selected face into sketch 2D space ──
+let _sketchFaceTris  = null; // [[u0,v0],[u1,v1],[u2,v2], ...] one entry per tri vertex
+let _sketchFaceEdges = null; // [[u0,v0],[u1,v1]][] — boundary edges only
+
+function _buildSketchUnderlay(plane) {
+  _sketchFaceTris = null; _sketchFaceEdges = null;
+  const verts = _extractFaceTriangles(plane);
+  if (!verts) return;
+
+  // Project a 3D vertex index (into the flat verts array) to 2D sketch coords
+  function proj(i) {
+    const x=verts[i*3], y=verts[i*3+1], z=verts[i*3+2];
+    if (plane.axis==='Z') return [x, y];
+    if (plane.axis==='X') return [y, z];
+    return [x, z]; // Y
+  }
+
+  const n = verts.length / 3;
+  const tris = [];
+  const edgeCount = new Map(), edgePts = new Map();
+
+  for (let t = 0; t < n; t += 3) {
+    const pa=proj(t), pb=proj(t+1), pc=proj(t+2);
+    tris.push(pa, pb, pc);
+    for (const [a,b] of [[pa,pb],[pb,pc],[pc,pa]]) {
+      const ka=`${a[0].toFixed(3)},${a[1].toFixed(3)}`;
+      const kb=`${b[0].toFixed(3)},${b[1].toFixed(3)}`;
+      const key = ka<kb ? `${ka}|${kb}` : `${kb}|${ka}`;
+      edgeCount.set(key, (edgeCount.get(key)||0)+1);
+      if (!edgePts.has(key)) edgePts.set(key, [a,b]);
+    }
+  }
+
+  _sketchFaceTris = tris;
+  _sketchFaceEdges = [...edgeCount.entries()]
+    .filter(([,c])=>c===1).map(([k])=>edgePts.get(k));
+}
+
+function drawFaceUnderlay() {
+  if (!_sketchFaceTris || !_sketchFaceEdges) return;
+  ctx.save();
+  // Filled face (very subtle)
+  ctx.fillStyle = 'rgba(245,158,11,0.07)';
+  ctx.beginPath();
+  for (let i=0; i<_sketchFaceTris.length; i+=3) {
+    const [x0,y0]=wtoc(_sketchFaceTris[i][0],  _sketchFaceTris[i][1]);
+    const [x1,y1]=wtoc(_sketchFaceTris[i+1][0],_sketchFaceTris[i+1][1]);
+    const [x2,y2]=wtoc(_sketchFaceTris[i+2][0],_sketchFaceTris[i+2][1]);
+    ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.lineTo(x2,y2); ctx.closePath();
+  }
+  ctx.fill();
+  // Boundary outline (dashed amber)
+  ctx.strokeStyle='rgba(245,158,11,0.45)'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+  ctx.beginPath();
+  for (const [[x0,y0],[x1,y1]] of _sketchFaceEdges) {
+    const [sx0,sy0]=wtoc(x0,y0), [sx1,sy1]=wtoc(x1,y1);
+    ctx.moveTo(sx0,sy0); ctx.lineTo(sx1,sy1);
+  }
+  ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+}
+
+function createFaceSketch(plane) {
+  _clearFaceHighlight();
+  renderer.domElement.style.cursor = '';
+  _faceHoverPlane = null;
+  _buildSketchUnderlay(plane);
+
+  // Create a persistent datum plane node so the user can sketch on it again later
+  const datumId = newId('dt');
+  const nDatum = featureTree.filter(f=>f.type==='datum').length + 1;
+  featureTree.push({ id:datumId, type:'datum', name:`Datum ${nDatum}`, plane });
+
+  _addSketchOnDatum(datumId, plane);
+}
+
+function _addSketchOnDatum(datumId, plane) {
+  _buildSketchUnderlay(plane);
+  const skId = newId('sk');
+  const n = featureTree.filter(f=>f.type==='sketch').length + 1;
+  featureTree.push({ id:skId, type:'sketch', name:`Sketch ${n}`, plane, datumId, entities:[] });
+  activeSketchId = skId;
+  const pl = `${plane.axis} +${plane.offset.toFixed(1)}`;
+  document.querySelector('.sk-overlay').textContent = `Sketch ${n} · ${pl} Plane`;
+  setMode3d(false);
+  renderFeatureTree();
+  scheduleRender();
+}
+
+// Always-on hover: highlight face and show cursor when in 3D mode
+renderer.domElement.addEventListener('mousemove', e => {
+  if (!document.querySelector('.main').classList.contains('mode-3d')) return;
+  if (!modelMesh) return;
+  const result = _raycastFace(e.clientX, e.clientY);
+  if (result) {
+    const p = result.plane;
+    const changed = !_faceHoverPlane || _faceHoverPlane.axis !== p.axis || _faceHoverPlane.offset !== p.offset;
+    _faceHoverPlane = p;
+    renderer.domElement.style.cursor = 'pointer';
+    if (changed) _showFaceHighlight(p);
+    document.getElementById('st-info').textContent = `${p.axis} face · Click to sketch on it`;
+    renderer.render(scene, camera);
+  } else {
+    _faceHoverPlane = null;
+    renderer.domElement.style.cursor = '';
+    _clearFaceHighlight();
+    if (document.getElementById('st-info').textContent.includes('face ·'))
+      document.getElementById('st-info').textContent = '';
+    renderer.render(scene, camera);
+  }
+});
+
+renderer.domElement.addEventListener('mousedown', e => { _faceMDownPos = [e.clientX, e.clientY]; });
+
+renderer.domElement.addEventListener('click', e => {
+  if (!document.querySelector('.main').classList.contains('mode-3d')) return;
+  if (!_faceHoverPlane) return;
+  // Ignore if this was a drag (orbit)
+  if (_faceMDownPos && Math.hypot(e.clientX-_faceMDownPos[0], e.clientY-_faceMDownPos[1]) > 5) return;
+  createFaceSketch(_faceHoverPlane);
+});
+
+// Keep "✏ Sketch Face" button as an info tooltip / no-op (face selection is always-on)
+document.getElementById('btn-face-sketch').addEventListener('click', () => {
+  if (!modelMesh) { document.getElementById('st-info').textContent = 'Build a model first'; return; }
+  document.getElementById('st-info').textContent = 'Hover over a face and click to sketch on it';
+});
+
+// ════════════════════════════════════════════════════════════════════
+// STL EXPORT
+// ════════════════════════════════════════════════════════════════════
+
+const exporter=new STLExporter();
+document.getElementById('btn-stl').addEventListener('click', ()=>{
+  if (!modelMesh) return;
+  const clone=modelMesh.clone();
+  clone.applyMatrix4(modelGroup.matrixWorld);
+  const bin=exporter.parse(clone,{binary:true});
+  const a=Object.assign(document.createElement('a'),{
+    href:URL.createObjectURL(new Blob([bin],{type:'application/octet-stream'})),
+    download:`model-mage-sketch_h${extH}mm.stl`,
+  });
+  a.click(); URL.revokeObjectURL(a.href);
+  window.MagicLabProgress?.track(window.ML_TOOLS?.MODEL_MAGE || 'model-mage', 'lesson_complete', {
+    topic: 'Model Exported',
+    metadata: { filename: document.getElementById('filename-input')?.value || '' }
+  });
+});
+
+// ════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════
+// VIEW MODE TOGGLE (Sketch ↔ 3D)
+// ════════════════════════════════════════════════════════════════════
+
+function setMode3d(on) {
+  const main   = document.querySelector('.main');
+  const sketch = document.querySelector('.sketch-panel');
+  const right  = document.querySelector('.right-panel');
+  const ext    = document.querySelector('.ext-panel');
+  const btn    = document.getElementById('btn-mode-3d');
+
+  main.classList.toggle('mode-3d', on);
+  btn.textContent = on ? '✎ Edit Sketch' : '⬡ View 3D';
+  btn.title       = on ? 'Back to 2D sketch' : 'Switch to 3D view';
+
+  if (on) {
+    sketch.style.display = 'none';
+    right.style.cssText = 'flex:1; width:auto; min-width:0;';
+    _sketchFaceTris = null; _sketchFaceEdges = null; // clear underlay when leaving sketch
+    // Auto-select the first extrude node for the active sketch so op-toggle is visible
+    setTimeout(() => {
+      const sk = activeSketch();
+      if (sk?.datumId) {
+        const extNode = featureTree.find(f=>f.type==='extrude'&&f.sketchId===activeSketchId);
+        if (extNode) {
+          document.querySelector('.ext-panel').dataset.activeExtrudeId = extNode.id;
+          _syncOpToggle(extNode);
+        }
+      }
+    }, 0);
+  } else {
+    sketch.style.display = '';
+    right.style.cssText = '';
+  }
+
+  setTimeout(() => {
+    const vp = document.getElementById('vp3d');
+    renderer.setSize(vp.clientWidth, vp.clientHeight);
+    camera.aspect = vp.clientWidth / vp.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.render(scene, camera);
+    if (!on) resize();
+  }, 310);
+}
+
+document.getElementById('btn-mode-3d').addEventListener('click', () => {
+  const is3d = document.querySelector('.main').classList.contains('mode-3d');
+  setMode3d(!is3d);
+});
+
+// ════════════════════════════════════════════════════════════════════
+// FEATURE TREE
+// ════════════════════════════════════════════════════════════════════
+
+function initFeatureTree() {
+  nextFeatId = 1;
+  const skId = newId('sk');
+  featureTree = [{id:skId, type:'sketch', name:'Sketch 1', plane:'XY', entities:[]}];
+  activeSketchId = skId;
+}
+
+function migrateV1(legacyEntities) {
+  nextFeatId = 1;
+  const skId = newId('sk');
+  const sk = {id:skId, type:'sketch', name:'Sketch 1', plane:'XY', entities:legacyEntities};
+  featureTree = [sk];
+  activeSketchId = skId;
+  const profs = getAllProfiles(sk);
+  profs.forEach((_,idx)=>{
+    featureTree.push({
+      id:newId('ex'), type:'extrude',
+      name:idx===0?'Extrude 1':`Extrude ${idx+1}`,
+      sketchId:skId, profileIdx:idx,
+      operation:idx===0?'new':'fuse',
+      height:extH, filletR, chamferR
+    });
+  });
+}
+
+function renderFeatureTree() {
+  scheduleAutosave();
+  const list = document.getElementById('feat-list');
+  if (!list) return;
+  list.innerHTML = '';
+  for (const node of featureTree) {
+    if (node.type === 'datum') {
+      const div = document.createElement('div');
+      div.className = 'feat-node datum-node';
+      const pl = `${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
+      div.innerHTML = `<span style="flex-shrink:0">◇</span><span class="feat-node-name">${node.name}<span style="font-size:0.62rem;color:rgba(245,200,80,0.55);display:block">${pl} · click to add sketch</span></span>`;
+      div.addEventListener('click', () => selectFeatureNode(node));
+      list.appendChild(div);
+      continue;
+    }
+    const div = document.createElement('div');
+    const underDatum = node.type==='sketch' && node.datumId;
+    const skOfDatum  = node.type==='extrude' && featureTree.find(f=>f.id===node.sketchId)?.datumId;
+    div.className = 'feat-node'
+      + (node.type==='extrude' ? (skOfDatum ? ' extrude-under-datum' : ' extrude-node') : '')
+      + (underDatum ? ' sketch-under-datum' : '');
+    if (node.type==='sketch' && node.id===activeSketchId) div.classList.add('active');
+    const icon = node.type==='sketch' ? '✏' : '⬡';
+    let sub='', badge='';
+    if (node.type==='extrude') {
+      const hLabel = node.operation==='cut' ? 'depth' : 'h';
+      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">${hLabel}${node.height}mm`
+        +(node.filletR?` · f${node.filletR}`:'')+(node.chamferR?` · c${node.chamferR}`:'')+`</span>`;
+      badge=`<span class="feat-node-op op-${node.operation}">${node.operation.toUpperCase()}</span>`;
+    } else {
+      const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis}+${node.plane.offset.toFixed(1)}`;
+      sub=`<span style="font-size:0.62rem;color:var(--text2);display:block">${pl}</span>`;
+    }
+    div.innerHTML=`<span style="flex-shrink:0">${icon}</span><span class="feat-node-name">${node.name}${sub}</span>${badge}`;
+    div.addEventListener('click',()=>selectFeatureNode(node));
+    list.appendChild(div);
+  }
+}
+
+function _syncOpToggle(node) {
+  const toggle = document.getElementById('op-toggle');
+  const addBtn = document.getElementById('btn-op-add');
+  const cutBtn = document.getElementById('btn-op-cut');
+  const lblH   = document.getElementById('lbl-h');
+  // Show toggle only for non-'new' extrude nodes (i.e. datum-based or subsequent)
+  if (node && node.type==='extrude' && node.operation !== 'new') {
+    toggle.classList.add('visible');
+    const isCut = node.operation === 'cut';
+    cutBtn.classList.toggle('active', isCut);
+    addBtn.classList.toggle('active', !isCut);
+    if (lblH) lblH.textContent = isCut ? 'Depth' : 'Height';
+  } else {
+    toggle.classList.remove('visible');
+    if (lblH) lblH.textContent = 'Height';
+  }
+}
+
+function selectFeatureNode(node) {
+  if (node.type==='datum') {
+    // Create a new sketch on this datum plane
+    _addSketchOnDatum(node.id, node.plane);
+    return;
+  }
+  if (node.type==='sketch') {
+    activeSketchId = node.id;
+    setMode3d(false);
+    const pl=typeof node.plane==='string'?node.plane:`${node.plane.axis} +${node.plane.offset.toFixed(1)}`;
+    document.querySelector('.sk-overlay').textContent=`${node.name} · ${pl} Plane`;
+    scheduleRender();
+  } else if (node.type==='extrude') {
+    const ep=document.querySelector('.ext-panel');
+    ep.dataset.activeExtrudeId=node.id;
+    document.getElementById('s-h').value=node.height;
+    document.getElementById('v-h').value=node.height;
+    extH=node.height;
+    const v=node.filletR>0?node.filletR:node.chamferR;
+    edgeMode=node.filletR>0?'fillet':'chamfer';
+    document.getElementById(edgeMode==='fillet'?'btn-fillet-mode':'btn-chamfer-mode').classList.add('active');
+    document.getElementById(edgeMode==='fillet'?'btn-chamfer-mode':'btn-fillet-mode').classList.remove('active');
+    document.getElementById('s-edge').value=v;
+    document.getElementById('v-edge').value=v;
+    filletR=node.filletR; chamferR=node.chamferR;
+    _syncOpToggle(node);
+    scheduleExtrude();
+  }
+  renderFeatureTree();
+}
+
+document.getElementById('btn-op-add').addEventListener('click', () => {
+  const ep = document.querySelector('.ext-panel');
+  const node = featureTree.find(f=>f.id===ep.dataset.activeExtrudeId);
+  if (!node) return;
+  node.operation = 'fuse';
+  _syncOpToggle(node);
+  renderFeatureTree();
+  scheduleExtrude();
+});
+document.getElementById('btn-op-cut').addEventListener('click', () => {
+  const ep = document.querySelector('.ext-panel');
+  const node = featureTree.find(f=>f.id===ep.dataset.activeExtrudeId);
+  if (!node) return;
+  node.operation = 'cut';
+  _syncOpToggle(node);
+  renderFeatureTree();
+  scheduleExtrude();
+});
+
+document.getElementById('btn-add-sketch').addEventListener('click', ()=>{
+  const skId=newId('sk');
+  const n=featureTree.filter(f=>f.type==='sketch').length+1;
+  featureTree.push({id:skId,type:'sketch',name:`Sketch ${n}`,plane:'XY',entities:[]});
+  activeSketchId=skId;
+  document.querySelector('.sk-overlay').textContent=`Sketch ${n} · XY Plane`;
+  setMode3d(false);
+  renderFeatureTree();
+  scheduleRender();
+});
+
+// SAVE / LOAD SKETCH
+// ════════════════════════════════════════════════════════════════════
+
+document.getElementById('btn-save').addEventListener('click', () => {
+  const name=(document.getElementById('filename-input')?.value||'sketch').trim()||'sketch';
+  const data=JSON.stringify({version:2,filename:name,featureTree,entities:ents()},null,2);
+  const a=Object.assign(document.createElement('a'),{
+    href:URL.createObjectURL(new Blob([data],{type:'application/json'})),
+    download:name.replace(/[^\w\-_.]/g,'_')+'.json',
+  });
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('btn-load').addEventListener('click', () => {
+  document.getElementById('file-load').click();
+});
+
+document.getElementById('file-load').addEventListener('change', e => {
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try {
+      const data=JSON.parse(ev.target.result);
+      if (data.version===2&&Array.isArray(data.featureTree)) {
+        featureTree=data.featureTree;
+        nextFeatId=Math.max(...featureTree.map(f=>parseInt(f.id.split('-')[1])||0),0)+1;
+        activeSketchId=featureTree.find(f=>f.type==='sketch')?.id??null;
+        const fi=document.getElementById('filename-input'); if(fi&&data.filename) fi.value=data.filename;
+      } else if (Array.isArray(data.entities)) {
+        migrateV1(data.entities);
+      } else throw new Error('Invalid file');
+      renderFeatureTree(); scheduleRender(); scheduleExtrude();
+    } catch(err){ alert('Could not read sketch file: '+err.message); }
+  };
+  reader.readAsText(file); e.target.value='';
+});
+
+// ════════════════════════════════════════════════════════════════════
+// LOAD STL INTO 3D VIEW
+// ════════════════════════════════════════════════════════════════════
+
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+const stlLoader = new STLLoader();
+let importedMeshes = [];
+
+document.getElementById('btn-load-stl').addEventListener('click', () => {
+  document.getElementById('file-load-stl').click();
+});
+
+document.getElementById('file-load-stl').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const geo = stlLoader.parse(ev.target.result);
+    geo.computeVertexNormals();
+    // Centre the geometry
+    geo.computeBoundingBox();
+    const box = geo.boundingBox;
+    const cx = (box.min.x + box.max.x) / 2;
+    const cy = (box.min.y + box.max.y) / 2;
+    geo.translate(-cx, -cy, -box.min.z);
+
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x6b7db3, roughness: 0.55, metalness: 0.25,
+      transparent: true, opacity: 0.82,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+    importedMeshes.push(mesh);
+
+    // Focus camera on it
+    const sphere = new THREE.Box3().setFromObject(mesh).getBoundingSphere(new THREE.Sphere());
+    controls.target.copy(sphere.center);
+    camera.position.set(sphere.center.x + sphere.radius * 2,
+                        sphere.center.y + sphere.radius * 2,
+                        sphere.center.z + sphere.radius * 2);
+    controls.update();
+    renderer.render(scene, camera);
+
+    document.getElementById('vp-ph').style.display = 'none';
+    document.getElementById('vp-badge').style.display = 'block';
+    document.getElementById('vp-badge').textContent = `STL · ${file.name}`;
+    document.getElementById('btn-clear-stl').style.display = '';
+  };
+  reader.readAsArrayBuffer(file);
+  e.target.value = '';
+});
+
+document.getElementById('btn-clear-stl').addEventListener('click', () => {
+  for (const m of importedMeshes) { scene.remove(m); m.geometry.dispose(); m.material.dispose(); }
+  importedMeshes = [];
+  document.getElementById('btn-clear-stl').style.display = 'none';
+  if (!modelMesh) {
+    document.getElementById('vp-ph').style.display = '';
+    document.getElementById('vp-badge').style.display = 'none';
+  } else {
+    document.getElementById('vp-badge').textContent = 'replicad · OpenCascade WASM';
+  }
+  renderer.render(scene, camera);
+});
+
+// ════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════
+
+updateHint();
+if (tryRestoreAutosave()) {
+  showRestoreToast();
+  scheduleExtrude(); // rebuild the 3D solid from the restored tree (queued if worker isn't ready yet)
+} else {
+  initFeatureTree();
+}
+renderFeatureTree();
+scheduleRender();
+
+</script>
+  <footer class="app-footer">&copy; 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
