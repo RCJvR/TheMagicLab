@@ -33,7 +33,13 @@
     .nav-link:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
 
     .toolbar{flex-shrink:0;background:rgba(10,15,32,0.95);border-bottom:1px solid var(--border);
-             display:flex;align-items:center;padding:6px 10px;gap:4px;overflow-x:auto;}
+             display:flex;align-items:center;padding:6px 10px;gap:4px;}
+    #compScroll{flex:1;display:flex;align-items:center;gap:4px;overflow-x:auto;min-width:0;}
+    .toolbar-actions{flex-shrink:0;display:flex;align-items:center;gap:6px;padding-left:8px;}
+    .examples-sel{height:36px;padding:0 10px;border-radius:8px;border:1px solid var(--border);
+              background:var(--surface);color:var(--text);font-size:0.76rem;font-weight:600;
+              cursor:pointer;font-family:inherit;}
+    .examples-sel:focus{outline:none;border-color:rgba(245,158,11,0.5);}
     .comp-btn{height:52px;min-width:56px;padding:4px 8px;border-radius:8px;border:1px solid transparent;
             background:none;color:var(--text2);font-size:0.62rem;font-weight:600;
             cursor:grab;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
@@ -124,10 +130,19 @@
   </div>
 </header>
 
-<div class="toolbar" id="toolbar">
-  <!-- populated by JS from COMPONENT_DEFS -->
-  <div class="tb-sep"></div>
-  <button class="run-btn go" id="btn-run"><i data-lucide="play"></i> Run</button>
+<div class="toolbar">
+  <div id="compScroll"><!-- populated by JS from COMPONENT_DEFS --></div>
+  <div class="toolbar-actions">
+    <select class="examples-sel" id="examplesSel">
+      <option value="">Load example circuit…</option>
+      <option value="ledBlink">LED blink (microcontroller)</option>
+      <option value="ldrAlarm">LDR light alarm</option>
+      <option value="tempAlarm">Temperature alarm (transistor)</option>
+      <option value="capacitorLed">Capacitor-delayed LED</option>
+    </select>
+    <div class="tb-sep"></div>
+    <button class="run-btn go" id="btn-run"><i data-lucide="play"></i> Run</button>
+  </div>
 </div>
 
 <div class="main">
@@ -689,7 +704,7 @@ window.addEventListener('keydown', (e)=>{
 });
 
 /* ─── toolbar: click-to-place (simplest reliable interaction) ─── */
-const toolbar = document.getElementById('toolbar');
+const compScroll = document.getElementById('compScroll');
 Object.keys(COMPONENT_DEFS).forEach(type=>{
   const def = COMPONENT_DEFS[type];
   const btn = el2('button', {class:'comp-btn', title:'Click, then click the board to place a '+def.label});
@@ -700,7 +715,7 @@ Object.keys(COMPONENT_DEFS).forEach(type=>{
     btn.classList.add('active');
     placingType = type;
   });
-  toolbar.insertBefore(btn, toolbar.querySelector('.tb-sep'));
+  compScroll.appendChild(btn);
 });
 function el2(tag, attrs){ const e=document.createElement(tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
 
@@ -945,19 +960,30 @@ function solveCircuit(){
     voltages.set(groundNode, 0);
     activeVSources.forEach(b=>vsrcCurrents.set(b, x[vsIdx.get(b)]));
 
-    // update nonlinear states based on this iteration's voltages, check convergence
+    // Update nonlinear states based on this iteration's voltages, check
+    // convergence. Each uses hysteresis (a lower bound to STAY on, a higher
+    // bound to SWITCH on from off) rather than one hard threshold — a
+    // single threshold lets the state flip every iteration when the
+    // equilibrium value sits close to it (e.g. a transistor's clamped ~0.6V
+    // base-emitter drop is right next to a 0.55V cutoff), which never
+    // converges and leaves the branch stuck on whichever state the last of
+    // the 25 iterations happened to land on — sometimes the wrong one.
     let changed = false;
     for (const b of branches){
       if (b.kind==='led'){
         const va = voltages.get(uf.find(b.na))||0, vb = voltages.get(uf.find(b.nb))||0;
         const col = LED_COLORS[b.comp.props.color];
-        const newState = (va-vb) > col.vf*0.9 ? 'on' : 'off';
+        const wasOn = ledState.get(b.comp.id)==='on';
+        const threshold = col.vf * (wasOn ? 0.8 : 0.9);
+        const newState = (va-vb) > threshold ? 'on' : 'off';
         if (ledState.get(b.comp.id)!==newState){ ledState.set(b.comp.id,newState); changed=true; }
       }
       if (b.kind==='transistor'){
         const vb = voltages.get(uf.find(b.nb))||0, ve = voltages.get(uf.find(b.ne))||0;
         const beKey = 't_'+b.comp.id+'_be';
-        const newBe = (vb-ve) > 0.55 ? 'on' : 'off';
+        const wasOn = ledState.get(beKey)==='on';
+        const threshold = wasOn ? 0.45 : 0.65;
+        const newBe = (vb-ve) > threshold ? 'on' : 'off';
         if (ledState.get(beKey)!==newBe){ ledState.set(beKey,newBe); changed=true; }
         const newState = newBe==='on' ? 'sat' : 'cutoff';
         if (transState.get(b.comp.id)!==newState){ transState.set(b.comp.id,newState); changed=true; }
@@ -1154,22 +1180,105 @@ document.getElementById('btn-save').addEventListener('click', ()=>{
   const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'circuit.json'; a.click();
 });
+/* ─── Example circuits, matching the CAPS Gr9 Electrical/Electronic
+   Systems example circuits exactly (see the Electronic Components &
+   Sensors lesson in Tech Tower) — a ready-made starting point for
+   each so a lesson can load and demo it in one click. ─── */
+const EXAMPLE_CIRCUITS = {
+  ledBlink: {
+    code: document.getElementById('code-editor').value,
+    components: [
+      {id:'c1', type:'mcu', x:380, y:480, props:{}},
+      {id:'c2', type:'resistor', x:260, y:480, props:{ohms:470}},
+      {id:'c3', type:'led', x:360, y:580, props:{color:'red'}},
+    ],
+    wires: [
+      {id:'w1', from:{kind:'pin', compId:'c1', pinId:'D13'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
+      {id:'w2', from:{kind:'pin', compId:'c2', pinId:'b'}, to:{kind:'pin', compId:'c3', pinId:'a'}},
+      {id:'w3', from:{kind:'pin', compId:'c3', pinId:'c'}, to:{kind:'pin', compId:'c1', pinId:'GND'}},
+    ],
+  },
+  ldrAlarm: {
+    code: '',
+    components: [
+      {id:'c1', type:'battery', x:100, y:480, props:{voltage:3}},
+      {id:'c2', type:'ldr', x:220, y:480, props:{light:50}},
+      {id:'c3', type:'buzzer', x:360, y:460, props:{}},
+    ],
+    wires: [
+      {id:'w1', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
+      {id:'w2', from:{kind:'pin', compId:'c2', pinId:'b'}, to:{kind:'pin', compId:'c3', pinId:'+'}},
+      {id:'w3', from:{kind:'pin', compId:'c3', pinId:'-'}, to:{kind:'pin', compId:'c1', pinId:'-'}},
+    ],
+  },
+  tempAlarm: {
+    code: '',
+    components: [
+      {id:'c1', type:'battery', x:80, y:650, props:{voltage:6}},
+      {id:'c2', type:'thermistor', x:180, y:650, props:{temp:25, type:'+t'}},
+      {id:'c3', type:'potentiometer', x:260, y:650, props:{maxOhms:10000, wiperPos:50}},
+      {id:'c4', type:'resistor', x:180, y:720, props:{ohms:1000}},
+      {id:'c5', type:'transistor', x:380, y:700, props:{}},
+      {id:'c6', type:'buzzer', x:380, y:600, props:{}},
+    ],
+    wires: [
+      {id:'w1', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
+      {id:'w2', from:{kind:'pin', compId:'c2', pinId:'b'}, to:{kind:'pin', compId:'c3', pinId:'a'}},
+      {id:'w3', from:{kind:'pin', compId:'c3', pinId:'b'}, to:{kind:'pin', compId:'c1', pinId:'-'}},
+      {id:'w4', from:{kind:'pin', compId:'c3', pinId:'wiper'}, to:{kind:'pin', compId:'c4', pinId:'a'}},
+      {id:'w5', from:{kind:'pin', compId:'c4', pinId:'b'}, to:{kind:'pin', compId:'c5', pinId:'b'}},
+      {id:'w6', from:{kind:'pin', compId:'c5', pinId:'e'}, to:{kind:'pin', compId:'c1', pinId:'-'}},
+      {id:'w7', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c6', pinId:'+'}},
+      {id:'w8', from:{kind:'pin', compId:'c6', pinId:'-'}, to:{kind:'pin', compId:'c5', pinId:'c'}},
+    ],
+  },
+  capacitorLed: {
+    code: '',
+    components: [
+      {id:'c1', type:'battery', x:80, y:480, props:{voltage:6}},
+      {id:'c2', type:'switch', x:180, y:470, props:{closed:true}},
+      {id:'c3', type:'resistor', x:280, y:470, props:{ohms:470}},
+      {id:'c4', type:'capacitor', x:400, y:460, props:{uf:1000}},
+      {id:'c5', type:'led', x:400, y:560, props:{color:'red'}},
+    ],
+    wires: [
+      {id:'w1', from:{kind:'pin', compId:'c1', pinId:'+'}, to:{kind:'pin', compId:'c2', pinId:'a'}},
+      {id:'w2', from:{kind:'pin', compId:'c2', pinId:'b'}, to:{kind:'pin', compId:'c3', pinId:'a'}},
+      {id:'w3', from:{kind:'pin', compId:'c3', pinId:'b'}, to:{kind:'pin', compId:'c4', pinId:'+'}},
+      {id:'w4', from:{kind:'pin', compId:'c3', pinId:'b'}, to:{kind:'pin', compId:'c5', pinId:'a'}},
+      {id:'w5', from:{kind:'pin', compId:'c4', pinId:'-'}, to:{kind:'pin', compId:'c1', pinId:'-'}},
+      {id:'w6', from:{kind:'pin', compId:'c5', pinId:'c'}, to:{kind:'pin', compId:'c1', pinId:'-'}},
+    ],
+  },
+};
+document.getElementById('examplesSel').addEventListener('change', (e)=>{
+  const key = e.target.value;
+  if (!key) return;
+  if (components.length && !confirm('Load this example? It will replace what\'s currently on the board.')) { e.target.value=''; return; }
+  loadCircuitData(EXAMPLE_CIRCUITS[key]);
+  e.target.value = '';
+});
+
+function loadCircuitData(data){
+  components = data.components||[];
+  let maxId = 0;
+  components.forEach(c=>{ const n=parseInt(c.id.slice(1)); if(n>maxId) maxId=n; });
+  nextId = maxId+1;
+  wires = data.wires||[];
+  document.getElementById('code-editor').value = data.code || '';
+  document.getElementById('serial-out').textContent = '';
+  document.getElementById('codeErr').textContent = '';
+  selected = null;
+  scheduleRender(); renderPropPanel();
+}
+
 document.getElementById('btn-load').addEventListener('click', ()=>document.getElementById('file-load').click());
 document.getElementById('file-load').addEventListener('change', (e)=>{
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ()=>{
-    try {
-      const data = JSON.parse(reader.result);
-      components = data.components||[];
-      let maxId = 0;
-      components.forEach(c=>{ const n=parseInt(c.id.slice(1)); if(n>maxId) maxId=n; });
-      nextId = maxId+1;
-      wires = data.wires||[];
-      if (data.code) document.getElementById('code-editor').value = data.code;
-      selected = null;
-      scheduleRender(); renderPropPanel();
-    } catch(err){ alert('Could not read that file.'); }
+    try { loadCircuitData(JSON.parse(reader.result)); }
+    catch(err){ alert('Could not read that file.'); }
   };
   reader.readAsText(file);
 });
