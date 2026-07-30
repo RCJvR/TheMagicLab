@@ -167,6 +167,7 @@
     .wire-line:hover{stroke:#fff;stroke-width:3.5;}
     .wire-line.selected{stroke:#fff!important;stroke-width:3.5;filter:drop-shadow(0 0 4px rgba(255,255,255,0.7));}
     .wire-preview{stroke:var(--accent2);stroke-width:2;stroke-dasharray:5,4;opacity:0.65;fill:none;pointer-events:none;}
+    .placement-ghost{opacity:0.5;pointer-events:none;}
     .sel-handle{fill:#1f2937;stroke:var(--accent2);stroke-width:1.5;cursor:pointer;}
     .sel-handle:hover{fill:var(--accent2);}
     .sel-handle:hover + .sel-handle-icon{fill:#1a1206;}
@@ -286,7 +287,7 @@ void loop() {
    microcontroller board.
 ═══════════════════════════════════════════════════════════════ */
 
-const GRID = 20; // px per breadboard hole / grid unit
+const GRID = 24; // px per breadboard hole / grid unit — bumped up from 20 so parts and holes are easier to see and click
 // Board width fills whatever the canvas viewport actually has available
 // (never fewer columns than the original fixed 40, so existing saved
 // circuits built at smaller window sizes still fit).
@@ -355,7 +356,7 @@ const COMPONENT_DEFS = {
       polarityCallout(g, w-7.5, h/2, '+', 0, 16, '#16a34a');
       polarityCallout(g, 7, h/2, '−', 0, 16, '#dc2626');
     },
-    isSource:true,
+    isSource:true, internalR:0.3,
   },
   battery9v: {
     label:'9V Battery', icon:'🔋', w:2.6, h:2.3, category:'power',
@@ -377,7 +378,86 @@ const COMPONENT_DEFS = {
       polarityCallout(g, 0.85*GRID, topY, '+', -15, 8, '#16a34a');
       polarityCallout(g, 1.75*GRID, topY, '−', 15, 8, '#dc2626');
     },
-    isSource:true,
+    isSource:true, internalR:1.8,
+  },
+  batteryAA: {
+    label:'AA Battery', icon:'🔋', w:2.4, h:1.1, category:'power',
+    pins:[{id:'+', dx:0, dy:0.55},{id:'-', dx:2.4, dy:0.55}],
+    defaultProps:{voltage:1.5},
+    render(g,c){
+      const w=2.4*GRID, h=1.1*GRID;
+      g.appendChild(line(0,h/2,5,h/2,'url(#metalGrad)',2));
+      g.appendChild(line(w-5,h/2,w,h/2,'url(#metalGrad)',2));
+      const body = rect(2.5,1,w-5,h-2,4,'url(#battGrad)','#0a0c10');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(2.5,1,w-5,(h-2)*0.4,4,'url(#sheenGrad)'));
+      g.appendChild(rect(w-9,3,6,h-6,2,'#facc15','#8a6108'));
+      g.appendChild(rect(2.5,3,5,h-6,2,'#374151'));
+      g.appendChild(text(w/2,-6,'AA Battery (1.5V)','comp-label'));
+      polarityCallout(g, w-6, h/2, '+', 0, 14, '#16a34a');
+      polarityCallout(g, 5, h/2, '−', 0, 14, '#dc2626');
+    },
+    isSource:true, internalR:0.2,
+  },
+  batteryAAA: {
+    label:'AAA Battery', icon:'🔋', w:2, h:0.9, category:'power',
+    pins:[{id:'+', dx:0, dy:0.45},{id:'-', dx:2, dy:0.45}],
+    defaultProps:{voltage:1.5},
+    render(g,c){
+      const w=2*GRID, h=0.9*GRID;
+      g.appendChild(line(0,h/2,4,h/2,'url(#metalGrad)',1.6));
+      g.appendChild(line(w-4,h/2,w,h/2,'url(#metalGrad)',1.6));
+      const body = rect(2,0.8,w-4,h-1.6,3,'url(#battGrad)','#0a0c10');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(2,0.8,w-4,(h-1.6)*0.4,3,'url(#sheenGrad)'));
+      g.appendChild(rect(w-7,2.4,5,h-4.8,2,'#facc15','#8a6108'));
+      g.appendChild(rect(2,2.4,4,h-4.8,2,'#374151'));
+      g.appendChild(text(w/2,-6,'AAA Battery (1.5V)','comp-label'));
+      polarityCallout(g, w-4.5, h/2, '+', 0, 12, '#16a34a');
+      polarityCallout(g, 4, h/2, '−', 0, 12, '#dc2626');
+    },
+    isSource:true, internalR:0.35,
+  },
+  battery2032: {
+    label:'CR2032 Coin Cell', icon:'🔋', w:1.6, h:1.6, category:'power',
+    pins:[{id:'+', dx:0.4, dy:1.6},{id:'-', dx:1.2, dy:1.6}],
+    defaultProps:{voltage:3},
+    render(g,c){
+      const cx=0.8*GRID, cy=0.75*GRID, r=13;
+      g.appendChild(line(0.4*GRID,cy+r*0.6,0.4*GRID,1.6*GRID,'url(#metalGrad)',1.6));
+      g.appendChild(line(1.2*GRID,cy+r*0.6,1.2*GRID,1.6*GRID,'url(#metalGrad)',1.6));
+      const body = circleShape(cx,cy,r,'url(#metalKnob)');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(el('circle',{cx,cy,r:r*0.55,fill:'#1e293b'}));
+      g.appendChild(text(cx,cy+3,'3V','comp-value',8));
+      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(text(cx,-6,'CR2032 (3V)','comp-label'));
+      polarityCallout(g, 0.4*GRID, 1.6*GRID, '+', -10, 10, '#16a34a');
+      polarityCallout(g, 1.2*GRID, 1.6*GRID, '−', 10, 10, '#dc2626');
+    },
+    isSource:true, internalR:15,
+  },
+  batteryLiPo: {
+    label:'LiPo Battery (3.7V)', icon:'🔋', w:2.6, h:1.6, category:'power',
+    pins:[{id:'+', dx:0.4, dy:1.6},{id:'-', dx:1.2, dy:1.6}],
+    defaultProps:{voltage:3.7},
+    render(g,c){
+      const w=2.6*GRID, bodyH=1.4*GRID;
+      g.appendChild(line(0.4*GRID,bodyH,0.4*GRID,1.6*GRID,'#dc2626',1.8));
+      g.appendChild(line(1.2*GRID,bodyH,1.2*GRID,1.6*GRID,'#1f2937',1.8));
+      const body = rect(0,0,w,bodyH,8,'url(#darkPlasticGrad)','#000');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(2,2,w-4,bodyH*0.35,6,'url(#sheenGrad)'));
+      g.appendChild(text(w/2,bodyH/2+4,'LiPo 3.7V','comp-value',8));
+      g.appendChild(text(w/2,-6,'LiPo Battery (3.7V)','comp-label'));
+      polarityCallout(g, 0.4*GRID, 1.6*GRID, '+', -12, 8, '#16a34a');
+      polarityCallout(g, 1.2*GRID, 1.6*GRID, '−', 12, 8, '#dc2626');
+    },
+    isSource:true, internalR:0.08,
   },
   switch: {
     label:'Switch', icon:'🔘', w:2.5, h:1, category:'input',
@@ -891,9 +971,25 @@ const boardHoles = []; // {x,y,bus}
 // via the Placement toolbar button and selectable/removable like a part.
 let breadboardPresent = true;
 const ROW_LETTERS_TOP = ['a','b','c','d','e'], ROW_LETTERS_BOT = ['f','g','h','i','j'];
+/* Single source of truth for the board's vertical layout — buildBreadboard()
+   (hole positions) and renderBreadboard() (background/labels/rails) used to
+   compute overlapping pieces of this independently, and the two drifted out
+   of sync: the background rect ended above the actual bottom rail/labels,
+   leaving them stranded in the dark canvas below the board, while the top
+   labels sat right on top of the top rail's holes instead of above them. */
+function boardLayout(){
+  const botY0 = BOARD_Y + BOARD_ROWS_TOP*GRID + RAIL_GAP*1.4;
+  const topLabelY = BOARD_Y - 2*GRID - 22;
+  const botRail2Y = botY0 + BOARD_ROWS_BOT*GRID + 2*GRID;
+  const botLabelY = botRail2Y + 22;
+  const bottomY = botLabelY + 14;
+  const bgTop = topLabelY - 14;
+  return { botY0, topLabelY, botRail2Y, botLabelY, bottomY, bgTop };
+}
 function buildBreadboard(){
   boardHoles.length = 0;
   if (!breadboardPresent) return BOARD_Y;
+  const { botY0, bottomY } = boardLayout();
   const railRows = [
     {dy:-2, bus:'rail-top-pos', color:'#ef4444'},
     {dy:-1, bus:'rail-top-neg', color:'#3b82f6'},
@@ -909,7 +1005,6 @@ function buildBreadboard(){
       boardHoles.push({x:BOARD_X+col*GRID, y:BOARD_Y+row*GRID, bus:'col'+col+'-top', col, rowLetter:ROW_LETTERS_TOP[row]});
     }
   }
-  const botY0 = BOARD_Y + BOARD_ROWS_TOP*GRID + RAIL_GAP*1.4;
   for (let row=0; row<BOARD_ROWS_BOT; row++){
     for (let col=0; col<BOARD_COLS; col++){
       boardHoles.push({x:BOARD_X+col*GRID, y:botY0+row*GRID, bus:'col'+col+'-bot', col, rowLetter:ROW_LETTERS_BOT[row]});
@@ -925,7 +1020,7 @@ function buildBreadboard(){
       boardHoles.push({x:BOARD_X+col*GRID, y:r.y, bus:r.bus, rail:true, color:r.color});
     }
   });
-  return botY0 + BOARD_ROWS_BOT*GRID + 3*GRID;
+  return bottomY;
 }
 let boardBottomY = buildBreadboard();
 function toggleBreadboard(){
@@ -1007,7 +1102,19 @@ function renderAll(){
   for (const c of components) renderComponent(c);
   updatePinConnectionStyles();
   renderWirePreview();
+  renderPlacementGhost();
   applyZoomTransform();
+}
+
+/* Translucent preview of the part about to be placed, following the mouse
+   — so you can see exactly where it'll land (and that it's snapped to the
+   grid) before committing, instead of clicking blind. */
+function renderPlacementGhost(){
+  if (!placingType || !placingPreviewPos) return;
+  const def = COMPONENT_DEFS[placingType];
+  const ghost = el('g',{class:'placement-ghost', transform:`translate(${placingPreviewPos.x},${placingPreviewPos.y})`});
+  def.render(ghost, { x:placingPreviewPos.x, y:placingPreviewPos.y, props:JSON.parse(JSON.stringify(def.defaultProps)) });
+  svg.appendChild(ghost);
 }
 
 /* Realistic breadboard: cream perforated body, a centre trench between the
@@ -1018,8 +1125,9 @@ function renderAll(){
    hole on the same strip/rail, since that's the part that's easy to
    misjudge by eye (which holes are actually the same electrical node). */
 function renderBreadboard(){
-  const bgW = BOARD_COLS*GRID + 20, bgH = boardBottomY - BOARD_Y + 20;
-  const boardBg = rect(BOARD_X-30, BOARD_Y-50, bgW, bgH, 10, '#ece7d8');
+  const { botY0, topLabelY, botLabelY, bgTop } = boardLayout();
+  const bgW = BOARD_COLS*GRID + 20, bgH = (boardBottomY + 10) - bgTop;
+  const boardBg = rect(BOARD_X-30, bgTop, bgW, bgH, 10, '#ece7d8');
   boardBg.setAttribute('class', 'board-bg');
   boardBg.addEventListener('click', (e)=>{ e.stopPropagation(); selectComponent('__breadboard__'); });
   svg.appendChild(boardBg);
@@ -1029,10 +1137,9 @@ function renderBreadboard(){
   svg.appendChild(el('line',{x1:BOARD_X-20,y1:trenchY,x2:BOARD_X+BOARD_COLS*GRID+10,y2:trenchY,stroke:'#b8b09a','stroke-width':1}));
 
   for (let col=5; col<BOARD_COLS; col+=5){
-    svg.appendChild(text(BOARD_X+col*GRID, BOARD_Y-38, String(col), 'bb-col-label', 7));
-    svg.appendChild(text(BOARD_X+col*GRID, boardBottomY-6, String(col), 'bb-col-label', 7));
+    svg.appendChild(text(BOARD_X+col*GRID, topLabelY, String(col), 'bb-col-label', 7));
+    svg.appendChild(text(BOARD_X+col*GRID, botLabelY, String(col), 'bb-col-label', 7));
   }
-  const botY0 = BOARD_Y + BOARD_ROWS_TOP*GRID + RAIL_GAP*1.4;
   ROW_LETTERS_TOP.forEach((letter,i)=> svg.appendChild(text(BOARD_X-14, BOARD_Y+i*GRID+3, letter, 'bb-row-label', 7)));
   ROW_LETTERS_BOT.forEach((letter,i)=> svg.appendChild(text(BOARD_X-14, botY0+i*GRID+3, letter, 'bb-row-label', 7)));
 
@@ -1298,7 +1405,13 @@ window.addEventListener('keydown', (e)=>{
     else if (selectedWireId){ removeWire(selectedWireId); selectedWireId=null; renderPropPanel(); }
     return;
   }
-  if (e.key==='Escape') { cancelWiring(); return; }
+  if (e.key==='Escape') {
+    cancelWiring();
+    placingType = null; placingPreviewPos = null;
+    document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
+    scheduleRender();
+    return;
+  }
   if (!selected) return;
   const c = components.find(x=>x.id===selected);
   if (!c) return;
@@ -1353,6 +1466,7 @@ CATEGORY_ORDER.forEach(cat=>{
 function el2(tag, attrs){ const e=document.createElement(tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
 
 let placingType = null;
+let placingPreviewPos = null;
 document.getElementById('canvasWrap').addEventListener('click', (e)=>{
   if (wiringFrom){
     // clicked bare board space mid-wire (pins/holes stop propagation before
@@ -1373,13 +1487,24 @@ document.getElementById('canvasWrap').addEventListener('click', (e)=>{
   const pos = clientToSvgPos(e);
   addComponent(placingType, pos.x, pos.y);
   placingType = null;
+  placingPreviewPos = null;
   document.querySelectorAll('.comp-btn').forEach(b=>b.classList.remove('active'));
 });
 document.getElementById('canvasWrap').addEventListener('mousemove', (e)=>{
-  if (!wiringFrom) return;
-  liveMousePos = clientToSvgPos(e);
-  liveMouseCtrl = e.ctrlKey;
-  scheduleRender();
+  if (wiringFrom){
+    liveMousePos = clientToSvgPos(e);
+    liveMouseCtrl = e.ctrlKey;
+    scheduleRender();
+    return;
+  }
+  if (placingType){
+    const pos = clientToSvgPos(e);
+    placingPreviewPos = {
+      x: Math.round((pos.x-BOARD_X)/GRID)*GRID+BOARD_X,
+      y: Math.round((pos.y-BOARD_Y)/GRID)*GRID+BOARD_Y,
+    };
+    scheduleRender();
+  }
 });
 document.getElementById('canvasWrap').addEventListener('wheel', (e)=>{
   if (!e.ctrlKey) return;
@@ -1533,7 +1658,22 @@ function solveCircuit(){
     if (c.type==='servo' || c.type==='ultrasonic') continue; // logical components only — see simTick for how their pins are read
     if (def.pins.length===2){
       const na = pinKey(c.id, def.pins[0].id), nb = pinKey(c.id, def.pins[1].id);
-      if (def.isSource) branches.push({ comp:c, kind:'vsource', v:c.props.voltage, na, nb });
+      if (def.isSource){
+        // Real batteries aren't ideal voltage sources — they sag under
+        // load because of their own internal resistance (tiny for a LiPo
+        // cell, surprisingly large for a coin cell, which is why a CR2032
+        // can light an LED fine but can't drive a motor). Modelled as an
+        // ideal source feeding the + pin through that resistance, via a
+        // hidden internal node between them.
+        const rInt = def.internalR;
+        if (rInt){
+          const internalNode = pinKey(c.id, '_int');
+          branches.push({ comp:c, kind:'vsource', v:c.props.voltage, na:internalNode, nb });
+          branches.push({ comp:c, kind:'resistor', ohms:rInt, na:internalNode, nb:na });
+        } else {
+          branches.push({ comp:c, kind:'vsource', v:c.props.voltage, na, nb });
+        }
+      }
       else if (c.type==='switch' || c.type==='button'){
         const closed = c.type==='switch' ? c.props.closed : c.props.pressed;
         if (closed) uf.union(na, nb);
