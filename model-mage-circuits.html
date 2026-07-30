@@ -222,10 +222,18 @@ const COMPONENT_DEFS = {
     defaultProps:{voltage:6},
     props:[{key:'voltage', label:'Voltage (V)', type:'select', options:[1.5,3,4.5,6,9,12]}],
     render(g,c){
-      g.appendChild(rect(0,0,c.w*GRID,c.h*GRID,4,'#78350f','#fbbf24'));
-      g.appendChild(text(c.w*GRID/2,-6,`${c.props.voltage}V Battery`,'comp-label'));
-      g.appendChild(text(c.w*GRID/2,c.h*GRID/2+4,'+','comp-value',10));
-      g.appendChild(text(c.w*GRID/2,c.h*GRID/2+4,'','comp-value'));
+      const w=c.w*GRID, h=c.h*GRID;
+      g.appendChild(line(0,h/2,6,h/2,'url(#metalGrad)',2));
+      g.appendChild(line(w-6,h/2,w,h/2,'url(#metalGrad)',2));
+      const body = rect(3,1,w-6,h-2,4,'url(#battGrad)','#0a0c10');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(3,1,w-6,(h-2)*0.4,4,'url(#sheenGrad)'));
+      g.appendChild(rect(w-11,3,7,h-6,2,'#facc15','#8a6108'));
+      g.appendChild(text(w-7.5,h/2+3.5,'+','comp-value',9));
+      g.appendChild(rect(4,3,6,h-6,2,'#374151'));
+      g.appendChild(text(7,h/2+3.5,'–','comp-value',9));
+      g.appendChild(text(w/2,-6,`${c.props.voltage}V Battery`,'comp-label'));
     },
     isSource:true,
   },
@@ -234,12 +242,16 @@ const COMPONENT_DEFS = {
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2.5, dy:0.5}],
     defaultProps:{closed:false},
     render(g,c){
-      const on = c.props.closed;
-      g.appendChild(line(0,0.5*GRID,2.5*GRID,0.5*GRID,'#4b5563',2));
-      g.appendChild(circleShape(0,0.5*GRID,3,'#9ca3af'));
-      g.appendChild(circleShape(2.5*GRID,0.5*GRID,3,'#9ca3af'));
-      const lever = line(3,0.5*GRID-3, on?2.5*GRID-3:1.4*GRID, on?0.5*GRID-3:0.5*GRID-10, on?'#34d399':'#f87171',3);
+      const on = c.props.closed, midY=0.5*GRID;
+      g.appendChild(line(0,midY,0.35*GRID,midY,'url(#metalGrad)',2));
+      g.appendChild(line(2.15*GRID,midY,2.5*GRID,midY,'url(#metalGrad)',2));
+      const base = rect(0.3*GRID,midY-8,1.9*GRID,16,4,'url(#darkPlasticGrad)','#000');
+      g.appendChild(base);
+      g.appendChild(circleShape(0.55*GRID,midY,4,'url(#metalKnob)'));
+      g.appendChild(circleShape(1.95*GRID,midY,4,'url(#metalKnob)'));
+      const lever = line(0.55*GRID,midY, on?1.95*GRID:1.0*GRID, on?midY-2:midY-11, on?'#34d399':'#f87171',3.5);
       g.appendChild(lever);
+      g.appendChild(circleShape(0.55*GRID,midY,2.5,'url(#metalKnob)'));
       g.appendChild(text(c.w*GRID/2,-6, on?'Switch: ON':'Switch: OFF','comp-label'));
     },
     onClick(c){ c.props.closed = !c.props.closed; },
@@ -249,8 +261,15 @@ const COMPONENT_DEFS = {
     pins:[{id:'a', dx:0, dy:0.5},{id:'b', dx:2, dy:0.5}],
     defaultProps:{pressed:false},
     render(g,c){
-      g.appendChild(rect(0,0,2*GRID,GRID,3, c.props.pressed?'#164e3a':'#1f2937','#6b7280'));
-      g.appendChild(text(GRID,GRID/2+3,'PUSH','comp-value',8));
+      const pressed = c.props.pressed;
+      g.appendChild(line(0,GRID/2,0.3*GRID,GRID/2,'url(#metalGrad)',1.6));
+      g.appendChild(line(1.7*GRID,GRID/2,2*GRID,GRID/2,'url(#metalGrad)',1.6));
+      g.appendChild(rect(0.15*GRID,0.05*GRID,1.7*GRID,0.9*GRID,3,'url(#darkPlasticGrad)','#000'));
+      const cap = circleShape(GRID,GRID/2, pressed?7:8.5, pressed?'#164e3a':'#2f3846');
+      cap.setAttribute('filter','url(#softShadow)');
+      g.appendChild(cap);
+      g.appendChild(el('circle',{cx:GRID,cy:GRID/2,r:pressed?7:8.5,fill:'url(#domeShine)'}));
+      g.appendChild(text(GRID,GRID/2+3,'PUSH','comp-value',7));
     },
     onDown(c){ c.props.pressed = true; },
     onUp(c){ c.props.pressed = false; },
@@ -261,8 +280,17 @@ const COMPONENT_DEFS = {
     defaultProps:{ohms:220},
     props:[{key:'ohms', label:'Resistance (Ω)', type:'select', options:[100,220,330,470,1000,2200,4700,10000,20000]}],
     render(g,c){
-      g.appendChild(line(0,0.5*GRID,3*GRID,0.5*GRID,'#78716c',2));
-      g.appendChild(rect(0.6*GRID,0.15*GRID,1.8*GRID,0.7*GRID,2,'#d6d3d1','#57534e'));
+      const bodyX=0.55*GRID, bodyW=1.9*GRID, bodyY=0.12*GRID, bodyH=0.76*GRID;
+      g.appendChild(line(0,0.5*GRID,bodyX,0.5*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(bodyX+bodyW,0.5*GRID,3*GRID,0.5*GRID,'url(#metalGrad)',2));
+      const body = rect(bodyX,bodyY,bodyW,bodyH,bodyH/2,'url(#resistorBodyGrad)','#8a7548');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(bodyX,bodyY,bodyW,bodyH*0.4,bodyH/2,'url(#sheenGrad)'));
+      const bands = [...resistorBands(c.props.ohms), '#d4af17'];
+      bands.forEach((col,i)=>{
+        g.appendChild(rect(bodyX+bodyW*0.14+i*bodyW*0.19, bodyY+0.5, bodyW*0.09, bodyH-1, 0, col));
+      });
       g.appendChild(text(1.5*GRID,-6,`${fmtOhms(c.props.ohms)}`,'comp-label'));
     },
   },
@@ -274,10 +302,15 @@ const COMPONENT_DEFS = {
     render(g,c){
       const col = LED_COLORS[c.props.color].hex;
       const glow = c._glow||0;
-      if (glow>0.02) g.appendChild(circleShape(0.8*GRID,0.8*GRID,10+glow*14,col,glow*0.85));
-      g.appendChild(circleShape(0.8*GRID,0.8*GRID,9,col,0.25+glow*0.75));
-      g.appendChild(el('circle',{cx:0.8*GRID,cy:0.8*GRID,r:9,fill:'none',stroke:col,'stroke-width':1.5}));
-      g.appendChild(text(0.8*GRID,-6,`LED (${c.props.color})`,'comp-label'));
+      const cx=0.8*GRID, cy=0.72*GRID, r=9;
+      g.appendChild(line(0.3*GRID,cy+r*0.55,0.3*GRID,1.6*GRID,'url(#metalGrad)',1.6));
+      g.appendChild(line(1.3*GRID,cy+r*0.55,1.3*GRID,1.45*GRID,'url(#metalGrad)',1.6));
+      g.appendChild(rect(cx-r-1,cy+r*0.45,(r+1)*2,2.5,1,'#4b5563'));
+      if (glow>0.02) g.appendChild(circleShape(cx,cy,r+glow*15,col,glow*0.55));
+      g.appendChild(circleShape(cx,cy,r,col,0.3+glow*0.7));
+      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#00000055','stroke-width':1}));
+      g.appendChild(text(cx,-6,`LED (${c.props.color})`,'comp-label'));
       g.appendChild(text(0.3*GRID,1.6*GRID+11,'A','comp-value',8));
       g.appendChild(text(1.3*GRID,1.6*GRID+11,'K','comp-value',8));
     },
@@ -289,8 +322,19 @@ const COMPONENT_DEFS = {
     defaultProps:{},
     render(g,c){
       const on = (c._current||0) > 0.002;
-      g.appendChild(circleShape(GRID,GRID,15,'#374151'));
-      g.appendChild(circleShape(GRID,GRID,9,on?'#fbbf24':'#6b7280'));
+      g.appendChild(line(0.4*GRID,GRID+13,0.4*GRID,2*GRID,'url(#metalGrad)',1.6));
+      g.appendChild(line(1.6*GRID,GRID+13,1.6*GRID,2*GRID,'url(#metalGrad)',1.6));
+      const can = circleShape(GRID,GRID,15,'url(#darkPlasticGrad)');
+      can.setAttribute('filter','url(#softShadow)');
+      g.appendChild(can);
+      g.appendChild(el('circle',{cx:GRID,cy:GRID,r:15,fill:'none',stroke:'#9ca3af','stroke-width':1}));
+      // resonance-hole ring, like a real piezo buzzer's perforated cap
+      for (let i=0;i<8;i++){
+        const a = i/8*Math.PI*2;
+        g.appendChild(circleShape(GRID+Math.cos(a)*10,GRID+Math.sin(a)*10,1.1,'#0b0d11'));
+      }
+      g.appendChild(circleShape(GRID,GRID,7,on?'#fbbf24':'#4b5563'));
+      g.appendChild(el('circle',{cx:GRID,cy:GRID,r:15,fill:'url(#domeShine)'}));
       g.appendChild(text(GRID,-6,'Buzzer','comp-label'));
       if (on){
         g.appendChild(el('circle',{cx:GRID,cy:GRID,r:19,fill:'none',stroke:'#fbbf24','stroke-width':1,opacity:0.6}));
@@ -304,9 +348,25 @@ const COMPONENT_DEFS = {
     defaultProps:{light:50},
     props:[{key:'light', label:'Light level (%)', type:'range', min:0, max:100}],
     render(g,c){
-      g.appendChild(line(0,0.5*GRID,2.2*GRID,0.5*GRID,'#78716c',2));
-      g.appendChild(rect(0.4*GRID,0.1*GRID,1.4*GRID,0.8*GRID,10,'#facc15','#a16207'));
-      g.appendChild(text(1.1*GRID,-6,`LDR (${Math.round(c.props.light)}% light)`,'comp-label'));
+      const cx=1.1*GRID, cy=0.5*GRID, r=0.75*GRID;
+      g.appendChild(line(0,cy,cx-r,cy,'url(#metalGrad)',2));
+      g.appendChild(line(cx+r,cy,2.2*GRID,cy,'url(#metalGrad)',2));
+      const disc = circleShape(cx,cy,r,'#e8d78a',0.9);
+      disc.setAttribute('filter','url(#softShadow)');
+      g.appendChild(disc);
+      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#a16207','stroke-width':1.5}));
+      // serpentine CdS meander track, like the real photoresistor's zig-zag light-sensing element
+      const rows=4, trackW=r*1.3, trackH=r*1.0;
+      const pts=[];
+      for (let row=0; row<rows; row++){
+        const ry = cy - trackH/2 + row*(trackH/(rows-1));
+        const xa = row%2===0 ? cx-trackW/2 : cx+trackW/2;
+        const xb = row%2===0 ? cx+trackW/2 : cx-trackW/2;
+        pts.push(`${xa},${ry}`, `${xb},${ry}`);
+      }
+      g.appendChild(el('polyline',{points:pts.join(' '),fill:'none',stroke:'#78716c','stroke-width':1.3}));
+      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(text(cx,-6,`LDR (${Math.round(c.props.light)}% light)`,'comp-label'));
     },
     resistanceFn(c){
       const t = c.props.light/100;
@@ -322,9 +382,15 @@ const COMPONENT_DEFS = {
       {key:'temp', label:'Temperature (°C)', type:'range', min:0, max:100},
     ],
     render(g,c){
-      g.appendChild(line(0,0.5*GRID,2.2*GRID,0.5*GRID,'#78716c',2));
-      g.appendChild(rect(0.4*GRID,0.1*GRID,1.4*GRID,0.8*GRID,10,'#fca5a5','#991b1b'));
-      g.appendChild(text(1.1*GRID,-6,`${c.props.type} Thermistor (${Math.round(c.props.temp)}°C)`,'comp-label'));
+      const cx=1.1*GRID, cy=0.5*GRID, r=0.7*GRID;
+      g.appendChild(line(0,cy,cx-r,cy,'url(#metalGrad)',2));
+      g.appendChild(line(cx+r,cy,2.2*GRID,cy,'url(#metalGrad)',2));
+      const bead = circleShape(cx,cy,r,'#1e3a8a');
+      bead.setAttribute('filter','url(#softShadow)');
+      g.appendChild(bead);
+      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#0f2050','stroke-width':1.5}));
+      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(text(cx,-6,`${c.props.type} Thermistor (${Math.round(c.props.temp)}°C)`,'comp-label'));
     },
     resistanceFn(c){
       const t = c.props.temp/100;
@@ -340,10 +406,18 @@ const COMPONENT_DEFS = {
       {key:'wiperPos', label:'Wiper position (%)', type:'range', min:0, max:100},
     ],
     render(g,c){
-      g.appendChild(rect(0.2*GRID,0.4*GRID,2*GRID,GRID,3,'#374151','#9ca3af'));
-      g.appendChild(line(0,1.4*GRID,0.2*GRID,1.4*GRID,'#78716c',2));
-      g.appendChild(line(2.4*GRID,1.4*GRID,2.2*GRID,1.4*GRID,'#78716c',2));
-      g.appendChild(line(1.2*GRID,0,1.2*GRID,0.4*GRID,'#78716c',2));
+      g.appendChild(line(0,1.4*GRID,0.2*GRID,1.4*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(2.4*GRID,1.4*GRID,2.2*GRID,1.4*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(1.2*GRID,0,1.2*GRID,0.4*GRID,'url(#metalGradV)',2));
+      const body = rect(0.2*GRID,0.4*GRID,2*GRID,GRID,3,'url(#darkPlasticGrad)','#000');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(0.2*GRID,0.4*GRID,2*GRID,GRID*0.35,3,'url(#sheenGrad)'));
+      const knobCx=1.2*GRID, knobCy=0.9*GRID, knobR=8;
+      g.appendChild(circleShape(knobCx,knobCy,knobR,'url(#metalKnob)'));
+      g.appendChild(el('circle',{cx:knobCx,cy:knobCy,r:knobR,fill:'none',stroke:'#334155','stroke-width':1}));
+      const ang = (-135 + (c.props.wiperPos/100)*270) * Math.PI/180;
+      g.appendChild(line(knobCx,knobCy,knobCx+Math.cos(ang)*knobR*0.85,knobCy+Math.sin(ang)*knobR*0.85,'#1e293b',1.6));
       g.appendChild(text(1.2*GRID,-6,`Pot ${Math.round(c.props.wiperPos)}%`,'comp-label'));
     },
     isPot:true,
@@ -354,11 +428,15 @@ const COMPONENT_DEFS = {
     defaultProps:{uf:100},
     props:[{key:'uf', label:'Capacitance (µF)', type:'select', options:[1,10,100,470,1000,4700]}],
     render(g,c){
-      g.appendChild(line(0,0.7*GRID,0.4*GRID,0.7*GRID,'#78716c',2));
-      g.appendChild(line(0.8*GRID,0.7*GRID,1.2*GRID,0.7*GRID,'#78716c',2));
-      g.appendChild(line(0.4*GRID,0.1*GRID,0.4*GRID,1.3*GRID,'#93c5fd',3));
-      g.appendChild(line(0.8*GRID,0.1*GRID,0.8*GRID,1.3*GRID,'#93c5fd',3));
-      g.appendChild(text(0.6*GRID,-6,`${c.props.uf}µF`,'comp-label'));
+      const cx=0.6*GRID, cy=0.7*GRID, rx=0.55*GRID, ry=0.65*GRID;
+      g.appendChild(line(0,cy,cx-rx*0.75,cy,'url(#metalGrad)',2));
+      g.appendChild(line(cx+rx*0.75,cy,1.2*GRID,cy,'url(#metalGrad)',2));
+      const body = el('ellipse',{cx,cy,rx,ry,fill:'#2563eb'});
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(el('ellipse',{cx,cy,rx,ry,fill:'none',stroke:'#0f2a6b','stroke-width':1.5}));
+      g.appendChild(el('ellipse',{cx,cy:cy-ry*0.4,rx:rx*0.7,ry:ry*0.35,fill:'url(#domeShine)'}));
+      g.appendChild(text(cx,-6,`${c.props.uf}µF`,'comp-label'));
     },
     isCapacitor:true,
   },
@@ -367,12 +445,18 @@ const COMPONENT_DEFS = {
     pins:[{id:'b', dx:0, dy:1}, {id:'c', dx:1.2, dy:0}, {id:'e', dx:1.2, dy:2}],
     defaultProps:{},
     render(g,c){
-      g.appendChild(circleShape(0.9*GRID,GRID,16,'#1f2937'));
-      g.appendChild(line(0,GRID,0.5*GRID,GRID,'#78716c',2));
-      g.appendChild(line(0.5*GRID,GRID,1.2*GRID,0.35*GRID,'#78716c',2));
-      g.appendChild(line(1.2*GRID,0,1.2*GRID,0.35*GRID,'#78716c',2));
-      g.appendChild(line(0.5*GRID,GRID,1.2*GRID,1.65*GRID,'#78716c',2));
-      g.appendChild(line(1.2*GRID,2*GRID,1.2*GRID,1.65*GRID,'#78716c',2));
+      g.appendChild(line(0,GRID,0.5*GRID,GRID,'url(#metalGrad)',2));
+      g.appendChild(line(0.5*GRID,GRID,1.2*GRID,0.35*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(1.2*GRID,0,1.2*GRID,0.35*GRID,'url(#metalGradV)',2));
+      g.appendChild(line(0.5*GRID,GRID,1.2*GRID,1.65*GRID,'url(#metalGrad)',2));
+      g.appendChild(line(1.2*GRID,2*GRID,1.2*GRID,1.65*GRID,'url(#metalGradV)',2));
+      // TO-92 package: black plastic dome with a flat front face
+      const cx=0.9*GRID, cy=GRID, r=16;
+      const body = el('path',{d:`M ${cx-r} ${cy} A ${r} ${r} 0 1 1 ${cx+r} ${cy} L ${cx-r} ${cy} Z`, fill:'url(#darkPlasticGrad)'});
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(el('path',{d:`M ${cx-r} ${cy} A ${r} ${r} 0 1 1 ${cx+r} ${cy}`, fill:'none',stroke:'#000','stroke-width':1}));
       g.appendChild(text(0.9*GRID,-6,'NPN','comp-label'));
       g.appendChild(text(0,GRID+11,'B','comp-value',8));
       g.appendChild(text(1.2*GRID,-3,'C','comp-value',8));
@@ -392,9 +476,26 @@ const COMPONENT_DEFS = {
     })(),
     defaultProps:{},
     render(g,c){
-      g.appendChild(rect(0,0,8*GRID,5*GRID,6,'#0f2b2a','#2dd4bf'));
-      g.appendChild(text(4*GRID,2.3*GRID,'MICROCONTROLLER','comp-label',10));
-      g.appendChild(text(4*GRID,2.8*GRID,'D0–D13 · A0–A5 · 5V · GND','comp-value',8));
+      const board = rect(0,0,8*GRID,5*GRID,6,'url(#pcbGrad)','#062019');
+      board.setAttribute('filter','url(#softShadow)');
+      g.appendChild(board);
+      g.appendChild(rect(0,0,8*GRID,5*GRID*0.3,6,'url(#sheenGrad)'));
+      // header-pin strips along the top (digital) and bottom (analog/power) edges
+      for (let i=0;i<=13;i++) g.appendChild(rect((7-i*0.5)*GRID-2.5,1,5,5,1,'url(#metalGradV)'));
+      for (let i=0;i<=5;i++) g.appendChild(rect((0.5+i*0.6)*GRID-2.5,5*GRID-6,5,5,1,'url(#metalGradV)'));
+      g.appendChild(rect(6*GRID-2.5,5*GRID-6,5,5,1,'url(#metalGradV)'));
+      g.appendChild(rect(7*GRID-2.5,5*GRID-6,5,5,1,'url(#metalGradV)'));
+      // main IC chip
+      const chip = rect(2.9*GRID,1.5*GRID,2.2*GRID,1.2*GRID,2,'#0b0d11','#000');
+      g.appendChild(chip);
+      for (let i=0;i<6;i++){
+        g.appendChild(rect(2.9*GRID+i*0.37*GRID,1.35*GRID,0.12*GRID,0.15*GRID,0,'url(#metalGrad)'));
+        g.appendChild(rect(2.9*GRID+i*0.37*GRID,2.7*GRID,0.12*GRID,0.15*GRID,0,'url(#metalGrad)'));
+      }
+      g.appendChild(circleShape(3.1*GRID,1.7*GRID,2,'#374151'));
+      g.appendChild(circleShape(4*GRID,3.6*GRID,3,'#22c55e'));
+      g.appendChild(text(4*GRID,3.35*GRID,'MICROCONTROLLER','comp-label',9));
+      g.appendChild(text(4*GRID,4.3*GRID,'D0–D13 · A0–A5 · 5V · GND','comp-value',7.5));
       for (let i=0;i<=13;i++) g.appendChild(text((7-i*0.5)*GRID,-4,'D'+i,'comp-value',6.5));
       for (let i=0;i<=5;i++) g.appendChild(text((0.5+i*0.6)*GRID,5*GRID+13,'A'+i,'comp-value',6.5));
       g.appendChild(text(6*GRID,5*GRID+13,'5V','comp-value',6.5));
@@ -407,11 +508,20 @@ const COMPONENT_DEFS = {
     pins:[{id:'+', dx:0, dy:2.2},{id:'-', dx:2.2, dy:2.2}],
     defaultProps:{},
     render(g,c){
-      g.appendChild(circleShape(1.1*GRID, 1.1*GRID, 20, '#374151'));
-      g.appendChild(el('circle',{cx:1.1*GRID, cy:1.1*GRID, r:20, fill:'none', stroke:'#9ca3af','stroke-width':2}));
+      const cx=1.1*GRID, cy=1.1*GRID;
+      g.appendChild(line(0,2.2*GRID,0,1.9*GRID,'url(#metalGrad)',1.8));
+      g.appendChild(line(2.2*GRID,2.2*GRID,2.2*GRID,1.9*GRID,'url(#metalGrad)',1.8));
+      // cylindrical metal can body
+      const can = circleShape(cx,cy,20,'url(#motorCan)');
+      can.setAttribute('filter','url(#softShadow)');
+      g.appendChild(can);
+      g.appendChild(el('circle',{cx,cy,r:20,fill:'none',stroke:'#1e293b','stroke-width':1.5}));
+      g.appendChild(rect(cx-5,cy-24,10,7,1,'#78350f','#4a220a'));
+      g.appendChild(circleShape(cx,cy,5,'#1e293b'));
       const angle = c._spinAngle||0;
-      g.appendChild(line(1.1*GRID,1.1*GRID, 1.1*GRID+16*Math.cos(angle), 1.1*GRID+16*Math.sin(angle), '#fbbf24', 3));
-      g.appendChild(text(1.1*GRID,-6,'DC Motor','comp-label'));
+      g.appendChild(line(cx,cy, cx+16*Math.cos(angle), cy+16*Math.sin(angle), '#fbbf24', 3));
+      g.appendChild(el('circle',{cx,cy,r:20,fill:'url(#domeShine)'}));
+      g.appendChild(text(cx,-6,'DC Motor','comp-label'));
     },
     fixedResistance:25,
   },
@@ -423,10 +533,17 @@ const COMPONENT_DEFS = {
       const gr=c._glowR||0, gg=c._glowG||0, gb=c._glowB||0;
       const mixed = `rgb(${Math.round(255*gr)},${Math.round(255*gg)},${Math.round(255*gb)})`;
       const totalGlow = Math.max(gr,gg,gb);
-      if (totalGlow>0.05) g.appendChild(circleShape(1.2*GRID,0.7*GRID,14+totalGlow*10,mixed,totalGlow*0.7));
-      g.appendChild(circleShape(1.2*GRID,0.7*GRID,10, totalGlow>0.05?mixed:'#4b5563'));
-      g.appendChild(el('circle',{cx:1.2*GRID,cy:0.7*GRID,r:10,fill:'none',stroke:'#9ca3af','stroke-width':1}));
-      g.appendChild(text(1.2*GRID,-6,'RGB LED','comp-label'));
+      const cx=1.2*GRID, cy=0.7*GRID, r=10;
+      [0,0.8*GRID,1.6*GRID,2.4*GRID].forEach(dx=>{
+        g.appendChild(line(dx,1.4*GRID,dx,1.8*GRID,'url(#metalGrad)',1.6));
+      });
+      g.appendChild(rect(cx-r-2,1.25*GRID,(r+2)*2,3,1,'#4b5563'));
+      if (totalGlow>0.05) g.appendChild(circleShape(cx,cy,r+totalGlow*14,mixed,totalGlow*0.6));
+      // clear/diffused dome — greyish translucent plastic when unlit, tinted by whichever channels are on
+      g.appendChild(circleShape(cx,cy,r, totalGlow>0.05?mixed:'#9ca3af', totalGlow>0.05 ? 0.35+totalGlow*0.65 : 0.5));
+      g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
+      g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#00000055','stroke-width':1}));
+      g.appendChild(text(cx,-6,'RGB LED','comp-label'));
       g.appendChild(text(0,1.8*GRID+11,'R','comp-value',7));
       g.appendChild(text(0.8*GRID,1.8*GRID+11,'G','comp-value',7));
       g.appendChild(text(1.6*GRID,1.8*GRID+11,'B','comp-value',7));
@@ -440,11 +557,23 @@ const COMPONENT_DEFS = {
     defaultProps:{},
     render(g,c){
       const angle = c._angle==null ? 90 : c._angle;
-      g.appendChild(rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID,4,'#1f2937','#6b7280'));
+      // three colour-coded leads, matching a real servo cable (red/brown/orange)
+      g.appendChild(line(0,1.6*GRID,0,2*GRID,'#dc2626',1.8));
+      g.appendChild(line(1.2*GRID,1.6*GRID,1.2*GRID,2*GRID,'#57534e',1.8));
+      g.appendChild(line(2.4*GRID,1.6*GRID,2.4*GRID,2*GRID,'#f97316',1.8));
+      const body = rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID,4,'url(#pcbBlueGrad)','#0a1a4a');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(0.3*GRID,0.2*GRID,1.8*GRID,1.4*GRID*0.35,4,'url(#sheenGrad)'));
+      // mounting flange tabs, like a real micro-servo's ears
+      g.appendChild(rect(-2,0.5*GRID,4,0.5*GRID,1,'#334155'));
+      g.appendChild(rect(2.4*GRID-2,0.5*GRID,4,0.5*GRID,1,'#334155'));
       const rad = (angle-90)*Math.PI/180;
       const cx=1.2*GRID, cy=0.9*GRID;
-      g.appendChild(line(cx,cy,cx+22*Math.sin(rad),cy-22*Math.cos(rad),'#fbbf24',3));
-      g.appendChild(circleShape(cx,cy,4,'#9ca3af'));
+      // white plastic servo horn (output spline)
+      g.appendChild(line(cx,cy,cx+22*Math.sin(rad),cy-22*Math.cos(rad),'#f8fafc',3.5));
+      g.appendChild(line(cx,cy,cx-14*Math.sin(rad),cy+14*Math.cos(rad),'#f8fafc',3.5));
+      g.appendChild(circleShape(cx,cy,4.5,'url(#metalKnob)'));
       g.appendChild(text(1.2*GRID,-6,`Servo (${Math.round(angle)}°)`,'comp-label'));
       g.appendChild(text(0,2*GRID+11,'V','comp-value',7));
       g.appendChild(text(1.2*GRID,2*GRID+11,'G','comp-value',7));
@@ -458,9 +587,16 @@ const COMPONENT_DEFS = {
     defaultProps:{distance:50},
     props:[{key:'distance', label:'Object distance (cm)', type:'range', min:2, max:400}],
     render(g,c){
-      g.appendChild(rect(0,0,3*GRID,1.4*GRID,6,'#1e293b','#60a5fa'));
-      g.appendChild(circleShape(0.9*GRID,0.7*GRID,10,'#334155'));
-      g.appendChild(circleShape(2.1*GRID,0.7*GRID,10,'#334155'));
+      const board = rect(0,0,3*GRID,1.4*GRID,6,'url(#pcbBlueGrad)','#0a1a4a');
+      board.setAttribute('filter','url(#softShadow)');
+      g.appendChild(board);
+      g.appendChild(rect(0,0,3*GRID,1.4*GRID*0.3,6,'url(#sheenGrad)'));
+      [0.9*GRID,2.1*GRID].forEach(cx=>{
+        g.appendChild(circleShape(cx,0.7*GRID,10,'url(#metalKnob)'));
+        g.appendChild(el('circle',{cx,cy:0.7*GRID,r:7,fill:'none',stroke:'#1e293b','stroke-width':1}));
+        g.appendChild(el('circle',{cx,cy:0.7*GRID,r:4,fill:'#1e293b'}));
+        g.appendChild(el('circle',{cx,cy:0.7*GRID,r:10,fill:'url(#domeShine)'}));
+      });
       g.appendChild(text(1.5*GRID,-6,`Ultrasonic (${Math.round(c.props.distance)}cm)`,'comp-label'));
       g.appendChild(text(0,1.6*GRID+11,'V','comp-value',7));
       g.appendChild(text(1*GRID,1.6*GRID+11,'T','comp-value',7));
@@ -474,9 +610,12 @@ const COMPONENT_DEFS = {
     pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:2, dy:0.7}],
     defaultProps:{},
     render(g,c){
-      g.appendChild(circleShape(GRID,0.7*GRID,15,'#1e3a5f'));
-      g.appendChild(text(GRID,0.7*GRID-2,'V','comp-label',11));
-      g.appendChild(text(GRID,0.7*GRID+10,fmtVal(c._reading,'V'),'comp-value',8));
+      const cx=GRID, cy=0.7*GRID;
+      g.appendChild(circleShape(cx,cy,15,'url(#metalKnob)'));
+      g.appendChild(circleShape(cx,cy,12.5,'#0f2540'));
+      g.appendChild(text(cx,cy-2,'V','comp-label',10));
+      g.appendChild(text(cx,cy+10,fmtVal(c._reading,'V'),'comp-value',7.5));
+      g.appendChild(el('circle',{cx,cy,r:15,fill:'url(#domeShine)'}));
     },
     isMeter:'voltage', highImpedance:true,
   },
@@ -485,9 +624,12 @@ const COMPONENT_DEFS = {
     pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:2, dy:0.7}],
     defaultProps:{},
     render(g,c){
-      g.appendChild(circleShape(GRID,0.7*GRID,15,'#1e3a5f'));
-      g.appendChild(text(GRID,0.7*GRID-2,'A','comp-label',11));
-      g.appendChild(text(GRID,0.7*GRID+10,fmtVal(c._reading,'A'),'comp-value',8));
+      const cx=GRID, cy=0.7*GRID;
+      g.appendChild(circleShape(cx,cy,15,'url(#metalKnob)'));
+      g.appendChild(circleShape(cx,cy,12.5,'#0f2540'));
+      g.appendChild(text(cx,cy-2,'A','comp-label',10));
+      g.appendChild(text(cx,cy+10,fmtVal(c._reading,'A'),'comp-value',7.5));
+      g.appendChild(el('circle',{cx,cy,r:15,fill:'url(#domeShine)'}));
     },
     isMeter:'current', fixedResistance:0.01,
   },
@@ -511,6 +653,64 @@ function rect(x,y,w,h,r,fill,stroke){ return el('rect',{x,y,width:w,height:h,rx:
 function line(x1,y1,x2,y2,stroke,w){ return el('line',{x1,y1,x2,y2,stroke,'stroke-width':w||1.5,'stroke-linecap':'round'}); }
 function circleShape(cx,cy,r,fill,opacity){ return el('circle',{cx,cy,r,fill,opacity: opacity==null?1:opacity}); }
 function text(x,y,str,cls,size){ const t=el('text',{x,y,class:cls}); if(size) t.setAttribute('font-size',size); t.textContent=str; return t; }
+
+/* ─── shared gradients/filters for more realistic component rendering ───
+   Rebuilt every renderAll() call since svg.innerHTML is cleared each frame;
+   cheap (a handful of <stop> elements), and keeps every component's visuals
+   in sync without a separate "has this run yet" tracking flag. */
+function componentDefs(){
+  const defs = el('defs',{});
+  defs.innerHTML = `
+    <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e2e8f0"/><stop offset="50%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="metalGradV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0"/><stop offset="50%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="resistorBodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ecdfc0"/><stop offset="50%" stop-color="#d8c393"/><stop offset="100%" stop-color="#b9a172"/>
+    </linearGradient>
+    <linearGradient id="darkPlasticGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#454c5c"/><stop offset="55%" stop-color="#20242e"/><stop offset="100%" stop-color="#0c0e13"/>
+    </linearGradient>
+    <linearGradient id="pcbGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#155e4f"/><stop offset="100%" stop-color="#0a2b25"/>
+    </linearGradient>
+    <linearGradient id="pcbBlueGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#0f2a6b"/>
+    </linearGradient>
+    <linearGradient id="battGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#57606f"/><stop offset="50%" stop-color="#262c38"/><stop offset="100%" stop-color="#12151c"/>
+    </linearGradient>
+    <linearGradient id="sheenGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="domeShine" cx="35%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/><stop offset="45%" stop-color="#ffffff" stop-opacity="0.12"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="metalKnob" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#475569"/>
+    </radialGradient>
+    <radialGradient id="motorCan" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#cbd5e1"/><stop offset="50%" stop-color="#64748b"/><stop offset="100%" stop-color="#334155"/>
+    </radialGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1.2" stdDeviation="1.1" flood-opacity="0.35"/>
+    </filter>
+  `;
+  return defs;
+}
+
+/* 4-band resistor colour code, derived from the resistance value so the
+   on-screen part matches what a real resistor of that value looks like. */
+const BAND_HEX = ['#1c1c1c','#7c4a2d','#dc2626','#f97316','#eab308','#16a34a','#2563eb','#7c3aed','#9ca3af','#f8fafc'];
+function resistorBands(ohms){
+  let exp = 0, val = ohms;
+  while (val >= 100){ val/=10; exp++; }
+  val = Math.round(val);
+  const d1 = Math.floor(val/10), d2 = val%10;
+  return [BAND_HEX[d1]||'#1c1c1c', BAND_HEX[d2]||'#1c1c1c', BAND_HEX[exp]||'#1c1c1c'];
+}
 
 /* ═══════════════════════════════════════════════════════════════
    BREADBOARD MODEL
@@ -592,6 +792,7 @@ function holeKey(hole){ return 'h:'+hole.x+','+hole.y; }
 ═══════════════════════════════════════════════════════════════ */
 function renderAll(){
   svg.innerHTML = '';
+  svg.appendChild(componentDefs());
   const totalW = BOARD_X*2 + BOARD_COLS*GRID;
   const totalH = boardBottomY + 220;
   svg.setAttribute('width', Math.max(totalW, 1100));
