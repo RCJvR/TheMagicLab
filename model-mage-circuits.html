@@ -163,6 +163,9 @@
     .sel-handle:hover{fill:var(--accent2);}
     .sel-handle:hover + .sel-handle-icon{fill:#1a1206;}
     .sel-handle-icon{font-size:11px;fill:var(--accent2);text-anchor:middle;font-weight:700;}
+    .meter-lcd-text{font-family:'JetBrains Mono',monospace;font-weight:700;fill:#0a2e0a;text-anchor:middle;}
+    .meter-unit-badge{font-family:'JetBrains Mono',monospace;font-weight:800;fill:#fff;text-anchor:middle;}
+    .callout-text{font-family:'JetBrains Mono',monospace;font-weight:800;fill:#fff;text-anchor:middle;pointer-events:none;}
     .wire-waypoint{fill:#fff;opacity:0.85;pointer-events:none;}
     .comp-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--text2);text-anchor:middle;pointer-events:none;}
     .comp-value{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:var(--accent2);text-anchor:middle;pointer-events:none;font-weight:700;}
@@ -341,6 +344,30 @@ const COMPONENT_DEFS = {
       g.appendChild(rect(4,3,6,h-6,2,'#374151'));
       g.appendChild(text(7,h/2+3.5,'–','comp-value',9));
       g.appendChild(text(w/2,-6,`${c.props.voltage}V Battery`,'comp-label'));
+      polarityCallout(g, w-7.5, h/2, '+', 0, 16, '#16a34a');
+      polarityCallout(g, 7, h/2, '−', 0, 16, '#dc2626');
+    },
+    isSource:true,
+  },
+  battery9v: {
+    label:'9V Battery', icon:'🔋', w:2.6, h:2.3,
+    pins:[{id:'+', dx:0.85, dy:0},{id:'-', dx:1.75, dy:0}],
+    defaultProps:{voltage:9},
+    render(g,c){
+      // real 9V batteries have BOTH terminals on the same face (the snap
+      // connectors on top) — unlike an AA/D cell's opposite-end poles
+      const w=2.6*GRID, topY=0.35*GRID, h=2.3*GRID;
+      g.appendChild(line(0.85*GRID,0,0.85*GRID,topY,'url(#metalGradV)',2));
+      g.appendChild(line(1.75*GRID,0,1.75*GRID,topY,'url(#metalGradV)',2));
+      const body = rect(0,topY,w,h-topY,5,'url(#battGrad)','#0a0c10');
+      body.setAttribute('filter','url(#softShadow)');
+      g.appendChild(body);
+      g.appendChild(rect(0,topY,w,(h-topY)*0.35,5,'url(#sheenGrad)'));
+      g.appendChild(circleShape(1.75*GRID,topY,6.5,'url(#metalKnob)')); // larger female snap = negative
+      g.appendChild(circleShape(0.85*GRID,topY,4.5,'url(#metalKnob)')); // smaller male snap = positive
+      g.appendChild(text(w/2,-6,'9V Battery','comp-label'));
+      polarityCallout(g, 0.85*GRID, topY, '+', -15, 8, '#16a34a');
+      polarityCallout(g, 1.75*GRID, topY, '−', 15, 8, '#dc2626');
     },
     isSource:true,
   },
@@ -409,17 +436,24 @@ const COMPONENT_DEFS = {
     render(g,c){
       const col = LED_COLORS[c.props.color].hex;
       const glow = c._glow||0;
-      const cx=0.8*GRID, cy=0.72*GRID, r=9;
-      g.appendChild(line(0.3*GRID,cy+r*0.55,0.3*GRID,1.6*GRID,'url(#metalGrad)',1.6));
-      g.appendChild(line(1.3*GRID,cy+r*0.55,1.3*GRID,1.45*GRID,'url(#metalGrad)',1.6));
-      g.appendChild(rect(cx-r-1,cy+r*0.45,(r+1)*2,2.5,1,'#4b5563'));
+      const cx=0.8*GRID, cy=0.66*GRID, r=8.5;
+      const flangeY = cy+r*0.6;
+      // anode (A) leg is longer and reaches further down than cathode (K) —
+      // matches every real through-hole LED, so this alone tells polarity
+      // even before you read the callout chips.
+      g.appendChild(line(0.3*GRID,flangeY,0.3*GRID,1.6*GRID,'url(#metalGrad)',1.6));
+      g.appendChild(line(1.3*GRID,flangeY,1.3*GRID,1.32*GRID,'url(#metalGrad)',1.6));
+      g.appendChild(rect(cx-r-1.5,flangeY-2,(r+1.5)*2,4,1.5,'#3f4552'));
       if (glow>0.02) g.appendChild(circleShape(cx,cy,r+glow*15,col,glow*0.55));
-      g.appendChild(circleShape(cx,cy,r,col,0.3+glow*0.7));
+      g.appendChild(circleShape(cx,cy,r,col,0.32+glow*0.68));
       g.appendChild(el('circle',{cx,cy,r,fill:'url(#domeShine)'}));
       g.appendChild(el('circle',{cx,cy,r,fill:'none',stroke:'#00000055','stroke-width':1}));
+      // flat-edge cue on the rim, cathode side — real 5mm LEDs are moulded
+      // with a flat notch here so polarity is readable even once it's wired in
+      g.appendChild(line(cx+r*0.6,cy-r*0.65,cx+r*0.6,cy+r*0.65,'rgba(0,0,0,0.35)',1.4));
       g.appendChild(text(cx,-6,`LED (${c.props.color})`,'comp-label'));
-      g.appendChild(text(0.3*GRID,1.6*GRID+11,'A','comp-value',8));
-      g.appendChild(text(1.3*GRID,1.6*GRID+11,'K','comp-value',8));
+      polarityCallout(g, 0.3*GRID, 1.6*GRID, 'A', -9, 11, '#16a34a');
+      polarityCallout(g, 1.3*GRID, 1.32*GRID, 'K', 9, 11, '#dc2626');
     },
     isNonlinear:true,
   },
@@ -713,34 +747,40 @@ const COMPONENT_DEFS = {
     isUltrasonic:true,
   },
   voltmeter: {
-    label:'Voltmeter', icon:'📏', w:2, h:1.4,
-    pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:2, dy:0.7}],
+    label:'Voltmeter', icon:'📏', w:3.4, h:2.4,
+    pins:[{id:'+', dx:0.5, dy:2.4},{id:'-', dx:2.9, dy:2.4}],
     defaultProps:{},
-    render(g,c){
-      const cx=GRID, cy=0.7*GRID;
-      g.appendChild(circleShape(cx,cy,15,'url(#metalKnob)'));
-      g.appendChild(circleShape(cx,cy,12.5,'#0f2540'));
-      g.appendChild(text(cx,cy-2,'V','comp-label',10));
-      g.appendChild(text(cx,cy+10,fmtVal(c._reading,'V'),'comp-value',7.5));
-      g.appendChild(el('circle',{cx,cy,r:15,fill:'url(#domeShine)'}));
-    },
+    render(g,c){ renderMeterBody(g,c,'V','#16a34a'); },
     isMeter:'voltage', highImpedance:true,
   },
   ammeter: {
-    label:'Ammeter', icon:'🧭', w:2, h:1.4,
-    pins:[{id:'+', dx:0, dy:0.7},{id:'-', dx:2, dy:0.7}],
+    label:'Ammeter', icon:'🧭', w:3.4, h:2.4,
+    pins:[{id:'+', dx:0.5, dy:2.4},{id:'-', dx:2.9, dy:2.4}],
     defaultProps:{},
-    render(g,c){
-      const cx=GRID, cy=0.7*GRID;
-      g.appendChild(circleShape(cx,cy,15,'url(#metalKnob)'));
-      g.appendChild(circleShape(cx,cy,12.5,'#0f2540'));
-      g.appendChild(text(cx,cy-2,'A','comp-label',10));
-      g.appendChild(text(cx,cy+10,fmtVal(c._reading,'A'),'comp-value',7.5));
-      g.appendChild(el('circle',{cx,cy,r:15,fill:'url(#domeShine)'}));
-    },
+    render(g,c){ renderMeterBody(g,c,'A','#dc2626'); },
     isMeter:'current', fixedResistance:0.01,
   },
 };
+
+/* Shared multimeter-style body for the voltmeter/ammeter: a real LCD
+   panel with big digits, not a tiny letter in a circle — the reading
+   needs to be readable from across a classroom, not just up close. */
+function renderMeterBody(g, c, unit, accentColor){
+  const w=3.4*GRID, h=1.9*GRID;
+  g.appendChild(line(0.5*GRID,h,0.5*GRID,2.4*GRID,'url(#metalGradV)',2));
+  g.appendChild(line(2.9*GRID,h,2.9*GRID,2.4*GRID,'url(#metalGradV)',2));
+  const body = rect(0,0,w,h,7,'url(#darkPlasticGrad)','#000');
+  body.setAttribute('filter','url(#softShadow)');
+  g.appendChild(body);
+  g.appendChild(rect(0,0,w,h*0.28,7,'url(#sheenGrad)'));
+  const scrX=7, scrY=9, scrW=w-14, scrH=h-18;
+  g.appendChild(rect(scrX,scrY,scrW,scrH,3,'#c9e8c2'));
+  g.appendChild(el('rect',{x:scrX,y:scrY,width:scrW,height:scrH,rx:3,fill:'none',stroke:'#00000030','stroke-width':1}));
+  g.appendChild(el('circle',{cx:scrX+10,cy:scrY+10,r:6,fill:accentColor,opacity:0.85}));
+  g.appendChild(text(scrX+10,scrY+13,unit,'meter-unit-badge',8));
+  g.appendChild(text(scrX+scrW/2+6, scrY+scrH/2+6, fmtVal(c._reading,unit), 'meter-lcd-text', 16));
+  g.appendChild(text(w/2,-6,unit==='V'?'Voltmeter':'Ammeter','comp-label'));
+}
 
 const LED_COLORS = {
   red:{hex:'#ef4444', vf:1.8}, green:{hex:'#22c55e', vf:2.1}, yellow:{hex:'#eab308', vf:2.0},
@@ -760,6 +800,17 @@ function rect(x,y,w,h,r,fill,stroke){ return el('rect',{x,y,width:w,height:h,rx:
 function line(x1,y1,x2,y2,stroke,w){ return el('line',{x1,y1,x2,y2,stroke,'stroke-width':w||1.5,'stroke-linecap':'round'}); }
 function circleShape(cx,cy,r,fill,opacity){ return el('circle',{cx,cy,r,fill,opacity: opacity==null?1:opacity}); }
 function text(x,y,str,cls,size){ const t=el('text',{x,y,class:cls}); if(size) t.setAttribute('font-size',size); t.textContent=str; return t; }
+
+/* Callout label for a polarised pin (anode/cathode, +/-): a short leader
+   line from the pin to a small filled chip with the letter/symbol, so
+   polarity reads clearly instead of a bare letter easily lost against
+   the board dots. (dx,dy) is the chip's offset from the pin position. */
+function polarityCallout(g, px, py, label, dx, dy, color){
+  const lx = px+dx, ly = py+dy;
+  g.appendChild(line(px,py,lx,ly,'rgba(0,0,0,0.45)',1));
+  g.appendChild(el('circle',{cx:lx,cy:ly,r:7,fill:color||'#1f2937',stroke:'rgba(0,0,0,0.4)','stroke-width':1}));
+  g.appendChild(text(lx,ly+3,label,'callout-text',8.5));
+}
 
 /* ─── shared gradients/filters for more realistic component rendering ───
    Rebuilt every renderAll() call since svg.innerHTML is cleared each frame;
