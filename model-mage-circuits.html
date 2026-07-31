@@ -64,9 +64,22 @@
                  background-size:20px 20px;}
     #svgScaleBox{position:absolute;top:0;left:0;transform-origin:0 0;}
     #circuit-svg{display:block;cursor:default;transform-origin:0 0;}
-    .canvas-hint{position:absolute;bottom:10px;left:10px;background:rgba(10,15,32,0.9);border:1px solid var(--border);
-                 border-radius:8px;padding:8px 12px;font-size:0.70rem;color:var(--text2);line-height:1.7;max-width:320px;pointer-events:none;}
-    .canvas-hint b{color:var(--text);}
+    /* Building-tips hint: collapses to a small "?" pill so it never
+       parks itself on top of the board — the pill is the only clickable
+       part (the rest is decorative, pointer-events:none, so it can
+       never eat a tap meant for the canvas underneath it). */
+    .canvas-hint{position:absolute;bottom:10px;left:10px;display:flex;align-items:flex-end;gap:8px;
+                 max-width:340px;pointer-events:none;}
+    .hint-toggle{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);
+                 background:rgba(10,15,32,0.92);color:var(--accent2);font-weight:800;font-size:14px;
+                 cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;
+                 pointer-events:auto;}
+    .hint-toggle:hover{background:rgba(255,255,255,.1);}
+    .canvas-hint:not(.collapsed) .hint-toggle{background:rgba(245,158,11,0.18);border-color:rgba(245,158,11,0.4);}
+    .hint-text{background:rgba(10,15,32,0.9);border:1px solid var(--border);
+              border-radius:8px;padding:8px 12px;font-size:0.70rem;color:var(--text2);line-height:1.7;}
+    .canvas-hint.collapsed .hint-text{display:none;}
+    .hint-text b{color:var(--text);}
     .zoom-controls{position:absolute;bottom:10px;right:10px;display:flex;align-items:center;gap:2px;
                    background:rgba(10,15,32,0.9);border:1px solid var(--border);border-radius:8px;padding:4px;}
     .zoom-btn{width:26px;height:26px;border-radius:6px;border:none;background:var(--surface);color:var(--text);
@@ -275,7 +288,10 @@
     <div id="svgScaleBox">
       <svg id="circuit-svg"></svg>
     </div>
-    <div class="canvas-hint" id="canvasHint"></div>
+    <div class="canvas-hint" id="canvasHint">
+      <button class="hint-toggle" id="hintToggle" title="Building tips">?</button>
+      <div class="hint-text" id="hintText"></div>
+    </div>
     <div class="zoom-controls">
       <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
       <span class="zoom-pct" id="zoomPct">100%</span>
@@ -419,12 +435,38 @@ function autoOpenPanel(){
    hint on a phone points at the panel's delete button instead. */
 function updateCanvasHint(){
   const mobile = MOBILE_LAYOUT_QUERY.matches;
-  document.getElementById('canvasHint').innerHTML = mobile
+  document.getElementById('hintText').innerHTML = mobile
     ? `<b>How to build:</b> Tap a part in the toolbar, then tap the board to place it. Tap one pin, then another to draw a wire — tap empty board space in between to bend the cable and keep routing tidy. Tap a part or wire, then open the <b>Code</b> panel above to edit or delete it.`
     : `<b>How to build:</b> Click a part in the toolbar, then click the board to place it. Click one pin, then another to draw a wire — click empty board space in between to bend the cable and keep routing tidy (hold Ctrl to snap that bend to horizontal/vertical). Click a part or wire to edit or delete it in the panel, or press Delete on your keyboard.`;
 }
 updateCanvasHint();
 MOBILE_LAYOUT_QUERY.addEventListener('change', updateCanvasHint);
+
+/* Collapsed to a small "?" pill by default so it never sits on top of
+   the board — this is especially cramped on a phone screen, which is
+   why a phone starts collapsed. Whatever the user picks (open or
+   closed) is remembered, overriding that device default next visit. */
+const HINT_STORAGE_KEY = 'mm_circuits_hint_open';
+function getStoredHintOpen(){
+  try { const v = localStorage.getItem(HINT_STORAGE_KEY); return v===null ? null : v==='1'; } catch(_) { return null; }
+}
+function setStoredHintOpen(open){
+  try { localStorage.setItem(HINT_STORAGE_KEY, open ? '1' : '0'); } catch(_) {}
+}
+let hintOpen = getStoredHintOpen();
+if (hintOpen===null) hintOpen = !MOBILE_LAYOUT_QUERY.matches;
+function applyHintOpenState(){
+  const hint = document.getElementById('canvasHint');
+  hint.classList.toggle('collapsed', !hintOpen);
+  document.getElementById('hintToggle').textContent = hintOpen ? '✕' : '?';
+  document.getElementById('hintToggle').title = hintOpen ? 'Hide building tips' : 'Show building tips';
+}
+document.getElementById('hintToggle').addEventListener('click', ()=>{
+  hintOpen = !hintOpen;
+  setStoredHintOpen(hintOpen);
+  applyHintOpenState();
+});
+applyHintOpenState();
 
 /* ───────────────────────────────────────────────────────────────
    COMPONENT DEFINITIONS
