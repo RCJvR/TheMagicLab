@@ -275,7 +275,7 @@
     <div id="svgScaleBox">
       <svg id="circuit-svg"></svg>
     </div>
-    <div class="canvas-hint"><b>How to build:</b> drag a part from the toolbar onto the board. Click one pin, then click another to draw a wire — click empty board space in between to bend the cable and keep routing tidy (hold Ctrl to snap that bend to horizontal/vertical). Click a part or wire to edit it in the panel. Press Delete to remove the selected part or wire.</div>
+    <div class="canvas-hint" id="canvasHint"></div>
     <div class="zoom-controls">
       <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
       <span class="zoom-pct" id="zoomPct">100%</span>
@@ -402,6 +402,29 @@ function setPanelOpen(open){
 }
 document.getElementById('btn-toggle-panel').addEventListener('click', ()=> setPanelOpen(!isPanelOpen()));
 document.getElementById('btn-panel-close').addEventListener('click', ()=> setPanelOpen(false));
+// On phones/tablets the panel is a full overlay that hides the whole board,
+// so auto-opening it every time something is selected (which also fires on
+// every drag and every tap on empty board space) would fight the user out
+// of the canvas. Only auto-open on wide screens where the panel sits beside
+// the board instead of on top of it — on narrow screens the user opens it
+// on purpose with the header button.
+const MOBILE_LAYOUT_QUERY = window.matchMedia('(max-width:820px)');
+function autoOpenPanel(){
+  if (!MOBILE_LAYOUT_QUERY.matches) setPanelOpen(true);
+}
+
+/* the placement/wiring/delete flow is the same tap-or-click gesture on
+   any device, but the wording needs to match what's actually on screen —
+   there's no dragging, and touch has no Ctrl key or Delete key, so the
+   hint on a phone points at the panel's delete button instead. */
+function updateCanvasHint(){
+  const mobile = MOBILE_LAYOUT_QUERY.matches;
+  document.getElementById('canvasHint').innerHTML = mobile
+    ? `<b>How to build:</b> Tap a part in the toolbar, then tap the board to place it. Tap one pin, then another to draw a wire — tap empty board space in between to bend the cable and keep routing tidy. Tap a part or wire, then open the <b>Code</b> panel above to edit or delete it.`
+    : `<b>How to build:</b> Click a part in the toolbar, then click the board to place it. Click one pin, then another to draw a wire — click empty board space in between to bend the cable and keep routing tidy (hold Ctrl to snap that bend to horizontal/vertical). Click a part or wire to edit or delete it in the panel, or press Delete on your keyboard.`;
+}
+updateCanvasHint();
+MOBILE_LAYOUT_QUERY.addEventListener('change', updateCanvasHint);
 
 /* ───────────────────────────────────────────────────────────────
    COMPONENT DEFINITIONS
@@ -1276,7 +1299,7 @@ function renderWire(w){
   path.addEventListener('click', (e)=>{
     e.stopPropagation();
     selectedWireId = w.id; selected = null;
-    setPanelOpen(true);
+    autoOpenPanel();
     renderPropPanel(); scheduleRender();
   });
   svg.appendChild(path);
@@ -1414,7 +1437,7 @@ function addComponent(type, x, y){
 function selectComponent(id){
   selected = id;
   selectedWireId = null;
-  setPanelOpen(true);
+  autoOpenPanel();
   scheduleRender();
   renderPropPanel();
 }
