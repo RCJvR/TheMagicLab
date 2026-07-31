@@ -291,7 +291,13 @@ const GRID = 24; // px per breadboard hole / grid unit — bumped up from 20 so 
 // Board width fills whatever the canvas viewport actually has available
 // (never fewer columns than the original fixed 40, so existing saved
 // circuits built at smaller window sizes still fit).
-let BOARD_COLS = Math.max(40, Math.floor((window.innerWidth - 300 - 80) / GRID));
+// Three fixed sizes matching real breadboards (mini/half+/full) rather than
+// one board that stretches to fill the window — a size is something you
+// pick for the circuit you're building, not something that changes on you
+// when the window resizes.
+const BOARD_SIZE_COLS = { small:20, medium:30, large:60 };
+let breadboardSize = 'medium';
+let BOARD_COLS = BOARD_SIZE_COLS[breadboardSize];
 const BOARD_ROWS_TOP = 5;   // rows a-e
 const BOARD_ROWS_BOT = 5;   // rows f-j
 const BOARD_X = 40, BOARD_Y = 140; // top-left of the terminal-strip area in SVG space
@@ -1026,12 +1032,30 @@ function buildBreadboard(){
 }
 let boardBottomY = buildBreadboard();
 function toggleBreadboard(){
-  breadboardPresent = !breadboardPresent;
+  breadboardPresent = false;
+  boardBottomY = buildBreadboard();
+  if (selected==='__breadboard__'){ selected=null; renderPropPanel(); }
+  updateBreadboardButtonStates();
+  scheduleRender();
+}
+function setBreadboardSize(size){
+  if (breadboardPresent && breadboardSize===size){
+    breadboardPresent = false;
+  } else {
+    breadboardSize = size;
+    BOARD_COLS = BOARD_SIZE_COLS[size];
+    breadboardPresent = true;
+  }
   boardBottomY = buildBreadboard();
   if (!breadboardPresent && selected==='__breadboard__'){ selected=null; renderPropPanel(); }
-  const btn = document.getElementById('btn-breadboard-toggle');
-  if (btn) btn.classList.toggle('active', breadboardPresent);
+  updateBreadboardButtonStates();
   scheduleRender();
+}
+function updateBreadboardButtonStates(){
+  ['small','medium','large'].forEach(size=>{
+    const btn = document.getElementById('btn-breadboard-'+size);
+    if (btn) btn.classList.toggle('active', breadboardPresent && breadboardSize===size);
+  });
 }
 
 function nearestHole(x,y){
@@ -1450,12 +1474,18 @@ CATEGORY_ORDER.forEach(cat=>{
   const strip = el2('div', {class:'comp-cat-strip'});
   if (cat==='placement'){
     // the breadboard isn't a draggable part like everything else here —
-    // it's a single optional fixture, toggled on/off rather than placed
-    const boardBtn = el2('button', {class:'comp-btn', id:'btn-breadboard-toggle', title:'Show or hide the breadboard'});
-    boardBtn.innerHTML = `<span class="ci">🍞</span><span>Breadboard</span>`;
-    if (breadboardPresent) boardBtn.classList.add('active');
-    boardBtn.addEventListener('click', toggleBreadboard);
-    strip.appendChild(boardBtn);
+    // it's a single optional fixture, sized and toggled on/off rather than
+    // placed. Three fixed sizes (not one that stretches to the window)
+    // matching real mini/half+/full breadboards; picking a size that's
+    // already showing turns it off, picking a different one swaps to it.
+    const sizes = [{key:'small', label:'Small Breadboard'}, {key:'medium', label:'Medium Breadboard'}, {key:'large', label:'Large Breadboard'}];
+    sizes.forEach(s=>{
+      const boardBtn = el2('button', {class:'comp-btn', id:'btn-breadboard-'+s.key, title:'Show/hide a '+s.key+' breadboard'});
+      boardBtn.innerHTML = `<span class="ci">🍞</span><span>${s.label}</span>`;
+      if (breadboardPresent && breadboardSize===s.key) boardBtn.classList.add('active');
+      boardBtn.addEventListener('click', ()=>setBreadboardSize(s.key));
+      strip.appendChild(boardBtn);
+    });
   }
   (byCategory[cat]||[]).forEach(type=>{
     const def = COMPONENT_DEFS[type];
@@ -1531,8 +1561,8 @@ function renderPropPanel(){
   const panel = document.getElementById('propPanel');
   if (selected==='__breadboard__'){
     panel.innerHTML = `
-      <div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">🍞 Breadboard</div>
-      <p class="empty-hint">A breadboard is optional — you can wire parts directly to each other's pins instead. Holes in the same row (or the same power rail) are already connected to each other; hover a hole to see which ones.</p>
+      <div style="font-weight:800;color:#fff;font-size:14px;margin-bottom:10px;">🍞 Breadboard <span style="opacity:.6;font-weight:600;text-transform:capitalize;">(${breadboardSize})</span></div>
+      <p class="empty-hint">A breadboard is optional — you can wire parts directly to each other's pins instead. Holes in the same row (or the same power rail) are already connected to each other; hover a hole to see which ones. Pick a different size from the Placement row in the toolbar to swap it out.</p>
       <button class="del-btn" id="btnRemoveBoard">Remove breadboard</button>`;
     document.getElementById('btnRemoveBoard').addEventListener('click', ()=>{ toggleBreadboard(); selected=null; renderPropPanel(); });
     return;
