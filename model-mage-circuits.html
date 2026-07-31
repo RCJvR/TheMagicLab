@@ -106,7 +106,42 @@
               background:var(--surface);color:var(--text2);font-size:0.70rem;font-weight:600;
               cursor:pointer;font-family:inherit;}
     .mini-btn:hover{background:rgba(255,255,255,.08);color:var(--text);}
+    .mini-btn.active{background:rgba(245,158,11,0.18);color:var(--accent2);border-color:rgba(245,158,11,0.4);}
     .btn-row{display:flex;gap:6px;margin-top:8px;}
+    .panel-close-row{padding:10px 16px 0;flex-shrink:0;}
+
+    /* Text/Block code tabs */
+    .code-tabs{display:flex;gap:4px;margin-bottom:8px;}
+    .code-tab-btn{flex:1;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface);
+                 color:var(--text2);font-size:0.72rem;font-weight:700;cursor:pointer;font-family:inherit;}
+    .code-tab-btn:hover{color:var(--text);}
+    .code-tab-btn.active{background:rgba(245,158,11,0.18);color:var(--accent2);border-color:rgba(245,158,11,0.4);}
+
+    /* Block coding editor */
+    .block-section{margin-bottom:10px;}
+    .block-section-title{font-size:0.72rem;font-weight:700;color:var(--text2);margin-bottom:6px;
+                         display:flex;align-items:baseline;gap:6px;}
+    .block-section-hint{font-size:0.64rem;font-weight:500;color:var(--muted);}
+    .block-list{display:flex;flex-direction:column;gap:6px;}
+    .block-card{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:8px 10px;}
+    .block-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:6px;}
+    .block-type-label{font-size:0.74rem;font-weight:700;color:var(--text);}
+    .block-controls{display:flex;gap:3px;flex-shrink:0;}
+    .block-mini-btn{width:24px;height:24px;border-radius:5px;border:1px solid var(--border);background:var(--surface);
+                    color:var(--text2);font-size:0.68rem;cursor:pointer;font-family:inherit;
+                    display:flex;align-items:center;justify-content:center;}
+    .block-mini-btn:hover{background:rgba(255,255,255,.1);color:var(--text);}
+    .block-fields{display:flex;flex-wrap:wrap;gap:8px;}
+    .block-field{display:flex;flex-direction:column;gap:2px;font-size:0.66rem;color:var(--muted);min-width:64px;flex:1;}
+    .block-field.wide{flex-basis:100%;}
+    .block-field input,.block-field select{height:27px;padding:0 6px;font-size:0.72rem;}
+    .block-children{margin-top:8px;padding-left:10px;border-left:2px solid var(--border);
+                    display:flex;flex-direction:column;gap:4px;}
+    .block-children-label{font-size:0.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;
+                          letter-spacing:.05em;margin-top:4px;}
+    .block-add-row{margin-top:6px;}
+    .block-add-select{width:100%;height:30px;border-radius:6px;border:1px dashed var(--border);background:transparent;
+                      color:var(--text2);font-size:0.72rem;font-family:inherit;cursor:pointer;}
 
     /* Tutorials modal */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;
@@ -180,7 +215,10 @@
     .comp-value{font-family:'JetBrains Mono',monospace;font-size:8.5px;fill:var(--accent2);text-anchor:middle;pointer-events:none;font-weight:700;}
 
     @media (max-width:820px){
-      .right-panel{position:absolute;right:0;top:0;bottom:0;z-index:20;}
+      header{padding:8px 10px;flex-wrap:wrap;row-gap:6px;}
+      .hdr-right{flex-wrap:wrap;gap:5px;}
+      .right-panel{position:absolute;right:0;top:0;bottom:0;z-index:20;width:min(320px,92vw);
+                   box-shadow:-8px 0 24px rgba(0,0,0,0.45);}
     }
   </style>
 </head>
@@ -190,6 +228,7 @@
   <a class="logo" href="model-mage.html"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><path d="M14 3 L24 8.5 L24 19.5 L14 25 L4 19.5 L4 8.5 Z" stroke="rgba(251,191,36,0.80)" stroke-width="1.6" stroke-linejoin="round" fill="none"/><circle cx="14" cy="14" r="2" fill="rgba(245,158,11,0.90)"/></svg> Model Mage <span style="opacity:.5;font-weight:600;">· Circuits</span></a>
   <div class="hdr-right">
     <button class="mini-btn" id="btn-tutorials">🎓 Tutorials</button>
+    <button class="mini-btn" id="btn-toggle-panel">💻 Code</button>
     <button class="mini-btn" id="btn-save">💾 Save</button>
     <button class="mini-btn" id="btn-load">📂 Load</button>
     <input type="file" id="file-load" accept=".json,application/json" style="display:none">
@@ -244,13 +283,18 @@
       <button class="zoom-btn" id="zoomReset" title="Reset zoom">⤾</button>
     </div>
   </div>
-  <div class="right-panel">
+  <div class="right-panel" id="rightPanel" style="display:none;">
+    <div class="panel-close-row"><button class="mini-btn" id="btn-panel-close" style="width:100%;">✕ Close panel</button></div>
     <div class="panel-sec">
       <div class="panel-title">Selected component</div>
       <div id="propPanel"><p class="empty-hint">Click a component on the board to see and edit its properties here.</p></div>
     </div>
     <div class="panel-sec">
       <div class="panel-title">Microcontroller code <span style="font-weight:600;color:var(--muted);">setup() / loop()</span></div>
+      <div class="code-tabs">
+        <button class="code-tab-btn active" id="tabTextCode">Text code</button>
+        <button class="code-tab-btn" id="tabBlockCode">Block coding</button>
+      </div>
       <textarea id="code-editor" spellcheck="false">void setup() {
   pinMode(13, OUTPUT);
 }
@@ -261,6 +305,18 @@ void loop() {
   digitalWrite(13, LOW);
   delay(500);
 }</textarea>
+      <div id="blockEditor" style="display:none;">
+        <div class="block-section">
+          <div class="block-section-title">setup() <span class="block-section-hint">runs once</span></div>
+          <div class="block-list" id="blockList-setup"></div>
+          <div id="blockAdd-setup"></div>
+        </div>
+        <div class="block-section">
+          <div class="block-section-title">loop() <span class="block-section-hint">repeats forever</span></div>
+          <div class="block-list" id="blockList-loop"></div>
+          <div id="blockAdd-loop"></div>
+        </div>
+      </div>
       <div class="btn-row">
         <button class="mini-btn" id="btn-code-run" style="flex:1;">▶ Run code</button>
         <button class="mini-btn" id="btn-code-stop" style="flex:1;">■ Stop code</button>
@@ -332,6 +388,20 @@ function setZoom(z){
   const pctEl = document.getElementById('zoomPct');
   if (pctEl) pctEl.textContent = Math.round(zoomLevel*100)+'%';
 }
+
+/* ─── right-side panel (component properties + code + serial monitor):
+   collapsed by default so the board gets the full screen on phones/
+   tablets, opened on demand from the header button or by selecting
+   a part/wire on the board ─── */
+function isPanelOpen(){
+  return document.getElementById('rightPanel').style.display !== 'none';
+}
+function setPanelOpen(open){
+  document.getElementById('rightPanel').style.display = open ? 'flex' : 'none';
+  document.getElementById('btn-toggle-panel').classList.toggle('active', open);
+}
+document.getElementById('btn-toggle-panel').addEventListener('click', ()=> setPanelOpen(!isPanelOpen()));
+document.getElementById('btn-panel-close').addEventListener('click', ()=> setPanelOpen(false));
 
 /* ───────────────────────────────────────────────────────────────
    COMPONENT DEFINITIONS
@@ -1206,6 +1276,7 @@ function renderWire(w){
   path.addEventListener('click', (e)=>{
     e.stopPropagation();
     selectedWireId = w.id; selected = null;
+    setPanelOpen(true);
     renderPropPanel(); scheduleRender();
   });
   svg.appendChild(path);
@@ -1343,6 +1414,7 @@ function addComponent(type, x, y){
 function selectComponent(id){
   selected = id;
   selectedWireId = null;
+  setPanelOpen(true);
   scheduleRender();
   renderPropPanel();
 }
@@ -2002,6 +2074,239 @@ document.getElementById('btn-run').addEventListener('click', ()=>{
 });
 
 /* ═══════════════════════════════════════════════════════════════
+   BLOCK CODING
+   A tap-friendly alternative to typing setup()/loop() by hand —
+   built for touch screens where dragging small puzzle pieces around
+   is painful. Each block is a plain object; blockProgramToArduino()
+   compiles the whole program into the same Arduino-flavoured source
+   text the text editor produces, so it runs through the exact same
+   preprocessArduino()/runUserCode() pipeline as typed code.
+═══════════════════════════════════════════════════════════════ */
+let codeMode = 'text'; // 'text' | 'blocks'
+let blockSeq = 1;
+const newBlockId = () => 'blk' + (blockSeq++);
+
+function defaultBlockProgram(){
+  return {
+    setup: [ {id:newBlockId(), type:'pinMode', pin:13, mode:'OUTPUT'} ],
+    loop: [
+      {id:newBlockId(), type:'digitalWrite', pin:13, value:'HIGH'},
+      {id:newBlockId(), type:'delay', ms:500},
+      {id:newBlockId(), type:'digitalWrite', pin:13, value:'LOW'},
+      {id:newBlockId(), type:'delay', ms:500},
+    ],
+  };
+}
+let blockProgram = defaultBlockProgram();
+
+const BLOCK_TYPES = {
+  pinMode:      { label:'Set pin mode' },
+  digitalWrite: { label:'Digital write' },
+  analogWrite:  { label:'Analog write (PWM)' },
+  delay:        { label:'Wait (ms)' },
+  serialPrint:  { label:'Print to serial monitor' },
+  ifBlock:      { label:'If…' },
+  repeat:       { label:'Repeat N times' },
+};
+function defaultBlock(type){
+  switch(type){
+    case 'pinMode': return {id:newBlockId(), type, pin:13, mode:'OUTPUT'};
+    case 'digitalWrite': return {id:newBlockId(), type, pin:13, value:'HIGH'};
+    case 'analogWrite': return {id:newBlockId(), type, pin:9, value:128};
+    case 'delay': return {id:newBlockId(), type, ms:500};
+    case 'serialPrint': return {id:newBlockId(), type, text:'hello'};
+    case 'ifBlock': return {id:newBlockId(), type, cond:{source:'digitalRead', pin:2, op:'==', value:'HIGH'}, then:[], else:[]};
+    case 'repeat': return {id:newBlockId(), type, times:5, body:[]};
+  }
+}
+
+function scanMaxBlockId(arr, state){
+  (arr||[]).forEach(b=>{
+    const n = parseInt(String(b.id).replace(/^blk/,''), 10);
+    if (!isNaN(n) && n>state.max) state.max = n;
+    if (b.then) scanMaxBlockId(b.then, state);
+    if (b.else) scanMaxBlockId(b.else, state);
+    if (b.body) scanMaxBlockId(b.body, state);
+  });
+}
+
+function condToCode(cond){
+  const left = cond.source==='analogRead' ? `analogRead(${cond.pin})` : `digitalRead(${cond.pin})`;
+  return `${left} ${cond.op} ${cond.value}`;
+}
+function blockToCode(b, depth){
+  const pad = '  '.repeat(depth);
+  switch(b.type){
+    case 'pinMode': return `${pad}pinMode(${b.pin}, ${b.mode});`;
+    case 'digitalWrite': return `${pad}digitalWrite(${b.pin}, ${b.value});`;
+    case 'analogWrite': return `${pad}analogWrite(${b.pin}, ${b.value});`;
+    case 'delay': return `${pad}delay(${b.ms});`;
+    case 'serialPrint': return `${pad}Serial.println(${JSON.stringify(b.text||'')});`;
+    case 'ifBlock': {
+      let out = `${pad}if (${condToCode(b.cond)}) {\n${blocksToCode(b.then,depth+1)}\n${pad}}`;
+      if (b.else && b.else.length) out += ` else {\n${blocksToCode(b.else,depth+1)}\n${pad}}`;
+      return out;
+    }
+    case 'repeat': {
+      const v = '_i'+b.id;
+      return `${pad}for (let ${v}=0; ${v}<${b.times}; ${v}++) {\n${blocksToCode(b.body,depth+1)}\n${pad}}`;
+    }
+    default: return '';
+  }
+}
+function blocksToCode(arr, depth){ return (arr||[]).map(b=>blockToCode(b,depth)).join('\n'); }
+function blockProgramToArduino(){
+  return `void setup() {\n${blocksToCode(blockProgram.setup,1)}\n}\n\nvoid loop() {\n${blocksToCode(blockProgram.loop,1)}\n}`;
+}
+
+function setCodeMode(mode){
+  codeMode = mode;
+  document.getElementById('tabTextCode').classList.toggle('active', mode==='text');
+  document.getElementById('tabBlockCode').classList.toggle('active', mode==='blocks');
+  document.getElementById('code-editor').style.display = mode==='text' ? '' : 'none';
+  document.getElementById('blockEditor').style.display = mode==='blocks' ? '' : 'none';
+  if (mode==='blocks') renderBlockEditor();
+}
+document.getElementById('tabTextCode').addEventListener('click', ()=>{
+  if (codeMode==='blocks') document.getElementById('code-editor').value = blockProgramToArduino();
+  setCodeMode('text');
+});
+document.getElementById('tabBlockCode').addEventListener('click', ()=>setCodeMode('blocks'));
+
+function fieldEl(labelTxt, inputEl, wide){
+  const wrap = document.createElement('label'); wrap.className = 'block-field' + (wide ? ' wide' : '');
+  const span = document.createElement('span'); span.textContent = labelTxt;
+  wrap.appendChild(span); wrap.appendChild(inputEl);
+  return wrap;
+}
+function fieldNumber(labelTxt, value, onChange, opts={}){
+  const inp = document.createElement('input');
+  inp.type = 'number';
+  if (opts.min!=null) inp.min = opts.min;
+  if (opts.max!=null) inp.max = opts.max;
+  inp.value = value;
+  inp.addEventListener('input', ()=>onChange(Number(inp.value)||0));
+  return fieldEl(labelTxt, inp, opts.wide);
+}
+function fieldSelect(labelTxt, value, options, onChange, opts={}){
+  const sel = document.createElement('select');
+  options.forEach(o=>{
+    const opt = document.createElement('option');
+    opt.value = o; opt.textContent = o; if (String(o)===String(value)) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', ()=>onChange(sel.value));
+  return fieldEl(labelTxt, sel, opts.wide);
+}
+function fieldText(labelTxt, value, onChange){
+  const inp = document.createElement('input');
+  inp.type = 'text'; inp.value = value;
+  inp.addEventListener('input', ()=>onChange(inp.value));
+  return fieldEl(labelTxt, inp);
+}
+
+function makeAddRow(targetArr){
+  const row = document.createElement('div'); row.className = 'block-add-row';
+  const sel = document.createElement('select'); sel.className = 'block-add-select';
+  const ph = document.createElement('option'); ph.value=''; ph.textContent='+ Add a block…'; sel.appendChild(ph);
+  Object.keys(BLOCK_TYPES).forEach(t=>{
+    const o = document.createElement('option'); o.value=t; o.textContent=BLOCK_TYPES[t].label; sel.appendChild(o);
+  });
+  sel.addEventListener('change', ()=>{
+    if (!sel.value) return;
+    targetArr.push(defaultBlock(sel.value));
+    renderBlockEditor();
+  });
+  row.appendChild(sel);
+  return row;
+}
+
+function renderBlockCard(b, arr, idx){
+  const card = document.createElement('div'); card.className = 'block-card';
+  const head = document.createElement('div'); head.className = 'block-card-head';
+  const label = document.createElement('span'); label.className = 'block-type-label';
+  label.textContent = BLOCK_TYPES[b.type].label;
+  head.appendChild(label);
+  const ctrls = document.createElement('div'); ctrls.className = 'block-controls';
+  const mkBtn = (txt, title, fn)=>{
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'block-mini-btn'; btn.textContent = txt; btn.title = title;
+    btn.addEventListener('click', fn);
+    return btn;
+  };
+  ctrls.appendChild(mkBtn('▲','Move up', ()=>{ if (idx>0){ [arr[idx-1],arr[idx]]=[arr[idx],arr[idx-1]]; renderBlockEditor(); } }));
+  ctrls.appendChild(mkBtn('▼','Move down', ()=>{ if (idx<arr.length-1){ [arr[idx+1],arr[idx]]=[arr[idx],arr[idx+1]]; renderBlockEditor(); } }));
+  ctrls.appendChild(mkBtn('✕','Delete', ()=>{ arr.splice(idx,1); renderBlockEditor(); }));
+  head.appendChild(ctrls);
+  card.appendChild(head);
+
+  const fields = document.createElement('div'); fields.className = 'block-fields';
+  switch(b.type){
+    case 'pinMode':
+      fields.appendChild(fieldNumber('Pin', b.pin, v=>b.pin=v, {min:0,max:19}));
+      fields.appendChild(fieldSelect('Mode', b.mode, ['OUTPUT','INPUT','INPUT_PULLUP'], v=>b.mode=v));
+      break;
+    case 'digitalWrite':
+      fields.appendChild(fieldNumber('Pin', b.pin, v=>b.pin=v, {min:0,max:19}));
+      fields.appendChild(fieldSelect('Value', b.value, ['HIGH','LOW'], v=>b.value=v));
+      break;
+    case 'analogWrite':
+      fields.appendChild(fieldNumber('Pin', b.pin, v=>b.pin=v, {min:0,max:19}));
+      fields.appendChild(fieldNumber('Value (0–255)', b.value, v=>b.value=v, {min:0,max:255}));
+      break;
+    case 'delay':
+      fields.appendChild(fieldNumber('Milliseconds', b.ms, v=>b.ms=v, {min:0}));
+      break;
+    case 'serialPrint':
+      fields.appendChild(fieldText('Text', b.text, v=>b.text=v));
+      break;
+    case 'ifBlock':
+      fields.appendChild(fieldSelect('Read', b.cond.source, ['digitalRead','analogRead'], v=>{ b.cond.source=v; b.cond.value = v==='digitalRead' ? 'HIGH' : 512; renderBlockEditor(); }, {wide:true}));
+      fields.appendChild(fieldNumber('Pin', b.cond.pin, v=>b.cond.pin=v, {min:0,max:19}));
+      fields.appendChild(fieldSelect('Is', b.cond.op, ['==','!=','<','>','<=','>='], v=>b.cond.op=v));
+      if (b.cond.source==='digitalRead') fields.appendChild(fieldSelect('Value', b.cond.value, ['HIGH','LOW'], v=>b.cond.value=v));
+      else fields.appendChild(fieldNumber('Value (0–1023)', b.cond.value, v=>b.cond.value=v, {min:0,max:1023}));
+      break;
+    case 'repeat':
+      fields.appendChild(fieldNumber('Times', b.times, v=>b.times=v, {min:1}));
+      break;
+  }
+  card.appendChild(fields);
+
+  if (b.type==='ifBlock' || b.type==='repeat'){
+    const children = document.createElement('div'); children.className = 'block-children';
+    const bodyArr = b.type==='ifBlock' ? b.then : b.body;
+    const bodyLabel = document.createElement('div'); bodyLabel.className='block-children-label';
+    bodyLabel.textContent = b.type==='ifBlock' ? 'then:' : 'repeat body:';
+    children.appendChild(bodyLabel);
+    const bodyList = document.createElement('div'); bodyList.className = 'block-list';
+    renderBlockList(bodyList, bodyArr);
+    children.appendChild(bodyList);
+    children.appendChild(makeAddRow(bodyArr));
+    if (b.type==='ifBlock'){
+      const elseLabel = document.createElement('div'); elseLabel.className='block-children-label'; elseLabel.textContent='else:';
+      children.appendChild(elseLabel);
+      const elseList = document.createElement('div'); elseList.className = 'block-list';
+      renderBlockList(elseList, b.else);
+      children.appendChild(elseList);
+      children.appendChild(makeAddRow(b.else));
+    }
+    card.appendChild(children);
+  }
+  return card;
+}
+function renderBlockList(container, arr){
+  container.innerHTML = '';
+  arr.forEach((b, idx)=> container.appendChild(renderBlockCard(b, arr, idx)));
+}
+function renderBlockEditor(){
+  renderBlockList(document.getElementById('blockList-setup'), blockProgram.setup);
+  renderBlockList(document.getElementById('blockList-loop'), blockProgram.loop);
+  const setupAdd = document.getElementById('blockAdd-setup'); setupAdd.innerHTML=''; setupAdd.appendChild(makeAddRow(blockProgram.setup));
+  const loopAdd = document.getElementById('blockAdd-loop'); loopAdd.innerHTML=''; loopAdd.appendChild(makeAddRow(blockProgram.loop));
+}
+
+/* ═══════════════════════════════════════════════════════════════
    MICROCONTROLLER CODE RUNNER
    Arduino-flavoured JS: strips C-style type keywords, then runs
    the result as real async JS via `new Function`, with pinMode /
@@ -2044,7 +2349,7 @@ async function runUserCode(){
   const mcu = components.find(c=>c.type==='mcu');
   if (!mcu){ document.getElementById('codeErr').textContent = 'Place a Microcontroller on the board first.'; return; }
   document.getElementById('codeErr').textContent = '';
-  const raw = document.getElementById('code-editor').value;
+  const raw = codeMode==='blocks' ? blockProgramToArduino() : document.getElementById('code-editor').value;
   const processed = preprocessArduino(raw);
   const wrapped = `
     return { async setup(){ ${extractBody(processed,'setup')} }, async loop(){ ${extractBody(processed,'loop')} } };
@@ -2121,7 +2426,8 @@ document.getElementById('btn-code-stop').addEventListener('click', ()=>{ codeRun
    SAVE / LOAD / CLEAR
 ═══════════════════════════════════════════════════════════════ */
 document.getElementById('btn-save').addEventListener('click', ()=>{
-  const data = { components: components.map(c=>({id:c.id,type:c.type,x:c.x,y:c.y,props:c.props})), wires, code: document.getElementById('code-editor').value };
+  const data = { components: components.map(c=>({id:c.id,type:c.type,x:c.x,y:c.y,props:c.props})), wires,
+    code: document.getElementById('code-editor').value, codeMode, blockProgram };
   const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'circuit.json'; a.click();
 });
@@ -2546,6 +2852,10 @@ function loadCircuitData(data){
   nextId = maxId+1;
   wires = data.wires||[];
   document.getElementById('code-editor').value = data.code || '';
+  blockProgram = data.blockProgram || defaultBlockProgram();
+  const st = {max:0}; scanMaxBlockId(blockProgram.setup, st); scanMaxBlockId(blockProgram.loop, st);
+  blockSeq = st.max+1;
+  setCodeMode(data.codeMode==='blocks' ? 'blocks' : 'text');
   document.getElementById('serial-out').textContent = '';
   document.getElementById('codeErr').textContent = '';
   selected = null;
