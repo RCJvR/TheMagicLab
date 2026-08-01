@@ -211,6 +211,7 @@
         <div class="symbol-quiz">
           <div class="symbol-quiz-name" id="quizCompName">Cell</div>
           <div class="symbol-opts" id="quizOpts"></div>
+          <div class="feedback" id="quizFeedback"></div>
         </div>
         <button class="toggle-btn" style="margin-top:10px" onclick="nextQuizQuestion()">Next component →</button>
       </div>
@@ -248,6 +249,10 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // The circuitCanvas has offsetWidth 0 while the Explore tab panel is
+  // display:none, so the first resizeCanvas() call (at page load) falls
+  // back to a hardcoded default width. Re-measure now that it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
 }
 
 /* ═══════════════════════════════════════════════
@@ -266,7 +271,7 @@ function setMode(m){
   // The circuit canvas is only meaningful in build mode — hide it and let
   // the quiz take the full width instead of leaving an empty black panel.
   document.querySelector('.explore-layout').classList.toggle('quiz-mode', m==='quiz');
-  if(m==='quiz'){ drawQuizSymbol(); }
+  if(m==='quiz'){ drawQuizSymbol(); } else { clearTimeout(quizAdvanceTimer); }
   drawCircuit();
 }
 
@@ -381,14 +386,15 @@ function drawCircuit(){
 
 /* symbol quiz */
 const COMPONENTS = [
-  {name:'Cell', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=4;c.beginPath();c.moveTo(30,10);c.lineTo(30,40);c.stroke();c.lineWidth=2;c.beginPath();c.moveTo(55,17);c.lineTo(55,33);c.stroke();}},
-  {name:'Lamp', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(34,14);c.lineTo(56,36);c.moveTo(56,14);c.lineTo(34,36);c.stroke();}},
-  {name:'Switch', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.moveTo(10,30);c.lineTo(25,30);c.lineTo(60,14);c.stroke();c.beginPath();c.arc(25,30,3,0,Math.PI*2);c.arc(60,30,3,0,Math.PI*2);c.fill();c.beginPath();c.moveTo(60,30);c.lineTo(80,30);c.stroke();}},
-  {name:'Resistor', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.strokeRect(20,18,50,14);}},
-  {name:'Buzzer', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(36,25);c.quadraticCurveTo(40,15,45,25);c.quadraticCurveTo(50,35,54,25);c.stroke();}},
-  {name:'Motor', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.font='bold 16px sans-serif';c.fillStyle='#fdba74';c.fillText('M',39,31);}},
+  {name:'Cell', hint:'The cell symbol is two parallel lines of different lengths — the longer line is the positive terminal.', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=4;c.beginPath();c.moveTo(30,10);c.lineTo(30,40);c.stroke();c.lineWidth=2;c.beginPath();c.moveTo(55,17);c.lineTo(55,33);c.stroke();}},
+  {name:'Lamp', hint:'The lamp symbol is a circle with an X (cross) through it.', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(34,14);c.lineTo(56,36);c.moveTo(56,14);c.lineTo(34,36);c.stroke();}},
+  {name:'Switch', hint:'The switch symbol looks like a hinged lever between two contact dots.', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.moveTo(10,30);c.lineTo(25,30);c.lineTo(60,14);c.stroke();c.beginPath();c.arc(25,30,3,0,Math.PI*2);c.arc(60,30,3,0,Math.PI*2);c.fill();c.beginPath();c.moveTo(60,30);c.lineTo(80,30);c.stroke();}},
+  {name:'Resistor', hint:'The resistor symbol is a simple rectangle.', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.strokeRect(20,18,50,14);}},
+  {name:'Buzzer', hint:'The buzzer symbol is a circle containing a wavy sound-wave line.', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.beginPath();c.moveTo(36,25);c.quadraticCurveTo(40,15,45,25);c.quadraticCurveTo(50,35,54,25);c.stroke();}},
+  {name:'Motor', hint:'The motor symbol is a circle with the letter M inside it.', draw:c=>{c.strokeStyle='#fdba74';c.lineWidth=2.5;c.beginPath();c.arc(45,25,15,0,Math.PI*2);c.stroke();c.font='bold 16px sans-serif';c.fillStyle='#fdba74';c.fillText('M',39,31);}},
 ];
 let quizIdx = 0;
+let quizAdvanceTimer = null;
 function makeSymbolCanvas(comp){
   const cv = document.createElement('canvas');
   cv.width=90; cv.height=50;
@@ -397,9 +403,13 @@ function makeSymbolCanvas(comp){
   return cv;
 }
 function drawQuizSymbol(){
+  clearTimeout(quizAdvanceTimer);
   quizIdx = Math.floor(Math.random()*COMPONENTS.length);
   const comp = COMPONENTS[quizIdx];
   document.getElementById('quizCompName').textContent = comp.name;
+  const fb = document.getElementById('quizFeedback');
+  fb.className = 'feedback';
+  fb.innerHTML = '';
   const opts = [comp];
   const pool = COMPONENTS.filter(c=>c.name!==comp.name);
   while(opts.length<4 && pool.length){
@@ -417,13 +427,18 @@ function drawQuizSymbol(){
       document.querySelectorAll('.symbol-opt').forEach(el=>el.style.pointerEvents='none');
       const isCorrect = o.name===comp.name;
       wrap.classList.add(isCorrect?'correct':'wrong');
-      // If they picked wrong, reveal which option actually was correct —
-      // otherwise a wrong guess never tells you the right answer.
-      if(!isCorrect){
-        [...optsDiv.children].forEach((child,i)=>{
-          if(opts[i].name===comp.name) child.classList.add('correct');
-        });
+      // Wrong guesses get a hint that helps you spot the right symbol next time,
+      // rather than just revealing which option it was — so the answer isn't
+      // just handed over. Either way, move on automatically after a beat so
+      // you don't have to reach for the "Next" button every time.
+      if(isCorrect){
+        fb.className='feedback ok show';
+        fb.innerHTML='✓ Correct!';
+      }else{
+        fb.className='feedback bad show';
+        fb.innerHTML='✗ Not quite. '+comp.hint;
       }
+      quizAdvanceTimer = setTimeout(drawQuizSymbol, isCorrect?2200:3600);
     };
     optsDiv.appendChild(wrap);
   });
