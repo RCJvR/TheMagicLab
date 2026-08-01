@@ -125,67 +125,69 @@
     };
   })();
 
-  // ── 3. Equal Line Segments — Set Square and Ruler ──
+  // ── 3. Dividing a Line into Equal Parts (compass, set square and ruler) ──
   (function () {
-    const rulerY = 150, rulerX1 = 40, rulerX2 = 170;
-    const seg = 30; // segment length and slide spacing, mm
-    const xs = [60, 90, 120];
-    const triTop = rulerY - seg;
-    function triangle(x) {
-      return { kind: 'polygon', points: [[x, rulerY], [x + 22, rulerY], [x, rulerY - seg]], lineType: 'construction' };
-    }
-    function segLine(x) {
-      return { kind: 'line', p1: [x, rulerY], p2: [x, triTop], lineType: 'A' };
-    }
-    CONSTRUCTIONS['equal-segments-set-square'] = {
-      id: 'equal-segments-set-square', title: 'Equal Line Segments — Set Square and Ruler',
-      summary: 'Draw a series of equal-length, perfectly parallel lines by sliding a set square along a fixed ruler — the basic technique behind every graph grid and loci diagram.',
+    const A = [50, 150], B = [150, 150]; // the line to be divided
+    const N = 5; // number of equal parts
+    const auxAngleDeg = -20; // any convenient angle, not along AB
+    const stepLen = 18; // any convenient compass radius
+    const auxPts = Array.from({ length: N }, (_, i) => G.lineAtAngleLength(A, auxAngleDeg, stepLen * (i + 1)));
+    const last = auxPts[N - 1];
+    const divPts = Array.from({ length: N - 1 }, (_, i) => [
+      A[0] + (B[0] - A[0]) * (i + 1) / N,
+      A[1] + (B[1] - A[1]) * (i + 1) / N,
+    ]);
+    const segLen = G.distance(A, B) / N;
+    const chain = [A, ...divPts, B];
+
+    CONSTRUCTIONS['divide-line-equal-parts'] = {
+      id: 'divide-line-equal-parts', title: 'Dividing a Line into Equal Parts (Compass, Set Square & Ruler)',
+      summary: "Divide any line into any number of exactly equal parts using a random auxiliary line, a compass, and a set square sliding along a ruler — the technique behind every evenly spaced graph axis or loci grid.",
       bounds: { w: 200, h: 180 },
-      workbookPrompt: 'Using a ruler as a fixed guide and a set square sliding along it, construct three equal, parallel line segments 30 mm long, spaced 30 mm apart. Show the set square position used for each.',
+      workbookPrompt: 'Divide a 100 mm line AB into 5 equal parts, using a random auxiliary line, compass divisions, and a set square on a ruler to project the divisions onto AB. Show all construction lines.',
       steps: [
         {
           id: 1,
-          instruction: 'Draw a straight guide line with your ruler. The set square will slide along this fixed edge for every line you draw — the ruler itself never moves.',
-          calloutAt: [(rulerX1 + rulerX2) / 2, rulerY],
+          instruction: 'Draw the line to be divided, AB (100 mm), and decide how many equal parts you need — here, 5.',
+          measurement: { label: 'AB = 100 mm' },
+          calloutAt: A,
           reveals: [
-            { kind: 'line', p1: [rulerX1, rulerY], p2: [rulerX2, rulerY], lineType: 'C' },
-            { kind: 'label', at: [rulerX1, rulerY + 9], text: 'ruler (fixed)', size: 3.2, color: '#94a3b8' },
+            { kind: 'line', p1: A, p2: B, lineType: 'A' },
+            { kind: 'point', at: A, label: 'A' }, { kind: 'point', at: B, label: 'B' },
           ],
         },
         {
           id: 2,
-          instruction: 'Place your set square with one edge flat against the ruler. Draw a line along its other edge, perpendicular to the ruler — this is your first segment.',
-          measurement: { label: 'segment = 30 mm' },
-          calloutAt: [xs[0], rulerY - seg / 2],
-          reveals: [triangle(xs[0]), segLine(xs[0]), { kind: 'point', at: [xs[0], triTop], label: '1' }],
+          instruction: 'From A, draw a random auxiliary line — any convenient angle, any length, as long as it is not along AB.',
+          calloutAt: G.midpoint(A, last),
+          reveals: [{ kind: 'line', p1: A, p2: last, lineType: 'C' }],
         },
         {
           id: 3,
-          instruction: 'Keeping the ruler fixed, slide the set square 30 mm to the right along it and draw the second line. Because its base never leaves the ruler, the new line is automatically parallel to the first, and exactly as long.',
-          measurement: { label: 'spacing = 30 mm' },
-          calloutAt: [xs[1], rulerY - seg / 2],
-          reveals: [
-            triangle(xs[1]), segLine(xs[1]), { kind: 'point', at: [xs[1], triTop], label: '2' },
-            { kind: 'dimension', p1: [xs[0], rulerY + 14], p2: [xs[1], rulerY + 14], offset: 0, text: '30' },
-          ],
+          instruction: 'With your compass set to any convenient radius, step off 5 equal divisions along the auxiliary line from A. Mark points 1–5.',
+          calloutAt: auxPts[2],
+          reveals: auxPts.map((p, i) => ({ kind: 'point', at: p, label: String(i + 1) })),
         },
         {
           id: 4,
-          instruction: 'Slide and draw a third time. Every segment is equal in length and evenly spaced — the length was only ever measured once.',
-          calloutAt: [xs[2], rulerY - seg / 2],
-          reveals: [
-            triangle(xs[2]), segLine(xs[2]), { kind: 'point', at: [xs[2], triTop], label: '3' },
-            { kind: 'dimension', p1: [xs[1], rulerY + 14], p2: [xs[2], rulerY + 14], offset: 0, text: '30' },
-          ],
+          instruction: 'Join point 5 to B with a straight line.',
+          calloutAt: G.midpoint(last, B),
+          reveals: [{ kind: 'line', p1: last, p2: B, lineType: 'construction' }],
         },
         {
           id: 5,
-          instruction: 'This slide-and-draw technique is exactly how the equally spaced gridlines on a displacement–time graph, or the equally spaced position lines in a loci problem, are built: one accurate first line, then a fixed slide of the set square for every line after it.',
-          calloutAt: [(xs[0] + xs[2]) / 2, triTop - 12],
+          instruction: 'Place a set square against a ruler so one edge runs parallel to line 5–B. Slide the set square along the ruler and draw a parallel line through each of points 1–4 — where each one crosses AB is a division point.',
+          calloutAt: G.midpoint(auxPts[0], divPts[0]),
           reveals: [
-            { kind: 'line', p1: [xs[0], triTop - 6], p2: [xs[2], triTop - 6], lineType: 'centre' },
-            { kind: 'dimension', p1: [xs[0], rulerY + 24], p2: [xs[2], rulerY + 24], offset: 0, text: '60' },
+            ...auxPts.slice(0, N - 1).map((p, i) => ({ kind: 'line', p1: p, p2: divPts[i], lineType: 'construction' })),
+            ...divPts.map((p, i) => ({ kind: 'point', at: p, label: 'D' + (i + 1) })),
           ],
+        },
+        {
+          id: 6,
+          instruction: 'AB is now divided into 5 exactly equal parts (20 mm each) — even though it was never measured or divided directly. This is the technique behind every evenly spaced axis, from displacement–time graphs to loci diagrams.',
+          calloutAt: [(A[0] + B[0]) / 2, B[1] + 20],
+          reveals: chain.slice(0, -1).map((p, i) => ({ kind: 'dimension', p1: p, p2: chain[i + 1], offset: 14, text: segLen.toFixed(0) })),
         },
       ],
     };
@@ -678,15 +680,15 @@
       explanation: 'If the radius were less than or equal to half of AB, the arcs from A and B would never intersect.',
     },
     {
-      text: 'When using a set square sliding along a fixed ruler to draw several equally spaced lines, why are all the lines guaranteed to be parallel?',
+      text: 'When dividing a line AB into equal parts using a random auxiliary line, why must the compass divisions be connected to AB with lines PARALLEL to the line joining the last division point to B?',
       options: [
-        "Because the set square's edge stays in contact with the same straight ruler for every line, so its angle to the ruler never changes",
-        'Because the lines are all measured with a protractor before being drawn',
-        'Because the set square is replaced with an identical one each time',
-        'Parallel lines are not actually guaranteed — they must be checked afterwards',
+        'Because parallel lines cut two rays from a common point in the same proportion — this is what guarantees the divisions on AB come out exactly equal',
+        'Because it looks neater than using arcs',
+        'Because a set square can only draw perpendicular lines',
+        'It does not actually matter, as long as each line crosses AB somewhere',
       ],
       answer: 0,
-      explanation: 'The ruler fixes one direction. As long as the set square\'s edge is kept flat against it, sliding the set square only translates the drawing edge — it never rotates it — so every line drawn is automatically parallel to the last.',
+      explanation: 'This is the intercept (Thales) theorem: a set of parallel lines crossing two rays from a common point divides both rays in the same ratio. Since the auxiliary line was divided into equal parts, the parallels transfer that same equal division onto AB.',
     },
     {
       text: 'In the tangent-from-an-external-point construction, what is true about the angle between a tangent and the radius at the point of contact?',
@@ -750,7 +752,7 @@
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
   global.CONSTRUCTION_ORDER = [
-    'bisect-line', 'bisect-angle', 'equal-segments-set-square', 'tangent-external',
+    'bisect-line', 'bisect-angle', 'divide-line-equal-parts', 'tangent-external',
     'hexagon-in-circle', 'hexagon-about-circle', 'pentagon-in-circle', 'pentagon-given-side',
     'helix-spring', 'ellipse-concentric-circles', 'tangent-arc-link',
   ];
