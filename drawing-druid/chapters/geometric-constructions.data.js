@@ -125,7 +125,73 @@
     };
   })();
 
-  // ── 3. Tangent to a circle from an external point ──
+  // ── 3. Equal Line Segments — Set Square and Ruler ──
+  (function () {
+    const rulerY = 150, rulerX1 = 40, rulerX2 = 170;
+    const seg = 30; // segment length and slide spacing, mm
+    const xs = [60, 90, 120];
+    const triTop = rulerY - seg;
+    function triangle(x) {
+      return { kind: 'polygon', points: [[x, rulerY], [x + 22, rulerY], [x, rulerY - seg]], lineType: 'construction' };
+    }
+    function segLine(x) {
+      return { kind: 'line', p1: [x, rulerY], p2: [x, triTop], lineType: 'A' };
+    }
+    CONSTRUCTIONS['equal-segments-set-square'] = {
+      id: 'equal-segments-set-square', title: 'Equal Line Segments — Set Square and Ruler',
+      summary: 'Draw a series of equal-length, perfectly parallel lines by sliding a set square along a fixed ruler — the basic technique behind every graph grid and loci diagram.',
+      bounds: { w: 200, h: 180 },
+      workbookPrompt: 'Using a ruler as a fixed guide and a set square sliding along it, construct three equal, parallel line segments 30 mm long, spaced 30 mm apart. Show the set square position used for each.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'Draw a straight guide line with your ruler. The set square will slide along this fixed edge for every line you draw — the ruler itself never moves.',
+          calloutAt: [(rulerX1 + rulerX2) / 2, rulerY],
+          reveals: [
+            { kind: 'line', p1: [rulerX1, rulerY], p2: [rulerX2, rulerY], lineType: 'C' },
+            { kind: 'label', at: [rulerX1, rulerY + 9], text: 'ruler (fixed)', size: 3.2, color: '#94a3b8' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: 'Place your set square with one edge flat against the ruler. Draw a line along its other edge, perpendicular to the ruler — this is your first segment.',
+          measurement: { label: 'segment = 30 mm' },
+          calloutAt: [xs[0], rulerY - seg / 2],
+          reveals: [triangle(xs[0]), segLine(xs[0]), { kind: 'point', at: [xs[0], triTop], label: '1' }],
+        },
+        {
+          id: 3,
+          instruction: 'Keeping the ruler fixed, slide the set square 30 mm to the right along it and draw the second line. Because its base never leaves the ruler, the new line is automatically parallel to the first, and exactly as long.',
+          measurement: { label: 'spacing = 30 mm' },
+          calloutAt: [xs[1], rulerY - seg / 2],
+          reveals: [
+            triangle(xs[1]), segLine(xs[1]), { kind: 'point', at: [xs[1], triTop], label: '2' },
+            { kind: 'dimension', p1: [xs[0], rulerY + 14], p2: [xs[1], rulerY + 14], offset: 0, text: '30' },
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'Slide and draw a third time. Every segment is equal in length and evenly spaced — the length was only ever measured once.',
+          calloutAt: [xs[2], rulerY - seg / 2],
+          reveals: [
+            triangle(xs[2]), segLine(xs[2]), { kind: 'point', at: [xs[2], triTop], label: '3' },
+            { kind: 'dimension', p1: [xs[1], rulerY + 14], p2: [xs[2], rulerY + 14], offset: 0, text: '30' },
+          ],
+        },
+        {
+          id: 5,
+          instruction: 'This slide-and-draw technique is exactly how the equally spaced gridlines on a displacement–time graph, or the equally spaced position lines in a loci problem, are built: one accurate first line, then a fixed slide of the set square for every line after it.',
+          calloutAt: [(xs[0] + xs[2]) / 2, triTop - 12],
+          reveals: [
+            { kind: 'line', p1: [xs[0], triTop - 6], p2: [xs[2], triTop - 6], lineType: 'centre' },
+            { kind: 'dimension', p1: [xs[0], rulerY + 24], p2: [xs[2], rulerY + 24], offset: 0, text: '60' },
+          ],
+        },
+      ],
+    };
+  })();
+
+  // ── 4. Tangent to a circle from an external point ──
   (function () {
     const O = [70, 110], r = 35;
     const Pext = [O[0] + 70, O[1]];
@@ -180,7 +246,7 @@
     };
   })();
 
-  // ── 4. Regular hexagon inscribed in a circle (compass-radius-step method) ──
+  // ── 5. Regular hexagon inscribed in a circle (compass-radius-step method) ──
   (function () {
     const center = [100, 100], r = 30; // 60mm diameter
     const verts = G.regularPolygonInCircle(center, r, 6, -90);
@@ -211,15 +277,75 @@
       reveals: [{ kind: 'polygon', points: verts, lineType: 'A' }],
     });
     CONSTRUCTIONS['hexagon-in-circle'] = {
-      id: 'hexagon-in-circle', title: 'Regular Hexagon Inscribed in a Circle',
-      summary: "Construct a regular hexagon using the compass-step method — for a hexagon, the compass radius never changes.",
+      id: 'hexagon-in-circle', title: 'Regular Hexagon — Inscribed in a Circle (Distance Across Corners)',
+      summary: "Construct a regular hexagon using the compass-step method — for a hexagon, the compass radius never changes. Use this when the distance ACROSS CORNERS (the circumscribing circle) is given.",
       bounds: { w: 200, h: 180 },
       workbookPrompt: 'Inscribe a regular hexagon in a circle of 60 mm diameter, using the compass-step method. Label all six vertices.',
       steps,
     };
   })();
 
-  // ── 5. Regular pentagon inscribed in a circle (central-angle method) ──
+  // ── 6. Regular hexagon circumscribed about a circle (tangent / set-square method) ──
+  (function () {
+    const center = [100, 100], r = 30; // 60mm diameter inscribed circle (distance across flats)
+    const R = r / Math.cos(30 * Math.PI / 180); // circumradius: distance from O to each vertex
+    const verts = G.regularPolygonInCircle(center, R, 6, -60); // vertices sit 30° from each tangent point
+    const tangentPts = G.regularPolygonInCircle(center, r, 6, -90); // the 6 points of tangency
+    const s = G.distance(verts[0], verts[1]); // side length
+
+    const steps = [
+      {
+        id: 1,
+        instruction: 'Draw a circle of radius 30 mm, centre O — this is the hexagon\'s INSCRIBED circle (its diameter is the "distance across flats"). Draw a radius straight up to locate the first point of tangency.',
+        measurement: { label: 'r = 30 mm' },
+        calloutAt: center,
+        reveals: [
+          { kind: 'circle', center, r, lineType: 'A' },
+          { kind: 'point', at: center, label: 'O' },
+          { kind: 'line', p1: center, p2: tangentPts[0], lineType: 'construction' },
+        ],
+      },
+      {
+        id: 2,
+        instruction: 'At that point, draw a line perpendicular to the radius — a Type A line, exactly one side-length long (' + s.toFixed(1) + ' mm), centred on the point. This is the hexagon\'s top side.',
+        measurement: { label: 'side = ' + s.toFixed(1) + ' mm' },
+        calloutAt: G.midpoint(verts[5], verts[0]),
+        reveals: [
+          { kind: 'line', p1: verts[5], p2: verts[0], lineType: 'A' },
+          { kind: 'right-angle-marker', at: tangentPts[0], rotationDeg: 0 },
+        ],
+      },
+    ];
+    for (let i = 1; i < 6; i++) {
+      steps.push({
+        id: i + 2,
+        instruction: i === 1
+          ? 'Repeat at the other five points, 60° apart around the circle — draw the next radius, then its perpendicular tangent side.'
+          : 'Continue around the circle: radius, then perpendicular tangent side, at every 60°.',
+        calloutAt: tangentPts[i],
+        reveals: [
+          { kind: 'line', p1: center, p2: tangentPts[i], lineType: 'construction' },
+          { kind: 'line', p1: verts[(i + 5) % 6], p2: verts[i], lineType: 'A' },
+        ],
+      });
+    }
+    steps.push({
+      id: 8,
+      instruction: 'Where each pair of adjacent tangent lines meets is a vertex of the hexagon. Label them 1–6 — the outline is already complete.',
+      calloutAt: center,
+      reveals: verts.map((v, i) => ({ kind: 'point', at: v, label: String(i + 1) })),
+    });
+
+    CONSTRUCTIONS['hexagon-about-circle'] = {
+      id: 'hexagon-about-circle', title: 'Regular Hexagon — Circumscribed About a Circle (Distance Across Flats)',
+      summary: 'Construct a regular hexagon around a given circle using six tangent lines, 60° apart. Use this when the distance ACROSS FLATS (the inscribed circle) is given instead of the distance across corners.',
+      bounds: { w: 200, h: 180 },
+      workbookPrompt: 'Circumscribe a regular hexagon about a circle of 60 mm diameter (the inscribed circle), using the tangent method. Label all six vertices.',
+      steps,
+    };
+  })();
+
+  // ── 7. Regular pentagon inscribed in a circle (protractor / central-angle method) ──
   (function () {
     const center = [100, 100], r = 35; // 70mm diameter
     const verts = G.regularPolygonInCircle(center, r, 5, -90);
@@ -254,15 +380,116 @@
       reveals: [{ kind: 'polygon', points: verts, lineType: 'A' }],
     });
     CONSTRUCTIONS['pentagon-in-circle'] = {
-      id: 'pentagon-in-circle', title: 'Regular Pentagon Inscribed in a Circle',
-      summary: 'Construct a regular pentagon by dividing a circle into 5 equal central angles — the method used for odd-sided polygons.',
+      id: 'pentagon-in-circle', title: 'Regular Pentagon — Protractor Method (Given the Circumscribing Circle)',
+      summary: 'Construct a regular pentagon by dividing a given circle into 5 equal 72° central angles with a protractor — used when the circumscribing circle is what you\'re given.',
       bounds: { w: 200, h: 180 },
       workbookPrompt: 'Inscribe a regular pentagon in a circle of 70 mm diameter, dividing it into 5 equal 72° angles. Label all five vertices.',
       steps,
     };
   })();
 
-  // ── 6. Helix / spring curve (plan + elevation projection) ──
+  // ── 8. Regular pentagon on a given side (bisection / golden-ratio method) ──
+  (function () {
+    const s = 60; // given side AB
+    const apothem = s / (2 * Math.tan(36 * Math.PI / 180));
+    const Rc = s / (2 * Math.sin(36 * Math.PI / 180));
+    const O = [100, 150 - apothem];
+    const verts = G.regularPolygonInCircle(O, Rc, 5, -90); // [D(apex), C, B, A, E] clockwise
+    const D = verts[0], C = verts[1], B = verts[2], A = verts[3], E = verts[4];
+    const M = G.midpoint(A, B);
+    const X = [B[0], B[1] - s]; // perpendicular at B, BX = AB
+    const MX = G.distance(M, X);
+    const Y = [M[0] - MX, M[1]]; // golden-ratio point, AB produced through A
+    const BY = G.distance(B, Y);
+    const AY = MX - G.distance(M, A);
+    const bisectorTop = [M[0], D[1] - 15];
+
+    CONSTRUCTIONS['pentagon-given-side'] = {
+      id: 'pentagon-given-side', title: 'Regular Pentagon — Given a Side (Bisection Method)',
+      summary: 'Construct a regular pentagon starting from one known side, using the perpendicular bisector and the golden ratio — no protractor required, and no circle given in advance.',
+      bounds: { w: 200, h: 180 },
+      workbookPrompt: 'Construct a regular pentagon on a given side AB = 60 mm, using the bisection (golden-ratio) method. Show all construction arcs and label points M, X, Y and the five vertices A–E.',
+      steps: [
+        {
+          id: 1,
+          instruction: 'Draw the given side AB, 60 mm long, using a Type A line.',
+          measurement: { label: 'AB = 60 mm' },
+          calloutAt: A,
+          reveals: [
+            { kind: 'line', p1: A, p2: B, lineType: 'A' },
+            { kind: 'point', at: A, label: 'A' }, { kind: 'point', at: B, label: 'B' },
+          ],
+        },
+        {
+          id: 2,
+          instruction: "Bisect AB (as in Construction 1) to find its midpoint M, and extend the perpendicular bisector well above AB — it will pass through the pentagon's top vertex.",
+          calloutAt: M,
+          reveals: [
+            { kind: 'line', p1: M, p2: bisectorTop, lineType: 'construction' },
+            { kind: 'point', at: M, label: 'M' },
+          ],
+        },
+        {
+          id: 3,
+          instruction: 'At B, construct a line perpendicular to AB. With centre B and radius AB, mark point X on it, so BX = AB.',
+          measurement: { label: 'BX = AB = 60 mm' },
+          calloutAt: X,
+          reveals: [
+            { kind: 'line', p1: B, p2: X, lineType: 'construction' },
+            { kind: 'right-angle-marker', at: B, rotationDeg: 180 },
+            { kind: 'point', at: X, label: 'X' },
+          ],
+        },
+        {
+          id: 4,
+          instruction: 'Join M to X. With centre M and radius MX, swing an arc to cut line AB produced (extended beyond A) at point Y.',
+          measurement: { label: 'AY ≈ ' + AY.toFixed(1) + ' mm (0.618 × AB — the golden ratio)' },
+          calloutAt: Y,
+          reveals: [
+            { kind: 'line', p1: M, p2: X, lineType: 'construction' },
+            arcTowards(M, Y, MX, 20),
+            { kind: 'point', at: Y, label: 'Y' },
+          ],
+        },
+        {
+          id: 5,
+          instruction: "With centre B and radius BY, swing an arc to cross the extended bisector above AB. This crossing point is D, the pentagon's top vertex.",
+          measurement: { label: 'BY ≈ ' + BY.toFixed(1) + " mm (the pentagon's diagonal length)" },
+          calloutAt: D,
+          reveals: [
+            arcTowards(B, D, BY, 14),
+            { kind: 'point', at: D, label: 'D' },
+          ],
+        },
+        {
+          id: 6,
+          instruction: 'With centre B and centre D, both with radius AB, swing two arcs crossing to the right of the bisector. Their intersection is vertex C.',
+          calloutAt: C,
+          reveals: [
+            arcTowards(B, C, s, 20), arcTowards(D, C, s, 20),
+            { kind: 'point', at: C, label: 'C' },
+          ],
+        },
+        {
+          id: 7,
+          instruction: 'In the same way, with centre A and centre D, radius AB, swing two arcs crossing to the left of the bisector to find vertex E.',
+          calloutAt: E,
+          reveals: [
+            arcTowards(A, E, s, 20), arcTowards(D, E, s, 20),
+            { kind: 'point', at: E, label: 'E' },
+          ],
+        },
+        {
+          id: 8,
+          instruction: 'Join A–B–C–D–E–A in order with Type A lines to complete the pentagon.',
+          calloutAt: G.midpoint(C, D),
+          reveals: [{ kind: 'polygon', points: [A, B, C, D, E], lineType: 'A' }],
+        },
+      ],
+    };
+  })();
+
+  // ── 9. Helix / spring curve (plan + elevation projection) ──
   (function () {
     const planCenter = [60, 150], planR = 20; // 40mm diameter
     const planPts = G.regularPolygonInCircle(planCenter, planR, 12, -90);
@@ -317,7 +544,7 @@
     };
   })();
 
-  // ── 7. Ellipse — Concentric Circles Method ──
+  // ── 10. Ellipse — Concentric Circles Method ──
   (function () {
     const O = [100, 100], MAJOR_R = 45, MINOR_R = 25, N = 12, D2R = Math.PI / 180;
     const outerPts = Array.from({ length: N }, (_, i) => {
@@ -379,7 +606,7 @@
     };
   })();
 
-  // ── 8. Tangent Arc Blend — Rounded-End Link ──
+  // ── 11. Tangent Arc Blend — Rounded-End Link ──
   (function () {
     const CY = 100, LEFT_CX = 45, RIGHT_CX = 135, HALF_W = 15, HOLE_R = 6;
     CONSTRUCTIONS['tangent-arc-link'] = {
@@ -451,6 +678,17 @@
       explanation: 'If the radius were less than or equal to half of AB, the arcs from A and B would never intersect.',
     },
     {
+      text: 'When using a set square sliding along a fixed ruler to draw several equally spaced lines, why are all the lines guaranteed to be parallel?',
+      options: [
+        "Because the set square's edge stays in contact with the same straight ruler for every line, so its angle to the ruler never changes",
+        'Because the lines are all measured with a protractor before being drawn',
+        'Because the set square is replaced with an identical one each time',
+        'Parallel lines are not actually guaranteed — they must be checked afterwards',
+      ],
+      answer: 0,
+      explanation: 'The ruler fixes one direction. As long as the set square\'s edge is kept flat against it, sliding the set square only translates the drawing edge — it never rotates it — so every line drawn is automatically parallel to the last.',
+    },
+    {
       text: 'In the tangent-from-an-external-point construction, what is true about the angle between a tangent and the radius at the point of contact?',
       options: ['It is always 90°', 'It is always 45°', 'It equals half the angle at the centre', 'It depends on the circle\'s radius'],
       answer: 0,
@@ -463,10 +701,22 @@
       explanation: "A regular hexagon's side length always equals the radius of its circumscribing circle — this is why the compass-step method works without recalculating.",
     },
     {
+      text: 'A hexagon is constructed by drawing six tangent lines around a given circle, 60° apart. What does the diameter of that circle represent?',
+      options: ['The hexagon\'s distance across flats', 'The hexagon\'s distance across corners', 'The hexagon\'s side length', 'It has no fixed relationship to the hexagon'],
+      answer: 0,
+      explanation: 'When a circle is INSCRIBED in a hexagon (tangent to all six sides), its diameter is the "distance across flats." This is different from the circumscribing circle used in the compass-step method, whose diameter is the "distance across corners."',
+    },
+    {
       text: 'A regular pentagon is inscribed in a circle by dividing it into equal central angles. What is that angle?',
       options: ['72°', '60°', '90°', '108°'],
       answer: 0,
       explanation: '360° ÷ 5 = 72°. (108° is the pentagon\'s interior angle, not the central angle.)',
+    },
+    {
+      text: 'In the given-a-side pentagon construction, the length BY (found using the perpendicular bisector and a right-angle triangle) turns out to equal which pentagon measurement?',
+      options: ['The diagonal of the pentagon', 'The apothem of the pentagon', 'Twice the side length', 'The circumradius'],
+      answer: 0,
+      explanation: 'BY = φ × AB (φ ≈ 1.618, the golden ratio) — exactly the length of a regular pentagon\'s diagonal. That is what lets one arc from a base point locate the top vertex directly on the perpendicular bisector.',
     },
     {
       text: 'When projecting a helix from its plan and elevation, what does the "pitch" represent?',
@@ -499,6 +749,10 @@
   ];
 
   global.CONSTRUCTIONS = CONSTRUCTIONS;
-  global.CONSTRUCTION_ORDER = ['bisect-line', 'bisect-angle', 'tangent-external', 'hexagon-in-circle', 'pentagon-in-circle', 'helix-spring', 'ellipse-concentric-circles', 'tangent-arc-link'];
+  global.CONSTRUCTION_ORDER = [
+    'bisect-line', 'bisect-angle', 'equal-segments-set-square', 'tangent-external',
+    'hexagon-in-circle', 'hexagon-about-circle', 'pentagon-in-circle', 'pentagon-given-side',
+    'helix-spring', 'ellipse-concentric-circles', 'tangent-arc-link',
+  ];
   global.PRACTICE_QUESTIONS = PRACTICE_QUESTIONS;
 })(window);
