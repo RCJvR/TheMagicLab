@@ -298,7 +298,10 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'explore') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+  // The wave/compression canvases have offsetWidth 0 while the Simulate tab
+  // panel is display:none, so the first resizeCanvases() call (at page load)
+  // falls back to a hardcoded default width. Re-measure now that it's visible.
+  if (id === 'simulate') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
 }
 
 /* ---- Sound wave simulator ---- */

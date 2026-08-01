@@ -224,6 +224,10 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // The gearCanvas has offsetWidth 0 while the Explore tab panel is
+  // display:none, so the first resizeCanvas() call (at page load) falls
+  // back to a hardcoded default width. Re-measure now that it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
 }
 
 /* ═══════════════════════════════════════════════

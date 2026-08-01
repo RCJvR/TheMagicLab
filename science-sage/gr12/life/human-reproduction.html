@@ -250,6 +250,11 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // The reproCanvas has offsetWidth 0 while its tab panel is display:none,
+  // so the first resizeCanvas() call (at page load) falls back to a
+  // hardcoded default width, desyncing the click hit-testing regions.
+  // Re-measure now that Explore is visible.
+  if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
 }
 
 /* ═══════════════════════════════════════════════

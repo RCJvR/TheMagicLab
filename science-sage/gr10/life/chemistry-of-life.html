@@ -266,6 +266,9 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // enzCanvas has offsetWidth 0 while tab-explore is display:none, so the initial
+  // resizeCanvas() call fell back to a hardcoded width. Re-measure now it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
 }
 
 /* ═══════════════════════════════════════════════
