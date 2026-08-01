@@ -10,7 +10,7 @@
       '.ml-contact-fab .ml-contact-label{display:none}' +
       '@keyframes mlFabPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}' +
       '@media (max-width:640px){' +
-      '.ml-contact-fab{top:10px;right:10px;bottom:auto;left:auto;width:auto;height:30px;padding:0 12px 0 10px;border-radius:999px;font-size:13px;box-shadow:0 4px 14px rgba(8,145,178,.45)}' +
+      '.ml-contact-fab{bottom:18px;right:16px;width:auto;height:36px;padding:0 14px 0 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 14px rgba(8,145,178,.45)}' +
       '.ml-contact-fab .ml-contact-icon{font-size:14px}' +
       '.ml-contact-fab .ml-contact-label{display:inline;font-weight:600}' +
       '}';

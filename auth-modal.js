@@ -185,6 +185,7 @@
 
     if (!email || !password) { _showErr(signinErr(), 'Please fill in all fields.'); return; }
 
+    _clearMessages();
     btn.disabled = true; btn.textContent = 'Signing in…';
     const { error } = await window.MagicLabAuth.signIn(email, password);
 
@@ -195,21 +196,22 @@
       _showOk(signinOk(), '✓ Signed in! Loading your progress…');
       // Wait for onAuthStateChange + profile fetch to settle before closing.
       // A fixed setTimeout races against the async profile fetch and loses.
-      // Instead we wait for magiclab:auth:ready to fire with a valid profile.
+      // signIn() triggers onAuthStateChange, which fires magiclab:auth:change
+      // once the profile fetch resolves — that's the real "done" signal.
       const _onReady = (e) => {
         if (!e.detail?.profile) return; // ignore spurious fires with null profile
-        document.removeEventListener('magiclab:auth:ready', _onReady);
+        document.removeEventListener('magiclab:auth:change', _onReady);
         _renderNavAuth(e.detail.profile);
         closeModal();
       };
-      document.addEventListener('magiclab:auth:ready', _onReady);
-      // Safety fallback: close after 5s regardless, so the modal never gets stuck
+      document.addEventListener('magiclab:auth:change', _onReady);
+      // Safety fallback: close after 3s regardless, so the modal never gets stuck
       setTimeout(() => {
-        document.removeEventListener('magiclab:auth:ready', _onReady);
+        document.removeEventListener('magiclab:auth:change', _onReady);
         const profile = window.MagicLabAuth?.getProfile();
         if (profile) _renderNavAuth(profile);
         closeModal();
-      }, 5000);
+      }, 3000);
     }
   });
 
@@ -229,6 +231,7 @@
       _showErr(signupErr(), 'Please select your grade.'); return;
     }
 
+    _clearMessages();
     btn.disabled = true; btn.textContent = 'Creating account…';
     const { error } = await window.MagicLabAuth.signUp(
       email, password, name, _selectedRole,
@@ -245,17 +248,17 @@
       _showOk(signupOk(), '✓ Account created! Signing you in…');
       const _onReady = (e) => {
         if (!e.detail?.profile) return;
-        document.removeEventListener('magiclab:auth:ready', _onReady);
+        document.removeEventListener('magiclab:auth:change', _onReady);
         _renderNavAuth(e.detail.profile);
         closeModal();
       };
-      document.addEventListener('magiclab:auth:ready', _onReady);
+      document.addEventListener('magiclab:auth:change', _onReady);
       setTimeout(() => {
-        document.removeEventListener('magiclab:auth:ready', _onReady);
+        document.removeEventListener('magiclab:auth:change', _onReady);
         const profile = window.MagicLabAuth?.getProfile();
         if (profile) _renderNavAuth(profile);
         closeModal();
-      }, 5000);
+      }, 3000);
     }
   });
 
