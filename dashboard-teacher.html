@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher Dashboard — The Magic Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <style>
@@ -19,6 +20,14 @@
       --teacher:#06b6d4; /* teal — distinct from student indigo */
       --font:"Cabinet Grotesk",sans-serif;
       --mono:"JetBrains Mono",monospace;
+
+      /* Design tokens — shared scale with index.html / pricing.html / dashboard-student.html */
+      --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+      --space-5:24px; --space-6:32px; --space-7:48px; --space-8:64px;
+      --radius-2xs:6px; --radius-xs:8px; --radius-sm:12px; --radius-md:16px;
+      --radius-lg:20px; --radius-xl:24px; --radius-full:99px;
+      --ease-standard:cubic-bezier(0.2,0.8,0.2,1);
+      --dur-fast:150ms; --dur-med:220ms;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{min-height:100%;}
@@ -43,18 +52,22 @@
       font-weight:900;font-size:20px;letter-spacing:-0.03em;text-decoration:none;
       background:linear-gradient(120deg,#fff 0%,#67e8f9 50%,#6ee7b7 100%);
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      /* The gradient-clip trick above only recolors TEXT — it leaves the logo
+         icon's currentColor unset, so without this it falls back to the
+         browser's default link-blue instead of white. */
+      color:#fff;
       display:flex;align-items:center;gap:8px;
     }
     .nav-right{display:flex;align-items:center;gap:8px;}
     .nav-pill{
-      font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;
+      font-size:12px;font-weight:600;padding:6px 14px;border-radius:var(--radius-full);
       border:1px solid var(--border);background:var(--surface);color:var(--muted);
       text-decoration:none;transition:all 140ms;cursor:pointer;font-family:var(--font);
     }
     .nav-pill:hover{background:rgba(255,255,255,0.09);color:var(--text);}
     .nav-teacher-badge{
       font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.08em;
-      text-transform:uppercase;padding:4px 12px;border-radius:99px;
+      text-transform:uppercase;padding:4px 12px;border-radius:var(--radius-full);
       background:rgba(6,182,212,0.14);border:1px solid rgba(6,182,212,0.30);
       color:#67e8f9;
     }
@@ -70,7 +83,7 @@
     .state-screen h2{font-weight:900;font-size:26px;letter-spacing:-0.03em;color:var(--text);margin:20px 0 12px;}
     .state-screen p{font-size:15px;color:var(--muted);max-width:380px;line-height:1.7;margin-bottom:28px;}
     .cta-btn{
-      padding:13px 30px;border-radius:14px;border:none;
+      padding:13px 30px;border-radius:var(--radius-md);border:none;
       background:linear-gradient(135deg,#0776a0,#0fa874);
       color:#fff;font-family:var(--font);font-size:15px;font-weight:700;
       letter-spacing:-0.01em;cursor:pointer;
@@ -82,11 +95,11 @@
     #teacher-dash{display:none;}
     .tab-bar{
       display:flex;gap:4px;
-      background:rgba(0,0,0,0.30);border-radius:12px;padding:4px;
+      background:rgba(0,0,0,0.30);border-radius:var(--radius-sm);padding:4px;
       margin-bottom:36px;width:fit-content;
     }
     .tab-btn{
-      padding:9px 22px;border-radius:9px;border:none;cursor:pointer;
+      padding:9px 22px;border-radius:var(--radius-xs);border:none;cursor:pointer;
       font-family:var(--font);font-size:14px;font-weight:700;letter-spacing:-0.01em;
       color:var(--muted);background:transparent;transition:all 150ms;
     }
@@ -99,7 +112,7 @@
     .tab-panel.active{display:block;}
     .help-tab-badge{
       display:inline-flex;align-items:center;justify-content:center;
-      min-width:16px;height:16px;padding:0 4px;margin-left:6px;border-radius:99px;
+      min-width:16px;height:16px;padding:0 4px;margin-left:6px;border-radius:var(--radius-full);
       background:#ef4444;color:#fff;font-size:10px;font-weight:800;
     }
 
@@ -107,27 +120,27 @@
     .help-thread-card{cursor:pointer;}
     .help-thread-unread{
       display:inline-flex;align-items:center;justify-content:center;
-      min-width:18px;height:18px;padding:0 5px;border-radius:99px;
+      min-width:18px;height:18px;padding:0 5px;border-radius:var(--radius-full);
       background:#ef4444;color:#fff;font-size:11px;font-weight:800;
     }
     .help-chat-box{
       display:flex;flex-direction:column;height:420px;
-      border:1px solid var(--border);border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.15);
+      border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;background:rgba(0,0,0,0.15);
     }
     .help-chat-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
-    .help-msg{max-width:70%;padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.4;}
+    .help-msg{max-width:70%;padding:9px 13px;border-radius:var(--radius-sm);font-size:13px;line-height:1.4;}
     .help-msg.mine{align-self:flex-end;background:rgba(6,182,212,0.22);color:var(--text);border-bottom-right-radius:3px;}
     .help-msg.theirs{align-self:flex-start;background:rgba(255,255,255,0.06);color:var(--text2);border-bottom-left-radius:3px;}
     .help-msg-time{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px;opacity:0.7;}
     .help-chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border2);}
     .help-chat-send{
-      padding:0 20px;border-radius:10px;border:none;flex-shrink:0;
+      padding:0 20px;border-radius:var(--radius-sm);border:none;flex-shrink:0;
       background:linear-gradient(135deg,#0891b2,#0e7490);
       color:#fff;font-weight:700;font-size:13px;cursor:pointer;font-family:var(--font);
     }
     .help-filter-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
     .filter-pill{
-      padding:7px 16px;border-radius:99px;border:1px solid var(--border);
+      padding:7px 16px;border-radius:var(--radius-full);border:1px solid var(--border);
       background:var(--surface);color:var(--muted);
       font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all 140ms;
     }
@@ -135,7 +148,7 @@
     .filter-pill.active{border-color:rgba(6,182,212,0.40);background:rgba(6,182,212,0.14);color:#67e8f9;}
     .roster-item{
       display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:8px;
-      border-radius:12px;background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);
       cursor:pointer;transition:border-color 140ms;
     }
     .roster-item:hover{border-color:rgba(6,182,212,0.35);}
@@ -168,7 +181,7 @@
     .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
     .stat-card{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:16px;padding:18px 20px;
+      border-radius:var(--radius-md);padding:18px 20px;
     }
     .stat-label{
       font-family:var(--mono);font-size:10px;font-weight:600;
@@ -186,11 +199,11 @@
     .class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px;}
     .class-card{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:18px;padding:22px;cursor:pointer;
+      border-radius:var(--radius-lg);padding:22px;cursor:pointer;
       transition:all 200ms;position:relative;overflow:hidden;
     }
     .class-card::before{
-      content:'';position:absolute;inset:0;border-radius:18px;
+      content:'';position:absolute;inset:0;border-radius:var(--radius-lg);
       background:radial-gradient(ellipse at 0% 0%,rgba(6,182,212,0.08),transparent 60%);
       opacity:0;transition:opacity 200ms;pointer-events:none;
     }
@@ -198,10 +211,10 @@
     .class-card:hover::before{opacity:1;}
     .class-card.selected{border-color:rgba(6,182,212,0.50);background:rgba(6,182,212,0.08);}
     .class-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
-    .class-icon{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(6,182,212,0.14);border:1px solid rgba(6,182,212,0.25);}
+    .class-icon{width:42px;height:42px;border-radius:var(--radius-sm);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(6,182,212,0.14);border:1px solid rgba(6,182,212,0.25);}
     .class-invite{
       font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.12em;
-      padding:4px 10px;border-radius:8px;
+      padding:4px 10px;border-radius:var(--radius-xs);
       background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.25);
       color:#f5a623;cursor:pointer;transition:all 130ms;user-select:none;
     }
@@ -216,7 +229,7 @@
     .create-class-btn{
       display:flex;align-items:center;justify-content:center;gap:8px;
       background:var(--surface2);border:1.5px dashed rgba(6,182,212,0.30);
-      border-radius:18px;padding:22px;cursor:pointer;
+      border-radius:var(--radius-lg);padding:22px;cursor:pointer;
       font-size:14px;font-weight:700;color:rgba(6,182,212,0.60);
       transition:all 180ms;min-height:140px;
     }
@@ -225,7 +238,7 @@
     /* ── Student table ── */
     .class-detail{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:18px;overflow:hidden;margin-bottom:32px;
+      border-radius:var(--radius-lg);overflow:hidden;margin-bottom:32px;
     }
     .class-detail-header{
       padding:18px 22px;border-bottom:1px solid var(--border2);
@@ -236,7 +249,7 @@
     .back-btn{
       display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;
       color:var(--muted);background:none;border:1px solid var(--border2);
-      border-radius:99px;padding:5px 14px;cursor:pointer;transition:all 130ms;
+      border-radius:var(--radius-full);padding:5px 14px;cursor:pointer;transition:all 130ms;
       font-family:var(--font);
     }
     .back-btn:hover{color:var(--text);background:var(--surface);}
@@ -257,19 +270,19 @@
     .student-table tr:hover td{background:rgba(255,255,255,0.02);}
     .student-name{font-weight:700;color:var(--text);}
     .student-avatar{
-      width:28px;height:28px;border-radius:8px;flex-shrink:0;
+      width:28px;height:28px;border-radius:var(--radius-xs);flex-shrink:0;
       background:linear-gradient(135deg,#4338ca,#059669);
       display:inline-flex;align-items:center;justify-content:center;
       font-size:12px;font-weight:800;color:#fff;margin-right:8px;vertical-align:middle;
     }
     .progress-mini{
-      height:4px;background:rgba(255,255,255,0.08);border-radius:99px;
+      height:4px;background:rgba(255,255,255,0.08);border-radius:var(--radius-full);
       overflow:hidden;width:80px;display:inline-block;vertical-align:middle;
     }
-    .progress-mini-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teacher),var(--accent-2));}
+    .progress-mini-fill{height:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--teacher),var(--accent-2));}
     .xp-pill{
       font-family:var(--mono);font-size:10px;font-weight:600;
-      padding:2px 8px;border-radius:99px;
+      padding:2px 8px;border-radius:var(--radius-full);
       background:rgba(124,109,250,0.12);border:1px solid rgba(124,109,250,0.25);
       color:#c4baff;
     }
@@ -279,7 +292,7 @@
     }
     .tool-dots{display:flex;gap:4px;}
     .tool-dot{
-      width:22px;height:22px;border-radius:6px;display:flex;
+      width:22px;height:22px;border-radius:var(--radius-2xs);display:flex;
       align-items:center;justify-content:center;font-size:11px;
     }
     .tool-dot.active{background:rgba(17,217,143,0.15);border:1px solid rgba(17,217,143,0.30);}
@@ -308,7 +321,7 @@
     .modal-overlay.open{opacity:1;pointer-events:all;}
     .modal-box{
       background:#0d1226;border:1px solid rgba(255,255,255,0.10);
-      border-radius:22px;padding:32px;width:100%;max-width:420px;
+      border-radius:var(--radius-xl);padding:32px;width:100%;max-width:420px;
       box-shadow:0 32px 80px rgba(0,0,0,0.60);
       transform:translateY(12px);transition:transform 200ms;
     }
@@ -323,7 +336,7 @@
     .form-input{
       width:100%;padding:10px 14px;
       background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
-      border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;
+      border-radius:var(--radius-sm);color:var(--text);font-family:var(--font);font-size:14px;
       outline:none;transition:border-color 150ms;
     }
     .form-input:focus{border-color:rgba(6,182,212,0.50);}
@@ -331,7 +344,7 @@
     select.form-input option{background:#0d1226;color:var(--text);}
     .grade-row{display:flex;gap:6px;flex-wrap:wrap;}
     .grade-chip{
-      padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.10);
+      padding:6px 14px;border-radius:var(--radius-xs);border:1px solid rgba(255,255,255,0.10);
       background:rgba(255,255,255,0.04);color:var(--muted);
       font-size:13px;font-weight:600;cursor:pointer;transition:all 140ms;
       font-family:var(--font);
@@ -339,7 +352,7 @@
     .grade-chip.selected{background:rgba(6,182,212,0.14);border-color:rgba(6,182,212,0.40);color:#67e8f9;}
     .modal-actions{display:flex;gap:8px;margin-top:22px;}
     .btn-primary{
-      flex:1;padding:12px;border-radius:12px;border:none;cursor:pointer;
+      flex:1;padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;
       background:linear-gradient(135deg,#0776a0,#0fa874);color:#fff;
       font-family:var(--font);font-size:14px;font-weight:700;
       box-shadow:0 3px 14px rgba(6,182,212,0.28);transition:all 150ms;
@@ -347,7 +360,7 @@
     .btn-primary:hover{box-shadow:0 5px 20px rgba(6,182,212,0.42);transform:translateY(-1px);}
     .btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
     .btn-ghost{
-      padding:12px 20px;border-radius:12px;border:1px solid var(--border);
+      padding:12px 20px;border-radius:var(--radius-sm);border:1px solid var(--border);
       background:var(--surface);color:var(--text2);cursor:pointer;
       font-family:var(--font);font-size:14px;font-weight:600;transition:all 140ms;
     }
@@ -360,7 +373,7 @@
     .lesson-picker{
       max-height:220px;overflow-y:auto;
       background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.10);
-      border-radius:10px;padding:6px 4px;
+      border-radius:var(--radius-sm);padding:6px 4px;
     }
     .lesson-picker-empty{padding:16px 12px;font-size:13px;color:var(--muted);text-align:center;}
     .lesson-group{margin-bottom:2px;}
@@ -371,7 +384,7 @@
     }
     .lesson-item-row{
       display:flex;align-items:center;gap:8px;padding:5px 10px 5px 26px;cursor:pointer;
-      font-size:13px;color:var(--text2);border-radius:6px;
+      font-size:13px;color:var(--text2);border-radius:var(--radius-2xs);
     }
     .lesson-item-row:hover{background:rgba(255,255,255,0.05);}
     .lesson-item-row.hidden-filtered,.lesson-group.hidden-filtered{display:none;}
@@ -381,24 +394,24 @@
     .assign-toolbar{display:flex;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
     .assignment-card{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:16px;padding:20px 22px;margin-bottom:14px;
+      border-radius:var(--radius-md);padding:20px 22px;margin-bottom:14px;
     }
     .assignment-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
     .assignment-title{font-weight:800;font-size:16px;letter-spacing:-0.02em;color:#fff;margin-bottom:4px;}
     .assignment-meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
     .assignment-due{
-      font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;
+      font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 10px;border-radius:var(--radius-full);
       background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.28);color:#f5a623;
     }
     .assignment-due.overdue{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.32);color:#fca5a5;}
     .assignment-instructions{font-size:13px;color:var(--text2);line-height:1.6;margin-top:10px;}
     .assignment-progress-row{display:flex;align-items:center;gap:10px;margin-top:14px;}
-    .assignment-progress-bar{flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;max-width:260px;}
-    .assignment-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teacher),var(--accent-2));}
+    .assignment-progress-bar{flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:var(--radius-full);overflow:hidden;max-width:260px;}
+    .assignment-progress-fill{height:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--teacher),var(--accent-2));}
     .assignment-progress-label{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;}
     .assignment-actions{display:flex;gap:8px;flex-shrink:0;}
     .assign-detail-toggle{
-      background:none;border:1px solid var(--border2);border-radius:99px;
+      background:none;border:1px solid var(--border2);border-radius:var(--radius-full);
       padding:5px 14px;font-size:12px;font-weight:600;color:var(--muted);
       cursor:pointer;transition:all 130ms;font-family:var(--font);
     }
@@ -417,7 +430,7 @@
     ══════════════════════════════════════════ */
     .training-intro{
       background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.16);
-      border-radius:16px;padding:22px 26px;margin-bottom:32px;
+      border-radius:var(--radius-md);padding:22px 26px;margin-bottom:32px;
       display:flex;align-items:flex-start;gap:18px;
     }
     .training-intro-icon{font-size:32px;flex-shrink:0;}
@@ -429,7 +442,7 @@
     .training-tool-tabs{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
     .training-tool-tab{
       display:flex;align-items:center;gap:9px;padding:11px 20px;
-      border-radius:14px;border:1px solid var(--border);background:var(--surface);
+      border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);
       cursor:pointer;transition:all 150ms;font-family:var(--font);
     }
     .training-tool-tab:hover{border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.06);}
@@ -446,7 +459,7 @@
     .module-grid{display:flex;flex-direction:column;gap:10px;}
     .module-card{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:14px;padding:0;overflow:hidden;transition:border-color 150ms;
+      border-radius:var(--radius-md);padding:0;overflow:hidden;transition:border-color 150ms;
     }
     .module-card:hover{border-color:rgba(6,182,212,0.25);}
     .module-header{
@@ -455,7 +468,7 @@
     }
     .module-num{
       font-family:var(--mono);font-size:12px;font-weight:600;
-      width:28px;height:28px;border-radius:8px;flex-shrink:0;
+      width:28px;height:28px;border-radius:var(--radius-xs);flex-shrink:0;
       display:flex;align-items:center;justify-content:center;
       background:rgba(255,255,255,0.06);color:var(--muted);
     }
@@ -463,7 +476,7 @@
     .module-title{font-weight:700;font-size:15px;letter-spacing:-0.01em;color:var(--text);flex:1;}
     .module-badge{
       font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.08em;
-      text-transform:uppercase;padding:3px 9px;border-radius:99px;flex-shrink:0;
+      text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-full);flex-shrink:0;
     }
     .module-badge-beginner{background:rgba(17,217,143,0.10);border:1px solid rgba(17,217,143,0.22);color:#6ee7b7;}
     .module-badge-intermediate{background:rgba(245,166,35,0.10);border:1px solid rgba(245,166,35,0.22);color:#fcd34d;}
@@ -488,7 +501,7 @@
     /* Concept blocks */
     .concept-block{
       background:var(--surface2);border:1px solid var(--border2);
-      border-radius:10px;padding:14px 16px;margin-bottom:10px;
+      border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;
       font-size:14px;color:var(--text2);line-height:1.75;
     }
     .concept-block h4{
@@ -507,7 +520,7 @@
 
     /* Code example */
     .code-example{
-      background:rgba(0,0,0,0.40);border-radius:10px;padding:14px 16px;
+      background:rgba(0,0,0,0.40);border-radius:var(--radius-sm);padding:14px 16px;
       font-family:var(--mono);font-size:12px;line-height:1.85;
       color:rgba(210,218,245,0.70);margin:10px 0;overflow-x:auto;
     }
@@ -520,15 +533,16 @@
     /* Teaching tips */
     .teaching-tip{
       background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.20);
-      border-radius:10px;padding:12px 16px;margin:10px 0;
+      border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;
       font-size:13px;color:#fcd34d;line-height:1.65;
     }
     .teaching-tip strong{font-weight:700;}
+    .tip-icon{width:14px;height:14px;vertical-align:-2px;margin-right:3px;display:inline-block;}
 
     /* Common mistakes */
     .mistake-block{
       background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.18);
-      border-radius:10px;padding:12px 16px;margin:10px 0;
+      border-radius:var(--radius-sm);padding:12px 16px;margin:10px 0;
       font-size:13px;color:#fca5a5;line-height:1.65;
     }
     .mistake-block strong{font-weight:700;}
@@ -536,7 +550,7 @@
     /* Complete button */
     .module-complete-btn{
       display:flex;align-items:center;gap:7px;
-      padding:10px 20px;border-radius:10px;border:none;cursor:pointer;
+      padding:10px 20px;border-radius:var(--radius-sm);border:none;cursor:pointer;
       font-family:var(--font);font-size:13px;font-weight:700;
       background:rgba(17,217,143,0.14);border:1px solid rgba(17,217,143,0.28);
       color:#6ee7b7;transition:all 140ms;margin-top:16px;
@@ -549,12 +563,12 @@
     /* Training progress bar */
     .training-progress-wrap{
       background:var(--surface);border:1px solid var(--border);
-      border-radius:14px;padding:18px 22px;margin-bottom:28px;
+      border-radius:var(--radius-md);padding:18px 22px;margin-bottom:28px;
       display:flex;align-items:center;gap:20px;flex-wrap:wrap;
     }
     .training-progress-label{font-family:var(--mono);font-size:11px;color:var(--muted);flex-shrink:0;}
-    .training-progress-bar{flex:1;min-width:120px;height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
-    .training-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#06b6d4,#11d98f);transition:width 600ms ease;}
+    .training-progress-bar{flex:1;min-width:120px;height:6px;background:rgba(255,255,255,0.08);border-radius:var(--radius-full);overflow:hidden;}
+    .training-progress-fill{height:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,#06b6d4,#11d98f);transition:width 600ms ease;}
     .training-progress-count{font-family:var(--mono);font-size:12px;font-weight:600;color:#67e8f9;flex-shrink:0;}
 
     @media(max-width:900px){
@@ -567,12 +581,12 @@
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+  <a href="index.html" class="nav-logo"><i data-lucide="flask-conical" style="width:20px;height:20px;flex-shrink:0"></i> The Magic Lab</a>
   <div class="nav-right">
     <span class="nav-teacher-badge">Teacher</span>
     <a href="index.html" class="nav-pill">← All Tools</a>
-    <a href="account.html" class="nav-pill">⚙️ My Account</a>
-    <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+    <a href="account.html" class="nav-pill"><i data-lucide="settings" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>My Account</a>
+    <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;vertical-align:-2px;margin-right:3px"></i>Sign In</button>
   </div>
 </nav>
 
@@ -580,7 +594,7 @@
 
   <!-- ── Guest state ── -->
   <div id="guest-state" class="state-screen">
-    <div style="font-size:56px;">🎓</div>
+    <div style="color:var(--teacher);"><i data-lucide="graduation-cap" style="width:56px;height:56px;"></i></div>
     <h2>Teacher Dashboard</h2>
     <p>Sign in with a teacher account to manage your classes and access professional training.</p>
     <button class="cta-btn" onclick="window.MagicLabModal?.open('signup')">Sign In / Register</button>
@@ -588,7 +602,7 @@
 
   <!-- ── Not a teacher ── -->
   <div id="student-state" class="state-screen" style="display:none;">
-    <div style="font-size:56px;">🔒</div>
+    <div style="color:var(--muted);"><i data-lucide="lock" style="width:56px;height:56px;"></i></div>
     <h2>Teachers only</h2>
     <p>This dashboard is for teacher accounts. Looking for your student progress? Head to My Progress.</p>
     <a href="dashboard-student.html" class="cta-btn" style="display:inline-block;text-decoration:none;text-align:center;">Go to My Progress</a>
@@ -599,11 +613,11 @@
 
     <!-- Tab bar -->
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="switchTab('classes', this)">🏫 My Classes</button>
-      <button class="tab-btn" onclick="switchTab('assignments', this)">📝 Assignments</button>
-      <button class="tab-btn" onclick="switchTab('livegame', this)">🏟️ The Arena</button>
-      <button class="tab-btn" onclick="switchTab('training', this)">📚 Teacher Training</button>
-      <button class="tab-btn" onclick="switchTab('help', this)">💬 Help Requests<span id="help-tab-badge" class="help-tab-badge" style="display:none;"></span></button>
+      <button class="tab-btn active" onclick="switchTab('classes', this)"><i data-lucide="school" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>My Classes</button>
+      <button class="tab-btn" onclick="switchTab('assignments', this)"><i data-lucide="file-text" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Assignments</button>
+      <button class="tab-btn" onclick="switchTab('livegame', this)"><i data-lucide="trophy" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>The Arena</button>
+      <button class="tab-btn" onclick="switchTab('training', this)"><i data-lucide="book-open" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Teacher Training</button>
+      <button class="tab-btn" onclick="switchTab('help', this)"><i data-lucide="message-circle" style="width:14px;height:14px;vertical-align:-3px;margin-right:4px"></i>Help Requests<span id="help-tab-badge" class="help-tab-badge" style="display:none;"></span></button>
     </div>
 
     <!-- ═══ TAB: CLASSES ═══ -->
@@ -653,13 +667,13 @@
               <div class="class-detail-meta" id="detail-class-meta"></div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <div id="detail-invite-display" style="font-family:var(--mono);font-size:12px;color:#f5a623;background:rgba(245,166,35,0.10);border:1px solid rgba(245,166,35,0.25);padding:5px 12px;border-radius:8px;cursor:pointer;" title="Click to copy"></div>
+              <div id="detail-invite-display" style="font-family:var(--mono);font-size:12px;color:#f5a623;background:rgba(245,166,35,0.10);border:1px solid rgba(245,166,35,0.25);padding:5px 12px;border-radius:var(--radius-xs);cursor:pointer;" title="Click to copy"></div>
               <button class="back-btn" onclick="closeClassDetail()">← All classes</button>
             </div>
           </div>
           <div id="student-table-wrap">
             <div class="empty-state">
-              <span class="empty-state-icon">⏳</span>
+              <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="loader-2" style="width:40px;height:40px;"></i></span>
               <h3>Loading learners…</h3>
             </div>
           </div>
@@ -687,7 +701,7 @@
 
       <div id="assignments-list">
         <div class="empty-state">
-          <span class="empty-state-icon">📝</span>
+          <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="file-text" style="width:40px;height:40px;"></i></span>
           <h3>No classes yet</h3>
           <p>Create a class on the My Classes tab before setting assignments.</p>
         </div>
@@ -742,7 +756,7 @@
           <label class="form-label">Game title</label>
           <input class="form-input" id="lg-title" placeholder="e.g. Unit 9 AI Quiz">
         </div>
-        <button class="btn-primary" id="lg-launch-btn" style="padding:12px 26px;" onclick="launchGame()">🏟️ Launch Arena</button>
+        <button class="btn-primary" id="lg-launch-btn" style="padding:12px 26px;" onclick="launchGame()"><i data-lucide="trophy" style="width:15px;height:15px;vertical-align:-3px;margin-right:6px"></i>Launch Arena</button>
         <div id="lg-msg" class="msg"></div>
       </div>
 
@@ -758,7 +772,7 @@
       </div>
 
       <div class="training-intro">
-        <div class="training-intro-icon">💡</div>
+        <div class="training-intro-icon" style="color:var(--accent-3);"><i data-lucide="lightbulb" style="width:32px;height:32px;"></i></div>
         <div class="training-intro-text">
           <div class="training-intro-title">You don't need to be an expert. You need to be one lesson ahead.</div>
           <div class="training-intro-body">These modules are designed for teachers who've been assigned STEM subjects without specialist training. Each module explains the concept, how to teach it, what trips learners up, and what a good lesson looks like in practice. Start with Java Genie or Web Wizard — whichever you're teaching first.</div>
@@ -768,21 +782,21 @@
       <!-- Tool tabs -->
       <div class="training-tool-tabs" id="training-tool-tabs">
         <div class="training-tool-tab active" onclick="switchTrainingTool('java-genie', this)">
-          <span class="training-tool-tab-icon">🧞</span>
+          <span class="training-tool-tab-icon"><i data-lucide="code-2" style="width:20px;height:20px;"></i></span>
           <div class="training-tool-tab-info">
             <span class="training-tool-tab-name">Java Genie</span>
             <span class="training-tool-tab-prog" id="jg-prog">0 / 6 modules</span>
           </div>
         </div>
         <div class="training-tool-tab" onclick="switchTrainingTool('web-wizard', this)">
-          <span class="training-tool-tab-icon">🌐</span>
+          <span class="training-tool-tab-icon"><i data-lucide="globe" style="width:20px;height:20px;"></i></span>
           <div class="training-tool-tab-info">
             <span class="training-tool-tab-name">Web Wizard</span>
             <span class="training-tool-tab-prog" id="ww-prog">0 / 5 modules</span>
           </div>
         </div>
         <div class="training-tool-tab" onclick="switchTrainingTool('ai-oracle', this)">
-          <span class="training-tool-tab-icon">🔮</span>
+          <span class="training-tool-tab-icon"><i data-lucide="sparkles" style="width:20px;height:20px;"></i></span>
           <div class="training-tool-tab-info">
             <span class="training-tool-tab-name">AI Oracle</span>
             <span class="training-tool-tab-prog" id="ao-prog">0 / 4 modules</span>
@@ -962,12 +976,12 @@ const TRAINING_MODULES = {
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>☕ What is Java?</h4>
+            <h4><i data-lucide="coffee" style="width:15px;height:15px;flex-shrink:0"></i>What is Java?</h4>
             <p>Java is a <strong>general-purpose programming language</strong> first released in 1995. It's one of the most widely-used languages in the world — powering Android apps, banking systems, and enterprise software. The South African CAPS and IEB IT curricula specify Java for Grades 10–12, and Java Genie introduces it visually for Grades 8–9.</p>
             <p>The key idea: Java code is written by humans in text form, then <strong>compiled</strong> (translated) into bytecode that a computer can run. Your learners don't need to know how that works — they just need to know that their code does something.</p>
           </div>
           <div class="concept-block">
-            <h4>🐢 Why Turtle Graphics?</h4>
+            <h4><i data-lucide="compass" style="width:15px;height:15px;flex-shrink:0"></i>Why Turtle Graphics?</h4>
             <p>Turtle graphics is a drawing method where a "turtle" (a cursor) moves around a screen following your instructions. It's used because:</p>
             <ul>
               <li><strong>Immediate feedback</strong> — learners type code and instantly see a shape drawn</li>
@@ -978,13 +992,13 @@ const TRAINING_MODULES = {
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Start with a demo, not instructions.</strong> Open Java Genie, run the first example, and let learners watch the turtle draw. Ask: "What do you think the code is doing?" before explaining anything. Curiosity first.</div>
-          <div class="teaching-tip"><strong>💡 Teach the mental model.</strong> Tell learners: "The turtle starts in the middle, facing right. Every command you give it moves or turns it. You're giving it directions like a GPS."</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Start with a demo, not instructions.</strong> Open Java Genie, run the first example, and let learners watch the turtle draw. Ask: "What do you think the code is doing?" before explaining anything. Curiosity first.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach the mental model.</strong> Tell learners: "The turtle starts in the middle, facing right. Every command you give it moves or turns it. You're giving it directions like a GPS."</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ "My code doesn't do anything."</strong> They probably forgot to click Run, or have a syntax error. Java is case-sensitive — <code>Forward(100)</code> ≠ <code>forward(100)</code>. Check capitals first.</div>
-          <div class="mistake-block"><strong>❌ Confusion between degrees and distance.</strong> <code>turn(90)</code> turns 90 degrees — it doesn't move. <code>forward(100)</code> moves 100 pixels. Learners mix these up constantly in the first session.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>"My code doesn't do anything."</strong> They probably forgot to click Run, or have a syntax error. Java is case-sensitive — <code>Forward(100)</code> ≠ <code>forward(100)</code>. Check capitals first.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Confusion between degrees and distance.</strong> <code>turn(90)</code> turns 90 degrees — it doesn't move. <code>forward(100)</code> moves 100 pixels. Learners mix these up constantly in the first session.</div>
         </div>
       `
     },
@@ -996,7 +1010,7 @@ const TRAINING_MODULES = {
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>📦 What is a variable?</h4>
+            <h4><i data-lucide="package" style="width:15px;height:15px;flex-shrink:0"></i>What is a variable?</h4>
             <p>A variable is a <strong>named box that stores a value</strong>. In Java, every variable has a <strong>type</strong> that tells it what kind of value it can hold. The most common types learners will use:</p>
             <ul>
               <li><code>int</code> — whole numbers (e.g. <code>int sides = 4;</code>)</li>
@@ -1006,7 +1020,7 @@ const TRAINING_MODULES = {
             </ul>
           </div>
           <div class="concept-block">
-            <h4>📝 Declaration syntax</h4>
+            <h4><i data-lucide="file-text" style="width:15px;height:15px;flex-shrink:0"></i>Declaration syntax</h4>
             <p>Java requires you to declare the type before the name. The format is always: <code>type name = value;</code></p>
           </div>
           <div class="code-example">
@@ -1018,14 +1032,14 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Use a physical analogy.</strong> Hold up a box and say: "This box is called <em>size</em>. Right now it holds the number 100. I can look inside the box, I can change what's in it, but I can't change its label." The label = variable name. The contents = value.</div>
-          <div class="teaching-tip"><strong>💡 Change variables, watch shapes change.</strong> Write a square using a variable for the side length, then ask learners to change just that one number. They'll see the square grow or shrink and instantly understand why variables are useful.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use a physical analogy.</strong> Hold up a box and say: "This box is called <em>size</em>. Right now it holds the number 100. I can look inside the box, I can change what's in it, but I can't change its label." The label = variable name. The contents = value.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Change variables, watch shapes change.</strong> Write a square using a variable for the side length, then ask learners to change just that one number. They'll see the square grow or shrink and instantly understand why variables are useful.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ Forgetting the semicolon.</strong> Java requires <code>;</code> at the end of most lines. This causes syntax errors that look confusing. Teach learners to check for missing semicolons first when they get an error.</div>
-          <div class="mistake-block"><strong>❌ Using a variable before declaring it.</strong> <code>forward(size);</code> before <code>int size = 100;</code> will fail. Java reads top to bottom.</div>
-          <div class="mistake-block"><strong>❌ Assigning the wrong type.</strong> <code>int name = "Java";</code> will error — text belongs in a <code>String</code>. Teach learners to match the type to what they're storing.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting the semicolon.</strong> Java requires <code>;</code> at the end of most lines. This causes syntax errors that look confusing. Teach learners to check for missing semicolons first when they get an error.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Using a variable before declaring it.</strong> <code>forward(size);</code> before <code>int size = 100;</code> will fail. Java reads top to bottom.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Assigning the wrong type.</strong> <code>int name = "Java";</code> will error — text belongs in a <code>String</code>. Teach learners to match the type to what they're storing.</div>
         </div>
       `
     },
@@ -1037,7 +1051,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>🔄 Why loops?</h4>
+            <h4><i data-lucide="repeat" style="width:15px;height:15px;flex-shrink:0"></i>Why loops?</h4>
             <p>A loop lets you <strong>repeat a block of code</strong> without writing it out multiple times. Without loops, drawing a square requires four <code>forward</code> and four <code>turn</code> calls. With a loop, it's two lines inside a repeat.</p>
           </div>
           <div class="concept-block">
@@ -1066,15 +1080,15 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Act it out physically.</strong> Tell a learner: "Stand up. Take 1 step forward and turn 90 degrees. Repeat that until you've done it 4 times." They just ran a for loop. Then say: "Now let's write that in code."</div>
-          <div class="teaching-tip"><strong>💡 Change the number, watch what happens.</strong> Ask learners to change <code>4</code> to <code>6</code> in the loop condition. A hexagon appears. Change it to <code>3</code> — triangle. This shows the power of loops immediately.</div>
-          <div class="teaching-tip"><strong>💡 Teach the for loop first.</strong> Most turtle graphics challenges use a known count. Introduce while loops only once learners are comfortable with for loops.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Act it out physically.</strong> Tell a learner: "Stand up. Take 1 step forward and turn 90 degrees. Repeat that until you've done it 4 times." They just ran a for loop. Then say: "Now let's write that in code."</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Change the number, watch what happens.</strong> Ask learners to change <code>4</code> to <code>6</code> in the loop condition. A hexagon appears. Change it to <code>3</code> — triangle. This shows the power of loops immediately.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Teach the for loop first.</strong> Most turtle graphics challenges use a known count. Introduce while loops only once learners are comfortable with for loops.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ The infinite loop.</strong> Forgetting <code>i++</code> (or writing <code>i--</code>) means the loop condition never becomes false and the program freezes. Java Genie has a stop button for exactly this. Tell learners about it before they hit it.</div>
-          <div class="mistake-block"><strong>❌ Off-by-one errors.</strong> <code>i &lt; 4</code> runs 4 times (0,1,2,3). <code>i &lt;= 4</code> runs 5 times. This confuses learners. Tip: start counting from 0 and use <code>&lt;</code> not <code>&lt;=</code> as the default.</div>
-          <div class="mistake-block"><strong>❌ Missing curly braces.</strong> <code>{ }</code> define what's inside the loop. Without them, only the very next line repeats. Teach learners to always use braces even for a single line.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>The infinite loop.</strong> Forgetting <code>i++</code> (or writing <code>i--</code>) means the loop condition never becomes false and the program freezes. Java Genie has a stop button for exactly this. Tell learners about it before they hit it.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Off-by-one errors.</strong> <code>i &lt; 4</code> runs 4 times (0,1,2,3). <code>i &lt;= 4</code> runs 5 times. This confuses learners. Tip: start counting from 0 and use <code>&lt;</code> not <code>&lt;=</code> as the default.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Missing curly braces.</strong> <code>{ }</code> define what's inside the loop. Without them, only the very next line repeats. Teach learners to always use braces even for a single line.</div>
         </div>
       `
     },
@@ -1086,7 +1100,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>🔧 What is a method?</h4>
+            <h4><i data-lucide="wrench" style="width:15px;height:15px;flex-shrink:0"></i>What is a method?</h4>
             <p>A method is a <strong>named block of code that does one specific thing</strong>. Once written, you can call it by name as many times as you like. This avoids repeating the same code and makes programs easier to read.</p>
             <p>In Java Genie, think of methods as teaching the turtle a new trick: you define it once, then call it whenever you want the trick performed.</p>
           </div>
@@ -1107,14 +1121,14 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Use the cooking analogy.</strong> A method is like a recipe. "To make toast: put bread in toaster, wait, remove bread, butter it." You don't re-explain the toast recipe every time — you just say "make toast." Methods work the same way.</div>
-          <div class="teaching-tip"><strong>💡 Show the duplication problem first.</strong> Have learners copy-paste their square code 3 times to draw 3 squares. Then show them how one method with a parameter makes it 3 short lines instead of 12. The motivation becomes obvious.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the cooking analogy.</strong> A method is like a recipe. "To make toast: put bread in toaster, wait, remove bread, butter it." You don't re-explain the toast recipe every time — you just say "make toast." Methods work the same way.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Show the duplication problem first.</strong> Have learners copy-paste their square code 3 times to draw 3 squares. Then show them how one method with a parameter makes it 3 short lines instead of 12. The motivation becomes obvious.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ Calling a method before defining it.</strong> Unlike variables, method order matters less in Java — but within the context of Java Genie, keep definitions at the top for clarity.</div>
-          <div class="mistake-block"><strong>❌ Forgetting parameters vs arguments.</strong> The <em>parameter</em> is the placeholder in the definition (<code>int size</code>). The <em>argument</em> is the actual value when calling (<code>100</code>). Learners often confuse these terms.</div>
-          <div class="mistake-block"><strong>❌ <code>void</code> vs return types.</strong> At this level keep everything <code>void</code> (the method does something but gives nothing back). Return types come in Grade 10+.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Calling a method before defining it.</strong> Unlike variables, method order matters less in Java — but within the context of Java Genie, keep definitions at the top for clarity.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting parameters vs arguments.</strong> The <em>parameter</em> is the placeholder in the definition (<code>int size</code>). The <em>argument</em> is the actual value when calling (<code>100</code>). Learners often confuse these terms.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i><code>void</code> vs return types.</strong> At this level keep everything <code>void</code> (the method does something but gives nothing back). Return types come in Grade 10+.</div>
         </div>
       `
     },
@@ -1126,27 +1140,27 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">A suggested 60-minute lesson structure</div>
           <div class="concept-block">
-            <h4>⏱ Minutes 0–10: Hook</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 0–10: Hook</h4>
             <p>Open Java Genie on the projector. Run one of the examples (the spiral or star pattern works well). Ask: "Who can guess what the code does before I show them?" Take 2–3 guesses. Then reveal and run it.</p>
           </div>
           <div class="concept-block">
-            <h4>⏱ Minutes 10–25: Teach the concept</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 10–25: Teach the concept</h4>
             <p>Introduce the new concept (e.g. loops). Explain it, write a simple example on the board or live in Java Genie. Run it. Ask learners to predict what will change if you modify one number.</p>
           </div>
           <div class="concept-block">
-            <h4>⏱ Minutes 25–50: Learner practice</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 25–50: Learner practice</h4>
             <p>Give a specific challenge: "Draw a hexagon using a for loop." Walk the room. Help stuck learners with questions, not answers: "What does <code>i &lt; 4</code> control?" not "Change it to 6."</p>
           </div>
           <div class="concept-block">
-            <h4>⏱ Minutes 50–60: Share and reflect</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 50–60: Share and reflect</h4>
             <p>Ask 2–3 learners to share their screens. Ask the class: "What did they do the same as you? What did they do differently?" Close with: "What was the hardest part today?"</p>
           </div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Differentiation strategies</div>
-          <div class="teaching-tip"><strong>💡 For learners who finish early:</strong> "Now make it spiral outward" or "Add colour" or "Can you draw the South African flag using only turtle graphics?" Extension tasks keep fast finishers engaged without leaving others behind.</div>
-          <div class="teaching-tip"><strong>💡 For learners who are stuck:</strong> Pair them with a learner who's just finished, not your strongest programmer. Explaining it once is often better than having the concept explained to them.</div>
-          <div class="teaching-tip"><strong>💡 For learners with no home internet:</strong> The service worker caches Java Genie for offline use — learners can continue at home even without data once they've loaded it once on Wi-Fi.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>For learners who finish early:</strong> "Now make it spiral outward" or "Add colour" or "Can you draw the South African flag using only turtle graphics?" Extension tasks keep fast finishers engaged without leaving others behind.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>For learners who are stuck:</strong> Pair them with a learner who's just finished, not your strongest programmer. Explaining it once is often better than having the concept explained to them.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>For learners with no home internet:</strong> The service worker caches Java Genie for offline use — learners can continue at home even without data once they've loaded it once on Wi-Fi.</div>
         </div>
       `
     },
@@ -1158,7 +1172,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">Assessment approaches for Java Genie work</div>
           <div class="concept-block">
-            <h4>📋 Practical assessment — draw a shape</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Practical assessment — draw a shape</h4>
             <p>Give learners a specification: "Draw a regular pentagon with side length 120 pixels, using a for loop and a variable for the side length." Assess on:</p>
             <ul>
               <li>Correct use of a variable (/3)</li>
@@ -1167,18 +1181,18 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
             </ul>
           </div>
           <div class="concept-block">
-            <h4>📋 Code reading assessment</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Code reading assessment</h4>
             <p>Show learners a piece of code and ask them to predict the output, identify any errors, or describe in plain language what the code does. This tests understanding without requiring them to write from scratch — good for lower-ability learners or time-constrained assessments.</p>
           </div>
           <div class="concept-block">
-            <h4>📋 Using the Magic Lab progress data</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Using the Magic Lab progress data</h4>
             <p>The teacher dashboard shows you each learner's lesson completions, quiz scores, and code runs. You can use this as a participation grade or to identify learners who need extra support before a formal assessment.</p>
           </div>
         </div>
         <div class="module-section">
           <div class="module-section-title">What NOT to assess at this level</div>
-          <div class="mistake-block"><strong>❌ Don't penalise unconventional solutions.</strong> If a learner draws a square using four separate <code>forward</code>/<code>turn</code> calls instead of a loop — it works. Award marks for the output, then teach the loop approach as "a smarter way to do the same thing."</div>
-          <div class="mistake-block"><strong>❌ Don't require perfect syntax under time pressure.</strong> Syntax errors happen to professional developers. A learner who understands the concept but typed <code>Forwrd</code> instead of <code>forward</code> deserves partial credit.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Don't penalise unconventional solutions.</strong> If a learner draws a square using four separate <code>forward</code>/<code>turn</code> calls instead of a loop — it works. Award marks for the output, then teach the loop approach as "a smarter way to do the same thing."</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Don't require perfect syntax under time pressure.</strong> Syntax errors happen to professional developers. A learner who understands the concept but typed <code>Forwrd</code> instead of <code>forward</code> deserves partial credit.</div>
         </div>
       `
     },
@@ -1193,12 +1207,12 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>🌐 What is HTML?</h4>
+            <h4><i data-lucide="globe" style="width:15px;height:15px;flex-shrink:0"></i>What is HTML?</h4>
             <p><strong>HTML (HyperText Markup Language)</strong> is the language that defines the <em>structure and content</em> of a web page. Every website you visit is built on HTML. It tells the browser: "here is a heading, here is a paragraph, here is an image."</p>
             <p>HTML is <strong>not</strong> a programming language — it doesn't do logic or calculations. It describes what should appear on screen using <strong>tags</strong>.</p>
           </div>
           <div class="concept-block">
-            <h4>🏷️ What is a tag?</h4>
+            <h4><i data-lucide="tag" style="width:15px;height:15px;flex-shrink:0"></i>What is a tag?</h4>
             <p>A tag is a label in angle brackets that marks up content. Most tags come in pairs — an opening tag and a closing tag (with a <code>/</code>).</p>
           </div>
           <div class="code-example">
@@ -1207,7 +1221,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
 &lt;<span class="kw">strong</span>&gt;This text is bold&lt;/<span class="kw">strong</span>&gt;
           </div>
           <div class="concept-block">
-            <h4>🏗️ The basic HTML structure</h4>
+            <h4><i data-lucide="layout-template" style="width:15px;height:15px;flex-shrink:0"></i>The basic HTML structure</h4>
             <p>Every valid HTML page has the same skeleton. Learners don't need to memorise this — Web Wizard provides it automatically — but they should understand what each part does.</p>
           </div>
           <div class="code-example">
@@ -1224,13 +1238,13 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Open a website and right-click → View Source.</strong> Show learners the raw HTML of a real website. It looks overwhelming, but finding the <code>&lt;h1&gt;</code> tag and matching it to the visible heading on screen makes it click immediately.</div>
-          <div class="teaching-tip"><strong>💡 Live preview is the best teacher.</strong> Web Wizard's split-screen editor shows changes instantly. Tell learners: "Type something in the editor and watch the right side. That's your website."</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Open a website and right-click → View Source.</strong> Show learners the raw HTML of a real website. It looks overwhelming, but finding the <code>&lt;h1&gt;</code> tag and matching it to the visible heading on screen makes it click immediately.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Live preview is the best teacher.</strong> Web Wizard's split-screen editor shows changes instantly. Tell learners: "Type something in the editor and watch the right side. That's your website."</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ Forgetting to close tags.</strong> <code>&lt;p&gt;Hello</code> without <code>&lt;/p&gt;</code> often causes everything after it to be styled strangely. Teach learners to type both tags before filling in the content.</div>
-          <div class="mistake-block"><strong>❌ Putting content in the &lt;head&gt;.</strong> Learners write their text inside <code>&lt;head&gt;</code> and wonder why it doesn't appear. Everything visible belongs in <code>&lt;body&gt;</code>.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Forgetting to close tags.</strong> <code>&lt;p&gt;Hello</code> without <code>&lt;/p&gt;</code> often causes everything after it to be styled strangely. Teach learners to type both tags before filling in the content.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Putting content in the &lt;head&gt;.</strong> Learners write their text inside <code>&lt;head&gt;</code> and wonder why it doesn't appear. Everything visible belongs in <code>&lt;body&gt;</code>.</div>
         </div>
       `
     },
@@ -1242,7 +1256,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>🎨 What is CSS?</h4>
+            <h4><i data-lucide="palette" style="width:15px;height:15px;flex-shrink:0"></i>What is CSS?</h4>
             <p><strong>CSS (Cascading Style Sheets)</strong> controls how HTML elements <em>look</em> — colour, size, font, spacing, position. HTML is the skeleton; CSS is the skin, clothes, and makeup.</p>
             <p>CSS rules have two parts: a <strong>selector</strong> (what to style) and <strong>declarations</strong> (how to style it).</p>
           </div>
@@ -1276,13 +1290,13 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Change one property at a time.</strong> Don't show a full CSS stylesheet to start. Change just <code>color</code> on a heading, watch it change in the preview, then add <code>font-size</code>. Incremental changes build understanding faster than showing the full picture.</div>
-          <div class="teaching-tip"><strong>💡 Let them make it ugly.</strong> Give learners 5 minutes to make their page as ugly as possible using CSS. Bright green text on a yellow background. Comic Sans at 60px. This removes fear and teaches the properties through play.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Change one property at a time.</strong> Don't show a full CSS stylesheet to start. Change just <code>color</code> on a heading, watch it change in the preview, then add <code>font-size</code>. Incremental changes build understanding faster than showing the full picture.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Let them make it ugly.</strong> Give learners 5 minutes to make their page as ugly as possible using CSS. Bright green text on a yellow background. Comic Sans at 60px. This removes fear and teaches the properties through play.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ Missing colons and semicolons.</strong> CSS syntax is <code>property: value;</code> — the colon is required, the semicolon ends the declaration. Missing either breaks all styles below it.</div>
-          <div class="mistake-block"><strong>❌ American vs British spelling.</strong> CSS uses American English — <code>color</code> not <code>colour</code>. South African learners make this mistake constantly. Worth noting explicitly.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Missing colons and semicolons.</strong> CSS syntax is <code>property: value;</code> — the colon is required, the semicolon ends the declaration. Missing either breaks all styles below it.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>American vs British spelling.</strong> CSS uses American English — <code>color</code> not <code>colour</code>. South African learners make this mistake constantly. Worth noting explicitly.</div>
         </div>
       `
     },
@@ -1294,21 +1308,21 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>🔗 Links</h4>
+            <h4><i data-lucide="link" style="width:15px;height:15px;flex-shrink:0"></i>Links</h4>
             <p>The <code>&lt;a&gt;</code> (anchor) tag creates a clickable link. The destination goes in the <code>href</code> attribute.</p>
           </div>
           <div class="code-example">
 &lt;<span class="kw">a</span> <span class="str">href</span>=<span class="num">"https://themagiclab.co.za"</span>&gt;Visit The Magic Lab&lt;/<span class="kw">a</span>&gt;
           </div>
           <div class="concept-block">
-            <h4>🖼️ Images</h4>
+            <h4><i data-lucide="image" style="width:15px;height:15px;flex-shrink:0"></i>Images</h4>
             <p>The <code>&lt;img&gt;</code> tag embeds an image. It is <em>self-closing</em> (no closing tag). The <code>src</code> attribute is the image URL, and <code>alt</code> provides a text description for accessibility.</p>
           </div>
           <div class="code-example">
 &lt;<span class="kw">img</span> <span class="str">src</span>=<span class="num">"photo.jpg"</span> <span class="str">alt</span>=<span class="num">"A photo"</span> <span class="str">width</span>=<span class="num">"300"</span>&gt;
           </div>
           <div class="concept-block">
-            <h4>🧱 Page structure with div and semantic tags</h4>
+            <h4><i data-lucide="layers" style="width:15px;height:15px;flex-shrink:0"></i>Page structure with div and semantic tags</h4>
             <p>Real web pages use <strong>containers</strong> to group content. <code>&lt;div&gt;</code> is the general-purpose container. Newer semantic tags describe the meaning of sections:</p>
             <ul>
               <li><code>&lt;header&gt;</code> — the top section (logo, nav)</li>
@@ -1320,13 +1334,13 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Build a simple personal profile page.</strong> A photo, a heading with their name, a paragraph about themselves, and a link to their favourite website. Learners engage more with content about themselves than abstract examples.</div>
-          <div class="teaching-tip"><strong>💡 Use free image URLs.</strong> Sites like <code>unsplash.com</code> provide free, direct-link images. No downloading or uploading required — learners can use a URL directly in <code>src</code>.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Build a simple personal profile page.</strong> A photo, a heading with their name, a paragraph about themselves, and a link to their favourite website. Learners engage more with content about themselves than abstract examples.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use free image URLs.</strong> Sites like <code>unsplash.com</code> provide free, direct-link images. No downloading or uploading required — learners can use a URL directly in <code>src</code>.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ Broken image paths.</strong> <code>src="myphoto.jpg"</code> only works if the image is in the same folder as the HTML file. For Web Wizard, use full URLs (https://...) to avoid this entirely.</div>
-          <div class="mistake-block"><strong>❌ Nesting tags incorrectly.</strong> <code>&lt;b&gt;&lt;i&gt;text&lt;/b&gt;&lt;/i&gt;</code> is wrong — you must close the most recently opened tag first: <code>&lt;b&gt;&lt;i&gt;text&lt;/i&gt;&lt;/b&gt;</code>.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Broken image paths.</strong> <code>src="myphoto.jpg"</code> only works if the image is in the same folder as the HTML file. For Web Wizard, use full URLs (https://...) to avoid this entirely.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Nesting tags incorrectly.</strong> <code>&lt;b&gt;&lt;i&gt;text&lt;/b&gt;&lt;/i&gt;</code> is wrong — you must close the most recently opened tag first: <code>&lt;b&gt;&lt;i&gt;text&lt;/i&gt;&lt;/b&gt;</code>.</div>
         </div>
       `
     },
@@ -1338,26 +1352,26 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">A suggested 60-minute lesson structure</div>
           <div class="concept-block">
-            <h4>⏱ Minutes 0–8: Show a real website's code</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 0–8: Show a real website's code</h4>
             <p>Navigate to any simple website, right-click → View Page Source. Find the <code>&lt;h1&gt;</code> tag together. Ask: "Where does this text appear on the page?" This grounds the lesson in something real.</p>
           </div>
           <div class="concept-block">
-            <h4>⏱ Minutes 8–20: Live demonstration in Web Wizard</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 8–20: Live demonstration in Web Wizard</h4>
             <p>Open Web Wizard on the projector. Use the HTML tab to type a basic page structure, narrating as you go. Switch to the CSS tab and add one style at a time. Ask predictions: "What will happen if I change this number?"</p>
           </div>
           <div class="concept-block">
-            <h4>⏱ Minutes 20–50: Learner project time</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 20–50: Learner project time</h4>
             <p>Set a clear deliverable: "By the end of the lesson your page must have: a heading with your name, a paragraph about yourself, at least 3 CSS styles, and one image or link." Specific requirements reduce "I don't know what to do."</p>
           </div>
           <div class="concept-block">
-            <h4>⏱ Minutes 50–60: Gallery walk (digital)</h4>
+            <h4><i data-lucide="clock" style="width:15px;height:15px;flex-shrink:0"></i>Minutes 50–60: Gallery walk (digital)</h4>
             <p>Ask 3 learners to share their screen for 90 seconds each. The class must identify: one thing the presenter did that they didn't think of. This creates peer learning without embarrassment.</p>
           </div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Managing different skill levels</div>
-          <div class="teaching-tip"><strong>💡 Give extension tasks in advance.</strong> Write "If you finish early: add a navigation menu, add a second page, make the page mobile-friendly" on the board before the lesson starts. Fast finishers don't need to wait for permission.</div>
-          <div class="teaching-tip"><strong>💡 Pair programming works well for HTML/CSS.</strong> Two learners on one computer — one types, one directs. Switch every 10 minutes. This reduces the gap between strong and weak learners faster than individual work.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Give extension tasks in advance.</strong> Write "If you finish early: add a navigation menu, add a second page, make the page mobile-friendly" on the board before the lesson starts. Fast finishers don't need to wait for permission.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Pair programming works well for HTML/CSS.</strong> Two learners on one computer — one types, one directs. Switch every 10 minutes. This reduces the gap between strong and weak learners faster than individual work.</div>
         </div>
       `
     },
@@ -1369,7 +1383,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">Assessment approaches for Web Wizard work</div>
           <div class="concept-block">
-            <h4>📋 Practical task: build a page to spec</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Practical task: build a page to spec</h4>
             <p>Give learners a written specification like a brief from a "client" (e.g. a school tuck shop wants a simple website). Assess the submission against specific requirements:</p>
             <ul>
               <li>Correct use of at least 5 different HTML tags (/5)</li>
@@ -1380,18 +1394,18 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
             </ul>
           </div>
           <div class="concept-block">
-            <h4>📋 Portfolio approach</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Portfolio approach</h4>
             <p>Rather than a single assessment, ask learners to build one page per week across a term. By week 8 they have 8 progressively more complex pages. The final mark is based on the portfolio as a whole — rewarding growth, not just a single performance.</p>
           </div>
           <div class="concept-block">
-            <h4>📋 Peer review</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Peer review</h4>
             <p>Have learners review each other's code using a simple checklist: "Does it have a title? Does it use headings correctly? Is the CSS in a separate section?" Peer review builds reading comprehension of code — an undervalued skill.</p>
           </div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Saving and submitting work</div>
-          <div class="teaching-tip"><strong>💡 Web Wizard has a download button.</strong> Learners can download their HTML file and submit it via email or Google Classroom. The file opens in any browser for marking — no special software needed.</div>
-          <div class="teaching-tip"><strong>💡 Screenshots are valid evidence.</strong> For learners who lose their work, a screenshot of the rendered preview is acceptable evidence for most assessment rubrics. Encourage learners to screenshot at the end of every lesson.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Web Wizard has a download button.</strong> Learners can download their HTML file and submit it via email or Google Classroom. The file opens in any browser for marking — no special software needed.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Screenshots are valid evidence.</strong> For learners who lose their work, a screenshot of the rendered preview is acceptable evidence for most assessment rubrics. Encourage learners to screenshot at the end of every lesson.</div>
         </div>
       `
     },
@@ -1406,26 +1420,26 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>🧠 The core mental model</h4>
+            <h4><i data-lucide="brain" style="width:15px;height:15px;flex-shrink:0"></i>The core mental model</h4>
             <p>AI Oracle teaches learners a three-layer model: <strong>data → pattern recognition → output</strong>. You don't need to understand backpropagation to teach this well. The key idea is that modern AI (specifically large language models like ChatGPT or Claude) learned by reading billions of text examples and adjusting billions of internal numbers called <strong>weights</strong> to minimise prediction errors.</p>
             <p>The result is a system that is extraordinarily good at producing plausible-sounding text — but that does not understand meaning, does not reason the way humans do, and does not have access to verified facts.</p>
           </div>
           <div class="concept-block">
-            <h4>⚡ The weighted sum — what the interactive demo shows</h4>
+            <h4><i data-lucide="zap" style="width:15px;height:15px;flex-shrink:0"></i>The weighted sum — what the interactive demo shows</h4>
             <p>Unit 1 includes a neural network visualiser where learners drag sliders to adjust inputs (x₁, x₂) and weights (w₁, w₂) and watch the neuron fire or stay silent. The maths: <code>output = max(0, x₁×w₁ + x₂×w₂)</code>. The <code>max(0, …)</code> is called ReLU — it means the neuron only activates when the weighted sum is positive. This is a real operation used inside every modern AI system.</p>
           </div>
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Start with the training analogy.</strong> Ask: "How did you learn to recognise a dog?" You saw thousands of examples. No one gave you a formula. AI training works the same way — patterns extracted from enormous amounts of data, not rules programmed by hand.</div>
-          <div class="teaching-tip"><strong>💡 Use the visualiser as a class demo first.</strong> Project the neural network demo and ask learners to predict: "What happens if I set both weights to zero?" (Neuron stays silent — no signal gets through.) Let them discover the behaviour before you explain it.</div>
-          <div class="teaching-tip"><strong>💡 Emphasise what AI doesn't do.</strong> The most important misconception to correct: AI doesn't look things up, doesn't think, and doesn't know when it's wrong. It generates the most statistically likely continuation of the text you gave it.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Start with the training analogy.</strong> Ask: "How did you learn to recognise a dog?" You saw thousands of examples. No one gave you a formula. AI training works the same way — patterns extracted from enormous amounts of data, not rules programmed by hand.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the visualiser as a class demo first.</strong> Project the neural network demo and ask learners to predict: "What happens if I set both weights to zero?" (Neuron stays silent — no signal gets through.) Let them discover the behaviour before you explain it.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Emphasise what AI doesn't do.</strong> The most important misconception to correct: AI doesn't look things up, doesn't think, and doesn't know when it's wrong. It generates the most statistically likely continuation of the text you gave it.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner misconceptions</div>
-          <div class="mistake-block"><strong>❌ "AI searches the internet."</strong> Most AI assistants (including ChatGPT without plugins) do not browse the web. They generate text from training data with a knowledge cutoff date. Correct this early — it's the root cause of learners trusting AI-generated "facts."</div>
-          <div class="mistake-block"><strong>❌ "AI understands what I'm asking."</strong> It doesn't understand in the human sense. It identifies patterns in your input and produces statistically likely output. This is why poorly worded prompts produce poor output — the model pattern-matches on whatever you give it.</div>
-          <div class="mistake-block"><strong>❌ "If AI said it confidently, it must be true."</strong> Confidence and accuracy are completely independent in language models. This is the hallucination problem. The Spot the Hallucination activity in Lesson 8 is designed specifically to address this.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>"AI searches the internet."</strong> Most AI assistants (including ChatGPT without plugins) do not browse the web. They generate text from training data with a knowledge cutoff date. Correct this early — it's the root cause of learners trusting AI-generated "facts."</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>"AI understands what I'm asking."</strong> It doesn't understand in the human sense. It identifies patterns in your input and produces statistically likely output. This is why poorly worded prompts produce poor output — the model pattern-matches on whatever you give it.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>"If AI said it confidently, it must be true."</strong> Confidence and accuracy are completely independent in language models. This is the hallucination problem. The Spot the Hallucination activity in Lesson 8 is designed specifically to address this.</div>
         </div>
       `
     },
@@ -1437,7 +1451,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>✍️ The four-part prompt structure</h4>
+            <h4><i data-lucide="pen-tool" style="width:15px;height:15px;flex-shrink:0"></i>The four-part prompt structure</h4>
             <p>AI Oracle teaches the <strong>Role → Context → Task → Format</strong> framework. Each part serves a distinct purpose:</p>
             <ul>
               <li><strong>Role:</strong> tells the AI what persona to adopt (<em>"You are a patient Maths tutor for Grade 9 learners"</em>)</li>
@@ -1450,14 +1464,14 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Show two prompts side by side.</strong> Bad: <em>"Explain photosynthesis."</em> Good: <em>"You are a Life Sciences teacher. I'm a Grade 10 learner who just covered the light reactions. Explain the dark reactions in 4 bullet points using simple language."</em> Ask learners which response they'd expect to be more useful.</div>
-          <div class="teaching-tip"><strong>💡 Prompt writing as a literacy skill.</strong> Frame prompting as a form of writing — like writing a clear email or a well-structured question to a teacher. The clearer and more specific your request, the better the response. Vague questions get vague answers.</div>
-          <div class="teaching-tip"><strong>💡 Let learners run the click-to-order game in pairs.</strong> The ordering game on Lesson 4 has learners physically sequence the four prompt components. Pairs who disagree on the order have a discussion — that argument is the learning.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Show two prompts side by side.</strong> Bad: <em>"Explain photosynthesis."</em> Good: <em>"You are a Life Sciences teacher. I'm a Grade 10 learner who just covered the light reactions. Explain the dark reactions in 4 bullet points using simple language."</em> Ask learners which response they'd expect to be more useful.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Prompt writing as a literacy skill.</strong> Frame prompting as a form of writing — like writing a clear email or a well-structured question to a teacher. The clearer and more specific your request, the better the response. Vague questions get vague answers.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Let learners run the click-to-order game in pairs.</strong> The ordering game on Lesson 4 has learners physically sequence the four prompt components. Pairs who disagree on the order have a discussion — that argument is the learning.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common learner mistakes</div>
-          <div class="mistake-block"><strong>❌ One-line prompts.</strong> Most learners start with the shortest possible prompt. The prompt builder's star rating helps make the quality gap visible — a one-line prompt scores 0–1 stars, a structured prompt scores 3–4. The score creates intrinsic motivation to improve.</div>
-          <div class="mistake-block"><strong>❌ Treating the first response as final.</strong> Prompting is iterative. Teach learners to follow up: "That's too complex — simplify it for a Grade 9 level" or "Give me one more example." AI Oracle introduces this in Lesson 6 (advanced prompting).</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>One-line prompts.</strong> Most learners start with the shortest possible prompt. The prompt builder's star rating helps make the quality gap visible — a one-line prompt scores 0–1 stars, a structured prompt scores 3–4. The score creates intrinsic motivation to improve.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Treating the first response as final.</strong> Prompting is iterative. Teach learners to follow up: "That's too complex — simplify it for a Grade 9 level" or "Give me one more example." AI Oracle introduces this in Lesson 6 (advanced prompting).</div>
         </div>
       `
     },
@@ -1469,28 +1483,28 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">The concept</div>
           <div class="concept-block">
-            <h4>⚖️ Why this conversation is urgent</h4>
+            <h4><i data-lucide="scale" style="width:15px;height:15px;flex-shrink:0"></i>Why this conversation is urgent</h4>
             <p>Research suggests a significant proportion of secondary school learners have used AI to complete assignments. The question is no longer whether your learners are using AI — it's whether they're using it in ways that support or undermine their learning. The goal of the AI Oracle ethics unit is not to frighten learners into avoiding AI, but to help them develop <strong>principled, self-aware AI use</strong>.</p>
           </div>
           <div class="concept-block">
-            <h4>🎯 The spectrum approach</h4>
+            <h4><i data-lucide="target" style="width:15px;height:15px;flex-shrink:0"></i>The spectrum approach</h4>
             <p>Rather than a binary "allowed / not allowed," the module teaches a spectrum: clearly fine → depends on context → academic dishonesty. This is more honest — the reality is that context determines ethics in most cases. A teacher who has said "use AI freely for this project" and a teacher who has said "no AI" create very different ethical situations for the same action.</p>
           </div>
           <div class="concept-block">
-            <h4>📚 The Thabo scenario</h4>
+            <h4><i data-lucide="book-open" style="width:15px;height:15px;flex-shrink:0"></i>The Thabo scenario</h4>
             <p>Lesson 7 presents a branching scenario: a learner facing an essay deadline with three choices. Each choice leads to a different consequence card — academic dishonesty, ethical tool use, or a hallucination trap. This is designed to make the ethical reasoning concrete and personal, not abstract.</p>
           </div>
         </div>
         <div class="module-section">
           <div class="module-section-title">How to teach it</div>
-          <div class="teaching-tip"><strong>💡 Set your classroom policy before this lesson.</strong> Learners will ask "but what are OUR rules?" Have a clear answer ready. A good starting position: "Using AI to understand a concept = fine. Using AI to produce work you submit as your own = not fine. When in doubt, ask me."</div>
-          <div class="teaching-tip"><strong>💡 Use the scenario as a discussion starter, not just a clicker activity.</strong> After learners have clicked through the Thabo scenario, ask: "Has anything like this happened to you or someone you know?" The discussion that follows is where the real learning happens.</div>
-          <div class="teaching-tip"><strong>💡 Address the "everyone does it" argument directly.</strong> Acknowledge it: "You're right that it's widespread. Here's why it still matters for you personally…" and redirect to the skills argument — exams don't have AI, jobs test what you actually know.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Set your classroom policy before this lesson.</strong> Learners will ask "but what are OUR rules?" Have a clear answer ready. A good starting position: "Using AI to understand a concept = fine. Using AI to produce work you submit as your own = not fine. When in doubt, ask me."</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Use the scenario as a discussion starter, not just a clicker activity.</strong> After learners have clicked through the Thabo scenario, ask: "Has anything like this happened to you or someone you know?" The discussion that follows is where the real learning happens.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Address the "everyone does it" argument directly.</strong> Acknowledge it: "You're right that it's widespread. Here's why it still matters for you personally…" and redirect to the skills argument — exams don't have AI, jobs test what you actually know.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Common classroom situations</div>
-          <div class="mistake-block"><strong>❌ "The AI said it, so it must be right — I can't be blamed."</strong> Authorship of submitted work remains the learner's responsibility. Submitting a hallucinated fact is still an error on the learner's assessment, regardless of the source.</div>
-          <div class="mistake-block"><strong>❌ Learners who've already submitted AI work feeling defensive.</strong> Don't make this a witch-hunt. Frame the lesson as "going forward" — what we now know and how we'll use it better. Shame closes the conversation; curiosity opens it.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>"The AI said it, so it must be right — I can't be blamed."</strong> Authorship of submitted work remains the learner's responsibility. Submitting a hallucinated fact is still an error on the learner's assessment, regardless of the source.</div>
+          <div class="mistake-block"><strong><i data-lucide="x-circle" class="tip-icon"></i>Learners who've already submitted AI work feeling defensive.</strong> Don't make this a witch-hunt. Frame the lesson as "going forward" — what we now know and how we'll use it better. Shame closes the conversation; curiosity opens it.</div>
         </div>
       `
     },
@@ -1502,7 +1516,7 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         <div class="module-section">
           <div class="module-section-title">What to assess</div>
           <div class="concept-block">
-            <h4>📋 Observable evidence of AI literacy</h4>
+            <h4><i data-lucide="clipboard-list" style="width:15px;height:15px;flex-shrink:0"></i>Observable evidence of AI literacy</h4>
             <p>AI literacy is difficult to assess with a traditional test, but there are concrete observable skills you can evaluate:</p>
             <ul>
               <li><strong>Prompt quality:</strong> Can the learner write a well-structured, specific prompt? (Use the Role-Context-Task-Format framework as a rubric.)</li>
@@ -1514,14 +1528,14 @@ size = size + <span class="num">50</span>;      <span class="cmt">// updates the
         </div>
         <div class="module-section">
           <div class="module-section-title">Assessment ideas</div>
-          <div class="teaching-tip"><strong>💡 Prompt portfolio.</strong> Ask learners to collect 3 prompts they've written over the term, annotate each with the Role-Context-Task-Format breakdown, and reflect on what they'd improve. This is authentic, low-cost, and hard to fake.</div>
-          <div class="teaching-tip"><strong>💡 Hallucination hunt.</strong> Give learners an AI-generated paragraph on a topic they've studied (you write it and plant 1–2 errors). Ask them to identify what's wrong and what source they'd use to verify. Marks for process, not just the right answer.</div>
-          <div class="teaching-tip"><strong>💡 Scenario judgement task.</strong> Present 3–4 AI use scenarios (similar to the Thabo scenario in Lesson 7). Ask learners to classify each on the spectrum (clearly fine / depends / dishonest) and justify their classification in 2–3 sentences. This tests reasoning, not recall.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Prompt portfolio.</strong> Ask learners to collect 3 prompts they've written over the term, annotate each with the Role-Context-Task-Format breakdown, and reflect on what they'd improve. This is authentic, low-cost, and hard to fake.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Hallucination hunt.</strong> Give learners an AI-generated paragraph on a topic they've studied (you write it and plant 1–2 errors). Ask them to identify what's wrong and what source they'd use to verify. Marks for process, not just the right answer.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Scenario judgement task.</strong> Present 3–4 AI use scenarios (similar to the Thabo scenario in Lesson 7). Ask learners to classify each on the spectrum (clearly fine / depends / dishonest) and justify their classification in 2–3 sentences. This tests reasoning, not recall.</div>
         </div>
         <div class="module-section">
           <div class="module-section-title">Integration with other subjects</div>
-          <div class="teaching-tip"><strong>💡 AI Oracle is cross-curricular.</strong> The skills it teaches — critical evaluation, structured communication, ethical reasoning — are valuable in every subject. Consider running it during Life Orientation, English, or a dedicated digital literacy period rather than treating it as an IT-only topic.</div>
-          <div class="teaching-tip"><strong>💡 Pair with a subject-specific task.</strong> After completing AI Oracle, assign a "use AI responsibly to help you study [topic from your syllabus]" task. Learners apply the module skills immediately in a real context, which dramatically improves retention.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>AI Oracle is cross-curricular.</strong> The skills it teaches — critical evaluation, structured communication, ethical reasoning — are valuable in every subject. Consider running it during Life Orientation, English, or a dedicated digital literacy period rather than treating it as an IT-only topic.</div>
+          <div class="teaching-tip"><strong><i data-lucide="lightbulb" class="tip-icon"></i>Pair with a subject-specific task.</strong> After completing AI Oracle, assign a "use AI responsibly to help you study [topic from your syllabus]" task. Learners apply the module skills immediately in a real context, which dramatically improves retention.</div>
         </div>
       `
     },
@@ -1650,7 +1664,7 @@ function _renderClassGrid() {
     card.className = 'class-card';
     card.innerHTML = `
       <div class="class-card-header">
-        <div class="class-icon">🏫</div>
+        <div class="class-icon"><i data-lucide="school" style="width:20px;height:20px;"></i></div>
         <div class="class-invite" title="Click to copy invite code"
           onclick="copyInvite('${cls.invite_code}', this)">
           ${cls.invite_code}
@@ -1678,6 +1692,7 @@ function _renderClassGrid() {
   btn.innerHTML = `<span style="font-size:22px;">+</span> Create new class`;
   btn.onclick = () => openCreateModal();
   grid.appendChild(btn);
+  window.lucide?.createIcons();
 }
 
 async function _loadClassQuickStats(classId) {
@@ -1724,11 +1739,13 @@ async function openClassDetail(cls) {
     `${cls.grade ? `Grade ${cls.grade}` : ''}${cls.subject ? ` · ${cls.subject}` : ''} · Invite: ${cls.invite_code}`;
 
   const inviteEl = document.getElementById('detail-invite-display');
-  inviteEl.textContent = `📋 ${cls.invite_code}`;
+  inviteEl.innerHTML = `<i data-lucide="clipboard-copy" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px"></i>${cls.invite_code}`;
   inviteEl.onclick = () => copyInvite(cls.invite_code, inviteEl);
+  window.lucide?.createIcons();
 
   document.getElementById('student-table-wrap').innerHTML = `
-    <div class="empty-state"><span class="empty-state-icon">⏳</span><h3>Loading learners…</h3></div>`;
+    <div class="empty-state"><span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="loader-2" style="width:40px;height:40px;"></i></span><h3>Loading learners…</h3></div>`;
+  window.lucide?.createIcons();
 
   const [students, progress] = await Promise.all([
     window.MagicLabAuth.getClassStudents(cls.id),
@@ -1739,18 +1756,22 @@ async function openClassDetail(cls) {
 }
 
 const TOOL_META = {
-  'java-genie':    { icon:'🧞', name:'Java', total:12 },
-  'web-wizard':    { icon:'🌐', name:'Web',  total:10 },
-  'code-conjurer': { icon:'📜', name:'Code', total:18 },
-  'math-magician': { icon:'🔢', name:'Math', total:19 },
-  'computer-codex':{ icon:'💻', name:'Codex',total:25 },
+  'java-genie':    { icon:'code-2',    name:'Java', total:12 },
+  'web-wizard':    { icon:'globe',     name:'Web',  total:10 },
+  'code-conjurer': { icon:'wand-2',    name:'Code', total:18 },
+  'math-magician': { icon:'calculator',name:'Math', total:19 },
+  'computer-codex':{ icon:'book-open', name:'Codex',total:25 },
 };
+
+function icon(name, size) {
+  return `<i data-lucide="${name}" style="width:${size}px;height:${size}px"></i>`;
+}
 
 function _renderStudentTable(students, progress, classId) {
   if (!students.length) {
     document.getElementById('student-table-wrap').innerHTML = `
       <div class="empty-state">
-        <span class="empty-state-icon">👩‍🎓</span>
+        <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="users" style="width:40px;height:40px;"></i></span>
         <h3>No learners yet</h3>
         <p>Share the invite code with your class. Learners join from their student dashboard.</p>
       </div>`;
@@ -1774,7 +1795,7 @@ function _renderStudentTable(students, progress, classId) {
           <th>Learner</th>
           <th>XP / Level</th>
           <th>Streak</th>
-          ${tools.map(t => `<th title="${TOOL_META[t].name}">${TOOL_META[t].icon}</th>`).join('')}
+          ${tools.map(t => `<th title="${TOOL_META[t].name}">${icon(TOOL_META[t].icon,15)}</th>`).join('')}
           <th></th>
         </tr>
       </thead>
@@ -1794,7 +1815,7 @@ function _renderStudentTable(students, progress, classId) {
                 <span class="xp-pill">Lv ${lvl} · ${xp.toLocaleString()} XP</span>
               </td>
               <td>
-                <span class="streak-pill">${s.streak_current > 0 ? `🔥 ${s.streak_current}` : '—'}</span>
+                <span class="streak-pill">${s.streak_current > 0 ? `<i data-lucide="flame" style="width:12px;height:12px;vertical-align:-2px;margin-right:2px"></i>${s.streak_current}` : '—'}</span>
               </td>
               ${tools.map(toolId => {
                 const r    = prog[toolId];
@@ -1811,13 +1832,14 @@ function _renderStudentTable(students, progress, classId) {
               <td>
                 <button class="remove-btn" title="Remove from class"
                   onclick="confirmRemove('${classId}','${s.id}','${(s.display_name||'').replace(/'/g,'\\\'')}')"
-                >✕</button>
+                ><i data-lucide="x" style="width:13px;height:13px;"></i></button>
               </td>
             </tr>`;
         }).join('')}
       </tbody>
     </table>
     </div>`;
+  window.lucide?.createIcons();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1842,10 +1864,11 @@ function _populateAssignmentClassPickers() {
     document.getElementById('assign-new-btn').disabled = true;
     document.getElementById('assignments-list').innerHTML = `
       <div class="empty-state">
-        <span class="empty-state-icon">📝</span>
+        <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="file-text" style="width:40px;height:40px;"></i></span>
         <h3>No classes yet</h3>
         <p>Create a class on the My Classes tab before setting assignments.</p>
       </div>`;
+    window.lucide?.createIcons();
     return;
   }
 
@@ -1865,7 +1888,8 @@ function _onAssignmentClassChange() {
 async function _loadClassAssignmentsTab(classId) {
   if (!classId) return;
   const wrap = document.getElementById('assignments-list');
-  wrap.innerHTML = `<div class="empty-state"><span class="empty-state-icon">⏳</span><h3>Loading assignments…</h3></div>`;
+  wrap.innerHTML = `<div class="empty-state"><span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="loader-2" style="width:40px;height:40px;"></i></span><h3>Loading assignments…</h3></div>`;
+  window.lucide?.createIcons();
   const assignments = await window.MagicLabAssignments.getClassAssignments(classId);
   _renderAssignmentsList(assignments, classId);
 }
@@ -1875,10 +1899,11 @@ function _renderAssignmentsList(assignments, classId) {
   if (!assignments.length) {
     wrap.innerHTML = `
       <div class="empty-state">
-        <span class="empty-state-icon">📝</span>
+        <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="file-text" style="width:40px;height:40px;"></i></span>
         <h3>No assignments yet</h3>
         <p>Click "+ New Assignment" to set the first one for this class.</p>
       </div>`;
+    window.lucide?.createIcons();
     return;
   }
 
@@ -1900,7 +1925,7 @@ function _renderAssignmentsList(assignments, classId) {
           </div>
           <div class="assignment-actions">
             <button class="assign-detail-toggle" onclick="toggleAssignmentDetail('${a.id}')">Learners</button>
-            <button class="remove-btn" title="Delete assignment" onclick="confirmDeleteAssignment('${a.id}','${classId}','${a.title.replace(/'/g,"\\'")}')">✕</button>
+            <button class="remove-btn" title="Delete assignment" onclick="confirmDeleteAssignment('${a.id}','${classId}','${a.title.replace(/'/g,"\\'")}')"><i data-lucide="x" style="width:13px;height:13px;"></i></button>
           </div>
         </div>
         ${a.instructions ? `<div class="assignment-instructions">${a.instructions}</div>` : ''}
@@ -1911,6 +1936,7 @@ function _renderAssignmentsList(assignments, classId) {
         <div class="assignment-student-list" id="assign-students-${a.id}"></div>
       </div>`;
   }).join('');
+  window.lucide?.createIcons();
 }
 
 function _toolLabel(tool) {
@@ -2159,7 +2185,7 @@ async function launchGame() {
   if (error) {
     msg.textContent = error.message;
     msg.className = 'msg err';
-    btn.disabled = false; btn.textContent = '🏟️ Launch Arena';
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="trophy" style="width:15px;height:15px;vertical-align:-3px;margin-right:6px"></i>Launch Arena'; window.lucide?.createIcons();
     return;
   }
 
@@ -2300,6 +2326,7 @@ function _renderTrainingModules() {
     `;
     grid.appendChild(div);
   });
+  window.lucide?.createIcons();
 }
 
 function toggleModule(modId) {
@@ -2416,10 +2443,11 @@ function _renderHelpClassGrid() {
   if (!_classes.length) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1;">
-        <span class="empty-state-icon">🏫</span>
+        <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="school" style="width:40px;height:40px;"></i></span>
         <h3>No classes yet</h3>
         <p>Create a class on the My Classes tab first.</p>
       </div>`;
+    window.lucide?.createIcons();
     return;
   }
   grid.innerHTML = _classes.map(c => {
@@ -2430,13 +2458,14 @@ function _renderHelpClassGrid() {
     return `
       <div class="class-card help-thread-card" onclick="openHelpRoster('${c.id}')">
         <div class="class-card-header">
-          <div class="class-icon">💬</div>
+          <div class="class-icon"><i data-lucide="message-circle" style="width:20px;height:20px;"></i></div>
           ${unread > 0 ? `<span class="help-thread-unread">${unread}</span>` : ''}
         </div>
         <div class="class-name">${_escT(c.name)}</div>
         <div class="class-meta">${asked.length} asked · ${resolved.length} resolved</div>
       </div>`;
   }).join('');
+  window.lucide?.createIcons();
 }
 
 async function openHelpRoster(classId) {
@@ -2479,10 +2508,11 @@ function _renderHelpRoster() {
                :                              'No learners in this class yet.';
     list.innerHTML = `
       <div class="empty-state">
-        <span class="empty-state-icon">💬</span>
+        <span class="empty-state-icon" style="color:var(--muted);"><i data-lucide="message-circle" style="width:40px;height:40px;"></i></span>
         <h3>Nothing here</h3>
         <p>${hint}</p>
       </div>`;
+    window.lucide?.createIcons();
     return;
   }
 
@@ -2652,6 +2682,8 @@ function _fmtDate(iso) {
   if (!iso) return '';
   return new Date(iso).toLocaleDateString('en-ZA', { day:'numeric', month:'short', year:'numeric' });
 }
+
+document.addEventListener('DOMContentLoaded', () => { window.lucide?.createIcons(); });
 </script>
 
   <script src="/contact-button.js" defer></script>

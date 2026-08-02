@@ -109,6 +109,10 @@
       font-weight: 900; font-size: 22px; letter-spacing: -0.03em;
       background: linear-gradient(120deg, #fff 0%, #c4baff 50%, #6ee7b7 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      /* The gradient-clip trick above only recolors TEXT — it leaves the logo
+         icon's currentColor unset, so without this it falls back to the
+         browser's default link-blue instead of white. */
+      color: #fff;
       text-decoration: none; display: flex; align-items: center; gap: 10px;
     }
     .nav-logo img { width: 30px; height: 30px; border-radius: var(--radius-2xs); }

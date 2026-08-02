@@ -7,7 +7,12 @@
   <meta name="theme-color" content="#080c1a">
   <title>My Profile — The Magic Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <!-- Cabinet Grotesk is a Fontshare font, not a Google Fonts family — load it from
+       Fontshare's own CDN, kept in its own <link> so a problem with one family can't
+       take the others down (this is what was silently breaking every font site-wide). -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <style>
@@ -19,6 +24,14 @@
       --accent-1:#7c6dfa; --accent-2:#11d98f; --accent-3:#f5a623;
       --font-display:"Cabinet Grotesk",sans-serif;
       --font-mono:"JetBrains Mono",monospace;
+
+      /* Same token scale as index.html / pricing.html */
+      --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+      --radius-2xs: 6px; --radius-xs: 8px; --radius-sm: 12px; --radius-md: 16px;
+      --radius-lg: 20px; --radius-xl: 24px; --radius-full: 99px;
+      --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --dur-fast: 150ms; --dur-med: 220ms;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; }
@@ -42,11 +55,15 @@
       letter-spacing: -0.03em;
       background: linear-gradient(120deg, #fff 0%, #c4baff 50%, #6ee7b7 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      /* Base color so the logo icon's currentColor resolves to white instead
+         of the browser's default link-blue (the gradient-clip trick above
+         only recolors the text, not any child elements). */
+      color: #fff;
       text-decoration: none;
     }
     .nav-right { display: flex; align-items: center; gap: 8px; }
     .nav-pill {
-      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 99px;
+      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: var(--radius-full);
       border: 1px solid var(--border); background: var(--surface); color: var(--muted);
       text-decoration: none; transition: all 140ms; cursor: pointer;
       font-family: var(--font-display);
@@ -69,7 +86,7 @@
     }
     #guest-state p { font-size: 15px; color: var(--muted); max-width: 380px; line-height: 1.7; margin-bottom: 28px; }
     .cta-btn {
-      padding: 13px 30px; border-radius: 14px; border: none;
+      padding: 13px 30px; border-radius: var(--radius-md); border: none;
       background: linear-gradient(135deg, #5b50d6, #0fa874);
       color: #fff; font-family: var(--font-display);
       font-size: 15px; font-weight: 700; letter-spacing: -0.01em; cursor: pointer;
@@ -82,16 +99,16 @@
     .player-hero {
       display: grid; grid-template-columns: auto 1fr auto;
       gap: 28px; align-items: center;
-      padding: 32px 36px; border-radius: 22px;
+      padding: 32px 36px; border-radius: var(--radius-xl);
       background: var(--surface); border: 1px solid var(--border);
       margin-bottom: 36px; position: relative; overflow: hidden;
     }
     .player-hero::before {
-      content: ''; position: absolute; inset: 0; border-radius: 22px; pointer-events: none;
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius-xl); pointer-events: none;
       background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(124,109,250,0.10), transparent 70%);
     }
     .player-avatar {
-      width: 72px; height: 72px; border-radius: 20px; flex-shrink: 0;
+      width: 72px; height: 72px; border-radius: var(--radius-lg); flex-shrink: 0;
       background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
       display: flex; align-items: center; justify-content: center;
       font-size: 32px; font-weight: 900; color: #fff;
@@ -110,7 +127,7 @@
     .player-level-block { text-align: right; position: relative; z-index: 1; min-width: 190px; }
     .level-badge {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 6px 14px; border-radius: 99px;
+      padding: 6px 14px; border-radius: var(--radius-full);
       background: rgba(124,109,250,0.15); border: 1px solid rgba(124,109,250,0.30);
       font-family: var(--font-mono); font-size: 11px; font-weight: 600;
       color: #c4baff; margin-bottom: 10px; letter-spacing: 0.04em;
@@ -121,11 +138,11 @@
     }
     .xp-row strong { color: var(--accent-1); font-weight: 600; }
     .xp-bar-outer {
-      height: 6px; background: rgba(255,255,255,0.08); border-radius: 99px;
+      height: 6px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full);
       overflow: hidden; width: 190px;
     }
     .xp-bar-fill {
-      height: 100%; border-radius: 99px;
+      height: 100%; border-radius: var(--radius-full);
       background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
       transition: width 700ms cubic-bezier(0.34,1.1,0.64,1);
     }
@@ -141,7 +158,7 @@
     }
     .stat-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 20px 22px;
+      border-radius: var(--radius-md); padding: 20px 22px;
     }
     .stat-label {
       font-family: var(--font-mono); font-size: 10px; font-weight: 600;
@@ -168,7 +185,7 @@
     .streak-row { display: flex; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
     .streak-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 22px 28px;
+      border-radius: var(--radius-md); padding: 22px 28px;
       display: flex; align-items: center; gap: 18px; flex-shrink: 0;
     }
     .streak-flame { font-size: 36px; line-height: 1; }
@@ -182,7 +199,7 @@
     .heatmap-card {
       flex: 1; min-width: 280px;
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 20px 22px;
+      border-radius: var(--radius-md); padding: 20px 22px;
     }
     .heatmap-title {
       font-family: var(--font-mono); font-size: 10px; font-weight: 600;
@@ -205,24 +222,24 @@
     }
     .tool-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 18px; padding: 22px;
+      border-radius: var(--radius-lg); padding: 22px;
       display: flex; flex-direction: column; gap: 14px;
     }
     .tc-header { display: flex; align-items: center; gap: 12px; }
     .tc-icon-wrap {
-      width: 44px; height: 44px; border-radius: 13px; flex-shrink: 0;
+      width: 44px; height: 44px; border-radius: var(--radius-sm); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center; font-size: 22px;
     }
     .tc-name { font-weight: 800; font-size: 16px; letter-spacing: -0.02em; color: var(--text); }
     .tc-last { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-left: auto; }
-    .tc-bar-outer { height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
-    .tc-bar-fill { height: 100%; border-radius: 99px; transition: width 600ms ease; }
+    .tc-bar-outer { height: 5px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full); overflow: hidden; }
+    .tc-bar-fill { height: 100%; border-radius: var(--radius-full); transition: width 600ms ease; }
     .tc-stats { display: flex; gap: 18px; }
     .tc-stat-val { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--text); }
     .tc-stat-lbl { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1px; }
     .tc-launch {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 9px 18px; border-radius: 11px; border: 1px solid var(--border);
+      padding: 9px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);
       background: var(--surface); color: var(--text2);
       text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
       transition: all 140ms; align-self: flex-start;
@@ -236,7 +253,7 @@
     }
     .badge-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 16px 14px; text-align: center;
+      border-radius: var(--radius-md); padding: 16px 14px; text-align: center;
       transition: border-color 200ms;
     }
     .badge-card.earned { border-color: rgba(245,166,35,0.35); background: rgba(245,166,35,0.06); }
@@ -250,7 +267,7 @@
     .feed { display: flex; flex-direction: column; gap: 6px; margin-bottom: 36px; }
     .feed-item {
       display: flex; align-items: center; gap: 12px;
-      padding: 11px 16px; border-radius: 12px;
+      padding: 11px 16px; border-radius: var(--radius-sm);
       background: var(--surface2); border: 1px solid var(--border2);
     }
     .feed-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -261,7 +278,7 @@
     /* ── Class panel ── */
     .class-panel {
       background: rgba(124,109,250,0.06); border: 1px solid rgba(124,109,250,0.18);
-      border-radius: 16px; padding: 22px 26px;
+      border-radius: var(--radius-md); padding: 22px 26px;
       display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
       margin-bottom: 36px;
     }
@@ -271,13 +288,13 @@
     .class-input-row { display: flex; gap: 8px; }
     .class-input {
       padding: 9px 14px; background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(124,109,250,0.30); border-radius: 10px;
+      border: 1px solid rgba(124,109,250,0.30); border-radius: var(--radius-sm);
       color: var(--text); font-family: var(--font-mono);
       font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
       outline: none; width: 130px;
     }
     .class-join-btn {
-      padding: 9px 18px; border-radius: 10px; border: none;
+      padding: 9px 18px; border-radius: var(--radius-sm); border: none;
       background: rgba(124,109,250,0.25); color: #c4baff;
       font-family: var(--font-display); font-size: 13px; font-weight: 700;
       cursor: pointer; transition: all 140ms;
@@ -287,7 +304,7 @@
     /* ── Assignments ── */
     .assignment-item {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 16px 20px; margin-bottom: 10px;
+      border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 10px;
       display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
     }
     .assignment-item.done { opacity: 0.6; }
@@ -295,7 +312,7 @@
     .assignment-item-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 3px; }
     .assignment-item-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .assignment-item-due {
-      font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 2px 9px; border-radius: 99px;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 2px 9px; border-radius: var(--radius-full);
       background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.28); color: #f5a623;
     }
     .assignment-item-due.overdue { background: rgba(248,113,113,0.14); border-color: rgba(248,113,113,0.32); color: #fca5a5; }
@@ -304,11 +321,11 @@
     .assignment-item-status.pending-status { color: var(--muted); }
     .assignment-item-link {
       text-decoration: none; font-size: 12px; font-weight: 700; color: #c4baff;
-      padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(124,109,250,0.30);
+      padding: 6px 14px; border-radius: var(--radius-full); border: 1px solid rgba(124,109,250,0.30);
       background: rgba(124,109,250,0.10); transition: all 140ms; flex-shrink: 0;
     }
     .assignment-item-link:hover { background: rgba(124,109,250,0.20); }
-    #assignments-panel.jump-highlight { animation: jump-highlight-fade 2.4s ease-out; border-radius: 16px; }
+    #assignments-panel.jump-highlight { animation: jump-highlight-fade 2.4s ease-out; border-radius: var(--radius-md); }
     @keyframes jump-highlight-fade {
       0%   { box-shadow: 0 0 0 3px rgba(245,158,11,0.55); background: rgba(245,158,11,0.08); }
       100% { box-shadow: 0 0 0 3px rgba(245,158,11,0); background: rgba(245,158,11,0); }
@@ -336,7 +353,7 @@
     .empty-hint { font-size: 13px; color: var(--muted); padding: 6px 0 14px; }
     .friend-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 12px 16px; margin-bottom: 8px;
+      border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 8px;
       display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
     }
     .friend-avatar {
@@ -348,7 +365,7 @@
     .friend-name { font-weight: 700; font-size: 13px; color: var(--text); flex: 1; min-width: 100px; }
     .friend-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
     .friend-btn {
-      font-size: 11px; font-weight: 700; padding: 7px 13px; border-radius: 8px;
+      font-size: 11px; font-weight: 700; padding: 7px 13px; border-radius: var(--radius-xs);
       border: 1px solid var(--border); background: var(--surface2); color: var(--text2);
       cursor: pointer; transition: all 140ms; white-space: nowrap; font-family: var(--font-display);
     }
@@ -361,13 +378,13 @@
     /* ── Lesson invites ── */
     .invite-item {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px 18px; margin-bottom: 8px;
+      border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 8px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     }
     .invite-item-main { flex: 1; min-width: 200px; }
     .invite-item-title { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 3px; }
     .invite-item-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
-    .invite-status { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 99px; flex-shrink: 0; }
+    .invite-status { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: var(--radius-full); flex-shrink: 0; }
     .invite-status.pending   { background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.28); color: #f5a623; }
     .invite-status.accepted  { background: rgba(124,109,250,0.12); border: 1px solid rgba(124,109,250,0.28); color: #c4baff; }
     .invite-status.completed { background: rgba(17,217,143,0.12); border: 1px solid rgba(17,217,143,0.28); color: #6ee7b7; }
@@ -375,21 +392,21 @@
     /* ── Help chat ── */
     .help-chat-box {
       display: flex; flex-direction: column; height: 340px;
-      border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--surface2);
     }
     .help-chat-messages { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
-    .help-msg { max-width: 75%; padding: 9px 13px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
+    .help-msg { max-width: 75%; padding: 9px 13px; border-radius: var(--radius-sm); font-size: 13px; line-height: 1.4; }
     .help-msg.mine   { align-self: flex-end;   background: rgba(124,109,250,0.22); color: #e4e8f8; border-bottom-right-radius: 3px; }
     .help-msg.theirs { align-self: flex-start; background: rgba(255,255,255,0.06); color: var(--text2); border-bottom-left-radius: 3px; }
     .help-msg-time { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-top: 3px; opacity: 0.7; }
     .help-chat-input-row { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--border2); }
     .help-chat-input-row input {
       flex: 1; padding: 9px 12px; background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+      border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text);
       font-family: var(--font-display); font-size: 13px; outline: none;
     }
     .help-chat-send {
-      padding: 9px 16px; border-radius: 10px; border: none;
+      padding: 9px 16px; border-radius: var(--radius-sm); border: none;
       background: linear-gradient(135deg, #4f46e5, #10b981);
       color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; font-family: var(--font-display);
     }
@@ -407,11 +424,11 @@
 <body>
 
   <nav>
-    <a href="index.html" class="nav-logo">⚗️ The Magic Lab</a>
+    <a href="index.html" class="nav-logo"><i data-lucide="flask-conical" style="width:18px;height:18px;vertical-align:-4px;margin-right:4px;"></i>The Magic Lab</a>
     <div class="nav-right">
       <a href="index.html" class="nav-pill">← All Tools</a>
-      <a href="account.html" class="nav-pill">⚙️ My Account</a>
-      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+      <a href="account.html" class="nav-pill"><i data-lucide="settings" style="width:13px;height:13px;vertical-align:-2px;margin-right:5px;"></i>My Account</a>
+      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;vertical-align:-2px;margin-right:5px;"></i>Sign In</button>
     </div>
   </nav>
 
@@ -419,7 +436,7 @@
 
     <!-- Guest -->
     <div id="guest-state">
-      <div style="font-size:64px;">🔮</div>
+      <div><i data-lucide="sparkles" style="width:64px;height:64px;color:var(--accent-1);"></i></div>
       <h2>Your learning profile</h2>
       <p>Sign in to track XP, streaks, badges, and your progress across every tool.</p>
       <button class="cta-btn" onclick="window.MagicLabModal?.open('signup')">Create Free Account</button>
@@ -483,7 +500,7 @@
       <div class="section-hdr">Streak</div>
       <div class="streak-row">
         <div class="streak-card">
-          <div class="streak-flame">🔥</div>
+          <div class="streak-flame"><i data-lucide="flame" style="width:28px;height:28px;"></i></div>
           <div>
             <div class="streak-number" id="streak-number">0</div>
             <div class="streak-label">day streak</div>
@@ -512,7 +529,7 @@
       <!-- The Arena join -->
       <div class="class-panel" style="background:rgba(17,217,143,0.06);border-color:rgba(17,217,143,0.18);margin-bottom:36px;">
         <div class="class-panel-text">
-          <div class="class-panel-title" style="color:#6ee7b7;">🏟️ Enter The Arena</div>
+          <div class="class-panel-title" style="color:#6ee7b7;display:flex;align-items:center;gap:8px;"><i data-lucide="trophy" style="width:16px;height:16px;"></i>Enter The Arena</div>
           <div class="class-panel-sub" style="color:rgba(110,231,183,0.55);">Enter the code your teacher shared to play</div>
         </div>
         <div class="class-input-row">
@@ -583,7 +600,7 @@
   <!-- Invite a friend to a lesson -->
   <div class="ml-modal-overlay" id="invite-modal-overlay">
     <div class="ml-modal" style="max-width:440px;">
-      <button class="ml-modal-close" id="invite-modal-close">✕</button>
+      <button class="ml-modal-close" id="invite-modal-close"><i data-lucide="x" style="width:15px;height:15px;"></i></button>
       <div class="ml-modal-title">Invite a friend to a lesson</div>
       <p class="ml-modal-sub">Pick a friend and a lesson — you'll both earn a shared badge once you've each completed it on your own.</p>
       <div class="ml-field">
@@ -615,18 +632,18 @@
 
   <script>
     const TOOL_META = {
-      'java-genie':        { icon:'🧞', name:'Java Genie',        url:'java-genie.html',              color:'#5b50d6', bg:'rgba(91,80,214,0.18)',   total:1,   unit:'tutorial' },
-      'web-wizard':        { icon:'🌐', name:'Web Wizard',        url:'web-wizard.html',              color:'#0776a0', bg:'rgba(7,118,160,0.18)',   total:1,   unit:'tutorial' },
-      'code-conjurer':     { icon:'📜', name:'Code Conjurer',     url:'code-conjurer.html',           color:'#b31540', bg:'rgba(179,21,64,0.18)',   total:21 },
-      'math-magician':     { icon:'🔢', name:'Math Magician',     url:'math-magician/index.html',     color:'#d4920e', bg:'rgba(212,146,14,0.18)',  total:282 },
-      'computer-codex':    { icon:'💻', name:'Computer Codex',    url:'computer-codex.html',          color:'#3d5068', bg:'rgba(61,80,104,0.18)',   total:160 },
-      'ai-oracle':         { icon:'🔮', name:'AI Oracle',         url:'ai-oracle.html',               color:'#a855f7', bg:'rgba(168,85,247,0.18)',  total:18  },
-      'drawing-druid':     { icon:'🪶', name:'Drawing Druid',     url:'drawing-druid/index.html',     color:'#eab308', bg:'rgba(234,179,8,0.18)',   total:134, unit:'constructions' },
-      'science-sage':      { icon:'🔬', name:'Science Sage',      url:'science-sage/index.html',      color:'#22c55e', bg:'rgba(34,197,94,0.18)',   total:108 },
-      'tech-tower':        { icon:'🔧', name:'The Tech Tower',    url:'tech-tower/index.html',        color:'#f97316', bg:'rgba(249,115,22,0.18)',  total:14  },
-      'robot-realm':       { icon:'🤖', name:'Robot Realm',       url:'robot-realm/index.html',       color:'#ef4444', bg:'rgba(239,68,68,0.18)',   total:4,   unit:'challenges' },
-      'spike-spellcaster': { icon:'🧱', name:'Spike Spellcaster', url:'spike-spellcaster/index.html', color:'#facc15', bg:'rgba(250,204,21,0.18)',  total:20,  metric:'code_runs' },
-      'model-mage':        { icon:'🧊', name:'Model Mage',        url:'model-mage.html',              color:'#14b8a6', bg:'rgba(20,184,166,0.18)',  total:10,  unit:'models' },
+      'java-genie':        { icon:'code-2', name:'Java Genie',        url:'java-genie.html',              color:'#5b50d6', bg:'rgba(91,80,214,0.18)',   total:1,   unit:'tutorial' },
+      'web-wizard':        { icon:'globe', name:'Web Wizard',        url:'web-wizard.html',              color:'#0776a0', bg:'rgba(7,118,160,0.18)',   total:1,   unit:'tutorial' },
+      'code-conjurer':     { icon:'wand-2', name:'Code Conjurer',     url:'code-conjurer.html',           color:'#b31540', bg:'rgba(179,21,64,0.18)',   total:21 },
+      'math-magician':     { icon:'calculator', name:'Math Magician',     url:'math-magician/index.html',     color:'#d4920e', bg:'rgba(212,146,14,0.18)',  total:282 },
+      'computer-codex':    { icon:'book-open', name:'Computer Codex',    url:'computer-codex.html',          color:'#3d5068', bg:'rgba(61,80,104,0.18)',   total:160 },
+      'ai-oracle':         { icon:'sparkles', name:'AI Oracle',         url:'ai-oracle.html',               color:'#a855f7', bg:'rgba(168,85,247,0.18)',  total:18  },
+      'drawing-druid':     { icon:'compass', name:'Drawing Druid',     url:'drawing-druid/index.html',     color:'#eab308', bg:'rgba(234,179,8,0.18)',   total:134, unit:'constructions' },
+      'science-sage':      { icon:'microscope', name:'Science Sage',      url:'science-sage/index.html',      color:'#22c55e', bg:'rgba(34,197,94,0.18)',   total:108 },
+      'tech-tower':        { icon:'wrench', name:'The Tech Tower',    url:'tech-tower/index.html',        color:'#f97316', bg:'rgba(249,115,22,0.18)',  total:14  },
+      'robot-realm':       { icon:'cpu', name:'Robot Realm',       url:'robot-realm/index.html',       color:'#ef4444', bg:'rgba(239,68,68,0.18)',   total:4,   unit:'challenges' },
+      'spike-spellcaster': { icon:'bot', name:'Spike Spellcaster', url:'spike-spellcaster/index.html', color:'#facc15', bg:'rgba(250,204,21,0.18)',  total:20,  metric:'code_runs' },
+      'model-mage':        { icon:'box', name:'Model Mage',        url:'model-mage.html',              color:'#14b8a6', bg:'rgba(20,184,166,0.18)',  total:10,  unit:'models' },
     };
 
     // ── Readiness guard ──────────────────────────────────────
@@ -889,7 +906,7 @@
         return `
           <div class="tool-card">
             <div class="tc-header">
-              <div class="tc-icon-wrap" style="background:${meta.bg};">${meta.icon}</div>
+              <div class="tc-icon-wrap" style="background:${meta.bg};">${meta.icon ? `<i data-lucide="${meta.icon}" style="width:20px;height:20px"></i>` : ''}</div>
               <span class="tc-name">${meta.name}</span>
               ${last ? `<span class="tc-last">${last}</span>` : ''}
             </div>
@@ -905,6 +922,7 @@
             <a href="${meta.url}" class="tc-launch">${done > 0 ? 'Continue →' : 'Start →'}</a>
           </div>`;
       }).join('');
+      window.lucide?.createIcons();
     }
 
     function _renderBadges({ earned, all }) {
@@ -960,12 +978,13 @@
           <div class="feed-item">
             <div class="feed-dot" style="background:${em.color}"></div>
             <span class="feed-text">
-              ${tool.icon || ''} <strong>${tool.name || ev.tool}</strong>: ${em.label}${topic}
+              ${tool.icon ? `<i data-lucide="${tool.icon}" style="width:13px;height:13px;vertical-align:-2px"></i>` : ''} <strong>${tool.name || ev.tool}</strong>: ${em.label}${topic}
             </span>
             ${xpPart}
             <span class="feed-time">${time}</span>
           </div>`;
       }).join('');
+      window.lucide?.createIcons();
     }
 
     // Class join
@@ -1087,7 +1106,7 @@
           <div class="friend-avatar">${_initials(f.displayName)}</div>
           <div class="friend-name">${_esc(f.displayName)}</div>
           <button class="friend-btn primary" onclick="openInviteModal('${f.id}')">Invite to a lesson</button>
-          <button class="friend-btn" onclick="_removeFriendship('${f.friendshipId}')" title="Unfriend">✕</button>
+          <button class="friend-btn" onclick="_removeFriendship('${f.friendshipId}')" title="Unfriend"><i data-lucide="x" style="width:12px;height:12px;"></i></button>
         </div>`).join('');
     }
 
@@ -1136,7 +1155,7 @@
           <div class="invite-item">
             <div class="invite-item-main">
               <div class="invite-item-title">${_esc(inv.otherName)} invited you to complete a lesson together</div>
-              <div class="invite-item-meta">${TOOL_META[inv.tool]?.icon || ''} ${_esc(TOOL_META[inv.tool]?.name || inv.tool)} — ${_esc(inv.topic)}</div>
+              <div class="invite-item-meta">${TOOL_META[inv.tool]?.icon ? `<i data-lucide="${TOOL_META[inv.tool].icon}" style="width:13px;height:13px;vertical-align:-2px"></i>` : ''} ${_esc(TOOL_META[inv.tool]?.name || inv.tool)} — ${_esc(inv.topic)}</div>
             </div>
             <button class="friend-btn accept" onclick="_acceptInvite('${inv.id}')">Accept</button>
             <button class="friend-btn decline" onclick="_removeInvite('${inv.id}')">Decline</button>
@@ -1152,10 +1171,11 @@
         <div class="invite-item">
           <div class="invite-item-main">
             <div class="invite-item-title">${inv.isInviter ? `You invited ${_esc(inv.otherName)}` : `With ${_esc(inv.otherName)}`}</div>
-            <div class="invite-item-meta">${TOOL_META[inv.tool]?.icon || ''} ${_esc(TOOL_META[inv.tool]?.name || inv.tool)} — ${_esc(inv.topic)}</div>
+            <div class="invite-item-meta">${TOOL_META[inv.tool]?.icon ? `<i data-lucide="${TOOL_META[inv.tool].icon}" style="width:13px;height:13px;vertical-align:-2px"></i>` : ''} ${_esc(TOOL_META[inv.tool]?.name || inv.tool)} — ${_esc(inv.topic)}</div>
           </div>
           <span class="invite-status ${inv.status}">${statusLabel[inv.status] || inv.status}</span>
         </div>`).join('');
+      window.lucide?.createIcons();
     }
 
     async function _acceptInvite(id) {
