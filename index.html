@@ -8,7 +8,12 @@
   <title>The Magic Lab — STEM Learning Tools</title>
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <!-- Cabinet Grotesk is a Fontshare font, not a Google Fonts family — it must be
+       loaded from Fontshare's own CDN, and kept in its own <link> so a problem with
+       one font family can never take the others down with it. -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
@@ -34,6 +39,33 @@
       --font-body:    "Cabinet Grotesk", sans-serif;
       --font-mono:    "JetBrains Mono", monospace;
       --font-serif:   "Instrument Serif", serif;
+
+      /* ── Spacing scale (4px base grid) ── */
+      --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+      /* ── Radius scale — every border-radius on the page maps onto one
+         of these, instead of the 13 unrelated one-off values it used to. ── */
+      --radius-2xs: 6px;   /* micro elements: badges, tags */
+      --radius-xs:  8px;   /* tiny controls: chat message icons */
+      --radius-sm:  12px;  /* buttons, inputs, icon chips */
+      --radius-md:  16px;  /* medium panels: banner buttons, chat bubbles */
+      --radius-lg:  20px;  /* cards */
+      --radius-xl:  24px;  /* large panels: arena banner, tutor modal */
+      --radius-full: 99px; /* pills */
+
+      /* ── Elevation scale — resting / hover / modal ── */
+      --elevation-sm: 0 4px 18px rgba(124,109,250,0.30);
+      --elevation-md: 0 6px 26px rgba(124,109,250,0.46);
+      --elevation-lg: 0 28px 60px rgba(0,0,0,0.50);
+      --elevation-xl: 0 32px 90px rgba(0,0,0,0.70);
+
+      /* ── Motion — one duration/easing for ordinary hover feedback.
+         The card's springier lift keeps its own bounce curve on purpose;
+         everything else (pills, links, small buttons) now shares this. ── */
+      --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --dur-fast: 150ms;
+      --dur-med:  220ms;
     }
 
     html, body {
@@ -79,19 +111,20 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       text-decoration: none; display: flex; align-items: center; gap: 10px;
     }
-    .nav-logo img { width: 30px; height: 30px; border-radius: 7px; }
+    .nav-logo img { width: 30px; height: 30px; border-radius: var(--radius-2xs); }
 
     .nav-right { display: flex; align-items: center; gap: 8px; }
 
     .nav-pill {
       font-size: 12px; font-weight: 600; padding: 7px 16px;
-      border-radius: 99px; border: 1px solid var(--border);
+      border-radius: var(--radius-full); border: 1px solid var(--border);
       background: var(--surface); color: var(--muted);
-      text-decoration: none; transition: all 150ms; cursor: pointer;
+      text-decoration: none; transition: all var(--dur-fast) var(--ease-standard); cursor: pointer;
       font-family: var(--font-body);
       display: inline-flex; align-items: center; line-height: 1;
     }
     .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); border-color: rgba(255,255,255,0.18); }
+    .nav-pill:active { transform: scale(0.97); }
     .nav-pill-accent {
       border-color: rgba(124,109,250,0.45);
       background: rgba(124,109,250,0.12);
@@ -106,7 +139,7 @@
     .nav-badge {
       display: none; align-items: center; justify-content: center;
       min-width: 16px; height: 16px; padding: 0 4px; margin-left: 7px;
-      border-radius: 99px; background: #f59e0b; color: #1a1206;
+      border-radius: var(--radius-full); background: #f59e0b; color: #1a1206;
       font-size: 10px; font-weight: 800; line-height: 1;
     }
     .nav-badge.overdue { background: #ef4444; color: #fff; }
@@ -115,13 +148,13 @@
     .hero {
       display: flex; flex-direction: column; align-items: center;
       text-align: center;
-      padding: 48px 24px 32px;
+      padding: var(--space-7) var(--space-5) var(--space-6);
       gap: 0;
     }
 
     .hero-tag {
       display: inline-flex; align-items: center; gap: 7px;
-      padding: 6px 16px; border-radius: 99px; margin-bottom: 28px;
+      padding: 6px 16px; border-radius: var(--radius-full); margin-bottom: var(--space-6);
       background: rgba(124,109,250,0.12); border: 1px solid rgba(124,109,250,0.28);
       font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
       color: #a89ffc;
@@ -158,12 +191,12 @@
 
     /* ── Cards grid ── */
     .cards-outer { width: 100%; }
-    .cards-scroll { padding: 8px 52px 32px; }
+    .cards-scroll { padding: var(--space-2) 52px var(--space-6); }
 
     .cards-track {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      gap: var(--space-4);
     }
 
     @media (max-width: 1100px) { .cards-track { grid-template-columns: repeat(3, 1fr); } }
@@ -175,18 +208,24 @@
       width: auto;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px; padding: 22px;
+      border-radius: var(--radius-lg); padding: var(--space-5);
       display: flex; flex-direction: column;
       text-decoration: none; color: inherit;
       position: relative; overflow: hidden;
+      /* The card lift keeps its own springy bounce curve on purpose — it's
+         a deliberate signature motion, not part of the "12 mismatched
+         durations" problem. Everything else on the card standardizes on
+         --dur-med / --ease-standard. */
       transition: transform 260ms cubic-bezier(0.34,1.3,0.64,1),
-                  border-color 220ms, box-shadow 220ms, opacity 220ms;
+                  border-color var(--dur-med) var(--ease-standard),
+                  box-shadow var(--dur-med) var(--ease-standard),
+                  opacity var(--dur-med) var(--ease-standard);
     }
 
     /* Ambient glow top-left */
     .card::before {
-      content: ''; position: absolute; inset: 0; border-radius: 24px;
-      opacity: 0; transition: opacity 250ms;
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius-xl);
+      opacity: 0; transition: opacity var(--dur-med) var(--ease-standard);
       pointer-events: none;
     }
 
@@ -195,16 +234,16 @@
 
     .card:hover {
       transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 28px 60px rgba(0,0,0,0.50);
+      box-shadow: var(--elevation-lg);
       opacity: 1 !important;
     }
     .card:hover::before { opacity: 1; }
 
     /* ── Card internals ── */
     .card-icon {
-      width: 44px; height: 44px; border-radius: 13px;
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 16px; font-size: 22px; flex-shrink: 0;
+      margin-bottom: var(--space-4); font-size: 22px; flex-shrink: 0;
     }
 
     .card-grade {
@@ -216,43 +255,49 @@
     .card-title {
       font-family: var(--font-display);
       font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
-      color: #fff; margin-bottom: 8px; line-height: 1.1;
+      color: #fff; margin-bottom: var(--space-2); line-height: 1.1;
     }
 
     .card-desc {
       font-size: 13px; line-height: 1.65;
       color: rgba(210,218,245,0.55);
-      flex: 1; margin-bottom: 18px;
+      flex: 1; margin-bottom: var(--space-4);
     }
 
     .card-tags {
-      display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 18px;
+      display: flex; gap: var(--space-1); flex-wrap: wrap; margin-bottom: var(--space-4);
     }
     .tag {
       font-family: var(--font-mono);
       font-size: 9px; font-weight: 500; letter-spacing: 0.06em;
-      padding: 3px 7px; border-radius: 5px;
+      padding: 3px 7px; border-radius: var(--radius-2xs);
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09);
       color: rgba(210,218,245,0.50);
     }
 
     .card-btn {
       display: flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 10px 16px; border-radius: 12px;
+      padding: 10px var(--space-4); border-radius: var(--radius-sm);
       font-family: var(--font-display); font-size: 13px; font-weight: 700;
       text-decoration: none; border: none; cursor: pointer; width: 100%;
-      transition: transform 150ms, box-shadow 150ms;
+      transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
       letter-spacing: -0.01em;
+      /* One house gradient for every card's call-to-action — the same
+         indigo → emerald pairing already used for the logo, hero tag and
+         the Arena banner button — instead of a different hue per tool. */
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      box-shadow: var(--elevation-sm);
     }
-    .card-btn:hover { transform: translateY(-1px); }
-    .card-btn:active { transform: none; }
+    .card-btn:hover { transform: translateY(-1px); box-shadow: var(--elevation-md); }
+    .card-btn:active { transform: scale(0.98); }
 
     /* ═══ ARENA BANNER ═══ */
-    .arena-banner { max-width: 1100px; margin: 0 auto 64px; padding: 0 24px; }
+    .arena-banner { max-width: 1100px; margin: 0 auto var(--space-8); padding: 0 var(--space-5); }
     .arena-banner-inner {
-      display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); flex-wrap: wrap;
       background: linear-gradient(135deg, rgba(124,109,250,0.14), rgba(17,217,143,0.08));
-      border: 1px solid rgba(124,109,250,0.30); border-radius: 22px; padding: 32px 40px;
+      border: 1px solid rgba(124,109,250,0.30); border-radius: var(--radius-xl); padding: var(--space-6) 40px;
     }
     .arena-banner-icon { font-size: 34px; margin-bottom: 8px; }
     .arena-banner-title {
@@ -261,13 +306,14 @@
     }
     .arena-banner-desc { font-size: 14px; color: rgba(210,218,245,0.65); line-height: 1.6; max-width: 480px; }
     .arena-banner-btn {
-      flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px; border-radius: 14px; text-decoration: none;
-      background: linear-gradient(135deg,#7c6dfa,#11d98f); color: #0a0e1c;
+      flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--space-2);
+      padding: 14px 28px; border-radius: var(--radius-md); text-decoration: none;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #0a0e1c;
       font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: -0.01em;
-      box-shadow: 0 6px 24px rgba(124,109,250,0.30); transition: all 160ms;
+      box-shadow: var(--elevation-sm); transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
     }
-    .arena-banner-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,109,250,0.42); }
+    .arena-banner-btn:hover { transform: translateY(-2px); box-shadow: var(--elevation-md); }
+    .arena-banner-btn:active { transform: scale(0.98); }
 
 
     /* ═══ PER-TOOL THEMES ═══ */
@@ -276,29 +322,21 @@
     .card-java::before   { background: radial-gradient(ellipse at 0% 0%, rgba(124,109,250,0.15), transparent 65%); }
     .card-java:hover     { border-color: rgba(124,109,250,0.50); }
     .card-java .card-icon{ background: linear-gradient(135deg,rgba(124,109,250,0.30),rgba(17,217,143,0.12)); border:1px solid rgba(124,109,250,0.28); }
-    .btn-java { background: linear-gradient(135deg,#5b50d6,#0fa874); color:#fff; box-shadow:0 4px 18px rgba(91,80,214,0.35); }
-    .btn-java:hover { box-shadow:0 6px 26px rgba(91,80,214,0.50); }
 
     /* Web Wizard — cyan */
     .card-web::before   { background: radial-gradient(ellipse at 0% 0%, rgba(6,182,212,0.14), transparent 65%); }
     .card-web:hover     { border-color: rgba(6,182,212,0.50); }
     .card-web .card-icon{ background: linear-gradient(135deg,rgba(6,182,212,0.28),rgba(124,58,237,0.14)); border:1px solid rgba(6,182,212,0.28); }
-    .btn-web { background: linear-gradient(135deg,#0776a0,#6d28d9); color:#fff; box-shadow:0 4px 18px rgba(7,118,160,0.30); }
-    .btn-web:hover { box-shadow:0 6px 26px rgba(7,118,160,0.48); }
 
     /* Computer Codex — blue */
     .card-codex::before  { background: radial-gradient(ellipse at 0% 0%, rgba(59,130,246,0.15), transparent 65%); }
     .card-codex:hover    { border-color: rgba(59,130,246,0.50); }
     .card-codex .card-icon{ background: linear-gradient(135deg,rgba(59,130,246,0.30),rgba(6,182,212,0.14)); border:1px solid rgba(59,130,246,0.28); }
-    .btn-codex { background: linear-gradient(135deg,#1d4ed8,#3b82f6); color:#fff; box-shadow:0 4px 18px rgba(59,130,246,0.32); }
-    .btn-codex:hover { box-shadow:0 6px 26px rgba(59,130,246,0.50); }
 
     /* Code Conjurer — rose */
     .card-conjurer::before  { background: radial-gradient(ellipse at 0% 0%, rgba(244,63,94,0.12), transparent 65%); }
     .card-conjurer:hover    { border-color: rgba(244,63,94,0.45); }
     .card-conjurer .card-icon{ background: linear-gradient(135deg,rgba(244,63,94,0.26),rgba(249,115,22,0.14)); border:1px solid rgba(244,63,94,0.28); }
-    .btn-conjurer { background: linear-gradient(135deg,#b31540,#e06012); color:#fff; box-shadow:0 4px 18px rgba(179,21,64,0.30); }
-    .btn-conjurer:hover { box-shadow:0 6px 26px rgba(179,21,64,0.46); }
 
     /* Math Magician — amber */
     .card-math::before  { background: radial-gradient(ellipse at 0% 0%, rgba(245,166,35,0.12), transparent 65%); }
@@ -309,68 +347,52 @@
     .card-codex .card-title { color: #93c5fd; }
     .card-java .card-title { color: #c4baff; }
     .card-math .card-title { color: #fcd34d; }
-    .btn-math { background: linear-gradient(135deg,#a05c08,#d4920e); color:#fff; box-shadow:0 4px 18px rgba(160,92,8,0.32); }
-    .btn-math:hover { box-shadow:0 6px 26px rgba(160,92,8,0.50); }
 
     /* AI Oracle — violet/fuchsia */
     .card-oracle::before  { background: radial-gradient(ellipse at 0% 0%, rgba(168,85,247,0.15), transparent 65%); }
     .card-oracle:hover    { border-color: rgba(168,85,247,0.50); }
     .card-oracle .card-icon{ background: linear-gradient(135deg,rgba(168,85,247,0.30),rgba(236,72,153,0.16)); border:1px solid rgba(168,85,247,0.30); }
     .card-oracle .card-title { color: #e4bcff; }
-    .btn-oracle { background: linear-gradient(135deg,#7c22b8,#b5205e); color:#fff; box-shadow:0 4px 18px rgba(124,34,184,0.32); }
-    .btn-oracle:hover { box-shadow:0 6px 26px rgba(124,34,184,0.52); }
 
     /* Model Mage — teal */
     .card-model::before  { background: radial-gradient(ellipse at 0% 0%, rgba(20,184,166,0.15), transparent 65%); }
     .card-model:hover    { border-color: rgba(20,184,166,0.50); }
     .card-model .card-icon{ background: linear-gradient(135deg,rgba(20,184,166,0.22),rgba(132,204,22,0.10)); border:1px solid rgba(20,184,166,0.18); }
     .card-model .card-title { color: #99f6e4; }
-    .btn-model { background: linear-gradient(135deg,#0d9488,#166534); color:#fff; box-shadow:0 4px 18px rgba(13,148,136,0.32); }
-    .btn-model:hover { box-shadow:0 6px 26px rgba(13,148,136,0.52); }
 
     /* Science Sage — emerald/lime */
     .card-science::before  { background: radial-gradient(ellipse at 0% 0%, rgba(34,197,94,0.15), transparent 65%); }
     .card-science:hover    { border-color: rgba(34,197,94,0.50); }
     .card-science .card-icon{ background: linear-gradient(135deg,rgba(34,197,94,0.28),rgba(132,204,22,0.16)); border:1px solid rgba(34,197,94,0.28); }
     .card-science .card-title { color: #86efac; }
-    .btn-science { background: linear-gradient(135deg,#166534,#3f6212); color:#fff; box-shadow:0 4px 18px rgba(22,101,52,0.35); }
-    .btn-science:hover { box-shadow:0 6px 26px rgba(22,101,52,0.55); }
 
     /* Robot Realm — orange/red */
     .card-robot::before  { background: radial-gradient(ellipse at 0% 0%, rgba(249,115,22,0.15), transparent 65%); }
     .card-robot:hover    { border-color: rgba(249,115,22,0.50); }
     .card-robot .card-icon{ background: linear-gradient(135deg,rgba(249,115,22,0.28),rgba(239,68,68,0.16)); border:1px solid rgba(249,115,22,0.28); }
     .card-robot .card-title { color: #fdba74; }
-    .btn-robot { background: linear-gradient(135deg,#c2410c,#991b1b); color:#fff; box-shadow:0 4px 18px rgba(194,65,12,0.35); }
-    .btn-robot:hover { box-shadow:0 6px 26px rgba(194,65,12,0.55); }
 
     /* Drawing Druid — sky blue (sits between Web Wizard's cyan and Computer Codex's blue) */
     .card-drawing::before  { background: radial-gradient(ellipse at 0% 0%, rgba(14,165,233,0.16), transparent 65%); }
     .card-drawing:hover    { border-color: rgba(14,165,233,0.50); }
     .card-drawing .card-icon{ background: linear-gradient(135deg,rgba(14,165,233,0.28),rgba(56,189,248,0.14)); border:1px solid rgba(14,165,233,0.28); }
     .card-drawing .card-title { color: #7dd3fc; }
-    .btn-drawing { background: linear-gradient(135deg,#0369a1,#0c4a6e); color:#fff; box-shadow:0 4px 18px rgba(3,105,161,0.38); }
-    .btn-drawing:hover { box-shadow:0 6px 26px rgba(3,105,161,0.58); }
 
     /* The Tech Tower — copper/amber */
     .card-tech::before  { background: radial-gradient(ellipse at 0% 0%, rgba(180,83,9,0.20), transparent 65%); }
     .card-tech:hover     { border-color: rgba(217,119,6,0.50); }
     .card-tech .card-icon{ background: linear-gradient(135deg,rgba(217,119,6,0.30),rgba(253,186,116,0.14)); border:1px solid rgba(217,119,6,0.30); }
     .card-tech .card-title { color: #fdba74; }
-    .btn-tech { background: linear-gradient(135deg,#b45309,#78350f); color:#fff; box-shadow:0 4px 18px rgba(180,83,9,0.40); }
-    .btn-tech:hover { box-shadow:0 6px 26px rgba(180,83,9,0.60); }
 
     /* Spike Spellcaster — LEGO yellow */
     .card-spike::before  { background: radial-gradient(ellipse at 0% 0%, rgba(250,204,21,0.16), transparent 65%); }
     .card-spike:hover    { border-color: rgba(250,204,21,0.50); }
     .card-spike .card-icon{ background: linear-gradient(135deg,rgba(250,204,21,0.30),rgba(245,158,11,0.16)); border:1px solid rgba(250,204,21,0.30); }
     .card-spike .card-title { color: #fde047; }
-    .btn-spike { background: linear-gradient(135deg,#a16207,#854d0e); color:#fff; box-shadow:0 4px 18px rgba(161,98,7,0.38); }
-    .btn-spike:hover { box-shadow:0 6px 26px rgba(161,98,7,0.58); }
 
     /* ── Footer ── */
     footer {
-      margin-top: auto; padding: 28px 52px;
+      margin-top: auto; padding: var(--space-6) 52px;
       border-top: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
     }
@@ -378,7 +400,7 @@
     .footer-links { display: flex; gap: 20px; }
     .footer-link {
       font-size: 12px; color: rgba(210,218,245,0.30);
-      text-decoration: none; transition: color 130ms;
+      text-decoration: none; transition: color var(--dur-fast) var(--ease-standard);
     }
     .footer-link:hover { color: rgba(210,218,245,0.70); }
 
@@ -398,16 +420,16 @@
 
   <nav>
     <a href="index.html" class="nav-logo">
-      <span style="font-size:1.3em;line-height:1;">⚗️</span>
+      <i data-lucide="flask-conical" style="width:20px;height:20px;flex-shrink:0;"></i>
       The Magic Lab
     </a>
     <div class="nav-right">
       <a href="pitch.html" class="nav-pill" style="border-color:rgba(245,166,35,0.35);background:rgba(245,166,35,0.10);color:#f5a623;">About</a>
-      <a href="dashboard-student.html" class="nav-pill nav-pill-accent">📊 My Progress</a>
-      <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="nav-pill" style="display:none;border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.10);color:#fbbf24;">🔔 Homework<span id="nav-assignments-badge" class="nav-badge"></span></a>
-      <a id="nav-teachers-btn" href="dashboard-teacher.html" class="nav-pill" style="display:none;border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.10);color:#67e8f9;">🎓 Teachers</a>
-      <a id="nav-upgrade-btn" href="pricing.html" class="nav-pill" style="display:none;border-color:rgba(124,109,250,0.35);background:rgba(124,109,250,0.10);color:#c4baff;">⚡ Upgrade to Pro</a>
-      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+      <a href="dashboard-student.html" class="nav-pill nav-pill-accent"><i data-lucide="bar-chart-3" style="width:13px;height:13px;margin-right:6px;"></i>My Progress</a>
+      <a id="nav-assignments-btn" href="dashboard-student.html#assignments-panel" class="nav-pill" style="display:none;border-color:rgba(245,158,11,0.35);background:rgba(245,158,11,0.10);color:#fbbf24;"><i data-lucide="bell" style="width:13px;height:13px;margin-right:6px;"></i>Homework<span id="nav-assignments-badge" class="nav-badge"></span></a>
+      <a id="nav-teachers-btn" href="dashboard-teacher.html" class="nav-pill" style="display:none;border-color:rgba(6,182,212,0.30);background:rgba(6,182,212,0.10);color:#67e8f9;"><i data-lucide="graduation-cap" style="width:13px;height:13px;margin-right:6px;"></i>Teachers</a>
+      <a id="nav-upgrade-btn" href="pricing.html" class="nav-pill" style="display:none;border-color:rgba(124,109,250,0.35);background:rgba(124,109,250,0.10);color:#c4baff;"><i data-lucide="zap" style="width:13px;height:13px;margin-right:6px;"></i>Upgrade to Pro</a>
+      <button class="nav-pill ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;margin-right:6px;"></i>Sign In</button>
     </div>
   </nav>
 
@@ -428,7 +450,7 @@
 
         <!-- Code Conjurer — rose/red (RED) -->
         <a href="code-conjurer.html" class="card card-conjurer">
-          <div class="card-icon">🪄</div>
+          <div class="card-icon"><i data-lucide="wand-2" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 10 – 12</div>
           <div class="card-title">Code Conjurer</div>
           <p class="card-desc">Advanced Java for IT learners. Classes, arrays, algorithms, exception handling, and full OOP — aligned to IEB/CAPS Gr 10–12 IT.</p>
@@ -445,7 +467,7 @@
 
         <!-- Robot Realm — orange (ORANGE) -->
         <a href="robot-realm/index.html" class="card card-robot">
-          <div class="card-icon">🤖</div>
+          <div class="card-icon"><i data-lucide="cpu" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 12</div>
           <div class="card-title">Robot Realm</div>
           <p class="card-desc">Program and simulate robots in a 2D arena. Write code to control motors, read sensors, navigate obstacles, and follow lines — no hardware needed.</p>
@@ -462,7 +484,7 @@
 
         <!-- The Tech Tower — copper/amber (ORANGE) -->
         <a href="tech-tower/index.html" class="card card-tech">
-          <div class="card-icon">🔧</div>
+          <div class="card-icon"><i data-lucide="wrench" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 9</div>
           <div class="card-title">The Tech Tower</div>
           <p class="card-desc">CAPS Technology, hands-on. Frame structures, gears &amp; mechanical advantage, hydraulics, circuits, logic gates, and processing &amp; materials — with interactive simulations for every lesson.</p>
@@ -506,7 +528,7 @@
 
         <!-- Spike Spellcaster — LEGO yellow (YELLOW) -->
         <a href="spike-spellcaster/index.html" class="card card-spike">
-          <div class="card-icon">🧱</div>
+          <div class="card-icon"><i data-lucide="bot" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 4 – 9</div>
           <div class="card-title">Spike Spellcaster</div>
           <p class="card-desc">Code a LEGO® SPIKE Prime in Python or blocks. Practise in the built-in simulator, then connect your own hub over Bluetooth and run your code on the real robot. Built for WRO RoboMission.</p>
@@ -523,7 +545,7 @@
 
         <!-- Science Sage — green (GREEN) -->
         <a href="science-sage/index.html" class="card card-science">
-          <div class="card-icon">🔬</div>
+          <div class="card-icon"><i data-lucide="microscope" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 12</div>
           <div class="card-title">Science Sage</div>
           <p class="card-desc">Natural Sciences for Gr 8–9, branching into Life Sciences and Physical Sciences for Gr 10–12. Experiments, concepts, and CAPS-aligned content.</p>
@@ -565,7 +587,7 @@
 
         <!-- Web Wizard — cyan (CYAN) -->
         <a href="web-wizard.html" class="card card-web">
-          <div class="card-icon">🧙</div>
+          <div class="card-icon"><i data-lucide="globe" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 9</div>
           <div class="card-title">Web Wizard</div>
           <p class="card-desc">Design websites live using HTML and CSS. Every change appears instantly in a live preview — no server, no setup required.</p>
@@ -582,7 +604,7 @@
 
         <!-- Drawing Druid — sky blue (proof of concept) -->
         <a href="drawing-druid/index.html" class="card card-drawing">
-          <div class="card-icon">🪶</div>
+          <div class="card-icon"><i data-lucide="compass" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 10 – 12 · Preview</div>
           <div class="card-title">Drawing Druid</div>
           <p class="card-desc">Engineering Graphics &amp; Design, visualised. Starting with an interactive cam &amp; loci simulator — displacement diagrams and cam profiles built and animated live.</p>
@@ -599,7 +621,7 @@
 
         <!-- Computer Codex — blue (BLUE) -->
         <a href="computer-codex.html" class="card card-codex">
-          <div class="card-icon">📚</div>
+          <div class="card-icon"><i data-lucide="book-open" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 10</div>
           <div class="card-title">Computer Codex</div>
           <p class="card-desc">Digital literacy essentials. Windows, Office, file management, Excel, Word — and a brand new unit on AI, LLMs, and ethical AI use.</p>
@@ -616,7 +638,7 @@
 
         <!-- Java Genie — indigo (INDIGO) -->
         <a href="java-genie.html" class="card card-java">
-          <div class="card-icon">🧞</div>
+          <div class="card-icon"><i data-lucide="code-2" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 9</div>
           <div class="card-title">Java Genie</div>
           <p class="card-desc">Learn Java visually with turtle graphics, loops, and interactive tutorials. Write real programs from day one and watch them draw on screen.</p>
@@ -633,7 +655,7 @@
 
         <!-- AI Oracle — purple (VIOLET) -->
         <a href="ai-oracle.html" class="card card-oracle">
-          <div class="card-icon">🔮</div>
+          <div class="card-icon"><i data-lucide="sparkles" style="width:22px;height:22px;"></i></div>
           <div class="card-grade">Grade 8 – 12</div>
           <div class="card-title">AI Oracle</div>
           <p class="card-desc">Understand how AI actually works, master the art of prompting, and learn to use AI ethically for studying, research, and assignments.</p>
@@ -656,7 +678,7 @@
   <div class="arena-banner">
     <div class="arena-banner-inner">
       <div>
-        <div class="arena-banner-icon">🏟️</div>
+        <div class="arena-banner-icon"><i data-lucide="trophy" style="width:30px;height:30px;"></i></div>
         <div class="arena-banner-title">The Arena — live quiz battles</div>
         <div class="arena-banner-desc">Compete head-to-head on real lesson content. Teachers host a round from their dashboard; learners join instantly with a code, right from their own device.</div>
       </div>
@@ -666,47 +688,53 @@
 
   <!-- Footer -->
   <footer>
-    <span class="footer-copy">⚗️ The Magic Lab · © 2026 Ruhan Janse van Rensburg. All rights reserved. · <a href="terms.html" style="color:inherit;">Terms</a> · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="mailto:ruhan@themagiclab.co.za?subject=The%20Magic%20Lab%20-%20Suggestion%2FQuestion" style="color:inherit;">Contact Developer</a></span>
+    <span class="footer-copy"><i data-lucide="flask-conical" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px;"></i>The Magic Lab · © 2026 Ruhan Janse van Rensburg. All rights reserved. · <a href="terms.html" style="color:inherit;">Terms</a> · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="mailto:ruhan@themagiclab.co.za?subject=The%20Magic%20Lab%20-%20Suggestion%2FQuestion" style="color:inherit;">Contact Developer</a></span>
   </footer>
 
-  <script>lucide.createIcons();</script>
+  <script>
+    // Run after the full document (including the AI tutor widget markup
+    // further down the page) has parsed, so every data-lucide icon on the
+    // page — not just the ones above this script tag — gets rendered.
+    document.addEventListener('DOMContentLoaded', () => window.lucide?.createIcons());
+  </script>
 
   <!-- ── AI TUTOR (carried over from previous build) ── -->
   <style>
     .tutor-overlay{position:fixed;inset:0;z-index:10000;background:rgba(4,6,18,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 220ms}
     .tutor-overlay.open{opacity:1;pointer-events:all}
-    .tutor-modal{width:100%;max-width:520px;height:min(660px,90vh);background:#0b0f23;border:1px solid rgba(255,255,255,.10);border-radius:22px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 90px rgba(0,0,0,.70);transform:translateY(14px);transition:transform 220ms}
+    .tutor-modal{width:100%;max-width:520px;height:min(660px,90vh);background:#0b0f23;border:1px solid rgba(255,255,255,.10);border-radius:var(--radius-xl);display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--elevation-xl);transform:translateY(14px);transition:transform var(--dur-med) var(--ease-standard)}
     .tutor-overlay.open .tutor-modal{transform:translateY(0)}
     .tutor-header{flex-shrink:0;padding:14px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
-    .tutor-avatar{width:36px;height:36px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#4f46e5,#10b981);display:flex;align-items:center;justify-content:center;font-size:18px}
+    .tutor-avatar{width:36px;height:36px;border-radius:var(--radius-sm);flex-shrink:0;background:linear-gradient(135deg,#4f46e5,#10b981);display:flex;align-items:center;justify-content:center;font-size:18px}
     .tutor-header-text h3{font-family:"Cabinet Grotesk",sans-serif;font-weight:800;font-size:14px;background:linear-gradient(125deg,#fff 0%,#a5b4fc 55%,#6ee7b7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .tutor-header-text p{font-size:11px;color:rgba(221,225,240,.40);margin-top:1px}
-    .tutor-close{margin-left:auto;width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:rgba(221,225,240,.50);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 130ms;flex-shrink:0}
+    .tutor-close{margin-left:auto;width:28px;height:28px;border-radius:var(--radius-2xs);border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:rgba(221,225,240,.50);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all var(--dur-fast) var(--ease-standard);flex-shrink:0}
     .tutor-close:hover{color:#dde1f0;background:rgba(255,255,255,.10)}
     .tutor-messages{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.10) transparent}
     .tutor-msg{display:flex;gap:10px;align-items:flex-start}
     .tutor-msg.user{flex-direction:row-reverse}
-    .tutor-bubble{max-width:80%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.65}
-    .tutor-msg.ai .tutor-bubble{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:#dde1f0;border-radius:4px 14px 14px 14px}
-    .tutor-msg.user .tutor-bubble{background:linear-gradient(135deg,rgba(79,70,229,.30),rgba(16,185,129,.20));border:1px solid rgba(99,102,241,.30);color:#e8eaf4;border-radius:14px 4px 14px 14px}
-    .tutor-msg-icon{width:28px;height:28px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
+    .tutor-bubble{max-width:80%;padding:10px 14px;border-radius:var(--radius-md);font-size:13px;line-height:1.65}
+    .tutor-msg.ai .tutor-bubble{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:#dde1f0;border-radius:var(--radius-2xs) var(--radius-md) var(--radius-md) var(--radius-md)}
+    .tutor-msg.user .tutor-bubble{background:linear-gradient(135deg,rgba(79,70,229,.30),rgba(16,185,129,.20));border:1px solid rgba(99,102,241,.30);color:#e8eaf4;border-radius:var(--radius-md) var(--radius-2xs) var(--radius-md) var(--radius-md)}
+    .tutor-msg-icon{width:28px;height:28px;border-radius:var(--radius-xs);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
     .tutor-msg.ai .tutor-msg-icon{background:linear-gradient(135deg,#4f46e5,#10b981)}
     .tutor-msg.user .tutor-msg-icon{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
-    .tutor-typing{display:flex;gap:4px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:4px 14px 14px 14px;width:fit-content}
+    .tutor-typing{display:flex;gap:4px;align-items:center;padding:10px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:var(--radius-2xs) var(--radius-md) var(--radius-md) var(--radius-md);width:fit-content}
     .tutor-typing span{width:6px;height:6px;border-radius:50%;background:#818cf8;animation:tutorDot 1.2s infinite}
     .tutor-typing span:nth-child(2){animation-delay:.2s}.tutor-typing span:nth-child(3){animation-delay:.4s}
     @keyframes tutorDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
     .tutor-suggestions{flex-shrink:0;padding:8px 18px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.05)}
-    .tutor-suggestion{padding:5px 11px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid rgba(99,102,241,.30);background:rgba(99,102,241,.10);color:#a5b4fc;cursor:pointer;transition:all 130ms;white-space:nowrap}
+    .tutor-suggestion{padding:5px 11px;border-radius:var(--radius-full);font-size:11px;font-weight:600;border:1px solid rgba(99,102,241,.30);background:rgba(99,102,241,.10);color:#a5b4fc;cursor:pointer;transition:all 130ms;white-space:nowrap}
     .tutor-suggestion:hover{background:rgba(99,102,241,.22);color:#c7d2fe}
     .tutor-input-row{flex-shrink:0;padding:12px 18px 14px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;align-items:flex-end}
-    .tutor-input{flex:1;resize:none;padding:10px 14px;min-height:42px;max-height:120px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#e8eaf4;font-family:"Cabinet Grotesk",sans-serif;font-size:13px;outline:none;transition:border-color 150ms;line-height:1.5}
+    .tutor-input{flex:1;resize:none;padding:10px 14px;min-height:42px;max-height:120px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);color:#e8eaf4;font-family:"Cabinet Grotesk",sans-serif;font-size:13px;outline:none;transition:border-color 150ms;line-height:1.5}
     .tutor-input::placeholder{color:rgba(221,225,240,.28)}
     .tutor-input:focus{border-color:rgba(99,102,241,.50)}
-    .tutor-send{width:40px;height:40px;border-radius:11px;border:none;flex-shrink:0;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all 150ms}
+    .tutor-send{width:40px;height:40px;border-radius:var(--radius-sm);border:none;flex-shrink:0;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all 150ms}
     .tutor-send:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(79,70,229,.40)}
+    .tutor-send:active{transform:scale(0.94)}
     .tutor-send:disabled{opacity:.45;cursor:not-allowed;transform:none}
-    .tutor-fab{position:fixed;bottom:28px;right:28px;z-index:9998;width:54px;height:54px;border-radius:16px;border:none;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;font-size:24px;cursor:pointer;box-shadow:0 8px 28px rgba(79,70,229,.50);display:flex;align-items:center;justify-content:center;transition:all 180ms;animation:fabPop .4s cubic-bezier(.34,1.56,.64,1) both}
+    .tutor-fab{position:fixed;bottom:28px;right:28px;z-index:9998;width:54px;height:54px;border-radius:var(--radius-md);border:none;background:linear-gradient(135deg,#4f46e5,#10b981);color:#fff;font-size:24px;cursor:pointer;box-shadow:0 8px 28px rgba(79,70,229,.50);display:flex;align-items:center;justify-content:center;transition:all 180ms;animation:fabPop .4s cubic-bezier(.34,1.56,.64,1) both}
     .tutor-fab:hover{transform:scale(1.10);box-shadow:0 12px 36px rgba(79,70,229,.60)}
     @keyframes fabPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
   </style>
@@ -716,12 +744,12 @@
   <div class="tutor-overlay" id="tutorOverlay">
     <div class="tutor-modal">
       <div class="tutor-header">
-        <div class="tutor-avatar">🧙</div>
+        <div class="tutor-avatar"><i data-lucide="sparkles" style="width:18px;height:18px;"></i></div>
         <div class="tutor-header-text">
           <h3>Magic Lab Tutor</h3>
           <p>Ask me anything about the topics on this site</p>
         </div>
-        <button class="tutor-close" onclick="window.MagicTutor?.close()">✕</button>
+        <button class="tutor-close" onclick="window.MagicTutor?.close()"><i data-lucide="x" style="width:15px;height:15px;"></i></button>
       </div>
       <div class="tutor-messages" id="tutorMessages"></div>
       <div class="tutor-suggestions" id="tutorSuggestions">
@@ -732,7 +760,7 @@
       </div>
       <div class="tutor-input-row">
         <textarea class="tutor-input" id="tutorInput" placeholder="Ask the tutor anything…" rows="1"></textarea>
-        <button class="tutor-send" id="tutorSend" onclick="MagicTutor.sendFromInput()">➤</button>
+        <button class="tutor-send" id="tutorSend" onclick="MagicTutor.sendFromInput()"><i data-lucide="send" style="width:17px;height:17px;"></i></button>
       </div>
     </div>
   </div>
@@ -744,10 +772,11 @@
     function addMessage(role,content){messages.push({role,content});renderMessages();}
     function renderMessages(){
       const c=document.getElementById('tutorMessages');if(!c)return;
-      c.innerHTML=messages.map(m=>`<div class="tutor-msg ${m.role==='user'?'user':'ai'}"><div class="tutor-msg-icon">${m.role==='user'?'🎓':'🧙'}</div><div class="tutor-bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`).join('');
+      c.innerHTML=messages.map(m=>`<div class="tutor-msg ${m.role==='user'?'user':'ai'}"><div class="tutor-msg-icon"><i data-lucide="${m.role==='user'?'graduation-cap':'sparkles'}" style="width:14px;height:14px;"></i></div><div class="tutor-bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`).join('');
       c.scrollTop=c.scrollHeight;
+      window.lucide?.createIcons();
     }
-    function showTyping(){const c=document.getElementById('tutorMessages');if(!c)return;const e=document.createElement('div');e.className='tutor-msg ai';e.id='tutorTyping';e.innerHTML='<div class="tutor-msg-icon">🧙</div><div class="tutor-typing"><span></span><span></span><span></span></div>';c.appendChild(e);c.scrollTop=c.scrollHeight;}
+    function showTyping(){const c=document.getElementById('tutorMessages');if(!c)return;const e=document.createElement('div');e.className='tutor-msg ai';e.id='tutorTyping';e.innerHTML='<div class="tutor-msg-icon"><i data-lucide="sparkles" style="width:14px;height:14px;"></i></div><div class="tutor-typing"><span></span><span></span><span></span></div>';c.appendChild(e);c.scrollTop=c.scrollHeight;window.lucide?.createIcons();}
     function hideTyping(){document.getElementById('tutorTyping')?.remove();}
     async function callClaude(msg){
       if(isLoading)return;isLoading=true;
