@@ -226,6 +226,14 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // isoCanvas and viewCanvas both have offsetWidth 0 while the Explore tab
+  // panel is display:none, so the initial resizeIso()/resizeView() calls
+  // (at page load) fall back to hardcoded default widths instead of the
+  // real ones. Re-measure now that the panel is actually visible.
+  if(id==='explore'){
+    if(typeof resizeIso==='function') resizeIso();
+    if(typeof resizeView==='function') resizeView();
+  }
 }
 
 /* ═══════════════════════════════════════════════
@@ -320,20 +328,21 @@ const OBJECTS = {
       },
       top:{
         label:'TOP VIEW (PLAN)',
-        desc:'Looking straight down from above. Shows true width (6) and depth (4). The dashed line at x=3 marks where the raised step\'s edge meets the lower base — a visible change of level, drawn where the top surface height changes.',
+        desc:'Looking straight down from above. Shows true width (6) and depth (4). The line at x=3 marks where the raised step\'s edge meets the lower base. It\'s drawn SOLID, not dashed — nothing overhangs this edge, so it\'s directly visible looking straight down, unlike a genuinely hidden line.',
         draw:(cx,cy)=>{
           const pts=[[0,0],[0,-4],[6,-4],[6,0]];
           return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
         },
-        extraLine:(cx,cy)=>[[cx+3*VU,cy],[cx+3*VU,cy-4*VU]]
+        visibleLine:(cx,cy)=>[[cx+3*VU,cy],[cx+3*VU,cy-4*VU]]
       },
       side:{
         label:'SIDE (END) VIEW',
-        desc:'Looking at the object from the side (along the x-axis). Shows the true depth (4 units) and the tallest height reached anywhere along the object: 4 units, where the step is present.',
+        desc:'Looking at the object from the side (along the x-axis). The outline is a simple 4-unit-high rectangle. The line at 2 units marks where the lower base level continues behind the step — it\'s drawn SOLID, not dashed, because it\'s a true external corner of the object: from the opposite end you\'d see it directly, so it isn\'t buried behind solid material the way a genuinely hidden feature is.',
         draw:(cx,cy)=>{
           const pts=[[0,0],[0,-4],[4,-4],[4,0]];
           return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
-        }
+        },
+        visibleLine:(cx,cy)=>[[cx,cy-2*VU],[cx+4*VU,cy-2*VU]]
       }
     }
   },
@@ -353,21 +362,22 @@ const OBJECTS = {
       },
       top:{
         label:'TOP VIEW (PLAN)',
-        desc:'Looking straight down from above. Shows the true width (6) and depth (4) of the base footprint. Two dashed lines (at x=2 and x=4) mark where the towers\' edges meet the lower connecting base.',
+        desc:'Looking straight down from above. Shows the true width (6) and depth (4) of the base footprint. Two SOLID lines (at x=2 and x=4) mark where the towers\' edges meet the lower connecting base — visible, not hidden, since nothing overhangs them when viewed from directly above.',
         draw:(cx,cy)=>{
           const pts=[[0,0],[0,-4],[6,-4],[6,0]];
           return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
         },
-        extraLine:(cx,cy)=>[[cx+2*VU,cy],[cx+2*VU,cy-4*VU]],
-        extraLine2:(cx,cy)=>[[cx+4*VU,cy],[cx+4*VU,cy-4*VU]]
+        visibleLine:(cx,cy)=>[[cx+2*VU,cy],[cx+2*VU,cy-4*VU]],
+        visibleLine2:(cx,cy)=>[[cx+4*VU,cy],[cx+4*VU,cy-4*VU]]
       },
       side:{
         label:'SIDE (END) VIEW',
-        desc:'Looking at the object from the side. Shows the true depth (4 units) and the tallest height reached anywhere along the object: 3 units, the height of the towers.',
+        desc:'Looking at the object from the side. The outline is a simple 3-unit-high rectangle. The dashed line at 1 unit shows where the lower connecting base sits — and here it genuinely IS hidden: a full-height tower stands flush at BOTH ends, so there\'s no direction along this axis you could look from and see the notch floor directly. That\'s the real test for a hidden line — buried behind solid material from every angle, not just the one you happen to be viewing from.',
         draw:(cx,cy)=>{
           const pts=[[0,0],[0,-3],[4,-3],[4,0]];
           return pts.map(p=>[cx+p[0]*VU, cy+p[1]*VU]);
-        }
+        },
+        extraLine:(cx,cy)=>[[cx,cy-1*VU],[cx+4*VU,cy-1*VU]]
       }
     }
   }
@@ -400,6 +410,8 @@ function drawSelectedView(){
   viewCtx.strokeStyle='#fdba74';
   viewCtx.lineWidth=2.5;
   viewCtx.stroke();
+  // Hidden edges: exist in 3D but are occluded from this particular
+  // viewing direction — drawn dashed, per the lesson's own line-type key.
   [v.extraLine, v.extraLine2].filter(Boolean).forEach(fn=>{
     const [a,b] = fn(cx,cy);
     viewCtx.save();
@@ -411,6 +423,18 @@ function drawSelectedView(){
     viewCtx.lineTo(b[0],b[1]);
     viewCtx.stroke();
     viewCtx.restore();
+  });
+  // Visible interior edges: a genuine change of surface (e.g. a step's
+  // top edge seen from directly above) that nothing occludes from this
+  // view, so it's drawn solid — same weight as the outline, not dashed.
+  [v.visibleLine, v.visibleLine2].filter(Boolean).forEach(fn=>{
+    const [a,b] = fn(cx,cy);
+    viewCtx.beginPath();
+    viewCtx.moveTo(a[0],a[1]);
+    viewCtx.lineTo(b[0],b[1]);
+    viewCtx.strokeStyle='#fdba74';
+    viewCtx.lineWidth=2.5;
+    viewCtx.stroke();
   });
   viewCtx.fillStyle='rgba(210,218,245,.55)';
   viewCtx.font='10px "JetBrains Mono",monospace';
