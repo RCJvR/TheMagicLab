@@ -264,6 +264,10 @@ function switchTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
+  // pressCanvas has offsetWidth 0 while the Explore tab panel is
+  // display:none, so the first resizePress() call (at page load) falls
+  // back to a hardcoded default width. Re-measure now that it's visible.
+  if(id==='explore' && typeof resizePress==='function') resizePress();
 }
 
 /* ═══════════════════════════════════════════════
@@ -313,8 +317,14 @@ function drawPress(dIn,dOut,pushFrac){
     pressCtx.strokeStyle = fluidEdge;
     pressCtx.lineWidth = 1;
     pressCtx.strokeRect(cx-r+2, fluidTop, r*2-4, baseY-fluidTop-2);
-    // piston (plunger) position - moves within top portion of cylinder
-    const pistonY = baseY - cylH*0.35 - pistonTravelFrac*(cylH*0.5);
+    // piston (plunger) position - moves within top portion of cylinder.
+    // A higher pistonTravelFrac means "pushed further in", so it should
+    // move the piston DOWN, toward the fluid — the old formula subtracted
+    // more as the fraction rose, moving it UP and out instead, so the
+    // input piston looked like it was retracting as more force was
+    // dialled in (and the output piston looked like it was sinking as it
+    // should have been rising).
+    const pistonY = baseY - cylH*0.85 + pistonTravelFrac*(cylH*0.5);
     pressCtx.fillStyle = '#fdba74';
     pressCtx.fillRect(cx-r-4, pistonY, r*2+8, 10);
     // rod above piston
