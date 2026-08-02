@@ -262,30 +262,21 @@ function isoProject(x,y,z,ox,oy){
   const py = oy + (x+y)*Math.sin(Math.PI/6)*U - z*U;
   return [px,py];
 }
-function drawIsoBox(x0,x1,y0,y1,z0,z1,ox,oy,fill,edge){
-  // 8 corners. With this projection, increasing x moves down-right and
-  // increasing y moves down-left, so the NEAR (visible) faces are the ones
-  // at the maximum x and maximum y — x1 and y1 — not x0/y0. Using y0 here
-  // used to draw the hidden far face on top of the box instead of the
-  // visible near face, which is what broke the whole silhouette.
-  const c = (x,y,z)=>isoProject(x,y,z,ox,oy);
-  const top = [c(x0,y0,z1),c(x1,y0,z1),c(x1,y1,z1),c(x0,y1,z1)];
-  const front = [c(x0,y1,z0),c(x1,y1,z0),c(x1,y1,z1),c(x0,y1,z1)];
-  const side = [c(x1,y0,z0),c(x1,y1,z0),c(x1,y1,z1),c(x1,y0,z1)];
-  [ {pts:top,shade:1.0}, {pts:front,shade:0.75}, {pts:side,shade:0.55} ].forEach(face=>{
-    isoCtx.beginPath();
-    face.pts.forEach((p,i)=> i===0?isoCtx.moveTo(p[0],p[1]):isoCtx.lineTo(p[0],p[1]));
-    isoCtx.closePath();
-    isoCtx.fillStyle = fill(face.shade);
-    isoCtx.fill();
-    isoCtx.strokeStyle = edge;
-    isoCtx.lineWidth = 1.5;
-    isoCtx.stroke();
-  });
+function isoFace(pts3d, ox, oy, fill, shade, edge){
+  const pts = pts3d.map(([x,y,z])=>isoProject(x,y,z,ox,oy));
+  isoCtx.beginPath();
+  pts.forEach((p,i)=> i===0?isoCtx.moveTo(p[0],p[1]):isoCtx.lineTo(p[0],p[1]));
+  isoCtx.closePath();
+  isoCtx.fillStyle = fill(shade);
+  isoCtx.fill();
+  isoCtx.strokeStyle = edge;
+  isoCtx.lineWidth = 1.5;
+  isoCtx.stroke();
 }
 function drawIso(){
   isoCtx.clearRect(0,0,isoW,isoH);
-  const boxes = OBJECTS[currentObject].boxes;
+  const obj = OBJECTS[currentObject];
+  const boxes = obj.boxes;
   let maxX=0, maxY=0, maxZ=0;
   boxes.forEach(b=>{ maxX=Math.max(maxX,b[1]); maxY=Math.max(maxY,b[3]); maxZ=Math.max(maxZ,b[5]); });
   // Auto-fit: scale the unit size so the object's isometric footprint fills
@@ -301,9 +292,51 @@ function drawIso(){
   const ox = (isoW-drawnW)/2 + maxY*cos30*U;
   const oy = marginTop + (availH-drawnH)/2 + maxZ*U;
   const fill = s => `rgba(253,186,116,${0.10+0.55*s})`;
-  boxes.forEach(b=>{
-    drawIsoBox(b[0],b[1],b[2],b[3],b[4],b[5], ox,oy, fill, 'rgba(253,186,116,0.9)');
+  const edge = 'rgba(253,186,116,0.9)';
+
+  // Draw as ONE solid, not a pile of separate boxes: merge the (possibly
+  // overlapping — e.g. the step's box sits on top of the FULL base slab's
+  // box, not beside it) boxes into a non-overlapping height "skyline" by
+  // taking the tallest box covering each x-range, then draw exactly the
+  // faces a real solid would actually show from this angle — no internal
+  // seams at the box joins.
+  const xs = Array.from(new Set(boxes.flatMap(b=>[b[0],b[1]]))).sort((a,b)=>a-b);
+  const segs = [];
+  for(let i=0;i<xs.length-1;i++){
+    const xa=xs[i], xb=xs[i+1];
+    let z=0;
+    boxes.forEach(b=>{ if(b[0]<=xa && b[1]>=xb) z=Math.max(z,b[5]); });
+    const last = segs[segs.length-1];
+    if(last && last.z===z) last.x1=xb; // merge flush with the previous segment if the height didn't actually change
+    else segs.push({x0:xa,x1:xb,z});
+  }
+
+  // TOP faces — one per segment. These sit at genuinely different heights,
+  // so each keeps its own outline; that's a real edge of the step/notch,
+  // not a seam between pieces.
+  segs.forEach(seg=>{
+    isoFace([[seg.x0,0,seg.z],[seg.x1,0,seg.z],[seg.x1,maxY,seg.z],[seg.x0,maxY,seg.z]], ox, oy, fill, 1.0, edge);
   });
+
+  // WALL faces — only visible from this angle where the profile steps DOWN
+  // moving left to right (a step UP hides behind its own taller material,
+  // per the same occlusion logic worked out for the side-view hidden
+  // lines). The object's right end falls out of the same rule as a "step
+  // down to the ground", so it needs no special case. Assumes the segments
+  // are contiguous, which holds for both example objects.
+  segs.forEach((seg,i)=>{
+    const heightAfter = i+1<segs.length ? segs[i+1].z : 0;
+    if(heightAfter < seg.z){
+      isoFace([[seg.x1,0,heightAfter],[seg.x1,maxY,heightAfter],[seg.x1,maxY,seg.z],[seg.x1,0,seg.z]], ox, oy, fill, 0.55, edge);
+    }
+  });
+
+  // FRONT face — ONE merged polygon for the whole profile, reusing the
+  // exact outline already used for the front orthographic view, so it
+  // reads as a single solid instead of one front face per box.
+  const frontOutline = obj.views.front.draw(0,0).map(([px,py])=>[px/VU, -py/VU]);
+  isoFace(frontOutline.map(([x,z])=>[x,maxY,z]), ox, oy, fill, 0.75, edge);
+
   isoCtx.fillStyle='rgba(210,218,245,.55)';
   isoCtx.font='11px "JetBrains Mono",monospace';
   isoCtx.fillText('Isometric sketch (not to scale)', 14, isoH-14);
