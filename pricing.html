@@ -6,7 +6,13 @@
   <meta name="theme-color" content="#080c1a">
   <title>Pricing — The Magic Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <!-- Cabinet Grotesk is a Fontshare font, not a Google Fonts family — it must be
+       loaded from Fontshare's own CDN, and kept in its own <link> so a problem with
+       one font family can never take the others down with it. -->
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link rel="stylesheet" href="auth-modal.css">
   <script defer src="auth.js"></script>
   <script defer src="auth-modal.js"></script>
@@ -18,56 +24,80 @@
       --text: #e4e8f8; --muted: rgba(210,218,245,0.45);
       --accent-1: #7c6dfa; --accent-2: #11d98f;
       --fd: "Cabinet Grotesk", sans-serif; --fm: "JetBrains Mono", monospace;
+
+      /* Same token scale as index.html, so both pages share one system. */
+      --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+      --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+
+      --radius-2xs: 6px; --radius-xs: 8px; --radius-sm: 12px; --radius-md: 16px;
+      --radius-lg: 20px; --radius-xl: 24px; --radius-full: 99px;
+
+      --elevation-sm: 0 4px 18px rgba(124,109,250,0.30);
+      --elevation-md: 0 6px 26px rgba(124,109,250,0.46);
+      --elevation-card: 0 20px 60px rgba(0,0,0,0.35);
+
+      --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+      --dur-fast: 150ms;
+      --dur-med:  220ms;
     }
     html, body { min-height: 100%; background: var(--bg); color: var(--text); font-family: var(--fd); font-size: 16px; line-height: 1.6; }
     body { display: flex; flex-direction: column; }
     nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 52px; border-bottom: 1px solid var(--border); }
-    .nav-logo { font-weight: 900; font-size: 20px; letter-spacing: -0.03em; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-    .nav-pill { font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); text-decoration: none; cursor: pointer; font-family: var(--fd); }
-    main { max-width: 760px; margin: 0 auto; padding: 64px 24px; text-align: center; flex: 1; width: 100%; }
-    h1 { font-weight: 900; font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.03em; margin-bottom: 12px; }
-    .sub { color: var(--muted); max-width: 460px; margin: 0 auto 48px; }
-    .plan-card {
-      background: var(--surface); border: 1px solid rgba(124,109,250,0.35); border-radius: 24px;
-      padding: 40px; max-width: 380px; margin: 0 auto 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    .nav-logo { font-weight: 900; font-size: 20px; letter-spacing: -0.03em; color: #fff; text-decoration: none; display: flex; align-items: center; gap: var(--space-2); }
+    .nav-pill {
+      font-size: 12px; font-weight: 600; padding: 7px 16px;
+      border-radius: var(--radius-full); border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted); text-decoration: none; cursor: pointer;
+      font-family: var(--fd); display: inline-flex; align-items: center; gap: 6px;
+      transition: all var(--dur-fast) var(--ease-standard);
     }
-    .plan-name { font-family: var(--fm); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #a89ffc; margin-bottom: 10px; }
-    .plan-price { font-weight: 900; font-size: 48px; letter-spacing: -0.03em; color: #fff; margin-bottom: 4px; }
+    .nav-pill:hover { background: rgba(255,255,255,0.09); color: var(--text); border-color: rgba(255,255,255,0.18); }
+    .nav-pill:active { transform: scale(0.97); }
+    main { max-width: 760px; margin: 0 auto; padding: var(--space-8) var(--space-5); text-align: center; flex: 1; width: 100%; }
+    h1 { font-weight: 900; font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.03em; margin-bottom: var(--space-3); }
+    .sub { color: var(--muted); max-width: 460px; margin: 0 auto var(--space-7); }
+    .plan-card {
+      background: var(--surface); border: 1px solid rgba(124,109,250,0.35); border-radius: var(--radius-xl);
+      padding: 40px; max-width: 380px; margin: 0 auto 40px;
+      box-shadow: var(--elevation-card);
+    }
+    .plan-name { font-family: var(--fm); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #a89ffc; margin-bottom: var(--space-3); }
+    .plan-price { font-weight: 900; font-size: 48px; letter-spacing: -0.03em; color: #fff; margin-bottom: var(--space-1); }
     .plan-price span { font-size: 16px; font-weight: 500; color: var(--muted); }
-    .plan-features { list-style: none; text-align: left; margin: 28px 0; display: flex; flex-direction: column; gap: 12px; }
-    .plan-features li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: rgba(210,218,245,0.75); }
+    .plan-features { list-style: none; text-align: left; margin: var(--space-6) 0; display: flex; flex-direction: column; gap: var(--space-3); }
+    .plan-features li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 14px; color: rgba(210,218,245,0.75); }
     .plan-features li::before { content: '✓'; color: var(--accent-2); font-weight: 800; flex-shrink: 0; }
     .upgrade-btn {
-      width: 100%; padding: 14px; border-radius: 14px; border: none; cursor: pointer;
-      background: linear-gradient(135deg, #7c6dfa, #11d98f); color: #0a0e1c;
+      width: 100%; padding: 14px; border-radius: var(--radius-md); border: none; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: #0a0e1c;
       font-family: var(--fd); font-weight: 800; font-size: 15px; letter-spacing: -0.01em;
-      transition: all 160ms;
+      transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
     }
     .upgrade-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,109,250,0.42); }
+    .upgrade-btn:active:not(:disabled) { transform: scale(0.98); }
     .upgrade-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-    .plan-msg { margin-top: 14px; font-size: 13px; }
+    .plan-msg { margin-top: var(--space-4); font-size: 13px; }
     .plan-msg.error { color: #fca5a5; }
     .plan-msg.ok { color: #86efac; }
     .already-badge {
-      display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 12px;
+      display: inline-flex; align-items: center; gap: var(--space-2); padding: 10px 20px; border-radius: var(--radius-sm);
       background: rgba(17,217,143,0.14); border: 1px solid rgba(17,217,143,0.35); color: #86efac;
       font-weight: 700; font-size: 14px; width: 100%; justify-content: center;
     }
     .school-note {
-      max-width: 500px; margin: 0 auto; padding: 24px; border-radius: 16px;
+      max-width: 500px; margin: 0 auto; padding: var(--space-5); border-radius: var(--radius-md);
       background: var(--surface); border: 1px solid var(--border); font-size: 14px; color: var(--muted);
     }
     .school-note a { color: #a89ffc; font-weight: 600; text-decoration: none; }
     .school-note a:hover { text-decoration: underline; }
-    footer { padding: 24px; text-align: center; font-size: 12px; color: rgba(210,218,245,0.28); }
+    footer { padding: var(--space-5); text-align: center; font-size: 12px; color: rgba(210,218,245,0.28); display: flex; align-items: center; justify-content: center; gap: 6px; }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="index.html" class="nav-logo"><span style="font-size:1.2em;">⚗️</span> The Magic Lab</a>
-    <button class="nav-pill" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+    <a href="index.html" class="nav-logo"><img src="assets/logo-prism.svg" alt="" style="width:20px;height:20px;"> The Magic Lab</a>
+    <button class="nav-pill" data-ml-auth onclick="window.MagicLabModal?.open()"><i data-lucide="lock" style="width:13px;height:13px;"></i>Sign In</button>
   </nav>
 
   <main>
@@ -90,13 +120,15 @@
     <div class="school-note">
       <strong style="color:#fff;">Teaching a whole class or school?</strong><br>
       Bulk access for schools is arranged directly — get in touch at
-      <a href="mailto:ruhan@themagiclab.co.za">ruhan@themagiclab.co.za</a> and we'll set your students up.
+      <a href="mailto:ruhanjvr@gmail.com">ruhanjvr@gmail.com</a> and we'll set your students up.
     </div>
   </main>
 
-  <footer>⚗️ The Magic Lab · © 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
+  <footer><img src="assets/logo-prism.svg" alt="" style="width:12px;height:12px;vertical-align:-2px;">The Magic Lab · © 2026 Ruhan Janse van Rensburg. All rights reserved.</footer>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => window.lucide?.createIcons());
+
     function _syncPlanCard() {
       const profile = window.MagicLabAuth?.getProfile();
       const btn = document.getElementById('upgradeBtn');
@@ -105,18 +137,8 @@
       if (profile?.package === 'pro' || profile?.package === 'school') {
         btn.outerHTML = '<div class="already-badge">✓ You already have full access</div>';
         if (msg) msg.textContent = '';
-        return;
-      }
-      if (!window.MagicLabPayments?.live) {
-        btn.disabled = true;
-        btn.textContent = '💳 Payments launching soon';
-        if (msg) {
-          msg.className = 'plan-msg';
-          msg.textContent = "We're putting the final touches on secure payments — the Pro plan opens shortly.";
-        }
       }
     }
-    document.addEventListener('DOMContentLoaded', _syncPlanCard);
     document.addEventListener('magiclab:auth:ready', _syncPlanCard);
     document.addEventListener('magiclab:auth:change', _syncPlanCard);
 
