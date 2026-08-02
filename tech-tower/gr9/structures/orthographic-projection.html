@@ -262,6 +262,24 @@ function isoProject(x,y,z,ox,oy){
   const py = oy + (x+y)*Math.sin(Math.PI/6)*U - z*U;
   return [px,py];
 }
+// Sutherland-Hodgman clip of a convex 2D polygon against a single half-plane.
+// insideFn(point) says which side to keep; intersectFn(a,b) finds where
+// edge a->b crosses the boundary. Used to cut away the part of a top face
+// that a taller, later segment hides from the isometric viewing angle.
+function clipPolygonHalfPlane(poly, insideFn, intersectFn){
+  const out = [];
+  for(let i=0;i<poly.length;i++){
+    const cur = poly[i], prev = poly[(i-1+poly.length)%poly.length];
+    const curIn = insideFn(cur), prevIn = insideFn(prev);
+    if(curIn){
+      if(!prevIn) out.push(intersectFn(prev,cur));
+      out.push(cur);
+    } else if(prevIn){
+      out.push(intersectFn(prev,cur));
+    }
+  }
+  return out;
+}
 function isoFace(pts3d, ox, oy, fill, shade, edge){
   const pts = pts3d.map(([x,y,z])=>isoProject(x,y,z,ox,oy));
   isoCtx.beginPath();
@@ -311,11 +329,26 @@ function drawIso(){
     else segs.push({x0:xa,x1:xb,z});
   }
 
-  // TOP faces — one per segment. These sit at genuinely different heights,
-  // so each keeps its own outline; that's a real edge of the step/notch,
-  // not a seam between pieces.
-  segs.forEach(seg=>{
-    isoFace([[seg.x0,0,seg.z],[seg.x1,0,seg.z],[seg.x1,maxY,seg.z],[seg.x0,maxY,seg.z]], ox, oy, fill, 1.0, edge);
+  // TOP faces — one per segment, clipped to the part actually visible from
+  // this angle. A LATER (higher-x), TALLER segment can hide part of an
+  // earlier one: along the isometric view direction (roughly (1,1,1) —
+  // increasing x, y and z together), a point (x,y) on this face is
+  // occluded once y - x drops to or below maxY - (that later segment's
+  // start x), i.e. it's close enough, in depth, for the taller segment's
+  // own material to sit in front of it. (Assumes the taller segment is
+  // near enough that x-distance to it never exceeds its height
+  // difference, true for both example objects — a fully general solution
+  // would need a second clip for that case.)
+  segs.forEach((seg,i)=>{
+    let poly = [[seg.x0,0],[seg.x1,0],[seg.x1,maxY],[seg.x0,maxY]];
+    segs.slice(i+1).filter(s=>s.z>seg.z).forEach(occluder=>{
+      const threshold = maxY - occluder.x0;
+      poly = clipPolygonHalfPlane(poly, p=>(p[1]-p[0])>threshold, (a,b)=>{
+        const fa=a[1]-a[0]-threshold, fb=b[1]-b[0]-threshold, t=fa/(fa-fb);
+        return [a[0]+t*(b[0]-a[0]), a[1]+t*(b[1]-a[1])];
+      });
+    });
+    if(poly.length>=3) isoFace(poly.map(([x,y])=>[x,y,seg.z]), ox, oy, fill, 1.0, edge);
   });
 
   // WALL faces — one at every height change, up OR down. (The earlier
