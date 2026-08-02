@@ -351,20 +351,22 @@ function drawIso(){
     if(poly.length>=3) isoFace(poly.map(([x,y])=>[x,y,seg.z]), ox, oy, fill, 1.0, edge);
   });
 
-  // WALL faces — one at every height change, up OR down. (The earlier
-  // "only downward steps are visible" rule was correct for the strict,
-  // single-axis SIDE view, but isometric is a diagonal view: an upward
-  // step, like the notch floor rising to meet the right tower, is still
-  // genuinely visible from this angle. Skipping it left an actual gap in
-  // the geometry — the canvas background showing through — not just a
-  // stylistic miss.) The object's right end falls out of the same rule as
-  // a "step down to the ground", so it needs no special case. Assumes the
-  // segments are contiguous, which holds for both example objects.
+  // WALL faces — only where the profile steps DOWN moving left to right.
+  // An upward step (e.g. the notch floor rising to meet the right tower)
+  // faces back toward -x, the same orientation as the object's own left
+  // end, which is never drawn either — both are back-facing from this
+  // angle. It briefly looked like skipping it left a gap, but that was a
+  // symptom of the top faces not being occluded/clipped correctly yet
+  // (see above): once the notch floor is properly clipped down to its
+  // true visible sliver, the merged front face's own boundary already
+  // closes the silhouette there — no separate wall needed. The object's
+  // right end falls out of this same "step down" rule as a drop to the
+  // ground, so it needs no special case. Assumes the segments are
+  // contiguous, which holds for both example objects.
   segs.forEach((seg,i)=>{
     const heightAfter = i+1<segs.length ? segs[i+1].z : 0;
-    if(heightAfter !== seg.z){
-      const zLo = Math.min(seg.z, heightAfter), zHi = Math.max(seg.z, heightAfter);
-      isoFace([[seg.x1,0,zLo],[seg.x1,maxY,zLo],[seg.x1,maxY,zHi],[seg.x1,0,zHi]], ox, oy, fill, 0.55, edge);
+    if(heightAfter < seg.z){
+      isoFace([[seg.x1,0,heightAfter],[seg.x1,maxY,heightAfter],[seg.x1,maxY,seg.z],[seg.x1,0,seg.z]], ox, oy, fill, 0.55, edge);
     }
   });
 
