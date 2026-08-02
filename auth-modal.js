@@ -18,7 +18,7 @@
 <div class="ml-modal-overlay" id="ml-overlay" role="dialog" aria-modal="true" aria-label="Sign in to The Magic Lab">
   <div class="ml-modal">
     <button class="ml-modal-close" id="ml-close" aria-label="Close">✕</button>
-    <div class="ml-modal-logo"><img src="/assets/logo-prism.svg" alt="" style="width:20px;height:20px;vertical-align:-4px;margin-right:4px;">The Magic Lab</div>
+    <div class="ml-modal-logo"><img src="/assets/logo-prism.svg" alt="" style="width:28px;height:28px;vertical-align:-7px;margin-right:4px;">The Magic Lab</div>
     <div class="ml-modal-title" id="ml-modal-title">Welcome back</div>
     <p class="ml-modal-sub" id="ml-modal-sub">Sign in to track your progress</p>
 
