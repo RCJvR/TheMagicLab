@@ -189,6 +189,7 @@
         <button class="view-btn active" id="vb_front" onclick="selectView('front')"><i data-lucide="square" style="width:13px;height:13px"></i> Front</button>
         <button class="view-btn" id="vb_top" onclick="selectView('top')"><i data-lucide="square" style="width:13px;height:13px"></i> Top</button>
         <button class="view-btn" id="vb_side" onclick="selectView('side')"><i data-lucide="square" style="width:13px;height:13px"></i> Side</button>
+        <button class="view-btn" id="vb_all" onclick="selectView('all')"><i data-lucide="layout-grid" style="width:13px;height:13px"></i> Complete Sketch</button>
       </div>
       <div class="truss-canvas-wrap" style="padding:10px"><canvas id="viewCanvas" height="200"></canvas></div>
       <div class="part-info" id="viewInfo" style="margin-top:12px"></div>
@@ -242,7 +243,7 @@ function switchTab(id,btn){
    step of 3x4x2 sitting on the back-left of the base,
    giving an overall L-profile when viewed from the side.
 ═══════════════════════════════════════════════ */
-const U = 26; // unit size in px for iso drawing
+let U = 26; // unit size in px for iso drawing (auto-fitted to canvas + object — see drawIso)
 const isoCanvas = document.getElementById('isoCanvas');
 const isoCtx = isoCanvas.getContext('2d');
 let isoW, isoH;
@@ -284,9 +285,23 @@ function drawIsoBox(x0,x1,y0,y1,z0,z1,ox,oy,fill,edge){
 }
 function drawIso(){
   isoCtx.clearRect(0,0,isoW,isoH);
-  const ox = isoW*0.42, oy = isoH*0.68;
+  const boxes = OBJECTS[currentObject].boxes;
+  let maxX=0, maxY=0, maxZ=0;
+  boxes.forEach(b=>{ maxX=Math.max(maxX,b[1]); maxY=Math.max(maxY,b[3]); maxZ=Math.max(maxZ,b[5]); });
+  // Auto-fit: scale the unit size so the object's isometric footprint fills
+  // the canvas (with margin), whatever the canvas's real size turns out to
+  // be and whichever object is selected. A fixed unit size + fixed origin
+  // ratio left it small and off-centre on a wide canvas.
+  const cos30 = Math.cos(Math.PI/6), sin30 = Math.sin(Math.PI/6);
+  const wProj = (maxX+maxY)*cos30, hProj = (maxX+maxY)*sin30 + maxZ;
+  const marginX = 24, marginTop = 20, marginBottom = 34; // marginBottom leaves room for the caption
+  const availW = isoW - marginX*2, availH = isoH - marginTop - marginBottom;
+  U = Math.max(10, Math.min(availW/wProj, availH/hProj));
+  const drawnW = wProj*U, drawnH = hProj*U;
+  const ox = (isoW-drawnW)/2 + maxY*cos30*U;
+  const oy = marginTop + (availH-drawnH)/2 + maxZ*U;
   const fill = s => `rgba(253,186,116,${0.10+0.55*s})`;
-  OBJECTS[currentObject].boxes.forEach(b=>{
+  boxes.forEach(b=>{
     drawIsoBox(b[0],b[1],b[2],b[3],b[4],b[5], ox,oy, fill, 'rgba(253,186,116,0.9)');
   });
   isoCtx.fillStyle='rgba(210,218,245,.55)';
@@ -306,7 +321,7 @@ function resizeView(){
   viewCtx.scale(devicePixelRatio, devicePixelRatio);
   drawSelectedView();
 }
-const VU = 22;
+let VU = 22; // scaled up temporarily for the combined "Complete Sketch" layout — see drawAllViews
 // Two objects to explore, each built from axis-aligned boxes (matching the
 // isometric drawIsoBox calls) plus the matching hand-worked 2D outline for
 // each of the three orthographic views.
@@ -349,8 +364,12 @@ const OBJECTS = {
   notched:{
     label:'Notched (U) block',
     // Two towers (3 units tall) at x 0-2 and x 4-6, joined by a 1-unit-tall
-    // base spanning the full width — leaves a gap/notch in the middle top.
-    boxes:[[0,2,0,4,0,3],[4,6,0,4,0,3],[0,6,0,4,0,1]],
+    // base — leaves a gap/notch in the middle top. The connecting base box
+    // only spans x 2-4 (the gap): each tower's own box already covers its
+    // own 0-1 unit base height, so a base box spanning the full 0-6 width
+    // would overlap both towers and cause z-fighting-style rendering glitches
+    // in the isometric view (double-drawn faces/edges where boxes coincide).
+    boxes:[[0,2,0,4,0,3],[4,6,0,4,0,3],[2,4,0,4,0,1]],
     views:{
       front:{
         label:'FRONT VIEW',
@@ -397,10 +416,10 @@ function selectView(id){
   document.getElementById('vb_'+id).classList.add('active');
   drawSelectedView();
 }
-function drawSelectedView(){
-  viewCtx.clearRect(0,0,vW,vH);
-  const v = OBJECTS[currentObject].views[currentView];
-  const cx = vW*0.28, cy = vH*0.80;
+// Draws one view's outline + hidden/visible interior lines at the given
+// origin. Shared by the single-view mode and the combined "Complete
+// Sketch" layout so both stay in sync with the same view data.
+function drawViewShape(v, cx, cy){
   const pts = v.draw(cx,cy);
   viewCtx.beginPath();
   pts.forEach((p,i)=> i===0?viewCtx.moveTo(p[0],p[1]):viewCtx.lineTo(p[0],p[1]));
@@ -436,6 +455,22 @@ function drawSelectedView(){
     viewCtx.lineWidth=2.5;
     viewCtx.stroke();
   });
+}
+
+function drawSelectedView(){
+  if(currentView==='all'){ drawAllViews(); return; }
+  // Coming back from "Complete Sketch" mode, which grows the canvas taller
+  // — restore the normal single-view height so it doesn't stay stretched.
+  if(vH !== 200){
+    vH = 200;
+    viewCanvas.height = vH*devicePixelRatio;
+    viewCtx.setTransform(1,0,0,1,0,0);
+    viewCtx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  viewCtx.clearRect(0,0,vW,vH);
+  const v = OBJECTS[currentObject].views[currentView];
+  const cx = vW*0.28, cy = vH*0.80;
+  drawViewShape(v, cx, cy);
   viewCtx.fillStyle='rgba(210,218,245,.55)';
   viewCtx.font='10px "JetBrains Mono",monospace';
   viewCtx.fillText(v.label, 12, 16);
@@ -443,6 +478,49 @@ function drawSelectedView(){
   document.getElementById('viewInfo').innerHTML = `
     <div class="part-name">${v.label}</div>
     <div class="part-desc">${v.desc}</div>`;
+}
+
+// The "Complete Sketch" layout: all three views on one canvas, arranged
+// exactly as the lesson's own first-angle convention describes — top view
+// directly underneath the front view, side view directly beside it, with
+// features aligned across views by construction (they share cx/cy origins
+// on the matching axis).
+function drawAllViews(){
+  const obj = OBJECTS[currentObject];
+  const boxes = obj.boxes;
+  let maxX=0, maxY=0, maxZ=0;
+  boxes.forEach(b=>{ maxX=Math.max(maxX,b[1]); maxY=Math.max(maxY,b[3]); maxZ=Math.max(maxZ,b[5]); });
+
+  const marginLeft=36, marginTop=28, marginRight=20, marginBottom=20, gap=34;
+  const savedVU = VU;
+  const availW = vW - marginLeft - marginRight - gap;
+  VU = Math.max(8, Math.min(24, availW/(maxX+maxY)));
+
+  vH = marginTop + maxZ*VU + gap + maxY*VU + marginBottom;
+  viewCanvas.height = vH*devicePixelRatio;
+  viewCtx.setTransform(1,0,0,1,0,0);
+  viewCtx.scale(devicePixelRatio, devicePixelRatio);
+  viewCtx.clearRect(0,0,vW,vH);
+
+  const cxF = marginLeft, cyF = marginTop + maxZ*VU;       // front: shares its x-axis with top, its z-axis with side
+  const cxT = cxF,        cyT = cyF + gap + maxY*VU;       // top: directly below front
+  const cxS = cxF + maxX*VU + gap, cyS = cyF;              // side: directly beside front
+
+  drawViewShape(obj.views.front, cxF, cyF);
+  drawViewShape(obj.views.top,   cxT, cyT);
+  drawViewShape(obj.views.side,  cxS, cyS);
+
+  viewCtx.fillStyle='rgba(210,218,245,.55)';
+  viewCtx.font='9px "JetBrains Mono",monospace';
+  viewCtx.fillText('FRONT', cxF, cyF-maxZ*VU-8);
+  viewCtx.fillText('TOP (PLAN)', cxT, cyT-maxY*VU-8);
+  viewCtx.fillText('SIDE', cxS, cyS-maxZ*VU-8);
+
+  VU = savedVU; // restore the fixed scale used by the single-view mode
+
+  document.getElementById('viewInfo').innerHTML = `
+    <div class="part-name">Complete Orthographic Sketch</div>
+    <div class="part-desc">All three views laid out exactly as first-angle projection requires: the top view directly underneath the front view, and the side view directly beside it. Because they share the same aligned axes, a feature's position lines up across every view — that's what makes a full orthographic drawing readable as one connected description of the object, not three unrelated pictures.</div>`;
 }
 window.addEventListener('resize', resizeView);
 resizeIso();
