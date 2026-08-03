@@ -147,6 +147,29 @@
     </div>
     <p style="font-size:12px;color:var(--muted);margin-top:-8px">Violet · Indigo · Blue · Green · Yellow · Orange · Red (mnemonic: VIBGYOR)</p>
     <p>A rainbow forms when sunlight is refracted and dispersed by water droplets in the atmosphere — the same principle as a prism.</p>
+
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:16px;margin:16px 0">
+      <svg viewBox="0 0 400 200" style="width:100%;height:auto;display:block" role="img" aria-label="Diagram of white light entering a triangular glass prism and dispersing into the spectrum">
+        <polygon points="200,20 260,150 140,150" fill="rgba(148,163,184,0.10)" stroke="rgba(148,163,184,0.55)" stroke-width="1.5"/>
+        <line x1="150" y1="80" x2="184" y2="112" stroke="rgba(148,163,184,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="220" y1="80" x2="254" y2="128" stroke="rgba(148,163,184,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="30" y1="88" x2="167" y2="96" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
+        <line x1="167" y1="96" x2="237" y2="104" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <line x1="237" y1="104" x2="365" y2="114" stroke="#ef4444" stroke-width="2"/>
+        <line x1="237" y1="104" x2="365" y2="122" stroke="#f97316" stroke-width="2"/>
+        <line x1="237" y1="104" x2="365" y2="130" stroke="#eab308" stroke-width="2"/>
+        <line x1="237" y1="104" x2="365" y2="138" stroke="#22c55e" stroke-width="2"/>
+        <line x1="237" y1="104" x2="365" y2="146" stroke="#3b82f6" stroke-width="2"/>
+        <line x1="237" y1="104" x2="365" y2="154" stroke="#6366f1" stroke-width="2"/>
+        <line x1="237" y1="104" x2="365" y2="162" stroke="#8b5cf6" stroke-width="2"/>
+        <text x="28" y="78" font-size="10" fill="rgba(255,255,255,0.7)" font-family="Cabinet Grotesk, sans-serif">White light</text>
+        <text x="372" y="117" font-size="9" fill="#ef4444" font-family="Cabinet Grotesk, sans-serif">R — bends least</text>
+        <text x="372" y="163" font-size="9" fill="#8b5cf6" font-family="Cabinet Grotesk, sans-serif">V — bends most</text>
+        <text x="200" y="185" font-size="10" fill="rgba(148,163,184,0.6)" font-family="Cabinet Grotesk, sans-serif" text-anchor="middle">Refraction happens twice — entering and leaving the glass</text>
+      </svg>
+      <p style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">Every colour bends towards the base of the prism, but by a different amount — violet bends most, red bends least — so white light fans out into the spectrum.</p>
+    </div>
+
     <div class="callout"><strong>Remember:</strong> Violet/indigo/blue light has the highest frequency (shortest wavelength). Red/orange light has the lowest frequency (longest wavelength). Frequency details are NOT required at this level.</div>
 
     <h2>Opaque and transparent substances</h2>
@@ -255,7 +278,7 @@ const W=520,H=420;
 let mode='prism', raf=null, t=0, mirrorAngle=45;
 
 const modeInfo={
-  prism:'White light enters the prism and is dispersed into the visible spectrum — violet bends most, red bends least.',
+  prism:'White light refracts twice — entering and leaving the glass. Violet bends most, red bends least, so white light disperses into the spectrum. (Colour separation is exaggerated here for visibility — a real prism spreads light by only a few degrees.)',
   reflection:'The angle of incidence (incoming ray) equals the angle of reflection (outgoing ray), both measured from the normal.',
   refraction:'Light bends towards the normal when entering a denser medium (air → water). It bends away when leaving.',
   colour:'A coloured object reflects only its own colour and absorbs all others. Black absorbs all; white reflects all.'
@@ -279,6 +302,7 @@ function initSim(){
 
 const SPEC=['#8b5cf6','#6366f1','#3b82f6','#22c55e','#eab308','#f97316','#ef4444'];
 const SPEC_NAMES=['Violet','Indigo','Blue','Green','Yellow','Orange','Red'];
+const SPEC_N=[1.545,1.535,1.525,1.518,1.513,1.509,1.505]; // refractive index per colour — violet highest, red lowest
 
 function loop(){
   raf=requestAnimationFrame(loop);
@@ -294,32 +318,106 @@ function loop(){
 }
 
 function drawPrism(){
-  // White beam in
-  const beamX=60, beamY=H/2;
-  ctx.strokeStyle='rgba(255,255,255,0.8)';ctx.lineWidth=4;
-  ctx.beginPath();ctx.moveTo(beamX,beamY);ctx.lineTo(220,H/2);ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='11px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('White light',130,H/2-12);
+  // Equilateral prism (60° apex), apex up, base horizontal — the classic dispersion prism.
+  const A={x:250,y:117}, B={x:350,y:290}, C={x:150,y:290};
 
-  // Prism
-  const px=220,py=H/2-80,pb=H/2+80;
-  ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+120,pb);ctx.lineTo(px-30,pb);ctx.closePath();
-  ctx.fillStyle='rgba(148,163,184,0.12)';ctx.fill();
-  ctx.strokeStyle='rgba(148,163,184,0.5)';ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='12px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('Prism',px+30,pb+16);
+  function norm(v){const l=Math.hypot(v.x,v.y)||1;return{x:v.x/l,y:v.y/l};}
+  function outward(P1,P2,interior){
+    const f=norm({x:P2.x-P1.x,y:P2.y-P1.y});
+    let n={x:-f.y,y:f.x};
+    const toI={x:interior.x-P1.x,y:interior.y-P1.y};
+    if(n.x*toI.x+n.y*toI.y>0) n={x:-n.x,y:-n.y};
+    return n;
+  }
+  // Vector form of Snell's law (mirrors GLSL's refract()): d is the incident
+  // direction, n is the surface normal pointing back against d, eta = n1/n2.
+  function refract(d,n,eta){
+    const cosI=-(d.x*n.x+d.y*n.y);
+    const sin2T=eta*eta*(1-cosI*cosI);
+    if(sin2T>1) return null; // total internal reflection
+    const cosT=Math.sqrt(1-sin2T);
+    const k=eta*cosI-cosT;
+    return norm({x:eta*d.x+k*n.x,y:eta*d.y+k*n.y});
+  }
+  function segIntersect(p,d,q1,q2){
+    const e={x:q2.x-q1.x,y:q2.y-q1.y};
+    const den=d.x*e.y-d.y*e.x;
+    if(Math.abs(den)<1e-9) return null;
+    const t=((q1.x-p.x)*e.y-(q1.y-p.y)*e.x)/den;
+    return {x:p.x+d.x*t,y:p.y+d.y*t};
+  }
 
-  // Dispersed rays
-  const exitX=290, exitY=H/2+20;
-  SPEC.forEach((c,i)=>{
-    const angle=-0.35+i*0.1;
-    const ex=exitX+Math.cos(angle)*200, ey=exitY+Math.sin(angle)*200;
-    ctx.strokeStyle=c;ctx.lineWidth=2.5;ctx.globalAlpha=0.85;
-    ctx.beginPath();ctx.moveTo(exitX,exitY);ctx.lineTo(ex,ey);ctx.stroke();
-    ctx.globalAlpha=1;
-    ctx.fillStyle=c;ctx.font='10px var(--fd)';
-    ctx.fillText(SPEC_NAMES[i],ex+8,ey+3);
+  const nEntry=outward(A,C,B), nExit=outward(A,B,C);
+
+  // Incident beam tilted ~10° above horizontal so the angle of incidence (~40°)
+  // stays clear of total internal reflection at the far face for every colour.
+  const inAng=-10*Math.PI/180;
+  const dIn={x:Math.cos(inAng),y:Math.sin(inAng)};
+  const entry={x:A.x+(C.x-A.x)*0.6, y:A.y+(C.y-A.y)*0.6};
+  const start={x:entry.x-dIn.x*175, y:entry.y-dIn.y*175};
+
+  // Prism body
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.closePath();
+  ctx.fillStyle='rgba(148,163,184,0.10)';ctx.fill();
+  ctx.strokeStyle='rgba(148,163,184,0.55)';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Glass prism',(A.x+B.x+C.x)/3,C.y+24);
+
+  // Normal at the entry point (dashed)
+  ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(entry.x-nEntry.x*45,entry.y-nEntry.y*45);ctx.lineTo(entry.x+nEntry.x*45,entry.y+nEntry.y*45);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Incident white beam
+  ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(entry.x,entry.y);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('White light',start.x,start.y-10);
+
+  // Trace each colour through both refractions using its own refractive index —
+  // this is what actually makes violet bend more than red, not a hand-picked angle.
+  const rays=SPEC.map((c,i)=>{
+    const n=SPEC_N[i];
+    const dGlass=refract(dIn,nEntry,1/n);
+    if(!dGlass) return null;
+    const exitPt=segIntersect(entry,dGlass,A,B);
+    if(!exitPt) return null;
+    const dAir=refract(dGlass,{x:-nExit.x,y:-nExit.y},n);
+    if(!dAir) return null;
+    return {exitPt,dAir};
   });
+
+  const validAngles=rays.filter(Boolean).map(r=>Math.atan2(r.dAir.y,r.dAir.x));
+  const meanAngle=validAngles.reduce((a,b)=>a+b,0)/(validAngles.length||1);
+  const EXAG=4.5; // real prisms disperse light by only a few degrees — exaggerated so the fan is visible on screen
+
+  const midExit=(rays[3]||rays.find(Boolean));
+  if(midExit){
+    ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(midExit.exitPt.x-nExit.x*45,midExit.exitPt.y-nExit.y*45);ctx.lineTo(midExit.exitPt.x+nExit.x*45,midExit.exitPt.y+nExit.y*45);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  rays.forEach((r,i)=>{
+    if(!r) return;
+    // True refracted path inside the glass, entry face → exit face
+    ctx.strokeStyle=SPEC[i];ctx.lineWidth=1.5;ctx.globalAlpha=0.5;
+    ctx.beginPath();ctx.moveTo(entry.x,entry.y);ctx.lineTo(r.exitPt.x,r.exitPt.y);ctx.stroke();
+    ctx.globalAlpha=1;
+
+    // Emerging ray — spread exaggerated around the true mean exit direction so colours separate visibly
+    const trueAngle=Math.atan2(r.dAir.y,r.dAir.x);
+    const dispAngle=meanAngle+(trueAngle-meanAngle)*EXAG;
+    const ex=r.exitPt.x+Math.cos(dispAngle)*150, ey=r.exitPt.y+Math.sin(dispAngle)*150;
+    ctx.strokeStyle=SPEC[i];ctx.lineWidth=2.5;ctx.globalAlpha=0.9;
+    ctx.beginPath();ctx.moveTo(r.exitPt.x,r.exitPt.y);ctx.lineTo(ex,ey);ctx.stroke();
+    ctx.globalAlpha=1;
+    ctx.fillStyle=SPEC[i];ctx.font='10px var(--fd)';ctx.textAlign='left';
+    ctx.fillText(SPEC_NAMES[i],ex+6,ey+3);
+  });
+
+  ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Violet refracts most, red refracts least (spread exaggerated for clarity)',W/2,H-10);
 }
 
 function drawReflection(){
