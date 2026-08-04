@@ -163,16 +163,16 @@
         <line x1="167" y1="103" x2="240.8" y2="116.8" stroke="#3b82f6" stroke-width="1.6" opacity="0.8"/>
         <line x1="167" y1="103" x2="242.0" y2="118.9" stroke="#6366f1" stroke-width="1.6" opacity="0.8"/>
         <line x1="167" y1="103" x2="243.2" y2="121.0" stroke="#8b5cf6" stroke-width="1.6" opacity="0.8"/>
-        <!-- stage 2: each colour bends again leaving the glass and spreads further, drawn as a
-             wedge that's thin where it leaves the prism and thick by its labelled end — every
-             ray tapers the same way, so the widening isn't tied to which colour it is. -->
-        <polygon points="236.0,108.9 309.8,117.0 310.2,111.0 236.0,107.9" fill="#ef4444"/>
-        <polygon points="237.1,111.0 309.5,125.0 310.5,119.0 237.3,110.0" fill="#f97316"/>
-        <polygon points="238.3,113.1 309.3,132.9 310.7,127.1 238.5,112.1" fill="#eab308"/>
-        <polygon points="239.4,115.2 309.1,140.8 310.9,135.2 239.8,114.2" fill="#22c55e"/>
-        <polygon points="240.6,117.3 308.8,148.8 311.2,143.2 241.0,116.3" fill="#3b82f6"/>
-        <polygon points="241.8,119.3 308.6,156.7 311.4,151.3 242.2,118.5" fill="#6366f1"/>
-        <polygon points="242.9,121.4 308.4,164.6 311.6,159.4 243.5,120.6" fill="#8b5cf6"/>
+        <!-- stage 2: each colour bends again leaving the glass and spreads further. Each band's
+             edge is the shared midpoint with its neighbour, so the seven colours meet with no
+             gap between them — the underlying ray directions from stage 1 are unchanged. -->
+        <polygon points="235.4,107.4 310.0,110.0 310.0,118.0 236.6,109.5" fill="#ef4444"/>
+        <polygon points="236.6,109.5 310.0,118.0 310.0,126.0 237.8,111.5" fill="#f97316"/>
+        <polygon points="237.8,111.5 310.0,126.0 310.0,134.0 239.0,113.7" fill="#eab308"/>
+        <polygon points="239.0,113.7 310.0,134.0 310.0,142.0 240.2,115.8" fill="#22c55e"/>
+        <polygon points="240.2,115.8 310.0,142.0 310.0,150.0 241.4,117.8" fill="#3b82f6"/>
+        <polygon points="241.4,117.8 310.0,150.0 310.0,158.0 242.6,120.0" fill="#6366f1"/>
+        <polygon points="242.6,120.0 310.0,158.0 310.0,166.0 243.8,122.0" fill="#8b5cf6"/>
         <text x="26" y="76" font-size="10" fill="rgba(255,255,255,0.7)" font-family="Cabinet Grotesk, sans-serif">White light</text>
         <text x="316" y="117" font-size="10" font-weight="700" fill="#ef4444" font-family="Cabinet Grotesk, sans-serif">R</text>
         <text x="316" y="165" font-size="10" font-weight="700" fill="#8b5cf6" font-family="Cabinet Grotesk, sans-serif">V</text>
@@ -419,36 +419,45 @@ function drawPrism(){
     ctx.setLineDash([]);
   }
 
-  // A ray drawn as a wedge that's thin at (x1,y1) and thick at (x2,y2) — same
-  // taper profile for every colour, so thickness grows along each ray's own
-  // path rather than differing from one colour to the next.
-  function taperedRay(x1,y1,x2,y2,color,w1,w2,alpha){
-    const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1;
-    const nx=-dy/len,ny=dx/len;
-    ctx.beginPath();
-    ctx.moveTo(x1+nx*w1/2,y1+ny*w1/2);
-    ctx.lineTo(x2+nx*w2/2,y2+ny*w2/2);
-    ctx.lineTo(x2-nx*w2/2,y2-ny*w2/2);
-    ctx.lineTo(x1-nx*w1/2,y1-ny*w1/2);
-    ctx.closePath();
-    ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.fill();ctx.globalAlpha=1;
-  }
-
   rays.forEach((r,i)=>{
     if(!r) return;
     // Stage 1 path inside the glass: entry point → this colour's own point on the far face.
     ctx.strokeStyle=SPEC[i];ctx.lineWidth=1.5;ctx.globalAlpha=0.6;
     ctx.beginPath();ctx.moveTo(entry.x,entry.y);ctx.lineTo(r.exitPt.x,r.exitPt.y);ctx.stroke();
     ctx.globalAlpha=1;
+  });
 
-    // Stage 2 path in air: bends again at the far face and spreads apart further,
-    // drawn thin where it leaves the prism and progressively thicker toward its
-    // endpoint — every colour tapers the same way, so this isn't a colour effect.
+  // Stage 2, in air: each colour's own exit point and refracted direction (computed
+  // above, unchanged) define where its band starts and ends. Rather than drawing each
+  // ray as its own independent wedge — which leaves gaps because neighbouring rays
+  // point in slightly different directions — build the boundary *between* every pair
+  // of neighbours once and share it, so band i's right edge is exactly band i+1's
+  // left edge and the seven colours meet with no seam.
+  const endPts=rays.map(r=>{
+    if(!r) return null;
     const angle=Math.atan2(r.dAir.y,r.dAir.x);
-    const ex=r.exitPt.x+Math.cos(angle)*112, ey=r.exitPt.y+Math.sin(angle)*112;
-    taperedRay(r.exitPt.x,r.exitPt.y,ex,ey,SPEC[i],1.5,7,0.9);
+    return {x:r.exitPt.x+Math.cos(angle)*112, y:r.exitPt.y+Math.sin(angle)*112};
+  });
+  function boundaryPoints(pts){
+    const n=pts.length, b=new Array(n+1);
+    for(let i=1;i<n;i++) b[i]={x:(pts[i-1].x+pts[i].x)/2, y:(pts[i-1].y+pts[i].y)/2};
+    b[0]={x:pts[0].x+(pts[0].x-pts[1].x)*0.5, y:pts[0].y+(pts[0].y-pts[1].y)*0.5};
+    b[n]={x:pts[n-1].x+(pts[n-1].x-pts[n-2].x)*0.5, y:pts[n-1].y+(pts[n-1].y-pts[n-2].y)*0.5};
+    return b;
+  }
+  const nearB=boundaryPoints(rays.map(r=>r.exitPt)), farB=boundaryPoints(endPts);
+
+  rays.forEach((r,i)=>{
+    if(!r) return;
+    ctx.beginPath();
+    ctx.moveTo(nearB[i].x,nearB[i].y);
+    ctx.lineTo(farB[i].x,farB[i].y);
+    ctx.lineTo(farB[i+1].x,farB[i+1].y);
+    ctx.lineTo(nearB[i+1].x,nearB[i+1].y);
+    ctx.closePath();
+    ctx.globalAlpha=0.9;ctx.fillStyle=SPEC[i];ctx.fill();ctx.globalAlpha=1;
     ctx.fillStyle=SPEC[i];ctx.font='10px var(--fd)';ctx.textAlign='left';
-    ctx.fillText(SPEC_NAMES[i],ex+6,ey+3);
+    ctx.fillText(SPEC_NAMES[i],endPts[i].x+6,endPts[i].y+3);
   });
 
   ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='10px var(--fd)';ctx.textAlign='center';
