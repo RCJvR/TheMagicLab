@@ -147,6 +147,43 @@
     </div>
     <p style="font-size:12px;color:var(--muted);margin-top:-8px">Violet · Indigo · Blue · Green · Yellow · Orange · Red (mnemonic: VIBGYOR)</p>
     <p>A rainbow forms when sunlight is refracted and dispersed by water droplets in the atmosphere — the same principle as a prism.</p>
+
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:16px;margin:16px 0">
+      <svg viewBox="0 0 400 200" style="width:100%;height:auto;display:block" role="img" aria-label="Diagram of white light entering an equilateral triangular glass prism and dispersing into the spectrum in two stages">
+        <!-- equilateral prism, sitting upright with its base horizontal. The incident beam
+             is tilted ~9° above horizontal -- with the base level, that's the shallowest
+             approach that still refracts well clear of total internal reflection at the
+             far face. -->
+        <polygon points="200,46 260,150 140,150" fill="rgba(148,163,184,0.10)" stroke="rgba(148,163,184,0.55)" stroke-width="1.5"/>
+        <line x1="177.0" y1="115.9" x2="151.0" y2="100.9" stroke="rgba(148,163,184,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="226.9" y1="122.6" x2="252.9" y2="107.6" stroke="rgba(148,163,184,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="25.7" y1="130.3" x2="164.0" y2="108.4" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
+        <!-- stage 1: colours begin separating (slightly) while crossing the glass -->
+        <line x1="164.0" y1="108.4" x2="238.3" y2="112.3" stroke="#ef4444" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="238.7" y2="113.2" stroke="#f97316" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="239.2" y2="114.0" stroke="#eab308" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="239.9" y2="115.1" stroke="#22c55e" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="240.8" y2="116.6" stroke="#3b82f6" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="242.0" y2="118.9" stroke="#6366f1" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="243.4" y2="121.2" stroke="#8b5cf6" stroke-width="1.6" opacity="0.8"/>
+        <!-- stage 2: each colour bends again leaving the glass and spreads further. Each band's
+             edge is the shared midpoint with its neighbour, so the seven colours meet with no
+             gap between them — the underlying ray directions from stage 1 are unchanged. -->
+        <polygon points="238.0,111.9 300.0,139.8 299.7,142.4 238.5,112.7" fill="#ef4444"/>
+        <polygon points="238.5,112.7 299.7,142.4 299.3,145.0 239.0,113.6" fill="#f97316"/>
+        <polygon points="239.0,113.6 299.3,145.0 298.7,148.1 239.6,114.6" fill="#eab308"/>
+        <polygon points="239.6,114.6 298.7,148.1 297.8,152.2 240.3,115.9" fill="#22c55e"/>
+        <polygon points="240.3,115.9 297.8,152.2 295.8,158.4 241.4,117.8" fill="#3b82f6"/>
+        <polygon points="241.4,117.8 295.8,158.4 292.0,166.6 242.7,120.0" fill="#6366f1"/>
+        <polygon points="242.7,120.0 292.0,166.6 287.2,175.4 244.0,122.3" fill="#8b5cf6"/>
+        <text x="25" y="102" font-size="10" fill="rgba(255,255,255,0.7)" font-family="Cabinet Grotesk, sans-serif">White light</text>
+        <text x="304" y="144" font-size="10" font-weight="700" fill="#ef4444" font-family="Cabinet Grotesk, sans-serif">R</text>
+        <text x="288" y="180" font-size="10" font-weight="700" fill="#8b5cf6" font-family="Cabinet Grotesk, sans-serif">V</text>
+        <text x="200" y="195" font-size="10" fill="rgba(148,163,184,0.6)" font-family="Cabinet Grotesk, sans-serif" text-anchor="middle">Two refractions: a slight split entering, a bigger split leaving</text>
+      </svg>
+      <p style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">The colours start separating the moment they enter the glass and keep spreading as they cross it. When they reach the second face they bend again — away from the normal this time — and spread apart much more sharply. Violet bends most at both faces, red least, so white light fans out into the spectrum.</p>
+    </div>
+
     <div class="callout"><strong>Remember:</strong> Violet/indigo/blue light has the highest frequency (shortest wavelength). Red/orange light has the lowest frequency (longest wavelength). Frequency details are NOT required at this level.</div>
 
     <h2>Opaque and transparent substances</h2>
@@ -255,7 +292,7 @@ const W=520,H=420;
 let mode='prism', raf=null, t=0, mirrorAngle=45;
 
 const modeInfo={
-  prism:'White light enters the prism and is dispersed into the visible spectrum — violet bends most, red bends least.',
+  prism:'White light refracts twice. Colours start separating slightly as soon as they enter the glass, keep spreading while crossing it, then bend again and spread much further as they leave — violet bends most at both faces, red least. (The tiny split inside the glass is exaggerated so it\'s visible; the wider split on exit is the real effect of leaving glass for air.)',
   reflection:'The angle of incidence (incoming ray) equals the angle of reflection (outgoing ray), both measured from the normal.',
   refraction:'Light bends towards the normal when entering a denser medium (air → water). It bends away when leaving.',
   colour:'A coloured object reflects only its own colour and absorbs all others. Black absorbs all; white reflects all.'
@@ -279,6 +316,7 @@ function initSim(){
 
 const SPEC=['#8b5cf6','#6366f1','#3b82f6','#22c55e','#eab308','#f97316','#ef4444'];
 const SPEC_NAMES=['Violet','Indigo','Blue','Green','Yellow','Orange','Red'];
+const SPEC_N=[1.545,1.535,1.525,1.518,1.513,1.509,1.505]; // refractive index per colour — violet highest, red lowest
 
 function loop(){
   raf=requestAnimationFrame(loop);
@@ -294,32 +332,141 @@ function loop(){
 }
 
 function drawPrism(){
-  // White beam in
-  const beamX=60, beamY=H/2;
-  ctx.strokeStyle='rgba(255,255,255,0.8)';ctx.lineWidth=4;
-  ctx.beginPath();ctx.moveTo(beamX,beamY);ctx.lineTo(220,H/2);ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='11px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('White light',130,H/2-12);
+  // Equilateral prism (60° apex), sitting upright with its base horizontal.
+  const A={x:250,y:117}, B={x:350,y:290}, C={x:150,y:290};
 
-  // Prism
-  const px=220,py=H/2-80,pb=H/2+80;
-  ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+120,pb);ctx.lineTo(px-30,pb);ctx.closePath();
-  ctx.fillStyle='rgba(148,163,184,0.12)';ctx.fill();
-  ctx.strokeStyle='rgba(148,163,184,0.5)';ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='12px var(--fd)';ctx.textAlign='center';
-  ctx.fillText('Prism',px+30,pb+16);
+  function norm(v){const l=Math.hypot(v.x,v.y)||1;return{x:v.x/l,y:v.y/l};}
+  function outward(P1,P2,interior){
+    const f=norm({x:P2.x-P1.x,y:P2.y-P1.y});
+    let n={x:-f.y,y:f.x};
+    const toI={x:interior.x-P1.x,y:interior.y-P1.y};
+    if(n.x*toI.x+n.y*toI.y>0) n={x:-n.x,y:-n.y};
+    return n;
+  }
+  // Vector form of Snell's law (mirrors GLSL's refract()): d is the incident
+  // direction, n is the surface normal pointing back against d, eta = n1/n2.
+  function refract(d,n,eta){
+    const cosI=-(d.x*n.x+d.y*n.y);
+    const sin2T=eta*eta*(1-cosI*cosI);
+    if(sin2T>1) return null; // total internal reflection
+    const cosT=Math.sqrt(1-sin2T);
+    const k=eta*cosI-cosT;
+    return norm({x:eta*d.x+k*n.x,y:eta*d.y+k*n.y});
+  }
+  function segIntersect(p,d,q1,q2){
+    const e={x:q2.x-q1.x,y:q2.y-q1.y};
+    const den=d.x*e.y-d.y*e.x;
+    if(Math.abs(den)<1e-9) return null;
+    const t=((q1.x-p.x)*e.y-(q1.y-p.y)*e.x)/den;
+    return {x:p.x+d.x*t,y:p.y+d.y*t};
+  }
 
-  // Dispersed rays
-  const exitX=290, exitY=H/2+20;
-  SPEC.forEach((c,i)=>{
-    const angle=-0.35+i*0.1;
-    const ex=exitX+Math.cos(angle)*200, ey=exitY+Math.sin(angle)*200;
-    ctx.strokeStyle=c;ctx.lineWidth=2.5;ctx.globalAlpha=0.85;
-    ctx.beginPath();ctx.moveTo(exitX,exitY);ctx.lineTo(ex,ey);ctx.stroke();
-    ctx.globalAlpha=1;
-    ctx.fillStyle=c;ctx.font='10px var(--fd)';
-    ctx.fillText(SPEC_NAMES[i],ex+8,ey+3);
+  const nEntry=outward(A,C,B), nExit=outward(A,B,C);
+
+  // Incident beam tilted ~9° above horizontal — with the prism sitting upright
+  // (base horizontal), this is the shallowest approach that still keeps the
+  // angle of incidence (~39°) safely clear of total internal reflection at
+  // the far face for every colour.
+  const inAng=-9*Math.PI/180;
+  const dIn={x:Math.cos(inAng),y:Math.sin(inAng)};
+  const entry={x:A.x+(C.x-A.x)*0.6, y:A.y+(C.y-A.y)*0.6};
+  const start={x:entry.x-dIn.x*175, y:entry.y-dIn.y*175};
+
+  // Prism body
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.closePath();
+  ctx.fillStyle='rgba(148,163,184,0.10)';ctx.fill();
+  ctx.strokeStyle='rgba(148,163,184,0.55)';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Glass prism',(A.x+B.x+C.x)/3,Math.max(A.y,B.y,C.y)+22);
+
+  // Normal at the entry point (dashed)
+  ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(entry.x-nEntry.x*45,entry.y-nEntry.y*45);ctx.lineTo(entry.x+nEntry.x*45,entry.y+nEntry.y*45);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Incident white beam
+  ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(entry.x,entry.y);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('White light',start.x,start.y-10);
+
+  // Stage 1 — refraction at the entry face. Each colour's own refractive index
+  // gives it a very slightly different angle inside the glass (a real prism only
+  // separates colours by a fraction of a degree here — far too small to see), so
+  // the tiny spread is exaggerated just enough to be visible while it crosses the glass.
+  const glassAngles=SPEC_N.map(n=>{
+    const d=refract(dIn,nEntry,1/n);
+    return d?Math.atan2(d.y,d.x):null;
   });
+  const meanGlass=glassAngles.reduce((a,b)=>a+(b||0),0)/glassAngles.length;
+  const EXAG_INSIDE=9;
+
+  // Stage 2 — each (visibly-separated) internal ray reaches its own point on the
+  // far face and refracts again leaving the glass. This second refraction is real
+  // Snell's law with no further exaggeration — going from glass into air naturally
+  // amplifies the gap between colours far more than the first surface did, which
+  // is exactly why the fan only becomes obviously rainbow-coloured after this bend.
+  const rays=SPEC.map((c,i)=>{
+    if(glassAngles[i]==null) return null;
+    const dispGlassAngle=meanGlass+(glassAngles[i]-meanGlass)*EXAG_INSIDE;
+    const dGlass={x:Math.cos(dispGlassAngle),y:Math.sin(dispGlassAngle)};
+    const exitPt=segIntersect(entry,dGlass,A,B);
+    if(!exitPt) return null;
+    const dAir=refract(dGlass,{x:-nExit.x,y:-nExit.y},SPEC_N[i]);
+    if(!dAir) return null;
+    return {exitPt,dAir};
+  });
+
+  const midExit=(rays[3]||rays.find(Boolean));
+  if(midExit){
+    ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(midExit.exitPt.x-nExit.x*45,midExit.exitPt.y-nExit.y*45);ctx.lineTo(midExit.exitPt.x+nExit.x*45,midExit.exitPt.y+nExit.y*45);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  rays.forEach((r,i)=>{
+    if(!r) return;
+    // Stage 1 path inside the glass: entry point → this colour's own point on the far face.
+    ctx.strokeStyle=SPEC[i];ctx.lineWidth=1.5;ctx.globalAlpha=0.6;
+    ctx.beginPath();ctx.moveTo(entry.x,entry.y);ctx.lineTo(r.exitPt.x,r.exitPt.y);ctx.stroke();
+    ctx.globalAlpha=1;
+  });
+
+  // Stage 2, in air: each colour's own exit point and refracted direction (computed
+  // above, unchanged) define where its band starts and ends. Rather than drawing each
+  // ray as its own independent wedge — which leaves gaps because neighbouring rays
+  // point in slightly different directions — build the boundary *between* every pair
+  // of neighbours once and share it, so band i's right edge is exactly band i+1's
+  // left edge and the seven colours meet with no seam.
+  const endPts=rays.map(r=>{
+    if(!r) return null;
+    const angle=Math.atan2(r.dAir.y,r.dAir.x);
+    return {x:r.exitPt.x+Math.cos(angle)*112, y:r.exitPt.y+Math.sin(angle)*112};
+  });
+  function boundaryPoints(pts){
+    const n=pts.length, b=new Array(n+1);
+    for(let i=1;i<n;i++) b[i]={x:(pts[i-1].x+pts[i].x)/2, y:(pts[i-1].y+pts[i].y)/2};
+    b[0]={x:pts[0].x+(pts[0].x-pts[1].x)*0.5, y:pts[0].y+(pts[0].y-pts[1].y)*0.5};
+    b[n]={x:pts[n-1].x+(pts[n-1].x-pts[n-2].x)*0.5, y:pts[n-1].y+(pts[n-1].y-pts[n-2].y)*0.5};
+    return b;
+  }
+  const nearB=boundaryPoints(rays.map(r=>r.exitPt)), farB=boundaryPoints(endPts);
+
+  rays.forEach((r,i)=>{
+    if(!r) return;
+    ctx.beginPath();
+    ctx.moveTo(nearB[i].x,nearB[i].y);
+    ctx.lineTo(farB[i].x,farB[i].y);
+    ctx.lineTo(farB[i+1].x,farB[i+1].y);
+    ctx.lineTo(nearB[i+1].x,nearB[i+1].y);
+    ctx.closePath();
+    ctx.globalAlpha=0.9;ctx.fillStyle=SPEC[i];ctx.fill();ctx.globalAlpha=1;
+    ctx.fillStyle=SPEC[i];ctx.font='10px var(--fd)';ctx.textAlign='left';
+    ctx.fillText(SPEC_NAMES[i],endPts[i].x+6,endPts[i].y+3);
+  });
+
+  ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Violet refracts most, red refracts least (the split inside the glass is exaggerated to be visible)',W/2,H-10);
 }
 
 function drawReflection(){
