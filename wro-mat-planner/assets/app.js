@@ -119,17 +119,15 @@
   }
 
   function buildKeyZonesPanel() {
-    const dl = document.querySelector('#keyZones dl');
-    if (!dl) return;
+    const tbody = document.querySelector('#keyZones tbody');
+    if (!tbody) return;
     window.WRO_ZONES.forEach(z => {
-      const dt = document.createElement('dt');
-      dt.textContent = z.name;
-      const dd = document.createElement('dd');
-      if (z.type === 'rect') {
-        dd.textContent = `(${z.x.toFixed(0)}, ${z.y.toFixed(0)}) → (${(z.x+z.w).toFixed(0)}, ${(z.y+z.h).toFixed(0)})  ·  ${z.w.toFixed(0)} × ${z.h.toFixed(0)} mm`;
-      }
-      dl.appendChild(dt);
-      dl.appendChild(dd);
+      if (z.type !== 'rect') return;
+      const tr = h('tr', {}, tbody);
+      h('td', { class: 'zone-name', text: z.name }, tr);
+      [z.x, z.y, z.x + z.w, z.y + z.h, z.w, z.h].forEach(v => {
+        h('td', { text: v.toFixed(0) }, tr);
+      });
     });
   }
 
