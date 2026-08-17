@@ -9,6 +9,7 @@ window.WRO_PROGRAM = (function() {
 
   const STORAGE_KEY = 'wro2026-program';
   const PORTS = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const SVG_NS = 'http://www.w3.org/2000/svg';
 
   function h(tag, attrs = {}, parent = null) {
     const e = document.createElement(tag);
@@ -19,9 +20,18 @@ window.WRO_PROGRAM = (function() {
     if (parent) parent.appendChild(e);
     return e;
   }
+  function svg(tag, attrs = {}, parent = null) {
+    const e = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
 
   function defaultConfig() {
     return { wheelDiameter: 56, axleTrack: 114, portLeft: 'A', portRight: 'B', portFront: 'C', portBack: 'D' };
+  }
+  function defaultWalker() {
+    return { ref: 'center', start: null, stepIndex: 0 };
   }
 
   function loadState() {
@@ -29,14 +39,59 @@ window.WRO_PROGRAM = (function() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        return { steps: parsed.steps || [], config: Object.assign(defaultConfig(), parsed.config || {}) };
+        return {
+          steps: parsed.steps || [],
+          config: Object.assign(defaultConfig(), parsed.config || {}),
+          walker: Object.assign(defaultWalker(), parsed.walker || {}),
+        };
       }
     } catch { /* fall through to default */ }
-    return { steps: [], config: defaultConfig() };
+    return { steps: [], config: defaultConfig(), walker: defaultWalker() };
   }
   function persist(state) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
+
+  // ---- kinematics: 0deg = up/north, positive = clockwise (matches the
+  // rest of the tool and PyBricks' own turn() convention) ----
+  function applyStep(pose, step) {
+    if (step.type === 'drive' || step.type === 'lineFollow') {
+      const rad = pose.heading * Math.PI / 180;
+      const dist = step.distanceMm;
+      return { x: pose.x + dist * Math.sin(rad), y: pose.y - dist * Math.cos(rad), heading: pose.heading };
+    }
+    if (step.type === 'turn') {
+      const signed = step.direction === 'left' ? -step.degrees : step.degrees;
+      return { x: pose.x, y: pose.y, heading: ((pose.heading + signed) % 360 + 360) % 360 };
+    }
+    return pose;
+  }
+  function poseAtIndex(steps, start, idx) {
+    let pose = { x: start.x, y: start.y, heading: start.heading };
+    for (let i = 0; i < idx; i++) pose = applyStep(pose, steps[i]);
+    return pose;
+  }
+  function trailPoints(steps, start, uptoIdx) {
+    const pts = [{ x: start.x, y: start.y }];
+    let pose = { x: start.x, y: start.y, heading: start.heading };
+    for (let i = 0; i < uptoIdx; i++) {
+      pose = applyStep(pose, steps[i]);
+      if (steps[i].type === 'drive' || steps[i].type === 'lineFollow') pts.push({ x: pose.x, y: pose.y });
+    }
+    return pts;
+  }
+  function refPoint(pose, ref, size) {
+    const rad = pose.heading * Math.PI / 180;
+    const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
+    const right = { x: Math.cos(rad), y: Math.sin(rad) };
+    const half = size / 2;
+    if (ref === 'front') return { x: pose.x + fwd.x * half, y: pose.y + fwd.y * half };
+    if (ref === 'back')  return { x: pose.x - fwd.x * half, y: pose.y - fwd.y * half };
+    if (ref === 'right') return { x: pose.x + right.x * half, y: pose.y + right.y * half };
+    if (ref === 'left')  return { x: pose.x - right.x * half, y: pose.y - right.y * half };
+    return { x: pose.x, y: pose.y };
+  }
+  const REF_LABELS = { center: 'Centre', front: 'Front', back: 'Back', left: 'Left side', right: 'Right side' };
 
   function describeStep(step) {
     switch (step.type) {
@@ -130,11 +185,12 @@ window.WRO_PROGRAM = (function() {
     return L.join('\n') + '\n';
   }
 
-  function init() {
+  function init(tools) {
     const section = document.getElementById('programSection');
     if (!section) return;
 
     const state = loadState();
+    let renderWalker = function() {}; // replaced once the walker section below initialises
 
     // ---- robot config ----
     const configToggle = document.getElementById('programConfigToggle');
@@ -231,6 +287,7 @@ window.WRO_PROGRAM = (function() {
           persist(state); render();
         });
       });
+      renderWalker();
     }
     render();
 
@@ -290,6 +347,142 @@ window.WRO_PROGRAM = (function() {
       a.click();
       URL.revokeObjectURL(url);
     });
+
+    // ---- walker: place a robot on the mat and step through the route ----
+    const stage = document.getElementById('stage');
+    const measSvg = document.getElementById('measureSvg');
+    const walkerLayer = document.getElementById('walkerLayer');
+    const refSelect = document.getElementById('walkerRef');
+    const placeBtn = document.getElementById('walkerPlaceBtn');
+    const resetBtn = document.getElementById('walkerResetBtn');
+    const prevBtn = document.getElementById('walkerPrevBtn');
+    const nextBtn = document.getElementById('walkerNextBtn');
+    const readout = document.getElementById('walkerReadout');
+
+    if (walkerLayer && refSelect) {
+      refSelect.value = state.walker.ref;
+
+      let placing = null; // null | 'position' | 'heading'
+      let pendingStart = null;
+
+      function clientToMM(e) {
+        const r = stage.getBoundingClientRect();
+        return {
+          x: ((e.clientX - r.left) / r.width) * window.WRO_MAT.width,
+          y: ((e.clientY - r.top) / r.height) * window.WRO_MAT.height,
+        };
+      }
+
+      function clearWalkerLayer() { walkerLayer.innerHTML = ''; }
+
+      function drawRobotAt(pose) {
+        clearWalkerLayer();
+        const size = tools.getRobotSize();
+        const half = size / 2;
+        const g = svg('g', { transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})` }, walkerLayer);
+        svg('rect', { x: -half, y: -half, width: size, height: size, class: 'walker-footprint' }, g);
+        svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
+
+        // trail so far
+        const idx = Math.min(state.walker.stepIndex, state.steps.length);
+        const pts = trailPoints(state.steps, state.walker.start, idx);
+        if (pts.length > 1) {
+          svg('polyline', {
+            points: pts.map(p => `${p.x},${p.y}`).join(' '),
+            class: 'walker-trail',
+          }, walkerLayer);
+        }
+
+        // reference-point marker
+        const rp = refPoint(pose, refSelect.value, size);
+        svg('circle', { cx: rp.x, cy: rp.y, r: 9, class: 'walker-refdot' }, walkerLayer);
+      }
+
+      function updateReadout() {
+        const total = state.steps.length;
+        const idx = Math.min(state.walker.stepIndex, total);
+        if (!state.walker.start) {
+          readout.textContent = 'Click "Place robot on mat", then click the mat twice — once for position, once to set heading.';
+          return;
+        }
+        const pose = poseAtIndex(state.steps, state.walker.start, idx);
+        const size = tools.getRobotSize();
+        const rp = refPoint(pose, refSelect.value, size);
+        const stepNote = idx > 0 && state.steps[idx - 1] ? ` · last: ${describeStep(state.steps[idx - 1])}` : ' · at start pose';
+        readout.textContent = `Step ${idx}/${total} — ${REF_LABELS[refSelect.value]} @ (${rp.x.toFixed(0)}, ${rp.y.toFixed(0)}) mm · heading ${pose.heading.toFixed(0)}°${stepNote}`;
+      }
+
+      renderWalker = function() {
+        state.walker.stepIndex = Math.min(state.walker.stepIndex, state.steps.length);
+        const hasRobot = !!state.walker.start;
+        resetBtn.disabled = !hasRobot;
+        prevBtn.disabled = !hasRobot || state.walker.stepIndex === 0;
+        nextBtn.disabled = !hasRobot || state.walker.stepIndex >= state.steps.length;
+        if (hasRobot) {
+          const pose = poseAtIndex(state.steps, state.walker.start, state.walker.stepIndex);
+          drawRobotAt(pose);
+        } else {
+          clearWalkerLayer();
+        }
+        updateReadout();
+      };
+
+      refSelect.addEventListener('change', () => {
+        state.walker.ref = refSelect.value;
+        persist(state);
+        renderWalker();
+      });
+
+      placeBtn.addEventListener('click', () => {
+        tools.setTool('none');
+        placing = 'position';
+        pendingStart = null;
+        placeBtn.textContent = '📍 Click the mat: set position…';
+        readout.textContent = 'Click anywhere on the mat to set the robot\'s starting position.';
+      });
+
+      measSvg.addEventListener('click', (e) => {
+        if (!placing) return;
+        const pt = clientToMM(e);
+        if (placing === 'position') {
+          pendingStart = { x: pt.x, y: pt.y, heading: 0 };
+          placing = 'heading';
+          placeBtn.textContent = '📍 Click again: set heading…';
+          readout.textContent = 'Now click in the direction the robot should face.';
+          drawRobotAt(pendingStart);
+        } else if (placing === 'heading') {
+          const dx = pt.x - pendingStart.x, dy = pt.y - pendingStart.y;
+          let heading = Math.atan2(dx, -dy) * 180 / Math.PI;
+          heading = ((heading % 360) + 360) % 360;
+          pendingStart.heading = heading;
+          state.walker.start = pendingStart;
+          state.walker.stepIndex = 0;
+          placing = null;
+          placeBtn.textContent = '📍 Re-place robot';
+          persist(state);
+          renderWalker();
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        state.walker.stepIndex = 0;
+        persist(state);
+        renderWalker();
+      });
+      prevBtn.addEventListener('click', () => {
+        state.walker.stepIndex = Math.max(0, state.walker.stepIndex - 1);
+        persist(state);
+        renderWalker();
+      });
+      nextBtn.addEventListener('click', () => {
+        state.walker.stepIndex = Math.min(state.steps.length, state.walker.stepIndex + 1);
+        persist(state);
+        renderWalker();
+      });
+
+      if (state.walker.start) placeBtn.textContent = '📍 Re-place robot';
+      renderWalker();
+    }
   }
 
   return { init, generatePyBricks };

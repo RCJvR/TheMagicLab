@@ -593,7 +593,7 @@
 
     setupExportModal(tools);
     setupSavedPaths(tools);
-    if (window.WRO_PROGRAM) window.WRO_PROGRAM.init();
+    if (window.WRO_PROGRAM) window.WRO_PROGRAM.init(tools);
 
     // Auto-load if there's saved state? Skip — explicit is better.
   }

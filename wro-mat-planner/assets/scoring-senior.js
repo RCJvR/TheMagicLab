@@ -70,14 +70,10 @@ window.WRO_SCORING = {
       id: 'cement',
       name: '3. Deliver the cement',
       items: [
-        {
-          id: 'cement_in',
-          label: 'Cement elements completely in matching-colour area',
-          type: 'counter',
-          points: 1,
-          maxCount: 40,
-          max: 40,
-        },
+        { id: 'cement_yellow', label: 'Yellow elements completely in',  type: 'counter', points: 1, maxCount: 10, max: 10 },
+        { id: 'cement_green',  label: 'Green elements completely in',   type: 'counter', points: 1, maxCount: 10, max: 10 },
+        { id: 'cement_blue',   label: 'Blue elements completely in',    type: 'counter', points: 1, maxCount: 10, max: 10 },
+        { id: 'cement_white',  label: 'White elements completely in',   type: 'counter', points: 1, maxCount: 10, max: 10 },
       ],
     },
     {

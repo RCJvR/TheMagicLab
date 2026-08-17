@@ -454,6 +454,7 @@
       },
       redraw: () => { redrawAll(); drawLive(); },
       math: { dist, bearing, pathLength, turnAngle },
+      getRobotSize,
     };
   }
 
