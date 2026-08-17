@@ -5,21 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WRO 2026 Mosaic Masters · Game Mat Planner</title>
 <meta name="description" content="Interactive measurement and path-planning tool for the WRO 2026 RoboMission Senior game mat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
 <div class="page">
 
-  <header class="site">
-    <h1>WRO 2026 — <em>Mosaic Masters</em><br>Game Mat <em>Planner</em></h1>
-    <div class="meta">
-      <strong>Senior</strong>
-      Mat Size · 2362 × 1143 mm<br>
-      Aspect · 2.066 : 1<br>
-      Reference Grid · 50 mm<br>
-      Source · official printing file
+  <nav class="app-nav">
+    <div class="nav-left">
+      <div class="app-icon">🧩</div>
+      <span class="app-title">Mosaic Masters — Game Mat Planner</span>
+      <span class="nav-tag">Senior</span>
     </div>
-  </header>
+    <div class="nav-right">
+      <a href="elementary.html" class="nav-pill">Elementary mat →</a>
+      <a href="../index.html" class="nav-pill">← The Magic Lab</a>
+    </div>
+  </nav>
 
   <p class="lead">
     The WRO RoboMission Senior 2026 "Mosaic Masters" mat measures
@@ -48,6 +53,7 @@
     <select id="robotProfile" title="Robot size profile (used for ROBOT and POSE)"></select>
     <input type="number" id="robotSizeCustom" min="50" max="500" step="10" value="220" title="Custom robot size (mm) — only shown when 'Custom' profile selected">
     <span class="hint" id="robotSizeUnit">mm</span>
+    <button id="robotSaveBtn" title="Save the current robot size as a named preset">+ SAVE ROBOT</button>
     <div class="sep"></div>
     <label class="toggle"><input type="checkbox" id="snapToggle" checked> snap 10 mm</label>
     <label class="toggle"><input type="checkbox" id="showGrid" checked> grid</label>
@@ -56,12 +62,15 @@
     <div class="sep"></div>
     <button id="saveBtn" title="Save measurements to this browser">SAVE</button>
     <button id="loadBtn" title="Load saved measurements">LOAD</button>
+    <button id="savePathBtn" title="Save the current path with a name, for comparison">SAVE PATH</button>
     <button id="exportCode" title="Export path as code">EXPORT CODE</button>
     <button id="printBtn" title="Print or save as PDF">PRINT</button>
     <button id="clearAll" title="Clear all measurements (C)">CLEAR</button>
     <span class="hint">click on mat · ENTER finish path · ESC cancel · DEL undo last</span>
     <div class="readout" id="readout">— , — mm</div>
   </div>
+
+  <div class="robot-custom-list" id="robotCustomList" style="display:none;"></div>
 
   <div class="stage" id="stage" data-tool="none" data-show-grid="true" data-show-zones="true" data-show-ruler="true">
     <img class="mat" alt="WRO 2026 Mosaic Masters game mat" src="img/gamemat-senior.jpg">
@@ -73,6 +82,27 @@
   </div>
 
   <div class="meas-list" id="measList"></div>
+
+  <section id="savedPathsSection" style="display:none;">
+    <h3>Saved paths · comparison</h3>
+    <table class="saved-paths-table">
+      <thead>
+        <tr><th>Name</th><th>Points</th><th>Total distance</th><th>Legs (mm)</th><th>Saved</th><th></th></tr>
+      </thead>
+      <tbody id="savedPathsBody"></tbody>
+    </table>
+  </section>
+
+  <section id="scoringPanel">
+    <div class="scoring-head">
+      <h3>Scoring estimator</h3>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="scoring-total" id="scoringTotal">0 / 233</span>
+        <button class="scoring-reset" id="scoringReset" type="button">Reset</button>
+      </div>
+    </div>
+    <div class="scoring-body" id="scoringBody"></div>
+  </section>
 
   <div class="info">
     <section>
@@ -110,6 +140,7 @@
         <li><span class="swatch" style="background:#ff7ad9"></span> Mosaic tile storage (4 colours)</li>
         <li><span class="swatch" style="background:#c084fc"></span> Mosaic frame · marking &amp; 3D-object mount</li>
         <li><span class="swatch" style="background:#80ffb4"></span> Cement target areas (4 colours)</li>
+        <li><span class="swatch" style="background:#ff4d4d"></span> Barriers · avoid touching (4 corners)</li>
       </ul>
     </section>
   </div>
@@ -141,7 +172,7 @@
         <button id="downloadCode">Download</button>
       </div>
       <textarea readonly spellcheck="false"></textarea>
-      <p style="margin: 0; font-size: 12px; color: rgba(0,0,0,0.55); line-height: 1.5;">
+      <p style="margin: 0; font-size: 12px; line-height: 1.5;">
         Tip: place a <strong>POSE</strong> at your robot's start to set the
         starting heading, then a <strong>PATH</strong> for the route. The
         generator will compute turn angles between segments automatically.
@@ -153,6 +184,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="assets/zones-senior.js"></script>
+<script src="assets/scoring-senior.js"></script>
 <script src="assets/tools.js"></script>
 <script src="assets/codegen.js"></script>
 <script src="assets/app.js"></script>
