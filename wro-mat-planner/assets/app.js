@@ -92,6 +92,12 @@
           x: z.x, y: z.y, width: z.w, height: z.h, rx: 4
         }, zonesLayer);
       }
+      if (z.type === 'polygon') {
+        el('polygon', {
+          class: `zone-box ${z.klass}`,
+          points: z.points.map(p => `${p.x},${p.y}`).join(' ')
+        }, zonesLayer);
+      }
       if (z.label) {
         const t = el('text', {
           x: z.label.x, y: z.label.y,
@@ -118,14 +124,25 @@
     });
   }
 
+  function zoneBBox(z) {
+    if (z.type === 'rect') return { x: z.x, y: z.y, x2: z.x + z.w, y2: z.y + z.h, w: z.w, h: z.h };
+    if (z.type === 'polygon') {
+      const xs = z.points.map(p => p.x), ys = z.points.map(p => p.y);
+      const x = Math.min(...xs), y = Math.min(...ys), x2 = Math.max(...xs), y2 = Math.max(...ys);
+      return { x, y, x2, y2, w: x2 - x, h: y2 - y };
+    }
+    return null;
+  }
+
   function buildKeyZonesPanel() {
     const tbody = document.querySelector('#keyZones tbody');
     if (!tbody) return;
     window.WRO_ZONES.forEach(z => {
-      if (z.type !== 'rect') return;
+      const b = zoneBBox(z);
+      if (!b) return;
       const tr = h('tr', {}, tbody);
       h('td', { class: 'zone-name', text: z.name }, tr);
-      [z.x, z.y, z.x + z.w, z.y + z.h, z.w, z.h].forEach(v => {
+      [b.x, b.y, b.x2, b.y2, b.w, b.h].forEach(v => {
         h('td', { text: v.toFixed(0) }, tr);
       });
     });
@@ -576,6 +593,7 @@
 
     setupExportModal(tools);
     setupSavedPaths(tools);
+    if (window.WRO_PROGRAM) window.WRO_PROGRAM.init();
 
     // Auto-load if there's saved state? Skip — explicit is better.
   }

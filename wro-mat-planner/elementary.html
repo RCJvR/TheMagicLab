@@ -88,6 +88,60 @@
     </table>
   </section>
 
+  <section id="programSection">
+    <div class="program-head">
+      <h3>Route planner → PyBricks</h3>
+      <button class="chip-btn" id="programConfigToggle" type="button">⚙ Robot config</button>
+    </div>
+
+    <div class="program-config" id="programConfig" style="display:none;">
+      <label>Wheel Ø <input type="number" id="cfgWheelDiameter" value="56" min="10" max="300" step="1"> mm</label>
+      <label>Axle track <input type="number" id="cfgAxleTrack" value="114" min="10" max="500" step="1"> mm</label>
+      <label>Left motor <select id="cfgPortLeft"></select></label>
+      <label>Right motor <select id="cfgPortRight"></select></label>
+      <label>Front motor <select id="cfgPortFront"></select></label>
+      <label>Back motor <select id="cfgPortBack"></select></label>
+    </div>
+
+    <div class="program-add-row">
+      <select id="stepType">
+        <option value="drive">Drive fwd/back</option>
+        <option value="turn">Turn</option>
+        <option value="frontMotor">Front motor</option>
+        <option value="backMotor">Back motor</option>
+        <option value="lineFollow">Line follow</option>
+        <option value="wait">Wait</option>
+        <option value="comment">Comment</option>
+      </select>
+      <span class="program-field" data-for="drive,lineFollow">
+        <input type="number" id="stepDistance" value="200" step="10"> mm
+      </span>
+      <span class="program-field" data-for="turn,frontMotor,backMotor">
+        <input type="number" id="stepDegrees" value="90" min="0" max="3600" step="5"> °
+      </span>
+      <span class="program-field" data-for="turn">
+        <select id="stepDirection"><option value="right">Right (CW)</option><option value="left">Left (CCW)</option></select>
+      </span>
+      <span class="program-field" data-for="frontMotor,backMotor">
+        <select id="stepMotorAction"><option value="lift">Lift</option><option value="drop">Drop</option></select>
+      </span>
+      <span class="program-field" data-for="wait">
+        <input type="number" id="stepSeconds" value="1" min="0" step="0.1"> s
+      </span>
+      <span class="program-field" data-for="comment">
+        <input type="text" id="stepComment" placeholder="Note text…">
+      </span>
+      <button id="stepAddBtn" type="button">+ Add step</button>
+    </div>
+
+    <ol class="program-steps" id="programSteps"></ol>
+
+    <div class="program-actions" id="programActions" style="display:none;">
+      <button id="programExportBtn" type="button">EXPORT PYBRICKS CODE</button>
+      <button id="programClearBtn" type="button" class="chip-btn danger">Clear route</button>
+    </div>
+  </section>
+
   <section id="keyZones">
     <h3>Key zones (mm, top-left origin)</h3>
     <table class="zones-table">
@@ -169,11 +223,34 @@
   </div>
 </div>
 
+<!-- Route-planner export modal -->
+<div class="modal-bg" id="programModal">
+  <div class="modal">
+    <h2>
+      Export route as PyBricks code
+      <button class="close" title="Close">×</button>
+    </h2>
+    <div class="body">
+      <textarea id="programCode" readonly spellcheck="false"></textarea>
+      <div class="row">
+        <button id="programCopyCode">Copy</button>
+        <button id="programDownloadCode">Download .py</button>
+      </div>
+      <p style="margin: 0; font-size: 12px; line-height: 1.5;">
+        Starter code using PyBricks' standard <code>DriveBase</code> and
+        <code>Motor</code> classes. Check motor ports, turn direction and
+        lift/drop sign against your own build before running it.
+      </p>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="assets/zones-elementary.js"></script>
 <script src="assets/tools.js"></script>
 <script src="assets/codegen.js"></script>
+<script src="assets/program.js"></script>
 <script src="assets/app.js"></script>
 
 </body>

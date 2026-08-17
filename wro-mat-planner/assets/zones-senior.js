@@ -189,47 +189,62 @@ window.WRO_ZONES = [
   // (blue ball), TR/BL are black (red ball). Scoring is presence-only —
   // "not damaged or moved" — so these are obstacle-avoidance references,
   // not placement targets.
+  // Each barrier is a 6-vertex "L" hexagon (~16mm arm thickness), traced
+  // from the actual pixel contour rather than a bounding box — the dashed
+  // outline now hugs the real LEGO wall shape instead of a loose square.
   {
     id: 'barrier_tl',
     name: 'Barrier · top-left (red / blue ball)',
-    desc: 'L-shaped LEGO wall, red bricks with a blue ball on top. Sits on the grey pad at the frame\'s top-left corner.',
+    desc: 'L-shaped LEGO wall, red bricks with a blue ball on top. Arms run along the top and left edges of the frame\'s top-left corner.',
     rule: 'Rules §3.4 — 7 pts if not damaged or moved (touching the mat outside its grey pad counts as moved). 28 pts max across all 4 barriers.',
     klass: 'barrier',
-    type: 'rect',
-    x: 845.6, y: 135.8, w: 127.5, h: 127.5,
+    type: 'polygon',
+    points: [
+      { x: 861.6, y: 263.3 }, { x: 861.6, y: 151.8 }, { x: 973.1, y: 151.8 },
+      { x: 973.1, y: 135.8 }, { x: 845.6, y: 135.8 }, { x: 845.6, y: 263.3 },
+    ],
     label: { x: 845, y: 122, anchor: 'start', text: 'BARRIER · RED' },
     centre: { x: 909, y: 199 }
   },
   {
     id: 'barrier_tr',
     name: 'Barrier · top-right (black / red ball)',
-    desc: 'L-shaped LEGO wall, black bricks with a red ball on top. Sits on the grey pad at the frame\'s top-right corner.',
+    desc: 'L-shaped LEGO wall, black bricks with a red ball on top. Arms run along the top and right edges of the frame\'s top-right corner.',
     rule: 'Rules §3.4 — see barrier_tl.',
     klass: 'barrier',
-    type: 'rect',
-    x: 1388.9, y: 136.4, w: 127.5, h: 126.9,
+    type: 'polygon',
+    points: [
+      { x: 1500.4, y: 263.3 }, { x: 1500.4, y: 152.4 }, { x: 1388.9, y: 152.4 },
+      { x: 1388.9, y: 136.4 }, { x: 1516.4, y: 136.4 }, { x: 1516.4, y: 263.3 },
+    ],
     label: { x: 1520, y: 122, anchor: 'end', text: 'BARRIER · BLACK' },
     centre: { x: 1452, y: 199 }
   },
   {
     id: 'barrier_bl',
     name: 'Barrier · bottom-left (black / red ball)',
-    desc: 'L-shaped LEGO wall, black bricks with a red ball on top. Sits on the grey pad at the frame\'s bottom-left corner.',
+    desc: 'L-shaped LEGO wall, black bricks with a red ball on top. Arms run along the bottom and left edges of the frame\'s bottom-left corner.',
     rule: 'Rules §3.4 — see barrier_tl.',
     klass: 'barrier',
-    type: 'rect',
-    x: 845.6, y: 629.4, w: 127.5, h: 127.5,
+    type: 'polygon',
+    points: [
+      { x: 861.6, y: 629.4 }, { x: 861.6, y: 740.9 }, { x: 973.1, y: 740.9 },
+      { x: 973.1, y: 756.9 }, { x: 845.6, y: 756.9 }, { x: 845.6, y: 629.4 },
+    ],
     label: { x: 845, y: 772, anchor: 'start', text: 'BARRIER · BLACK' },
     centre: { x: 909, y: 693 }
   },
   {
     id: 'barrier_br',
     name: 'Barrier · bottom-right (red / blue ball)',
-    desc: 'L-shaped LEGO wall, red bricks with a blue ball on top. Sits on the grey pad at the frame\'s bottom-right corner.',
+    desc: 'L-shaped LEGO wall, red bricks with a blue ball on top. Arms run along the bottom and right edges of the frame\'s bottom-right corner.',
     rule: 'Rules §3.4 — see barrier_tl.',
     klass: 'barrier',
-    type: 'rect',
-    x: 1388.9, y: 629.4, w: 127.5, h: 127.5,
+    type: 'polygon',
+    points: [
+      { x: 1500.4, y: 629.4 }, { x: 1516.4, y: 629.4 }, { x: 1516.4, y: 756.9 },
+      { x: 1388.9, y: 756.9 }, { x: 1388.9, y: 740.9 }, { x: 1500.4, y: 740.9 },
+    ],
     label: { x: 1520, y: 772, anchor: 'end', text: 'BARRIER · RED' },
     centre: { x: 1452, y: 693 }
   },
