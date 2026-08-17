@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WRO 2026 Mosaic Masters · Game Mat Planner</title>
+<meta name="description" content="Interactive measurement and path-planning tool for the WRO 2026 RoboMission Senior game mat.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="site">
+    <h1>WRO 2026 — <em>Mosaic Masters</em><br>Game Mat <em>Planner</em></h1>
+    <div class="meta">
+      <strong>Senior</strong>
+      Mat Size · 2362 × 1143 mm<br>
+      Aspect · 2.066 : 1<br>
+      Reference Grid · 50 mm<br>
+      Source · official printing file
+    </div>
+  </header>
+
+  <p class="lead">
+    The WRO RoboMission Senior 2026 "Mosaic Masters" mat measures
+    <strong>2362 mm × 1143 mm</strong> (same overall field size as the other
+    age categories, ± 5 mm tolerance per dimension). Your robot restores a
+    damaged mosaic: collect coloured tiles, place them in the 3D-printed
+    mosaic frame in the middle of the field, and deliver cement elements to
+    their matching colour targets — while parking tools in the sponsor area,
+    parking space and start area. The overlay adds a 50 mm reference grid,
+    edge ruler, and labelled call-outs for every zone that scores points.
+    Use the toolbar to measure distances, plan robot paths, check turn
+    angles, and place a robot footprint. Click <strong>EXPORT CODE</strong>
+    to convert a planned path into starter Python or Word Blocks pseudocode.
+    Coordinates use a top-left origin (0, 0).
+  </p>
+
+  <div class="toolbar" id="toolbar">
+    <div class="group">
+      <button data-tool="none" class="active" title="Pan / no tool (P)">PAN</button>
+      <button data-tool="distance" title="Two-point distance (D)">DIST</button>
+      <button data-tool="path" title="Multi-point path (M)">PATH</button>
+      <button data-tool="angle" title="Heading + turn angle (A)">ANGLE</button>
+      <button data-tool="footprint" title="Robot footprint (R)">ROBOT</button>
+      <button data-tool="pose" title="Robot pose with heading (O)">POSE</button>
+    </div>
+    <select id="robotProfile" title="Robot size profile (used for ROBOT and POSE)"></select>
+    <input type="number" id="robotSizeCustom" min="50" max="500" step="10" value="220" title="Custom robot size (mm) — only shown when 'Custom' profile selected">
+    <span class="hint" id="robotSizeUnit">mm</span>
+    <div class="sep"></div>
+    <label class="toggle"><input type="checkbox" id="snapToggle" checked> snap 10 mm</label>
+    <label class="toggle"><input type="checkbox" id="showGrid" checked> grid</label>
+    <label class="toggle"><input type="checkbox" id="showZones" checked> zones</label>
+    <label class="toggle"><input type="checkbox" id="showRuler" checked> ruler</label>
+    <div class="sep"></div>
+    <button id="saveBtn" title="Save measurements to this browser">SAVE</button>
+    <button id="loadBtn" title="Load saved measurements">LOAD</button>
+    <button id="exportCode" title="Export path as code">EXPORT CODE</button>
+    <button id="printBtn" title="Print or save as PDF">PRINT</button>
+    <button id="clearAll" title="Clear all measurements (C)">CLEAR</button>
+    <span class="hint">click on mat · ENTER finish path · ESC cancel · DEL undo last</span>
+    <div class="readout" id="readout">— , — mm</div>
+  </div>
+
+  <div class="stage" id="stage" data-tool="none" data-show-grid="true" data-show-zones="true" data-show-ruler="true">
+    <img class="mat" alt="WRO 2026 Mosaic Masters game mat" src="img/gamemat-senior.jpg">
+    <svg class="overlay" id="overlaySvg" viewBox="0 0 2362 1143" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg class="measure" id="measureSvg" viewBox="0 0 2362 1143" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="measLayer"></g>
+      <g id="liveLayer"></g>
+    </svg>
+  </div>
+
+  <div class="meas-list" id="measList"></div>
+
+  <div class="info">
+    <section>
+      <h3>Mat dimensions</h3>
+      <dl>
+        <dt>Width</dt><dd>2362 mm (≈ 92.99 in)</dd>
+        <dt>Height</dt><dd>1143 mm (≈ 45.00 in)</dd>
+        <dt>Aspect</dt><dd>2.066 : 1</dd>
+        <dt>Tolerance</dt><dd>± 5 mm per dimension</dd>
+        <dt>Border height</dt><dd>50 mm (table wall)</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h3>Reference grid</h3>
+      <dl>
+        <dt>Minor</dt><dd>50 mm (faint white)</dd>
+        <dt>Major</dt><dd>200 mm (brighter white)</dd>
+        <dt>Edge ticks</dt><dd>100 mm, labelled every 500 mm</dd>
+        <dt>Origin (0,0)</dt><dd>top-left corner of mat</dd>
+        <dt>Centre</dt><dd>(1181, 571.5) mm</dd>
+      </dl>
+    </section>
+
+    <section id="keyZones">
+      <h3>Key zones (mm, top-left origin)</h3>
+      <dl></dl>
+    </section>
+
+    <section class="legend">
+      <h3>Zone legend</h3>
+      <ul>
+        <li><span class="swatch" style="background:#4cc9f0"></span> Start area (masonry trowel target)</li>
+        <li><span class="swatch" style="background:#ffa94d"></span> Tool targets · sponsor area &amp; parking space</li>
+        <li><span class="swatch" style="background:#ff7ad9"></span> Mosaic tile storage (4 colours)</li>
+        <li><span class="swatch" style="background:#c084fc"></span> Mosaic frame · marking &amp; 3D-object mount</li>
+        <li><span class="swatch" style="background:#80ffb4"></span> Cement target areas (4 colours)</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer class="site">
+    <span>Background · WRO 2026 Senior "Mosaic Masters" official printing file</span>
+    <span>Overlay generated for planning use — not an official WRO document</span>
+  </footer>
+
+</div><!-- /.page -->
+
+<!-- Code-export modal -->
+<div class="modal-bg" id="exportModal">
+  <div class="modal">
+    <h2>
+      Export path as code
+      <button class="close" title="Close">×</button>
+    </h2>
+    <div class="body">
+      <div class="row">
+        <label for="exportFormat">Format:</label>
+        <select id="exportFormat">
+          <option value="python">Python (Spike Prime / generic)</option>
+          <option value="wordblocks">Word Blocks pseudocode</option>
+          <option value="table">Tab-separated step table</option>
+          <option value="json">JSON (raw data)</option>
+        </select>
+        <button id="copyCode">Copy</button>
+        <button id="downloadCode">Download</button>
+      </div>
+      <textarea readonly spellcheck="false"></textarea>
+      <p style="margin: 0; font-size: 12px; color: rgba(0,0,0,0.55); line-height: 1.5;">
+        Tip: place a <strong>POSE</strong> at your robot's start to set the
+        starting heading, then a <strong>PATH</strong> for the route. The
+        generator will compute turn angles between segments automatically.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/zones-senior.js"></script>
+<script src="assets/tools.js"></script>
+<script src="assets/codegen.js"></script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>
