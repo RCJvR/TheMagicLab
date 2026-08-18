@@ -82,6 +82,46 @@ window.WRO_PROGRAM = (function() {
     for (let i = 0; i < idx; i++) pose = applyStep(pose, steps[i]);
     return pose;
   }
+  // Same as applyStep, but partway through (frac 0..1) -- used to animate
+  // the robot smoothly moving/turning during Play instead of jumping
+  // straight to each step's endpoint.
+  function applyStepPartial(pose, step, frac) {
+    if (step.type === 'drive' || step.type === 'lineFollow') {
+      const rad = pose.heading * Math.PI / 180;
+      const dist = step.distanceMm * frac;
+      return { x: pose.x + dist * Math.sin(rad), y: pose.y - dist * Math.cos(rad), heading: pose.heading };
+    }
+    if (step.type === 'turn') {
+      const signed = step.direction === 'left' ? -step.degrees : step.degrees;
+      return { x: pose.x, y: pose.y, heading: ((pose.heading + signed * frac) % 360 + 360) % 360 };
+    }
+    return pose; // instantaneous actions (pickup/place/deliver/settle/motor/wait/etc): no motion, just a dwell
+  }
+  // How long a step takes to "play" in seconds, from the actual configured
+  // kinematics -- a drive/turn step's duration is its real distance/angle
+  // divided by its own speed/turn-rate (falling back to the config
+  // defaults), so 1x playback matches how long the step would really take
+  // on the robot. Steps with no inherent duration (pickups, motor moves,
+  // comments, ...) get a short fixed dwell so they're visible in the
+  // animation instead of vanishing instantly.
+  const DEFAULT_ACTION_DWELL_S = 0.6;
+  function stepDuration(step, config) {
+    switch (step.type) {
+      case 'drive':
+      case 'lineFollow': {
+        const speed = (step.speedMmS && step.speedMmS > 0) ? step.speedMmS : (config.straightSpeed || 200);
+        return Math.abs(step.distanceMm) / Math.max(1, speed);
+      }
+      case 'turn': {
+        const rate = (step.turnRateDegS && step.turnRateDegS > 0) ? step.turnRateDegS : (config.turnRate || 100);
+        return Math.abs(step.degrees) / Math.max(1, rate);
+      }
+      case 'wait':
+        return Math.max(0, step.seconds || 0);
+      default:
+        return DEFAULT_ACTION_DWELL_S;
+    }
+  }
   // A robot that unfolds starts "closed" (must fit the start area) and
   // switches to "open" the moment an Unfold step has been passed.
   function sizeStateAtIndex(steps, idx) {
@@ -607,6 +647,8 @@ window.WRO_PROGRAM = (function() {
     const resetBtn = document.getElementById('walkerResetBtn');
     const prevBtn = document.getElementById('walkerPrevBtn');
     const nextBtn = document.getElementById('walkerNextBtn');
+    const playBtn = document.getElementById('walkerPlayBtn');
+    const playSpeedSel = document.getElementById('walkerPlaySpeed');
     const readout = document.getElementById('walkerReadout');
 
     // ---- game-element rendering (tiles/cement/tools/frame) + scoring
@@ -737,6 +779,16 @@ window.WRO_PROGRAM = (function() {
       let placing = null; // null | 'position' | 'heading'
       let pendingStart = null;
 
+      // ---- Play: animate the robot through the route in real time,
+      // instead of only jumping between step endpoints via Prev/Next.
+      // playFrac is 0..1 progress through state.walker.stepIndex's own
+      // step -- deliberately not persisted (a reload should land back on
+      // the clean step boundary, not mid-animation).
+      let playing = false;
+      let playFrac = 0;
+      let playRAF = null;
+      let playLastT = null;
+
       function clientToMM(e) {
         const r = stage.getBoundingClientRect();
         return {
@@ -764,6 +816,7 @@ window.WRO_PROGRAM = (function() {
         if (!state.walker.start || placing) return;
         e.preventDefault();
         e.stopPropagation();
+        pausePlayback();
         pushHistory();
         robotDrag = { origin: { x: state.walker.start.x, y: state.walker.start.y }, startMouse: clientToMM(extractPoint(e)) };
         document.addEventListener('mousemove', onRobotDragMove);
@@ -807,6 +860,13 @@ window.WRO_PROGRAM = (function() {
         if (state.walker.start) {
           const idx = Math.min(state.walker.stepIndex, state.steps.length);
           const pts = trailPoints(state.steps, state.walker.start, idx);
+          // Mid-drive during Play: extend the trail's leading edge to the
+          // live interpolated position instead of only jumping once the
+          // whole step finishes, so the path visibly draws itself.
+          const curStep = state.steps[idx];
+          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow')) {
+            pts.push({ x: pose.x, y: pose.y });
+          }
           if (pts.length > 1) {
             svg('polyline', {
               points: pts.map(p => `${p.x},${p.y}`).join(' '),
@@ -837,6 +897,28 @@ window.WRO_PROGRAM = (function() {
         svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
       }
 
+      // The live pose: fully-applied steps up to stepIndex, plus however far
+      // into the *current* step Play has gotten (playFrac 0..1). At rest
+      // (playFrac 0) this is identical to poseAtIndex(..., stepIndex).
+      function currentPose() {
+        const idx = Math.min(state.walker.stepIndex, state.steps.length);
+        let pose = poseAtIndex(state.steps, state.walker.start, idx);
+        if (playFrac > 0 && idx < state.steps.length) {
+          pose = applyStepPartial(pose, state.steps[idx], playFrac);
+        }
+        return pose;
+      }
+      // Unlike drive/turn (which visibly interpolate via currentPose), an
+      // instantaneous step -- pickup/place/deliver/settle/unfold -- has no
+      // partial state to show mid-dwell. So it should read as "done" the
+      // moment its dwell *starts* (playFrac > 0), not only once the dwell
+      // finishes -- otherwise a picked-up tile wouldn't appear lifted onto
+      // the robot until 0.6s after you'd expect it to.
+      function appliedStepIndex() {
+        const idx = Math.min(state.walker.stepIndex, state.steps.length);
+        return playFrac > 0 ? Math.min(idx + 1, state.steps.length) : idx;
+      }
+
       function updateReadout() {
         const total = state.steps.length;
         const idx = Math.min(state.walker.stepIndex, total);
@@ -844,11 +926,16 @@ window.WRO_PROGRAM = (function() {
           readout.textContent = 'Click "Place robot on mat", then click the mat twice — once for position, once to set heading.';
           return;
         }
-        const pose = poseAtIndex(state.steps, state.walker.start, idx);
-        const sizeState = sizeStateAtIndex(state.steps, idx);
+        const pose = currentPose();
+        const sizeState = sizeStateAtIndex(state.steps, appliedStepIndex());
         const size = tools.getRobotSize(sizeState);
         const rp = refPoint(pose, refSelect.value, size);
-        const stepNote = idx > 0 && state.steps[idx - 1] ? ` · last: ${describeStep(state.steps[idx - 1])}` : ' · at start pose';
+        let stepNote;
+        if (playing && idx < total) {
+          stepNote = ` · running: ${describeStep(state.steps[idx])} (${Math.round(playFrac * 100)}%)`;
+        } else {
+          stepNote = idx > 0 && state.steps[idx - 1] ? ` · last: ${describeStep(state.steps[idx - 1])}` : ' · at start pose';
+        }
         readout.textContent = `Step ${idx}/${total} — ${REF_LABELS[refSelect.value]} @ (${rp.x.toFixed(0)}, ${rp.y.toFixed(0)}) mm · heading ${pose.heading.toFixed(0)}° · ${sizeState}${stepNote}`;
       }
 
@@ -856,23 +943,78 @@ window.WRO_PROGRAM = (function() {
         state.walker.stepIndex = Math.min(state.walker.stepIndex, state.steps.length);
         const hasRobot = !!state.walker.start;
         resetBtn.disabled = !hasRobot;
-        prevBtn.disabled = !hasRobot || state.walker.stepIndex === 0;
-        nextBtn.disabled = !hasRobot || state.walker.stepIndex >= state.steps.length;
+        prevBtn.disabled = !hasRobot || playing || state.walker.stepIndex === 0;
+        nextBtn.disabled = !hasRobot || playing || state.walker.stepIndex >= state.steps.length;
+        playBtn.disabled = !hasRobot || !state.steps.length;
+        playBtn.textContent = playing ? '⏸ Pause' : '▶ Play';
         let pose = null, sizeState = 'closed';
         if (hasRobot) {
-          pose = poseAtIndex(state.steps, state.walker.start, state.walker.stepIndex);
-          sizeState = sizeStateAtIndex(state.steps, state.walker.stepIndex);
+          pose = currentPose();
+          sizeState = sizeStateAtIndex(state.steps, appliedStepIndex());
           drawRobotAt(pose, sizeState);
         } else {
           clearWalkerLayer();
         }
         if (window.WRO_ELEMENTS) {
-          const inv = inventoryAtIndex(state.steps, state.walker.stepIndex, state.mosaicPattern);
+          const inv = inventoryAtIndex(state.steps, appliedStepIndex(), state.mosaicPattern);
           renderElements(pose, sizeState, inv);
           syncScoringFromInventory(inv);
         }
         updateReadout();
       };
+
+      // ---- Play: animate stepIndex/playFrac forward in real time using
+      // each step's actual duration (stepDuration), via requestAnimationFrame
+      // so it stays smooth regardless of frame rate. ----
+      function pausePlayback() {
+        if (!playing) return;
+        playing = false;
+        if (playRAF != null) { cancelAnimationFrame(playRAF); playRAF = null; }
+        playLastT = null;
+        persist(state); // stepIndex only -- playFrac is deliberately not persisted
+        renderWalker();
+      }
+      function playTick(t) {
+        if (!playing) return;
+        if (playLastT == null) playLastT = t;
+        // Clamp so a backgrounded/throttled tab doesn't "catch up" in one huge jump.
+        const dtSeconds = Math.min(0.25, (t - playLastT) / 1000);
+        playLastT = t;
+        const speed = parseFloat(playSpeedSel.value) || 1;
+
+        let idx = state.walker.stepIndex;
+        let remaining = dtSeconds * speed;
+        while (remaining > 0 && idx < state.steps.length) {
+          const dur = Math.max(0.001, stepDuration(state.steps[idx], state.config));
+          const newElapsed = playFrac * dur + remaining;
+          if (newElapsed >= dur) {
+            remaining = newElapsed - dur;
+            idx++;
+            playFrac = 0;
+          } else {
+            playFrac = newElapsed / dur;
+            remaining = 0;
+          }
+        }
+        state.walker.stepIndex = idx;
+        if (idx >= state.steps.length) {
+          playFrac = 0;
+          pausePlayback();
+          return;
+        }
+        renderWalker();
+        playRAF = requestAnimationFrame(playTick);
+      }
+      function startPlayback() {
+        if (!state.walker.start || !state.steps.length) return;
+        cancelPlacingAndReleaseTool();
+        if (state.walker.stepIndex >= state.steps.length) { state.walker.stepIndex = 0; playFrac = 0; }
+        playing = true;
+        playLastT = null;
+        renderWalker();
+        playRAF = requestAnimationFrame(playTick);
+      }
+      playBtn.addEventListener('click', () => { playing ? pausePlayback() : startPlayback(); });
 
       refSelect.addEventListener('change', () => {
         cancelPlacingAndReleaseTool();
@@ -909,6 +1051,7 @@ window.WRO_PROGRAM = (function() {
         // Tapping the button again mid-placement backs out -- the touch
         // equivalent of pressing Esc, since a touchscreen has no Esc key.
         if (placing) { cancelPlacingAndReleaseTool(); return; }
+        pausePlayback();
         tools.setTool('none');
         // tools.js's own click handler is now a no-op (its closure `tool` is
         // 'none'), but the CSS rule `[data-tool="none"] svg.measure {
@@ -994,22 +1137,33 @@ window.WRO_PROGRAM = (function() {
       }, { passive: false });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && placing) cancelPlacingAndReleaseTool();
+        if (e.key === 'Escape') {
+          pausePlayback();
+          if (placing) cancelPlacingAndReleaseTool();
+        }
+        // Undo/redo (window.WRO_HISTORY) can rewrite state.walker.stepIndex
+        // out from under an in-progress animation -- stop it first.
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'y' || e.key === 'Z' || e.key === 'Y')) {
+          pausePlayback();
+        }
       });
 
       resetBtn.addEventListener('click', () => {
+        pausePlayback();
         cancelPlacingAndReleaseTool();
         state.walker.stepIndex = 0;
         persist(state);
         renderWalker();
       });
       prevBtn.addEventListener('click', () => {
+        pausePlayback();
         cancelPlacingAndReleaseTool();
         state.walker.stepIndex = Math.max(0, state.walker.stepIndex - 1);
         persist(state);
         renderWalker();
       });
       nextBtn.addEventListener('click', () => {
+        pausePlayback();
         cancelPlacingAndReleaseTool();
         state.walker.stepIndex = Math.min(state.steps.length, state.walker.stepIndex + 1);
         persist(state);
