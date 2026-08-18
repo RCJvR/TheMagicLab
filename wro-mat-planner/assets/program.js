@@ -28,7 +28,10 @@ window.WRO_PROGRAM = (function() {
   }
 
   function defaultConfig() {
-    return { wheelDiameter: 56, axleTrack: 114, portLeft: 'A', portRight: 'B', portFront: 'C', portBack: 'D' };
+    return {
+      wheelDiameter: 56, axleTrack: 114, portLeft: 'A', portRight: 'B', portFront: 'C', portBack: 'D',
+      straightSpeed: 200, straightAcceleration: 400, turnRate: 100, turnAcceleration: 300,
+    };
   }
   function defaultWalker() {
     return { ref: 'center', start: null, stepIndex: 0 };
@@ -71,6 +74,14 @@ window.WRO_PROGRAM = (function() {
     for (let i = 0; i < idx; i++) pose = applyStep(pose, steps[i]);
     return pose;
   }
+  // A robot that unfolds starts "closed" (must fit the start area) and
+  // switches to "open" the moment an Unfold step has been passed.
+  function sizeStateAtIndex(steps, idx) {
+    for (let i = 0; i < idx; i++) {
+      if (steps[i].type === 'unfold') return 'open';
+    }
+    return 'closed';
+  }
   function trailPoints(steps, start, uptoIdx) {
     const pts = [{ x: start.x, y: start.y }];
     let pose = { x: start.x, y: start.y, heading: start.heading };
@@ -96,9 +107,13 @@ window.WRO_PROGRAM = (function() {
   function describeStep(step) {
     switch (step.type) {
       case 'drive':
-        return `Drive ${step.distanceMm >= 0 ? 'forward' : 'backward'} ${Math.abs(step.distanceMm)} mm`;
+        return `Drive ${step.distanceMm >= 0 ? 'forward' : 'backward'} ${Math.abs(step.distanceMm)} mm`
+          + (step.speedMmS ? ` @ ${step.speedMmS} mm/s` : '');
       case 'turn':
-        return `Turn ${step.direction === 'left' ? 'left (CCW)' : 'right (CW)'} ${step.degrees}°`;
+        return `Turn ${step.direction === 'left' ? 'left (CCW)' : 'right (CW)'} ${step.degrees}°`
+          + (step.turnRateDegS ? ` @ ${step.turnRateDegS}°/s` : '');
+      case 'unfold':
+        return 'Unfold to open size';
       case 'frontMotor':
         return `Front motor: ${step.action} ${step.degrees}°`;
       case 'backMotor':
@@ -138,6 +153,7 @@ window.WRO_PROGRAM = (function() {
     L.push(`back_motor = Motor(Port.${config.portBack})`);
     L.push('');
     L.push(`drive_base = DriveBase(left_motor, right_motor, wheel_diameter=${config.wheelDiameter}, axle_track=${config.axleTrack})`);
+    L.push(`drive_base.settings(straight_speed=${config.straightSpeed}, straight_acceleration=${config.straightAcceleration}, turn_rate=${config.turnRate}, turn_acceleration=${config.turnAcceleration})`);
     L.push('');
     L.push('# --- Generated route ---');
     L.push('# turn(): positive = right/clockwise, negative = left/counter-clockwise');
@@ -148,17 +164,36 @@ window.WRO_PROGRAM = (function() {
       L.push('# (no steps added yet -- build a route in the planner, then re-export)');
     }
 
+    // Track the currently-active straight_speed/turn_rate so we only emit a
+    // settings() override when a step's value actually differs from what's
+    // already active -- avoids a redundant settings() call before every
+    // single drive/turn when most of the route uses the defaults.
+    let activeSpeed = config.straightSpeed;
+    let activeTurnRate = config.turnRate;
+
     steps.forEach(step => {
       const note = describeStep(step);
       switch (step.type) {
-        case 'drive':
+        case 'drive': {
+          if (step.speedMmS && step.speedMmS !== activeSpeed) {
+            L.push(`drive_base.settings(straight_speed=${step.speedMmS})`);
+            activeSpeed = step.speedMmS;
+          }
           L.push(`drive_base.straight(${step.distanceMm})  # ${note}`);
           break;
+        }
         case 'turn': {
+          if (step.turnRateDegS && step.turnRateDegS !== activeTurnRate) {
+            L.push(`drive_base.settings(turn_rate=${step.turnRateDegS})`);
+            activeTurnRate = step.turnRateDegS;
+          }
           const signed = step.direction === 'left' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
           L.push(`drive_base.turn(${signed})  # ${note}`);
           break;
         }
+        case 'unfold':
+          L.push(`# --- ${note}: add your unfolding mechanism call here ---`);
+          break;
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
           L.push(`front_motor.run_angle(200, ${signed}, then=Stop.HOLD)  # ${note}`);
@@ -201,6 +236,10 @@ window.WRO_PROGRAM = (function() {
     const portRight = document.getElementById('cfgPortRight');
     const portFront = document.getElementById('cfgPortFront');
     const portBack = document.getElementById('cfgPortBack');
+    const straightSpeedInput = document.getElementById('cfgStraightSpeed');
+    const straightAccelInput = document.getElementById('cfgStraightAccel');
+    const turnRateInput = document.getElementById('cfgTurnRate');
+    const turnAccelInput = document.getElementById('cfgTurnAccel');
 
     [portLeft, portRight, portFront, portBack].forEach(sel => {
       PORTS.forEach(p => {
@@ -215,6 +254,10 @@ window.WRO_PROGRAM = (function() {
     portRight.value = state.config.portRight;
     portFront.value = state.config.portFront;
     portBack.value = state.config.portBack;
+    straightSpeedInput.value = state.config.straightSpeed;
+    straightAccelInput.value = state.config.straightAcceleration;
+    turnRateInput.value = state.config.turnRate;
+    turnAccelInput.value = state.config.turnAcceleration;
 
     function syncConfig() {
       state.config = {
@@ -222,10 +265,15 @@ window.WRO_PROGRAM = (function() {
         axleTrack: parseFloat(axleInput.value) || 114,
         portLeft: portLeft.value, portRight: portRight.value,
         portFront: portFront.value, portBack: portBack.value,
+        straightSpeed: parseFloat(straightSpeedInput.value) || 200,
+        straightAcceleration: parseFloat(straightAccelInput.value) || 400,
+        turnRate: parseFloat(turnRateInput.value) || 100,
+        turnAcceleration: parseFloat(turnAccelInput.value) || 300,
       };
       persist(state);
     }
-    [wheelInput, axleInput, portLeft, portRight, portFront, portBack].forEach(el => {
+    [wheelInput, axleInput, portLeft, portRight, portFront, portBack,
+     straightSpeedInput, straightAccelInput, turnRateInput, turnAccelInput].forEach(el => {
       el.addEventListener('change', syncConfig);
     });
 
@@ -246,8 +294,10 @@ window.WRO_PROGRAM = (function() {
     syncFields();
 
     const distanceInput = document.getElementById('stepDistance');
+    const speedInput = document.getElementById('stepSpeed');
     const degreesInput = document.getElementById('stepDegrees');
     const directionSel = document.getElementById('stepDirection');
+    const stepTurnRateInput = document.getElementById('stepTurnRate');
     const motorActionSel = document.getElementById('stepMotorAction');
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
@@ -296,9 +346,17 @@ window.WRO_PROGRAM = (function() {
       const step = { type: t };
       if (t === 'drive' || t === 'lineFollow') {
         step.distanceMm = parseFloat(distanceInput.value) || 0;
+        if (t === 'drive') {
+          const spd = parseFloat(speedInput.value);
+          if (!isNaN(spd) && spd > 0) step.speedMmS = spd;
+        }
       } else if (t === 'turn') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
         step.direction = directionSel.value;
+        const rate = parseFloat(stepTurnRateInput.value);
+        if (!isNaN(rate) && rate > 0) step.turnRateDegS = rate;
+      } else if (t === 'unfold') {
+        // no parameters
       } else if (t === 'frontMotor' || t === 'backMotor') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
         step.action = motorActionSel.value;
@@ -375,22 +433,26 @@ window.WRO_PROGRAM = (function() {
 
       function clearWalkerLayer() { walkerLayer.innerHTML = ''; }
 
-      function drawRobotAt(pose) {
+      function drawRobotAt(pose, sizeState) {
         clearWalkerLayer();
-        const size = tools.getRobotSize();
+        const size = tools.getRobotSize(sizeState || 'closed');
         const half = size / 2;
         const g = svg('g', { transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})` }, walkerLayer);
-        svg('rect', { x: -half, y: -half, width: size, height: size, class: 'walker-footprint' }, g);
+        svg('rect', { x: -half, y: -half, width: size, height: size, class: `walker-footprint walker-footprint-${sizeState || 'closed'}` }, g);
         svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
 
-        // trail so far
-        const idx = Math.min(state.walker.stepIndex, state.steps.length);
-        const pts = trailPoints(state.steps, state.walker.start, idx);
-        if (pts.length > 1) {
-          svg('polyline', {
-            points: pts.map(p => `${p.x},${p.y}`).join(' '),
-            class: 'walker-trail',
-          }, walkerLayer);
+        // trail so far — skipped during placement (drawRobotAt(pendingStart)
+        // is called before state.walker.start exists, on the "click again to
+        // set heading" step)
+        if (state.walker.start) {
+          const idx = Math.min(state.walker.stepIndex, state.steps.length);
+          const pts = trailPoints(state.steps, state.walker.start, idx);
+          if (pts.length > 1) {
+            svg('polyline', {
+              points: pts.map(p => `${p.x},${p.y}`).join(' '),
+              class: 'walker-trail',
+            }, walkerLayer);
+          }
         }
 
         // reference-point marker
@@ -406,10 +468,11 @@ window.WRO_PROGRAM = (function() {
           return;
         }
         const pose = poseAtIndex(state.steps, state.walker.start, idx);
-        const size = tools.getRobotSize();
+        const sizeState = sizeStateAtIndex(state.steps, idx);
+        const size = tools.getRobotSize(sizeState);
         const rp = refPoint(pose, refSelect.value, size);
         const stepNote = idx > 0 && state.steps[idx - 1] ? ` · last: ${describeStep(state.steps[idx - 1])}` : ' · at start pose';
-        readout.textContent = `Step ${idx}/${total} — ${REF_LABELS[refSelect.value]} @ (${rp.x.toFixed(0)}, ${rp.y.toFixed(0)}) mm · heading ${pose.heading.toFixed(0)}°${stepNote}`;
+        readout.textContent = `Step ${idx}/${total} — ${REF_LABELS[refSelect.value]} @ (${rp.x.toFixed(0)}, ${rp.y.toFixed(0)}) mm · heading ${pose.heading.toFixed(0)}° · ${sizeState}${stepNote}`;
       }
 
       renderWalker = function() {
@@ -420,7 +483,8 @@ window.WRO_PROGRAM = (function() {
         nextBtn.disabled = !hasRobot || state.walker.stepIndex >= state.steps.length;
         if (hasRobot) {
           const pose = poseAtIndex(state.steps, state.walker.start, state.walker.stepIndex);
-          drawRobotAt(pose);
+          const sizeState = sizeStateAtIndex(state.steps, state.walker.stepIndex);
+          drawRobotAt(pose, sizeState);
         } else {
           clearWalkerLayer();
         }

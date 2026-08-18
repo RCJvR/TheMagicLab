@@ -18,6 +18,90 @@
     if (parent) parent.appendChild(e);
     return e;
   }
+  // ---- Custom-styled dropdowns ----
+  // Native <select> popups render with the OS's light-theme colours in a
+  // lot of real browser/OS combinations, regardless of the page's own dark
+  // theme or `color-scheme` — confirmed against an actual user's browser,
+  // not just one test environment. Rather than hope color-scheme is
+  // honoured, this replaces the visible popup with one this page fully
+  // controls, while the original <select> stays in the DOM (invisible) as
+  // the single source of truth for .value and 'change' events — so every
+  // other file that reads/listens to these selects needs zero changes.
+  const selectSyncRegistry = new WeakMap();
+  function enhanceSelect(select) {
+    if (select.dataset.enhanced) return;
+    select.dataset.enhanced = '1';
+
+    const wrap = document.createElement('span');
+    wrap.className = 'csel';
+    select.parentNode.insertBefore(wrap, select);
+    wrap.appendChild(select);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'csel-btn';
+    wrap.appendChild(btn);
+
+    const list = document.createElement('div');
+    list.className = 'csel-list';
+    wrap.appendChild(list);
+
+    function sync() {
+      const opt = select.options[select.selectedIndex];
+      btn.textContent = opt ? opt.textContent : '';
+    }
+    function makeItem(opt) {
+      const item = document.createElement('div');
+      item.className = 'csel-item' + (opt.selected ? ' active' : '');
+      item.textContent = opt.textContent;
+      item.addEventListener('click', () => {
+        select.value = opt.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        sync();
+        close();
+      });
+      return item;
+    }
+    function build() {
+      list.innerHTML = '';
+      Array.from(select.children).forEach(node => {
+        if (node.tagName === 'OPTGROUP') {
+          const label = document.createElement('div');
+          label.className = 'csel-group';
+          label.textContent = node.label;
+          list.appendChild(label);
+          Array.from(node.children).forEach(opt => list.appendChild(makeItem(opt)));
+        } else if (node.tagName === 'OPTION') {
+          list.appendChild(makeItem(node));
+        }
+      });
+    }
+    function open() { build(); list.classList.add('open'); btn.classList.add('open'); }
+    function close() { list.classList.remove('open'); btn.classList.remove('open'); }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (list.classList.contains('open')) close(); else open();
+    });
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (!wrap.contains(e.target)) close();
+    });
+
+    sync();
+    selectSyncRegistry.set(select, sync);
+  }
+  function enhanceAllSelects() {
+    document.querySelectorAll('select').forEach(enhanceSelect);
+  }
+  function syncSelect(select) {
+    const fn = selectSyncRegistry.get(select);
+    if (fn) fn();
+  }
+
   function h(tag, attrs = {}, parent = null) {
     const e = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs)) {
@@ -159,9 +243,22 @@
     localStorage.setItem(CUSTOM_ROBOTS_KEY, JSON.stringify(list));
   }
 
-  function buildRobotProfileSelect() {
+  // A saved custom robot is { id, name, closed, open }. Older saves only had
+  // { id, name, size } (from before open/closed states existed) — normalise
+  // those to closed = open = size so nothing breaks for existing users.
+  function normalizeCustomRobot(r) {
+    const closed = r.closed != null ? r.closed : r.size;
+    const open = r.open != null ? r.open : closed;
+    return { id: r.id, name: r.name, closed, open };
+  }
+  function formatRobotLabel(name, closed, open) {
+    return closed === open ? `${name} (${closed} mm)` : `${name} (${closed}/${open} mm)`;
+  }
+
+  function buildRobotProfileSelect(tools) {
     const sel = document.getElementById('robotProfile');
-    const customInput = document.getElementById('robotSizeCustom');
+    const closedInput = document.getElementById('robotSizeCustom');
+    const openInput = document.getElementById('robotSizeCustomOpen');
     if (!sel) return;
 
     // Custom presets live directly in WRO_ROBOT_PROFILES so tools.js's
@@ -171,7 +268,10 @@
     // localStorage directly, or saved robots end up listed twice.
     function syncProfilesArray() {
       const builtins = window.WRO_ROBOT_PROFILES.filter(p => !p.userAdded);
-      const saved = loadCustomRobots().map(r => ({ id: r.id, name: `${r.name} (${r.size} mm)`, size: r.size, userAdded: true }));
+      const saved = loadCustomRobots().map(normalizeCustomRobot).map(r => ({
+        id: r.id, name: formatRobotLabel(r.name, r.closed, r.open),
+        size: r.closed, openSize: r.open, userAdded: true,
+      }));
       window.WRO_ROBOT_PROFILES = builtins.concat(saved);
     }
     syncProfilesArray();
@@ -203,51 +303,85 @@
     function syncCustomVisibility() {
       const profile = window.WRO_ROBOT_PROFILES.find(p => p.id === sel.value);
       const visible = !!(profile && profile.custom);
-      const unitLabel = document.getElementById('robotSizeUnit');
-      if (customInput) customInput.style.display = visible ? '' : 'none';
-      if (unitLabel)   unitLabel.style.display = visible ? '' : 'none';
+      const fields = document.getElementById('robotSizeFields');
+      if (fields) fields.style.display = visible ? '' : 'none';
     }
     sel.addEventListener('change', syncCustomVisibility);
     syncCustomVisibility();
 
-    function currentSize() {
-      const profile = window.WRO_ROBOT_PROFILES.find(p => p.id === sel.value);
-      if (profile && profile.custom && customInput) {
-        const v = parseInt(customInput.value, 10);
-        return (!isNaN(v) && v > 0) ? v : profile.size;
-      }
-      return profile ? profile.size : 250;
+    // ---- Closed/Open toggle (controls which size ROBOT/POSE draw) ----
+    const stateToggle = document.getElementById('robotStateToggle');
+    if (stateToggle) {
+      stateToggle.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          stateToggle.dataset.state = btn.dataset.state;
+          stateToggle.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+          if (tools) tools.redraw();
+        });
+      });
     }
 
-    const addBtn = document.getElementById('robotSaveBtn');
-    if (addBtn) {
-      addBtn.addEventListener('click', () => {
-        const size = currentSize();
-        const name = window.prompt(`Save the current robot size (${size} mm) as a named preset.\n\nName it:`, '');
-        if (name === null) return;
-        const trimmed = name.trim();
-        if (!trimmed) { toast('Name needed — not saved'); return; }
+    function currentSizes() {
+      const profile = window.WRO_ROBOT_PROFILES.find(p => p.id === sel.value);
+      if (profile && profile.custom && closedInput) {
+        const c = parseInt(closedInput.value, 10);
+        const o = openInput ? parseInt(openInput.value, 10) : c;
+        return {
+          closed: (!isNaN(c) && c > 0) ? c : profile.size,
+          open: (!isNaN(o) && o > 0) ? o : ((!isNaN(c) && c > 0) ? c : profile.size),
+        };
+      }
+      if (!profile) return { closed: 250, open: 250 };
+      return { closed: profile.size, open: profile.openSize || profile.size };
+    }
+
+    // ---- Save-as-preset inline form (replaces a chain of prompt() calls
+    // so both sizes can be entered/edited together) ----
+    const saveBtn = document.getElementById('robotSaveBtn');
+    const saveForm = document.getElementById('robotSaveForm');
+    const saveNameInput = document.getElementById('robotSaveName');
+    const saveClosedInput = document.getElementById('robotSaveClosed');
+    const saveOpenInput = document.getElementById('robotSaveOpen');
+    if (saveBtn && saveForm) {
+      saveBtn.addEventListener('click', () => {
+        const sizes = currentSizes();
+        saveNameInput.value = '';
+        saveClosedInput.value = sizes.closed;
+        saveOpenInput.value = sizes.open;
+        saveForm.style.display = '';
+        saveNameInput.focus();
+      });
+      document.getElementById('robotSaveCancel').addEventListener('click', () => {
+        saveForm.style.display = 'none';
+      });
+      document.getElementById('robotSaveConfirm').addEventListener('click', () => {
+        const trimmed = saveNameInput.value.trim();
+        if (!trimmed) { toast('Name needed — not saved'); saveNameInput.focus(); return; }
+        const closed = parseInt(saveClosedInput.value, 10) || 220;
+        const open = parseInt(saveOpenInput.value, 10) || closed;
         const list = loadCustomRobots();
-        list.push({ id: `user_${Date.now()}`, name: trimmed, size });
+        list.push({ id: `user_${Date.now()}`, name: trimmed, closed, open });
         saveCustomRobots(list);
         syncProfilesArray();
         populate();
         sel.value = list[list.length - 1].id;
+        syncSelect(sel);
         syncCustomVisibility();
         renderCustomRobotList();
-        toast(`Saved "${trimmed}" · ${size} mm`);
+        saveForm.style.display = 'none';
+        toast(`Saved "${trimmed}" · ${closed === open ? closed + ' mm' : closed + '/' + open + ' mm'}`);
       });
     }
 
     function renderCustomRobotList() {
       const box = document.getElementById('robotCustomList');
       if (!box) return;
-      const list = loadCustomRobots();
+      const list = loadCustomRobots().map(normalizeCustomRobot);
       box.innerHTML = '';
       box.style.display = list.length ? '' : 'none';
       list.forEach(r => {
         const row = h('div', { class: 'chip' }, box);
-        h('span', { text: `${r.name} · ${r.size} mm` }, row);
+        h('span', { text: r.closed === r.open ? `${r.name} · ${r.closed} mm` : `${r.name} · ${r.closed}/${r.open} mm` }, row);
         const del = h('button', { text: '×', title: 'Delete this preset', type: 'button' }, row);
         del.addEventListener('click', () => {
           const next = loadCustomRobots().filter(x => x.id !== r.id);
@@ -256,6 +390,7 @@
           const wasSelected = sel.value === r.id;
           populate();
           if (wasSelected) sel.value = 'custom';
+          syncSelect(sel);
           syncCustomVisibility();
           renderCustomRobotList();
           toast(`Deleted "${r.name}"`);
@@ -264,7 +399,7 @@
     }
     renderCustomRobotList();
 
-    return { currentSize };
+    return { currentSizes };
   }
 
   // ---- Toast ----
@@ -548,7 +683,6 @@
   function init() {
     buildOverlay();
     buildKeyZonesPanel();
-    buildRobotProfileSelect();
     buildScoringPanel();
 
     const stage = document.getElementById('stage');
@@ -564,6 +698,8 @@
       stage, measSvg, measLayer, liveLayer, readout, measList, snapEl, robotSelect,
       onChange: () => {}
     });
+
+    buildRobotProfileSelect(tools);
 
     // Toolbar wiring
     document.querySelectorAll('button[data-tool]').forEach(btn => {
@@ -587,13 +723,17 @@
     // Robot profile change → redraw existing footprints with new size
     robotSelect.addEventListener('change', () => tools.redraw());
     const customInput = document.getElementById('robotSizeCustom');
-    if (customInput) {
-      customInput.addEventListener('input', () => tools.redraw());
-    }
+    const customOpenInput = document.getElementById('robotSizeCustomOpen');
+    if (customInput) customInput.addEventListener('input', () => tools.redraw());
+    if (customOpenInput) customOpenInput.addEventListener('input', () => tools.redraw());
 
     setupExportModal(tools);
     setupSavedPaths(tools);
     if (window.WRO_PROGRAM) window.WRO_PROGRAM.init(tools);
+
+    // Runs last so it picks up every <select> — including the ones
+    // program.js just populated (robot ports, etc).
+    enhanceAllSelects();
 
     // Auto-load if there's saved state? Skip — explicit is better.
   }

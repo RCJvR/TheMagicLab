@@ -74,17 +74,33 @@
       if (!snapEl.checked) return pt;
       return { x: Math.round(pt.x / SNAP_STEP) * SNAP_STEP, y: Math.round(pt.y / SNAP_STEP) * SNAP_STEP };
     }
-    function getRobotSize() {
+    // Robots that unfold after the start of the run have two footprints: a
+    // "closed" one that must fit the start area, and an "open" one used for
+    // the rest of the run. Built-in profiles don't fold (openSize falls
+    // back to size); custom/saved profiles can define both.
+    function getRobotState() {
+      const toggle = document.getElementById('robotStateToggle');
+      return (toggle && toggle.dataset.state === 'open') ? 'open' : 'closed';
+    }
+    function getRobotSize(stateOverride) {
+      const state = stateOverride || getRobotState();
       if (!robotSelect) return 250;
       const profile = window.WRO_ROBOT_PROFILES.find(p => p.id === robotSelect.value);
       if (!profile) return 250;
       if (profile.custom) {
-        const customInput = document.getElementById('robotSizeCustom');
-        if (customInput) {
-          const v = parseInt(customInput.value, 10);
-          if (!isNaN(v) && v > 0) return v;
+        const closedInput = document.getElementById('robotSizeCustom');
+        const openInput = document.getElementById('robotSizeCustomOpen');
+        const closed = closedInput ? parseInt(closedInput.value, 10) : NaN;
+        const open = openInput ? parseInt(openInput.value, 10) : NaN;
+        if (state === 'open') {
+          if (!isNaN(open) && open > 0) return open;
+          if (!isNaN(closed) && closed > 0) return closed;
+        } else {
+          if (!isNaN(closed) && closed > 0) return closed;
         }
+        return profile.size;
       }
+      if (state === 'open') return profile.openSize || profile.size;
       return profile.size;
     }
 
@@ -455,6 +471,7 @@
       redraw: () => { redrawAll(); drawLive(); },
       math: { dist, bearing, pathLength, turnAngle },
       getRobotSize,
+      getRobotState,
     };
   }
 

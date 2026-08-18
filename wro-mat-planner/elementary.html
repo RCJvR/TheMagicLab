@@ -46,9 +46,16 @@
       <button data-tool="pose" title="Robot pose with heading (O)">POSE</button>
     </div>
     <select id="robotProfile" title="Robot size profile (used for ROBOT and POSE)"></select>
-    <input type="number" id="robotSizeCustom" min="50" max="500" step="10" value="220" title="Custom robot size (mm) — only shown when 'Custom' profile selected">
-    <span class="hint" id="robotSizeUnit">mm</span>
-    <button id="robotSaveBtn" title="Save the current robot size as a named preset">+ SAVE ROBOT</button>
+    <div class="robot-state-toggle" id="robotStateToggle" data-state="closed" title="Which footprint size ROBOT/POSE and the walker use">
+      <button type="button" data-state="closed" class="active">Closed</button>
+      <button type="button" data-state="open">Open</button>
+    </div>
+    <span class="robot-size-fields" id="robotSizeFields">
+      <label class="mini-label">closed <input type="number" id="robotSizeCustom" min="50" max="500" step="10" value="220" title="Closed-state robot size (mm) — fits the start area"></label>
+      <label class="mini-label">open <input type="number" id="robotSizeCustomOpen" min="50" max="500" step="10" value="220" title="Open/unfolded robot size (mm)"></label>
+      <span class="hint">mm</span>
+    </span>
+    <button id="robotSaveBtn" title="Save the current closed/open robot sizes as a named preset">+ SAVE ROBOT</button>
     <div class="sep"></div>
     <label class="toggle"><input type="checkbox" id="snapToggle" checked> snap 10 mm</label>
     <label class="toggle"><input type="checkbox" id="showGrid" checked> grid</label>
@@ -66,6 +73,15 @@
   </div>
 
   <div class="robot-custom-list" id="robotCustomList" style="display:none;"></div>
+
+  <div class="robot-save-form" id="robotSaveForm" style="display:none;">
+    <input type="text" id="robotSaveName" placeholder="Robot name…">
+    <label class="mini-label">closed <input type="number" id="robotSaveClosed" min="50" max="500" step="10"></label>
+    <label class="mini-label">open <input type="number" id="robotSaveOpen" min="50" max="500" step="10"></label>
+    <span class="hint">mm</span>
+    <button id="robotSaveConfirm" type="button">Save</button>
+    <button id="robotSaveCancel" type="button" class="chip-btn">Cancel</button>
+  </div>
 
   <div class="stage" id="stage" data-tool="none" data-show-grid="true" data-show-zones="true" data-show-ruler="true">
     <img class="mat" alt="WRO 2026 Robot Rockstars game mat" src="img/gamemat-elementary.jpg">
@@ -102,12 +118,17 @@
       <label>Right motor <select id="cfgPortRight"></select></label>
       <label>Front motor <select id="cfgPortFront"></select></label>
       <label>Back motor <select id="cfgPortBack"></select></label>
+      <label title="Default straight-line speed, used when a Drive step doesn't set its own">Straight speed <input type="number" id="cfgStraightSpeed" value="200" min="10" max="2000" step="10"> mm/s</label>
+      <label title="Default straight-line acceleration">Straight accel <input type="number" id="cfgStraightAccel" value="400" min="10" max="4000" step="10"> mm/s²</label>
+      <label title="Default turn rate, used when a Turn step doesn't set its own">Turn rate <input type="number" id="cfgTurnRate" value="100" min="10" max="1000" step="10"> °/s</label>
+      <label title="Default turn acceleration">Turn accel <input type="number" id="cfgTurnAccel" value="300" min="10" max="2000" step="10"> °/s²</label>
     </div>
 
     <div class="program-add-row">
       <select id="stepType">
         <option value="drive">Drive fwd/back</option>
         <option value="turn">Turn</option>
+        <option value="unfold">Unfold to open size</option>
         <option value="frontMotor">Front motor</option>
         <option value="backMotor">Back motor</option>
         <option value="lineFollow">Line follow</option>
@@ -117,11 +138,17 @@
       <span class="program-field" data-for="drive,lineFollow">
         <input type="number" id="stepDistance" value="200" step="10"> mm
       </span>
+      <span class="program-field" data-for="drive">
+        <input type="number" id="stepSpeed" placeholder="default" min="0" step="10"> mm/s
+      </span>
       <span class="program-field" data-for="turn,frontMotor,backMotor">
         <input type="number" id="stepDegrees" value="90" min="0" max="3600" step="5"> °
       </span>
       <span class="program-field" data-for="turn">
         <select id="stepDirection"><option value="right">Right (CW)</option><option value="left">Left (CCW)</option></select>
+      </span>
+      <span class="program-field" data-for="turn">
+        <input type="number" id="stepTurnRate" placeholder="default" min="0" step="10"> °/s
       </span>
       <span class="program-field" data-for="frontMotor,backMotor">
         <select id="stepMotorAction"><option value="lift">Lift</option><option value="drop">Drop</option></select>

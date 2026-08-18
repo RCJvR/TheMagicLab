@@ -41,6 +41,62 @@
 
 * { box-sizing: border-box; }
 
+/* Every <select> on this page is on a dark background, but browsers render
+   the native option-list popup using the OS light theme by default — pale
+   grey text on white, unreadable. color-scheme tells Chromium/Firefox to
+   draw that popup (and other native controls) in dark mode; the explicit
+   option colours below are a belt-and-braces fallback for browsers that
+   only partially honour color-scheme for popups. */
+html { color-scheme: dark; }
+select { color-scheme: dark; }
+select option {
+  background: #0d1226;
+  color: #e4e8f8;
+}
+
+/* ------------------ CUSTOM DROPDOWN ------------------
+   color-scheme doesn't get fully honoured for the option-list popup on
+   every browser/OS combination — confirmed on a real user's machine, not
+   just one test environment — so every <select> gets progressively
+   enhanced (see enhanceAllSelects() in app.js) into this fully-styled
+   widget. The original <select> stays in the DOM as the real data source;
+   it's just visually hidden. */
+.csel { position: relative; display: inline-flex; vertical-align: middle; }
+.csel select { display: none; }
+/* This widget can end up inside the toolbar, the export modal, or the
+   program-config box — each of those has its own "button"/"select"
+   styling with varying specificity (".modal .body button" in particular
+   out-specifies a plain ".csel-btn" class). !important keeps this one
+   component looking the same everywhere instead of inheriting whichever
+   container it happens to sit in. */
+.csel .csel-btn {
+  display: inline-flex !important; align-items: center !important; gap: 8px !important;
+  background: rgba(255,255,255,0.05) !important; border: 1px solid var(--border) !important; color: var(--text) !important;
+  border-radius: var(--radius-sm) !important; padding: 6px 10px !important; font-family: var(--font-body) !important; font-size: 12.5px !important;
+  text-transform: none !important; letter-spacing: normal !important; font-weight: 400 !important;
+  cursor: pointer; white-space: nowrap; line-height: 1.3;
+}
+.csel .csel-btn:hover { background: rgba(255,255,255,0.09) !important; }
+.csel .csel-btn.open { border-color: rgba(249,115,22,0.45) !important; }
+.csel-btn::after { content: '▾'; font-size: 9px; color: var(--muted-2); }
+.csel-list {
+  position: absolute; top: calc(100% + 4px); left: 0; min-width: 100%;
+  max-height: 280px; overflow-y: auto;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+  z-index: 2000; display: none;
+}
+.csel-list.open { display: block; }
+.csel-item {
+  padding: 7px 12px; font-size: 12.5px; color: var(--text); cursor: pointer; white-space: nowrap;
+}
+.csel-item:hover { background: rgba(255,255,255,0.08); }
+.csel-item.active { background: rgba(249,115,22,0.16); color: #fdba74; }
+.csel-group {
+  padding: 6px 12px 2px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted-2); font-family: var(--font-mono);
+}
+
 html, body {
   margin: 0; padding: 0;
   min-height: 100%;
@@ -251,6 +307,50 @@ nav.app-nav {
   font-size: 13px; line-height: 1; display: flex; align-items: center; justify-content: center;
 }
 .chip button:hover { background: rgba(239,68,68,0.35); color: #fff; }
+
+/* ---- open/closed robot state ---- */
+/* #robotStateToggle (ID) lives inside .toolbar, whose ".toolbar button" rule
+   is the same specificity as a plain ".robot-state-toggle button" class
+   selector — an ID keeps this correct regardless of stylesheet order. */
+.robot-state-toggle { display: flex; border-radius: var(--radius-full); overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+#robotStateToggle button {
+  font-family: var(--font-mono) !important; font-size: 11px !important; font-weight: 700 !important; padding: 7px 12px !important;
+  border: 0 !important; background: rgba(255,255,255,0.03) !important; color: var(--muted-2) !important; cursor: pointer;
+  text-transform: none !important; letter-spacing: normal !important;
+  border-right: 1px solid var(--border) !important;
+}
+#robotStateToggle button:last-child { border-right: 0 !important; }
+#robotStateToggle button.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important; color: #fff !important; }
+
+.robot-size-fields { display: inline-flex; align-items: center; gap: 10px; }
+.mini-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); white-space: nowrap; }
+.mini-label input[type="number"] {
+  width: 58px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text);
+  border-radius: var(--radius-sm); padding: 5px 7px; font: inherit;
+}
+
+.robot-save-form {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin: -6px 0 14px; padding: 10px 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+}
+.robot-save-form input[type="text"] {
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text);
+  border-radius: var(--radius-sm); padding: 6px 10px; font-family: var(--font-body); font-size: 12.5px; width: 160px;
+}
+.robot-save-form input[type="number"] {
+  width: 58px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text);
+  border-radius: var(--radius-sm); padding: 6px 8px; font: inherit;
+}
+.robot-save-form button {
+  font-family: var(--font-display); font-size: 12px; font-weight: 700;
+  padding: 7px 14px; border-radius: var(--radius-full); border: 0; cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
+}
+.robot-save-form button:hover { filter: brightness(1.1); }
+.robot-save-form button#robotSaveCancel {
+  background: rgba(255,255,255,0.05); color: var(--muted);
+}
 
 /* ------------------ STAGE ------------------ */
 .stage {
@@ -581,6 +681,10 @@ nav.app-nav {
   stroke-width: 2.5;
   vector-effect: non-scaling-stroke;
 }
+/* Closed (folded, pre-unfold) draws dashed to read as "tucked in";
+   open (unfolded) draws solid as the robot's real running footprint. */
+.walker-footprint-closed { stroke-dasharray: 6 5; }
+.walker-footprint-open { stroke-dasharray: none; }
 .walker-arrow {
   fill: rgba(250,204,21,0.9);
   stroke: rgba(0,0,0,0.6);
