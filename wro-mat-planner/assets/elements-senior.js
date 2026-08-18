@@ -32,6 +32,21 @@ window.WRO_ELEMENTS = (function() {
     }
     return pts;
   }
+  // The 6 printed pickup squares in each tile-colour zone aren't evenly
+  // distributed across the zone (grid() above) -- traced from the official
+  // printing file at full resolution (27898x13500, ~10.7x this data's
+  // working copy): each square is 31.7x31.7mm, flush with the zone's
+  // top-left corner, on a 63.8mm grid (one tile-width of gap between
+  // squares). Offsets are relative to the zone's own x/y so they apply to
+  // all 4 colour zones, which share the same internal layout.
+  function tileGrid(zoneId) {
+    const z = zone(zoneId);
+    const colOffsets = [16, 80, 144];
+    const rowOffsets = [16, 80];
+    const pts = [];
+    rowOffsets.forEach(ry => colOffsets.forEach(rx => pts.push({ x: z.x + rx, y: z.y + ry })));
+    return pts;
+  }
   // Rules: cement elements are "randomly placed... and can even be stacked".
   // A deterministic jittered scatter (seeded PRNG, not Math.random) reads
   // better for a shared planning reference than a literal live-random one --
@@ -55,7 +70,7 @@ window.WRO_ELEMENTS = (function() {
 
   const tiles = [];
   TILE_COLOURS.forEach(colour => {
-    grid('tiles_' + colour, 3, 2, 0.18).forEach((p, i) => {
+    tileGrid('tiles_' + colour).forEach((p, i) => {
       tiles.push({ id: `tile_${colour}_${i}`, colour, x: p.x, y: p.y });
     });
   });
@@ -67,23 +82,62 @@ window.WRO_ELEMENTS = (function() {
     });
   });
 
-  // 4x3 grid inside the frame mount -- the real 12-slot layout depends on
-  // the paper pattern placed under the frame that round, which the
-  // configurator (mosaicPattern in program.js) lets you set to match.
-  const frameSlots = grid('mosaic_frame_mount', 4, 3, 0.10).map((p, i) => ({
-    id: `slot_${i}`, index: i, x: p.x, y: p.y,
-  }));
+  // Exact 4x3 pocket layout traced from the official 3D-print file (the
+  // "3d-files" link in the rules PDF -> WRO-2026-RoboMission-Senior-3D-
+  // Printing.zip -> "Template without logo.stl"): parsed the mesh directly
+  // (binary STL, painter's-algorithm top-down height render) to find 12
+  // square pockets, each 33.6x33.6mm, on a clean 50mm grid -- local coords
+  // (33,83,133,183) x (33,83,133) from the mesh's own bounding-box corner.
+  // That corner maps 1:1 onto mosaic_frame_mount's top-left, since the
+  // mesh's overall footprint (216.6x166.6mm) matches the mount zone
+  // (216.1x165.9mm) almost exactly. The paper pattern under the frame (not
+  // this geometry) decides each pocket's *colour* each round -- that's what
+  // the mosaicPattern configurator in program.js is for.
+  const FRAME_POCKET_MM = 33.6;
+  const frameSlots = [];
+  {
+    const mount = zone('mosaic_frame_mount');
+    const localXs = [33, 83, 133, 183];
+    const localYs = [33, 83, 133];
+    let i = 0;
+    localYs.forEach(ly => {
+      localXs.forEach(lx => {
+        frameSlots.push({ id: `slot_${i}`, index: i, x: mount.x + lx, y: mount.y + ly });
+        i++;
+      });
+    });
+  }
 
-  // w/h are the tool's own footprint, sized to match the grey pickup pad it
-  // sits on exactly (re-measured by isolating each pad's fill colour from
-  // the surrounding wood-pallet border and pavement, not just the pallet's
-  // outer edge -- the cement bowl's pad in particular is much smaller than
-  // its wooden pallet).
+  // Footprints traced from the official printing file at full resolution
+  // (27898x13500 source, not the 2600px working copy -- confirmed clean,
+  // un-tapered edges at that resolution where the working copy's JPEG
+  // blur had made them ambiguous), matching each pad's actual grey fill,
+  // not its wooden-pallet border:
+  //  - trowel_rect and cement_bowl are plain rectangles/squares.
+  //  - trowel_masonry's pad is a genuine 3-tier staircase, not a
+  //    rectangle -- confirmed two ways: the pad's own pixel outline, and
+  //    the official building instructions (WRO-2026-RM-Senior-BI-All.pdf),
+  //    which show it built as a stepped white base with an angled red
+  //    handle (the rectangular trowel is a flat blade + straight handle
+  //    by contrast). `points` are relative to (x,y), clockwise from the
+  //    shortest tier's top-left corner.
   const tools = [
-    { id: 'trowel_rect',    name: 'Rectangular trowel', scoringId: 'trowel_rect',    target: 'sponsor_area', x: 892,  y: 1061, w: 124, h: 61 },
-    { id: 'cement_bowl',    name: 'Cement bowl',         scoringId: 'cement_bowl',    target: 'parking_area', x: 1181, y: 1060, w: 34,  h: 33 },
-    { id: 'trowel_masonry', name: 'Masonry trowel',      scoringId: 'trowel_masonry', target: 'start',        x: 1506, y: 1070, w: 116, h: 78 },
+    { id: 'trowel_rect', name: 'Rectangular trowel', scoringId: 'trowel_rect', target: 'sponsor_area',
+      shape: 'rect', x: 893, y: 1061, w: 127, h: 64 },
+    { id: 'cement_bowl', name: 'Cement bowl', scoringId: 'cement_bowl', target: 'parking_area',
+      shape: 'rect', x: 1181, y: 1061, w: 32, h: 32 },
+    { id: 'trowel_masonry', name: 'Masonry trowel', scoringId: 'trowel_masonry', target: 'start',
+      shape: 'polygon', x: 1488, y: 1061, w: 86, h: 80,
+      points: [
+        { x: -43, y: -24 }, { x: -14, y: -24 }, { x: -14, y: -32 }, { x: 15, y: -32 },
+        { x: 15, y: -40 }, { x: 43, y: -40 }, { x: 43, y: 40 }, { x: 15, y: 40 },
+        { x: 15, y: 32 }, { x: -14, y: 32 }, { x: -14, y: 24 }, { x: -43, y: 24 },
+      ] },
   ];
 
-  return { tiles, cement, frameSlots, tools, TILE_COLOURS, CEMENT_COLOURS };
+  return {
+    tiles, cement, frameSlots, tools, TILE_COLOURS, CEMENT_COLOURS,
+    FRAME_POCKET_MM,
+    frameOuter: zone('mosaic_frame_mount'), // outer footprint for the frame graphic itself
+  };
 })();

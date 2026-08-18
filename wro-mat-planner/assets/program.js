@@ -427,6 +427,20 @@ window.WRO_PROGRAM = (function() {
         patternBox.style.display = patternBox.style.display === 'none' ? '' : 'none';
       });
 
+      // Rolls a fresh layout the same way the real event does -- a paper
+      // pattern swapped in before the run -- rather than making you click
+      // through 12 slots by hand every practice attempt.
+      const randomBtn = document.getElementById('mosaicPatternRandomBtn');
+      if (randomBtn) {
+        randomBtn.addEventListener('click', () => {
+          const colours = window.WRO_ELEMENTS.TILE_COLOURS;
+          state.mosaicPattern = state.mosaicPattern.map(() => colours[Math.floor(Math.random() * colours.length)]);
+          persist(state);
+          renderPatternGrid();
+          renderWalker();
+        });
+      }
+
       const frameSlotSel = document.getElementById('stepFrameSlot');
       window.WRO_ELEMENTS.frameSlots.forEach((slot, i) => {
         const opt = document.createElement('option');
@@ -646,10 +660,18 @@ window.WRO_PROGRAM = (function() {
           const zone = window.WRO_ZONES.find(z => z.id === tool.target);
           if (zone) { x = zone.centre.x; y = zone.centre.y; }
         }
-        svg('rect', {
-          x: x - tool.w / 2, y: y - tool.h / 2, width: tool.w, height: tool.h, rx: 4,
-          class: `elem-tool${delivered ? ' elem-tool-delivered' : ''}`,
-        }, elementsLayer);
+        const cls = `elem-tool${delivered ? ' elem-tool-delivered' : ''}`;
+        if (tool.shape === 'polygon') {
+          svg('polygon', {
+            points: tool.points.map(p => `${x + p.x},${y + p.y}`).join(' '),
+            class: cls,
+          }, elementsLayer);
+        } else {
+          svg('rect', {
+            x: x - tool.w / 2, y: y - tool.h / 2, width: tool.w, height: tool.h, rx: 4,
+            class: cls,
+          }, elementsLayer);
+        }
       });
 
       inv.frameSlots.forEach((filled, i) => {

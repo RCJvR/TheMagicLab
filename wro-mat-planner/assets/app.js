@@ -206,6 +206,28 @@
         }, zonesLayer);
       }
     });
+
+    // -- 3D-printed mosaic frame (Senior only): the physical object itself,
+    // not just its mount zone -- traced from the official 3D-print file, see
+    // elements-senior.js. Static because the frame's shape never changes;
+    // program.js draws the coloured tile that's landed in a pocket on top
+    // of this, once the walker has actually placed one there. --
+    if (window.WRO_ELEMENTS) {
+      const E = window.WRO_ELEMENTS;
+      const frameLayer = el('g', { class: 'frame-layer' }, svg);
+      el('rect', {
+        class: 'frame-body',
+        x: E.frameOuter.x, y: E.frameOuter.y, width: E.frameOuter.w, height: E.frameOuter.h, rx: 10,
+      }, frameLayer);
+      const pocketHalf = E.FRAME_POCKET_MM / 2;
+      E.frameSlots.forEach(slot => {
+        el('rect', {
+          class: 'frame-pocket',
+          x: slot.x - pocketHalf, y: slot.y - pocketHalf,
+          width: E.FRAME_POCKET_MM, height: E.FRAME_POCKET_MM, rx: 3,
+        }, frameLayer);
+      });
+    }
   }
 
   function zoneBBox(z) {
