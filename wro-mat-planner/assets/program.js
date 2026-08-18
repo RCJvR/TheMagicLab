@@ -139,15 +139,17 @@ window.WRO_PROGRAM = (function() {
     }
     return pts;
   }
-  function refPoint(pose, ref, size) {
+  // footprint: { w, l } -- front/back offset by half the length (the
+  // direction the robot points), left/right offset by half the width.
+  function refPoint(pose, ref, footprint) {
     const rad = pose.heading * Math.PI / 180;
     const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
     const right = { x: Math.cos(rad), y: Math.sin(rad) };
-    const half = size / 2;
-    if (ref === 'front') return { x: pose.x + fwd.x * half, y: pose.y + fwd.y * half };
-    if (ref === 'back')  return { x: pose.x - fwd.x * half, y: pose.y - fwd.y * half };
-    if (ref === 'right') return { x: pose.x + right.x * half, y: pose.y + right.y * half };
-    if (ref === 'left')  return { x: pose.x - right.x * half, y: pose.y - right.y * half };
+    const halfL = footprint.l / 2, halfW = footprint.w / 2;
+    if (ref === 'front') return { x: pose.x + fwd.x * halfL, y: pose.y + fwd.y * halfL };
+    if (ref === 'back')  return { x: pose.x - fwd.x * halfL, y: pose.y - fwd.y * halfL };
+    if (ref === 'right') return { x: pose.x + right.x * halfW, y: pose.y + right.y * halfW };
+    if (ref === 'left')  return { x: pose.x - right.x * halfW, y: pose.y - right.y * halfW };
     return { x: pose.x, y: pose.y };
   }
   const REF_LABELS = { center: 'Centre', front: 'Front', back: 'Back', left: 'Left side', right: 'Right side' };
@@ -732,7 +734,7 @@ window.WRO_PROGRAM = (function() {
         const right = { x: Math.cos(rad), y: Math.sin(rad) };
         const sizes = inv.carrying.map(carriedItemSize);
         const maxW = Math.max(...sizes.map(s => s.w));
-        const out = tools.getRobotSize(sizeState) / 2 + maxW / 2 + 14;
+        const out = tools.getRobotFootprint(sizeState).w / 2 + maxW / 2 + 14;
         const totalAlong = sizes.reduce((s, sz) => s + sz.h, 0) + (sizes.length - 1) * 6;
         let cursor = -totalAlong / 2;
         inv.carrying.forEach((item, i) => {
@@ -846,13 +848,14 @@ window.WRO_PROGRAM = (function() {
 
       function drawRobotAt(pose, sizeState) {
         clearWalkerLayer();
-        const size = tools.getRobotSize(sizeState || 'closed');
-        const half = size / 2;
+        const fp = tools.getRobotFootprint(sizeState || 'closed');
+        const halfW = fp.w / 2, halfL = fp.l / 2;
+        const arrowLen = Math.min(42, halfL + 10);
         const g = svg('g', { transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})`, class: 'walker-robot-live' }, walkerLayer);
         g.addEventListener('mousedown', onRobotMouseDown);
         g.addEventListener('touchstart', onRobotMouseDown, { passive: false });
-        svg('rect', { x: -half, y: -half, width: size, height: size, class: `walker-footprint walker-footprint-${sizeState || 'closed'}` }, g);
-        svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
+        svg('rect', { x: -halfW, y: -halfL, width: fp.w, height: fp.l, class: `walker-footprint walker-footprint-${sizeState || 'closed'}` }, g);
+        svg('polygon', { points: `0,${-halfL + 10} ${-18},${-halfL + arrowLen} ${18},${-halfL + arrowLen}`, class: 'walker-arrow' }, g);
 
         // trail so far — skipped during placement (drawRobotAt(pendingStart)
         // is called before state.walker.start exists, on the "click again to
@@ -876,7 +879,7 @@ window.WRO_PROGRAM = (function() {
         }
 
         // reference-point marker
-        const rp = refPoint(pose, refSelect.value, size);
+        const rp = refPoint(pose, refSelect.value, fp);
         svg('circle', { cx: rp.x, cy: rp.y, r: 9, class: 'walker-refdot' }, walkerLayer);
       }
 
@@ -887,14 +890,15 @@ window.WRO_PROGRAM = (function() {
       function drawGhost(pose) {
         clearWalkerLayer();
         const sizeState = tools.getRobotState();
-        const size = tools.getRobotSize(sizeState);
-        const half = size / 2;
+        const fp = tools.getRobotFootprint(sizeState);
+        const halfW = fp.w / 2, halfL = fp.l / 2;
+        const arrowLen = Math.min(42, halfL + 10);
         const g = svg('g', {
           transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})`,
           class: 'walker-ghost',
         }, walkerLayer);
-        svg('rect', { x: -half, y: -half, width: size, height: size, class: `walker-footprint walker-footprint-${sizeState}` }, g);
-        svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
+        svg('rect', { x: -halfW, y: -halfL, width: fp.w, height: fp.l, class: `walker-footprint walker-footprint-${sizeState}` }, g);
+        svg('polygon', { points: `0,${-halfL + 10} ${-18},${-halfL + arrowLen} ${18},${-halfL + arrowLen}`, class: 'walker-arrow' }, g);
       }
 
       // The live pose: fully-applied steps up to stepIndex, plus however far
@@ -928,8 +932,8 @@ window.WRO_PROGRAM = (function() {
         }
         const pose = currentPose();
         const sizeState = sizeStateAtIndex(state.steps, appliedStepIndex());
-        const size = tools.getRobotSize(sizeState);
-        const rp = refPoint(pose, refSelect.value, size);
+        const fp = tools.getRobotFootprint(sizeState);
+        const rp = refPoint(pose, refSelect.value, fp);
         let stepNote;
         if (playing && idx < total) {
           stepNote = ` · running: ${describeStep(state.steps[idx])} (${Math.round(playFrac * 100)}%)`;

@@ -256,7 +256,9 @@ window.WRO_ZONES = [
   },
 ];
 
-// Common robot profiles (size in mm, square footprint)
+// Common robot profiles (size in mm, square footprint in both closed and
+// open states -- none of these fold into a rectangle; profiles that do can
+// add openW/openL, see getRobotFootprint() in tools.js)
 window.WRO_ROBOT_PROFILES = [
   { id: 'custom',    name: 'Custom (set size →)',       size: 220, custom: true },
   { id: 'wro250',    name: 'WRO max (250 mm cube)',     size: 250 },

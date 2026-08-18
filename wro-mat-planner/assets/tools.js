@@ -75,33 +75,43 @@
       return { x: Math.round(pt.x / SNAP_STEP) * SNAP_STEP, y: Math.round(pt.y / SNAP_STEP) * SNAP_STEP };
     }
     // Robots that unfold after the start of the run have two footprints: a
-    // "closed" one that must fit the start area, and an "open" one used for
-    // the rest of the run. Built-in profiles don't fold (openSize falls
-    // back to size); custom/saved profiles can define both.
+    // "closed" one that must fit the start area (always square -- the start
+    // box itself is square, so there's no benefit to an asymmetric closed
+    // shape) and an "open" one used for the rest of the run, which can be a
+    // genuine rectangle (e.g. 400mm long x 220mm wide) rather than a bigger
+    // square. Built-in profiles don't fold (open falls back to the closed
+    // square); custom/saved profiles can define an open width x length.
     function getRobotState() {
       const toggle = document.getElementById('robotStateToggle');
       return (toggle && toggle.dataset.state === 'open') ? 'open' : 'closed';
     }
-    function getRobotSize(stateOverride) {
+    // Returns { w, l }: w = left<->right extent, l = front<->back extent
+    // (the direction the robot points, heading 0deg).
+    function getRobotFootprint(stateOverride) {
       const state = stateOverride || getRobotState();
-      if (!robotSelect) return 250;
+      const square = s => ({ w: s, l: s });
+      if (!robotSelect) return square(250);
       const profile = window.WRO_ROBOT_PROFILES.find(p => p.id === robotSelect.value);
-      if (!profile) return 250;
+      if (!profile) return square(250);
       if (profile.custom) {
         const closedInput = document.getElementById('robotSizeCustom');
-        const openInput = document.getElementById('robotSizeCustomOpen');
-        const closed = closedInput ? parseInt(closedInput.value, 10) : NaN;
-        const open = openInput ? parseInt(openInput.value, 10) : NaN;
+        const openWInput = document.getElementById('robotSizeCustomOpenW');
+        const openLInput = document.getElementById('robotSizeCustomOpenL');
+        const closedRaw = closedInput ? parseInt(closedInput.value, 10) : NaN;
+        const closed = (!isNaN(closedRaw) && closedRaw > 0) ? closedRaw : profile.size;
         if (state === 'open') {
-          if (!isNaN(open) && open > 0) return open;
-          if (!isNaN(closed) && closed > 0) return closed;
-        } else {
-          if (!isNaN(closed) && closed > 0) return closed;
+          const openWRaw = openWInput ? parseInt(openWInput.value, 10) : NaN;
+          const openLRaw = openLInput ? parseInt(openLInput.value, 10) : NaN;
+          const w = (!isNaN(openWRaw) && openWRaw > 0) ? openWRaw : closed;
+          const l = (!isNaN(openLRaw) && openLRaw > 0) ? openLRaw : closed;
+          return { w, l };
         }
-        return profile.size;
+        return square(closed);
       }
-      if (state === 'open') return profile.openSize || profile.size;
-      return profile.size;
+      if (state === 'open') {
+        return { w: profile.openW || profile.size, l: profile.openL || profile.size };
+      }
+      return square(profile.size);
     }
 
     function cloneMeasurements(arr) {
@@ -272,8 +282,10 @@
       parent.appendChild(t);
     }
 
-    function drawRobotShape(parent, centre, headingDeg, size, colour, label, opts = {}) {
-      const half = size / 2;
+    // footprint: { w, l } -- w = left<->right extent, l = front<->back
+    // extent (the "forward" direction in the local, unrotated frame).
+    function drawRobotShape(parent, centre, headingDeg, footprint, colour, label, opts = {}) {
+      const halfW = footprint.w / 2, halfL = footprint.l / 2;
       // Rotate group around centre by headingDeg (where 0° = up)
       const g = el('g', {
         transform: `translate(${centre.x} ${centre.y}) rotate(${headingDeg})`,
@@ -289,12 +301,13 @@
       }
       // body
       g.appendChild(el('rect', {
-        x: -half, y: -half, width: size, height: size,
+        x: -halfW, y: -halfL, width: footprint.w, height: footprint.l,
         class: 'm-footprint', stroke: colour
       }));
       // direction arrow (points up in local frame, which is "forward")
+      const arrowLen = Math.min(50, halfL + 12);
       const arrow = el('polygon', {
-        points: `0,${-half + 12} ${-22},${-half + 50} ${22},${-half + 50}`,
+        points: `0,${-halfL + 12} ${-22},${-halfL + arrowLen} ${22},${-halfL + arrowLen}`,
         class: 'm-pose-arrow'
       });
       g.appendChild(arrow);
@@ -307,13 +320,22 @@
       // label outside the rotation, in mat coords
       if (label) {
         const t = el('text', {
-          x: centre.x + half + 8, y: centre.y - half + 22,
+          x: centre.x + halfW + 8, y: centre.y - halfL + 22,
           class: 'm-footprint-label', 'font-size': 20, 'text-anchor': 'start',
           fill: colour
         });
         t.textContent = label;
         parent.appendChild(t);
       }
+    }
+
+    // Reads a measurement's stored robot footprint, tolerating the old
+    // format (a single `robotSize` number, from before open/closed could be
+    // a rectangle) so measurements saved before this change still render.
+    function footprintOf(m) {
+      if (m.robotFootprint) return m.robotFootprint;
+      if (typeof m.robotSize === 'number') return { w: m.robotSize, l: m.robotSize };
+      return { w: 250, l: 250 };
     }
 
     function drawMeasurement(parent, m, isLive=false) {
@@ -358,13 +380,14 @@
         }
       } else if (m.tool === 'footprint') {
         const p = m.points[0];
-        const size = m.robotSize || 250;
-        drawRobotShape(parent, p, 0, size, c, `${size}×${size} robot @ (${p.x.toFixed(0)},${p.y.toFixed(0)})`);
+        const fp = footprintOf(m);
+        const dims = fp.w === fp.l ? `${fp.w}×${fp.w}` : `${fp.w}×${fp.l}`;
+        drawRobotShape(parent, p, 0, fp, c, `${dims} robot @ (${p.x.toFixed(0)},${p.y.toFixed(0)})`);
       } else if (m.tool === 'pose') {
         const p = m.points[0];
         const heading = m.heading || 0;
-        const size = m.robotSize || 250;
-        drawRobotShape(parent, p, heading, size, c,
+        const fp = footprintOf(m);
+        drawRobotShape(parent, p, heading, fp, c,
           `Pose @ (${p.x.toFixed(0)},${p.y.toFixed(0)}) · ${heading.toFixed(1)}°`,
           { draggable: !isLive && tool === 'pose', measurementId: m.id });
       }
@@ -392,7 +415,7 @@
           }
         }
         live.colour = COLOURS[(measurements.length) % COLOURS.length];
-        live.robotSize = getRobotSize();
+        live.robotFootprint = getRobotFootprint();
         drawMeasurement(liveLayer, live, true);
       }
       // Pose: live rotation preview
@@ -404,7 +427,7 @@
           points: [c],
           heading: ((heading % 360) + 360) % 360,
           colour: COLOURS[(measurements.length) % COLOURS.length],
-          robotSize: getRobotSize(),
+          robotFootprint: getRobotFootprint(),
         };
         drawMeasurement(liveLayer, live, true);
       }
@@ -458,14 +481,14 @@
           info.textContent = `vertex (${b.x.toFixed(0)},${b.y.toFixed(0)})  ·  turn ${Math.abs(t).toFixed(1)}° ${dir}  ·  interior ${interior.toFixed(1)}°`;
         } else if (m.tool === 'footprint') {
           const p = m.points[0];
-          const size = m.robotSize || 250;
+          const fp = footprintOf(m);
           desc.textContent = `Robot footprint #${m.id}`;
-          info.textContent = `centre (${p.x.toFixed(0)},${p.y.toFixed(0)})  ·  ${size} × ${size} mm`;
+          info.textContent = `centre (${p.x.toFixed(0)},${p.y.toFixed(0)})  ·  ${fp.w} × ${fp.l} mm`;
         } else if (m.tool === 'pose') {
           const p = m.points[0];
-          const size = m.robotSize || 250;
+          const fp = footprintOf(m);
           desc.textContent = `Robot pose #${m.id}`;
-          info.textContent = `(${p.x.toFixed(0)},${p.y.toFixed(0)})  ·  heading ${(m.heading || 0).toFixed(1)}°  ·  ${size} mm`;
+          info.textContent = `(${p.x.toFixed(0)},${p.y.toFixed(0)})  ·  heading ${(m.heading || 0).toFixed(1)}°  ·  ${fp.w} × ${fp.l} mm`;
         }
         row.appendChild(swatch);
         row.appendChild(desc);
@@ -514,7 +537,7 @@
         if (pushPoint(pt) && workingPoints.length === 3) commitMeasurement();
       } else if (tool === 'footprint') {
         workingPoints = [pt];
-        commitMeasurement({ robotSize: getRobotSize() });
+        commitMeasurement({ robotFootprint: getRobotFootprint() });
       } else if (tool === 'pose') {
         if (!poseRotateState) {
           poseRotateState = { centre: pt, isRotating: true };
@@ -523,7 +546,7 @@
           const heading = Math.atan2(pt.x - c.x, -(pt.y - c.y)) * 180 / Math.PI;
           const headNorm = ((heading % 360) + 360) % 360;
           workingPoints = [c];
-          commitMeasurement({ heading: headNorm, robotSize: getRobotSize() });
+          commitMeasurement({ heading: headNorm, robotFootprint: getRobotFootprint() });
         }
       }
       drawLive();
@@ -605,7 +628,7 @@
       },
       redraw: () => { redrawAll(); drawLive(); },
       math: { dist, bearing, pathLength, turnAngle },
-      getRobotSize,
+      getRobotFootprint,
       getRobotState,
     };
   }

@@ -265,34 +265,41 @@
     localStorage.setItem(CUSTOM_ROBOTS_KEY, JSON.stringify(list));
   }
 
-  // A saved custom robot is { id, name, closed, open }. Older saves only had
-  // { id, name, size } (from before open/closed states existed) — normalise
-  // those to closed = open = size so nothing breaks for existing users.
+  // A saved custom robot is { id, name, closed, openW, openL } -- closed is
+  // always a square (the start area is square), open can be a genuine
+  // rectangle (e.g. 400mm long x 220mm wide when unfolded). Older saves had
+  // { id, name, size } (pre open/closed) or { id, name, closed, open }
+  // (pre rectangular-open) — normalise both to the current shape so nothing
+  // breaks for existing users.
   function normalizeCustomRobot(r) {
     const closed = r.closed != null ? r.closed : r.size;
-    const open = r.open != null ? r.open : closed;
-    return { id: r.id, name: r.name, closed, open };
+    const openW = r.openW != null ? r.openW : (r.open != null ? r.open : closed);
+    const openL = r.openL != null ? r.openL : (r.open != null ? r.open : closed);
+    return { id: r.id, name: r.name, closed, openW, openL };
   }
-  function formatRobotLabel(name, closed, open) {
-    return closed === open ? `${name} (${closed} mm)` : `${name} (${closed}/${open} mm)`;
+  function formatRobotLabel(name, closed, openW, openL) {
+    if (closed === openW && closed === openL) return `${name} (${closed} mm)`;
+    const openStr = openW === openL ? `${openW}` : `${openW}×${openL}`;
+    return `${name} (${closed}/${openStr} mm)`;
   }
 
   function buildRobotProfileSelect(tools) {
     const sel = document.getElementById('robotProfile');
     const closedInput = document.getElementById('robotSizeCustom');
-    const openInput = document.getElementById('robotSizeCustomOpen');
+    const openWInput = document.getElementById('robotSizeCustomOpenW');
+    const openLInput = document.getElementById('robotSizeCustomOpenL');
     if (!sel) return;
 
     // Custom presets live directly in WRO_ROBOT_PROFILES so tools.js's
-    // existing getRobotSize() lookup (which only knows that array) picks
-    // them up with no changes on its side. This is the single source of
-    // truth for what populate() renders — it must never also re-read
+    // existing getRobotFootprint() lookup (which only knows that array)
+    // picks them up with no changes on its side. This is the single source
+    // of truth for what populate() renders — it must never also re-read
     // localStorage directly, or saved robots end up listed twice.
     function syncProfilesArray() {
       const builtins = window.WRO_ROBOT_PROFILES.filter(p => !p.userAdded);
       const saved = loadCustomRobots().map(normalizeCustomRobot).map(r => ({
-        id: r.id, name: formatRobotLabel(r.name, r.closed, r.open),
-        size: r.closed, openSize: r.open, userAdded: true,
+        id: r.id, name: formatRobotLabel(r.name, r.closed, r.openW, r.openL),
+        size: r.closed, openW: r.openW, openL: r.openL, userAdded: true,
       }));
       window.WRO_ROBOT_PROFILES = builtins.concat(saved);
     }
@@ -347,14 +354,17 @@
       const profile = window.WRO_ROBOT_PROFILES.find(p => p.id === sel.value);
       if (profile && profile.custom && closedInput) {
         const c = parseInt(closedInput.value, 10);
-        const o = openInput ? parseInt(openInput.value, 10) : c;
+        const closed = (!isNaN(c) && c > 0) ? c : profile.size;
+        const ow = openWInput ? parseInt(openWInput.value, 10) : NaN;
+        const ol = openLInput ? parseInt(openLInput.value, 10) : NaN;
         return {
-          closed: (!isNaN(c) && c > 0) ? c : profile.size,
-          open: (!isNaN(o) && o > 0) ? o : ((!isNaN(c) && c > 0) ? c : profile.size),
+          closed,
+          openW: (!isNaN(ow) && ow > 0) ? ow : closed,
+          openL: (!isNaN(ol) && ol > 0) ? ol : closed,
         };
       }
-      if (!profile) return { closed: 250, open: 250 };
-      return { closed: profile.size, open: profile.openSize || profile.size };
+      if (!profile) return { closed: 250, openW: 250, openL: 250 };
+      return { closed: profile.size, openW: profile.openW || profile.size, openL: profile.openL || profile.size };
     }
 
     // ---- Save-as-preset inline form (replaces a chain of prompt() calls
@@ -363,13 +373,15 @@
     const saveForm = document.getElementById('robotSaveForm');
     const saveNameInput = document.getElementById('robotSaveName');
     const saveClosedInput = document.getElementById('robotSaveClosed');
-    const saveOpenInput = document.getElementById('robotSaveOpen');
+    const saveOpenWInput = document.getElementById('robotSaveOpenW');
+    const saveOpenLInput = document.getElementById('robotSaveOpenL');
     if (saveBtn && saveForm) {
       saveBtn.addEventListener('click', () => {
         const sizes = currentSizes();
         saveNameInput.value = '';
         saveClosedInput.value = sizes.closed;
-        saveOpenInput.value = sizes.open;
+        saveOpenWInput.value = sizes.openW;
+        saveOpenLInput.value = sizes.openL;
         saveForm.style.display = '';
         saveNameInput.focus();
       });
@@ -380,9 +392,10 @@
         const trimmed = saveNameInput.value.trim();
         if (!trimmed) { toast('Name needed — not saved'); saveNameInput.focus(); return; }
         const closed = parseInt(saveClosedInput.value, 10) || 220;
-        const open = parseInt(saveOpenInput.value, 10) || closed;
+        const openW = parseInt(saveOpenWInput.value, 10) || closed;
+        const openL = parseInt(saveOpenLInput.value, 10) || closed;
         const list = loadCustomRobots();
-        list.push({ id: `user_${Date.now()}`, name: trimmed, closed, open });
+        list.push({ id: `user_${Date.now()}`, name: trimmed, closed, openW, openL });
         saveCustomRobots(list);
         syncProfilesArray();
         populate();
@@ -391,7 +404,8 @@
         syncCustomVisibility();
         renderCustomRobotList();
         saveForm.style.display = 'none';
-        toast(`Saved "${trimmed}" · ${closed === open ? closed + ' mm' : closed + '/' + open + ' mm'}`);
+        const openStr = openW === openL ? `${openW}` : `${openW}×${openL}`;
+        toast(`Saved "${trimmed}" · ${(closed === openW && closed === openL) ? closed + ' mm' : closed + '/' + openStr + ' mm'}`);
       });
     }
 
@@ -403,7 +417,9 @@
       box.style.display = list.length ? '' : 'none';
       list.forEach(r => {
         const row = h('div', { class: 'chip' }, box);
-        h('span', { text: r.closed === r.open ? `${r.name} · ${r.closed} mm` : `${r.name} · ${r.closed}/${r.open} mm` }, row);
+        const sameAsClosed = r.closed === r.openW && r.closed === r.openL;
+        const openStr = r.openW === r.openL ? `${r.openW}` : `${r.openW}×${r.openL}`;
+        h('span', { text: sameAsClosed ? `${r.name} · ${r.closed} mm` : `${r.name} · ${r.closed}/${openStr} mm` }, row);
         const del = h('button', { text: '×', title: 'Delete this preset', type: 'button' }, row);
         del.addEventListener('click', () => {
           const next = loadCustomRobots().filter(x => x.id !== r.id);
