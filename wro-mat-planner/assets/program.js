@@ -433,12 +433,36 @@ window.WRO_PROGRAM = (function() {
         renderWalker();
       });
 
+      function cancelPlacing() {
+        if (!placing) return;
+        placing = null;
+        // Don't touch stage.dataset.tool here — the toolbar button that
+        // triggered this cancellation already set it via its own (earlier)
+        // click listener in app.js. Overwriting it here would stomp
+        // whichever real tool the user just picked.
+        placeBtn.textContent = state.walker.start ? '📍 Re-place robot' : '📍 Place robot on mat';
+        renderWalker();
+      }
+
       placeBtn.addEventListener('click', () => {
         tools.setTool('none');
+        // tools.js's own click handler is now a no-op (its closure `tool` is
+        // 'none'), but the CSS rule `[data-tool="none"] svg.measure {
+        // pointer-events: none}` also makes the mat un-clickable — so the
+        // stage needs a tool value that isn't "none" for OUR click handler
+        // below to ever receive an event at all.
+        stage.dataset.tool = 'placing';
         placing = 'position';
         pendingStart = null;
         placeBtn.textContent = '📍 Click the mat: set position…';
         readout.textContent = 'Click anywhere on the mat to set the robot\'s starting position.';
+      });
+
+      // Placing a robot borrows the mat's click surface — if the user picks
+      // a different tool mid-placement, back out cleanly instead of leaving
+      // two click handlers racing each other.
+      document.querySelectorAll('button[data-tool]').forEach(btn => {
+        btn.addEventListener('click', () => cancelPlacing());
       });
 
       measSvg.addEventListener('click', (e) => {
@@ -458,6 +482,7 @@ window.WRO_PROGRAM = (function() {
           state.walker.start = pendingStart;
           state.walker.stepIndex = 0;
           placing = null;
+          stage.dataset.tool = 'none';
           placeBtn.textContent = '📍 Re-place robot';
           persist(state);
           renderWalker();
