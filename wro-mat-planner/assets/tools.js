@@ -128,7 +128,42 @@
       });
     }
 
+    // Drag an existing, committed pose's silhouette to reposition it,
+    // instead of having to delete and re-place it. Only wired up while the
+    // POSE tool is active (see drawRobotShape's `opts.draggable`).
+    let poseDrag = null; // { id, origin: {x,y}, startMouse: {x,y} }
+    function startPoseDrag(e, id) {
+      e.preventDefault();
+      e.stopPropagation();
+      const m = measurements.find(mm => mm.id === id);
+      if (!m) return;
+      pushHistory();
+      poseDrag = { id, origin: { x: m.points[0].x, y: m.points[0].y }, startMouse: clientToMM(e) };
+      document.addEventListener('mousemove', onPoseDragMove);
+      document.addEventListener('mouseup', onPoseDragEnd);
+    }
+    function onPoseDragMove(e) {
+      if (!poseDrag) return;
+      const m = measurements.find(mm => mm.id === poseDrag.id);
+      if (!m) { onPoseDragEnd(); return; }
+      const pt = clientToMM(e);
+      m.points[0] = snap({
+        x: poseDrag.origin.x + (pt.x - poseDrag.startMouse.x),
+        y: poseDrag.origin.y + (pt.y - poseDrag.startMouse.y),
+      });
+      redrawAll();
+    }
+    function onPoseDragEnd() {
+      if (!poseDrag) return;
+      poseDrag = null;
+      refreshList();
+      if (onChange) onChange(measurements);
+      document.removeEventListener('mousemove', onPoseDragMove);
+      document.removeEventListener('mouseup', onPoseDragEnd);
+    }
+
     function setTool(t) {
+      const prevTool = tool;
       tool = t;
       workingPoints = [];
       poseRotateState = null;
@@ -136,6 +171,11 @@
       stage.dataset.tool = t;
       document.querySelectorAll('button[data-tool]').forEach(b =>
         b.classList.toggle('active', b.dataset.tool === t));
+      // Committed poses are only draggable while POSE is the active tool
+      // (drawRobotShape's opts.draggable reads `tool` live) -- re-render them
+      // on any switch into or out of 'pose' so that stays in sync instead of
+      // a stale mousedown listener lingering from before the switch.
+      if (prevTool === 'pose' || t === 'pose') redrawAll();
     }
 
     function commitMeasurement(extra = {}) {
@@ -218,12 +258,20 @@
       parent.appendChild(t);
     }
 
-    function drawRobotShape(parent, centre, headingDeg, size, colour, label) {
+    function drawRobotShape(parent, centre, headingDeg, size, colour, label, opts = {}) {
       const half = size / 2;
       // Rotate group around centre by headingDeg (where 0° = up)
       const g = el('g', {
-        transform: `translate(${centre.x} ${centre.y}) rotate(${headingDeg})`
+        transform: `translate(${centre.x} ${centre.y}) rotate(${headingDeg})`,
+        class: opts.draggable ? 'm-pose-draggable' : '',
       });
+      if (opts.draggable) {
+        g.addEventListener('mousedown', e => startPoseDrag(e, opts.measurementId));
+        // Swallow the click too -- grabbing an existing pose to drag it
+        // must not also be read as "place a new pose point here" by the
+        // tool's own click handler on measSvg.
+        g.addEventListener('click', e => e.stopPropagation());
+      }
       // body
       g.appendChild(el('rect', {
         x: -half, y: -half, width: size, height: size,
@@ -302,7 +350,8 @@
         const heading = m.heading || 0;
         const size = m.robotSize || 250;
         drawRobotShape(parent, p, heading, size, c,
-          `Pose @ (${p.x.toFixed(0)},${p.y.toFixed(0)}) · ${heading.toFixed(1)}°`);
+          `Pose @ (${p.x.toFixed(0)},${p.y.toFixed(0)}) · ${heading.toFixed(1)}°`,
+          { draggable: !isLive && tool === 'pose', measurementId: m.id });
       }
     }
 

@@ -463,6 +463,10 @@ nav.app-nav {
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
+/* A committed POSE's silhouette, draggable while the POSE tool is active
+   (see tools.js drawRobotShape opts.draggable). */
+.m-pose-draggable { cursor: grab; }
+.m-pose-draggable:active { cursor: grabbing; }
 
 /* Measurements list */
 .meas-list {
@@ -714,6 +718,14 @@ nav.app-nav {
 .walker-ghost .walker-footprint {
   stroke-dasharray: 4 4;
 }
+/* The placed robot stays draggable even while the mat is otherwise idle --
+   svg.measure goes pointer-events:none there (see .stage[data-tool="none"]
+   svg.measure), so this opts the robot's own hit area back in explicitly. */
+.walker-robot-live {
+  pointer-events: all;
+  cursor: grab;
+}
+.walker-robot-live:active { cursor: grabbing; }
 
 /* ------------------ SCORING PANEL ------------------ */
 #scoringPanel {

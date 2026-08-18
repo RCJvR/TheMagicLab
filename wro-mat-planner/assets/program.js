@@ -467,11 +467,41 @@ window.WRO_PROGRAM = (function() {
 
       function clearWalkerLayer() { walkerLayer.innerHTML = ''; }
 
+      // Drag the placed robot's silhouette to reposition it, instead of
+      // having to re-run the two-click place flow. Dragging shifts
+      // state.walker.start by the same delta at whatever step is currently
+      // shown, which slides the whole route uniformly (heading unchanged).
+      let robotDrag = null; // { origin: {x,y}, startMouse: {x,y} }
+      function onRobotMouseDown(e) {
+        if (!state.walker.start || placing) return;
+        e.preventDefault();
+        e.stopPropagation();
+        pushHistory();
+        robotDrag = { origin: { x: state.walker.start.x, y: state.walker.start.y }, startMouse: clientToMM(e) };
+        document.addEventListener('mousemove', onRobotDragMove);
+        document.addEventListener('mouseup', onRobotDragEnd);
+      }
+      function onRobotDragMove(e) {
+        if (!robotDrag) return;
+        const pt = clientToMM(e);
+        state.walker.start.x = robotDrag.origin.x + (pt.x - robotDrag.startMouse.x);
+        state.walker.start.y = robotDrag.origin.y + (pt.y - robotDrag.startMouse.y);
+        renderWalker();
+      }
+      function onRobotDragEnd() {
+        if (!robotDrag) return;
+        robotDrag = null;
+        persist(state);
+        document.removeEventListener('mousemove', onRobotDragMove);
+        document.removeEventListener('mouseup', onRobotDragEnd);
+      }
+
       function drawRobotAt(pose, sizeState) {
         clearWalkerLayer();
         const size = tools.getRobotSize(sizeState || 'closed');
         const half = size / 2;
-        const g = svg('g', { transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})` }, walkerLayer);
+        const g = svg('g', { transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})`, class: 'walker-robot-live' }, walkerLayer);
+        g.addEventListener('mousedown', onRobotMouseDown);
         svg('rect', { x: -half, y: -half, width: size, height: size, class: `walker-footprint walker-footprint-${sizeState || 'closed'}` }, g);
         svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
 
