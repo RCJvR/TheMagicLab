@@ -543,6 +543,7 @@ window.WRO_PROGRAM = (function() {
       };
 
       refSelect.addEventListener('change', () => {
+        cancelPlacingAndReleaseTool();
         state.walker.ref = refSelect.value;
         persist(state);
         renderWalker();
@@ -557,6 +558,19 @@ window.WRO_PROGRAM = (function() {
         // whichever real tool the user just picked.
         placeBtn.textContent = state.walker.start ? '📍 Re-place robot' : '📍 Place robot on mat';
         renderWalker();
+      }
+
+      // Reset/Prev/Next/ref-select don't select a different tool, so unlike
+      // cancelPlacing() above they DO need to put the mat's click surface
+      // back to normal themselves. Without this, clicking e.g. Reset
+      // mid-placement only redraws over the ghost -- it doesn't leave
+      // placement mode, so the next mat click is silently eaten as the
+      // position/heading click instead of doing what it looks like it does.
+      function cancelPlacingAndReleaseTool() {
+        if (!placing) return;
+        pendingStart = null;
+        stage.dataset.tool = 'none';
+        cancelPlacing();
       }
 
       placeBtn.addEventListener('click', () => {
@@ -622,24 +636,23 @@ window.WRO_PROGRAM = (function() {
       });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && placing) {
-          pendingStart = null;
-          stage.dataset.tool = 'none';
-          cancelPlacing();
-        }
+        if (e.key === 'Escape' && placing) cancelPlacingAndReleaseTool();
       });
 
       resetBtn.addEventListener('click', () => {
+        cancelPlacingAndReleaseTool();
         state.walker.stepIndex = 0;
         persist(state);
         renderWalker();
       });
       prevBtn.addEventListener('click', () => {
+        cancelPlacingAndReleaseTool();
         state.walker.stepIndex = Math.max(0, state.walker.stepIndex - 1);
         persist(state);
         renderWalker();
       });
       nextBtn.addEventListener('click', () => {
+        cancelPlacingAndReleaseTool();
         state.walker.stepIndex = Math.min(state.steps.length, state.walker.stepIndex + 1);
         persist(state);
         renderWalker();
