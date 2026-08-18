@@ -104,6 +104,30 @@
       return profile.size;
     }
 
+    function cloneMeasurements(arr) {
+      return arr.map(m => Object.assign({}, m, { points: m.points.map(p => Object.assign({}, p)) }));
+    }
+    // Snapshot the committed measurements list before a mutation, so
+    // Ctrl+Z / Ctrl+Y (window.WRO_HISTORY, shared with the route planner)
+    // can step back and forth through it.
+    function pushHistory() {
+      if (!window.WRO_HISTORY) return;
+      window.WRO_HISTORY.snapshot({
+        label: 'measurements',
+        data: cloneMeasurements(measurements),
+        restore(target) {
+          const prev = cloneMeasurements(measurements);
+          measurements = cloneMeasurements(target);
+          nextId = Math.max(0, ...measurements.map(m => m.id || 0)) + 1;
+          redrawAll();
+          drawLive();
+          refreshList();
+          if (onChange) onChange(measurements);
+          return prev;
+        },
+      });
+    }
+
     function setTool(t) {
       tool = t;
       workingPoints = [];
@@ -116,6 +140,7 @@
 
     function commitMeasurement(extra = {}) {
       if (!workingPoints.length && !extra.points) return;
+      pushHistory();
       const m = Object.assign({
         id: nextId++,
         tool: tool,
@@ -131,6 +156,7 @@
       if (onChange) onChange(measurements);
     }
     function clearAll() {
+      if (measurements.length) pushHistory();
       measurements = [];
       workingPoints = [];
       poseRotateState = null;
@@ -338,6 +364,7 @@
         del.title = 'Remove this measurement';
         del.textContent = '×';
         del.addEventListener('click', () => {
+          pushHistory();
           measurements.splice(idx, 1);
           redrawAll();
           refreshList();
@@ -445,7 +472,7 @@
       }
       else if (k === 'delete' || k === 'backspace') {
         if (workingPoints.length) { workingPoints.pop(); drawLive(); }
-        else if (measurements.length) { measurements.pop(); redrawAll(); refreshList(); if (onChange) onChange(measurements); }
+        else if (measurements.length) { pushHistory(); measurements.pop(); redrawAll(); refreshList(); if (onChange) onChange(measurements); }
       }
       else if (k === 'c') clearAll();
       else if (k === 'p') setTool('none');

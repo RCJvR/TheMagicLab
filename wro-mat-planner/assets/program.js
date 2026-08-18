@@ -227,6 +227,35 @@ window.WRO_PROGRAM = (function() {
     const state = loadState();
     let renderWalker = function() {}; // replaced once the walker section below initialises
 
+    // Snapshot steps + robot placement before a mutation, so Ctrl+Z / Ctrl+Y
+    // (window.WRO_HISTORY, shared with the measurement tools) can step back
+    // and forth through route edits. Navigation (prev/next/reset step index)
+    // deliberately isn't tracked here -- only actual edits are.
+    function cloneProgramState() {
+      return {
+        steps: JSON.parse(JSON.stringify(state.steps)),
+        walkerStart: state.walker.start ? Object.assign({}, state.walker.start) : null,
+        walkerStepIndex: state.walker.stepIndex,
+      };
+    }
+    function pushHistory() {
+      if (!window.WRO_HISTORY) return;
+      window.WRO_HISTORY.snapshot({
+        label: 'program',
+        data: cloneProgramState(),
+        restore(target) {
+          const prev = cloneProgramState();
+          state.steps = JSON.parse(JSON.stringify(target.steps));
+          state.walker.start = target.walkerStart ? Object.assign({}, target.walkerStart) : null;
+          state.walker.stepIndex = target.walkerStepIndex;
+          persist(state);
+          render();
+          placeBtn.textContent = state.walker.start ? '📍 Re-place robot' : '📍 Place robot on mat';
+          return prev;
+        },
+      });
+    }
+
     // ---- robot config ----
     const configToggle = document.getElementById('programConfigToggle');
     const configBox = document.getElementById('programConfig');
@@ -318,6 +347,7 @@ window.WRO_PROGRAM = (function() {
         up.textContent = '↑';
         up.disabled = idx === 0;
         up.addEventListener('click', () => {
+          pushHistory();
           [state.steps[idx - 1], state.steps[idx]] = [state.steps[idx], state.steps[idx - 1]];
           persist(state); render();
         });
@@ -326,6 +356,7 @@ window.WRO_PROGRAM = (function() {
         down.textContent = '↓';
         down.disabled = idx === state.steps.length - 1;
         down.addEventListener('click', () => {
+          pushHistory();
           [state.steps[idx + 1], state.steps[idx]] = [state.steps[idx], state.steps[idx + 1]];
           persist(state); render();
         });
@@ -333,6 +364,7 @@ window.WRO_PROGRAM = (function() {
         const del = h('button', { type: 'button', title: 'Delete step', class: 'danger' }, actions);
         del.textContent = '×';
         del.addEventListener('click', () => {
+          pushHistory();
           state.steps.splice(idx, 1);
           persist(state); render();
         });
@@ -367,6 +399,7 @@ window.WRO_PROGRAM = (function() {
         if (!step.text) return;
         commentInput.value = '';
       }
+      pushHistory();
       state.steps.push(step);
       persist(state);
       render();
@@ -374,6 +407,7 @@ window.WRO_PROGRAM = (function() {
 
     document.getElementById('programClearBtn').addEventListener('click', () => {
       if (!state.steps.length) return;
+      pushHistory();
       state.steps = [];
       persist(state);
       render();
@@ -460,6 +494,23 @@ window.WRO_PROGRAM = (function() {
         svg('circle', { cx: rp.x, cy: rp.y, r: 9, class: 'walker-refdot' }, walkerLayer);
       }
 
+      // "In hand" preview while placing: a translucent footprint that
+      // follows the cursor before the position click, then rotates live
+      // toward the cursor before the heading click, so you can see how the
+      // robot will land before committing to either click.
+      function drawGhost(pose) {
+        clearWalkerLayer();
+        const sizeState = tools.getRobotState();
+        const size = tools.getRobotSize(sizeState);
+        const half = size / 2;
+        const g = svg('g', {
+          transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})`,
+          class: 'walker-ghost',
+        }, walkerLayer);
+        svg('rect', { x: -half, y: -half, width: size, height: size, class: `walker-footprint walker-footprint-${sizeState}` }, g);
+        svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
+      }
+
       function updateReadout() {
         const total = state.steps.length;
         const idx = Math.min(state.walker.stepIndex, total);
@@ -519,7 +570,7 @@ window.WRO_PROGRAM = (function() {
         placing = 'position';
         pendingStart = null;
         placeBtn.textContent = '📍 Click the mat: set position…';
-        readout.textContent = 'Click anywhere on the mat to set the robot\'s starting position.';
+        readout.textContent = 'Move over the mat to see the robot, then click to set its position.';
       });
 
       // Placing a robot borrows the mat's click surface — if the user picks
@@ -529,6 +580,22 @@ window.WRO_PROGRAM = (function() {
         btn.addEventListener('click', () => cancelPlacing());
       });
 
+      // "In hand" ghost: follow the cursor before the position click, then
+      // rotate toward the cursor before the heading click.
+      measSvg.addEventListener('mousemove', (e) => {
+        if (!placing) return;
+        const pt = clientToMM(e);
+        if (placing === 'position') {
+          drawGhost({ x: pt.x, y: pt.y, heading: 0 });
+        } else if (placing === 'heading') {
+          const dx = pt.x - pendingStart.x, dy = pt.y - pendingStart.y;
+          let heading = Math.atan2(dx, -dy) * 180 / Math.PI;
+          heading = ((heading % 360) + 360) % 360;
+          drawGhost({ x: pendingStart.x, y: pendingStart.y, heading });
+          readout.textContent = `Heading ${heading.toFixed(0)}° — click to confirm, or Esc to cancel.`;
+        }
+      });
+
       measSvg.addEventListener('click', (e) => {
         if (!placing) return;
         const pt = clientToMM(e);
@@ -536,13 +603,14 @@ window.WRO_PROGRAM = (function() {
           pendingStart = { x: pt.x, y: pt.y, heading: 0 };
           placing = 'heading';
           placeBtn.textContent = '📍 Click again: set heading…';
-          readout.textContent = 'Now click in the direction the robot should face.';
-          drawRobotAt(pendingStart);
+          readout.textContent = 'Move to aim the robot, then click to set its heading.';
+          drawGhost(pendingStart);
         } else if (placing === 'heading') {
           const dx = pt.x - pendingStart.x, dy = pt.y - pendingStart.y;
           let heading = Math.atan2(dx, -dy) * 180 / Math.PI;
           heading = ((heading % 360) + 360) % 360;
           pendingStart.heading = heading;
+          pushHistory();
           state.walker.start = pendingStart;
           state.walker.stepIndex = 0;
           placing = null;
@@ -550,6 +618,14 @@ window.WRO_PROGRAM = (function() {
           placeBtn.textContent = '📍 Re-place robot';
           persist(state);
           renderWalker();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && placing) {
+          pendingStart = null;
+          stage.dataset.tool = 'none';
+          cancelPlacing();
         }
       });
 
