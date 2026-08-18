@@ -464,6 +464,14 @@ window.WRO_PROGRAM = (function() {
           y: ((e.clientY - r.top) / r.height) * window.WRO_MAT.height,
         };
       }
+      // A TouchEvent has no clientX/clientY of its own -- pull it from
+      // touches (start/move) or changedTouches (end), shared by the
+      // placement flow and the robot-drag handlers below.
+      function extractPoint(e) {
+        if (e.touches && e.touches.length) return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+        if (e.changedTouches && e.changedTouches.length) return { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY };
+        return { clientX: e.clientX, clientY: e.clientY };
+      }
 
       function clearWalkerLayer() { walkerLayer.innerHTML = ''; }
 
@@ -477,23 +485,30 @@ window.WRO_PROGRAM = (function() {
         e.preventDefault();
         e.stopPropagation();
         pushHistory();
-        robotDrag = { origin: { x: state.walker.start.x, y: state.walker.start.y }, startMouse: clientToMM(e) };
+        robotDrag = { origin: { x: state.walker.start.x, y: state.walker.start.y }, startMouse: clientToMM(extractPoint(e)) };
         document.addEventListener('mousemove', onRobotDragMove);
         document.addEventListener('mouseup', onRobotDragEnd);
+        document.addEventListener('touchmove', onRobotDragMoveTouch, { passive: false });
+        document.addEventListener('touchend', onRobotDragEndTouch, { passive: false });
       }
-      function onRobotDragMove(e) {
+      function moveRobotDragTo(pt) {
         if (!robotDrag) return;
-        const pt = clientToMM(e);
-        state.walker.start.x = robotDrag.origin.x + (pt.x - robotDrag.startMouse.x);
-        state.walker.start.y = robotDrag.origin.y + (pt.y - robotDrag.startMouse.y);
+        const mm = clientToMM(pt);
+        state.walker.start.x = robotDrag.origin.x + (mm.x - robotDrag.startMouse.x);
+        state.walker.start.y = robotDrag.origin.y + (mm.y - robotDrag.startMouse.y);
         renderWalker();
       }
+      function onRobotDragMove(e) { moveRobotDragTo(extractPoint(e)); }
+      function onRobotDragMoveTouch(e) { e.preventDefault(); moveRobotDragTo(extractPoint(e)); }
+      function onRobotDragEndTouch(e) { e.preventDefault(); onRobotDragEnd(); }
       function onRobotDragEnd() {
         if (!robotDrag) return;
         robotDrag = null;
         persist(state);
         document.removeEventListener('mousemove', onRobotDragMove);
         document.removeEventListener('mouseup', onRobotDragEnd);
+        document.removeEventListener('touchmove', onRobotDragMoveTouch);
+        document.removeEventListener('touchend', onRobotDragEndTouch);
       }
 
       function drawRobotAt(pose, sizeState) {
@@ -502,6 +517,7 @@ window.WRO_PROGRAM = (function() {
         const half = size / 2;
         const g = svg('g', { transform: `translate(${pose.x} ${pose.y}) rotate(${pose.heading})`, class: 'walker-robot-live' }, walkerLayer);
         g.addEventListener('mousedown', onRobotMouseDown);
+        g.addEventListener('touchstart', onRobotMouseDown, { passive: false });
         svg('rect', { x: -half, y: -half, width: size, height: size, class: `walker-footprint walker-footprint-${sizeState || 'closed'}` }, g);
         svg('polygon', { points: `0,${-half + 10} ${-18},${-half + 42} ${18},${-half + 42}`, class: 'walker-arrow' }, g);
 
@@ -604,6 +620,9 @@ window.WRO_PROGRAM = (function() {
       }
 
       placeBtn.addEventListener('click', () => {
+        // Tapping the button again mid-placement backs out -- the touch
+        // equivalent of pressing Esc, since a touchscreen has no Esc key.
+        if (placing) { cancelPlacingAndReleaseTool(); return; }
         tools.setTool('none');
         // tools.js's own click handler is now a no-op (its closure `tool` is
         // 'none'), but the CSS rule `[data-tool="none"] svg.measure {
@@ -625,8 +644,10 @@ window.WRO_PROGRAM = (function() {
       });
 
       // "In hand" ghost: follow the cursor before the position click, then
-      // rotate toward the cursor before the heading click.
-      measSvg.addEventListener('mousemove', (e) => {
+      // rotate toward the cursor before the heading click. Shared by mouse
+      // hover and touch drag -- a touchscreen has no hover, so on touch this
+      // only appears once a finger is actually down and moving.
+      function updatePlacementGhost(e) {
         if (!placing) return;
         const pt = clientToMM(e);
         if (placing === 'position') {
@@ -638,9 +659,10 @@ window.WRO_PROGRAM = (function() {
           drawGhost({ x: pendingStart.x, y: pendingStart.y, heading });
           readout.textContent = `Heading ${heading.toFixed(0)}° — click to confirm, or Esc to cancel.`;
         }
-      });
+      }
+      measSvg.addEventListener('mousemove', updatePlacementGhost);
 
-      measSvg.addEventListener('click', (e) => {
+      function commitPlacementTap(e) {
         if (!placing) return;
         const pt = clientToMM(e);
         if (placing === 'position') {
@@ -663,7 +685,27 @@ window.WRO_PROGRAM = (function() {
           persist(state);
           renderWalker();
         }
-      });
+      }
+      measSvg.addEventListener('click', commitPlacementTap);
+
+      // Touch: press-and-drag to aim (mirrors mousemove), lift to commit
+      // that phase (mirrors click) -- two taps in the right spots works too,
+      // but drag-to-aim reads better on a touchscreen than a bare double-tap.
+      measSvg.addEventListener('touchstart', (e) => {
+        if (!placing) return;
+        e.preventDefault();
+        updatePlacementGhost(extractPoint(e));
+      }, { passive: false });
+      measSvg.addEventListener('touchmove', (e) => {
+        if (!placing) return;
+        e.preventDefault();
+        updatePlacementGhost(extractPoint(e));
+      }, { passive: false });
+      measSvg.addEventListener('touchend', (e) => {
+        if (!placing) return;
+        e.preventDefault();
+        commitPlacementTap(extractPoint(e));
+      }, { passive: false });
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && placing) cancelPlacingAndReleaseTool();

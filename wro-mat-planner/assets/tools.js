@@ -130,7 +130,14 @@
 
     // Drag an existing, committed pose's silhouette to reposition it,
     // instead of having to delete and re-place it. Only wired up while the
-    // POSE tool is active (see drawRobotShape's `opts.draggable`).
+    // POSE tool is active (see drawRobotShape's `opts.draggable`). Works
+    // with both mouse and touch -- a TouchEvent has no clientX/clientY of
+    // its own, so extractPoint() pulls it from touches/changedTouches.
+    function extractPoint(e) {
+      if (e.touches && e.touches.length) return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+      if (e.changedTouches && e.changedTouches.length) return { clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY };
+      return { clientX: e.clientX, clientY: e.clientY };
+    }
     let poseDrag = null; // { id, origin: {x,y}, startMouse: {x,y} }
     function startPoseDrag(e, id) {
       e.preventDefault();
@@ -138,26 +145,33 @@
       const m = measurements.find(mm => mm.id === id);
       if (!m) return;
       pushHistory();
-      poseDrag = { id, origin: { x: m.points[0].x, y: m.points[0].y }, startMouse: clientToMM(e) };
+      poseDrag = { id, origin: { x: m.points[0].x, y: m.points[0].y }, startMouse: clientToMM(extractPoint(e)) };
       document.addEventListener('mousemove', onPoseDragMove);
       document.addEventListener('mouseup', onPoseDragEnd);
+      document.addEventListener('touchmove', onPoseDragMoveTouch, { passive: false });
+      document.addEventListener('touchend', onPoseDragEndTouch, { passive: false });
     }
-    function onPoseDragMove(e) {
+    function movePoseDragTo(pt) {
       if (!poseDrag) return;
       const m = measurements.find(mm => mm.id === poseDrag.id);
       if (!m) { onPoseDragEnd(); return; }
-      const pt = clientToMM(e);
+      const mm = clientToMM(pt);
       m.points[0] = snap({
-        x: poseDrag.origin.x + (pt.x - poseDrag.startMouse.x),
-        y: poseDrag.origin.y + (pt.y - poseDrag.startMouse.y),
+        x: poseDrag.origin.x + (mm.x - poseDrag.startMouse.x),
+        y: poseDrag.origin.y + (mm.y - poseDrag.startMouse.y),
       });
       redrawAll();
     }
+    function onPoseDragMove(e) { movePoseDragTo(extractPoint(e)); }
+    function onPoseDragMoveTouch(e) { e.preventDefault(); movePoseDragTo(extractPoint(e)); }
+    function onPoseDragEndTouch(e) { e.preventDefault(); onPoseDragEnd(); }
     function onPoseDragEnd() {
       if (!poseDrag) return;
       poseDrag = null;
       refreshList();
       if (onChange) onChange(measurements);
+      document.removeEventListener('touchmove', onPoseDragMoveTouch);
+      document.removeEventListener('touchend', onPoseDragEndTouch);
       document.removeEventListener('mousemove', onPoseDragMove);
       document.removeEventListener('mouseup', onPoseDragEnd);
     }
@@ -267,6 +281,7 @@
       });
       if (opts.draggable) {
         g.addEventListener('mousedown', e => startPoseDrag(e, opts.measurementId));
+        g.addEventListener('touchstart', e => startPoseDrag(e, opts.measurementId), { passive: false });
         // Swallow the click too -- grabbing an existing pose to drag it
         // must not also be read as "place a new pose point here" by the
         // tool's own click handler on measSvg.
@@ -461,13 +476,15 @@
     }
 
     // ---- event wiring ----
-    measSvg.addEventListener('mousemove', e => {
+    function updateLive(e) {
       const raw = clientToMM(e);
       const pt = snap(raw);
       liveMouse = pt;
       readout.textContent = `${pt.x.toFixed(0).padStart(4, ' ')} , ${pt.y.toFixed(0).padStart(4, ' ')} mm`;
       drawLive();
-    });
+      return pt;
+    }
+    measSvg.addEventListener('mousemove', updateLive);
     measSvg.addEventListener('mouseleave', () => {
       liveMouse = null;
       readout.textContent = '— , — mm';
@@ -482,7 +499,10 @@
       return true;
     }
 
-    measSvg.addEventListener('click', e => {
+    // Shared by mouse 'click' and touch 'touchend' -- a touch device has no
+    // hover, so unlike mousemove there's no live preview before this fires,
+    // but the commit logic itself is identical either way.
+    function commitTap(e) {
       if (tool === 'none') return;
       const pt = snap(clientToMM(e));
 
@@ -507,10 +527,49 @@
         }
       }
       drawLive();
-    });
+    }
+    measSvg.addEventListener('click', commitTap);
     measSvg.addEventListener('dblclick', e => {
       if (tool === 'path' && workingPoints.length >= 2) commitMeasurement();
     });
+
+    // ---- touch support (phones/tablets have no hover, so the "live"
+    // ghost/readout only appears once a finger is actually down) ----
+    function touchPoint(e, list) {
+      const t = e[list] && e[list][0];
+      return t ? { clientX: t.clientX, clientY: t.clientY } : null;
+    }
+    let lastTapAt = 0, lastTapXY = null;
+    measSvg.addEventListener('touchstart', e => {
+      if (tool === 'none') return;
+      e.preventDefault(); // also suppresses the synthetic mouse/click pair Safari/Chrome would otherwise fire after this touch
+      updateLive(touchPoint(e, 'touches'));
+    }, { passive: false });
+    measSvg.addEventListener('touchmove', e => {
+      if (tool === 'none') return;
+      const t = touchPoint(e, 'touches');
+      if (!t) return;
+      e.preventDefault();
+      updateLive(t);
+    }, { passive: false });
+    measSvg.addEventListener('touchend', e => {
+      if (tool === 'none') return;
+      const t = touchPoint(e, 'changedTouches');
+      if (!t) return;
+      e.preventDefault();
+      commitTap(t);
+      // No dblclick on touch -- detect a manual double-tap in roughly the
+      // same spot to finish a path the same way a mouse double-click does.
+      const now = Date.now();
+      const isDoubleTap = tool === 'path' && lastTapXY && (now - lastTapAt) < 400 &&
+        Math.hypot(t.clientX - lastTapXY.x, t.clientY - lastTapXY.y) < 28;
+      if (isDoubleTap) {
+        if (workingPoints.length >= 2) commitMeasurement();
+        lastTapAt = 0; lastTapXY = null;
+      } else {
+        lastTapAt = now; lastTapXY = { x: t.clientX, y: t.clientY };
+      }
+    }, { passive: false });
 
     document.addEventListener('keydown', e => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;

@@ -376,7 +376,10 @@ nav.app-nav {
   overflow: visible;
 }
 .stage svg.overlay { pointer-events: none; }
-.stage svg.measure { cursor: crosshair; }
+/* touch-action:none stops the browser's own pan/pinch-zoom from fighting
+   with our touch handlers (measuring, placing, dragging) -- without it,
+   a touch-drag on the mat scrolls or zooms the page instead. */
+.stage svg.measure { cursor: crosshair; touch-action: none; }
 .stage[data-tool="none"] svg.measure { cursor: default; pointer-events: none; }
 .stage[data-tool="footprint"] svg.measure,
 .stage[data-tool="pose"] svg.measure { cursor: move; }
@@ -465,7 +468,7 @@ nav.app-nav {
 }
 /* A committed POSE's silhouette, draggable while the POSE tool is active
    (see tools.js drawRobotShape opts.draggable). */
-.m-pose-draggable { cursor: grab; }
+.m-pose-draggable { cursor: grab; touch-action: none; }
 .m-pose-draggable:active { cursor: grabbing; }
 
 /* Measurements list */
@@ -723,6 +726,7 @@ nav.app-nav {
    svg.measure), so this opts the robot's own hit area back in explicitly. */
 .walker-robot-live {
   pointer-events: all;
+  touch-action: none;
   cursor: grab;
 }
 .walker-robot-live:active { cursor: grabbing; }
@@ -930,6 +934,15 @@ footer.site {
   .info { grid-template-columns: 1fr 1fr; }
   .scoring-body { grid-template-columns: 1fr; }
   nav.app-nav { justify-content: center; text-align: center; }
+}
+
+/* Touch-target sizing for touch/stylus input specifically (not just narrow
+   screens -- a tablet in landscape can be wider than most phone breakpoints
+   but still needs a finger-sized hit area, not a mouse-sized one). */
+@media (pointer: coarse) {
+  .program-step-actions button { width: 36px; height: 36px; font-size: 15px; }
+  .meas-list .row .delete { padding: 10px 12px; font-size: 18px; }
+  .toolbar button, .chip-btn { min-height: 38px; }
 }
 
 /* ------------------ PRINT STYLES ------------------ */
