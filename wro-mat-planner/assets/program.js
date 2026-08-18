@@ -219,12 +219,22 @@ window.WRO_PROGRAM = (function() {
         inv.carrying.push({ type: 'tile', colour: step.colour });
       }
     } else if (step.type === 'placeTile') {
-      const ci = inv.carrying.findIndex(c => c.type === 'tile');
-      if (ci !== -1 && inv.frameSlots[step.slot] == null) {
-        const item = inv.carrying.splice(ci, 1)[0];
+      if (inv.frameSlots[step.slot] == null) {
         const want = mosaicPattern[step.slot];
-        const correct = want === 'empty' ? null : (want === item.colour);
-        inv.frameSlots[step.slot] = { colour: item.colour, correct };
+        // Prefer a carried tile matching the target slot's colour -- a
+        // grabber that lifts 6 same-colour tiles at once usually carries
+        // more than a single slot needs, so leftovers from an earlier
+        // colour batch can still be sitting in `carrying` when a later
+        // batch starts placing. Falls back to FIFO (oldest first) when the
+        // slot's colour isn't known yet (pattern not set) or no carried
+        // tile matches, same as the old colour-blind behaviour.
+        let ci = want !== 'empty' ? inv.carrying.findIndex(c => c.type === 'tile' && c.colour === want) : -1;
+        if (ci === -1) ci = inv.carrying.findIndex(c => c.type === 'tile');
+        if (ci !== -1) {
+          const item = inv.carrying.splice(ci, 1)[0];
+          const correct = want === 'empty' ? null : (want === item.colour);
+          inv.frameSlots[step.slot] = { colour: item.colour, correct };
+        }
       }
     } else if (step.type === 'pickupTool') {
       if (inv.toolsAtPad[step.toolId]) {
