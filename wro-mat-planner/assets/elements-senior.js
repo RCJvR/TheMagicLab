@@ -74,10 +74,15 @@ window.WRO_ELEMENTS = (function() {
     id: `slot_${i}`, index: i, x: p.x, y: p.y,
   }));
 
+  // w/h are the tool's own footprint, sized to match the grey pickup pad it
+  // sits on exactly (re-measured by isolating each pad's fill colour from
+  // the surrounding wood-pallet border and pavement, not just the pallet's
+  // outer edge -- the cement bowl's pad in particular is much smaller than
+  // its wooden pallet).
   const tools = [
-    { id: 'trowel_rect',    name: 'Rectangular trowel', scoringId: 'trowel_rect',    target: 'sponsor_area', x: 868,  y: 1071, w: 90, h: 55 },
-    { id: 'cement_bowl',    name: 'Cement bowl',         scoringId: 'cement_bowl',    target: 'parking_area', x: 1181, y: 1070, w: 55, h: 55 },
-    { id: 'trowel_masonry', name: 'Masonry trowel',      scoringId: 'trowel_masonry', target: 'start',        x: 1485, y: 1070, w: 80, h: 55 },
+    { id: 'trowel_rect',    name: 'Rectangular trowel', scoringId: 'trowel_rect',    target: 'sponsor_area', x: 892,  y: 1061, w: 124, h: 61 },
+    { id: 'cement_bowl',    name: 'Cement bowl',         scoringId: 'cement_bowl',    target: 'parking_area', x: 1181, y: 1060, w: 34,  h: 33 },
+    { id: 'trowel_masonry', name: 'Masonry trowel',      scoringId: 'trowel_masonry', target: 'start',        x: 1506, y: 1070, w: 116, h: 78 },
   ];
 
   return { tiles, cement, frameSlots, tools, TILE_COLOURS, CEMENT_COLOURS };

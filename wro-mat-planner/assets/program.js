@@ -597,19 +597,29 @@ window.WRO_PROGRAM = (function() {
 
     // ---- game-element rendering (tiles/cement/tools/frame) + scoring
     // tie-in. Senior-only: WRO_ELEMENTS is undefined on Elementary, so all
-    // of this is a no-op there. ----
+    // of this is a no-op there. Real-world sizes (1 LEGO stud = 8mm):
+    // mosaic tile = 4x4 plate (32x32mm), cement = 1x6 plate (48x8mm),
+    // tools = exactly their pickup pad's footprint (elements-senior.js).
     const COLOUR_HEX = { white: '#e9edf5', green: '#22c55e', blue: '#3b82f6', yellow: '#facc15' };
+    const TILE_MM = 32;
+    const CEMENT_MM = { w: 48, h: 8 };
     function clearElementsLayer() { if (elementsLayer) elementsLayer.innerHTML = ''; }
+    function carriedItemSize(item) {
+      if (item.type === 'tile') return { w: TILE_MM, h: TILE_MM };
+      const tool = window.WRO_ELEMENTS.tools.find(t => t.id === item.id);
+      return tool ? { w: tool.w, h: tool.h } : { w: 24, h: 24 };
+    }
     function renderElements(pose, sizeState, inv) {
       if (!window.WRO_ELEMENTS || !elementsLayer) return;
       clearElementsLayer();
       const E = window.WRO_ELEMENTS;
+      const half = TILE_MM / 2;
 
       E.TILE_COLOURS.forEach(colour => {
         const positions = E.tiles.filter(t => t.colour === colour);
         positions.slice(0, inv.tilePool[colour]).forEach(p => {
           svg('rect', {
-            x: p.x - 9, y: p.y - 9, width: 18, height: 18, rx: 2,
+            x: p.x - half, y: p.y - half, width: TILE_MM, height: TILE_MM, rx: 2,
             class: 'elem-tile', fill: COLOUR_HEX[colour],
           }, elementsLayer);
         });
@@ -619,8 +629,8 @@ window.WRO_PROGRAM = (function() {
         const positions = E.cement.filter(c => c.colour === colour);
         positions.forEach((p, i) => {
           const settled = i < inv.cementSettled[colour];
-          svg('circle', {
-            cx: p.x, cy: p.y, r: settled ? 10 : 7,
+          svg('rect', {
+            x: p.x - CEMENT_MM.w / 2, y: p.y - CEMENT_MM.h / 2, width: CEMENT_MM.w, height: CEMENT_MM.h, rx: 1.5,
             class: `elem-cement ${settled ? 'elem-cement-settled' : 'elem-cement-loose'}`,
             fill: COLOUR_HEX[colour],
           }, elementsLayer);
@@ -647,7 +657,7 @@ window.WRO_PROGRAM = (function() {
         const slot = E.frameSlots[i];
         const correctness = filled.correct === true ? 'correct' : filled.correct === false ? 'incorrect' : 'unknown';
         svg('rect', {
-          x: slot.x - 12, y: slot.y - 12, width: 24, height: 24, rx: 3,
+          x: slot.x - half, y: slot.y - half, width: TILE_MM, height: TILE_MM, rx: 3,
           class: `elem-frame-tile elem-frame-tile-${correctness}`, fill: COLOUR_HEX[filled.colour],
         }, elementsLayer);
       });
@@ -656,13 +666,19 @@ window.WRO_PROGRAM = (function() {
         const rad = pose.heading * Math.PI / 180;
         const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
         const right = { x: Math.cos(rad), y: Math.sin(rad) };
-        const out = tools.getRobotSize(sizeState) / 2 + 18;
+        const sizes = inv.carrying.map(carriedItemSize);
+        const maxW = Math.max(...sizes.map(s => s.w));
+        const out = tools.getRobotSize(sizeState) / 2 + maxW / 2 + 14;
+        const totalAlong = sizes.reduce((s, sz) => s + sz.h, 0) + (sizes.length - 1) * 6;
+        let cursor = -totalAlong / 2;
         inv.carrying.forEach((item, i) => {
-          const along = (i - (inv.carrying.length - 1) / 2) * 22;
+          const sz = sizes[i];
+          const along = cursor + sz.h / 2;
+          cursor += sz.h + 6;
           const px = pose.x - right.x * out + fwd.x * along;
           const py = pose.y - right.y * out + fwd.y * along;
           const colour = item.type === 'tile' ? COLOUR_HEX[item.colour] : '#cbd5e1';
-          svg('rect', { x: px - 8, y: py - 8, width: 16, height: 16, rx: 2, class: 'elem-carried', fill: colour }, elementsLayer);
+          svg('rect', { x: px - sz.w / 2, y: py - sz.h / 2, width: sz.w, height: sz.h, rx: 2, class: 'elem-carried', fill: colour }, elementsLayer);
         });
       }
     }
