@@ -94,6 +94,7 @@
     <svg class="measure" id="measureSvg" viewBox="0 0 2362 1143" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <g id="measLayer"></g>
       <g id="liveLayer"></g>
+      <g id="elementsLayer"></g>
       <g id="walkerLayer"></g>
     </svg>
   </div>
@@ -114,6 +115,7 @@
     <div class="program-head">
       <h3>Route planner → PyBricks</h3>
       <button class="chip-btn" id="programConfigToggle" type="button">⚙ Robot config</button>
+      <button class="chip-btn" id="mosaicPatternToggle" type="button" style="display:none;">🧩 Mosaic pattern</button>
     </div>
 
     <div class="program-config" id="programConfig" style="display:none;">
@@ -129,6 +131,16 @@
       <label title="Default turn acceleration">Turn accel <input type="number" id="cfgTurnAccel" value="300" min="10" max="2000" step="10"> °/s²</label>
     </div>
 
+    <div class="mosaic-pattern-box" id="mosaicPatternBox" style="display:none;">
+      <p class="mosaic-pattern-hint">
+        The frame's colour layout is decided by a paper pattern placed under
+        it each round, not fixed — set these 12 slots to match today's
+        practice randomization so "Place tile" steps below can tell a
+        correct placement from a wrong one. Click a slot to cycle its colour.
+      </p>
+      <div class="mosaic-pattern-grid" id="mosaicPatternGrid"></div>
+    </div>
+
     <div class="program-add-row">
       <select id="stepType">
         <option value="drive">Drive fwd/back</option>
@@ -137,6 +149,11 @@
         <option value="frontMotor">Front motor</option>
         <option value="backMotor">Back motor</option>
         <option value="lineFollow">Line follow</option>
+        <option value="pickupTool">Pick up tool</option>
+        <option value="deliverTool">Deliver tool</option>
+        <option value="pickupTile">Pick up mosaic tile</option>
+        <option value="placeTile">Place tile in frame</option>
+        <option value="settleCement">Settle cement in target</option>
         <option value="wait">Wait</option>
         <option value="comment">Comment</option>
       </select>
@@ -157,6 +174,33 @@
       </span>
       <span class="program-field" data-for="frontMotor,backMotor">
         <select id="stepMotorAction"><option value="lift">Lift</option><option value="drop">Drop</option></select>
+      </span>
+      <span class="program-field" data-for="pickupTool,deliverTool">
+        <select id="stepTool">
+          <option value="trowel_rect">Rectangular trowel</option>
+          <option value="cement_bowl">Cement bowl</option>
+          <option value="trowel_masonry">Masonry trowel</option>
+        </select>
+      </span>
+      <span class="program-field" data-for="pickupTile">
+        <select id="stepTileColour">
+          <option value="white">White</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+          <option value="yellow">Yellow</option>
+        </select>
+      </span>
+      <span class="program-field" data-for="placeTile">
+        <select id="stepFrameSlot"></select>
+      </span>
+      <span class="program-field" data-for="settleCement">
+        <select id="stepCementColour">
+          <option value="yellow">Yellow</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+          <option value="white">White</option>
+        </select>
+        <input type="number" id="stepCementCount" value="1" min="1" max="10" step="1"> ×
       </span>
       <span class="program-field" data-for="wait">
         <input type="number" id="stepSeconds" value="1" min="0" step="0.1"> s
@@ -316,6 +360,7 @@
 
 <script src="assets/zones-senior.js"></script>
 <script src="assets/scoring-senior.js"></script>
+<script src="assets/elements-senior.js"></script>
 <script src="assets/history.js"></script>
 <script src="assets/tools.js"></script>
 <script src="assets/codegen.js"></script>

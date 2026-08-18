@@ -630,6 +630,9 @@
       });
     }
   }
+  // Lets program.js's route-simulation push tool/mosaic/cement counts into
+  // the same localStorage the panel reads, then ask it to redraw.
+  window.WRO_SCORING_REFRESH = buildScoringPanel;
 
   // ---- Code export modal ----
   function setupExportModal(tools) {

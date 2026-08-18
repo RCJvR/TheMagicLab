@@ -36,6 +36,12 @@ window.WRO_PROGRAM = (function() {
   function defaultWalker() {
     return { ref: 'center', start: null, stepIndex: 0 };
   }
+  // 12 frame slots, each 'empty' (not configured) or a tile colour -- the
+  // real layout is set by a paper pattern placed under the frame each
+  // round, so this has to be entered per practice run, not hardcoded.
+  function defaultMosaicPattern() {
+    return new Array(12).fill('empty');
+  }
 
   function loadState() {
     try {
@@ -46,10 +52,12 @@ window.WRO_PROGRAM = (function() {
           steps: parsed.steps || [],
           config: Object.assign(defaultConfig(), parsed.config || {}),
           walker: Object.assign(defaultWalker(), parsed.walker || {}),
+          mosaicPattern: Array.isArray(parsed.mosaicPattern) && parsed.mosaicPattern.length === 12
+            ? parsed.mosaicPattern : defaultMosaicPattern(),
         };
       }
     } catch { /* fall through to default */ }
-    return { steps: [], config: defaultConfig(), walker: defaultWalker() };
+    return { steps: [], config: defaultConfig(), walker: defaultWalker(), mosaicPattern: defaultMosaicPattern() };
   }
   function persist(state) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -104,6 +112,11 @@ window.WRO_PROGRAM = (function() {
   }
   const REF_LABELS = { center: 'Centre', front: 'Front', back: 'Back', left: 'Left side', right: 'Right side' };
 
+  function toolName(toolId) {
+    const t = window.WRO_ELEMENTS && window.WRO_ELEMENTS.tools.find(t => t.id === toolId);
+    return t ? t.name : toolId;
+  }
+
   function describeStep(step) {
     switch (step.type) {
       case 'drive':
@@ -120,6 +133,16 @@ window.WRO_PROGRAM = (function() {
         return `Back motor: ${step.action} ${step.degrees}°`;
       case 'lineFollow':
         return `Line follow ${step.distanceMm} mm`;
+      case 'pickupTool':
+        return `Pick up ${toolName(step.toolId)}`;
+      case 'deliverTool':
+        return `Deliver ${toolName(step.toolId)}`;
+      case 'pickupTile':
+        return `Pick up ${step.colour} tile`;
+      case 'placeTile':
+        return `Place tile in frame slot ${step.slot + 1}`;
+      case 'settleCement':
+        return `Settle ${step.count}× ${step.colour} cement`;
       case 'wait':
         return `Wait ${step.seconds} s`;
       case 'comment':
@@ -127,6 +150,62 @@ window.WRO_PROGRAM = (function() {
       default:
         return step.type;
     }
+  }
+
+  // ---- game-element inventory: which tiles/cement/tools have been picked
+  // up, are being carried, or delivered/settled -- a pure function of step
+  // history up to `idx`, mirroring poseAtIndex/sizeStateAtIndex so it can be
+  // recomputed for any point the walker is scrubbed to. Senior-only
+  // (window.WRO_ELEMENTS is undefined on the Elementary page).
+  function defaultInventory() {
+    if (!window.WRO_ELEMENTS) return null;
+    const tilePool = {}, cementLoose = {}, cementSettled = {}, toolsAtPad = {};
+    window.WRO_ELEMENTS.TILE_COLOURS.forEach(c => { tilePool[c] = 6; });
+    window.WRO_ELEMENTS.CEMENT_COLOURS.forEach(c => { cementLoose[c] = 10; cementSettled[c] = 0; });
+    window.WRO_ELEMENTS.tools.forEach(t => { toolsAtPad[t.id] = true; });
+    return {
+      tilePool, cementLoose, cementSettled, toolsAtPad,
+      toolsDelivered: {},
+      frameSlots: new Array(12).fill(null), // null | { colour, correct: true|false|null }
+      carrying: [], // { type:'tile', colour } | { type:'tool', id }
+    };
+  }
+  function applyElementStep(inv, step, mosaicPattern) {
+    if (step.type === 'pickupTile') {
+      if (inv.tilePool[step.colour] > 0) {
+        inv.tilePool[step.colour]--;
+        inv.carrying.push({ type: 'tile', colour: step.colour });
+      }
+    } else if (step.type === 'placeTile') {
+      const ci = inv.carrying.findIndex(c => c.type === 'tile');
+      if (ci !== -1 && inv.frameSlots[step.slot] == null) {
+        const item = inv.carrying.splice(ci, 1)[0];
+        const want = mosaicPattern[step.slot];
+        const correct = want === 'empty' ? null : (want === item.colour);
+        inv.frameSlots[step.slot] = { colour: item.colour, correct };
+      }
+    } else if (step.type === 'pickupTool') {
+      if (inv.toolsAtPad[step.toolId]) {
+        inv.toolsAtPad[step.toolId] = false;
+        inv.carrying.push({ type: 'tool', id: step.toolId });
+      }
+    } else if (step.type === 'deliverTool') {
+      const ci = inv.carrying.findIndex(c => c.type === 'tool' && c.id === step.toolId);
+      if (ci !== -1) {
+        inv.carrying.splice(ci, 1);
+        inv.toolsDelivered[step.toolId] = true;
+      }
+    } else if (step.type === 'settleCement') {
+      const n = Math.min(step.count, inv.cementLoose[step.colour]);
+      inv.cementLoose[step.colour] -= n;
+      inv.cementSettled[step.colour] += n;
+    }
+  }
+  function inventoryAtIndex(steps, idx, mosaicPattern) {
+    const inv = defaultInventory();
+    if (!inv) return null;
+    for (let i = 0; i < idx; i++) applyElementStep(inv, steps[i], mosaicPattern);
+    return inv;
   }
 
   function generatePyBricks(steps, config) {
@@ -207,6 +286,13 @@ window.WRO_PROGRAM = (function() {
         case 'lineFollow':
           L.push(`# TODO line_follow(${step.distanceMm})  -- PyBricks has no built-in line follower;`);
           L.push(`#      implement using your colour/reflect sensor readings`);
+          break;
+        case 'pickupTool':
+        case 'deliverTool':
+        case 'pickupTile':
+        case 'placeTile':
+        case 'settleCement':
+          L.push(`# --- ${note}: add your gripper/mechanism call here ---`);
           break;
         case 'wait':
           L.push(`wait(${Math.round(step.seconds * 1000)})  # ${note}`);
@@ -310,6 +396,46 @@ window.WRO_PROGRAM = (function() {
       configBox.style.display = configBox.style.display === 'none' ? '' : 'none';
     });
 
+    // ---- mosaic frame pattern configurator (Senior-only: WRO_ELEMENTS is
+    // undefined on the Elementary page) ----
+    if (window.WRO_ELEMENTS) {
+      const patternToggle = document.getElementById('mosaicPatternToggle');
+      const patternBox = document.getElementById('mosaicPatternBox');
+      const patternGrid = document.getElementById('mosaicPatternGrid');
+      const CYCLE = ['empty', 'white', 'green', 'blue', 'yellow'];
+
+      patternToggle.style.display = '';
+      function renderPatternGrid() {
+        patternGrid.innerHTML = '';
+        state.mosaicPattern.forEach((colour, i) => {
+          const btn = h('button', {
+            type: 'button', class: 'mosaic-slot', 'data-colour': colour,
+            title: `Slot ${i + 1}: ${colour === 'empty' ? 'not set' : colour} — click to cycle`,
+          }, patternGrid);
+          btn.textContent = colour === 'empty' ? String(i + 1) : '';
+          btn.addEventListener('click', () => {
+            const next = CYCLE[(CYCLE.indexOf(state.mosaicPattern[i]) + 1) % CYCLE.length];
+            state.mosaicPattern[i] = next;
+            persist(state);
+            renderPatternGrid();
+            renderWalker(); // re-checks already-placed tiles' correctness against the new pattern
+          });
+        });
+      }
+      renderPatternGrid();
+      patternToggle.addEventListener('click', () => {
+        patternBox.style.display = patternBox.style.display === 'none' ? '' : 'none';
+      });
+
+      const frameSlotSel = document.getElementById('stepFrameSlot');
+      window.WRO_ELEMENTS.frameSlots.forEach((slot, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = `Slot ${i + 1}`;
+        frameSlotSel.appendChild(opt);
+      });
+    }
+
     // ---- add-step row ----
     const typeSel = document.getElementById('stepType');
     const fields = Array.from(document.querySelectorAll('.program-field'));
@@ -330,6 +456,14 @@ window.WRO_PROGRAM = (function() {
     const motorActionSel = document.getElementById('stepMotorAction');
     const secondsInput = document.getElementById('stepSeconds');
     const commentInput = document.getElementById('stepComment');
+    // These only exist on the Senior page (index.html) -- null here on
+    // Elementary, which is fine, since the dropdown there has no options
+    // that reach the branches below that read them.
+    const stepToolSel = document.getElementById('stepTool');
+    const stepTileColourSel = document.getElementById('stepTileColour');
+    const stepFrameSlotSel = document.getElementById('stepFrameSlot');
+    const stepCementColourSel = document.getElementById('stepCementColour');
+    const stepCementCountInput = document.getElementById('stepCementCount');
 
     const stepsList = document.getElementById('programSteps');
     const actionsBox = document.getElementById('programActions');
@@ -392,6 +526,15 @@ window.WRO_PROGRAM = (function() {
       } else if (t === 'frontMotor' || t === 'backMotor') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
         step.action = motorActionSel.value;
+      } else if (t === 'pickupTool' || t === 'deliverTool') {
+        step.toolId = stepToolSel.value;
+      } else if (t === 'pickupTile') {
+        step.colour = stepTileColourSel.value;
+      } else if (t === 'placeTile') {
+        step.slot = parseInt(stepFrameSlotSel.value, 10) || 0;
+      } else if (t === 'settleCement') {
+        step.colour = stepCementColourSel.value;
+        step.count = Math.max(1, Math.min(10, parseInt(stepCementCountInput.value, 10) || 1));
       } else if (t === 'wait') {
         step.seconds = parseFloat(secondsInput.value) || 0;
       } else if (t === 'comment') {
@@ -444,12 +587,111 @@ window.WRO_PROGRAM = (function() {
     const stage = document.getElementById('stage');
     const measSvg = document.getElementById('measureSvg');
     const walkerLayer = document.getElementById('walkerLayer');
+    const elementsLayer = document.getElementById('elementsLayer');
     const refSelect = document.getElementById('walkerRef');
     const placeBtn = document.getElementById('walkerPlaceBtn');
     const resetBtn = document.getElementById('walkerResetBtn');
     const prevBtn = document.getElementById('walkerPrevBtn');
     const nextBtn = document.getElementById('walkerNextBtn');
     const readout = document.getElementById('walkerReadout');
+
+    // ---- game-element rendering (tiles/cement/tools/frame) + scoring
+    // tie-in. Senior-only: WRO_ELEMENTS is undefined on Elementary, so all
+    // of this is a no-op there. ----
+    const COLOUR_HEX = { white: '#e9edf5', green: '#22c55e', blue: '#3b82f6', yellow: '#facc15' };
+    function clearElementsLayer() { if (elementsLayer) elementsLayer.innerHTML = ''; }
+    function renderElements(pose, sizeState, inv) {
+      if (!window.WRO_ELEMENTS || !elementsLayer) return;
+      clearElementsLayer();
+      const E = window.WRO_ELEMENTS;
+
+      E.TILE_COLOURS.forEach(colour => {
+        const positions = E.tiles.filter(t => t.colour === colour);
+        positions.slice(0, inv.tilePool[colour]).forEach(p => {
+          svg('rect', {
+            x: p.x - 9, y: p.y - 9, width: 18, height: 18, rx: 2,
+            class: 'elem-tile', fill: COLOUR_HEX[colour],
+          }, elementsLayer);
+        });
+      });
+
+      E.CEMENT_COLOURS.forEach(colour => {
+        const positions = E.cement.filter(c => c.colour === colour);
+        positions.forEach((p, i) => {
+          const settled = i < inv.cementSettled[colour];
+          svg('circle', {
+            cx: p.x, cy: p.y, r: settled ? 10 : 7,
+            class: `elem-cement ${settled ? 'elem-cement-settled' : 'elem-cement-loose'}`,
+            fill: COLOUR_HEX[colour],
+          }, elementsLayer);
+        });
+      });
+
+      E.tools.forEach(tool => {
+        const carried = inv.carrying.some(c => c.type === 'tool' && c.id === tool.id);
+        if (carried) return;
+        const delivered = inv.toolsDelivered[tool.id];
+        let x = tool.x, y = tool.y;
+        if (delivered) {
+          const zone = window.WRO_ZONES.find(z => z.id === tool.target);
+          if (zone) { x = zone.centre.x; y = zone.centre.y; }
+        }
+        svg('rect', {
+          x: x - tool.w / 2, y: y - tool.h / 2, width: tool.w, height: tool.h, rx: 4,
+          class: `elem-tool${delivered ? ' elem-tool-delivered' : ''}`,
+        }, elementsLayer);
+      });
+
+      inv.frameSlots.forEach((filled, i) => {
+        if (!filled) return;
+        const slot = E.frameSlots[i];
+        const correctness = filled.correct === true ? 'correct' : filled.correct === false ? 'incorrect' : 'unknown';
+        svg('rect', {
+          x: slot.x - 12, y: slot.y - 12, width: 24, height: 24, rx: 3,
+          class: `elem-frame-tile elem-frame-tile-${correctness}`, fill: COLOUR_HEX[filled.colour],
+        }, elementsLayer);
+      });
+
+      if (pose && inv.carrying.length) {
+        const rad = pose.heading * Math.PI / 180;
+        const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
+        const right = { x: Math.cos(rad), y: Math.sin(rad) };
+        const out = tools.getRobotSize(sizeState) / 2 + 18;
+        inv.carrying.forEach((item, i) => {
+          const along = (i - (inv.carrying.length - 1) / 2) * 22;
+          const px = pose.x - right.x * out + fwd.x * along;
+          const py = pose.y - right.y * out + fwd.y * along;
+          const colour = item.type === 'tile' ? COLOUR_HEX[item.colour] : '#cbd5e1';
+          svg('rect', { x: px - 8, y: py - 8, width: 16, height: 16, rx: 2, class: 'elem-carried', fill: colour }, elementsLayer);
+        });
+      }
+    }
+
+    // Writes the tool/mosaic/cement scoring fields the simulation
+    // understands into the same localStorage key the scoring panel reads,
+    // then asks it to redraw. Only touches those specific fields -- the
+    // barrier bonus checkboxes (which the simulation doesn't model) stay
+    // fully under manual control.
+    function syncScoringFromInventory(inv) {
+      if (!window.WRO_ELEMENTS) return;
+      try {
+        const raw = localStorage.getItem('wro2026-scoring-state');
+        const score = raw ? JSON.parse(raw) : {};
+        window.WRO_ELEMENTS.tools.forEach(t => {
+          score[t.scoringId] = inv.toolsDelivered[t.id] ? 'full' : 'none';
+        });
+        let correct = 0, incorrect = 0;
+        inv.frameSlots.forEach(slot => {
+          if (!slot || slot.correct == null) return;
+          if (slot.correct) correct++; else incorrect++;
+        });
+        score.mosaic_correct = correct;
+        score.mosaic_incorrect = incorrect;
+        window.WRO_ELEMENTS.CEMENT_COLOURS.forEach(c => { score['cement_' + c] = inv.cementSettled[c]; });
+        localStorage.setItem('wro2026-scoring-state', JSON.stringify(score));
+        if (window.WRO_SCORING_REFRESH) window.WRO_SCORING_REFRESH();
+      } catch { /* scoring sync is best-effort */ }
+    }
 
     if (walkerLayer && refSelect) {
       refSelect.value = state.walker.ref;
@@ -578,12 +820,18 @@ window.WRO_PROGRAM = (function() {
         resetBtn.disabled = !hasRobot;
         prevBtn.disabled = !hasRobot || state.walker.stepIndex === 0;
         nextBtn.disabled = !hasRobot || state.walker.stepIndex >= state.steps.length;
+        let pose = null, sizeState = 'closed';
         if (hasRobot) {
-          const pose = poseAtIndex(state.steps, state.walker.start, state.walker.stepIndex);
-          const sizeState = sizeStateAtIndex(state.steps, state.walker.stepIndex);
+          pose = poseAtIndex(state.steps, state.walker.start, state.walker.stepIndex);
+          sizeState = sizeStateAtIndex(state.steps, state.walker.stepIndex);
           drawRobotAt(pose, sizeState);
         } else {
           clearWalkerLayer();
+        }
+        if (window.WRO_ELEMENTS) {
+          const inv = inventoryAtIndex(state.steps, state.walker.stepIndex, state.mosaicPattern);
+          renderElements(pose, sizeState, inv);
+          syncScoringFromInventory(inv);
         }
         updateReadout();
       };

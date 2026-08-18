@@ -642,6 +642,28 @@ nav.app-nav {
 .program-step-actions button.danger { color: #fca5a5; }
 .program-step-actions button.danger:hover { background: rgba(239,68,68,0.25); color: #fff; }
 
+/* ---- mosaic frame pattern configurator ---- */
+.mosaic-pattern-box {
+  padding: 10px 12px; margin-bottom: 12px;
+  background: rgba(8,12,26,0.35); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.mosaic-pattern-hint { margin: 0 0 10px; font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+.mosaic-pattern-grid {
+  display: grid; grid-template-columns: repeat(4, 44px); gap: 6px;
+}
+.mosaic-slot {
+  width: 44px; height: 33px; border-radius: var(--radius-xs);
+  border: 1px solid var(--border); cursor: pointer;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(0,0,0,0.55); background: rgba(255,255,255,0.04);
+}
+.mosaic-slot[data-colour="empty"] { color: var(--muted-2); background: rgba(255,255,255,0.04); }
+.mosaic-slot[data-colour="white"]  { background: #e9edf5; }
+.mosaic-slot[data-colour="green"]  { background: #22c55e; }
+.mosaic-slot[data-colour="blue"]   { background: #3b82f6; color: rgba(255,255,255,0.85); }
+.mosaic-slot[data-colour="yellow"] { background: #facc15; }
+
 .program-actions { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
 #programExportBtn {
   font-family: var(--font-display); font-size: 12px; font-weight: 700;
@@ -730,6 +752,29 @@ nav.app-nav {
   cursor: grab;
 }
 .walker-robot-live:active { cursor: grabbing; }
+
+/* ---- simulated-run game elements (Senior only) ---- */
+.elem-tile {
+  stroke: rgba(0,0,0,0.55); stroke-width: 1.5; vector-effect: non-scaling-stroke;
+}
+.elem-cement {
+  stroke: rgba(0,0,0,0.5); stroke-width: 1.5; vector-effect: non-scaling-stroke;
+}
+.elem-cement-loose { opacity: 0.55; stroke-dasharray: 2 3; }
+.elem-cement-settled { opacity: 1; }
+.elem-tool {
+  fill: rgba(226,232,240,0.85); stroke: #64748b; stroke-width: 2;
+  vector-effect: non-scaling-stroke; stroke-dasharray: 5 4;
+}
+.elem-tool-delivered { fill: rgba(34,197,94,0.35); stroke: #22c55e; stroke-dasharray: none; }
+.elem-frame-tile { stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.elem-frame-tile-correct { stroke: #22c55e; }
+.elem-frame-tile-incorrect { stroke: #ef4444; }
+.elem-frame-tile-unknown { stroke: #94a3b8; stroke-dasharray: 3 3; }
+.elem-carried {
+  stroke: #fff; stroke-width: 1.5; stroke-dasharray: 3 2;
+  vector-effect: non-scaling-stroke; opacity: 0.95;
+}
 
 /* ------------------ SCORING PANEL ------------------ */
 #scoringPanel {
