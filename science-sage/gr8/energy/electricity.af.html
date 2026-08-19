@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektriese Stroombane — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:16px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-bottom:24px}
+    .circuit-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .circuit-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:40px;text-align:right}
+    .toggle-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .toggle-row label{font-size:13px;font-weight:600;color:var(--text)}
+    .toggle-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.08);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;width:100%}
+    .toggle-btn:hover{background:rgba(251,191,36,.16)}
+    .toggle-btn.off{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--muted)}
+    .circuit-type-row{display:flex;gap:8px;margin-bottom:4px}
+    .ctype-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms}
+    .ctype-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fcd34d}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:22px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}
+    .ohm-show{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:12px 16px;font-family:var(--fm);font-size:12px;color:#fcd34d;text-align:center;margin-top:8px}
+    .bulb-status{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:13px;margin-top:8px;transition:all 300ms}
+    .bulb-status.on{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.30);color:#fcd34d}
+    .bulb-status.off{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--muted)}
+
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.circuit-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-top{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energie &amp; Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Energie &amp; Verandering · Les 2</div>
+  <h1 class="lesson-title">Elektriese Stroombane</h1>
+  <p class="lesson-sub">Verken hoe elektriese stroombane werk — bou reeks- en parallelstroombane en sien die Wet van Ohm in aksie.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:14px;height:14px"></i> Simuleer</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n elektriese stroombaan?</h2>
+    <p>'n <strong>Elektriese stroombaan</strong> is 'n geslote pad waarlangs elektriese stroom kan vloei. Vir stroom om te vloei, moet die stroombaan <strong>volledig</strong> wees (geen gapings nie), 'n energiebron hê (soos 'n battery), en iets hê wat die energie gebruik (soos 'n gloeilamp of weerstand).</p>
+    <div class="callout"><strong>Elektriese stroom (I)</strong> is die vloei van elektrone deur 'n geleier. Dit word gemeet in <strong>Ampère (A)</strong> met behulp van 'n ampèremeter.</div>
+
+    <h2>Sleutelgroothede</h2>
+    <ul>
+      <li><strong>Spanning (V)</strong> — die "stoot" wat stroom deur die stroombaan dryf. Gemeet in Volt (V) met 'n voltmeter.</li>
+      <li><strong>Stroom (I)</strong> — die tempo waarteen lading vloei. Gemeet in Ampère (A).</li>
+      <li><strong>Weerstand (R)</strong> — hoeveel 'n komponent die vloei van stroom teenwerk. Gemeet in Ohm (Ω).</li>
+    </ul>
+
+    <h2>Wet van Ohm</h2>
+    <p>Die verband tussen spanning, stroom en weerstand word deur die <strong>Wet van Ohm</strong> beskryf:</p>
+    <div class="formula">V = I × R &nbsp;&nbsp;|&nbsp;&nbsp; I = V ÷ R &nbsp;&nbsp;|&nbsp;&nbsp; R = V ÷ I</div>
+    <p>Waar V = spanning (Volt), I = stroom (Ampère), R = weerstand (Ohm). As jy die spanning verhoog, vloei meer stroom. As jy die weerstand verhoog, vloei minder stroom.</p>
+    <div class="key-fact">Voorbeeld: V = 6 V, R = 3 Ω → I = 6 ÷ 3 = 2 A</div>
+
+    <h2>Stroombaansimbole</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Komponent</th><th>Beskrywing van simbool</th><th>Funksie</th></tr></thead>
+      <tbody>
+        <tr><td>Battery (sel)</td><td>Lang lyn (+) en kort lyn (−)</td><td>Verskaf elektriese energie</td></tr>
+        <tr><td>Gloeilamp</td><td>Sirkel met X binne-in</td><td>Skakel elektriese energie om na lig</td></tr>
+        <tr><td>Weerstand</td><td>Reghoek</td><td>Werk stroomvloei teen</td></tr>
+        <tr><td>Skakelaar</td><td>Gaping met 'n lyn wat oop/toe kan gaan</td><td>Maak die stroombaan oop of toe</td></tr>
+        <tr><td>Ampèremeter</td><td>Sirkel met A</td><td>Meet stroom (in reeks)</td></tr>
+        <tr><td>Voltmeter</td><td>Sirkel met V</td><td>Meet spanning (in parallel)</td></tr>
+        <tr><td>Draad</td><td>Reguit lyn</td><td>Verbind komponente</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Reeks- teenoor parallelstroombane</h2>
+    <p>Komponente kan op twee maniere verbind word:</p>
+    <ul>
+      <li><strong>Reeksstroombaan:</strong> Komponente word een na die ander in 'n enkele lus verbind. Dieselfde stroom vloei deur al die komponente. As een gloeilamp breek, gaan almal af.</li>
+      <li><strong>Parallelstroombaan:</strong> Komponente word oor dieselfde twee punte verbind (langs mekaar). Elke komponent het dieselfde spanning oor hom. As een gloeilamp breek, bly die ander aan.</li>
+    </ul>
+    <div class="callout"><strong>Huisbedrading</strong> gebruik parallelstroombane sodat elke toestel onafhanklik aan-/afgeskakel kan word en die volle hoofspanning ontvang.</div>
+  </div>
+</div>
+
+<!-- SIMULATE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Stroombaansimulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel spanning en weerstand, skakel die skakelaar, en wissel tussen reeks en parallel. Kyk hoe die stroom verander en hoe helder die gloeilampe skyn.</p>
+  <div class="explore-top">
+    <div class="circuit-wrap">
+      <h3>Stroombaandiagram</h3>
+      <canvas id="circuitCanvas" height="320"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stroombaantipe</div>
+        <div class="circuit-type-row">
+          <button class="ctype-btn active" id="btnSeries" onclick="setCircuitType('series')">Reeks</button>
+          <button class="ctype-btn" id="btnParallel" onclick="setCircuitType('parallel')">Parallel</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Kontroles</div>
+        <div class="slider-row">
+          <label>Spanning</label>
+          <input type="range" id="voltageSlider" min="1" max="12" value="6" oninput="updateCircuit()">
+          <span class="slider-val" id="voltVal">6 V</span>
+        </div>
+        <div class="slider-row">
+          <label>Weerstand</label>
+          <input type="range" id="resistSlider" min="1" max="12" value="3" oninput="updateCircuit()">
+          <span class="slider-val" id="resistVal">3 Ω</span>
+        </div>
+        <button class="toggle-btn" id="switchBtn" onclick="toggleSwitch()">
+          <i data-lucide="toggle-right" style="width:16px;height:16px"></i>
+          Skakelaar: TOE
+        </button>
+        <div class="bulb-status on" id="bulbStatus">💡 Lamp is AAN</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Lesings</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Spanning</div><div class="readout-val" id="readV">6<span>V</span></div></div>
+          <div class="readout"><div class="readout-label">Weerstand</div><div class="readout-val" id="readR">3<span>Ω</span></div></div>
+          <div class="readout"><div class="readout-label">Stroom</div><div class="readout-val" id="readI" style="color:#fbbf24">2.00<span>A</span></div></div>
+          <div class="readout"><div class="readout-label">Drywing</div><div class="readout-val" id="readP" style="color:#86efac">12.0<span>W</span></div></div>
+        </div>
+        <div class="ohm-show" id="ohmShow">I = 6 ÷ 3 = 2.00 A</div>
+        <div style="margin-top:12px;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:8px;font-family:'JetBrains Mono',monospace">
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px">Wet van Ohm</div>
+          <div style="font-size:12px;color:rgba(251,191,36,0.90);margin-bottom:3px">V = I × R</div>
+          <div style="font-size:12px;color:rgba(96,165,250,0.90);margin-bottom:3px">I = V ÷ R</div>
+          <div style="font-size:12px;color:rgba(134,239,172,0.90)">R = V ÷ I</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na vir enige wat jy verkeerd gehad het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek. Wys alle berekeninge duidelik.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (1 punt)</div><div class="wb-qtext">Stel die Wet van Ohm in woorde.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">'n Stroombaan het 'n battery van 9 V en 'n weerstand van 3 Ω. Bereken: (a) die stroom deur die weerstand, (b) die drywing wat afgegee word, (c) wat met die stroom gebeur as die weerstand verdubbel word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Wat is die verskil tussen 'n <em>reeks</em>stroombaan en 'n <em>parallel</em>stroombaan? Gee EEN voordeel van 'n parallelstroombaan in huisbedrading.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (2 punte)</div><div class="wb-qtext">Noem die instrument wat gebruik word om (a) stroom en (b) spanning te meet. Beskryf hoe elkeen in 'n stroombaan gekoppel word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (4 punte)</div><div class="wb-qtext">In 'n reeksstroombaan met twee gloeilampe en 'n 12 V battery: elke gloeilamp het 'n weerstand van 4 Ω. Bereken die totale weerstand en die stroom wat vloei. Watter spanning ervaar elke gloeilamp? Wys alle berekeninge.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (5 punte)</div><div class="wb-qtext">'n Leerder toets 'n weerstand deur dit aan verskillende batteryspannings te koppel en die stroom elke keer te meet. Haar resultate word hieronder getoon.<br><br>
+      <table class="symbols-table"><thead><tr><th>Spanning (V)</th><th>Stroom (A)</th></tr></thead><tbody>
+      <tr><td>2</td><td>0.5</td></tr>
+      <tr><td>4</td><td>1.0</td></tr>
+      <tr><td>6</td><td>1.5</td></tr>
+      <tr><td>8</td><td>2.0</td></tr>
+      </tbody></table><br>
+      (a) Gebruik die Wet van Ohm om die weerstand (R = V ÷ I) vir elk van die vier lesings te bereken. Wys jou berekeninge. (2)<br>
+      (b) Wat merk jy op oor die weerstandswaarde by al vier lesings? (1)<br>
+      (c) Beskryf, gebaseer op jou antwoord by (b), hoe 'n grafiek van Stroom (y-as) teenoor Spanning (x-as) vir hierdie weerstand sou lyk. (1)<br>
+      (d) Voorspel watter stroom gemeet sou word as die leerder dieselfde weerstand aan 'n 10 V battery koppel. (1)</div></div>
+  </div>
+</div>
+
+<script>
+let switchClosed = true;
+let circuitType = 'series';
+let V = 6, R = 3;
+let frame = 0;
+let flowOffset = 0;
+
+const canvas = document.getElementById('circuitCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas(){
+  const dpr = window.devicePixelRatio || 1;
+  const dW = canvas.offsetWidth || 480;
+  canvas.width = dW * dpr;
+  canvas.height = 320 * dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+}
+
+function setCircuitType(t){
+  circuitType=t;
+  document.getElementById('btnSeries').classList.toggle('active',t==='series');
+  document.getElementById('btnParallel').classList.toggle('active',t==='parallel');
+  updateCircuit();
+}
+
+function toggleSwitch(){
+  switchClosed=!switchClosed;
+  const btn=document.getElementById('switchBtn');
+  btn.className='toggle-btn'+(switchClosed?'':' off');
+  btn.innerHTML=`<i data-lucide="${switchClosed?'toggle-right':'toggle-left'}" style="width:16px;height:16px"></i> Skakelaar: ${switchClosed?'TOE':'OOP'}`;
+  lucide.createIcons();
+  updateCircuit();
+}
+
+function updateCircuit(){
+  V=+document.getElementById('voltageSlider').value;
+  R=+document.getElementById('resistSlider').value;
+  document.getElementById('voltVal').textContent=V+' V';
+  document.getElementById('resistVal').textContent=R+' Ω';
+  const I=switchClosed ? V/R : 0;
+  const P=V*I;
+  document.getElementById('readV').innerHTML=`${V}<span>V</span>`;
+  document.getElementById('readR').innerHTML=`${R}<span>Ω</span>`;
+  document.getElementById('readI').innerHTML=`${I.toFixed(2)}<span>A</span>`;
+  document.getElementById('readP').innerHTML=`${P.toFixed(1)}<span>W</span>`;
+  document.getElementById('ohmShow').textContent = switchClosed
+    ? `I = ${V} ÷ ${R} = ${I.toFixed(2)} A`
+    : 'Skakelaar oop — geen stroom vloei nie';
+  const status=document.getElementById('bulbStatus');
+  if(!switchClosed){status.className='bulb-status off';status.textContent='💡 Lamp is AF (oop skakelaar)'}
+  else if(I<0.5){status.className='bulb-status off';status.textContent='💡 Lamp is baie dof (lae stroom)'}
+  else if(I<1.5){status.className='bulb-status on';status.textContent='💡 Lamp gloei dof'}
+  else{status.className='bulb-status on';status.textContent='💡 Lamp is AAN en helder!'}
+}
+
+function drawCircuit(){
+  const W=canvas.offsetWidth||480, H=320;
+  ctx.clearRect(0,0,W,H);
+
+  const I = switchClosed ? V/R : 0;
+  const brightness = Math.min(1, I/4);
+  const wireCol = switchClosed ? `rgba(251,191,36,${0.4+brightness*0.6})` : 'rgba(255,255,255,0.15)';
+  const wireW = 2.5;
+
+  if(circuitType==='series'){
+    const L=85,R2=W-60,T=60,B=H-60;
+    const mx=(L+R2)/2;
+
+    // Wires
+    ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(mx-30,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(mx+30,T);ctx.lineTo(R2,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(R2,T);ctx.lineTo(R2,B*0.45);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(R2,B*0.55);ctx.lineTo(R2,B);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(R2,B);ctx.lineTo(L,B);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,B);ctx.stroke();
+
+    if(switchClosed && I>0){
+      flowOffset=(flowOffset+I*0.012)%1;
+      drawFlow([[L,T,mx-30,T],[mx+30,T,R2,T],[R2,T,R2,B*0.45],[R2,B*0.55,R2,B],[R2,B,L,B],[L,B,L,T]],flowOffset,wireCol);
+    }
+
+    const battY = T+(B-T)/2-20;
+    drawBattery(L,battY,false);
+    drawBulb(mx,T,brightness);
+    drawSwitch(R2,B*0.45,R2,B*0.55,switchClosed);
+
+    // Labels — battery beside its symbol, others at natural positions
+    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"';
+    ctx.textAlign='right';
+    ctx.fillText('Battery',L-14,battY+18);
+    ctx.textAlign='center';
+    ctx.fillText('Lamp',mx,T-16);
+    ctx.textAlign='right';
+    ctx.fillText('Skakelaar',R2-6,(B*0.45+B*0.55)/2-6);
+    ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText(`${I.toFixed(1)} A`,mx,B-8);
+
+  } else {
+    const L=85,R2=W-60,T=70,B=H-60;
+    const M=(T+B)/2;
+    const bx1=W*0.43, bx2=W*0.64;
+    const swX1=L+28, swX2=L+64;
+
+    ctx.strokeStyle=wireCol; ctx.lineWidth=wireW; ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(swX1,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(swX2,T);ctx.lineTo(R2,T);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(L,B);ctx.lineTo(R2,B);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(L,T);ctx.lineTo(L,M-25);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(L,M+25);ctx.lineTo(L,B);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx1,T);ctx.lineTo(bx1,M-18);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx1,M+18);ctx.lineTo(bx1,B);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx2,T);ctx.lineTo(bx2,M-18);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx2,M+18);ctx.lineTo(bx2,B);ctx.stroke();
+
+    if(switchClosed && I>0){
+      flowOffset=(flowOffset+I*0.010)%1;
+      drawFlow([
+        [L,M-25,L,T],[L,T,swX1,T],
+        [swX2,T,bx1,T],[bx1,T,bx2,T],
+        [bx1,T,bx1,M-18],[bx1,M+18,bx1,B],
+        [bx2,T,bx2,M-18],[bx2,M+18,bx2,B],
+        [bx2,B,L,B],[L,B,L,M+25]
+      ],flowOffset,wireCol);
+    }
+
+    const battY2 = M-20;
+    drawBattery(L,battY2,false);
+    drawBulb(bx1,M,brightness);
+    drawBulb(bx2,M,brightness);
+    drawSwitch(swX1,T,swX2,T,switchClosed);
+
+    ctx.fillStyle='rgba(210,218,245,0.45)'; ctx.font='11px "JetBrains Mono"';
+    ctx.textAlign='right';
+    ctx.fillText('Battery',L-14,battY2+18);
+    ctx.textAlign='center';
+    ctx.fillText('Lamp 1',bx1,T-16);
+    ctx.fillText('Lamp 2',bx2,T-16);
+    ctx.fillText('Skakelaar',(swX1+swX2)/2,T-10);
+    ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='bold 11px "JetBrains Mono"';
+    ctx.fillText(`Elk: ${I.toFixed(1)} A`,(bx1+bx2)/2,B-8);
+  }
+}
+
+function drawFlow(paths, offset, col){
+  const dotSpacing=22;
+  ctx.fillStyle=col.replace('rgba','rgba').replace(/,[^,)]+\)/, ',0.9)');
+  paths.forEach(([x1,y1,x2,y2])=>{
+    const dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy);
+    const nx=dx/len, ny=dy/len;
+    const start=offset*dotSpacing;
+    for(let d=start;d<len;d+=dotSpacing){
+      const x=x1+nx*d, y=y1+ny*d;
+      ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+    }
+  });
+}
+
+function drawBattery(x,y,horiz){
+  ctx.strokeStyle='rgba(255,255,255,0.60)'; ctx.lineWidth=2;
+  if(!horiz){
+    ctx.beginPath();ctx.moveTo(x-10,y);ctx.lineTo(x+10,y);ctx.stroke();
+    ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-6,y+12);ctx.lineTo(x+6,y+12);ctx.stroke();
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x-10,y+24);ctx.lineTo(x+10,y+24);ctx.stroke();
+    ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-6,y+36);ctx.lineTo(x+6,y+36);ctx.stroke();
+    ctx.fillStyle='rgba(251,191,36,0.70)'; ctx.font='10px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText('+',x+16,y+4); ctx.fillText('−',x+16,y+40);
+  }
+}
+
+function drawBulb(x,y,brightness){
+  const grd=ctx.createRadialGradient(x,y,0,x,y,28);
+  grd.addColorStop(0,`rgba(251,191,36,${brightness*0.6})`);
+  grd.addColorStop(1,'rgba(251,191,36,0)');
+  ctx.beginPath();ctx.arc(x,y,28,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+  ctx.beginPath();ctx.arc(x,y,15,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(251,191,36,${0.3+brightness*0.7})`;ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x-8,y-8);ctx.lineTo(x+8,y+8);ctx.moveTo(x+8,y-8);ctx.lineTo(x-8,y+8);
+  ctx.strokeStyle=`rgba(255,220,100,${0.2+brightness*0.8})`;ctx.lineWidth=2;ctx.stroke();
+}
+
+function drawSwitch(x1,y1,x2,y2,closed){
+  ctx.strokeStyle=closed?'rgba(251,191,36,0.80)':'rgba(255,255,255,0.30)'; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  if(closed){ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);}
+  else{ctx.moveTo(x1,y1);ctx.lineTo(x2-8,y2-16);}
+  ctx.stroke();
+  ctx.beginPath();ctx.arc(x1,y1,4,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.60)';ctx.fill();
+  ctx.beginPath();ctx.arc(x2,y2,4,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.60)';ctx.fill();
+}
+
+function animate(){
+  if(document.getElementById('tab-explore').classList.contains('active')){
+    updateCircuit();
+    drawCircuit();
+    flowOffset=(flowOffset+(switchClosed?V/R*0.003:0))%1;
+  }
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize',()=>{resizeCanvas();});
+resizeCanvas();
+updateCircuit();
+animate();
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='explore') resizeCanvas();
+}
+
+const QUESTIONS=[
+  {text:'Wat is die eenheid van elektriese weerstand?',opts:['Ampère (A)','Volt (V)','Ohm (Ω)','Watt (W)'],ans:2,exp:'Weerstand word gemeet in Ohm (Ω), vernoem na Georg Ohm wat die verband V = I × R ontdek het.'},
+  {text:'\'n Stroombaan het \'n spanning van 12 V en \'n weerstand van 4 Ω. Wat is die stroom?',opts:['48 A','0.33 A','8 A','3 A'],ans:3,exp:'Deur die Wet van Ohm te gebruik: I = V ÷ R = 12 ÷ 4 = 3 A.'},
+  {text:'In \'n reeksstroombaan met twee gloeilampe, as een gloeilamp breek:',opts:['Net daardie gloeilamp gaan af','Albei gloeilampe gaan af','Die stroom neem toe','Die spanning verdubbel'],ans:1,exp:'In \'n reeksstroombaan is daar net een pad vir stroom. As een komponent breek (oop stroombaan), kan geen stroom vloei nie en al die komponente hou op werk.'},
+  {text:'Watter instrument word IN REEKS in \'n stroombaan gekoppel?',opts:['Voltmeter','Galvanometer','Ossilloskoop','Ampèremeter'],ans:3,exp:'\'n Ampèremeter moet in reeks gekoppel word sodat al die stroom daardeur vloei, wat dit in staat stel om daardie stroom akkuraat te meet.'},
+  {text:'Wat gebeur met die stroom in \'n stroombaan as die spanning verdubbel word maar die weerstand dieselfde bly?',opts:['Dit halveer','Dit bly dieselfde','Dit verdubbel','Dit word nul'],ans:2,exp:'Volgens die Wet van Ohm, I = V ÷ R. As V verdubbel en R dieselfde bly, verdubbel I ook. Stroom is direk eweredig aan spanning.'},
+  {text:'Waarom word parallelbedrading in huise gebruik eerder as reeksbedrading?',opts:['Dit gebruik minder elektrisiteit','Elke toestel kan onafhanklik geskakel word en ontvang die volle spanning','Dit is goedkoper om te installeer','Dit het minder weerstand'],ans:1,exp:'In \'n parallelstroombaan het elke tak die volle voorsieningspanning en kan onafhanklik beheer word. As een toestel breek, hou die ander aan werk — noodsaaklik vir huisbedrading.'},
+  {text:'\'n Leerder koppel een gloeilamp (weerstand 4 Ω) aan \'n 12 V battery. Sy voeg dan \'n identiese tweede gloeilamp IN REEKS met die eerste een by, sodat die totale weerstand 8 Ω word. Wat gebeur met die stroom, en waarom gloei elke gloeilamp dowwer as voorheen?',opts:['Die stroom neem toe, omdat daar nou twee gloeilampe is wat lig maak','Die stroom neem af, omdat die totale weerstand toegeneem het, sodat volgens die Wet van Ohm minder stroom deur die enkele lus vloei en albei gloeilampe hierdie kleiner stroom deel','Die stroom bly presies dieselfde, omdat die batteryspanning nie verander het nie','Die stroom neem af omdat die spanning nou tussen twee afsonderlike batterye verdeel word'],ans:1,exp:'Deur I = V ÷ R te gebruik: met een gloeilamp is I = 12 ÷ 4 = 3 A. Met twee identiese gloeilampe in reeks verdubbel die totale weerstand na 8 Ω, sodat I = 12 ÷ 8 = 1.5 A — die helfte van die oorspronklike stroom. Omdat \'n reeksstroombaan net een pad het, dra albei gloeilampe hierdie selfde verminderde stroom, en dis waarom hulle dowwer gloei as die enkele gloeilamp voorheen gedoen het.'},
+  {text:'Twee identiese 6 Ω-gloeilampe word aan \'n 12 V battery gekoppel. In Stroombaan A word hulle IN REEKS bedraad (totale weerstand 12 Ω). In Stroombaan B word hulle IN PARALLEL bedraad, sodat elke gloeilamp die volle 12 V afsonderlik oor hom het. Watter stelling vergelyk die stroom deur ELKE gloeilamp in die twee stroombane korrek?',opts:['Die stroom deur elke gloeilamp is identies in albei stroombane, aangesien die gloeilampe self identies is','Elke gloeilamp in Stroombaan A (reeks) dra meer stroom as elke gloeilamp in Stroombaan B (parallel)','Elke gloeilamp in Stroombaan B (parallel) dra dubbel die stroom van elke gloeilamp in Stroombaan A (reeks), omdat elke parallelle gloeilamp die volle 12 V oor net sy eie 6 Ω kry, terwyl die reeksgloeilampe \'n verdeelde spanning oor \'n hoër totale weerstand deel','Geeneen van die stroombane kan twee gloeilampe met \'n enkele battery laat brand nie'],ans:2,exp:'In Stroombaan A (reeks): totale weerstand = 12 Ω, sodat I = 12 ÷ 12 = 1 A deur albei gloeilampe vloei. In Stroombaan B (parallel): elke gloeilamp het die volle 12 V oor sy eie 6 Ω, sodat I = 12 ÷ 6 = 2 A deur elke gloeilamp — dubbel die reeksstroom. Dis waarom identiese gloeilampe helderder gloei wanneer hulle in parallel bedraad word as in reeks oor dieselfde battery.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou vol — gaan die les weer deur!':score<=4?'Goeie poging — kyk na die verduidelikings.':score===5?'Goed gedaan!':'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

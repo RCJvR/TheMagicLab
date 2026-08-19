@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atome & Atoommodelle — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+      --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.15);
+      --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border);margin-bottom:0}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .model-timeline{display:flex;flex-direction:column;gap:0;margin:16px 0}
+    .model-step{display:flex;gap:16px;padding:14px 0;border-left:2px solid rgba(96,165,250,.22);margin-left:10px;padding-left:20px;position:relative}
+    .model-step::before{content:'';position:absolute;left:-6px;top:20px;width:10px;height:10px;border-radius:50%;background:#60a5fa;border:2px solid var(--bg)}
+    .model-step-year{font-family:var(--fm);font-size:10px;font-weight:600;color:#60a5fa;white-space:nowrap;margin-top:2px;min-width:48px}
+    .model-step-body h4{font-weight:700;font-size:14px;color:#fff;margin-bottom:4px}
+    .model-step-body p{font-size:13px;color:rgba(210,218,245,.65);line-height:1.65;margin:0}
+
+    .explore-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+    .canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px}
+    canvas{border-radius:12px;display:block;background:#050810}
+    .controls{display:flex;flex-direction:column;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .element-display{text-align:center;padding:16px;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;margin-bottom:14px}
+    .element-symbol{font-weight:900;font-size:52px;letter-spacing:-0.04em;color:#60a5fa;line-height:1}
+    .element-name{font-size:13px;color:var(--muted);margin-top:4px}
+    .element-num{font-family:var(--fm);font-size:11px;color:rgba(96,165,250,.70);margin-top:2px}
+    .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+    .slider-row label{font-size:13px;font-weight:600;color:var(--text);min-width:110px}
+    input[type=range]{flex:1;accent-color:#60a5fa;height:4px;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:12px;color:#60a5fa;min-width:28px;text-align:right}
+    .data-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .data-cell{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:10px 12px}
+    .data-cell-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:3px}
+    .data-cell-val{font-weight:700;font-size:18px;color:#fff}
+    .data-cell-val span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}
+    .shell-config{font-family:var(--fm);font-size:12px;color:#a5f3fc;text-align:center;padding:8px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.18);border-radius:8px;margin-top:8px;word-break:break-all}
+    .category-pill{display:inline-block;font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-top:6px}
+
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}.canvas-wrap{display:none}}
+  
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+      .canvas-wrap{overflow-x:auto}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Materie en Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Materie en Materiale · Les 1</div>
+  <h1 class="lesson-title">Atome & Atoommodelle</h1>
+  <p class="lesson-sub">Ontdek die piepklein partikels waaruit alles bestaan — van 'n greintjie sand tot 'n verre ster.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n atoom?</h2>
+    <p>Alles om jou — jou lessenaar, die lug wat jy inasem, selfs jyself — bestaan uit <strong>materie</strong>. Materie bestaan uit ongelooflik klein partikels wat <strong>atome</strong> genoem word. Atome is so klein dat 'n enkele punt op hierdie bladsy biljoene daarvan bevat.</p>
+    <div class="callout"><strong>Kernidee:</strong> 'n Atoom is die kleinste eenheid van 'n element wat steeds die chemiese eienskappe van daardie element het. Jy kan 'n atoom nie verder verdeel sonder om te verander wat dit is nie.</div>
+
+    <h2>Binne-in 'n atoom</h2>
+    <p>Atome is nie soliede balletjies nie — hulle het 'n struktuur. Elke atoom het drie tipes sub-atomiese partikels:</p>
+    <ul>
+      <li><strong>Protone</strong> — positief gelaai (+), gevind in die kern</li>
+      <li><strong>Neutrone</strong> — geen lading nie (neutraal), gevind in die kern</li>
+      <li><strong>Elektrone</strong> — negatief gelaai (−), wentel om die kern in doppe</li>
+    </ul>
+    <div class="key-fact">Atoomgetal = aantal protone = aantal elektrone (in 'n neutrale atoom)</div>
+    <div class="key-fact">Massagetal = protone + neutrone</div>
+    <p>Die <strong>kern</strong> is in die middel en is uiters digs — dit bevat byna al die atoom se massa. Die elektrone wentel om die kern in vaste energievlakke wat <strong>elektrondoppe</strong> genoem word.</p>
+
+    <h2>Elektrondoppe</h2>
+    <p>Elektrone vul doppe in volgorde van binne na buite. Elke dop het 'n maksimum aantal elektrone wat dit kan huisves:</p>
+    <ul>
+      <li>Dop 1 (naaste aan die kern): maksimum <strong>2</strong> elektrone</li>
+      <li>Dop 2: maksimum <strong>8</strong> elektrone</li>
+      <li>Dop 3: maksimum <strong>18</strong> elektrone</li>
+      <li>Dop 4: maksimum <strong>32</strong> elektrone</li>
+    </ul>
+    <p>Ons skryf die elektronrangskikking as 'n reeks syfers, bv. koolstof het 6 elektrone gerangskik as <strong>2,4</strong> (2 in dop 1, 4 in dop 2). Dit word die <strong>elektronkonfigurasie</strong> genoem.</p>
+
+    <h2>Geskiedenis van atoommodelle</h2>
+    <div class="model-timeline">
+      <div class="model-step"><div class="model-step-year">~450 v.C.</div><div class="model-step-body"><h4>Demokritos — "Atomos"</h4><p>Antieke Griekse filosoof wat voorgestel het dat materie uit ondeelbare partikels bestaan wat hy "atomos" (onsnybaar) genoem het. Geen eksperimente nie — net redenering.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1803</div><div class="model-step-body"><h4>Dalton — Soliede-sfeer-model</h4><p>John Dalton het voorgestel dat atome soliede, onvernietigbare sfere is. Elke element het identiese atome; verbindings vorm wanneer atome saamsmelt.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1904</div><div class="model-step-body"><h4>Thomson — Pruimpoeding-model</h4><p>J.J. Thomson het die elektron ontdek en voorgestel dat atome 'n bal positiewe lading is met elektrone deurstrooi soos pruime in 'n poeding.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1911</div><div class="model-step-body"><h4>Rutherford — Kernmodel</h4><p>Ernest Rutherford se goudfolie-eksperiment het getoon dat die meeste van die atoom leë ruimte is, met 'n piepklein, digte, positiewe kern in die middel.</p></div></div>
+      <div class="model-step"><div class="model-step-year">1913</div><div class="model-step-body"><h4>Bohr — Planetêre model</h4><p>Niels Bohr het bygevoeg dat elektrone om die kern wentel in vaste energievlakke (doppe). Dit is die model wat in Graad 8-wetenskap gebruik word.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Atoombouer — Al 118 Elemente</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Kies enige element van waterstof tot oganesson. Doppe met meer as 12 elektrone wys 'n telring in plaas van individuele stippels.</p>
+  <div class="explore-layout">
+    <div class="canvas-wrap">
+      <canvas id="atomCanvas" width="460" height="460"></canvas>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-align:center">Protone (rooi) · Neutrone (grys) · Elektrone (blou, geanimeer)</div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Kies Element</div>
+        <div class="element-display">
+          <div class="element-symbol" id="elSymbol">H</div>
+          <div class="element-name" id="elName">Waterstof</div>
+          <div class="element-num" id="elNum">Z = 1</div>
+          <div id="elCategory" class="category-pill" style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.22);color:#93c5fd">Reaktiewe nie-metaal</div>
+        </div>
+        <div class="slider-row">
+          <label>Atoomgetal</label>
+          <input type="range" id="atomicSlider" min="1" max="118" value="1" oninput="setElement(+this.value)">
+          <span class="slider-val" id="sliderVal">1</span>
+        </div>
+        <div class="shell-config" id="shellConfig">Elektronkonfigurasie: 1</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Atoomdata</div>
+        <div class="data-grid">
+          <div class="data-cell"><div class="data-cell-label">Protone</div><div class="data-cell-val" id="dProtons" style="color:#f87171">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Neutrone</div><div class="data-cell-val" id="dNeutrons" style="color:#94a3b8">0</div></div>
+          <div class="data-cell"><div class="data-cell-label">Elektrone</div><div class="data-cell-val" id="dElectrons" style="color:#60a5fa">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Massagetal</div><div class="data-cell-val" id="dMass">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Periode</div><div class="data-cell-val" id="dPeriod">1</div></div>
+          <div class="data-cell"><div class="data-cell-label">Groep</div><div class="data-cell-val" id="dGroup">1</div></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Het jy geweet?</div>
+        <p style="font-size:13px;color:rgba(210,218,245,.70);line-height:1.65" id="elFact">Waterstof is die ligste en volopste element in die heelal. Die son bestaan grotendeels uit waterstof!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na vir enige wat jy gemis het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord hierdie vrae in jou oefeningboek. Wys alle berekeninge waar dit vereis word.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (1 punt)</div><div class="wb-qtext">Definieer die term <em>atoom</em>.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Noem die drie sub-atomiese partikels wat in 'n atoom voorkom en gee die lading van elkeen.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Koolstof het 'n atoomgetal van 6 en 'n massagetal van 12. Bereken die aantal (a) protone, (b) neutrone, en (c) elektrone in 'n neutrale koolstofatoom.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (2 punte)</div><div class="wb-qtext">Skryf die elektronkonfigurasie vir natrium (Na), wat 'n atoomgetal van 11 het. Hoeveel elektrone is in elke dop?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (4 punte)</div><div class="wb-qtext">Beskryf kortliks <strong>twee</strong> verskillende atoommodelle en noem die wetenskaplike wat met elkeen geassosieer word. Verduidelik wat elke model reg gekry het en wat later as verkeerd bewys is.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (2 punte)</div><div class="wb-qtext">'n Atoom suurstof het 8 elektrone. Skryf sy elektronkonfigurasie in die vorm wat in wetenskap gebruik word (bv. 2,6) en verduidelik watter dop die buitenste elektrone beset.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 7 · (6 punte)</div><div class="wb-qtext">Voltooi die tabel hieronder vir elke neutrale atoom, deur die verwantskappe te gebruik: protone = atoomgetal, elektrone = protone (in 'n neutrale atoom), en neutrone = massagetal − atoomgetal. Wys jou berekeninge vir minstens twee rye.<br><br>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+      <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Element</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Atoomgetal (Z)</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Massagetal</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Protone</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Neutrone</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Elektrone</th></tr></thead>
+      <tbody>
+      <tr><td style="padding:6px 10px">Stikstof</td><td style="padding:6px 10px">7</td><td style="padding:6px 10px">14</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td></tr>
+      <tr><td style="padding:6px 10px">Aluminium</td><td style="padding:6px 10px">13</td><td style="padding:6px 10px">27</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td></tr>
+      <tr><td style="padding:6px 10px">Chloor</td><td style="padding:6px 10px">17</td><td style="padding:6px 10px">35</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td></tr>
+      <tr><td style="padding:6px 10px">Kalsium</td><td style="padding:6px 10px">20</td><td style="padding:6px 10px">40</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td><td style="padding:6px 10px">?</td></tr>
+      </tbody></table></div></div>
+  </div>
+</div>
+
+<script>
+/* ── Element data: all 118 elements ──
+   Fields: z, sym, name, mass, shells (electrons per principal shell n=1..7),
+           group, period, category, fact
+   Shells with 0 at the end are omitted. */
+const ELEMENTS = [
+  {z:1,  sym:'H',  name:'Waterstof',      mass:1,   shells:[1],            group:1,  period:1, cat:'Reaktiewe nie-metaal',  fact:'Waterstof is die ligste en volopste element in die heelal. Die son bestaan grotendeels uit waterstof!'},
+  {z:2,  sym:'He', name:'Helium',        mass:4,   shells:[2],            group:18, period:1, cat:'Edelgas',          fact:'Helium is ligter as lug — daarom dryf heliumballonne! Dit is \'n edelgas wat nooit reageer nie.'},
+  {z:3,  sym:'Li', name:'Litium',       mass:7,   shells:[2,1],          group:1,  period:2, cat:'Alkalimetaal',       fact:'Litium word gebruik in herlaaibare batterye in slimfone en elektriese voertuie.'},
+  {z:4,  sym:'Be', name:'Berillium',     mass:9,   shells:[2,2],          group:2,  period:2, cat:'Aardalkalimetaal',fact:'Berillium is uiters lig en styf — dit word gebruik in ruimtetuie en satellietstrukture.'},
+  {z:5,  sym:'B',  name:'Boor',         mass:11,  shells:[2,3],          group:13, period:2, cat:'Metalloïed',          fact:'Boor word gebruik om boraks (\'n skoonmaakmiddel) en boorsilikaatglas wat hitte weerstaan, te maak.'},
+  {z:6,  sym:'C',  name:'Koolstof',        mass:12,  shells:[2,4],          group:14, period:2, cat:'Reaktiewe nie-metaal',  fact:'Koolstof is die basis van alle lewe. Diamant en grafiet is albei suiwer koolstof, net in verskillende rangskikkings!'},
+  {z:7,  sym:'N',  name:'Stikstof',      mass:14,  shells:[2,5],          group:15, period:2, cat:'Reaktiewe nie-metaal',  fact:'Stikstof maak 78% van die lug wat ons inasem uit, maar ons liggame kan dit nie direk gebruik nie.'},
+  {z:8,  sym:'O',  name:'Suurstof',        mass:16,  shells:[2,6],          group:16, period:2, cat:'Reaktiewe nie-metaal',  fact:'Suurstof word deur byna alle lewende wesens vir asemhaling benodig. Plante produseer dit tydens fotosintese.'},
+  {z:9,  sym:'F',  name:'Fluoor',      mass:19,  shells:[2,7],          group:17, period:2, cat:'Reaktiewe nie-metaal',  fact:'Fluoor is die mees reaktiewe element van almal. Dit word by tandepasta gevoeg om tandglasuur te versterk.'},
+  {z:10, sym:'Ne', name:'Neon',          mass:20,  shells:[2,8],          group:18, period:2, cat:'Edelgas',          fact:'Neon gloei helder oranje-rooi wanneer elektrisiteit daardeur vloei — so werk neonligte!'},
+  {z:11, sym:'Na', name:'Natrium',        mass:23,  shells:[2,8,1],        group:1,  period:3, cat:'Alkalimetaal',       fact:'Natrium reageer hewig met water. Tafelsout is natriumchloried (NaCl) — noodsaaklik vir die lewe.'},
+  {z:12, sym:'Mg', name:'Magnesium',     mass:24,  shells:[2,8,2],        group:2,  period:3, cat:'Aardalkalimetaal',fact:'Magnesium brand met \'n verblindende wit vlam en word in vuurwerke en vuurpyle gebruik.'},
+  {z:13, sym:'Al', name:'Aluminium',     mass:27,  shells:[2,8,3],        group:13, period:3, cat:'Na-oorgangsmetaal',fact:'Aluminium is die volopste metaal in die Aarde se kors. Dit word in drankblikkies en vliegtuie gebruik.'},
+  {z:14, sym:'Si', name:'Silikon',       mass:28,  shells:[2,8,4],        group:14, period:3, cat:'Metalloïed',          fact:'"Silicon Valley" is na silikon vernoem — die basis van rekenaarskyfies en sonpanele.'},
+  {z:15, sym:'P',  name:'Fosfor',    mass:31,  shells:[2,8,5],        group:15, period:3, cat:'Reaktiewe nie-metaal',  fact:'Fosfor is noodsaaklik vir DNS en bene. Wit fosfor gloei in die donker!'},
+  {z:16, sym:'S',  name:'Swael',        mass:32,  shells:[2,8,6],        group:16, period:3, cat:'Reaktiewe nie-metaal',  fact:'Swael ruik na vrot eiers wanneer dit waterstofsulfied vorm. Dit is reeds sedert antieke tye bekend.'},
+  {z:17, sym:'Cl', name:'Chloor',      mass:35,  shells:[2,8,7],        group:17, period:3, cat:'Reaktiewe nie-metaal',  fact:'Chloor word by swembaddens gevoeg om bakterieë dood te maak. Dit is in die Eerste Wêreldoorlog as chemiese wapen gebruik.'},
+  {z:18, sym:'Ar', name:'Argon',         mass:40,  shells:[2,8,8],        group:18, period:3, cat:'Edelgas',          fact:'Argon vul gloeilampe om te keer dat die filament uitbrand. Dit maak ongeveer 1% van ons atmosfeer uit.'},
+  {z:19, sym:'K',  name:'Kalium',     mass:39,  shells:[2,8,8,1],      group:1,  period:4, cat:'Alkalimetaal',       fact:'Kalium is noodsaaklik vir senuseine en spiersametrekkings. Piesangs is \'n uitstekende bron daarvan!'},
+  {z:20, sym:'Ca', name:'Kalsium',       mass:40,  shells:[2,8,8,2],      group:2,  period:4, cat:'Aardalkalimetaal',fact:'Kalsium bou bene en tande. Melk, kaas en blaargroentes is almal ryk aan kalsium.'},
+  {z:21, sym:'Sc', name:'Skandium',      mass:45,  shells:[2,8,9,2],      group:3,  period:4, cat:'Oorgangsmetaal',   fact:'Skandium is \'n skaars metaal wat gebruik word om aluminiumlegerings vir lugvaarttoepassings te versterk.'},
+  {z:22, sym:'Ti', name:'Titaan',      mass:48,  shells:[2,8,10,2],     group:4,  period:4, cat:'Oorgangsmetaal',   fact:'Titaan is so sterk soos staal maar 45% ligter, en heeltemal bestand teen korrosie. Dit word in straalenjins gebruik.'},
+  {z:23, sym:'V',  name:'Vanadium',      mass:51,  shells:[2,8,11,2],     group:5,  period:4, cat:'Oorgangsmetaal',   fact:'Vanadiumstaal word in gereedskap en vere gebruik. Vanadiumverbindings gee sommige minerale hul blou/groen kleur.'},
+  {z:24, sym:'Cr', name:'Chroom',      mass:52,  shells:[2,8,13,1],     group:6,  period:4, cat:'Oorgangsmetaal',   fact:'Chroom gee vlekvrye staal sy roeswerendheid en is verantwoordelik vir die rooi kleur van robyne.'},
+  {z:25, sym:'Mn', name:'Mangaan',     mass:55,  shells:[2,8,13,2],     group:7,  period:4, cat:'Oorgangsmetaal',   fact:'Mangaan is noodsaaklik vir die vervaardiging van staal. Die menslike liggaam benodig klein hoeveelhede daarvan vir ensiemwerking.'},
+  {z:26, sym:'Fe', name:'Yster',          mass:56,  shells:[2,8,14,2],     group:8,  period:4, cat:'Oorgangsmetaal',   fact:'Yster is die metaal wat wêreldwyd die meeste gebruik word en die hoofbestanddeel van staal. Die Aarde se kern bestaan grotendeels uit yster.'},
+  {z:27, sym:'Co', name:'Kobalt',        mass:59,  shells:[2,8,15,2],     group:9,  period:4, cat:'Oorgangsmetaal',   fact:'Kobalt gee \'n blou kleur aan glas en keramiek. Vitamien B12 bevat kobalt in die middel van sy molekule.'},
+  {z:28, sym:'Ni', name:'Nikkel',        mass:58,  shells:[2,8,16,2],     group:10, period:4, cat:'Oorgangsmetaal',   fact:'Nikkel word in munte, vlekvrye staal en herlaaibare batterye (NiMH-batterye) gebruik.'},
+  {z:29, sym:'Cu', name:'Koper',        mass:63,  shells:[2,8,18,1],     group:11, period:4, cat:'Oorgangsmetaal',   fact:'Koper word al meer as 10 000 jaar deur mense gebruik. Dit is noodsaaklik vir elektriese bedrading weens sy geleivermoë.'},
+  {z:30, sym:'Zn', name:'Sink',          mass:65,  shells:[2,8,18,2],     group:12, period:4, cat:'Oorgangsmetaal',   fact:'Sink beskerm staal teen roes (galvanisering) en word deur die liggaam benodig vir immuunwerking.'},
+  {z:31, sym:'Ga', name:'Gallium',       mass:70,  shells:[2,8,18,3],     group:13, period:4, cat:'Na-oorgangsmetaal',fact:'Gallium smelt net bo kamertemperatuur (30°C) — dit kan in jou hand smelt! Dit word in LED\'s en halfgeleiers gebruik.'},
+  {z:32, sym:'Ge', name:'Germanium',     mass:73,  shells:[2,8,18,4],     group:14, period:4, cat:'Metalloïed',          fact:'Germanium was een van die elemente wat deur Mendelejef voorspel is voordat dit ontdek is. Dit word in vesel-optika gebruik.'},
+  {z:33, sym:'As', name:'Arseen',       mass:75,  shells:[2,8,18,5],     group:15, period:4, cat:'Metalloïed',          fact:'Arseenverbindings is giftig en is histories as gif gebruik. Vandag word dit in die vervaardiging van halfgeleiers gebruik.'},
+  {z:34, sym:'Se', name:'Selenium',      mass:79,  shells:[2,8,18,6],     group:16, period:4, cat:'Reaktiewe nie-metaal',  fact:'Selenium word in sonselle en fotokopieermasjiene gebruik. Klein hoeveelhede is noodsaaklike voedingstowwe vir die menslike liggaam.'},
+  {z:35, sym:'Br', name:'Broom',       mass:80,  shells:[2,8,18,7],     group:17, period:4, cat:'Reaktiewe nie-metaal',  fact:'Broom is een van slegs twee elemente wat vloeibaar is by kamertemperatuur (die ander is kwik).'},
+  {z:36, sym:'Kr', name:'Krypton',       mass:84,  shells:[2,8,18,8],     group:18, period:4, cat:'Edelgas',          fact:'Krypton word in hoëprestasie-gloeilampe en lasers gebruik. (Dis nie Superman se swakheid nie — dit is fiksie!)'},
+  {z:37, sym:'Rb', name:'Rubidium',      mass:85,  shells:[2,8,18,8,1],   group:1,  period:5, cat:'Alkalimetaal',       fact:'Rubidium ontvlam spontaan in lug en ontplof in water. Dit word in atoomhorlosies gebruik vir uiterste presisie.'},
+  {z:38, sym:'Sr', name:'Strontium',     mass:88,  shells:[2,8,18,8,2],   group:2,  period:5, cat:'Aardalkalimetaal',fact:'Strontiumverbindings produseer die skitterende rooi kleur in vuurwerke. Dit word ook in sommige katodestraalbuise gebruik.'},
+  {z:39, sym:'Y',  name:'Yttrium',       mass:89,  shells:[2,8,18,9,2],   group:3,  period:5, cat:'Oorgangsmetaal',   fact:'Yttrium word in LED\'s, supergeleiers gebruik, en om die rooi fosfore in ou TV-skerms te maak.'},
+  {z:40, sym:'Zr', name:'Zirkonium',     mass:91,  shells:[2,8,18,10,2],  group:4,  period:5, cat:'Oorgangsmetaal',   fact:'Zirkonium is hoogs bestand teen korrosie en hitte, wat dit ideaal maak vir brandstofstawe in kernreaktore.'},
+  {z:41, sym:'Nb', name:'Niobium',       mass:93,  shells:[2,8,18,12,1],  group:5,  period:5, cat:'Oorgangsmetaal',   fact:'Niobium is \'n supergeleier by lae temperature en versterk staal vir pyplyne en straalenjins.'},
+  {z:42, sym:'Mo', name:'Molibdeen',    mass:96,  shells:[2,8,18,13,1],  group:6,  period:5, cat:'Oorgangsmetaal',   fact:'Molibdeen het die 6de hoogste smeltpunt van alle elemente. Dit is noodsaaklik vir stikstofbinding in sommige bakterieë.'},
+  {z:43, sym:'Tc', name:'Tegnesium',    mass:98,  shells:[2,8,18,13,2],  group:7,  period:5, cat:'Oorgangsmetaal',   fact:'Tegnesium was die eerste kunsmatig vervaardigde element. Al sy isotope is radioaktief; dit word in mediese beeldvorming gebruik.'},
+  {z:44, sym:'Ru', name:'Rutenium',     mass:101, shells:[2,8,18,15,1],  group:8,  period:5, cat:'Oorgangsmetaal',   fact:'Rutenium is een van die skaarsste metale op Aarde en word gebruik om platinum- en palladiumlegerings te verhard.'},
+  {z:45, sym:'Rh', name:'Rodium',       mass:103, shells:[2,8,18,16,1],  group:9,  period:5, cat:'Oorgangsmetaal',   fact:'Rodium is die duurste natuurlik voorkomende element en word in katalitiese omsetters in motors gebruik.'},
+  {z:46, sym:'Pd', name:'Palladium',     mass:106, shells:[2,8,18,18],    group:10, period:5, cat:'Oorgangsmetaal',   fact:'Palladium kan tot 900 keer sy eie volume waterstof absorbeer! Dit word in katalitiese omsetters en elektronika gebruik.'},
+  {z:47, sym:'Ag', name:'Silwer',        mass:108, shells:[2,8,18,18,1],  group:11, period:5, cat:'Oorgangsmetaal',   fact:'Silwer het die hoogste elektriese en termiese geleivermoë van alle elemente. Dit word al millennia lank in munte gebruik.'},
+  {z:48, sym:'Cd', name:'Kadmium',       mass:112, shells:[2,8,18,18,2],  group:12, period:5, cat:'Oorgangsmetaal',   fact:'Kadmium is hoogs giftig, maar word in herlaaibare NiCd-batterye en as \'n geel pigment in verf gebruik.'},
+  {z:49, sym:'In', name:'Indium',        mass:115, shells:[2,8,18,18,3],  group:13, period:5, cat:'Na-oorgangsmetaal',fact:'Indium word in raakskerms en platskermvertonings gebruik (as indiumtinoksied) en is sagter as lood.'},
+  {z:50, sym:'Sn', name:'Tin',           mass:119, shells:[2,8,18,18,4],  group:14, period:5, cat:'Na-oorgangsmetaal',fact:'Tin is reeds 3500 jaar gelede in brons (saam met koper) gebruik. Blikkies is eintlik staal wat met tin bedek is.'},
+  {z:51, sym:'Sb', name:'Antimoon',      mass:122, shells:[2,8,18,18,5],  group:15, period:5, cat:'Metalloïed',          fact:'Antimoon is deur antieke Egiptenare as oogmaskara gebruik. Vandag word dit in vlamvertragers gebruik.'},
+  {z:52, sym:'Te', name:'Telluur',     mass:128, shells:[2,8,18,18,6],  group:16, period:5, cat:'Metalloïed',          fact:'Telluur is skaarser as goud in die Aarde se kors. Dit gee \'n knoffelagtige asem aan enigiemand wat selfs klein hoeveelhede daarvan opneem.'},
+  {z:53, sym:'I',  name:'Jodium',        mass:127, shells:[2,8,18,18,7],  group:17, period:5, cat:'Reaktiewe nie-metaal',  fact:'Jodium is noodsaaklik vir tiroïedhormone. \'n Tekort veroorsaak kropgeswel. Die pers damp van jodium is kenmerkend.'},
+  {z:54, sym:'Xe', name:'Xenon',         mass:131, shells:[2,8,18,18,8],  group:18, period:5, cat:'Edelgas',          fact:'Xenon word in hoë-intensiteit motorkoplampe, flitsfotografie en ioon-aandryfstukke vir ruimtetuie gebruik.'},
+  {z:55, sym:'Cs', name:'Sesium',       mass:133, shells:[2,8,18,18,8,1],group:1,  period:6, cat:'Alkalimetaal',       fact:'Sesium-atoomhorlosies is so presies dat hulle minder as een sekonde elke 300 miljoen jaar verloor.'},
+  {z:56, sym:'Ba', name:'Barium',        mass:137, shells:[2,8,18,18,8,2],group:2,  period:6, cat:'Aardalkalimetaal',fact:'Bariumsulfaat word ingesluk as \'n "bariummaaltyd" om die spysverteringskanaal op X-strale sigbaar te maak.'},
+  {z:57, sym:'La', name:'Lantaan',     mass:139, shells:[2,8,18,18,9,2],group:3,  period:6, cat:'Lantanied',         fact:'Lantaan word in kameralense, ateljeebeligting en hibriede motorbatterye gebruik.'},
+  {z:58, sym:'Ce', name:'Serium',        mass:140, shells:[2,8,18,19,9,2],group:3,  period:6, cat:'Lantanied',         fact:'Serium is die volopste skaars-aarde-element en word in katalitiese omsetters en glaspolering gebruik.'},
+  {z:59, sym:'Pr', name:'Praseodimium',  mass:141, shells:[2,8,18,21,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Praseodimium skep die geel-groen kleur in sommige brille vir sweisers en glasblasers.'},
+  {z:60, sym:'Nd', name:'Neodimium',     mass:144, shells:[2,8,18,22,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Neodimiummagnete is die sterkste permanente magnete bekend — hulle word in luidsprekers, hardeskywe en elektriese motors gebruik.'},
+  {z:61, sym:'Pm', name:'Prometium',    mass:145, shells:[2,8,18,23,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Prometium het geen stabiele isotope nie en is uiters skaars. Dit is vernoem na Prometheus uit die Griekse mitologie.'},
+  {z:62, sym:'Sm', name:'Samarium',      mass:150, shells:[2,8,18,24,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Samarium-kobalt-magnete werk by baie hoë temperature en word in straalenjins en ruimtetuie gebruik.'},
+  {z:63, sym:'Eu', name:'Europium',      mass:152, shells:[2,8,18,25,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Europium produseer die rooi en blou kleure in TV-skerms en word gebruik in die sekuriteitsdruk van euro-banknote.'},
+  {z:64, sym:'Gd', name:'Gadolinium',    mass:157, shells:[2,8,18,25,9,2],group:3,  period:6, cat:'Lantanied',         fact:'Gadolinium word as \'n MRI-kontrasmiddel gebruik — dit maak sagte weefsel duideliker sigbaar op MRI-skanderings.'},
+  {z:65, sym:'Tb', name:'Terbium',       mass:159, shells:[2,8,18,27,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Terbium word in vastetoestand-toestelle, brandstofselle en sonarstelsels gebruik. Dit gloei helder groen onder UV-lig.'},
+  {z:66, sym:'Dy', name:'Disprosium',    mass:163, shells:[2,8,18,28,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Disprosium word by neodimiummagnete gevoeg sodat hulle by die hoë temperature binne-in elektriese motors kan werk.'},
+  {z:67, sym:'Ho', name:'Holmium',       mass:165, shells:[2,8,18,29,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Holmium het die hoogste magnetiese moment van enige element. Dit word in kragtige magnete en kernreaktore gebruik.'},
+  {z:68, sym:'Er', name:'Erbium',        mass:167, shells:[2,8,18,30,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Erbium versterk seine in veseloptiese kabels — noodsaaklik vir langafstand-internetkommunikasie.'},
+  {z:69, sym:'Tm', name:'Tulium',       mass:169, shells:[2,8,18,31,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Tulium is een van die skaarsste lantaniede. Dit word in draagbare X-straalmasjiene gebruik wat geen elektrisiteit benodig nie.'},
+  {z:70, sym:'Yb', name:'Ytterbium',     mass:173, shells:[2,8,18,32,8,2],group:3,  period:6, cat:'Lantanied',         fact:'Ytterbium word in vlekvrye-staal-legerings en atoomhorlosies gebruik. Dit is vernoem na die dorpie Ytterby in Swede.'},
+  {z:71, sym:'Lu', name:'Lutesium',      mass:175, shells:[2,8,18,32,9,2],group:3,  period:6, cat:'Lantanied',         fact:'Lutesium is die swaarste en hardste van die lantaniede. Dit word in kankerbehandeling gebruik (lutesium-177-terapie).'},
+  {z:72, sym:'Hf', name:'Hafnium',       mass:178, shells:[2,8,18,32,10,2],group:4, period:6, cat:'Oorgangsmetaal',   fact:'Hafnium word in beheerstawe van kernreaktore gebruik omdat dit neutrone baie doeltreffend absorbeer.'},
+  {z:73, sym:'Ta', name:'Tantaal',      mass:181, shells:[2,8,18,32,11,2],group:5, period:6, cat:'Oorgangsmetaal',   fact:'Tantaal word in die klein kapasitors binne-in slimfone en rekenaars gebruik. Byna alle selfone bevat dit.'},
+  {z:74, sym:'W',  name:'Wolfram',      mass:184, shells:[2,8,18,32,12,2],group:6, period:6, cat:'Oorgangsmetaal',   fact:'Wolfram het die hoogste smeltpunt van alle metale (3422°C). Gloeilampfilamente word van wolfram gemaak.'},
+  {z:75, sym:'Re', name:'Renium',       mass:186, shells:[2,8,18,32,13,2],group:7, period:6, cat:'Oorgangsmetaal',   fact:'Renium het die tweede-hoogste smeltpunt van alle elemente en word in turbinelemme van straalenjins gebruik.'},
+  {z:76, sym:'Os', name:'Osmium',        mass:192, shells:[2,8,18,32,14,2],group:8, period:6, cat:'Oorgangsmetaal',   fact:'Osmium is die digste natuurlik voorkomende element — \'n stuk so groot soos \'n gholfbal sou 1,4 kg weeg!'},
+  {z:77, sym:'Ir', name:'Iridium',       mass:192, shells:[2,8,18,32,15,2],group:9, period:6, cat:'Oorgangsmetaal',   fact:'Iridium is die metaal wat die beste bestand is teen korrosie. Die K-Pg-grens (die laag wat met die uitsterwing van dinosourusse geassosieer word) is ryk aan iridium.'},
+  {z:78, sym:'Pt', name:'Platinum',      mass:195, shells:[2,8,18,32,17,1],group:10,period:6, cat:'Oorgangsmetaal',   fact:'Platinum is skaarser as goud en word in katalitiese omsetters, juwele en kankermiddels (sisplatien) gebruik.'},
+  {z:79, sym:'Au', name:'Goud',          mass:197, shells:[2,8,18,32,18,1],group:11,period:6, cat:'Oorgangsmetaal',   fact:'Goud verkleur of korrodeer nie, wat dit deur die geskiedenis heen waardevol gemaak het. Al die Aarde se goud is oorspronklik deur meteoriete gebring!'},
+  {z:80, sym:'Hg', name:'Kwik',       mass:201, shells:[2,8,18,32,18,2],group:12,period:6, cat:'Oorgangsmetaal',   fact:'Kwik is die enigste metaal wat vloeibaar is by kamertemperatuur. Dit word in termometers en barometers gebruik.'},
+  {z:81, sym:'Tl', name:'Tallium',      mass:204, shells:[2,8,18,32,18,3],group:13,period:6, cat:'Na-oorgangsmetaal',fact:'Tallium is hoogs giftig en is voorheen as rotgif gebruik. Vandag word dit in sommige mediese beeldvorming gebruik.'},
+  {z:82, sym:'Pb', name:'Lood',          mass:207, shells:[2,8,18,32,18,4],group:14,period:6, cat:'Na-oorgangsmetaal',fact:'Lood is in antieke Rome vir pype gebruik (die Engelse woord "plumbing" kom van "plumbum"). Dit blokkeer X-strale en gammastraling.'},
+  {z:83, sym:'Bi', name:'Bismut',       mass:209, shells:[2,8,18,32,18,5],group:15,period:6, cat:'Na-oorgangsmetaal',fact:'Bismut vorm pragtige reënboogkleurige kristalle. Dit is in Pepto-Bismol en is een van die minste giftige swaar metale.'},
+  {z:84, sym:'Po', name:'Polonium',      mass:209, shells:[2,8,18,32,18,6],group:16,period:6, cat:'Na-oorgangsmetaal',fact:'Polonium is deur Marie Curie ontdek en is vernoem na haar tuisland Pole. Dit is uiters radioaktief.'},
+  {z:85, sym:'At', name:'Astaat',      mass:210, shells:[2,8,18,32,18,7],group:17,period:6, cat:'Reaktiewe nie-metaal',  fact:'Astaat is die skaarsste natuurlik voorkomende element — minder as 1 gram bestaan op enige oomblik in die hele Aardkors.'},
+  {z:86, sym:'Rn', name:'Radon',         mass:222, shells:[2,8,18,32,18,8],group:18,period:6, cat:'Edelgas',          fact:'Radon is \'n radioaktiewe gas wat uit rotse in geboue insypel. Dit is die tweede grootste oorsaak van longkanker.'},
+  {z:87, sym:'Fr', name:'Frankium',      mass:223, shells:[2,8,18,32,18,8,1],group:1,period:7,cat:'Alkalimetaal',       fact:'Frankium is die tweede skaarsste natuurlik voorkomende element. Op enige oomblik bestaan daar slegs 20–30 gram daarvan op Aarde.'},
+  {z:88, sym:'Ra', name:'Radium',        mass:226, shells:[2,8,18,32,18,8,2],group:2,period:7,cat:'Aardalkalimetaal',fact:'Radium is deur Marie Curie ontdek en is voorheen in liggewende horlosiewyserplate gebruik, totdat die gevaar daarvan besef is.'},
+  {z:89, sym:'Ac', name:'Aktinium',      mass:227, shells:[2,8,18,32,18,9,2],group:3,period:7,cat:'Aktinied',           fact:'Aktinium gloei blou in die donker weens sy intense radioaktiwiteit. Dit word in navorsing oor kanker-radioterapie gebruik.'},
+  {z:90, sym:'Th', name:'Torium',       mass:232, shells:[2,8,18,32,18,10,2],group:3,period:7,cat:'Aktinied',          fact:'Torium is \'n radioaktiewe metaal wat kernreaktore veiliger as uraan sou kon aandryf. Dit word in gloeikousie-lanterns gebruik.'},
+  {z:91, sym:'Pa', name:'Protaktinium',  mass:231, shells:[2,8,18,32,20,9,2],group:3,period:7,cat:'Aktinied',           fact:'Protaktinium is een van die skaarsste en duurste natuurlik voorkomende elemente. Dit is hoogs radioaktief en giftig.'},
+  {z:92, sym:'U',  name:'Uraan',       mass:238, shells:[2,8,18,32,21,9,2],group:3,period:7,cat:'Aktinied',           fact:'Uraan dryf kragsentrales aan wat sowat 10% van die wêreld se elektrisiteit sonder CO₂-uitlatings opwek.'},
+  {z:93, sym:'Np', name:'Neptunium',     mass:237, shells:[2,8,18,32,22,9,2],group:3,period:7,cat:'Aktinied',           fact:'Neptunium was die eerste transuraan-element wat in 1940 gesintetiseer is. Dit is na die planeet Neptunus vernoem.'},
+  {z:94, sym:'Pu', name:'Plutonium',     mass:244, shells:[2,8,18,32,24,8,2],group:3,period:7,cat:'Aktinied',           fact:'Plutonium het die Cassini-ruimtetuig na Saturnus aangedryf en word in kernwapens gebruik. Sy langslewende isotoop hou 80 miljoen jaar.'},
+  {z:95, sym:'Am', name:'Amerisium',     mass:243, shells:[2,8,18,32,25,8,2],group:3,period:7,cat:'Aktinied',           fact:'Amerisium is in rookdetektore in miljoene huise wêreldwyd — \'n radioaktiewe element wat ons veilig hou!'},
+  {z:96, sym:'Cm', name:'Kurium',        mass:247, shells:[2,8,18,32,25,9,2],group:3,period:7,cat:'Aktinied',           fact:'Kurium is na Marie en Pierre Curie vernoem. Dit het instrumente op die Mars Pathfinder-swerftuig aangedryf.'},
+  {z:97, sym:'Bk', name:'Berkelium',     mass:247, shells:[2,8,18,32,27,8,2],group:3,period:7,cat:'Aktinied',           fact:'Berkelium is die eerste keer by Berkeley, Kalifornië, vervaardig. Daar is nog nooit meer as \'n paar gram daarvan geproduseer nie.'},
+  {z:98, sym:'Cf', name:'Kalifornium',   mass:251, shells:[2,8,18,32,28,8,2],group:3,period:7,cat:'Aktinied',           fact:'Kalifornium word gebruik om kernreaktore aan die gang te sit en om vliegtuie met neutronradiografie op vermoeidheidskrake te ondersoek.'},
+  {z:99, sym:'Es', name:'Einsteinium',   mass:252, shells:[2,8,18,32,29,8,2],group:3,period:7,cat:'Aktinied',           fact:'Einsteinium is in 1952 in die oorblyfsels van die eerste waterstofbomtoets ontdek en is na Albert Einstein vernoem.'},
+  {z:100,sym:'Fm', name:'Fermium',       mass:257, shells:[2,8,18,32,30,8,2],group:3,period:7,cat:'Aktinied',           fact:'Fermium is ook in oorblyfsels van kerntoetse ontdek. Dit is vernoem na Enrico Fermi, die skepper van die eerste kernreaktor.'},
+  {z:101,sym:'Md', name:'Mendelevium',   mass:258, shells:[2,8,18,32,31,8,2],group:3,period:7,cat:'Aktinied',           fact:'Mendelevium is vernoem na Dmitri Mendelejef, wat die periodieke tabel geskep het. Slegs nanogram-hoeveelhede daarvan bestaan.'},
+  {z:102,sym:'No', name:'Nobelium',      mass:259, shells:[2,8,18,32,32,8,2],group:3,period:7,cat:'Aktinied',           fact:'Nobelium is vernoem na Alfred Nobel, die uitvinder van dinamiet en stigter van die Nobelpryse.'},
+  {z:103,sym:'Lr', name:'Lawrensium',    mass:266, shells:[2,8,18,32,32,8,3],group:3,period:7,cat:'Aktinied',           fact:'Lawrensium is vernoem na Ernest Lawrence, die uitvinder van die sikklotron-deeltjieversneller.'},
+  {z:104,sym:'Rf', name:'Rutherfordium', mass:267, shells:[2,8,18,32,32,10,2],group:4,period:7,cat:'Oorgangsmetaal',  fact:'Rutherfordium is na Ernest Rutherford vernoem. Dit is \'n sintetiese element wat slegs vir sekondes bestaan.'},
+  {z:105,sym:'Db', name:'Dubnium',       mass:268, shells:[2,8,18,32,32,11,2],group:5,period:7,cat:'Oorgangsmetaal',  fact:'Dubnium is na Dubna, Rusland, vernoem. Dit was die onderwerp van \'n Koue Oorlog-geskil tussen Amerikaanse en Sowjet-wetenskaplikes.'},
+  {z:106,sym:'Sg', name:'Seaborgium',    mass:271, shells:[2,8,18,32,32,12,2],group:6,period:7,cat:'Oorgangsmetaal',  fact:'Seaborgium is vernoem na Glenn Seaborg, wat gehelp het om 10 elemente te ontdek — die meeste deur enige individu.'},
+  {z:107,sym:'Bh', name:'Bohrium',       mass:272, shells:[2,8,18,32,32,13,2],group:7,period:7,cat:'Oorgangsmetaal',  fact:'Bohrium is vernoem na Niels Bohr, wat die atoommodel ontwikkel het. Dit verval binne minder as \'n sekonde.'},
+  {z:108,sym:'Hs', name:'Hassium',       mass:277, shells:[2,8,18,32,32,14,2],group:8,period:7,cat:'Oorgangsmetaal',  fact:'Hassium is vernoem na die Duitse deelstaat Hessen. Daar word voorspel dit sal die digste van alle elemente wees indien dit in grootmaat vervaardig word.'},
+  {z:109,sym:'Mt', name:'Meitnerium',    mass:278, shells:[2,8,18,32,32,15,2],group:9,period:7,cat:'Oorgangsmetaal',  fact:'Meitnerium vernoem Lise Meitner, wat kernsplyting help ontdek het. Sy is verskeie kere vir die Nobelprys genomineer.'},
+  {z:110,sym:'Ds', name:'Darmstadtium',  mass:281, shells:[2,8,18,32,32,17,1],group:10,period:7,cat:'Oorgangsmetaal', fact:'Darmstadtium is vernoem na Darmstadt, Duitsland, waar dit die eerste keer geskep is. Daar is nog nooit meer as \'n paar atome daarvan gemaak nie.'},
+  {z:111,sym:'Rg', name:'Roentgenium',   mass:282, shells:[2,8,18,32,32,18,1],group:11,period:7,cat:'Oorgangsmetaal', fact:'Roentgenium vernoem Wilhelm Röntgen, wat X-strale ontdek het. Dit is die eerste keer in 1994 uit slegs drie atome gemaak.'},
+  {z:112,sym:'Cn', name:'Copernicium',   mass:285, shells:[2,8,18,32,32,18,2],group:12,period:7,cat:'Oorgangsmetaal', fact:'Copernicium is op die 537ste verjaardag van Nicolaus Copernicus gesintetiseer. Dit mag dalk meer soos \'n edelgas as \'n metaal gedra.'},
+  {z:113,sym:'Nh', name:'Nihonium',      mass:286, shells:[2,8,18,32,32,18,3],group:13,period:7,cat:'Na-oorgangsmetaal',fact:'Nihonium is na Japan vernoem (Nihon in Japannees). Dit was die eerste element wat in Asië ontdek is.'},
+  {z:114,sym:'Fl', name:'Flerovium',     mass:289, shells:[2,8,18,32,32,18,4],group:14,period:7,cat:'Na-oorgangsmetaal',fact:'Flerovium is vernoem na die Flerov-laboratorium in Rusland. Dit mag dalk \'n gas by kamertemperatuur wees — baie ongewoon vir \'n metaal.'},
+  {z:115,sym:'Mc', name:'Moscovium',     mass:290, shells:[2,8,18,32,32,18,5],group:15,period:7,cat:'Na-oorgangsmetaal',fact:'Moscovium is vernoem na die Moskou-oblast in Rusland. Sy stabielste isotoop het \'n halfleeftyd van slegs 220 millisekondes.'},
+  {z:116,sym:'Lv', name:'Livermorium',   mass:293, shells:[2,8,18,32,32,18,6],group:16,period:7,cat:'Na-oorgangsmetaal',fact:'Livermorium is vernoem na die Lawrence Livermore Nasionale Laboratorium in Kalifornië. Dit is gesamentlik deur die VSA en Rusland ontdek.'},
+  {z:117,sym:'Ts', name:'Tennessine',    mass:294, shells:[2,8,18,32,32,18,7],group:17,period:7,cat:'Na-oorgangsmetaal',fact:'Tennessine is vernoem na Tennessee, VSA. Daar word voorspel dit sal anders as enige ander halogeen optree weens relatiwistiese effekte.'},
+  {z:118,sym:'Og', name:'Oganesson',     mass:294, shells:[2,8,18,32,32,18,8],group:18,period:7,cat:'Edelgas',         fact:'Oganesson is die swaarste element wat ooit gemaak is. Dit is vernoem na fisikus Yuri Oganessian, wat nog steeds leef — baie skaars vir \'n element!'},
+];
+
+/* Category → display colour */
+const CAT_COLORS = {
+  'Alkalimetaal':          {bg:'rgba(239,68,68,.12)',    border:'rgba(239,68,68,.25)',    text:'#fca5a5'},
+  'Aardalkalimetaal':  {bg:'rgba(251,146,60,.12)',   border:'rgba(251,146,60,.25)',   text:'#fdba74'},
+  'Oorgangsmetaal':      {bg:'rgba(251,191,36,.12)',   border:'rgba(251,191,36,.25)',   text:'#fcd34d'},
+  'Na-oorgangsmetaal': {bg:'rgba(163,230,53,.10)',   border:'rgba(163,230,53,.22)',   text:'#bef264'},
+  'Metalloïed':             {bg:'rgba(20,184,166,.10)',   border:'rgba(20,184,166,.22)',   text:'#5eead4'},
+  'Reaktiewe nie-metaal':     {bg:'rgba(96,165,250,.12)',   border:'rgba(96,165,250,.25)',   text:'#93c5fd'},
+  'Edelgas':             {bg:'rgba(168,85,247,.12)',   border:'rgba(168,85,247,.25)',   text:'#d8b4fe'},
+  'Lantanied':            {bg:'rgba(236,72,153,.10)',   border:'rgba(236,72,153,.22)',   text:'#f9a8d4'},
+  'Aktinied':              {bg:'rgba(99,102,241,.12)',   border:'rgba(99,102,241,.25)',   text:'#a5b4fc'},
+};
+
+let currentZ = 1;
+let frame = 0;
+
+function setElement(z) {
+  currentZ = z;
+  const el = ELEMENTS[z - 1];
+  document.getElementById('elSymbol').textContent   = el.sym;
+  document.getElementById('elName').textContent     = el.name;
+  document.getElementById('elNum').textContent      = `Z = ${el.z}`;
+  document.getElementById('sliderVal').textContent  = z;
+  document.getElementById('dProtons').textContent   = el.z;
+  document.getElementById('dNeutrons').textContent  = el.mass - el.z;
+  document.getElementById('dElectrons').textContent = el.z;
+  document.getElementById('dMass').textContent      = el.mass;
+  document.getElementById('dPeriod').textContent    = el.period;
+  document.getElementById('dGroup').textContent     = el.group <= 3 && el.period >= 6 ? '—' : el.group;
+  document.getElementById('shellConfig').textContent = 'Konfigurasie: ' + el.shells.join(' , ');
+  document.getElementById('elFact').textContent     = el.fact;
+
+  const cat = document.getElementById('elCategory');
+  const cc = CAT_COLORS[el.cat] || {bg:'rgba(255,255,255,.06)',border:'rgba(255,255,255,.12)',text:'var(--muted)'};
+  cat.textContent = el.cat;
+  cat.style.background = cc.bg;
+  cat.style.border     = `1px solid ${cc.border}`;
+  cat.style.color      = cc.text;
+}
+
+/* ── Canvas ── */
+const canvas  = document.getElementById('atomCanvas');
+const ctx     = canvas.getContext('2d');
+const CX = 230, CY = 230;
+// Radii for up to 7 shells
+const SHELL_RADII  = [40, 68, 98, 130, 162, 190, 215];
+const SHELL_SPEEDS = [0.024, 0.015, 0.009, 0.006, 0.004, 0.003, 0.002];
+// Shells with ≤ DOT_THRESHOLD electrons show individual dots; more → ring+count
+const DOT_THRESHOLD = 12;
+
+function drawAtom(t) {
+  ctx.clearRect(0, 0, 460, 460);
+  const el = ELEMENTS[currentZ - 1];
+
+  // Shell orbit rings
+  el.shells.forEach((_, si) => {
+    ctx.beginPath();
+    ctx.arc(CX, CY, SHELL_RADII[si], 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // Nucleus glow
+  const nucR = Math.max(14, Math.min(28, 8 + el.z * 0.18));
+  const g = ctx.createRadialGradient(CX, CY, 0, CX, CY, nucR * 2);
+  g.addColorStop(0, 'rgba(239,68,68,0.50)');
+  g.addColorStop(1, 'rgba(239,68,68,0)');
+  ctx.beginPath(); ctx.arc(CX, CY, nucR * 2, 0, Math.PI * 2);
+  ctx.fillStyle = g; ctx.fill();
+
+  // Nucleus body
+  ctx.beginPath(); ctx.arc(CX, CY, nucR, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(239,68,68,0.92)'; ctx.fill();
+  ctx.strokeStyle = 'rgba(255,120,120,0.55)'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Nucleus label
+  if (nucR > 16) {
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold ${Math.min(13, nucR * 0.65)}px "JetBrains Mono"`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(el.sym, CX, CY);
+  }
+
+  // Draw each shell
+  el.shells.forEach((count, si) => {
+    if (count === 0) return;
+    const r     = SHELL_RADII[si];
+    const speed = SHELL_SPEEDS[si] * (si % 2 === 0 ? 1 : -1);
+
+    if (count <= DOT_THRESHOLD) {
+      // Individual animated electron dots
+      for (let e = 0; e < count; e++) {
+        const baseAngle = (Math.PI * 2 * e / count);
+        const angle = baseAngle + t * speed;
+        const ex = CX + r * Math.cos(angle);
+        const ey = CY + r * Math.sin(angle);
+
+        // Glow
+        const eg = ctx.createRadialGradient(ex, ey, 0, ex, ey, 9);
+        eg.addColorStop(0, 'rgba(96,165,250,0.55)');
+        eg.addColorStop(1, 'rgba(96,165,250,0)');
+        ctx.beginPath(); ctx.arc(ex, ey, 9, 0, Math.PI * 2);
+        ctx.fillStyle = eg; ctx.fill();
+
+        // Dot
+        ctx.beginPath(); ctx.arc(ex, ey, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(96,165,250,${0.85 - si * 0.08})`; ctx.fill();
+      }
+    } else {
+      // Dense shell: draw a glowing ring + count badge
+      ctx.beginPath(); ctx.arc(CX, CY, r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(96,165,250,${0.55 - si * 0.06})`;
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      // Small rotating indicator dot so it still looks animated
+      const angle = t * speed;
+      const ix = CX + r * Math.cos(angle);
+      const iy = CY + r * Math.sin(angle);
+      ctx.beginPath(); ctx.arc(ix, iy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(165,243,252,0.90)'; ctx.fill();
+
+      // Count badge on the ring
+      const bx = CX + r * Math.cos(-0.4);
+      const by = CY + r * Math.sin(-0.4);
+      ctx.fillStyle = 'rgba(8,12,26,0.85)';
+      ctx.beginPath(); ctx.arc(bx, by, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#a5f3fc';
+      ctx.font = 'bold 10px "JetBrains Mono"';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(count, bx, by);
+    }
+  });
+}
+
+function animate() {
+  frame++;
+  drawAtom(frame);
+  requestAnimationFrame(animate);
+}
+animate();
+setElement(1);
+
+/* ── Tabs ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+}
+
+/* ── Practice ── */
+const QUESTIONS = [
+  {text:'Wat is die term vir die piepklein partikel wat die kleinste eenheid van \'n element is?', opts:['Molekule','Verbinding','Atoom','Neutron'], ans:2, exp:'\'n Atoom is die kleinste eenheid van \'n element. Molekules bestaan uit twee of meer atome wat aan mekaar gebind is.'},
+  {text:'Waar in \'n atoom word protone en neutrone gevind?', opts:['In die elektrondoppe','In die kern','Wentelend om die kern','Eweredig deur die hele atoom versprei'], ans:1, exp:'Protone en neutrone is saamgepak in die piepklein, digte kern in die middel van die atoom.'},
+  {text:'Koolstof het \'n atoomgetal van 6. Hoeveel elektrone het \'n neutrale koolstofatoom?', opts:['12','4','3','6'], ans:3, exp:'In \'n neutrale atoom is die aantal elektrone altyd gelyk aan die aantal protone. Koolstof se atoomgetal is 6, dus het dit 6 elektrone.'},
+  {text:'Watter wetenskaplike se goudfolie-eksperiment het bewys dat atome \'n piepklein, digte kern het?', opts:['Dalton','Thomson','Rutherford','Bohr'], ans:2, exp:'Rutherford het alfa-deeltjies na goudfolie geskiet. Die meeste het deurgegaan, maar sommige het teruggekaats — wat \'n piepklein, digte, positiewe kern bewys het.'},
+  {text:'\'n Natriumatoom (Na) het \'n atoomgetal van 11. Wat is sy elektronkonfigurasie?', opts:['2,8,1','2,9','3,8','2,8,1,0'], ans:0, exp:'Dop 1 huisves 2, dop 2 huisves 8, en die oorblywende 1 elektron gaan in dop 3. Konfigurasie: 2,8,1.'},
+  {text:'Watter sub-atomiese partikel het GEEN lading nie?', opts:['Proton','Elektron','Neutron','Kern'], ans:2, exp:'Neutrone is neutraal — hulle het geen elektriese lading nie. Protone is positief (+) en elektrone is negatief (−).'},
+  {text:'\'n Atoom het 15 protone en \'n massagetal van 31. \'n Klasmaat beweer hierdie atoom moet 31 elektrone hê, omdat die massagetal die totale aantal partikels in die atoom verteenwoordig. Wat is verkeerd met hierdie bewering, en hoeveel neutrone het die atoom werklik?', opts:['Die bewering is korrek — die atoom het 31 elektrone en 0 neutrone','Die bewering is verkeerd: in \'n neutrale atoom is elektrone gelyk aan die aantal protone (15), nie die massagetal nie. Massagetal = protone + neutrone, dus neutrone = 31 − 15 = 16','Die bewering is verkeerd omdat massagetal slegs elektrone tel, dus is daar 31 elektrone en 15 neutrone','Die bewering is slegs korrek as die atoom \'n elektriese lading dra'], ans:1, exp:'Die massagetal is die totaal van protone ÉN neutrone — dit vertel jou nie direk die aantal elektrone nie. In \'n neutrale atoom is elektrone altyd gelyk aan die aantal protone (hier, 15). Om neutrone te vind: massagetal − protone = 31 − 15 = 16 neutrone.'},
+  {text:'In Rutherford se goudfolie-eksperiment het die meeste alfa-deeltjies reguit deur die goudfolie beweeg, maar \'n klein aantal het amper reguit teruggekaats. Thomson se "pruimpoeding"-model — \'n bal uitgespreide positiewe lading met elektrone daardeur versprei — het voorspel dat elke deeltjie met slegs geringe afwyking moes deurgaan. Wat het die onverwagte terugkaatsing onthul, en waarom kon die pruimpoeding-model dit nie verduidelik nie?', opts:['Dit het getoon dat atome glad geen interne struktuur het nie — net leë ruimte met niks daarin','Dit het onthul dat atome \'n piepklein, uiters digte, positief gelaaide kern het — \'n konsentrasie van lading en massa wat \'n uitgespreide "pruimpoeding" van positiewe lading nooit kon voortbring nie, aangesien uitgespreide lading nie genoeg krag kon uitoefen om \'n vinnig-bewegende deeltjie om te keer nie','Dit het bewys dat elektrone swaarder as protone is','Dit het getoon dat goud nie eintlik \'n element is nie'], ans:1, exp:'As positiewe lading eweredig deur die hele atoom versprei was (soos Thomson voorgestel het), sou dit oral te swak en verdun wees om die rigting van \'n vinnige alfa-deeltjie om te keer. Die feit dat \'n klein fraksie amper reguit teruggekaats het, beteken hulle het iets kleins, digs en sterk gelaai getref — wat Rutherford laat voorstel het dat daar \'n piepklein positiewe kern in die middel is, met die res van die atoom grotendeels leë ruimte.'},
+];
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+function buildPractice() {
+  document.getElementById('questions').innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o, oi) =>
+        `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+           <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+         </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show'; fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show'; fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    const msgs = ['Bly leer — lees die les weer deur en probeer weer!','Goeie poging — gaan die verduidelikings hierbo weer deur.','Goed gedaan! \'n Stewige begrip van atome.','Uitstekend! Jy het atoomstruktuur baasgeraak.'];
+    document.getElementById('scoreMsg').textContent = score <= 2 ? msgs[0] : score <= 4 ? msgs[1] : score === 5 ? msgs[2] : msgs[3];
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
+

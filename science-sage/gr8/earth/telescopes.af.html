@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teleskope &amp; Sterrebeelde — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,146,60,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(139,92,246,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .tel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    .tel-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .tel-card h3{font-size:13px;font-weight:800;color:#fdba74;margin-bottom:6px}
+    .tel-card p{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.6;margin:0}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(251,146,60,.40);background:rgba(251,146,60,.12);color:#fdba74}
+    /* Practice + Workbook */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#fb923c}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(251,146,60,.35)}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-wrap{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Die Aarde en Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Die Aarde en Daarbuite · Les 3</div>
+  <h1 class="lesson-title">Teleskope &amp; Sterrebeelde</h1>
+  <p class="lesson-sub">Teleskope brei menslike visie oor biljoene ligjare uit. Suid-Afrika huisves twee van die kragtigste teleskope op Aarde — SALT en die MeerKAT/SKA.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🔭 Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Waarom het ons teleskope nodig?</h2>
+    <p>Sterre en verafgeleë voorwerpe is te flou en te ver weg om met die blote oog te bestudeer. 'n Teleskoop versamel baie meer lig as die menslike oog en vergroot beelde sodat ons hulle in detail kan bestudeer. Teleskope was fundamenteel tot byna elke groot ontdekking in sterrekunde.</p>
+
+    <h2>Tipes teleskope</h2>
+    <div class="tel-grid">
+      <div class="tel-card">
+        <h3>Optiese teleskope</h3>
+        <p>Versamel en fokus <strong>sigbare lig</strong> deur lense (brekend) of spieëls (weerkaatsend) te gebruik. Word deur amateur-sterrekundiges en by observatoriums gebruik. Voorbeeld: SALT.</p>
+      </div>
+      <div class="tel-card">
+        <h3>Radioteleskope</h3>
+        <p>Versamel <strong>radiogolwe</strong> wat deur sterre, sterrestelsels en ander bronne uitgestuur word. Werk dag en nag, deur wolke. Voorbeeld: MeerKAT / SKA.</p>
+      </div>
+      <div class="tel-card">
+        <h3>Ruimteteleskope</h3>
+        <p>Bo die Aarde se atmosfeer — geen verwringing van lug, wolke of ligbesoedeling nie. Kan UV-, X-straal- en infrarooistraling opspoor. Voorbeeld: Hubble-ruimteteleskoop.</p>
+      </div>
+      <div class="tel-card">
+        <h3>Infrarooiteleskope</h3>
+        <p>Spoor <strong>infrarooi- (hitte-) straling</strong> op — kan deur stofwolke sien en baie verafgeleë sterrestelsels bestudeer. Voorbeeld: James Webb-ruimteteleskoop.</p>
+      </div>
+    </div>
+
+    <h2>SALT — Southern African Large Telescope</h2>
+    <p>SALT is in Sutherland in die Noord-Kaap, Suid-Afrika, geleë. Dit is die <strong>grootste enkele optiese teleskoop in die Suidelike Halfrond</strong>:</p>
+    <ul>
+      <li>Primêre spieël: 11 × 9,8 m (sesagonale skikking van 91 kleiner spieëls)</li>
+      <li>Voltooi: 2005</li>
+      <li>Bedryf deur die Suid-Afrikaanse Sterrekundige Observatorium (SAAO)</li>
+      <li>Waarneem sterre, sterrestelsels, kwasars, eksoplanete</li>
+      <li>Internasionale vennootskap tussen Suid-Afrika en universiteite wêreldwyd</li>
+    </ul>
+
+    <h2>MeerKAT en die SKA</h2>
+    <p>Die <strong>Square Kilometre Array (SKA)</strong> is die wêreld se grootste radioteleskoop — 'n wêreldwye projek met sy kernterreine in Suid-Afrika (Karoo) en Australië:</p>
+    <ul>
+      <li><strong>MeerKAT</strong>: 'n voorloper-radioteleskoop met 64 skottels in die Karoo; voltooi in 2018. Reeds een van die wêreld se mees sensitiewe radioteleskope.</li>
+      <li><strong>SKA</strong>: sal uiteindelik duisende antennas oor twee vastelande verbind met 'n gekombineerde versamelarea van meer as 1 vierkante kilometer</li>
+      <li>Doel: karteer waterstofgas regoor die heelal; spoor pulsars op; soek na tekens van lewe (SETI); bestudeer die vroeë heelal</li>
+    </ul>
+    <div class="callout"><strong>Suid-Afrika se wetenskaptrots:</strong> SALT en MeerKAT/SKA verteenwoordig Suid-Afrika se wêreldwye leierskap in sterrekunde. Die Karoo se lae radiofrekwensie-steuring en helder luglui maak dit ideaal vir hierdie instrumente.</div>
+
+    <h2>Die Hubble-ruimteteleskoop</h2>
+    <p>Die <strong>Hubble-ruimteteleskoop</strong>, in 1990 deur NASA gelanseer, wentel om die Aarde teen ongeveer 547 km hoogte. Omdat dit bo die atmosfeer is, vang dit uitsonderlik skerp beelde sonder atmosferiese wasigheid vas:</p>
+    <ul>
+      <li>Primêre spieël: 2,4 m</li>
+      <li>Het die ouderdom van die heelal onthul (~13,8 biljoen jaar)</li>
+      <li>Het ontdek dat die uitbreiding van die heelal versnel (donker energie)</li>
+      <li>Het beelde verskaf van sterrestelsels biljoene ligjare ver</li>
+    </ul>
+
+    <h2>Sterrebeelde</h2>
+    <p>'n <strong>Sterrebeeld</strong> is 'n groep sterre wat lyk asof hulle 'n patroon in die lug vorm, soos vanaf die Aarde gesien. Daar is 88 amptelik erkende sterrebeelde.</p>
+    <ul>
+      <li>Sterre in 'n sterrebeeld is <em>nie</em> noodwendig naby mekaar in die ruimte nie — hulle lyk net naby vanuit ons oogpunt</li>
+      <li>Verskillende sterrebeelde is sigbaar vanaf die Noordelike en Suidelike Halfrond</li>
+      <li>Sterrebeelde lyk of hulle gedurende die nag oor die lug beweeg (die Aarde draai) en verander met die seisoene (die Aarde wentel om die Son)</li>
+    </ul>
+    <p><strong>Sterrebeelde van die Suidelike Halfrond:</strong></p>
+    <ul>
+      <li><strong>Crux (Suiderkruis)</strong> — die mees herkenbare sterrebeeld sigbaar vanaf Suid-Afrika; sy lang as wys na die Suidelike Hemelpool</li>
+      <li><strong>Scorpius</strong> — maklik sigbaar in die winter; 'n groot geboë sterrebeeld wat 'n skerpioen voorstel</li>
+      <li><strong>Orion</strong> — sigbaar in die somer; een van die mees herkende sterrebeelde wêreldwyd</li>
+      <li><strong>Centaurus</strong> — bevat Alpha Centauri, die naaste sterstelsel</li>
+    </ul>
+
+    <h2>Inheemse sterrekundige kennis</h2>
+    <p>Baie Afrika-kulture het ryk tradisies van sterrekundige waarneming. Die San-mense van suidelike Afrika het baie sterrebeelde geïdentifiseer en genoem, en sterposisies gebruik om seisoenale aktiwiteite soos jag en plant te rig. Die Pleiades-sterretros (Selemela) dui byvoorbeeld tradisioneel die tyd aan om gewasse te plant.</p>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Aansig</div>
+        <button class="mode-btn active" onclick="setMode('crux',this)">✦ Suiderkruis</button>
+        <button class="mode-btn" onclick="setMode('scorpius',this)">🦂 Scorpius</button>
+        <button class="mode-btn" onclick="setMode('orion',this)">⚔ Orion</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Teleskope op 'n oogopslag</div>
+        <div style="font-size:11px;color:rgba(210,218,245,0.6);line-height:1.8">
+          <div><span style="color:#fdba74;font-weight:700">SALT</span> — opties, Sutherland</div>
+          <div><span style="color:#fb923c;font-weight:700">MeerKAT</span> — radio, Karoo</div>
+          <div><span style="color:#c084fc;font-weight:700">Hubble</span> — ruimte, opties/UV</div>
+          <div><span style="color:#22d3ee;font-weight:700">SKA</span> — radio, Karoo + Aus</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Telling</span><span class="score-val" id="score">0 / 8</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Skryf jou antwoorde in die spasies hieronder. Gebruik volledige sinne.</p>
+    <div class="wb-card"><div class="wb-q">1. Verduidelik die verskil tussen 'n optiese teleskoop en 'n radioteleskoop. Gee een voorbeeld van elk en noem waar in Suid-Afrika dit geleë is.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Beskryf SALT. Waar is dit geleë, wat waarneem dit, en waarom is dit belangrik vir Suid-Afrika?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Wat is die SKA en wat is sy wetenskaplike doel? Hoe hou MeerKAT verband met die SKA?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Verduidelik waarom die Hubble-ruimteteleskoop skerper beelde kan produseer as 'n teleskoop van dieselfde grootte op die Aarde se oppervlak.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Wat is 'n sterrebeeld? Beskryf die Suiderkruis (Crux) en verduidelik hoe dit nuttig is vir navigasie in die Suidelike Halfrond.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Bespreek die sterrekundige kennis van die San-mense. Gee een voorbeeld van hoe 'n ster of sterretros in die daaglikse lewe gebruik is.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. Die tabel hieronder vergelyk drie teleskope wat in hierdie les genoem word.<br><br>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+      <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Teleskoop</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Tipe</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Primêre spieël / skottelgrootte</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Ligging</th></tr></thead>
+      <tbody>
+      <tr><td style="padding:6px 10px">SALT</td><td style="padding:6px 10px">Opties (grond)</td><td style="padding:6px 10px">11 m × 9,8 m spieël</td><td style="padding:6px 10px">Sutherland, Suid-Afrika</td></tr>
+      <tr><td style="padding:6px 10px">Hubble</td><td style="padding:6px 10px">Opties/UV (ruimte)</td><td style="padding:6px 10px">2,4 m spieël</td><td style="padding:6px 10px">Aardwenteling</td></tr>
+      <tr><td style="padding:6px 10px">MeerKAT</td><td style="padding:6px 10px">Radio</td><td style="padding:6px 10px">64 skottels, elk 13,5 m</td><td style="padding:6px 10px">Karoo, Suid-Afrika</td></tr>
+      </tbody></table><br>
+      (a) SALT se primêre spieël is ongeveer 11 m breed. Bereken ruweg hoeveel keer breër dit is as Hubble se 2,4 m spieël. (1)<br>
+      (b) 'n Breër spieël versamel meer lig. Ten spyte daarvan dat SALT baie meer lig per oomblik as Hubble versamel, verduidelik waarom Hubble steeds skerper beelde van baie flou, verafgeleë voorwerpe kan neem. (2)<br>
+      (c) MeerKAT gebruik 64 aparte skottels wat saamwerk in plaas van een reusagtige skottel. Stel een voordeel van hierdie ontwerp voor bo 'n enkele groot skottel met dieselfde totale versamelarea. (1)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let mode='crux',raf=null,t=0;
+let bgStars=[];
+
+const constellations={
+  crux:{
+    name:'Crux (Suiderkruis)',
+    stars:[
+      {x:W/2,y:H/2-90,r:4,name:'Gacrux (γ)',color:'#f87171'},
+      {x:W/2,y:H/2+70,r:5,name:'Acrux (α)',color:'#93c5fd'},
+      {x:W/2-80,y:H/2,r:3.5,name:'Delta Crucis (δ)',color:'#e4e8f8'},
+      {x:W/2+70,y:H/2,r:4,name:'Mimosa (β)',color:'#c084fc'},
+      {x:W/2+20,y:H/2+20,r:2.5,name:'Epsilon (ε)',color:'#fde68a'}
+    ],
+    lines:[[0,1],[2,3]],
+    desc:'Die Suiderkruis (Crux) is die bekendste sterrebeeld van die Suidelike Halfrond. Sy lang as (Gacrux → Acrux) wys na die Suidelike Hemelpool. Word vir navigasie gebruik.'
+  },
+  scorpius:{
+    name:'Scorpius',
+    stars:[
+      {x:W/2-60,y:H/2-110,r:5,name:'Antares (α)',color:'#f87171'},
+      {x:W/2-40,y:H/2-70,r:3,name:'σ Sco',color:'#e4e8f8'},
+      {x:W/2-20,y:H/2-40,r:3,name:'τ Sco',color:'#e4e8f8'},
+      {x:W/2,y:H/2-10,r:3,name:'ε Sco',color:'#fde68a'},
+      {x:W/2+20,y:H/2+20,r:3,name:'μ Sco',color:'#e4e8f8'},
+      {x:W/2+40,y:H/2+50,r:3,name:'ζ Sco',color:'#e4e8f8'},
+      {x:W/2+60,y:H/2+80,r:3.5,name:'η Sco',color:'#c084fc'},
+      {x:W/2+80,y:H/2+100,r:3,name:'θ Sco',color:'#e4e8f8'},
+      {x:W/2+90,y:H/2+110,r:3,name:'ι Sco (stert)',color:'#e4e8f8'}
+    ],
+    lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]],
+    desc:'Scorpius is \'n groot dierkring-sterrebeeld wat in die winter vanaf Suid-Afrika sigbaar is. Antares (α Sco) is \'n rooi superreus-ster — een van die grootste bekende sterre — wat die "hart" van die skerpioen vorm.'
+  },
+  orion:{
+    name:'Orion',
+    stars:[
+      {x:W/2-60,y:H/2-90,r:4.5,name:'Betelgeuse (α)',color:'#f87171'},
+      {x:W/2+60,y:H/2-90,r:4,name:'Bellatrix (γ)',color:'#93c5fd'},
+      {x:W/2+80,y:H/2+80,r:4.5,name:'Rigel (β)',color:'#bfdbfe'},
+      {x:W/2-80,y:H/2+80,r:3.5,name:'Saiph (κ)',color:'#93c5fd'},
+      {x:W/2-20,y:H/2-10,r:3,name:"Alnitak (ζ — gordel)",color:'#fde68a'},
+      {x:W/2,y:H/2-5,r:3,name:"Alnilam (ε — gordel)",color:'#fde68a'},
+      {x:W/2+20,y:H/2-10,r:3,name:"Mintaka (δ — gordel)",color:'#fde68a'}
+    ],
+    lines:[[0,1],[0,3],[1,2],[2,3],[4,5],[5,6],[0,4],[1,6],[2,3]],
+    desc:"Orion is in die somer vanaf Suid-Afrika sigbaar. Betelgeuse (rooi superreus) en Rigel (blou superreus) is twee van die helderste sterre in die lug. Orion se Gordel (drie sterre in 'n ry) is dadelik herkenbaar."
+  }
+};
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(raf) cancelAnimationFrame(raf);
+  initSim();
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/420);
+  bgStars=[];
+  for(let i=0;i<250;i++) bgStars.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1+0.3,b:Math.random()});
+  t=0;loop();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#010208';
+  ctx.fillRect(0,0,W,H);
+
+  for(const s of bgStars){
+    const tw=0.3+0.7*Math.abs(Math.sin(t*0.015+s.b*50));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${0.25*tw*s.b})`;ctx.fill();
+  }
+
+  const c=constellations[mode];
+
+  // Lines
+  ctx.strokeStyle='rgba(251,146,60,0.3)';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);
+  for(const [a,b] of c.lines){
+    ctx.beginPath();ctx.moveTo(c.stars[a].x,c.stars[a].y);ctx.lineTo(c.stars[b].x,c.stars[b].y);ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  // Stars
+  for(const s of c.stars){
+    const tw=0.7+0.3*Math.abs(Math.sin(t*0.02+s.r));
+    const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3);
+    g.addColorStop(0,s.color);g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(s.x,s.y,s.r*3,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r*tw,0,Math.PI*2);
+    ctx.fillStyle=s.color;ctx.fill();
+    ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='9px var(--fd)';ctx.textAlign='left';
+    ctx.fillText(s.name,s.x+s.r*3+3,s.y+3);
+  }
+
+  // Constellation name
+  ctx.fillStyle='#fdba74';ctx.font='bold 13px var(--fd)';ctx.textAlign='center';
+  ctx.fillText(c.name,W/2,22);
+
+  // Description
+  const words=c.desc.split(' ');let line='',lines=[],maxW=W-40;
+  ctx.font='10px var(--fd)';
+  for(const w of words){
+    const test=line+w+' ';
+    if(ctx.measureText(test).width>maxW&&line){lines.push(line.trim());line=w+' ';}
+    else line=test;
+  }
+  lines.push(line.trim());
+  lines.forEach((l,i)=>{
+    ctx.fillStyle='rgba(210,218,245,0.45)';
+    ctx.fillText(l,W/2,H-12-lines.length*14+i*14);
+  });
+}
+
+initSim();
+
+const QS=[
+  {q:"SALT is Suid-Afrika se grootste optiese teleskoop. Waar is dit geleë?",opts:["Johannesburg","Sutherland, Noord-Kaap","Kaapstad","Pretoria"],ans:1,fb:"SALT (Southern African Large Telescope) is in Sutherland in die Noord-Kaap geleë — gekies vir sy helder luglui, hoë hoogte en lae ligbesoedeling."},
+  {q:"Watter tipe straling spoor die MeerKAT-teleskoop op?",opts:["Sigbare lig","X-strale","Radiogolwe","Infrarooi"],ans:2,fb:"MeerKAT is 'n radioteleskoop — dit spoor radiogolwe op wat deur sterrekundige voorwerpe uitgestuur word. Dit is in die Karoo in Suid-Afrika geleë."},
+  {q:"Waarom kan die Hubble-ruimteteleskoop skerper sien as 'n grondgebaseerde teleskoop van dieselfde grootte?",opts:["Dit is nader aan die sterre","Dit is bo die Aarde se atmosfeer, sodat daar geen atmosferiese verwringing is nie","Dit gebruik radiogolwe","Dit is groter as enige grondgebaseerde teleskoop"],ans:1,fb:"Die Aarde se atmosfeer verwring lig (wat veroorsaak dat sterre 'flikker') en blokkeer sommige golflengtes. Hubble wentel bo die atmosfeer, sodat dit skerp, onverwronge beelde kry."},
+  {q:"Wat is 'n sterrebeeld?",opts:["'n Groep sterre wat fisies naby mekaar in die ruimte is","'n Tipe sterrestelsel","'n Groep sterre wat lyk asof hulle 'n patroon in die lug vorm, soos vanaf die Aarde gesien","'n Tipe newel"],ans:2,fb:"'n Sterrebeeld is 'n groep sterre wat lyk asof hulle 'n patroon vorm soos vanaf die Aarde gesien. Die sterre is nie noodwendig naby mekaar nie — hulle lyk net naby vanuit ons oogpunt."},
+  {q:"Die Suiderkruis (Crux) is nuttig vir navigasie omdat:",opts:["Dit die helderste ster in die lug is","Sy lang as na die Suidelike Hemelpool wys","Dit presies in die ooste opkom","Dit altyd reg bo Suid-Afrika is"],ans:1,fb:"Die lang as van Crux (van Gacrux na Acrux) wys na die Suidelike Hemelpool, wat naby ware suid is. Dit kan vir navigasie in die Suidelike Halfrond gebruik word."},
+  {q:"Die San-mense van Suid-Afrika het tradisioneel die Pleiades-sterretros (Selemela) gebruik om:",opts:["Ter see te navigeer","Die tyd om gewasse te plant aan te dui","Die weer te voorspel","Die rigting van die wind te identifiseer"],ans:1,fb:"Die Pleiades (Selemela) dui tradisioneel die tyd aan om gewasse te plant. Baie inheemse kulture het sterrekundige waarnemings gebruik om seisoenale landboubedrywighede te rig."},
+  {q:"Sterrekundiges wil 'n verafgeleë sterrestelsel bestudeer wat swaar agter dik wolke kosmiese stof weggesteek is wanneer dit in sigbare lig besigtig word. Watter tipe teleskoop sal die doeltreffendste vir hierdie taak wees, en waarom?",opts:["'n Optiese teleskoop, want sigbare lig is altyd die mees gedetailleerde manier om sterrestelsels waar te neem","'n Infrarooiteleskoop, want infrarooistraling kan deur stofwolke beweeg wat sigbare lig blokkeer","'n Radioteleskoop, want radiogolwe word deur stof geblokkeer en dit sou bevestig dat die stof daar is","Enige teleskoop sal ewe goed werk, aangesien stof geen tipe straling beïnvloed nie"],ans:1,fb:"Sigbare lig word maklik deur stof verstrooi en geabsorbeer, en daarom lyk die sterrestelsel weggesteek vir 'n optiese teleskoop. Infrarooistraling het 'n langer golflengte as sigbare lig en kan grotendeels onbeïnvloed deur stofwolke beweeg, wat instrumente soos die James Webb-ruimteteleskoop in staat stel om sterrestelsels en stervormingsgebiede te openbaar wat optiese teleskope nie kan sien nie."},
+  {q:"'n Navorsingspan moet 'n pulsar vir verskeie maande deurlopend monitor, insluitend gedurende die dag en deur dik wolkbedekking. Gebaseer op wat jy weet oor hoe verskillende teleskope werk, watter sou die beste keuse wees?",opts:["'n Optiese teleskoop, aangesien pulsars die beste in sigbare lig gesien word","SALT, want dit is die grootste optiese teleskoop in die Suidelike Halfrond","'n Radioteleskoop soos MeerKAT, want radiogolwe beweeg deur wolke en kan dag of nag opgespoor word","'n Ruimteteleskoop, want pulsars kan slegs vanuit wenteling waargeneem word"],ans:2,fb:"Radioteleskope soos MeerKAT spoor radiogolwe op, wat reguit deur wolkbedekking en daglig beweeg sonder om geblokkeer of uitgewas te word — anders as optiese teleskope, wat donker, helder luglui benodig. Dit maak radioteleskope ideaal vir lang, ononderbroke waarnemingsveldtogte, soos die opsporing van 'n pulsar se gereelde radiopulse oor maande heen."}
+];
+let scores=new Array(8).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

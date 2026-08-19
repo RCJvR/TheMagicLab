@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partikelmodel van Materie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#60a5fa;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(59,130,246,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .state-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+    .state-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+    .state-card h3{font-size:13px;font-weight:800;color:#93c5fd;margin-bottom:8px}
+    .state-card ul{text-align:left;margin:0 0 0 14px;font-size:12px;color:rgba(210,218,245,.65);line-height:1.7}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(96,165,250,.40);background:rgba(96,165,250,.12);color:#93c5fd}
+    .slider-row{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+    .slider-row label{font-size:11px;color:rgba(210,218,245,.75);display:flex;justify-content:space-between}
+    .slider-row input[type=range]{width:100%;accent-color:#60a5fa;cursor:pointer}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#60a5fa;font-family:var(--fm);font-weight:600}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#60a5fa}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(96,165,250,.35)}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-wrap{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Materie en Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Materie en Materiale · Les 6</div>
+  <h1 class="lesson-title">Partikelmodel van Materie</h1>
+  <p class="lesson-sub">Alle materie bestaan uit uiters klein partikels. Hoe hulle gerangskik is en hoe hulle beweeg, verduidelik elke toestand van materie, digtheid, diffusie, druk en meer.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">⚗️ Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Die partikelmodel</h2>
+    <p>Die <strong>partikelmodel van materie</strong> is 'n wetenskaplike teorie wat die gedrag van alle materie — vaste stowwe, vloeistowwe en gasse — verduidelik in terme van uiters klein partikels (atome en molekules). Die sleutelidees is:</p>
+    <ul>
+      <li>Alle materie bestaan uit partikels wat te klein is om te sien</li>
+      <li>Die spasies tussen partikels is leeg (nie lug nie — niks)</li>
+      <li>Partikels beweeg altyd (selfs in vaste stowwe vibreer hulle)</li>
+      <li>Partikels in verskillende toestande is anders gerangskik en gedra hulle anders</li>
+    </ul>
+
+    <h2>Die drie toestande van materie</h2>
+    <div class="state-grid">
+      <div class="state-card">
+        <h3>VASTE STOF</h3>
+        <ul>
+          <li>Nou opmekaar gepak, gereelde rangskikking</li>
+          <li>Vibreer — beweeg nie rond nie</li>
+          <li>Sterk kragte tussen partikels</li>
+          <li>Baie klein spasies</li>
+          <li>Vaste vorm en volume</li>
+        </ul>
+      </div>
+      <div class="state-card">
+        <h3>VLOEISTOF</h3>
+        <ul>
+          <li>Losser gerangskik, steeds na aan mekaar</li>
+          <li>Beweeg en gly by mekaar verby</li>
+          <li>Swakker kragte</li>
+          <li>Klein spasies</li>
+          <li>Vaste volume, geen vaste vorm nie</li>
+        </ul>
+      </div>
+      <div class="state-card">
+        <h3>GAS</h3>
+        <ul>
+          <li>Geen gereelde rangskikking nie</li>
+          <li>Beweeg baie vinnig in alle rigtings</li>
+          <li>Uiters swak kragte</li>
+          <li>Baie groot spasies</li>
+          <li>Geen vaste vorm of volume nie</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Toestandsverandering</h2>
+    <p>Verhitting gee partikels meer energie, wat veroorsaak dat hulle vinniger en verder uitmekaar beweeg. Afkoeling verwyder energie en vertraag partikels:</p>
+    <table class="compare-table">
+      <thead><tr><th>Proses</th><th>Verandering</th><th>Wat met die partikels gebeur</th></tr></thead>
+      <tbody>
+        <tr><td>Smelting</td><td>Vaste stof → Vloeistof</td><td>Kry energie; breek los van vaste posisies; gly by mekaar verby</td></tr>
+        <tr><td>Verdamping / Kook</td><td>Vloeistof → Gas</td><td>Kry genoeg energie om te ontsnap; beweeg baie ver uitmekaar</td></tr>
+        <tr><td>Kondensasie</td><td>Gas → Vloeistof</td><td>Verloor energie; vertraag; kragte trek hulle nader</td></tr>
+        <tr><td>Vries / Stol</td><td>Vloeistof → Vaste stof</td><td>Verloor meer energie; vestig in vaste posisies</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Diffusie</h2>
+    <p>Diffusie is die netto beweging van partikels van 'n gebied van <strong>hoë konsentrasie</strong> na een van <strong>lae konsentrasie</strong>. Dit gebeur omdat partikels voortdurend lukraak beweeg.</p>
+    <ul>
+      <li>Diffusie is <strong>vinniger in gasse</strong> as in vloeistowwe — gaspartikels beweeg baie vinniger en het meer spasie</li>
+      <li>Voorbeeld: 'n parfuumbottel wat oorkant die kamer oopgemaak word — jy ruik dit sonder enige wind</li>
+      <li>Voorbeeld: 'n druppel kleursel wat deur water versprei (neem minute tot ure)</li>
+    </ul>
+    <div class="callout"><strong>Kurrikulumskakel:</strong> Diffusie in gasse en vloeistowwe verduidelik ook gasuitruil in die longe (Graad 9 Lewe en Lewenswetenskappe — suurstof diffundeer van alveoli na bloed, CO₂ diffundeer uit).</div>
+
+    <h2>Digtheid</h2>
+    <p>Digtheid beskryf hoeveel massa in 'n gegewe volume gepak is. 'n Materiaal het 'n hoë digtheid as sy partikels <strong>swaar</strong> en <strong>styf opmekaar gepak</strong> is.</p>
+    <ul>
+      <li><strong>Vaste stowwe</strong> is oor die algemeen digter as vloeistowwe, wat digter is as gasse</li>
+      <li><strong>Uitsondering:</strong> Ys (vaste water) is <em>minder</em> digter as vloeibare water — daarom dryf ys</li>
+      <li>Olie is minder digter as water, so olie dryf op water</li>
+    </ul>
+
+    <h2>Uitsetting en inkrimping</h2>
+    <p>Wanneer materiale verhit word, beweeg partikels vinniger en druk verder uitmekaar — die materiaal <strong>sit uit</strong>. Wanneer dit afkoel, vertraag partikels en beweeg nader aan mekaar — die materiaal <strong>krimp in</strong>.</p>
+    <p>Tydens uitsetting en inkrimping bly die <strong>getal en grootte van die partikels dieselfde</strong> — net die spasies tussen hulle verander.</p>
+
+    <h2>Druk in gasse</h2>
+    <p>Gaspartikels beweeg voortdurend en <strong>bots teen die wande van hul houer</strong>. Hierdie botsings skep druk. As jy meer gas in 'n houer pomp, is daar meer partikels, meer botsings, en dus <strong>hoër druk</strong>. Dit verduidelik waarom 'n band harder word soos jy dit oppomp.</p>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Toestand van materie</div>
+        <button class="mode-btn active" onclick="setState('solid',this)">🧱 Vaste stof</button>
+        <button class="mode-btn" onclick="setState('liquid',this)">💧 Vloeistof</button>
+        <button class="mode-btn" onclick="setState('gas',this)">💨 Gas</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Temperatuur</div>
+        <div class="slider-row">
+          <label>Hitte <span id="temp-val">50°C</span></label>
+          <input type="range" min="0" max="100" value="50" id="sl-temp" oninput="updateTemp(this.value)">
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Waarnemings</div>
+        <div class="stat-item"><span>Toestand</span><span id="st-state">Vaste stof</span></div>
+        <div class="stat-item"><span>Spoed</span><span id="st-speed">Laag</span></div>
+        <div class="stat-item"><span>Spasiëring</span><span id="st-space">Klein</span></div>
+        <div class="stat-item"><span>Druk</span><span id="st-press">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Telling</span><span class="score-val" id="score">0 / 8</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Skryf jou antwoorde in die spasies hieronder. Gebruik volledige sinne.</p>
+    <div class="wb-card"><div class="wb-q">1. Beskryf die rangskikking, beweging en spasiëring van partikels in 'n vaste stof, vloeistof en gas. Gebruik die partikelmodel van materie.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Verduidelik wat op partikelvlak gebeur wanneer 'n vaste stof smelt en dan wanneer die vloeistof verdamp. Wat gebeur met die energie van die partikels?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Verduidelik diffusie en gee een voorbeeld in 'n gas en een voorbeeld in 'n vloeistof. Waarom is diffusie vinniger in gasse as in vloeistowwe?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. 'n Brood en 'n baksteen van dieselfde grootte het nie dieselfde massa nie. Verduidelik dit met behulp van die partikelmodel van materie, met verwysing na die konsep van digtheid.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Waarom het 'n metaalbrug klein gapings wat teen gereelde tussenposes daarin ingebou is? Verduidelik met behulp van die konsep van uitsetting en inkrimping.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Verduidelik waarom die pomp van meer lug in 'n fietsband die druk daarbinne verhoog. Gebruik die partikelmodel in jou antwoord.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. Die tabel toon die massa en volume van vier verskillende blokke materiaal.
+      <table class="compare-table" style="margin:10px 0">
+        <thead><tr><th>Blok</th><th>Massa (g)</th><th>Volume (cm&sup3;)</th></tr></thead>
+        <tbody>
+          <tr><td>A &mdash; Kurk</td><td>24</td><td>100</td></tr>
+          <tr><td>B &mdash; Hout</td><td>70</td><td>100</td></tr>
+          <tr><td>C &mdash; Yster</td><td>790</td><td>100</td></tr>
+          <tr><td>D &mdash; Aluminium</td><td>270</td><td>100</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die digtheid (massa &divide; volume) van elke blok, in g/cm&sup3;.<br>
+      (b) Rangskik die vier materiale van MINSTE digste na MEESTE digste.<br>
+      (c) Water het 'n digtheid van 1 g/cm&sup3;. Gebruik jou antwoorde by (a) om te bepaal watter van hierdie materiale sou DRYF as dit in water geplaas word. Verduidelik jou redenasie.<br>
+      (d) Verduidelik, met behulp van die partikelmodel van materie, waarom die ysterblok 'n veel hoër digtheid as die kurkblok het, al het beide blokke presies dieselfde volume (100 cm&sup3;).</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let currentState='solid', temp=50, particles=[], raf=null, t=0;
+let wallHits=0, lastHits=0;
+
+function updateTemp(v){
+  temp=+v;
+  document.getElementById('temp-val').textContent=v+'°C';
+  updateStats();
+}
+
+function setState(s,btn){
+  currentState=s;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  initSim();
+}
+
+function updateStats(){
+  const speedMap={solid:'Baie laag (vibreer)',liquid:'Medium',gas:'Baie hoog'};
+  const spaceMap={solid:'Baie klein',liquid:'Klein',gas:'Baie groot'};
+  const stateLabel={solid:'Vaste stof',liquid:'Vloeistof',gas:'Gas'};
+  document.getElementById('st-state').textContent=stateLabel[currentState];
+  document.getElementById('st-speed').textContent=speedMap[currentState];
+  document.getElementById('st-space').textContent=spaceMap[currentState];
+  document.getElementById('st-press').textContent=currentState==='gas'?(wallHits+' botsings/s'):'Nvt';
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/420);
+  particles=[]; t=0; wallHits=0;
+  const N=currentState==='solid'?36:currentState==='liquid'?30:20;
+  if(currentState==='solid'){
+    const cols=6,rows=6,gap=Math.round(Math.min(W,H)*0.13);
+    const px=W/2-gap*2.5, py=H/2-gap*2.5;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++)
+      particles.push({x:px+c*gap,y:py+r*gap,vx:(Math.random()-.5)*0.4,vy:(Math.random()-.5)*0.4,ox:px+c*gap,oy:py+r*gap,r:10,gap});
+  } else if(currentState==='liquid'){
+    for(let i=0;i<N;i++) particles.push({x:80+Math.random()*(W-160),y:H/2+Math.random()*150,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,r:10});
+  } else {
+    for(let i=0;i<N;i++) particles.push({x:80+Math.random()*(W-160),y:60+Math.random()*(H-120),vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4,r:7});
+  }
+  updateStats();
+  loop();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#060a16';
+  ctx.fillRect(0,0,W,H);
+
+  const speedFactor=0.5+temp/100*1.5;
+
+  if(currentState==='solid'){
+    for(const p of particles){
+      const amp=0.5+temp/100*3;
+      p.x=p.ox+Math.cos(t*0.08+p.ox)*amp+(Math.random()-.5)*0.2;
+      p.y=p.oy+Math.sin(t*0.08+p.oy)*amp+(Math.random()-.5)*0.2;
+      drawParticle(p,true);
+    }
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[j].x-particles[i].x,dy=particles[j].y-particles[i].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        const bondR=(particles[i].gap||30)*1.5;
+        if(d<bondR){
+          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(96,165,250,${0.3*(1-d/bondR)})`;ctx.lineWidth=1;ctx.stroke();
+        }
+      }
+    }
+  } else if(currentState==='liquid'){
+    for(const p of particles){
+      p.vx+=(Math.random()-.5)*0.1; p.vy+=0.05+(Math.random()-.5)*0.1;
+      const speed=Math.sqrt(p.vx*p.vx+p.vy*p.vy)*speedFactor;
+      const s=Math.min(speed,3);
+      p.x+=p.vx*speedFactor*0.5; p.y+=p.vy*speedFactor*0.5;
+      if(p.x<p.r+60){p.x=p.r+60;p.vx*=-0.7;}
+      if(p.x>W-p.r-60){p.x=W-p.r-60;p.vx*=-0.7;}
+      if(p.y<H/2-20){p.y=H/2-20;p.vy*=-0.5;}
+      if(p.y>H-p.r-20){p.y=H-p.r-20;p.vy*=-0.7;}
+      p.vx*=0.98; p.vy*=0.97;
+      drawParticle(p,false);
+    }
+    ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(60,H/2-20);ctx.lineTo(W-60,H/2-20);ctx.stroke();
+    ctx.fillStyle='rgba(96,165,250,0.06)';
+    ctx.fillRect(60,H/2-20,W-120,H-(H/2-20)-p_bottom());
+  } else {
+    let hits=0;
+    for(const p of particles){
+      p.x+=p.vx*speedFactor; p.y+=p.vy*speedFactor;
+      if(p.x<p.r+50){p.x=p.r+50;p.vx=Math.abs(p.vx);hits++;}
+      if(p.x>W-p.r-50){p.x=W-p.r-50;p.vx=-Math.abs(p.vx);hits++;}
+      if(p.y<p.r+40){p.y=p.r+40;p.vy=Math.abs(p.vy);hits++;}
+      if(p.y>H-p.r-40){p.y=H-p.r-40;p.vy=-Math.abs(p.vy);hits++;}
+      drawParticle(p,false);
+    }
+    if(t%60===0){wallHits=hits;updateStats();}
+    ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=2;
+    ctx.strokeRect(50,40,W-100,H-80);
+  }
+}
+
+function p_bottom(){ return 60; }
+
+function drawParticle(p,bonded){
+  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+  const g=ctx.createRadialGradient(p.x-p.r*0.3,p.y-p.r*0.3,0,p.x,p.y,p.r);
+  g.addColorStop(0,'rgba(147,197,253,0.9)');
+  g.addColorStop(1,'rgba(37,99,235,0.7)');
+  ctx.fillStyle=g;
+  ctx.fill();
+  ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=1;ctx.stroke();
+}
+
+initSim();
+
+const QS=[
+  {q:"In watter toestand van materie is die partikels die naaste opmekaar gepak en in 'n gereelde rangskikking?",opts:["Gas","Vloeistof","Vaste stof","Plasma"],ans:2,fb:"In 'n vaste stof is partikels styf opmekaar gepak in 'n gereelde rangskikking en vibreer hulle in vaste posisies."},
+  {q:"Diffusie is vinniger in gasse as in vloeistowwe omdat:",opts:["Gasse swaarder partikels het","Gaspartikels baie vinniger beweeg en baie groter spasies tussen hulle het","Gasse minder digter is","Gaspartikels kleiner is"],ans:1,fb:"Gaspartikels het baie hoë spoed en baie groot spasies tussen hulle, wat vinnige diffusie moontlik maak."},
+  {q:"Wanneer 'n vaste stof smelt, wat gebeur met die partikels?",opts:["Partikels kry energie en breek los van vaste posisies, en gly by mekaar verby","Partikels verloor energie en vertraag","Partikels verdwyn","Partikels krimp"],ans:0,fb:"Smelting vind plaas wanneer partikels genoeg energie kry om uit hul vaste posisies te breek en by mekaar verby te gly — die vaste stof word 'n vloeistof."},
+  {q:"Ys dryf op water omdat:",opts:["Ys warmer is","Ys-partikels ligter is","Ys minder digter as vloeibare water is","Ys magneties is"],ans:2,fb:"Dit is 'n opvallende uitsondering — ys (vaste water) is minder digter as vloeibare water, so dit dryf. Die meeste vaste stowwe is digter as hul vloeibare vorm."},
+  {q:"Wanneer jy meer lug in 'n band pomp, neem die druk daarbinne toe omdat:",opts:["Die band warmer word","Daar meer partikels is, wat meer botsings met die bandwande veroorsaak","Die lug swaarder word","Die band uitsit"],ans:1,fb:"Druk in 'n gas ontstaan deurdat partikels teen die houerwande bots. Meer partikels = meer botsings = hoër druk."},
+  {q:"'n Metaalbrug het gapings (uitsettingskoppelinge) daarin ingebou om voorsiening te maak vir:",opts:["Waterdreinering","Versiering","Uitsetting en inkrimping soos temperatuur verander","Windbeweging"],ans:2,fb:"Metale sit uit wanneer dit verhit word en krimp in wanneer dit afkoel. Uitsettingskoppelinge voorkom dat dit in die somer buig en in die winter kraak."},
+  {q:"'n Ysterblok en 'n gomskuimblok is presies dieselfde grootte (dieselfde volume), tog het die ysterblok 'n veel groter massa. Wat is die BESTE verduideliking, met behulp van die partikelmodel?",opts:["Yster is magneties, en magnetisme voeg ekstra massa by die blok","Yster se partikels is baie nader opmekaar gepak en is individueel meer massief, sodat meer massa in dieselfde volume inpas","Gomskuimpartikels beweeg vinniger, wat op een of ander manier sy massa verminder","Albei blokke het eintlik dieselfde massa, aangesien hulle dieselfde volume het"],ans:1,fb:"Digtheid hang af van hoeveel massa in 'n gegewe volume gepak is. Yster se partikels is individueel swaarder EN baie stywer opmekaar gepak as gomskuim s'n, sodat 'n blok yster veel meer massa in presies dieselfde ruimte bevat — dit is waarom dit soveel digter (en swaarder vir sy grootte) as gomskuim is."},
+  {q:"'n Bottel parfuum word oorkant 'n kamer oopgemaak. Op 'n warm dag versprei die reuk merkbaar vinniger deur die kamer as op 'n koue dag. Wat is die BESTE verduideliking, met behulp van die partikelmodel?",opts:["Hitte maak die parfuumpartikels swaarder, sodat hulle sink en vinniger oor die vloer versprei","Op 'n warm dag het die parfuumpartikels (en die lugpartikels waardeur hulle diffundeer) meer kinetiese energie en beweeg vinniger, sodat diffusie vinniger plaasvind","Koue lug blokkeer reuke heeltemal daarvan om daardeur te beweeg","Parfuum verdamp net na 'n gas op warm dae, sodat daar glad geen reuk op koue dae is nie"],ans:1,fb:"Verhitting gee partikels meer kinetiese energie, sodat hulle vinniger beweeg (dit is ook waarom materiale uitsit wanneer dit verhit word). Aangesien diffusie eenvoudig die lukrake beweging van partikels is wat versprei, diffundeer vinniger-bewegende partikels vinniger deur die lug. Dit is waarom dieselfde druppel parfuum merkbaar vinniger deur 'n warm kamer as 'n koue een versprei."}
+];
+let scores=new Array(QS.length).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / '+QS.length;}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statiese Elektrisiteit — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(251,191,36,0.05) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fde68a}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fde68a;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fde68a}
+    .charge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    .charge-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+    .charge-card .symbol{font-size:36px;margin-bottom:8px}
+    .charge-card h3{font-size:13px;font-weight:800;color:#fde68a;margin-bottom:6px}
+    .charge-card p{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.6;margin:0}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fde68a}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#fbbf24;font-family:var(--fm);font-weight:600}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-label{font-size:13px;color:var(--muted)}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(251,191,36,.35)}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-wrap{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Energie &amp; Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Energie &amp; Verandering · Les 1</div>
+  <h1 class="lesson-title">Statiese Elektrisiteit</h1>
+  <p class="lesson-sub">Hoe vryf elektrone tussen materiale oordra, wat positiewe en negatiewe ladings skep — en die vonke, skokke en weerlig wat daarop volg.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">⚡ Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Wat is statiese elektrisiteit?</h2>
+    <p>Statiese elektrisiteit is 'n opbou van elektriese lading op die oppervlak van 'n materiaal. Anders as stroomelektrisiteit (wat vloei), bly statiese ladings op een plek — vandaar "staties" (stilstaande).</p>
+    <p>Alles is gemaak van atome, wat protone (+) en elektrone (−) bevat. Normaalweg is hierdie ladings gebalanseer en is 'n voorwerp neutraal. Statiese elektrisiteit ontstaan wanneer elektrone van een materiaal na 'n ander oorgedra word.</p>
+
+    <h2>Lading deur wrywing</h2>
+    <p>Wanneer twee sekere materiale teen mekaar <strong>gevryf</strong> word, word elektrone (nie protone of neutrone nie — hierdie beweeg nie) van een materiaal na die ander oorgedra:</p>
+    <ul>
+      <li>Die materiaal wat <strong>elektrone kry</strong>, word negatief gelaai (−)</li>
+      <li>Die materiaal wat <strong>elektrone verloor</strong>, word positief gelaai (+)</li>
+    </ul>
+    <div class="callout"><strong>Sleutelreël:</strong> Net elektrone word tydens vryf oorgedra. Protone en neutrone is in die kern vasgevang en kan nie tussen materiale beweeg nie.</div>
+    <p><strong>Voorbeelde:</strong> 'n Plastiek-/perspekslinjaal met wol of sy vryf; 'n ballon teen jou hare vryf; oor 'n mat in sokkies skuifel.</p>
+
+    <h2>Aantrekking en afstoting</h2>
+    <div class="charge-grid">
+      <div class="charge-card">
+        <div class="symbol">⊕ ⊖</div>
+        <h3>Teenoorgestelde ladings TREK AAN</h3>
+        <p>'n Positiewe voorwerp en 'n negatiewe voorwerp trek na mekaar toe.</p>
+      </div>
+      <div class="charge-card">
+        <div class="symbol">⊕ ⊕</div>
+        <h3>Soortgelyke ladings STOOT AF</h3>
+        <p>Twee positiewe of twee negatiewe voorwerpe stoot van mekaar af.</p>
+      </div>
+    </div>
+    <p>'n Gelaaide liniaal wat naby klein stukkies snesiepapier geplaas word, sal hulle aantrek — die gelaaide liniaal induseer 'n teenoorgestelde lading op die oppervlak van die papier naaste aan dit.</p>
+
+    <h2>Ontlading en vonke</h2>
+    <p>Wanneer die opbou van lading groot genoeg word, spring elektrone oor 'n lugspasie — dit is 'n <strong>ontlading</strong>. Jy sien dit as 'n vonk en voel dit as 'n skok. Statiese ontlading kom meer algemeen voor wanneer die lug droog is (klam lug laat ladings makliker wegvloei).</p>
+    <p><strong>Weerlig</strong> is 'n massiewe statiese ontlading. Bewegende lug- en waterdeeltjies in 'n stormwolk vryf teen mekaar, wat elektrone oordra. Die wolk raak gelaai, en wanneer die lading groot genoeg is, ontlaai 'n reusagtige vonk (weerligstraal) tussen die wolk en die grond.</p>
+
+    <h2>Veiligheid tydens weerligstorms</h2>
+    <ul>
+      <li>Bly binnenshuis of in 'n motor (die metaalskil gelei lading veilig om jou)</li>
+      <li>Vermy hoë bome, oop velde, heuweltoppe en water</li>
+      <li>Moenie metaalvoorwerpe buite vashou nie</li>
+      <li>Weerligafleiers op geboue bied 'n veilige pad vir lading om die grond te bereik</li>
+    </ul>
+    <div class="callout"><strong>Vorentoe skakel:</strong> Statiese elektrisiteit hou verband met die elektriese krag (elektrostatiese krag) wat in Graad 9 Kragte gedek word. Die ladings wat hier geskep word, is dieselfde verskynsel.</div>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card" title="Klik om te vryf!">
+      <canvas id="cv" width="520" height="400"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Eksperiment</div>
+        <button class="mode-btn active" onclick="setMode('rub',this)">🪮 Vryf en laai</button>
+        <button class="mode-btn" onclick="setMode('attract',this)">📄 Trek papier aan</button>
+        <button class="mode-btn" onclick="setMode('lightning',this)">⚡ Weerlig</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Ladingstoestand</div>
+        <div class="stat-item"><span>Liniaallading</span><span id="st-charge">Neutraal</span></div>
+        <div class="stat-item"><span>Elektrone beweeg</span><span id="st-elec">0</span></div>
+        <div class="stat-item"><span>Vonke</span><span id="st-sparks">0</span></div>
+      </div>
+      <div class="ctrl-card" style="font-size:12px;color:var(--muted);line-height:1.7" id="mode-desc">
+        Klik en sleep oor die liniaal om dit met wol te vryf. Kyk hoe elektrone oorgedra word!
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span class="score-label">Telling</span><span class="score-val" id="score">0 / 8</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Skryf jou antwoorde in die spasies hieronder. Gebruik volsinne.</p>
+    <div class="wb-card"><div class="wb-q">1. Verduidelik wat met elektrone gebeur wanneer 'n plastiekliniaal met 'n stuk wol gevryf word. Watter materiaal word positief gelaai en watter word negatief gelaai?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Stel die reël vir aantrekking en afstoting tussen gelaaide voorwerpe. Gee een werklike-lewe-voorbeeld van elk.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Waarom word protone NIE tydens wrywing oorgedra nie, maar elektrone wel?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Verduidelik, in terme van elektronoordrag, hoe 'n donderwolk tydens 'n donderstorm gelaai raak.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Waarom veroorsaak statiese elektrisiteit meer skokke op droë dae as op klam dae?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Lys drie veiligheidsvoorsorgmaatreëls wat jy tydens 'n weerligstorm moet tref. Verduidelik die wetenskap agter EEN daarvan.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. 'n Leerder vryf verskillende pare materiale teen mekaar en gebruik 'n elektroskoop om die lading te meet wat elke materiaal uiteindelik het. Haar resultate word hieronder getoon.<br><br>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+      <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Proef</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Materiaal A</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Materiaal B</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Lading op A</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Lading op B</th></tr></thead>
+      <tbody>
+      <tr><td style="padding:6px 10px">1</td><td style="padding:6px 10px">Glasstaaf</td><td style="padding:6px 10px">Sydoek</td><td style="padding:6px 10px">Positief (+)</td><td style="padding:6px 10px">Negatief (−)</td></tr>
+      <tr><td style="padding:6px 10px">2</td><td style="padding:6px 10px">Rubberballon</td><td style="padding:6px 10px">Woltrui</td><td style="padding:6px 10px">Negatief (−)</td><td style="padding:6px 10px">Positief (+)</td></tr>
+      <tr><td style="padding:6px 10px">3</td><td style="padding:6px 10px">Akrielliniaal</td><td style="padding:6px 10px">Woldoek</td><td style="padding:6px 10px">Negatief (−)</td><td style="padding:6px 10px">Positief (+)</td></tr>
+      <tr><td style="padding:6px 10px">4</td><td style="padding:6px 10px">Glasstaaf</td><td style="padding:6px 10px">Woltrui</td><td style="padding:6px 10px">Positief (+)</td><td style="padding:6px 10px">Negatief (−)</td></tr>
+      </tbody></table><br>
+      (a) In Proewe 2 en 3 word wol positief gelaai. In Proef 4 word wol negatief gelaai. Is dit 'n teenstrydigheid? Verduidelik wat dit jou vertel oor of 'n materiaal se lading net van die materiaal self afhang, of ook van wat dit teen gevryf word. (2)<br>
+      (b) Gee in elke proef aan watter materiaal elektrone VERLOOR het en watter materiaal elektrone GEKRY het. (1)<br>
+      (c) Voorspel, op grond van die patroon in die tabel, watter lading glas sou kry as dit direk teen 'n akrielliniaal gevryf word. Gebruik die resultate van Proewe 3 en 4 om jou voorspelling te regverdig. (2)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=400;
+let mode='rub', charge=0, electrons=[], sparks=[], papers=[], raf=null, rubbing=false, sparkCount=0;
+let mouseX=0,mouseY=0,prevX=0,prevY=0;
+
+const descs={
+  rub:'Klik en sleep oor die liniaal om dit met wol te vryf. Kyk hoe elektrone na die liniaal oorgedra word!',
+  attract:'\'n Gelaaide liniaal trek stukkies papier aan. Laai dit eers (in Vryf-modus), kom dan hierheen.',
+  lightning:'Kyk hoe statiese lading in \'n stormwolk opbou totdat dit as weerlig ontlaai!'
+};
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-desc').textContent=descs[m];
+  initSim();
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*400/520);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/400);
+  electrons=[]; sparks=[]; papers=[];
+  if(mode==='attract'){
+    for(let i=0;i<16;i++) papers.push({x:80+Math.random()*360,y:200+Math.random()*160,vx:0,vy:0,w:10+Math.random()*10,h:5+Math.random()*5});
+  } else if(mode==='lightning'){
+    charge=0;
+    for(let i=0;i<20;i++) electrons.push({x:Math.random()*W,y:50+Math.random()*100,vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*1.5,sign:-1});
+    for(let i=0;i<10;i++) electrons.push({x:Math.random()*W,y:H-80+Math.random()*60,vx:(Math.random()-.5)*1,vy:(Math.random()-.5)*1,sign:1});
+  }
+  loop();
+}
+
+cv.addEventListener('mousedown',e=>{rubbing=true;const r=cv.getBoundingClientRect();mouseX=(e.clientX-r.left)*(W/r.width);mouseY=(e.clientY-r.top)*(H/r.height);prevX=mouseX;prevY=mouseY;});
+cv.addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();prevX=mouseX;prevY=mouseY;mouseX=(e.clientX-r.left)*(W/r.width);mouseY=(e.clientY-r.top)*(H/r.height);});
+cv.addEventListener('mouseup',()=>rubbing=false);
+cv.addEventListener('mouseleave',()=>rubbing=false);
+
+let t=0;
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#060a16';
+  ctx.fillRect(0,0,W,H);
+
+  if(mode==='rub') drawRub();
+  else if(mode==='attract') drawAttract();
+  else drawLightning();
+
+  sparks=sparks.filter(s=>s.life>0);
+  for(const s of sparks){
+    s.life--;
+    ctx.globalAlpha=s.life/s.maxLife;
+    ctx.strokeStyle='#fde68a';
+    ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(s.x1,s.y1);ctx.lineTo(s.x2,s.y2);ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+}
+
+function drawRub(){
+  const rx=50,ry=90,rw=420,rh=80;
+  ctx.fillStyle='rgba(96,165,250,0.15)';
+  ctx.strokeStyle='rgba(96,165,250,0.5)';
+  ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(96,165,250,0.8)';
+  ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('PLASTIEKLINIAAL',rx+rw/2,ry+rh/2+6);
+
+  const wx=160,wy=220,ww=200,wh=80;
+  ctx.fillStyle='rgba(251,191,36,0.15)';
+  ctx.strokeStyle='rgba(251,191,36,0.4)';
+  ctx.beginPath();ctx.roundRect(wx,wy,ww,wh,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.8)';
+  ctx.font='bold 16px sans-serif';ctx.textAlign='center';
+  ctx.fillText('WOL',wx+ww/2,wy+wh/2+6);
+
+  if(rubbing){
+    const dist=Math.sqrt((mouseX-prevX)**2+(mouseY-prevY)**2);
+    if(dist>3 && mouseX>rx && mouseX<rx+rw && mouseY>ry-20 && mouseY<ry+rh+20){
+      charge=Math.min(10,charge+0.15);
+      if(Math.random()<0.3){
+        electrons.push({x:mouseX+(Math.random()-.5)*40,y:mouseY+(Math.random()-.5)*20,vx:(Math.random()-.5)*2-1,vy:(Math.random()-.5)*2-2,life:60,maxLife:60});
+      }
+    }
+  }
+
+  for(const e of electrons){
+    e.x+=e.vx; e.y+=e.vy; e.life--;
+    const a=e.life/e.maxLife;
+    ctx.globalAlpha=a;
+    ctx.fillStyle='#fbbf24';
+    ctx.beginPath();ctx.arc(e.x,e.y,3,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.font='9px var(--fm)';ctx.textAlign='center';
+    ctx.fillText('e⁻',e.x,e.y+3);
+    ctx.globalAlpha=1;
+  }
+  electrons=electrons.filter(e=>e.life>0);
+
+  const q=Math.round(charge);
+  const label=q===0?'Neutraal':q>6?'Sterk −':'−'.repeat(Math.min(q,5));
+  document.getElementById('st-charge').textContent=label;
+  document.getElementById('st-elec').textContent=electrons.length;
+
+  if(charge>0){
+    for(let i=0;i<Math.min(charge*2,14);i++){
+      const ex=rx+20+i*(rw-40)/13;
+      ctx.fillStyle='#fbbf24';
+      ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+      ctx.fillText('−',ex,ry+6);
+    }
+  }
+}
+
+function drawAttract(){
+  const rx=50,ry=50,rw=420,rh=60;
+  const charged=charge>0;
+  const chColor=charged?'rgba(96,165,250,0.8)':'rgba(107,114,128,0.5)';
+  ctx.fillStyle=charged?'rgba(96,165,250,0.15)':'rgba(107,114,128,0.06)';
+  ctx.strokeStyle=chColor; ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(rx,ry,rw,rh,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle=chColor;
+  ctx.font='bold 15px sans-serif';ctx.textAlign='center';
+  ctx.fillText(charged?'GELAAIDE LINIAAL  (negatief −)':'ONGELAAIDE LINIAAL  (vryf dit eers!)',rx+rw/2,ry+rh/2+6);
+
+  // Charge indicators on ruler
+  if(charged){
+    const neg=Math.min(Math.round(charge*3),20);
+    for(let i=0;i<neg;i++){
+      ctx.fillStyle='#fbbf24';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+      ctx.fillText('−',rx+30+i*(rw-60)/(neg-1||1),ry+12);
+    }
+    // Arrow showing attraction downward
+    ctx.strokeStyle='rgba(96,165,250,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(rx+rw/2,ry+rh);ctx.lineTo(rx+rw/2,ry+rh+40);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  const rulerCX=rx+rw/2, rulerCY=ry+rh+4;
+  for(const p of papers){
+    if(charged){
+      const dx=rulerCX-p.x, dy=rulerCY-p.y;
+      const dist=Math.sqrt(dx*dx+dy*dy)+1;
+      if(dist<280){
+        const force=charge*8000/(dist*dist+80);
+        p.vx+=dx/dist*force*0.06;
+        p.vy+=dy/dist*force*0.06;
+      }
+    }
+    p.vy+=0.10;
+    p.vx*=0.90; p.vy*=0.90;
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.y>H-10){p.y=H-10;p.vy*=-0.4;}
+    if(p.x<10)p.x=10; if(p.x>W-10)p.x=W-10;
+    // Draw paper scrap as a small white rectangle with slight rotation
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.vx*0.15);
+    ctx.fillStyle='rgba(230,235,255,0.90)';
+    ctx.strokeStyle='rgba(255,255,255,0.3)';
+    ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.roundRect(-p.w/2,-p.h/2,p.w,p.h,2);ctx.fill();ctx.stroke();
+    ctx.restore();
+    // Induced charge on paper when near ruler
+    if(charged && Math.abs(p.y-rulerCY)<120){
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='9px sans-serif';ctx.textAlign='center';
+      ctx.fillText('+',p.x,p.y-p.h/2-2);
+    }
+  }
+  document.getElementById('st-charge').textContent=charge>5?'Hoog':'Laag';
+  // Init papers if empty
+  if(papers.length===0)
+    for(let i=0;i<16;i++) papers.push({x:60+Math.random()*(W-120),y:180+Math.random()*180,vx:0,vy:0,w:14+Math.random()*10,h:7+Math.random()*5});
+}
+
+function drawLightning(){
+  charge+=0.015;
+  const cloudCY=130, cloudW=170, cloudH=55, gndY=H-50;
+
+  // Sky gradient
+  const sky=ctx.createLinearGradient(0,0,0,gndY);
+  sky.addColorStop(0,'#0a0f1e'); sky.addColorStop(1,'#0f1829');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,gndY);
+
+  // Storm cloud — layered ellipses
+  const cloudParts=[
+    {x:W/2,    y:cloudCY,      rx:cloudW,   ry:cloudH,   a:0.50},
+    {x:W/2-80, y:cloudCY+18,   rx:90,       ry:40,       a:0.42},
+    {x:W/2+90, y:cloudCY+14,   rx:95,       ry:38,       a:0.42},
+    {x:W/2-30, y:cloudCY-22,   rx:85,       ry:38,       a:0.35},
+    {x:W/2+50, y:cloudCY-18,   rx:75,       ry:32,       a:0.32},
+  ];
+  cloudParts.forEach(({x,y,rx,ry,a})=>{
+    const g=ctx.createRadialGradient(x,y-10,5,x,y,rx);
+    g.addColorStop(0,`rgba(80,90,110,${a+0.1})`);
+    g.addColorStop(1,`rgba(30,38,55,${a-0.1})`);
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();
+  });
+  // Cloud bottom flat
+  ctx.fillStyle='rgba(25,32,48,0.6)';
+  ctx.fillRect(W/2-cloudW+10, cloudCY+cloudH-12, (cloudW-10)*2, 16);
+
+  // Ground
+  const grd=ctx.createLinearGradient(0,gndY,0,H);
+  grd.addColorStop(0,'#374151');grd.addColorStop(1,'#1f2937');
+  ctx.fillStyle=grd; ctx.fillRect(0,gndY,W,H-gndY);
+  ctx.fillStyle='#4b5563'; ctx.fillRect(0,gndY,W,3);
+  ctx.fillStyle='rgba(107,114,128,0.4)';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('G R O N D',W/2,gndY+22);
+
+  // Negative charges in cloud (building up)
+  const negCount=Math.min(Math.floor(charge*8),28);
+  for(let i=0;i<negCount;i++){
+    const ex=(W/2-110)+i*(220/(28-1));
+    const ey=cloudCY+20+Math.sin(i*1.3)*12;
+    ctx.fillStyle='#fbbf24'; ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText('−',ex,ey);
+  }
+
+  // Positive charges on ground
+  for(let i=0;i<10;i++){
+    const ex=(W/2-140)+i*(280/9);
+    ctx.fillStyle='#60a5fa'; ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('+',ex,gndY-10);
+  }
+
+  // Charge build-up indicator bar
+  const barX=W-60, barY=60, barH=H-130, barW=18;
+  ctx.fillStyle='rgba(255,255,255,0.05)'; ctx.beginPath();ctx.roundRect(barX,barY,barW,barH,5);ctx.fill();
+  const fillH=barH*(charge/5);
+  const barGrad=ctx.createLinearGradient(0,barY+barH-fillH,0,barY+barH);
+  barGrad.addColorStop(0,'#fbbf24');barGrad.addColorStop(1,'#ef4444');
+  ctx.fillStyle=barGrad; ctx.beginPath();ctx.roundRect(barX,barY+barH-fillH,barW,fillH,5);ctx.fill();
+  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='9px sans-serif';ctx.textAlign='center';
+  ctx.fillText('LADING',barX+barW/2,barY-8);
+  ctx.fillText(charge.toFixed(1),barX+barW/2,barY+barH+14);
+
+  if(charge>=5){
+    drawBolt(W/2+(Math.random()-.5)*80, cloudCY+cloudH, W/2+(Math.random()-.5)*40, gndY);
+    charge=0; sparkCount++;
+    document.getElementById('st-sparks').textContent=sparkCount;
+  }
+  document.getElementById('st-charge').textContent=charge.toFixed(1)+' / 5.0';
+  document.getElementById('st-elec').textContent=negCount;
+}
+
+function drawBolt(x1,y1,x2,y2){
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  const segs=8;
+  for(let i=1;i<=segs;i++){
+    const t=i/segs;
+    const xi=x1+(x2-x1)*t+(Math.random()-.5)*60;
+    const yi=y1+(y2-y1)*t;
+    ctx.lineTo(xi,yi);
+  }
+  ctx.strokeStyle='rgba(253,224,71,0.9)';
+  ctx.lineWidth=3;
+  ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,0.7)';
+  ctx.lineWidth=1;
+  ctx.stroke();
+}
+
+const QS=[
+  {q:"Wanneer 'n plastiekliniaal met wol gevryf word, watter deeltjies word tussen die materiale oorgedra?",opts:["Protone","Neutrone","Elektrone","Atome"],ans:2,fb:"Net elektrone word tydens wrywing oorgedra. Protone en neutrone is in die kern vasgevang."},
+  {q:"'n Plastiekliniaal wat met wol gevryf word, kry elektrone. Watter lading verkry die liniaal?",opts:["Positief","Negatief","Neutraal","Geen lading nie"],ans:1,fb:"Die liniaal kry elektrone (negatiewe deeltjies), sodat dit negatief gelaai word."},
+  {q:"Twee voorwerpe het albei 'n positiewe lading. Wat sal gebeur wanneer hulle naby aan mekaar gebring word?",opts:["Hulle sal aantrek","Hulle sal afstoot","Niks nie","Hulle sal neutraal word"],ans:1,fb:"Soortgelyke ladings stoot af. Twee positiewe voorwerpe stoot van mekaar af."},
+  {q:"Waarom veroorsaak statiese elektrisiteit meer skokke op droë dae?",opts:["Droë lug gelei elektrisiteit beter","Klam lug laat ladings stadig wegvloei, wat opbou voorkom","Mense beweeg vinniger op droë dae","Statiese elektrisiteit bestaan net in koue weer"],ans:1,fb:"Watermolekules in klam lug laat ladings stadig wegvloei. Op droë dae bou lading makliker op."},
+  {q:"Weerlig word veroorsaak deur:",opts:["Reën wat die grond afkoel","'n Opbou van statiese lading in stormwolke wat na die Aarde ontlaai","Magnetiese velde vanaf die Aarde","Radiogolwe"],ans:1,fb:"Weerlig is 'n massiewe elektrostatiese ontlading — lading bou in wolke op weens wrywing tussen lug- en waterdeeltjies, en ontlaai dan na die Aarde."},
+  {q:"Watter veiligheidsmaatreël beskerm 'n gebou teen weerligskade?",opts:["Die dak wit verf","'n Weerligafleier installeer","Rubbertteëls op die dak gebruik","Vensters oophou"],ans:1,fb:"'n Weerligafleier bied 'n pad van lae weerstand vir lading om veilig na die Aarde te vloei, wat die gebou beskerm."},
+  {q:"'n Leerder vryf ballon A teen 'n woltrui — ballon A kry elektrone en word negatief gelaai. Sy vryf dan 'n identiese ballon B teen DIESELFDE woltrui op presies dieselfde manier. Wat sal gebeur wanneer sy ballonne A en B naby aan mekaar hou, en waarom?",opts:["Hulle sal aantrek, omdat albei met dieselfde stuk wol gelaai is","Hulle sal afstoot, omdat albei ballonne op dieselfde manier elektrone van die wol gekry het en dus albei negatief gelaai is, en soortgelyke ladings stoot af","Niks sal gebeur nie, omdat twee identiese voorwerpe nie albei gelaai kan word nie","Hulle sal aantrek, omdat vryf met wol altyd een positiewe en een negatiewe voorwerp skep"],ans:1,fb:"Om 'n voorwerp op dieselfde manier teen dieselfde materiaal te vryf, dra elke keer op dieselfde manier elektrone oor. Aangesien albei ballon A en ballon B elektrone van die wol gekry het, eindig albei negatief gelaai — en soortgelyke ladings (twee negatiewes) stoot mekaar af, eerder as om aan te trek."},
+  {q:"'n Negatief gelaaide liniaal trek klein stukkies papier aan, al is elke stukkie papier elektries oor die algeheel neutraal (dit het gelyke getalle protone en elektrone). Watter verduideliking verklaar hierdie aantrekking korrek?",opts:["Die papier moet in die geheim reeds positief gelaai wees, sodat dit \"neutraal\" te noem verkeerd is","Die liniaal se negatiewe lading stoot die elektrone binne elke stukkie papier effens weg, wat 'n positiewe lading op die naaste oppervlak en 'n negatiewe lading op die verste oppervlak induseer — die geïnduseerde positiewe oppervlak word dan na die liniaal aangetrek","Alle neutrale voorwerpe word outomaties na enige gelaaide voorwerp aangetrek, sonder enige oorsaak","Die papier word permanent positief gelaai die oomblik wanneer die liniaal naby gebring word"],ans:1,fb:"'n Gelaaide voorwerp kan 'n neutrale een deur induksie aantrek: die liniaal se negatiewe lading stoot die papier se eie elektrone baie effens na sy verste kant toe, wat die naaste kant van die papier effens positief en die verste kant effens negatief laat. Die liniaal word dan na die geïnduseerde positiewe lading op die naaste oppervlak aangetrek — al is die papier as geheel steeds oor die algeheel neutraal."}
+];
+let scores=new Array(8).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

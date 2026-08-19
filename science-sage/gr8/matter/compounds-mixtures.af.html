@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verbindings &amp; Mengsels — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);
+      --text:#e4e8f8;--muted:rgba(210,218,245,0.45);
+      --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.15);
+      --fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace;
+    }
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border);margin-bottom:0}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.20);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+    .compare-table th{background:rgba(96,165,250,.10);color:#93c5fd;font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;border:1px solid var(--border);text-align:left}
+    .compare-table td{padding:10px 14px;border:1px solid var(--border);color:rgba(210,218,245,.75);vertical-align:top}
+    .compare-table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+    .canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+    canvas{border-radius:12px;display:block;background:#050810}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    select.mol-select{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);font-family:var(--fd);font-size:13px;padding:9px 12px;border-radius:10px;outline:none;cursor:pointer}
+    select.mol-select option{background:#0d1225;color:var(--text)}
+    select.mol-select:focus{border-color:rgba(96,165,250,.4)}
+    .mol-formula{font-family:var(--fm);font-size:22px;font-weight:700;color:#60a5fa;text-align:center;margin:10px 0 4px}
+    .mol-name{font-size:13px;color:var(--muted);text-align:center;margin-bottom:8px}
+    .mol-type-pill{display:inline-block;font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin:0 auto;display:block;text-align:center;width:fit-content}
+    .mol-desc{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.65;margin-top:10px}
+    /* Mixture quiz */
+    .mix-quiz{margin-top:4px}
+    .mix-q{font-size:13.5px;color:rgba(210,218,245,.85);margin-bottom:10px;line-height:1.6}
+    .mix-opts{display:flex;flex-direction:column;gap:6px}
+    .mix-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:rgba(210,218,245,.75);font-size:13px;padding:9px 14px;border-radius:9px;cursor:pointer;text-align:left;transition:all 140ms}
+    .mix-btn:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28)}
+    .mix-btn.ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mix-btn.bad{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mix-feedback{font-size:12px;margin-top:8px;line-height:1.6;color:rgba(210,218,245,.65);min-height:36px}
+    .next-mix-btn{margin-top:10px;font-family:var(--fd);font-size:12px;font-weight:700;padding:7px 16px;border-radius:8px;border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.08);color:#93c5fd;cursor:pointer;transition:all 140ms}
+    .next-mix-btn:hover{background:rgba(96,165,250,.18)}
+
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}.canvas-wrap{display:none}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+      .canvas-wrap{overflow-x:auto}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Materie &amp; Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Materie &amp; Materiale · Les 3</div>
+  <h1 class="lesson-title">Verbindings &amp; Mengsels</h1>
+  <p class="lesson-sub">Verstaan hoe elemente kombineer om verbindings te vorm, en hoe mengsels van suiwer stowwe verskil.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Elemente, Verbindings en Mengsels</h2>
+    <p>Alle materie kan geklassifiseer word as óf 'n <strong>suiwer stof</strong> óf 'n <strong>mengsel</strong>. Suiwer stowwe bestaan uit slegs een tipe partikel en het vaste, bepaalde eienskappe. Mengsels bevat twee of meer stowwe wat fisies gekombineer is, maar nie chemies verbind nie.</p>
+    <div class="callout"><strong>Drie sleutelkategorieë:</strong>
+      <br>• <strong>Element</strong> — 'n suiwer stof wat uit slegs een tipe atoom bestaan (bv. suurstofgas, O₂; yster, Fe)
+      <br>• <strong>Verbinding</strong> — 'n suiwer stof wat uit twee of meer verskillende elemente bestaan wat chemies in 'n vaste verhouding saamgebind is (bv. water, H₂O; sout, NaCl)
+      <br>• <strong>Mengsel</strong> — twee of meer stowwe wat fisies gekombineer is, maar nie chemies gebind nie (bv. lug, seewater, grond)
+    </div>
+
+    <h2>Elemente</h2>
+    <p>'n <strong>Element</strong> is 'n suiwer stof wat nie deur gewone chemiese metodes in eenvoudiger stowwe afgebreek kan word nie. Daar is 118 bekende elemente, almal op die periodieke tabel gelys. Elemente bestaan as individuele atome (bv. helium, He) of as molekules van dieselfde tipe atoom (bv. suurstofgas, O₂; waterstofgas, H₂).</p>
+    <div class="key-fact">As 'n stof slegs EEN tipe atoom bevat, is dit 'n element. As dit twee of meer VERSKILLENDE tipes atome bevat wat chemies gebind is, is dit 'n verbinding.</div>
+
+    <h2>Verbindings</h2>
+    <p>'n <strong>Verbinding</strong> word gevorm wanneer twee of meer verskillende elemente chemies gekombineer word. Die elemente word deur chemiese bindings (ioniese of kovalente) in 'n vaste, bepaalde verhouding saamgevoeg. Verbindings het heeltemal ander eienskappe as die elemente waaruit hulle bestaan.</p>
+    <ul>
+      <li><strong>Water (H₂O):</strong> 2 waterstofatome + 1 suurstofatoom. Beide waterstof en suurstof is brandbare gasse — tog blus water vure!</li>
+      <li><strong>Natriumchloried / tafelsout (NaCl):</strong> 1 natriumatoom + 1 chlooratoom. Natrium is 'n gevaarlik reaktiewe metaal en chloor is 'n giftige gas — tog vorm hulle saam gewone sout, noodsaaklik vir die lewe.</li>
+      <li><strong>Koolstofdioksied (CO₂):</strong> 1 koolstofatoom + 2 suurstofatome. Word geproduseer wanneer brandstof verbrand en tydens asemhaling.</li>
+      <li><strong>Metaan (CH₄):</strong> 1 koolstofatoom + 4 waterstofatome. Aardgas wat vir kook en verhitting gebruik word.</li>
+    </ul>
+    <div class="callout"><strong>Sleutelpunt:</strong> In 'n verbinding is die elemente teenwoordig in 'n <em>vaste massaverhouding</em>. Water is altyd H₂O — nooit H₃O of HO nie. Dit is die Wet van Bepaalde Verhoudings. Verbindings kan slegs deur <strong>chemiese</strong> reaksies geskei word, nie deur fisiese metodes nie.</div>
+
+    <h2>Mengsels</h2>
+    <p>'n <strong>Mengsel</strong> bevat twee of meer stowwe wat fisies gekombineer is. Die stowwe behou hul eie eienskappe en kan gewoonlik deur fisiese metodes geskei word (bv. filtrasie, verdamping).</p>
+    <ul>
+      <li>Die komponente is <strong>nie</strong> chemies gebind nie.</li>
+      <li>Die samestelling is <strong>veranderlik</strong> — anders as 'n verbinding kan die verhouding wissel.</li>
+      <li>Elke komponent behou sy eie chemiese eienskappe.</li>
+      <li>Geen energie word (gewoonlik) tydens vermenging vrygestel of geabsorbeer nie.</li>
+    </ul>
+
+    <h2>Homogene vs Heterogene Mengsels</h2>
+    <table class="compare-table">
+      <tr><th>Eienskap</th><th>Homogene mengsel (oplossing)</th><th>Heterogene mengsel</th></tr>
+      <tr><td>Voorkoms</td><td>Eenvormig deurgaans — lyk dieselfde in elke deel</td><td>Nie-eenvormig — verskillende dele lyk verskillend</td></tr>
+      <tr><td>Komponente sigbaar?</td><td>Nee — komponente is nie met die blote oog sigbaar nie</td><td>Dikwels ja — duidelike dele kan gesien word</td></tr>
+      <tr><td>Voorbeelde</td><td>Soutwater, asyn, lug, brons (legering), koeldrank</td><td>Sand + water, grond, olie + water, slaai, graniet</td></tr>
+      <tr><td>Skeiding</td><td>Gewoonlik moeiliker — vereis verdamping of distillasie</td><td>Makliker — filtrasie, sifting, of afgiet</td></tr>
+    </table>
+    <p>Lug is 'n homogene mengsel van stikstof (~78%), suurstof (~21%), argon (~1%), en klein hoeveelhede ander gasse. Dit lyk eenvormig, maar kan in sy komponentgasse geskei word deur fraksionele distillasie van vloeibare lug.</p>
+
+    <h2>Fisiese vs Chemiese Veranderinge</h2>
+    <p>Om te verstaan hoe verbindings en mengsels vorm, moet jy die verskil tussen fisiese en chemiese veranderinge ken:</p>
+    <ul>
+      <li><strong>Fisiese verandering:</strong> Geen nuwe stof word gevorm nie. Die stof verander van vorm, grootte, of toestand (vaste stof/vloeistof/gas), maar sy chemiese identiteit bly dieselfde. Voorbeelde: ys wat smelt, suiker wat in water oplos, papier wat skeur, water wat kook. Fisiese veranderinge is gewoonlik omkeerbaar.</li>
+      <li><strong>Chemiese verandering:</strong> 'n Nuwe stof met nuwe eienskappe word gevorm. Die verandering behels die breek en vorm van chemiese bindings. Voorbeelde: hout wat brand, yster wat roes, 'n eier wat gaargemaak word, 'n koek wat gebak word. Chemiese veranderinge is gewoonlik onomkeerbaar.</li>
+    </ul>
+    <div class="key-fact">Tekens van 'n chemiese verandering: kleurverandering, gas geproduseer (borrel), temperatuurverandering, lig geproduseer, presipitaat vorm, nuwe reuk. Die vorming van 'n verbinding = chemiese verandering. Die maak van 'n mengsel = fisiese verandering.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Molekuulbekyker &amp; Mengseltoets</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Kies 'n molekule om sy bal-en-stok-model op die canvas te sien draai. Toets jouself dan met die mengseltoets aan die regterkant.</p>
+  <div class="explore-layout">
+    <div class="canvas-wrap">
+      <canvas id="molCanvas" width="420" height="380"></canvas>
+      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-align:center">Sleep die canvas om te draai · Bal-en-stok-model</div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Kies Molekule</div>
+        <select class="mol-select" id="molSelect" onchange="selectMolecule()">
+          <option value="H2">H₂ — Waterstofgas</option>
+          <option value="O2">O₂ — Suurstofgas</option>
+          <option value="H2O" selected>H₂O — Water</option>
+          <option value="CO2">CO₂ — Koolstofdioksied</option>
+          <option value="NaCl">NaCl — Natriumchloried (sout)</option>
+          <option value="CH4">CH₄ — Metaan</option>
+          <option value="N2">N₂ — Stikstofgas</option>
+          <option value="O3">O₃ — Osoon</option>
+        </select>
+        <div class="mol-formula" id="molFormula">H₂O</div>
+        <div class="mol-name" id="molName">Water</div>
+        <div class="mol-type-pill" id="molTypePill">Verbinding</div>
+        <div class="mol-desc" id="molDesc">Water is een van die belangrikste verbindings op Aarde. Dit bestaan uit 2 waterstofatome wat kovalent aan 1 suurstofatoom gebind is. Sy geboë vorm gee dit ongewone eienskappe, insluitend 'n hoë kookpunt.</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Is Dit 'n Mengsel? — Mini-toets</div>
+        <div class="mix-quiz">
+          <div class="mix-q" id="mixQ">Laai tans…</div>
+          <div class="mix-opts" id="mixOpts"></div>
+          <div class="mix-feedback" id="mixFeedback"></div>
+          <button class="next-mix-btn" id="nextMixBtn" onclick="nextMixQuestion()" style="display:none">Volgende vraag →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na vir enige wat jy gemis het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord hierdie vrae in jou oefeningboek. Wys al jou redenering waar dit vereis word.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Definieer elk van die volgende en gee een voorbeeld van elk: (a) element, (b) verbinding, (c) mengsel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Natrium (Na) is 'n reaktiewe metaal en chloor (Cl) is 'n giftige gas. Tog, wanneer hulle kombineer om natriumchloried (NaCl) te vorm, is die produk onskadelike tafelsout. (a) Is dit 'n fisiese of chemiese verandering? (b) Watter tipe stof is NaCl? (c) Verduidelik waarom die eienskappe van NaCl so verskil van sy samestellende elemente.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Verduidelik die verskil tussen 'n homogene mengsel en 'n heterogene mengsel. Klassifiseer elk van die volgende: (i) soutwater, (ii) grond, (iii) lug, (iv) olie en water.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Klassifiseer elk van die volgende as 'n element, verbinding, of mengsel. Gee 'n rede vir elke antwoord: (a) suiwer yster (Fe), (b) koolstofdioksied (CO₂), (c) seewater, (d) suiwer goud (Au).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Lys VIER tekens dat 'n chemiese verandering plaasgevind het. Besluit dan: is die oplos van sout in water 'n fisiese verandering of 'n chemiese verandering? Verduidelik jou antwoord.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (4 punte)</div><div class="wb-qtext">Lug word as 'n homogene mengsel beskryf. (a) Noem DRIE gasse wat in lug voorkom en gee die benaderde persentasie vir elk. (b) Verduidelik waarom lug as 'n mengsel eerder as 'n verbinding geklassifiseer word. (c) Noem die industriële proses wat gebruik word om die gasse in lug te skei.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 7 · (4 punte)</div><div class="wb-qtext">Vloeibare lug word stadig verhit sodat sy gasse geskei kan word. Die tabel hieronder toon die kookpunt van elke gas.
+      <table class="compare-table"><tr><th>Gas</th><th>Kookpunt (°C)</th></tr><tr><td>Stikstof (N₂)</td><td>−196</td></tr><tr><td>Argon (Ar)</td><td>−186</td></tr><tr><td>Suurstof (O₂)</td><td>−183</td></tr></table>
+      (a) Gebruik die data: watter gas kook EERSTE af soos die vloeibare lug verhit? Verduidelik jou antwoord. (b) Bereken die temperatuurverskil, in °C, tussen die kookpunte van stikstof en suurstof. (c) Noem hierdie skeidingsproses, en verduidelik waarom dit die gasse kan skei al is lug 'n homogene mengsel.</div></div>
+  </div>
+</div>
+
+<script>
+/* ── Molecule data ── */
+const MOLECULES = {
+  H2: {
+    formula:'H₂', name:'Waterstofgas', type:'Element', typeColor:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+    desc:'H₂ is \'n element — dit bevat slegs een tipe atoom (waterstof). Dit is \'n diatomiese molekule: twee waterstofatome wat deur \'n enkele kovalente binding saamgebind is.',
+    atoms:[
+      {x:-0.7,y:0,z:0,r:18,color:'#93c5fd',label:'H'},
+      {x:0.7,y:0,z:0,r:18,color:'#93c5fd',label:'H'},
+    ],
+    bonds:[[0,1]]
+  },
+  O2: {
+    formula:'O₂', name:'Suurstofgas', type:'Element', typeColor:{bg:'rgba(248,113,113,.12)',border:'rgba(248,113,113,.28)',text:'#fca5a5'},
+    desc:'O₂ is \'n element — slegs een tipe atoom. Twee suurstofatome word deur \'n dubbele kovalente binding saamgevoeg. Suurstof maak 21% van die atmosfeer uit en is noodsaaklik vir asemhaling.',
+    atoms:[
+      {x:-0.65,y:0,z:0,r:20,color:'#f87171',label:'O'},
+      {x:0.65,y:0,z:0,r:20,color:'#f87171',label:'O'},
+    ],
+    bonds:[[0,1]]
+  },
+  N2: {
+    formula:'N₂', name:'Stikstofgas', type:'Element', typeColor:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+    desc:'N₂ is \'n element — twee stikstofatome wat deur \'n baie sterk drievoudige kovalente binding saamgevoeg is. Dit maak 78% van die atmosfeer uit. Sy sterk binding maak dit meestal onreaktief by kamertemperatuur.',
+    atoms:[
+      {x:-0.65,y:0,z:0,r:18,color:'#818cf8',label:'N'},
+      {x:0.65,y:0,z:0,r:18,color:'#818cf8',label:'N'},
+    ],
+    bonds:[[0,1]]
+  },
+  H2O: {
+    formula:'H₂O', name:'Water', type:'Verbinding', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'Water is \'n verbinding — dit bevat twee verskillende tipes atome (waterstof en suurstof) wat chemies gebind is. Sy geboë vorm (104.5°) gee dit unieke eienskappe, wat dit die "oplosmiddel van die lewe" maak.',
+    atoms:[
+      {x:0,y:0.6,z:0,r:24,color:'#f87171',label:'O'},
+      {x:-0.85,y:-0.45,z:0,r:16,color:'#93c5fd',label:'H'},
+      {x:0.85,y:-0.45,z:0,r:16,color:'#93c5fd',label:'H'},
+    ],
+    bonds:[[0,1],[0,2]]
+  },
+  CO2: {
+    formula:'CO₂', name:'Koolstofdioksied', type:'Verbinding', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'CO₂ is \'n verbinding met \'n lineêre vorm — een koolstofatoom dubbel gebind aan twee suurstofatome. Dit word in asemhaling en verbranding geproduseer, en is \'n kweekhuisgas.',
+    atoms:[
+      {x:-1.0,y:0,z:0,r:20,color:'#f87171',label:'O'},
+      {x:0,y:0,z:0,r:20,color:'#94a3b8',label:'C'},
+      {x:1.0,y:0,z:0,r:20,color:'#f87171',label:'O'},
+    ],
+    bonds:[[0,1],[1,2]]
+  },
+  NaCl: {
+    formula:'NaCl', name:'Natriumchloried (tafelsout)', type:'Verbinding', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'NaCl is \'n ioniese verbinding. Natrium (Na) gee sy buitenste elektron aan chloor (Cl), wat Na⁺ en Cl⁻ ione vorm wat deur elektrostatiese aantrekking saamgehou word. Ten spyte daarvan dat sy elemente gevaarlik is, is NaCl onskadelik.',
+    atoms:[
+      {x:-0.75,y:0,z:0,r:26,color:'#fdba74',label:'Na⁺'},
+      {x:0.75,y:0,z:0,r:22,color:'#86efac',label:'Cl⁻'},
+    ],
+    bonds:[[0,1]]
+  },
+  CH4: {
+    formula:'CH₄', name:'Metaan', type:'Verbinding', typeColor:{bg:'rgba(34,197,94,.12)',border:'rgba(34,197,94,.28)',text:'#86efac'},
+    desc:'CH₄ is \'n verbinding met \'n tetraëdriese vorm. Een koolstofatoom vorm vier enkele kovalente bindings met vier waterstofatome. Dit is die hoofkomponent van aardgas, wat vir kook en verhitting gebruik word.',
+    atoms:[
+      {x:0,y:0,z:0,r:22,color:'#94a3b8',label:'C'},
+      {x:0,y:1.1,z:0,r:15,color:'#93c5fd',label:'H'},
+      {x:0,y:-1.1,z:0,r:15,color:'#93c5fd',label:'H'},
+      {x:-1.0,y:0,z:0.4,r:15,color:'#93c5fd',label:'H'},
+      {x:1.0,y:0,z:0.4,r:15,color:'#93c5fd',label:'H'},
+    ],
+    bonds:[[0,1],[0,2],[0,3],[0,4]]
+  },
+  O3: {
+    formula:'O₃', name:'Osoon', type:'Element', typeColor:{bg:'rgba(96,165,250,.12)',border:'rgba(96,165,250,.28)',text:'#93c5fd'},
+    desc:'Osoon is \'n allotroop van suurstof — dit bevat slegs een tipe atoom (suurstof), maar drie atome vorm \'n geboë molekule. Die osoonlaag in die stratosfeer beskerm die Aarde teen skadelike UV-straling.',
+    atoms:[
+      {x:0,y:0.7,z:0,r:20,color:'#f87171',label:'O'},
+      {x:-0.85,y:-0.35,z:0,r:20,color:'#f87171',label:'O'},
+      {x:0.85,y:-0.35,z:0,r:20,color:'#f87171',label:'O'},
+    ],
+    bonds:[[0,1],[0,2]]
+  }
+};
+
+/* ── Canvas & rotation ── */
+const canvas = document.getElementById('molCanvas');
+const ctx    = canvas.getContext('2d');
+const CX = 210, CY = 190;
+
+let rotY = 0.4, rotX = 0.2;
+let dragging = false, lastMX = 0, lastMY = 0;
+let autoRotY = 0;
+let frame = 0;
+let currentMol = 'H2O';
+
+canvas.addEventListener('mousedown', e => { dragging = true; lastMX = e.clientX; lastMY = e.clientY; });
+window.addEventListener('mouseup', () => { dragging = false; });
+window.addEventListener('mousemove', e => {
+  if(!dragging) return;
+  rotY += (e.clientX - lastMX) * 0.012;
+  rotX += (e.clientY - lastMY) * 0.010;
+  lastMX = e.clientX; lastMY = e.clientY;
+});
+canvas.addEventListener('touchstart', e => { dragging=true; lastMX=e.touches[0].clientX; lastMY=e.touches[0].clientY; e.preventDefault(); },{passive:false});
+window.addEventListener('touchend', () => { dragging=false; });
+window.addEventListener('touchmove', e => {
+  if(!dragging) return;
+  rotY += (e.touches[0].clientX - lastMX)*0.012;
+  rotX += (e.touches[0].clientY - lastMY)*0.010;
+  lastMX=e.touches[0].clientX; lastMY=e.touches[0].clientY;
+},{passive:false});
+
+function project(x3,y3,z3, scale=105) {
+  /* rotate around Y then X */
+  let x1 = x3*Math.cos(rotY) + z3*Math.sin(rotY);
+  let z1 = -x3*Math.sin(rotY) + z3*Math.cos(rotY);
+  let y1 = y3*Math.cos(rotX) - z1*Math.sin(rotX);
+  let z2 = y3*Math.sin(rotX) + z1*Math.cos(rotX);
+  const fov = 3.5;
+  const pz = fov + z2;
+  const px = CX + (x1 / pz) * scale;
+  const py = CY - (y1 / pz) * scale;
+  const size = 1 / pz;
+  return {px, py, size, z2};
+}
+
+function drawMol() {
+  ctx.clearRect(0,0,420,380);
+  const mol = MOLECULES[currentMol];
+  if(!mol) return;
+
+  /* project all atoms */
+  const projected = mol.atoms.map((a,i) => {
+    const p = project(a.x, a.y, a.z || 0);
+    return {...a,...p,i};
+  });
+
+  /* draw bonds first (behind atoms) */
+  mol.bonds.forEach(([ai,bi]) => {
+    const a = projected[ai], b = projected[bi];
+    ctx.beginPath();
+    ctx.moveTo(a.px, a.py);
+    ctx.lineTo(b.px, b.py);
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    /* inner bright line */
+    ctx.beginPath();
+    ctx.moveTo(a.px, a.py);
+    ctx.lineTo(b.px, b.py);
+    ctx.strokeStyle = 'rgba(255,255,255,0.70)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+
+  /* sort atoms by z (painter's algorithm) */
+  projected.sort((a,b) => a.z2 - b.z2);
+
+  projected.forEach(a => {
+    const r = a.r * a.size * 2.2;
+    /* glow */
+    const grd = ctx.createRadialGradient(a.px-r*0.3,a.py-r*0.3,r*0.05,a.px,a.py,r*1.4);
+    grd.addColorStop(0,'rgba(255,255,255,0.18)');
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(a.px,a.py,r*1.4,0,Math.PI*2);
+    ctx.fillStyle=grd; ctx.fill();
+
+    /* sphere body */
+    const sg = ctx.createRadialGradient(a.px-r*0.3,a.py-r*0.35,r*0.05,a.px,a.py,r);
+    sg.addColorStop(0,'rgba(255,255,255,0.55)');
+    sg.addColorStop(0.35,a.color);
+    sg.addColorStop(1,shadeColor(a.color,-60));
+    ctx.beginPath(); ctx.arc(a.px,a.py,r,0,Math.PI*2);
+    ctx.fillStyle=sg; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1; ctx.stroke();
+
+    /* label */
+    if(r > 10) {
+      ctx.fillStyle='#fff';
+      ctx.font=`bold ${Math.max(8,Math.min(14,r*0.55))}px "JetBrains Mono"`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(a.label,a.px,a.py);
+    }
+  });
+}
+
+function shadeColor(hex, amt) {
+  /* darken/lighten a colour given as rgba(...) or #rrggbb */
+  if(hex.startsWith('#')) {
+    let r=parseInt(hex.slice(1,3),16)+amt, g=parseInt(hex.slice(3,5),16)+amt, b=parseInt(hex.slice(5,7),16)+amt;
+    r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
+    return `rgb(${r},${g},${b})`;
+  }
+  return hex;
+}
+
+function animLoop() {
+  if(!dragging) rotY += 0.008;
+  frame++;
+  drawMol();
+  requestAnimationFrame(animLoop);
+}
+animLoop();
+
+function selectMolecule() {
+  currentMol = document.getElementById('molSelect').value;
+  const mol = MOLECULES[currentMol];
+  document.getElementById('molFormula').textContent = mol.formula;
+  document.getElementById('molName').textContent    = mol.name;
+  const pill = document.getElementById('molTypePill');
+  pill.textContent = mol.type;
+  const tc = mol.typeColor;
+  pill.style.background = tc.bg;
+  pill.style.border = `1px solid ${tc.border}`;
+  pill.style.color  = tc.text;
+  document.getElementById('molDesc').textContent = mol.desc;
+}
+selectMolecule();
+
+/* ── Mixture quiz ── */
+const MIX_QUESTIONS = [
+  {q:'Is <strong>soutwater</strong> \'n mengsel of \'n verbinding?', opts:['Mengsel','Verbinding','Element'], ans:0, exp:'Soutwater is \'n mengsel — sout (NaCl) is in water (H₂O) opgelos, maar geen chemiese bindings word tussen hulle gevorm nie. Dit kan deur verdamping geskei word.'},
+  {q:'Is <strong>suiwer water (H₂O)</strong> \'n mengsel of \'n verbinding?', opts:['Mengsel','Verbinding','Element'], ans:1, exp:'Suiwer water is \'n verbinding — waterstof- en suurstofatome is chemies gebind in \'n vaste 2:1-verhouding. Dit kan nie deur fisiese metodes geskei word nie.'},
+  {q:'Is <strong>lug</strong> \'n mengsel of \'n verbinding?', opts:['Mengsel','Verbinding','Element'], ans:0, exp:'Lug is \'n mengsel van gasse (hoofsaaklik stikstof en suurstof). Die gasse is nie chemies gebind nie en kan deur fraksionele distillasie geskei word. Die verhouding kan wissel (bv. meer CO₂ naby \'n vuur).'},
+  {q:'Is <strong>koolstofdioksied (CO₂)</strong> \'n mengsel of \'n verbinding?', opts:['Mengsel','Verbinding','Element'], ans:1, exp:'CO₂ is \'n verbinding — een koolstof- en twee suurstofatome is chemies gebind in \'n vaste verhouding. Jy kan hulle nie deur fisiese metodes skei nie.'},
+  {q:'Is <strong>grond</strong> \'n homogene of heterogene mengsel?', opts:['Homogeen','Heterogeen','Dit is \'n verbinding'], ans:1, exp:'Grond is \'n heterogene mengsel — dit bevat verskillende partikels (sand, klei, organiese materiaal, minerale) wat nie eenvormig versprei is nie. Verskillende dele van grond lyk verskillend.'},
+  {q:'Is <strong>asyn</strong> (asynsuur opgelos in water) \'n homogene of heterogene mengsel?', opts:['Homogeen','Heterogeen','Dit is \'n suiwer verbinding'], ans:0, exp:'Asyn is \'n homogene mengsel (\'n oplossing) — dit is deurgaans eenvormig en jy kan nie die individuele komponente sien nie. Dit lyk dieselfde in elke deel.'},
+  {q:'Watter een van hierdie is \'n <strong>element</strong>?', opts:['Koolstofdioksied (CO₂)','Suiwer suurstofgas (O₂)','Soutwater','Metaan (CH₄)'], ans:1, exp:'Suiwer suurstofgas (O₂) is \'n element — dit bevat slegs een tipe atoom (suurstof). CO₂ en CH₄ is verbindings; soutwater is \'n mengsel.'},
+  {q:'Ystervylsel gemeng met sand — is dit \'n mengsel of \'n verbinding?', opts:['Mengsel','Verbinding','Element'], ans:0, exp:'Ystervylsel en sand is fisies gemeng, nie chemies gebind nie. Geen nuwe stof word gevorm nie. Dit is \'n heterogene mengsel wat met \'n magneet geskei kan word.'},
+];
+let mixIdx = 0, mixAnswered = false;
+const mixOrder = [...MIX_QUESTIONS.keys()].sort(()=>Math.random()-0.5);
+
+function renderMixQuestion() {
+  mixAnswered = false;
+  const qi = mixOrder[mixIdx % mixOrder.length];
+  const q  = MIX_QUESTIONS[qi];
+  document.getElementById('mixQ').innerHTML = q.q;
+  document.getElementById('mixFeedback').textContent = '';
+  document.getElementById('nextMixBtn').style.display = 'none';
+  document.getElementById('mixOpts').innerHTML = q.opts.map((o,i) =>
+    `<button class="mix-btn" id="mopt${i}" onclick="answerMix(${i},${qi})">${o}</button>`
+  ).join('');
+}
+
+function answerMix(oi, qi) {
+  if(mixAnswered) return;
+  mixAnswered = true;
+  const q = MIX_QUESTIONS[qi];
+  document.querySelectorAll('.mix-btn').forEach(b => b.disabled=true);
+  document.getElementById('mopt'+q.ans).classList.add('ok');
+  if(oi !== q.ans) document.getElementById('mopt'+oi).classList.add('bad');
+  document.getElementById('mixFeedback').textContent = q.exp;
+  document.getElementById('nextMixBtn').style.display = 'block';
+}
+
+function nextMixQuestion() {
+  mixIdx++;
+  renderMixQuestion();
+}
+renderMixQuestion();
+
+/* ── Tabs ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+/* ── Practice ── */
+const QUESTIONS = [
+  {text:'Wat is die sleutelverskil tussen \'n verbinding en \'n mengsel?',opts:['\'n Verbinding bevat slegs een element; \'n mengsel bevat baie','In \'n verbinding is elemente chemies in vaste verhoudings gebind; in \'n mengsel is hulle fisies gekombineer','\'n Verbinding kan deur filtrasie geskei word; \'n mengsel nie','Mengsels is altyd vloeistowwe; verbindings is altyd vaste stowwe'],ans:1,exp:'In \'n verbinding is atome van verskillende elemente chemies gebind in \'n bepaalde vaste verhouding (bv. H₂O altyd 2:1). In \'n mengsel is stowwe fisies gekombineer sonder \'n vaste verhouding en sonder chemiese binding.'},
+  {text:'Water (H₂O) word geproduseer wanneer waterstof in suurstof brand. Watter tipe verandering is dit?',opts:['\'n Fisiese verandering, want water bestaan steeds uit H en O','\'n Chemiese verandering, want \'n nuwe stof (water) word gevorm','\'n Mengsel wat vorm, want waterstof en suurstof word gemeng','\'n Fisiese verandering, want geen energie word vrygestel nie'],ans:1,exp:'Die verbranding van waterstof in suurstof is \'n chemiese verandering — \'n nuwe stof (water) word gevorm met heeltemal ander eienskappe as waterstof en suurstof. Energie (lig en hitte) word ook vrygestel.'},
+  {text:'Watter een van die volgende is \'n homogene mengsel?',opts:['Grond','Olie en water','\'n Vonkelende koeldrank (gekarboneerde drankie)','Sand en klippertjies'],ans:2,exp:'\'n Vonkelende drankie is \'n homogene mengsel (oplossing) — die koolstofdioksied en water is deurgaans eenvormig gemeng. Grond, olie-en-water, en sand-en-klippertjies is heterogeen — hul komponente is nie eenvormig versprei nie.'},
+  {text:'Natriumchloried (NaCl) kan van soutwater geskei word deur verdamping. Dit vertel jou dat soutwater \'n:',opts:['Verbinding is, want chemiese bindings moet gebreek word','Mengsel is, want dit kan deur \'n fisiese metode geskei word','Element is, want natrium en chloried is albei teenwoordig','Verbinding is, want dit het \'n vaste samestelling'],ans:1,exp:'As \'n stof deur \'n fisiese metode (soos verdamping) geskei kan word, is dit \'n mengsel, nie \'n verbinding nie. Verbindings kan slegs deur chemiese reaksies geskei word, nie deur fisiese prosesse nie.'},
+  {text:'Watter een van die volgende is \'n ELEMENT?',opts:['Koolstofdioksied (CO₂)','Brons (koper- + tin-legering)','Suiwer swael (S₈)','Metaan (CH₄)'],ans:2,exp:'Suiwer swael (S₈) is \'n element — dit bevat slegs een tipe atoom (swael). CO₂ en CH₄ is verbindings; brons is \'n mengsel (legering). Let wel: S₈ is die molekulêre vorm wat swael natuurlik aanneem, maar dit bly steeds \'n element.'},
+  {text:'Yster (Fe) en swael (S) word saam in \'n beker gemeng. Geen verhitting vind plaas nie. Wat is die resultaat?',opts:['\'n Verbinding genaamd ystersulfied (FeS) word gevorm','\'n Mengsel van yster en swael word gevorm','\'n Element word gevorm, want albei is op die periodieke tabel','\'n Chemiese reaksie vind plaas en gas word geproduseer'],ans:1,exp:'Om bloot yster en swael sonder verhitting te meng, lewer \'n heterogene mengsel — jy kan die geel swael en grys yster steeds apart sien, en hulle kan met \'n magneet geskei word. Geen chemiese bindings word gevorm nie.'},
+  {text:'\'n Beker bevat sand, sout, en water wat almal saam gemeng is. \'n Leerder wil al DRIE stowwe apart terugkry, deur slegs fisiese metodes te gebruik. Watter reeks stappe sal werk?',opts:['Verdamp eers die hele mengsel, en probeer dan filtreer wat oorbly','Filtreer die mengsel om die sand te verwyder, verdamp/distilleer dan die filtraat om die sout van die water te skei','Voeg \'n magneet by om die sand te verwyder, filtreer dan die sout uit die water','Filtreer die mengsel twee keer — eers vir die sout, dan vir die water'],ans:1,exp:'Sand is onoplosbaar, so filtrasie verwyder dit eerste en laat \'n filtraat van soutwater agter. Verdamping (of beter, distillasie, om ook die water terug te kry) skei dan die opgeloste sout van die water. Filtrasie kan nie opgeloste sout verwyder nie, want soutpartikels beweeg saam met die water deur die filtreerpapier — slegs verdamping/distillasie kan \'n oplossing skei.'},
+  {text:'Die Wet van Bepaalde Verhoudings stel dat suiwer water (H₂O) altyd waterstof en suurstof in \'n vaste massaverhouding van 1:8 bevat. \'n Leerder ontbind drie onbekende vloeistofmonsters en meet hierdie waterstof:suurstof-massaverhoudings — Monster 1 = 1:8, Monster 2 = 1:9, Monster 3 = 2:16. Watter monster(s) is konsekwent met suiwer water?',opts:['Slegs Monster 1','Slegs Monster 2','Slegs Monster 3','Monsters 1 en 3'],ans:3,exp:'Monster 3 se verhouding van 2:16 vereenvoudig na 1:8 (deel albei getalle deur 2), wat ooreenstem met die vaste verhouding wat vir suiwer water vereis word — dus is Monsters 1 en 3 albei konsekwent. Monster 2 se verhouding van 1:9 stem NIE ooreen met 1:8 nie, dus kan dit nie suiwer water wees nie; dit bevat waarskynlik \'n onsuiwerheid of is verkeerd gemeet. Dit is presies wat die Wet van Bepaalde Verhoudings voorspel: \'n verbinding het altyd dieselfde massaverhouding, ongeag die monstergrootte.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  document.getElementById('questions').innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;
+  answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    const msgs=['Bly leer — lees die les weer deur.','Goeie poging — gaan die verduidelikings na.','Goed gedaan! \'n Deeglike begrip.','Uitstekend! Jy het verbindings en mengsels bemeester.'];
+    document.getElementById('scoreMsg').textContent=score<=3?msgs[0]:score<=5?msgs[1]:score<=7?msgs[2]:msgs[3];
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sigbare Lig — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(139,92,246,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fde68a}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fde68a;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fde68a}
+    .spectrum-bar{display:flex;border-radius:10px;overflow:hidden;height:32px;margin:16px 0}
+    .spectrum-bar div{flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--fm);color:rgba(0,0,0,0.7)}
+    .light-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    .light-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .light-card h3{font-size:13px;font-weight:800;color:#fde68a;margin-bottom:6px}
+    .light-card p{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.6;margin:0}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fde68a}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#fbbf24;font-family:var(--fm);font-weight:600}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(251,191,36,.35)}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-wrap{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Energie &amp; Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Energie &amp; Verandering · Les 4</div>
+  <h1 class="lesson-title">Sigbare Lig</h1>
+  <p class="lesson-sub">Lig beweeg in reguit lyne, skei in 'n reënboogspektrum deur 'n prisma, kaats van spieëls af, breek wanneer dit glas binnegaan — en jou oog sien dit alles.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🌈 Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Eienskappe van lig</h2>
+    <p>Lig is 'n vorm van energie wat uitgestraal word deur <strong>liggewende voorwerpe</strong> soos die Son, gloeilampe en vlamme. Sleuteleienskappe:</p>
+    <ul>
+      <li>Lig beweeg in <strong>reguit lyne</strong> (strale)</li>
+      <li>Lig beweeg teen 300 000 km/s deur leë ruimte</li>
+      <li>Dit het nie 'n medium nodig nie (dit kan deur 'n vakuum beweeg)</li>
+      <li>Dit word deur straling oorgedra</li>
+    </ul>
+
+    <h2>Die spektrum van sigbare lig</h2>
+    <p>Wit lig is nie 'n enkele kleur nie — dit is 'n mengsel van al die kleure van die spektrum. Wanneer wit lig deur 'n driehoekige prisma beweeg, word dit versprei (opgesplit) in sy komponentkleure, van laagste frekwensie (langste golflengte) tot hoogste:</p>
+    <div class="spectrum-bar">
+      <div style="background:#6d28d9">V</div>
+      <div style="background:#4f46e5">I</div>
+      <div style="background:#2563eb">B</div>
+      <div style="background:#16a34a">G</div>
+      <div style="background:#ca8a04">G</div>
+      <div style="background:#ea580c">O</div>
+      <div style="background:#dc2626">R</div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:-8px">Violet · Indigo · Blou · Groen · Geel · Oranje · Rooi (die Engelse geheue-esel is VIBGYOR)</p>
+    <p>'n Reënboog vorm wanneer sonlig deur waterdruppels in die atmosfeer gebreek en versprei word — dieselfde beginsel as 'n prisma.</p>
+
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:16px;margin:16px 0">
+      <svg viewBox="0 0 400 200" style="width:100%;height:auto;display:block" role="img" aria-label="Diagram van wit lig wat 'n gelyksydige driehoekige glasprisma binnegaan en in twee stadiums in die spektrum versprei">
+        <!-- equilateral prism, sitting upright with its base horizontal. The incident beam
+             is tilted ~9° above horizontal -- with the base level, that's the shallowest
+             approach that still refracts well clear of total internal reflection at the
+             far face. -->
+        <polygon points="200,46 260,150 140,150" fill="rgba(148,163,184,0.10)" stroke="rgba(148,163,184,0.55)" stroke-width="1.5"/>
+        <line x1="177.0" y1="115.9" x2="151.0" y2="100.9" stroke="rgba(148,163,184,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="226.9" y1="122.6" x2="252.9" y2="107.6" stroke="rgba(148,163,184,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="25.7" y1="130.3" x2="164.0" y2="108.4" stroke="rgba(255,255,255,0.85)" stroke-width="2.5"/>
+        <!-- stage 1: colours begin separating (slightly) while crossing the glass -->
+        <line x1="164.0" y1="108.4" x2="238.3" y2="112.3" stroke="#ef4444" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="238.7" y2="113.2" stroke="#f97316" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="239.2" y2="114.0" stroke="#eab308" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="239.9" y2="115.1" stroke="#22c55e" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="240.8" y2="116.6" stroke="#3b82f6" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="242.0" y2="118.9" stroke="#6366f1" stroke-width="1.6" opacity="0.8"/>
+        <line x1="164.0" y1="108.4" x2="243.4" y2="121.2" stroke="#8b5cf6" stroke-width="1.6" opacity="0.8"/>
+        <!-- stage 2: each colour bends again leaving the glass and spreads further. Each band's
+             edge is the shared midpoint with its neighbour, so the seven colours meet with no
+             gap between them — the underlying ray directions from stage 1 are unchanged. -->
+        <polygon points="238.0,111.9 300.0,139.8 299.7,142.4 238.5,112.7" fill="#ef4444"/>
+        <polygon points="238.5,112.7 299.7,142.4 299.3,145.0 239.0,113.6" fill="#f97316"/>
+        <polygon points="239.0,113.6 299.3,145.0 298.7,148.1 239.6,114.6" fill="#eab308"/>
+        <polygon points="239.6,114.6 298.7,148.1 297.8,152.2 240.3,115.9" fill="#22c55e"/>
+        <polygon points="240.3,115.9 297.8,152.2 295.8,158.4 241.4,117.8" fill="#3b82f6"/>
+        <polygon points="241.4,117.8 295.8,158.4 292.0,166.6 242.7,120.0" fill="#6366f1"/>
+        <polygon points="242.7,120.0 292.0,166.6 287.2,175.4 244.0,122.3" fill="#8b5cf6"/>
+        <text x="25" y="102" font-size="10" fill="rgba(255,255,255,0.7)" font-family="Cabinet Grotesk, sans-serif">Wit lig</text>
+        <text x="304" y="144" font-size="10" font-weight="700" fill="#ef4444" font-family="Cabinet Grotesk, sans-serif">R</text>
+        <text x="288" y="180" font-size="10" font-weight="700" fill="#8b5cf6" font-family="Cabinet Grotesk, sans-serif">V</text>
+        <text x="200" y="195" font-size="10" fill="rgba(148,163,184,0.6)" font-family="Cabinet Grotesk, sans-serif" text-anchor="middle">Twee brekings: 'n effense skeiding by die ingang, 'n groter skeiding by die uitgang</text>
+      </svg>
+      <p style="font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px">Die kleure begin skei sodra hulle die glas binnegaan en bly versprei terwyl hulle daardeur beweeg. Wanneer hulle die tweede oppervlak bereik, breek hulle weer — dié keer weg van die normaal — en versprei baie skerper. Violet breek die meeste by albei oppervlakke, rooi die minste, sodat wit lig uitwaaier in die spektrum.</p>
+    </div>
+
+    <div class="callout"><strong>Onthou:</strong> Violet-, indigo- en blou lig het die hoogste frekwensie (kortste golflengte). Rooi- en oranje lig het die laagste frekwensie (langste golflengte). Frekwensiebesonderhede word NIE op hierdie vlak vereis nie.</div>
+
+    <h2>Ondeurskynende en deurskynende stowwe</h2>
+    <div class="light-grid">
+      <div class="light-card">
+        <h3>Ondeurskynend</h3>
+        <p>Lig kan nie daardeur beweeg nie. Dit word geabsorbeer of gereflekteer. Ondeurskynende voorwerpe werp skaduwees. Voorbeelde: metaal, baksteen, hout, karton.</p>
+      </div>
+      <div class="light-card">
+        <h3>Deurskynend</h3>
+        <p>Die meeste lig beweeg daardeur. Sommige word geabsorbeer en sommige gereflekteer, maar die meeste word deurgelaat. Voorbeelde: glas, deursigtige plastiek, skoon water.</p>
+      </div>
+    </div>
+
+    <h2>Absorpsie en kleur</h2>
+    <p>Wanneer wit lig 'n gekleurde oppervlak tref, word sommige frekwensies (kleure) <strong>geabsorbeer</strong> en ander <strong>gereflekteer</strong>. Die kleure wat jou oog bereik, bepaal watter kleur jy sien:</p>
+    <ul>
+      <li>'n <strong>Rooi</strong> muur absorbeer violet, indigo, blou, groen, geel, oranje — en reflekteer rooi</li>
+      <li>'n <strong>Swart</strong> voorwerp absorbeer ALLE frekwensies — geen lig word gereflekteer nie, sodat dit swart lyk</li>
+      <li>'n <strong>Wit</strong> voorwerp reflekteer ALLE frekwensies — alle kleure bereik die oog, sodat dit wit lyk</li>
+    </ul>
+
+    <h2>Refleksie van lig</h2>
+    <p>Lig kaats van oppervlaktes af. Die <strong>wet van refleksie</strong> stel: die hoek van inval = die hoek van refleksie (albei gemeet vanaf die normaal — 'n denkbeeldige lyn loodreg op die oppervlak).</p>
+    <ul>
+      <li><strong>Gladde oppervlaktes</strong> (spieëls): alle lig reflekteer in dieselfde rigting → duidelike beeld</li>
+      <li><strong>Rowwe oppervlaktes</strong> (verfrommelde foelie, muur): gereflekteerde lig versprei in baie rigtings → geen duidelike beeld nie (diffuse refleksie)</li>
+    </ul>
+
+    <h2>Breking van lig</h2>
+    <p>Wanneer lig van een medium (bv. lug) na 'n ander (bv. glas of water) beweeg, verander sy spoed. As dit teen 'n hoek binnegaan, verander dit ook rigting. Dit word <strong>breking</strong> genoem:</p>
+    <ul>
+      <li>Lig wat 'n digter medium binnegaan (lug → glas) breek <em>na</em> die normaal toe (word stadiger)</li>
+      <li>Lig wat 'n digter medium verlaat (glas → lug) breek <em>weg van</em> die normaal (word vinniger)</li>
+      <li>'n Driehoekige prisma breek lig twee keer — een keer by binnegaan en een keer by uitgaan — en versprei dit in die spektrum</li>
+      <li>'n Lens breek lig om dit op 'n punt te fokus</li>
+    </ul>
+    <p>Jy kan breking sien deur 'n potlood in 'n glas water te plaas — die potlood lyk geknak by die wateroppervlak.</p>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Demonstrasie</div>
+        <button class="mode-btn active" onclick="setMode('prism',this)">🔺 Prisma-verspreiding</button>
+        <button class="mode-btn" onclick="setMode('reflection',this)">🪞 Refleksie</button>
+        <button class="mode-btn" onclick="setMode('refraction',this)">💧 Breking</button>
+        <button class="mode-btn" onclick="setMode('colour',this)">🎨 Kleur &amp; absorpsie</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Inligting</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7" id="mode-info">Wit lig gaan die prisma binne en word versprei in die sigbare spektrum — violet breek die meeste, rooi breek die minste.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Telling</span><span class="score-val" id="score">0 / 8</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Skryf jou antwoorde in die spasies hieronder. Gebruik volledige sinne.</p>
+    <div class="wb-card"><div class="wb-q">1. Lys die kleure van die sigbare spektrum in volgorde van hoogste frekwensie na laagste frekwensie. Watter geheue-esel kan jou help om die volgorde te onthou?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Verduidelik die verskil tussen 'n ondeurskynende en 'n deurskynende stof. Gee twee voorbeelde van elk en verduidelik wat met lig gebeur wanneer dit hierdie stowwe tref.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. 'n Rooi motor is in sonlig geparkeer. Verduidelik in terme van ligabsorpsie en -refleksie waarom die motor rooi lyk.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Stel die wet van refleksie en teken 'n straaldiagram om dit te illustreer. Merk die normaal, hoek van inval en hoek van refleksie.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Wat is breking? 'n Ligstraal beweeg vanaf lug in 'n glasblok teen 'n hoek. In watter rigting breek dit? Wat gebeur wanneer dit die glas verlaat en terugkeer na lug?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Verduidelik hoe 'n driehoekige prisma wit lig versprei in die sigbare spektrum. Waarom breek violet lig meer as rooi lig?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. 'n Leerder gebruik 'n straalkassie en 'n plat spieël om die wet van refleksie te toets. Sy meet die hoek van inval en die hoek van refleksie (albei vanaf die normaal) vir vier verskillende proewe.<br><br>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">
+      <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Proef</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Hoek van inval</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.15)">Hoek van refleksie</th></tr></thead>
+      <tbody>
+      <tr><td style="padding:6px 10px">1</td><td style="padding:6px 10px">20°</td><td style="padding:6px 10px">20°</td></tr>
+      <tr><td style="padding:6px 10px">2</td><td style="padding:6px 10px">35°</td><td style="padding:6px 10px">35°</td></tr>
+      <tr><td style="padding:6px 10px">3</td><td style="padding:6px 10px">50°</td><td style="padding:6px 10px">48°</td></tr>
+      <tr><td style="padding:6px 10px">4</td><td style="padding:6px 10px">65°</td><td style="padding:6px 10px">65°</td></tr>
+      </tbody></table><br>
+      (a) Stel, gebaseer op Proewe 1, 2 en 4, die wet van refleksie in jou eie woorde. (2)<br>
+      (b) Watter proef pas NIE hierdie patroon nie? (1)<br>
+      (c) Stel EEN moontlike rede voor vir die onverwagte resultaat in daardie proef (dink aan moontlike bronne van eksperimentele fout, nie 'n nuwe wet van fisika nie). (1)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let mode='prism', raf=null, t=0, mirrorAngle=45;
+
+const modeInfo={
+  prism:'Wit lig breek twee keer. Kleure begin effens skei sodra hulle die glas binnegaan, bly versprei terwyl hulle daardeur beweeg, en breek dan weer en versprei baie verder wanneer hulle uitgaan — violet breek die meeste by albei oppervlakke, rooi die minste. (Die klein skeiding binne die glas word oordryf sodat dit sigbaar is; die wyer skeiding by die uitgang is die werklike effek van glas na lug beweeg.)',
+  reflection:'Die hoek van inval (inkomende straal) is gelyk aan die hoek van refleksie (uitgaande straal), albei gemeet vanaf die normaal.',
+  refraction:'Lig breek na die normaal toe wanneer dit \'n digter medium binnegaan (lug → water). Dit breek weg wanneer dit uitgaan.',
+  colour:'\'n Gekleurde voorwerp reflekteer slegs sy eie kleur en absorbeer al die ander. Swart absorbeer alles; wit reflekteer alles.'
+};
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-info').textContent=modeInfo[m];
+  if(raf) cancelAnimationFrame(raf);
+  initSim();
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/420);
+  t=0; loop();
+}
+
+const SPEC=['#8b5cf6','#6366f1','#3b82f6','#22c55e','#eab308','#f97316','#ef4444'];
+const SPEC_NAMES=['Violet','Indigo','Blou','Groen','Geel','Oranje','Rooi'];
+const SPEC_N=[1.545,1.535,1.525,1.518,1.513,1.509,1.505]; // refractive index per colour — violet highest, red lowest
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#060a16';
+  ctx.fillRect(0,0,W,H);
+
+  if(mode==='prism') drawPrism();
+  else if(mode==='reflection') drawReflection();
+  else if(mode==='refraction') drawRefraction();
+  else drawColour();
+}
+
+function drawPrism(){
+  // Equilateral prism (60° apex), sitting upright with its base horizontal.
+  const A={x:250,y:117}, B={x:350,y:290}, C={x:150,y:290};
+
+  function norm(v){const l=Math.hypot(v.x,v.y)||1;return{x:v.x/l,y:v.y/l};}
+  function outward(P1,P2,interior){
+    const f=norm({x:P2.x-P1.x,y:P2.y-P1.y});
+    let n={x:-f.y,y:f.x};
+    const toI={x:interior.x-P1.x,y:interior.y-P1.y};
+    if(n.x*toI.x+n.y*toI.y>0) n={x:-n.x,y:-n.y};
+    return n;
+  }
+  // Vector form of Snell's law (mirrors GLSL's refract()): d is the incident
+  // direction, n is the surface normal pointing back against d, eta = n1/n2.
+  function refract(d,n,eta){
+    const cosI=-(d.x*n.x+d.y*n.y);
+    const sin2T=eta*eta*(1-cosI*cosI);
+    if(sin2T>1) return null; // total internal reflection
+    const cosT=Math.sqrt(1-sin2T);
+    const k=eta*cosI-cosT;
+    return norm({x:eta*d.x+k*n.x,y:eta*d.y+k*n.y});
+  }
+  function segIntersect(p,d,q1,q2){
+    const e={x:q2.x-q1.x,y:q2.y-q1.y};
+    const den=d.x*e.y-d.y*e.x;
+    if(Math.abs(den)<1e-9) return null;
+    const t=((q1.x-p.x)*e.y-(q1.y-p.y)*e.x)/den;
+    return {x:p.x+d.x*t,y:p.y+d.y*t};
+  }
+
+  const nEntry=outward(A,C,B), nExit=outward(A,B,C);
+
+  // Incident beam tilted ~9° above horizontal — with the prism sitting upright
+  // (base horizontal), this is the shallowest approach that still keeps the
+  // angle of incidence (~39°) safely clear of total internal reflection at
+  // the far face for every colour.
+  const inAng=-9*Math.PI/180;
+  const dIn={x:Math.cos(inAng),y:Math.sin(inAng)};
+  const entry={x:A.x+(C.x-A.x)*0.6, y:A.y+(C.y-A.y)*0.6};
+  const start={x:entry.x-dIn.x*175, y:entry.y-dIn.y*175};
+
+  // Prism body
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.closePath();
+  ctx.fillStyle='rgba(148,163,184,0.10)';ctx.fill();
+  ctx.strokeStyle='rgba(148,163,184,0.55)';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Glasprisma',(A.x+B.x+C.x)/3,Math.max(A.y,B.y,C.y)+22);
+
+  // Normal at the entry point (dashed)
+  ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(entry.x-nEntry.x*45,entry.y-nEntry.y*45);ctx.lineTo(entry.x+nEntry.x*45,entry.y+nEntry.y*45);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Incident white beam
+  ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(entry.x,entry.y);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Wit lig',start.x,start.y-10);
+
+  // Stage 1 — refraction at the entry face. Each colour's own refractive index
+  // gives it a very slightly different angle inside the glass (a real prism only
+  // separates colours by a fraction of a degree here — far too small to see), so
+  // the tiny spread is exaggerated just enough to be visible while it crosses the glass.
+  const glassAngles=SPEC_N.map(n=>{
+    const d=refract(dIn,nEntry,1/n);
+    return d?Math.atan2(d.y,d.x):null;
+  });
+  const meanGlass=glassAngles.reduce((a,b)=>a+(b||0),0)/glassAngles.length;
+  const EXAG_INSIDE=9;
+
+  // Stage 2 — each (visibly-separated) internal ray reaches its own point on the
+  // far face and refracts again leaving the glass. This second refraction is real
+  // Snell's law with no further exaggeration — going from glass into air naturally
+  // amplifies the gap between colours far more than the first surface did, which
+  // is exactly why the fan only becomes obviously rainbow-coloured after this bend.
+  const rays=SPEC.map((c,i)=>{
+    if(glassAngles[i]==null) return null;
+    const dispGlassAngle=meanGlass+(glassAngles[i]-meanGlass)*EXAG_INSIDE;
+    const dGlass={x:Math.cos(dispGlassAngle),y:Math.sin(dispGlassAngle)};
+    const exitPt=segIntersect(entry,dGlass,A,B);
+    if(!exitPt) return null;
+    const dAir=refract(dGlass,{x:-nExit.x,y:-nExit.y},SPEC_N[i]);
+    if(!dAir) return null;
+    return {exitPt,dAir};
+  });
+
+  const midExit=(rays[3]||rays.find(Boolean));
+  if(midExit){
+    ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(148,163,184,0.45)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(midExit.exitPt.x-nExit.x*45,midExit.exitPt.y-nExit.y*45);ctx.lineTo(midExit.exitPt.x+nExit.x*45,midExit.exitPt.y+nExit.y*45);ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  rays.forEach((r,i)=>{
+    if(!r) return;
+    // Stage 1 path inside the glass: entry point → this colour's own point on the far face.
+    ctx.strokeStyle=SPEC[i];ctx.lineWidth=1.5;ctx.globalAlpha=0.6;
+    ctx.beginPath();ctx.moveTo(entry.x,entry.y);ctx.lineTo(r.exitPt.x,r.exitPt.y);ctx.stroke();
+    ctx.globalAlpha=1;
+  });
+
+  // Stage 2, in air: each colour's own exit point and refracted direction (computed
+  // above, unchanged) define where its band starts and ends. Rather than drawing each
+  // ray as its own independent wedge — which leaves gaps because neighbouring rays
+  // point in slightly different directions — build the boundary *between* every pair
+  // of neighbours once and share it, so band i's right edge is exactly band i+1's
+  // left edge and the seven colours meet with no seam.
+  const endPts=rays.map(r=>{
+    if(!r) return null;
+    const angle=Math.atan2(r.dAir.y,r.dAir.x);
+    return {x:r.exitPt.x+Math.cos(angle)*112, y:r.exitPt.y+Math.sin(angle)*112};
+  });
+  function boundaryPoints(pts){
+    const n=pts.length, b=new Array(n+1);
+    for(let i=1;i<n;i++) b[i]={x:(pts[i-1].x+pts[i].x)/2, y:(pts[i-1].y+pts[i].y)/2};
+    b[0]={x:pts[0].x+(pts[0].x-pts[1].x)*0.5, y:pts[0].y+(pts[0].y-pts[1].y)*0.5};
+    b[n]={x:pts[n-1].x+(pts[n-1].x-pts[n-2].x)*0.5, y:pts[n-1].y+(pts[n-1].y-pts[n-2].y)*0.5};
+    return b;
+  }
+  const nearB=boundaryPoints(rays.map(r=>r.exitPt)), farB=boundaryPoints(endPts);
+
+  rays.forEach((r,i)=>{
+    if(!r) return;
+    ctx.beginPath();
+    ctx.moveTo(nearB[i].x,nearB[i].y);
+    ctx.lineTo(farB[i].x,farB[i].y);
+    ctx.lineTo(farB[i+1].x,farB[i+1].y);
+    ctx.lineTo(nearB[i+1].x,nearB[i+1].y);
+    ctx.closePath();
+    ctx.globalAlpha=0.9;ctx.fillStyle=SPEC[i];ctx.fill();ctx.globalAlpha=1;
+    ctx.fillStyle=SPEC[i];ctx.font='10px var(--fd)';ctx.textAlign='left';
+    ctx.fillText(SPEC_NAMES[i],endPts[i].x+6,endPts[i].y+3);
+  });
+
+  ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Violet breek die meeste, rooi breek die minste (die skeiding binne die glas is oordryf om sigbaar te wees)',W/2,H-10);
+}
+
+function drawReflection(){
+  const cx=W/2, sy=H/2+40; // contact point, surface y
+
+  // Mirror surface (horizontal)
+  ctx.strokeStyle='rgba(148,163,184,0.6)';ctx.lineWidth=4;
+  ctx.beginPath();ctx.moveTo(60,sy);ctx.lineTo(W-60,sy);ctx.stroke();
+  ctx.fillStyle='rgba(148,163,184,0.25)';ctx.fillRect(60,sy+2,W-120,18);
+  ctx.fillStyle='rgba(148,163,184,0.55)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Spieëloppervlak',W/2,sy+28);
+
+  // Normal (vertical dashed)
+  ctx.setLineDash([5,5]);
+  ctx.strokeStyle='rgba(107,114,128,0.5)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(cx,sy-150);ctx.lineTo(cx,sy+60);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(107,114,128,0.55)';ctx.font='10px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Normaal',cx+5,sy-130);
+
+  // Incident ray: top-left → contact point
+  const ix1=cx-160, iy1=sy-130;
+  ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(ix1,iy1);ctx.lineTo(cx,sy);ctx.stroke();
+  drawArrowHead(ix1,iy1,cx,sy,'#fde68a');
+  ctx.fillStyle='#fde68a';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Invalstraal',ix1+55,iy1+10);
+
+  // Reflected ray: contact point → top-right (same angle, other side)
+  const rx1=cx+160, ry1=sy-130;
+  ctx.strokeStyle='#f87171';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(cx,sy);ctx.lineTo(rx1,ry1);ctx.stroke();
+  drawArrowHead(cx,sy,rx1,ry1,'#f87171');
+  ctx.fillStyle='#f87171';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Gereflekteerde straal',rx1-55,ry1+10);
+
+  // Angle arcs
+  const ang=Math.atan2(130,160);
+  ctx.strokeStyle='rgba(251,191,36,0.5)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(cx,sy,55,-(Math.PI/2+ang),-Math.PI/2);ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.85)';ctx.font='12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('θᵢ',cx-36,sy-22);
+
+  ctx.strokeStyle='rgba(248,113,113,0.5)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(cx,sy,55,-Math.PI/2,-(Math.PI/2-ang));ctx.stroke();
+  ctx.fillStyle='rgba(248,113,113,0.85)';ctx.font='12px var(--fd)';
+  ctx.fillText('θᵣ',cx+36,sy-22);
+
+  ctx.fillStyle='rgba(210,218,245,0.6)';ctx.font='13px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('θᵢ = θᵣ  —  Hoek van inval = Hoek van refleksie',W/2,H-20);
+}
+
+function drawRefraction(){
+  // Water surface
+  ctx.fillStyle='rgba(59,130,246,0.08)';
+  ctx.fillRect(0,H/2,W,H/2);
+  ctx.strokeStyle='rgba(59,130,246,0.4)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+  ctx.fillStyle='rgba(59,130,246,0.5)';ctx.font='11px var(--fd)';ctx.textAlign='right';
+  ctx.fillText('Water',W-10,H/2+20);
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.textAlign='right';
+  ctx.fillText('Lug',W-10,H/2-10);
+
+  const ix=W/2,iy=H/2;
+  // Normal
+  ctx.setLineDash([5,5]);ctx.strokeStyle='rgba(107,114,128,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(ix,iy-150);ctx.lineTo(ix,iy+150);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Incident
+  ctx.strokeStyle='#fde68a';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(ix-110,iy-110);ctx.lineTo(ix,iy);ctx.stroke();
+  drawArrowHead(ix-110,iy-110,ix,iy,'#fde68a');
+  ctx.fillStyle='#fde68a';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Invalstraal (lug)',ix-70,iy-90);
+
+  // Refracted (steeper - bends toward normal)
+  ctx.strokeStyle='#86efac';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(ix,iy);ctx.lineTo(ix+60,iy+130);ctx.stroke();
+  drawArrowHead(ix,iy,ix+60,iy+130,'#86efac');
+  ctx.fillStyle='#86efac';ctx.font='11px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Gebreekte straal (water)',ix+62,iy+80);
+  ctx.fillText('(breek na die normaal toe)',ix+62,iy+96);
+
+  // Angles
+  ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(ix,iy,50,-Math.PI/2,-Math.PI/4);ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('θ₁',ix-18,iy-30);
+
+  ctx.strokeStyle='rgba(134,239,172,0.4)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(ix,iy,50,Math.PI/2,Math.PI/2+Math.atan2(60,130));ctx.stroke();
+  ctx.fillStyle='rgba(134,239,172,0.7)';
+  ctx.fillText('θ₂',ix+25,iy+38);
+  ctx.fillText('θ₂ < θ₁',ix+90,iy+130);
+}
+
+function drawColour(){
+  const objs=[
+    {x:100,y:180,r:45,reflect:'#ef4444',name:'Rooi voorwerp',absorbs:'V I B G Y O'},
+    {x:260,y:180,r:45,reflect:'#22c55e',name:'Groen voorwerp',absorbs:'V I B Y O R'},
+    {x:420,y:180,r:45,reflect:'#666',name:'Swart voorwerp',absorbs:'alles'},
+    {x:180,y:330,r:45,reflect:'#fff',name:'Wit voorwerp',absorbs:'niks (reflekteer alles)'},
+    {x:360,y:330,r:45,reflect:'#3b82f6',name:'Blou voorwerp',absorbs:'V I G Y O R'}
+  ];
+  ctx.font='bold 11px var(--fd)';
+  for(const o of objs){
+    ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+    ctx.fillStyle=o.reflect==='#fff'?'rgba(255,255,255,0.9)':o.reflect==='#666'?'#111':o.reflect;
+    ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='rgba(210,218,245,0.8)';ctx.textAlign='center';
+    ctx.fillText(o.name,o.x,o.y+o.r+14);
+    ctx.fillStyle='rgba(210,218,245,0.45)';ctx.font='9px var(--fd)';
+    ctx.fillText('Absorbeer: '+o.absorbs,o.x,o.y+o.r+26);
+    ctx.font='bold 11px var(--fd)';
+    // Sun ray in
+    ctx.strokeStyle='rgba(251,191,36,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(o.x-60,o.y-80);ctx.lineTo(o.x-o.r*0.7,o.y-o.r*0.7);ctx.stroke();
+  }
+  ctx.fillStyle='#fde68a';ctx.font='bold 12px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('☀ Wit lig tref gekleurde oppervlaktes',W/2,40);
+}
+
+function drawArrowHead(x1,y1,x2,y2,color){
+  const ang=Math.atan2(y2-y1,x2-x1);
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-12*Math.cos(ang-0.4),y2-12*Math.sin(ang-0.4));
+  ctx.lineTo(x2-12*Math.cos(ang+0.4),y2-12*Math.sin(ang+0.4));
+  ctx.closePath();ctx.fill();
+}
+
+initSim();
+
+const QS=[
+  {q:"Wat is die korrekte volgorde van die sigbare spektrum van hoogste frekwensie na laagste frekwensie?",opts:["Rooi, Oranje, Geel, Groen, Blou, Indigo, Violet","Violet, Indigo, Blou, Groen, Geel, Oranje, Rooi","Groen, Geel, Blou, Rooi, Violet, Oranje, Indigo","Blou, Groen, Rooi, Geel, Violet, Oranje, Indigo"],ans:1,fb:"VIBGYOR: Violet het die hoogste frekwensie, Rooi het die laagste. Dit is die omgekeerde van die Engelse geheue-esel ROY G BIV."},
+  {q:"'n Swart voorwerp wat in sonlig geplaas word, lyk swart omdat:",opts:["Dit alle kleure lig reflekteer","Dit alle frekwensies lig absorbeer","Dit lig breek","Dit alle lig daardeur laat"],ans:1,fb:"'n Swart voorwerp absorbeer alle frekwensies sigbare lig. Niks word na jou oog toe teruggereflekteer nie, sodat dit swart lyk."},
+  {q:"Die wet van refleksie stel dat:",opts:["Die hoek van inval twee keer die hoek van refleksie is","Die hoek van inval gelyk is aan die hoek van refleksie","Lig altyd teen 90° reflekteer","Rowwe oppervlaktes altyd meer as gladde oppervlaktes reflekteer"],ans:1,fb:"Die wet van refleksie: hoek van inval = hoek van refleksie. Albei word vanaf die normaal na die oppervlak gemeet."},
+  {q:"Wanneer lig teen 'n hoek van lug na glas beweeg, breek dit:",opts:["Weg van die normaal","Na die normaal toe","Langs die normaal","Dit breek nie"],ans:1,fb:"Wanneer lig 'n digter medium (soos glas) binnegaan, word dit stadiger en breek dit na die normaal toe. Dit is breking."},
+  {q:"'n Prisma versprei wit lig in sy komponentkleure omdat:",opts:["Die glas sommige kleure absorbeer","Verskillende kleure lig met verskillende hoeveelhede breek","Die prisma sommige kleure reflekteer","Alle kleure teen verskillende spoede deur lug beweeg"],ans:1,fb:"Verskillende frekwensies (kleure) lig breek met verskillende hoeveelhede in glas. Violet breek die meeste, rooi breek die minste — dit versprei wit lig in die spektrum."},
+  {q:"'n Ondeurskynende voorwerp wat tussen 'n ligbron en 'n muur geplaas word, sal:",opts:["Die lig daar rondom breek","'n Skaduwee op die muur skep","Al die lig terugreflekteer","Die lig daardeur laat"],ans:1,fb:"Ondeurskynende voorwerpe laat nie lig daardeur nie. Die area agter die voorwerp — afgesluit van die ligbron — skep 'n skaduwee."},
+  {q:"'n Groen T-hemp (wat slegs groen lig reflekteer en alle ander kleure absorbeer) word met suiwer rooi lig in 'n donker kamer verlig — geen ander kleure lig is teenwoordig nie. Watter kleur sal die T-hemp lyk, en waarom?",opts:["Groen, want die T-hemp se werklike kleur verander nooit ongeag watter lig daarop skyn nie","Rooi, want die T-hemp reflekteer watter kleur lig ook al daarop skyn","Swart (of baie donker), want daar is geen groen lig teenwoordig vir die hemp om te reflekteer nie, en die rooi lig wat WEL teenwoordig is, word deur die hemp geabsorbeer eerder as gereflekteer","Wit, want die vermenging van rooi lig met 'n gekleurde voorwerp lewer altyd wit lig"],ans:2,fb:"'n Gekleurde voorwerp kan slegs kleure lig reflekteer wat werklik daarop skyn. Die groen T-hemp reflekteer normaalweg groen en absorbeer elke ander kleur, insluitend rooi. Onder suiwer rooi lig is daar geen groen lig beskikbaar om te reflekteer nie, en die rooi lig wat wel die hemp tref, word geabsorbeer eerder as gereflekteer — sodat byna geen lig jou oog bereik nie, en die hemp lyk swart of baie donker, al is daar niks 'verkeerd' met die hemp self nie."},
+  {q:"'n Potlood in 'n glas water lyk presies by die wateroppervlak geknak — die deel bo die water lyk normaal, maar die ondergedompelde deel lyk sywaarts verskuif. Watter verduideliking verklaar dit korrek?",opts:["Refleksie vind by die wateroppervlak plaas, wat die beeld van die potlood sywaarts laat kaats","Breking vind plaas waar lig van die ondergedompelde deel van die potlood van water na lug oorgaan, wat die strale laat buig en verskuif waar daardie deel van die potlood voorkom — lig van die deel bo die water gaan nooit oor hierdie grens nie, sodat dit normaal lyk","Die water verander die kleur en vorm van die lig wat die potlood tref, chemies","Die geboë glashouer tree soos 'n lens op en vervorm slegs die onderste helfte van die beeld"],ans:1,fb:"Breking gebeur spesifiek by die grens tussen twee media met verskillende digtheid. Lig van die ondergedompelde deel van die potlood moet van water na lug oorgaan om jou oog te bereik, en dit breek by daardie grens — wat die skynbare posisie van daardie deel van die potlood verskuif. Lig van die deel van die potlood bo die water beweeg reguit deur lug die hele pad, sonder om enige grens oor te steek, sodat dit nie breek nie en in sy ware posisie voorkom. Hierdie wanpassing by die oppervlak skep die 'geknakte potlood'-illusie."}
+];
+let scores=new Array(8).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

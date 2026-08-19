@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buite die Sonnestelsel — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,146,60,0.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(139,92,246,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .scale-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .scale-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .scale-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .scale-table td:first-child{color:#fdba74;font-weight:700;font-family:var(--fm)}
+    .scale-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;margin-bottom:6px}
+    .mode-btn.active{border-color:rgba(251,146,60,.40);background:rgba(251,146,60,.12);color:#fdba74}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#fb923c;font-family:var(--fm);font-weight:600;font-size:10px}
+    /* Practice + Workbook */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#fb923c}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(251,146,60,.35)}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-wrap{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Die Aarde &amp; Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Die Aarde &amp; Daarbuite · Les 2</div>
+  <h1 class="lesson-title">Buite die Sonnestelsel</h1>
+  <p class="lesson-sub">Ons Son is net een van 200–400 miljard sterre in die Melkweg-sterrestelsel — en die Melkweg is een van honderde miljarde sterrestelsels in die waarneembare heelal.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🌌 Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Buite ons sonnestelsel</h2>
+    <p>Ons sonnestelsel — die Son plus al die voorwerpe wat dit omwentel — is enorm. Die afstand van die Son na Pluto is ongeveer 6 miljard km. Tog is dit piepklein in vergelyking met die afstande tussen sterre. Die naaste sterstelsel aan ons Son is <strong>Alpha Centauri</strong>, ongeveer 4.3 ligjaar ver.</p>
+
+    <h2>Die ligjaar</h2>
+    <p>Afstande in die ruimte is so groot dat kilometer onprakties raak. Wetenskaplikes gebruik die <strong>ligjaar (lj)</strong> as 'n eenheid van afstand:</p>
+    <div class="callout"><strong>1 ligjaar</strong> = die afstand wat lig in een jaar in 'n vakuum aflê = ongeveer <strong>9.46 × 10¹² km</strong> (ongeveer 9.5 biljoen kilometer)</div>
+    <p>Lig beweeg teen 300 000 km/s. In een jaar lê dit amper 10 biljoen km af. Wanneer jy na Alpha Centauri kyk, sien jy lig wat dit 4.3 jaar gelede verlaat het — jy kyk in die verlede in.</p>
+    <table class="scale-table">
+      <thead><tr><th>Voorwerp</th><th>Afstand vanaf die Aarde</th></tr></thead>
+      <tbody>
+        <tr><td>Maan</td><td>1.3 ligsekondes</td></tr>
+        <tr><td>Son</td><td>8.3 ligminute</td></tr>
+        <tr><td>Alpha Centauri (naaste sterstelsel)</td><td>4.3 ligjaar</td></tr>
+        <tr><td>Middelpunt van die Melkweg</td><td>~26 000 ligjaar</td></tr>
+        <tr><td>Andromeda-sterrestelsel (naaste groot sterrestelsel)</td><td>~2.5 miljoen ligjaar</td></tr>
+        <tr><td>Waarneembare heelal (radius)</td><td>~46 miljard ligjaar</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Ons sterrestelsel — die Melkweg</h2>
+    <p>'n <strong>Sterrestelsel</strong> is 'n massiewe stelsel van miljoene of miljarde sterre, gas, stof en donker materie wat deur swaartekrag saamgehou word. Ons sonnestelsel behoort aan die <strong>Melkweg-sterrestelsel</strong>:</p>
+    <ul>
+      <li>Bevat ongeveer 200–400 miljard sterre</li>
+      <li>Deursnee: ongeveer 100 000 ligjaar</li>
+      <li>Vorm: 'n gebalkte spiraalvormige sterrestelsel</li>
+      <li>Ons sonnestelsel is in een van die spiraalarms geleë, ongeveer 26 000 ligjaar van die galaktiese middelpunt</li>
+      <li>Op 'n helder donker nag kan jy die Melkweg as 'n helder band oor die lug sien — jy kyk van die kant af deur die skyf van ons sterrestelsel</li>
+    </ul>
+
+    <h2>Tipes sterrestelsels</h2>
+    <ul>
+      <li><strong>Spiraalstelsels</strong> — plat skyf met spiraalarms; voorbeeld: Melkweg, Andromeda</li>
+      <li><strong>Elliptiese stelsels</strong> — balvormig, sonder spiraalarms</li>
+      <li><strong>Onreëlmatige stelsels</strong> — sonder 'n gereelde vorm; voorbeeld: die Magelhaanse Wolke, sigbaar vanaf Suid-Afrika</li>
+    </ul>
+    <div class="callout"><strong>Suid-Afrikaanse verband:</strong> Die Magelhaanse Wolke — die Groot en Klein Magelhaanse Wolk (GMW en KMW) — is twee klein onreëlmatige sterrestelsels wat met die blote oog vanaf die Suidelike Halfrond sigbaar is. Hulle is satellietstelsels van die Melkweg, onderskeidelik ongeveer 160 000 en 200 000 ligjaar ver.</div>
+
+    <h2>Die heelal</h2>
+    <p>Die <strong>heelal</strong> bevat alles wat bestaan — alle materie, energie, ruimte en tyd. Die waarneembare heelal bevat na raming 2 biljoen (2 000 000 000 000) sterrestelsels. Die heelal het ongeveer 13.8 miljard jaar gelede ontstaan in 'n gebeurtenis genaamd die Oerknal (Big Bang).</p>
+
+    <h2>Groottehiërargie</h2>
+    <p>Dit help om in vlakke van skaal te dink:</p>
+    <ul>
+      <li>Planeet → Planetêre stelsel (sonnestelsel) → Sterretros → Sterrestelsel → Sterrestelselgroep → Waarneembare Heelal</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="420"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Aansig</div>
+        <button class="mode-btn active" onclick="setMode('milkyway',this)">🌌 Melkweg</button>
+        <button class="mode-btn" onclick="setMode('distances',this)">📏 Skaal van afstande</button>
+        <button class="mode-btn" onclick="setMode('galaxies',this)">🌀 Tipes sterrestelsels</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Skaalfeite</div>
+        <div class="stat-item"><span>Son → Alpha Cen</span><span>4.3 lj</span></div>
+        <div class="stat-item"><span>Melkweg-deursnee</span><span>100 000 lj</span></div>
+        <div class="stat-item"><span>Sterre in Melkweg</span><span>~300 miljard</span></div>
+        <div class="stat-item"><span>Sterrestelsels in heelal</span><span>~2 biljoen</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Telling</span><span class="score-val" id="score">0 / 8</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Skryf jou antwoorde in die spasies hieronder. Gebruik volledige sinne.</p>
+    <div class="wb-card"><div class="wb-q">1. Wat is 'n ligjaar? Waarom gebruik wetenskaplikes ligjare in plaas van kilometer wanneer hulle afstande in die ruimte meet?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Die naaste ster aan ons Son is Alpha Centauri, ongeveer 4.3 ligjaar ver. Wat beteken dit om te sê jy "kyk terug in die tyd" wanneer jy 'n verre ster waarneem?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Beskryf die Melkweg-sterrestelsel. Waar is ons sonnestelsel daarbinne geleë?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Noem die drie hoofsoorte sterrestelsels en beskryf kortliks die vorm van elk. Gee 'n voorbeeld van elke tipe.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Skryf die groottehiërargie van kleinste na grootste, begin met "planeet" en eindig met "waarneembare heelal". Noem ten minste 6 vlakke.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Wat is die Magelhaanse Wolke en waarom is hulle betekenisvol vir waarnemers in Suid-Afrika? Hoe ver is hulle?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">7. Die tabel hieronder gee die benaderde afstand van vier voorwerpe vanaf die Aarde in ligjare.<br><br>
+      <table class="scale-table"><thead><tr><th>Voorwerp</th><th>Afstand (ligjare)</th></tr></thead><tbody>
+      <tr><td>Alpha Centauri</td><td>4.3</td></tr>
+      <tr><td>Sirius</td><td>8.6</td></tr>
+      <tr><td>Betelgeuse</td><td>640</td></tr>
+      <tr><td>Deneb</td><td>2 600</td></tr>
+      </tbody></table><br>
+      (a) Bereken hoeveel keer verder Deneb vanaf die Aarde is as Alpha Centauri (rond af tot die naaste heelgetal). Wys jou berekeninge.<br>
+      (b) Menslike skryfstelsels het ongeveer 5 000 jaar gelede ontwikkel. Verduidelik, met behulp van die tabel, of die lig wat jy vanaand van Deneb sien, voor of na die uitvinding van skrif verlaat het, en met ongeveer hoeveel jaar.<br>
+      (c) Verduidelik waarom die helderheid van 'n ster in die naglug nie op sy eie vir jou kan sê hoe ver dit is nie.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=420;
+let mode='milkyway',raf=null,t=0;
+let stars=[];
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(raf) cancelAnimationFrame(raf);
+  initSim();
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*420/520);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/420);
+  stars=[];
+  if(mode==='milkyway'){
+    // Generate stars for milky way
+    for(let i=0;i<600;i++){
+      const arm=Math.floor(Math.random()*2);
+      const r=30+Math.pow(Math.random(),0.7)*180;
+      const theta=arm*Math.PI+(r/180)*Math.PI*3+( Math.random()-.5)*0.8;
+      stars.push({
+        x:W/2+r*Math.cos(theta)+(Math.random()-.5)*30,
+        y:H/2+r*Math.sin(theta)*0.4+(Math.random()-.5)*20,
+        s:Math.random()*1.5+0.3,
+        b:Math.random()
+      });
+    }
+    // Core bulge
+    for(let i=0;i<200;i++){
+      const r=Math.random()*45;
+      const th=Math.random()*Math.PI*2;
+      stars.push({x:W/2+r*Math.cos(th),y:H/2+r*Math.sin(th)*0.5,s:Math.random()*1+0.3,b:Math.random(),core:true});
+    }
+  } else {
+    for(let i=0;i<200;i++) stars.push({x:Math.random()*W,y:Math.random()*H,s:Math.random()*1.2+0.2,b:Math.random()});
+  }
+  t=0;loop();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#020408';
+  ctx.fillRect(0,0,W,H);
+
+  if(mode==='milkyway') drawMilkyWay();
+  else if(mode==='distances') drawDistances();
+  else drawGalaxies();
+}
+
+function drawMilkyWay(){
+  for(const s of stars){
+    const twinkle=0.4+0.6*Math.abs(Math.sin(t*0.02+s.b*100));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,Math.PI*2);
+    const c=s.core?`rgba(253,186,116,${0.6*twinkle})`:`rgba(255,255,255,${0.3*twinkle})`;
+    ctx.fillStyle=c;ctx.fill();
+  }
+  // Sun marker
+  const sx=W/2+100,sy=H/2-30;
+  ctx.beginPath();ctx.arc(sx,sy,5,0,Math.PI*2);
+  ctx.fillStyle='#fde68a';ctx.fill();
+  ctx.strokeStyle='rgba(253,224,71,0.6)';ctx.lineWidth=8;
+  ctx.beginPath();ctx.arc(sx,sy,10,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#fde68a';ctx.font='bold 10px var(--fd)';ctx.textAlign='left';
+  ctx.fillText('Ons Son',sx+14,sy+4);
+
+  // Core label
+  ctx.fillStyle='rgba(253,186,116,0.7)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Galaktiese middelpunt',W/2,H/2+6);
+
+  // Diameter line
+  ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(251,146,60,0.3)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W/2-210,H/2);ctx.lineTo(W/2+210,H/2);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(251,146,60,0.6)';ctx.font='10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('← ~100 000 ligjaar →',W/2,H/2+56);
+
+  ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='11px var(--fd)';
+  ctx.fillText('Melkweg — gebalkte spiraalstelsel',W/2,20);
+}
+
+function drawDistances(){
+  // Background stars
+  for(const s of stars){ctx.beginPath();ctx.arc(s.x,s.y,s.s*0.6,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.2*s.b})`;ctx.fill();}
+
+  const items=[
+    {label:'Aarde',x:60,color:'#3b82f6',size:8,dist:'0'},
+    {label:'Maan (1.3 ls)',x:110,color:'#94a3b8',size:5,dist:''},
+    {label:'Son (8.3 lm)',x:180,color:'#fde68a',size:12,dist:''},
+    {label:'Alpha Cen (4.3 lj)',x:320,color:'#fb923c',size:6,dist:''},
+    {label:'Melkweg-middelpunt (26 000 lj)',x:460,color:'#c084fc',size:18,dist:''}
+  ];
+
+  items.forEach((it,i)=>{
+    // Arrow line
+    if(i<items.length-1){
+      ctx.setLineDash([3,3]);ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(it.x+10,H/2);ctx.lineTo(items[i+1].x-10,H/2);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    // Glow
+    const g=ctx.createRadialGradient(it.x,H/2,0,it.x,H/2,it.size*2.5);
+    g.addColorStop(0,it.color.replace(')',',0.3)').replace('rgb','rgba'));
+    g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(it.x,H/2,it.size*2.5,0,Math.PI*2);ctx.fill();
+    // Body
+    ctx.beginPath();ctx.arc(it.x,H/2,it.size,0,Math.PI*2);ctx.fillStyle=it.color;ctx.fill();
+    // Label
+    ctx.fillStyle='rgba(210,218,245,0.8)';ctx.font='9.5px var(--fd)';ctx.textAlign='center';
+    const lines=it.label.split('(');
+    ctx.fillText(lines[0].trim(),it.x,H/2+it.size+16);
+    if(lines[1]) ctx.fillText('('+lines[1],it.x,H/2+it.size+28);
+  });
+
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Skaal van afstande (nie op skaal nie — groottes oordryf vir sigbaarheid)',W/2,H-16);
+}
+
+function drawGalaxies(){
+  for(const s of stars){ctx.beginPath();ctx.arc(s.x,s.y,s.s*0.5,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.15*s.b})`;ctx.fill();}
+
+  // Spiral
+  drawSpiral(130,150,'Spiraal\n(bv. Melkweg)','#fb923c');
+  // Elliptical
+  drawElliptical(W/2,150,'Ellipties','#c084fc');
+  // Irregular
+  drawIrregular(390,150,'Onreëlmatig\n(bv. Magelhaanse\nWolke)','#22d3ee');
+
+  // LMC/SMC
+  ctx.fillStyle='rgba(34,211,238,0.7)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText('Magelhaanse Wolke sigbaar vanaf Suid-Afrika!',W/2,H-16);
+}
+
+function drawSpiral(cx,cy,label,color){
+  for(let arm=0;arm<2;arm++){
+    for(let i=0;i<80;i++){
+      const r=8+i*1.6, th=arm*Math.PI+(i/80)*Math.PI*3;
+      const px=cx+r*Math.cos(th), py=cy+r*Math.sin(th)*0.4;
+      const a=0.6*(1-i/80);
+      ctx.beginPath();ctx.arc(px,py,1.2,0,Math.PI*2);
+      ctx.fillStyle=`${color}${Math.round(a*255).toString(16).padStart(2,'0')}`;
+      ctx.fill();
+    }
+  }
+  // Core
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,18);
+  g.addColorStop(0,'rgba(253,230,138,0.9)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(cx,cy,18,10,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  label.split('\n').forEach((l,i)=>ctx.fillText(l,cx,cy+85+i*13));
+}
+
+function drawElliptical(cx,cy,label,color){
+  const g=ctx.createRadialGradient(cx,cy,0,cx,cy,55);
+  g.addColorStop(0,'rgba(192,132,252,0.8)');g.addColorStop(0.5,'rgba(139,92,246,0.4)');g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(cx,cy,55,38,0,0,Math.PI*2);ctx.fill();
+  for(let i=0;i<60;i++){
+    const r=Math.random()*45, th=Math.random()*Math.PI*2;
+    ctx.beginPath();ctx.arc(cx+r*Math.cos(th),cy+r*Math.sin(th)*0.65,0.8,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.fill();
+  }
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  ctx.fillText(label,cx,cy+85);
+}
+
+function drawIrregular(cx,cy,label,color){
+  const pts=[];
+  for(let i=0;i<50;i++){
+    const r=5+Math.random()*50, th=Math.random()*Math.PI*2;
+    pts.push({x:cx+r*Math.cos(th)*1.2,y:cy+r*Math.sin(th)*0.9});
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,1,0,Math.PI*2);
+    ctx.fillStyle='rgba(34,211,238,0.5)';ctx.fill();
+  }
+  ctx.fillStyle='rgba(210,218,245,0.75)';ctx.font='bold 10px var(--fd)';ctx.textAlign='center';
+  label.split('\n').forEach((l,i)=>ctx.fillText(l,cx,cy+85+i*13));
+}
+
+initSim();
+
+const QS=[
+  {q:"Wat is 'n ligjaar?",opts:["Die tyd wat lig neem om die Son te bereik","Die afstand wat lig in een jaar aflê","Een miljard kilometer","Die ouderdom van die heelal"],ans:1,fb:"'n Ligjaar is 'n eenheid van AFSTAND — die afstand wat lig in een jaar in 'n vakuum aflê, ongeveer 9.46 × 10¹² km."},
+  {q:"Hoe ver is Alpha Centauri, die naaste sterstelsel, ongeveer vanaf die Aarde?",opts:["4.3 kilometer","4.3 ligminute","4.3 ligjaar","4.3 miljoen ligjaar"],ans:2,fb:"Alpha Centauri is ongeveer 4.3 ligjaar ver — dit beteken die lig wat ons van dit sien, het 4.3 jaar gelede vertrek."},
+  {q:"In watter sterrestelsel is ons sonnestelsel geleë?",opts:["Andromeda","Magelhaanse Wolk","Die Melkweg","Die waarneembare heelal"],ans:2,fb:"Ons sonnestelsel (die Son en alles wat dit omwentel) is in die Melkweg-sterrestelsel geleë, ongeveer 26 000 ligjaar van die galaktiese middelpunt."},
+  {q:"Die Melkweg word die beste beskryf as:",opts:["'n Elliptiese sterrestelsel","'n Gebalkte spiraalstelsel","'n Onreëlmatige sterrestelsel","'n Bolvormige sterretros"],ans:1,fb:"Die Melkweg is 'n gebalkte spiraalstelsel met 'n sentrale balkvormige gebied en spiraalarms wat na buite strek."},
+  {q:"Wat is die Magelhaanse Wolke?",opts:["Gaswolke binne die Melkweg","Twee onreëlmatige dwergstelsels sigbaar vanaf die Suidelike Halfrond","Twee tipes newels","Sterretrosse naby die Son"],ans:1,fb:"Die Groot en Klein Magelhaanse Wolk is twee onreëlmatige dwergstelsels wat die Melkweg omwentel. Hulle is met die blote oog sigbaar vanaf die Suidelike Halfrond, insluitend Suid-Afrika."},
+  {q:"Wanneer jy 'n ster waarneem wat 1000 ligjaar ver is, sien jy:",opts:["Die ster soos dit nou op hierdie oomblik is","Die ster soos dit 1000 jaar gelede was","'n Weerkaatsing van die ster","'n Kunstenaar se voorstelling"],ans:1,fb:"Lig van 'n ster 1000 lj ver neem 1000 jaar om ons te bereik. Jy sien hoe die ster 1000 jaar gelede gelyk het — jy kyk terug in die tyd!"},
+  {q:"Ster A is 650 ligjaar vanaf die Aarde en Ster B is 1200 ligjaar vanaf die Aarde. Vanaand lyk albei ewe helder aan die lug. Watter stelling verduidelik korrek wat jy werklik sien?",opts:["Albei sterre het vanaand presies so gelyk, in werklike tyd, omdat hulle ewe helder lyk","Jy sien Ster A soos dit 650 jaar gelede was en Ster B soos dit 1200 jaar gelede was — die twee beelde is 550 jaar uitmekaar in die sterre se geskiedenis, nie van dieselfde oomblik nie","Aangesien Ster B se lig ouer is, moet Ster B 'n jonger ster as Ster A wees","Gelyke helderheid bewys dat die twee sterre op dieselfde ware afstand van die Aarde is"],ans:1,fb:"Ligreistyd hang slegs van afstand af, so elke ster se beeld toon dit soos dit was toe daardie lig dit verlaat het — nie 'nou' nie. Ster A se lig het 650 jaar gelede vertrek en Ster B se lig het 1200 jaar gelede vertrek, 'n verskil van 1200 − 650 = 550 jaar, al kom albei seine vanaand saam aan. Helderheid aan die lug hang af van beide ware ligsterkte en afstand, so dit kan nie alleen gebruik word om afstande te vergelyk nie."},
+  {q:"Die Melkweg se deursnee is ongeveer 100 000 ligjaar. As 'n ruimtetuig teen een-tiende van die spoed van lig (0.1c) kon reis, hoeveel jaar sou dit ongeveer neem om die hele sterrestelsel te deurkruis?",opts:["10 000 jaar","100 000 jaar","1 000 000 jaar","10 000 000 jaar"],ans:2,fb:"Tyd = afstand ÷ spoed. Aangesien die afstand reeds in ligjaar gegee word, beteken deling deur 'n breukdeel van ligspoed: 100 000 lj ÷ 0.1c = 1 000 000 jaar. Teen slegs een-tiende van die spoed van lig sou 'n enkelrigting-oorsteek van die Melkweg 'n miljoen jaar neem — wat wys hoe geweldig groot selfs ons eie sterrestelsel is."}
+];
+let scores=new Array(8).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 8';}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
