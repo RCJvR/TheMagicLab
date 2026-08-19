@@ -17,6 +17,7 @@
 <script defer src="../../require-auth.js"></script>
   <script defer src="../../progress.js"></script>
   <script defer src="../../auth-modal.js"></script>
+  <script defer src="../../lang-toggle.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -516,11 +517,12 @@
       <span class="grade-badge">Grade 9</span>
     </div>
     <div class="header-right">
-      <a href="../index.html" class="home-btn"> <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Grades</a>
-      <a href="../../index.html" class="home-btn"> <i data-lucide="home" style="width:12px;height:12px;"></i> Home</a>
+      <a href="../index.html" class="home-btn"> <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> <span id="lblGrades">Grades</span></a>
+      <a href="../../index.html" class="home-btn"> <i data-lucide="home" style="width:12px;height:12px;"></i> <span id="lblHome">Home</span></a>
       <span id="progressText">Loading…</span>
       <div id="progressBar"><div id="progressFill"></div></div>
-      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 Sign In</button>
+      <span id="mlLangToggle"></span>
+      <button class="ml-auth-btn" data-ml-auth onclick="window.MagicLabModal?.open()">🔐 <span id="lblSignIn">Sign In</span></button>
     </div>
   </header>
 
@@ -540,16 +542,16 @@
     <div id="contentArea">
       <div id="tabBar">
         <button class="tab-btn active" id="lessonTabBtn">
-          <i data-lucide="book-open" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i>Lesson
+          <i data-lucide="book-open" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i><span id="lblTabLesson">Lesson</span>
         </button>
         <button class="tab-btn" id="practiceTabBtn">
-          <i data-lucide="pencil" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i>Practice
+          <i data-lucide="pencil" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i><span id="lblTabPractice">Practice</span>
         </button>
         <button class="tab-btn" id="workbookTabBtn">
-          <i data-lucide="book" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i>Workbook
+          <i data-lucide="book" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i><span id="lblTabWorkbook">Workbook</span>
         </button>
         <button class="tab-btn" id="answerKeyTabBtn">
-          <i data-lucide="check-square" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i>Answer Key
+          <i data-lucide="check-square" style="width:13px;height:13px;display:inline;vertical-align:-2px;margin-right:4px;"></i><span id="lblTabAnswerKey">Answer Key</span>
         </button>
       </div>
       <div class="content-panel" id="lessonPanel"></div>
@@ -565,6 +567,7 @@
 // GRADE 8 CHAPTER MANIFEST
 // ═══════════════════════════════════════════════════════════════
 const GRADE = 9;
+let currentLang = (window.MLLang && MLLang.getLang()) || 'en';
 const CHAPTER_MANIFEST = [
   { num:  1, name: "Number Systems, Ratios, Rates and Financial Maths", topics: 3, file: "ch1.js" },
   { num:  2, name: "Integers", topics: 2, file: "ch2.js" },
@@ -591,42 +594,164 @@ const CHAPTER_MANIFEST = [
 // DYNAMIC CHAPTER LOADER
 // ═══════════════════════════════════════════════════════════════
 const MathMagician = {
-  _registry: {},     // ch_num → { topics, workbook, answerKey }
-  _loading:  {},     // ch_num → Promise
+  _registry: {},     // "num:lang" → { topics, workbook, answerKey }
+  _loading:  {},     // "num:lang" → Promise
   _loaded:   new Set(),
+  _pendingLang: {},  // num → lang, read by registerChapter while its <script> executes
 
   registerChapter(num, data) {
-    this._registry[num] = data;
-    this._loaded.add(num);
+    const lang = this._pendingLang[num] || 'en';
+    const key = num + ':' + lang;
+    this._registry[key] = data;
+    this._loaded.add(key);
   },
 
-  load(chNum) {
-    if (this._loaded.has(chNum)) return Promise.resolve(this._registry[chNum]);
-    if (this._loading[chNum])   return this._loading[chNum];
+  // Loads a chapter in the given language. If no translation file exists yet
+  // for that language, falls back to the English file so the UI never breaks
+  // — the caller (buildSidebar/reloadContentForLang) surfaces a toast about it.
+  load(chNum, lang) {
+    lang = lang || currentLang;
     const manifest = CHAPTER_MANIFEST.find(c => c.num === chNum);
-    if (!manifest || !manifest.file) return Promise.resolve(null);
+    if (!manifest) return Promise.resolve(null);
 
-    this._loading[chNum] = new Promise((resolve, reject) => {
+    let file = lang === 'af' ? manifest.fileAf : manifest.file;
+    let effLang = lang;
+    if (!file) {
+      if (!manifest.file) return Promise.resolve(null);
+      file = manifest.file;
+      effLang = 'en';
+    }
+    const key = chNum + ':' + effLang;
+    if (this._loaded.has(key)) return Promise.resolve(this._registry[key]);
+    if (this._loading[key])   return this._loading[key];
+
+    this._pendingLang[chNum] = effLang;
+    this._loading[key] = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = manifest.file;
-      script.onload  = () => resolve(this._registry[chNum] || null);
-      script.onerror = () => reject(new Error('Failed to load ' + manifest.file));
+      script.src = file;
+      script.onload  = () => { delete this._pendingLang[chNum]; resolve(this._registry[key] || null); };
+      script.onerror = () => { delete this._pendingLang[chNum]; reject(new Error('Failed to load ' + file)); };
       document.head.appendChild(script);
     });
-    return this._loading[chNum];
+    return this._loading[key];
   },
 
-  get(chNum) {
-    return this._registry[chNum] || null;
+  // True once a chapter is available in `lang` OR has fallen back to English.
+  isLoaded(chNum, lang) {
+    lang = lang || currentLang;
+    return this._loaded.has(chNum + ':' + lang) || this._loaded.has(chNum + ':en');
+  },
+
+  // True only when the chapter is actually translated into `lang` (used to
+  // decide whether to show the "not yet translated" toast).
+  hasTranslation(chNum, lang) {
+    lang = lang || currentLang;
+    if (lang === 'en') return true;
+    const manifest = CHAPTER_MANIFEST.find(c => c.num === chNum);
+    return !!(manifest && manifest.fileAf);
+  },
+
+  get(chNum, lang) {
+    lang = lang || currentLang;
+    return this._registry[chNum + ':' + lang] || this._registry[chNum + ':en'] || null;
   }
 };
+
+// ═══════════════════════════════════════════════════════════════
+// CHROME TRANSLATIONS (UI strings that aren't part of chapter data)
+// ═══════════════════════════════════════════════════════════════
+const CHROME_T = {
+  en: {
+    grades: 'Grades', home: 'Home', signIn: 'Sign In',
+    tabLesson: 'Lesson', tabPractice: 'Practice', tabWorkbook: 'Workbook', tabAnswerKey: 'Answer Key',
+    loading: 'Loading…', failedRetry: 'Failed — retry',
+    loadChapter: ch => `Load Chapter ${ch}`, comingSoon: 'Coming soon',
+    chapterHdr: (ch, name) => `Ch ${ch} — ${name}`,
+    topicsCount: n => `${n} topics`,
+    progressTopics: (done, total) => `${done} / ${total} topics`,
+    startPractice: 'Start practice questions',
+    nextQuestion: 'Next question', check: 'Check', answerPlaceholder: 'Type your answer…',
+    correct: '✓ Correct!', notQuite: '✗ Not quite', wellDone: 'Well done!',
+    reviewDefault: 'Have another look at the lesson and try the next question.',
+    gettingExplanation: '⏳ Getting explanation…',
+    topicComplete: 'Topic complete! 🎉',
+    scoredOn: (c, t, pct, name) => `You scored <strong style="color:#fcd34d">${c} / ${t}</strong> (${pct}%) on <em>${name}</em>.`,
+    nextTopic: name => `Next topic: ${name}`,
+    allTopicsDone: "🏆 You've completed all topics!",
+    qOf: (i, total) => `Q <span>${i}</span> of <span>${total}</span>`,
+    scoreLabel: (c, t) => `Score <span>${c}/${t}</span>`,
+    workbookTitle: 'Workbook Exercises', printAll: 'Print All',
+    workbookIntro: 'Answer these questions in your exercise book. Show all working. Marks are indicated per part.',
+    chapterLabel: (n, name) => `✦ Chapter ${n} — ${name}`,
+    printChapter: 'Print Chapter', printAnswers: 'Print Answers', workbookBtn: 'Workbook', answersBtn: 'Answers',
+    questionLabel: num => `Question ${num}`,
+    markWord: n => `${n} mark${n > 1 ? 's' : ''}`,
+    answerKeyAll: 'Answer Key — All Chapters', printWorkbook: 'Print Workbook',
+    answerKeyIntro: 'Full worked answers for all workbook exercises. For teacher/marker use.',
+    noChaptersLoaded: 'No chapters loaded yet.',
+    answerKeyChapter: (n, name) => `Answer Key — ${name}`,
+    answerKeyTopic: name => `Answer Key — ${name}`,
+    filteredWBChapter: (n, name) => `Chapter ${n} — ${name}`,
+    filteredAKIntro: 'Worked answers for workbook exercises.',
+    notTranslatedToast: 'This chapter isn’t translated into Afrikaans yet — showing English.',
+  },
+  af: {
+    grades: 'Grade', home: 'Tuis', signIn: 'Meld aan',
+    tabLesson: 'Les', tabPractice: 'Oefening', tabWorkbook: 'Werkboek', tabAnswerKey: 'Antwoordsleutel',
+    loading: 'Laai tans…', failedRetry: 'Onsuksesvol — probeer weer',
+    loadChapter: ch => `Laai Hoofstuk ${ch}`, comingSoon: 'Binnekort beskikbaar',
+    chapterHdr: (ch, name) => `Hst ${ch} — ${name}`,
+    topicsCount: n => `${n} onderwerpe`,
+    progressTopics: (done, total) => `${done} / ${total} onderwerpe`,
+    startPractice: 'Begin oefenvrae',
+    nextQuestion: 'Volgende vraag', check: 'Gaan na', answerPlaceholder: 'Tik jou antwoord…',
+    correct: '✓ Reg!', notQuite: '✗ Nie heeltemal reg nie', wellDone: 'Goed gedaan!',
+    reviewDefault: 'Kyk weer na die les en probeer die volgende vraag.',
+    gettingExplanation: '⏳ Verduideliking word verkry…',
+    topicComplete: 'Onderwerp voltooi! 🎉',
+    scoredOn: (c, t, pct, name) => `Jy het <strong style="color:#fcd34d">${c} / ${t}</strong> (${pct}%) behaal vir <em>${name}</em>.`,
+    nextTopic: name => `Volgende onderwerp: ${name}`,
+    allTopicsDone: '🏆 Jy het al die onderwerpe voltooi!',
+    qOf: (i, total) => `Vraag <span>${i}</span> van <span>${total}</span>`,
+    scoreLabel: (c, t) => `Telling <span>${c}/${t}</span>`,
+    workbookTitle: 'Werkboekoefeninge', printAll: 'Druk alles',
+    workbookIntro: 'Beantwoord hierdie vrae in jou oefeningboek. Wys alle berekeninge. Punte word per deel aangedui.',
+    chapterLabel: (n, name) => `✦ Hoofstuk ${n} — ${name}`,
+    printChapter: 'Druk hoofstuk', printAnswers: 'Druk antwoorde', workbookBtn: 'Werkboek', answersBtn: 'Antwoorde',
+    questionLabel: num => `Vraag ${num}`,
+    markWord: n => `${n} ${n === 1 ? 'punt' : 'punte'}`,
+    answerKeyAll: 'Antwoordsleutel — Alle hoofstukke', printWorkbook: 'Druk werkboek',
+    answerKeyIntro: 'Volledige uitgewerkte antwoorde vir alle werkboekoefeninge. Vir onderwyser-/nasienergebruik.',
+    noChaptersLoaded: 'Nog geen hoofstukke gelaai nie.',
+    answerKeyChapter: (n, name) => `Antwoordsleutel — ${name}`,
+    answerKeyTopic: name => `Antwoordsleutel — ${name}`,
+    filteredWBChapter: (n, name) => `Hoofstuk ${n} — ${name}`,
+    filteredAKIntro: 'Uitgewerkte antwoorde vir werkboekoefeninge.',
+    notTranslatedToast: 'Hierdie hoofstuk is nog nie in Afrikaans vertaal nie — Engels word gewys.',
+  }
+};
+function T() { return CHROME_T[currentLang] || CHROME_T.en; }
+
+function applyChrome() {
+  const t = T();
+  const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  set('lblGrades', t.grades);
+  set('lblHome', t.home);
+  set('lblSignIn', t.signIn);
+  set('lblTabLesson', t.tabLesson);
+  set('lblTabPractice', t.tabPractice);
+  set('lblTabWorkbook', t.tabWorkbook);
+  set('lblTabAnswerKey', t.tabAnswerKey);
+  if (progressText && progressText.textContent === 'Loading…') progressText.textContent = t.loading;
+  document.documentElement.lang = currentLang;
+}
 
 // ── Flat TOPICS array rebuilt from loaded chapters ─────────────
 let TOPICS = [];
 function rebuildTopics() {
   TOPICS = [];
-  Object.keys(MathMagician._registry).sort((a,b)=>a-b).forEach(ch => {
-    const data = MathMagician._registry[ch];
+  CHAPTER_MANIFEST.forEach(m => {
+    const data = MathMagician.get(m.num, currentLang);
     if (data && data.topics) TOPICS.push(...data.topics);
   });
 }
@@ -643,27 +768,27 @@ function getTopicById(id) {
 
 // ── Workbook & answer key pulled from loaded chapters ──────────
 function getAllWorkbook() {
-  return Object.keys(MathMagician._registry).sort((a,b)=>a-b)
-    .map(ch => MathMagician._registry[ch]?.workbook).filter(Boolean);
+  return CHAPTER_MANIFEST.map(m => MathMagician.get(m.num, currentLang)?.workbook).filter(Boolean);
 }
 function getAllAnswerKey() {
-  return Object.keys(MathMagician._registry).sort((a,b)=>a-b)
-    .map(ch => MathMagician._registry[ch]?.answerKey).filter(Boolean);
+  return CHAPTER_MANIFEST.map(m => MathMagician.get(m.num, currentLang)?.answerKey).filter(Boolean);
 }
 
 // Track which chapters are collapsed (all collapsed by default)
 const collapsedChapters = new Set(CHAPTER_MANIFEST.map(c => c.num));
 
 function buildSidebar() {
+  const t = T();
   sidebarList.innerHTML = '';
   CHAPTER_MANIFEST.forEach(manifest => {
     const ch = manifest.num;
-    const isLoaded   = MathMagician._loaded.has(ch);
+    const isLoaded   = MathMagician.isLoaded(ch, currentLang);
     const isComingSoon = !manifest.file;
     const isCollapsed  = collapsedChapters.has(ch);
-    const chTopics     = isLoaded ? (MathMagician.get(ch)?.topics || []) : [];
+    const chTopics     = isLoaded ? (MathMagician.get(ch, currentLang)?.topics || []) : [];
     const doneCount    = chTopics.filter(t => completed.has(t.id)).length;
     const totalCount   = manifest.topics;
+    const chapterName  = currentLang === 'af' && manifest.nameAf ? manifest.nameAf : manifest.name;
 
     // Header
     const hdr = document.createElement('div');
@@ -673,9 +798,9 @@ function buildSidebar() {
         ${!isComingSoon ? `<svg class="chapter-chevron ${isCollapsed ? 'collapsed' : ''}" viewBox="0 0 16 16" fill="none">
           <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>` : `<span style="width:14px;height:14px;display:inline-block;opacity:0.3;">·</span>`}
-        <span>Ch ${ch} — ${manifest.name}</span>
+        <span>${t.chapterHdr(ch, chapterName)}</span>
       </div>
-      <span class="chapter-hdr-meta">${isComingSoon ? 'soon' : (isLoaded ? doneCount+'/'+totalCount : totalCount+' topics')}</span>
+      <span class="chapter-hdr-meta">${isComingSoon ? t.comingSoon : (isLoaded ? doneCount+'/'+totalCount : t.topicsCount(totalCount))}</span>
     `;
 
     // Topics container
@@ -685,25 +810,26 @@ function buildSidebar() {
     if (isComingSoon) {
       const soon = document.createElement('div');
       soon.style.cssText = 'padding:7px 14px 7px 28px;font-size:11px;color:rgba(221,225,240,0.20);font-style:italic;';
-      soon.textContent = 'Coming soon';
+      soon.textContent = t.comingSoon;
       group.appendChild(soon);
     } else if (!isLoaded) {
       // Show a "load chapter" button
       const loadBtn = document.createElement('div');
       loadBtn.style.cssText = 'padding:8px 14px 8px 28px;';
-      loadBtn.innerHTML = `<button style="font-size:11px;padding:5px 12px;border-radius:7px;border:1px solid rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);color:#fcd34d;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;font-weight:600;" data-ch="${ch}">Load Chapter ${ch}</button>`;
+      loadBtn.innerHTML = `<button style="font-size:11px;padding:5px 12px;border-radius:7px;border:1px solid rgba(245,158,11,0.30);background:rgba(245,158,11,0.08);color:#fcd34d;cursor:pointer;font-family:Cabinet Grotesk,sans-serif;font-weight:600;" data-ch="${ch}">${t.loadChapter(ch)}</button>`;
       loadBtn.querySelector('button').addEventListener('click', async (e) => {
         const btn = e.target;
-        btn.textContent = 'Loading…';
+        btn.textContent = t.loading;
         btn.disabled = true;
         try {
-          await MathMagician.load(ch);
+          if (currentLang === 'af' && !MathMagician.hasTranslation(ch, 'af')) MLLang.toast(t.notTranslatedToast);
+          await MathMagician.load(ch, currentLang);
           rebuildTopics();
           updateProgress();
           buildSidebar();
           buildAnswerKey();
         } catch(err) {
-          btn.textContent = 'Failed — retry';
+          btn.textContent = t.failedRetry;
           btn.disabled = false;
         }
       });
@@ -732,8 +858,9 @@ function buildSidebar() {
     if (!isComingSoon) {
       hdr.addEventListener('click', () => {
         // If not loaded yet, load on first expand
-        if (!isLoaded && !MathMagician._loading[ch] && manifest.file) {
-          MathMagician.load(ch).then(() => {
+        if (!isLoaded && !MathMagician._loading[ch + ':' + currentLang] && manifest.file) {
+          if (currentLang === 'af' && !MathMagician.hasTranslation(ch, 'af')) MLLang.toast(t.notTranslatedToast);
+          MathMagician.load(ch, currentLang).then(() => {
             rebuildTopics();
             updateProgress();
             buildSidebar();
@@ -798,7 +925,7 @@ function updateProgress() {
   const done  = completed.size;
   const total = TOPICS.length;
   const allTotal = CHAPTER_MANIFEST.reduce((s,c) => s + c.topics, 0);
-  progressText.textContent = `${done} / ${allTotal} topics`;
+  progressText.textContent = T().progressTopics(done, allTotal);
   progressFill.style.width = allTotal > 0 ? `${(done / allTotal) * 100}%` : '0%';
 }
 
@@ -865,7 +992,7 @@ function renderLesson() {
     <div class="lesson-body">${l.body}</div>
     <button class="lesson-next-btn" id="goToPractice">
       <i data-lucide="pencil" style="width:14px;height:14px;"></i>
-      Start practice questions
+      ${T().startPractice}
     </button>
   `;
   document.getElementById('goToPractice').addEventListener('click', () => {
@@ -910,14 +1037,14 @@ function renderQuestion() {
     const nextTopic = hasNext ? TOPICS[curIdx + 1] : null;
     practicePanel.innerHTML = `
       <div class="complete-banner">
-        <h2>Topic complete! 🎉</h2>
-        <p>You scored <strong style="color:#fcd34d">${ts.correct} / ${ts.total}</strong> (${pct}%) on <em>${t.name}</em>.</p>
+        <h2>${T().topicComplete}</h2>
+        <p>${T().scoredOn(ts.correct, ts.total, pct, t.name)}</p>
         ${nextTopic
           ? `<button class="lesson-next-btn" id="nextTopicBtn">
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-              Next topic: ${nextTopic.name}
+              ${T().nextTopic(nextTopic.name)}
              </button>`
-          : `<p style="color:#6ee7b7;font-size:15px;font-weight:600;">🏆 You've completed all topics!</p>`}
+          : `<p style="color:#6ee7b7;font-size:15px;font-weight:600;">${T().allTopicsDone}</p>`}
       </div>`;
     if (nextTopic) {
       document.getElementById('nextTopicBtn').addEventListener('click', () => selectTopic(nextTopic.id));
@@ -942,15 +1069,15 @@ function renderQuestion() {
   } else {
     questionHTML = `
       <div class="input-row">
-        <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer…" autocomplete="off">
-        <button class="submit-btn" id="submitBtn">Check</button>
+        <input type="text" class="answer-input" id="answerInput" placeholder="${T().answerPlaceholder}" autocomplete="off">
+        <button class="submit-btn" id="submitBtn">${T().check}</button>
       </div>`;
   }
 
   practicePanel.innerHTML = `
     <div class="score-row">
-      <span class="score-pill">Q <span>${qIndex + 1}</span> of <span>${t.questions.length}</span></span>
-      <span class="score-pill">Score <span>${ts2.correct}/${ts2.total}</span></span>
+      <span class="score-pill">${T().qOf(qIndex + 1, t.questions.length)}</span>
+      <span class="score-pill">${T().scoreLabel(ts2.correct, ts2.total)}</span>
       <span class="q-topic-tag">${q.topic}</span>
     </div>
     <div class="question-text">${q.text}</div>
@@ -959,7 +1086,7 @@ function renderQuestion() {
       <div class="feedback-label" id="feedbackLabel"></div>
       <div id="feedbackText"></div>
     </div>
-    <button id="nextQBtn">Next question <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></button>
+    <button id="nextQBtn">${T().nextQuestion} <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></button>
   `;
   lucide.createIcons();
 
@@ -978,12 +1105,12 @@ function renderQuestion() {
     feedbackArea.style.display = 'block';
     if (correct) {
       feedbackArea.className = 'correct';
-      feedbackLabel.textContent = '✓ Correct!';
-      feedbackText.textContent = explanation || 'Well done!';
+      feedbackLabel.textContent = T().correct;
+      feedbackText.textContent = explanation || T().wellDone;
     } else {
       feedbackArea.className = 'wrong';
-      feedbackLabel.textContent = '✗ Not quite';
-      feedbackText.innerHTML = explanation || 'Have another look at the lesson and try the next question.';
+      feedbackLabel.textContent = T().notQuite;
+      feedbackText.innerHTML = explanation || T().reviewDefault;
     }
     nextQBtn.classList.add('show');
   }
@@ -1063,15 +1190,16 @@ async function fetchAIFeedback(q, userAnswer, correctAnswer, callback) {
 
   feedbackArea.style.display = 'block';
   feedbackArea.className = 'loading';
-  feedbackLabel.textContent = '⏳ Getting explanation…';
+  feedbackLabel.textContent = T().gettingExplanation;
   feedbackText.textContent = '';
 
   const topic  = getTopicById(currentTopicId);
+  const langInstruction = currentLang === 'af' ? '\nWrite your entire explanation in Afrikaans.' : '';
   const prompt = `You are a friendly, encouraging Grade 9 maths tutor (IEB/CAPS curriculum, South Africa).
 A student answered a question incorrectly. Give a SHORT, clear explanation (max 3 sentences) of:
 1. Why their answer is wrong.
 2. The correct method to get the right answer.
-Be encouraging and specific. Do not just state the answer — explain the method.
+Be encouraging and specific. Do not just state the answer — explain the method.${langInstruction}
 
 Question: ${q.text.replace(/<[^>]+>/g, '')}
 Topic: ${q.topic} (${topic.name})
@@ -1092,7 +1220,9 @@ Correct answer: ${correctAnswer}`;
     const text = data.content?.map(c => c.text || '').join('') || 'Check the lesson for a worked example.';
     callback(false, text);
   } catch {
-    callback(false, `The correct answer is <strong>${correctAnswer}</strong>. Review the worked example in the lesson.`);
+    callback(false, currentLang === 'af'
+      ? `Die korrekte antwoord is <strong>${correctAnswer}</strong>. Kyk weer na die uitgewerkte voorbeeld in die les.`
+      : `The correct answer is <strong>${correctAnswer}</strong>. Review the worked example in the lesson.`);
   }
 }
 
@@ -1119,27 +1249,28 @@ workbookTabBtn.addEventListener('click',  () => switchTab('workbook'));
 answerKeyTabBtn.addEventListener('click', () => switchTab('answerkey'));
 
 function renderWorkbook() {
+  const t = T();
   let html = `
     <div class="wb-header">
-      <div class="wb-title">Workbook Exercises</div>
+      <div class="wb-title">${t.workbookTitle}</div>
       <button class="wb-print-btn" onclick="printSection('workbook')">
-        <i data-lucide="printer" style="width:12px;height:12px;"></i> Print All
+        <i data-lucide="printer" style="width:12px;height:12px;"></i> ${t.printAll}
       </button>
     </div>
-    <p class="wb-intro">Answer these questions in your exercise book. Show all working. Marks are indicated per part.</p>
+    <p class="wb-intro">${t.workbookIntro}</p>
   `;
 
   getAllWorkbook().forEach(chap => {
     html += `<div class="wb-chapter-block" data-ch="${chap.chapter}">
       <div class="wb-chapter-title">
         <div class="wb-chapter-header">
-          <span>✦ Chapter ${chap.chapter} — ${chap.chapterName}</span>
+          <span>${t.chapterLabel(chap.chapter, chap.chapterName)}</span>
           <div class="wb-chapter-actions">
             <button class="wb-chapter-print-btn" onclick="printSection('workbook',${chap.chapter})">
-              <i data-lucide="printer" style="width:9px;height:9px;"></i> Print Chapter
+              <i data-lucide="printer" style="width:9px;height:9px;"></i> ${t.printChapter}
             </button>
             <button class="wb-chapter-print-btn ak-style" onclick="printSection('answerkey',${chap.chapter})">
-              <i data-lucide="check-square" style="width:9px;height:9px;"></i> Print Answers
+              <i data-lucide="check-square" style="width:9px;height:9px;"></i> ${t.printAnswers}
             </button>
           </div>
         </div>
@@ -1150,22 +1281,22 @@ function renderWorkbook() {
           <div class="wb-topic-label">${topic.name}</div>
           <div style="display:flex;gap:5px;">
             <button class="wb-topic-print-btn" onclick="printSection('workbook',${chap.chapter},${tIdx})">
-              <i data-lucide="printer" style="width:11px;height:11px;"></i> Workbook
+              <i data-lucide="printer" style="width:11px;height:11px;"></i> ${t.workbookBtn}
             </button>
             <button class="wb-topic-print-btn ak-style" onclick="printSection('answerkey',${chap.chapter},${tIdx})">
-              <i data-lucide="check-square" style="width:11px;height:11px;"></i> Answers
+              <i data-lucide="check-square" style="width:11px;height:11px;"></i> ${t.answersBtn}
             </button>
           </div>
         </div>`;
       topic.questions.forEach(q => {
         html += `<div class="wb-question">
-          <div class="wb-question-num">Question ${q.num}</div>
+          <div class="wb-question-num">${t.questionLabel(q.num)}</div>
           <div class="wb-question-text">${q.text}</div>`;
         if (q.parts) {
           q.parts.forEach(p => {
             html += `<div class="wb-part">
               <span class="wb-part-label">${p.label}</span>
-              <span>${p.text} <span class="wb-marks">${p.marks} mark${p.marks>1?'s':''}</span></span>
+              <span>${p.text} <span class="wb-marks">${t.markWord(p.marks)}</span></span>
             </div>`;
           });
         }
@@ -1236,23 +1367,24 @@ function printSection(type, chapterNum, topicIdx) {
 }
 
 function _buildFilteredWB(allWB, chapterNum, topicIdx) {
+  const t = T();
   const chap = allWB.find(c => c.chapter === chapterNum);
   if (!chap) return;
   const topics = topicIdx !== undefined ? [chap.topics[topicIdx]] : chap.topics;
   const label = topicIdx !== undefined
-    ? `Chapter ${chap.chapter} — ${chap.topics[topicIdx]?.name}`
-    : `Chapter ${chap.chapter} — ${chap.chapterName}`;
+    ? t.filteredWBChapter(chap.chapter, chap.topics[topicIdx]?.name)
+    : t.filteredWBChapter(chap.chapter, chap.chapterName);
   let html = `<div class="wb-header"><div class="wb-title">${label}</div></div>
-    <p class="wb-intro">Answer these questions in your exercise book. Show all working. Marks indicated per part.</p>
+    <p class="wb-intro">${t.workbookIntro}</p>
     <div class="wb-chapter-block">`;
   topics.filter(Boolean).forEach(topic => {
     html += `<div class="wb-topic-block"><div class="wb-topic-label">${topic.name}</div>`;
     topic.questions.forEach(q => {
-      html += `<div class="wb-question"><div class="wb-question-num">Question ${q.num}</div>
+      html += `<div class="wb-question"><div class="wb-question-num">${t.questionLabel(q.num)}</div>
         <div class="wb-question-text">${q.text}</div>`;
       if (q.parts) q.parts.forEach(p => {
         html += `<div class="wb-part"><span class="wb-part-label">${p.label}</span>
-          <span>${p.text} <span class="wb-marks">${p.marks} mark${p.marks>1?'s':''}</span></span></div>`;
+          <span>${p.text} <span class="wb-marks">${t.markWord(p.marks)}</span></span></div>`;
       });
       const lines = q.parts ? Math.max(3, q.parts.length * 2) : 4;
       html += `<div class="wb-answer-lines">${'<div class="wb-line"></div>'.repeat(lines)}</div></div>`;
@@ -1264,15 +1396,16 @@ function _buildFilteredWB(allWB, chapterNum, topicIdx) {
 }
 
 function _buildFilteredAK(allAK, chapterNum, topicIdx) {
+  const t = T();
   const chap = allAK.find(c => c.chapter === chapterNum);
   if (!chap) return;
   const topics = topicIdx !== undefined ? [chap.topics[topicIdx]] : chap.topics;
   const label = topicIdx !== undefined
-    ? `Answer Key — ${chap.topics[topicIdx]?.name}`
-    : `Answer Key — ${chap.chapterName}`;
+    ? t.answerKeyTopic(chap.topics[topicIdx]?.name)
+    : t.answerKeyChapter(chap.chapter, chap.chapterName);
   let html = `<div class="wb-header">
     <div class="wb-title" style="background:linear-gradient(125deg,#fff 0%,#6ee7b7 60%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${label}</div>
-  </div><p class="wb-intro">Worked answers for workbook exercises.</p>
+  </div><p class="wb-intro">${t.filteredAKIntro}</p>
   <div class="wb-chapter-block">`;
   topics.filter(Boolean).forEach(topic => {
     html += `<div class="wb-topic-block">
@@ -1296,27 +1429,28 @@ function _buildFilteredAK(allAK, chapterNum, topicIdx) {
 // ANSWER KEY
 // ═══════════════════════════════════════════════════════════════
 function buildAnswerKey() {
+  const t = T();
   const allKeys = getAllAnswerKey();
   const printPanel = document.getElementById('answerKeyPrintPanel');
   if (!printPanel) return;
 
   let html = `
     <div class="wb-header">
-      <div class="wb-title" style="background:linear-gradient(125deg,#fff 0%,#6ee7b7 60%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Answer Key — All Chapters</div>
+      <div class="wb-title" style="background:linear-gradient(125deg,#fff 0%,#6ee7b7 60%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${t.answerKeyAll}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="wb-print-btn" onclick="printSection('answerkey')" style="border-color:rgba(16,185,129,0.30);background:rgba(16,185,129,0.10);color:#6ee7b7;">
-          <i data-lucide="printer" style="width:12px;height:12px;"></i> Print All
+          <i data-lucide="printer" style="width:12px;height:12px;"></i> ${t.printAll}
         </button>
         <button class="wb-print-btn" onclick="printSection('workbook')">
-          <i data-lucide="printer" style="width:12px;height:12px;"></i> Print Workbook
+          <i data-lucide="printer" style="width:12px;height:12px;"></i> ${t.printWorkbook}
         </button>
       </div>
     </div>
-    <p class="wb-intro">Full worked answers for all workbook exercises. For teacher/marker use.</p>
+    <p class="wb-intro">${t.answerKeyIntro}</p>
   `;
 
   if (!allKeys.length) {
-    html += `<p style="color:rgba(221,225,240,0.35);font-style:italic;font-size:13px;">No chapters loaded yet.</p>`;
+    html += `<p style="color:rgba(221,225,240,0.35);font-style:italic;font-size:13px;">${t.noChaptersLoaded}</p>`;
   }
 
   allKeys.forEach(chap => {
@@ -1326,10 +1460,10 @@ function buildAnswerKey() {
           <span>✦ ${chap.chapterName}</span>
           <div class="wb-chapter-actions">
             <button class="wb-chapter-print-btn ak-style" onclick="printSection('answerkey',${chap.chapter})">
-              <i data-lucide="printer" style="width:9px;height:9px;"></i> Print Chapter
+              <i data-lucide="printer" style="width:9px;height:9px;"></i> ${t.printChapter}
             </button>
             <button class="wb-chapter-print-btn" onclick="printSection('workbook',${chap.chapter})">
-              <i data-lucide="book" style="width:9px;height:9px;"></i> Workbook
+              <i data-lucide="book" style="width:9px;height:9px;"></i> ${t.workbookBtn}
             </button>
           </div>
         </div>
@@ -1340,10 +1474,10 @@ function buildAnswerKey() {
           <div class="wb-topic-label" style="color:rgba(110,231,183,0.60);">${topic.name}</div>
           <div style="display:flex;gap:5px;">
             <button class="wb-topic-print-btn ak-style" onclick="printSection('answerkey',${chap.chapter},${tIdx})">
-              <i data-lucide="printer" style="width:11px;height:11px;"></i> Answers
+              <i data-lucide="printer" style="width:11px;height:11px;"></i> ${t.answersBtn}
             </button>
             <button class="wb-topic-print-btn" onclick="printSection('workbook',${chap.chapter},${tIdx})">
-              <i data-lucide="book" style="width:11px;height:11px;"></i> Workbook
+              <i data-lucide="book" style="width:11px;height:11px;"></i> ${t.workbookBtn}
             </button>
           </div>
         </div>`;
@@ -1370,6 +1504,7 @@ function buildAnswerKey() {
 // INIT — load chapter 1 immediately, then initialise
 // ═══════════════════════════════════════════════════════════════
 async function init() {
+  applyChrome();
   // Load all chapters in parallel — the files are local so this is fast
   const loads = CHAPTER_MANIFEST.filter(m => m.file).map(m => MathMagician.load(m.num).catch(() => null));
   await Promise.all(loads);
@@ -1383,6 +1518,36 @@ async function init() {
   lucide.createIcons();
 }
 init();
+
+// ═══════════════════════════════════════════════════════════════
+// LANGUAGE TOGGLE — swap chrome text + re-fetch chapter content
+// ═══════════════════════════════════════════════════════════════
+function reloadContentForLang() {
+  const loadedNums = new Set();
+  MathMagician._loaded.forEach(key => loadedNums.add(parseInt(key.split(':')[0], 10)));
+  const loads = [...loadedNums].map(n => MathMagician.load(n, currentLang).catch(() => null));
+  Promise.all(loads).then(() => {
+    rebuildTopics();
+    buildSidebar();
+    updateProgress();
+    buildAnswerKey();
+    renderWorkbook();
+    if (currentTopicId && TOPICS.find(tp => tp.id === currentTopicId)) {
+      renderLesson();
+      if (currentTab === 'practice') renderQuestion();
+    }
+  });
+}
+
+if (window.MLLang) {
+  MLLang.mount('mlLangToggle', {
+    onChange(nextLang) {
+      currentLang = nextLang;
+      applyChrome();
+      reloadContentForLang();
+    }
+  });
+}
 
 // ── Restore completed topics from Supabase ─────────────────────────────────
 // Runs once progress SDK is ready. Matches saved topic titles back to IDs.

@@ -93,17 +93,21 @@
 <script defer src="../auth.js"></script>
 <script defer src="../require-auth.js"></script>
 <script defer src="../progress.js"></script>
+<script defer src="../lang-toggle.js"></script>
 </head>
 <body>
   <nav>
     <a href="../index.html" class="nav-logo"><i data-lucide="calculator" style="width:20px;height:20px;flex-shrink:0"></i> Math Magician</a>
-    <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back to Magic Lab</a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span id="mlLangToggle"></span>
+      <a href="../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> <span id="lblBack">Back to Magic Lab</span></a>
+    </div>
   </nav>
 
   <section class="hero">
-    <div class="hero-tag"><span class="hero-tag-dot"></span>Mathematics · CAPS / IEB · Gr 8–12</div>
-    <h1>Choose your <em>grade.</em></h1>
-    <p class="hero-sub">Interactive lessons, guided practice, and workbook exercises aligned to the South African mathematics curriculum.</p>
+    <div class="hero-tag"><span class="hero-tag-dot"></span><span id="lblHeroTag">Mathematics · CAPS / IEB · Gr 8–12</span></div>
+    <h1 id="lblHeading">Choose your <em>grade.</em></h1>
+    <p class="hero-sub" id="lblHeroSub">Interactive lessons, guided practice, and workbook exercises aligned to the South African mathematics curriculum.</p>
   </section>
 
   <div class="symbols"><span>∑</span><span>π</span><span>√</span><span>∞</span><span>∫</span><span>±</span><span>≠</span><span>≤</span><span>≥</span><span>∝</span></div>
@@ -112,8 +116,8 @@
 
   <div class="view-toggle-row">
     <div class="view-toggle">
-      <button class="view-pill" id="pill-grid" onclick="setView('grid')"><i data-lucide="layout-grid" style="width:12px;height:12px"></i> Grid</button>
-      <button class="view-pill" id="pill-dropdown" onclick="setView('dropdown')"><i data-lucide="chevron-down" style="width:12px;height:12px"></i> Quick jump</button>
+      <button class="view-pill" id="pill-grid" onclick="setView('grid')"><i data-lucide="layout-grid" style="width:12px;height:12px"></i> <span id="lblGrid">Grid</span></button>
+      <button class="view-pill" id="pill-dropdown" onclick="setView('dropdown')"><i data-lucide="chevron-down" style="width:12px;height:12px"></i> <span id="lblQuickJump">Quick jump</span></button>
     </div>
   </div>
 
@@ -190,6 +194,80 @@
     const refreshIcons=()=>{try{lucide.createIcons();}catch(_){}};
     refreshIcons();
 
+    // ── Language toggle ─────────────────────────────────────────────────
+    const PICKER_T = {
+      en: {
+        back: 'Back to Magic Lab', heroTag: 'Mathematics · CAPS / IEB · Gr 8–12',
+        grid: 'Grid', quickJump: 'Quick jump', jumpToGrade: 'Jump to grade', selectGrade: 'Select a grade',
+        startLearning: 'Start learning →', continueLink: 'Continue →', reviewAgain: 'Review again →',
+        topicsComplete: (d,t) => `${d}/${t} topics · complete 🎉`, topicsPct: (d,t,p) => `${d}/${t} topics · ${p}%`,
+        continueWhere: 'Continue where you left off', gradeWord: 'Grade',
+        footer: 'Math Magician · Part of The Magic Lab · © 2026 Ruhan Janse van Rensburg',
+        cards: {
+          8:  { tag: 'Senior Phase', desc: 'Foundations for the Senior Phase — numbers, algebra, geometry and data.' },
+          9:  { tag: 'Senior Phase', desc: 'Building fluency ahead of the transition into the FET phase.' },
+          10: { tag: 'FET Phase',    desc: 'The start of FET Maths — functions, trigonometry and Euclidean geometry.' },
+          11: { tag: 'FET Phase',    desc: 'Deeper functions, sequences, trig identities and analytical geometry.' },
+          12: { tag: 'Matric',       desc: 'Matric-ready — calculus, financial maths, and full exam preparation.' },
+        }
+      },
+      af: {
+        back: 'Terug na Magic Lab', heroTag: 'Wiskunde · CAPS / IEB · Gr 8–12',
+        grid: 'Rooster', quickJump: 'Vinnige keuse', jumpToGrade: 'Spring na graad', selectGrade: 'Kies \'n graad',
+        startLearning: 'Begin leer →', continueLink: 'Gaan voort →', reviewAgain: 'Hersien weer →',
+        topicsComplete: (d,t) => `${d}/${t} onderwerpe · voltooi 🎉`, topicsPct: (d,t,p) => `${d}/${t} onderwerpe · ${p}%`,
+        continueWhere: 'Gaan voort waar jy opgehou het', gradeWord: 'Graad',
+        footer: 'Math Magician · Deel van The Magic Lab · © 2026 Ruhan Janse van Rensburg',
+        cards: {
+          8:  { tag: 'Senior Fase', desc: 'Grondslag vir die Senior Fase — getalle, algebra, meetkunde en data.' },
+          9:  { tag: 'Senior Fase', desc: 'Bou vlotheid op voor die oorgang na die FET-fase.' },
+          10: { tag: 'FET-fase',    desc: 'Die begin van FET-Wiskunde — funksies, trigonometrie en Euklidiese meetkunde.' },
+          11: { tag: 'FET-fase',    desc: 'Dieper funksies, rye, trig-identiteite en analitiese meetkunde.' },
+          12: { tag: 'Matriek',     desc: 'Matriek-gereed — calculus, finansiële wiskunde en volledige eksamenvoorbereiding.' },
+        }
+      }
+    };
+    let currentLang = (window.MLLang && MLLang.getLang()) || 'en';
+    function PT() { return PICKER_T[currentLang]; }
+
+    function applyPickerChrome() {
+      const t = PT();
+      const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+      set('lblBack', t.back);
+      set('lblHeroTag', t.heroTag);
+      set('lblGrid', t.grid);
+      set('lblQuickJump', t.quickJump);
+      document.querySelector('.path-trigger-label').textContent = t.jumpToGrade;
+      document.querySelector('.path-trigger-current').textContent = t.selectGrade;
+      document.querySelector('.footer-copy').lastChild.textContent = t.footer;
+      document.querySelectorAll('.strand-card[data-grade]').forEach(card => {
+        const g = card.dataset.grade;
+        const c = t.cards[g];
+        if (!c) return;
+        card.querySelector('.strand-tag').textContent = c.tag;
+        card.querySelector('.strand-desc').textContent = c.desc;
+        const cta = card.querySelector('.strand-topic');
+        if (!card.dataset.progressState) cta.textContent = t.startLearning;
+        else cta.textContent = card.dataset.progressState === 'done' ? t.reviewAgain : t.continueLink;
+      });
+      document.querySelectorAll('.path-item-sub').forEach((el, i) => {
+        const g = [8,9,10,11,12][i];
+        if (t.cards[g]) el.textContent = t.cards[g].tag;
+      });
+      document.documentElement.lang = currentLang;
+    }
+    if (window.MLLang) {
+      MLLang.mount('mlLangToggle', {
+        onChange(next) {
+          currentLang = next; applyPickerChrome(); renderGradeProgress();
+          const slot = document.querySelector('[data-continue-slot]');
+          if (slot) slot.innerHTML = '';
+          renderContinueCard();
+        }
+      });
+    }
+    applyPickerChrome();
+
     function setView(mode){
       document.getElementById('view-grid').classList.toggle('active', mode==='grid');
       document.getElementById('view-dropdown').classList.toggle('active', mode==='dropdown');
@@ -222,13 +300,16 @@
         box.classList.add('show');
         box.querySelector('.grade-progress-fill').style.width = pct+'%';
         const cta = card.querySelector('.strand-topic');
+        const t = PT();
         if(done>=total){
           box.classList.add('done');
-          box.querySelector('.grade-progress-label').textContent = `${done}/${total} topics · complete 🎉`;
-          cta.textContent = 'Review again →';
+          card.dataset.progressState = 'done';
+          box.querySelector('.grade-progress-label').textContent = t.topicsComplete(done, total);
+          cta.textContent = t.reviewAgain;
         } else {
-          box.querySelector('.grade-progress-label').textContent = `${done}/${total} topics · ${pct}%`;
-          cta.textContent = 'Continue →';
+          card.dataset.progressState = 'progress';
+          box.querySelector('.grade-progress-label').textContent = t.topicsPct(done, total, pct);
+          cta.textContent = t.continueLink;
         }
       });
     }
@@ -249,10 +330,10 @@
       const text = document.createElement('div');
       const label = document.createElement('div');
       label.className = 'continue-label';
-      label.textContent = 'Continue where you left off';
+      label.textContent = PT().continueWhere;
       const title = document.createElement('div');
       title.className = 'continue-title';
-      title.textContent = `Grade ${last.grade}` + (last.topic ? ` · ${last.topic}` : ' Maths');
+      title.textContent = `${PT().gradeWord} ${last.grade}` + (last.topic ? ` · ${last.topic}` : ' Maths');
       text.appendChild(label);
       text.appendChild(title);
       const arrow = document.createElement('span');

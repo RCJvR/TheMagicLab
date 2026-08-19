@@ -106,6 +106,7 @@
   </style>
 <script defer src="../../../auth.js"></script>
 <script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 </head>
@@ -114,6 +115,7 @@
   <a class="nav-logo" href="../../index.html">Science Sage</a>
   <div style="display:flex;align-items:center;gap:12px">
     <span class="nav-strand">Matter &amp; Materials</span>
+    <span id="mlLangToggle"></span>
     <a class="nav-back" href="../../index.html">← Home</a>
   </div>
 </nav>
@@ -433,6 +435,21 @@ function answer(qi,oi,btn){
 }
 function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / '+QS.length;}
 renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
 </script>
   <script src="/contact-button.js" defer></script>
 </body>
