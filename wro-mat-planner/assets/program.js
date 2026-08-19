@@ -65,6 +65,33 @@ window.WRO_PROGRAM = (function() {
 
   // ---- kinematics: 0deg = up/north, positive = clockwise (matches the
   // rest of the tool and PyBricks' own turn() convention) ----
+  // Rotate a 2D vector by `deg` degrees, consistent with how heading h
+  // transforms this app's own right(h)=(cos h, sin h) vector -- verified:
+  // rotateVec(right(h), d) === right(h+d) via the angle-addition formulas.
+  function rotateVec(v, deg) {
+    const rad = deg * Math.PI / 180;
+    const c = Math.cos(rad), s = Math.sin(rad);
+    return { x: v.x * c - v.y * s, y: v.x * s + v.y * c };
+  }
+  // 'arc' steps (PyBricks drive_base.arc(), or a single-wheel pivot turn)
+  // sweep the robot's CENTRE around a pivot point offset from the centre by
+  // `radius` mm along the robot's own right-axis, rather than rotating in
+  // place like 'turn' -- the robot's x/y actually moves. `degrees` is the
+  // heading change, same signed convention as 'turn' (positive = right/CW).
+  // This formula (and its sign convention) was verified against a real
+  // route's own PID heading bookkeeping rather than assumed from docs --
+  // see parsePyBricksCode's arc handling for why that mattered.
+  function applyArcStep(pose, radius, degrees) {
+    const rad = pose.heading * Math.PI / 180;
+    const right = { x: Math.cos(rad), y: Math.sin(rad) };
+    const pivot = { x: pose.x + radius * right.x, y: pose.y + radius * right.y };
+    const offset = rotateVec({ x: pose.x - pivot.x, y: pose.y - pivot.y }, degrees);
+    return {
+      x: pivot.x + offset.x,
+      y: pivot.y + offset.y,
+      heading: ((pose.heading + degrees) % 360 + 360) % 360,
+    };
+  }
   function applyStep(pose, step) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
@@ -74,6 +101,9 @@ window.WRO_PROGRAM = (function() {
     if (step.type === 'turn') {
       const signed = step.direction === 'left' ? -step.degrees : step.degrees;
       return { x: pose.x, y: pose.y, heading: ((pose.heading + signed) % 360 + 360) % 360 };
+    }
+    if (step.type === 'arc') {
+      return applyArcStep(pose, step.radius, step.degrees);
     }
     return pose;
   }
@@ -94,6 +124,9 @@ window.WRO_PROGRAM = (function() {
     if (step.type === 'turn') {
       const signed = step.direction === 'left' ? -step.degrees : step.degrees;
       return { x: pose.x, y: pose.y, heading: ((pose.heading + signed * frac) % 360 + 360) % 360 };
+    }
+    if (step.type === 'arc') {
+      return applyArcStep(pose, step.radius, step.degrees * frac);
     }
     return pose; // instantaneous actions (pickup/place/deliver/settle/motor/wait/etc): no motion, just a dwell
   }
@@ -116,6 +149,11 @@ window.WRO_PROGRAM = (function() {
         const rate = (step.turnRateDegS && step.turnRateDegS > 0) ? step.turnRateDegS : (config.turnRate || 100);
         return Math.abs(step.degrees) / Math.max(1, rate);
       }
+      case 'arc': {
+        const speed = config.straightSpeed || 200;
+        const arcLength = Math.abs(step.radius) * Math.abs(step.degrees) * Math.PI / 180;
+        return arcLength / Math.max(1, speed);
+      }
       case 'wait':
         return Math.max(0, step.seconds || 0);
       default:
@@ -130,12 +168,23 @@ window.WRO_PROGRAM = (function() {
     }
     return 'closed';
   }
+  const ARC_TRAIL_SAMPLES = 12;
   function trailPoints(steps, start, uptoIdx) {
     const pts = [{ x: start.x, y: start.y }];
     let pose = { x: start.x, y: start.y, heading: start.heading };
     for (let i = 0; i < uptoIdx; i++) {
-      pose = applyStep(pose, steps[i]);
-      if (steps[i].type === 'drive' || steps[i].type === 'lineFollow') pts.push({ x: pose.x, y: pose.y });
+      const step = steps[i];
+      // A straight chord between an arc's start/end would visibly cut the
+      // curve's corner, so sample intermediate points along the sweep
+      // instead of just pushing the endpoint (as drive/lineFollow do).
+      if (step.type === 'arc') {
+        for (let s = 1; s <= ARC_TRAIL_SAMPLES; s++) {
+          const p = applyArcStep(pose, step.radius, step.degrees * s / ARC_TRAIL_SAMPLES);
+          pts.push({ x: p.x, y: p.y });
+        }
+      }
+      pose = applyStep(pose, step);
+      if (step.type === 'drive' || step.type === 'lineFollow') pts.push({ x: pose.x, y: pose.y });
     }
     return pts;
   }
@@ -167,6 +216,8 @@ window.WRO_PROGRAM = (function() {
       case 'turn':
         return `Turn ${step.direction === 'left' ? 'left (CCW)' : 'right (CW)'} ${step.degrees}°`
           + (step.turnRateDegS ? ` @ ${step.turnRateDegS}°/s` : '');
+      case 'arc':
+        return `Arc ${step.degrees >= 0 ? 'right' : 'left'} ${Math.abs(step.degrees)}° (radius ${step.radius} mm)`;
       case 'unfold':
         return 'Unfold to open size';
       case 'frontMotor':
@@ -322,6 +373,9 @@ window.WRO_PROGRAM = (function() {
           L.push(`drive_base.turn(${signed})  # ${note}`);
           break;
         }
+        case 'arc':
+          L.push(`drive_base.arc(${step.radius}, ${step.degrees})  # ${note} -- verify curve direction on your build`);
+          break;
         case 'unfold':
           L.push(`# --- ${note}: add your unfolding mechanism call here ---`);
           break;
@@ -391,6 +445,28 @@ window.WRO_PROGRAM = (function() {
     return config;
   }
 
+  // Splits a Python call's argument-list string on top-level commas only
+  // (doesn't split inside nested parens/brackets or the rare embedded
+  // call) -- good enough for the plain numbers/strings/Color.X/True/False
+  // arguments real robot code actually passes to a driving helper.
+  function splitArgs(argStr) {
+    const parts = [];
+    let depth = 0, cur = '';
+    for (let i = 0; i < argStr.length; i++) {
+      const c = argStr[i];
+      if (c === '(' || c === '[') depth++;
+      else if (c === ')' || c === ']') depth--;
+      if (c === ',' && depth === 0) { parts.push(cur.trim()); cur = ''; }
+      else cur += c;
+    }
+    if (cur.trim() !== '') parts.push(cur.trim());
+    return parts;
+  }
+  function unquote(s) {
+    const m = s && s.match(/^["'](.*)["']$/);
+    return m ? m[1] : s;
+  }
+
   function parsePyBricksCode(code) {
     const TILE_COLOURS = (window.WRO_ELEMENTS && window.WRO_ELEMENTS.TILE_COLOURS) || ['white', 'green', 'blue', 'yellow'];
     const colourAlt = TILE_COLOURS.join('|');
@@ -402,10 +478,18 @@ window.WRO_PROGRAM = (function() {
     function countIndent(line) {
       return line.match(/^[ \t]*/)[0].replace(/\t/g, '    ').length;
     }
+    // A call, optionally with a trailing "# comment" this parser doesn't
+    // need to read (arguments already carry everything it needs).
+    function matchCall(codePart, fnName) {
+      const m = codePart.match(new RegExp(`^${fnName}\\((.*)\\)$`));
+      return m ? splitArgs(m[1]) : null;
+    }
 
     const allLines = code.replace(/\r\n/g, '\n').split('\n');
     const config = extractConfigFromCode(allLines);
-    const warnings = [];
+    const warnings = []; // lines that produced no step -- unrecognised, or a call skipped outright
+    const notes = [];    // lines that DID produce a step, but only an approximation of the real motion
+    const halfAxleTrack = (config.axleTrack || 114) / 2;
 
     // A full export carries this exact marker right before the real route --
     // skip straight past the docstring/imports/hub/motor boilerplate to the
@@ -427,43 +511,190 @@ window.WRO_PROGRAM = (function() {
 
     let activeSpeed = null, activeTurnRate = null;
     let inDocstring = false;
+    // Cross-line state for patterns this app's export never emits but real
+    // driver code does -- see the two lookahead-by-mutation notes below.
+    let pendingArc = null;          // the just-parsed arc step, for the acc_angle line right after it
+    let pendingOpenLoopDrive = null; // an open-loop drive_base.drive(speed, 0) call, waiting for its wait(ms)
+    const motorAngle = {};          // attachment-motor variable name -> last absolute run_target() angle
+    const motorSlots = [];          // first 2 distinct attachment-motor names seen, in order -> front/back
+    const warnedExtraMotor = new Set();
+    const definedFunctions = new Set(); // `def NAME(...):` names seen, so later bare NAME() calls can be
+                                         // recognised as "known helper, presumably no motion" instead of
+                                         // an unparseable line
 
-    function parseSingle(trimmed) {
-      if (!trimmed) return null;
-      if (trimmed === '"""') { inDocstring = !inDocstring; return null; }
+    function attachmentMotorSlot(name) {
+      let idx = motorSlots.indexOf(name);
+      if (idx === -1 && motorSlots.length < 2) { motorSlots.push(name); idx = motorSlots.length - 1; }
+      if (idx === -1) {
+        if (!warnedExtraMotor.has(name)) {
+          warnedExtraMotor.add(name);
+          warnings.push(`"${name}" is a 3rd+ attachment motor -- the simulator only models 2 generic motor slots (front/back), its calls are skipped`);
+        }
+        return null;
+      }
+      return idx === 0 ? 'front' : 'back';
+    }
+
+    function parseSingle(rawTrimmed) {
+      if (!rawTrimmed) return null;
+      if (rawTrimmed === '"""') { inDocstring = !inDocstring; return null; }
       if (inDocstring) return null;
 
-      let m;
-      if ((m = trimmed.match(/^drive_base\.settings\(straight_speed=(-?[\d.]+)\)/))) { activeSpeed = parseFloat(m[1]); return null; }
-      if ((m = trimmed.match(/^drive_base\.settings\(turn_rate=(-?[\d.]+)\)/))) { activeTurnRate = parseFloat(m[1]); return null; }
-      if (/^drive_base\.settings\(/.test(trimmed)) return null; // combined header call, already read separately
+      const trimmed = rawTrimmed;
+      // Code with any trailing "# comment" stripped, for matching calls by
+      // their full argument list ($-anchored) -- comments themselves are
+      // still matched against `trimmed` below, unaffected by this.
+      const codePart = trimmed.replace(/\s*#.*$/, '').trim();
 
-      if ((m = trimmed.match(/^drive_base\.straight\((-?[\d.]+)\)/))) {
+      const prevArc = pendingArc; pendingArc = null;
+      const prevOpenLoopDrive = pendingOpenLoopDrive; pendingOpenLoopDrive = null;
+
+      let m, args;
+
+      // ---- acc_angle bookkeeping right after a drive_base.arc() call --
+      // some drivers track their own absolute heading alongside the gyro,
+      // immediately after every arc() with `acc_angle += N` / `-= N`. That
+      // line is the one place the *true* signed heading change for this
+      // specific arc call is unambiguous -- PyBricks' own radius-sign
+      // convention isn't reliably known here, so this is trusted over it.
+      if (prevArc && /^acc_angle\s*[+\-]?=/.test(codePart)) {
+        if ((m = codePart.match(/^acc_angle\s*\+=\s*(-?[\d.]+)/))) prevArc.degrees = parseFloat(m[1]);
+        else if ((m = codePart.match(/^acc_angle\s*-=\s*(-?[\d.]+)/))) prevArc.degrees = -parseFloat(m[1]);
+        return null; // absorbed into the arc step already pushed
+      }
+
+      // ---- open-loop drive_base.drive(speed, turn_rate) held for a
+      // fixed wait(ms) then stopped -- common for "back into the wall to
+      // square up" moves that don't have a real target distance. Distance
+      // is only an estimate (speed x time, no accel ramp modelled).
+      if (prevOpenLoopDrive && (m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
+        const ms = parseFloat(m[1]);
+        const distanceMm = Math.round(prevOpenLoopDrive.speed * ms / 1000);
+        notes.push(`Approximated: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${ms} ms -> estimated ${distanceMm} mm (real stopping point, e.g. a wall, isn't known)`);
+        return { type: 'drive', distanceMm, speedMmS: Math.abs(prevOpenLoopDrive.speed) };
+      }
+
+      if ((m = codePart.match(/^drive_base\.settings\(straight_speed=(-?[\d.]+)\)/))) { activeSpeed = parseFloat(m[1]); return null; }
+      if ((m = codePart.match(/^drive_base\.settings\(turn_rate=(-?[\d.]+)\)/))) { activeTurnRate = parseFloat(m[1]); return null; }
+      if (/^drive_base\.settings\(/.test(codePart)) return null; // combined header call, already read separately
+
+      if ((m = codePart.match(/^drive_base\.straight\((-?[\d.]+)\)/))) {
         const step = { type: 'drive', distanceMm: parseFloat(m[1]) };
         if (activeSpeed != null) step.speedMmS = activeSpeed;
         return step;
       }
-      if ((m = trimmed.match(/^drive_base\.turn\((-?[\d.]+)\)/))) {
+      if ((m = codePart.match(/^drive_base\.turn\((-?[\d.]+)\)/))) {
         const v = parseFloat(m[1]);
         const step = { type: 'turn', direction: v < 0 ? 'left' : 'right', degrees: Math.abs(v) };
         if (activeTurnRate != null) step.turnRateDegS = activeTurnRate;
         return step;
       }
-      if ((m = trimmed.match(/^front_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
+      // drive_base.arc(radius, angle): heading delta defaults to the angle
+      // argument's own sign (matching turn()'s convention), then gets
+      // corrected by a following acc_angle line above if there is one.
+      if ((args = matchCall(codePart, 'drive_base\\.arc'))) {
+        const radius = parseFloat(args[0]);
+        const angle = parseFloat(args[1]);
+        const step = { type: 'arc', radius, degrees: angle };
+        pendingArc = step;
+        notes.push(`Approximated: "${trimmed}" -- heading change trusted from this file's own acc_angle bookkeeping if present right after, but the curve's bow direction (which side it bulges toward) is a best guess, not a verified PyBricks convention`);
+        return step;
+      }
+      // drive_base.drive(speed, turn_rate): only the straight case
+      // (turn_rate ~ 0) can be approximated as a step; a curving open-loop
+      // drive has no clean equivalent here.
+      if ((args = matchCall(codePart, 'drive_base\\.drive'))) {
+        const speed = parseFloat(args[0]);
+        const turnRate = parseFloat(args[1]);
+        if (Math.abs(turnRate) < 0.01) {
+          pendingOpenLoopDrive = { speed };
+        } else {
+          warnings.push(`Could not simulate: "${trimmed}" -- open-loop curving drive (nonzero turn rate) has no fixed distance/angle`);
+        }
+        return null;
+      }
+      if (/^drive_base\.(stop|hold|brake)\(\)/.test(codePart)) return null; // no motion info on its own
+
+      if ((m = codePart.match(/^front_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
         const v = parseFloat(m[1]);
         return { type: 'frontMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
       }
-      if ((m = trimmed.match(/^back_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
+      if ((m = codePart.match(/^back_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
         const v = parseFloat(m[1]);
         return { type: 'backMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
       }
-      if ((m = trimmed.match(/^wait\((-?[\d.]+)\)/))) {
+      if ((m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
         return { type: 'wait', seconds: parseFloat(m[1]) / 1000 };
       }
-      if ((m = trimmed.match(/^#\s*TODO line_follow\((-?[\d.]+)\)/))) {
+      if ((m = codePart.match(/^#\s*TODO line_follow\((-?[\d.]+)\)/))) {
         return { type: 'lineFollow', distanceMm: parseFloat(m[1]) };
       }
       if (trimmed.startsWith('#      implement using')) return null; // 2nd line of the lineFollow stub
+
+      // ---- Custom PID driving helpers (this specific driver's own
+      // reusable functions, not a real PyBricks call): kept apart from the
+      // real drive_base.*/motor.* calls above because their signatures
+      // are call-site defined, not part of the PyBricks API. ----
+      if ((args = matchCall(codePart, 'driveStraightPid'))) {
+        const step = { type: 'drive', distanceMm: parseFloat(args[0]) };
+        if (args[1] !== undefined) step.speedMmS = parseFloat(args[1]);
+        return step; // target_heading (args[2], if any) is a gyro-lock target, not a path change
+      }
+      if ((args = matchCall(codePart, 'lineFollowPid'))) {
+        const step = { type: 'drive', distanceMm: parseFloat(args[0]) };
+        if (args[1] !== undefined) step.speedMmS = parseFloat(args[1]);
+        return step; // modelled as a straight drive of the given distance
+      }
+      if ((args = matchCall(codePart, 'turnPid'))) {
+        const v = parseFloat(args[0]);
+        return { type: 'turn', direction: v < 0 ? 'left' : 'right', degrees: Math.abs(v) };
+      }
+      if ((args = matchCall(codePart, 'pivotTurnPid'))) {
+        const angle = parseFloat(args[0]);
+        const pivotWheel = args[2] !== undefined ? unquote(args[2]).toLowerCase() : 'left';
+        const radius = pivotWheel === 'right' ? halfAxleTrack : -halfAxleTrack;
+        return { type: 'arc', radius, degrees: angle };
+      }
+      if ((args = matchCall(codePart, 'driveStraightColorControl'))) {
+        const distanceMm = parseFloat(args[1]);
+        const step = { type: 'drive', distanceMm };
+        if (args[2] !== undefined) step.speedMmS = parseFloat(args[2]);
+        notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger -- simulated using its max_distance_mm=${distanceMm} mm, real stopping point may differ`);
+        return step;
+      }
+      if ((args = matchCall(codePart, 'lineFollowColorStopPid'))) {
+        const distanceMm = parseFloat(args[1]);
+        const step = { type: 'drive', distanceMm };
+        if (args[2] !== undefined) step.speedMmS = parseFloat(args[2]);
+        notes.push(`Approximated: "${trimmed.slice(0, 60)}${trimmed.length > 60 ? '…' : ''}" stops on a colour sensor trigger -- simulated using its max_distance_mm=${distanceMm} mm, real stopping point may differ`);
+        return step;
+      }
+
+      // ---- Attachment motors driven by absolute-angle run_target() calls
+      // (not the relative run_angle() PyBricks export uses) -- track each
+      // named motor's running angle so a call can be turned into a
+      // relative lift/drop step. The first 2 distinct motor variable
+      // names seen (that aren't the drive wheels) claim the simulator's
+      // 2 generic front/back slots. ----
+      if ((m = codePart.match(/^(\w+)\.run_target\(\s*[\d.]+\s*,\s*(-?[\d.]+)/))) {
+        const [, motorVar, angleStr] = m;
+        if (motorVar === 'left_motor' || motorVar === 'right_motor') return null; // drive wheels, not an attachment
+        const targetAngle = parseFloat(angleStr);
+        const prevAngle = motorAngle[motorVar] || 0;
+        motorAngle[motorVar] = targetAngle;
+        const delta = targetAngle - prevAngle;
+        if (delta === 0) return null;
+        const slot = attachmentMotorSlot(motorVar);
+        if (!slot) return null; // warned once already, above
+        return { type: slot === 'front' ? 'frontMotor' : 'backMotor', action: delta < 0 ? 'drop' : 'lift', degrees: Math.abs(delta) };
+      }
+      if ((m = codePart.match(/^(\w+)\.(run_until_stalled|dc)\(/))) {
+        if (m[1] !== 'left_motor' && m[1] !== 'right_motor') {
+          warnings.push(`Could not simulate: "${trimmed}" -- ${m[2]}() has no fixed target angle`);
+        }
+        return null;
+      }
+      if (/^\w+\.(hold|brake)\(\)/.test(codePart)) return null; // e.g. left_motor.hold() -- no motion info
 
       // Comment-only action stubs: "# --- <note>: add your ... call here ---"
       if ((m = trimmed.match(/^#\s*---\s*(.+?):\s*add your (?:unfolding mechanism|gripper\/mechanism) call here\s*---/))) {
@@ -479,14 +710,45 @@ window.WRO_PROGRAM = (function() {
         return null;
       }
 
-      // Boilerplate safety net -- only matters when the marker above wasn't
-      // found (a bare snippet with no header at all).
+      if (codePart === '') { // a whole-line comment, not a code+trailing-comment line
+        if (trimmed.startsWith('#')) return { type: 'comment', text: trimmed.replace(/^#\s?/, '') };
+        return null;
+      }
+
+      // A bare call to a function this file defines itself (e.g. a debug
+      // print helper like HeadingCheck()) -- its body was intentionally
+      // never analysed, so assume no motion rather than guess.
+      if ((m = codePart.match(/^(\w+)\([^)]*\)$/)) && definedFunctions.has(m[1])) return null;
+      if (/^print\(/.test(codePart)) return null;
+
+      // Boilerplate / setup safety net: imports, hub/sensor/motor
+      // construction, plain variable assignments (Color.X = ..., voltage =
+      // ..., acc_angle = 0, ...) -- none of these describe robot motion.
       if (/^(#!|from |import |hub\s*=|left_motor\s*=|right_motor\s*=|front_motor\s*=\s*Motor|back_motor\s*=\s*Motor|drive_base\s*=\s*DriveBase|#\s*---\s*Generated route|Written for|Generated by|Check motor ports|PrimeHub for)/.test(trimmed)) return null;
+      if (/^[\w.\[\]]+(\s*\+=|\s*-=|\s*=(?!=))/.test(codePart)) return null; // generic assignment
+      if (/^[\w.]+\.\w+\([^)]*\)$/.test(codePart) && !/run_target|run_angle/.test(codePart)) return null; // other harmless setup calls, e.g. sensor.detectable_colors(...) -- drive_base.*/motor run_* calls are all already matched above, so only near-misses of those two reach here to warn instead of vanish
 
       if (trimmed.startsWith('#')) return { type: 'comment', text: trimmed.replace(/^#\s?/, '') };
 
       warnings.push(`Could not parse line: "${trimmed}"`);
       return null;
+    }
+
+    // Advances past an entire indented block without parsing any of its
+    // lines as steps -- used for `def`/`while`/`if`/etc bodies, which
+    // aren't part of the linear route (a function's body runs only when
+    // called, and this parser doesn't trace calls into it; a while/if
+    // body's lines are out of context without the condition they're
+    // gated on).
+    function skipBlockBody(startIdx, baseIndent) {
+      let i = startIdx;
+      while (i < lines.length) {
+        const trimmed = lines[i].trim();
+        if (trimmed === '') { i++; continue; }
+        if (countIndent(lines[i]) < baseIndent) break;
+        i++;
+      }
+      return i;
     }
 
     function parseBlock(startIdx, baseIndent) {
@@ -512,6 +774,27 @@ window.WRO_PROGRAM = (function() {
           continue;
         }
 
+        const defMatch = trimmed.match(/^def\s+(\w+)\s*\(/);
+        if (defMatch) definedFunctions.add(defMatch[1]);
+
+        const blockMatch = trimmed.match(/^(def|class|while|if|elif|else|try|except|finally|with)\b.*:\s*(#.*)?$/);
+        if (blockMatch) {
+          let j = i + 1;
+          while (j < lines.length && lines[j].trim() === '') j++;
+          if (j < lines.length && countIndent(lines[j]) > indent) {
+            const nextIdx = skipBlockBody(j, countIndent(lines[j]));
+            if (blockMatch[1] !== 'def') {
+              warnings.push(`Skipped block (not traced): "${trimmed}" -- ${nextIdx - i - 1} line(s) inside`);
+            }
+            i = nextIdx;
+            continue;
+          }
+          // no indented body followed (e.g. file/scope ends right after) --
+          // just skip the header line itself
+          i++;
+          continue;
+        }
+
         const step = parseSingle(trimmed);
         if (step) steps.push(step);
         i++;
@@ -520,7 +803,7 @@ window.WRO_PROGRAM = (function() {
     }
 
     const { steps } = parseBlock(start, 0);
-    return { steps, warnings, config };
+    return { steps, warnings, notes, config };
   }
 
   function init(tools) {
@@ -848,7 +1131,7 @@ window.WRO_PROGRAM = (function() {
           h('p', { class: 'import-warn', text: 'Paste or upload some code first.' }, importStatus);
           return;
         }
-        const { steps, warnings, config } = parsePyBricksCode(code);
+        const { steps, warnings, notes, config } = parsePyBricksCode(code);
         pushHistory();
         state.steps = steps;
         state.config = Object.assign({}, state.config, config);
@@ -868,6 +1151,11 @@ window.WRO_PROGRAM = (function() {
         render();
 
         h('p', { class: 'import-ok', text: `Imported ${steps.length} step${steps.length === 1 ? '' : 's'}.` }, importStatus);
+        if (notes.length) {
+          h('p', { class: 'import-note-head', text: `${notes.length} step${notes.length === 1 ? '' : 's'} simulated as an approximation -- double-check these against the real robot:` }, importStatus);
+          const noteList = h('ul', { class: 'import-note-list' }, importStatus);
+          notes.forEach(n => h('li', { text: n }, noteList));
+        }
         if (warnings.length) {
           h('p', { class: 'import-warn', text: `${warnings.length} line${warnings.length === 1 ? '' : 's'} could not be parsed and ${warnings.length === 1 ? 'was' : 'were'} skipped:` }, importStatus);
           const list = h('ul', { class: 'import-warn-list' }, importStatus);
@@ -1104,7 +1392,7 @@ window.WRO_PROGRAM = (function() {
           // live interpolated position instead of only jumping once the
           // whole step finishes, so the path visibly draws itself.
           const curStep = state.steps[idx];
-          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow')) {
+          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc')) {
             pts.push({ x: pose.x, y: pose.y });
           }
           if (pts.length > 1) {
