@@ -358,6 +358,171 @@ window.WRO_PROGRAM = (function() {
     return L.join('\n') + '\n';
   }
 
+  // ---- Import: the reverse of generatePyBricks. Recognises real callables
+  // (drive_base.straight/turn, motor.run_angle, wait) directly, and the
+  // comment-only stubs generatePyBricks emits for actions with no real
+  // PyBricks equivalent (pickup/place/deliver/settle/unfold/lineFollow) by
+  // matching describeStep()'s own text -- that comment is the only place
+  // those steps' parameters survive the export. Supports one level of
+  // `for _ in range(N):` loops (indentation-based), since hand-written code
+  // often repeats a pickup/drop sequence that way rather than listing it
+  // out N times. Not a general Python parser -- anything it doesn't
+  // recognise is reported as a warning and skipped, not guessed at.
+  function extractConfigFromCode(lines) {
+    const config = {};
+    lines.forEach(line => {
+      let m;
+      if ((m = line.match(/left_motor\s*=\s*Motor\(Port\.(\w)\)/))) config.portLeft = m[1];
+      if ((m = line.match(/right_motor\s*=\s*Motor\(Port\.(\w)\)/))) config.portRight = m[1];
+      if ((m = line.match(/front_motor\s*=\s*Motor\(Port\.(\w)\)/))) config.portFront = m[1];
+      if ((m = line.match(/back_motor\s*=\s*Motor\(Port\.(\w)\)/))) config.portBack = m[1];
+      if ((m = line.match(/DriveBase\([^)]*wheel_diameter=([\d.]+)/))) config.wheelDiameter = parseFloat(m[1]);
+      if ((m = line.match(/DriveBase\([^)]*axle_track=([\d.]+)/))) config.axleTrack = parseFloat(m[1]);
+      // Only the header's combined settings() call (all four kwargs together)
+      // describes the base config -- per-step overrides later in the file
+      // always carry exactly one kwarg, so this pattern can't match those.
+      if ((m = line.match(/drive_base\.settings\(straight_speed=([\d.]+),\s*straight_acceleration=([\d.]+),\s*turn_rate=([\d.]+),\s*turn_acceleration=([\d.]+)\)/))) {
+        config.straightSpeed = parseFloat(m[1]);
+        config.straightAcceleration = parseFloat(m[2]);
+        config.turnRate = parseFloat(m[3]);
+        config.turnAcceleration = parseFloat(m[4]);
+      }
+    });
+    return config;
+  }
+
+  function parsePyBricksCode(code) {
+    const TILE_COLOURS = (window.WRO_ELEMENTS && window.WRO_ELEMENTS.TILE_COLOURS) || ['white', 'green', 'blue', 'yellow'];
+    const colourAlt = TILE_COLOURS.join('|');
+    function toolIdByName(name) {
+      if (!window.WRO_ELEMENTS) return name;
+      const t = window.WRO_ELEMENTS.tools.find(t => t.name === name);
+      return t ? t.id : name;
+    }
+    function countIndent(line) {
+      return line.match(/^[ \t]*/)[0].replace(/\t/g, '    ').length;
+    }
+
+    const allLines = code.replace(/\r\n/g, '\n').split('\n');
+    const config = extractConfigFromCode(allLines);
+    const warnings = [];
+
+    // A full export carries this exact marker right before the real route --
+    // skip straight past the docstring/imports/hub/motor boilerplate to the
+    // first real step when it's present, instead of trying to itemise every
+    // possible header line.
+    const markerIdx = allLines.findIndex(l => l.trim() === '# --- Generated route ---');
+    let start = 0;
+    if (markerIdx !== -1) {
+      start = markerIdx + 1;
+      const skipExact = [
+        '# turn(): positive = right/clockwise, negative = left/counter-clockwise',
+        '# motors: positive = lift, negative = drop -- flip the sign if reversed on your build',
+        '# (no steps added yet -- build a route in the planner, then re-export)',
+        '',
+      ];
+      while (start < allLines.length && skipExact.includes(allLines[start].trim())) start++;
+    }
+    const lines = allLines;
+
+    let activeSpeed = null, activeTurnRate = null;
+    let inDocstring = false;
+
+    function parseSingle(trimmed) {
+      if (!trimmed) return null;
+      if (trimmed === '"""') { inDocstring = !inDocstring; return null; }
+      if (inDocstring) return null;
+
+      let m;
+      if ((m = trimmed.match(/^drive_base\.settings\(straight_speed=(-?[\d.]+)\)/))) { activeSpeed = parseFloat(m[1]); return null; }
+      if ((m = trimmed.match(/^drive_base\.settings\(turn_rate=(-?[\d.]+)\)/))) { activeTurnRate = parseFloat(m[1]); return null; }
+      if (/^drive_base\.settings\(/.test(trimmed)) return null; // combined header call, already read separately
+
+      if ((m = trimmed.match(/^drive_base\.straight\((-?[\d.]+)\)/))) {
+        const step = { type: 'drive', distanceMm: parseFloat(m[1]) };
+        if (activeSpeed != null) step.speedMmS = activeSpeed;
+        return step;
+      }
+      if ((m = trimmed.match(/^drive_base\.turn\((-?[\d.]+)\)/))) {
+        const v = parseFloat(m[1]);
+        const step = { type: 'turn', direction: v < 0 ? 'left' : 'right', degrees: Math.abs(v) };
+        if (activeTurnRate != null) step.turnRateDegS = activeTurnRate;
+        return step;
+      }
+      if ((m = trimmed.match(/^front_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
+        const v = parseFloat(m[1]);
+        return { type: 'frontMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
+      }
+      if ((m = trimmed.match(/^back_motor\.run_angle\([^,]+,\s*(-?[\d.]+)/))) {
+        const v = parseFloat(m[1]);
+        return { type: 'backMotor', action: v < 0 ? 'drop' : 'lift', degrees: Math.abs(v) };
+      }
+      if ((m = trimmed.match(/^wait\((-?[\d.]+)\)/))) {
+        return { type: 'wait', seconds: parseFloat(m[1]) / 1000 };
+      }
+      if ((m = trimmed.match(/^#\s*TODO line_follow\((-?[\d.]+)\)/))) {
+        return { type: 'lineFollow', distanceMm: parseFloat(m[1]) };
+      }
+      if (trimmed.startsWith('#      implement using')) return null; // 2nd line of the lineFollow stub
+
+      // Comment-only action stubs: "# --- <note>: add your ... call here ---"
+      if ((m = trimmed.match(/^#\s*---\s*(.+?):\s*add your (?:unfolding mechanism|gripper\/mechanism) call here\s*---/))) {
+        const note = m[1];
+        let n;
+        if (note === 'Unfold to open size') return { type: 'unfold' };
+        if ((n = note.match(new RegExp(`^Pick up (${colourAlt}) tile$`)))) return { type: 'pickupTile', colour: n[1] };
+        if ((n = note.match(/^Place tile in frame slot (\d+)$/))) return { type: 'placeTile', slot: parseInt(n[1], 10) - 1 };
+        if ((n = note.match(new RegExp(`^Settle (\\d+)\\u00d7 (${colourAlt}) cement$`)))) return { type: 'settleCement', count: parseInt(n[1], 10), colour: n[2] };
+        if ((n = note.match(/^Pick up (.+)$/))) return { type: 'pickupTool', toolId: toolIdByName(n[1]) };
+        if ((n = note.match(/^Deliver (.+)$/))) return { type: 'deliverTool', toolId: toolIdByName(n[1]) };
+        warnings.push(`Unrecognised action stub: "${trimmed}"`);
+        return null;
+      }
+
+      // Boilerplate safety net -- only matters when the marker above wasn't
+      // found (a bare snippet with no header at all).
+      if (/^(#!|from |import |hub\s*=|left_motor\s*=|right_motor\s*=|front_motor\s*=\s*Motor|back_motor\s*=\s*Motor|drive_base\s*=\s*DriveBase|#\s*---\s*Generated route|Written for|Generated by|Check motor ports|PrimeHub for)/.test(trimmed)) return null;
+
+      if (trimmed.startsWith('#')) return { type: 'comment', text: trimmed.replace(/^#\s?/, '') };
+
+      warnings.push(`Could not parse line: "${trimmed}"`);
+      return null;
+    }
+
+    function parseBlock(startIdx, baseIndent) {
+      const steps = [];
+      let i = startIdx;
+      while (i < lines.length) {
+        const raw = lines[i];
+        const trimmed = raw.trim();
+        if (trimmed === '') { i++; continue; }
+        const indent = countIndent(raw);
+        if (indent < baseIndent) break;
+
+        const forMatch = trimmed.match(/^for\s+\w+\s+in\s+range\((\d+)\):$/);
+        if (forMatch) {
+          const count = parseInt(forMatch[1], 10);
+          let j = i + 1;
+          while (j < lines.length && lines[j].trim() === '') j++;
+          if (j >= lines.length) { i = j; continue; }
+          const innerIndent = countIndent(lines[j]);
+          const { steps: bodySteps, nextIdx } = parseBlock(j, innerIndent);
+          for (let r = 0; r < count; r++) bodySteps.forEach(s => steps.push(Object.assign({}, s)));
+          i = nextIdx;
+          continue;
+        }
+
+        const step = parseSingle(trimmed);
+        if (step) steps.push(step);
+        i++;
+      }
+      return { steps, nextIdx: i };
+    }
+
+    const { steps } = parseBlock(start, 0);
+    return { steps, warnings, config };
+  }
+
   function init(tools) {
     const section = document.getElementById('programSection');
     if (!section) return;
@@ -648,6 +813,68 @@ window.WRO_PROGRAM = (function() {
       a.click();
       URL.revokeObjectURL(url);
     });
+
+    // ---- import modal: parse pasted/uploaded PyBricks code back into steps ----
+    const importBtn = document.getElementById('programImportBtn');
+    if (importBtn) {
+      const importModal = document.getElementById('programImportModal');
+      const importCloseBtn = importModal.querySelector('button.close');
+      const importCodeArea = document.getElementById('programImportCode');
+      const importFileInput = document.getElementById('programImportFile');
+      const importFileName = document.getElementById('programImportFileName');
+      const importStatus = document.getElementById('programImportStatus');
+      const importRunBtn = document.getElementById('programImportRunBtn');
+
+      importBtn.addEventListener('click', () => {
+        importStatus.innerHTML = '';
+        importModal.classList.add('open');
+      });
+      importCloseBtn.addEventListener('click', () => importModal.classList.remove('open'));
+      importModal.addEventListener('click', e => { if (e.target === importModal) importModal.classList.remove('open'); });
+
+      importFileInput.addEventListener('change', () => {
+        const file = importFileInput.files[0];
+        if (!file) return;
+        importFileName.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = () => { importCodeArea.value = String(reader.result); };
+        reader.readAsText(file);
+      });
+
+      importRunBtn.addEventListener('click', () => {
+        const code = importCodeArea.value;
+        importStatus.innerHTML = '';
+        if (!code.trim()) {
+          h('p', { class: 'import-warn', text: 'Paste or upload some code first.' }, importStatus);
+          return;
+        }
+        const { steps, warnings, config } = parsePyBricksCode(code);
+        pushHistory();
+        state.steps = steps;
+        state.config = Object.assign({}, state.config, config);
+        state.walker.stepIndex = 0;
+        persist(state);
+        // reflect any restored config (wheel/axle/ports/speeds) in the UI
+        wheelInput.value = state.config.wheelDiameter;
+        axleInput.value = state.config.axleTrack;
+        portLeft.value = state.config.portLeft;
+        portRight.value = state.config.portRight;
+        portFront.value = state.config.portFront;
+        portBack.value = state.config.portBack;
+        straightSpeedInput.value = state.config.straightSpeed;
+        straightAccelInput.value = state.config.straightAcceleration;
+        turnRateInput.value = state.config.turnRate;
+        turnAccelInput.value = state.config.turnAcceleration;
+        render();
+
+        h('p', { class: 'import-ok', text: `Imported ${steps.length} step${steps.length === 1 ? '' : 's'}.` }, importStatus);
+        if (warnings.length) {
+          h('p', { class: 'import-warn', text: `${warnings.length} line${warnings.length === 1 ? '' : 's'} could not be parsed and ${warnings.length === 1 ? 'was' : 'were'} skipped:` }, importStatus);
+          const list = h('ul', { class: 'import-warn-list' }, importStatus);
+          warnings.forEach(w => h('li', { text: w }, list));
+        }
+      });
+    }
 
     // ---- walker: place a robot on the mat and step through the route ----
     const stage = document.getElementById('stage');
@@ -1189,5 +1416,5 @@ window.WRO_PROGRAM = (function() {
     }
   }
 
-  return { init, generatePyBricks };
+  return { init, generatePyBricks, parsePyBricksCode };
 })();

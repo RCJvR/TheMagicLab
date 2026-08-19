@@ -111,6 +111,7 @@
     <div class="program-head">
       <h3>Route planner → PyBricks</h3>
       <button class="chip-btn" id="programConfigToggle" type="button">⚙ Robot config</button>
+      <button class="chip-btn" id="programImportBtn" type="button">📤 Import code</button>
     </div>
 
     <div class="program-config" id="programConfig" style="display:none;">
@@ -302,6 +303,37 @@
         Starter code using PyBricks' standard <code>DriveBase</code> and
         <code>Motor</code> classes. Check motor ports, turn direction and
         lift/drop sign against your own build before running it.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Route-planner import modal -->
+<div class="modal-bg" id="programImportModal">
+  <div class="modal">
+    <h2>
+      Import code → simulate route
+      <button class="close" title="Close">×</button>
+    </h2>
+    <div class="body">
+      <div class="row">
+        <label class="chip-btn" for="programImportFile" style="cursor:pointer;">Choose file…</label>
+        <input type="file" id="programImportFile" accept=".py,.txt" style="display:none;">
+        <span class="hint" id="programImportFileName">no file chosen</span>
+      </div>
+      <textarea id="programImportCode" spellcheck="false" placeholder="Paste PyBricks code here (this tool's own EXPORT PYBRICKS CODE format), or choose a .py file above…"></textarea>
+      <div class="row">
+        <button id="programImportRunBtn">Import &amp; simulate</button>
+      </div>
+      <div id="programImportStatus"></div>
+      <p style="margin: 0; font-size: 12px; line-height: 1.5;">
+        Recognises <code>drive_base.straight()/turn()</code>, motor
+        <code>run_angle()</code>, <code>wait()</code>, and simple
+        <code>for _ in range(N):</code> loops. This <strong>replaces</strong>
+        the current route — export or note down anything you want to keep
+        first. It restores motor ports / speeds from the code header if
+        present, but not the robot's starting position — place the robot on
+        the mat before pressing Play.
       </p>
     </div>
   </div>
