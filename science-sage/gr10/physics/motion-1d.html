@@ -120,6 +120,7 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
   </style>
 <script defer src="../../../auth.js"></script>
 <script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
 <script defer src="../../../progress.js"></script>
 <script defer src="../../../lesson-progress-observer.js"></script>
 </head>
@@ -128,6 +129,7 @@ input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
   <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
   <div style="display:flex;align-items:center;gap:10px">
     <span class="nav-strand">Physics</span>
+    <span id="mlLangToggle"></span>
     <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Back</a>
   </div>
 </nav>
@@ -573,6 +575,21 @@ buildPractice();
 </script>
 <script>lucide.createIcons()</script>
 <script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
   <script src="/contact-button.js" defer></script>
 </body>
 </html>
