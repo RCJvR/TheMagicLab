@@ -238,10 +238,10 @@ MathMagician.registerChapter(18, {
           (function(){
             const issues = [
               {t:'Steekproefgrootte is klein (minder as ~30)', w:1},
-              {t:'Die steekproef was \\'n gerieflikheidsteekproef (nie ewekansig/sistematies nie)', w:1},
+              {t:'Die steekproef was \'n gerieflikheidsteekproef (nie ewekansig/sistematies nie)', w:1},
               {t:'Opnamevrae lyk lei-end of eensydig', w:1},
-              {t:'Die data-insamelaar trek voordeel uit \\'n bepaalde uitkoms', w:1},
-              {t:'Die steekproef sluit \\'n groot deel van die populasie uit', w:1},
+              {t:'Die data-insamelaar trek voordeel uit \'n bepaalde uitkoms', w:1},
+              {t:'Die steekproef sluit \'n groot deel van die populasie uit', w:1},
             ];
             const div = document.getElementById('relChecks');
             issues.forEach((it,i) => {
@@ -255,7 +255,7 @@ MathMagician.registerChapter(18, {
               const out = document.getElementById('relOut');
               let verdict, colour;
               if(checked === 0){ verdict = 'Geen waarskuwingstekens gekies nie — die bron lyk tot dusver betroubaar.'; colour = '#6ee7b7'; }
-              else if(checked <= 1){ verdict = 'Geringe bekommernis — interpreteer gevolgtrekkings met \\'n mate van omsigtigheid.'; colour = '#fcd34d'; }
+              else if(checked <= 1){ verdict = 'Geringe bekommernis — interpreteer gevolgtrekkings met \'n mate van omsigtigheid.'; colour = '#fcd34d'; }
               else if(checked <= 3){ verdict = 'Verskeie waarskuwingstekens — die data is waarskynlik bevooroordeeld of onbetroubaar.'; colour = '#fbbf24'; }
               else { verdict = 'Baie waarskuwingstekens — hierdie bron behoort nie vertrou te word sonder verdere bewyse nie.'; colour = '#fca5a5'; }
               out.innerHTML = '<span style="color:'+colour+';">'+checked+' kwessie(s) gekies: '+verdict+'</span>';
