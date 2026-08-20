@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genetika &amp; Oorerwing — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    /* Punnett extras */
+    .punnett-result{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 18px;margin-top:14px;font-size:13px;color:rgba(210,218,245,.80);line-height:1.9}
+    .punnett-result strong{color:#fcd34d}
+    select{background:#0d1226;border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--text);padding:7px 10px;font-size:13px;font-family:var(--fd);cursor:pointer;outline:none;width:100%}
+    select option{background:#0d1226;color:var(--text)}
+    select:focus{border-color:rgba(251,191,36,.40)}
+    label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewe en Lewenswetenskappe</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Lewe en Lewenswetenskappe · Les 4</div>
+  <h1 class="lesson-title">Genetika &amp; Oorerwing</h1>
+  <p class="lesson-sub">Ontdek hoe eienskappe deur gene van ouers oorgeërf word, leer om Punnett-vierkante te lees, en ontdek hoe dominante en resessiewe allele ons eienskappe bepaal.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="compass" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>DNS: Die Boublad van die Lewe</h2>
+    <p><strong>DNS</strong> (deoksiribonukleïensuur, DNA) is die molekule wat alle genetiese inligting in lewende organismes dra. Dit word in die <strong>kern</strong> van elke sel gestoor en het die vorm van 'n <strong>dubbelheliks</strong> — twee stringe wat om mekaar gedraai is soos 'n wenteltrap. DNS bestaan uit kleiner eenhede genaamd <strong>nukleotiede</strong>, elk met een van vier basisse: <strong>Adenien (A), Timien (T), Guanien (G) en Sitosien (C)</strong>. Die volgorde van hierdie basisse vorm die genetiese kode.</p>
+    <div class="callout"><strong>Sleutelreël:</strong> A koppel altyd met T, en G koppel altyd met C. Hierdie basispaarreël verseker akkurate kopiëring van genetiese inligting wanneer selle deel.</div>
+
+    <h2>Chromosome</h2>
+    <p>DNS word opgerol en verpak in strukture genaamd <strong>chromosome</strong>, wat in die kern voorkom. Mense het <strong>46 chromosome</strong> wat in <strong>23 pare</strong> gerangskik is — een chromosoom in elke paar word van elke ouer oorgeërf.</p>
+    <ul>
+      <li>Pare 1–22 word <strong>outosome</strong> genoem (nie-geslagschromosome).</li>
+      <li>Paar 23 is die <strong>geslagschromosome</strong>: vroulikes het twee X-chromosome (<strong>XX</strong>), manlikes het een X- en een Y-chromosoom (<strong>XY</strong>).</li>
+    </ul>
+    <div class="key-fact">Mense: 46 chromosome · 23 pare · Geslagschromosome: XX = vroulik, XY = manlik</div>
+
+    <h2>Gene en Allele</h2>
+    <p>'n <strong>Geen</strong> is 'n spesifieke deel van DNS wat vir 'n bepaalde eienskap kodeer — byvoorbeeld die geen wat oogkleur bepaal. Elke geen beset 'n vaste posisie (genaamd 'n <em>lokus</em>) op 'n chromosoom.</p>
+    <p>'n <strong>Alleel</strong> is 'n alternatiewe vorm van 'n geen. Omdat chromosome in pare voorkom, dra elke individu <strong>twee allele</strong> vir elke geen — een op elke chromosoom in die paar.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Term</th><th>Betekenis</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dominante alleel</strong></td><td>Word uitgedruk selfs wanneer slegs een kopie teenwoordig is. Geskryf as 'n hoofletter.</td><td>B = bruin oë (dominant)</td></tr>
+        <tr><td><strong>Resessiewe alleel</strong></td><td>Word slegs uitgedruk wanneer twee kopieë teenwoordig is. Geskryf as 'n kleinletter.</td><td>b = blou oë (resessief)</td></tr>
+        <tr><td><strong>Genotipe</strong></td><td>Die genetiese samestelling — watter allele 'n organisme dra.</td><td>BB, Bb, of bb</td></tr>
+        <tr><td><strong>Fenotipe</strong></td><td>Die fisiese eienskap wat werklik uitgedruk word.</td><td>Bruin oë of blou oë</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Homosigoties en Heterosigoties</h2>
+    <ul>
+      <li><strong>Homosigoties dominant (BB):</strong> Twee kopieë van die dominante alleel. Fenotipe = dominante eienskap (bruin oë).</li>
+      <li><strong>Homosigoties resessief (bb):</strong> Twee kopieë van die resessiewe alleel. Fenotipe = resessiewe eienskap (blou oë).</li>
+      <li><strong>Heterosigoties (Bb):</strong> Een van elke alleel. Fenotipe = dominante eienskap (bruin oë), omdat B b oorheers.</li>
+    </ul>
+    <div class="callout"><strong>Onthou:</strong> 'n Organisme kan bruin oë hê met genotipe BB <em>of</em> Bb. Jy kan nie net deur te kyk die genotipe bepaal nie — dis waarom ons genotipe van fenotipe onderskei.</div>
+
+    <h2>Punnett-vierkante</h2>
+    <p>'n <strong>Punnett-vierkant</strong> is 'n rooster wat gebruik word om die moontlike genotipes (en fenotipes) van nageslag uit 'n genetiese kruising te voorspel. Die allele van een ouer word langs die boonste kant geplaas; die allele van die ander ouer word langs die linkerkant geplaas.</p>
+    <p><strong>Voorbeeld van 'n monohibriede kruising — Bb × Bb (heterosigotiese bruinogige ouers):</strong></p>
+    <div class="formula">BB : 2 Bb : bb &nbsp;→&nbsp; Genotipeverhouding 1:2:1 &nbsp;·&nbsp; Fenotipeverhouding 3 bruin : 1 blou</div>
+    <p>Dit beteken daar is 'n <strong>75%-kans</strong> op bruin oë en 'n <strong>25%-kans</strong> op blou oë by elke nakomeling.</p>
+
+    <h2>Uitgewerkte Voorbeelde</h2>
+    <ul>
+      <li><strong>Tongrol (T = roller, t = nie-roller):</strong> Tt × Tt → 1 TT : 2 Tt : 1 tt → 3 rollers : 1 nie-roller</li>
+      <li><strong>Oorlel-aanhegting (F = vry, f = vas):</strong> Ff × ff → 1 Ff : 1 ff → 1 vry : 1 vas (50:50)</li>
+      <li><strong>Ertjiesaadkleur (Y = geel, y = groen):</strong> Yy × Yy → 3 geel : 1 groen (Mendel se klassieke resultaat)</li>
+    </ul>
+
+    <h2>Gregor Mendel</h2>
+    <p><strong>Gregor Mendel</strong> (1822–1884) was 'n Oostenrykse monnik wat die basiese beginsels van oorerwing ontdek het deur ertjieplante versigtig te kruisbevrug en die resultate oor baie jare aan te teken. Hy het eienskappe soos saadkleur, saadvorm, planthoogte en peulkleur nagevors. Sy werk is grotendeels tydens sy leeftyd geïgnoreer, maar word nou as die grondslag van genetika erken. Sy bevindings het tot twee wette gelei: die <strong>Wet van Segregasie</strong> (allele skei wanneer gamete vorm) en die <strong>Wet van Onafhanklike Assortering</strong> (gene vir verskillende eienskappe word onafhanklik oorgeërf).</p>
+
+    <h2>Kodominansie</h2>
+    <p>By <strong>kodominansie</strong> is geen alleel dominant of resessief nie — <em>albei</em> word ten volle in die fenotipe uitgedruk. Die beste voorbeeld is die <strong>ABO-bloedgroepstelsel</strong>: 'n persoon met genotipe I<sup>A</sup>I<sup>B</sup> het bloedgroep AB, wat gelyktydig beide A- en B-antigene op rooibloedselle toon.</p>
+    <div class="callout"><strong>Kodominansie teenoor dominansie:</strong> By eenvoudige dominansie (Bb) oorheers een alleel die ander heeltemal. By kodominansie (I<sup>A</sup>I<sup>B</sup>) dra albei allele ewe veel by tot die fenotipe.</div>
+
+    <h2>Geslagsbepaling</h2>
+    <p>Die geslag van 'n kind word deur die <strong>vader se sperm</strong> bepaal, nie deur die moeder se eiersel nie. Alle eiersels dra 'n X-chromosoom. Spermselle dra óf 'n X- óf 'n Y-chromosoom. As 'n spermsel met 'n Y-chromosoom die eiersel bevrug, is die nakomeling manlik (XY). As 'n spermsel met 'n X-chromosoom die eiersel bevrug, is die nakomeling vroulik (XX). Die Y-chromosoom dra die <em>SRY</em>-geen, wat manlike ontwikkeling in werking stel.</p>
+    <div class="key-fact">Vader bepaal geslag: X-sperm → dogter (XX) · Y-sperm → seun (XY)</div>
+
+    <h2>Oorgeërfde teenoor Omgewingseienskappe</h2>
+    <p>Nie alle eienskappe is suiwer geneties nie. Sommige eienskappe word deur die omgewing beïnvloed:</p>
+    <ul>
+      <li><strong>Oorgeërfde eienskappe:</strong> oogkleur, bloedgroep, tongrol, oorlel-aanhegting, velkleur (gedeeltelik).</li>
+      <li><strong>Omgewingseienskappe:</strong> taal wat gepraat word, littekens, liggaamsmassa (beïnvloed deur dieet), sonbruin.</li>
+      <li><strong>Albei (natuur + omgewing):</strong> lengte (gene bepaal die potensiaal; voeding bepaal hoeveel van daardie potensiaal bereik word), intelligensie, atletiese vermoë.</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Interaktiewe Punnett-vierkant-generator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Kies ouer-genotipes en 'n eienskap. Die Punnett-vierkant word onmiddellik opgedateer en wys al die moontlike nakomeling-kombinasies met genotipe- en fenotipeverhoudings.</p>
+  <div class="sim-outer">
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Eienskap</div>
+        <select id="traitSel" onchange="drawPunnett()">
+          <option value="eye">Oogkleur (B=bruin, b=blou)</option>
+          <option value="tongue">Tongrol (T=roller, t=nie-roller)</option>
+          <option value="earlobe">Oorlel-aanhegting (F=vry, f=vas)</option>
+        </select>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Ouer 1-genotipe</div>
+        <select id="p1Sel" onchange="drawPunnett()">
+          <option value="BB">BB (Homosigoties dominant)</option>
+          <option value="Bb" selected>Bb (Heterosigoties)</option>
+          <option value="bb">bb (Homosigoties resessief)</option>
+        </select>
+      </div>
+      <div class="ctrl-card" style="grid-column:1">
+        <div class="ctrl-label">Ouer 2-genotipe</div>
+        <select id="p2Sel" onchange="drawPunnett()">
+          <option value="BB">BB (Homosigoties dominant)</option>
+          <option value="Bb" selected>Bb (Heterosigoties)</option>
+          <option value="bb">bb (Homosigoties resessief)</option>
+        </select>
+      </div>
+    </div>
+    <div class="sim-canvas-wrap">
+      <h3>Punnett-vierkant</h3>
+      <canvas id="punnettCanvas" height="320"></canvas>
+    </div>
+    <div class="punnett-result" id="punnettResult"></div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings na vir enige vrae wat jy verkeerd beantwoord het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord al die vrae in jou oefeningboek. Teken diagramme waar gevra. Wys alle berekeninge vir Punnett-vierkante.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (4 punte)</div><div class="wb-qtext">Definieer die volgende terme en gee 'n voorbeeld van elk: (a) geen, (b) alleel, (c) genotipe, (d) fenotipe.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (5 punte)</div><div class="wb-qtext">By ertjieplante is ronde sade (R) dominant oor gerimpelde sade (r). Twee heterosigotiese plante word gekruis (Rr × Rr). Teken 'n volledig gemerkte Punnett-vierkant en gee: (a) die genotipeverhouding, (b) die fenotipeverhouding, (c) die waarskynlikheid dat 'n nakomeling gerimpelde sade sal hê.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">'n Vrou met bloedgroep A (genotipe I<sup>A</sup>i) en 'n man met bloedgroep B (genotipe I<sup>B</sup>i) kry kinders. Gebruik 'n Punnett-vierkant om die moontlike bloedgroepe van hul kinders te bepaal en gee die waarskynlikheid van elk.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik hoe die geslag van 'n baba bepaal word. Noem in jou antwoord die geslagschromosome van elke ouer, verduidelik watter ouer die geslag bepaal, en gee die chromosoomkombinasie wat 'n manlike en 'n vroulike nakomeling produseer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">'n Leerder sê: "As altwee ouers bruin oë het, moet al hul kinders ook bruin oë hê." Verduidelik of hierdie stelling korrek of verkeerd is. Gebruik die konsepte van dominante en resessiewe allele en 'n Punnett-vierkant in jou antwoord.</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') drawPunnett();
+}
+
+/* ---- Punnett Square ---- */
+const TRAITS = {
+  eye:     { dom: 'B', rec: 'b', domName: "Bruin oë", recName: "Blou oë" },
+  tongue:  { dom: 'T', rec: 't', domName: "Tongroller", recName: "Nie-roller" },
+  earlobe: { dom: 'F', rec: 'f', domName: "Vrye oorlel", recName: "Vaste oorlel" }
+};
+
+function parseGeno(g) {
+  // Returns [allele1, allele2]
+  return [g[0], g[1]];
+}
+
+function drawPunnett() {
+  const canvas = document.getElementById('punnettCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 600;
+  const H = 320;
+
+  ctx.setTransform(1,0,0,1,0,0);
+  canvas.width = W * (window.devicePixelRatio || 1);
+  canvas.height = H * (window.devicePixelRatio || 1);
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+
+  ctx.clearRect(0, 0, W, H);
+
+  const trait = TRAITS[document.getElementById('traitSel').value];
+  const p1 = parseGeno(document.getElementById('p1Sel').value);
+  const p2 = parseGeno(document.getElementById('p2Sel').value);
+
+  // Punnett square layout
+  const cx = W / 2;
+  const cy = H / 2 + 10;
+  const cellW = 120;
+  const cellH = 100;
+  const headerW = 60;
+  const headerH = 50;
+  const left = cx - cellW - headerW / 2;
+  const top = cy - cellH - headerH / 2;
+
+  // Draw header cells (parent alleles)
+  // P1 alleles on top: p1[0] above left column, p1[1] above right column
+  // P2 alleles on sides: p2[0] left of top row, p2[1] left of bottom row
+
+  const isDom = (a) => a === trait.dom;
+
+  // Offspring combinations
+  const combos = [
+    [p1[0], p2[0]],
+    [p1[1], p2[0]],
+    [p1[0], p2[1]],
+    [p1[1], p2[1]]
+  ];
+
+  // Sort each combo so dominant first
+  const sortedCombos = combos.map(([a, b]) => {
+    if (isDom(a) && !isDom(b)) return [a, b];
+    if (isDom(b) && !isDom(a)) return [b, a];
+    return [a, b];
+  });
+
+  // Count phenotypes
+  let domCount = 0, recCount = 0;
+  const genoCount = {};
+  sortedCombos.forEach(([a, b]) => {
+    const g = a + b;
+    genoCount[g] = (genoCount[g] || 0) + 1;
+    if (isDom(a) || isDom(b)) domCount++; else recCount++;
+  });
+
+  // --- Draw ---
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Background grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  for (let xi = 0; xi < W; xi += 40) { ctx.beginPath(); ctx.moveTo(xi,0); ctx.lineTo(xi,H); ctx.stroke(); }
+  for (let yi = 0; yi < H; yi += 40) { ctx.beginPath(); ctx.moveTo(0,yi); ctx.lineTo(W,yi); ctx.stroke(); }
+
+  // Header label "Ouer 1 →"
+  ctx.font = '700 11px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(252,211,77,0.60)';
+  ctx.fillText('Ouer 1 →', left + headerW + cellW, top + headerH / 2 - 14);
+
+  // Header label "Ouer 2 ↓"
+  ctx.save();
+  ctx.translate(left + headerW / 2 - 14, top + headerH + cellH);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('Ouer 2 ↓', 0, 0);
+  ctx.restore();
+
+  // Draw P1 header cells
+  for (let ci = 0; ci < 2; ci++) {
+    const hx = left + headerW + ci * cellW;
+    const hy = top;
+    ctx.fillStyle = 'rgba(251,191,36,0.10)';
+    ctx.beginPath();
+    ctx.roundRect(hx + 4, hy + 4, cellW - 8, headerH - 8, 8);
+    ctx.fill();
+    ctx.font = 'bold 22px "Cabinet Grotesk",sans-serif';
+    ctx.fillStyle = isDom(p1[ci]) ? '#fcd34d' : '#a5b4fc';
+    ctx.fillText(p1[ci], hx + cellW / 2, hy + headerH / 2);
+  }
+
+  // Draw P2 header cells
+  for (let ri = 0; ri < 2; ri++) {
+    const hx = left;
+    const hy = top + headerH + ri * cellH;
+    ctx.fillStyle = 'rgba(251,191,36,0.10)';
+    ctx.beginPath();
+    ctx.roundRect(hx + 4, hy + 4, headerW - 8, cellH - 8, 8);
+    ctx.fill();
+    ctx.font = 'bold 22px "Cabinet Grotesk",sans-serif';
+    ctx.fillStyle = isDom(p2[ri]) ? '#fcd34d' : '#a5b4fc';
+    ctx.fillText(p2[ri], hx + headerW / 2, hy + cellH / 2);
+  }
+
+  // Draw 4 offspring cells
+  const positions = [[0,0],[1,0],[0,1],[1,1]];
+  positions.forEach(([ci, ri]) => {
+    const combo = sortedCombos[ri * 2 + ci];
+    const ox = left + headerW + ci * cellW;
+    const oy = top + headerH + ri * cellH;
+    const isRecessive = !isDom(combo[0]) && !isDom(combo[1]);
+
+    // Cell background
+    const bg = isRecessive ? 'rgba(99,102,241,0.15)' : 'rgba(34,197,94,0.10)';
+    ctx.fillStyle = bg;
+    ctx.beginPath();
+    ctx.roundRect(ox + 3, oy + 3, cellW - 6, cellH - 6, 10);
+    ctx.fill();
+    ctx.strokeStyle = isRecessive ? 'rgba(99,102,241,0.35)' : 'rgba(34,197,94,0.28)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(ox + 3, oy + 3, cellW - 6, cellH - 6, 10);
+    ctx.stroke();
+
+    // Genotype text (large)
+    ctx.font = 'bold 26px "Cabinet Grotesk",sans-serif';
+    ctx.fillStyle = isRecessive ? '#a5b4fc' : '#86efac';
+    ctx.fillText(combo[0] + combo[1], ox + cellW / 2, oy + cellH / 2 - 10);
+
+    // Phenotype text (small)
+    ctx.font = '11px "JetBrains Mono",monospace';
+    ctx.fillStyle = 'rgba(210,218,245,0.50)';
+    ctx.fillText(isRecessive ? trait.recName : trait.domName, ox + cellW / 2, oy + cellH / 2 + 18);
+  });
+
+  // Grid lines for cells
+  ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+  ctx.lineWidth = 1;
+  // Vertical lines
+  for (let ci = 0; ci <= 2; ci++) {
+    const x = left + headerW + ci * cellW;
+    ctx.beginPath();
+    ctx.moveTo(x, top + headerH);
+    ctx.lineTo(x, top + headerH + 2 * cellH);
+    ctx.stroke();
+  }
+  // Horizontal lines
+  for (let ri = 0; ri <= 2; ri++) {
+    const y = top + headerH + ri * cellH;
+    ctx.beginPath();
+    ctx.moveTo(left + headerW, y);
+    ctx.lineTo(left + headerW + 2 * cellW, y);
+    ctx.stroke();
+  }
+
+  // Result panel
+  const genoEntries = Object.entries(genoCount).sort();
+  const genoStr = genoEntries.map(([g, n]) => `${n} ${g}`).join(' : ');
+  const phenoStr = (domCount > 0 && recCount > 0)
+    ? `${domCount} ${trait.domName} : ${recCount} ${trait.recName}`
+    : (domCount === 4 ? `4 ${trait.domName} (100%)` : `4 ${trait.recName} (100%)`);
+  const recProb = Math.round((recCount / 4) * 100);
+  const domProb = 100 - recProb;
+
+  document.getElementById('punnettResult').innerHTML =
+    `<strong>Genotipeverhouding:</strong> ${genoStr}<br>
+     <strong>Fenotipeverhouding:</strong> ${phenoStr}<br>
+     <strong>Waarskynlikheid van ${trait.domName}:</strong> ${domProb}% &nbsp;·&nbsp; <strong>Waarskynlikheid van ${trait.recName}:</strong> ${recProb}%`;
+}
+
+window.addEventListener('resize', drawPunnett);
+
+/* ---- Practice Questions ---- */
+const QUESTIONS = [
+  {
+    text: "Wat is die verskil tussen 'n genotipe en 'n fenotipe?",
+    opts: [
+      "Genotipe is die fisiese voorkoms; fenotipe is die genetiese samestelling",
+      "Genotipe is die genetiese samestelling; fenotipe is die fisiese voorkoms",
+      "Hulle beteken dieselfde ding in genetika",
+      "Genotipe verwys slegs na dominante allele"
+    ],
+    ans: 1,
+    exp: "Genotipe verwys na die werklike allele wat 'n organisme dra (bv. Bb), terwyl fenotipe die waarneembare fisiese eienskap is wat daaruit voortspruit (bv. bruin oë). Dieselfde fenotipe kan deur verskillende genotipes geproduseer word (BB en Bb gee altwee bruin oë)."
+  },
+  {
+    text: "Lank (T) is dominant oor kort (t). Wat is die fenotipe van 'n plant met genotipe Tt?",
+    opts: ["Kort", "Lank", "Medium hoogte", "Kan nie bepaal word nie"],
+    ans: 1,
+    exp: "Tt is heterosigoties. Omdat T (lank) dominant is, word dit uitgedruk selfs wanneer slegs een kopie teenwoordig is. Die plant sal lank wees. Die resessiewe alleel t word deur die dominante T oorheers."
+  },
+  {
+    text: "Twee heterosigotiese bruinogige ouers (Bb × Bb) kry kinders. Watter fraksie van die nakomelinge word verwag om blou oë te hê?",
+    opts: ["0 (geen)", "1/4 (25%)", "1/2 (50%)", "3/4 (75%)"],
+    ans: 1,
+    exp: "'n Bb × Bb-kruising gee nakomelingverhoudings van 1 BB : 2 Bb : 1 bb. Slegs die bb-genotipe toon die resessiewe blouoog-fenotipe — dit is 1 uit 4, of 25%."
+  },
+  {
+    text: "Wat is die geslagschromosome van 'n menslike vrou?",
+    opts: ["XY", "YY", "XX", "XO"],
+    ans: 2,
+    exp: "Menslike vroulikes het twee X-chromosome (XX). Menslike manlikes het een X- en een Y-chromosoom (XY). Die vader se sperm bepaal die geslag van die nakomeling, aangesien eiersels altyd X dra."
+  },
+  {
+    text: "Wat is kodominansie? Kies die beste beskrywing.",
+    opts: [
+      "Een alleel is heeltemal dominant oor die ander",
+      "Die resessiewe alleel word gedeeltelik uitgedruk",
+      "Albei allele word gelyktydig ten volle in die fenotipe uitgedruk",
+      "Geen van die allele word uitgedruk nie"
+    ],
+    ans: 2,
+    exp: "By kodominansie word albei allele ewe veel in die fenotipe uitgedruk. Die klassieke voorbeeld is bloedgroep AB (genotipe IᴬIᴮ), waar albei A- en B-antigene op rooibloedselle verskyn — geen alleel is dominant oor die ander nie."
+  },
+  {
+    text: "'n Plant is homosigoties resessief (rr) vir rooi blomme, waar dominante R wit blomme produseer. Watter kleur is die blomme?",
+    opts: ["Wit", "Pienk ('n mengsel)", "Rooi", "Kleurloos"],
+    ans: 2,
+    exp: "Die plant het genotipe rr — twee resessiewe allele. Aangesien geen dominante R-alleel teenwoordig is om die resessiewe eienskap te oorheers nie, word die resessiewe fenotipe (rooi blomme) uitgedruk. Dit is die definisie van homosigoties resessief."
+  },
+  {
+    text: "Twee ONAFHANKLIKE eienskappe word in ertjieplante bestudeer: saadvorm (Rr × Rr, rond R dominant) en blomkleur (Pp × Pp, pers P dominant). Wat is die waarskynlikheid dat 'n nakomeling BEIDE ronde sade EN pers blomme sal hê?",
+    opts: ["9/16", "3/4", "1/2", "3/16"],
+    ans: 0,
+    exp: "Elke kruising gee op sy eie 'n 3/4-kans op die dominante fenotipe (Rr × Rr → 3 rond : 1 gerimpeld; Pp × Pp → 3 pers : 1 wit). Aangesien die twee eienskappe onafhanklik oorgeërf word, vermenigvuldig jy die twee waarskynlikhede om die kans te vind dat BEIDE saam voorkom: 3/4 × 3/4 = 9/16."
+  },
+  {
+    text: "'n Vader is heterosigoties vir tongrol (Tt) en 'n moeder is homosigoties resessief (tt). Hulle verwag 'n kind. Geslag word onafhanklik bepaal deur of die vader se sperm 'n X- of Y-chromosoom dra (50:50 in albei gevalle). Wat is die waarskynlikheid dat die kind BEIDE 'n tongroller EN manlik sal wees?",
+    opts: ["1/4", "1/2", "3/4", "1/8"],
+    ans: 0,
+    exp: "Tt × tt gee 1 Tt : 1 tt, dus is daar 'n 1/2 (50%) kans om 'n tongroller te wees. Afsonderlik is daar 'n 1/2 (50%) kans om manlik te wees, aangesien die vader se sperm X of Y met gelyke waarskynlikheid dra. Tongrol-gene en geslagschromosome word onafhanklik oorgeërf, dus vermenigvuldig jy die twee waarskynlikhede: 1/2 × 1/2 = 1/4."
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Hou so aan — gaan die les weer deur!' : score <= 4 ? 'Goeie poging — gaan die verduidelikings na.' : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+drawPunnett();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

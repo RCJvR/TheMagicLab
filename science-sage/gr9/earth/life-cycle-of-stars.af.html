@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Geboorte, Lewe en Dood van 'n Ster — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+    .star-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .ctype-row{display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+    .ctype-btn{flex:1;min-width:100px;padding:9px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms;text-align:center}
+    .ctype-btn.active{border-color:rgba(251,146,60,.40);background:rgba(251,146,60,.12);color:#fdba74}
+    .stage-nav{display:flex;gap:8px}
+    .stage-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05);color:var(--text);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms}
+    .stage-btn:hover:not(:disabled){background:rgba(251,146,60,.15)}
+    .stage-btn:disabled{opacity:.35;cursor:default}
+    .stage-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;margin-bottom:6px;margin-top:4px}
+    .stage-desc{font-size:12.5px;color:rgba(210,218,245,.75);line-height:1.7}
+    .stage-dots{display:flex;gap:6px;margin:10px 0}
+    .stage-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15)}
+    .stage-dot.done{background:#fb923c}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.star-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Die Aarde &amp; Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Die Aarde &amp; Daarbuite · Les 7</div>
+  <h1 class="lesson-title">Die Geboorte, Lewe en Dood van 'n Ster</h1>
+  <p class="lesson-sub">Elke ster — ook ons Son — word gebore, leef vir miljarde jare, en sterf uiteindelik. Hoe dit sterf, hang heeltemal van sy massa af.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="sparkles" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Die geboorte van 'n ster</h2>
+    <p>Sterre word binne-in 'n <strong>newel</strong> gebore — 'n reuse-wolk van gas (meestal waterstof) en stof in die ruimte. Swaartekrag laat digter gebiede binne die newel stadig na binne inmekaarstort:</p>
+    <ul>
+      <li>Soos die wolk inmekaarstort, word dit digter en warmer, en vorm dit 'n draaiende bal van gas genaamd 'n <strong>protoster</strong>.</li>
+      <li>Wanneer die kern warm en digte genoeg word (ongeveer 10 miljoen °C), ontsteek <strong>kernfusie</strong> — waterstofatome smelt saam om helium te vorm, en stel enorme hoeveelhede energie vry.</li>
+      <li>Dit merk die geboorte van 'n ware ster. Die uitwaartse druk van fusie balanseer die inwaartse trek van swaartekrag, en die ster word stabiel.</li>
+    </ul>
+    <div class="key-fact">Ons Son het ongeveer 4.6 miljard jaar gelede op hierdie manier gevorm, uit 'n inmekaarstortende gebied van 'n sonnewel.</div>
+
+    <h2>Die hoofreeks: 'n ster se "volwasse lewe"</h2>
+    <p>Sodra fusie begin, tree 'n ster in die <strong>hoofreeks</strong> — die langste en stabielste fase van sy lewe. Gedurende hierdie fase:</p>
+    <ul>
+      <li>Kernfusie in die kern skakel voortdurend waterstof om in helium, en stel energie vry as lig en hitte.</li>
+      <li>Die uitwaartse druk van fusie-energie balanseer presies die inwaartse trek van die ster se eie swaartekrag, wat die ster vir miljarde jare stabiel in grootte hou.</li>
+      <li>Ons Son is tans 'n hoofreeksster, ongeveer halfpad deur sy hoofreeks-leeftyd.</li>
+    </ul>
+    <div class="callout"><strong>Massa bepaal leeftyd:</strong> Meer massiewe sterre verbrand hul waterstofbrandstof baie vinniger, wat hulle korter (maar veel helderder) lewens gee — soms slegs 'n paar miljoen jaar. Minder massiewe sterre verbrand brandstof stadig en kan tientalle miljarde jare lank standvastig skyn, veel langer as die heelal se huidige ouderdom.</div>
+
+    <h2>Dood van 'n Sonagtige (laer-massa) ster</h2>
+    <p>Wanneer 'n ster soos ons Son uiteindelik sonder waterstofbrandstof in sy kern raak, kan dit nie meer genoeg uitwaartse druk produseer om swaartekrag te balanseer nie, en sy lewensiklus tree in sy finale fases in:</p>
+    <ul>
+      <li>Die kern krimp en verhit verder, terwyl die buitenste lae enorm uitbrei — die ster word 'n <strong>rooi reus</strong>.</li>
+      <li>Die buitenste lae word uiteindelik in die ruimte afgeskud, en vorm 'n gloeiende dop van gas genaamd 'n <strong>planetêre newel</strong>.</li>
+      <li>Wat oorbly, is die blootgestelde, uiters digte kern van die ster — 'n <strong>witdwerg</strong> — wat oor 'n geweldige tydspan stadig sal afkoel en verdof.</li>
+    </ul>
+
+    <h2>Dood van 'n massiewe ster</h2>
+    <p>Sterre met veel groter massa as die Son ondergaan 'n baie meer dramatiese einde:</p>
+    <ul>
+      <li>Die ster swel op in 'n selfs groter <strong>rooi superreus</strong>.</li>
+      <li>Sodra fusie die kern nie meer kan ondersteun nie, stort die ster skielik ineen en ontplof in 'n massiewe ontploffing genaamd 'n <strong>supernova</strong> — wat vlugtig 'n hele sterrestelsel oorskyn.</li>
+      <li>Wat na die ontploffing oorbly, hang af van die massa van die oorspronklike ster se kern:
+        <ul>
+          <li>'n Baie digte, kompakte <strong>neutronster</strong> kan vorm, of</li>
+          <li>Vir die mees massiewe sterre stort die kern heeltemal ineen tot 'n <strong>swart gat</strong> — 'n gebied waar swaartekrag so sterk is dat selfs lig nie kan ontsnap nie.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="callout"><strong>Sleutel-CAPS-idee:</strong> Die massa van 'n ster bepaal beide hoe lank dit leef en hoe dit sterf. Laer-massa sterre: newel → hoofreeks → rooi reus → planetêre newel → witdwerg. Hoër-massa sterre: newel → hoofreeks → rooi superreus → supernova → neutronster of swart gat.</div>
+
+    <h2>Waarom dit saak maak</h2>
+    <p>Die swaarder elemente wat planete, en selfs ons eie liggame, uitmaak (soos koolstof, suurstof en yster), is oorspronklik binne sterre geskep deur kernfusie, en deur supernova-ontploffings in die ruimte versprei. In 'n baie werklike sin bestaan ons uit sterremateriaal.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Ster-lewensiklus-verkenner</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Kies 'n beginster-massa, en stap dan deur die fases van sy lewe met die Volgende/Vorige-knoppies.</p>
+  <div class="explore-layout">
+    <div class="star-wrap">
+      <canvas id="starCanvas" height="380"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stermassa</div>
+        <div class="ctype-row">
+          <button class="ctype-btn active" id="btnSun" onclick="setPath('sun')">Sonagtige ster</button>
+          <button class="ctype-btn" id="btnMassive" onclick="setPath('massive')">Massiewe ster</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Fase</div>
+        <div class="stage-dots" id="stageDots"></div>
+        <div class="stage-name" id="stageName"></div>
+        <div class="stage-desc" id="stageDesc"></div>
+        <div class="stage-nav" style="margin-top:12px">
+          <button class="stage-btn" id="btnPrev" onclick="prevStage()">◀ Vorige</button>
+          <button class="stage-btn" id="btnNext" onclick="nextStage()">Volgende ▶</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo weer deur.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in jou oefeningboek. Gebruik diagramme om jou antwoorde te ondersteun waar nuttig.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Beskryf hoe 'n ster gebore word, beginnend by 'n newel. Verwys na swaartekrag en kernfusie in jou antwoord.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Verduidelik wat bedoel word met die "hoofreeks"-fase van 'n ster se lewe, en verduidelik waarom meer massiewe sterre korter hoofreeks-leeftye het as minder massiewe sterre.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Beskryf, in volgorde, die fases in die dood van 'n Sonagtige (laer-massa) ster, en eindig met die voorwerp wat oorbly.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Beskryf, in volgorde, die fases in die dood van 'n veel massiewer ster. Noem die TWEE moontlike voorwerpe wat na 'n supernova kan oorbly, en gee aan wat bepaal watter een vorm.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Verduidelik waarom wetenskaplikes sê dat die atome waaruit ons liggame bestaan, oorspronklik binne sterre gevorm is.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (5 punte)</div><div class="wb-qtext">Die tabel toon benaderde hoofreeks-leeftye vir sterre van verskillende massas:
+      <table class="planets-table" style="margin:12px 0">
+        <thead><tr><th>Stermassa (sonmassas)</th><th>0.5</th><th>1 (die Son)</th><th>10</th><th>25</th></tr></thead>
+        <tbody><tr><td><strong>Bene. hoofreeks-leeftyd</strong></td><td>56 miljard jaar</td><td>10 miljard jaar</td><td>20 miljoen jaar</td><td>7 miljoen jaar</td></tr></tbody>
+      </table>
+      (a) Beskryf die tendens wat in die tabel getoon word: wat gebeur met 'n ster se hoofreeks-leeftyd namate sy massa toeneem? (2 punte)<br>
+      (b) Bereken ongeveer hoeveel keer langer die Son se hoofreeks-leeftyd is in vergelyking met dié van die 10-sonmassa-ster. Wys jou berekeninge. (2 punte)<br>
+      (c) Gebruik die tabel en wat jy weet oor die dood van sterre: watter TWEE van hierdie vier sterre sal waarskynlik as 'n witdwerg eindig, en watter TWEE sal waarskynlik in 'n supernova eindig? (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+}
+
+/* ---- Star life cycle data ---- */
+const PATHS = {
+  sun: [
+    { name: 'Newel', color: '#60a5fa', shape: 'cloud', desc: '\'n Uitgestrekte wolk van gas en stof in die ruimte. Swaartekrag laat \'n digter gebied begin om na binne in te stort.' },
+    { name: 'Hoofreeksster', color: '#fde68a', shape: 'star', desc: 'Kernfusie van waterstof na helium ontsteek in die kern. Uitwaartse fusiedruk balanseer inwaartse swaartekrag — die ster skyn standvastig vir miljarde jare. Ons Son is nou hier.' },
+    { name: 'Rooi reus', color: '#f87171', shape: 'giant', desc: 'Waterstof in die kern raak op. Die kern krimp en verhit verder terwyl die buitenste lae enorm uitbrei, wat die ster afkoel en verrooi.' },
+    { name: 'Planetêre newel', color: '#c084fc', shape: 'nebulaShell', desc: 'Die rooi reus skud sy buitenste lae in die ruimte af, en vorm \'n gloeiende dop van uitbreidende gas rondom die blootgestelde kern.' },
+    { name: 'Witdwerg', color: '#e0e7ff', shape: 'dwarf', desc: 'Die oorblywende, blootgestelde kern — uiters digte en warm, maar ondergaan nie meer fusie nie. Dit sal oor \'n geweldige tydspan afkoel en verdof.' }
+  ],
+  massive: [
+    { name: 'Newel', color: '#60a5fa', shape: 'cloud', desc: '\'n Uitgestrekte wolk van gas en stof in die ruimte. Swaartekrag laat \'n digter gebied begin om na binne in te stort — hierdie gebied is veel massiewer as dié wat ons Son gevorm het.' },
+    { name: 'Hoofreeksster', color: '#93c5fd', shape: 'star', desc: 'Kernfusie ontsteek, maar omdat die ster veel massiewer is, verbrand dit sy waterstofbrandstof baie vinniger as \'n Sonagtige ster — sy hoofreeks-lewe duur slegs miljoene jare.' },
+    { name: 'Rooi superreus', color: '#ef4444', shape: 'supergiant', desc: 'Waterstof in die kern raak op. Die ster swel op tot \'n enorme grootte — veel groter as \'n rooi reus — terwyl dit geleidelik swaarder elemente in sy kern smelt.' },
+    { name: 'Supernova', color: '#fef08a', shape: 'explosion', desc: 'Sodra fusie die kern nie meer kan ondersteun nie, stort dit skielik ineen en ontplof die ster in \'n katastrofiese supernova, wat vlugtig \'n hele sterrestelsel oorskyn.' },
+    { name: 'Neutronster of swart gat', color: '#a78bfa', shape: 'remnant', desc: 'Wat oorbly, hang af van die massa van die ineengestorte kern: \'n baie digte neutronster, of — vir die mees massiewe kerne — volledige ineenstorting tot \'n swart gat, waaruit selfs lig nie kan ontsnap nie.' }
+  ]
+};
+
+let currentPath = 'sun';
+let currentStage = 0;
+
+function setPath(p) {
+  currentPath = p;
+  currentStage = 0;
+  document.getElementById('btnSun').classList.toggle('active', p === 'sun');
+  document.getElementById('btnMassive').classList.toggle('active', p === 'massive');
+  renderStage();
+}
+
+function nextStage() {
+  const stages = PATHS[currentPath];
+  if (currentStage < stages.length - 1) { currentStage++; renderStage(); }
+}
+function prevStage() {
+  if (currentStage > 0) { currentStage--; renderStage(); }
+}
+
+function renderStage() {
+  const stages = PATHS[currentPath];
+  const s = stages[currentStage];
+  document.getElementById('stageName').textContent = s.name;
+  document.getElementById('stageName').style.color = s.color;
+  document.getElementById('stageDesc').textContent = s.desc;
+  document.getElementById('btnPrev').disabled = currentStage === 0;
+  document.getElementById('btnNext').disabled = currentStage === stages.length - 1;
+
+  const dotsDiv = document.getElementById('stageDots');
+  dotsDiv.innerHTML = stages.map((_, i) => `<div class="stage-dot ${i <= currentStage ? 'done' : ''}"></div>`).join('');
+
+  drawStar();
+}
+
+/* ---- Canvas drawing ---- */
+const starCanvas = document.getElementById('starCanvas');
+const starCtx = starCanvas.getContext('2d');
+let starsBg = [];
+
+function resizeStarCanvas() {
+  const W = starCanvas.offsetWidth || 560;
+  const H = 380;
+  starCanvas.width = W * (window.devicePixelRatio || 1);
+  starCanvas.height = H * (window.devicePixelRatio || 1);
+  starCtx.setTransform(1,0,0,1,0,0);
+  starCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  if (starsBg.length === 0) {
+    for (let i = 0; i < 100; i++) starsBg.push([Math.random() * W, Math.random() * H, Math.random() * 1.2 + 0.2]);
+  }
+  drawStar();
+}
+
+let pulseT = 0;
+function drawStar() {
+  const W = starCanvas.offsetWidth || 560;
+  const H = 380;
+  starCtx.clearRect(0, 0, W, H);
+  starCtx.fillStyle = '#040710';
+  starCtx.fillRect(0, 0, W, H);
+
+  starsBg.forEach(([sx, sy, sr]) => {
+    starCtx.beginPath();
+    starCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+    starCtx.fillStyle = 'rgba(255,255,255,0.5)';
+    starCtx.fill();
+  });
+
+  const cx = W / 2, cy = H / 2;
+  const s = PATHS[currentPath][currentStage];
+
+  const radii = { cloud: 90, star: 45, giant: 100, nebulaShell: 110, dwarf: 22, supergiant: 140, explosion: 150, remnant: 30 };
+  const r = radii[s.shape] || 50;
+
+  if (s.shape === 'cloud') {
+    for (let i = 0; i < 40; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const dist = Math.random() * r;
+      const px = cx + Math.cos(ang) * dist;
+      const py = cy + Math.sin(ang) * dist;
+      const pr = Math.random() * 18 + 6;
+      const grad = starCtx.createRadialGradient(px, py, 0, px, py, pr);
+      grad.addColorStop(0, 'rgba(96,165,250,0.35)');
+      grad.addColorStop(1, 'rgba(96,165,250,0)');
+      starCtx.beginPath();
+      starCtx.arc(px, py, pr, 0, Math.PI * 2);
+      starCtx.fillStyle = grad;
+      starCtx.fill();
+    }
+  } else if (s.shape === 'nebulaShell') {
+    const grad = starCtx.createRadialGradient(cx, cy, r * 0.3, cx, cy, r);
+    grad.addColorStop(0, 'rgba(224,231,255,0.9)');
+    grad.addColorStop(0.5, 'rgba(192,132,252,0.35)');
+    grad.addColorStop(1, 'rgba(192,132,252,0)');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r, 0, Math.PI * 2);
+    starCtx.fillStyle = grad;
+    starCtx.fill();
+    // Bright core
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, 14, 0, Math.PI * 2);
+    starCtx.fillStyle = '#e0e7ff';
+    starCtx.fill();
+  } else if (s.shape === 'explosion') {
+    pulseT += 0.05;
+    const pulse = 1 + Math.sin(pulseT) * 0.06;
+    const grad = starCtx.createRadialGradient(cx, cy, 0, cx, cy, r * pulse);
+    grad.addColorStop(0, 'rgba(255,255,255,0.95)');
+    grad.addColorStop(0.3, 'rgba(254,240,138,0.85)');
+    grad.addColorStop(0.6, 'rgba(248,113,113,0.5)');
+    grad.addColorStop(1, 'rgba(248,113,113,0)');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r * pulse, 0, Math.PI * 2);
+    starCtx.fillStyle = grad;
+    starCtx.fill();
+    requestAnimationFrame(() => { if (document.getElementById('tab-explore').classList.contains('active') && s.shape === 'explosion') drawStar(); });
+  } else if (s.shape === 'remnant') {
+    // draw both possibilities side by side
+    const grad1 = starCtx.createRadialGradient(cx - 70, cy, 0, cx - 70, cy, 24);
+    grad1.addColorStop(0, '#e0e7ff');
+    grad1.addColorStop(1, 'rgba(224,231,255,0)');
+    starCtx.beginPath(); starCtx.arc(cx - 70, cy, 18, 0, Math.PI * 2); starCtx.fillStyle = grad1; starCtx.fill();
+    starCtx.font = '11px "JetBrains Mono",monospace'; starCtx.fillStyle = 'rgba(210,218,245,0.6)'; starCtx.textAlign = 'center';
+    starCtx.fillText('Neutronster', cx - 70, cy + 45);
+
+    const grad2 = starCtx.createRadialGradient(cx + 70, cy, 0, cx + 70, cy, 30);
+    grad2.addColorStop(0, '#000');
+    grad2.addColorStop(0.6, '#000');
+    grad2.addColorStop(1, 'rgba(167,139,250,0.4)');
+    starCtx.beginPath(); starCtx.arc(cx + 70, cy, 26, 0, Math.PI * 2); starCtx.fillStyle = grad2; starCtx.fill();
+    starCtx.strokeStyle = 'rgba(167,139,250,0.6)'; starCtx.lineWidth = 2; starCtx.stroke();
+    starCtx.fillStyle = 'rgba(210,218,245,0.6)';
+    starCtx.fillText('Swart gat', cx + 70, cy + 50);
+  } else {
+    // star, giant, dwarf, supergiant - simple glowing sphere
+    const grad = starCtx.createRadialGradient(cx - r * 0.2, cy - r * 0.2, 0, cx, cy, r);
+    grad.addColorStop(0, '#ffffff');
+    grad.addColorStop(0.4, s.color);
+    grad.addColorStop(1, s.color + '55');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r, 0, Math.PI * 2);
+    starCtx.fillStyle = grad;
+    starCtx.fill();
+
+    // halo
+    const halo = starCtx.createRadialGradient(cx, cy, r, cx, cy, r * 1.6);
+    halo.addColorStop(0, s.color + '33');
+    halo.addColorStop(1, s.color + '00');
+    starCtx.beginPath();
+    starCtx.arc(cx, cy, r * 1.6, 0, Math.PI * 2);
+    starCtx.fillStyle = halo;
+    starCtx.fill();
+  }
+
+  // Stage label
+  starCtx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  starCtx.fillStyle = 'rgba(255,255,255,0.85)';
+  starCtx.textAlign = 'center';
+  starCtx.fillText(s.name, cx, H - 24);
+}
+
+window.addEventListener('resize', resizeStarCanvas);
+resizeStarCanvas();
+renderStage();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Wat veroorsaak die vorming van \'n ster vanuit \'n newel?',
+    opts: ['Magnetiese velde wat gas na buite afstoot', 'Swaartekrag wat \'n digte gebied van gas en stof laat na binne instort', 'Sonwind wat deeltjies saamdruk', 'Skielike afkoeling van die ruimte'],
+    ans: 1,
+    exp: 'Swaartekrag trek \'n digter gebied van \'n newel (wolk van gas en stof) na binne, wat dit laat inmekaarstort, verhit, en uiteindelik kernfusie laat ontsteek.'
+  },
+  {
+    text: 'Watter proses dryf \'n ster tydens sy hoofreeksfase aan?',
+    opts: ['Chemiese verbranding van gas', 'Slegs radioaktiewe verval', 'Kernfusie van waterstof na helium in die kern', 'Weerkaatsing van sonlig'],
+    ans: 2,
+    exp: 'Tydens die hoofreeks skakel kernfusie waterstof om in helium in die ster se kern, en stel energie vry wat swaartekrag balanseer en die ster stabiel hou.'
+  },
+  {
+    text: 'Waarom het meer massiewe sterre korter hoofreeks-leeftye as minder massiewe sterre?',
+    opts: [
+      'Hulle bevat oor die algemeen minder waterstofbrandstof',
+      'Hulle verbrand hul brandstof veel vinniger, al het hulle dikwels meer daarvan',
+      'Hulle is koeler en verbrand stadiger',
+      'Massa het geen effek op hoe lank \'n ster leef nie'
+    ],
+    ans: 1,
+    exp: 'Meer massiewe sterre smelt waterstof teen \'n veel vinniger tempo om hul groter massa teen swaartekrag te ondersteun, wat hul brandstofvoorraad baie vinniger opgebruik en korter lewens gee.'
+  },
+  {
+    text: 'Wat word van \'n Sonagtige ster nadat dit die hoofreeks verlaat?',
+    opts: ['\'n Swart gat', '\'n Rooi reus, en uiteindelik \'n witdwerg', '\'n Onmiddellike supernova', '\'n Neutronster'],
+    ans: 1,
+    exp: '\'n Sonagtige (laer-massa) ster brei uit tot \'n rooi reus, skud sy buitenste lae af as \'n planetêre newel, en laat \'n witdwerg agter.'
+  },
+  {
+    text: 'Wat gebeur wanneer \'n veel massiewer ster die einde van sy lewe bereik?',
+    opts: [
+      'Dit verdof stilweg tot \'n witdwerg',
+      'Dit swel op tot \'n rooi superreus en ontplof as \'n supernova',
+      'Dit hou eenvoudig op om te skyn sonder enige ander verandering',
+      'Dit word direk \'n newel'
+    ],
+    ans: 1,
+    exp: 'Massiewe sterre swel op tot rooi superreuse, ondergaan dan \'n kern-ineenstorting en ontplof as \'n supernova — een van die energiekste gebeure in die heelal.'
+  },
+  {
+    text: 'Wat bepaal of \'n neutronster of \'n swart gat na \'n supernova vorm?',
+    opts: ['Die kleur van die ster voor dit ontplof het', 'Die massa van die ineengestorte kern wat agtergelaat word', 'Hoe lank die ster bestaan het voordat dit ontplof het', 'Die afstand van die ster vanaf die Aarde'],
+    ans: 1,
+    exp: 'As die ineengestorte kern baie massief is, is sy swaartekrag sterk genoeg om dit heeltemal tot \'n swart gat te laat ineenstort. \'n Minder massiewe ineengestorte kern vorm eerder \'n uiters digte neutronster.'
+  },
+  {
+    text: 'Benaderde hoofreeks-leeftye is ongeveer 10 miljard jaar vir \'n 1-sonmassa-ster (soos die Son) en ongeveer 7 miljoen jaar vir \'n 25-sonmassa-ster. Ongeveer hoeveel keer LANGER is die Son se hoofreeks-leeftyd in vergelyking met dié van die 25-sonmassa-ster?',
+    opts: ['Ongeveer 25 keer langer', 'Ongeveer 140 keer langer', 'Ongeveer 1 400 keer langer', 'Ongeveer 14 000 keer langer'],
+    ans: 2,
+    exp: '10 miljard jaar ÷ 7 miljoen jaar = 10 000 000 000 ÷ 7 000 000 ≈ 1 400. Al het die massiewe ster 25 keer meer massa (en dus, min of meer, meer waterstofbrandstof om te verbrand), verbrand dit daardie brandstof soveel vinniger dat sy leeftyd uiteindelik meer as duisend keer korter is — massa en leeftyd is nie eenvoudig eweredig aan mekaar nie.'
+  },
+  {
+    text: '\'n Ster het 20 keer die massa van die Son. Op grond van wat beide \'n ster se hoofreeks-leeftyd EN sy uiteindelike dood bepaal, watter paar voorspellings pas die beste by die les?',
+    opts: [
+      'Baie lang hoofreeks-leeftyd (tientalle miljarde jare) en \'n uiteindelike witdwerg-oorblyfsel',
+      'Kort hoofreeks-leeftyd (miljoene jare) en \'n supernova wat eindig in \'n neutronster of swart gat',
+      'Kort hoofreeks-leeftyd maar \'n sagte dood as \'n rooi reus en planetêre newel',
+      '\'n Leeftyd en doodspad identies aan dié van die Son, omdat albei gewone sterre is'
+    ],
+    ans: 1,
+    exp: 'Massa bepaal beide aspekte van \'n ster se lewe. \'n Ster 20 keer meer massief as die Son verbrand sy brandstof veel vinniger, wat dit \'n kort hoofreeks-leeftyd gee (miljoene, nie miljarde, jare nie). Sy veel groter massa beteken ook dat dit nie sagkens kan eindig nie — dit swel op tot \'n rooi superreus en sterf in \'n supernova, en laat \'n neutronster of swart gat agter, nie \'n witdwerg nie.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Bly oefen — gaan die les weer deur!' : score <= 4 ? 'Goeie poging — kyk na die verduidelikings.' : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

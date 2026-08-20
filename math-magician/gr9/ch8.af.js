@@ -1,0 +1,216 @@
+// Math Magician — Graad 9, Hoofstuk 8 data (Afrikaans)
+// Faktorisering
+
+MathMagician.registerChapter(8, {
+  topics: [
+    {
+      id: 15,
+      chapter: 8,
+      name: "Gemeenskaplike faktore en groepering",
+      fullName: "GGD en groepering in pare",
+      lesson: {
+        heading: "Gemeenskaplike faktore en groepering",
+        sub: "Hoofstuk 8 · Onderwerp 1",
+        body: `
+          <p>Faktorisering is die omgekeerde van uitvermenigvuldiging. Ons neem 'n uitdrukking en skryf dit as 'n produk van faktore.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Faktoriseringsmetodes — Graad 9</div>
+            <p>
+              <strong>1. GGD (Grootste Gemene Deler):</strong> haal die grootste gemeenskaplike faktor uit.<br>
+              <strong>2. Verskil van kwadrate:</strong> <span class="math">a² - b² = (a+b)(a-b)</span><br>
+              <strong>3. Trinome:</strong> <span class="math">x² + bx + c = (x + p)(x + q)</span> waar p + q = b en pq = c.<br>
+              <strong>4. Groepering in pare:</strong> groepeer terme, faktoriseer elke groep, haal die gemeenskaplike hakie uit.
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Uitgewerkte voorbeelde</div>
+            <div class="example-step"><span class="step-num">1</span><span>GGD: 6x²y - 9xy² = 3xy(2x - 3y)</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>Groepering: 3ax + 3ay + bx + by = 3a(x + y) + b(x + y) = (3a + b)(x + y)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>Kyk altyd eers vir 'n GGD voordat jy ander metodes toepas.</span></div>
+          </div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Haal altyd eers die GGD uit voordat jy enige ander faktoriseringsmetode toepas.</span></div>
+
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit — GGD- & Groeperingsverkenner</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer tot vier koëffisiënte in. Vind hulle GGD en sien hoe 'n gemeenskaplike faktor uitgehaal word.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 1</label><input id="hcf1" type="number" value="12" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 2</label><input id="hcf2" type="number" value="8" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 3 (opt)</label><input id="hcf3" type="number" placeholder="…" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">Term 4 (opt)</label><input id="hcf4" type="number" placeholder="…" style="width:65px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="hcfBtn" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Vind GGD</button>
+            </div>
+            <div id="hcfOut" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a;}
+            function primeFactors(n){n=Math.abs(n);var factors=[];for(var p=2;p*p<=n;p++){while(n%p===0){factors.push(p);n/=p;}}if(n>1)factors.push(n);return factors;}
+            function calc(){
+              var vals=[1,2,3,4].map(function(i){return parseInt(document.getElementById('hcf'+i).value);}).filter(function(v){return!isNaN(v)&&v!==0;});
+              if(vals.length<2){document.getElementById('hcfOut').innerHTML='<span style="color:#fca5a5;">Voer ten minste 2 nie-nul terme in.</span>';return;}
+              var h=vals.reduce(gcd);
+              var factored=vals.map(function(v){return v+' = '+h+(v/h!==1?' × '+(v/h):'');});
+              var divided=vals.map(function(v){return (v/h);});
+              document.getElementById('hcfOut').innerHTML=[
+                '<div><span style="color:rgba(221,225,240,0.45);">Terme: </span><span style="color:#a5b4fc;">'+vals.join(', ')+'</span></div>',
+                '<div><span style="color:rgba(221,225,240,0.45);">GGD: </span><span style="color:#6ee7b7;font-size:17px;font-weight:700;">'+h+'</span></div>',
+                '<div style="font-size:11px;color:rgba(221,225,240,0.40);">'+factored.join(' &nbsp;|&nbsp; ')+'</div>',
+                '<div style="margin-top:4px;"><span style="color:rgba(221,225,240,0.45);">Gefaktoriseerde vorm: </span><span style="color:#fbbf24;font-weight:700;">'+h+'('+divided.join(' + ')+')</span></div>',
+                '<div style="font-size:10px;color:rgba(221,225,240,0.35);margin-top:4px;">Priemfaktore van GGD ('+h+'): '+primeFactors(h).join(' × ')+'</div>',
+              ].join('');
+            }
+            document.getElementById('hcfBtn').addEventListener('click',calc);
+
+          })();
+          </script>
+        Kyk ALTYD eers vir 'n gemeenskaplike faktor. Dit vereenvoudig al die ander metodes wat volg.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Faktoriseer: 12x²y² - 8x³y²", options: ["4x²y²(3x - 2y)", "4xy(3x² - 2y²)", "2xy(6x² - 4xy)", "4x²y(3y - 2x)"], answer: 0, topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer deur groepering: ax + ay + 3x + 3y", options: ["(a + 3)(x + y)", "a(x + y) + 3", "(a + x)(3 + y)", "(ax)(3y)"], answer: 0, topic: "Faktorisering" },
+        { type: "input", text: "Faktoriseer 15a²b² - 10ab³. Wat is die koëffisiënt van die GGD?", answer: "5", topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer deur groepering: px - qx + py - qy", options: ["(p - q)(x + y)", "(p + q)(x - y)", "(p - q)(x - y)", "(x + y)(p + q)"], answer: 0, topic: "Faktorisering" },
+        { type: "mc", text: "Watter uitdrukking het (2x - y) as 'n faktor?", options: ["4x² + y²", "4x² - y²", "2x² - y", "4x - 2y"], answer: 1, topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer volledig: 4x(x + 3) - 8(x + 3)", options: ["4(x + 3)(x - 2)", "4(x + 3)(x + 2)", "(x + 3)(4x - 8)", "(4x - 8)(x - 3)"], answer: 0, topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer volledig: 24x³y² - 36x²y³ + 60x⁴y", options: ["12x²y(2xy - 3y² + 5x²)", "12xy(2x²y - 3xy² + 5x³)", "6x²y(4xy - 6y² + 10x²)", "12x²y(2xy + 3y² - 5x²)"], answer: 0, topic: "Faktorisering" },
+      ]
+    },
+    {
+      id: 16,
+      chapter: 8,
+      name: "Verskil van kwadrate en trinome",
+      fullName: "Verskil van kwadrate en trinome faktoriseer",
+      lesson: {
+        heading: "Verskil van kwadrate en trinome",
+        sub: "Hoofstuk 8 · Onderwerp 2",
+        body: `
+          <p>Twee kragtige faktoriseringstegnieke: verskil van kwadrate en trinome.</p>
+          <div class="def-box">
+            <div class="def-box-title">📖 Formules en reëls</div>
+            <p>
+              <strong>Verskil van kwadrate:</strong> <span class="math">a² - b² = (a + b)(a - b)</span><br>
+              Werk slegs as albei terme volkome kwadrate is en daar 'n MINUS-teken is.<br><br>
+              <strong>Trinoom x² + bx + c:</strong><br>
+              Vind twee getalle p en q sodat p × q = c en p + q = b.<br>
+              Dan: <span class="math">x² + bx + c = (x + p)(x + q)</span>
+            </p>
+          </div>
+          <div class="example-box">
+            <div class="example-box-title">✏️ Uitgewerkte voorbeelde</div>
+            <div class="example-step"><span class="step-num">1</span><span>9x² - 25 = (3x + 5)(3x - 5)</span></div>
+            <div class="example-step"><span class="step-num">2</span><span>x² + 7x + 12: benodig p × q = 12 en p + q = 7 → p = 3, q = 4 → (x + 3)(x + 4)</span></div>
+            <div class="example-step"><span class="step-num">3</span><span>x² - 5x - 14: benodig pq = -14, p+q = -5 → p = -7, q = 2 → (x - 7)(x + 2)</span></div>
+            <div class="example-step"><span class="step-num">4</span><span>2x² - 8 = 2(x² - 4) = 2(x + 2)(x - 2) (GGD eers!)</span></div>
+          </div>
+          <div class="tip-box"><span class="tip-icon">💡</span><span>Vir trinome, kyk altyd: p + q = b (koëffisiënt van die middelterm) EN p × q = c (konstante).
+          <div class="def-box" style="border-color:rgba(99,102,241,0.30);background:rgba(99,102,241,0.07);">
+            <div class="def-box-title" style="color:#a5b4fc;">&#127918; Probeer dit — Kwadratiese Faktoriseerder</div>
+            <p style="font-size:11px;color:rgba(221,225,240,0.40);margin-bottom:10px;">Voer a, b, c in vir ax&#178; + bx + c. Sien die diskriminant, wortels, en gefaktoriseerde vorm.</p>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">a</label><input id="faca4" type="number" value="2" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">b</label><input id="facb4" type="number" value="5" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <div style="display:flex;flex-direction:column;gap:4px;"><label style="font-size:10px;color:rgba(221,225,240,0.45);">c</label><input id="facc4" type="number" value="-3" style="width:60px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:JetBrains Mono,monospace;text-align:center;"></div>
+              <button id="facBtn4" style="padding:7px 14px;border-radius:7px;border:none;background:linear-gradient(135deg,#4338ca,#6366f1);color:#fff;font-family:DM Sans,sans-serif;font-size:12px;font-weight:700;cursor:pointer;">Faktoriseer</button>
+            </div>
+            <div id="facOut4" style="font-family:JetBrains Mono,monospace;font-size:12.5px;line-height:2;"></div>
+          </div>
+          <script>
+          (function(){
+            function solve(){
+              const a=parseInt(document.getElementById('faca4').value)||1;
+              const b=parseInt(document.getElementById('facb4').value)||0;
+              const c=parseInt(document.getElementById('facc4').value)||0;
+              const d=b*b-4*a*c;
+              const bStr=b===0?'':b>0?' + '+b+'x':' − '+Math.abs(b)+'x';
+              const cStr=c===0?'':c>0?' + '+c:' − '+Math.abs(c);
+              let lines=['<div><span style="color:rgba(221,225,240,0.45);">Uitdrukking: </span><span style="color:#fbbf24;">'+(a===1?'':a)+'x\xb2'+bStr+cStr+'</span></div>','<div><span style="color:rgba(221,225,240,0.45);">Δ = '+b+'\xb2−4('+a+')('+c+') = </span><span style="color:#a5b4fc;">'+d+'</span></div>'];
+              if(d<0){lines.push('<div style="color:#fca5a5;">Δ &lt; 0 → geen reële wortels nie</div>');}
+              else{const sq=Math.sqrt(d),isRat=Number.isInteger(sq);const x1=(-b+sq)/(2*a),x2=(-b-sq)/(2*a);
+                if(isRat){lines.push('<div><span style="color:rgba(221,225,240,0.45);">Wortels: </span><span style="color:#6ee7b7;">x = '+x1+(x1!==x2?' of x = '+x2:'  (gelyk)')+'</span></div>');
+                  const f=x=>(x>=0?'− '+x:'+ '+Math.abs(x));
+                  lines.push('<div><span style="color:rgba(221,225,240,0.45);">Gefaktoriseer: </span><span style="color:#6ee7b7;font-size:14px;font-weight:700;">'+(x1===x2?(a!==1?a:'')+'(x '+f(x1)+')\xb2':'(x '+f(x1)+')('+(a!==1?a:'')+'x '+f(x2)+')')+'</span></div>');}
+                else{lines.push('<div style="color:#fbbf24;">Irrasionale wortels — gebruik x = ('+(-b)+' \xb1 √'+d+') / '+(2*a)+'</div>');}}
+              document.getElementById('facOut4').innerHTML=lines.join('');
+            }
+            document.getElementById('facBtn4').addEventListener('click',solve);
+            ['faca4','facb4','facc4'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')solve();}));
+            solve();
+          })();
+          </script>
+        Albei voorwaardes moet geld.</span></div>
+        `
+      },
+      questions: [
+        { type: "mc", text: "Faktoriseer: 4x² - 49", options: ["(2x - 7)(2x - 7)", "(2x - 7)(2x + 7)", "(4x - 7)(x + 7)", "(2x + 49)(2x - 1)"], answer: 1, topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer: x² + 9x + 20", options: ["(x + 4)(x + 5)", "(x + 2)(x + 10)", "(x + 1)(x + 20)", "(x−4)(x−5)"/*JUNK*/], answer: 0, topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer: x² - 3x - 18", options: ["(x - 9)(x + 2)", "(x + 3)(x - 6)", "(x - 3)(x + 6)", "(x - 6)(x + 3)"], answer: 3, topic: "Faktorisering" },
+        { type: "input", text: "Faktoriseer: 3x² - 48. Wat is die konstante in een van die liniêre faktore? (gee 'n positiewe waarde)", answer: "4", topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer volledig: 2x² - 2x - 24", options: ["2(x - 4)(x + 3)", "2(x + 4)(x - 3)", "(2x - 6)(x + 4)", "2(x - 4)(x - 3)"], answer: 0, topic: "Faktorisering" },
+        { type: "input", text: "Faktoriseer volledig: 5x² - 5x - 60. Gee die konstante term in die liniêre faktor met die kleiner absolute waarde (gee 'n positiewe getal).", answer: "3", topic: "Faktorisering" },
+        { type: "mc", text: "Faktoriseer volledig: x² - 25 + x(x + 5)", options: ["(x + 5)(2x - 5)", "(x - 5)(2x + 5)", "2(x + 5)(x - 5)", "(2x + 5)(x - 5)"], answer: 0, topic: "Faktorisering" },
+      ]
+    },
+  ],
+  workbook: {
+    chapter: 8, chapterName: "Faktorisering",
+    topics: [
+      {
+        name: "GGD en Groepering",
+        questions: [
+          {
+            num: "1",
+            text: "Faktoriseer volledig:",
+            parts: [
+              { label: "a)", text: "18a²b - 12a²b² + 6ab²", marks: 3 },
+              { label: "b)", text: "3ax + 6ay - bx - 2by", marks: 4 },
+              { label: "c)", text: "2p(x - 3) - 5(3 - x)", marks: 4 },
+            ]
+          },
+        ]
+      },
+      {
+        name: "Verskil van Kwadrate en Trinome",
+        questions: [
+          {
+            num: "2",
+            text: "Faktoriseer volledig:",
+            parts: [
+              { label: "a)", text: "25x² - 64", marks: 2 },
+              { label: "b)", text: "3x² - 75", marks: 3 },
+              { label: "c)", text: "x² + 8x + 15", marks: 3 },
+              { label: "d)", text: "x² - 4x - 12", marks: 3 },
+              { label: "e)", text: "2x² + 14x + 24", marks: 4 },
+              { label: "f)", text: "x² - 16 + x(x - 4)", marks: 5 },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+  answerKey: {
+    chapter: 8, chapterName: "Hoofstuk 8 — Faktorisering",
+    topics: [
+      {
+        name: "GGD en Groepering",
+        answers: [
+          { num: "Q1a", ans: "6ab(3a² - 2ab + b²)", note: "GGD = 6ab" },
+          { num: "Q1b", ans: "(3a - b)(x + 2y)", note: "3a(x+2y) - b(x+2y) = (3a-b)(x+2y)" },
+          { num: "Q1c", ans: "(2p + 5)(x - 3)", note: "Let wel 3-x = -(x-3); -5(3-x) = +5(x-3); haal (x-3) uit" },
+        ]
+      },
+      {
+        name: "Verskil van Kwadrate en Trinome",
+        answers: [
+          { num: "Q2a", ans: "(5x - 8)(5x + 8)", note: "√25x²=5x; √64=8" },
+          { num: "Q2b", ans: "3(x - 5)(x + 5)", note: "GGD 3 eers: 3(x²-25) = 3(x-5)(x+5)" },
+          { num: "Q2c", ans: "(x + 3)(x + 5)", note: "3 × 5 = 15; 3 + 5 = 8 ✓" },
+          { num: "Q2d", ans: "(x - 6)(x + 2)", note: "-6 × 2 = -12; -6 + 2 = -4 ✓" },
+          { num: "Q2e", ans: "2(x + 3)(x + 4)", note: "GGD 2; x²+7x+12 = (x+3)(x+4)" },
+          { num: "Q2f", ans: "(x + 4)(x - 4) + x(x - 4) = (x - 4)(2x + 4) = 2(x - 4)(x + 2)", note: "haal (x-4) uit albei dele" },
+        ]
+      },
+    ]
+  }
+});

@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipes Chemiese Reaksies — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+.lesson-header{padding:36px 40px 24px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#fcd34d}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#fcd34d;text-align:center;line-height:1.9}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(251,191,36,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Materie en Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Materie en Materiale · Les 4</div>
+  <h1 class="lesson-title">Tipes Chemiese Reaksies</h1>
+  <p class="lesson-sub">Klassifiseer chemiese reaksies as sintese, ontbinding, enkelverplasing, of dubbelverplasing — en oefen om vergelykings te balanseer deur die behoud van massa te gebruik.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Simuleer</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="circle-check" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="notebook-pen" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n Chemiese Reaksie?</h2>
+    <p>'n Chemiese reaksie vind plaas wanneer stowwe (reaktante) in nuwe stowwe (produkte) omgeskakel word. Die kernbeginsel is die <strong>Wet van Behoud van Massa</strong> (Lavoisier): materie word nie geskep of vernietig nie — die totale massa van reaktante is gelyk aan die totale massa van produkte.</p>
+    <div class="callout"><strong>Formaat van 'n chemiese vergelyking:</strong> Reaktante → Produkte<br>
+    Voorbeeld: 2H₂ + O₂ → 2H₂O (atome is gebalanseer aan beide kante)</div>
+
+    <h2>Vergelykings Balanseer</h2>
+    <p>Om 'n vergelyking te balanseer, verander jy slegs die <strong>koëffisiënte</strong> (getalle voor die formules) — verander nooit die subskripte binne 'n formule nie. Tel die atome aan elke kant en pas dit aan totdat hulle ooreenstem.</p>
+    <div class="formula">
+      Ongebalanseerd: H₂ + O₂ → H₂O<br>
+      Gebalanseerd: 2H₂ + O₂ → 2H₂O<br>
+      Links: 4H, 2O · Regs: 4H, 2O ✓
+    </div>
+
+    <h2>1. Sintese- (Kombinasie-) Reaksies</h2>
+    <p>Twee of meer reaktante kombineer om 'n <strong>enkele produk</strong> te vorm: A + B → AB</p>
+    <ul>
+      <li>2Na + Cl₂ → 2NaCl (natrium + chloor → sout)</li>
+      <li>C + O₂ → CO₂ (koolstof + suurstof → koolstofdioksied)</li>
+      <li>2H₂ + O₂ → 2H₂O (waterstof + suurstof → water)</li>
+      <li>CaO + H₂O → Ca(OH)₂ (ongebluste kalk + water → gebluste kalk)</li>
+    </ul>
+    <div class="key-fact">Wenk: die aantal produkte is altyd EEN in 'n sintesereaksie.</div>
+
+    <h2>2. Ontbindingsreaksies</h2>
+    <p>'n Enkele verbinding breek af in <strong>twee of meer eenvoudiger stowwe</strong>: AB → A + B. Hierdie reaksies benodig energietoevoer — hitte, elektrisiteit, of lig.</p>
+    <ul>
+      <li>2H₂O → 2H₂ + O₂ (elektrolise van water)</li>
+      <li>CaCO₃ → CaO + CO₂ (kalksteen verhit)</li>
+      <li>2HgO → 2Hg + O₂ (kwiksilweroksied verhit)</li>
+      <li>2H₂O₂ → 2H₂O + O₂ (ontbinding van waterstofperoksied)</li>
+    </ul>
+    <div class="key-fact">Wenk: die aantal reaktante is altyd EEN in 'n ontbindingsreaksie.</div>
+
+    <h2>3. Enkelverplasings- (Substitusie-) Reaksies</h2>
+    <p>'n Meer reaktiewe element verplaas 'n minder reaktiewe element uit 'n verbinding: A + BC → AC + B</p>
+    <ul>
+      <li>Fe + CuSO₄ → FeSO₄ + Cu (yster verplaas koper)</li>
+      <li>Zn + 2HCl → ZnCl₂ + H₂ (sink verplaas waterstof)</li>
+      <li>Mg + 2HCl → MgCl₂ + H₂ (magnesium verplaas waterstof)</li>
+    </ul>
+    <p>Die <strong>reaktiwiteitsreeks</strong> rangskik metale van mees reaktief (K, Na, Ca, Mg, Al, Zn, Fe, Ni, Sn, Pb, H, Cu, Ag, Au) tot minste reaktief. 'n Metaal kan slegs metale onder hom in die reeks verplaas.</p>
+    <div class="callout"><strong>Sleutelreël:</strong> Fe verplaas Cu omdat Fe bo Cu in die reaktiwiteitsreeks is. Cu kan nie Fe verplaas nie.</div>
+
+    <h2>4. Dubbelverplasings- (Uitruil-) Reaksies</h2>
+    <p>Twee verbindings ruil ione uit om twee nuwe verbindings te vorm: AB + CD → AD + CB. Hierdie reaksies produseer dikwels 'n presipitaat (onoplosbare vaste stof), 'n gas, of water.</p>
+    <ul>
+      <li>AgNO₃ + NaCl → AgCl↓ + NaNO₃ (presipitaat vorm)</li>
+      <li>Na₂SO₄ + BaCl₂ → BaSO₄↓ + 2NaCl (presipitaat vorm)</li>
+      <li>HCl + NaOH → NaCl + H₂O (neutralisasie — water vorm)</li>
+      <li>Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂↑ (gas vorm)</li>
+    </ul>
+    <div class="key-fact">Neutralisasie is 'n spesiale geval van dubbelverplasing: suur + basis → sout + water</div>
+
+    <h2>5. Energie in Reaksies</h2>
+    <table class="symbols-table">
+      <tr><th>Tipe</th><th>Energieverandering</th><th>Temperatuur</th><th>Voorbeelde</th></tr>
+      <tr><td>Eksotermies</td><td>Stel energie (hitte) vry</td><td>Omgewing word warmer</td><td>Verbranding, neutralisasie, respirasie</td></tr>
+      <tr><td>Endotermies</td><td>Absorbeer energie (hitte)</td><td>Omgewing word kouer</td><td>Fotosintese, ontbinding, oplos van NH₄NO₃</td></tr>
+    </table>
+
+    <h2>6. Verbranding (Oksidasie-Reduksie)</h2>
+    <p>Verbranding is die reaksie van 'n brandstof met suurstof, wat hitte en lig vrystel. Dit is 'n tipe redoksreaksie waarin koolstofverbindings geoksideer word.</p>
+    <div class="formula">
+      Volledige verbranding: CH₄ + 2O₂ → CO₂ + 2H₂O<br>
+      Onvolledige verbranding: 2CH₄ + 3O₂ → 2CO + 4H₂O (koolstofmonoksied — giftig!)
+    </div>
+
+    <h2>Reaksietempo</h2>
+    <p>Hoe vinnig reaktante na produkte omgeskakel word, hang af van:</p>
+    <ul>
+      <li><strong>Konsentrasie:</strong> meer deeltjies per volume → meer botsings → vinniger</li>
+      <li><strong>Temperatuur:</strong> hoër temperatuur → deeltjies beweeg vinniger → meer gereelde en energieke botsings</li>
+      <li><strong>Oppervlakte:</strong> kleiner deeltjies → meer oppervlakte blootgestel → vinniger reaksie</li>
+      <li><strong>Katalisator:</strong> stof wat 'n reaksie vinniger maak sonder om self verbruik te word (bv. MnO₂ in H₂O₂-ontbinding)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Reaksietipe-Simulator</h3>
+      <canvas id="cv" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Reaksietipe</div>
+        <button class="mode-btn active" onclick="setMode('synthesis',this)">Sintese</button>
+        <button class="mode-btn" onclick="setMode('decomposition',this)">Ontbinding</button>
+        <button class="mode-btn" onclick="setMode('single',this)">Enkelverplasing</button>
+        <button class="mode-btn" onclick="setMode('double',this)">Dubbelverplasing</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Gebalanseerde Vergelyking</div>
+        <div id="eq-display" style="font-family:var(--fm);font-size:13px;color:#fcd34d;line-height:1.9;min-height:60px"></div>
+        <div id="type-desc" style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-val"></div>
+      <div><div style="font-weight:800;font-size:16px;color:#fff" id="score-msg"></div><div style="font-size:13px;color:var(--muted);margin-top:3px">Herlaai die bladsy om weer te probeer</div></div>
+    </div>
+    <div id="practice-container"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in volledige sinne. Wys alle berekeninge. Gebruik die lesaantekeninge om jou te help.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1</div><div class="wb-qtext">Stel die Wet van Behoud van Massa en verduidelik waarom dit beteken dat ons chemiese vergelykings moet balanseer. Balanseer die volgende vergelyking en identifiseer die reaksietipe: Fe + O₂ → Fe₂O₃</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2</div><div class="wb-qtext">Klassifiseer elk van die volgende reaksies as sintese, ontbinding, enkelverplasing, of dubbelverplasing. Motiveer jou antwoord kortliks in elke geval.<br>(a) 2KClO₃ → 2KCl + 3O₂<br>(b) Mg + 2HCl → MgCl₂ + H₂<br>(c) SO₃ + H₂O → H₂SO₄<br>(d) Pb(NO₃)₂ + 2KI → PbI₂ + 2KNO₃</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3</div><div class="wb-qtext">Gebruik die reaktiwiteitsreeks (K, Na, Ca, Mg, Al, Zn, Fe, Ni, Sn, Pb, H, Cu, Ag, Au) om te verduidelik waarom sink koper uit kopersulfaatoplossing kan verplaas, maar koper nie sink uit sinksulfaatoplossing kan verplaas nie. Skryf die gebalanseerde vergelyking vir die sink/kopersulfaat-reaksie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4</div><div class="wb-qtext">Onderskei tussen eksotermiese en endotermiese reaksies. Gee twee voorbeelde van elk. Verduidelik wat met die temperatuur van die omgewing gebeur tydens elke tipe, en waarom.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5</div><div class="wb-qtext">'n Leerder maal 'n stukkie kalsiumkarbonaat (marmer) tot 'n fyn poeier voordat dit by soutsuur gevoeg word. Die reaksie produseer CO₂-gas.<br>(a) Skryf die gebalanseerde vergelyking vir hierdie reaksie en klassifiseer die tipe.<br>(b) Verduidelik waarom die gepoeierde marmer vinniger reageer as die heel stukkie.<br>(c) Noem twee ander faktore wat die tempo van hierdie reaksie kan verhoog en verduidelik die rede vir elkeen.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6</div><div class="wb-qtext">'n Leerder laat DIESELFDE MASSA marmerstukkies met oormaat soutsuur reageer in twee afsonderlike eksperimente — een met groot stukkies, een met gepoeierde marmer — en meet die volume CO₂-gas wat elke 20 sekondes versamel word:<br><br>
+    <table class="symbols-table">
+      <thead><tr><th>Tyd (s)</th><th>Gasvolume — groot stukkies (cm³)</th><th>Gasvolume — gepoeierde marmer (cm³)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>20</td><td>10</td><td>35</td></tr>
+        <tr><td>40</td><td>22</td><td>58</td></tr>
+        <tr><td>60</td><td>33</td><td>60</td></tr>
+        <tr><td>80</td><td>45</td><td>60</td></tr>
+        <tr><td>100</td><td>55</td><td>60</td></tr>
+        <tr><td>120</td><td>60</td><td>60</td></tr>
+      </tbody>
+    </table>
+    (a) Plot albei stelle data op dieselfde stel asse (gasvolume op die y-as, tyd op die x-as) om twee reaksietempo-grafieke te teken.<br><br>
+    (b) Op watter tydstip hou elke eksperiment op om gas te produseer (bereik dit sy maksimum volume)?<br><br>
+    (c) Albei eksperimente produseer uiteindelik DIESELFDE totale volume gas (60 cm³). Verduidelik waarom die finale volume dieselfde is, al vind die reaksies teen verskillende tempo's plaas.<br><br>
+    (d) Gebruik die idee van oppervlakte en deeltjiebotsings om te verduidelik waarom die gepoeierde marmer sy maksimum gasvolume soveel vinniger bereik as die groot stukkies.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ── Canvas simulation ──
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+let W=520,H=320,dpr=1;
+let mode='synthesis';
+let raf=null,t=0;
+
+const modes={
+  synthesis:{
+    eq:'2Na  +  Cl₂  →  2NaCl',
+    desc:"Twee of meer reaktante kombineer om 'n enkele produk te vorm (A + B → AB).",
+    molecules:[
+      {label:'Na',color:'#fbbf24',x:0.15,r:22},
+      {label:'Na',color:'#fbbf24',x:0.28,r:22},
+      {label:'Cl₂',color:'#a3e635',x:0.72,r:28},
+    ],
+    product:{label:'2NaCl',color:'#86efac',x:0.5,r:34}
+  },
+  decomposition:{
+    eq:'2H₂O  →  2H₂  +  O₂',
+    desc:"'n Enkele verbinding breek af in twee of meer eenvoudiger stowwe (AB → A + B). Vereis energie.",
+    molecules:[
+      {label:'H₂O',color:'#60a5fa',x:0.35,r:28},
+      {label:'H₂O',color:'#60a5fa',x:0.52,r:28},
+    ],
+    product:null,
+    products:[
+      {label:'H₂',color:'#fbbf24',x:0.25,r:22},
+      {label:'H₂',color:'#fbbf24',x:0.42,r:22},
+      {label:'O₂',color:'#f87171',x:0.65,r:26},
+    ]
+  },
+  single:{
+    eq:'Zn  +  CuSO₄  →  ZnSO₄  +  Cu',
+    desc:"'n Meer reaktiewe element verplaas 'n minder reaktiewe een uit 'n verbinding (A + BC → AC + B).",
+    molecules:[
+      {label:'Zn',color:'#a78bfa',x:0.18,r:24},
+      {label:'CuSO₄',color:'#f97316',x:0.55,r:34},
+    ],
+    product:null,
+    products:[
+      {label:'ZnSO₄',color:'#c4b5fd',x:0.3,r:34},
+      {label:'Cu',color:'#fb923c',x:0.72,r:22},
+    ]
+  },
+  double:{
+    eq:'AgNO₃  +  NaCl  →  AgCl↓  +  NaNO₃',
+    desc:'Twee verbindings ruil ione uit om twee nuwe verbindings te vorm. Vorm dikwels \'n presipitaat, gas, of water.',
+    molecules:[
+      {label:'AgNO₃',color:'#e2e8f0',x:0.2,r:32},
+      {label:'NaCl',color:'#fbbf24',x:0.55,r:28},
+    ],
+    product:null,
+    products:[
+      {label:'AgCl↓',color:'#94a3b8',x:0.28,r:32},
+      {label:'NaNO₃',color:'#fde68a',x:0.68,r:32},
+    ]
+  }
+};
+
+function resizeSim(){
+  dpr=window.devicePixelRatio||1;
+  W=cv.offsetWidth||520;
+  H=320;
+  cv.width=W*dpr;
+  cv.height=H*dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+}
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  t=0;
+  const md=modes[m];
+  document.getElementById('eq-display').textContent=md.eq;
+  document.getElementById('type-desc').textContent=md.desc;
+  if(!raf) loop();
+}
+
+function drawMolecule(x,y,r,label,color,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha||1;
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,Math.PI*2);
+  const g=ctx.createRadialGradient(x-r*0.3,y-r*0.3,r*0.1,x,y,r);
+  g.addColorStop(0,'rgba(255,255,255,0.18)');
+  g.addColorStop(1,color+'44');
+  ctx.fillStyle=g;
+  ctx.fill();
+  ctx.strokeStyle=color;
+  ctx.lineWidth=2;
+  ctx.stroke();
+  ctx.fillStyle='#fff';
+  ctx.font=`bold ${r>26?13:11}px "JetBrains Mono",monospace`;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(label,x,y);
+  ctx.restore();
+}
+
+function drawArrow(x1,y,x2){
+  ctx.save();
+  ctx.strokeStyle='rgba(251,191,36,0.6)';
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(x1,y);
+  ctx.lineTo(x2,y);
+  ctx.stroke();
+  ctx.fillStyle='rgba(251,191,36,0.6)';
+  ctx.beginPath();
+  ctx.moveTo(x2,y);
+  ctx.lineTo(x2-10,y-5);
+  ctx.lineTo(x2-10,y+5);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  if(!document.getElementById('tab-explore').classList.contains('active')){
+    cancelAnimationFrame(raf); raf=null; return;
+  }
+  t+=0.012;
+  ctx.clearRect(0,0,W,H);
+
+  const md=modes[mode];
+  const progress=Math.min((Math.sin(t)*0.5+0.5),1); // 0→1 oscillation
+  const reacted=progress>0.5;
+  const p=reacted?(progress-0.5)*2:progress*2; // 0→1 for each phase
+
+  // background label
+  ctx.fillStyle='rgba(251,191,36,0.06)';
+  ctx.font='bold 11px "JetBrains Mono",monospace';
+  ctx.textAlign='left';
+  ctx.textBaseline='top';
+  ctx.fillText(reacted?'PRODUKTE':'REAKTANTE',16,14);
+
+  if(mode==='synthesis'){
+    const cy=H/2;
+    if(!reacted){
+      // two Na moving toward center, Cl2 from right
+      const dx=p*0.1;
+      drawMolecule(W*(0.15+dx),cy,22,'Na','#fbbf24',1-p*0.3);
+      drawMolecule(W*(0.28+dx),cy,22,'Na','#fbbf24',1-p*0.3);
+      drawMolecule(W*(0.72-dx),cy,28,'Cl₂','#a3e635',1-p*0.3);
+      drawArrow(W*0.44,cy,W*0.56);
+    } else {
+      drawMolecule(W*0.5,cy,36,'2NaCl','#86efac',p);
+    }
+  } else if(mode==='decomposition'){
+    const cy=H/2;
+    if(!reacted){
+      drawMolecule(W*0.35,cy,28,'H₂O','#60a5fa',1);
+      drawMolecule(W*0.52,cy,28,'H₂O','#60a5fa',1);
+      // lightning bolt = energy input hint
+      ctx.fillStyle='rgba(251,191,36,0.5)';
+      ctx.font='20px sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText('⚡',W*0.43,cy-42);
+    } else {
+      drawMolecule(W*0.22,cy,22,'H₂','#fbbf24',p);
+      drawMolecule(W*0.38,cy,22,'H₂','#fbbf24',p);
+      drawMolecule(W*0.62,cy,26,'O₂','#f87171',p);
+      drawArrow(W*0.75,cy,W*0.85);
+    }
+  } else if(mode==='single'){
+    const cy=H/2;
+    if(!reacted){
+      drawMolecule(W*(0.18+p*0.12),cy,24,'Zn','#a78bfa',1);
+      drawMolecule(W*0.55,cy,34,'CuSO₄','#f97316',1);
+    } else {
+      drawMolecule(W*0.28,cy,34,'ZnSO₄','#c4b5fd',p);
+      drawMolecule(W*0.68,cy,22,'Cu','#fb923c',p);
+      ctx.fillStyle='rgba(251,191,36,0.5)';
+      ctx.font='11px "JetBrains Mono",monospace';
+      ctx.textAlign='center';
+      ctx.fillText('Zn meer reaktief as Cu',W*0.5,cy+55);
+    }
+  } else if(mode==='double'){
+    const cy=H/2;
+    if(!reacted){
+      drawMolecule(W*(0.2+p*0.08),cy,32,'AgNO₃','#e2e8f0',1);
+      drawMolecule(W*(0.55-p*0.08),cy,28,'NaCl','#fbbf24',1);
+    } else {
+      drawMolecule(W*0.28,cy,32,'AgCl↓','#94a3b8',p);
+      drawMolecule(W*0.68,cy,32,'NaNO₃','#fde68a',p);
+      // precipitate dots
+      for(let i=0;i<6;i++){
+        ctx.beginPath();
+        ctx.arc(W*0.28+(i%3-1)*12,cy+38+(Math.floor(i/3))*10,3,0,Math.PI*2);
+        ctx.fillStyle='rgba(148,163,184,'+p+')';
+        ctx.fill();
+      }
+      ctx.fillStyle='rgba(148,163,184,0.6)';
+      ctx.font='10px "JetBrains Mono",monospace';
+      ctx.textAlign='center';
+      ctx.fillText('presipitaat',W*0.28,cy+62);
+    }
+  }
+}
+
+function initSim(){
+  resizeSim();
+  const md=modes[mode];
+  document.getElementById('eq-display').textContent=md.eq;
+  document.getElementById('type-desc').textContent=md.desc;
+  if(!raf) loop();
+}
+
+window.addEventListener('resize',()=>{
+  if(document.getElementById('tab-explore').classList.contains('active')) resizeSim();
+});
+
+// ── Practice ──
+const questions=[
+  {q:'Watter tipe reaksie produseer slegs EEN produk?',opts:['Ontbinding','Dubbelverplasing','Sintese','Enkelverplasing'],ans:2,exp:"In 'n sintesereaksie kombineer twee of meer reaktante om 'n enkele produk te vorm (A + B → AB)."},
+  {q:'Watter tipe reaksie is: 2H₂O₂ → 2H₂O + O₂?',opts:['Sintese','Ontbinding','Enkelverplasing','Verbranding'],ans:1,exp:'Een reaktant (H₂O₂) breek in twee produkte (H₂O en O₂). Dit is ontbinding.'},
+  {q:'Yster word in kopersulfaatoplossing geplaas. Watter stelling is korrek?',opts:['Niks gebeur nie — yster is minder reaktief as koper','Koper word uit die oplossing verplaas — yster is meer reaktief','Yster los op sonder enige verplasing',"Die reaksie is 'n voorbeeld van dubbelverplasing"],ans:1,exp:'Yster is bo koper in die reaktiwiteitsreeks, so dit verplaas koper: Fe + CuSO₄ → FeSO₄ + Cu.'},
+  {q:'AgNO₃ + NaCl → AgCl + NaNO₃. Watter tipe reaksie is dit?',opts:['Sintese','Ontbinding','Enkelverplasing','Dubbelverplasing'],ans:3,exp:'Twee verbindings (AgNO₃ en NaCl) ruil ione uit om twee nuwe verbindings te vorm (AgCl en NaNO₃). Dit is dubbelverplasing.'},
+  {q:"Watter een van die volgende is 'n eksotermiese reaksie?",opts:['Fotosintese','Ontbinding van CaCO₃','Verbranding van metaan','Oplos van ammoniumnitraat in water'],ans:2,exp:'Verbranding stel energie as hitte vry. Fotosintese, ontbinding van CaCO₃, en die oplos van NH₄NO₃ is endotermies.'},
+  {q:"'n Leerder verhoog die temperatuur van 'n reaksie. Watter effek het dit op die reaksietempo?",opts:['Dit verminder omdat deeltjies stadiger beweeg','Dit verhoog omdat deeltjies meer gereeld en met meer energie bots','Dit het geen effek op die tempo nie','Dit stop die reaksie'],ans:1,exp:'Hoër temperatuur gee deeltjies meer kinetiese energie, wat lei tot meer gereelde en meer energieke botsings, wat die reaksietempo verhoog.'},
+  {q:"'n Leerder laat 5.6 g yster met 3.2 g swael in 'n geslote houer reageer. Na die reaksie word die vaste produk (ystersulfied) geweeg en dit blyk 8.8 g te wees. Ondersteun hierdie data die Wet van Behoud van Massa, en watter tipe reaksie is dit?",opts:['Nee — dit lyk asof massa tydens die reaksie verlore gegaan het',"Ja — die totale massa van die reaktante (5.6 g + 3.2 g = 8.8 g) is gelyk aan die massa van die produk (8.8 g), wat bevestig dat geen massa gewen of verloor is nie; dit is ook 'n sintesereaksie, aangesien twee elemente gekombineer het om een verbinding te vorm","Nee — 'n sintesereaksie behoort altyd minder totale massa te produseer as die reaktante",'Ja, maar slegs omdat swael met suurstof uit die lug moes reageer het in plaas van yster'],ans:1,exp:"Wanneer die massa van die reaktante bygetel word (5.6 g yster + 3.2 g swael = 8.8 g), kry jy presies die massa van die produk (8.8 g ystersulfied). Dit bevestig die Wet van Behoud van Massa — in 'n geslote houer kan materie nie geskep of vernietig word nie, dit word net herrangskik in 'n nuwe stof. Aangesien twee elemente (Fe en S) gekombineer het om 'n enkele verbinding (FeS) te vorm, is dit ook 'n sintesereaksie."},
+  {q:'\'n Leerder balanseer die vergelyking vir aluminium wat met suurstof reageer as: 2Al + O₂ → Al₂O₃, en kontroleer dit dan deur atome te tel: Linkerkant = 2 Al, 2 O; Regterkant = 2 Al, 3 O. Is hierdie vergelyking korrek gebalanseer, en indien nie, wat is die korrekte gebalanseerde vergelyking?',opts:['Ja, dit is gebalanseer — om 2 suurstofatome aan die een kant en 3 aan die ander te hê, is naby genoeg','Nee — die suurstofatome stem nie ooreen nie (2 teenoor 3). Die korrek gebalanseerde vergelyking is 4Al + 3O₂ → 2Al₂O₃, wat 4 Al- en 6 O-atome aan beide kante gee','Nee — die aluminiumatome stem nie ooreen nie. Die korrekte vergelyking is Al + O₂ → AlO₂',"Ja, want subskripte kan altyd aangepas word om 'n vergelyking te balanseer"],ans:1,exp:'Die vergelyking is NIE gebalanseer nie — die Wet van Behoud van Massa vereis presies dieselfde aantal van elke tipe atoom aan beide kante, so "naby genoeg" is nooit aanvaarbaar nie. Aangesien subskripte die formule van \'n stof bepaal en nooit verander kan word nie, kan slegs koëffisiënte aangepas word: 4Al + 3O₂ → 2Al₂O₃ gee 4 Al-atome en 3×2 = 6 O-atome aan die linkerkant, wat ooreenstem met 2×2 = 4 Al-atome en 2×3 = 6 O-atome aan die regterkant.'},
+];
+
+let score=0,answered=0;
+function buildPractice(){
+  const c=document.getElementById('practice-container');
+  c.innerHTML='';
+  questions.forEach((q,i)=>{
+    const card=document.createElement('div');
+    card.className='q-card';
+    card.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div>
+    <div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j})" id="opt-${i}-${j}"><span class="opt-letter">${'ABCD'[j]}</span>${o}</button>`).join('')}</div>
+    <div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(card);
+  });
+}
+
+function answer(qi,oi){
+  const q=questions[qi];
+  if(document.getElementById(`opt-${qi}-0`).disabled) return;
+  for(let j=0;j<4;j++){
+    const b=document.getElementById(`opt-${qi}-${j}`);
+    b.disabled=true;
+    if(j===q.ans) b.classList.add('correct');
+    else if(j===oi) b.classList.add('wrong');
+  }
+  const fb=document.getElementById(`fb-${qi}`);
+  fb.className='feedback show '+(oi===q.ans?'ok':'bad');
+  fb.textContent=(oi===q.ans?'✓ Reg! ':'✗ Nie heeltemal reg nie. ')+q.exp;
+  if(oi===q.ans) score++;
+  answered++;
+  if(answered===questions.length){
+    const b=document.getElementById('score-banner');
+    b.classList.add('show');
+    document.getElementById('score-val').textContent=`${score}/${questions.length}`;
+    document.getElementById('score-msg').textContent=score===questions.length?'Perfekte telling!':score>=Math.ceil(questions.length*0.65)?'Goeie werk!':'Gaan voort om die les te hersien.';
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

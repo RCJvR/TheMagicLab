@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kragte — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-bottom:24px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:78px}
+    input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:52px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:20px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:11px;font-weight:500;color:var(--muted);margin-left:2px}
+    .result-banner{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:13px;margin-top:8px;transition:all 300ms}
+    .result-banner.balanced{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.30);color:#93c5fd}
+    .result-banner.left{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.30);color:#fcd34d}
+    .result-banner.right{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.30);color:#86efac}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-top{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energie &amp; Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Energie &amp; Verandering · Les 4</div>
+  <h1 class="lesson-title">Kragte</h1>
+  <p class="lesson-sub">Verken wat kragte is, die verskillende tipes kontak- en nie-kontakkragte, en hoe gebalanseerde en ongebalanseerde kragte beweging beïnvloed.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="move-horizontal" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n krag?</h2>
+    <p>'n <strong style="color:#fcd34d">Krag</strong> is 'n stoot of 'n trek wat een voorwerp op 'n ander uitoefen. 'n Krag kan:</p>
+    <ul>
+      <li>'n Voorwerp se <strong>spoed</strong> verander (dit vinniger of stadiger maak)</li>
+      <li>'n Voorwerp se <strong>rigting</strong> van beweging verander</li>
+      <li>'n Voorwerp se <strong>vorm</strong> verander (dit rek, plat druk, buig of draai)</li>
+      <li>Beweging heeltemal begin of stop</li>
+    </ul>
+    <div class="callout">Krag word in <strong>newton (N)</strong> gemeet, vernoem na Sir Isaac Newton. Krag is 'n <em>vektor</em>-grootheid — dit het sowel grootte (omvang) as rigting.</div>
+
+    <h2>Kontakkragte</h2>
+    <p>Kontakkragte vereis dat die voorwerpe mekaar aanraak:</p>
+    <ul>
+      <li><strong>Wrywing:</strong> 'n krag wat beweging tussen twee oppervlaktes wat aanmekaar raak, teenwerk. Wrywing werk altyd in die teenoorgestelde rigting van beweging (of gepoogde beweging).</li>
+      <li><strong>Toegepaste (spierkrag):</strong> 'n stoot of trek wat direk deur 'n persoon of dier toegepas word, bv. om 'n trollie te stoot of 'n skooltas op te tel.</li>
+      <li><strong>Normaalkrag:</strong> die ondersteuningskrag wat 'n oppervlak op 'n voorwerp wat daarop rus, uitoefen, en wat loodreg (in 'n regte hoek) op die oppervlak werk.</li>
+      <li><strong>Spanning:</strong> die trekkrag wat deur 'n tou, lyn of kabel oorgedra word wanneer dit stywe getrek word, bv. 'n tou in 'n toutrek-kompetisie.</li>
+    </ul>
+
+    <h2>Nie-kontakkragte</h2>
+    <p>Nie-kontakkragte werk op 'n voorwerp in sonder dat die voorwerpe hoef aan te raak:</p>
+    <ul>
+      <li><strong>Swaartekrag (gravitasie):</strong> die aantrekkingskrag tussen enige twee voorwerpe met massa. Op Aarde trek swaartekrag alle voorwerpe na die middel van die Aarde toe — dis waarom voorwerpe val en gewig het.</li>
+      <li><strong>Magnetiese krag:</strong> die krag tussen magnete, of tussen 'n magneet en 'n magnetiese materiaal, wat oor 'n afstand werk.</li>
+      <li><strong>Elektrostatiese krag:</strong> die krag tussen elektries gelaaide voorwerpe — soortgelyke ladings stoot mekaar af, ongelyke ladings trek mekaar aan, selfs sonder om te raak.</li>
+    </ul>
+    <div class="key-fact">Gewig is eintlik die swaartekrag wat op 'n voorwerp se massa inwerk. Gewig = massa × gravitasieveldsterkte (W = m × g), en word in newton gemeet — moenie dit met massa verwar nie, wat in kilogram gemeet word.</div>
+
+    <h2>Kragte as vektore voorstel</h2>
+    <p>Omdat krag sowel grootte as rigting het, stel ons dit met 'n <strong>pyl</strong> voor:</p>
+    <ul>
+      <li>Die <strong>lengte</strong> van die pyl wys die grootte (omvang) van die krag — 'n langer pyl beteken 'n groter krag.</li>
+      <li>Die <strong>rigting</strong> waarin die pyl wys, wys die rigting waarin die krag werk.</li>
+    </ul>
+    <div class="formula">Kragdiagramme: langer pyl = groter krag · pylrigting = kragrigting</div>
+
+    <h2>Gebalanseerde teenoor ongebalanseerde kragte</h2>
+    <p>Wanneer meer as een krag op 'n voorwerp inwerk, moet ons hulle gekombineerde effek in ag neem:</p>
+    <ul>
+      <li><strong>Gebalanseerde kragte:</strong> kragte wat gelyk in grootte en teenoorgesteld in rigting is. Hulle hef mekaar op, sodat daar <strong>geen verandering</strong> in die voorwerp se beweging is nie — dit bly óf stil, óf beweeg voort teen 'n konstante spoed in 'n reguit lyn.</li>
+      <li><strong>Ongebalanseerde kragte:</strong> kragte wat nie mekaar heeltemal ophef nie. 'n Ongebalanseerde krag laat die voorwerp <strong>versnel</strong> — dit word vinniger, stadiger, of verander van rigting.</li>
+    </ul>
+    <div class="callout"><strong>Voorbeeld:</strong> 'n Boek wat op 'n tafel rus, het sy gewig (afwaarts) gebalanseer deur die normaalkrag van die tafel (opwaarts) — die boek bly stil. As jy 'n trollie stoot en die toegepaste krag groter is as wrywing, is die kragte ongebalanseerd en die trollie word vinniger.</div>
+
+    <h2>Resulterende krag</h2>
+    <p>Die <strong style="color:#fcd34d">resulterende krag</strong> is die enkele algehele krag wat dieselfde effek sou hê as al die individuele kragte wat op 'n voorwerp inwerk, gekombineer. Vir kragte wat langs dieselfde reguit lyn werk:</p>
+    <ul>
+      <li>Kragte wat in <strong>dieselfde rigting</strong> werk, word bymekaar <strong>getel</strong>.</li>
+      <li>Kragte wat in <strong>teenoorgestelde rigtings</strong> werk, word van mekaar <strong>afgetrek</strong>, en die resultante werk in die rigting van die groter krag.</li>
+    </ul>
+    <div class="formula">Resulterende krag = som van kragte in een rigting − som van kragte in die teenoorgestelde rigting</div>
+    <div class="key-fact">Voorbeeld: Twee leerders stoot 'n boks. Een stoot regs met 40 N, die ander stoot links (teenoorgesteld) met 25 N. Resulterende krag = 40 − 25 = 15 N na regs → die boks versnel na regs.</div>
+    <p>As die resulterende krag <strong>nul</strong> is, is die kragte gebalanseer en is daar geen verandering in beweging nie. As die resulterende krag <strong>nie nul</strong> is nie, versnel die voorwerp in die rigting van die resulterende krag.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Resulterende-krag-simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel die twee teenoorgestelde horisontale kragte wat op die boks inwerk met behulp van die skuiwers. Kyk hoe die resulterende-krag-pyl opdateer en sien of die boks na links versnel, na regs versnel, of gebalanseerd bly.</p>
+  <div class="explore-top">
+    <div class="sim-canvas-wrap">
+      <h3>Kragdiagram</h3>
+      <canvas id="forceCanvas" height="320"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Krag wat LINKS druk (op die boks)</div>
+        <div class="slider-row">
+          <label>Linkerkrag</label>
+          <input type="range" id="leftSlider" min="0" max="50" value="20" oninput="updateForces()">
+          <span class="slider-val" id="leftVal">20 N</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Krag wat REGS druk (op die boks)</div>
+        <div class="slider-row">
+          <label>Regterkrag</label>
+          <input type="range" id="rightSlider" min="0" max="50" value="20" oninput="updateForces()">
+          <span class="slider-val" id="rightVal">20 N</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Resultaat</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Resultante</div><div class="readout-val" id="readResultant" style="color:#fbbf24">0<span>N</span></div></div>
+          <div class="readout"><div class="readout-label">Rigting</div><div class="readout-val" id="readDirection" style="font-size:14px">Gebalanseer</div></div>
+        </div>
+        <div class="result-banner balanced" id="resultBanner">Die kragte is gebalanseer — die boks bly stil.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na vir enige wat jy verkeerd gehad het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord al die vrae in jou oefeningboek. Teken kragdiagramme waar gevra.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Definieer die term "krag" en gee die eenheid waarin krag gemeet word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Klassifiseer ELKE van die volgende kragte as 'n kontakkrag of 'n nie-kontakkrag, en noem die spesifieke tipe krag:<br><br>
+    a) 'n Boek wat op 'n tafel rus, word deur die tafel ondersteun.<br>
+    b) 'n Yskasmagneet kleef aan 'n metaaldeur sonder om 'n magneet binne-in aan te raak.<br>
+    c) 'n Leerder trek 'n tou in 'n toutrek-kompetisie.<br>
+    d) 'n Bal val grond toe nadat dit in die lug gegooi is.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Twee leerders stoot 'n krat van teenoorgestelde kante. Leerder A stoot met 'n krag van 35 N na regs. Leerder B stoot met 'n krag van 20 N na links. Bereken die resulterende krag op die krat, en gee sowel die grootte as die rigting aan. Beskryf wat met die krat sal gebeur.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik die verskil tussen gebalanseerde kragte en ongebalanseerde kragte. Gee vir ELKE geval aan wat met die beweging van 'n voorwerp gebeur.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Teken 'n gemerkte kragdiagram van 'n boek wat op 'n tafel rus. Wys die gewigskrag en die normaalkrag as pyle, merk elke krag, en verduidelik waarom die boek stilbly.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">Twee spanne trek tou met 'n tou waaraan 'n kragmeter geheg is. Die kragte wat vir drie afsonderlike proewe aangeteken is, was:
+      <table class="symbols-table" style="margin:12px 0">
+        <thead><tr><th>Proef</th><th>Span A se krag</th><th>Span B se krag</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>420 N</td><td>400 N</td></tr>
+          <tr><td>2</td><td>380 N</td><td>420 N</td></tr>
+          <tr><td>3</td><td>450 N</td><td>450 N</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die resulterende krag vir ELKE proef, en gee aan watter span dit bevoordeel (of of dit gebalanseer is). (3 punte)<br>
+      (b) In watter proef versnel die tou NIE? Verduidelik jou antwoord met behulp van die konsep van gebalanseerde en ongebalanseerde kragte. (2 punte)<br>
+      (c) In Proef 2 roep Span B 'n reserwespeler in wat 'n ekstra 20 N by hulle trek voeg. Herbereken die nuwe resulterende krag vir Proef 2 en gee aan wat nou met die tou sal gebeur. (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tabs ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') { resizeForce(); drawForce(); }
+}
+
+/* ---- Canvas ---- */
+const forceCanvas = document.getElementById('forceCanvas');
+const forceCtx = forceCanvas.getContext('2d');
+const FH = 320;
+let leftF = 20, rightF = 20;
+let boxOffset = 0;
+
+function resizeForce() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = forceCanvas.offsetWidth || 480;
+  forceCanvas.width = W * dpr;
+  forceCanvas.height = FH * dpr;
+  forceCtx.setTransform(1, 0, 0, 1, 0, 0);
+  forceCtx.scale(dpr, dpr);
+}
+
+function updateForces() {
+  leftF = +document.getElementById('leftSlider').value;
+  rightF = +document.getElementById('rightSlider').value;
+  document.getElementById('leftVal').textContent = leftF + ' N';
+  document.getElementById('rightVal').textContent = rightF + ' N';
+
+  const resultant = rightF - leftF; // positive = net right, negative = net left
+  const mag = Math.abs(resultant);
+  document.getElementById('readResultant').innerHTML = mag + '<span>N</span>';
+
+  const banner = document.getElementById('resultBanner');
+  const dirEl = document.getElementById('readDirection');
+
+  if (mag < 0.5) {
+    dirEl.textContent = 'Gebalanseer';
+    dirEl.style.color = '#93c5fd';
+    banner.className = 'result-banner balanced';
+    banner.textContent = 'Die kragte is gebalanseer — die boks bly stil (of beweeg teen \'n konstante spoed).';
+  } else if (resultant > 0) {
+    dirEl.textContent = 'Regs →';
+    dirEl.style.color = '#86efac';
+    banner.className = 'result-banner right';
+    banner.textContent = `Ongebalanseerd! Resulterende krag van ${mag} N na REGS — die boks versnel na regs.`;
+  } else {
+    dirEl.textContent = '← Links';
+    dirEl.style.color = '#fcd34d';
+    banner.className = 'result-banner left';
+    banner.textContent = `Ongebalanseerd! Resulterende krag van ${mag} N na LINKS — die boks versnel na links.`;
+  }
+}
+
+function drawArrow(ctx, x1, y, len, color, pointRight) {
+  const x2 = pointRight ? x1 + len : x1 - len;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x2, y);
+  ctx.stroke();
+  // arrowhead
+  const headLen = 12;
+  const dir = pointRight ? 1 : -1;
+  ctx.beginPath();
+  ctx.moveTo(x2, y);
+  ctx.lineTo(x2 - dir * headLen, y - 7);
+  ctx.lineTo(x2 - dir * headLen, y + 7);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawForce() {
+  const W = forceCanvas.offsetWidth || 480;
+  forceCtx.clearRect(0, 0, W, FH);
+  const cx = W / 2 + boxOffset;
+  const cy = FH / 2;
+
+  // ground line
+  forceCtx.strokeStyle = 'rgba(255,255,255,0.10)';
+  forceCtx.lineWidth = 1.5;
+  forceCtx.beginPath();
+  forceCtx.moveTo(0, cy + 40);
+  forceCtx.lineTo(W, cy + 40);
+  forceCtx.stroke();
+
+  // box
+  const boxSize = 64;
+  forceCtx.fillStyle = 'rgba(251,191,36,0.18)';
+  forceCtx.strokeStyle = 'rgba(251,191,36,0.55)';
+  forceCtx.lineWidth = 2;
+  forceCtx.beginPath();
+  forceCtx.roundRect(cx - boxSize / 2, cy + 40 - boxSize, boxSize, boxSize, 8);
+  forceCtx.fill();
+  forceCtx.stroke();
+  forceCtx.fillStyle = 'rgba(255,255,255,0.85)';
+  forceCtx.font = '600 12px "Cabinet Grotesk", sans-serif';
+  forceCtx.textAlign = 'center';
+  forceCtx.fillText('Boks', cx, cy + 40 - boxSize / 2 + 4);
+
+  const boxMidY = cy + 40 - boxSize / 2;
+  const maxLen = Math.min(W / 2 - 70, 170);
+
+  // left force arrow (pointing right, i.e. pushing box rightwards from the left side)
+  if (leftF > 0) {
+    const len = (leftF / 50) * maxLen;
+    drawArrow(forceCtx, cx - boxSize / 2 - 8, boxMidY - 18, len, '#fbbf24', false);
+    forceCtx.fillStyle = '#fcd34d';
+    forceCtx.font = '600 11px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'right';
+    forceCtx.fillText(`${leftF} N`, cx - boxSize / 2 - 12 - len, boxMidY - 30);
+  }
+
+  // right force arrow
+  if (rightF > 0) {
+    const len = (rightF / 50) * maxLen;
+    drawArrow(forceCtx, cx + boxSize / 2 + 8, boxMidY - 18, len, '#4ade80', true);
+    forceCtx.fillStyle = '#86efac';
+    forceCtx.font = '600 11px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'left';
+    forceCtx.fillText(`${rightF} N`, cx + boxSize / 2 + 12 + len, boxMidY - 30);
+  }
+
+  // resultant arrow (below box)
+  const resultant = rightF - leftF;
+  if (Math.abs(resultant) > 0.5) {
+    const rlen = (Math.abs(resultant) / 50) * maxLen;
+    const resColor = resultant > 0 ? 'rgba(96,165,250,0.9)' : 'rgba(96,165,250,0.9)';
+    drawArrow(forceCtx, cx, boxMidY + 55, rlen, resColor, resultant > 0);
+    forceCtx.fillStyle = '#93c5fd';
+    forceCtx.font = '700 12px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'center';
+    forceCtx.fillText(`Resultante: ${Math.abs(resultant)} N`, cx, boxMidY + 75);
+  } else {
+    forceCtx.fillStyle = 'rgba(210,218,245,0.4)';
+    forceCtx.font = '600 12px "JetBrains Mono", monospace';
+    forceCtx.textAlign = 'center';
+    forceCtx.fillText('Gebalanseer — resultante = 0 N', cx, boxMidY + 65);
+  }
+
+  // gentle animation nudge to suggest motion direction when unbalanced
+  if (Math.abs(resultant) > 0.5) {
+    boxOffset += resultant > 0 ? 0.3 : -0.3;
+    const limit = W * 0.15;
+    if (boxOffset > limit) boxOffset = limit;
+    if (boxOffset < -limit) boxOffset = -limit;
+  }
+}
+
+function animateForce() {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    drawForce();
+  }
+  requestAnimationFrame(animateForce);
+}
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    resizeForce();
+    drawForce();
+  }
+});
+
+resizeForce();
+updateForces();
+animateForce();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Wat is die eenheid wat gebruik word om krag te meet?',
+    opts: ['Kilogram (kg)', 'Newton (N)', 'Meter (m)', 'Joule (J)'],
+    ans: 1,
+    exp: 'Krag word in newton (N) gemeet, vernoem na Sir Isaac Newton. Massa word in kilogram gemeet; dit is verskillende groothede.'
+  },
+  {
+    text: '\'n Yskasmagneet trek \'n metaaldeur aan sonder om dit eers aan te raak. Dit is \'n voorbeeld van:',
+    opts: ['\'n Kontakkrag (wrywing)', '\'n Kontakkrag (spanning)', '\'n Nie-kontakkrag (magnetiese krag)', '\'n Nie-kontakkrag (swaartekrag)'],
+    ans: 2,
+    exp: 'Magnetiese krag is \'n nie-kontakkrag — dit kan tussen twee voorwerpe werk (soos \'n magneet en \'n metaaldeur) selfs voordat hulle raak.'
+  },
+  {
+    text: 'Watter een van die volgende is \'n kontakkrag?',
+    opts: ['Swaartekrag', 'Magnetiese krag', 'Wrywing', 'Elektrostatiese krag'],
+    ans: 2,
+    exp: 'Wrywing vereis dat twee oppervlaktes aanmekaar raak, dus is dit \'n kontakkrag. Swaartekrag, magnetiese krag en elektrostatiese krag is almal nie-kontakkragte.'
+  },
+  {
+    text: '\'n Krat het twee kragte wat langs dieselfde lyn daarop inwerk: 60 N na regs en 60 N na links. Wat is die resulterende krag, en wat gebeur met die krat?',
+    opts: [
+      '120 N na regs; die krat versnel na regs',
+      '0 N; die kragte is gebalanseer en die krat se beweging verander nie',
+      '60 N na links; die krat versnel na links',
+      'Die krat hou outomaties heeltemal op om te beweeg'
+    ],
+    ans: 1,
+    exp: 'Gelyke kragte wat in teenoorgestelde rigtings inwerk, hef mekaar op, wat \'n resultante van 0 N gee. Wanneer kragte gebalanseer is, is daar geen verandering in die voorwerp se beweging nie — dit bly stil of beweeg voort teen \'n konstante spoed.'
+  },
+  {
+    text: '\'n Trollie word gestoot met \'n toegepaste krag van 45 N na regs, terwyl wrywing met 15 N na links inwerk. Wat is die resulterende krag, en wat gebeur met die trollie?',
+    opts: [
+      '30 N na regs; die trollie versnel na regs',
+      '60 N na regs; die trollie versnel na regs',
+      '30 N na links; die trollie versnel na links',
+      '0 N; die trollie bly stil'
+    ],
+    ans: 0,
+    exp: 'Resulterende krag = 45 N − 15 N = 30 N na regs (aangesien die toegepaste krag groter is). Hierdie ongebalanseerde krag laat die trollie versnel in die rigting van die resultante — na regs.'
+  },
+  {
+    text: 'Waarom word \'n krag as \'n vektorgrootheid beskou?',
+    opts: [
+      'Omdat dit slegs met \'n spesiale instrument gemeet kan word',
+      'Omdat dit sowel grootte as rigting het',
+      'Omdat dit nooit met tyd verander nie',
+      'Omdat dit slegs tussen voorwerpe wat raak, voorkom'
+    ],
+    ans: 1,
+    exp: '\'n Vektorgrootheid het sowel grootte as rigting. Krag is \'n vektor omdat ons moet aandui hoe groot dit is én in watter rigting dit werk — dis waarom kragte as pyle voorgestel word.'
+  },
+  {
+    text: '\'n Boks van 5 kg rus op \'n tafel (gebruik g = 9.8 N/kg vir gewig). \'n Leerder druk dan boonop met \'n ekstra krag van 10 N op die boks af. Wat moet die normaalkrag van die tafel nou wees om die boks stil te hou, en waarom?',
+    opts: [
+      '49 N, omdat afdruk nie die normaalkrag beïnvloed nie',
+      '59 N, omdat die normaalkrag die TOTALE afwaartse krag moet balanseer — die boks se gewig plus die toegepaste stoot',
+      '10 N, omdat slegs die stootkrag gebalanseer hoef te word',
+      '39 N, omdat die toegepaste krag die gewig verminder'
+    ],
+    ans: 1,
+    exp: 'Gewig = m × g = 5 × 9.8 = 49 N afwaarts. As die leerder se 10 N stoot (ook afwaarts) bygevoeg word, word die totale afwaartse krag 49 + 10 = 59 N. Vir die boks om stil te bly, moet die resulterende krag nul wees, dus moet die tafel se normaalkrag hierdie totaal presies balanseer: 59 N opwaarts.'
+  },
+  {
+    text: '\'n Valskermspringer met \'n massa van 80 kg val (gebruik g = 9.8 N/kg). Op \'n sekere punt groei die lugweerstand (\'n kontakkrag van die lug) totdat dit presies gelyk is aan die valskermspringer se gewig (\'n nie-kontakkrag). Wat is die grootte van die lugweerstand op hierdie punt, en wat gebeur met die valskermspringer se beweging?',
+    opts: [
+      '392 N; die valskermspringer word al hoe vinniger',
+      '784 N; die kragte is gebalanseer, sodat die reeds-vallende valskermspringer nou teen \'n konstante spoed beweeg in plaas daarvan om voort te gaan versnel',
+      '784 N; die valskermspringer hou onmiddellik in die lug op',
+      '8 N; die valskermspringer begin opwaarts sweef'
+    ],
+    ans: 1,
+    exp: 'Gewig = m × g = 80 × 9.8 = 784 N. Sodra die lugweerstand ook 784 N bereik, is die kragte gebalanseer (resultante = 0 N). Gebalanseerde kragte beteken NIE dat \'n voorwerp ophou nie — \'n voorwerp wat reeds beweeg, beweeg eenvoudig voort teen \'n konstante spoed wanneer die kragte daarop gebalanseer is. Dis waarom vallende valskermspringers \'n gelykblywende spoed bereik in plaas daarvan om vir ewig te bly versnel.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Hou vol — gaan die les weer deur!' : score <= 4 ? 'Goeie poging — kyk na die verduidelikings.' : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

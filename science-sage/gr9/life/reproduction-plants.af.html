@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voortplanting by Plante — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    .info-panel{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:120px}
+    .info-panel-title{font-weight:800;font-size:15px;color:#fcd34d;margin-bottom:6px}
+    .info-panel-text{font-size:13px;color:rgba(210,218,245,.75);line-height:1.7}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Lewe en Lewenswetenskappe</span>
+  <span id="mlLangToggle"></span>
+  <a class="nav-back" href="../index.html">&#8592; Graad 9</a>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Lewe en Lewenswetenskappe · Les 2</div>
+  <h1 class="lesson-title">Voortplanting by Plante</h1>
+  <p class="lesson-sub">Verken hoe plante geslagtelik voortplant (deur blomme, bestuiwing en bevrugting) en ongeslagtelik (deur vegetatiewe voortplanting), en hoe sade versprei word.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">&#128214; Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#9998; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#128203; Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Ongeslagtelike Voortplanting by Plante</h2>
+    <p>Ongeslagtelike voortplanting behels net <strong style="color:#fcd34d">een ouer</strong> en lewer nageslag wat geneties identies aan die ouer is — hulle word <em>klone</em> genoem. Geen gamete is betrokke nie. By plante word ongeslagtelike voortplanting ook <em>vegetatiewe voortplanting</em> genoem, omdat dit vegetatiewe (nie-voortplantings-) plantdele behels.</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Metode</th><th>Plantdeel Gebruik</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td>Uitloper (stolon)</td><td>Horisontale stam langs die grond</td><td>Aarbei, spinnekopplant</td></tr>
+        <tr><td>Bol</td><td>Ondergrondse vlesige blaarbasisse wat voedsel stoor</td><td>Ui, tulp, affodil</td></tr>
+        <tr><td>Knol</td><td>Geswelde ondergrondse stam wat voedsel stoor</td><td>Aartappel</td></tr>
+        <tr><td>Wortelstok</td><td>Horisontale ondergrondse stam</td><td>Gemmer, iris, kweekgras</td></tr>
+        <tr><td>Steggie</td><td>Stam/blaar wat afgesny en in grond gewortel word</td><td>Geranium, roos</td></tr>
+        <tr><td>Enting</td><td>Een plant aan die wortelstok van 'n ander geheg</td><td>Appel, roos, wingerdstok</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Voordele van ongeslagtelike voortplanting:</strong> Vinnig; geen maat of bestuiwer nodig nie; alle nageslag oorleef (geen saadsterfte nie); behou wenslike eienskappe van die ouer.<br><br>
+      <strong>Nadele:</strong> Geen genetiese variasie nie — die hele populasie is kwesbaar vir dieselfde siekte of omgewingsverandering; kan nie oor generasies aanpas nie.
+    </div>
+
+    <h2>Geslagtelike Voortplanting by Plante</h2>
+    <p>Geslagtelike voortplanting behels die samesmelting van <strong style="color:#fcd34d">manlike en vroulike gamete</strong>. Die manlike gameet is in <em>stuifmeel</em> vervat; die vroulike gameet is die <em>eiersel</em> binne die saadknop. Omdat gamete van verskillende ouers saamsmelt, is die nageslag geneties uiteenlopend — dit is die grondstof vir evolusie en aanpassing.</p>
+
+    <h2>Struktuur van 'n Blom</h2>
+    <p>Blomme is die voortplantingsorgane van blomplante (angiosperme). 'n Tipiese blom het vier kranse van dele:</p>
+    <ul>
+      <li><strong>Kelkblare</strong> (kelk): buitenste krans; gewoonlik groen; beskerm die ontwikkelende knop voordat dit oopgaan.</li>
+      <li><strong>Kroonblare</strong> (kroon): dikwels helder gekleur; lok insekbestuiwers; kan nektargidse hê (UV-patrone wat vir bye sigbaar is).</li>
+      <li><strong>Meeldraad</strong> (manlike deel): bestaan uit die <em>helmknop</em> (produseer stuifmeel) en die <em>helmdraad</em> (steel wat die helmknop ondersteun).</li>
+      <li><strong>Vrugblaar / Stamper</strong> (vroulike deel): bestaan uit die <em>stempel</em> (ontvang stuifmeel; taai oppervlak), die <em>styl</em> (buis wat die stempel met die vrugbeginsel verbind), en die <em>vrugbeginsel</em> (bevat een of meer saadknoppe, elk met 'n eiersel).</li>
+    </ul>
+    <div class="key-fact">'n Blom met beide meeldrade en vrugblare word 'n volmaakte (biseksuele) blom genoem. Sommige blomme is eenslagtig — hulle dra slegs manlike of slegs vroulike dele.</div>
+
+    <h2>Bestuiwing</h2>
+    <p><strong>Bestuiwing</strong> is die oordrag van stuifmeelkorrels van die <em>helmknop</em> van een blom na die <em>stempel</em> van 'n ander (kruisbestuiwing) of na dieselfde blom (selfbestuiwing). Twee hoofagente dra stuifmeel:</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Kenmerk</th><th>Insekbestuifde Blomme</th><th>Windbestuifde Blomme</th></tr></thead>
+      <tbody>
+        <tr><td>Kroonblare</td><td>Groot, helder gekleur, geurig</td><td>Klein of afwesig, dofgekleur</td></tr>
+        <tr><td>Nektariums</td><td>Teenwoordig — produseer nektar as beloning</td><td>Afwesig</td></tr>
+        <tr><td>Stuifmeel</td><td>Groot, taai, stekelrig — kleef aan insekte</td><td>Baie klein, lig, glad — maklik lugdraend</td></tr>
+        <tr><td>Stempel</td><td>Klein, taai, binne-in die blom</td><td>Groot, verig, hang buite om stuifmeel te vang</td></tr>
+        <tr><td>Meeldrade</td><td>Binne-in die blom, beskut</td><td>Lang helmdrade wat buite die blom hang</td></tr>
+        <tr><td>Voorbeelde</td><td>Rose, sonneblomme, laventel</td><td>Grasse, mielies, denneboom</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Bevrugting</h2>
+    <p>Nadat 'n stuifmeelkorrel op 'n verenigbare stempel land, <em>ontkiem</em> dit: 'n <strong style="color:#fcd34d">stuifmeelbuis</strong> groei af deur die styl, dring die vrugbeginsel binne, en bereik die saadknop. Die <em>manlike kern</em> beweeg af deur die stuifmeelbuis en smelt saam met die <em>eiersel</em> binne die saadknop. Hierdie samesmelting is <strong>bevrugting</strong>.</p>
+    <div class="formula">Stuifmeelkorrel land op stempel → stuifmeelbuis groei → manlike kern beweeg af deur die buis → bevrug die eiersel → sigoot vorm</div>
+    <p>Die <em>sigoot</em> (bevrugte eiersel) deel herhaaldelik deur mitose om 'n <em>embrio</em> te vorm. Die saadknop ontwikkel tot 'n <em>saad</em> (wat die embrio en 'n voedselvoorraad bevat), en die wand van die vrugbeginsel ontwikkel tot die <em>vrug</em>.</p>
+
+    <h2>Saadverspreiding</h2>
+    <p>Sade moet versprei word (weg van die ouerplant af versprei) om kompetisie vir lig, water en voedingstowwe te verminder, en om nuwe gebiede te koloniseer. Daar is vier hoofmetodes:</p>
+    <ul>
+      <li><strong>Windverspreiding:</strong> sade is lig met aanpassings soos valskerms (perdeblom-pappus), vlerke (esdoring-/plataansaadjie), of is so klein dat hulle wegwaai (orgideesade).</li>
+      <li><strong>Waterverspreiding:</strong> sade het 'n waterdigte, drywende buitenste bekleding. Voorbeeld: klapper (dryf maande lank oor oseane).</li>
+      <li><strong>Dierverspreiding:</strong>
+        <ul>
+          <li><em>Ekstern:</em> sade/vrugte met hakies of weerhake wat aan pels of klere vasklou (kletsgras, takhare/knapsekêrels).</li>
+          <li><em>Intern:</em> vlesige vrugte wat deur diere geëet word; sade gaan onbeskadig deur die spysverteringskanaal en word elders in mis afgesit (bessies, vye, wilde vrugte).</li>
+        </ul>
+      </li>
+      <li><strong>Selfverspreiding (ontploffingsmeganismes):</strong> die vrugwand droog uit, skep spanning, en bars oop, en slinger sade weg (Impatiens/kruie-nie-raak-my-nie, spuitkomkommer, ertjies).</li>
+    </ul>
+
+    <h2>Ontkieming</h2>
+    <p>'n Saad is dormant — dit bevat 'n embrio en 'n voedselvoorraad (saadlobbe), maar sal nie groei totdat toestande reg is nie. Drie toestande is nodig vir ontkieming:</p>
+    <ul>
+      <li><strong>Water:</strong> aktiveer ensieme; verwater die saad; nodig vir metaboliese reaksies.</li>
+      <li><strong>Warmte (geskikte temperatuur):</strong> ensieme werk vinnigste by optimale temperature (~20–30 °C vir die meeste sade).</li>
+      <li><strong>Suurstof:</strong> nodig vir aërobiese respirasie om energie vir groei te voorsien.</li>
+    </ul>
+    <div class="callout"><strong>Let wel:</strong> Lig is NIE vir ontkieming self nodig nie (alhoewel dit later nodig is vir fotosintese sodra die saailing opkom en sy voedselvoorraad opraak).</div>
+
+    <h2>Vergelyking van Ongeslagtelike en Geslagtelike Voortplanting</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Kenmerk</th><th>Ongeslagtelik</th><th>Geslagtelik</th></tr></thead>
+      <tbody>
+        <tr><td>Aantal ouers</td><td>1</td><td>2 (gewoonlik)</td></tr>
+        <tr><td>Genetiese variasie</td><td>Geen (klone)</td><td>Ja — nageslag is uniek</td></tr>
+        <tr><td>Spoed</td><td>Vinnig</td><td>Stadiger</td></tr>
+        <tr><td>Gamete betrokke</td><td>Nee</td><td>Ja (stuifmeel + eiersel)</td></tr>
+        <tr><td>Aanpasbaarheid</td><td>Laag — kwesbaar vir siektes</td><td>Hoog — kan by verandering aanpas</td></tr>
+        <tr><td>Energiekoste</td><td>Laag</td><td>Hoog (blomme, nektar, vrugte)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Blomanatomie- en Bevrugtingsverkenner</h3>
+      <canvas id="flowerCanvas" height="460"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Modus</div>
+        <button class="mode-btn active" id="btnAnatomy" onclick="setMode('anatomy',this)">Anatomie</button>
+        <button class="mode-btn" id="btnFert" onclick="setMode('fertilisation',this)">Bevrugting</button>
+        <div style="margin-top:14px">
+          <div class="ctrl-label">Klik op 'n deel om te leer</div>
+          <div id="partButtons" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Gekose Deel</div>
+        <div class="info-panel">
+          <div class="info-panel-title" id="partTitle">Kies 'n deel</div>
+          <div class="info-panel-text" id="partText">Klik op enige blomdeel of die knoppies links om oor sy struktuur en funksie te leer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:800;font-size:16px;color:#fff">Vasvra Voltooi!</div><div style="font-size:13px;color:var(--muted)">Hersien jou antwoorde hieronder.</div></div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#128438; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae volledig. Gebruik diagramme waar vereis. Hierdie vrae is CAPS-belyn vir Graad 9 Natuurwetenskappe.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Teken en benoem 'n diagram van 'n tipiese blom wat die volgende dele toon: kelkblaar, kroonblaar, helmknop, helmdraad, stempel, styl, vrugbeginsel en saadknop. Skryf langs elke etiket die funksie van daardie deel neer.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Vergelyk windbestuiwing en insekbestuiwing deur die tabel hieronder te voltooi. Beskryf vir elke kenmerk hoe dit tussen die twee tipes blomme verskil.<br><br>
+      Kenmerke om te vergelyk: kroonblaargrootte en -kleur, stuifmeeleienskappe, stempelstruktuur, teenwoordigheid van nektar, voorbeeldplant.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Beskryf die proses van bevrugting in 'n blomplant. In jou antwoord:<br>
+      a) Verduidelik wat gebeur wanneer die stuifmeelkorrel op die stempel land.<br>
+      b) Beskryf hoe die manlike gameet die eiersel bereik.<br>
+      c) Noem watter struktuur na bevrugting vorm en waartoe dit ontwikkel.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">a) Noem vir elk van die volgende plante die metode van ongeslagtelike voortplanting wat gebruik word en die plantstruktuur betrokke:<br>
+      &nbsp;&nbsp;&nbsp;(i) Aarbei &nbsp;&nbsp; (ii) Aartappel &nbsp;&nbsp; (iii) Ui &nbsp;&nbsp; (iv) Gemmer<br><br>
+      b) Noem EEN voordeel en EEN nadeel van ongeslagtelike voortplanting in vergelyking met geslagtelike voortplanting.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">'n Klapper val van 'n palmboom in 'n rivier en word baie kilometers stroomaf gedra voordat dit op 'n strand uitspoel waar dit ontkiem.<br><br>
+      a) Watter metode van saadverspreiding word hier gedemonstreer?<br>
+      b) Gee TWEE strukturele aanpassings van die klapper wat hierdie metode van verspreiding moontlik maak.<br>
+      c) Noem die DRIE toestande wat die klappersaad vir ontkieming benodig. Verduidelik vir elkeen waarom dit nodig is.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6</div>
+      <div class="wb-qtext">'n Leerder plant 50 boonsade by elk van vyf verskillende temperature, terwyl water en suurstof konstant gehou word, en tel hoeveel sade na 7 dae ontkiem het:<br><br>
+      <table class="symbols-table">
+        <thead><tr><th>Temperatuur (°C)</th><th>Sade wat ontkiem het (uit 50)</th></tr></thead>
+        <tbody>
+          <tr><td>5</td><td>0</td></tr>
+          <tr><td>15</td><td>18</td></tr>
+          <tr><td>25</td><td>47</td></tr>
+          <tr><td>35</td><td>32</td></tr>
+          <tr><td>45</td><td>3</td></tr>
+        </tbody>
+      </table>
+      a) Teken 'n lyngrafiek van hierdie data, met temperatuur (°C) op die x-as en aantal sade wat ontkiem het op die y-as.<br><br>
+      b) Bereken die ontkiemingspersentasie by 25°C.<br><br>
+      c) Beskryf, in woorde, die tendens wat deur die grafiek getoon word soos temperatuur van 5°C tot 45°C toeneem.<br><br>
+      d) Stel voor waarom ontkieming skerp afgeneem het by 45°C, alhoewel water en suurstof nie beperkende faktore was nie.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') initSim();
+}
+
+// ── FLOWER DATA ───────────────────────────────────────────────────────────────
+const parts = {
+  sepal:  { title:'Kelkblaar', text:'Kelkblare is die buitenste, gewoonlik groen, blaaragtige strukture. Voordat die blom oopgaan, omsluit en beskerm kelkblare die ontwikkelende knop. Saam vorm hulle die kelk.', col:'#4ade80' },
+  petal:  { title:'Kroonblaar', text:'Kroonblare is dikwels helder gekleur en geurig om insekbestuiwers te lok. Hulle kan nektargidse hê — UV-sigbare patrone wat insekte na nektar lei. Saam vorm hulle die kroon.', col:'#f472b6' },
+  anther: { title:'Helmknop', text:'Die helmknop is die punt van die meeldraad (manlike voortplantingsorgaan). Dit bevat stuifmeelsakke waarin stuifmeelkorrels (wat manlike gamete bevat) deur meiose geproduseer word.', col:'#fbbf24' },
+  filament:{ title:'Helmdraad', text:'Die helmdraad is die dun steel van die meeldraad. Dit posisioneer die helmknop sodat stuifmeel deur insekte opgetel of deur wind versprei kan word.', col:'#a3e635' },
+  stigma: { title:'Stempel', text:'Die stempel is die boonste deel van die vrugblaar (vroulike deel). Sy taai of verige oppervlak vang stuifmeelkorrels. Dit moet stuifmeel van die korrekte spesie ontvang sodat bevrugting kan plaasvind.', col:'#c084fc' },
+  style:  { title:'Styl', text:'Die styl is die steel wat die stempel met die vrugbeginsel verbind. Na bestuiwing groei die stuifmeelbuis deur die styl om die saadknop te bereik.', col:'#818cf8' },
+  ovary:  { title:'Vrugbeginsel', text:'Die vrugbeginsel is die verdikte basis van die vrugblaar. Dit bevat een of meer saadknoppe. Na bevrugting ontwikkel die wand van die vrugbeginsel tot die vrug wat die sade beskerm en versprei.', col:'#fb923c' },
+  ovule:  { title:'Saadknop', text:"Die saadknop lê binne die vrugbeginsel en bevat die vroulike gameet (eiersel). Na bevrugting deur die manlike kern ontwikkel die saadknop tot 'n saad wat die embrio en 'n voedselvoorraad bevat.", col:'#f87171' },
+};
+
+let simMode = 'anatomy';
+let selectedPart = null;
+let fertProgress = 0;
+let fertAnim = null;
+let simInit = false;
+
+function setMode(mode, btn) {
+  simMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (mode === 'fertilisation') {
+    selectedPart = null;
+    fertProgress = 0;
+    startFertAnim();
+  } else {
+    if (fertAnim) { cancelAnimationFrame(fertAnim); fertAnim = null; }
+    fertProgress = 0;
+    drawFlower();
+  }
+}
+
+function selectPart(key) {
+  selectedPart = key;
+  document.getElementById('partTitle').textContent = parts[key].title;
+  document.getElementById('partText').textContent = parts[key].text;
+  document.querySelectorAll('#partButtons .mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+  if (fertAnim) { cancelAnimationFrame(fertAnim); fertAnim = null; }
+  drawFlower();
+}
+
+function buildPartButtons() {
+  const wrap = document.getElementById('partButtons');
+  wrap.innerHTML = '';
+  Object.keys(parts).forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'mode-btn';
+    b.dataset.key = k;
+    b.textContent = parts[k].title;
+    b.onclick = () => selectPart(k);
+    wrap.appendChild(b);
+  });
+}
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+const H = 460;
+let ctx2;
+
+function initSim() {
+  simInit = true;
+  buildPartButtons();
+  drawFlower();
+}
+
+function getCanvas() { return document.getElementById('flowerCanvas'); }
+
+function setupCanvas() {
+  const canvas = getCanvas();
+  const dpr = window.devicePixelRatio || 1;
+  const logicalW = canvas.offsetWidth || 640;
+  canvas.width = logicalW * dpr;
+  canvas.height = H * dpr;
+  ctx2 = canvas.getContext('2d');
+  ctx2.setTransform(1, 0, 0, 1, 0, 0);
+  ctx2.scale(dpr, dpr);
+  return { ctx: ctx2, W: logicalW, H };
+}
+
+function drawFlower() {
+  const { ctx, W } = setupCanvas();
+  ctx.clearRect(0, 0, W, H);
+
+  // — Layout constants —
+  const cx = W * 0.42;
+  const cy = H * 0.46;
+  const petalR = 68;
+  const petalLen = 52;
+
+  function highlight(key) {
+    if (simMode === 'anatomy' && selectedPart === key) return parts[key].col;
+    return null;
+  }
+  function partFill(key, defaultFill) {
+    const h = highlight(key);
+    return h || defaultFill;
+  }
+  function partAlpha(key) {
+    if (simMode === 'anatomy' && selectedPart && selectedPart !== key) return 0.35;
+    return 1;
+  }
+
+  // — Stem —
+  ctx.save();
+  ctx.globalAlpha = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + 90);
+  ctx.lineTo(cx, cy + 180);
+  ctx.strokeStyle = '#4ade80';
+  ctx.lineWidth = 6;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // — Petals —
+  const petalCount = 6;
+  for (let i = 0; i < petalCount; i++) {
+    const angle = (i / petalCount) * Math.PI * 2 - Math.PI / 2;
+    const px = cx + Math.cos(angle) * petalR;
+    const py = cy + Math.sin(angle) * petalR;
+    ctx.save();
+    ctx.globalAlpha = partAlpha('petal');
+    ctx.beginPath();
+    ctx.ellipse(px, py, 24, petalLen, angle, 0, Math.PI * 2);
+    ctx.fillStyle = partFill('petal', '#f472b6');
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // — Sepals —
+  const sepalCount = 6;
+  for (let i = 0; i < sepalCount; i++) {
+    const angle = (i / sepalCount) * Math.PI * 2;
+    const sx = cx + Math.cos(angle) * (petalR - 16);
+    const sy = cy + Math.sin(angle) * (petalR - 16);
+    ctx.save();
+    ctx.globalAlpha = partAlpha('sepal') * 0.7;
+    ctx.beginPath();
+    ctx.ellipse(sx, sy, 12, 36, angle, 0, Math.PI * 2);
+    ctx.fillStyle = partFill('sepal', '#4ade80');
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // — Receptacle (centre) —
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 30, 0, Math.PI * 2);
+  ctx.fillStyle = '#1e293b';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Carpel: ovary, style, stigma —
+  // Ovary (oval in centre)
+  ctx.save();
+  ctx.globalAlpha = partAlpha('ovary');
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 10, 18, 22, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partFill('ovary', '#fb923c');
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // Ovule inside ovary
+  ctx.save();
+  ctx.globalAlpha = partAlpha('ovule');
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 12, 7, 9, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partFill('ovule', '#f87171');
+  ctx.fill();
+  ctx.restore();
+
+  // Style
+  ctx.save();
+  ctx.globalAlpha = partAlpha('style');
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 12);
+  ctx.lineTo(cx, cy - 38);
+  ctx.strokeStyle = partFill('style', '#818cf8');
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // Stigma
+  ctx.save();
+  ctx.globalAlpha = partAlpha('stigma');
+  ctx.beginPath();
+  ctx.ellipse(cx, cy - 44, 10, 6, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partFill('stigma', '#c084fc');
+  ctx.fill();
+  ctx.restore();
+
+  // — Stamens (filament + anther) —
+  const stamenAngles = [Math.PI * 0.2, Math.PI * 0.5, Math.PI * 0.8, Math.PI * 1.2, Math.PI * 1.5, Math.PI * 1.8];
+  stamenAngles.forEach(angle => {
+    const fx = cx + Math.cos(angle) * 12;
+    const fy = cy + Math.sin(angle) * 12;
+    const ax = cx + Math.cos(angle) * 26;
+    const ay = cy + Math.sin(angle) * 26;
+
+    ctx.save();
+    ctx.globalAlpha = partAlpha('filament');
+    ctx.beginPath();
+    ctx.moveTo(fx, fy);
+    ctx.lineTo(ax, ay);
+    ctx.strokeStyle = partFill('filament', '#a3e635');
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.globalAlpha = partAlpha('anther');
+    ctx.beginPath();
+    ctx.ellipse(ax, ay, 5, 8, angle + Math.PI / 2, 0, Math.PI * 2);
+    ctx.fillStyle = partFill('anther', '#fbbf24');
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // — Labels in anatomy mode —
+  if (simMode === 'anatomy') {
+    drawLabel(ctx, cx + petalR + 30, cy - 40, 'Kroonblaar', parts['petal'].col, selectedPart === 'petal');
+    drawLabel(ctx, cx + petalR + 20, cy + 40, 'Kelkblaar', parts['sepal'].col, selectedPart === 'sepal');
+    drawLabel(ctx, cx + 52, cy - 46, 'Stempel', parts['stigma'].col, selectedPart === 'stigma');
+    drawLabel(ctx, cx + 52, cy - 28, 'Styl', parts['style'].col, selectedPart === 'style');
+    drawLabel(ctx, cx + 52, cy + 8, 'Vrugbeginsel', parts['ovary'].col, selectedPart === 'ovary');
+    drawLabel(ctx, cx + 52, cy + 24, 'Saadknop', parts['ovule'].col, selectedPart === 'ovule');
+    drawLabel(ctx, cx - 68, cy - 26, 'Helmknop', parts['anther'].col, selectedPart === 'anther');
+    drawLabel(ctx, cx - 68, cy - 10, 'Helmdraad', parts['filament'].col, selectedPart === 'filament');
+  }
+
+  // — Fertilisation animation —
+  if (simMode === 'fertilisation') {
+    drawFertilisationFrame(ctx, W, fertProgress);
+  }
+}
+
+function drawLabel(ctx, x, y, text, color, active) {
+  ctx.save();
+  ctx.font = `${active ? '700' : '600'} 11px "Cabinet Grotesk", sans-serif`;
+  ctx.fillStyle = active ? color : 'rgba(210,218,245,0.55)';
+  ctx.textAlign = 'left';
+  if (x < 200) ctx.textAlign = 'right';
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function drawFertilisationFrame(ctx, W, progress) {
+  const cx = W * 0.42;
+  const cy = H * 0.46;
+
+  // Pollen grain on stigma
+  const pollenX = cx + 18;
+  const pollenY = cy - 48;
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(pollenX, pollenY, 7, 0, Math.PI * 2);
+  ctx.fillStyle = '#fbbf24';
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 8px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('S', pollenX, pollenY + 3);
+  ctx.restore();
+
+  // Pollen tube growing down through style toward ovule
+  if (progress > 0) {
+    const tubeStart = { x: pollenX, y: pollenY + 7 };
+    const tubeEnd   = { x: cx, y: cy + 12 };
+    const currentY = tubeStart.y + (tubeEnd.y - tubeStart.y) * progress;
+    const currentX = tubeStart.x + (tubeEnd.x - tubeStart.x) * progress;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(tubeStart.x, tubeStart.y);
+    ctx.lineTo(currentX, currentY);
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([4, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Male nucleus dot
+    ctx.beginPath();
+    ctx.arc(currentX, currentY, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#fde68a';
+    ctx.fill();
+    ctx.restore();
+
+    // Label stage
+    const labelX = cx + 90;
+    ctx.save();
+    ctx.font = '600 12px "Cabinet Grotesk",sans-serif';
+    ctx.fillStyle = '#fcd34d';
+    ctx.textAlign = 'left';
+    if (progress < 0.3) {
+      ctx.fillText('1. Stuifmeel land op die stempel', labelX, cy - 60);
+    } else if (progress < 0.7) {
+      ctx.fillText('2. Stuifmeelbuis groei', labelX, cy - 60);
+      ctx.fillStyle = 'rgba(210,218,245,0.6)';
+      ctx.font = '500 11px "Cabinet Grotesk",sans-serif';
+      ctx.fillText('Manlike kern beweeg af', labelX, cy - 44);
+      ctx.fillText('deur die styl', labelX, cy - 30);
+    } else {
+      ctx.fillText('3. Bevrugting vind plaas', labelX, cy - 60);
+      ctx.fillStyle = 'rgba(210,218,245,0.6)';
+      ctx.font = '500 11px "Cabinet Grotesk",sans-serif';
+      ctx.fillText('Manlike kern smelt saam met', labelX, cy - 44);
+      ctx.fillText('die eiersel → sigoot vorm', labelX, cy - 30);
+    }
+    ctx.restore();
+
+    // Flash on ovule at completion
+    if (progress >= 1) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy + 12, 12, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(251,191,36,0.3)';
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+function startFertAnim() {
+  fertProgress = 0;
+  function step() {
+    fertProgress += 0.005;
+    if (fertProgress > 1.2) fertProgress = 0;
+    drawFlower();
+    fertAnim = requestAnimationFrame(step);
+  }
+  if (fertAnim) cancelAnimationFrame(fertAnim);
+  fertAnim = requestAnimationFrame(step);
+}
+
+window.addEventListener('resize', () => { if (simInit) drawFlower(); });
+
+// ── PRACTICE ──────────────────────────────────────────────────────────────────
+const questions = [
+  {
+    q: "Watter deel van die blom bevat die vroulike gameet (eiersel)?",
+    opts: ["Helmknop", "Helmdraad", "Stempel", "Saadknop"],
+    ans: 3,
+    fb: "Die saadknop, wat binne die vrugbeginsel geleë is, bevat die eiersel (vroulike gameet). Na bevrugting deur die manlike kern van die stuifmeel, ontwikkel die saadknop tot 'n saad."
+  },
+  {
+    q: "'n Blom het klein, dof gekleurde kroonblare, geen nektar nie, baie ligte en gladde stuifmeel, en groot verige stempels. Op watter tipe bestuiwing steun hierdie blom?",
+    opts: ["Insekbestuiwing", "Windbestuiwing", "Waterbestuiwing", "Selfbestuiwing"],
+    ans: 1,
+    fb: "Al hierdie kenmerke is aanpassings vir windbestuiwing: dof gekleurde kroonblare (geen behoefte om insekte te lok nie), geen nektar (geen beloning nodig nie), ligte gladde stuifmeel (maklik deur die lug gedra), en groot verige stempels (om lugdraende stuifmeel te vang). Grasse en mielies is klassieke voorbeelde."
+  },
+  {
+    q: "Wat doen die stuifmeelbuis tydens bevrugting in 'n blomplant?",
+    opts: [
+      "Dit dra die vroulike gameet op na die stempel",
+      "Dit groei van die stempel deur die styl om die manlike kern na die saadknop te lewer",
+      "Dit absorbeer water uit die grond om die embrio te voed",
+      "Dit verhoed dat verskeie stuifmeelkorrels dieselfde stempel bereik"
+    ],
+    ans: 1,
+    fb: "Nadat 'n stuifmeelkorrel op die stempel ontkiem, groei dit 'n stuifmeelbuis afwaarts deur die styl in die vrugbeginsel in. Die manlike kern beweeg binne hierdie buis totdat dit die saadknop bereik, waar dit met die eiersel saamsmelt om 'n sigoot te vorm."
+  },
+  {
+    q: "'n Aarbeiplant produseer uitlopers (stolone) wat horisontaal groei en tot nuwe plante ontwikkel. Dit is 'n voorbeeld van:",
+    opts: [
+      "Geslagtelike voortplanting — omdat dit twee aarbeiplante behels",
+      "Ongeslagtelike voortplanting — omdat dit geneties identiese nageslag van een ouer produseer",
+      "Bestuiwing — omdat stuifmeel tussen aarbeiplante oorgedra word",
+      "Ontkieming — omdat die nuwe plante uit sade groei"
+    ],
+    ans: 1,
+    fb: "Uitlopers is 'n vorm van vegetatiewe (ongeslagtelike) voortplanting. Die nuwe plante wat gevorm word, is geneties identies aan die ouerplant (klone), en word van 'n enkele ouer geproduseer sonder dat gamete betrokke is."
+  },
+  {
+    q: "'n Perdeblomsaad het 'n verige \"valskerm\" daaraan geheg. Watter metode van saadverspreiding verteenwoordig dit, en wat is die voordeel van hierdie aanpassing?",
+    opts: [
+      "Waterverspreiding; die saad dryf na verafgeleë kuste",
+      "Dierverspreiding (ekstern); die valskerm haak aan dierpels vas",
+      "Windverspreiding; die valskerm hou die saad in die lug sodat dit ver van die ouerplant af kan beweeg",
+      "Ontploffingsverspreiding; die valskerm laat die saadpeul oopbars"
+    ],
+    ans: 2,
+    fb: "Die verige pappus van 'n perdeblom is 'n windverspreidingsaanpassing. Dit werk soos 'n valskerm en laat lugstrome die piepklein saad ver van die ouerplant af dra. Dit verminder kompetisie tussen ouer en nageslag vir lig, water en voedingstowwe."
+  },
+  {
+    q: "Watter DRIE toestande word vir saadontkieming vereis?",
+    opts: [
+      "Sonlig, water en warmte",
+      "Water, warmte (geskikte temperatuur) en suurstof",
+      "Grond, sonlig en water",
+      "Koolstofdioksied, warmte en mineraalsoute"
+    ],
+    ans: 1,
+    fb: "Sade benodig water (om ensieme te aktiveer en metabolisme aan te dryf), warmte (ensieme benodig 'n optimale temperatuur), en suurstof (vir aërobiese respirasie om energie vir groei te voorsien). Sonlig is NIE vir ontkieming self nodig nie — dit word eers later vir fotosintese benodig."
+  },
+  {
+    q: "'n Boer verbou Land A heeltemal uit steggies wat van 'n enkele \"hoë-opbrengs\" piesangplant geneem is (ongeslagtelike voortplanting), en Land B uit sade wat deur kruisbestuiwing tussen baie verskillende piesangplante geproduseer is (geslagtelike voortplanting). 'n Nuwe swamsiekte verskyn wat slegs piesangs met een spesifieke genetiese eienskap affekteer. Watter land loop groter risiko om sy hele oes te verloor, en waarom?",
+    opts: [
+      "Land B, omdat geslagtelik-geproduseerde nageslag altyd swakker is as ongeslagtelik-geproduseerde nageslag",
+      "Land A, omdat elke plant 'n geneties identiese kloon is, sodat as een plant vatbaar vir die siekte is, almal ewe vatbaar is",
+      "Geeneen van die lande loop meer risiko nie — albei voortplantingsmetodes produseer altyd ewe weerstandbiedende plante",
+      "Land A, omdat steggies stadiger groei en dus outomaties swakker is"
+    ],
+    ans: 1,
+    fb: "Land A bestaan uit klone van net een ouerplant, sodat elke plant presies dieselfde gene deel — as die siekte daardie genetiese eienskap kan infekteer, kan dit die hele land uitwis. Land B, wat uit sade na kruisbestuiwing gegroei is, bevat genetiese variasie: sommige plante mag gene dra wat hulle weerstandbiedend maak, sodat die siekte minder waarskynlik die hele oes gaan vernietig. Dit is die sleutelnadeel van ongeslagtelike voortplanting — 'n gebrek aan genetiese variasie maak 'n hele populasie kwesbaar vir dieselfde siekte of omgewingsverandering."
+  },
+  {
+    q: "'n Leerder stel vier toetsbuise met identiese boonsade op en teken ontkieming na 5 dae aan: Buis A (water + warmte + geen lig) → het ontkiem; Buis B (geen water + warmte + lig) → het nie ontkiem nie; Buis C (water + koue, ~4°C + lig) → het nie ontkiem nie; Buis D (water + warmte + lig) → het ontkiem. Gebaseer op hierdie data, watter faktor word getoon om NIE vir ontkieming self nodig te wees nie?",
+    opts: [
+      "Water — Buis B het geen water gehad nie en het steeds nie ontkiem nie, so water maak duidelik nie saak nie",
+      "Warmte — Buis C is koud gehou en het misluk, wat bewys dat warmte irrelevant is vir ontkieming",
+      "Lig — sade het ontkiem beide met lig (Buis D) en sonder lig (Buis A), terwyl water en warmte in albei daardie buise teenwoordig was",
+      "Suurstof — geeneen van die buise het vir suurstof gekontroleer nie, so geen gevolgtrekking oor enige faktor kan gemaak word nie"
+    ],
+    ans: 2,
+    fb: "Om buise te vergelyk wat slegs in EEN veranderlike verskil, is die sleutel tot hierdie soort data. Buise A en D het albei water en warmte gehad, maar het in lig verskil — en albei het ontkiem. Dit toon dat lig nie vir ontkieming self nodig is nie. Buise B en C, daarteenoor, het elk of water of warmte kortgekom (met lig teenwoordig) en het nie ontkiem nie, wat bevestig dat water en warmte WEL nodig is. Lig word eers later noodsaaklik, sodra die saailing met fotosintese moet begin."
+  }
+];
+
+let answered = 0, correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, j) =>
+      `<button class="mc-opt" onclick="answer(${i},${j},this)">
+        <span class="opt-letter">${letters[j]}</span>${o}
+      </button>`
+    ).join('');
+    container.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Vraag ${i+1} van ${questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="mc-options">${optsHtml}</div>
+        <div class="feedback" id="fb-${i}"></div>
+      </div>`;
+  });
+}
+
+function answer(qi, selected, btn) {
+  const card = document.getElementById('qcard-' + qi);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  const q = questions[qi];
+  const opts = card.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('fb-' + qi);
+  if (selected === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = '&#10003; Reg! ' + q.fb;
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback show bad';
+    fb.innerHTML = '&#10007; Nie heeltemal reg nie. ' + q.fb;
+  }
+  answered++;
+  if (answered === questions.length) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct + '/' + questions.length;
+  }
+}
+
+buildPractice();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atome en Elektronrangskikking — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+.lesson-header{padding:36px 40px 24px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#fcd34d}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(251,191,36,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+.elem-select{font-family:var(--fm);font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);padding:8px 14px;cursor:pointer;width:100%}
+.elem-select option{background:#0d1225;color:var(--text)}
+.elem-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.ei{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;text-align:center}
+.ei-label{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.ei-val{font-weight:800;font-size:18px;color:#fbbf24;letter-spacing:-0.03em}
+.ei-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Materie en Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Materie en Materiale · Les 1</div>
+  <h1 class="lesson-title">Atome en Elektronrangskikking</h1>
+  <p class="lesson-sub">Verken atoomstruktuur, elektronskille, en hoe die periodieke tabel die elektronkonfigurasie van elke element weerspieël.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:13px;height:13px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="atom" style="width:13px;height:13px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:13px;height:13px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:13px;height:13px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Wat is 'n Atoom?</h2>
+    <p>'n Atoom is die kleinste deeltjie van 'n element wat steeds die chemiese eienskappe van daardie element het. Elke stukkie materie rondom jou — water, lug, rots, jou eie liggaam — bestaan uit atome. Atome is ondenkbaar klein: sowat 100 miljoen atome langs mekaar sou net een sentimeter beslaan.</p>
+    <p>Elke atoom het twee duidelike streke:</p>
+    <ul>
+      <li><strong>Die kern</strong> — 'n digte, positief-gelaaide middelpunt wat <em>protone</em> (positiewe lading) en <em>neutrone</em> (geen lading) bevat.</li>
+      <li><strong>Die elektronwolk</strong> — negatief-gelaaide <em>elektrone</em> wat spesifieke energievlakke (skille) rondom die kern beset.</li>
+    </ul>
+    <div class="callout"><strong>Kernpunt:</strong> Die positiewe lading van die protone in die kern trek die negatiewe elektrone aan en hou hulle in wentelbaan — net soos swaartekrag planete om die son laat wentel.</div>
+
+    <h2>Atoomgetal en Massagetal</h2>
+    <p>Elke element word deur twee fundamentele getalle bepaal:</p>
+    <div class="formula">Atoomgetal (Z) = aantal protone = aantal elektrone (neutrale atoom)</div>
+    <div class="formula">Massagetal (A) = protone + neutrone</div>
+    <div class="formula">Neutrone = Massagetal − Atoomgetal &nbsp;(N = A − Z)</div>
+    <p>Byvoorbeeld, natrium (Na) het Z = 11 en A = 23, dus het dit 11 protone, 11 elektrone, en 23 − 11 = 12 neutrone.</p>
+    <div class="callout"><strong>Isotope</strong> is atome van dieselfde element met dieselfde atoomgetal maar verskillende massagetalle — hulle het ekstra of minder neutrone. Koolstof-12 en Koolstof-14 is albei koolstof, maar C-14 het 2 ekstra neutrone.</div>
+
+    <h2>Elektronskille</h2>
+    <p>Elektrone wentel nie lukraak om die kern nie — hulle beset <em>energieskille</em> (ook energievlakke genoem). Elke skil het 'n maksimum aantal elektrone wat dit kan hou:</p>
+    <ul>
+      <li><strong>Skil 1</strong> (naaste aan die kern): maksimum <strong>2</strong> elektrone</li>
+      <li><strong>Skil 2</strong>: maksimum <strong>8</strong> elektrone</li>
+      <li><strong>Skil 3</strong>: maksimum <strong>8</strong> elektrone (vir elemente 1–20)</li>
+    </ul>
+    <p>Elektrone vul altyd eers die binneste skil voordat hulle na die volgende beweeg. Hierdie rangskikking word geskryf as 'n reeks getalle geskei deur kommas — byvoorbeeld, natrium (11 elektrone) word geskryf as <strong>2,8,1</strong>.</p>
+    <div class="key-fact">Die elektronrangskikking van die eerste 20 elemente volg die 2 → 8 → 8 → 2 vulpatroon.</div>
+
+    <h2>Bohr-diagramme vir die Eerste 20 Elemente</h2>
+    <p>'n Bohr-diagram wys die kern in die middel (gemerk met die aantal protone) en sirkels daaromheen wat elke skil verteenwoordig, met kolletjies of kruisies vir die elektrone in elke skil.</p>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Z</th><th>Element</th><th>Simbool</th><th>Elektronrangskikking</th><th>Valens-e⁻</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Waterstof</td><td>H</td><td>1</td><td>1</td></tr>
+        <tr><td>2</td><td>Helium</td><td>He</td><td>2</td><td>2</td></tr>
+        <tr><td>3</td><td>Litium</td><td>Li</td><td>2,1</td><td>1</td></tr>
+        <tr><td>4</td><td>Berillium</td><td>Be</td><td>2,2</td><td>2</td></tr>
+        <tr><td>5</td><td>Boor</td><td>B</td><td>2,3</td><td>3</td></tr>
+        <tr><td>6</td><td>Koolstof</td><td>C</td><td>2,4</td><td>4</td></tr>
+        <tr><td>7</td><td>Stikstof</td><td>N</td><td>2,5</td><td>5</td></tr>
+        <tr><td>8</td><td>Suurstof</td><td>O</td><td>2,6</td><td>6</td></tr>
+        <tr><td>9</td><td>Fluoor</td><td>F</td><td>2,7</td><td>7</td></tr>
+        <tr><td>10</td><td>Neon</td><td>Ne</td><td>2,8</td><td>8</td></tr>
+        <tr><td>11</td><td>Natrium</td><td>Na</td><td>2,8,1</td><td>1</td></tr>
+        <tr><td>12</td><td>Magnesium</td><td>Mg</td><td>2,8,2</td><td>2</td></tr>
+        <tr><td>13</td><td>Aluminium</td><td>Al</td><td>2,8,3</td><td>3</td></tr>
+        <tr><td>14</td><td>Silikon</td><td>Si</td><td>2,8,4</td><td>4</td></tr>
+        <tr><td>15</td><td>Fosfor</td><td>P</td><td>2,8,5</td><td>5</td></tr>
+        <tr><td>16</td><td>Swael</td><td>S</td><td>2,8,6</td><td>6</td></tr>
+        <tr><td>17</td><td>Chloor</td><td>Cl</td><td>2,8,7</td><td>7</td></tr>
+        <tr><td>18</td><td>Argon</td><td>Ar</td><td>2,8,8</td><td>8</td></tr>
+        <tr><td>19</td><td>Kalium</td><td>K</td><td>2,8,8,1</td><td>1</td></tr>
+        <tr><td>20</td><td>Kalsium</td><td>Ca</td><td>2,8,8,2</td><td>2</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Valenselektrone en Reaktiwiteit</h2>
+    <p>Die elektrone in die buitenste skil word <strong>valenselektrone</strong> genoem. Hulle is die elektrone wat aan chemiese reaksies en binding deelneem. Die aantal valenselektrone is die belangrikste enkele faktor wat bepaal hoe reaktief 'n element is en watter tipe bindings dit vorm.</p>
+    <ul>
+      <li>Elemente met <strong>1 valenselektron</strong> (soos Na, K) is baie reaktief — hulle verloor daardie elektron maklik.</li>
+      <li>Elemente met <strong>7 valenselektrone</strong> (soos Cl, F) is ook baie reaktief — hulle wen maklik een elektron om hul buitenste skil te voltooi.</li>
+      <li>Elemente met 'n <strong>volle buitenste skil</strong> (soos He, Ne, Ar) is byna heeltemal onreaktief — hulle is die edelgasse.</li>
+    </ul>
+    <div class="callout"><strong>Die Oktetreël:</strong> Atome is geneig om op maniere te reageer wat hulle 'n volle buitenste skil van 8 elektrone gee (of 2 vir die eerste skil). Hierdie stabiele konfigurasie word 'n <em>edelgaskonfigurasie</em> genoem.</div>
+
+    <h2>Die Periodieke Tabel en Elektronkonfigurasie</h2>
+    <p>Die periodieke tabel is so gerangskik dat elektronkonfigurasie onmiddellik sigbaar is:</p>
+    <ul>
+      <li><strong>Periodegetal</strong> = die aantal elektronskille wat die element het. Periode 1-elemente het 1 skil; Periode 3-elemente het 3 skille.</li>
+      <li><strong>Groepgetal</strong> (Groepe 1–8, ook hoofgroepe genoem) = die aantal valenselektrone. Alle Groep 1-elemente het 1 valenselektron; alle Groep 7-elemente het 7 valenselektrone.</li>
+      <li>Elemente in dieselfde <strong>groep</strong> het dieselfde aantal valenselektrone en daarom soortgelyke chemiese eienskappe — dit is waarom litium, natrium, en kalium almal hewig met water reageer.</li>
+    </ul>
+    <div class="key-fact">Periode 3, Groep 7 → 3 skille, 7 valenselektrone → dit is Chloor (Cl), elektronrangskikking 2,8,7. ✓</div>
+
+    <h2>Edelgasse: Die Stabieles</h2>
+    <p>Helium (He), Neon (Ne), Argon (Ar), Kripton (Kr), Xenon (Xe) en Radon (Rn) maak Groep 8 (ook Groep 18 of Groep 0 genoem) op — die edelgasse. Hul buitenste skille is heeltemal vol, wat beteken hulle het geen "aandrang" om elektrone te wen, te verloor, of te deel nie. Dit maak hulle byna heeltemal chemies inert (onreaktief). Hulle bestaan as enkele atome (monoatomies) eerder as molekules.</p>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Interaktiewe Atoombouer — Kies 'n Element</h3>
+      <canvas id="atomCanvas" height="420"></canvas>
+    </div>
+
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Kies Element (Z = 1–20)</div>
+        <select class="elem-select" id="elemSelect" onchange="selectElement(parseInt(this.value))">
+          <option value="1">1 — Waterstof (H)</option>
+          <option value="2">2 — Helium (He)</option>
+          <option value="3">3 — Litium (Li)</option>
+          <option value="4">4 — Berillium (Be)</option>
+          <option value="5">5 — Boor (B)</option>
+          <option value="6">6 — Koolstof (C)</option>
+          <option value="7">7 — Stikstof (N)</option>
+          <option value="8">8 — Suurstof (O)</option>
+          <option value="9">9 — Fluoor (F)</option>
+          <option value="10">10 — Neon (Ne)</option>
+          <option value="11" selected>11 — Natrium (Na)</option>
+          <option value="12">12 — Magnesium (Mg)</option>
+          <option value="13">13 — Aluminium (Al)</option>
+          <option value="14">14 — Silikon (Si)</option>
+          <option value="15">15 — Fosfor (P)</option>
+          <option value="16">16 — Swael (S)</option>
+          <option value="17">17 — Chloor (Cl)</option>
+          <option value="18">18 — Argon (Ar)</option>
+          <option value="19">19 — Kalium (K)</option>
+          <option value="20">20 — Kalsium (Ca)</option>
+        </select>
+        <div class="elem-info-grid" id="elemInfoGrid">
+          <div class="ei"><div class="ei-label">Atoomgetal</div><div class="ei-val" id="infoZ">11</div></div>
+          <div class="ei"><div class="ei-label">Massagetal</div><div class="ei-val" id="infoA">23</div></div>
+          <div class="ei"><div class="ei-label">Protone</div><div class="ei-val" id="infoP">11</div></div>
+          <div class="ei"><div class="ei-label">Neutrone</div><div class="ei-val" id="infoN">12</div></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Elektronkonfigurasie</div>
+        <div id="configDisplay" style="font-family:var(--fm);font-size:28px;font-weight:800;color:#fbbf24;margin:12px 0;letter-spacing:-0.02em;">2, 8, 1</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7" id="configDesc">
+          Natrium het 3 elektronskille. Sy buitenste (valens-) skil bevat <strong style="color:#fcd34d">1</strong> valenselektron, wat dit 'n Groep 1-element in Periode 3 maak. Dit verloor hierdie elektron maklik om 'n stabiele edelgaskonfigurasie te bereik.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Hersien die verduidelikings hieronder om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">
+      Beantwoord die volgende vrae in jou notaboek of op 'n aparte vel. Teken alle diagramme netjies met 'n potlood en liniaal. Wys alle berekeninge duidelik.
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Teken volledig gemerkte Bohr-diagramme vir die volgende elemente: <strong>Litium (Li)</strong>, <strong>Stikstof (N)</strong>, <strong>Natrium (Na)</strong>, <strong>Chloor (Cl)</strong>, en <strong>Kalsium (Ca)</strong>. Merk vir elke diagram die kern met die aantal protone, en wys die korrekte aantal elektrone in elke skil. <em>(2 punte elk — 10 punte in totaal)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Voltooi die tabel hieronder vir elke element. Skryf die aantal valenselektrone, die groepgetal, en die periodegetal neer.<br><br>
+      Elemente: Magnesium (Mg, Z=12) &nbsp;|&nbsp; Fluoor (F, Z=9) &nbsp;|&nbsp; Silikon (Si, Z=14) &nbsp;|&nbsp; Kalium (K, Z=19)<br><br>
+      <em>(3 punte per element — 12 punte in totaal)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Natrium (Na) en Kalium (K) is albei in Groep 1 van die periodieke tabel. Verduidelik, deur gebruik te maak van die konsep van valenselektrone, waarom elemente in dieselfde groep <em>soortgelyke chemiese eienskappe</em> het. Gebruik die elektronrangskikkings van Na (2,8,1) en K (2,8,8,1) in jou antwoord. <em>(4 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">'n Element X het 'n atoomgetal van 16 en 'n massagetal van 32.<br>
+      (a) Hoeveel protone het element X?<br>
+      (b) Hoeveel elektrone het element X (met die aanname dat dit neutraal is)?<br>
+      (c) Hoeveel neutrone het element X? Wys jou berekening.<br>
+      (d) Skryf die elektronrangskikking van element X.<br>
+      (e) Identifiseer element X volgens naam en simbool.<br>
+      <em>(1 punt elk — 5 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Neon (Ne) is 'n edelgas. Verduidelik, deur gebruik te maak van jou kennis van elektronrangskikking en die oktetreël, waarom neon chemies onreaktief is en nie verbindings met ander elemente vorm nie. <em>(3 punte)</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Element Data ───────────────────────────────────────────────────────────
+const ELEMENTS = {
+  1:  {name:'Waterstof',   sym:'H',  A:1,  shells:[1],       group:1, period:1, desc:'Waterstof het 1 elektronskil met net 1 elektron. Dit benodig nog 1 om sy eerste skil te voltooi. Dit is in Groep 1, Periode 1.'},
+  2:  {name:'Helium',     sym:'He', A:4,  shells:[2],       group:8, period:1, desc:"Helium het 'n volle eerste skil (2 elektrone). Dit is 'n edelgas — stabiel en onreaktief. Groep 8, Periode 1."},
+  3:  {name:'Litium',    sym:'Li', A:7,  shells:[2,1],     group:1, period:2, desc:'Litium het 2 skille: 2 elektrone in skil 1 en 1 valenselektron in skil 2. Dit verloor daardie 1 elektron maklik. Groep 1, Periode 2.'},
+  4:  {name:'Berillium',  sym:'Be', A:9,  shells:[2,2],     group:2, period:2, desc:'Berillium het 2 valenselektrone. Dit is geneig om 2 elektrone te verloor tydens binding. Groep 2, Periode 2.'},
+  5:  {name:'Boor',      sym:'B',  A:11, shells:[2,3],     group:3, period:2, desc:'Boor het 3 valenselektrone. Dit vorm 3 kovalente bindings. Groep 3, Periode 2.'},
+  6:  {name:'Koolstof',     sym:'C',  A:12, shells:[2,4],     group:4, period:2, desc:"Koolstof het 4 valenselektrone — presies die helfte van 'n volle skil. Dit vorm 4 kovalente bindings en is die grondslag van alle organiese chemie. Groep 4, Periode 2."},
+  7:  {name:'Stikstof',   sym:'N',  A:14, shells:[2,5],     group:5, period:2, desc:"Stikstof het 5 valenselektrone en benodig nog 3 vir 'n volle skil. Dit vorm N₂ met 'n drievoudige binding. Groep 5, Periode 2."},
+  8:  {name:'Suurstof',     sym:'O',  A:16, shells:[2,6],     group:6, period:2, desc:'Suurstof het 6 valenselektrone en benodig nog 2. Dit is baie elektronegatief en vorm 2 bindings. Groep 6, Periode 2.'},
+  9:  {name:'Fluoor',   sym:'F',  A:19, shells:[2,7],     group:7, period:2, desc:'Fluoor het 7 valenselektrone — dit benodig net nog 1. Dit is die mees reaktiewe nie-metaal. Groep 7, Periode 2.'},
+  10: {name:'Neon',       sym:'Ne', A:20, shells:[2,8],     group:8, period:2, desc:"Neon het 'n volle buitenste skil van 8 elektrone. Dit is 'n edelgas — stabiel en onreaktief. Groep 8, Periode 2."},
+  11: {name:'Natrium',     sym:'Na', A:23, shells:[2,8,1],   group:1, period:3, desc:'Natrium het 3 elektronskille. Sy buitenste (valens-) skil bevat 1 valenselektron, wat dit \'n Groep 1-element in Periode 3 maak. Dit verloor hierdie elektron maklik.'},
+  12: {name:'Magnesium',  sym:'Mg', A:24, shells:[2,8,2],   group:2, period:3, desc:'Magnesium het 2 valenselektrone in sy derde skil. Dit verloor hierdie 2 elektrone om Mg²⁺ te vorm. Groep 2, Periode 3.'},
+  13: {name:'Aluminium',  sym:'Al', A:27, shells:[2,8,3],   group:3, period:3, desc:'Aluminium het 3 valenselektrone. Dit vorm Al³⁺-ione in ioniese verbindings. Groep 3, Periode 3.'},
+  14: {name:'Silikon',    sym:'Si', A:28, shells:[2,8,4],   group:4, period:3, desc:"Silikon het 4 valenselektrone. Dit is 'n halfgeleier, die grondslag van rekenaarskyfies. Groep 4, Periode 3."},
+  15: {name:'Fosfor', sym:'P',  A:31, shells:[2,8,5],   group:5, period:3, desc:'Fosfor het 5 valenselektrone en vorm algemeen 3 of 5 bindings. Groep 5, Periode 3.'},
+  16: {name:'Swael',     sym:'S',  A:32, shells:[2,8,6],   group:6, period:3, desc:'Swael het 6 valenselektrone en benodig nog 2 vir \'n volle buitenste skil. Dit vorm S²⁻ in ioniese verbindings. Groep 6, Periode 3.'},
+  17: {name:'Chloor',   sym:'Cl', A:35, shells:[2,8,7],   group:7, period:3, desc:"Chloor het 7 valenselektrone — net 1 kort van 'n volle buitenste skil. Dit is 'n baie reaktiewe nie-metaal en wen 1 elektron om Cl⁻ te vorm. Groep 7, Periode 3."},
+  18: {name:'Argon',      sym:'Ar', A:40, shells:[2,8,8],   group:8, period:3, desc:"Argon het 'n volle buitenste skil (8 elektrone in skil 3). Dit is 'n edelgas — stabiel en onreaktief. Groep 8, Periode 3."},
+  19: {name:'Kalium',  sym:'K',  A:39, shells:[2,8,8,1], group:1, period:4, desc:'Kalium het 4 elektronskille en 1 valenselektron. Soos natrium, is dit baie reaktief en verloor daardie 1 elektron maklik. Groep 1, Periode 4.'},
+  20: {name:'Kalsium',    sym:'Ca', A:40, shells:[2,8,8,2], group:2, period:4, desc:'Kalsium het 4 elektronskille en 2 valenselektrone. Dit vorm Ca²⁺-ione deur 2 elektrone te verloor. Groep 2, Periode 4.'}
+};
+
+// ─── Simulation ──────────────────────────────────────────────────────────────
+const canvas = document.getElementById('atomCanvas');
+const ctx = canvas.getContext('2d');
+let currentZ = 11;
+let angle = 0;
+let animId = null;
+
+function initSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 420;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  canvas.style.height = cssH + 'px';
+  if (animId) cancelAnimationFrame(animId);
+  animate();
+}
+
+function animate() {
+  const cssW = canvas.width / (window.devicePixelRatio || 1);
+  const cssH = 420;
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  const el = ELEMENTS[currentZ];
+  const cx = cssW / 2;
+  const cy = cssH / 2;
+
+  // Draw starfield
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  for (let i = 0; i < 60; i++) {
+    const sx = ((i * 137.5 + 50) % cssW);
+    const sy = ((i * 89.3 + 20) % cssH);
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(sx, sy, 0.7, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Shell radii
+  const shellRadii = [52, 90, 130, 170];
+  const shells = el.shells;
+
+  // Draw shells (orbit rings)
+  shells.forEach((_, i) => {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(251,191,36,0.12)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 6]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, shellRadii[i], 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // Draw electrons
+  const shellColors = ['#fbbf24','#60a5fa','#34d399','#f472b6'];
+  shells.forEach((count, si) => {
+    const r = shellRadii[si];
+    const speed = [1, 0.65, 0.42, 0.28][si];
+    for (let ei = 0; ei < count; ei++) {
+      const a = angle * speed + (ei / count) * Math.PI * 2;
+      const ex = cx + r * Math.cos(a);
+      const ey = cy + r * Math.sin(a);
+      // Glow
+      const grad = ctx.createRadialGradient(ex, ey, 0, ex, ey, 7);
+      grad.addColorStop(0, shellColors[si]);
+      grad.addColorStop(1, 'transparent');
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(ex, ey, 7, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+      // Electron dot
+      ctx.fillStyle = shellColors[si];
+      ctx.beginPath();
+      ctx.arc(ex, ey, 4, 0, Math.PI*2);
+      ctx.fill();
+    }
+  });
+
+  // Nucleus glow
+  const nucGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 38);
+  nucGrad.addColorStop(0, 'rgba(251,191,36,0.55)');
+  nucGrad.addColorStop(0.5, 'rgba(251,100,36,0.25)');
+  nucGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = nucGrad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 38, 0, Math.PI*2);
+  ctx.fill();
+
+  // Nucleus body
+  ctx.fillStyle = 'rgba(251,191,36,0.9)';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI*2);
+  ctx.fill();
+
+  // Symbol in nucleus
+  ctx.fillStyle = '#040710';
+  ctx.font = 'bold 14px "Cabinet Grotesk", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(el.sym, cx, cy - 1);
+
+  // Proton count label below nucleus
+  ctx.fillStyle = 'rgba(251,191,36,0.65)';
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.fillText(currentZ + 'p', cx, cy + 32);
+
+  // Shell labels
+  shells.forEach((count, i) => {
+    ctx.fillStyle = shellColors[i];
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('Skil ' + (i+1) + ': ' + count + 'e', cx + shellRadii[i] + 6, cy - shellRadii[i] + 4);
+  });
+
+  angle += 0.018;
+  animId = requestAnimationFrame(animate);
+}
+
+function selectElement(z) {
+  currentZ = z;
+  const el = ELEMENTS[z];
+  document.getElementById('infoZ').textContent = z;
+  document.getElementById('infoA').textContent = el.A;
+  document.getElementById('infoP').textContent = z;
+  document.getElementById('infoN').textContent = el.A - z;
+  document.getElementById('configDisplay').textContent = el.shells.join(', ');
+  const valence = el.shells[el.shells.length - 1];
+  document.getElementById('configDesc').innerHTML = el.desc;
+}
+
+// ─── Tab switching ──────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') {
+    setTimeout(() => { initSim(); selectElement(currentZ); }, 50);
+  }
+}
+
+// ─── Practice ───────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: "Wat vertel die atoomgetal van 'n element jou?",
+    opts: ['Die totale massa van die atoom', "Die aantal protone (en elektrone in 'n neutrale atoom)", 'Die aantal neutrone in die kern', 'Die aantal elektronskille'],
+    ans: 1,
+    exp: 'Die atoomgetal (Z) word gedefinieer as die aantal protone in die kern. Aangesien atome elektries neutraal is, is die aantal elektrone gelyk aan die aantal protone. Die atoomgetal identifiseer elke element uniek.'
+  },
+  {
+    q: 'Wat is die korrekte elektronrangskikking vir natrium (Na, Z = 11)?',
+    opts: ['2, 9', '2, 8, 1', '3, 8', '2, 1, 8'],
+    ans: 1,
+    exp: 'Natrium het 11 elektrone. Skil 1 word met 2 elektrone gevul, skil 2 word met 8 elektrone gevul, wat 11 − 2 − 8 = 1 elektron in skil 3 laat. Die rangskikking is dus 2, 8, 1.'
+  },
+  {
+    q: 'In watter periode van die periodieke tabel word chloor (Cl, Z = 17) gevind?',
+    opts: ['Periode 1', 'Periode 2', 'Periode 3', 'Periode 7'],
+    ans: 2,
+    exp: 'Chloor het die elektronrangskikking 2, 8, 7 — wat beteken dit het 3 elektronskille. Die periodegetal is gelyk aan die aantal elektronskille, dus is chloor in Periode 3.'
+  },
+  {
+    q: 'Hoeveel valenselektrone het suurstof (O, Z = 8)?',
+    opts: ['2', '4', '6', '8'],
+    ans: 2,
+    exp: 'Suurstof se elektronrangskikking is 2, 6. Die valenselektrone is dié in die buitenste skil — in hierdie geval, die 6 elektrone in skil 2. Suurstof benodig nog 2 elektrone om sy buitenste skil te voltooi.'
+  },
+  {
+    q: 'Watter element het die elektronrangskikking 2, 8, 8?',
+    opts: ['Swael (S)', 'Kalsium (Ca)', 'Argon (Ar)', 'Kalium (K)'],
+    ans: 2,
+    exp: "Argon (Z = 18) het 18 elektrone: 2 in skil 1, 8 in skil 2, en 8 in skil 3, wat 2, 8, 8 gee. Hierdie volle buitenste skil maak argon 'n stabiele edelgas."
+  },
+  {
+    q: 'Waarom is edelgasse (soos neon en argon) chemies onreaktief?',
+    opts: ['Hulle het baie groot atoommassas', 'Hul buitenste elektronskille is heeltemal vol, dus het hulle geen neiging om elektrone te wen, te verloor, of te deel nie', 'Hulle bevat slegs neutrone in hul kern', 'Hulle het te min elektrone om bindings te vorm'],
+    ans: 1,
+    exp: "Edelgasse het 'n volle buitenste skil van elektrone (2 vir helium; 8 vir al die ander). Volgens die oktetreël is 'n volle buitenste skil die stabielste konfigurasie — daar is geen energievoordeel om elektrone te wen, te verloor, of te deel nie, dus vorm hulle nie chemiese bindings onder normale toestande nie."
+  },
+  {
+    q: 'Element X is in Periode 3, Groep 2 van die periodieke tabel. Element Y is in Periode 2, Groep 7. Gebruik slegs hierdie inligting: hoeveel valenselektrone het elkeen, en watter tipe ioon sal elkeen waarskynlik vorm?',
+    opts: [
+      "X het 2 valenselektrone en verloor hulle om 'n 2+-ioon te vorm; Y het 7 valenselektrone en wen een om 'n 1−-ioon te vorm",
+      "X het 3 valenselektrone en verloor hulle om 'n 3+-ioon te vorm; Y het 2 valenselektrone en wen 6 om 'n 6−-ioon te vorm",
+      "X het 2 valenselektrone en wen 6 meer om 'n 6−-ioon te vorm; Y het 7 valenselektrone en verloor al 7 om 'n 7+-ioon te vorm",
+      'Die groepgetal gee geen inligting oor valenselektrone nie, dus kan dit nie uitgewerk word nie'
+    ],
+    ans: 0,
+    exp: "Die groepgetal van 'n hoofgroep-element vertel jou direk sy aantal valenselektrone: Groep 2 beteken 2 valenselektrone, Groep 7 beteken 7 valenselektrone — ongeag watter periode (hoeveel skille) die element in is. Element X, met slegs 2 valenselektrone, bereik 'n volle buitenste skil die maklikste deur daardie 2 elektrone te verloor, wat 'n 2+-ioon vorm (soos Mg²⁺). Element Y, met 7 valenselektrone, hoef net nog 1 te wen om sy buitenste skil te voltooi, wat 'n 1−-ioon vorm (soos F⁻ of Cl⁻)."
+  },
+  {
+    q: 'Drie atome word ontleed: Atoom P het 12 protone, 12 neutrone, 12 elektrone. Atoom Q het 12 protone, 13 neutrone, 12 elektrone. Atoom R het 11 protone, 12 neutrone, 11 elektrone. Watter TWEE atome is isotope van dieselfde element, en waarom?',
+    opts: [
+      "P en Q, want isotope is atome met dieselfde aantal protone (dieselfde element) maar 'n verskillende aantal neutrone",
+      'P en R, want albei atome het toevallig presies 12 neutrone',
+      'Q en R, want hulle het soortgelyke massagetalle (25 en 23)',
+      'Al drie is isotope van dieselfde element, aangesien elkeen óf 11 óf 12 van een of ander deeltjie het'
+    ],
+    ans: 0,
+    exp: "Isotope word gedefinieer deur DIESELFDE atoomgetal te hê (dieselfde aantal protone, dus dieselfde element) maar 'n VERSKILLENDE aantal neutrone (en dus 'n verskillende massagetal). Atoom P (Z = 12, A = 24) en Atoom Q (Z = 12, A = 25) is albei magnesium — hulle is isotope van mekaar (Mg-24 en Mg-25). Atoom R het slegs 11 protone, dus is dit 'n heeltemal ander element (natrium), nie 'n isotoop van magnesium nie, al deel dit toevallig 'n neutrontelling met P."
+  }
+];
+
+let answers = new Array(QUESTIONS.length).fill(null);
+let correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="mc-opt" onclick="answer(${qi},${oi})" id="opt-${qi}-${oi}">
+            <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, oi) {
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = QUESTIONS[qi];
+  const isCorrect = oi === q.ans;
+  if (isCorrect) correct++;
+
+  document.querySelectorAll(`#opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+
+  if (answers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = correct + '/' + QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

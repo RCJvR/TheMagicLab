@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Aarde se Atmosfeer — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 270px;gap:24px;align-items:start}
+    .solar-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:72px}
+    input[type=range]{flex:1;accent-color:#fb923c;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#fdba74;min-width:48px;text-align:right}
+    .layer-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:200px;transition:border-color 200ms}
+    .layer-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;margin-bottom:2px}
+    .layer-range{font-family:var(--fm);font-size:10px;color:var(--muted);margin-bottom:10px}
+    .layer-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+    .layer-stat:last-child{border-bottom:none}
+    .layer-stat-label{color:var(--muted)}
+    .layer-stat-val{font-family:var(--fm);font-size:11px;color:var(--text)}
+    .layer-desc{font-size:12px;color:rgba(210,218,245,.65);line-height:1.6;margin-top:10px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.solar-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Die Aarde en Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Die Aarde en Daarbuite · Les 4</div>
+  <h1 class="lesson-title">Die Aarde se Atmosfeer</h1>
+  <p class="lesson-sub">Van die lug wat ons inasem tot die aurora's aan die rand van die ruimte — verken die gelaagde kombers wat lewe op Aarde moontlik maak.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="layers" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Samestelling van die Atmosfeer</h2>
+    <p>Die atmosfeer is die laag gasse wat die Aarde omring, deur swaartekrag op sy plek gehou. Dit is 'n mengsel van gasse, hoofsaaklik:</p>
+    <ul>
+      <li><strong>Stikstof (N₂): 78%</strong> — die volopste gas; relatief onreaktief, verdun suurstof tot veilige vlakke</li>
+      <li><strong>Suurstof (O₂): 21%</strong> — noodsaaklik vir asemhaling by diere en verbranding</li>
+      <li><strong>Argon (Ar): ~0,9%</strong> — 'n inerte edelgas</li>
+      <li><strong>Koolstofdioksied (CO₂): ~0,04%</strong> — noodsaaklik vir fotosintese; 'n belangrike kweekhuisgas</li>
+      <li><strong>Ander gasse:</strong> waterdamp, neon, helium, metaan, osoon (spoorhoeveelhede)</li>
+    </ul>
+    <div class="key-fact">Maklik om te onthou: N₂ = 78%, O₂ = 21%, res = 1% (Ar + CO₂ + ander)</div>
+
+    <h2>Die Vier Hooflae</h2>
+    <p>Die atmosfeer word in lae verdeel op grond van hoe temperatuur met hoogte verander. Temperatuur daal NIE gestadig nie — dit daal en styg afwisselend, afhangende van die laag.</p>
+    <table class="planets-table">
+      <thead><tr><th>Laag</th><th>Hoogte</th><th>Temperatuurneiging</th><th>Sleutelkenmerke</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Troposfeer</strong></td><td>0–12 km</td><td>Daal met hoogte (vanaf ~15°C tot -56°C)</td><td>Alle weer vind hier plaas; bevat ~75% van die atmosferiese massa; mense woon hier</td></tr>
+        <tr><td><strong>Stratosfeer</strong></td><td>12–50 km</td><td>Styg met hoogte (tot ~0°C)</td><td>Bevat die osoonlaag (20–35 km); absorbeer UV-straling; straalvliegtuie vlieg hier</td></tr>
+        <tr><td><strong>Mesosfeer</strong></td><td>50–80 km</td><td>Daal met hoogte (tot -90°C)</td><td>Koudste laag; meeste meteore brand hier op; nagligtende wolke vorm hier</td></tr>
+        <tr><td><strong>Termosfeer</strong></td><td>80–700 km</td><td>Styg skerp (tot 2 000°C+)</td><td>Baie yl lug; aurora's kom hier voor; die Internasionale Ruimtestasie wentel in die laer termosfeer; radiogolwe weerkaats van hierdie laag</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Wenk om die lae te onthou:</strong> Dink aan temperatuur terwyl jy styg: Af, Op, Af, Op — deur Troposfeer → Stratosfeer → Mesosfeer → Termosfeer.</div>
+
+    <h2>Lugdruk</h2>
+    <p>Lugdruk is die gewig van die lugkolom bo 'n punt. Op seevlak is lugdruk ongeveer <strong>101 325 Pa (1 atmosfeer)</strong>. Soos hoogte toeneem, is daar minder lug daarbo, sodat druk afneem. Op 12 km (bokant van die troposfeer) is druk slegs ongeveer 20% van seevlakdruk. Op 50 km is dit minder as 0,1%.</p>
+    <p>Dit is waarom vliegtuie hul kajuite onder druk moet plaas — op kruishoogte is die lug te yl om sonder hulp te asem.</p>
+
+    <h2>Die Osoonlaag</h2>
+    <p>Die <strong>osoonlaag</strong> is 'n streek in die stratosfeer (ongeveer 20–35 km hoog) waar osoon (O₃) gekonsentreer is. Osoon absorbeer die meeste van die Son se skadelike <strong>ultraviolet (UV) straling</strong>, veral UV-B- en UV-C-strale.</p>
+    <ul>
+      <li>Sonder die osoonlaag sou UV-straling DNS beskadig en velkanker, katarakte, en skade aan plante en mariene lewe veroorsaak.</li>
+      <li>Chemikalieë genaamd <strong>CFK's (chloorfluoorkoolstowwe)</strong> — voorheen gebruik in yskaste en spuitblikkies — het die osoonlaag vernietig, wat 'n "osoongat" oor Antarktika veroorsaak het.</li>
+      <li>Die <strong>Montreal-protokol (1987)</strong> het CFK's wêreldwyd verbied; die osoonlaag herstel stadig.</li>
+    </ul>
+
+    <h2>Die Kweekhuiseffek</h2>
+    <p>Die <strong>natuurlike kweekhuiseffek</strong> hou die Aarde warm genoeg om lewe te ondersteun. Só werk dit:</p>
+    <ul>
+      <li>Kortgolf-sonstraling beweeg deur die atmosfeer en verwarm die Aarde se oppervlak.</li>
+      <li>Die Aarde se oppervlak straal hitte uit as langgolf-infrarooi (hitte-)straling.</li>
+      <li><strong>Kweekhuisgasse</strong> (CO₂, waterdamp, metaan, stikstofoksied) absorbeer hierdie uitgaande hitte en straal 'n deel daarvan terug na die Aarde se oppervlak.</li>
+      <li>Dit verhoog die gemiddelde oppervlaktemperatuur tot ongeveer <strong>+15°C</strong> (sonder enige kweekhuiseffek sou dit ongeveer -18°C wees).</li>
+    </ul>
+    <p>Die <strong>versterkte kweekhuiseffek</strong> is die <em>probleem</em>: menslike aktiwiteite (die verbranding van fossielbrandstowwe, ontbossing) stel ekstra CO₂ en ander kweekhuisgasse vry, wat meer hitte as normaal vasvang en veroorsaak dat wêreldtemperature styg — <strong>globale verwarming</strong>, wat tot klimaatsverandering lei.</p>
+    <div class="callout"><strong>Belangrike onderskeid:</strong> Die natuurlike kweekhuiseffek is <em>noodsaaklik vir lewe</em>. Die versterkte kweekhuiseffek van ekstra mensgemaakte gasse veroorsaak gevaarlike klimaatsverandering. Moenie die twee verwar nie.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Atmosfeerlae-verkenner</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Sleep die hoogtesonderingskuiwer of klik op enige laag om dit te verken. Kyk hoe 'n meteoor in die mesosfeer opbrand en aurora's in die termosfeer gloei.</p>
+  <div class="explore-layout">
+    <div class="solar-wrap" id="atmoWrap">
+      <canvas id="atmoCanvas" height="520"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Hoogtesondering</div>
+        <div class="slider-row">
+          <label>Hoogte</label>
+          <input type="range" id="altSlider" min="0" max="700" step="1" value="0" oninput="onAltChange()">
+          <span class="slider-val" id="altVal">0 km</span>
+        </div>
+      </div>
+      <div class="layer-card" id="layerCard">
+        <div style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Sleep die skuiwer of<br>klik 'n laag om te verken</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in jou oefeningboek. Gebruik diagramme waar dit help om jou antwoord te verduidelik.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Gee die persentasie-samestelling van die drie volopste gasse in die Aarde se atmosfeer. Noem vir elke gas een rol wat dit vir lewende organismes of die Aarde se sisteme speel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Teken en benoem 'n diagram van die vier hoof-atmosferiese lae. Dui vir elke laag aan: (a) die ongeveer hoogtereeks, en (b) een sleutelkenmerk of gebeurtenis wat daar plaasvind.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Verduidelik waarom lugdruk met hoogte afneem. By watter ongeveer hoogte val druk tot ongeveer 20% van seevlakdruk? Waarom moet vliegtuigkajuite onder druk geplaas word?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Beskryf die rol van die osoonlaag. (a) Waar in die atmosfeer word dit gevind? (b) Watter tipe straling absorbeer dit en waarom is dit belangrik? (c) Watter chemikalieë het die osoonlaag beskadig, en watter internasionale ooreenkoms is aangegaan om dit aan te spreek?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (4 punte)</div><div class="wb-qtext">Verduidelik die natuurlike kweekhuiseffek stap vir stap. Sluit in jou antwoord in: (a) noem drie kweekhuisgasse, (b) beskryf hoe hitte vasgevang word, en (c) noem wat die Aarde se gemiddelde temperatuur sonder enige kweekhuiseffek sou wees.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (3 punte)</div><div class="wb-qtext">Onderskei tussen die natuurlike kweekhuiseffek en die versterkte kweekhuiseffek. Verduidelik hoe menslike aktiwiteite tot die versterkte kweekhuiseffek bydra en gee TWEE gevolge hiervan vir die Aarde se klimaat.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 7 · (5 punte)</div><div class="wb-qtext">'n Weerstasie se hoëhoogte-sonde het die volgende lesings aangeteken terwyl dit van die grond af tot in die mesosfeer gestyg het:
+      <table class="planets-table" style="margin:12px 0">
+        <thead><tr><th>Hoogte (km)</th><th>0</th><th>12</th><th>20</th><th>35</th><th>50</th><th>80</th></tr></thead>
+        <tbody><tr><td><strong>Temperatuur (°C)</strong></td><td>15</td><td>-56</td><td>-44</td><td>-22</td><td>0</td><td>-90</td></tr></tbody>
+      </table>
+      (a) Watter twee atmosferiese laaggrense lê op 12 km en 50 km? (2 punte)<br>
+      (b) Beskryf die temperatuurneiging wat in die tabel tussen 12 km en 50 km getoon word, en noem die laag waarin hierdie neiging voorkom. (2 punte)<br>
+      (c) Die temperatuur val redelik gestadig vanaf 0°C op 50 km tot -90°C op 80 km. Gebruik hierdie neiging om die temperatuur op 65 km (halfpad tussen 50 km en 80 km) te skat, en wys jou berekening. (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') startCanvas();
+}
+
+// ── Atmosphere Layer Data ──────────────────────────────────────
+const LAYERS = [
+  {
+    name:'Troposfeer', range:'0–12 km', color:'#3a7bd5', colorLight:'#6dd5fa',
+    tempFn: alt => 15 - alt * (71/12),   // 15°C at 0, -56°C at 12
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(0) + ' Pa',
+    phenomena:'Weer, wolke, reën, wind',
+    desc:"Alle weer vind hier plaas. Bevat ongeveer 75% van al die atmosferiese massa en byna alle waterdamp. Temperatuur daal met hoogte teen ongeveer 6,5°C per km. Die tropopouse merk die boonste grens.",
+    border: [0, 12]
+  },
+  {
+    name:'Stratosfeer', range:'12–50 km', color:'#7c3aed', colorLight:'#a78bfa',
+    tempFn: alt => -56 + (alt-12) * (56/38),  // -56 at 12, ~0 at 50
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(0) + ' Pa',
+    phenomena:'Osoonlaag, straalstrome, straalvliegtuie',
+    desc:'Temperatuur styg met hoogte omdat osoon UV-straling absorbeer. Bevat die osoonlaag (20–35 km). Byna geen weer hier nie — baie stabiel, en dis waarom kommersiële straalvliegtuie in die laer stratosfeer vlieg.',
+    border: [12, 50]
+  },
+  {
+    name:'Mesosfeer', range:'50–80 km', color:'#1e3a5f', colorLight:'#60a5fa',
+    tempFn: alt => 0 - (alt-50) * (90/30),    // 0 at 50, -90 at 80
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(0) + ' Pa',
+    phenomena:'Meteore brand op, nagligtende wolke',
+    desc:'Die koudste laag — temperature kan tot -90°C by die boonste deel daal. Meeste meteore (vallende sterre) brand hier op weens wrywing met lugmolekules. Nagligtende wolke — die hoogste wolke op Aarde — vorm naby die mesopouse.',
+    border: [50, 80]
+  },
+  {
+    name:'Termosfeer', range:'80–700 km', color:'#0a0a1a', colorLight:'#312e81',
+    tempFn: alt => -90 + (alt-80) * (2090/620), // -90 at 80, up to ~2000+ at 700
+    pressFn: alt => (101325 * Math.exp(-alt/8.5)).toFixed(4) + ' Pa',
+    phenomena:"Aurora's, ISS, radioweerkaatsing",
+    desc:"Temperatuur styg dramaties — molekules absorbeer hoë-energie sonstraling. Die lug is egter so yl dat daar baie min molekules is — jy sou nie \"warm\" voel nie. Aurora's (Suidelig en Noorlig) gloei hier. Die ISS wentel binne die termosfeer op ongeveer 400 km.",
+    border: [80, 700]
+  },
+];
+
+function getLayer(alt){
+  if(alt < 12) return LAYERS[0];
+  if(alt < 50) return LAYERS[1];
+  if(alt < 80) return LAYERS[2];
+  return LAYERS[3];
+}
+
+function getTemp(alt){
+  const l = getLayer(alt);
+  return Math.round(l.tempFn(alt));
+}
+
+// ── Canvas Setup ───────────────────────────────────────────────
+const atmoCanvas = document.getElementById('atmoCanvas');
+const ctx = atmoCanvas.getContext('2d');
+let canvasStarted = false;
+let animId = null;
+let probeAlt = 0;
+let selectedLayer = null;
+let meteorAnim = {x:0, y:0, active:false, t:0};
+let auroraT = 0;
+
+// Canvas layout: bottom = Earth surface, top = 700 km
+// Canvas height = 520px. Map: 0km → y=490, 700km → y=10
+let CANVAS_H = 520;
+let CANVAS_W = 560;
+const ATMO_LEFT = 80;  // left edge of atmosphere column
+const ATMO_RIGHT_FN = () => CANVAS_W - 20;
+
+function altToY(alt, H){ return H - 20 - (alt / 700) * (H - 40); }
+function yToAlt(y, H){ return ((H - 20 - y) / (H - 40)) * 700; }
+
+function resizeAtmo(){
+  CANVAS_W = atmoCanvas.offsetWidth || 560;
+  CANVAS_H = 520;
+  atmoCanvas.width = CANVAS_W * devicePixelRatio;
+  atmoCanvas.height = CANVAS_H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function onAltChange(){
+  probeAlt = +document.getElementById('altSlider').value;
+  document.getElementById('altVal').textContent = Math.round(probeAlt) + ' km';
+  selectedLayer = getLayer(probeAlt);
+  updateLayerCard(selectedLayer, probeAlt);
+}
+
+function updateLayerCard(layer, alt){
+  const temp = getTemp(alt);
+  const pressure = +(101325 * Math.exp(-alt/8.5));
+  let pressStr;
+  if(pressure >= 1) pressStr = pressure.toFixed(0) + ' Pa';
+  else if(pressure >= 0.001) pressStr = pressure.toFixed(3) + ' Pa';
+  else pressStr = pressure.toExponential(2) + ' Pa';
+
+  document.getElementById('layerCard').innerHTML = `
+    <div class="layer-name" style="color:${layer.colorLight}">${layer.name}</div>
+    <div class="layer-range">${layer.range}</div>
+    <div class="layer-stat"><span class="layer-stat-label">Hoogte</span><span class="layer-stat-val">${Math.round(alt)} km</span></div>
+    <div class="layer-stat"><span class="layer-stat-label">Temperatuur</span><span class="layer-stat-val">${temp}°C</span></div>
+    <div class="layer-stat"><span class="layer-stat-label">Lugdruk</span><span class="layer-stat-val">${pressStr}</span></div>
+    <div class="layer-stat"><span class="layer-stat-label">Verskynsels</span><span class="layer-stat-val" style="font-size:10px;text-align:right;max-width:120px">${layer.phenomena}</span></div>
+    <div class="layer-desc">${layer.desc}</div>`;
+}
+
+// Click on canvas to select layer
+atmoCanvas.addEventListener('click', e => {
+  const rect = atmoCanvas.getBoundingClientRect();
+  const y = e.clientY - rect.top;
+  const alt = Math.max(0, Math.min(700, yToAlt(y, CANVAS_H)));
+  probeAlt = alt;
+  document.getElementById('altSlider').value = alt;
+  document.getElementById('altVal').textContent = Math.round(alt) + ' km';
+  selectedLayer = getLayer(alt);
+  updateLayerCard(selectedLayer, alt);
+});
+
+function drawAtmosphere(){
+  const W = CANVAS_W, H = CANVAS_H;
+  const LEFT = ATMO_LEFT;
+  const RIGHT = W - 20;
+  const COLW = RIGHT - LEFT;
+
+  ctx.clearRect(0,0,W,H);
+
+  // Space background
+  ctx.fillStyle='#06091a'; ctx.fillRect(0,0,W,H);
+
+  // Stars in space region (above ~550km on canvas)
+  if(!drawAtmosphere.stars){
+    drawAtmosphere.stars=[];
+    for(let i=0;i<60;i++) drawAtmosphere.stars.push([Math.random()*W, Math.random()*(altToY(400,H)-10)+5, Math.random()*1.0+0.2]);
+  }
+  drawAtmosphere.stars.forEach(([sx,sy,sr])=>{
+    ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.fill();
+  });
+
+  // Draw layer bands
+  const layerBands = [
+    {alt0:0,  alt1:12,  c0:'rgba(74,144,217,0.85)',  c1:'rgba(100,180,240,0.5)', label:'Troposfeer'},
+    {alt0:12, alt1:50,  c0:'rgba(100,80,200,0.6)',   c1:'rgba(80,40,160,0.3)',   label:'Stratosfeer'},
+    {alt0:50, alt1:80,  c0:'rgba(20,50,100,0.5)',    c1:'rgba(10,20,60,0.3)',    label:'Mesosfeer'},
+    {alt0:80, alt1:700, c0:'rgba(10,10,30,0.4)',     c1:'rgba(0,0,10,0.1)',      label:'Termosfeer'},
+  ];
+
+  layerBands.forEach(b=>{
+    const y1 = altToY(b.alt1, H);
+    const y0 = altToY(b.alt0, H);
+    const grad = ctx.createLinearGradient(0,y1,0,y0);
+    grad.addColorStop(0, b.c0);
+    grad.addColorStop(1, b.c1);
+    ctx.fillStyle = grad;
+    ctx.fillRect(LEFT, y1, COLW, y0-y1);
+  });
+
+  // Layer boundary lines & labels
+  const boundaries = [
+    {alt:12,  label:'Tropopouse  12 km'},
+    {alt:50,  label:'Stratopouse 50 km'},
+    {alt:80,  label:'Mesopouse   80 km'},
+  ];
+  boundaries.forEach(b=>{
+    const y = altToY(b.alt, H);
+    ctx.beginPath(); ctx.moveTo(LEFT, y); ctx.lineTo(RIGHT, y);
+    ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1; ctx.setLineDash([4,4]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='left';
+    ctx.fillText(b.label, LEFT+4, y-4);
+  });
+
+  // Layer name labels (centred in band)
+  const layerLabels = [
+    {alt:6,   name:'TROPOSFEER',  color:'rgba(180,220,255,0.9)'},
+    {alt:31,  name:'STRATOSFEER', color:'rgba(180,160,255,0.9)'},
+    {alt:65,  name:'MESOSFEER',   color:'rgba(120,160,220,0.9)'},
+    {alt:300, name:'TERMOSFEER', color:'rgba(100,120,200,0.7)'},
+  ];
+  layerLabels.forEach(l=>{
+    const y = altToY(l.alt, H);
+    ctx.fillStyle=l.color; ctx.font='bold 11px "JetBrains Mono"'; ctx.textAlign='center';
+    ctx.fillText(l.name, LEFT + COLW/2, y);
+  });
+
+  // Ozone layer marker
+  const oz0 = altToY(20, H), oz1 = altToY(35, H);
+  ctx.fillStyle='rgba(167,243,208,0.12)';
+  ctx.fillRect(LEFT, oz1, COLW, oz0-oz1);
+  ctx.fillStyle='rgba(167,243,208,0.7)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='left';
+  ctx.fillText('OSOONLAAG', LEFT+4, (oz0+oz1)/2+3);
+
+  // Earth surface strip
+  const surfY = altToY(0, H);
+  const earthGrad = ctx.createLinearGradient(0, surfY, 0, H);
+  earthGrad.addColorStop(0,'#2d5a27'); earthGrad.addColorStop(1,'#1a3a18');
+  ctx.fillStyle=earthGrad; ctx.fillRect(LEFT, surfY, COLW, H-surfY);
+  ctx.fillStyle='rgba(100,180,100,0.8)'; ctx.font='bold 10px "Cabinet Grotesk"'; ctx.textAlign='center';
+  ctx.fillText('Aarde se Oppervlak', LEFT+COLW/2, H-8);
+
+  // Altitude axis (left)
+  ctx.fillStyle='rgba(210,218,245,0.5)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='right';
+  [0,50,100,200,300,400,500,600,700].forEach(a=>{
+    const y = altToY(a, H);
+    ctx.fillText(a+'km', LEFT-6, y+3);
+    ctx.beginPath(); ctx.moveTo(LEFT-3,y); ctx.lineTo(LEFT,y);
+    ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1; ctx.stroke();
+  });
+
+  // Auroras in thermosphere (animated)
+  auroraT += 0.02;
+  const auroraY_base = altToY(150, H);
+  const auroraY_top  = altToY(300, H);
+  for(let i=0;i<5;i++){
+    const auroraX = LEFT + COLW*0.15 + i*(COLW*0.14);
+    const phase = auroraT + i*1.2;
+    const h = (auroraY_base - auroraY_top) * (0.3 + 0.3*Math.sin(phase));
+    const ag = ctx.createLinearGradient(auroraX, auroraY_base, auroraX, auroraY_base - h);
+    const hue = 120 + i*30 + 20*Math.sin(auroraT);
+    ag.addColorStop(0,'rgba(0,255,120,0)');
+    ag.addColorStop(0.4,`hsla(${hue},100%,65%,0.35)`);
+    ag.addColorStop(1,'rgba(100,200,255,0)');
+    ctx.fillStyle=ag;
+    ctx.fillRect(auroraX-8, auroraY_base-h, 16, h);
+  }
+  // Aurora label
+  ctx.fillStyle='rgba(100,255,160,0.7)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='right';
+  ctx.fillText('AURORA', RIGHT-4, altToY(200,H));
+
+  // ISS marker
+  const issY = altToY(400, H);
+  ctx.fillStyle='rgba(255,200,50,0.8)'; ctx.font='10px "Cabinet Grotesk"'; ctx.textAlign='left';
+  ctx.fillText('🛸 ISS (~400 km)', LEFT+COLW*0.55, issY+4);
+  ctx.beginPath(); ctx.moveTo(LEFT+COLW*0.5, issY); ctx.lineTo(RIGHT-4, issY);
+  ctx.strokeStyle='rgba(255,200,50,0.25)'; ctx.lineWidth=1; ctx.setLineDash([3,4]); ctx.stroke(); ctx.setLineDash([]);
+
+  // Meteor animation in mesosphere
+  if(!meteorAnim.active){
+    if(Math.random()<0.004){
+      meteorAnim.active=true; meteorAnim.t=0;
+      meteorAnim.x = LEFT + Math.random()*COLW*0.6 + COLW*0.1;
+      meteorAnim.startY = altToY(80,H) - 10;
+    }
+  }
+  if(meteorAnim.active){
+    meteorAnim.t += 2.5;
+    const mY = meteorAnim.startY + meteorAnim.t;
+    const mX = meteorAnim.x + meteorAnim.t*0.5;
+    const burnProgress = Math.min(meteorAnim.t / 80, 1);
+    const alpha = 1 - burnProgress;
+    // Trail
+    ctx.save();
+    const mg = ctx.createLinearGradient(mX-meteorAnim.t*0.4, mY-meteorAnim.t, mX, mY);
+    mg.addColorStop(0,'rgba(255,150,50,0)');
+    mg.addColorStop(1,`rgba(255,220,100,${alpha*0.8})`);
+    ctx.beginPath(); ctx.moveTo(mX-meteorAnim.t*0.3, mY-meteorAnim.t*0.8); ctx.lineTo(mX,mY);
+    ctx.strokeStyle=mg; ctx.lineWidth=2; ctx.stroke();
+    // Head
+    ctx.beginPath(); ctx.arc(mX,mY,2+burnProgress*1,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,100,${alpha})`; ctx.fill();
+    ctx.restore();
+    const burnY = altToY(60,H);
+    if(mY > burnY + 40 || alpha<=0) meteorAnim.active=false;
+  }
+  // Meteor label
+  ctx.fillStyle='rgba(255,180,50,0.6)'; ctx.font='9px "JetBrains Mono"'; ctx.textAlign='right';
+  ctx.fillText('METEORE BRAND HIER', RIGHT-4, altToY(70,H));
+
+  // Probe line & dot
+  if(probeAlt >= 0){
+    const py = altToY(probeAlt, H);
+    ctx.beginPath(); ctx.moveTo(LEFT-2, py); ctx.lineTo(RIGHT, py);
+    ctx.strokeStyle='rgba(251,146,60,0.85)'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(LEFT-2, py, 5, 0, Math.PI*2);
+    ctx.fillStyle='#fb923c'; ctx.fill();
+    // Probe alt label
+    ctx.fillStyle='#fb923c'; ctx.font='bold 10px "JetBrains Mono"'; ctx.textAlign='left';
+    ctx.fillText(Math.round(probeAlt)+' km', LEFT+4, py-5);
+  }
+
+  // Outer atmosphere border
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+  ctx.strokeRect(LEFT, altToY(700,H), COLW, altToY(0,H)-altToY(700,H));
+}
+
+let lastTs = 0;
+function loop(ts){
+  const dt = (ts - lastTs)/16.67; lastTs = ts;
+  drawAtmosphere();
+  animId = requestAnimationFrame(loop);
+}
+
+function startCanvas(){
+  if(canvasStarted) return;
+  canvasStarted = true;
+  resizeAtmo();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',()=>{ if(canvasStarted) resizeAtmo(); });
+
+// ── Practice ────────────────────────────────────────────────────
+const QUESTIONS=[
+  {text:"Wat is die volopste gas in die Aarde se atmosfeer?",
+   opts:['Suurstof (O₂)','Koolstofdioksied (CO₂)','Stikstof (N₂)','Argon (Ar)'],
+   ans:2, exp:'Stikstof (N₂) maak ongeveer 78% van die atmosfeer uit. Suurstof is tweede met 21%, en al die ander gasse maak saam ongeveer 1% uit.'},
+  {text:'In watter atmosferiese laag vind alle weer plaas?',
+   opts:['Stratosfeer','Mesosfeer','Termosfeer','Troposfeer'],
+   ans:3, exp:"Alle weer — wolke, reën, wind, storms — vind in die troposfeer (0–12 km) plaas. Dit bevat ongeveer 75% van die atmosfeer se totale massa en byna alle waterdamp."},
+  {text:'Wat is die hooffunksie van die osoonlaag?',
+   opts:['Om radiogolwe na die Aarde terug te weerkaats','Om skadelike ultraviolet (UV) straling van die Son te absorbeer','Om hitte vas te vang om die Aarde warm te hou','Om suurstof vir lewende organismes te produseer'],
+   ans:1, exp:"Die osoonlaag in die stratosfeer (20–35 km) absorbeer die meeste van die Son se skadelike UV-straling (veral UV-B en UV-C), wat DNS en lewende organismes op die Aarde se oppervlak beskerm."},
+  {text:"In watter laag kom aurora's (Suiderlig) voor?",
+   opts:['Troposfeer','Stratosfeer','Mesosfeer','Termosfeer'],
+   ans:3, exp:"Aurora's kom in die termosfeer (80–700 km) voor, waar gelaaide sonpartikels met gasmolekules wisselwerk. Die Internasionale Ruimtestasie wentel ook binne die termosfeer op ongeveer 400 km."},
+  {text:'Wat gebeur met lugdruk soos hoogte toeneem?',
+   opts:['Dit neem gestadig toe','Dit bly dieselfde','Dit neem af','Dit neem eers toe en dan af'],
+   ans:2, exp:'Lugdruk neem af met hoogte omdat daar minder lug (minder molekules) bo jou is. Bo-op die troposfeer (12 km) is druk reeds slegs ongeveer 20% van seevlakdruk.'},
+  {text:'Wat is die verskil tussen die natuurlike kweekhuiseffek en die versterkte kweekhuiseffek?',
+   opts:['Die natuurlike effek is skadelik; die versterkte effek is voordelig','Die natuurlike effek hou die Aarde bewoonbaar; die versterkte effek word veroorsaak deur ekstra kweekhuisgasse van menslike aktiwiteite en veroorsaak globale verwarming','Hulle is dieselfde ding','Die versterkte kweekhuiseffek raak slegs poolstreke'],
+   ans:1, exp:'Die natuurlike kweekhuiseffek is noodsaaklik — sonder dit sou die Aarde ongeveer -18°C wees. Die versterkte kweekhuiseffek is die gevolg van ekstra CO₂ en ander gasse wat deur die verbranding van fossielbrandstowwe en ontbossing vrygestel word, wat addisionele hitte vasvang en globale verwarming veroorsaak.'},
+  {text:"'n Weerballon word van die grond af vrygelaat en styg deur die troposfeer, waar temperatuur redelik gestadig val vanaf 15°C op seevlak tot -56°C by die 12 km-tropopouse. Sy termometer lees -15°C. Ongeveer hoe hoog het die ballon gestyg?",
+   opts:["Ongeveer 2 km","Ongeveer 5 km","Ongeveer 8 km","Ongeveer 11 km"],
+   ans:1, exp:"Die temperatuur val 71°C oor 12 km, 'n tempo van ongeveer 5,9°C per km. Om van 15°C na -15°C te val, is 'n daling van 30°C, dus 30 ÷ 5,9 ≈ 5 km. Dit gebruik dieselfde proporsionele redenasie as om enige reguitlyn-neiging te lees: deel die verandering wat nodig is deur die tempo van verandering."},
+  {text:"CFK's (chloorfluoorkoolstowwe) is wêreldwyd deur die Montreal-protokol verbied. Watter stelling verduidelik die beste waarom hierdie enkele verbod met TWEE afsonderlike atmosferiese probleme gehelp het?",
+   opts:["CFK's verhoog suurstofvlakke, sodat die verwydering daarvan slegs die osoonlaag beskerm","CFK's breek stratosferiese osoon af ÉN tree op as baie doeltreffende kweekhuisgasse, sodat die vermindering daarvan osoonafbraak verminder het en terselfdertyd die versterkte kweekhuiseffek verlig het","CFK's raak slegs die troposfeer, sodat die verbod geen effek op die stratosfeer gehad het nie","CFK's verkoel die atmosfeer, sodat die verwydering daarvan globale verwarming op sy eie omgekeer het"],
+   ans:1, exp:"CFK-molekules kataliseer die afbraak van osoon (O₃) in die stratosfeer, wat osoonafbraak veroorsaak — maar hulle is ook uiters doeltreffend om uitgaande hitte vas te vang, wat hulle kragtige kweekhuisgasse maak. Die verbod op CFK's het dus osoonafbraak en 'n deel van die versterkte kweekhuiseffek in een stap aangespreek."},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou aan verken — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':score===5?'Goed gedaan!':'Volpunte! Uitstekende werk!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

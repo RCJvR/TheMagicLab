@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnetisme — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    /* Simulate */
+    .sim-layout{display:grid;grid-template-columns:1fr 260px;gap:24px;align-items:start}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .ctype-row{display:flex;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+    .ctype-btn{flex:1;min-width:80px;padding:8px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:11px;cursor:pointer;transition:all 140ms;text-align:center}
+    .ctype-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fcd34d}
+    .toggle-btn{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.08);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;width:100%;margin-top:8px}
+    .toggle-btn:hover{background:rgba(251,191,36,.16)}
+    .toggle-btn.off{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--muted)}
+    .info-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px}
+    .info-box strong{color:var(--text)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energie en Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Energie en Verandering · Les 3</div>
+  <h1 class="lesson-title">Magnetisme</h1>
+  <p class="lesson-sub">Ondersoek die onsigbare kragte tussen magnetiese pole, visualiseer veldlyne, en ontdek hoe die Aarde self 'n reusagtige magneet is.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="compass" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n magneet?</h2>
+    <p>'n <strong>Magneet</strong> is 'n voorwerp wat 'n magnetiese veld produseer — 'n onsigbare gebied van krag wat sekere materiale (yster, nikkel, kobalt en staal) kan aantrek en met ander magnete kan wisselwerk. Magnetisme is een van die fundamentele kragte van die natuur, en hou nou verband met elektrisiteit.</p>
+    <div class="callout"><strong>Magnetiese materiale</strong> word <em>ferromagnetiese</em> materiale genoem. Yster, nikkel en kobalt is die algemeenste. Materiale soos hout, plastiek en aluminium is <em>nie-magneties</em> en word nie deur magnete aangetrek nie.</div>
+
+    <h2>Magnetiese pole</h2>
+    <p>Elke magneet het twee <strong>pole</strong> — 'n <strong>Noord- (N-) pool</strong> en 'n <strong>Suid- (S-) pool</strong>. Die magnetiese krag is die sterkste by die pole. Die sleutelreël wat pole beheer, is:</p>
+    <div class="formula">Gelyksoortige pole STOOT AF · Ongelyksoortige pole TREK AAN</div>
+    <ul>
+      <li>Twee Noordpole teen mekaar gedruk — hulle stoot mekaar af (beweeg weg van mekaar af).</li>
+      <li>Twee Suidpole teen mekaar gedruk — hulle stoot mekaar af.</li>
+      <li>'n Noordpool en 'n Suidpool — hulle trek mekaar aan (beweeg na mekaar toe).</li>
+    </ul>
+    <div class="key-fact">Jy KAN NIE 'n enkele magnetiese pool isoleer nie. As jy 'n staafmagneet in twee sny, word elke helfte 'n volledige magneet met sy eie N- en S-pool.</div>
+
+    <h2>Magnetiese veldlyne</h2>
+    <p>'n <strong>Magnetiese veld</strong> is die gebied rondom 'n magneet waar 'n magnetiese krag opgespoor kan word. Ons stel dit voor met <strong>veldlyne</strong> (ook fluksielyne genoem):</p>
+    <ul>
+      <li>Veldlyne beweeg van die <strong>Noordpool na die Suidpool</strong> buite die magneet.</li>
+      <li>Binne die magneet beweeg veldlyne van Suid na Noord (hulle vorm geslote lusse).</li>
+      <li>Waar veldlyne <strong>naby mekaar</strong> is, is die veld <strong>sterk</strong>.</li>
+      <li>Waar veldlyne <strong>ver uitmekaar</strong> is, is die veld <strong>swak</strong>.</li>
+      <li>Veldlyne kruis <strong>nooit</strong> mekaar nie.</li>
+    </ul>
+
+    <h2>Permanente vs. tydelike magnete</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Tipe</th><th>Beskrywing</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Permanente magneet</strong></td><td>Behou sy magnetisme onbepaald onder normale toestande.</td><td>Staafmagneet, yskasmagneet, hoefyster-magneet</td></tr>
+        <tr><td><strong>Tydelike magneet</strong></td><td>Slegs magneties terwyl dit in die teenwoordigheid van 'n ander magneet of magnetiese veld is.</td><td>Ysterspyker langs 'n magneet gehou, ystervyllsel</td></tr>
+        <tr><td><strong>Elektromagneet</strong></td><td>Word geproduseer deur elektriese stroom wat deur 'n draadspoel vloei. Kan aan- en afgeskakel word.</td><td>Elektriese motors, MRI-masjiene, skrootwerf-hyskrane</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Die Aarde as 'n magneet</h2>
+    <p>Die Aarde tree op soos 'n reusagtige staafmagneet. Sy kern (grootliks bestaande uit vloeibare yster en nikkel) genereer 'n magnetiese veld wat ver die ruimte in strek en die <strong>magnetosfeer</strong> vorm. Dit beskerm lewe op Aarde teen skadelike sonwind-deeltjies.</p>
+    <ul>
+      <li>Die Aarde se <strong>geografiese Noordpool</strong> is eintlik naby 'n magnetiese <strong>Suidpool</strong> — dit is waarom die noordsoekende punt van 'n kompasnaald (die N-pool) daarheen aangetrek word.</li>
+      <li>Die hoek tussen geografiese noord en magnetiese noord word <strong>magnetiese deklinasie</strong> genoem.</li>
+      <li>'n <strong>Kompas</strong> is 'n vrylik opgehangde magnetiese naald wat met die Aarde se magnetiese veld belyn en altyd ongeveer noord wys.</li>
+    </ul>
+    <div class="callout"><strong>Elektromagnetisme:</strong> In 1820 het Hans Christian Ørsted ontdek dat 'n elektriese stroom 'n magnetiese veld rondom homself skep. Hierdie verband tussen elektrisiteit en magnetisme — <strong>elektromagnetisme</strong> genoem — is die grondslag van elektriese motors, generators, transformators en MRI-masjiene.</div>
+
+    <h2>Toepassings van magnetisme</h2>
+    <ul>
+      <li><strong>Kompas:</strong> Gebruik die Aarde se magnetiese veld vir navigasie.</li>
+      <li><strong>Elektriese motor:</strong> Gebruik die krag tussen 'n stroomdraende spoel en 'n magneet om rotasie te produseer.</li>
+      <li><strong>Generator:</strong> Skakel kinetiese energie om na elektriese energie deur elektromagnetiese induksie te gebruik.</li>
+      <li><strong>Maglev-treine:</strong> Gebruik kragtige elektromagnete om treine sonder wrywing te laat sweef en voort te dryf.</li>
+      <li><strong>MRI (Magnetiese Resonansie-beelding):</strong> Gebruik baie sterk magnetiese velde om die binnekant van die menslike liggaam af te beeld.</li>
+      <li><strong>Luidsprekers:</strong> Gebruik 'n elektromagneet wat naby 'n permanente magneet vibreer om klank te produseer.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Magnetiese-veld-visualiseerder</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Sleep die magnete. Skakel tussen ongelyksoortige pole (aantrekking) en gelyksoortige pole (afstoting) om te sien hoe die veldpatroon verander. Skakel kompasmodus aan om te sien hoe 'n naald met die plaaslike veld belyn.</p>
+  <div class="sim-layout">
+    <div class="sim-canvas-wrap">
+      <h3>Velddiagram</h3>
+      <canvas id="magCanvas" height="380"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Poolkonfigurasie</div>
+        <div class="ctype-row">
+          <button class="ctype-btn active" id="btnUnlike" onclick="setPoleMode('unlike')">N–S (Trek aan)</button>
+          <button class="ctype-btn" id="btnLike" onclick="setPoleMode('like')">N–N (Stoot af)</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Vertoonmodus</div>
+        <div class="ctype-row">
+          <button class="ctype-btn active" id="btnArrows" onclick="setDisplayMode('arrows')">Pyle</button>
+          <button class="ctype-btn" id="btnCompass" onclick="setDisplayMode('compass')">Kompas</button>
+        </div>
+        <div class="info-box" id="modeInfo"><strong>Pyl-modus:</strong> Klein pyle wys die rigting van die magnetiese veld by elke punt. Helderder pyle = sterker veld.</div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Magneetsterkte</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="sliderStrength" min="1" max="5" step="0.5" value="3" oninput="strengthChanged()" style="flex:1;accent-color:#fbbf24;cursor:pointer">
+          <span style="font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:28px;text-align:right" id="valStrength">3</span>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Sleutel</div>
+        <div style="font-size:12px;color:var(--muted);line-height:2">
+          <div><span style="color:#ef4444;font-weight:700">■</span> Noordpool (rooi)</div>
+          <div><span style="color:#3b82f6;font-weight:700">■</span> Suidpool (blou)</div>
+          <div><span style="color:#fbbf24;font-weight:700">→</span> Veldrigting</div>
+          <div style="margin-top:6px;font-size:11px">Sleep die magnete om hulle te herposisioneer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings deur vir enige wat jy verkeerd gehad het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord al die vrae in jou oefenboek. Teken diagramme waar gevra word.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Gee die reël vir die wisselwerking tussen magnetiese pole. Gee 'n voorbeeld van twee pole wat mekaar aantrek en twee pole wat mekaar afstoot.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Teken 'n staafmagneet en skets die magnetiese veldlyne rondom dit. Merk die Noord- en Suidpole. Merk op jou diagram 'n gebied van sterk veld en 'n gebied van swak veld.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (2 punte)</div><div class="wb-qtext">Verduidelik waarom 'n kompasnaald ongeveer noord wys. Verwys in jou antwoord na die Aarde se magnetiese veld en die pole van die kompasnaald.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (2 punte)</div><div class="wb-qtext">Onderskei tussen 'n permanente magneet en 'n elektromagneet. Gee EEN voordeel van 'n elektromagneet bo 'n permanente magneet.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">'n Leerder beweer dat as jy 'n staafmagneet in twee sny, jy een stuk met slegs 'n Noordpool en een stuk met slegs 'n Suidpool sal kry. Is die leerder korrek? Verduidelik jou antwoord volledig.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (2 punte)</div><div class="wb-qtext">Noem TWEE toepassings van magnetisme in die alledaagse lewe en verduidelik hoe magnetisme in elkeen gebruik word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 7 · (6 punte)</div><div class="wb-qtext">'n Leerder bou 'n elektromagneet deur draad om 'n ysterspyker te draai en dit aan 'n battery te koppel. Deur elke keer DIESELFDE battery en stroom te gebruik, tel sy hoeveel skuifspeldjies die elektromagneet kan optel vir verskillende getalle spoeldraaie:
+      <table class="symbols-table" style="margin:12px 0">
+        <thead><tr><th>Aantal spoeldraaie</th><th>10</th><th>20</th><th>30</th><th>40</th></tr></thead>
+        <tbody><tr><td><strong>Skuifspeldjies opgetel</strong></td><td>3</td><td>6</td><td>9</td><td>11</td></tr></tbody>
+      </table>
+      (a) Beskryf die verhouding wat getoon word tussen die aantal spoeldraaie en die aantal skuifspeldjies wat opgetel word. (2 punte)<br>
+      (b) Gebruik die patroon in die tabel en voorspel ongeveer hoeveel skuifspeldjies met slegs 5 draaie opgetel sou word. Verduidelik jou redenasie. (2 punte)<br>
+      (c) Stel EEN ander verandering voor (behalwe die aantal draaie) wat die leerder kan maak om te verhoog hoeveel skuifspeldjies die elektromagneet kan optel. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
+}
+
+/* ---- Magnetic field visualiser ---- */
+const magCanvas = document.getElementById('magCanvas');
+const magCtx = magCanvas.getContext('2d');
+
+let poleMode = 'unlike'; // 'unlike' or 'like'
+let displayMode = 'arrows'; // 'arrows' or 'compass'
+let magStrength = 3;
+let animT = 0;
+
+// Two magnets (bar magnets) represented as dipoles
+// Each magnet has a position, orientation, and an N pole and S pole offset
+let magnets = [
+  { x: 0, y: 0, label: 'Left', dragging: false },
+  { x: 0, y: 0, label: 'Right', dragging: false }
+];
+let dragTarget = null;
+let dragOffX = 0, dragOffY = 0;
+
+function resizeMag() {
+  const W = magCanvas.offsetWidth || 560;
+  const H = 380;
+  magCanvas.width = W * (window.devicePixelRatio || 1);
+  magCanvas.height = H * (window.devicePixelRatio || 1);
+  magCtx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+  // Reset magnet positions
+  magnets[0].x = W * 0.30;
+  magnets[0].y = H * 0.50;
+  magnets[1].x = W * 0.70;
+  magnets[1].y = H * 0.50;
+}
+
+function setPoleMode(m) {
+  poleMode = m;
+  document.getElementById('btnUnlike').classList.toggle('active', m === 'unlike');
+  document.getElementById('btnLike').classList.toggle('active', m === 'like');
+}
+
+function setDisplayMode(m) {
+  displayMode = m;
+  document.getElementById('btnArrows').classList.toggle('active', m === 'arrows');
+  document.getElementById('btnCompass').classList.toggle('active', m === 'compass');
+  document.getElementById('modeInfo').innerHTML = m === 'arrows'
+    ? '<strong>Pyl-modus:</strong> Klein pyle wys die rigting van die magnetiese veld by elke punt. Helderder pyle = sterker veld.'
+    : '<strong>Kompasmodus:</strong> Elke naald wys hoe \'n regte kompas op daardie plek in die veld sou wys.';
+}
+
+function strengthChanged() {
+  magStrength = parseFloat(document.getElementById('sliderStrength').value);
+  document.getElementById('valStrength').textContent = magStrength.toFixed(1);
+}
+
+// Compute field at (x, y) from a magnetic dipole at (px, py) with moment pointing in direction (mx, my)
+function dipoleField(x, y, px, py, mx, my, strength) {
+  const dx = x - px, dy = y - py;
+  const r2 = dx * dx + dy * dy;
+  if (r2 < 100) return [0, 0];
+  const r = Math.sqrt(r2);
+  const r3 = r2 * r;
+  const r5 = r3 * r2;
+  // m dot r
+  const mDotR = mx * dx + my * dy;
+  const Bx = strength * (3 * mDotR * dx / r5 - mx / r3);
+  const By = strength * (3 * mDotR * dy / r5 - my / r3);
+  return [Bx, By];
+}
+
+function getField(x, y) {
+  const W = magCanvas.offsetWidth || 560;
+  const H = 380;
+  // Magnet 1: left, moment pointing right (+x) — N is to the right
+  // Magnet 2: depends on poleMode
+  // In 'unlike' mode: magnet2 N pole faces left (moment pointing left)
+  // In 'like' mode: magnet2 N pole faces right (same as magnet1)
+  const m1x = 1, m1y = 0;
+  const m2x = poleMode === 'unlike' ? -1 : 1;
+  const m2y = 0;
+
+  const [B1x, B1y] = dipoleField(x, y, magnets[0].x, magnets[0].y, m1x, m1y, magStrength * 4000);
+  const [B2x, B2y] = dipoleField(x, y, magnets[1].x, magnets[1].y, m2x, m2y, magStrength * 4000);
+  return [B1x + B2x, B1y + B2y];
+}
+
+function drawMagnet(ctx, mx, my, mode) {
+  const hw = 42, hh = 14;
+  // Left half = S pole (or S depending on which magnet)
+  // Magnet 1: left half = S, right half = N
+  // Magnet 2: unlike => left half = N, right half = S; like => left half = S, right half = N
+  let leftCol, rightCol, leftLabel, rightLabel;
+  if (mode === 'left') {
+    leftCol = '#3b82f6'; rightCol = '#ef4444';
+    leftLabel = 'S'; rightLabel = 'N';
+  } else if (mode === 'unlike') {
+    leftCol = '#ef4444'; rightCol = '#3b82f6';
+    leftLabel = 'N'; rightLabel = 'S';
+  } else {
+    leftCol = '#3b82f6'; rightCol = '#ef4444';
+    leftLabel = 'S'; rightLabel = 'N';
+  }
+  // Shadow
+  ctx.shadowColor = 'rgba(0,0,0,0.4)';
+  ctx.shadowBlur = 10;
+  // Left half
+  ctx.fillStyle = leftCol;
+  ctx.beginPath();
+  ctx.roundRect(mx - hw, my - hh, hw, hh * 2, [6, 0, 0, 6]);
+  ctx.fill();
+  // Right half
+  ctx.fillStyle = rightCol;
+  ctx.beginPath();
+  ctx.roundRect(mx, my - hh, hw, hh * 2, [0, 6, 6, 0]);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  // Labels
+  ctx.fillStyle = 'rgba(255,255,255,0.90)';
+  ctx.font = 'bold 12px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(leftLabel, mx - hw / 2, my);
+  ctx.fillText(rightLabel, mx + hw / 2, my);
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawArrowField(ctx, W, H) {
+  const spacing = 36;
+  for (let gx = spacing / 2; gx < W; gx += spacing) {
+    for (let gy = spacing / 2; gy < H; gy += spacing) {
+      // Skip if too close to a magnet
+      let skip = false;
+      for (const m of magnets) {
+        const d = Math.hypot(gx - m.x, gy - m.y);
+        if (d < 52) { skip = true; break; }
+      }
+      if (skip) continue;
+
+      const [bx, by] = getField(gx, gy);
+      const mag = Math.hypot(bx, by);
+      if (mag < 0.001) continue;
+
+      const nx = bx / mag, ny = by / mag;
+      const strength = Math.min(1, Math.log1p(mag * 0.001) / 4);
+      const alpha = 0.15 + strength * 0.80;
+      const len = 10 + strength * 8;
+
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(Math.atan2(ny, nx));
+      ctx.strokeStyle = `rgba(251,191,36,${alpha})`;
+      ctx.fillStyle = `rgba(251,191,36,${alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(-len / 2, 0);
+      ctx.lineTo(len / 2 - 4, 0);
+      ctx.stroke();
+      // Arrowhead
+      ctx.beginPath();
+      ctx.moveTo(len / 2, 0);
+      ctx.lineTo(len / 2 - 5, -3);
+      ctx.lineTo(len / 2 - 5, 3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+function drawCompassField(ctx, W, H) {
+  const spacing = 48;
+  for (let gx = spacing / 2; gx < W; gx += spacing) {
+    for (let gy = spacing / 2; gy < H; gy += spacing) {
+      let skip = false;
+      for (const m of magnets) {
+        const d = Math.hypot(gx - m.x, gy - m.y);
+        if (d < 60) { skip = true; break; }
+      }
+      if (skip) continue;
+
+      const [bx, by] = getField(gx, gy);
+      const mag = Math.hypot(bx, by);
+      if (mag < 0.001) continue;
+
+      const angle = Math.atan2(by, bx);
+      const strength = Math.min(1, Math.log1p(mag * 0.001) / 4);
+      const alpha = 0.25 + strength * 0.65;
+      const r = 10;
+
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(angle);
+      // N half (red)
+      ctx.fillStyle = `rgba(239,68,68,${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(r, -3.5);
+      ctx.lineTo(r, 3.5);
+      ctx.closePath();
+      ctx.fill();
+      // S half (blue)
+      ctx.fillStyle = `rgba(59,130,246,${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-r, -3.5);
+      ctx.lineTo(-r, 3.5);
+      ctx.closePath();
+      ctx.fill();
+      // Centre dot
+      ctx.beginPath();
+      ctx.arc(0, 0, 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+
+function drawMagFrame() {
+  if (!document.getElementById('tab-explore').classList.contains('active')) {
+    requestAnimationFrame(drawMagFrame);
+    return;
+  }
+  animT += 0.02;
+  const W = magCanvas.offsetWidth || 560;
+  const H = 380;
+  magCtx.clearRect(0, 0, W, H);
+
+  // Background grid
+  magCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+  magCtx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { magCtx.beginPath(); magCtx.moveTo(x, 0); magCtx.lineTo(x, H); magCtx.stroke(); }
+  for (let y = 0; y < H; y += 40) { magCtx.beginPath(); magCtx.moveTo(0, y); magCtx.lineTo(W, y); magCtx.stroke(); }
+
+  // Draw field
+  if (displayMode === 'arrows') drawArrowField(magCtx, W, H);
+  else drawCompassField(magCtx, W, H);
+
+  // Draw magnets on top
+  drawMagnet(magCtx, magnets[0].x, magnets[0].y, 'left');
+  drawMagnet(magCtx, magnets[1].x, magnets[1].y, poleMode === 'unlike' ? 'unlike' : 'like');
+
+  // Labels
+  magCtx.font = '11px "JetBrains Mono",monospace';
+  magCtx.fillStyle = 'rgba(210,218,245,0.35)';
+  magCtx.textAlign = 'center';
+  magCtx.fillText('Magneet 1', magnets[0].x, magnets[0].y + 28);
+  magCtx.fillText('Magneet 2', magnets[1].x, magnets[1].y + 28);
+
+  requestAnimationFrame(drawMagFrame);
+}
+
+// Drag handling
+function getCanvasPos(e) {
+  const rect = magCanvas.getBoundingClientRect();
+  const scaleX = (magCanvas.offsetWidth || 560) / rect.width;
+  const scaleY = 380 / rect.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return [(clientX - rect.left) * scaleX, (clientY - rect.top) * scaleY];
+}
+
+function onPointerDown(e) {
+  const [cx, cy] = getCanvasPos(e);
+  for (const m of magnets) {
+    if (Math.hypot(cx - m.x, cy - m.y) < 50) {
+      dragTarget = m;
+      dragOffX = cx - m.x;
+      dragOffY = cy - m.y;
+      e.preventDefault();
+      return;
+    }
+  }
+}
+
+function onPointerMove(e) {
+  if (!dragTarget) return;
+  const [cx, cy] = getCanvasPos(e);
+  const W = magCanvas.offsetWidth || 560;
+  dragTarget.x = Math.max(50, Math.min(W - 50, cx - dragOffX));
+  dragTarget.y = Math.max(20, Math.min(360, cy - dragOffY));
+  e.preventDefault();
+}
+
+function onPointerUp() { dragTarget = null; }
+
+magCanvas.addEventListener('mousedown', onPointerDown);
+magCanvas.addEventListener('mousemove', onPointerMove);
+magCanvas.addEventListener('mouseup', onPointerUp);
+magCanvas.addEventListener('touchstart', onPointerDown, { passive: false });
+magCanvas.addEventListener('touchmove', onPointerMove, { passive: false });
+magCanvas.addEventListener('touchend', onPointerUp);
+
+window.addEventListener('resize', () => { resizeMag(); });
+resizeMag();
+requestAnimationFrame(drawMagFrame);
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Wat gebeur wanneer die Noordpole van twee staafmagnete naby mekaar gebring word?',
+    opts: ['Hulle trek mekaar aan', 'Hulle stoot mekaar af', 'Niks gebeur nie', 'Een verloor sy magnetisme'],
+    ans: 1,
+    exp: 'Gelyksoortige pole stoot mekaar af. Twee Noordpole of twee Suidpole sal weg van mekaar beweeg. Slegs ongelyksoortige pole (N en S) trek mekaar aan.'
+  },
+  {
+    text: "Watter van die volgende materiale word deur 'n magneet aangetrek?",
+    opts: ['Aluminium', 'Koper', 'Yster', 'Plastiek'],
+    ans: 2,
+    exp: "Yster is 'n ferromagnetiese materiaal en word deur magnete aangetrek. Aluminium en koper is nie-magnetiese metale. Plastiek is 'n nie-magnetiese nie-metaal."
+  },
+  {
+    text: "Magnetiese veldlyne beweeg vanaf watter pool na watter pool BUITE 'n magneet?",
+    opts: ['Suid na Noord', 'Noord na Suid', 'Hulle het geen rigting nie', 'Hulle beweeg in sirkels rondom die magneet'],
+    ans: 1,
+    exp: 'Buite die magneet beweeg veldlyne van Noord na Suid. Binne die magneet beweeg hulle van Suid na Noord en vorm geslote lusse.'
+  },
+  {
+    text: "Wat is 'n kompas en hoe werk dit?",
+    opts: [
+      "'n Toestel wat magnetiese sterkte met elektrisiteit meet",
+      "'n Vrylik opgehangde magnetiese naald wat met die Aarde se magnetiese veld belyn",
+      "'n Instrument wat gebruik word om sirkels te teken",
+      "'n Toestel wat 'n magnetiese veld skep"
+    ],
+    ans: 1,
+    exp: "'n Kompas bevat 'n vrylik draaiende gemagnetiseerde naald. Die Aarde se magnetiese veld oefen 'n draaimoment op die naald uit, wat dit laat belyn en ongeveer na geografiese noord laat wys."
+  },
+  {
+    text: "'n Elektromagneet verskil van 'n permanente magneet omdat 'n elektromagneet:",
+    opts: ['Altyd sterker is', 'Aan- en afgeskakel kan word', 'Slegs in een rigting werk', 'Geen magnetiese veld produseer nie'],
+    ans: 1,
+    exp: "'n Elektromagneet word geskep deur elektriese stroom deur 'n draadspoel te stuur. Wanneer die stroom afgeskakel word, verdwyn die magnetisme — dit is die sleutelvoordeel daarvan vir baie toepassings."
+  },
+  {
+    text: "'n Staafmagneet word in twee gesny. Wat is die uitslag?",
+    opts: [
+      'Een stuk het slegs \'n N-pool, die ander slegs \'n S-pool',
+      'Beide stukke verloor hulle magnetisme',
+      'Elke stuk word \'n volledige magneet met beide N- en S-pole',
+      'Die stukke word sterker magnete'
+    ],
+    ans: 2,
+    exp: 'Magnetiese pole kan nie geïsoleer word nie. Om \'n magneet te sny skep bloot twee kleiner volledige magnete, elk met sy eie Noord- en Suidpool. Dit geld ongeag hoeveel keer jy die magneet sny.'
+  },
+  {
+    text: "Twee staafmagnete word met hulle Noordpole na mekaar gedraai geplaas. 'n Leerder skets die veldlyne en vind dat byna geen lyne direk deur die gaping tussen die twee N-pole beweeg nie — hulle buig eerder weg en bondel op die buitenste kante van elke magneet. Wat toon hierdie patroon, en waarom gebeur dit?",
+    opts: [
+      'Die magnete trek sterk aan in die gaping, aangesien veldlyne altyd die digste tussen twee magnete is',
+      'Die twee N-pole stoot mekaar af, sodat die veldlyne weg van die gebied tussen hulle gedruk word, wat \'n swak veld direk tussen die gelyksoortige pole laat',
+      'Een van die twee magnete het sy magnetisme heeltemal verloor',
+      'Veldlyne wys altyd direk van een magneet na die ander, ongeag watter pole na mekaar draai'
+    ],
+    ans: 1,
+    exp: 'Gelyksoortige pole (N–N) stoot mekaar af. Omdat albei magnete veldlyne weg van mekaar in daardie gaping druk, buig die lyne na buite in plaas daarvan om die twee magnete direk te verbind — wat \'n swak (byna nul) veld tussen hulle laat, heel anders as die digte, direkte veldlyne wat jy tussen \'n N-pool en \'n S-pool sou sien, wat mekaar aantrek.'
+  },
+  {
+    text: "'n Kompasnaald se noordsoekende punt wys altyd na die Aarde se geografiese Noordpool. Deur die reël te gebruik dat ongelyksoortige pole mekaar aantrek, wat kan jy aflei oor die magnetiese poolaard van die Aarde naby sy geografiese Noordpool?",
+    opts: [
+      'Dit moet \'n magnetiese Noordpool wees, aangesien gelyksoortige pole mekaar aantrek',
+      'Dit moet \'n magnetiese Suidpool wees, aangesien die kompasnaald se N-pool daarheen aangetrek word, en slegs ongelyksoortige pole mekaar aantrek',
+      'Die Aarde het nêrens naby sy pole enige magnetiese poolaard nie',
+      'Dit is eintlik die kompasnaald se S-pool wat noord wys, nie die N-pool nie'
+    ],
+    ans: 1,
+    exp: 'Ongelyksoortige pole trek mekaar aan. Aangesien die kompasnaald se N-pool na die Aarde se geografiese Noordpool aangetrek word, moet die magnetiese pool wat daar geleë is \'n Suidpool wees — \'n effens verrassende, maar logiese gevolgtrekking uit dieselfde eenvoudige reël wat enige twee magnete beheer.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Hou vol — gaan die les weer deur!' : score <= 4 ? 'Goeie poging — gaan die verduidelikings deur.' : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

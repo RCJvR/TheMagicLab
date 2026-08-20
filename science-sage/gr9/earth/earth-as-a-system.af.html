@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Aarde as 'n Sisteem — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+    .sphere-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;align-items:center;justify-content:center;min-height:440px}
+    .sphere-svg-wrap{width:100%;max-width:460px}
+    .sphere-shape{cursor:pointer;transition:all 200ms}
+    .sphere-shape:hover{filter:brightness(1.25)}
+    .sphere-label{font-family:var(--fd);font-weight:800;font-size:14px;pointer-events:none;text-anchor:middle}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px;min-height:280px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .sphere-name{font-weight:800;font-size:19px;letter-spacing:-0.02em;margin-bottom:6px}
+    .sphere-def{font-size:12.5px;color:rgba(210,218,245,.75);line-height:1.7;margin-bottom:12px}
+    .interact-item{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;color:rgba(210,218,245,.70);line-height:1.6}
+    .interact-item:last-child{border-bottom:none}
+    .interact-item strong{color:var(--text)}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.sphere-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+      .sphere-wrap{min-height:320px}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Die Aarde &amp; Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Die Aarde &amp; Daarbuite · Les 5</div>
+  <h1 class="lesson-title">Die Aarde as 'n Sisteem</h1>
+  <p class="lesson-sub">Lug, water, rots en lewe is nie afsonderlike wêrelde nie — hulle is vier ineenvlegtende sfere wat mekaar voortdurend vorm en van mekaar afhanklik is.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="globe" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Die Aarde: 'n sisteem van sisteme</h2>
+    <p>'n <strong>Sisteem</strong> is 'n stel onderling verbonde dele wat as 'n geheel saamwerk, waar 'n verandering in een deel die ander beïnvloed. Die Aarde self kan verstaan word as 'n reuse-sisteem wat uit <strong>vier hoofsfere</strong> bestaan: die atmosfeer, die hidrosfeer, die litosfeer en die biosfeer. Geen van hierdie sfere bestaan in isolasie nie — hulle wissel voortdurend materie en energie met mekaar uit.</p>
+
+    <h2>Die vier sfere</h2>
+    <table class="planets-table">
+      <thead><tr><th>Sfeer</th><th>Wat dit is</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Atmosfeer</strong></td><td>Die laag gasse (lug) rondom die Aarde</td><td>Die lug wat ons inasem, wolke, wind, weer</td></tr>
+        <tr><td><strong>Hidrosfeer</strong></td><td>Al die water op, onder, en bo die Aarde se oppervlak</td><td>Oseane, riviere, mere, grondwater, ys, waterdamp</td></tr>
+        <tr><td><strong>Litosfeer</strong></td><td>Die vaste, rotsagtige buitelaag van die Aarde — die kors en boonste mantel</td><td>Berge, rotse, grond, die oseaanvloer</td></tr>
+        <tr><td><strong>Biosfeer</strong></td><td>Alle lewende organismes op Aarde en die omgewings waarin hulle leef</td><td>Woude, oseane se lewende wesens, mense, mikro-organismes</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Geheuewenk: Lug (atmosfeer), Water (hidrosfeer), Rots (litosfeer), Lewe (biosfeer) — "L-W-R-L", die vier sfere van die Aarde se sisteem.</div>
+
+    <h2>Sisteemdenke: alles is verbind</h2>
+    <p>Die sleutel-CAPS-idee in hierdie onderwerp is <strong>sisteemdenke</strong>: 'n verandering in enige een sfeer rimpel na buite en beïnvloed die ander. Die Aarde se sfere is nie vier afsonderlike "boksies" nie — hulle oorvleuel en wissel voortdurend met mekaar.</p>
+    <div class="callout"><strong>Voorbeeld — die waterkringloop:</strong> Water verdamp vanaf die oseaan (hidrosfeer) tot waterdamp (atmosfeer), vorm wolke, val as reën, en sypel in die grond in of vloei oor rots (litosfeer), voordat dit deur plantwortels opgeneem word (biosfeer) of terug see toe vloei. Hierdie enkele kringloop verbind al vier sfere.</div>
+
+    <h2>Hoe die sfere wisselwerk — voorbeelde</h2>
+    <ul>
+      <li><strong>Atmosfeer ↔ Hidrosfeer:</strong> Die son verhit oseaanwater, wat verdamping in die atmosfeer veroorsaak; die atmosfeer gee water terug aan die hidrosfeer as neerslag (reën, sneeu).</li>
+      <li><strong>Atmosfeer ↔ Litosfeer:</strong> Wind en temperatuurveranderinge veroorsaak <strong>verwering</strong> — die fisiese en chemiese afbraak van rots — oor lang tydperke.</li>
+      <li><strong>Hidrosfeer ↔ Litosfeer:</strong> Vloeiende water veroorsaak <strong>erosie</strong>, wat rots wegslyt en sediment vervoer wat later elders neergesit word (wat nuwe sedimentêre lae vorm).</li>
+      <li><strong>Biosfeer ↔ Atmosfeer:</strong> Plante absorbeer koolstofdioksied en vrystel suurstof deur fotosintese, wat direk die samestelling van die lug verander.</li>
+      <li><strong>Biosfeer ↔ Hidrosfeer:</strong> Lewende organismes het water nodig om te oorleef; akwatiese ekosisteme (riviere, oseane, vleilande) ondersteun enorme biodiversiteit.</li>
+      <li><strong>Biosfeer ↔ Litosfeer:</strong> Plantwortels breek rots oor tyd af, dra by tot grondvorming, en organismes woel in of leef op die vaste Aarde.</li>
+    </ul>
+
+    <h2>'n Verandering in een sfeer beïnvloed die ander</h2>
+    <p>Omdat die sfere onderling verbind is, kan 'n versteuring in een sfeer veranderinge regoor die hele Aarde-sisteem ontketen. 'n Klassieke voorbeeld is 'n <strong>vulkaniese uitbarsting</strong>:</p>
+    <ul>
+      <li>'n Vulkaan (deel van die <strong>litosfeer</strong>) bars uit, en vrystel lawa, as en gasse.</li>
+      <li>Vulkaniese gasse en as beweeg in die <strong>atmosfeer</strong> in, wat soms sonlig blokkeer en die klimaat tydelik afkoel, of tot kweekhuisgasse bydra.</li>
+      <li>As wat in riviere en oseane val, kan die waterkwaliteit in die <strong>hidrosfeer</strong> beïnvloed.</li>
+      <li>Veranderde sonlig, lugkwaliteit en watertoestande kan plante, diere en ekosisteme in die <strong>biosfeer</strong> skaad of ontwrig.</li>
+    </ul>
+    <div class="callout"><strong>Sisteem-idee in een sin:</strong> Jy kan nie een sfeer verander sonder om die ander te beïnvloed nie — die Aarde tree op as 'n enkele, onderling verbonde sisteem eerder as vier afsonderlike dele.</div>
+
+    <h2>Waarom dit saak maak</h2>
+    <p>Om die Aarde as 'n sisteem te verstaan, help wetenskaplikes voorspel hoe menslike aktiwiteite — soos die verbranding van fossielbrandstowwe (wat die atmosfeer beïnvloed), die opdam van riviere (wat die hidrosfeer beïnvloed), of mynbou (wat die litosfeer beïnvloed) — na buite sal rimpel en die biosfeer, insluitend die mens se eie lewe, sal beïnvloed.</p>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Die Vier Sfere-Verkenner</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Klik enige sfeer in die diagram om sy definisie te sien en hoe dit met elk van die ander drie sfere wisselwerk.</p>
+  <div class="explore-layout">
+    <div class="sphere-wrap">
+      <div class="sphere-svg-wrap">
+        <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <circle class="sphere-shape" id="shape-atmosphere" cx="185" cy="150" r="115" fill="rgba(96,165,250,0.28)" stroke="rgba(96,165,250,0.55)" stroke-width="2" onclick="selectSphere('atmosphere')"/>
+          <circle class="sphere-shape" id="shape-hydrosphere" cx="275" cy="150" r="115" fill="rgba(59,130,246,0.28)" stroke="rgba(59,130,246,0.55)" stroke-width="2" onclick="selectSphere('hydrosphere')"/>
+          <circle class="sphere-shape" id="shape-lithosphere" cx="185" cy="255" r="115" fill="rgba(180,120,70,0.28)" stroke="rgba(180,120,70,0.55)" stroke-width="2" onclick="selectSphere('lithosphere')"/>
+          <circle class="sphere-shape" id="shape-biosphere" cx="275" cy="255" r="115" fill="rgba(74,222,128,0.28)" stroke="rgba(74,222,128,0.55)" stroke-width="2" onclick="selectSphere('biosphere')"/>
+          <text class="sphere-label" x="140" y="105" fill="#93c5fd">ATMOSFEER</text>
+          <text class="sphere-label" x="330" y="105" fill="#60a5fa">HIDROSFEER</text>
+          <text class="sphere-label" x="120" y="360" fill="#d4a373">LITOSFEER</text>
+          <text class="sphere-label" x="345" y="360" fill="#4ade80">BIOSFEER</text>
+        </svg>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card" id="sphereInfo">
+        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:32px">Klik 'n sfeer om<br>sy besonderhede te sien</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo weer deur.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in jou oefeningboek. Gebruik voorbeelde in jou antwoorde waar moontlik.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (4 punte)</div><div class="wb-qtext">Noem die Aarde se vier sfere en gee 'n een-sin-definisie van elkeen.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Verduidelik, deur die waterkringloop as voorbeeld te gebruik, hoe die atmosfeer, hidrosfeer en litosfeer almal verbind is.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Verduidelik, aan die hand van 'n voorbeeld, hoe die biosfeer van BEIDE die atmosfeer en die hidrosfeer afhanklik is om te oorleef.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">'n Vulkaan bars uit. Beskryf hoe hierdie enkele gebeurtenis in die litosfeer die atmosfeer, hidrosfeer EN biosfeer kan beïnvloed.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Verduidelik in jou eie woorde wat bedoel word met "sisteemdenke" wanneer die Aarde bestudeer word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">'n Myn het afvalwater in 'n rivier begin vrystel. Wetenskaplikes het die volgende gemeet by 'n punt stroomop (voor die myn se uitvloei) en 'n punt stroomaf (na die myn se uitvloei):
+      <table class="planets-table" style="margin:12px 0">
+        <thead><tr><th>Meting</th><th>Stroomop</th><th>Stroomaf</th></tr></thead>
+        <tbody>
+          <tr><td>Watertroebelheid (waasagtigheid, NTU)</td><td>8</td><td>48</td></tr>
+          <tr><td>Opgeloste suurstof (mg/L)</td><td>8.4</td><td>4.2</td></tr>
+          <tr><td>Vis getel in 'n 100 m-strook</td><td>36</td><td>9</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die persentasieverandering van stroomop na stroomaf vir ELK van die drie metings. Wys jou berekeninge. (3 punte)<br>
+      (b) Verduidelik, met jou antwoorde by (a), waarom die vistelling soveel laer is stroomaf. (2 punte)<br>
+      (c) Noem die DRIE sfere van die Aarde se sisteem wat hier in wisselwerking getoon word in hierdie data, en beskryf die ketting van oorsaak en gevolg wat hulle verbind, begin by die myn. (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+const SPHERES = {
+  atmosphere: {
+    name: 'Atmosfeer', color: '#93c5fd',
+    def: 'Die laag gasse (lug) rondom die Aarde, in plek gehou deur swaartekrag. Dit sluit die suurstof in wat ons inasem, die waterdamp wat wolke vorm, en die winde wat weer skep.',
+    interactions: [
+      { with: 'Hidrosfeer', text: 'Absorbeer waterdamp deur verdamping vanaf oseane en mere, en gee water terug as reën en sneeu (neerslag).' },
+      { with: 'Litosfeer', text: 'Wind en veranderende temperature veroorsaak verwering — die geleidelike fisiese en chemiese afbraak van rots.' },
+      { with: 'Biosfeer', text: 'Voorsien suurstof vir respirasie en koolstofdioksied vir fotosintese; lewende wesens stel ook gasse terug in die lug vry.' }
+    ]
+  },
+  hydrosphere: {
+    name: 'Hidrosfeer', color: '#60a5fa',
+    def: 'Al die water wat op, onder en bo die Aarde se oppervlak gevind word — oseane, riviere, mere, grondwater, ys en waterdamp.',
+    interactions: [
+      { with: 'Atmosfeer', text: 'Water verdamp in die atmosfeer in en val terug as neerslag, wat die waterkringloop aandryf.' },
+      { with: 'Litosfeer', text: 'Vloeiende water veroorsaak erosie, wat rots wegslyt en sediment neersit wat mettertyd nuwe sedimentêre rots kan vorm.' },
+      { with: 'Biosfeer', text: 'Voorsien die water wat noodsaaklik is vir alle bekende lewe; ondersteun akwatiese ekosisteme soos riviere, vleilande en oseane.' }
+    ]
+  },
+  lithosphere: {
+    name: 'Litosfeer', color: '#d4a373',
+    def: 'Die vaste, rotsagtige buitelaag van die Aarde, bestaande uit die kors en die boonste deel van die mantel.',
+    interactions: [
+      { with: 'Atmosfeer', text: 'Vulkaniese uitbarstings stel gasse en as in die atmosfeer vry, wat klimaat en lugkwaliteit kan beïnvloed.' },
+      { with: 'Hidrosfeer', text: 'Rots en grond word deur riviere, golwe en ys geërodeer en gevorm; rots stoor ook grondwater ondergronds.' },
+      { with: 'Biosfeer', text: 'Voorsien die fisiese oppervlak, minerale en grondvoedingstowwe waarvan plante, diere en mense afhanklik is.' }
+    ]
+  },
+  biosphere: {
+    name: 'Biosfeer', color: '#4ade80',
+    def: 'Alle lewende organismes op Aarde — plante, diere, fungi en mikro-organismes — saam met die omgewings waarin hulle leef.',
+    interactions: [
+      { with: 'Atmosfeer', text: 'Fotosintese deur plante en alge verwyder koolstofdioksied uit en voeg suurstof by die atmosfeer.' },
+      { with: 'Hidrosfeer', text: 'Akwatiese lewe is heeltemal van water afhanklik; organismes beïnvloed ook waterkwaliteit en voedingstofkringlope.' },
+      { with: 'Litosfeer', text: 'Plantwortels breek rots af en dra by tot grondvorming; organismes leef in, op en woel deur die vaste Aarde.' }
+    ]
+  }
+};
+
+function selectSphere(id){
+  document.querySelectorAll('.sphere-shape').forEach(s => s.style.filter = 'none');
+  document.getElementById('shape-' + id).style.filter = 'brightness(1.4)';
+  const s = SPHERES[id];
+  document.getElementById('sphereInfo').innerHTML = `
+    <div class="sphere-name" style="color:${s.color}">${s.name}</div>
+    <div class="sphere-def">${s.def}</div>
+    <div class="ctrl-label" style="margin-top:6px">Hoe dit wisselwerk met...</div>
+    ${s.interactions.map(i => `<div class="interact-item"><strong>${i.with}:</strong> ${i.text}</div>`).join('')}
+  `;
+}
+
+const QUESTIONS=[
+  {text:'Watter van die Aarde se vier sfere verwys na die vaste, rotsagtige buitelaag van die Aarde?',
+   opts:['Atmosfeer','Hidrosfeer','Litosfeer','Biosfeer'],
+   ans:2, exp:'Die litosfeer is die vaste, rotsagtige buitelaag van die Aarde, bestaande uit die kors en die boonste deel van die mantel.'},
+  {text:'Die waterkringloop is \'n goeie voorbeeld van wisselwerking tussen watter sfere?',
+   opts:['Slegs die hidrosfeer','Slegs atmosfeer en hidrosfeer','Atmosfeer, hidrosfeer en litosfeer','Slegs die biosfeer'],
+   ans:2, exp:'Die waterkringloop verbind die hidrosfeer (oseane, riviere), die atmosfeer (verdamping, wolke, neerslag) en die litosfeer (water wat oor en deur rots en grond vloei).'},
+  {text:'Watter sfeer sluit alle lewende organismes op Aarde in?',
+   opts:['Litosfeer','Biosfeer','Hidrosfeer','Atmosfeer'],
+   ans:1, exp:'Die biosfeer sluit alle lewende organismes in — plante, diere, fungi en mikro-organismes — en die omgewings waarin hulle leef.'},
+  {text:'Waarvan is "verwering" \'n voorbeeld?',
+   opts:['Wisselwerking tussen die atmosfeer en die litosfeer','Wisselwerking tussen die biosfeer en die hidrosfeer alleen','\'n Proses wat slegs die atmosfeer beïnvloed','\'n Proses wat met geen sfeer verband hou nie'],
+   ans:0, exp:'Verwering is die fisiese en chemiese afbraak van rots as gevolg van blootstelling aan wind, reën en temperatuurveranderinge — \'n wisselwerking tussen die atmosfeer (en hidrosfeer) en die litosfeer.'},
+  {text:'\'n Vulkaniese uitbarsting stel as en gasse in die lug vry. Dit is \'n voorbeeld van:',
+   opts:['Die atmosfeer wat die litosfeer beïnvloed','Die litosfeer wat die atmosfeer beïnvloed','Die biosfeer wat die hidrosfeer beïnvloed','Geen sfeer-wisselwerking hoegenaamd nie'],
+   ans:1, exp:'\'n Vulkaniese uitbarsting ontstaan in die litosfeer, maar die gasse en as beweeg in die atmosfeer in, wat toon hoe \'n verandering in een sfeer \'n ander direk beïnvloed.'},
+  {text:'Waarom beskryf wetenskaplikes die Aarde as \'n "sisteem"?',
+   opts:['Omdat die vier sfere nooit met mekaar wisselwerk nie','Omdat \'n verandering in een sfeer al die ander sfere kan beïnvloed','Omdat slegs die biosfeer vir lewe saak maak','Omdat die sfere op verskillende planete bestaan'],
+   ans:1, exp:'Die Aarde word as \'n sisteem beskryf omdat sy vier sfere onderling verbind is — \'n verandering in een (soos \'n vulkaniese uitbarsting of ontbossing) rimpel na buite en beïnvloed die ander.'},
+  {text:'\'n Boer kap \'n woud op \'n heuwelhang om gewasse te plant. Tydens die volgende swaar reën spoel die nou-blootgestelde grond in \'n nabygeleë rivier in, wat die water troebel maak en die vispopulasie stroomaf verminder. Watter stelling beskryf die sisteem-wisselwerkings hier die beste?',
+   opts:['Slegs die biosfeer word geraak; die litosfeer en hidrosfeer speel geen rol in hierdie gebeurtenis nie','\'n Enkele verandering in die biosfeer (bome verwyder) ontketen effekte deur die litosfeer (gronderosie) en hidrosfeer (troebel water), wat dan weer die biosfeer stroomaf beïnvloed (minder vis)','Die atmosfeer is die enigste sfeer wat veranderinge in die ander drie kan ontketen','Die verwydering van bome het geen meetbare effek op grond, water of wildlewe nie omdat elke sfeer \'n aparte, geslote sisteem is'],
+   ans:1, exp:'Hierdie scenario wys hoe \'n verandering op homself kan terugkring: die biosfeer (ontbossing) beïnvloed die litosfeer (kaal grond erodeer), wat die hidrosfeer beïnvloed (troebel rivierwater), wat op sy beurt weer die biosfeer beïnvloed (minder vis stroomaf). \'n Enkele versteuring kan deur verskeie sfere rimpel en \'n tweede keer terugkeer om lewende wesens te beïnvloed.'},
+  {text:'Plaas hierdie vier gebeurtenisse van \'n vulkaniese uitbarsting in die korrekte oorsaak-en-gevolg-volgorde, van eerste tot laaste: (I) As wat in riviere val, beïnvloed waterkwaliteit. (II) \'n Vulkaan bars uit, en stel lawa, as en gasse vry. (III) Veranderde sonlig en watertoestande ontwrig plante en diere. (IV) Vulkaniese gasse en as beweeg in die atmosfeer in.',
+   opts:['II, IV, I, III','IV, II, III, I','II, I, IV, III','III, II, IV, I'],
+   ans:0, exp:'Die uitbarsting gebeur eerste in die litosfeer (II). Die as en gasse beweeg dan in die atmosfeer in (IV). Sommige van daardie as val in riviere, wat die hidrosfeer beïnvloed (I). Laastens ontwrig die veranderde lug- en watertoestande die biosfeer (III) — litosfeer → atmosfeer → hidrosfeer → biosfeer.'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':score===5?'Goed gedaan!':'Volpunte! Uitstekende werk!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

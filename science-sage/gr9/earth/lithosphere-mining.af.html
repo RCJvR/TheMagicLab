@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Litosfeer en Mynbou van Minerale Hulpbronne — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--orange:#fb923c;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 65% 50% at 50% 0%,rgba(251,146,60,0.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 0% 100%,rgba(96,165,250,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.22);color:#fdba74}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fdba74;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fb923c;border-bottom-color:#fb923c}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fdba74}
+    .key-fact{background:rgba(251,146,60,.07);border:1px solid rgba(251,146,60,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fdba74;font-family:var(--fm)}
+    .planets-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .planets-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .planets-table td{padding:9px 12px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .planets-table tr:last-child td{border-bottom:none}
+    .impact-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+    .impact-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:16px}
+    .impact-card h3{font-size:13px;font-weight:800;margin-bottom:8px}
+    .impact-card.pos h3{color:#4ade80}
+    .impact-card.neg h3{color:#f87171}
+    .impact-card ul{margin:0 0 0 16px;font-size:12.5px;color:rgba(210,218,245,.70);line-height:1.7}
+    /* Explore */
+    .explore-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+    .rock-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:20px}
+    .rock-svg-wrap{width:100%}
+    .rock-node{cursor:pointer;transition:all 200ms}
+    .rock-node:hover{filter:brightness(1.3)}
+    .rock-arrow{cursor:pointer;transition:all 200ms}
+    .rock-arrow:hover{filter:brightness(1.5)}
+    .rock-label{font-family:var(--fd);font-weight:800;font-size:13px;pointer-events:none;text-anchor:middle;fill:#fff}
+    .arrow-label{font-family:var(--fm);font-size:8.5px;pointer-events:none;text-anchor:middle;fill:rgba(210,218,245,.55)}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:18px;min-height:260px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .stage-name{font-weight:800;font-size:18px;letter-spacing:-0.02em;margin-bottom:6px}
+    .stage-desc{font-size:12.5px;color:rgba(210,218,245,.75);line-height:1.7;margin-bottom:10px}
+    .stage-example{font-size:12px;color:#fdba74;font-family:var(--fm);background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.20);border-radius:8px;padding:8px 10px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,146,60,.10);border-color:rgba(251,146,60,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fb923c}
+    /* Workbook */
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fb923c;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,146,60,.10);border:1px solid rgba(251,146,60,.25);color:#fdba74;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px;font-family:var(--fd)}
+    .print-btn:hover{background:rgba(251,146,60,.18)}
+    @media print{nav,.tabs,.print-btn,.rock-wrap,.controls{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-layout{grid-template-columns:1fr}
+      .impact-cols{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Die Aarde &amp; Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Die Aarde &amp; Daarbuite · Les 6</div>
+  <h1 class="lesson-title">Die Litosfeer en Mynbou van Minerale Hulpbronne</h1>
+  <p class="lesson-sub">Rots hou nooit op om te verander nie. Volg dit deur die rotssiklus, en ontdek dan hoe Suid-Afrika sy minerale rykdom ontgin — en teen watter prys.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is die litosfeer?</h2>
+    <p>Die <strong>litosfeer</strong> is die vaste, rotsagtige buitelaag van die Aarde. Dit bestaan uit die Aarde se <strong>kors</strong> (die dun buitenste laag) en die stywe boonste deel van die <strong>mantel</strong> daaronder. Die litosfeer is opgedeel in groot dele genaamd <strong>tektoniese plate</strong>, wat baie stadig oor tyd beweeg.</p>
+    <div class="key-fact">Die litosfeer is die bron van al die rotse, minerale en grond wat lewe, landbou, konstruksie en nywerheid op Aarde ondersteun.</div>
+
+    <h2>Die drie hoofrotstipes</h2>
+    <p>Alle rotse op Aarde val in een van drie kategorieë, gebaseer op hoe hulle gevorm is:</p>
+    <table class="planets-table">
+      <thead><tr><th>Rotstipe</th><th>Hoe dit vorm</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Stollingsgesteente</strong></td><td>Vorm wanneer magma (gesmelte rots ondergronds) of lawa (gesmelte rots op die oppervlak) afkoel en verhard</td><td>Graniet, basalt</td></tr>
+        <tr><td><strong>Sedimentêre gesteente</strong></td><td>Vorm wanneer klein sedimentdeeltjies (sand, modder, dopfragmente) oor tyd saamgepers en aanmekaargesement word</td><td>Sandsteen, kalksteen, skalie</td></tr>
+        <tr><td><strong>Metamorfe gesteente</strong></td><td>Vorm wanneer bestaande rots deur intense hitte en/of druk verander word, sonder om heeltemal te smelt</td><td>Marmer (van kalksteen), lei (van skalie)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Die rotssiklus</h2>
+    <p>Rotse is nie permanent nie — hulle word voortdurend omskep van een tipe na 'n ander oor lang geologiese tydperke, in 'n aaneenlopende lus genaamd die <strong>rotssiklus</strong>:</p>
+    <ul>
+      <li><strong>Magma/lawa koel af en verhard</strong> → vorm <strong>stollingsgesteente</strong>.</li>
+      <li><strong>Verwering en erosie</strong> breek stollingsgesteente (of enige rots) af in <strong>sediment</strong> (klein deeltjies).</li>
+      <li><strong>Kompaksie en sementasie</strong> van sediment oor tyd → vorm <strong>sedimentêre gesteente</strong>.</li>
+      <li><strong>Hitte en druk</strong> (bv. diep ondergronds, of naby tektoniese aktiwiteit) verander bestaande rots sonder om dit heeltemal te smelt → vorm <strong>metamorfe gesteente</strong>.</li>
+      <li>As enige rots genoeg verhit word om heeltemal te smelt, word dit weer <strong>magma</strong>, en die siklus herhaal.</li>
+    </ul>
+    <div class="callout"><strong>Sleutelidee:</strong> Die rotssiklus het geen vaste begin- of eindpunt nie — enige rotstipe kan uiteindelik in enige ander rotstipe omskep word, met genoeg tyd, hitte, druk, verwering of smelting.</div>
+
+    <h2>Suid-Afrika se minerale rykdom</h2>
+    <p>Suid-Afrika is een van die wêreld se rykste lande in minerale hulpbronne, en mynbou het 'n sentrale rol in sy ekonomiese geskiedenis en ontwikkeling gespeel.</p>
+    <table class="planets-table">
+      <thead><tr><th>Mineraal</th><th>Belangrikheid</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Goud</strong></td><td>Suid-Afrika was histories die wêreld se grootste goudprodusent, veral vanuit die Witwatersrand-bekken (Johannesburg-omgewing)</td></tr>
+        <tr><td><strong>Diamante</strong></td><td>Groot afsettings naby Kimberley en langs die Weskus; Suid-Afrika bly 'n beduidende wêreldprodusent</td></tr>
+        <tr><td><strong>Platinumgroepmetale</strong></td><td>Suid-Afrika hou die meerderheid van die wêreld se bekende platinumreserwes, hoofsaaklik in die Bosveld-kompleks</td></tr>
+        <tr><td><strong>Steenkool</strong></td><td>Volop in Mpumalanga; hoofsaaklik gebruik om elektrisiteit op te wek en vir uitvoer</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Hoe mynbou werk</h2>
+    <p>Mynbou is die proses waardeur waardevolle minerale of ander geologiese materiale uit die Aarde onttrek word. Daar is twee breë onttrekkingsmetodes:</p>
+    <ul>
+      <li><strong>Oppervlakmynbou (oopgroef):</strong> Gebruik wanneer die mineraalafsetting naby die oppervlak is. Lae grond en rots word verwyder om die hulpbron bloot te lê en te onttrek. Oor die algemeen goedkoper en veiliger, maar versteur 'n groter oppervlakarea.</li>
+      <li><strong>Ondergrondse mynbou:</strong> Gebruik wanneer die mineraalafsetting diep onder die oppervlak lê. Skagte en tonnels word gegrawe om die hulpbron te bereik en te onttrek. Duurder en 'n hoër risiko vir werkers, maar versteur minder oppervlakarea. Baie van Suid-Afrika se diep goudmyne is onder die diepste ter wêreld.</li>
+    </ul>
+
+    <h2>Ekonomiese belang en impak van mynbou</h2>
+    <p>Mynbou bring beide beduidende voordele en beduidende koste mee, wat versigtig teen mekaar opgeweeg moet word.</p>
+    <div class="impact-cols">
+      <div class="impact-card pos">
+        <h3>Ekonomiese voordele</h3>
+        <ul>
+          <li>Skep honderdduisende werksgeleenthede</li>
+          <li>Groot bydraer tot Suid-Afrika se BBP en uitvoerinkomste</li>
+          <li>Ondersteun verwante nywerhede (vervoer, toerusting, verwerking)</li>
+          <li>Voorsien rou materiale vir konstruksie, tegnologie en juweliersware</li>
+        </ul>
+      </div>
+      <div class="impact-card neg">
+        <h3>Omgewings- en sosiale impak</h3>
+        <ul>
+          <li>Versteur en kan land en ekosisteme permanent verander</li>
+          <li><strong>Suur mynwaterdreinering:</strong> water wat met blootgestelde sulfiedminerale reageer, word suur en kan riviere en grondwater besoedel — 'n ernstige probleem in dele van Suid-Afrika (bv. die Witwatersrand)</li>
+          <li>Stof- en lugkwaliteitimpak naby mynbougebiede</li>
+          <li>Risiko vir werkersgesondheid en -veiligheid, veral by ondergrondse mynbou</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><strong>Rehabilitasie:</strong> Mynmaatskappye word toenemend vereis om ontginde land te rehabiliteer nadat bedrywighede eindig — deur gate op te vul, besoedelde water te behandel, en plantegroei te herplant — om langtermyn-omgewingskade te verminder terwyl die ekonomiese voordele van mynbou steeds gerealiseer kan word.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Die Rotssiklus</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Klik enige fase of pyl in die lus om uit te vind wat gebeur en 'n voorbeeldrots te sien.</p>
+  <div class="explore-layout">
+    <div class="rock-wrap">
+      <div class="rock-svg-wrap">
+        <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- Loop arrows (curved paths) -->
+          <path class="rock-arrow" id="arrow-cooling" d="M 230 90 A 150 150 0 0 1 365 205" fill="none" stroke="rgba(248,113,113,0.5)" stroke-width="4" marker-end="url(#arrowhead)" onclick="selectStage('arrow-cooling')"/>
+          <path class="rock-arrow" id="arrow-weathering" d="M 365 255 A 150 150 0 0 1 265 385" fill="none" stroke="rgba(96,165,250,0.5)" stroke-width="4" marker-end="url(#arrowhead)" onclick="selectStage('arrow-weathering')"/>
+          <path class="rock-arrow" id="arrow-compaction" d="M 210 388 A 150 150 0 0 1 100 265" fill="none" stroke="rgba(74,222,128,0.5)" stroke-width="4" marker-end="url(#arrowhead)" onclick="selectStage('arrow-compaction')"/>
+          <path class="rock-arrow" id="arrow-heatpressure" d="M 95 210 A 150 150 0 0 1 200 92" fill="none" stroke="rgba(251,191,36,0.5)" stroke-width="4" marker-end="url(#arrowhead)" onclick="selectStage('arrow-heatpressure')"/>
+          <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="rgba(200,210,240,0.6)"/>
+            </marker>
+          </defs>
+
+          <!-- Stage nodes -->
+          <circle class="rock-node" id="node-magma" cx="230" cy="70" r="52" fill="rgba(248,113,113,0.30)" stroke="rgba(248,113,113,0.65)" stroke-width="2" onclick="selectStage('magma')"/>
+          <text class="rock-label" x="230" y="65">MAGMA</text>
+          <text class="rock-label" x="230" y="80" style="font-size:10px">/ LAWA</text>
+
+          <circle class="rock-node" id="node-igneous" cx="385" cy="230" r="52" fill="rgba(239,68,68,0.28)" stroke="rgba(239,68,68,0.6)" stroke-width="2" onclick="selectStage('igneous')"/>
+          <text class="rock-label" x="385" y="226">STOLLINGS-</text>
+          <text class="rock-label" x="385" y="240" style="font-size:10px">GESTEENTE</text>
+
+          <circle class="rock-node" id="node-sediment" cx="230" cy="405" r="52" fill="rgba(96,165,250,0.28)" stroke="rgba(96,165,250,0.6)" stroke-width="2" onclick="selectStage('sediment')"/>
+          <text class="rock-label" x="230" y="401">SEDIMENT</text>
+
+          <circle class="rock-node" id="node-sedimentary" cx="75" cy="230" r="52" fill="rgba(74,222,128,0.28)" stroke="rgba(74,222,128,0.6)" stroke-width="2" onclick="selectStage('sedimentary')"/>
+          <text class="rock-label" x="75" y="226">SEDIMENTÊRE</text>
+          <text class="rock-label" x="75" y="240" style="font-size:10px">GESTEENTE</text>
+
+          <circle class="rock-node" id="node-metamorphic" cx="230" cy="230" r="46" fill="rgba(251,191,36,0.30)" stroke="rgba(251,191,36,0.65)" stroke-width="2" onclick="selectStage('metamorphic')"/>
+          <text class="rock-label" x="230" y="226">METAMORFE</text>
+          <text class="rock-label" x="230" y="240" style="font-size:10px">GESTEENTE</text>
+        </svg>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card" id="stageInfo">
+        <div style="color:var(--muted);font-size:13px;text-align:center;margin-top:32px">Klik 'n fase of pyl<br>om die rotssiklus te verken</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo weer deur.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in jou oefeningboek. Gebruik diagramme waar dit help om jou antwoord te verduidelik.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Definieer die term "litosfeer" en noem die twee dele van die Aarde waaruit dit bestaan.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Teken 'n gelabelde diagram van die rotssiklus wat al drie rotstipes en die prosesse wat een na 'n ander omskep, toon.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (3 punte)</div><div class="wb-qtext">Noem DRIE minerale waarvan Suid-Afrika 'n groot wêreldprodusent is, en noem vir elkeen 'n streek van Suid-Afrika waar dit ontgin word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Onderskei tussen oppervlakmynbou (oopgroef) en ondergrondse mynbou. Gee EEN voordeel en EEN nadeel van elk.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (4 punte)</div><div class="wb-qtext">Bespreek die ekonomiese belang van mynbou in Suid-Afrika, sowel as TWEE omgewings- of sosiale impakte wat dit kan hê. Verwys in jou antwoord na suur mynwaterdreinering en rehabilitasie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">Suid-Afrika se goudproduksie het dramaties oor die dekades verander, deels omdat vlak afsettings uitgemyn is, wat myne dieper ondergronds dwing:
+      <table class="planets-table" style="margin:12px 0">
+        <thead><tr><th>Jaar</th><th>1970</th><th>1990</th><th>2010</th><th>2020</th></tr></thead>
+        <tbody><tr><td><strong>Bene. goudproduksie (ton/jaar)</strong></td><td>1 000</td><td>605</td><td>190</td><td>90</td></tr></tbody>
+      </table>
+      (a) Bereken die persentasieafname in goudproduksie van 1970 tot 2020. Wys jou berekeninge. (2 punte)<br>
+      (b) Gebruik wat jy weet oor oppervlak- teenoor ondergrondse mynbou en die betrokke koste, en stel EEN rede voor waarom produksie soveel afgeneem het, al het Suid-Afrika steeds groot goudreserwes wat ondergronds oorbly. (2 punte)<br>
+      (c) Beskryf EEN omgewingsvoordeel en EEN ekonomiese nadeel daarvan dat myne mettertyd al hoe dieper word. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+const STAGES = {
+  magma: {
+    name: 'Magma / Lawa', color: '#f87171',
+    desc: 'Gesmelte (vloeibare) rots. Onder die oppervlak word dit magma genoem; wanneer dit uit \'n vulkaan op die oppervlak uitbars, word dit lawa genoem.',
+    example: 'Voorbeeld: gesmelte rots onder \'n vulkaan soos dié gevind langs tektoniese plaatgrense.'
+  },
+  'arrow-cooling': {
+    name: 'Afkoeling en Verharding', color: '#f87171',
+    desc: 'Wanneer magma of lawa hitte verloor, koel dit af en verhard (kristalliseer) tot vaste rots. Magma wat stadig ondergronds afkoel, vorm groot kristalle; lawa wat vinnig op die oppervlak afkoel, vorm klein of geen kristalle.',
+    example: 'Proses: afkoeling → vorm stollingsgesteente, bv. graniet (stadige afkoeling ondergronds) of basalt (vinnige afkoeling op die oppervlak).'
+  },
+  igneous: {
+    name: 'Stollingsgesteente', color: '#ef4444',
+    desc: 'Rots gevorm wanneer magma of lawa afkoel en verhard. Stollingsgesteentes is die "oorspronklike" rotstipe waarmee die rotssiklus begin.',
+    example: 'Voorbeeld: Graniet — \'n harde, gespikkelde rots gevorm uit stadig-afgekoelde magma, dikwels gebruik in konstruksie.'
+  },
+  'arrow-weathering': {
+    name: 'Verwering en Erosie', color: '#60a5fa',
+    desc: 'Wind, reën, temperatuurveranderinge en lewende organismes breek rots geleidelik af in kleiner fragmente (verwering). Hierdie fragmente (sediment) word dan deur wind, water of ys weggevoer (erosie).',
+    example: 'Proses: verwering en erosie → breek stollingsgesteente (of enige rots) af in sediment soos sand, slik of gruis.'
+  },
+  sediment: {
+    name: 'Sediment', color: '#3b82f6',
+    desc: 'Klein, los deeltjies van afgebroke rots, minerale of organiese materiaal — soos sand, modder of dopfragmente — wat in lae opgaar, dikwels op die bodem van riviere, mere of oseane.',
+    example: 'Voorbeeld: sandkorrels wat op \'n rivierbedding of strand opgaar.'
+  },
+  'arrow-compaction': {
+    name: 'Kompaksie en Sementasie', color: '#4ade80',
+    desc: 'Oor lang tydperke word lae sediment saamgepers onder die gewig van materiaal daarbo, en minerale wat in water opgelos is, sement die deeltjies aanmekaar tot vaste rots.',
+    example: 'Proses: kompaksie en sementasie → vorm sedimentêre gesteente, bv. sand word sandsteen.'
+  },
+  sedimentary: {
+    name: 'Sedimentêre gesteente', color: '#22c55e',
+    desc: 'Rots gevorm wanneer sediment oor tyd saamgepers en aanmekaargesement word. Vorm dikwels in duidelike lae en kan fossiele bevat.',
+    example: 'Voorbeeld: Sandsteen — gevorm uit saamgeperste en aanmekaargesemente sandkorrels; Kalksteen — dikwels gevorm uit mariene dopfragmente.'
+  },
+  'arrow-heatpressure': {
+    name: 'Hitte en Druk', color: '#fbbf24',
+    desc: 'Rots wat diep ondergronds begrawe is, of onderworpe is aan die intense hitte en druk van tektoniese aktiwiteit, kan fisies en chemies verander word sonder om heeltemal te smelt.',
+    example: 'Proses: hitte en druk → vorm metamorfe gesteente, bv. kalksteen word marmer, skalie word lei.'
+  },
+  metamorphic: {
+    name: 'Metamorfe gesteente', color: '#f59e0b',
+    desc: 'Rots wat van \'n bestaande rotstipe (stollingsgesteente, sedimentêre gesteente, of selfs \'n ander metamorfe gesteente) deur intense hitte en/of druk verander is, sonder om heeltemal te smelt.',
+    example: 'Voorbeeld: Marmer — gevorm uit kalksteen onder hitte en druk; Lei — gevorm uit skalie.'
+  }
+};
+
+// melting arrow back to magma is implied by clicking metamorphic -> add a virtual "melting" info triggered by a second click path
+function selectStage(id){
+  document.querySelectorAll('.rock-node, .rock-arrow').forEach(el => el.style.filter = 'none');
+  const el = document.getElementById(id === 'magma' ? 'node-magma' : id === 'igneous' ? 'node-igneous' : id === 'sediment' ? 'node-sediment' : id === 'sedimentary' ? 'node-sedimentary' : id === 'metamorphic' ? 'node-metamorphic' : id);
+  if (el) el.style.filter = 'brightness(1.4)';
+  const s = STAGES[id];
+  let extra = '';
+  if (id === 'metamorphic') {
+    extra = `<div class="stage-example" style="margin-top:8px">Let wel: as metamorfe gesteente genoeg verhit word om heeltemal te smelt, word dit weer magma — wat die siklus voltooi!</div>`;
+  }
+  document.getElementById('stageInfo').innerHTML = `
+    <div class="stage-name" style="color:${s.color}">${s.name}</div>
+    <div class="stage-desc">${s.desc}</div>
+    <div class="stage-example">${s.example}</div>
+    ${extra}
+  `;
+}
+
+const QUESTIONS=[
+  {text:'Wat is die litosfeer?',
+   opts:['Die laag gasse rondom die Aarde','Die vaste, rotsagtige buitelaag van die Aarde (kors en boonste mantel)','Al die water op Aarde','Alle lewende organismes op Aarde'],
+   ans:1, exp:'Die litosfeer is die vaste, rotsagtige buitelaag van die Aarde, bestaande uit die kors en die stywe boonste deel van die mantel.'},
+  {text:'Watter rotstipe vorm wanneer magma of lawa afkoel en verhard?',
+   opts:['Sedimentêre gesteente','Metamorfe gesteente','Stollingsgesteente','Fossielrots'],
+   ans:2, exp:'Stollingsgesteente vorm direk uit die afkoeling en verharding van magma (ondergronds) of lawa (op die oppervlak), bv. graniet en basalt.'},
+  {text:'Sandsteen is \'n voorbeeld van watter rotstipe, en hoe vorm dit?',
+   opts:['Stollingsgesteente — uit afgekoelde lawa','Sedimentêre gesteente — uit saamgeperste en aanmekaargesemente sand','Metamorfe gesteente — uit hitte en druk op skalie','Stollingsgesteente — uit afgekoelde magma'],
+   ans:1, exp:'Sandsteen is \'n sedimentêre gesteente, gevorm wanneer lae sand oor lang tydperke saamgepers en aanmekaargesement word.'},
+  {text:'Wat gebeur met rots wanneer dit aan intense hitte en druk onderwerp word sonder om heeltemal te smelt?',
+   opts:['Dit word sediment','Dit word magma','Dit word metamorfe gesteente','Dit verdwyn heeltemal'],
+   ans:2, exp:'Hitte en druk (sonder volledige smelting) verander die struktuur van bestaande rots in metamorfe gesteente, bv. kalksteen word marmer.'},
+  {text:'Waarvan is Suid-Afrika \'n groot wêreldprodusent?',
+   opts:['Slegs olie en aardgas','Goud, diamante en platinumgroepmetale','Slegs hout','Varswater-uitvoere'],
+   ans:1, exp:'Suid-Afrika is een van die wêreld se hoofprodusente van goud, diamante en platinumgroepmetale, tesame met beduidende steenkoolreserwes.'},
+  {text:'Wat is suur mynwaterdreinering?',
+   opts:[
+     '\'n Metode wat gebruik word om goud uit rots te onttrek',
+     'Water wat suur word nadat dit met blootgestelde sulfiedminerale uit mynbou reageer, en riviere en grondwater besoedel',
+     '\'n Tipe ondergrondse myntonnel',
+     'Die proses om ontginde land te rehabiliteer'
+   ],
+   ans:1, exp:'Suur mynwaterdreinering ontstaan wanneer water in aanraking kom met blootgestelde sulfiedminerale in ontginde rots, wat suur word en nabygeleë riviere en grondwater kan besoedel — \'n werklike omgewingsprobleem in dele van Suid-Afrika.'},
+  {text:'\'n Geoloog vind \'n rotsmonster met sigbare fossiele en duidelike sedimentlagen — maar naby \'n breuklyn waar vulkaniese aktiwiteit voorheen naby plaasgevind het, is sommige van daardie lae gevou en effens herkristalliseer. Watter beskrywing pas hierdie rots en wat daarmee gebeur die beste?',
+   opts:['Dit is suiwer stollingsgesteente, onaangeraak deur enige ander proses','Dit het as sedimentêre gesteente begin, en die hitte en druk naby die vulkaniese aktiwiteit skep tans dele daarvan om in metamorfe gesteente','Dit is sediment wat nog nie saamgepers is nie','Dit kan nie geklassifiseer word nie omdat dit slegs kenmerke van een rotstipe toon'],
+   ans:1, exp:'Fossiele en gelaagdheid is klassieke tekens van sedimentêre gesteente, gevorm uit saamgeperste, aanmekaargesemente sediment. Maar die vouing en herkristallisasie naby die breuklyn toon dat hitte en druk van nabygeleë geologiese aktiwiteit dele van daardie sedimentêre gesteente tans in metamorfe gesteente omskep — \'n enkele monster wat die rotssiklus in aksie vasvang.'},
+  {text:'\'n Mynmaatskappy ontdek \'n goudhoudende rotsband omtrent 3 km onder die oppervlak. Op grond van wat die keuse van mynboumetode bepaal, watter benadering is die geskikste, en waarom?',
+   opts:['Oppervlakmynbou (oopgroef), omdat dit minder land versteur','Ondergrondse mynbou, omdat die afsetting te diep lê vir oppervlakmynbou om ekonomies te bereik','Oppervlakmynbou (oopgroef), omdat dit altyd goedkoper is ongeag diepte','Geen metode sal werk nie, dus kan die band nie ontgin word nie'],
+   ans:1, exp:'Oppervlakmynbou is slegs prakties wanneer \'n afsetting naby die oppervlak is. Op 3 km diep is skagte en tonnels (ondergrondse mynbou) nodig om die band te bereik — presies waarom baie van Suid-Afrika se diep Witwatersrand-goudmyne, van die diepste ter wêreld, ondergrondse metodes gebruik ondanks die hoër koste en risiko vir werkers.'},
+];
+
+let score=0, answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o,oi)=>`
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return; answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Bly oefen — gaan die les weer deur!':score<=4?'Goeie werk — kyk na die verduidelikings.':score===5?'Goed gedaan!':'Volpunte! Uitstekende werk!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

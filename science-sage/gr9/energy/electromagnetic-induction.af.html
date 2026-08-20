@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektromagnetiese Induksie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    /* Sim extras */
+    .readout-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px;min-width:110px}
+    .readout-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+    .readout-val{font-family:var(--fm);font-size:16px;font-weight:700;color:#fcd34d}
+    input[type=range]{accent-color:#fbbf24;cursor:pointer;width:100%}
+    .tf-badge{display:inline-block;padding:3px 9px;border-radius:6px;font-family:var(--fm);font-size:10px;font-weight:700;margin-left:8px}
+    .tf-up{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);color:#86efac}
+    .tf-down{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.30);color:#fca5a5}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energie en Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Energie en Verandering · Les 2</div>
+  <h1 class="lesson-title">Elektromagnetiese Induksie</h1>
+  <p class="lesson-sub">Ontdek hoe bewegende magnete elektriese stroom skep, hoe generators kinetiese energie na elektriese energie omskakel, en hoe transformators spanning verander.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="compass" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Elektromagnetiese induksie</h2>
+    <p><strong>Elektromagnetiese induksie</strong> is die proses waardeur 'n elektromotoriese krag (EMK) — en dus 'n elektriese stroom — in 'n geleier opgewek word deur die magnetiese fluks daardeur te verander. Dit is in 1831 deur <strong>Michael Faraday</strong> ontdek, en onafhanklik ook deur Joseph Henry omtrent dieselfde tyd.</p>
+    <p>Die sleutelinsig: jy het nie 'n battery nodig om stroom deur 'n draad te dryf nie. 'n <strong>Bewegende magneet</strong> naby 'n draadspoel, of 'n spoel wat deur 'n magnetiese veld beweeg, sal 'n stroom induseer. Die relatiewe beweging tussen die geleier en die magnetiese veld is wat saak maak.</p>
+    <div class="callout"><strong>Faraday se Wet:</strong> Die geïnduseerde EMK in 'n stroombaan is eweredig aan die <em>tempo van verandering</em> van magnetiese fluks deur die stroombaan. Meer veldlyne wat per sekonde gesny word = groter geïnduseerde EMK en stroom.</div>
+
+    <h2>Hoe om geïnduseerde stroom te verhoog</h2>
+    <ul>
+      <li>Gebruik 'n <strong>sterker magneet</strong> (meer magnetiese fluks).</li>
+      <li><strong>Beweeg die magneet vinniger</strong> ('n groter tempo van fluksverandering).</li>
+      <li>Verhoog die <strong>aantal draaie</strong> in die spoel (elke draai dra sy eie geïnduseerde EMK by — hulle tel bymekaar op).</li>
+      <li>Voeg 'n <strong>sagte ysterkern</strong> binne die spoel in (konsentreer en versterk die magnetiese veld).</li>
+    </ul>
+
+    <h2>Lenz se Wet</h2>
+    <p><strong>Lenz se Wet</strong> stel dat die geïnduseerde stroom altyd in 'n rigting vloei wat die verandering wat dit veroorsaak <em>teenwerk</em>. Dit is 'n gevolg van die behoud van energie — as die geïnduseerde stroom die verandering sou help in plaas daarvan om dit teen te werk, sou jy gratis energie kry.</p>
+    <div class="key-fact">Lenz se Wet: Geïnduseerde stroom werk die verandering in magnetiese fluks wat dit veroorsaak het, teen.</div>
+
+    <h2>WS teenoor GS-stroom</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Tipe</th><th>Beskrywing</th><th>Bron</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Gelykstroom (GS)</strong></td><td>Vloei slegs in een rigting. Konstante grootte (ideaal gesproke).</td><td>Batterye, sonselle, GS-generators</td></tr>
+        <tr><td><strong>Wisselstroom (WS)</strong></td><td>Keer herhaaldelik van rigting om teen 'n vaste frekwensie. Vorm 'n sinusvormige golfvorm.</td><td>WS-generators (alternators), hoofelektrisiteitstoevoer</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Suid-Afrika se hoofstroomtoevoer: 230 V WS teen 50 Hz (50 volledige siklusse per sekonde)</div>
+
+    <h2>Die WS-generator (Alternator)</h2>
+    <p>'n <strong>WS-generator</strong> skakel kinetiese (meganiese) energie na elektriese energie om deur elektromagnetiese induksie te gebruik. Die sleutelonderdele daarvan is:</p>
+    <ul>
+      <li><strong>Draadspoel</strong> (armatuur): draai binne die magnetiese veld.</li>
+      <li><strong>Permanente magnete</strong> (of elektromagnete): verskaf die magnetiese veld.</li>
+      <li><strong>Sleepringe</strong>: draaiende metaalringe wat elektriese kontak met die spoel handhaaf terwyl dit draai.</li>
+      <li><strong>Borsels</strong>: stilstaande koolstofkontakte wat teen die sleepringe druk om stroom na die eksterne stroombaan te dra.</li>
+      <li><strong>Eksterne stroombaan</strong>: waar die elektriese energie gebruik word.</li>
+    </ul>
+    <p>Terwyl die spoel draai, verander die hoek tussen die spoel en die magnetiese veld voortdurend. Dit veroorsaak dat die magnetiese fluks deur die spoel sinusvormig verander, en 'n <strong>wisselende EMK</strong> induseer wat 'n wisselstroom dryf. Die resultaat is 'n <strong>sinusvormige spanningsgolfvorm</strong>.</p>
+    <div class="callout"><strong>Vinniger rotasie</strong> → hoër frekwensie ÉN hoër piekspanning (meer veldlyne word per sekonde gesny). By SA-kragstasies draai turbines teen 3 000 opw om 50 Hz te produseer.</div>
+
+    <h2>Die GS-generator</h2>
+    <p>'n <strong>GS-generator</strong> werk volgens dieselfde beginsel as 'n WS-generator, maar gebruik 'n <strong>gesplete-ring-kommutator</strong> in plaas van sleepringe. Die kommutator keer die verbindings na die eksterne stroombaan elke halwe draai om, sodat die afvoer altyd in dieselfde rigting is — 'n pulserende GS. 'n Gladde GS-afvoer benodig veelvuldige spoele wat teen verskillende hoeke verskuif is.</p>
+
+    <h2>Transformators</h2>
+    <p>'n <strong>Transformator</strong> is 'n toestel wat die spanning van 'n WS-toevoer verander (opstoot of afskaal) deur <strong>wederkerige induksie</strong> te gebruik — die veranderende magnetiese veld wat deur die primêre spoel geproduseer word, induseer 'n EMK in die sekondêre spoel. Transformators werk slegs met WS, nie GS nie, omdat GS nie 'n voortdurend veranderende magnetiese fluks produseer nie.</p>
+    <p>'n Transformator bestaan uit:</p>
+    <ul>
+      <li><strong>Primêre spoel</strong> (Np draaie): gekoppel aan die toevoerspanning (Vp).</li>
+      <li><strong>Sekondêre spoel</strong> (Ns draaie): lewer die afvoerspanning (Vs).</li>
+      <li><strong>Sagte ysterkern</strong>: kanaliseer die magnetiese veld doeltreffend van die primêre na die sekondêre spoel.</li>
+    </ul>
+    <div class="formula">Vp / Vs = Np / Ns &nbsp;&nbsp;·&nbsp;&nbsp; Vp × Ip = Vs × Is (100% doeltreffendheid)</div>
+
+    <table class="symbols-table">
+      <thead><tr><th>Tipe</th><th>Draaiverhouding</th><th>Spanningseffek</th><th>Stroomeffek</th><th>Gebruik</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Opstoot-transformator</strong></td><td>Ns &gt; Np</td><td>Vs &gt; Vp (spanning verhoog)</td><td>Is &lt; Ip (stroom verlaag)</td><td>Kragoordraglyne — hoë spanning, lae stroom verminder energieverlies</td></tr>
+        <tr><td><strong>Afskaal-transformator</strong></td><td>Ns &lt; Np</td><td>Vs &lt; Vp (spanning verlaag)</td><td>Is &gt; Ip (stroom verhoog)</td><td>Huishoudelike toevoer — verlaag hoë oordragspanning na veilige 230 V</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Waarom teen hoë spanning oordra?</h2>
+    <p>Kraglyne wat elektrisiteit van kragstasies na huise dra, verloor energie as hitte in die drade (P_verlies = I² × R). Deur 'n <strong>opstoot-transformator</strong> te gebruik om spanning te verhoog en stroom te verlaag, word dieselfde hoeveelheid krag oorgedra met veel minder hitteverlies. 'n <strong>Afskaal-transformator</strong> aan die ander kant verlaag die spanning na 'n veilige vlak vir huise en besighede.</p>
+    <div class="callout"><strong>Waarom WS-hoofstroom?</strong> WS-spanning kan maklik verhoog of verlaag word deur transformators te gebruik; GS kan nie. Dit maak langafstand-elektriese oordrag baie meer doeltreffend met WS.</div>
+
+    <h2>Toepassings</h2>
+    <ul>
+      <li><strong>Kragstasies:</strong> Stoom- of waterturbines dryf WS-generators (alternators) aan.</li>
+      <li><strong>Nasionale-net-oordraglyne:</strong> Opstoot-transformators verhoog spanning na ~400 kV vir doeltreffende langafstand-oordrag.</li>
+      <li><strong>Substasies:</strong> Afskaal-transformators verlaag spanning vir industriële en huishoudelike gebruik.</li>
+      <li><strong>Elektriese motors:</strong> Die omgekeerde van 'n generator — elektriese energie omgeskakel na kinetiese energie.</li>
+      <li><strong>Mikrofone:</strong> Klankgolwe laat 'n spoel in 'n magnetiese veld vibreer, wat 'n klein wisselende stroom induseer wat die klank verteenwoordig.</li>
+      <li><strong>Induksie-kookplate:</strong> Hoëfrekwensie-WS induseer werwelstrome direk in 'n metaalpot, wat dit sonder 'n oop vlam verhit.</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Generator- en transformatorsimulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Skakel tussen Generator-modus (draaiende spoel-animasie met geïnduseerde sinusgolf) en Transformator-modus (lewendige spanningsberekening vanaf draaiverhouding).</p>
+  <div class="sim-outer">
+    <div style="display:flex;gap:8px;margin-bottom:4px">
+      <button class="mode-btn active" id="btnGen" onclick="setSimMode('gen')">Generator</button>
+      <button class="mode-btn" id="btnTf" onclick="setSimMode('tf')">Transformator</button>
+    </div>
+    <div class="sim-canvas-wrap">
+      <h3 id="simTitle">WS-generator</h3>
+      <canvas id="simCanvas" height="300"></canvas>
+    </div>
+
+    <!-- Generator controls -->
+    <div id="genControls">
+      <div class="sim-controls-row">
+        <div class="ctrl-card">
+          <div class="ctrl-label">Rotasiespoed</div>
+          <input type="range" id="speedSlider" min="0.5" max="4" step="0.1" value="1.5" oninput="updateGenReadouts()">
+          <div class="readout-row">
+            <div class="readout"><div class="readout-label">Spoed</div><div class="readout-val" id="rdSpeed">1.5×</div></div>
+            <div class="readout"><div class="readout-label">Frekwensie</div><div class="readout-val" id="rdGenFreq">1.5 Hz</div></div>
+            <div class="readout"><div class="readout-label">Piekspanning</div><div class="readout-val" id="rdPeak">1.5 V</div></div>
+          </div>
+        </div>
+        <div class="ctrl-card">
+          <div class="ctrl-label">Wat jy sien</div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.8">Links: spoel wat tussen twee magnete (N- en S-pole) draai. Die sinusgolf regs wys die geïnduseerde spanning. Vinniger rotasie → hoër frekwensie ÉN hoër piekspanning.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transformer controls -->
+    <div id="tfControls" style="display:none">
+      <div class="sim-controls-row">
+        <div class="ctrl-card">
+          <div class="ctrl-label">Primêre draaie (Np)</div>
+          <input type="range" id="npSlider" min="50" max="500" step="10" value="100" oninput="updateTfReadouts()">
+          <div class="readout-row">
+            <div class="readout"><div class="readout-label">Np</div><div class="readout-val" id="rdNp">100</div></div>
+          </div>
+        </div>
+        <div class="ctrl-card">
+          <div class="ctrl-label">Sekondêre draaie (Ns)</div>
+          <input type="range" id="nsSlider" min="50" max="500" step="10" value="300" oninput="updateTfReadouts()">
+          <div class="readout-row">
+            <div class="readout"><div class="readout-label">Ns</div><div class="readout-val" id="rdNs">300</div></div>
+          </div>
+        </div>
+        <div class="ctrl-card">
+          <div class="ctrl-label">Toevoerspanning (Vp)</div>
+          <input type="range" id="vpSlider" min="10" max="240" step="5" value="100" oninput="updateTfReadouts()">
+          <div class="readout-row">
+            <div class="readout"><div class="readout-label">Vp</div><div class="readout-val" id="rdVp">100 V</div></div>
+          </div>
+        </div>
+        <div class="ctrl-card">
+          <div class="ctrl-label">Afvoerspanning (Vs)</div>
+          <div class="readout-row">
+            <div class="readout"><div class="readout-label">Vs = Vp × Ns/Np</div><div class="readout-val" id="rdVs">300 V</div></div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted)" id="tfTypeLabel"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings deur vir enige wat jy verkeerd gehad het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord al die vrae in jou oefenboek. Wys alle berekeninge met eenhede. Teken en merk diagramme waar gevra word.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (5 punte)</div><div class="wb-qtext">'n Transformator het 'n primêre spoel met 200 draaie en 'n sekondêre spoel met 50 draaie. Die toevoerspanning is 240 V. (a) Is dit 'n opstoot- of afskaal-transformator? (b) Bereken die afvoerspanning (Vs). (c) As die primêre stroom 0,5 A is, bereken die sekondêre stroom, met die aanname van 100% doeltreffendheid. Wys alle berekeninge.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qnum" style="margin-top:8px">Vraag 2 · (4 punte)</div><div class="wb-qtext">Teken en merk 'n diagram van 'n WS-generator. Jou diagram moet die volgende insluit en merk: die spoel, die twee magnete (met pole), sleepringe, borsels, en die eksterne stroombaan. Verduidelik in twee sinne hoe dit WS produseer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Vergelyk WS- en GS-stroom. Doen vir elkeen: (a) definieer dit, (b) beskryf die spanning-tyd-grafiek daarvan, (c) gee 'n voorbeeld van 'n bron. Gee dan EEN rede waarom die nasionale net WS eerder as GS gebruik.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik waarom elektrisiteit teen baie hoë spannings oor lang afstande oorgedra word. Verwys in jou antwoord na: die formule vir kragverlies (P = I²R), die rol van 'n opstoot-transformator by die kragstasie, en die rol van 'n afskaal-transformator by die substasie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">'n Leerder druk 'n staafmagneet in 'n draadspoel wat aan 'n galvanometer gekoppel is. Die naald wyk af. Noem DRIE veranderinge wat die leerder kan maak om 'n groter afwyking te kry, en verduidelik die fisika agter elke verandering deur Faraday se Wet te gebruik.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">'n Kragstasie moet 100 000 W aan 'n dorp lewer deur 'n oordraagkabel met 'n weerstand van 5 Ω. Twee oordragopsies word vergelyk:
+      <table class="symbols-table" style="margin:12px 0">
+        <thead><tr><th>Opsie</th><th>Spanning</th><th>Stroom (P = VI)</th><th>Kabelweerstand</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A (lae spanning)</strong></td><td>1 000 V</td><td>100 A</td><td>5 Ω</td></tr>
+          <tr><td><strong>B (hoë spanning)</strong></td><td>10 000 V</td><td>10 A</td><td>5 Ω</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die krag wat as hitte verlore gaan (P_verlies = I²R) vir Opsie A en vir Opsie B. Wys alle berekeninge. (3 punte)<br>
+      (b) Bereken watter persentasie van die 100 000 W wat oorgedra word, in ELKE opsie as hitte verlore gaan. (2 punte)<br>
+      (c) Verduidelik, met behulp van jou antwoorde, waarom nasionale netwerke spanning so hoog opstoot voordat elektrisiteit oor lang afstande oorgedra word. (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tab switching ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') {
+    initSimCanvas();
+    if (!rafRunning) startRaf();
+  }
+}
+
+/* ---- Simulator state ---- */
+let simMode = 'gen';
+let rafRunning = false;
+let animT = 0;
+
+function setSimMode(m) {
+  simMode = m;
+  document.getElementById('btnGen').classList.toggle('active', m === 'gen');
+  document.getElementById('btnTf').classList.toggle('active', m === 'tf');
+  document.getElementById('genControls').style.display = m === 'gen' ? '' : 'none';
+  document.getElementById('tfControls').style.display = m === 'tf' ? '' : 'none';
+  document.getElementById('simTitle').textContent = m === 'gen' ? 'WS-generator' : 'Transformator';
+  initSimCanvas();
+  if (!rafRunning) startRaf();
+  if (m === 'tf') updateTfReadouts();
+}
+
+function initSimCanvas() {
+  const canvas = document.getElementById('simCanvas');
+  const W = canvas.offsetWidth || 700;
+  const H = 300;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  canvas.width = W * (window.devicePixelRatio || 1);
+  canvas.height = H * (window.devicePixelRatio || 1);
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+}
+
+function updateGenReadouts() {
+  const s = parseFloat(document.getElementById('speedSlider').value);
+  document.getElementById('rdSpeed').textContent = s.toFixed(1) + '×';
+  document.getElementById('rdGenFreq').textContent = s.toFixed(1) + ' Hz';
+  document.getElementById('rdPeak').textContent = s.toFixed(1) + ' V';
+}
+
+function updateTfReadouts() {
+  const np = parseInt(document.getElementById('npSlider').value);
+  const ns = parseInt(document.getElementById('nsSlider').value);
+  const vp = parseInt(document.getElementById('vpSlider').value);
+  const vs = vp * (ns / np);
+  document.getElementById('rdNp').textContent = np;
+  document.getElementById('rdNs').textContent = ns;
+  document.getElementById('rdVp').textContent = vp + ' V';
+  document.getElementById('rdVs').textContent = vs.toFixed(1) + ' V';
+  const isStepUp = ns > np;
+  const isEqual = ns === np;
+  document.getElementById('tfTypeLabel').innerHTML = isEqual
+    ? '<span style="color:var(--muted)">Ns = Np → Isolasietransformator (Vs = Vp)</span>'
+    : `<span class="tf-badge ${isStepUp ? 'tf-up' : 'tf-down'}">${isStepUp ? 'Opstoot' : 'Afskaal'}</span> <span style="color:var(--muted)">Draaiverhouding Np:Ns = ${np}:${ns} = 1:${(ns/np).toFixed(2)}</span>`;
+}
+
+/* ---- Drawing ---- */
+function drawGeneratorFrame(ctx, W, H) {
+  ctx.clearRect(0, 0, W, H);
+
+  const speed = parseFloat(document.getElementById('speedSlider').value);
+  const angle = animT * speed * Math.PI * 2;
+  const peakV = speed;
+
+  // -- Left half: coil schematic --
+  const gLeft = W * 0.38;
+  const cx = gLeft / 2;
+  const cy = H / 2;
+
+  // Background grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  // Divider
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(gLeft, 20); ctx.lineTo(gLeft, H - 20); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Magnets (N top, S bottom)
+  const magH = 36, magW = 70, magY = 30;
+  // N magnet (top)
+  ctx.fillStyle = '#ef4444cc';
+  ctx.beginPath(); ctx.roundRect(cx - magW / 2, magY, magW, magH, 6); ctx.fill();
+  ctx.font = 'bold 16px "Cabinet Grotesk",sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('N', cx, magY + magH / 2);
+
+  // S magnet (bottom)
+  const sMagY = H - magY - magH;
+  ctx.fillStyle = '#3b82f6cc';
+  ctx.beginPath(); ctx.roundRect(cx - magW / 2, sMagY, magW, magH, 6); ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.fillText('S', cx, sMagY + magH / 2);
+
+  // Field lines between magnets
+  ctx.strokeStyle = 'rgba(251,191,36,0.15)';
+  ctx.lineWidth = 1;
+  for (let fx = -2; fx <= 2; fx++) {
+    const lx = cx + fx * 10;
+    ctx.beginPath();
+    ctx.moveTo(lx, magY + magH);
+    ctx.lineTo(lx, sMagY);
+    ctx.stroke();
+  }
+  // Arrow on field lines
+  ctx.fillStyle = 'rgba(251,191,36,0.30)';
+  const midFY = (magY + magH + sMagY) / 2;
+  ctx.beginPath(); ctx.moveTo(cx, midFY + 8); ctx.lineTo(cx - 4, midFY); ctx.lineTo(cx + 4, midFY); ctx.closePath(); ctx.fill();
+
+  // Rotating coil (ellipse approximation)
+  const coilW = 28;
+  const coilH = 55;
+  const coilCX = cx;
+  const coilCY = cy;
+
+  ctx.save();
+  ctx.translate(coilCX, coilCY);
+  ctx.rotate(angle);
+  // Coil body
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 3;
+  ctx.shadowColor = '#fbbf24';
+  ctx.shadowBlur = 8;
+  ctx.beginPath();
+  ctx.ellipse(0, 0, coilW, coilH, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  // Coil side bars
+  ctx.strokeStyle = '#fcd34d';
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(-coilW, -coilH * 0.6); ctx.lineTo(-coilW, coilH * 0.6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(coilW, -coilH * 0.6); ctx.lineTo(coilW, coilH * 0.6); ctx.stroke();
+  ctx.restore();
+
+  // Slip rings
+  const srX = cx + 62;
+  ctx.strokeStyle = 'rgba(210,218,245,0.5)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.ellipse(srX, cy - 12, 8, 4, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(srX, cy + 12, 8, 4, 0, 0, Math.PI * 2); ctx.stroke();
+  // Brushes
+  ctx.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx.fillRect(srX + 6, cy - 15, 10, 6);
+  ctx.fillRect(srX + 6, cy + 9, 10, 6);
+  // Labels
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(210,218,245,0.40)';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('sleepringe', srX + 20, cy);
+  ctx.textBaseline = 'alphabetic';
+
+  // -- Right half: sine wave --
+  const sineLeft = gLeft + 20;
+  const sineW = W - sineLeft - 20;
+  const sineCY = cy;
+  const sineAmp = Math.min(peakV * 35, H * 0.38);
+  const sinePeriodPx = sineW * 0.5;
+
+  // Axis
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(sineLeft, sineCY); ctx.lineTo(sineLeft + sineW, sineCY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(sineLeft, sineCY - sineAmp - 16); ctx.lineTo(sineLeft, sineCY + sineAmp + 16); ctx.stroke();
+
+  // Axis labels
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(210,218,245,0.35)';
+  ctx.textAlign = 'left';
+  ctx.fillText('V', sineLeft + 4, sineCY - sineAmp - 8);
+  ctx.fillText('t', sineLeft + sineW - 10, sineCY - 6);
+  ctx.fillText('+Vpiek', sineLeft + 4, sineCY - sineAmp + 4);
+  ctx.fillText('–Vpiek', sineLeft + 4, sineCY + sineAmp + 14);
+
+  // Sine wave (scrolling)
+  ctx.beginPath();
+  for (let px = 0; px <= sineW; px++) {
+    const t = px / sinePeriodPx - animT * speed * 0.5;
+    const vy = sineCY - Math.sin(t * Math.PI * 2) * sineAmp;
+    if (px === 0) ctx.moveTo(sineLeft + px, vy); else ctx.lineTo(sineLeft + px, vy);
+  }
+  const grad = ctx.createLinearGradient(sineLeft, 0, sineLeft + sineW, 0);
+  grad.addColorStop(0, 'rgba(251,191,36,0.2)');
+  grad.addColorStop(0.5, '#fbbf24');
+  grad.addColorStop(1, 'rgba(251,191,36,0.3)');
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Current dot on sine wave
+  const dotT = -animT * speed * 0.5;
+  const dotY = sineCY - Math.sin(dotT * Math.PI * 2) * sineAmp;
+  ctx.beginPath();
+  ctx.arc(sineLeft + 2, dotY, 5, 0, Math.PI * 2);
+  ctx.fillStyle = '#fbbf24';
+  ctx.fill();
+
+  // Title
+  ctx.font = '700 11px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(210,218,245,0.35)';
+  ctx.textAlign = 'center';
+  ctx.fillText('Geïnduseerde spanning (WS)', sineLeft + sineW / 2, sineCY + sineAmp + 34);
+}
+
+function drawTransformerFrame(ctx, W, H) {
+  ctx.clearRect(0, 0, W, H);
+
+  const np = parseInt(document.getElementById('npSlider').value);
+  const ns = parseInt(document.getElementById('nsSlider').value);
+  const vp = parseInt(document.getElementById('vpSlider').value);
+  const vs = vp * (ns / np);
+
+  // Background grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  const cy = H / 2;
+  const coreX = W / 2 - 30;
+  const coreW = 60;
+  const coreH = 110;
+  const coreTop = cy - coreH / 2;
+
+  // Iron core (rectangle)
+  ctx.fillStyle = 'rgba(100,116,139,0.35)';
+  ctx.strokeStyle = 'rgba(148,163,184,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.roundRect(coreX, coreTop, coreW, coreH, 6); ctx.fill(); ctx.stroke();
+  ctx.font = '9px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(148,163,184,0.6)';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('Yster-', W / 2, cy - 10);
+  ctx.fillText('kern', W / 2, cy + 10);
+  ctx.textBaseline = 'alphabetic';
+
+  // Primary coil (left)
+  const primX = coreX - 60;
+  const coilTop = coreTop + 15;
+  const coilH2 = coreH - 30;
+  const numPrimTurns = Math.max(3, Math.min(10, Math.round(np / 50)));
+  const turnSpacing = coilH2 / numPrimTurns;
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = '#fbbf24';
+  ctx.shadowBlur = 6;
+  for (let i = 0; i < numPrimTurns; i++) {
+    const ty = coilTop + i * turnSpacing + turnSpacing / 2;
+    ctx.beginPath();
+    ctx.arc(coreX - 2, ty, 12, Math.PI * 0.5, Math.PI * 1.5, false);
+    ctx.stroke();
+    // Connect to next
+    if (i < numPrimTurns - 1) {
+      ctx.beginPath();
+      ctx.moveTo(coreX - 2, ty - 12);
+      ctx.lineTo(coreX - 2, ty - turnSpacing + 12);
+      ctx.stroke();
+    }
+  }
+  ctx.shadowBlur = 0;
+
+  // Primary leads
+  ctx.strokeStyle = '#fbbf24';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(primX - 30, coilTop + 4); ctx.lineTo(coreX - 14, coilTop + 4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(primX - 30, coilTop + coilH2 - 4); ctx.lineTo(coreX - 14, coilTop + coilH2 - 4); ctx.stroke();
+
+  // Primary voltage label
+  ctx.fillStyle = '#fcd34d';
+  ctx.font = 'bold 13px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(`Vp = ${vp} V`, primX - 42, cy - 18);
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(252,211,77,0.6)';
+  ctx.fillText(`Np = ${np}`, primX - 42, cy + 4);
+  ctx.fillText('draaie', primX - 42, cy + 18);
+
+  // Secondary coil (right)
+  const secX = coreX + coreW + 60;
+  const numSecTurns = Math.max(3, Math.min(10, Math.round(ns / 50)));
+  const sTurnSpacing = coilH2 / numSecTurns;
+  ctx.strokeStyle = '#22d3ee';
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = '#22d3ee';
+  ctx.shadowBlur = 6;
+  for (let i = 0; i < numSecTurns; i++) {
+    const ty = coilTop + i * sTurnSpacing + sTurnSpacing / 2;
+    ctx.beginPath();
+    ctx.arc(coreX + coreW + 2, ty, 12, Math.PI * 1.5, Math.PI * 0.5, false);
+    ctx.stroke();
+    if (i < numSecTurns - 1) {
+      ctx.beginPath();
+      ctx.moveTo(coreX + coreW + 2, ty - 12);
+      ctx.lineTo(coreX + coreW + 2, ty - sTurnSpacing + 12);
+      ctx.stroke();
+    }
+  }
+  ctx.shadowBlur = 0;
+
+  // Secondary leads
+  ctx.strokeStyle = '#22d3ee';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(coreX + coreW + 14, coilTop + 4); ctx.lineTo(secX + 30, coilTop + 4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(coreX + coreW + 14, coilTop + coilH2 - 4); ctx.lineTo(secX + 30, coilTop + coilH2 - 4); ctx.stroke();
+
+  // Secondary voltage label
+  ctx.fillStyle = '#22d3ee';
+  ctx.font = 'bold 13px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(`Vs = ${vs.toFixed(0)} V`, secX + 42, cy - 18);
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(34,211,238,0.6)';
+  ctx.fillText(`Ns = ${ns}`, secX + 42, cy + 4);
+  ctx.fillText('draaie', secX + 42, cy + 18);
+
+  // Step-up / step-down label
+  const isUp = ns > np;
+  ctx.font = 'bold 12px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = isUp ? '#86efac' : '#fca5a5';
+  ctx.fillText(ns === np ? 'Isolasie' : isUp ? '▲ Opstoot' : '▼ Afskaal', W / 2, coreTop - 22);
+
+  // Animated AC ripple on primary wire
+  const lineY1 = coilTop + 4;
+  const rippleAmp = 4;
+  const rippleFreq = 3;
+  ctx.strokeStyle = 'rgba(251,191,36,0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let px = 0; px < 28; px++) {
+    const rx = primX - 30 + px;
+    const ry = lineY1 + Math.sin((px / 28 + animT * 2) * Math.PI * 2 * rippleFreq) * rippleAmp;
+    if (px === 0) ctx.moveTo(rx, ry); else ctx.lineTo(rx, ry);
+  }
+  ctx.stroke();
+
+  // Flux arrows inside core
+  const arrowCount = 4;
+  for (let ai = 0; ai < arrowCount; ai++) {
+    const ay = coreTop + 20 + ai * (coreH - 40) / (arrowCount - 1);
+    const ax = W / 2;
+    const alpha = 0.2 + 0.3 * Math.abs(Math.sin(animT * 2 + ai * 0.5));
+    ctx.fillStyle = `rgba(251,191,36,${alpha})`;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay + 6);
+    ctx.lineTo(ax - 4, ay - 2);
+    ctx.lineTo(ax + 4, ay - 2);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Formula at bottom
+  ctx.font = '12px "JetBrains Mono",monospace';
+  ctx.fillStyle = 'rgba(252,211,77,0.55)';
+  ctx.textAlign = 'center';
+  ctx.fillText(`Vp/Vs = Np/Ns  →  ${vp}/${vs.toFixed(0)} = ${np}/${ns}`, W / 2, H - 18);
+}
+
+function startRaf() {
+  rafRunning = true;
+  let last = performance.now();
+  function loop(now) {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    animT += dt;
+
+    const canvas = document.getElementById('simCanvas');
+    if (!canvas) { rafRunning = false; return; }
+    const ctx = canvas.getContext('2d');
+    const W = canvas.offsetWidth || 700;
+    const H = 300;
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+
+    if (simMode === 'gen') drawGeneratorFrame(ctx, W, H);
+    else drawTransformerFrame(ctx, W, H);
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-explore').classList.contains('active')) initSimCanvas();
+});
+
+updateGenReadouts();
+updateTfReadouts();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: "Wat het Michael Faraday ontdek oor die beweeg van 'n magneet naby 'n draadspoel?",
+    opts: [
+      "Dit skep 'n magnetiese veld maar geen stroom nie",
+      'Dit induseer \'n elektromotoriese krag (EMK) en dryf \'n stroom in die spoel',
+      'Dit vernietig die magnetiese veld van die magneet',
+      'Dit werk slegs as die spoel \'n ysterkern het'
+    ],
+    ans: 1,
+    exp: "Faraday het elektromagnetiese induksie in 1831 ontdek: die beweeg van 'n magneet (of die beweeg van die spoel) veroorsaak 'n verandering in magnetiese fluks deur die spoel, wat 'n EMK induseer wat 'n stroom dryf. Dit is die grondslag van alle generators."
+  },
+  {
+    text: "Watter verandering sal NIE die geïnduseerde stroom in 'n generatorspoel verhoog nie?",
+    opts: [
+      "Gebruik 'n sterker magneet",
+      'Draai die spoel vinniger',
+      'Verf die spoel \'n ander kleur',
+      'Voeg meer draaie by die spoel'
+    ],
+    ans: 2,
+    exp: "Om die spoel te verf het geen uitwerking op die magnetiese fluks of die tempo van fluksverandering nie. Die geïnduseerde stroom hang af van magnetiese veldsterkte, rotasiespoed, aantal draaie, en die teenwoordigheid van 'n ysterkern — nie kleur nie."
+  },
+  {
+    text: "Wat is die sleutelverskil tussen die WS-generator en die GS-generator?",
+    opts: [
+      'Die GS-generator gebruik magnete; die WS-generator gebruik spoele',
+      'Die WS-generator gebruik sleepringe; die GS-generator gebruik \'n gesplete-ring-kommutator',
+      'Die WS-generator produseer hoër spanning',
+      'Die GS-generator draai vinniger'
+    ],
+    ans: 1,
+    exp: "Albei generators werk volgens dieselfde induksiebeginsel. Die WS-generator gebruik sleepringe, wat toelaat dat stroom van rigting verander terwyl die spoel draai, wat WS produseer. Die GS-generator gebruik 'n gesplete-ring-kommutator, wat verbindings elke halwe draai omkeer om te verseker dat stroom altyd in dieselfde rigting vloei, wat GS produseer."
+  },
+  {
+    text: "'n Transformator het 400 draaie op die primêre en 100 draaie op die sekondêre. Die primêre spanning is 240 V. Wat is die sekondêre spanning?",
+    opts: ['960 V', '240 V', '60 V', '40 V'],
+    ans: 2,
+    exp: "Deur Vp/Vs = Np/Ns te gebruik: Vs = Vp × (Ns/Np) = 240 × (100/400) = 240 × 0,25 = 60 V. Dit is 'n afskaal-transformator (Ns < Np), so die spanning verlaag."
+  },
+  {
+    text: 'Waarom kan transformators nie met gelykstroom (GS) werk nie?',
+    opts: [
+      'GS het \'n te lae spanning',
+      'GS produseer nie \'n voortdurend veranderende magnetiese fluks nie, sodat geen EMK in die sekondêre spoel geïnduseer word nie',
+      'GS vloei te vinnig vir die ysterkern',
+      'GS keer te dikwels van rigting om'
+    ],
+    ans: 1,
+    exp: "Transformators werk deur wederkerige induksie: die veranderende magnetiese fluks in die primêre induseer 'n EMK in die sekondêre. GS produseer 'n konstante (nie-veranderende) magnetiese fluks, sodat na die aanvanklike aanskakel-vlaag geen EMK geïnduseer word en geen stroom in die sekondêre vloei nie. Slegs WS se voortdurend veranderende stroom produseer die voortdurend veranderende fluks wat nodig is."
+  },
+  {
+    text: 'Waarom dra die nasionale elektrisiteitsnet krag teen baie hoë spannings oor (bv. 400 000 V)?',
+    opts: [
+      'Hoë spanning laat elektrisiteit vinniger beweeg',
+      'Hoë spanning met lae stroom verminder kragverlies as hitte in oordraagkabels (P = I²R)',
+      'Transformators werk slegs teen baie hoë spannings',
+      'Dit is veiliger om hoë spanning oor lang afstande te gebruik'
+    ],
+    ans: 1,
+    exp: "Kragverlies in kabels word gegee deur P_verlies = I²R. Vir 'n gegewe hoeveelheid krag (P = VI) beteken oordrag teen hoë spanning lae stroom. Aangesien verlies afhang van I², verminder die vermindering van stroom die hitteverliese dramaties. 'n Opstoot-transformator by die kragstasie verhoog spanning; afskaal-transformators by substasies verlaag dit vir veilige huisgebruik."
+  },
+  {
+    text: "'n Transformator stoot 100 V op na 400 V. As die primêre spoel 150 draaie het, hoeveel draaie moet die sekondêre spoel hê, en wat gebeur met die stroom?",
+    opts: [
+      '600 draaie; sekondêre stroom is LAER as primêre stroom',
+      '600 draaie; sekondêre stroom is HOËR as primêre stroom',
+      '37,5 draaie; sekondêre stroom is LAER as primêre stroom',
+      '150 draaie; stroom bly presies dieselfde'
+    ],
+    ans: 0,
+    exp: "Deur Vp/Vs = Np/Ns te gebruik: 100/400 = 150/Ns, dus Ns = 150 × (400/100) = 600 draaie. Aangesien dit 'n opstoot-transformator is (spanning verhoog 4×), en Vp×Ip = Vs×Is teen 100% doeltreffendheid, moet die stroom met dieselfde faktor (4×) verlaag om krag konstant te hou — dus is die sekondêre stroom laer as die primêre stroom."
+  },
+  {
+    text: "'n Kragstasie lewer 100 000 W aan 'n dorp deur 'n kabel met 5 Ω weerstand. Om teen 1 000 V oor te dra, benodig 'n stroom van 100 A; om DIESELFDE krag teen 10 000 V oor te dra, benodig slegs 10 A. Vergelyk, deur P_verlies = I²R te gebruik, die krag wat as hitte in die twee gevalle verlore gaan.",
+    opts: [
+      'Albei gevalle verloor presies dieselfde hoeveelheid krag, aangesien die kabelweerstand onveranderd bly',
+      'Die 1 000 V-opsie verloor 50 000 W (50% van die krag) as hitte; die 10 000 V-opsie verloor slegs 500 W (0,5%) — \'n 100-voudige vermindering',
+      'Die 10 000 V-opsie verloor MEER krag, want hoër spanning verhoog altyd verhitting',
+      'Geeneen van die opsies verloor enige krag nie, want transformators is 100% doeltreffend'
+    ],
+    ans: 1,
+    exp: "Teen 1 000 V: P_verlies = I²R = 100² × 5 = 50 000 W — die helfte van die oorgedraagde krag word as hitte vermors! Teen 10 000 V: P_verlies = 10² × 5 = 500 W — slegs 0,5%. Die verhoging van die spanning met 10× verlaag die stroom met 10×, en aangesien verlies van stroom-in-die-kwadraat afhang, val die verlies met 100×. Dit is presies waarom nasionale netwerke spanning so hoog opstoot vir oordrag."
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Hou vol — gaan die les weer deur!' : score <= 4 ? 'Goeie poging — gaan die verduidelikings deur.' : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
