@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voortplanting by Diere — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    .info-panel{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:120px}
+    .info-panel-title{font-weight:800;font-size:15px;color:#fcd34d;margin-bottom:6px}
+    .info-panel-text{font-size:13px;color:rgba(210,218,245,.75);line-height:1.7}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Lewe en Lewenswetenskappe</span>
+  <span id="mlLangToggle"></span>
+  <a class="nav-back" href="../index.html">&#8592; Graad 9</a>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Lewe en Lewenswetenskappe · Les 3</div>
+  <h1 class="lesson-title">Voortplanting by Diere</h1>
+  <p class="lesson-sub">Ondersoek geslagtelike voortplanting by diere, met fokus op die menslike voortplantingstelsel, bevrugting, en die ontwikkeling van die fetus.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">&#128214; Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#9998; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#128203; Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Tipes Voortplanting by Diere</h2>
+    <p>Die meeste diere plant <strong style="color:#fcd34d">geslagtelik</strong> voort, maar sommige eenvoudiger diere gebruik ook ongeslagtelike voortplanting:</p>
+    <ul>
+      <li><strong>Ontkieming (Hydra):</strong> 'n klein uitgroeisel (kiem) vorm op die ouer, groei, en breek uiteindelik af as 'n nuwe individu.</li>
+      <li><strong>Binêre splitsing (Amoeba):</strong> die organisme splits in twee identiese dogterselle.</li>
+      <li><strong>Fragmentasie (Planaria/platwurms):</strong> die liggaam breek in fragmente, en elkeen regenereer tot 'n volledige organisme.</li>
+    </ul>
+    <div class="callout">
+      <strong>Voordele van geslagtelike voortplanting:</strong> produseer genetiese variasie deur die kombinasie van twee ouers se DNS, wat populasies in staat stel om by veranderende omgewings aan te pas.<br><br>
+      <strong>Nadeel:</strong> vereis dat 'n maat gevind moet word; energie word belê in die aantrek van 'n maat (bv. hofmakerye, helder kleuring).
+    </div>
+
+    <h2>Eksterne teenoor Interne Bevrugting</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Kenmerk</th><th>Eksterne Bevrugting</th><th>Interne Bevrugting</th></tr></thead>
+      <tbody>
+        <tr><td>Waar dit plaasvind</td><td>Buite die liggaam, in water</td><td>Binne die vroulike se liggaam</td></tr>
+        <tr><td>Voorbeelde</td><td>Vis, paddas (amfibieë)</td><td>Reptiele, voëls, soogdiere</td></tr>
+        <tr><td>Aantal eiers</td><td>Baie (duisende) — meeste gaan verlore</td><td>Min — goed beskerm</td></tr>
+        <tr><td>Ouerlike sorg</td><td>Gewoonlik afwesig</td><td>Gewoonlik teenwoordig</td></tr>
+        <tr><td>Omgewing benodig</td><td>Akwaties — sperm swem na eiers</td><td>Enige — sperm beweeg binne die liggaam</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Die Manlike Voortplantingstelsel</h2>
+    <p>Die manlike voortplantingstelsel produseer sperm (manlike gamete) en lewer dit tydens voortplanting af.</p>
+    <ul>
+      <li><strong>Testes (enkelvoud: testis):</strong> twee kliere in die skrotum (buite die liggaamsholte) waar sperm deur 'n proses genoem <em>spermatogenese</em> geproduseer word. Die laer temperatuur van die skrotum (~2°C onder liggaamstemperatuur) is noodsaaklik vir gesonde spermproduksie.</li>
+      <li><strong>Epididimis:</strong> 'n gekrulde buis waar sperm ryp word en tydelik gestoor word.</li>
+      <li><strong>Vas deferens (spermkanaal):</strong> vervoer sperm van die epididimis na die uretra.</li>
+      <li><strong>Semineuse vesikels, prostaatklier, Cowper se kliere:</strong> aanvullende kliere wat vloeistowwe by semen voeg — wat voedingstowwe (fruktose) voorsien en die suur omgewing van die vagina buffer.</li>
+      <li><strong>Uretra:</strong> die buis waardeur beide semen en uriene die liggaam verlaat (maar nie gelyktydig nie).</li>
+      <li><strong>Penis:</strong> lewer semen tydens omgang na die vroulike voortplantingskanaal af.</li>
+    </ul>
+
+    <h2>Struktuur van 'n Spermsel</h2>
+    <p>'n Spermsel is hoogs gespesialiseerd vir sy funksie om 'n eiersel te bereik en te bevrug:</p>
+    <ul>
+      <li><strong>Kop:</strong> bevat die <em>kern</em> met die man se DNS (haploïed — 23 chromosome). Die punt van die kop het die <em>akrosoom</em>, wat ensieme vrystel om die eiersel se buitenste laag te penetreer.</li>
+      <li><strong>Middelstuk:</strong> vol <em>mitochondria</em> om energie (ATP) vir beweging deur sellulêre respirasie te voorsien.</li>
+      <li><strong>Stert (flagellum):</strong> sweepagtige struktuur wat die sperm deur vloeistof voortdryf. Sperm kan teen ~3 mm/min swem.</li>
+    </ul>
+    <div class="key-fact">Mans produseer ongeveer 200–500 miljoen sperm per ejakulasie, deurlopend vanaf puberteit regdeur die lewe.</div>
+
+    <h2>Die Vroulike Voortplantingstelsel</h2>
+    <ul>
+      <li><strong>Ovaria:</strong> twee amandelvormige organe wat eiers (ova) deur 'n proses genoem <em>oögenese</em> produseer. Hulle produseer ook die hormone oestrogeen en progesteroon.</li>
+      <li><strong>Fallopiusbuise (eierleiers):</strong> twee buise wat elke ovarium met die uterus verbind. Bevrugting vind gewoonlik hier plaas. Klein silia wat die buis bekleed, vee die eiersel na die uterus toe.</li>
+      <li><strong>Uterus (baarmoeder):</strong> 'n dikwandige, spierige orgaan waar die embrio inplant en die fetus ontwikkel. Die binnebekleding is die <em>endometrium</em>.</li>
+      <li><strong>Serviks:</strong> die nou onderste opening van die uterus; verwyd tydens geboorte.</li>
+      <li><strong>Vagina:</strong> die spierige buis wat die serviks met die buitekant verbind; ontvang die penis tydens omgang en is die geboortekanaal.</li>
+    </ul>
+    <div class="key-fact">Vroulikes word gebore met al hul eiers reeds gevorm (~1–2 miljoen onvolwasse oösiete). Teen puberteit bly ~400 000 oor. Slegs ongeveer 400 word ooit in 'n leeftyd geovuleer.</div>
+
+    <h2>Die Menstruele Siklus</h2>
+    <p>Die menstruele siklus is gemiddeld <strong style="color:#fcd34d">28 dae</strong> lank en word deur hormone beheer. Belangrike gebeurtenisse:</p>
+    <ul>
+      <li><strong>Dag 1–5:</strong> Menstruasie — die endometrium (baarmoederbekleding) skil af as 'n periode omdat geen swangerskap in die vorige siklus plaasgevind het nie.</li>
+      <li><strong>Dag 6–13:</strong> Die endometrium herbou onder die invloed van oestrogeen; 'n eiersel word ryp in 'n follikel in die ovarium.</li>
+      <li><strong>Dag 14:</strong> Ovulasie — 'n skielike toename in luteïniserende hormoon (LH) veroorsaak die vrystelling van die ryp eiersel uit die ovarium.</li>
+      <li><strong>Dag 15–28:</strong> Die endometrium verdik onder progesteroon, wat vir moontlike inplanting voorberei. As bevrugting nie plaasvind nie, val hormoonvlakke en die siklus herhaal.</li>
+    </ul>
+
+    <h2>Bevrugting</h2>
+    <p>Tydens geslagsomgang word miljoene sperm in die vagina afgesit. Hulle beweeg deur die serviks en uterus en in die Fallopiusbuise in. Van die miljoene wat vrygestel word, bereik slegs 'n paar honderd die eiersel. <strong style="color:#fcd34d">Slegs een sperm dring die eiersel binne</strong> — die oomblik dit gebeur, voorkom chemiese veranderinge in die eiersel se membraan dat enige ander sperm binnedring.</p>
+    <div class="formula">Sperm + Eiersel → Sigoot (bevrugte eiersel, 46 chromosome)</div>
+    <p>Die sigoot bevat 'n volledige stel van 46 chromosome (23 van elke ouer) en is geneties uniek.</p>
+
+    <h2>Inplanting &amp; Vroeë Ontwikkeling</h2>
+    <p>Na bevrugting begin die sigoot deur mitose deel terwyl dit langs die Fallopiusbuis na die uterus beweeg. Teen die tyd dit die uterus bereik (~5–7 dae later) het dit 'n bal selle geword genoem 'n <em>blastosist</em>. Dit <strong>plant</strong> dan in die verdikte endometrium (baarmoederwand) in. Mislukte inplanting lei tot verlies van die embrio.</p>
+    <ul>
+      <li><strong>0–8 weke:</strong> genoem 'n <em>embrio</em>; alle hoofsaaklike organe begin vorm (organogenese).</li>
+      <li><strong>9 weke – geboorte:</strong> genoem 'n <em>fetus</em>; organe ontwikkel en groei; word herkenbaar mens. Draagtyd is ~38 weke (ongeveer 9 maande).</li>
+    </ul>
+
+    <h2>Die Plasenta, Naelstring &amp; Vrugwater</h2>
+    <p>Hierdie strukture ondersteun en beskerm die ontwikkelende fetus:</p>
+    <ul>
+      <li><strong>Plasenta:</strong> 'n skyfvormige orgaan wat in die baarmoederwand ingebed is. Dit het 'n groot oppervlakte van villi in kontak met die moeder se bloedvoorsiening. Oor hierdie grens beweeg <em>suurstof en voedingstowwe van moeder na fetus</em>, en <em>koolstofdioksied en afvalprodukte van fetus na moeder</em>. Die moeder se en die fetus se bloed <strong>meng nie</strong> — hulle word deur dun membrane geskei. Die plasenta produseer ook hormone (hCG, progesteroon, oestrogeen) om swangerskap te handhaaf.</li>
+      <li><strong>Naelstring:</strong> 'n buigsame string met twee arteries en een aar wat die fetus met die plasenta verbind, en bloed tussen hulle vervoer.</li>
+      <li><strong>Vrugwatersak &amp; -water:</strong> die fetus dryf in vrugwater binne die vrugwatersak. Die vloeistof beskerm die fetus teen fisiese skokke, handhaaf 'n stabiele temperatuur, en voorkom dat die fetus uitdroog.</li>
+    </ul>
+    <div class="callout"><strong>Sleutelpunt:</strong> Die plasenta tree op as die fetus se longe, spysverteringstelsel, en niere, alles in een. Dit tree ook op as 'n grens teen die meeste (maar nie alle) patogene en skadelike stowwe nie — sommige middels, alkohol, en virusse (bv. MIV, rubella) kan die plasenta oorsteek en die fetus benadeel.</div>
+
+    <h2>Geboorte (Bevalling)</h2>
+    <p>Aan die einde van die draagtyd (~38 weke), word geboorte deur 'n reeks hormone (oksitosien is die sleutel) getrigger:</p>
+    <ul>
+      <li>Die serviks begin <strong>verwyd</strong> (wyer word) om die baba deur te laat.</li>
+      <li>Sterk ritmiese <strong>baarmoedersametrekkings</strong> (arbeid) druk die baba af.</li>
+      <li>Die <strong>vrugwatersak bars</strong> ("water breek"), wat vrugwater vrystel.</li>
+      <li>Die baba word kop-eerste deur die vagina (geboortekanaal) gebore.</li>
+      <li>Die <strong>naelstring word afgesny</strong> — die pasgeborene moet nou onafhanklik asemhaal.</li>
+      <li>Die <strong>plasenta word uitgedryf</strong> as die "nageboorte" kort daarna.</li>
+    </ul>
+
+    <h2>Seksueel Oordraagbare Infeksies (SOI's)</h2>
+    <p>SOI's is infeksies wat hoofsaaklik deur seksuele kontak versprei word. Twee belangrike voorbeelde:</p>
+    <ul>
+      <li><strong>MIV/VIGS:</strong> Menslike Immuniteitsgebreksvirus vernietig CD4 T-selle van die immuunstelsel, wat uiteindelik Verworwe Immuniteitsgebreksindroom veroorsaak. Word oorgedra deur onbeskermde seks, bloedkontak, en moeder-na-kind (tydens geboorte of borsvoeding). Geen genesing bestaan nie, maar antiretrovirale terapie (ART) stel mense in staat om lank en gesond te lewe.</li>
+      <li><strong>Sifilis:</strong> veroorsaak deur die bakterie <em>Treponema pallidum</em>. Vorder in stadiums. Genesbaar met antibiotika (penisillien) indien vroeg opgetel.</li>
+    </ul>
+    <div class="key-fact">Konsekwente en korrekte gebruik van kondome verminder die risiko van die meeste SOI's en is die enigste voorbehoedmetode wat ook SOI-oordrag voorkom.</div>
+
+    <h2>Voorbehoeding</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Tipe</th><th>Metode</th><th>Hoe dit werk</th></tr></thead>
+      <tbody>
+        <tr><td>Skans</td><td>Manlike/vroulike kondoom</td><td>Voorkom fisies dat sperm die eiersel bereik; beskerm ook teen SOI's</td></tr>
+        <tr><td>Hormonaal</td><td>Voorbehoedpil</td><td>Sintetiese hormone voorkom ovulasie en verander die baarmoederbekleding</td></tr>
+        <tr><td>Hormonaal</td><td>Inspuiting / inplantaat / pleister</td><td>Langwerkende hormoonvrystelling voorkom ovulasie</td></tr>
+        <tr><td>Intra-uterien</td><td>IUD (spiraaltjie)</td><td>Toestel in die uterus voorkom inplanting</td></tr>
+        <tr><td>Chirurgies</td><td>Sterilisasie (buisligasie / vasektomie)</td><td>Permanent — Fallopiusbuise of vas deferens afgesny/vasgebind</td></tr>
+        <tr><td>Onthouding</td><td>Nie deelneem aan geslagsomgang nie</td><td>100% doeltreffend indien konsekwent beoefen</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Voortplantingstelselverkenner</h3>
+      <canvas id="reproCanvas" height="460"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stelsel</div>
+        <button class="mode-btn active" id="btnMale" onclick="setSystem('male',this)">Manlik</button>
+        <button class="mode-btn" id="btnFemale" onclick="setSystem('female',this)">Vroulik</button>
+        <div style="margin-top:14px">
+          <div class="ctrl-label">Kies 'n orgaan</div>
+          <div id="organButtons" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Orgaaninligting</div>
+        <div class="info-panel">
+          <div class="info-panel-title" id="infoTitle">Kies 'n orgaan</div>
+          <div class="info-panel-text" id="infoText">Klik 'n orgaannaam aan die linkerkant, of tik op 'n struktuur op die diagram, om meer oor die rol daarvan in voortplanting te leer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:800;font-size:16px;color:#fff">Vasvra Voltooi!</div><div style="font-size:13px;color:var(--muted)">Hersien jou antwoorde hieronder.</div></div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#128438; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae volledig. Gebruik diagramme waar vereis. Hierdie vrae is CAPS-belyn vir Graad 9 Natuurwetenskappe.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">a) Teken en merk 'n vereenvoudigde diagram van die manlike voortplantingstelsel wat wys: testes, epididimis, vas deferens, uretra, en penis.<br><br>
+      b) Teken en merk 'n vereenvoudigde diagram van die vroulike voortplantingstelsel wat wys: ovaria, Fallopiusbuise (eierleiers), uterus, serviks, en vagina.<br><br>
+      c) Gee langs elke gemerkte struktuur die funksie daarvan in voortplanting.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Beskryf die reis van 'n spermsel vanaf sy produksieplek tot die oomblik van bevrugting. Noem in jou antwoord elke struktuur waardeur die sperm beweeg (in die manlike EN vroulike liggaam) en verduidelik wat by elke stadium gebeur.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Die plasenta word dikwels beskryf as 'n "lewenslyn" vir die ontwikkelende fetus.<br><br>
+      a) Lys DRIE stowwe wat VAN die moeder se bloed NA die fetus oor die plasenta beweeg.<br>
+      b) Lys TWEE afvalprodukte wat VAN die fetus NA die moeder se bloed beweeg.<br>
+      c) Verduidelik waarom dit belangrik is dat die moeder se bloed en die fetus se bloed NIE direk meng nie.<br>
+      d) Noem die struktuur wat die fetus met die plasenta verbind.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Vergelyk eksterne bevrugting (soos gesien by paddas) en interne bevrugting (soos gesien by soogdiere) onder die volgende opskrifte:<br>
+      a) Waar bevrugting plaasvind<br>
+      b) Aantal eiers/nakomelinge geproduseer<br>
+      c) Mate van ouerlike sorg<br>
+      d) Voordeel van elke metode</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">a) Wat is 'n seksueel oordraagbare infeksie (SOI)? Noem TWEE voorbeelde van SOI's.<br><br>
+      b) Verduidelik hoe MIV oorgedra word en waarom dit gevaarlik is vir die immuunstelsel.<br><br>
+      c) Noem TWEE maniere waarop 'n persoon homself teen SOI's kan beskerm.<br><br>
+      d) Noem EEN voorbehoedmetode wat OOK teen SOI's beskerm en verduidelik hoe dit werk.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6</div>
+      <div class="wb-qtext">Die tabel hieronder vergelyk voortplanting by drie diere.<br><br>
+      <table class="symbols-table">
+        <thead><tr><th>Dier</th><th>Tipe bevrugting</th><th>Eiers geproduseer per voortplantingsgebeurtenis</th><th>Nakomelinge wat tot volwassenheid oorleef (gemiddeld)</th></tr></thead>
+        <tbody>
+          <tr><td>Padda</td><td>Ekstern</td><td>2 000</td><td>4</td></tr>
+          <tr><td>Hoender</td><td>Intern</td><td>12</td><td>8</td></tr>
+        </tbody>
+      </table>
+      a) Bereken die persentasie eiers wat tot volwassenheid oorleef vir die padda, en vir die hoender. Wys jou berekeninge.<br><br>
+      b) Watter van die twee diere belê meer ouerlike sorg en beskerming per eier? Gebruik jou berekende persentasies om jou antwoord te regverdig.<br><br>
+      c) Verduidelik hoe die padda se strategie om baie groot getalle eiers te produseer help om vir sy lae oorlewingspersentasie te vergoed.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') initSim();
+}
+
+// ── ORGAN DATA ────────────────────────────────────────────────────────────────
+const maleOrgans = {
+  testes:      { title:'Testes', text:'Die twee testes is in die skrotum geleë, wat ~2°C onder kern-liggaamstemperatuur gehou word. Hulle produseer sperm (spermatogenese) en die hormoon testosteroon vanaf puberteit. Miljoene sperm word elke dag geproduseer.', col:'#60a5fa' },
+  epididymis:  { title:'Epididimis', text:'\'n Styf gekrulde buis (~6 m lank) waar onvolwasse sperm oor ongeveer 2–3 weke ryp word, en die vermoë om te swem verkry. Sperm word hier gestoor tot ejakulasie.', col:'#a78bfa' },
+  vasdeferens: { title:'Vas Deferens', text:'Die vas deferens (spermkanaal) is \'n spierige buis wat sperm van die epididimis op na die bekkenholte in die rigting van die uretra dryf tydens ejakulasie.', col:'#34d399' },
+  urethra:     { title:'Uretra', text:'\'n Gedeelde buis vir beide uriene en semen (maar nooit gelyktydig nie). Dit loop deur die penis en dra semen na buite. \'n Sfinkterspier voorkom dat uriene met semen meng.', col:'#fbbf24' },
+  penis:       { title:'Penis', text:'Die eksterne orgaan wat semen tydens omgang na die vroulike voortplantingskanaal aflewer. Bevat erektiele weefsel wat met bloed vul om tydens opwinding stewig te word.', col:'#f87171' },
+};
+
+const femaleOrgans = {
+  ovaries:      { title:'Ovaria', text:'Twee amandelgrootte organe wat duisende onvolwasse eierselle (oösiete) bevat wat van geboorte af teenwoordig is. Elke maand stimuleer hormone een follikel om ryp te word en \'n eiersel vry te stel (ovulasie). Ovaria produseer ook oestrogeen en progesteroon.', col:'#f472b6' },
+  fallopian:    { title:'Fallopiusbuise (Eierleiers)', text:'Twee buise (~10 cm lank) wat die ovaria met die uterus verbind. Klein silia vee die vrygestelde eiersel na die uterus toe. Bevrugting vind gewoonlik in die Fallopiusbuis plaas, ongeveer \'n derde van die pad vanaf die ovarium.', col:'#fb923c' },
+  uterus:       { title:'Uterus (Baarmoeder)', text:'\'n Peervormige, dikwandige spierige orgaan waar die embrio inplant en die fetus vir ~38 weke ontwikkel. Die binnebekleding (endometrium) verdik elke maand ter voorbereiding vir inplanting. Sy kragtige spiere trek tydens arbeid saam om die baba uit te druk.', col:'#c084fc' },
+  cervix:       { title:'Serviks', text:'Die nou, onderste opening van die uterus. Dit produseer slym wat normaalweg sperm en bakterieë verhoed om binne te dring. Tydens geboorte (bevalling) verwyd die serviks tot ~10 cm om die baba deur te laat.', col:'#34d399' },
+  vagina:       { title:'Vagina', text:'Die spierige kanaal wat die serviks met die buitekant van die liggaam verbind. Dit ontvang die penis tydens omgang en dien as die geboortekanaal waardeur die baba gebore word. Dit het \'n suur pH om infeksie te voorkom.', col:'#fbbf24' },
+};
+
+let system = 'male';
+let selectedOrgan = null;
+let simInit = false;
+
+function setSystem(sys, btn) {
+  system = sys;
+  selectedOrgan = null;
+  document.querySelectorAll('.mode-btn[data-sys]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('infoTitle').textContent = 'Kies \'n orgaan';
+  document.getElementById('infoText').textContent = 'Klik \'n orgaannaam aan die linkerkant, of tik op \'n struktuur op die diagram, om meer oor die rol daarvan in voortplanting te leer.';
+  buildOrganButtons();
+  drawSystem();
+}
+
+function selectOrgan(key) {
+  selectedOrgan = key;
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  document.getElementById('infoTitle').textContent = data[key].title;
+  document.getElementById('infoText').textContent = data[key].text;
+  document.querySelectorAll('#organButtons .mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+  drawSystem();
+}
+
+function buildOrganButtons() {
+  const wrap = document.getElementById('organButtons');
+  wrap.innerHTML = '';
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  Object.keys(data).forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'mode-btn';
+    b.dataset.key = k;
+    b.textContent = data[k].title.split('(')[0].trim();
+    b.onclick = () => selectOrgan(k);
+    wrap.appendChild(b);
+  });
+}
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+const H = 460;
+let ctx3;
+
+function initSim() {
+  simInit = true;
+  buildOrganButtons();
+  drawSystem();
+}
+
+function setupCanvas() {
+  const canvas = document.getElementById('reproCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const logicalW = canvas.offsetWidth || 640;
+  canvas.width = logicalW * dpr;
+  canvas.height = H * dpr;
+  ctx3 = canvas.getContext('2d');
+  ctx3.setTransform(1, 0, 0, 1, 0, 0);
+  ctx3.scale(dpr, dpr);
+  return { ctx: ctx3, W: logicalW, H };
+}
+
+function partCol(key, defaultCol) {
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  if (selectedOrgan === key) return data[key].col;
+  return defaultCol;
+}
+function partAlpha(key) {
+  if (!selectedOrgan) return 1;
+  return selectedOrgan === key ? 1 : 0.3;
+}
+
+function drawSystem() {
+  const { ctx, W } = setupCanvas();
+  ctx.clearRect(0, 0, W, H);
+  if (system === 'male') drawMale(ctx, W);
+  else drawFemale(ctx, W);
+}
+
+function label(ctx, x, y, text, key) {
+  const data = system === 'male' ? maleOrgans : femaleOrgans;
+  const active = selectedOrgan === key;
+  ctx.save();
+  ctx.font = `${active ? '700' : '600'} 11px "Cabinet Grotesk", sans-serif`;
+  ctx.fillStyle = active ? (data[key] ? data[key].col : '#fcd34d') : 'rgba(210,218,245,0.52)';
+  ctx.textAlign = x > W * 0.5 ? 'left' : 'right';
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function drawMale(ctx, W) {
+  const cx = W * 0.46;
+  const baseY = 60;
+
+  // — Body outline (torso hint) —
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(cx - 80, baseY, 160, 280, 20);
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Testes (two ovals at bottom) —
+  const testesY = baseY + 300;
+  [-34, 34].forEach((dx, i) => {
+    ctx.save();
+    ctx.globalAlpha = partAlpha('testes');
+    ctx.beginPath();
+    ctx.ellipse(cx + dx, testesY, 22, 30, 0, 0, Math.PI * 2);
+    ctx.fillStyle = partCol('testes', 'rgba(96,165,250,0.25)');
+    ctx.fill();
+    ctx.strokeStyle = partCol('testes', '#60a5fa');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+  });
+  // scrotum outline
+  ctx.save();
+  ctx.globalAlpha = partAlpha('testes') * 0.4;
+  ctx.beginPath();
+  ctx.ellipse(cx, testesY + 4, 60, 38, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = partCol('testes', '#60a5fa');
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Epididymis (coiled on side of each testis) —
+  [cx - 34, cx + 34].forEach(tx => {
+    const side = tx < cx ? -1 : 1;
+    ctx.save();
+    ctx.globalAlpha = partAlpha('epididymis');
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      ctx.ellipse(tx + side * 24, testesY - 10 + i * 8, 8, 4, 0, 0, Math.PI * 2);
+    }
+    ctx.strokeStyle = partCol('epididymis', '#a78bfa');
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // — Vas deferens (curves up from epididymis to pelvis) —
+  ctx.save();
+  ctx.globalAlpha = partAlpha('vasdeferens');
+  ctx.beginPath();
+  ctx.moveTo(cx - 34 - 32, testesY - 10);
+  ctx.bezierCurveTo(cx - 80, testesY - 60, cx - 70, baseY + 220, cx - 20, baseY + 200);
+  ctx.moveTo(cx + 34 + 32, testesY - 10);
+  ctx.bezierCurveTo(cx + 80, testesY - 60, cx + 70, baseY + 220, cx + 20, baseY + 200);
+  ctx.strokeStyle = partCol('vasdeferens', '#34d399');
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // — Urethra (vertical line through penis) —
+  const urethraTop = baseY + 200;
+  const urethraBot = baseY + 390;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('urethra');
+  ctx.beginPath();
+  ctx.moveTo(cx, urethraTop);
+  ctx.lineTo(cx, urethraBot - 60);
+  ctx.strokeStyle = partCol('urethra', '#fbbf24');
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Penis (rounded rect) —
+  ctx.save();
+  ctx.globalAlpha = partAlpha('penis');
+  ctx.beginPath();
+  ctx.roundRect(cx - 16, urethraBot - 65, 32, 80, 10);
+  ctx.fillStyle = partCol('penis', 'rgba(248,113,113,0.2)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('penis', '#f87171');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Labels —
+  label(ctx, cx - 18, testesY + 5,   'Testes',        'testes');
+  label(ctx, cx - 18, testesY - 6,   'Epididimis',    'epididymis');
+  label(ctx, cx - 18, baseY + 170,   'Vas deferens',  'vasdeferens');
+  label(ctx, cx - 18, urethraTop + 40,'Uretra',       'urethra');
+  label(ctx, cx - 18, urethraBot + 8, 'Penis',        'penis');
+}
+
+function drawFemale(ctx, W) {
+  const cx = W * 0.46;
+  const baseY = 40;
+
+  // — Body outline —
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(cx - 110, baseY + 60, 220, 300, 20);
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Ovaries (two ovals) —
+  const ovY = baseY + 100;
+  [cx - 80, cx + 80].forEach(ox => {
+    ctx.save();
+    ctx.globalAlpha = partAlpha('ovaries');
+    ctx.beginPath();
+    ctx.ellipse(ox, ovY, 22, 16, 0, 0, Math.PI * 2);
+    ctx.fillStyle = partCol('ovaries', 'rgba(244,114,182,0.2)');
+    ctx.fill();
+    ctx.strokeStyle = partCol('ovaries', '#f472b6');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // — Fallopian tubes (arching from ovaries to uterus) —
+  const uterTop = baseY + 150;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('fallopian');
+  ctx.beginPath();
+  // Left tube
+  ctx.moveTo(cx - 80, ovY);
+  ctx.quadraticCurveTo(cx - 80, uterTop - 20, cx - 28, uterTop);
+  // Right tube
+  ctx.moveTo(cx + 80, ovY);
+  ctx.quadraticCurveTo(cx + 80, uterTop - 20, cx + 28, uterTop);
+  ctx.strokeStyle = partCol('fallopian', '#fb923c');
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.restore();
+
+  // — Uterus (pear shape) —
+  const uterCX = cx;
+  const uterCY = baseY + 195;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('uterus');
+  ctx.beginPath();
+  ctx.ellipse(uterCX, uterCY, 44, 52, 0, 0, Math.PI * 2);
+  ctx.fillStyle = partCol('uterus', 'rgba(192,132,252,0.2)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('uterus', '#c084fc');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Cervix —
+  const cervY = baseY + 255;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('cervix');
+  ctx.beginPath();
+  ctx.roundRect(cx - 14, cervY, 28, 26, 6);
+  ctx.fillStyle = partCol('cervix', 'rgba(52,211,153,0.2)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('cervix', '#34d399');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Vagina —
+  const vagY = cervY + 26;
+  ctx.save();
+  ctx.globalAlpha = partAlpha('vagina');
+  ctx.beginPath();
+  ctx.roundRect(cx - 18, vagY, 36, 70, 8);
+  ctx.fillStyle = partCol('vagina', 'rgba(251,191,36,0.12)');
+  ctx.fill();
+  ctx.strokeStyle = partCol('vagina', '#fbbf24');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // — Labels —
+  label(ctx, cx + 110, ovY,        'Ovaria',           'ovaries');
+  label(ctx, cx + 110, ovY + 20,   'Fallopiusbuise',   'fallopian');
+  label(ctx, cx + 110, uterCY,     'Uterus',           'uterus');
+  label(ctx, cx + 110, cervY + 12, 'Serviks',          'cervix');
+  label(ctx, cx + 110, vagY + 35,  'Vagina',           'vagina');
+}
+
+window.addEventListener('resize', () => { if (simInit) drawSystem(); });
+
+// ── PRACTICE ──────────────────────────────────────────────────────────────────
+const questions = [
+  {
+    q: 'Watter struktuur in \'n spermsel bevat mitochondria, en waarom is dit belangrik?',
+    opts: [
+      'Die kop; mitochondria bevat die sperm se genetiese materiaal',
+      'Die stert; mitochondria voorsien die krag om die flagellum te laat draai',
+      'Die middelstuk; mitochondria voer respirasie uit om ATP vir beweging te produseer',
+      'Die akrosoom; mitochondria stel ensieme vry om die eiersel binne te dring'
+    ],
+    ans: 2,
+    fb: 'Die middelstuk van die sperm is vol mitochondria. Hierdie voer aerobiese respirasie uit om ATP (energie-eenheid) te produseer, wat die klop van die flagellum (stert) aandryf. Hierdie energie is noodsaaklik sodat die sperm die lang afstand van die vagina na die Fallopiusbuis kan swem, waar bevrugting plaasvind.'
+  },
+  {
+    q: 'Waar vind bevrugting die algemeenste plaas in die menslike vroulike voortplantingstelsel?',
+    opts: ['In die uterus', 'In die vagina', 'In die Fallopiusbuis (eierleier)', 'In die ovarium'],
+    ans: 2,
+    fb: 'Bevrugting vind normaalweg in die Fallopiusbuis (eierleier) plaas, ongeveer \'n derde van die pad vanaf die ovarium. Die bevrugte eiersel (sigoot) beweeg dan oor 5–7 dae na die uterus toe, en deel terwyl dit beweeg, voordat dit in die baarmoederwand (endometrium) inplant.'
+  },
+  {
+    q: 'Die plasenta is \'n noodsaaklike struktuur tydens swangerskap. Watter van die volgende beskryf sy funksie KORREK?',
+    opts: [
+      'Dit stoor melk wat deur die moeder geproduseer word om die pasgeborene te voed',
+      'Dit laat die moeder se bloed direk in die fetus invloei vir suurstoflewering',
+      'Dit laat suurstof en voedingstowwe van moeder na fetus beweeg sonder dat die bloed meng',
+      'Dit produseer sperm- en eierselle vir die ontwikkelende fetus'
+    ],
+    ans: 2,
+    fb: 'Die plasenta laat die uitruil van stowwe toe (suurstof, voedingstowwe na fetus; koolstofdioksied, afval van fetus) oor dun membrane. Belangrik is dat die moeder se bloed en die fetale bloed geskei bly — hulle meng nie. Dit voorkom immuunverwerping en beskerm die fetus teen die meeste van die moeder se hormone en immuunselle.'
+  },
+  {
+    q: 'n Padda stel duisende eiers in \'n dam vry, terwyl \'n menslike vroulike een eiersel per maand vrystel. Hierdie verskil hou verband met:',
+    opts: [
+      'Eksterne bevrugting wat minder nakomelinge produseer omdat water nie \'n goeie medium vir voortplanting is nie',
+      'Eksterne bevrugting wat baie eiers benodig omdat die meeste nie bevrug word of oorleef nie; interne bevrugting benodig minder eiers omdat hulle beter beskerm word',
+      'Paddas het meer ovaria as mense',
+      'Paddas plant geslagtelik voort terwyl mense ongeslagtelik voortplant'
+    ],
+    ans: 1,
+    fb: 'By eksterne bevrugting (paddas) word eiers en sperm in oop water vrygestel waar die kans op bevrugting laer is en predasie hoog is — dus vergoed groot getalle hiervoor. By interne bevrugting (mense) word sperm direk naby die eiersel afgesit, en die embrio ontwikkel in die beskermde uterus — dus word slegs een of enkele eiers per siklus benodig.'
+  },
+  {
+    q: 'Tydens watter ontwikkelingstadium word die term "fetus" gebruik?',
+    opts: [
+      'Vanaf bevrugting tot inplanting (0–7 dae)',
+      'Vanaf bevrugting tot 8 weke (organogenesefase)',
+      'Vanaf 9 weke na bevrugting tot geboorte (~38 weke draagtyd)',
+      'Vanaf geboorte tot 4 weke ouderdom (neonatale periode)'
+    ],
+    ans: 2,
+    fb: 'Die ontwikkelende mens word \'n embrio genoem vanaf bevrugting tot die einde van week 8, waartydens alle hoofsaaklike organe begin vorm. Vanaf week 9 tot geboorte (totale draagtyd ~38 weke), word dit \'n fetus genoem. Gedurende die fetale periode groei en ryp die organe, en neem die fetus \'n herkenbaar menslike vorm aan.'
+  },
+  {
+    q: 'Watter voorbehoedmetode bied ook beskerming teen seksueel oordraagbare infeksies (SOI\'s)?',
+    opts: [
+      'Die voorbehoedpil',
+      '\'n Intra-uteriene toestel (IUD)',
+      'Chirurgiese sterilisasie (buisligasie)',
+      'Die manlike of vroulike kondoom'
+    ],
+    ans: 3,
+    fb: 'Die kondoom (manlik of vroulik) is die ENIGSTE algemeen beskikbare voorbehoedmetode wat ook teen SOI\'s beskerm. Dit voorkom fisies die uitruil van liggaamsvloeistowwe (semen, vaginale afskeidings, bloed) wat patogene soos MIV, sifilis, gonorree, en chlamidia oordra. Hormonale metodes en IUD\'s voorkom swangerskap, maar blokkeer nie SOI-oordrag nie.'
+  },
+  {
+    q: 'n Leerder teken relatiewe bloed-LH-vlakke (luteïniserende hormoon) op verskillende punte in \'n 28-dae-menstruele siklus aan: Dag 7 = 12 eenhede; Dag 14 = 96 eenhede; Dag 21 = 15 eenhede; Dag 26 = 10 eenhede. Op grond van hierdie data, op watter dag het ovulasie heel waarskynlik plaasgevind, en waarom?',
+    opts: [
+      'Dag 7, want LH styg reeds gestaag vanaf die begin van die siklus',
+      'Dag 14, want ovulasie word deur \'n skerp toename in LH getrigger, wat met die skielike piek in die data ooreenstem',
+      'Dag 21, want dit is wanneer die endometrium op sy dikste is',
+      'Dag 26, want menstruasie begin kort daarna'
+    ],
+    ans: 1,
+    fb: 'Die data wys dat LH-vlakke op die meeste dae laag is, maar skerp piek na 96 eenhede op dag 14. Ovulasie word presies deur so \'n LH-toename getrigger, wat veroorsaak dat die ryp eiersel uit die ovarium vrygestel word. Dit stem ooreen met die tipiese 28-dae-siklus, waar ovulasie ongeveer by die middelpunt plaasvind. Die ander dae wys slegs lae, agtergrond-LH-vlakke en kan nie die vrystelling van \'n eiersel verklaar nie.'
+  },
+  {
+    q: 'n Padda stel duisende eiers in \'n dam vry (eksterne bevrugting), en die meeste word nooit bevrug nie of word deur roofdiere geëet. \'n Menslike vroulike stel ongeveer een eiersel per maand vry (interne bevrugting), en daardie bevrugte eiersel het \'n veel groter kans om tot geboorte te oorleef. Wat toon hierdie vergelyking die beste oor die verband tussen bevrugtingsmetode en voortplantingstrategie?',
+    opts: [
+      'Paddas is minder goed aangepas vir voortplanting as mense',
+      'Spesies wat eksterne bevrugting gebruik, vergoed vir lae oorlewing per eiersel deur baie groot getalle eiers te produseer, terwyl spesies met interne bevrugting en ouerlike sorg hulpbronne in minder, beter-beskermde nakomelinge kan belê',
+      'Interne bevrugting produseer altyd meer totale nakomelinge as eksterne bevrugting',
+      'Die aantal eiers wat geproduseer word, hang net van die fisiese grootte van die dier af'
+    ],
+    ans: 1,
+    fb: 'Dit weerspieël \'n ware kompromie in voortplantingstrategie, nie \'n verskil in hoe "goed aangepas" \'n organisme is nie. Eksterne bevrugting in water stel eiers en sperm bloot aan groot verliese (geen beskerming nie, geen waarborg dat hulle mekaar sal ontmoet nie), dus verhoog die produksie van baie eiers die kans dat ten minste enkeles oorleef. Interne bevrugting, tesame met ouerlike sorg en (by soogdiere) interne ontwikkeling, beskerm elke individuele nakomeling veel beter, dus word veel minder eiers benodig. Albei strategieë is ewe geldige evolusionêre oplossings om die oorlewing van die spesie te verseker.'
+  }
+];
+
+let answered = 0, correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, j) =>
+      `<button class="mc-opt" onclick="answer(${i},${j},this)">
+        <span class="opt-letter">${letters[j]}</span>${o}
+      </button>`
+    ).join('');
+    container.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Vraag ${i+1} van ${questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="mc-options">${optsHtml}</div>
+        <div class="feedback" id="fb-${i}"></div>
+      </div>`;
+  });
+}
+
+function answer(qi, selected, btn) {
+  const card = document.getElementById('qcard-' + qi);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  const q = questions[qi];
+  const opts = card.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('fb-' + qi);
+  if (selected === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = '&#10003; Reg! ' + q.fb;
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback show bad';
+    fb.innerHTML = '&#10007; Nie heeltemal reg nie. ' + q.fb;
+  }
+  answered++;
+  if (answered === questions.length) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct + '/' + questions.length;
+  }
+}
+
+// Add data-sys attribute to system mode buttons for correct toggle
+document.getElementById('btnMale').dataset.sys = 'male';
+document.getElementById('btnFemale').dataset.sys = 'female';
+
+buildPractice();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
