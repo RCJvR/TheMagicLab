@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemiese Reaksies — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#60a5fa;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .eq-box{background:rgba(255,255,255,.04);border:1px solid rgba(96,165,250,.25);border-radius:14px;padding:18px 22px;margin:16px 0;text-align:center;font-family:var(--fm);font-size:14px;color:#e4e8f8;letter-spacing:.02em;line-height:2.2}
+    .eq-box .r{color:#f87171}.eq-box .p{color:#86efac}.eq-box .arr{color:var(--muted)}
+    .sign-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    .sign-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .sign-card h3{font-size:13px;font-weight:800;margin-bottom:6px}
+    .sign-card.react h3{color:#f87171}
+    .sign-card.prod h3{color:#86efac}
+    .sign-card p{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.6;margin:0}
+    /* Explore */
+    .explore-wrap{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
+    .canvas-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    canvas{display:block;width:100%}
+    .controls{display:flex;flex-direction:column;gap:12px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{width:100%;padding:9px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:11px;cursor:pointer;transition:all 140ms;margin-bottom:6px;text-align:left}
+    .mode-btn.active{border-color:rgba(96,165,250,.40);background:rgba(96,165,250,.12);color:#93c5fd}
+    .react-btn{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.12);color:#93c5fd;font-weight:800;font-size:13px;cursor:pointer;transition:all 150ms;margin-top:6px}
+    .react-btn:hover{background:rgba(96,165,250,.22)}
+    .stat-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:6px}
+    .stat-item span:first-child{color:var(--muted)}
+    .stat-item span:last-child{color:#60a5fa;font-family:var(--fm);font-weight:600}
+    /* Practice + Workbook */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#60a5fa}
+    .wb-wrap{max-width:680px}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(96,165,250,.35)}
+  
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-wrap{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Materie en Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Materie en Materiale · Les 4</div>
+  <h1 class="lesson-title">Chemiese Reaksies</h1>
+  <p class="lesson-sub">Reaktante kombineer en breek uitmekaar om produkte met heeltemal nuwe eienskappe te vorm. Geen atome gaan verlore nie — hulle word net herrangskik.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🧪 Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Wat is 'n chemiese reaksie?</h2>
+    <p>'n <strong>Chemiese reaksie</strong> is 'n proses waartydens stowwe (reaktante) in nuwe stowwe (produkte) met ander chemiese eienskappe omgeskakel word. Tydens die reaksie word chemiese bindings in die reaktante verbreek en nuwe bindings vorm om die produkte te skep.</p>
+    <div class="sign-grid">
+      <div class="sign-card react">
+        <h3>⚗️ Reaktante</h3>
+        <p>Die stowwe wat <strong>voor</strong> die reaksie teenwoordig is — die beginmateriale wat met mekaar reageer.</p>
+      </div>
+      <div class="sign-card prod">
+        <h3>✅ Produkte</h3>
+        <p>Die stowwe wat <strong>na</strong> die reaksie geproduseer word. Hulle het ander eienskappe as die reaktante.</p>
+      </div>
+    </div>
+    <div class="callout"><strong>Kernbeginsel:</strong> In 'n chemiese reaksie word atome herrangskik — geen atome word geskep of vernietig nie. Die totale aantal atome van elke element is dieselfde in die reaktante en die produkte (behoud van massa).</div>
+
+    <h2>Hoe om 'n chemiese vergelyking te lees</h2>
+    <p>Chemiese reaksies word as vergelykings geskryf met reaktante aan die linkerkant en produkte aan die regterkant, geskei deur 'n pyl (→ wat "produseer" beteken):</p>
+    <div class="eq-box">
+      <span class="r">Reaktant A</span> + <span class="r">Reaktant B</span> <span class="arr">→</span> <span class="p">Produk C</span> + <span class="p">Produk D</span>
+    </div>
+    <p><strong>Voorbeeld 1 — asyn en eierdop:</strong></p>
+    <div class="eq-box">
+      <span class="r">Asyn (asynsuur)</span> + <span class="r">Kalsiumkarbonaat (eierdop)</span> <span class="arr">→</span> <span class="p">CO₂-gas</span> + <span class="p">Kalsiumasetaat (oplossing)</span>
+    </div>
+    <p>Jy kan hierdie reaksie waarneem: borrels CO₂ vorm, die eierdop los op, en die oplossing verander — dit is tekens dat 'n chemiese reaksie plaasgevind het.</p>
+
+    <p><strong>Voorbeeld 2 — CO₂ en kalkwater:</strong></p>
+    <div class="eq-box">
+      <span class="r">Koolstofdioksied</span> + <span class="r">Kalsiumhidroksied (kalkwater)</span> <span class="arr">→</span> <span class="p">Kalsiumkarbonaat (wit presipitaat)</span> + <span class="p">Water</span>
+    </div>
+    <p>Wanneer jy deur 'n strooitjie in helder kalkwater blaas, word dit melkerig/wit. Dit is die standaardtoets vir koolstofdioksied.</p>
+
+    <h2>Tekens dat 'n chemiese reaksie plaasgevind het</h2>
+    <ul>
+      <li>'n Gas word geproduseer (borreling)</li>
+      <li>'n Presipitaat vorm (troebel vaste stof verskyn in 'n vloeistof)</li>
+      <li>'n Kleurverandering vind plaas</li>
+      <li>Hitte of lig word vrygestel of geabsorbeer</li>
+      <li>'n Reuk word geproduseer</li>
+    </ul>
+
+    <h2>Chemiese reaksies teenoor fisiese veranderinge</h2>
+    <p>In 'n <strong>fisiese verandering</strong> (soos smelt, oplos of sny), word geen nuwe stowwe gevorm nie en die verandering is gewoonlik omkeerbaar. In 'n <strong>chemiese reaksie</strong> word nuwe stowwe met ander eienskappe gevorm, en die verandering is gewoonlik moeilik of onmoontlik om om te keer.</p>
+
+    <h2>Inheemse kennis</h2>
+    <p>Fermentasie is 'n voorbeeld van 'n chemiese reaksie wat oor kulture heen al duisende jare lank bekend is. Gis skakel suikers om in etanol (alkohol) en koolstofdioksiedgas. Dit word gebruik om tradisionele drankies soos umqombothi (sorghumbier) te brou — 'n proses wat graan ook meer verteerbaar en voedsaam maak.</p>
+    <div class="callout"><strong>Skakel vorentoe:</strong> Chemiese reaksies word verder ontwikkel in Graad 9, waar jy gebalanseerde vergelykings skryf vir metale en nie-metale wat met suurstof reageer, en vir sure wat met basisse reageer.</div>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <div class="canvas-card">
+      <canvas id="cv" width="520" height="400"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Reaksie</div>
+        <button class="mode-btn active" onclick="setRxn('vinegar',this)">🥚 Asyn + Eierdop</button>
+        <button class="mode-btn" onclick="setRxn('limewater',this)">💨 CO₂ + Kalkwater</button>
+        <button class="mode-btn" onclick="setRxn('ferment',this)">🍺 Fermentasie</button>
+        <button class="react-btn" id="react-btn" onclick="triggerReaction()">▶ Reageer!</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Status</div>
+        <div class="stat-item"><span>Fase</span><span id="st-phase">Voor</span></div>
+        <div class="stat-item"><span>Borrels</span><span id="st-bubbles">0</span></div>
+        <div class="stat-item"><span>Reaksie</span><span id="st-rxn">Asyn + CaCO₃</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Telling</span><span class="score-val" id="score">0 / 6</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Skryf jou antwoorde in die spasies hieronder. Gebruik volledige sinne.</p>
+    <div class="wb-card"><div class="wb-q">1. Definieer die terme "reaktant" en "produk" in die konteks van 'n chemiese reaksie, en gee 'n voorbeeld van elkeen.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Lys vyf waarneembare tekens dat 'n chemiese reaksie plaasgevind het. Gee 'n werklike-lewe voorbeeld vir enige twee daarvan.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Skryf 'n woordvergelyking vir die reaksie tussen asyn en 'n eierdop. Identifiseer die reaktante en produkte.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Verduidelik die verskil tussen 'n chemiese reaksie en 'n fisiese verandering. Gee een voorbeeld van elkeen.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. Wat is die kalkwatertoets en wat spoor dit op? Skryf 'n woordvergelyking vir wat gebeur.</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Verduidelik die behoud van massa in 'n chemiese reaksie. Waarom gaan geen massa verlore nie, al word 'n gas (CO₂) vrygestel?</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=520,H=400;
+let rxn='vinegar',phase='before',bubbles=[],particles=[],raf=null,t=0,reacted=false,reactTimer=null;
+
+const rxnData={
+  vinegar:{label:'Asyn + CaCO₃',reactA:'Asyn (CH₃COOH)',reactB:'Eierdop (CaCO₃)',product:'CO₂ + Kalsiumasetaat',color:'rgba(251,191,36,',shell:true},
+  limewater:{label:'CO₂ + Ca(OH)₂',reactA:'Koolstofdioksied (CO₂)',reactB:'Kalkwater Ca(OH)₂',product:'CaCO₃ (wit) + H₂O',color:'rgba(96,165,250,',shell:false},
+  ferment:{label:'Suiker + Gis',reactA:'Glukose (C₆H₁₂O₆)',reactB:'Gisensieme',product:'CO₂ + Etanol (C₂H₅OH)',color:'rgba(163,230,53,',shell:false}
+};
+
+function setRxn(r,btn){
+  rxn=r; phase='before'; reacted=false; bubbles=[]; particles=[]; clearTimeout(reactTimer);
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('st-rxn').textContent=rxnData[r].label;
+  document.getElementById('react-btn').textContent='▶ Reageer!';
+  document.getElementById('react-btn').disabled=false;
+  if(raf) cancelAnimationFrame(raf); initSim();
+}
+
+function triggerReaction(){
+  if(reacted) return;
+  reacted=true; phase='reacting';
+  document.getElementById('st-phase').textContent='Reageer…';
+  document.getElementById('react-btn').textContent='Reageer…';
+  document.getElementById('react-btn').disabled=true;
+  reactTimer=setTimeout(()=>{phase='after';document.getElementById('st-phase').textContent='Na';},3000);
+}
+
+function initSim(){
+  if(raf) cancelAnimationFrame(raf);
+  const dW=cv.offsetWidth||520,dH=Math.round(dW*400/520);
+  cv.width=dW; cv.height=dH; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dW/520,dH/400);
+  t=0; loop();
+}
+
+function loop(){
+  raf=requestAnimationFrame(loop);
+  t++;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#060a16';
+  ctx.fillRect(0,0,W,H);
+
+  const d=rxnData[rxn];
+
+  // Beaker
+  ctx.strokeStyle='rgba(148,163,184,0.4)';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(160,80);ctx.lineTo(120,320);ctx.lineTo(400,320);ctx.lineTo(360,80);ctx.stroke();
+  // Liquid
+  const liqColor=phase==='after'?(rxn==='limewater'?'rgba(229,231,235,0.25)':'rgba(34,197,94,0.15)'):d.color+'0.12)';
+  ctx.fillStyle=liqColor;
+  ctx.beginPath();ctx.moveTo(125,310);ctx.lineTo(127,150);ctx.lineTo(393,150);ctx.lineTo(395,310);ctx.closePath();ctx.fill();
+
+  // Reactant labels
+  ctx.font='12px var(--fd)';ctx.textAlign='center';
+  if(phase==='before'){
+    ctx.fillStyle='rgba(248,113,113,0.8)';
+    ctx.fillText(d.reactA,W/2,130);
+    ctx.fillStyle='rgba(248,113,113,0.6)';
+    ctx.fillText('+ '+d.reactB,W/2,148);
+  } else if(phase==='after'){
+    ctx.fillStyle='rgba(134,239,172,0.8)';
+    ctx.fillText('Produkte: '+d.product,W/2,130);
+  }
+
+  // Shell (vinegar rxn)
+  if(rxn==='vinegar' && phase!=='after'){
+    const dissolve=phase==='reacting'?Math.max(0,1-t/180):1;
+    ctx.fillStyle=`rgba(220,210,190,${0.8*dissolve})`;
+    ctx.beginPath();ctx.ellipse(W/2,240,40*dissolve,20*dissolve,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle=`rgba(210,200,180,${0.6*dissolve})`;ctx.lineWidth=2;ctx.stroke();
+    if(dissolve<0.05) phase='after';
+  }
+
+  // Bubbles
+  if(phase==='reacting' && t%4===0){
+    const bx=140+Math.random()*(W-280);
+    bubbles.push({x:bx,y:310,r:2+Math.random()*4,vy:0.8+Math.random()*1});
+  }
+  for(const b of bubbles){
+    b.y-=b.vy; b.x+=(Math.random()-.5)*0.5;
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    ctx.strokeStyle=`${d.color}0.6)`;ctx.lineWidth=1;ctx.stroke();
+  }
+  bubbles=bubbles.filter(b=>b.y>80);
+  document.getElementById('st-bubbles').textContent=bubbles.length;
+
+  // Limewater: milky cloud
+  if(rxn==='limewater' && phase==='reacting'){
+    for(let i=0;i<3;i++){
+      ctx.beginPath();
+      ctx.arc(140+Math.random()*240,160+Math.random()*140,3+Math.random()*6,0,Math.PI*2);
+      ctx.fillStyle='rgba(229,231,235,0.08)';ctx.fill();
+    }
+  }
+
+  // Labels bottom
+  ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px var(--fd)';ctx.textAlign='center';
+  ctx.fillText(phase==='before'?'Voor die reaksie':phase==='reacting'?'Reaksie aan die gang...':'Na die reaksie',W/2,360);
+}
+
+const QS=[
+  {q:"Wat word die stowwe genoem wat VOOR 'n chemiese reaksie teenwoordig is?",opts:["Produkte","Elemente","Reaktante","Verbindings"],ans:2,fb:"Reaktante is die beginmateriale in 'n chemiese reaksie. Hulle reageer saam om produkte te vorm."},
+  {q:"In die reaksie: asyn + eierdop → CO₂ + kalsiumasetaat, watter is die produkte?",opts:["Asyn en eierdop","CO₂ en kalsiumasetaat","Slegs CO₂","Slegs kalsiumasetaat"],ans:1,fb:"Produkte is wat na die reaksie gevorm word. CO₂ (gas) en kalsiumasetaat (oplossing) is albei produkte."},
+  {q:"Watter waarneming vertel jou dat CO₂-gas in 'n reaksie geproduseer is?",opts:["Die vloeistof word rooi","Borrels vorm","'n Wit presipitaat verskyn","Die vloeistof word warmer"],ans:1,fb:"CO₂ is 'n gas — wanneer dit geproduseer word, sien jy dit as borrels wat uit die vloeistof ontsnap."},
+  {q:"Helder kalkwater word melkerig wit wanneer CO₂ daardeur geborrel word. Die wit stof wat vorm, is:",opts:["Kalsiumhidroksied","Kalsiumkarbonaat","Kalsiumchloried","Koolstof"],ans:1,fb:"CO₂ + Ca(OH)₂ → CaCO₃ (wit presipitaat) + H₂O. Die wit troebelheid is kalsiumkarbonaat — dit is die standaardtoets vir CO₂."},
+  {q:"Watter van die volgende is 'n FISIESE verandering, NIE 'n chemiese reaksie nie?",opts:["Hout wat brand","Yster wat roes","Ys wat smelt","Brood wat bak"],ans:2,fb:"Smelt is 'n fisiese verandering — slegs die fase van materie verander, geen nuwe stof word gevorm nie. Die water kan weer tot ys vries."},
+  {q:"In enige chemiese reaksie word atome:",opts:["Uit niks geskep nie","Tydens die reaksie vernietig","Herrangskik maar nie geskep of vernietig nie","Verander in ander elemente"],ans:2,fb:"Behoud van massa: atome word in nuwe kombinasies (produkte) herrangskik, maar die totale aantal en tipe atome bly dieselfde."},
+  {q:"Twee leerders laat elk asyn met 'n eierdop reageer. Leerder A doen die reaksie in 'n GESLOTE houer en weeg dit voor en na. Leerder B doen dieselfde reaksie in 'n OOP houer en weeg dit voor en na. Watter leerder sal GEEN verandering in totale massa meet nie, en waarom?",opts:["Leerder B, want gas wat uit 'n oop houer ontsnap tel nie by massa nie","Leerder A, want in 'n geslote houer kan niks in- of uitgaan nie, dus bly die CO₂-gas wat geproduseer word vasgevang binne-in — die totale massa voor en na moet gelyk wees, aangesien atome slegs herrangskik word, nie geskep of vernietig nie","Geeneen van die leerders nie, want chemiese reaksies verander altyd die totale massa van 'n stelsel","Albei leerders, want massa word altyd behou, selfs al ontsnap gas in die lug in"],ans:1,fb:"Behoud van massa lyk slegs waar wanneer niks in- of uitgaan uit die stelsel wat gemeet word nie. In Leerder A se GESLOTE houer het die CO₂-gas wat geproduseer is nêrens om heen te gaan nie, dus word dit steeds geweeg — die totale massa bly dieselfde. In Leerder B se OOP houer ontsnap CO₂-gas in die lug in en is nie meer op die skaal nie, dus sal die gemete massa blyk af te neem — al is geen atome werklik vernietig nie, hulle het bloot die stelsel wat geweeg word, verlaat."},
+  {q:"Vaste droë-ys (bevrore CO₂) word in 'n glas warm water laat val. Dit produseer onmiddellik baie borrels en 'n dik wit newel, en die droë-ys verdwyn heeltemal binne minute. 'n Leerder beweer dit moet 'n chemiese reaksie wees omdat borreling een van die klassieke \"tekens van 'n chemiese reaksie\" is. Is die leerder korrek?",opts:["Ja — borreling beteken altyd 'n chemiese reaksie het plaasgevind, sonder uitsonderings","Nee — die droë-ys verander bloot van fase van vaste CO₂ na gasvormige CO₂ (sublimasie), DIESELFDE stof in 'n ander fase; die borrels is net ontsnappende CO₂-gas en die newel is gekondenseerde waterdamp, dus het geen nuwe stof gevorm nie — dit is 'n fisiese verandering","Ja — omdat die droë-ys heeltemal verdwyn, bewys dit dat 'n nuwe stof gevorm moet het","Nee — want chemiese reaksies produseer nooit borrels nie, slegs fisiese veranderinge soos smelt kan borrel"],ans:1,fb:"Die klassieke \"tekens van 'n chemiese reaksie\" (soos borreling) is nuttige leidrade, maar hulle is nie op hul eie bewys nie — jy moet altyd kyk of 'n werklik NUWE stof gevorm het. Hier verander vaste CO₂ bloot in gasvormige CO₂ (dieselfde chemiese stof, net 'n ander fase van materie) — dit is sublimasie, 'n fisiese verandering, nie 'n chemiese reaksie nie. Die newel is net waterdamp wat kondenseer in die koue lug bo die glas. Dit wys waarom wetenskaplikes 'n chemiese verandering bevestig deur vir nuwe stowwe te kyk, nie net deur borrels raak te sien nie."}
+];
+let scores=new Array(8).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / 6';}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
+

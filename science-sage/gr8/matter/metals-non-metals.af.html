@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metale en Nie-metale — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--acc:#60a5fa;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#93c5fd}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sign-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+    .sign-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .sign-card h3{font-size:13px;font-weight:800;margin-bottom:6px}
+    .sign-card.react h3{color:#f87171}
+    .sign-card.prod h3{color:#86efac}
+    .sign-card p{font-size:12.5px;color:rgba(210,218,245,.65);line-height:1.6;margin:0}
+    .props-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .props-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .props-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .props-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .explore-wrap{max-width:1000px}
+    .sort-board{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+    .sort-zone{min-height:120px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.18);border-radius:16px;padding:14px}
+    .sort-zone.metal{border-color:rgba(96,165,250,.35)}
+    .sort-zone.nonmetal{border-color:rgba(163,230,53,.35)}
+    .sort-zone h3{font-size:13px;font-weight:800;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--fm);font-size:11px}
+    .sort-zone.metal h3{color:#93c5fd}
+    .sort-zone.nonmetal h3{color:#bef264}
+    .sort-zone .placed{display:flex;flex-wrap:wrap;gap:8px;min-height:24px}
+    .placed-chip{font-size:12px;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text)}
+    .item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+    .item-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all 150ms}
+    .item-card:hover:not(.done){transform:translateY(-2px);border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.06)}
+    .item-card.done{opacity:.35;cursor:default}
+    .item-emoji{font-size:28px;margin-bottom:6px}
+    .item-name{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:8px}
+    .item-btns{display:flex;gap:6px}
+    .item-btn{flex:1;font-family:var(--fm);font-size:10px;font-weight:700;padding:6px 4px;border-radius:7px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 140ms}
+    .item-btn:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .item-btn.m:hover{border-color:rgba(96,165,250,.4);color:#93c5fd}
+    .item-btn.n:hover{border-color:rgba(163,230,53,.4);color:#bef264}
+    .explore-feedback{padding:14px 18px;border-radius:12px;font-size:13.5px;line-height:1.7;margin-bottom:16px;display:none}
+    .explore-feedback.show{display:block}
+    .explore-feedback.right{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .explore-feedback.wrong{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .explore-score{font-family:var(--fm);font-size:12px;color:var(--muted);margin-bottom:14px}
+    .explore-score span{color:#60a5fa;font-weight:700}
+    .reset-btn{padding:9px 18px;border-radius:10px;border:1px solid rgba(96,165,250,.3);background:rgba(96,165,250,.10);color:#93c5fd;font-weight:700;font-size:12.5px;cursor:pointer;transition:all 150ms}
+    .reset-btn:hover{background:rgba(96,165,250,.18)}
+    /* Practice + Workbook */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.correct-fb{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .feedback.wrong-fb{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-bar{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+    .score-val{font-family:var(--fm);font-size:20px;font-weight:700;color:#60a5fa}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .wb-q{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:12px;font-weight:600}
+    .wb-area{width:100%;min-height:100px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--fd);font-size:13.5px;line-height:1.7;resize:vertical;outline:none;transition:border-color 150ms}
+    .wb-area:focus{border-color:rgba(96,165,250,.35)}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-wrap{max-width:1000px;margin:0 auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sort-board{grid-template-columns:1fr}
+      .item-grid{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Materie &amp; Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 8 · Materie &amp; Materiale · Les 5</div>
+  <h1 class="lesson-title">Metale en Nie-metale</h1>
+  <p class="lesson-sub">Elke element op die periodieke tabel kan volgens sy fisiese eienskappe as 'n metaal of 'n nie-metaal ingedeel word — en daardie eienskappe bepaal presies watter taak dit in die wêreld om jou verrig.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="showTab('explore',this)">🧪 Verken</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="showTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+    <h2>Materie volgens eienskappe indeel</h2>
+    <p>Elke element kan geklassifiseer word as 'n <strong>metaal</strong>, 'n <strong>nie-metaal</strong>, of (in 'n paar spesiale gevalle) 'n <strong>metalloïed</strong>. Ons besluit nie hieroor deur te raai nie — ons kyk na meetbare <strong>fisiese eienskappe</strong>: hoe die element lyk, hoe dit hitte en elektrisiteit gelei, en hoe dit optree wanneer jy probeer om dit te buig, te hamer of te verhit.</p>
+    <div class="callout"><strong>Fisiese eienskap:</strong> 'n kenmerk van 'n stof wat waargeneem of gemeet kan word sonder om te verander wat die stof eintlik is — byvoorbeeld kleur, hardheid, of die vermoë om elektrisiteit te gelei.</div>
+
+    <h2>Eienskappe van metale</h2>
+    <ul>
+      <li><strong>Blink glans:</strong> metale het 'n glans wanneer hulle gepoleer of vars gesny word.</li>
+      <li><strong>Goeie geleiers</strong> van beide hitte en elektrisiteit — elektrone beweeg vrylik daardeur.</li>
+      <li><strong>Pletbaar:</strong> hulle kan gehamer of tot dun plate uitgerol word sonder om te breek (dink aan aluminiumfoelie).</li>
+      <li><strong>Rekbaar:</strong> hulle kan tot dun drade uitgetrek word (dink aan koperdrade).</li>
+      <li><strong>Hoë smeltpunte</strong> (oor die algemeen) — die meeste metale bly vas by kamertemperatuur, met kwik as die bekende uitsondering.</li>
+      <li><strong>Klankvol:</strong> hulle maak 'n duidelike lui-geluid wanneer hulle geslaan word — dis waarom klokke van metaal gemaak word.</li>
+      <li><strong>Hoë digtheid</strong> — metale voel oor die algemeen swaar vir hul grootte.</li>
+    </ul>
+
+    <h2>Eienskappe van nie-metale</h2>
+    <ul>
+      <li><strong>Dowwe</strong> voorkoms — geen metaalglans nie (met die uitsondering van jodium en grafiet, wat wel 'n effense glans het).</li>
+      <li><strong>Swak geleiers</strong> van hitte en elektrisiteit — die meeste is goeie isoleerders. Grafiet ('n vorm van koolstof) is 'n opvallende uitsondering wat wel elektrisiteit gelei.</li>
+      <li><strong>Bros</strong> wanneer vas — hulle verbrysel of kraak eerder as om in vorm te buig.</li>
+      <li><strong>Oor die algemeen laer smelt- en kookpunte</strong> — baie nie-metale is gasse by kamertemperatuur (suurstof, stikstof, chloor).</li>
+      <li><strong>Lae digtheid</strong> in vergelyking met metale, oor die algemeen.</li>
+      <li>Nie klankvol nie — hulle maak 'n dowwe plof eerder as 'n lui-geluid wanneer hulle geslaan word.</li>
+    </ul>
+    <div class="callout"><strong>Onthou:</strong> dit is algemene neigings, nie absolute reëls nie. Wetenskap is vol interessante uitsonderings — dis deel van wat die periodieke tabel so boeiend maak om te bestudeer.</div>
+
+    <h2>Metale en nie-metale op die periodieke tabel</h2>
+    <p>Die periodieke tabel is so gerangskik dat elemente met soortgelyke eienskappe in voorspelbare streke val:</p>
+    <table class="props-table">
+      <thead><tr><th>Streek</th><th>Waar gevind</th><th>Voorbeelde</th></tr></thead>
+      <tbody>
+        <tr><td>Metale</td><td>Links en middel van die tabel (die meerderheid van alle elemente)</td><td>Yster (Fe), Koper (Cu), Goud (Au), Aluminium (Al), Natrium (Na)</td></tr>
+        <tr><td>Nie-metale</td><td>Boonste regterhoek</td><td>Suurstof (O), Koolstof (C), Swael (S), Chloor (Cl), Stikstof (N)</td></tr>
+        <tr><td>Metalloïede</td><td>Langs die sigsag- "trap"-lyn wat metale van nie-metale skei</td><td>Silikon (Si), Boor (B), Germanium (Ge)</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Interessante ekstra: metalloïede toon eienskappe van BEIDE metale en nie-metale. Silikon, byvoorbeeld, lyk blink soos 'n metaal, maar is 'n halfgeleier (swak geleier tensy dit behandel word) — dis presies waarom dit in rekenaarskyfies gebruik word!</div>
+
+    <h2>Alledaagse gebruike van metale</h2>
+    <ul>
+      <li><strong>Koper</strong> — word vir elektriese bedrading gebruik omdat dit 'n uitstekende geleier van elektrisiteit is en ook rekbaar genoeg is om tot dun drade uitgetrek te word.</li>
+      <li><strong>Aluminium</strong> — word vir foelie en drankblikkies gebruik omdat dit lig van gewig, pletbaar is, en korrosie weerstaan (dit vorm 'n beskermende oksiedlaag).</li>
+      <li><strong>Yster en staal</strong> — word in konstruksie gebruik (brûe, geboue, wapeningstawe) weens hul sterkte en hoë smeltpunt.</li>
+      <li><strong>Goud</strong> — word in juwele gebruik omdat dit blink is en nie dof word of korrodeer nie.</li>
+    </ul>
+
+    <h2>Alledaagse gebruike van nie-metale</h2>
+    <ul>
+      <li><strong>Suurstof</strong> — noodsaaklik vir asemhaling in lewende organismes en vir verbranding.</li>
+      <li><strong>Koolstof</strong> — kom in baie vorme voor: grafiet (potlood-"lood" en elektrodes), diamant (snygereedskap en juwele), en as die grondslag van alle organiese verbindings in lewende dinge.</li>
+      <li><strong>Swael</strong> — word gebruik om kunsmis, vuurhoutjies en swaelsuur te vervaardig.</li>
+      <li><strong>Chloor</strong> — word gebruik om drinkwater en swembaddens te suiwer en te ontsmet deur skadelike mikro-organismes te dood.</li>
+    </ul>
+    <div class="callout"><strong>Vorentoe skakel:</strong> In Graad 9 sal jy bestudeer hoe metale en nie-metale chemies met suurstof, water en sure reageer, en die periodieke tabel gebruik om reaktiwiteitsneigings te voorspel.</div>
+  </div>
+</div>
+
+<div id="tab-explore" class="tab-panel">
+  <div class="explore-wrap">
+    <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Sorteer dit: Metaal of Nie-metaal?</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Klik 'n knoppie op elke itemkaart om dit te klassifiseer. Jy kry onmiddellike terugvoer en die bepalende eienskap wat dit verklap.</p>
+    <div class="explore-score">Gesorteer: <span id="sortedCount">0</span> / <span id="totalCount">8</span> &nbsp;•&nbsp; Korrek: <span id="correctCount">0</span></div>
+    <div class="explore-feedback" id="exploreFb"></div>
+    <div class="item-grid" id="itemGrid"></div>
+    <div class="sort-board">
+      <div class="sort-zone metal">
+        <h3>⚡ Metale</h3>
+        <div class="placed" id="metalZone"></div>
+      </div>
+      <div class="sort-zone nonmetal">
+        <h3>🍃 Nie-metale</h3>
+        <div class="placed" id="nonmetalZone"></div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetSort()">↻ Stel sortering terug</button>
+  </div>
+</div>
+
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-bar"><span style="font-size:13px;color:var(--muted)">Telling</span><span class="score-val" id="score">0 / 8</span></div>
+    <div id="q-container"></div>
+  </div>
+</div>
+
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Druk Werkboek</button>
+    <div class="wb-intro">Skryf jou antwoorde in die spasies hieronder. Gebruik volsinne en gee die puntetoekenning wat vir elke vraag getoon word die aandag wat dit verdien.</div>
+    <div class="wb-card"><div class="wb-q">1. Lys VIER fisiese eienskappe wat metale van nie-metale onderskei. (4 punte)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">2. Koper word vir elektriese bedrading gebruik en aluminium word vir foelie gebruik. Noem vir ELKE metaal EEN eienskap wat dit geskik maak vir sy gebruik. (4 punte)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">3. Beskryf waar metale, nie-metale en metalloïede op die periodieke tabel gevind word. (3 punte)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">4. Chloor word gebruik om drinkwater te suiwer en suurstof is noodsaaklik vir asemhaling. Verduidelik waarom elkeen van hierdie nie-metale in die alledaagse lewe belangrik is. (4 punte)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">5. 'n Leerder sê "alle metale is harde, blink vaste stowwe by kamertemperatuur." Gee TWEE uitsonderings wat toon dat hierdie stelling nie altyd waar is nie, en verduidelik elkeen. (4 punte)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+    <div class="wb-card"><div class="wb-q">6. Die tabel hieronder gee smeltpunt-, elektriese-geleivermoë- en voorkomsdata vir drie elemente.<br><table class="props-table"><thead><tr><th>Element</th><th>Smeltpunt (°C)</th><th>Gelei elektrisiteit?</th><th>Voorkoms</th></tr></thead><tbody><tr><td>Aluminium (Al)</td><td>660</td><td>Ja</td><td>Blink, silwerkleurig</td></tr><tr><td>Swael (S)</td><td>115</td><td>Nee</td><td>Dof, geel</td></tr><tr><td>Silikon (Si)</td><td>1414</td><td>Slegs gedeeltelik / wanneer behandel</td><td>Blink, grys</td></tr></tbody></table>Gebruik SLEGS die bewyse in die tabel (nie die elementname nie): (a) Klassifiseer elke element as 'n metaal, 'n nie-metaal, of 'n metalloïed, en regverdig ELKE klassifikasie met spesifieke bewyse uit die tabel. (b) Bereken die verskil in smeltpunt tussen silikon en swael. (6 punte)</div><textarea class="wb-area" placeholder="Jou antwoord…"></textarea></div>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+const ITEMS=[
+  {name:'Koperdraad',emoji:'🔌',type:'metal',fact:'Koper is \'n uitstekende geleier van elektrisiteit en is rekbaar genoeg om tot drade uitgetrek te word — daardie glans en geleivermoë is klassieke metaaleienskappe.'},
+  {name:'Rubberballon',emoji:'🎈',type:'nonmetal',fact:'Rubber is \'n swak geleier van elektrisiteit (\'n isoleerder) en rek eerder as om soos \'n metaal te buig — tipies van \'n nie-metaalagtige materiaal.'},
+  {name:'Aluminiumfoelie',emoji:'🧻',type:'metal',fact:'Aluminiumfoelie is dun omdat aluminium pletbaar is — dit kan tot plate uitgerol word sonder om te kraak, \'n bepalende metaaleienskap.'},
+  {name:'Swaelmonster',emoji:'🟡',type:'nonmetal',fact:'Swael is \'n dowwe, bros geel vaste stof wat nie elektrisiteit gelei nie — dit verbrysel eerder as om te buig, anders as \'n metaal.'},
+  {name:'Ysterspyker',emoji:'🔩',type:'metal',fact:'Yster is blink wanneer gepoleer, klankvol wanneer geslaan, en \'n goeie geleier van hitte — almal klassieke metaaleienskappe.'},
+  {name:'Koolstof (diamant)',emoji:'💎',type:'nonmetal',fact:'Diamant is \'n vorm van koolstof. Alhoewel dit baie hard is, gelei dit nie elektrisiteit nie en is dit nie pletbaar nie — sleutel nie-metaal-eienskappe (let wel: grafiet, \'n ander vorm van koolstof, gelei wel).'},
+  {name:'Heliumballon',emoji:'🎈',type:'nonmetal',fact:'Helium is \'n gas by kamertemperatuur met \'n baie lae digtheid en gelei nie elektrisiteit nie — \'n tipiese nie-metaal-eienskap (baie lae smelt-/kookpunt).'},
+  {name:'Goue ring',emoji:'💍',type:'metal',fact:'Goud is baie blink, pletbaar genoeg om tot juwele te vorm, en word nie dof nie — almal kenmerkende metaaleienskappe.'}
+];
+let sorted=new Array(ITEMS.length).fill(false);
+let correctCount=0;
+
+function renderItems(){
+  const grid=document.getElementById('itemGrid');
+  grid.innerHTML='';
+  document.getElementById('totalCount').textContent=ITEMS.length;
+  ITEMS.forEach((item,i)=>{
+    const card=document.createElement('div');
+    card.className='item-card';
+    card.id='item-'+i;
+    card.innerHTML=`<div class="item-emoji">${item.emoji}</div><div class="item-name">${item.name}</div><div class="item-btns"><button class="item-btn m" onclick="classify(${i},'metal')">Metaal</button><button class="item-btn n" onclick="classify(${i},'nonmetal')">Nie-metaal</button></div>`;
+    grid.appendChild(card);
+  });
+}
+
+function classify(i,guess){
+  if(sorted[i]) return;
+  sorted[i]=true;
+  const item=ITEMS[i];
+  const card=document.getElementById('item-'+i);
+  card.classList.add('done');
+  const zone=document.getElementById(item.type==='metal'?'metalZone':'nonmetalZone');
+  const chip=document.createElement('span');
+  chip.className='placed-chip';
+  chip.textContent=item.emoji+' '+item.name;
+  zone.appendChild(chip);
+
+  const fb=document.getElementById('exploreFb');
+  const isRight=guess===item.type;
+  if(isRight) correctCount++;
+  fb.className='explore-feedback show '+(isRight?'right':'wrong');
+  fb.textContent=(isRight?'✓ Reg! ':'✗ Nie heeltemal reg nie — '+item.name+' is eintlik \'n '+(item.type==='metal'?'metaal':'nie-metaal')+'. ')+item.fact;
+
+  document.getElementById('sortedCount').textContent=sorted.filter(Boolean).length;
+  document.getElementById('correctCount').textContent=correctCount;
+}
+
+function resetSort(){
+  sorted=new Array(ITEMS.length).fill(false);
+  correctCount=0;
+  document.getElementById('metalZone').innerHTML='';
+  document.getElementById('nonmetalZone').innerHTML='';
+  document.getElementById('sortedCount').textContent='0';
+  document.getElementById('correctCount').textContent='0';
+  document.getElementById('exploreFb').className='explore-feedback';
+  document.getElementById('exploreFb').textContent='';
+  renderItems();
+}
+renderItems();
+
+const QS=[
+  {q:"Watter van hierdie is NIE tipies 'n eienskap van metale nie?",opts:["Pletbaar","Goeie geleier van elektrisiteit","Dowwe, bros vaste stof","Klankvol wanneer geslaan"],ans:2,fb:"Metale is gewoonlik blink en pletbaar, nie dof en bros nie. Dowwe, bros vaste stowwe is tipies van nie-metale."},
+  {q:"Koper word hoofsaaklik vir elektriese bedrading gebruik omdat dit:",opts:["'n Swak geleier van elektrisiteit is","Bros is","'n Uitstekende geleier van elektrisiteit en rekbaar is","Dof van voorkoms is"],ans:2,fb:"Koper gelei elektrisiteit uiters goed en kan tot dun, buigsame drade uitgetrek word (dit is rekbaar) — ideaal vir bedrading."},
+  {q:"Op die periodieke tabel word nie-metale meestal gevind:",opts:["Heel links","In die middel","In die boonste regterhoek","Ewekansig versprei sonder enige patroon"],ans:2,fb:"Nie-metale groepeer in die boonste regterhoek van die periodieke tabel, met metale wat die linker- en middelgedeelte beslaan."},
+  {q:"Elemente soos silikon, wat eienskappe van BEIDE metale en nie-metale toon, word genoem:",opts:["Isotope","Metalloïede","Legerings","Verbindings"],ans:1,fb:"Metalloïede lê langs die sigsag-trap-lyn op die periodieke tabel en het 'n mengsel van metaal- en nie-metaal-eienskappe."},
+  {q:"Watter eienskap maak aluminiumfoelie nuttig om kos toe te draai?",opts:["Dit is 'n swak geleier van hitte","Dit is pletbaar en kan tot dun, buigsame plate uitgerol word","Dit is bros","Dit het 'n baie lae smeltpunt"],ans:1,fb:"Aluminium se pletbaarheid laat toe dat dit tot baie dun plate uitgerol word sonder om te kraak, en dit weerstaan ook korrosie — perfek vir foelie."},
+  {q:"Watter nie-metaal word gebruik om drinkwater te ontsmet en te suiwer?",opts:["Swael","Koolstof","Chloor","Helium"],ans:2,fb:"Chloor word in beheerde hoeveelhede by watervoorraad gevoeg om skadelike mikro-organismes te dood en water veilig maak om te drink."},
+  {q:"'n Leerder kry 'n ongemerkte grys vaste stof. Toetse toon: dit gelei elektrisiteit goed, en dit kan tot 'n dun plaat gehamer word sonder om te kraak — maar dit word NIE deur 'n magneet aangetrek nie. Watter gevolgtrekking word die BESTE deur hierdie bewyse ondersteun?",opts:["Dit kan nie 'n metaal wees nie, want alle metale is magneties","Dit is 'n metaal — magnetisme is nie 'n vereiste metaaleienskap nie, en goeie geleivermoë plus pletbaarheid is klassieke metaaleienskappe","Dit is 'n nie-metaal omdat dit nie magneties is nie","Dit is 'n metalloïed omdat dit gedeeltelik elektrisiteit gelei"],ans:1,fb:"Slegs 'n paar metale (yster, kobalt, nikkel) is magneties — magnetisme is NIE 'n algemene metaaleienskap nie. Goeie elektriese geleivermoë en pletbaarheid (om tot 'n plaat gehamer te word sonder om te verbrysel) is die bepalende metaaleienskappe, so hierdie monster is 'n metaal — net een wat nie magneties is nie, soos aluminium, tin of lood."},
+  {q:"Suiwer silikon is 'n swak geleier van elektrisiteit by kamertemperatuur, maar ingenieurs voeg klein hoeveelhede ander elemente daarby ('dopering') om rekenaarskyfies te bou. Waarom is silikon, 'n metalloïed, besonder geskik hiervoor in vergelyking met 'n tipiese metaal of nie-metaal?",opts:["Omdat dit 'n metaal is en dus reeds perfek elektrisiteit gelei","Omdat sy geleivermoë, as 'n metalloïed, beheer en aangepas kan word — anders as 'n metaal (gelei altyd goed) of die meeste nie-metale (gelei selde)","Omdat dit nooit onder enige toestande elektrisiteit gelei nie, wat die skyfie beskerm","Omdat dit die enigste element op die periodieke tabel is wat pletbaar is"],ans:1,fb:"Metalloïede soos silikon lê tussen metale en nie-metale in gedrag — hul geleivermoë is intermediêr en kan geskakel of aangepas word (bv. deur dopering), anders as 'n tipiese metaal (altyd 'n goeie geleier) of 'n tipiese nie-metaal (gelei selde glad nie). Hierdie aanpasbare 'halfgeleier'-gedrag is presies waarom silikon noodsaaklik is in rekenaarskyfies."}
+];
+let scores=new Array(QS.length).fill(null);
+function renderQ(){
+  const c=document.getElementById('q-container');c.innerHTML='';
+  QS.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';
+    d.innerHTML=`<div class="q-num">Vraag ${i+1}</div><div class="q-text">${q.q}</div><div class="mc-options">${q.opts.map((o,j)=>`<button class="mc-opt" onclick="answer(${i},${j},this)"><span class="opt-letter">${String.fromCharCode(65+j)}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb-${i}"></div>`;
+    c.appendChild(d);
+  });
+}
+function answer(qi,oi,btn){
+  const q=QS[qi];const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');opts.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qi);
+  if(oi===q.ans){btn.classList.add('correct');fb.className='feedback correct-fb show';fb.textContent='✓ Reg! '+q.fb;if(scores[qi]===null){scores[qi]=1;updateScore();}}
+  else{btn.classList.add('wrong');opts[q.ans].classList.add('correct');fb.className='feedback wrong-fb show';fb.textContent='✗ Nie heeltemal reg nie. '+q.fb;if(scores[qi]===null){scores[qi]=0;updateScore();}}
+}
+function updateScore(){document.getElementById('score').textContent=scores.filter(x=>x===1).length+' / '+QS.length;}
+renderQ();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
