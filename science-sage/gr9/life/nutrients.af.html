@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voedingstowwe &amp; Vertering — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    .info-panel{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:100px}
+    .info-panel-title{font-weight:800;font-size:16px;color:#fcd34d;margin-bottom:6px}
+    .info-panel-text{font-size:13px;color:rgba(210,218,245,.75);line-height:1.7}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Lewe en Lewenswetenskappe</span>
+  <span id="mlLangToggle"></span>
+  <a class="nav-back" href="../index.html">&#8592; Graad 9</a>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Lewe en Lewenswetenskappe · Les 1</div>
+  <h1 class="lesson-title">Voedingstowwe &amp; Vertering</h1>
+  <p class="lesson-sub">Verken die sewe tipes voedingstowwe, die belangrikheid van 'n gebalanseerde dieet, en hoe die spysverteringstelsel voedsel afbreek sodat die liggaam dit kan absorbeer en gebruik.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">&#128214; Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">&#9881; Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">&#9998; Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">&#128203; Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+    <h2>Die Sewe Klasse van Voedingstowwe</h2>
+    <p>Jou liggaam benodig 'n verskeidenheid voedingstowwe om te groei, homself te herstel, energie te produseer, en sy prosesse te reguleer. Daar is <strong style="color:#fcd34d">sewe klasse voedingstowwe</strong> wat elke menslike liggaam benodig:</p>
+    <div class="key-fact">1. Koolhidrate &nbsp;|&nbsp; 2. Proteïene &nbsp;|&nbsp; 3. Vette (Lipiede) &nbsp;|&nbsp; 4. Vitamiene &nbsp;|&nbsp; 5. Minerale &nbsp;|&nbsp; 6. Water &nbsp;|&nbsp; 7. Dieetvesel</div>
+
+    <h2>Koolhidrate</h2>
+    <p>Koolhidrate is die liggaam se <strong style="color:#fcd34d">primêre energiebron</strong>. Hulle word afgebreek tot glukose, wat sellulêre respirasie van brandstof voorsien. Daar is twee tipes:</p>
+    <ul>
+      <li><strong>Eenvoudige koolhidrate (suikers):</strong> glukose, fruktose, sukrose — voorkom in vrugte, lekkers en koeldrank. Word vinnig verteer en geabsorbeer.</li>
+      <li><strong>Komplekse koolhidrate (stysel):</strong> kettings van glukose — voorkom in brood, rys, pasta en aartappels. Word stadig verteer en voorsien volgehoue energie.</li>
+    </ul>
+    <div class="callout"><strong>Voedseltoets:</strong> Jodiumoplossing verkleur <strong>blou-swart</strong> in die teenwoordigheid van stysel. Benedict se reagens verkleur <strong>oranje/rooi</strong> wanneer dit met reduserende suikers (soos glukose) verhit word.</div>
+
+    <h2>Proteïene</h2>
+    <p>Proteïene is die <strong style="color:#fcd34d">bou- en herstelvoedingstowwe</strong>. Hulle bestaan uit kettings van <em>aminosure</em>. Daar is 20 verskillende aminosure; 8 is <em>essensieel</em> — die liggaam kan dit nie self maak nie en dit moet deur voedsel ingeneem word.</p>
+    <ul>
+      <li><strong>Dierlike bronne:</strong> vleis, vis, eiers, suiwelprodukte (bevat al die essensiële aminosure — "volledige proteïene")</li>
+      <li><strong>Plantbronne:</strong> boontjies, lensies, sojabone, neute (ontbreek gewoonlik een of meer essensiële aminosure — "onvolledige proteïene")</li>
+    </ul>
+    <div class="callout"><strong>Voedseltoets:</strong> Biuret-reagens verkleur <strong>pers/violet</strong> in die teenwoordigheid van proteïen.</div>
+
+    <h2>Vette (Lipiede)</h2>
+    <p>Vette stoor energie (meer as dubbel die energie per gram vergeleke met koolhidrate), verskaf isolasie, beskerm organe, en vorm selmembrane. Hulle los ook vetoplosbare vitamiene (A, D, E, K) op en vervoer dit.</p>
+    <ul>
+      <li><strong>Versadigde vette:</strong> vas by kamertemperatuur; voorkom in botter, kaas, vetterige vleis — gekoppel aan hartsiekte indien oormatig geëet.</li>
+      <li><strong>Onversadigde vette:</strong> vloeibaar by kamertemperatuur; voorkom in olyfolie, avokado, vetterige vis — oor die algemeen gesonder.</li>
+    </ul>
+    <div class="callout"><strong>Voedseltoets:</strong> Vrywe voedsel op bruin papier — vette laat 'n <strong>deurskynende (vetterige) kol</strong> wat nie uitdroog nie.</div>
+
+    <h2>Vitamiene</h2>
+    <p>Vitamiene is organiese verbindings wat in klein hoeveelhede vir metaboliese prosesse benodig word. Hulle word volgens oplosbaarheid gegroepeer:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Vitamien</th><th>Tipe</th><th>Bronne</th><th>Tekortsiekte</th></tr></thead>
+      <tbody>
+        <tr><td>A (retinol)</td><td>Vetoplosbaar</td><td>Wortels, lewer, eiers</td><td>Nagblindheid</td></tr>
+        <tr><td>B-kompleks</td><td>Wateroplosbaar</td><td>Volgraan, vleis</td><td>Beriberi (B1), Pellagra (B3)</td></tr>
+        <tr><td>C (askorbiensuur)</td><td>Wateroplosbaar</td><td>Sitrusvrugte, soetrissies</td><td>Skeurbuik</td></tr>
+        <tr><td>D (kalsiferol)</td><td>Vetoplosbaar</td><td>Sonlig, visolie, eiers</td><td>Ragitis (kinders), Osteomalasie (volwassenes)</td></tr>
+        <tr><td>E</td><td>Vetoplosbaar</td><td>Neute, saad, blaargroentes</td><td>Senuweeskade (skaars)</td></tr>
+        <tr><td>K</td><td>Vetoplosbaar</td><td>Groen groente</td><td>Swak bloedstolling</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Minerale</h2>
+    <p>Minerale is anorganiese elemente wat vir strukturele en regulerende funksies benodig word:</p>
+    <ul>
+      <li><strong>Kalsium (Ca):</strong> Bou bene en tande; benodig vir spiersametrekking en senuweefunksie. Bronne: suiwelprodukte, blaargroentes. Tekort → osteoporose.</li>
+      <li><strong>Yster (Fe):</strong> Komponent van hemoglobien in rooibloedselle — vervoer suurstof. Bronne: rooivleis, spinasie, peulgewasse. Tekort → ysterekortbloedarmoede.</li>
+      <li><strong>Jodium (I):</strong> Nodig vir die produksie van skildklierhormone, wat metabolisme reguleer. Bronne: gejodeerde sout, seekos. Tekort → kropgeswel (vergrote skildklier).</li>
+      <li><strong>Fosfor (P):</strong> Beenstruktuur, ATP-energiemolekules. Bronne: vleis, suiwelprodukte, neute.</li>
+    </ul>
+
+    <h2>Water</h2>
+    <p>Water maak ongeveer <strong style="color:#fcd34d">60% van die menslike liggaam</strong> se massa uit. Dit is die medium waarin alle chemiese reaksies plaasvind. Hoofrolle:</p>
+    <ul>
+      <li>Vervoer opgeloste stowwe (voedingstowwe, hormone, afvalstowwe) in bloed en limf</li>
+      <li>Reguleer liggaamstemperatuur deur sweet en respirasie</li>
+      <li>Smeer gewrigte en beskerm organe as kussing</li>
+      <li>Neem deel aan hidrolise-reaksies tydens vertering</li>
+    </ul>
+    <div class="key-fact">Aanbevole inname: ongeveer 2 liter per dag vir volwassenes (meer tydens oefening of in warm klimate).</div>
+
+    <h2>Dieetvesel</h2>
+    <p>Dieetvesel (roughage) bestaan uit plantselwandmateriaal — hoofsaaklik sellulose — wat die menslike spysverteringstelsel nie kan afbreek nie. Dit word nie geabsorbeer nie, maar speel 'n noodsaaklike rol:</p>
+    <ul>
+      <li>Voeg volume by voedsel, wat peristalse stimuleer (spiersametrekkings wat voedsel deur die spysverteringskanaal beweeg)</li>
+      <li>Voorkom hardlywigheid en verminder die risiko van dermkanker</li>
+      <li>Vertraag glukose-absorpsie, wat help om bloedsuikervlakke te stabiliseer</li>
+    </ul>
+    <p><strong>Bronne:</strong> volgraanprodukte, groente, vrugte, peulgewasse, neute.</p>
+
+    <h2>Gebalanseerde Dieet &amp; Wanvoeding</h2>
+    <p>'n <strong style="color:#fcd34d">Gebalanseerde dieet</strong> voorsien al sewe voedingstowwe in die korrekte verhoudings wat vir gesondheid nodig is. Die EatWell-bord (voedselbordkonsep) wys dat maaltye grootliks uit styselryke koolhidrate en vrugte &amp; groente moet bestaan, met matige proteïen en suiwel, en minimale vet en suiker.</p>
+    <div class="callout">
+      <strong>Wanvoeding</strong> beteken nie net verhongering nie. Dit beskryf enige wanbalans tussen voedingstofinname en -behoefte:<br><br>
+      • <strong>Ondervoeding:</strong> onvoldoende energie of spesifieke voedingstowwe — lei tot gestremde groei, kwashiorkor (proteïentekort), marasmus (totale kalorietekort).<br>
+      • <strong>Oorvoeding:</strong> oormatige energie-inname — lei tot vetsug, tipe 2-diabetes, kardiovaskulêre siekte.
+    </div>
+
+    <h2>Die Spysverteringstelsel</h2>
+    <p>Vertering is die proses waardeur groot, onoplosbare voedselmolekules afgebreek word tot klein, oplosbare molekules wat in die bloedstroom geabsorbeer kan word. Die spysverteringskanaal loop vanaf die mond tot die anus:</p>
+    <div class="formula">Mond → Slukderm → Maag → Dunderm → Dikderm → Rektum → Anus</div>
+
+    <h2>Die Mond</h2>
+    <p><strong>Meganiese vertering:</strong> tande breek voedsel fisies in kleiner stukke, wat die oppervlakte vir ensieme vergroot. Die tong meng voedsel met speeksel om 'n <em>bolus</em> te vorm.</p>
+    <p><strong>Chemiese vertering:</strong> speekselkliere produseer <em>amilase</em>, wat begin om stysel af te breek tot maltose ('n reduserende suiker). Die optimum pH vir speekselamilase is ongeveer 7 (neutraal).</p>
+
+    <h2>Die Slukderm</h2>
+    <p>Die bolus word ingesluk en beweeg af deur die slukderm deur middel van <em>peristalse</em> — gekoördineerde golwe van spiersametrekking en -ontspanning in die wand van die buis. Geen vertering vind hier plaas nie; die slukderm is bloot 'n vervoerbuis.</p>
+
+    <h2>Die Maag</h2>
+    <ul>
+      <li>Spierige wande roer voedsel om, wat meganiese vertering voortsit.</li>
+      <li>Maagkliere skei <em>maagsap</em> af wat soutsuur (HCl, pH ~2) en die ensiem <em>pepsien</em> bevat.</li>
+      <li>HCl doods die meeste ingeneemde bakterieë en verskaf die suur pH wat vir pepsienaktiwiteit benodig word.</li>
+      <li>Pepsien begin <strong>proteïenvertering</strong>, en breek proteïene af tot korter polipeptiedkettings.</li>
+      <li>Die halfvloeibare mengsel (chym) beweeg stadig deur die pilorussfinkter in die dunderm in.</li>
+    </ul>
+
+    <h2>Die Dunderm</h2>
+    <p>Dit is waar die meeste <strong style="color:#fcd34d">chemiese vertering en absorpsie</strong> plaasvind. Dit is 6–7 m lank en verdeel in die duodenum en ileum.</p>
+    <ul>
+      <li><strong>Gal</strong> (geproduseer deur die lewer, gestoor in die galblaas) word in die duodenum vrygestel. Dit bevat geen ensieme nie — dit <em>emulgeer</em> vette, deur vetdruppels in klein bolletjies te breek om die oppervlakte vir lipase te vergroot.</li>
+      <li><strong>Pankreassap</strong> (van die pankreas) bevat amilase, lipase en protease — wat die vertering van al drie makrovoedingstowwe voltooi.</li>
+      <li>Die dermwand self skei bykomende ensieme af (maltase, laktase, ens.).</li>
+      <li><strong>Absorpsie:</strong> die binnewand is bedek met miljoene klein vingeragtige uitsteeksels genoem <em>villi</em> (enkelvoud: villus), wat self bedek is met <em>mikrovilli</em> (die "borselgrens"). Dit vergroot die oppervlakte enorm. Opgeloste voedingstowwe beweeg in die bloedhaarvate en lakteale (vir vet) binne elke villus in.</li>
+    </ul>
+
+    <h2>Die Dikderm</h2>
+    <p>Onverteerde materiaal (hoofsaaklik vesel) beweeg in die dikderm (kolon) in. Die kolon herabsorbeer water en minerale soute uit die oorblywende materiaal. Miljarde dermbakterieë (die mikrobioom) breek sommige vesel af. Die oorblywende materiaal vorm <em>feses</em>, wat in die rektum gestoor en deur die anus uitgeskei word.</p>
+
+    <h2>Opsomming van Voedseltoetse</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Voedingstof</th><th>Reagens / Metode</th><th>Positiewe Resultaat</th></tr></thead>
+      <tbody>
+        <tr><td>Stysel</td><td>Jodiumoplossing</td><td>Blou-swart kleur</td></tr>
+        <tr><td>Reduserende suikers (glukose)</td><td>Benedict se reagens (verhit)</td><td>Oranje / bakstyrooi presipitaat</td></tr>
+        <tr><td>Proteïen</td><td>Biuret-reagens</td><td>Pers / violet kleur</td></tr>
+        <tr><td>Vet</td><td>Bruin papier (of Sudan III)</td><td>Deurskynende kol (of rooi kleur)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Spysverteringstelselverkenner</h3>
+      <canvas id="digestCanvas" height="420"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Kies 'n orgaan</div>
+        <div>
+          <button class="mode-btn active" onclick="selectOrgan('mouth',this)">Mond</button>
+          <button class="mode-btn" onclick="selectOrgan('oesophagus',this)">Slukderm</button>
+          <button class="mode-btn" onclick="selectOrgan('stomach',this)">Maag</button>
+          <button class="mode-btn" onclick="selectOrgan('smallintestine',this)">Dunderm</button>
+          <button class="mode-btn" onclick="selectOrgan('largeintestine',this)">Dikderm</button>
+          <button class="mode-btn" onclick="selectOrgan('rectum',this)">Rektum</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Orgaaninligting</div>
+        <div class="info-panel" id="organInfo">
+          <div class="info-panel-title" id="organTitle">Mond</div>
+          <div class="info-panel-text" id="organText">Die mond begin vertering. Tande voer <strong>meganiese vertering</strong> uit deur voedsel te maal. Speekselamilase begin <strong>chemiese vertering</strong> van stysel. Voedsel word deur die tong in 'n bolus (bal) gevorm.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:800;font-size:16px;color:#fff">Vasvra Voltooi!</div><div style="font-size:13px;color:var(--muted)">Hersien jou antwoorde hieronder.</div></div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">&#128438; Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in volsinne. Gebruik diagramme waar aangedui. Hierdie vrae is CAPS-belyn vir Graad 9 Natuurwetenskappe.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Noem die tekortsiekte wat met elk van die volgende voedingstowwe geassosieer word en beskryf EEN simptoom van elke siekte:<br><br>
+      a) Vitamien C &nbsp;&nbsp;&nbsp; b) Vitamien D &nbsp;&nbsp;&nbsp; c) Yster &nbsp;&nbsp;&nbsp; d) Jodium</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">'n Leerder toets 'n onbekende voedselstof met vier verskillende reagense en teken die volgende resultate aan:<br>
+      • Jodiumoplossing: geen kleurverandering nie (bly geel-bruin)<br>
+      • Benedict se reagens (na verhitting): bakstyrooi presipitaat<br>
+      • Biuret-reagens: geen kleurverandering nie<br>
+      • Bruinpapiertoets: deurskynende kol<br><br>
+      a) Watter voedingstof(fowwe) is in hierdie voedsel teenwoordig?<br>
+      b) Watter voedingstof(fowwe) is afwesig?<br>
+      c) Stel EEN voedsel voor wat hierdie resultate kan gee. Verduidelik jou antwoord.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Beskryf die reis van 'n proteïenryke maaltyd (bv. 'n gekookte eier) deur die spysverteringstelsel. Noem in jou antwoord die spesifieke ensiem wat by elke stadium op proteïen inwerk en gee die produk wat gevorm word.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Verduidelik waarom gal belangrik is in vertering, alhoewel dit geen verteringsensieme bevat nie. Verwys in jou antwoord na die oppervlakte en die rol van lipase.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">a) Onderskei tussen meganiese en chemiese vertering. Gee EEN voorbeeld van elk.<br><br>
+      b) 'n Leerder eet 'n maaltyd van wit rys, gebraaide hoender, en 'n glas lemoensap. Identifiseer die primêre voedingstof in elke voedselitem en verduidelik die belangrikheid daarvan vir die liggaam.</div>
+    </div>
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6</div>
+      <div class="wb-qtext">Die tabel hieronder wys die benaderde energiewaarde van elke voedingstof, en die massa (in gram) koolhidraat, proteïen en vet in 'n leerder se ontbyt.<br><br>
+      <table class="symbols-table">
+        <thead><tr><th>Voedingstof</th><th>Energiewaarde (kJ per gram)</th></tr></thead>
+        <tbody>
+          <tr><td>Koolhidraat</td><td>17</td></tr>
+          <tr><td>Proteïen</td><td>17</td></tr>
+          <tr><td>Vet</td><td>38</td></tr>
+        </tbody>
+      </table>
+      <table class="symbols-table">
+        <thead><tr><th>Voedselitem</th><th>Koolhidraat (g)</th><th>Proteïen (g)</th><th>Vet (g)</th></tr></thead>
+        <tbody>
+          <tr><td>2 snye brood</td><td>40</td><td>6</td><td>2</td></tr>
+          <tr><td>Grondboontjiebotter (30 g)</td><td>6</td><td>8</td><td>15</td></tr>
+          <tr><td>Melk (250 ml)</td><td>12</td><td>8</td><td>8</td></tr>
+        </tbody>
+      </table>
+      a) Bereken die totale massa (in gram) koolhidraat, proteïen en vet in hierdie ontbyt.<br><br>
+      b) Gebruik die gegewe energiewaardes om die energie (in kJ) te bereken wat deur die koolhidraat, die proteïen, en die vet in hierdie ontbyt verskaf word.<br><br>
+      c) Bereken die totale energiewaarde van die ontbyt in kJ.<br><br>
+      d) Bereken watter persentasie van die totale energie van vet kom (rond af tot die naaste heelgetalpersentasie). Kommentarieer, op grond van hierdie persentasie, of hierdie ontbyt 'n goed-gebalanseerde maaltyd is.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') initSim();
+}
+
+// ── ORGAN DATA ────────────────────────────────────────────────────────────────
+const organData = {
+  mouth: {
+    title: 'Mond (Mondholte)',
+    text: 'Meganiese vertering: tande maal voedsel in kleiner stukke. Chemiese vertering: speekselamilase breek stysel af → maltose. Voedsel word deur die tong in \'n bolus gevorm.',
+    color: '#f59e0b'
+  },
+  oesophagus: {
+    title: 'Slukderm',
+    text: '\'n Gespierde buis van ~25 cm lank. Peristalse — golfagtige spiersametrekkings — dryf die bolus van die mond na die maag. Geen vertering vind hier plaas nie.',
+    color: '#a78bfa'
+  },
+  stomach: {
+    title: 'Maag',
+    text: 'Roer voedsel meganies om. Skei maagsap af: HCl (pH ~2, doods bakterieë) en pepsien (breek proteïene af → polipeptiede). Produseer chym, wat in die dunderm beweeg.',
+    color: '#f87171'
+  },
+  smallintestine: {
+    title: 'Dunderm',
+    text: 'Hoofplek van vertering en absorpsie (6–7 m lank). Gal emulgeer vette; pankreasensieme voltooi vertering. Villi en mikrovilli maksimeer die absorpsie-oppervlakte.',
+    color: '#34d399'
+  },
+  largeintestine: {
+    title: 'Dikderm (Kolon)',
+    text: 'Herabsorbeer water en minerale uit onverteerde materiaal. Dermbakterieë fermenteer sommige dieetvesel. Oorblywende materiaal word feses.',
+    color: '#60a5fa'
+  },
+  rectum: {
+    title: 'Rektum & Anus',
+    text: 'Die rektum stoor feses tot ontlasting. Die anus is die finale opening waardeur afval uit die liggaam uitgeskei word.',
+    color: '#fb923c'
+  }
+};
+
+let selectedOrgan = 'mouth';
+
+function selectOrgan(key, btn) {
+  selectedOrgan = key;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('organTitle').textContent = organData[key].title;
+  document.getElementById('organText').innerHTML = organData[key].text;
+  if (simInitialised) drawDigest();
+}
+
+// ── CANVAS ────────────────────────────────────────────────────────────────────
+let simInitialised = false;
+const H = 420;
+
+function initSim() {
+  simInitialised = true;
+  drawDigest();
+}
+
+function drawDigest() {
+  const canvas = document.getElementById('digestCanvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const logicalW = canvas.offsetWidth || 600;
+  canvas.width = logicalW * dpr;
+  canvas.height = H * dpr;
+  ctx = canvas.getContext('2d');
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, logicalW, H);
+
+  const cx = logicalW / 2;
+  const active = selectedOrgan;
+
+  function col(key) {
+    return active === key ? organData[key].color : 'rgba(255,255,255,0.1)';
+  }
+  function strokeCol(key) {
+    return active === key ? organData[key].color : 'rgba(255,255,255,0.18)';
+  }
+  function txtCol(key) {
+    return active === key ? '#fff' : 'rgba(210,218,245,0.55)';
+  }
+
+  ctx.font = '600 12px "Cabinet Grotesk", sans-serif';
+  ctx.textAlign = 'center';
+
+  // — Mouth —
+  ctx.beginPath();
+  ctx.ellipse(cx, 38, 52, 20, 0, 0, Math.PI * 2);
+  ctx.fillStyle = col('mouth');
+  ctx.fill();
+  ctx.strokeStyle = strokeCol('mouth');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = txtCol('mouth');
+  ctx.fillText('Mond', cx, 42);
+
+  // — Oesophagus —
+  ctx.beginPath();
+  ctx.roundRect(cx - 14, 60, 28, 72, 8);
+  ctx.fillStyle = col('oesophagus');
+  ctx.fill();
+  ctx.strokeStyle = strokeCol('oesophagus');
+  ctx.stroke();
+  ctx.save();
+  ctx.translate(cx, 97);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillStyle = txtCol('oesophagus');
+  ctx.font = '600 10px "Cabinet Grotesk", sans-serif';
+  ctx.fillText('Slukderm', 0, 4);
+  ctx.restore();
+
+  // — Stomach —
+  ctx.beginPath();
+  ctx.ellipse(cx - 30, 170, 68, 42, -0.3, 0, Math.PI * 2);
+  ctx.fillStyle = col('stomach');
+  ctx.fill();
+  ctx.strokeStyle = strokeCol('stomach');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = txtCol('stomach');
+  ctx.font = '600 12px "Cabinet Grotesk", sans-serif';
+  ctx.fillText('Maag', cx - 30, 174);
+
+  // — Small Intestine (wavy coils) —
+  const siX = cx + 28;
+  const siY = 165;
+  ctx.beginPath();
+  ctx.ellipse(siX + 20, siY + 55, 54, 70, 0, 0, Math.PI * 2);
+  ctx.fillStyle = col('smallintestine');
+  ctx.fill();
+  ctx.strokeStyle = strokeCol('smallintestine');
+  ctx.stroke();
+  // inner coil lines
+  if (active === 'smallintestine') {
+    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 4; i++) {
+      ctx.beginPath();
+      ctx.ellipse(siX + 20, siY + 38 + i * 22, 34, 10, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+  ctx.fillStyle = txtCol('smallintestine');
+  ctx.font = '600 11px "Cabinet Grotesk", sans-serif';
+  ctx.fillText('Dun-', siX + 20, siY + 48);
+  ctx.fillText('derm', siX + 20, siY + 62);
+
+  // — Large Intestine (U-shape around small intestine) —
+  ctx.beginPath();
+  ctx.moveTo(cx - 90, 220);
+  ctx.lineTo(cx - 90, 310);
+  ctx.quadraticCurveTo(cx - 90, 360, cx - 40, 360);
+  ctx.lineTo(cx + 100, 360);
+  ctx.quadraticCurveTo(cx + 140, 360, cx + 140, 310);
+  ctx.lineTo(cx + 140, 220);
+  ctx.lineWidth = 22;
+  ctx.strokeStyle = col('largeintestine');
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = strokeCol('largeintestine');
+  ctx.lineCap = 'butt';
+  ctx.fillStyle = txtCol('largeintestine');
+  ctx.font = '600 10px "Cabinet Grotesk", sans-serif';
+  ctx.fillText('Dikderm', cx + 10, 375);
+
+  // — Rectum —
+  ctx.beginPath();
+  ctx.roundRect(cx - 14, 370, 28, 40, 6);
+  ctx.fillStyle = col('rectum');
+  ctx.fill();
+  ctx.strokeStyle = strokeCol('rectum');
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.fillStyle = txtCol('rectum');
+  ctx.font = '600 10px "Cabinet Grotesk", sans-serif';
+  ctx.fillText('Rektum', cx, 394);
+
+  // Highlight glow for selected
+  ctx.shadowBlur = 0;
+}
+
+window.addEventListener('resize', () => { if (simInitialised) drawDigest(); });
+
+// ── PRACTICE ──────────────────────────────────────────────────────────────────
+const questions = [
+  {
+    q: 'Watter voedseltoetsreagens verkleur blou-swart in die teenwoordigheid van stysel?',
+    opts: ['Benedict se reagens', 'Biuret-reagens', 'Jodiumoplossing', 'Kalkwater'],
+    ans: 2,
+    fb: 'Jodiumoplossing verkleur blou-swart wanneer stysel teenwoordig is. Benedict se reagens word gebruik om vir reduserende suikers te toets (dit verkleur oranje/rooi), en Biuret toets vir proteïen (dit verkleur pers).'
+  },
+  {
+    q: 'Watter orgaan produseer gal, en wat is gal se rol in vertering?',
+    opts: [
+      'Die pankreas; gal bevat ensieme wat proteïene afbreek',
+      'Die lewer; gal emulgeer vette om die oppervlakte vir lipase te vergroot',
+      'Die maag; gal neutraliseer soutsuur',
+      'Die galblaas; gal breek stysel af tot glukose'
+    ],
+    ans: 1,
+    fb: 'Gal word deur die lewer geproduseer en in die galblaas gestoor. Dit emulgeer vette — deur groot vetdruppels in klein bolletjies te breek — wat die oppervlakte wat vir die ensiem lipase beskikbaar is, aansienlik vergroot.'
+  },
+  {
+    q: '\'n Persoon wie se dieet ernstig aan yster kortkom, sal heel waarskynlik ontwikkel:',
+    opts: ['Ragitis', 'Skeurbuik', 'Ysterekortbloedarmoede', 'Kropgeswel'],
+    ans: 2,
+    fb: 'Yster is noodsaaklik vir die produksie van hemoglobien in rooibloedselle. \'n Tekort aan yster lei tot ysterekortbloedarmoede, gekenmerk deur uitputting, bleekheid en kortasem. Ragitis word deur vitamien D-tekort veroorsaak, skeurbuik deur vitamien C-tekort, en kropgeswel deur jodiumtekort.'
+  },
+  {
+    q: 'In watter deel van die spysverteringstelsel vind die MEESTE absorpsie van voedingstowwe in die bloedstroom plaas?',
+    opts: ['Mond', 'Maag', 'Dunderm', 'Dikderm'],
+    ans: 2,
+    fb: 'Die dunderm is die hoofplek van voedingstofabsorpsie. Die binnebekleding het miljoene villi en mikrovilli wat die oppervlakte geweldig vergroot, wat verteerde voedingstowwe in staat stel om doeltreffend in die bloed en limf te beweeg.'
+  },
+  {
+    q: 'Watter ensiem begin die vertering van stysel in die mond?',
+    opts: ['Pepsien', 'Lipase', 'Speekselamilase', 'Maltase'],
+    ans: 2,
+    fb: 'Speekselamilase word deur die speekselkliere geproduseer en is in speeksel teenwoordig. Dit begin stysel afbreek tot maltose (\'n disakkaried) terwyl voedsel gekou en in die mond gemeng word. Pepsien werk op proteïene in die maag in.'
+  },
+  {
+    q: 'Dieetvesel kan nie deur mense verteer word nie. Waarom is dit steeds \'n belangrike deel van \'n gesonde dieet?',
+    opts: [
+      'Dit verskaf die meeste energie van al die voedingstowwe',
+      'Dit voeg volume by voedsel en stimuleer peristalse, wat hardlywigheid voorkom',
+      'Dit word deur die lewer in vitamiene omgeskakel',
+      'Dit verskaf essensiële aminosure vir proteïensintese'
+    ],
+    ans: 1,
+    fb: 'Alhoewel mense dieetvesel (sellulose) nie kan verteer nie, voeg dit volume by die derminhoud. Dit stimuleer die spierige wande van die derm om saam te trek (peristalse), wat voedsel doeltreffend laat beweeg en hardlywigheid voorkom. Voldoende vesel verminder ook die risiko van dermkanker.'
+  },
+  {
+    q: '\'n Leerder toets speekselamilase by drie pH-waardes en teken die relatiewe ensiemaktiwiteit aan: pH 2 → 4 eenhede; pH 7 → 92 eenhede; pH 9 → 10 eenhede. Wat kan korrek uit hierdie data afgelei word?',
+    opts: [
+      'Amilase werk ewe goed by alle pH-waardes',
+      'Amilase se optimum pH is sterk suur, soortgelyk aan pepsien',
+      'Amilase het \'n optimum pH naby neutraal (pH 7), en die aktiwiteit daal skerp by beide suur en alkaliese toestande',
+      'Die ensiem word permanent vernietig by enige pH bo 7'
+    ],
+    ans: 2,
+    fb: 'Die data wys dat die aktiwiteit die hoogste is naby pH 7 en veel laer by pH 2 en pH 9 — dit is die patroon van \'n ensiem met \'n neutrale optimum pH. Speekselamilase werk die beste in die mond se neutrale toestande, anders as pepsien, wat \'n suur optimum (ongeveer pH 2) het wat by die maag pas. Die daling in aktiwiteit aan beide kante van die optimum weerspieël dat die ensiem se vorm buite sy ideale pH-reeks ontwrig word, nie permanente vernietiging by pH 9 spesifiek nie.'
+  },
+  {
+    q: 'Kind A eet genoeg styselryke pap vir energie, maar byna geen proteïenryke voedsel nie, en het \'n geswelde buik met dun ledemate. Kind B eet ver te min voedsel van enige aard en lyk uiters maer regdeur, sonder vet- of spierreserwes. Watter toestand het elke kind heel waarskynlik?',
+    opts: [
+      'Kind A het marasmus; Kind B het kwashiorkor',
+      'Kind A het kwashiorkor; Kind B het marasmus',
+      'Beide kinders het kwashiorkor, net op verskillende stadiums',
+      'Beide kinders ly aan skeurbuik veroorsaak deur vitamien C-tekort'
+    ],
+    ans: 1,
+    fb: 'Kind A kry genoeg energie (van stysel) maar te min proteïen — dit pas by kwashiorkor, waar die geswelde buik voortspruit uit onvoldoende proteïen om die bloed se osmotiese balans te handhaaf, wat veroorsaak dat vloeistof in weefsels ophoop. Kind B kort energie en voedingstowwe oor die algemeen, wat by marasmus pas, waar die liggaam sy eie vet en spiere afbreek om te oorleef, wat die hele liggaam uitgeteer laat. Om hulle te onderskei, moet gekyk word na wat ontbreek (net proteïen teenoor totale voedselinname), nie net dat albei kinders wanvoed is nie.'
+  }
+];
+
+let answered = 0, correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, j) =>
+      `<button class="mc-opt" onclick="answer(${i},${j},this)">
+        <span class="opt-letter">${letters[j]}</span>${o}
+      </button>`
+    ).join('');
+    container.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Vraag ${i+1} van ${questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="mc-options">${optsHtml}</div>
+        <div class="feedback" id="fb-${i}"></div>
+      </div>`;
+  });
+}
+
+function answer(qi, selected, btn) {
+  const card = document.getElementById('qcard-' + qi);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+  const q = questions[qi];
+  const opts = card.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('fb-' + qi);
+  if (selected === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = '&#10003; Reg! ' + q.fb;
+    correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback show bad';
+    fb.innerHTML = '&#10007; Nie heeltemal reg nie. ' + q.fb;
+  }
+  answered++;
+  if (answered === questions.length) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct + '/' + questions.length;
+  }
+}
+
+buildPractice();
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

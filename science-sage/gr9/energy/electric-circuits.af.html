@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektriese Selle, Weerstand &amp; Stroombane — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .safety-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.85);line-height:1.7}
+    .safety-box strong{color:#fca5a5}
+    /* Explore */
+    .explore-top{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-bottom:24px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .controls{display:flex;flex-direction:column;gap:14px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .circuit-type-row{display:flex;gap:8px;margin-bottom:4px}
+    .ctype-btn{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;transition:all 140ms}
+    .ctype-btn.active{border-color:rgba(251,191,36,.40);background:rgba(251,191,36,.12);color:#fcd34d}
+    .bulb-toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+    .bulb-toggle{flex:1;min-width:70px;padding:8px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);font-weight:700;font-size:11px;cursor:pointer;transition:all 140ms;text-align:center}
+    .bulb-toggle.active{border-color:rgba(74,222,128,.40);background:rgba(74,222,128,.12);color:#86efac}
+    .status-box{text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:13px;margin-top:8px;transition:all 300ms}
+    .status-box.lit{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.30);color:#fcd34d}
+    .status-box.dark{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.28);color:#fca5a5}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .explore-top{grid-template-columns:1fr}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Energie &amp; Verandering</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Energie &amp; Verandering · Les 5</div>
+  <h1 class="lesson-title">Elektriese Selle, Weerstand &amp; Stroombane</h1>
+  <p class="lesson-sub">Ontdek hoe elektriese selle energie stoor, wat weerstand veroorsaak, hoe serie- en parallelle stroombane verskil, en hoe om veilig met elektrisiteit te wees.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Elektriese selle as energiestelsels</h2>
+    <p>'n <strong style="color:#fcd34d">Elektriese sel</strong> is 'n toestel wat <strong>gestoorde chemiese energie</strong> in <strong>elektriese energie</strong> omskep. Binne-in 'n sel stoot chemiese reaksies tussen die elektrodes en die elektroliet elektrone om 'n stroombaan wanneer dit gekoppel is.</p>
+    <ul>
+      <li>'n Enkele sel het 'n <strong>positiewe pool</strong> en 'n <strong>negatiewe pool</strong>, en verskaf 'n vaste spanning (bv. 1,5 V vir 'n standaard AA-sel).</li>
+      <li>'n <strong>Battery</strong> is tegnies twee of meer selle wat saam gekoppel is.</li>
+      <li>Wanneer selle <strong>in serie</strong> gekoppel word (positief na negatief, kop aan stert), tel hul spannings <strong>bymekaar</strong> — bv. twee 1,5 V-selle in serie gee 3 V.</li>
+    </ul>
+    <div class="callout"><strong>EMK (elektromotoriese krag)</strong> is die energie wat die sel aan elke eenheid lading wat daardeur beweeg, gee — dit is wat ons as die sel se spanning meet wanneer geen stroom vloei nie.</div>
+
+    <h2>Weerstand</h2>
+    <p><strong style="color:#fcd34d">Weerstand</strong> is die teenstand wat 'n materiaal aan die vloei van elektriese stroom bied, gemeet in <strong>ohm (Ω)</strong>. Weerstand word veroorsaak deur botsings tussen die bewegende elektrone en die deeltjies van die geleier, wat sommige elektriese energie in hitte omskep.</p>
+    <p>Verskeie faktore beïnvloed die weerstand van 'n geleier:</p>
+    <ul>
+      <li><strong>Lengte:</strong> 'n langer geleier het meer weerstand — elektrone bots met meer deeltjies op pad.</li>
+      <li><strong>Dikte (deursnee-oppervlakte):</strong> 'n dikker geleier het minder weerstand — daar is meer ruimte vir stroom om te vloei.</li>
+      <li><strong>Materiaal:</strong> verskillende materiale gelei verskillend. Koper is 'n uitstekende geleier (lae weerstand); nichroom en ander legerings het hoër weerstand en word in weerstande en verhittingselemente gebruik.</li>
+    </ul>
+    <div class="key-fact">'n Weerstand is 'n komponent wat doelbewus in 'n stroombaan geplaas word om die hoeveelheid stroom wat vloei, te beheer. In stroombaandiagramme word 'n weerstand as 'n reghoek (of sigsag in sommige notasies) geteken.</div>
+
+    <h2>Seriestroombane</h2>
+    <p>In 'n <strong style="color:#fcd34d">seriestroombaan</strong> word komponente een na die ander gekoppel, wat 'n enkele lus of pad vir stroom vorm:</p>
+    <ul>
+      <li>Daar is slegs <strong>EEN pad</strong> vir stroom om te vloei.</li>
+      <li>Die <strong>stroom is dieselfde</strong> op elke punt in die stroombaan.</li>
+      <li>Die totale spanning van die bron word <strong>gedeel</strong> (verdeel) tussen die komponente.</li>
+      <li>As EEN komponent breek of verwyder word, word die stroombaan verbreek en <strong>hou alles op om te werk</strong>.</li>
+    </ul>
+
+    <h2>Parallelle stroombane</h2>
+    <p>In 'n <strong style="color:#fcd34d">parallelle stroombaan</strong> word komponente oor afsonderlike takke tussen dieselfde twee punte gekoppel:</p>
+    <ul>
+      <li>Daar is <strong>veelvuldige paaie</strong> vir stroom om te vloei.</li>
+      <li>Die <strong>spanning is dieselfde</strong> oor elke tak (elke tak kry die volle voorsieningspanning).</li>
+      <li>Die <strong>stroom word gedeel</strong> tussen die takke — die totale stroom van die bron is gelyk aan die som van die strome in elke tak.</li>
+      <li>As EEN komponent breek, kan stroom steeds deur die <strong>ander takke</strong> vloei — hulle hou aan werk.</li>
+    </ul>
+    <div class="formula">Serie: een pad, stroom konstant, spanning gedeel &nbsp;|&nbsp; Parallel: baie paaie, spanning konstant, stroom gedeel</div>
+
+    <h2>Stroombaandiagramsimbole</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Komponent</th><th>Simboolbeskrywing</th><th>Funksie</th></tr></thead>
+      <tbody>
+        <tr><td>Sel</td><td>Een lang lyn (+) en een kort lyn (−)</td><td>Verskaf elektriese energie (EMK)</td></tr>
+        <tr><td>Battery</td><td>Twee of meer selsimbole langs mekaar</td><td>Verskeie selle saam gekoppel</td></tr>
+        <tr><td>Gloeilamp</td><td>Sirkel met 'n X binne-in</td><td>Skep elektriese energie om na lig (en hitte)</td></tr>
+        <tr><td>Weerstand</td><td>Reghoek</td><td>Werk stroomvloei teen, en beheer die grootte daarvan</td></tr>
+        <tr><td>Skakelaar</td><td>'n Breuk in die lyn wat kan oop-/toemaak</td><td>Maak die stroombaan oop of toe</td></tr>
+        <tr><td>Draad (geleier)</td><td>Reguit lyn</td><td>Koppel komponente met (byna) geen weerstand</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Huisbedrading</strong> gebruik parallelle stroombane — sodoende ontvang elke toestel die volle kragspanning en kan onafhanklik aan- of afgeskakel word sonder om die ander te beïnvloed.</div>
+
+    <h2>Veiligheid met elektrisiteit</h2>
+    <p>Elektrisiteit kan uiters gevaarlik wees as dit nie met respek behandel word nie. Graad 9-leerders moet die volgende veiligheidsbeginsels verstaan:</p>
+    <ul>
+      <li><strong>Isolasie:</strong> materiale soos rubber en plastiek gelei nie elektrisiteit nie. Drade word met isolasie bedek om elektriese skok en kortsluitings te voorkom.</li>
+      <li><strong>Sekerings:</strong> 'n dun draad wat ontwerp is om te smelt en die stroombaan te breek as die stroom te groot word, wat oorverhitting en brande voorkom.</li>
+      <li><strong>Stroombaanbrekers:</strong> 'n skakelaar wat outomaties "afskakel" (oopmaak) wanneer dit te veel stroom bespeur, wat die bedrading beskerm — anders as 'n sekering kan dit herstel en hergebruik word.</li>
+      <li><strong>Aarding (aarddraad):</strong> verskaf 'n veilige pad vir stroom om in die grond in te vloei as 'n fout voorkom, eerder as deur 'n persoon.</li>
+    </ul>
+    <div class="safety-box"><strong>Water en elektrisiteit:</strong> water (veral met opgeloste soute/minerale) gelei elektrisiteit baie beter as droë vel. Dit is waarom dit uiters gevaarlik is om elektriese toestelle naby water te gebruik, of skakelaars met nat hande aan te raak — die risiko van 'n ernstige of dodelike elektriese skok is baie hoër.</div>
+    <div class="safety-box"><strong>Veilige praktyke by die huis:</strong> oorlaai nooit 'n muurprop met te veel toestelle nie; raak nooit beskadigde of blootgestelde drade aan nie; skakel toestelle af en trek dit uit voor jy dit skoonmaak; steek nooit voorwerpe in elektriese muurproppe in nie; hou elektriese toestelle weg van badkamers, wasbakke en swembaddens.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Serie- teenoor Parallelle-stroombaansimulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Wissel tussen 'n serie- en 'n parallelle stroombaan van drie gloeilampe. Verwyder 'n gloeilamp om die effek te sien — in serie breek die verwydering van een gloeilamp die stroombaan en gaan alle gloeilampe dood; in parallel bly die ander gloeilampe aan.</p>
+  <div class="explore-top">
+    <div class="sim-canvas-wrap">
+      <h3>Stroombaandiagram</h3>
+      <canvas id="circCanvas" height="340"></canvas>
+    </div>
+    <div class="controls">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stroombaantipe</div>
+        <div class="circuit-type-row">
+          <button class="ctype-btn active" id="btnSeries" onclick="setCType('series')">Serie</button>
+          <button class="ctype-btn" id="btnParallel" onclick="setCType('parallel')">Parallel</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Gloeilampe (klik om te verwyder/vervang)</div>
+        <div class="bulb-toggle-row">
+          <button class="bulb-toggle active" id="bulbBtn0" onclick="toggleBulb(0)">Gloeilamp 1</button>
+          <button class="bulb-toggle active" id="bulbBtn1" onclick="toggleBulb(1)">Gloeilamp 2</button>
+          <button class="bulb-toggle active" id="bulbBtn2" onclick="toggleBulb(2)">Gloeilamp 3</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stroombaanstatus</div>
+        <div class="status-box lit" id="statusBox">Al die gloeilampe brand — stroombaan voltooi</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na vir enige wat jy verkeerd gehad het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord al die vrae in jou oefeningboek. Teken stroombaandiagramme waar gevra.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (2 punte)</div><div class="wb-qtext">Verduidelik wat 'n elektriese sel doen in terme van energie-omskepping. Noem wat met die spanning gebeur wanneer twee identiese selle in serie gekoppel word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Noem DRIE faktore wat die weerstand van 'n geleier beïnvloed, en noem vir ELKE faktor of om dit te vergroot die weerstand sal vergroot of verklein.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">'n Seriestroombaan en 'n parallelle stroombaan bevat elk drie identiese gloeilampe en 'n battery.<br><br>
+    a) In die seriestroombaan brand een gloeilamp deur (breek). Verduidelik wat met die ANDER TWEE gloeilampe gebeur en waarom.<br>
+    b) In die parallelle stroombaan brand een gloeilamp deur. Verduidelik wat met die ANDER TWEE gloeilampe gebeur en waarom.<br>
+    c) Gee EEN rede waarom huishoudelike elektriese bedrading ontwerp word met die stroombaantipe wat steeds werk selfs al faal een toestel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Verduidelik die funksie van ELKE van die volgende veiligheidstoestelle, en beskryf EEN verskil tussen hulle:<br><br>
+    a) 'n Sekering<br>
+    b) 'n Stroombaanbreker</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Verduidelik waarom dit gevaarlik is om 'n elektriese toestel met nat hande of naby water te gebruik. Verwys na die elektriese eienskappe van water in jou antwoord, en beskryf TWEE veilige praktyke vir die gebruik van elektrisiteit by die huis.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (5 punte)</div><div class="wb-qtext">'n Leerder bou stroombane met verskillende getalle identiese 1,5 V-selle wat in serie gekoppel is, en meet elke keer die totale spanning met 'n spanningsmeter:
+      <table class="symbols-table" style="margin:12px 0">
+        <thead><tr><th>Getal selle in serie</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+        <tbody><tr><td><strong>Totale spanning gemeet (V)</strong></td><td>1.5</td><td>3.0</td><td>4.5</td><td>6.0</td></tr></tbody>
+      </table>
+      (a) Beskryf die patroon wat in die tabel getoon word. (1 punt)<br>
+      (b) Gebruik die patroon om die totale spanning vir 7 selle korrek in serie gekoppel, te voorspel. Wys jou metode. (2 punte)<br>
+      (c) As een van daardie 7 selle omgekeerd (omgekeerde polariteit) ingesit is, wat sou die nuwe totale spanning wees? Wys jou berekening. (2 punte)</div></div>
+  </div>
+</div>
+
+<script>
+/* ---- Tabs ---- */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') { resizeCirc(); }
+}
+
+/* ---- Circuit simulator ---- */
+const circCanvas = document.getElementById('circCanvas');
+const circCtx = circCanvas.getContext('2d');
+const CH2 = 340;
+let cType = 'series';
+let bulbsOn = [true, true, true]; // whether each bulb is present (not removed)
+let flowOffset2 = 0;
+
+function resizeCirc() {
+  const dpr = window.devicePixelRatio || 1;
+  const W = circCanvas.offsetWidth || 480;
+  circCanvas.width = W * dpr;
+  circCanvas.height = CH2 * dpr;
+  circCtx.setTransform(1, 0, 0, 1, 0, 0);
+  circCtx.scale(dpr, dpr);
+}
+
+function setCType(t) {
+  cType = t;
+  document.getElementById('btnSeries').classList.toggle('active', t === 'series');
+  document.getElementById('btnParallel').classList.toggle('active', t === 'parallel');
+  updateStatus();
+}
+
+function toggleBulb(i) {
+  bulbsOn[i] = !bulbsOn[i];
+  document.getElementById('bulbBtn' + i).classList.toggle('active', bulbsOn[i]);
+  updateStatus();
+}
+
+function circuitComplete() {
+  if (cType === 'series') {
+    // all bulbs must be present for current to flow at all
+    return bulbsOn.every(Boolean);
+  } else {
+    // parallel: any branch present keeps current flowing in that branch
+    return bulbsOn.some(Boolean);
+  }
+}
+
+function bulbLit(i) {
+  if (cType === 'series') {
+    return bulbsOn[i] && bulbsOn.every(Boolean);
+  } else {
+    return bulbsOn[i];
+  }
+}
+
+function updateStatus() {
+  const box = document.getElementById('statusBox');
+  if (cType === 'series') {
+    if (bulbsOn.every(Boolean)) {
+      box.className = 'status-box lit';
+      box.textContent = 'Al die gloeilampe brand — stroombaan voltooi';
+    } else {
+      box.className = 'status-box dark';
+      box.textContent = 'Stroombaan verbreek! Net een pad — verwydering van \'n gloeilamp skakel AL die gloeilampe af.';
+    }
+  } else {
+    const litCount = bulbsOn.filter(Boolean).length;
+    if (litCount === 3) {
+      box.className = 'status-box lit';
+      box.textContent = 'Al die gloeilampe brand — stroombaan voltooi';
+    } else if (litCount > 0) {
+      box.className = 'status-box lit';
+      box.textContent = `${litCount} van 3 gloeilampe brand nog — ander takke hou aan werk!`;
+    } else {
+      box.className = 'status-box dark';
+      box.textContent = 'Al die gloeilampe is verwyder — geen stroom kan vloei nie.';
+    }
+  }
+}
+
+function drawBulbShape(ctx, x, y, lit) {
+  const r = 16;
+  if (lit) {
+    const grd = ctx.createRadialGradient(x, y, 0, x, y, 30);
+    grd.addColorStop(0, 'rgba(251,191,36,0.55)');
+    grd.addColorStop(1, 'rgba(251,191,36,0)');
+    ctx.beginPath(); ctx.arc(x, y, 30, 0, Math.PI * 2); ctx.fillStyle = grd; ctx.fill();
+  }
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fillStyle = lit ? 'rgba(251,191,36,0.20)' : 'rgba(255,255,255,0.04)';
+  ctx.fill();
+  ctx.strokeStyle = lit ? 'rgba(251,191,36,0.85)' : 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x - 8, y - 8); ctx.lineTo(x + 8, y + 8);
+  ctx.moveTo(x + 8, y - 8); ctx.lineTo(x - 8, y + 8);
+  ctx.strokeStyle = lit ? 'rgba(255,220,100,0.9)' : 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function drawBatterySym(ctx, x, y) {
+  ctx.strokeStyle = 'rgba(255,255,255,0.60)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x - 10, y); ctx.lineTo(x + 10, y); ctx.stroke();
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x - 6, y + 12); ctx.lineTo(x + 6, y + 12); ctx.stroke();
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x - 10, y + 24); ctx.lineTo(x + 10, y + 24); ctx.stroke();
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x - 6, y + 36); ctx.lineTo(x + 6, y + 36); ctx.stroke();
+  ctx.fillStyle = 'rgba(251,191,36,0.70)'; ctx.font = '10px "JetBrains Mono"'; ctx.textAlign = 'center';
+  ctx.fillText('+', x + 16, y + 4); ctx.fillText('−', x + 16, y + 40);
+}
+
+function drawGap(ctx, x, y, removed) {
+  // draws a small break marker where a bulb is removed, to visualise open circuit
+  if (removed) {
+    ctx.strokeStyle = 'rgba(239,68,68,0.6)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x - 5, y - 5); ctx.lineTo(x + 5, y + 5);
+    ctx.moveTo(x + 5, y - 5); ctx.lineTo(x - 5, y + 5);
+    ctx.stroke();
+  }
+}
+
+function drawCirc() {
+  const W = circCanvas.offsetWidth || 480;
+  circCtx.clearRect(0, 0, W, CH2);
+  const complete = circuitComplete();
+  const wireColOn = 'rgba(251,191,36,0.55)';
+  const wireColOff = 'rgba(255,255,255,0.15)';
+
+  if (cType === 'series') {
+    const L = 80, Rr = W - 60, T = 60, B = CH2 - 60;
+    const spacing = (Rr - L) / 4;
+    const bx = [L + spacing, L + spacing * 2, L + spacing * 3];
+
+    // wires top
+    for (let seg = 0; seg < 4; seg++) {
+      const x1 = L + spacing * seg, x2 = L + spacing * (seg + 1);
+      const isBulbSeg = seg < 3;
+      const segLive = isBulbSeg ? (bulbsOn[seg] && complete) : complete;
+      circCtx.strokeStyle = segLive ? wireColOn : wireColOff;
+      circCtx.lineWidth = 2.5;
+      circCtx.beginPath();
+      if (isBulbSeg) {
+        circCtx.moveTo(x1 + 18, T); circCtx.lineTo(x2 - 18, T);
+      } else {
+        circCtx.moveTo(x1, T); circCtx.lineTo(x2, T);
+      }
+      circCtx.stroke();
+    }
+    // right + bottom + left wires
+    circCtx.strokeStyle = complete ? wireColOn : wireColOff;
+    circCtx.lineWidth = 2.5;
+    circCtx.beginPath(); circCtx.moveTo(Rr, T); circCtx.lineTo(Rr, B); circCtx.stroke();
+    circCtx.beginPath(); circCtx.moveTo(Rr, B); circCtx.lineTo(L, B); circCtx.stroke();
+    circCtx.beginPath(); circCtx.moveTo(L, T); circCtx.lineTo(L, B); circCtx.stroke();
+
+    drawBatterySym(L, T + (B - T) / 2 - 20);
+    bx.forEach((x, i) => {
+      drawBulbShape(circCtx, x, T, bulbLit(i));
+      drawGap(circCtx, x, T, !bulbsOn[i]);
+    });
+
+    circCtx.fillStyle = 'rgba(210,218,245,0.45)'; circCtx.font = '11px "JetBrains Mono"';
+    circCtx.textAlign = 'center';
+    bx.forEach((x, i) => circCtx.fillText('Gloeilamp ' + (i + 1), x, T - 24));
+    circCtx.textAlign = 'right';
+    circCtx.fillText('Battery', L - 14, T + (B - T) / 2 + 2);
+  } else {
+    const L = 70, Rr = W - 50, T = 55, B = CH2 - 45;
+    const spacing = (Rr - L - 40) / 3;
+    const bx = [L + 40 + spacing * 0.5, L + 40 + spacing * 1.5, L + 40 + spacing * 2.5];
+
+    // main rails
+    circCtx.strokeStyle = complete ? wireColOn : wireColOff;
+    circCtx.lineWidth = 2.5;
+    circCtx.beginPath(); circCtx.moveTo(L, T); circCtx.lineTo(Rr, T); circCtx.stroke();
+    circCtx.beginPath(); circCtx.moveTo(L, B); circCtx.lineTo(Rr, B); circCtx.stroke();
+    circCtx.beginPath(); circCtx.moveTo(L, T); circCtx.lineTo(L, B); circCtx.stroke();
+
+    bx.forEach((x, i) => {
+      const live = bulbsOn[i] && complete;
+      circCtx.strokeStyle = live ? wireColOn : wireColOff;
+      circCtx.lineWidth = 2.5;
+      circCtx.beginPath(); circCtx.moveTo(x, T); circCtx.lineTo(x, T + (B - T) / 2 - 18); circCtx.stroke();
+      circCtx.beginPath(); circCtx.moveTo(x, T + (B - T) / 2 + 18); circCtx.lineTo(x, B); circCtx.stroke();
+      drawBulbShape(circCtx, x, T + (B - T) / 2, bulbLit(i));
+      drawGap(circCtx, x, T + (B - T) / 2, !bulbsOn[i]);
+    });
+
+    drawBatterySym(L, T + (B - T) / 2 - 20);
+
+    circCtx.fillStyle = 'rgba(210,218,245,0.45)'; circCtx.font = '11px "JetBrains Mono"';
+    circCtx.textAlign = 'center';
+    bx.forEach((x, i) => circCtx.fillText('Gloeilamp ' + (i + 1), x, T - 12));
+    circCtx.textAlign = 'right';
+    circCtx.fillText('Battery', L - 14, T + (B - T) / 2 + 2);
+  }
+
+  // flowing current dots
+  if (complete) {
+    flowOffset2 = (flowOffset2 + 0.01) % 1;
+  }
+}
+
+function animateCirc() {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    drawCirc();
+  }
+  requestAnimationFrame(animateCirc);
+}
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('tab-explore').classList.contains('active')) {
+    resizeCirc();
+  }
+});
+
+resizeCirc();
+updateStatus();
+animateCirc();
+
+/* ---- Practice ---- */
+const QUESTIONS = [
+  {
+    text: 'Watter energie-omskepping vind binne-in \'n elektriese sel plaas?',
+    opts: ['Elektriese energie na chemiese energie', 'Chemiese energie na elektriese energie', 'Ligenergie na chemiese energie', 'Hitte-energie na elektriese energie'],
+    ans: 1,
+    exp: '\'n Elektriese sel skep gestoorde chemiese energie om na elektriese energie deur chemiese reaksies tussen sy elektrodes en elektroliet.'
+  },
+  {
+    text: 'Watter faktor beïnvloed NIE die weerstand van \'n geleier nie?',
+    opts: ['Lengte van die geleier', 'Dikte van die geleier', 'Die kleur van die geleier se isolasie', 'Die materiaal waaruit die geleier gemaak is'],
+    ans: 2,
+    exp: 'Die kleur van die isolasie het geen effek op weerstand nie. Weerstand hang af van die geleier se lengte, dikte (deursnee-oppervlakte), en die materiaal waaruit dit gemaak is.'
+  },
+  {
+    text: 'In \'n SERIESTROOMBAAN, wat gebeur as een gloeilamp verwyder word?',
+    opts: ['Net daardie gloeilamp hou op om te werk; die res bly aan', 'Al die gloeilampe gaan dood, want daar is net een pad vir stroom', 'Die oorblywende gloeilampe word helderder', 'Niks verander nie'],
+    ans: 1,
+    exp: '\'n Seriestroombaan het net een pad vir stroom. Die verwydering van \'n gloeilamp breek daardie pad, sodat geen stroom enige plek in die stroombaan kan vloei nie — al die gloeilampe gaan dood.'
+  },
+  {
+    text: 'In \'n PARALLELLE STROOMBAAN, wat gebeur as een gloeilamp verwyder word?',
+    opts: ['Al die gloeilampe gaan dood', 'Net die oorblywende gloeilampe word dowwer en gaan uiteindelik ook dood', 'Die ander gloeilampe bly aan omdat hulle op afsonderlike takke is', 'Die battery hou op om te werk'],
+    ans: 2,
+    exp: 'In \'n parallelle stroombaan is elke gloeilamp op sy eie tak met sy eie pad terug na die battery. Die verwydering van een gloeilamp breek net daardie tak — stroom vloei steeds deur die ander takke, sodat hulle aan bly.'
+  },
+  {
+    text: 'Watter stelling vergelyk serie- en parallelle stroombane korrek?',
+    opts: [
+      'In serie word spanning gedeel; in parallel word stroom gedeel',
+      'In serie is stroom dieselfde regdeur; in parallel is spanning dieselfde oor elke tak',
+      'In serie is daar veelvuldige paaie; in parallel is daar net een pad',
+      'Serie- en parallelle stroombane gedra identies'
+    ],
+    ans: 1,
+    exp: 'In \'n seriestroombaan is stroom op elke punt dieselfde (enkele pad), terwyl spanning tussen komponente gedeel word. In \'n parallelle stroombaan is spanning oor elke tak dieselfde, terwyl die totale stroom tussen die takke gedeel word.'
+  },
+  {
+    text: 'Waarom is dit gevaarlik om \'n elektriese toestel met nat hande te gebruik?',
+    opts: [
+      'Water vergroot die weerstand van jou vel, wat jou teen skok beskerm',
+      'Water gelei elektrisiteit goed, wat die risiko van \'n ernstige elektriese skok vergroot',
+      'Water het geen effek op elektriese veiligheid nie',
+      'Nat hande laat die toestel beter werk'
+    ],
+    ans: 1,
+    exp: 'Water (veral met opgeloste minerale/soute) gelei elektrisiteit baie makliker as droë vel. Nat hande verlaag die liggaam se weerstand, wat meer stroom laat deurvloei — wat die risiko van \'n gevaarlike of dodelike skok aansienlik vergroot.'
+  },
+  {
+    text: '\'n Flits gebruik vier identiese 1,5 V-selle wat in serie gekoppel is. As een van die selle per ongeluk omgekeerd (omgekeerde polariteit) ingesit word, wat is die netto spanning wat nou die stroombaan aandryf?',
+    opts: ['6 V — al vier selle tel nog normaal bymekaar', '4,5 V — die omgekeerde sel doen eenvoudig niks nie', '3 V — die omgekeerde sel trek sy spanning af in plaas daarvan om by te tel', '0 V — die stroombaan kan glad nie werk nie'],
+    ans: 2,
+    exp: 'Met al 4 selle korrek georiënteer, tel spannings bymekaar: 4 × 1,5 V = 6 V. \'n Omgekeerde sel werk die ander teen in plaas daarvan om by te dra, sodat sy spanning effektief afgetrek word: 3 × 1,5 V (korrekte selle) − 1 × 1,5 V (omgekeerde sel) = 4,5 V − 1,5 V = 3 V. Die gloeilamp sal dowwer brand, nie heeltemal faal nie, aangesien die netto spanning steeds positief is.'
+  },
+  {
+    text: 'Twee identiese gloeilampe word in serie met \'n battery gekoppel. \'n Leerder vervang die verbindingsdraad tussen hulle met \'n veel langer EN dunner draad van dieselfde materiaal. Watter effek sal dit hê, en waarom?',
+    opts: [
+      'Geen effek nie, aangesien verbindingsdrade nooit enige weerstand het nie',
+      'Die gloeilampe sal helderder brand, want \'n langer, dunner draad vergroot die stroom',
+      'Die gloeilampe sal dowwer brand, want \'n langer EN dunner draad het hoër weerstand, wat die stroom wat deur die enkele seriepad vloei, verminder',
+      'Die stroombaan sal heeltemal breek, want drade kan nie langer as \'n gloeilamp se drade wees nie'
+    ],
+    ans: 2,
+    exp: 'Beide lengte en dikte beïnvloed weerstand: \'n langer draad en \'n dunner draad vergroot elk op hul eie die weerstand, sodat die kombinasie van beide veranderinge die totale weerstand in die stroombaan aansienlik vergroot. In \'n seriestroombaan is stroom dieselfde regdeur die enkele pad, sodat hoër totale weerstand daardie stroom verminder — wat elke gloeilamp in die lus dowwer maak, nie net die een naaste aan die nuwe draad nie.'
+  }
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+
+function buildPractice() {
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">
+        ${q.opts.map((o, oi) => `<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+
+function answer(qi, oi) {
+  if (answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if (oi === q.ans) {
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if (answered.every(Boolean)) {
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Bly oefen — gaan die les weer deur!' : score <= 4 ? 'Goeie poging — kyk na die verduidelikings.' : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekende werk.';
+    banner.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

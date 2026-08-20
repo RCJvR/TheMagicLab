@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sure, Basisse &amp; die pH-skaal — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+.lesson-header{padding:36px 40px 24px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#fcd34d}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(251,191,36,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+.ph-btn{font-size:13px;font-weight:700;padding:10px 22px;border-radius:10px;border:1px solid;cursor:pointer;transition:all 150ms;margin:4px}
+.ph-btn-acid{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fca5a5}
+.ph-btn-acid:hover{background:rgba(239,68,68,.22)}
+.ph-btn-base{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.35);color:#93c5fd}
+.ph-btn-base:hover{background:rgba(96,165,250,.22)}
+.ph-btn-reset{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.30);color:#86efac}
+.ph-btn-reset:hover{background:rgba(34,197,94,.20)}
+.ph-readout{font-family:var(--fm);font-size:48px;font-weight:900;letter-spacing:-0.04em;text-align:center;margin:8px 0 4px}
+.ph-label{font-family:var(--fm);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:8px}
+.ph-desc{font-size:13px;color:rgba(210,218,245,.7);text-align:center;line-height:1.6;min-height:40px}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Materie &amp; Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Materie &amp; Materiale · Les 3</div>
+  <h1 class="lesson-title">Sure, Basisse &amp; die pH-skaal</h1>
+  <p class="lesson-sub">Ondersoek die eienskappe van sure en basisse, leer om die pH-skaal te lees, en verken wat gebeur wanneer hulle mekaar neutraliseer.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:13px;height:13px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:13px;height:13px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:13px;height:13px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:13px;height:13px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Wat is Sure?</h2>
+    <p>'n <strong>Suur</strong> is 'n stof wat, wanneer opgelos in water, <strong>waterstofione (H⁺)</strong> in die oplossing vrystel. Hoe meer H⁺-ione vrygestel word, hoe sterker die suur. Sure het verskeie herkenbare eienskappe:</p>
+    <ul>
+      <li>Suur smaak (bv. asyn, suurlemoensap)</li>
+      <li>Reageer met metale om waterstofgas te vorm: Suur + Metaal → Sout + H₂</li>
+      <li>Reageer met karbonate om koolstofdioksied te vorm: Suur + Karbonaat → Sout + H₂O + CO₂</li>
+      <li>Laat blou lakmoespapier <strong>rooi</strong> word</li>
+      <li>Bytend — kan vel en materiale by hoë konsentrasies beskadig</li>
+      <li>pH kleiner as 7</li>
+    </ul>
+
+    <p><strong>Algemene sure en hul formules:</strong></p>
+    <table class="symbols-table">
+      <thead><tr><th>Suurnaam</th><th>Formule</th><th>Voorkoms / gebruik</th></tr></thead>
+      <tbody>
+        <tr><td>Soutsuur</td><td>HCl</td><td>Maagsuur, metaalskoonmaak</td></tr>
+        <tr><td>Swawelsuur</td><td>H₂SO₄</td><td>Motorbatterye, kunsmisvervaardiging</td></tr>
+        <tr><td>Salpetersuur</td><td>HNO₃</td><td>Kunsmis, plofstofvervaardiging</td></tr>
+        <tr><td>Etanoësuur (asynsuur)</td><td>CH₃COOH</td><td>Asyn, voedselbewaring</td></tr>
+        <tr><td>Sitroensuur</td><td>C₆H₈O₇</td><td>Suurlemoene, bruisdrankies</td></tr>
+        <tr><td>Koolsuur</td><td>H₂CO₃</td><td>Koolzuurhoudende water en fris­drankies</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Wat is Basisse &amp; Alkalieë?</h2>
+    <p>'n <strong>Basis</strong> is 'n stof wat 'n suur kan neutraliseer. Wanneer opgelos in water, stel 'n basis <strong>hidroksied-ione (OH⁻)</strong> vry. Basisse wat in water oplos, word <strong>alkalieë</strong> genoem. Eienskappe van basisse:</p>
+    <ul>
+      <li>Bitter smaak</li>
+      <li>Glibberige of seepagtige gevoel (soos seep op die vel)</li>
+      <li>Laat rooi lakmoespapier <strong>blou</strong> word</li>
+      <li>Kan bytend wees by hoë konsentrasies</li>
+      <li>pH groter as 7</li>
+    </ul>
+
+    <p><strong>Algemene basisse en alkalieë:</strong></p>
+    <table class="symbols-table">
+      <thead><tr><th>Naam</th><th>Formule</th><th>Voorkoms / gebruik</th></tr></thead>
+      <tbody>
+        <tr><td>Natriumhidroksied (kaustiese soda)</td><td>NaOH</td><td>Seepmaak, afvoerskoonmakers</td></tr>
+        <tr><td>Kaliumhidroksied</td><td>KOH</td><td>Seepmaak, batterye</td></tr>
+        <tr><td>Kalsiumhidroksied (geblusde kalk)</td><td>Ca(OH)₂</td><td>Behandeling van suur grond, sement</td></tr>
+        <tr><td>Ammoniakoplossing</td><td>NH₃(aq)</td><td>Skoonmaakmiddels, kunsmis</td></tr>
+        <tr><td>Natriumbikarbonaat (koeksoda)</td><td>NaHCO₃</td><td>Bak, teensuurmiddels, brandblussers</td></tr>
+        <tr><td>Magnesiumhidroksied</td><td>Mg(OH)₂</td><td>Teensuurmiddels (melk van magnesia)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout"><strong>Alkali vs Basis:</strong> Alle alkalieë is basisse, maar nie alle basisse is alkalieë nie. 'n Basis word slegs 'n alkali as dit oplosbaar in water is. Koperoksied (CuO) is 'n basis maar nie 'n alkali nie — dit los nie in water op nie.</div>
+
+    <h2>Die pH-skaal</h2>
+    <p>Die <strong>pH-skaal</strong> meet hoe suur of alkalies 'n oplossing is. Dit strek van <strong>0 tot 14</strong>:</p>
+    <ul>
+      <li><strong>pH 0–6</strong>: Suur (laer pH = meer suur, meer H⁺-ione)</li>
+      <li><strong>pH 7</strong>: Neutraal (suiwer water — gelyke H⁺- en OH⁻-ione)</li>
+      <li><strong>pH 8–14</strong>: Alkalies/basies (hoër pH = meer alkalies, meer OH⁻-ione)</li>
+    </ul>
+    <div class="key-fact">Die pH-skaal is logaritmies — 'n oplossing met pH 4 is 10× meer suur as pH 5, en 100× meer suur as pH 6.</div>
+
+    <p><strong>pH van algemene stowwe:</strong></p>
+    <table class="symbols-table">
+      <thead><tr><th>Stof</th><th>Bnd. pH</th><th>Klassifikasie</th></tr></thead>
+      <tbody>
+        <tr><td>Batterysuur (H₂SO₄)</td><td>0–1</td><td>Baie sterk suur</td></tr>
+        <tr><td>Maagsuur (HCl)</td><td>1–2</td><td>Sterk suur</td></tr>
+        <tr><td>Suurlemoensap</td><td>2–3</td><td>Suur</td></tr>
+        <tr><td>Asyn</td><td>2.5–3.5</td><td>Swak suur</td></tr>
+        <tr><td>Koffie</td><td>5</td><td>Swak suur</td></tr>
+        <tr><td>Reënwater</td><td>5.6</td><td>Effens suur</td></tr>
+        <tr><td>Suiwer water</td><td>7</td><td>Neutraal</td></tr>
+        <tr><td>Bloed</td><td>7.4</td><td>Baie effens alkalies</td></tr>
+        <tr><td>Seewater</td><td>8</td><td>Effens alkalies</td></tr>
+        <tr><td>Koeksodaoplossing</td><td>8.5–9</td><td>Swak basis</td></tr>
+        <tr><td>Melk van magnesia</td><td>10.5</td><td>Basis</td></tr>
+        <tr><td>Ammoniakoplossing</td><td>11–12</td><td>Sterk basis</td></tr>
+        <tr><td>Bleikmiddel (NaOCl)</td><td>12–13</td><td>Sterk basis</td></tr>
+        <tr><td>Natriumhidroksied</td><td>13–14</td><td>Baie sterk basis</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Indikators</h2>
+    <p>'n <strong>Indikator</strong> is 'n stof wat van kleur verander afhangende van of dit in 'n suur, neutrale, of alkaliese oplossing is. Indikators word gebruik om die pH van 'n oplossing te toets.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Indikator</th><th>In suur</th><th>Neutraal</th><th>In basis (alkali)</th></tr></thead>
+      <tbody>
+        <tr><td>Lakmoes</td><td>Rooi</td><td>Pers</td><td>Blou</td></tr>
+        <tr><td>Universele indikator</td><td>Rooi → oranje → geel</td><td>Groen</td><td>Blou → violet</td></tr>
+        <tr><td>Fenolftaleïen</td><td>Kleurloos</td><td>Kleurloos</td><td>Pienk/magenta</td></tr>
+        <tr><td>Metieloranje</td><td>Rooi/oranje</td><td>Oranje</td><td>Geel</td></tr>
+      </tbody>
+    </table>
+    <p>Universele indikator is 'n mengsel van verskeie indikators wat 'n volledige reeks kleure oor die pH-skaal gee, wat dit moontlik maak om pH-waardes te skat eerder as om net suur van basis te onderskei.</p>
+
+    <h2>Neutralisasie</h2>
+    <p><strong>Neutralisasie</strong> is die reaksie tussen 'n suur en 'n basis om 'n <strong>sout</strong> en <strong>water</strong> te vorm. Die H⁺-ione van die suur verbind met die OH⁻-ione van die basis om water te vorm:</p>
+    <div class="formula">Suur + Basis → Sout + Water</div>
+    <div class="formula">HCl + NaOH → NaCl + H₂O</div>
+    <div class="formula">H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O</div>
+    <div class="formula">HCl + KOH → KCl + H₂O</div>
+    <p>Die <strong>sout</strong> wat gevorm word, hang af van watter suur en watter basis reageer. Die naam van die sout kom van die metaal van die basis + die anioon van die suur:</p>
+    <table class="symbols-table">
+      <thead><tr><th>Suur</th><th>Basis</th><th>Sout gevorm</th><th>Soutnaam</th></tr></thead>
+      <tbody>
+        <tr><td>HCl</td><td>NaOH</td><td>NaCl</td><td>Natriumchloried</td></tr>
+        <tr><td>HCl</td><td>KOH</td><td>KCl</td><td>Kaliumchloried</td></tr>
+        <tr><td>H₂SO₄</td><td>NaOH</td><td>Na₂SO₄</td><td>Natriumsulfaat</td></tr>
+        <tr><td>HNO₃</td><td>NaOH</td><td>NaNO₃</td><td>Natriumnitraat</td></tr>
+        <tr><td>HCl</td><td>Ca(OH)₂</td><td>CaCl₂</td><td>Kalsiumchloried</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Alledaagse Gebruike van Sure en Basisse</h2>
+    <ul>
+      <li><strong>Maagsuur (HCl)</strong> — verteer voedsel en dood bakterieë</li>
+      <li><strong>Asyn (etanoësuur)</strong> — voedselbewaring, kook</li>
+      <li><strong>Koeksoda (NaHCO₃)</strong> — reageer met sure tydens bak om CO₂ vry te stel, wat deeg laat rys; word ook as teensuurmiddel gebruik</li>
+      <li><strong>Kalk (Ca(OH)₂)</strong> — bygevoeg by suur grond om dit te neutraliseer en gewasgroei te verbeter</li>
+      <li><strong>Seep en sjampoe</strong> — effens alkalies; help om olies te verwyder</li>
+      <li><strong>Teensuurmiddels (Mg(OH)₂, CaCO₃)</strong> — neutraliseer oortollige maagsuur om brandende maagpyn te verlig</li>
+      <li><strong>Swawelsuur</strong> — gebruik in die vervaardiging van kunsmis, plastiek, kleurstowwe, en plofstof</li>
+    </ul>
+
+    <div class="callout"><strong>Suurreën:</strong> Wanneer fossielbrandstowwe verbrand, word SO₂ en NO₂ in die atmosfeer vrygestel. Hierdie gasse los in reënwater op om swawelsuur en salpetersuur te vorm, wat die pH van reën na 4–5 verlaag. Suurreën beskadig woude, korrodeer geboue, en versuur mere en riviere.</div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Virtuele pH-meter — Interaktiewe Beker</h3>
+      <canvas id="phCanvas" height="380"></canvas>
+    </div>
+
+    <div class="sim-controls-row">
+      <div class="ctrl-card" style="text-align:center">
+        <div class="ctrl-label">Stel pH aan</div>
+        <button class="ph-btn ph-btn-acid" onclick="addAcid()">+ Voeg Suur By (−0.5 pH)</button>
+        <button class="ph-btn ph-btn-base" onclick="addBase()">+ Voeg Basis By (+0.5 pH)</button>
+        <button class="ph-btn ph-btn-reset" onclick="resetPH()">Herstel na Neutraal (pH 7)</button>
+        <div style="margin-top:14px">
+          <div class="ph-readout" id="phReadout" style="color:#22c55e">7.0</div>
+          <div class="ph-label" id="phLabel" style="color:#22c55e">NEUTRAAL</div>
+          <div class="ph-desc" id="phDesc">Suiwer water — gelyke konsentrasies H⁺- en OH⁻-ione. Universele indikator is groen.</div>
+        </div>
+      </div>
+
+      <div class="ctrl-card">
+        <div class="ctrl-label">pH-skaal Verwysing</div>
+        <div id="phScaleBar" style="height:220px;border-radius:10px;overflow:hidden;position:relative;display:flex;flex-direction:column">
+          <!-- built by JS -->
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:var(--fm)">
+          ← 0 (mees suur) &nbsp;·&nbsp; 14 (mees alkalies) →
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Hersien die verduidelikings om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord alle vrae in jou notaboek. Skryf gebalanseerde vergelykings waar vereis. Wys alle redenering en berekeninge duidelik.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">'n Leerder toets vier onbekende oplossings (A, B, C, D) met lakmoesindikator en universele indikator. Die resultate word hieronder gewys:<br><br>
+      Oplossing A: rooi lakmoes → rooi; universele indikator → oranje (pH ≈ 4)<br>
+      Oplossing B: rooi lakmoes → blou; universele indikator → blou (pH ≈ 9)<br>
+      Oplossing C: geen kleurverandering met lakmoes nie; universele indikator → groen (pH = 7)<br>
+      Oplossing D: rooi lakmoes → blou; universele indikator → violet (pH ≈ 13)<br><br>
+      (a) Identifiseer elke oplossing as suur, neutraal, of alkalies.<br>
+      (b) Rangskik oplossings A, B, C, en D van mees suur tot mees alkalies.<br>
+      (c) Watter oplossing is 'n sterk basis? Verduidelik jou redenasie deur van pH gebruik te maak.<br>
+      <em>(6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Skryf gebalanseerde woordvergelykings ÉN gebalanseerde formulevergelykings vir die volgende neutralisasiereaksies:<br><br>
+      (a) Soutsuur + kaliumhidroksied<br>
+      (b) Swawelsuur + natriumhidroksied<br>
+      (c) Salpetersuur + kalsiumhidroksied<br><br>
+      Noem vir elke reaksie die sout wat gevorm word. <em>(3 punte per reaksie — 9 punte in totaal)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">'n Boer merk op dat haar gewasse swak groei. Sy toets die grond en vind dat dit 'n pH van 4.5 het.<br><br>
+      (a) Is die grond suur, neutraal, of alkalies?<br>
+      (b) Watter stof kan die boer by die grond voeg om die pH te verhoog? Gee die chemiese formule van hierdie stof.<br>
+      (c) Watter tipe reaksie vind plaas wanneer hierdie stof met die suur grond reageer?<br>
+      (d) Verduidelik waarom die meeste gewasse die beste groei in grond met 'n pH naby 7.<br>
+      <em>(4 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Verduidelik die verskil tussen 'n <em>suur</em> en 'n <em>basis</em> in terme van die ione wat hulle in water produseer. Verduidelik dan wat 'n <em>sout</em> is en hoe dit tydens 'n neutralisasiereaksie vorm. Gebruik 'n voorbeeldvergelyking in jou antwoord. <em>(5 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Die pH van maagsuur is ongeveer 2. Teensuurtablette bevat magnesiumhidroksied (Mg(OH)₂).<br><br>
+      (a) Watter tipe stof is Mg(OH)₂? (suur / basis / neutraal)<br>
+      (b) Skryf 'n gebalanseerde formulevergelyking vir die reaksie tussen soutsuur (HCl) en magnesiumhidroksied (Mg(OH)₂). (<em>Wenk: Mg vorm 'n 2+ ioon</em>)<br>
+      (c) Nadat die teensuurmiddel geneem is, styg die maag-pH na 5. Het die maag meer of minder suur geword? Verduidelik deur van die pH-skaal gebruik te maak.<br>
+      (d) Sal die maaginhoud nou suur, neutraal, of alkalies wees?<br>
+      <em>(5 punte)</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── pH Simulation ───────────────────────────────────────────────────────────
+let currentPH = 7.0;
+let animId = null;
+let tick = 0;
+let targetPH = 7.0;
+let displayPH = 7.0;
+
+const canvas = document.getElementById('phCanvas');
+const ctx = canvas.getContext('2d');
+
+// pH to colour (universal indicator spectrum)
+function phToColor(ph) {
+  // 0→red, 3→orange, 5→yellow, 7→green, 9→teal, 11→blue, 14→violet
+  const stops = [
+    [0,  [220, 30,  30]],
+    [2,  [240, 80,  20]],
+    [4,  [240, 160, 20]],
+    [6,  [200, 220, 40]],
+    [7,  [50,  200, 80]],
+    [8,  [30,  180, 160]],
+    [10, [30,  120, 220]],
+    [12, [100, 60,  200]],
+    [14, [160, 30,  200]]
+  ];
+  for (let i = 0; i < stops.length - 1; i++) {
+    const [p0, c0] = stops[i];
+    const [p1, c1] = stops[i+1];
+    if (ph >= p0 && ph <= p1) {
+      const t = (ph - p0) / (p1 - p0);
+      return [
+        Math.round(c0[0] + t*(c1[0]-c0[0])),
+        Math.round(c0[1] + t*(c1[1]-c0[1])),
+        Math.round(c0[2] + t*(c1[2]-c0[2]))
+      ];
+    }
+  }
+  return [160, 30, 200];
+}
+
+function phLabel(ph) {
+  if (ph < 3) return ['BAIE STERK SUUR', 'Hoogs bytend. pH <3-stowwe sluit batterysuur en maagsuur in. H⁺-ioonkonsentrasie is baie hoog.'];
+  if (ph < 5) return ['SUUR', 'Suur oplossing. Algemene sure soos asyn en sitroensuur val in hierdie reeks. Laat lakmoes rooi word.'];
+  if (ph < 6.5) return ['SWAK SUUR', 'Effens suur. Koffie, reënwater, en baie vrugtesappe het pH in hierdie reeks.'];
+  if (ph < 7.5) return ['NEUTRAAL', 'Suiwer water — gelyke konsentrasies H⁺- en OH⁻-ione. Universele indikator is groen.'];
+  if (ph < 9) return ['SWAK BASIS', 'Effens alkalies. Bloed (pH 7.4) en seewater (pH 8) val hier. Laat lakmoes blou word.'];
+  if (ph < 11) return ['BASIS (ALKALI)', 'Alkaliese oplossing. Koeksoda en ammoniakoplossing val in hierdie reeks. Glibberige gevoel.'];
+  if (ph < 13) return ['STERK BASIS', 'Sterk alkalies. Bleikmiddel en ammoniak val hier. Bytend — hanteer versigtig.'];
+  return ['BAIE STERK BASIS', 'Uiters alkalies. NaOH-oplossings kan ernstige chemiese brandwonde veroorsaak. pH naby 14.'];
+}
+
+function initSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 380;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  canvas.style.height = cssH + 'px';
+  if (animId) cancelAnimationFrame(animId);
+  buildScaleBar();
+  animate();
+}
+
+function animate() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.width / dpr;
+  const cssH = 380;
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  // Smooth transition
+  displayPH += (currentPH - displayPH) * 0.06;
+  const ph = Math.max(0, Math.min(14, displayPH));
+
+  const [r,g,b] = phToColor(ph);
+  const liquidColor = `rgb(${r},${g},${b})`;
+  const cx = cssW / 2;
+
+  // Beaker geometry
+  const bx = cx - 100, bw = 200, bh = 260, by = 50;
+
+  // Background glow matching solution colour
+  const bgGlow = ctx.createRadialGradient(cx, by + bh/2, 0, cx, by + bh/2, 160);
+  bgGlow.addColorStop(0, `rgba(${r},${g},${b},0.12)`);
+  bgGlow.addColorStop(1, 'transparent');
+  ctx.fillStyle = bgGlow;
+  ctx.beginPath();
+  ctx.ellipse(cx, by + bh/2, 160, 140, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Beaker body (glass outline)
+  ctx.strokeStyle = 'rgba(200,220,255,0.25)';
+  ctx.lineWidth = 2;
+  // Bottom
+  ctx.beginPath();
+  ctx.moveTo(bx + 10, by + bh);
+  ctx.lineTo(bx + bw - 10, by + bh);
+  ctx.stroke();
+  // Left wall
+  ctx.beginPath();
+  ctx.moveTo(bx + 10, by);
+  ctx.lineTo(bx + 10, by + bh);
+  ctx.stroke();
+  // Right wall
+  ctx.beginPath();
+  ctx.moveTo(bx + bw - 10, by);
+  ctx.lineTo(bx + bw - 10, by + bh);
+  ctx.stroke();
+  // Lip left
+  ctx.beginPath();
+  ctx.moveTo(bx, by);
+  ctx.lineTo(bx + 30, by);
+  ctx.stroke();
+  // Lip right
+  ctx.beginPath();
+  ctx.moveTo(bx + bw, by);
+  ctx.lineTo(bx + bw - 30, by);
+  ctx.stroke();
+
+  // Liquid fill
+  const liquidTop = by + 20;
+  const grad = ctx.createLinearGradient(bx+10, liquidTop, bx+bw-10, by+bh);
+  grad.addColorStop(0, `rgba(${r},${g},${b},0.75)`);
+  grad.addColorStop(1, `rgba(${Math.round(r*0.6)},${Math.round(g*0.6)},${Math.round(b*0.6)},0.85)`);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.rect(bx + 11, liquidTop, bw - 22, by + bh - liquidTop);
+  ctx.fill();
+
+  // Surface shimmer
+  ctx.fillStyle = `rgba(${r},${g},${b},0.25)`;
+  ctx.beginPath();
+  ctx.ellipse(cx, liquidTop, (bw-22)/2, 8, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Bubbles (for strong acid/base)
+  const intensity = Math.abs(ph - 7) / 7;
+  if (intensity > 0.3) {
+    for (let i = 0; i < 6; i++) {
+      const bub_x = bx + 20 + ((tick*1.3 + i*47) % (bw - 40));
+      const bub_y = liquidTop + ((by + bh - liquidTop) - ((tick*1.5 + i*60) % (by + bh - liquidTop - 10)));
+      const bub_r = 2 + i * 0.8;
+      ctx.fillStyle = `rgba(255,255,255,${0.15 + intensity*0.2})`;
+      ctx.beginPath();
+      ctx.arc(bub_x, bub_y, bub_r, 0, Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  // pH number displayed on beaker
+  ctx.fillStyle = `rgba(${Math.round(255-r*0.4)},${Math.round(255-g*0.4)},${Math.round(255-b*0.4)},0.9)`;
+  ctx.font = 'bold 52px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(ph.toFixed(1), cx, by + bh/2 + 10);
+  ctx.font = '12px "JetBrains Mono",sans-serif';
+  ctx.fillStyle = `rgba(${Math.round(255-r*0.4)},${Math.round(255-g*0.4)},${Math.round(255-b*0.4)},0.6)`;
+  ctx.fillText('pH', cx, by + bh/2 - 32);
+
+  // pH scale strip at bottom of canvas
+  const stripY = by + bh + 20;
+  const stripW = cssW - 80;
+  const stripH = 16;
+  const stripX = 40;
+
+  for (let i = 0; i <= stripW; i++) {
+    const p = (i / stripW) * 14;
+    const [sr,sg,sb] = phToColor(p);
+    ctx.fillStyle = `rgb(${sr},${sg},${sb})`;
+    ctx.fillRect(stripX + i, stripY, 1, stripH);
+  }
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(stripX, stripY, stripW, stripH);
+
+  // Labels 0, 7, 14
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  [0,7,14].forEach(v => {
+    const x = stripX + (v/14)*stripW;
+    ctx.fillText(v, x, stripY + stripH + 12);
+  });
+
+  // Indicator triangle
+  const indX = stripX + (ph/14)*stripW;
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.moveTo(indX - 6, stripY - 4);
+  ctx.lineTo(indX + 6, stripY - 4);
+  ctx.lineTo(indX, stripY + 2);
+  ctx.fill();
+
+  // Update readout DOM
+  const hexColor = `rgb(${r},${g},${b})`;
+  document.getElementById('phReadout').style.color = hexColor;
+  document.getElementById('phLabel').style.color = hexColor;
+  document.getElementById('phReadout').textContent = ph.toFixed(1);
+  const [lbl, desc] = phLabel(ph);
+  document.getElementById('phLabel').textContent = lbl;
+  document.getElementById('phDesc').textContent = desc;
+
+  // Update scale bar marker
+  updateScaleBar(ph);
+
+  tick++;
+  animId = requestAnimationFrame(animate);
+}
+
+function buildScaleBar() {
+  const bar = document.getElementById('phScaleBar');
+  bar.innerHTML = '';
+  const phs = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
+  phs.forEach(p => {
+    const [r,g,b] = phToColor(p);
+    const row = document.createElement('div');
+    row.style.cssText = `flex:1;background:rgb(${r},${g},${b});display:flex;align-items:center;padding:0 8px;position:relative;`;
+    row.id = 'phrow-' + p;
+    row.innerHTML = `<span style="font-family:var(--fm);font-size:9px;font-weight:700;color:rgba(0,0,0,0.55)">${p}</span>`;
+    bar.appendChild(row);
+  });
+}
+
+function updateScaleBar(ph) {
+  document.querySelectorAll('[id^=phrow-]').forEach(el => {
+    el.style.outline = 'none';
+  });
+  const rounded = Math.round(ph);
+  const el = document.getElementById('phrow-' + rounded);
+  if (el) el.style.outline = '2px solid rgba(255,255,255,0.7)';
+}
+
+function addAcid() {
+  currentPH = Math.max(0, currentPH - 0.5);
+}
+function addBase() {
+  currentPH = Math.min(14, currentPH + 0.5);
+}
+function resetPH() {
+  currentPH = 7.0;
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => initSim(), 50);
+}
+
+// ─── Practice ────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: "Watter van die volgende beskryf 'n suur korrek?",
+    opts: [
+      "'n Stof wat OH⁻-ione in water vrystel en 'n pH groter as 7 het",
+      "'n Stof wat H⁺-ione in water vrystel en 'n pH kleiner as 7 het",
+      "'n Stof met 'n pH van presies 7 wat nie met metale reageer nie",
+      "'n Stof wat altyd bitter smaak en glibberig voel"
+    ],
+    ans: 1,
+    exp: "Sure word gedefinieer as stowwe wat H⁺-ione (waterstof) vrystel wanneer opgelos in water. Hierdie oormaat H⁺-ione gee 'n pH kleiner as 7. Sure smaak suur (nie bitter nie), reageer met metale, en laat lakmoes rooi word. Stowwe met OH⁻-ione en pH > 7 is basisse."
+  },
+  {
+    q: "'n Leerder toets 'n oplossing met universele indikator en kry 'n oranje kleur. Wat kan sy aflei?",
+    opts: [
+      "Die oplossing is sterk alkalies (pH 12–14)",
+      "Die oplossing is neutraal (pH 7)",
+      "Die oplossing is effens suur (pH ongeveer 3–4)",
+      "Die oplossing is 'n sterk suur (pH 0–1)"
+    ],
+    ans: 2,
+    exp: "Universele indikator word oranje by ongeveer pH 3–4, wat 'n effens suur oplossing aandui. Rooi dui pH 1–2 (sterk suur) aan, groen dui pH 7 (neutraal) aan, en blou/violet dui alkaliese toestande aan."
+  },
+  {
+    q: "Watter van die volgende beskryf korrek wat tydens 'n neutralisasiereaksie gebeur?",
+    opts: [
+      "'n Suur en 'n metaal reageer om waterstofgas te vorm",
+      "'n Suur en 'n basis reageer om 'n sout en water te vorm",
+      "'n Basis word in water opgelos om H⁺-ione vry te stel",
+      "'n Sout word verhit om 'n suur en 'n basis te vorm"
+    ],
+    ans: 1,
+    exp: "Neutralisasie is die reaksie tussen 'n suur en 'n basis om 'n sout en water te vorm: Suur + Basis → Sout + Water. Die H⁺-ione van die suur verbind met die OH⁻-ione van die basis om water te vorm, terwyl die oorblywende ione die sout vorm."
+  },
+  {
+    q: "Wat is die pH van 'n neutrale oplossing by kamertemperatuur?",
+    opts: ["0", "5", "7", "14"],
+    ans: 2,
+    exp: "'n Neutrale oplossing het 'n pH van presies 7. Dit beteken daar is gelyke konsentrasies H⁺- en OH⁻-ione. Suiwer water is die klassieke voorbeeld van 'n neutrale stof. Onder 7 is suur; bo 7 is alkalies."
+  },
+  {
+    q: "'n Oplossing het 'n pH van 2. 'n Ander oplossing het 'n pH van 4. Watter stelling is korrek?",
+    opts: [
+      "Die pH 4-oplossing is twee keer so suur soos die pH 2-oplossing",
+      "Beide oplossings het dieselfde suurheid",
+      "Die pH 2-oplossing is 100 keer meer suur as die pH 4-oplossing",
+      "Die pH 2-oplossing is 2 keer meer suur as die pH 4-oplossing"
+    ],
+    ans: 2,
+    exp: "Die pH-skaal is logaritmies — elke stap van 1 pH-eenheid verteenwoordig 'n 10-voudige verskil in H⁺-konsentrasie. 'n pH van 2 het 10× meer H⁺ as pH 3, en 100× meer H⁺ as pH 4. Die pH 2-oplossing is dus 100 keer meer suur as die pH 4-oplossing."
+  },
+  {
+    q: "Watter produkte word gevorm wanneer soutsuur (HCl) met natriumhidroksied (NaOH) reageer?",
+    opts: [
+      "Natriumoksied + waterstofgas",
+      "Natriumchloried + water",
+      "Natriumkarbonaat + koolstofdioksied",
+      "Waterstofchloried + natriumoksied"
+    ],
+    ans: 1,
+    exp: "Dit is 'n neutralisasiereaksie: HCl + NaOH → NaCl + H₂O. Die suur (HCl) reageer met die basis (NaOH) om natriumchloried (tafelsout, NaCl) en water (H₂O) te vorm. Die H⁺ van HCl verbind met OH⁻ van NaOH om water te vorm, en laat Na⁺ en Cl⁻ agter wat die sout vorm."
+  },
+  {
+    q: "'n Leerder laat 'n identiese stukkie magnesiumlint apart met drie sure van dieselfde konsentrasie reageer, en neem die tyd waar vir die bruising (waterstofgasproduksie) om te stop: HCl (pH 1) = 8 sekondes; etanoësuur (pH 3) = 35 sekondes; koolsuur (pH 5) = 90 sekondes. Watter gevolgtrekking kan korrek uit hierdie data gemaak word?",
+    opts: [
+      "Hoe hoër die pH, hoe vinniger reageer die metaal, want alkaliese oplossings los metaal die vinnigste op",
+      "Hoe laer die pH (hoe meer H⁺-ione beskikbaar), hoe vinniger die reaksie met die metaal",
+      "Reaksietyd met 'n metaal het geen verband met die pH van die gebruikte suur nie",
+      "Alle sure reageer met metale teen presies dieselfde tempo, ongeag pH"
+    ],
+    ans: 1,
+    exp: "Die data wys 'n duidelike patroon: die suur met die laagste pH (HCl, pH 1, die meeste H⁺-ione) het die vinnigste gereageer (8 s), terwyl die suur met die hoogste pH (koolsuur, pH 5, minder H⁺-ione) die stadigste gereageer het (90 s). Aangesien dit die H⁺-ione is wat met die metaal reageer om waterstofgas vry te stel, produseer 'n oplossing met 'n hoër konsentrasie H⁺-ione (laer pH) 'n vinniger reaksietempo."
+  },
+  {
+    q: "Drie teensuurmerke word elk getoets deur 'n vaste dosis by 'n vaste volume maagsuur teen pH 1.5 te voeg. Merk X verhoog die pH na 3.0; Merk Y verhoog dit na 5.0; Merk Z verhoog dit heeltemal na 7.0. Pepsien (die maag se proteïenverterende ensiem) werk slegs goed in suur toestande. Watter merk verlig brandende maagpyn die beste SONDER om vertering te belemmer?",
+    opts: [
+      "Merk Z, want om die maag perfek neutraal te maak is altyd die veiligste opsie",
+      "Merk Y, want dit verminder die suurheid genoeg om brandende maagpyn te verlig terwyl die maag suur genoeg bly vir pepsien om aktief te bly",
+      "Merk X, want die kleinste moontlike pH-verandering is altyd die beste keuse",
+      "Al drie merke is ewe geskik, aangesien hulle almal as teensuurmiddels geklassifiseer word"
+    ],
+    ans: 1,
+    exp: "Pepsien benodig 'n suur omgewing (sy optimum pH is ongeveer 2) om proteïene te verteer. Merk Z verhoog die maag na pH 7 — heeltemal neutraal — wat sou verhoed dat pepsien behoorlik werk en vertering sou belemmer. Merk X verminder suurheid slegs effens (tot pH 3), wat moontlik nie brandende maagpyn genoeg verlig nie. Merk Y tref die regte balans: dit verminder die oormatige suurheid wat ongemak veroorsaak aansienlik, terwyl pH 5 steeds suur genoeg is vir pepsien om te bly funksioneer."
+  }
+];
+
+let answers = new Array(QUESTIONS.length).fill(null);
+let correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="mc-opt" onclick="answer(${qi},${oi})" id="opt-${qi}-${oi}">
+            <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, oi) {
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = QUESTIONS[qi];
+  const isCorrect = oi === q.ans;
+  if (isCorrect) correct++;
+
+  document.querySelectorAll(`#opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+
+  if (answers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = correct + '/' + QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
