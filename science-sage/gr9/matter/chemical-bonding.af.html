@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemiese Binding — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+.lesson-header{padding:36px 40px 24px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#fcd34d}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:15px;color:#fcd34d;text-align:center}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+input[type=range]{flex:1;accent-color:#fbbf24;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#fcd34d;min-width:56px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(251,191,36,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+.mol-select{font-family:var(--fm);font-size:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:var(--text);padding:8px 14px;cursor:pointer;width:100%}
+.mol-select option{background:#0d1225;color:var(--text)}
+.bond-desc{font-size:13px;color:rgba(210,218,245,.78);line-height:1.75;margin-top:12px}
+.bond-desc strong{color:#fcd34d}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Materie &amp; Materiale</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Materie &amp; Materiale · Les 2</div>
+  <h1 class="lesson-title">Chemiese Binding</h1>
+  <p class="lesson-sub">Ontdek hoe atome bind — deur elektronoordrag (ioniese binding) of elektrondeling (kovalente binding) — en waarom die tipe binding 'n stof se eienskappe bepaal.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:13px;height:13px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="zap" style="width:13px;height:13px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:13px;height:13px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:13px;height:13px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON TAB -->
+<div id="tab-lesson" class="tab-panel active">
+  <div class="lesson-body">
+
+    <h2>Waarom Bind Atome?</h2>
+    <p>Atome vorm chemiese bindings om 'n meer stabiele elektronkonfigurasie te bereik — spesifiek, 'n <em>vol buitenste elektronskil</em>. Hierdie stabiele toestand word die <strong>edelgaskonfigurasie</strong> genoem. Die meeste atome het gedeeltelik gevulde buitenste skille en is energeties "ongemaklik" — deur met ander atome te bind, verlaag hulle hul energie en verhoog hulle hul stabiliteit.</p>
+    <div class="callout"><strong>Die Oktetreël:</strong> Die meeste atome streef na 8 elektrone in hul buitenste skil (of 2 vir waterstof en helium). Atome bereik dit deur elektrone te verloor, te wen, of met ander atome te deel.</div>
+
+    <h2>Ioniese Binding</h2>
+    <p>Ioniese binding vind plaas tussen 'n <strong>metaal</strong> en 'n <strong>nie-metaal</strong>. Die metaalatoom het min valenselektrone (gewoonlik 1–3) en verloor dit aan die nie-metaal, wat baie valenselektrone het (gewoonlik 5–7) en dit opneem. Hierdie oordrag skep gelaaide deeltjies genaamd <strong>ione</strong>:</p>
+    <ul>
+      <li>Die metaal verloor elektrone → word 'n positief gelaaide <strong>katioon</strong> (bv. Na⁺, Mg²⁺, Ca²⁺)</li>
+      <li>Die nie-metaal wen elektrone → word 'n negatief gelaaide <strong>anioon</strong> (bv. Cl⁻, O²⁻, F⁻)</li>
+    </ul>
+    <p>Die teenoorgesteld gelaaide ione trek mekaar sterk aan — hierdie elektrostatiese aantrekking is die ioniese binding. Die ione rangskik hulself in 'n gereelde, herhalende 3D-struktuur genaamd 'n <strong>ioniese rooster</strong> (of kristalrooster).</p>
+
+    <div class="formula">Na → Na⁺ + e⁻ &nbsp;&nbsp;|&nbsp;&nbsp; Cl + e⁻ → Cl⁻ &nbsp;&nbsp;|&nbsp;&nbsp; Na⁺ + Cl⁻ → NaCl</div>
+
+    <p><strong>Eienskappe van ioniese verbindings:</strong></p>
+    <ul>
+      <li><strong>Hoë smelt- en kookpunte</strong> — die elektrostatiese kragte wat die rooster bymekaar hou, is baie sterk en benodig baie energie om te oorkom.</li>
+      <li><strong>Hard maar bros</strong> — die rooster is rigied, maar as 'n laag deur 'n hou verskuif word, lyn gelyk-gelaaide ione op en stoot mekaar af, wat veroorsaak dat die kristal skei.</li>
+      <li><strong>Gelei elektrisiteit wanneer opgelos in water of gesmelt</strong> — ione is vry om te beweeg en lading te dra, maar vaste ioniese verbindings kan nie gelei nie (ione is op hul plek vasgevang).</li>
+      <li><strong>Oplosbaar in water</strong> (baie ioniese verbindings) — watermolekule word na die ione aangetrek en trek hulle in oplossing.</li>
+    </ul>
+
+    <h2>Kovalente Binding</h2>
+    <p>Kovalente binding vind plaas tussen twee <strong>nie-metale</strong>. In plaas daarvan om elektrone oor te dra, <em>deel</em> die atome pare elektrone. Elke gedeelde paar elektrone tel gelyktydig na die vol buitenste skil van <em>beide</em> atome.</p>
+    <ul>
+      <li><strong>Enkelbinding</strong>: 1 gedeelde paar elektrone (bv. H–H in H₂, H–Cl in HCl)</li>
+      <li><strong>Dubbelbinding</strong>: 2 gedeelde pare elektrone (bv. O=O in O₂, O=C=O in CO₂)</li>
+      <li><strong>Drievoudige binding</strong>: 3 gedeelde pare elektrone (bv. N≡N in N₂)</li>
+    </ul>
+
+    <div class="formula">H· + ·H → H:H (H₂) &nbsp;|&nbsp; Elke H deel 1 paar → albei kry 2e in buitenste skil ✓</div>
+    <div class="formula">O: + 2H· → H:O:H (H₂O) &nbsp;|&nbsp; O deel 2 pare met 2 H-atome → O kry 8e, elke H kry 2e ✓</div>
+
+    <p><strong>Eienskappe van kovalente (molekulêre) verbindings:</strong></p>
+    <ul>
+      <li><strong>Laer smelt- en kookpunte</strong> — die kragte tussen aparte molekule (intermolekulêre kragte) is swak; slegs 'n bietjie energie word benodig om hulle te skei.</li>
+      <li><strong>Gelei nie elektrisiteit nie</strong> — molekule het geen algehele lading nie en geen vry ione of elektrone om stroom te dra nie.</li>
+      <li><strong>Kan as gasse, vloeistowwe, of vaste stowwe voorkom</strong> by kamertemperatuur (H₂O is vloeistof; CO₂ is gas; wasagtige stof is vas).</li>
+      <li><strong>Oor die algemeen onoplosbaar in water</strong> (nie-polêre kovalente verbindings), alhoewel polêre verbindings soos HCl maklik oplos.</li>
+    </ul>
+
+    <h2>Metaalbinding</h2>
+    <p>In metaalbinding stel metaalatome hul valenselektrone in 'n gedeelde poel vry — 'n <strong>"see van gedelokaliseerde elektrone"</strong> — wat vrylik deur die struktuur vloei. Die oorblywende positiewe metaalione (katione) sit in 'n gereelde rooster, op hul plek gehou deur hul aantrekking na die omringende elektronsee.</p>
+    <p><strong>Eienskappe verduidelik deur metaalbinding:</strong></p>
+    <ul>
+      <li><strong>Uitstekende elektriese geleiers</strong> — die gedelokaliseerde elektrone kan vrylik deur die rooster beweeg wanneer 'n spanning toegepas word.</li>
+      <li><strong>Uitstekende hittegeleiers</strong> — vry elektrone dra vinnig kinetiese energie deur die metaal oor.</li>
+      <li><strong>Smeebaar en trekbaar</strong> — lae ione kan by mekaar verby gly sonder om te breek, omdat die elektronsee nie rigtinggebonde is nie.</li>
+      <li><strong>Blink (glansend)</strong> — vry elektrone weerkaats lig by die oppervlak.</li>
+      <li><strong>Hoë smeltpunte</strong> (oor die algemeen) — sterk aantrekking tussen positiewe ione en die elektronsee.</li>
+    </ul>
+
+    <h2>Vergelyking van Bindingtipes</h2>
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Eienskap</th><th>Ionies</th><th>Kovalent (molekulêr)</th><th>Metaal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Elektrongedrag</td><td>Oorgedra (metaal → nie-metaal)</td><td>Gedeel tussen nie-metale</td><td>Gedelokaliseerde see</td></tr>
+        <tr><td>Deelnemers</td><td>Metaal + nie-metaal</td><td>Nie-metaal + nie-metaal</td><td>Metaal + metaal</td></tr>
+        <tr><td>Smeltpunt</td><td>Hoog</td><td>Laag (molekulêr)</td><td>Wisselend (meestal hoog)</td></tr>
+        <tr><td>Elektriese geleiding</td><td>Slegs wanneer gesmelt/opgelos</td><td>Nee</td><td>Ja (vaste en vloeibare toestand)</td></tr>
+        <tr><td>Voorbeelde</td><td>NaCl, MgO, CaCl₂</td><td>H₂O, CO₂, N₂, HCl</td><td>Fe, Cu, Al, Na</td></tr>
+        <tr><td>Toestand by kamertemp.</td><td>Vas (kristallyn)</td><td>Gas / vloeistof / vas</td><td>Vas (behalwe Hg)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Lewis-stipstrukture (Elektronstip-diagramme)</h2>
+    <p>'n Lewis-stipstruktuur wys die valenselektrone van elke atoom as stippe rondom die elementsimbool gerangskik. Wanneer atome bind, word gedeelde elektronpare tussen die twee simbole gewys, en los (ongedeelde) pare word aan die buitenste kante gewys. Dit is 'n nuttige manier om te visualiseer hoeveel bindings 'n atoom vorm en hoe elektrone versprei word.</p>
+    <ul>
+      <li><strong>H₂</strong>: H·  ·H → H:H (1 gedeelde paar = enkelbinding)</li>
+      <li><strong>Cl₂</strong>: Elke Cl het 7 valenselektrone; hulle deel 1 paar → :Cl:Cl: met 3 los pare op elke Cl</li>
+      <li><strong>H₂O</strong>: O het 6 valenselektrone; deel 1 paar met elke H → H:O:H met 2 los pare op O</li>
+    </ul>
+    <div class="callout"><strong>Vinnige toets:</strong> As 'n binding tussen 'n metaal en 'n nie-metaal vorm → <strong>ionies</strong>. As beide nie-metale is → <strong>kovalent</strong>. As beide metale is → <strong>metaalbinding</strong>.</div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div id="tab-explore" class="tab-panel">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Bindingvorming-visualiseerder</h3>
+      <canvas id="bondCanvas" height="400"></canvas>
+    </div>
+
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Bindingtipe</div>
+        <div>
+          <button class="mode-btn active" id="btn-ionic" onclick="setMode('ionic')">Ionies (Na→Cl)</button>
+          <button class="mode-btn" id="btn-covalent" onclick="setMode('covalent')">Kovalent</button>
+          <button class="mode-btn" id="btn-metallic" onclick="setMode('metallic')">Metaal</button>
+        </div>
+        <div style="margin-top:10px;display:none" id="molRow">
+          <div class="ctrl-label" style="margin-top:8px">Kovalente Molekule</div>
+          <select class="mol-select" id="molSelect" onchange="setMolecule(this.value)">
+            <option value="H2">H₂ — Waterstof (enkelbinding)</option>
+            <option value="H2O">H₂O — Water (twee enkelbindings)</option>
+            <option value="CO2">CO₂ — Koolstofdioksied (twee dubbelbindings)</option>
+          </select>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Wat Gebeur</div>
+        <div class="bond-desc" id="bondDesc">
+          <strong>Ioniese binding — Na + Cl → NaCl</strong><br>
+          Natrium (Na) het 1 valenselektron. Chloor (Cl) het 7. Na <em>dra</em> sy buitenste elektron aan Cl <em>oor</em>. Na word Na⁺ (verloor 1e⁻) en Cl word Cl⁻ (wen 1e⁻). Die teenoorgestelde ladings trek mekaar sterk aan — en vorm 'n ioniese binding.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div id="tab-practice" class="tab-panel">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.75);line-height:1.6">
+        <strong style="color:#fff;display:block;margin-bottom:2px">Vasvra voltooi!</strong>
+        Hersien die verduidelikings hieronder om jou begrip te versterk.
+      </div>
+    </div>
+    <div id="practiceContainer"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div id="tab-workbook" class="tab-panel">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in jou notaboek. Gebruik diagramme waar toepaslik. Wys alle redenering duidelik.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Identifiseer die tipe binding (ionies, kovalent, of metaal) wat tussen elk van die volgende pare elemente vorm. Gee 'n rede vir elke antwoord.<br><br>
+      (a) Magnesium en suurstof &nbsp; (b) Waterstof en chloor &nbsp; (c) Koperatome &nbsp; (d) Kalsium en fluoor &nbsp; (e) Koolstof en suurstof<br><br>
+      <em>(2 punte per paar — 10 punte in totaal)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Beskryf, deur gebruik te maak van elektrondiagramme, wat gebeur wanneer natrium (Na) met chloor (Cl) bind om natriumchloried (NaCl) te vorm. Jou antwoord moet insluit:<br>
+      • Hoeveel elektrone Na in sy buitenste skil het voor binding<br>
+      • Hoeveel elektrone Cl in sy buitenste skil het voor binding<br>
+      • Wat met die elektron gebeur tydens bindingvorming<br>
+      • Watter ione gevorm word en hul ladings<br>
+      • Waarom die resulterende verbinding stabiel is<br>
+      <em>(5 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Vergelyk ioniese verbindings met kovalente verbindings deur 'n tabel met die volgende opskrifte te voltooi: Bindingtipe, Deeltjies teenwoordig, Smeltpunt, Elektriese geleiding (vas), Elektriese geleiding (opgelos/gesmelt), Voorbeeldverbinding. Gee ten minste twee voorbeelde vir elke tipe. <em>(8 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Teken eenvoudige Lewis-stipstrukture (elektronstip-diagramme) vir die volgende molekule. Wys alle valenselektrone as stippe en dui die gedeelde pare tussen atome aan:<br>
+      (a) Cl₂ &nbsp; (b) H₂O &nbsp; (c) NH₃ (stikstof het 5 valenselektrone; vorm 3 bindings met 3 waterstofatome)<br>
+      <em>(3 punte elk — 9 punte in totaal)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Koper (Cu) word wyd in elektriese bedrading gebruik. Verduidelik, deur gebruik te maak van jou kennis van metaalbinding:<br>
+      (a) Waarom koper 'n uitstekende elektriese geleier is.<br>
+      (b) Waarom koper tot dun drade uitgetrek kan word (trekbaar) sonder om te breek.<br>
+      (c) Waarom koper 'n relatief hoë smeltpunt het (1085 °C).<br>
+      <em>(2 punte elk — 6 punte)</em></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6</div>
+      <div class="wb-qtext">'n Leerder neem die smeltpunt en elektriese geleiding van drie stowwe waar:<br><br>
+      <table class="symbols-table">
+        <thead><tr><th>Stof</th><th>Smeltpunt (°C)</th><th>Gelei as 'n vaste stof?</th><th>Gelei wanneer gesmelt/opgelos?</th></tr></thead>
+        <tbody>
+          <tr><td>Magnesiumoksied (MgO)</td><td>2 852</td><td>Nee</td><td>Ja</td></tr>
+          <tr><td>Jodium (I₂)</td><td>114</td><td>Nee</td><td>Nee</td></tr>
+          <tr><td>Silwer (Ag)</td><td>962</td><td>Ja</td><td>Ja</td></tr>
+        </tbody>
+      </table>
+      (a) Gebruik die data om die tipe binding in elke stof te identifiseer (ionies, kovalent, of metaal). Regverdig elke antwoord deur BEIDE die smeltpunt EN die geleidingspatroon te gebruik.<br><br>
+      (b) Bereken die verskil in smeltpunt tussen magnesiumoksied en silwer.<br><br>
+      (c) 'n Leerder roer gepoeierde (vaste, onopgeloste) magnesiumoksied in water. Voorspel of hierdie mengsel elektrisiteit sal gelei, en verduidelik jou redenasie in terme van die ione in MgO.<br>
+      <em>(8 punte)</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Simulation State ────────────────────────────────────────────────────────
+let mode = 'ionic';
+let molecule = 'H2';
+let animId = null;
+let tick = 0;
+
+const canvas = document.getElementById('bondCanvas');
+const ctx = canvas.getContext('2d');
+
+function initSim() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth || 700;
+  const cssH = 400;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  canvas.style.height = cssH + 'px';
+  if (animId) cancelAnimationFrame(animId);
+  tick = 0;
+  animate();
+}
+
+function animate() {
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.width / dpr;
+  const cssH = 400;
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  if (mode === 'ionic') drawIonic(cssW, cssH);
+  else if (mode === 'covalent') drawCovalent(cssW, cssH);
+  else drawMetallic(cssW, cssH);
+
+  tick++;
+  animId = requestAnimationFrame(animate);
+}
+
+// ─── IONIC drawing ───────────────────────────────────────────────────────────
+function drawIonic(W, H) {
+  const phase = (tick % 300) / 300; // 0 → 1 cycle
+
+  // Phase 0–0.35: atoms approaching
+  // Phase 0.35–0.55: electron transfer
+  // Phase 0.55–0.85: ions shown, attraction
+  // Phase 0.85–1.0: NaCl label, reset
+
+  const cx = W / 2;
+  const cy = H / 2;
+
+  // Background label
+  ctx.fillStyle = 'rgba(251,191,36,0.06)';
+  ctx.font = 'bold 80px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('NaCl', cx, cy);
+
+  let naX, clX;
+  let electronFrac = 0; // 0 = on Na, 1 = on Cl
+  let showIons = false;
+
+  if (phase < 0.35) {
+    const t = phase / 0.35;
+    naX = cx - 180 + t * 100;
+    clX = cx + 180 - t * 100;
+  } else if (phase < 0.55) {
+    naX = cx - 80;
+    clX = cx + 80;
+    electronFrac = (phase - 0.35) / 0.20;
+  } else if (phase < 0.85) {
+    naX = cx - 80;
+    clX = cx + 80;
+    electronFrac = 1;
+    showIons = true;
+  } else {
+    const t = (phase - 0.85) / 0.15;
+    naX = cx - 80 - t * 100;
+    clX = cx + 80 + t * 100;
+    electronFrac = 1;
+    showIons = true;
+  }
+
+  // Draw Na atom
+  drawAtom(naX, cy, 32, '#fbbf24', 'Na', showIons ? 'Na⁺' : '', showIons ? 10 : 11, false);
+
+  // Draw Cl atom
+  drawAtom(clX, cy, 36, '#60a5fa', 'Cl', showIons ? 'Cl⁻' : '', showIons ? 18 : 17, true);
+
+  // Draw the transferring electron
+  const ex = naX + (clX - naX) * electronFrac;
+  const ey = cy - 40;
+  const eGrad = ctx.createRadialGradient(ex, ey, 0, ex, ey, 8);
+  eGrad.addColorStop(0, '#fbbf24');
+  eGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = eGrad;
+  ctx.beginPath();
+  ctx.arc(ex, ey, 8, 0, Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle = '#fbbf24';
+  ctx.beginPath();
+  ctx.arc(ex, ey, 4, 0, Math.PI*2);
+  ctx.fill();
+
+  // Arrow when transferring
+  if (phase >= 0.35 && phase < 0.6) {
+    ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(naX + 35, cy - 40);
+    ctx.lineTo(clX - 38, cy - 40);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Attraction arrow between ions
+  if (showIons && phase < 0.85) {
+    ctx.strokeStyle = 'rgba(200,200,255,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(naX + 35, cy);
+    ctx.lineTo(clX - 38, cy);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(200,200,255,0.4)';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('elektrostatiese aantrekking', cx, cy + 55);
+  }
+
+  // Step label
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  let stepLabel = '';
+  if (phase < 0.35) stepLabel = 'Stap 1: Atome nader mekaar';
+  else if (phase < 0.55) stepLabel = 'Stap 2: Na dra 1 elektron aan Cl oor';
+  else if (phase < 0.85) stepLabel = 'Stap 3: Ione gevorm — elektrostatiese aantrekking skep die ioniese binding';
+  else stepLabel = 'Stap 4: NaCl-ioonpaar gevorm — stabiele edelgaskonfigurasies bereik';
+  ctx.fillText(stepLabel, cx, H - 28);
+}
+
+function drawAtom(x, y, r, color, sym, ionLabel, numE, isRing) {
+  // Glow
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r + 12);
+  g.addColorStop(0, color + '55');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(x, y, r + 12, 0, Math.PI*2);
+  ctx.fill();
+
+  // Body
+  ctx.fillStyle = color + '33';
+  ctx.strokeStyle = color + 'bb';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI*2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Symbol
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 15px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sym, x, y);
+
+  // Ion label
+  if (ionLabel) {
+    ctx.fillStyle = color;
+    ctx.font = 'bold 13px "JetBrains Mono",monospace';
+    ctx.fillText(ionLabel, x, y - r - 16);
+  }
+
+  // Electron count label
+  ctx.fillStyle = 'rgba(210,218,245,0.45)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText(numE + 'e⁻', x, y + r + 14);
+}
+
+// ─── COVALENT drawing ────────────────────────────────────────────────────────
+const MOLECULES = {
+  H2: {
+    label:'H–H (Waterstof, enkelbinding)',
+    atoms:[
+      {sym:'H', color:'#fbbf24', r:22, ex:[-1], ey:[0]},
+      {sym:'H', color:'#fbbf24', r:22, ex:[1], ey:[0]}
+    ],
+    shared:1,
+    desc:'Twee waterstofatome dra elk 1 elektron by. Hulle deel 1 paar → enkelbinding. Elke H het nou 2 elektrone in sy skil — die stabiele heliumkonfigurasie.'
+  },
+  H2O: {
+    label:'H–O–H (Water, twee enkelbindings)',
+    atoms:[
+      {sym:'O', color:'#60a5fa', r:30, ex:[-1,1], ey:[-0.5,0.5]},
+      {sym:'H', color:'#fbbf24', r:20, ex:[1], ey:[0]},
+      {sym:'H', color:'#fbbf24', r:20, ex:[-1], ey:[0]}
+    ],
+    shared:2,
+    desc:'Suurstof het 6 valenselektrone en benodig nog 2. Dit deel 1 elektron met elk van 2 waterstofatome — en vorm 2 enkelbindings. Suurstof bereik 8e⁻ in sy buitenste skil; elke H bereik 2e⁻.'
+  },
+  CO2: {
+    label:'O=C=O (Koolstofdioksied, twee dubbelbindings)',
+    atoms:[
+      {sym:'C', color:'#a78bfa', r:28, ex:[-2,2], ey:[0,0]},
+      {sym:'O', color:'#60a5fa', r:26, ex:[2], ey:[0]},
+      {sym:'O', color:'#60a5fa', r:26, ex:[-2], ey:[0]}
+    ],
+    shared:4,
+    desc:'Koolstof het 4 valenselektrone en benodig nog 4. Dit vorm dubbelbindings met elke suurstofatoom, en deel 2 pare (4 elektrone) per binding. Al drie atome bereik vol buitenste skille.'
+  }
+};
+
+function drawCovalent(W, H) {
+  const mol = MOLECULES[molecule];
+  const cx = W / 2;
+  const cy = H / 2;
+  const pulse = 0.5 + 0.5 * Math.sin(tick * 0.04);
+
+  if (molecule === 'H2') {
+    const sep = 70;
+    const ax = cx - sep, bx = cx + sep;
+
+    // Shared electron cloud (between atoms)
+    const ov = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30);
+    ov.addColorStop(0, `rgba(251,191,36,${0.25 + 0.15*pulse})`);
+    ov.addColorStop(1, 'transparent');
+    ctx.fillStyle = ov;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 30, 0, Math.PI*2);
+    ctx.fill();
+
+    // Bond line
+    ctx.strokeStyle = `rgba(251,191,36,${0.4 + 0.2*pulse})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(ax + 22, cy);
+    ctx.lineTo(bx - 22, cy);
+    ctx.stroke();
+
+    drawSimpleAtom(ax, cy, 22, '#fbbf24', 'H');
+    drawSimpleAtom(bx, cy, 22, '#fbbf24', 'H');
+    drawSharedLabel(cx, cy - 50, '1 gedeelde paar', '#fbbf24');
+
+    // Electron dots
+    for (let i = 0; i < 2; i++) {
+      const a = tick * 0.03 + i * Math.PI;
+      const er = 15;
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(cx + er*Math.cos(a), cy + er*Math.sin(a)*0.5, 4, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+  } else if (molecule === 'H2O') {
+    const ox = cx, oy = cy;
+    const h1x = cx - 80, h1y = cy + 50;
+    const h2x = cx + 80, h2y = cy + 50;
+
+    // Bond lines
+    ctx.strokeStyle = `rgba(96,165,250,${0.5 + 0.2*pulse})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(ox, oy + 30); ctx.lineTo(h1x + 18, h1y - 16); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ox, oy + 30); ctx.lineTo(h2x - 18, h2y - 16); ctx.stroke();
+
+    // Lone pairs on O
+    ctx.fillStyle = 'rgba(96,165,250,0.6)';
+    [[-25,-25],[25,-25]].forEach(([dx,dy]) => {
+      ctx.beginPath(); ctx.arc(ox+dx, oy+dy, 4, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(ox+dx+10, oy+dy, 4, 0, Math.PI*2); ctx.fill();
+    });
+
+    drawSimpleAtom(ox, oy, 30, '#60a5fa', 'O');
+    drawSimpleAtom(h1x, h1y, 20, '#fbbf24', 'H');
+    drawSimpleAtom(h2x, h2y, 20, '#fbbf24', 'H');
+    drawSharedLabel(cx, cy - 60, '2 enkelbindings — O bereik 8e⁻', '#60a5fa');
+    ctx.fillStyle = 'rgba(96,165,250,0.5)';
+    ctx.font = '10px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('los pare', ox, oy - 42);
+
+  } else if (molecule === 'CO2') {
+    const cx2 = cx, cy2 = cy;
+    const o1x = cx - 130, o2x = cx + 130;
+
+    // Double bond lines (left)
+    [[cy2-5, cy2+5]].forEach(() => {
+      ctx.strokeStyle = `rgba(167,139,250,${0.5+0.2*pulse})`;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(o1x+26, cy2-5); ctx.lineTo(cx2-28, cy2-5); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(o1x+26, cy2+5); ctx.lineTo(cx2-28, cy2+5); ctx.stroke();
+      // Double bond right
+      ctx.beginPath(); ctx.moveTo(cx2+28, cy2-5); ctx.lineTo(o2x-26, cy2-5); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx2+28, cy2+5); ctx.lineTo(o2x-26, cy2+5); ctx.stroke();
+    });
+
+    drawSimpleAtom(cx2, cy2, 28, '#a78bfa', 'C');
+    drawSimpleAtom(o1x, cy2, 26, '#60a5fa', 'O');
+    drawSimpleAtom(o2x, cy2, 26, '#60a5fa', 'O');
+    drawSharedLabel(cx, cy2 - 65, '2 dubbelbindings — C deel 4 pare in totaal', '#a78bfa');
+
+    // Bond labels
+    ctx.fillStyle = 'rgba(167,139,250,0.6)';
+    ctx.font = '11px "JetBrains Mono",monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('= (dubbel)', cx - 65, cy2 + 30);
+    ctx.fillText('= (dubbel)', cx + 65, cy2 + 30);
+  }
+
+  // Description
+  ctx.fillStyle = 'rgba(210,218,245,0.5)';
+  ctx.font = '11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(mol.desc.substring(0,90) + (mol.desc.length>90?'…':''), cx, H - 10);
+}
+
+function drawSimpleAtom(x, y, r, color, sym) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r+8);
+  g.addColorStop(0, color+'44');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r+8, 0, Math.PI*2); ctx.fill();
+
+  ctx.fillStyle = color + '28';
+  ctx.strokeStyle = color + 'aa';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 14px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sym, x, y);
+}
+
+function drawSharedLabel(x, y, text, color) {
+  ctx.fillStyle = color;
+  ctx.font = 'bold 12px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, x, y);
+}
+
+// ─── METALLIC drawing ────────────────────────────────────────────────────────
+const metalElectrons = [];
+function initMetalElectrons(W, H) {
+  metalElectrons.length = 0;
+  for (let i = 0; i < 28; i++) {
+    metalElectrons.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 2.5,
+      vy: (Math.random() - 0.5) * 2.5
+    });
+  }
+}
+
+function drawMetallic(W, H) {
+  if (metalElectrons.length === 0) initMetalElectrons(W, H);
+
+  // Ion lattice
+  const cols = 6, rows = 4;
+  const gx = W / (cols + 1), gy = H / (rows + 1);
+  for (let r = 1; r <= rows; r++) {
+    for (let c = 1; c <= cols; c++) {
+      const x = c * gx, y = r * gy;
+      // Glow
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 22);
+      g.addColorStop(0, 'rgba(251,191,36,0.18)');
+      g.addColorStop(1, 'transparent');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI*2); ctx.fill();
+      // Ion
+      ctx.fillStyle = 'rgba(251,191,36,0.25)';
+      ctx.strokeStyle = 'rgba(251,191,36,0.55)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      // Label
+      ctx.fillStyle = '#fcd34d';
+      ctx.font = 'bold 10px "Cabinet Grotesk",sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('M⁺', x, y);
+    }
+  }
+
+  // Free electrons
+  metalElectrons.forEach(e => {
+    e.x += e.vx;
+    e.y += e.vy;
+    if (e.x < 0) e.x = W;
+    if (e.x > W) e.x = 0;
+    if (e.y < 0) e.y = H;
+    if (e.y > H) e.y = 0;
+
+    const eg = ctx.createRadialGradient(e.x, e.y, 0, e.x, e.y, 6);
+    eg.addColorStop(0, 'rgba(96,165,250,0.7)');
+    eg.addColorStop(1, 'transparent');
+    ctx.fillStyle = eg;
+    ctx.beginPath(); ctx.arc(e.x, e.y, 6, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#60a5fa';
+    ctx.beginPath(); ctx.arc(e.x, e.y, 3, 0, Math.PI*2); ctx.fill();
+  });
+
+  // Legend
+  ctx.fillStyle = 'rgba(251,191,36,0.7)';
+  ctx.font = '11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('● M⁺  positiewe metaalione in vaste rooster', 16, 12);
+  ctx.fillStyle = 'rgba(96,165,250,0.7)';
+  ctx.fillText('● e⁻   gedelokaliseerde elektrone (see van elektrone)', 16, 28);
+}
+
+// ─── Controls ────────────────────────────────────────────────────────────────
+const BOND_DESCS = {
+  ionic: '<strong>Ioniese binding — Na + Cl → NaCl</strong><br>Natrium (Na) het 1 valenselektron. Chloor (Cl) het 7. Na <em>dra</em> sy buitenste elektron aan Cl <em>oor</em>. Na word Na⁺ (verloor 1e⁻) en Cl word Cl⁻ (wen 1e⁻). Die teenoorgestelde ladings trek mekaar sterk aan — en vorm \'n ioniese binding.',
+  covalent: '<strong>Kovalente binding — elektrondeling</strong><br>Twee nie-metaalatome dra elk elektrone by tot \'n <em>gedeelde poel</em>. Beide atome tel die gedeelde elektrone as hul eie, wat elkeen in staat stel om \'n vol buitenste skil te bereik. Geen ione word gevorm nie — die binding is die gedeelde elektronpaar self.',
+  metallic: '<strong>Metaalbinding — see van elektrone</strong><br>Metaalatome stel hul valenselektrone in \'n gedeelde "see" vry. Positiewe metaalione (M⁺) sit in \'n gereelde rooster omring deur hierdie see. Die sterk aantrekking tussen die ione en die elektronsee hou die metaal bymekaar en maak uitstekende elektriese- en hittegeleiding moontlik.'
+};
+
+function setMode(m) {
+  mode = m;
+  metalElectrons.length = 0;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + m).classList.add('active');
+  document.getElementById('bondDesc').innerHTML = BOND_DESCS[m];
+  document.getElementById('molRow').style.display = m === 'covalent' ? 'block' : 'none';
+}
+
+function setMolecule(v) {
+  molecule = v;
+  const mol = MOLECULES[v];
+  document.getElementById('bondDesc').innerHTML = '<strong>' + mol.label + '</strong><br>' + mol.desc;
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'explore') setTimeout(() => initSim(), 50);
+}
+
+// ─── Practice ────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: 'Watter tipe chemiese binding vorm tussen natrium (Na) en chloor (Cl) om NaCl te vorm?',
+    opts: ['Kovalente binding', 'Ioniese binding', 'Metaalbinding', 'Waterstofbinding'],
+    ans: 1,
+    exp: 'Natrium is \'n metaal en chloor is \'n nie-metaal. Wanneer \'n metaal en \'n nie-metaal reageer, dra die metaal elektrone aan die nie-metaal oor, wat teenoorgesteld gelaaide ione vorm wat mekaar aantrek — dit is \'n ioniese binding.'
+  },
+  {
+    q: 'Wat gebeur met die elektrone wanneer \'n ioniese binding tussen \'n metaal en \'n nie-metaal vorm?',
+    opts: ['Elektrone word gelyk tussen die twee atome gedeel', 'Elektrone word van die nie-metaal na die metaal oorgedra', 'Elektrone word van die metaal na die nie-metaal oorgedra', 'Elektrone bly by die metaalatoom'],
+    ans: 2,
+    exp: 'In ioniese binding verloor (skenk) die metaalatoom een of meer elektrone aan die nie-metaalatoom. Die metaal word \'n positiewe ioon (katioon) en die nie-metaal word \'n negatiewe ioon (anioon). Die elektrostatiese aantrekking tussen hierdie ione is die ioniese binding.'
+  },
+  {
+    q: 'Watter van die volgende is \'n kenmerkende eienskap van ioniese verbindings?',
+    opts: ['Hulle is gasse by kamertemperatuur', 'Hulle gelei elektrisiteit as vaste stof', 'Hulle het hoë smelt- en kookpunte', 'Hulle is sag en wasagtig'],
+    ans: 2,
+    exp: 'Ioniese verbindings vorm sterk roosterstrukture wat deur elektrostatiese aantrekkings bymekaar gehou word. \'n Groot hoeveelheid energie word benodig om hierdie kragte te breek, dus het ioniese verbindings hoë smelt- en kookpunte. Hulle kan nie elektrisiteit as vaste stowwe gelei nie (ione is vas), maar wel wanneer opgelos of gesmelt.'
+  },
+  {
+    q: 'Watter tipe binding behels die deling van elektrone tussen twee atome?',
+    opts: ['Ioniese binding', 'Metaalbinding', 'Kovalente binding', 'Elektrostatiese binding'],
+    ans: 2,
+    exp: 'In \'n kovalente binding deel atome (beide nie-metale) een of meer pare elektrone. Elke gedeelde paar tel na die vol buitenste skil van beide atome. Geen ione word gevorm nie — die binding is die gedeelde elektronpaar self.'
+  },
+  {
+    q: 'Wat maak metale goeie geleiers van elektrisiteit?',
+    opts: ['Metaalatome is baie groot en swaar', 'Metaalatome het vol buitenste elektronskille', 'Metale het gedelokaliseerde (vrybewegende) elektrone wat lading kan dra', 'Metaalatome dra elektrone baie vinnig aan mekaar oor'],
+    ans: 2,
+    exp: 'In metaalbinding word valenselektrone in \'n "see" van gedelokaliseerde elektrone vrygestel wat oor al die metaalione gedeel word. Wanneer \'n spanning toegepas word, vloei hierdie vry elektrone in een rigting — en dra elektriese lading. Dit is waarom metale uitstekende geleiers is.'
+  },
+  {
+    q: 'Watter tipe binding kom voor in \'n molekule suurstofgas (O₂)?',
+    opts: ['Ioniese binding', 'Metaalbinding', 'Enkelvoudige kovalente binding', 'Dubbele kovalente binding'],
+    ans: 3,
+    exp: 'Suurstof het 6 valenselektrone en benodig nog 2 vir \'n vol buitenste skil. Twee suurstofatome deel elk 2 elektrone — wat 2 gedeelde pare (4 elektrone in totaal) tussen hulle skep. Dit is \'n dubbele kovalente binding, geskryf as O=O. Beide suurstofatome bereik 8 elektrone in hul buitenste skille.'
+  },
+  {
+    q: '\'n Leerder toets vier onbekende vaste verbindings en neem hierdie data waar:<br>W: smelt by 801°C; gelei elektrisiteit slegs wanneer gesmelt.<br>X: smelt by −182°C; gelei nooit elektrisiteit nie.<br>Y: smelt by 1538°C; gelei elektrisiteit as BEIDE \'n vaste stof en \'n vloeistof.<br>Z: smelt by 0°C; gelei nooit elektrisiteit nie.<br>Watter gevolgtrekking kan korrek uit hierdie data gemaak word oor die tipe binding van elke verbinding?',
+    opts: [
+      'W = ionies; X = kovalent; Y = metaal; Z = kovalent',
+      'W = kovalent; X = ionies; Y = metaal; Z = kovalent',
+      'W = metaal; X = kovalent; Y = ionies; Z = kovalent',
+      'W = ionies; X = metaal; Y = kovalent; Z = ionies'
+    ],
+    ans: 0,
+    exp: 'W het \'n hoë smeltpunt en gelei slegs wanneer dit gesmelt is (ione word vry om te beweeg) — dit is die klassieke kenmerk van \'n ioniese verbinding (soos NaCl, sp 801°C). X het \'n baie lae smeltpunt en gelei nooit — swak kragte tussen molekule en geen gelaaide deeltjies glad nie, dus is dit kovalent (molekulêr), soos metaan. Y het \'n uiters hoë smeltpunt EN gelei elektrisiteit in beide die vaste en vloeibare toestand — slegs metaalbinding gee hierdie patroon, omdat gedelokaliseerde elektrone selfs in die vaste rooster lading kan dra (soos yster, sp 1538°C). Z het \'n lae smeltpunt en gelei nooit — nog \'n kovalente molekulêre verbinding, soos water (sp 0°C).'
+  },
+  {
+    q: '\'n Leerder redeneer: "NaCl bestaan uit gelaaide ione, en CO₂ het ook polêre bindings — koolstof is effens positief en suurstof is effens negatief — dus moet albei verbindings dieselfde tipe binding hê." Wat is verkeerd met hierdie redenasie?',
+    opts: [
+      'Niks nie — die leerder is korrek, aangesien albei verbindings \'n verskil in lading behels',
+      'Die leerder is verkeerd: NaCl vorm tussen \'n metaal en \'n nie-metaal, waar elektrone heeltemal oorgedra word om aparte, vrybewegende ione te vorm. CO₂ vorm tussen twee nie-metale, waar elektrone slegs ongelyk gedeel word (polêr kovalent) — hulle word nooit heeltemal oorgedra nie, dus word geen vry ione ooit geskep nie',
+      'Die leerder is verkeerd omdat koolstof eintlik \'n metaal is, dus behoort CO₂ as ionies geklassifiseer te word',
+      'Die leerder is korrek omdat CO₂ net so goed as NaCl elektrisiteit gelei wanneer dit in water opgelos is'
+    ],
+    ans: 1,
+    exp: 'Dit onderskei \'n algemene verwarring: \'n ongelyke ladingverspreiding hê is nie dieselfde as ionies wees nie. In NaCl word elektrone heeltemal van Na na Cl oorgedra, wat aparte Na⁺- en Cl⁻-ione skep wat onafhanklik kan beweeg en stroom kan dra wanneer die verbinding smelt of oplos. In CO₂ is koolstof en suurstof albei nie-metale — hulle deel slegs elektrone ongelyk (die gedeelde elektrone sit nader aan suurstof), wat die binding \'n mate van polariteit gee, maar die elektrone word nooit heeltemal weggegee nie en geen aparte ione vorm ooit nie. Dit is waarom CO₂ nie elektrisiteit gelei nie, terwyl opgeloste of gesmelte NaCl wel.'
+  }
+];
+
+let answers = new Array(QUESTIONS.length).fill(null);
+let correct = 0;
+
+function buildPractice() {
+  const container = document.getElementById('practiceContainer');
+  container.innerHTML = '';
+  QUESTIONS.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.innerHTML = `
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="mc-options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <button class="mc-opt" onclick="answer(${qi},${oi})" id="opt-${qi}-${oi}">
+            <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${qi}"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function answer(qi, oi) {
+  if (answers[qi] !== null) return;
+  answers[qi] = oi;
+  const q = QUESTIONS[qi];
+  const isCorrect = oi === q.ans;
+  if (isCorrect) correct++;
+
+  document.querySelectorAll(`#opts-${qi} .mc-opt`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.ans) btn.classList.add('correct');
+    else if (i === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Reg! ' : '✗ Nie heeltemal reg nie. ') + q.exp;
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+
+  if (answers.every(a => a !== null)) {
+    const banner = document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent = correct + '/' + QUESTIONS.length;
+    banner.classList.add('show');
+    banner.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

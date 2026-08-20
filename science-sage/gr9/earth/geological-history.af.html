@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fossiele &amp; Geologiese Geskiedenis — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(251,191,36,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(239,68,68,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.22);color:#fcd34d}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#fbbf24;border-bottom-color:#fbbf24}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .lesson-body ol{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#fcd34d}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#fcd34d;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.30);color:#fcd34d}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#fbbf24}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fbbf24;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.25);color:#fcd34d;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(251,191,36,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    .step-btn{padding:9px 22px;border-radius:8px;border:1px solid rgba(251,191,36,.30);background:rgba(251,191,36,.12);color:#fcd34d;font-weight:700;font-size:12px;cursor:pointer;transition:all 150ms;font-family:var(--fd);margin-top:10px}
+    .step-btn:hover{background:rgba(251,191,36,.22)}
+    .step-btn:disabled{opacity:0.4;cursor:default}
+    .step-desc{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-top:10px;font-size:13px;color:rgba(210,218,245,.78);line-height:1.75;min-height:60px}
+    .era-info{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-top:10px;font-size:13px;color:rgba(210,218,245,.78);line-height:1.75;min-height:60px}
+    .era-info strong{color:#fcd34d}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script defer src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Die Aarde &amp; Daarbuite</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 9 · Die Aarde &amp; Daarbuite · Les 2</div>
+  <h1 class="lesson-title">Fossiele &amp; Geologiese Geskiedenis</h1>
+  <p class="lesson-sub">Verken hoe fossiele vorm, wat hulle ons oor die Aarde se geskiedenis vertel, en hoe wetenskaplikes geologiese tyd gebruik om die evolusie van lewe oor miljarde jare te verstaan.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="layers" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n fossiel?</h2>
+    <p>'n <strong>Fossiel</strong> is die bewaarde oorblyfsels of spore van 'n organisme wat in die verlede geleef het, gewoonlik gevind in sedimentêre gesteente. Fossiele kan miljoene of selfs miljarde jare oud wees, en hulle gee ons direkte bewyse van hoe lewe lank voor die bestaan van mense gelyk het.</p>
+    <div class="key-fact">Die meeste fossiele word in sedimentêre gesteente gevind (gesteente wat vorm uit saamgepersde lae sand, modder en ander sediment). Stollingsgesteente en metamorfe gesteente is te warm of onder te veel druk tydens vorming om fossiele te bewaar.</div>
+
+    <h2>Tipes fossiele</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Tipe</th><th>Beskrywing</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Liggaamsfossiel</strong></td><td>Bewaarde harde dele van die organisme self</td><td>Dinosourusbene, dopskulpe, tande, verstende hout</td></tr>
+        <tr><td><strong>Spoorfossiel</strong></td><td>Bewys van 'n organisme se aktiwiteit, nie sy liggaam nie</td><td>Voetspore, gange, koprolïete (versteende mis)</td></tr>
+        <tr><td><strong>Afdruk (mal)</strong></td><td>'n Holte of afdruk wat in gesteente agterbly nadat die organisme oplos</td><td>Dopvormige holte in kalksteen</td></tr>
+        <tr><td><strong>Gietsel</strong></td><td>'n Afdruk gevul met minerale, wat 'n 3D-vorm skep</td><td>Minerale replika van 'n dop of been</td></tr>
+        <tr><td><strong>Amberfossiel</strong></td><td>Organisme vasgevang in boomhars wat oor miljoene jare verhard het</td><td>Insekte, vere, plantmateriaal bewaar in amber</td></tr>
+        <tr><td><strong>Karbonisasie</strong></td><td>Organiese materiaal verminder tot 'n dun koolstoffilm in gesteente</td><td>Varingblaarafdrukke in skalie</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Hoe fossiele vorm</h2>
+    <p>Fossilisasie is 'n seldsame en spesifieke proses. Hier is die stappe:</p>
+    <ol>
+      <li><strong>Dood en vinnige begrawing:</strong> 'n Organisme sterf en word vinnig deur sediment (sand, modder, slik) bedek. Vinnige begrawing is noodsaaklik — dit voorkom dat aasetes en verrotting die oorblyfsels vernietig.</li>
+      <li><strong>Verrotting van sagte dele:</strong> Oor tyd verrot sagte weefsels (vel, spiere, organe) en verdwyn. Slegs harde dele — bene, tande, dopskulpe — hou geneig om te oorleef.</li>
+      <li><strong>Permineralisasie:</strong> Minerale wat in grondwater opgelos is, sypel stadig in die ruimtes binne-in bene en dopskulpe in, en vervang organiese materiaal met mineraalkristalle. Die fossiel verander in klip.</li>
+      <li><strong>Begrawing onder meer sediment:</strong> Meer lae sediment bou oor miljoene jare bo-op op. Die gewig pers en verhard die laer lae tot sedimentêre gesteente.</li>
+      <li><strong>Oplig en erosie:</strong> Geologiese kragte (tektoniese bewegings) stoot gesteentelae opwaarts. Wind, water en ys erodeer die oppervlaklae, wat uiteindelik die fossiel blootlê.</li>
+    </ol>
+    <div class="callout"><strong>Waarom is fossiele skaars?</strong> Die meeste organismes sterf onder toestande waar fossilisasie nie kan plaasvind nie (bv. op droë land, in woude). Selfs wanneer begrawe, kan fossiele deur hitte, druk of chemiese verandering vernietig word. Van al die organismes wat ooit geleef het, het slegs 'n ongelooflik klein fraksie enige fossielrekord agtergelaat.</div>
+
+    <h2>Indeksfossiele</h2>
+    <p><strong>Indeksfossiele</strong> is die oorblyfsels van organismes wat: (a) vir 'n relatief kort tydperk bestaan het, (b) volop en wydverspreid was, en (c) maklik geïdentifiseer word. Omdat hulle slegs gedurende 'n spesifieke, bekende tydperk geleef het, laat hulle geoloë toe om gesteentelae waarin hulle gevind word, te dateer.</p>
+    <ul>
+      <li><strong>Ammoniete</strong> — uitgestorwe opgekrulde weekdiere; uitstekende indeksfossiele vir Mesosoïese gesteentes</li>
+      <li><strong>Trilobiete</strong> — uitgestorwe mariene geleedpotiges; indeksfossiele vir Paleosoïese gesteentes</li>
+    </ul>
+
+    <h2>Relatiewe en absolute datering</h2>
+    <p><strong>Relatiewe datering</strong> vertel ons die ouderdom van 'n gesteentelaag of fossiel <em>relatief tot ander lae</em> — ouer of jonger — sonder om 'n presiese ouderdom in jare te gee.</p>
+    <ul>
+      <li><strong>Wet van Superposisie:</strong> In ongesteurde gesteente is die diepste lae die oudste; lae word geleidelik jonger na die oppervlak toe.</li>
+      <li><strong>Beginsel van Oorspronklike Horisontaliteit:</strong> Sedimentêre lae word oorspronklik horisontaal afgesit. Skuins of gevoude lae dui op latere geologiese aktiwiteit.</li>
+      <li><strong>Indeksfossiele</strong> maak dit moontlik om gesteentelae van verskillende plekke met mekaar te korreleer.</li>
+    </ul>
+    <p><strong>Absolute datering</strong> gee 'n werklike ouderdom in jare, deur gebruik te maak van <strong>radiometriese datering</strong>. Radioaktiewe elemente verval teen 'n bekende, konstante tempo (hul <em>halfleeftyd</em>). Deur te meet hoeveel van die oorspronklike radioaktiewe element oorbly teenoor hoeveel verval het, kan wetenskaplikes die ouderdom van die gesteente bereken.</p>
+    <ul>
+      <li><strong>Koolstof-14 (¹⁴C):</strong> Halfleeftyd ~5 730 jaar. Word gebruik vir relatief onlangse organiese materiaal (tot ~50 000 jaar oud).</li>
+      <li><strong>Uraan-lood:</strong> Halfleeftyd miljarde jare. Word gebruik vir antieke stollings- en metamorfe gesteentes (dateer die Aarde se oudste gesteentes op ~4 miljard jaar).</li>
+    </ul>
+
+    <h2>Die geologiese tydskaal</h2>
+    <p>Die Aarde is ongeveer <strong>4,6 miljard jaar oud</strong>. Geoloë verdeel hierdie enorme tydspan in eone, era's, periodes en epogge gebaseer op groot gebeurtenisse in die Aarde se geskiedenis, veral massa-uitwissings en die skielike verskyning van nuwe lewensvorme.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Era</th><th>Periode (ongeveer)</th><th>Sleutel lewensvorme / gebeurtenisse</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" style="background:rgba(251,191,36,.06);color:#fcd34d;font-family:var(--fm);font-size:10px;letter-spacing:.08em">PREKAMBRIESE SUPEREON (~4 600 – 541 Ma)</td></tr>
+        <tr><td>Hadeïese Eon</td><td>4 600–4 000 Ma</td><td>Vorming van die Aarde; geen lewe; swaar meteoriet-bombardement; oseane vorm</td></tr>
+        <tr><td>Argeïese Eon</td><td>4 000–2 500 Ma</td><td>Eerste lewe verskyn (~3,8 Ga) — enkelsellige prokariote; stromatoliete</td></tr>
+        <tr><td>Proterosoïese Eon</td><td>2 500–541 Ma</td><td>Eerste eukariote; eerste veelsellige organismes (~600 Ma); suurstofatmosfeer bou op</td></tr>
+        <tr><td colspan="3" style="background:rgba(251,191,36,.06);color:#fcd34d;font-family:var(--fm);font-size:10px;letter-spacing:.08em">FANEROSOÏESE EON (541 Ma – hede)</td></tr>
+        <tr><td><strong>Paleosoïese Era</strong></td><td>541–252 Ma</td><td>Kambriese Ontploffing (~541 Ma); eerste vis (~500 Ma); eerste landplante (~470 Ma); eerste amfibieë (~375 Ma); eerste reptiele (~310 Ma); eindig met die Groot Sterwing (96% van spesies uitgesterf)</td></tr>
+        <tr><td><strong>Mesosoïese Era</strong></td><td>252–66 Ma</td><td>Era van die Dinosourusse (verskyn ~230 Ma); eerste soogdiere; eerste voëls (Archaeopteryx ~150 Ma); eerste blomplante; eindig met die K-Pg-uitwissing (~66 Ma)</td></tr>
+        <tr><td><strong>Senosoïese Era</strong></td><td>66 Ma–hede</td><td>Era van die Soogdiere; diversifikasie van voëls; grasse verskyn; eerste menslike voorvaders (~7 Ma); moderne mense (~300 000 jaar gelede)</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Ma = miljoene jare gelede. Ga = miljarde jare gelede. 1 Ma = 1 000 000 jaar.</div>
+
+    <h2>Fossiele as bewys vir evolusie</h2>
+    <p>Die fossielrekord verskaf van die kragtigste bewyse vir die teorie van evolusie — die idee dat spesies oor tyd deur natuurlike seleksie verander.</p>
+    <ul>
+      <li><strong>Geleidelike verandering:</strong> Die fossielrekord van perde toon 'n duidelike opeenvolging van klein voorvaders met veelvuldige tone (~55 Ma) tot die enkelhoewige moderne perd — wat oor miljoene jare in grootte toeneem en spesialiseer vir vinnige hardloop op grasvlaktes.</li>
+      <li><strong>Oorgangsfossiele:</strong> <em>Archaeopteryx</em> (150 Ma) toon eienskappe van beide dinosourusse (tande, geklouterde vlerke, lang benerige stert) en voëls (vere, vurkbeen), en demonstreer die evolusionêre skakel tussen teropode dinosourusse en moderne voëls.</li>
+      <li><strong>Patrone oor tyd:</strong> Eenvoudiger organismes word slegs in ouer gesteentelae gevind; meer komplekse organismes verskyn in geleidelik jonger lae — presies wat evolusie sou voorspel.</li>
+    </ul>
+    <div class="callout"><strong>Belangrik:</strong> Die afwesigheid van fossiele weerlê nie evolusie nie. Die meeste organismes fossiliseer nooit. Die fossielrekord is inherent onvolledig, tog toon dit steeds 'n duidelike, konsekwente patroon van toenemende kompleksiteit oor tyd.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div style="display:flex;gap:10px;margin-bottom:4px;flex-wrap:wrap">
+      <button class="mode-btn active" id="modeTime" onclick="setMode('time')">Geologiese Tydskaal</button>
+      <button class="mode-btn" id="modeFossil" onclick="setMode('fossil')">Fossielvorming</button>
+    </div>
+    <div class="sim-canvas-wrap">
+      <h3 id="canvasTitle">Geologiese Tydskaal — Klik 'n Era om te Verken</h3>
+      <canvas id="simCanvas" height="460"></canvas>
+    </div>
+    <div id="timeInfo" class="era-info" style="max-width:900px">Klik op enige gekleurde era of eon op die tydlyn om sleutel lewensvorme en gebeurtenisse uit daardie tydperk te sien.</div>
+    <div id="fossilControls" style="display:none">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="step-btn" id="prevBtn" onclick="prevStep()" disabled>&#8592; Vorige</button>
+        <button class="step-btn" id="nextBtn" onclick="nextStep()">Volgende Stap &#8594;</button>
+        <span style="font-family:var(--fm);font-size:10px;color:var(--muted)" id="stepCounter">Stap 1 van 5</span>
+      </div>
+      <div class="step-desc" id="stepDesc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die les na vir enige vrae wat jy verkeerd gehad het.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord die volgende vrae in jou oefeningboek. Gebruik diagramme waar dit help om jou antwoord te verduidelik. Volsinne word vereis vir verduidelikings.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (5 punte)</div><div class="wb-qtext">Beskryf die proses van fossielvorming in vyf genommerde stappe. Verduidelik vir elke stap wat met die organisme se oorblyfsels gebeur en watter geologiese toestande nodig is. Sluit 'n gemerkte diagram in wat 'n fossiel toon wat in gesteentelae bewaar word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Vergelyk relatiewe datering en absolute datering van fossiele en gesteentes. In jou antwoord: (a) definieer elke metode, (b) verduidelik watter inligting elke metode verskaf, (c) gee een tegniek wat in elke metode gebruik word, en (d) noem wanneer 'n wetenskaplike een metode bo die ander sou kies.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (6 punte)</div><div class="wb-qtext">Bestudeer die volgende vereenvoudigde geologiese tydtabel en beantwoord die vrae: Die Paleosoïese Era het van 541 Ma tot 252 Ma geduur. Die Mesosoïese Era het van 252 Ma tot 66 Ma geduur. Die Senosoïese Era het 66 Ma gelede begin en duur tot vandag toe voort. (a) Bereken die duur van elke era in miljoene jare. (b) In watter era het die eerste reptiele verskyn? (c) In watter era het die dinosourusse uitgesterf, en watter gebeurtenis het dit veroorsaak? (d) Waarvoor staan "Ma" en waarom gebruik geoloë hierdie eenheid?</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Verduidelik hoe fossiele bewys vir die teorie van evolusie verskaf. In jou antwoord: (a) beskryf watter patroon wetenskaplikes waarneem wanneer hulle fossiele van verskillende gesteentelae vergelyk, (b) gee 'n spesifieke voorbeeld van 'n oorgangsfossiel en watter evolusionêre skakel dit toon, en (c) verduidelik waarom 'n onvolledige fossielrekord nie evolusie weerlê nie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Onderskei tussen die volgende fossieltipes deur die definisie van elk en een voorbeeld te gee: (a) liggaamsfossiel teenoor spoorfossiel, (b) afdruk teenoor gietsel, (c) amberfossiel teenoor karbonisasie.</div></div>
+  </div>
+</div>
+
+<script>
+// ── Tab switching ──────────────────────────────────────────────
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id === 'explore') initSim();
+}
+
+// ── Geological time data ───────────────────────────────────────
+const ERAS = [
+  { name: 'Hadeïese', start: 4600, end: 4000, color: '#7c2d12', light: '#fb923c',
+    life: 'Nog geen lewe nie. Die Aarde vorm uit oorblyfsels van die songewelk. Swaar meteoriet-bombardement. Oseane kondenseer uit waterdamp. Oudste bekende minerale (sirkoonkristalle) dateer na ~4 400 Ma.' },
+  { name: 'Argeïese', start: 4000, end: 2500, color: '#78350f', light: '#fbbf24',
+    life: 'Eerste lewe verskyn (~3,8 Ga) — eenvoudige enkelsellige prokariote (bakterieë). Stromatoliete — gelaagde matte van fotosintetiese bakterieë — verskyn in vlak seë. Nog geen suurstof in die atmosfeer nie.' },
+  { name: 'Proterosoïese', start: 2500, end: 541, color: '#713f12', light: '#fde68a',
+    life: 'Eerste eukariote (selle met kerne) ~2,1 Ga. Eerste veelsellige organismes ~600 Ma. "Groot Suurstofgebeurtenis" — sianobakterieë produseer suurstof, wat die atmosfeer transformeer. "Sneeubal-Aarde"-yseise.' },
+  { name: 'Paleosoïese', start: 541, end: 252, color: '#1e3a5f', light: '#60a5fa',
+    life: 'Kambriese Ontploffing (~541 Ma): meeste groot dierliggaamsplanne verskyn. Eerste vis (~500 Ma). Eerste landplante (~470 Ma). Eerste amfibieë (~375 Ma). Eerste reptiele (~310 Ma). Eindig met die Permiese massa-uitwissing — 96% van alle spesies uitgewis.' },
+  { name: 'Mesosoïese', start: 252, end: 66, color: '#14532d', light: '#4ade80',
+    life: 'Era van die Dinosourusse — verskyn ~230 Ma, oorheers vir 165 miljoen jaar. Eerste soogdiere (klein, naglewend). Eerste voëls — Archaeopteryx (~150 Ma) verbind dinosourusse aan moderne voëls. Eerste blomplante (~130 Ma). Eindig met die K-Pg-uitwissing (~66 Ma) — asteroïedimpak vernietig dinosourusse en 75% van spesies.' },
+  { name: 'Senosoïese', start: 66, end: 0, color: '#1e3a3a', light: '#34d399',
+    life: 'Era van die Soogdiere — vinnige diversifikasie na die dinosourus-uitwissing. Moderne voëlgroepe evolueer. Grasse versprei wêreldwyd (~25 Ma). Eerste hominiede (~7 Ma). Homo sapiens verskyn ~300 000 jaar gelede. Ysstydperke wissel af deur die Pleistoseen.' },
+];
+
+// ── Canvas / mode state ─────────────────────────────────────────
+let canvas, ctx2, simStarted = false;
+let currentMode = 'time';
+let hoveredEra = null;
+let fossilStep = 0;
+const FOSSIL_STEPS = 5;
+
+const FOSSIL_DESCS = [
+  'Stap 1 — Dood & Begrawing: \'n Marien dier sterf en sink na die seebodem. Dit word vinnig bedek met \'n laag fyn sediment (sand en modder). Hierdie vinnige begrawing voorkom dat aasetes en bakterieë die liggaam heeltemal vernietig.',
+  'Stap 2 — Sagte Deel-verrotting: Oor honderde tot duisende jare verrot die sagte weefsels (vel, spiere, organe) en verdwyn. Slegs die harde dele — bene, dop en tande — bly ingebed in die sediment.',
+  'Stap 3 — Permineralisasie: Mineraalryke grondwater sypel stadig deur die sediment. Minerale (silika, kalsiet, yster) vervang geleidelik die organiese materiaal in die bene, en vul elke klein porie en holte. Die fossiel verander in klip.',
+  'Stap 4 — Diep Begrawing & Gesteentevorming: Meer sedimentlae hoop oor miljoene jare op. Die gewig en druk pers en sementeer die laer lae tot soliede sedimentêre gesteente. Die fossiel is nou diep ondergronds vasgesluit.',
+  'Stap 5 — Oplig & Blootstelling: Tektoniese kragte stoot gesteentelae opwaarts. Miljoene jare se erosie deur wind, reën en riviere strip die oppervlaklae weg, wat uiteindelik die fossiel op of naby die oppervlak blootlê waar \'n wetenskaplike dit kan vind.',
+];
+
+function setMode(m){
+  currentMode = m;
+  document.getElementById('modeTime').classList.toggle('active', m === 'time');
+  document.getElementById('modeFossil').classList.toggle('active', m === 'fossil');
+  document.getElementById('canvasTitle').textContent = m === 'time'
+    ? 'Geologiese Tydskaal — Klik \'n Era om te Verken'
+    : 'Fossielvorming — Stap vir Stap';
+  document.getElementById('timeInfo').style.display = m === 'time' ? 'block' : 'none';
+  document.getElementById('fossilControls').style.display = m === 'fossil' ? 'block' : 'none';
+  if(m === 'fossil'){
+    fossilStep = 0;
+    updateFossilUI();
+  }
+  drawFrame();
+}
+
+function prevStep(){
+  if(fossilStep > 0){ fossilStep--; updateFossilUI(); drawFrame(); }
+}
+function nextStep(){
+  if(fossilStep < FOSSIL_STEPS - 1){ fossilStep++; updateFossilUI(); drawFrame(); }
+}
+function updateFossilUI(){
+  document.getElementById('stepDesc').textContent = FOSSIL_DESCS[fossilStep];
+  document.getElementById('stepCounter').textContent = `Stap ${fossilStep + 1} van ${FOSSIL_STEPS}`;
+  document.getElementById('prevBtn').disabled = fossilStep === 0;
+  document.getElementById('nextBtn').disabled = fossilStep === FOSSIL_STEPS - 1;
+}
+
+// ── Draw ───────────────────────────────────────────────────────
+function drawFrame(){
+  if(!canvas) return;
+  if(currentMode === 'time') drawTimeline();
+  else drawFossil();
+}
+
+function drawTimeline(){
+  const W = canvas.offsetWidth || 800, H = 460;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx2.setTransform(1,0,0,1,0,0);
+  ctx2.scale(devicePixelRatio, devicePixelRatio);
+
+  ctx2.fillStyle = '#04060e';
+  ctx2.fillRect(0, 0, W, H);
+
+  const PAD_LEFT = 110, PAD_RIGHT = 20, PAD_TOP = 24, PAD_BOT = 24;
+  const BAR_W = 42;
+  const totalMa = 4600;
+  const availH = H - PAD_TOP - PAD_BOT;
+
+  function maToY(ma){ return PAD_TOP + (ma / totalMa) * availH; }
+
+  // Background stripe
+  ctx2.fillStyle = 'rgba(255,255,255,0.02)';
+  ctx2.fillRect(PAD_LEFT, PAD_TOP, W - PAD_LEFT - PAD_RIGHT, availH);
+
+  // Era bands
+  ERAS.forEach((era, i) => {
+    const y0 = maToY(era.start), y1 = maToY(era.end);
+    const barH = Math.max(y1 - y0, 6);
+
+    // Solid bar
+    ctx2.fillStyle = era.color;
+    ctx2.fillRect(PAD_LEFT, y0, BAR_W, barH);
+
+    // Right info area tint
+    ctx2.fillStyle = era.color + '28';
+    ctx2.fillRect(PAD_LEFT + BAR_W, y0, W - PAD_LEFT - BAR_W - PAD_RIGHT, barH);
+
+    // Era name label in bar
+    ctx2.save();
+    ctx2.fillStyle = era.light;
+    ctx2.font = 'bold 10px "Cabinet Grotesk"';
+    ctx2.textAlign = 'center';
+    const midY = y0 + barH / 2;
+    if(barH > 14){
+      ctx2.translate(PAD_LEFT + BAR_W / 2, midY);
+      ctx2.rotate(-Math.PI / 2);
+      ctx2.fillText(era.name.toUpperCase(), 0, 4);
+    }
+    ctx2.restore();
+
+    // Ma label right of bar
+    ctx2.fillStyle = 'rgba(210,218,245,0.5)';
+    ctx2.font = '9px "JetBrains Mono"';
+    ctx2.textAlign = 'left';
+    if(barH > 18){
+      ctx2.fillText(era.start + ' Ma', PAD_LEFT + BAR_W + 6, y0 + 12);
+    }
+    if(era.end === 0){
+      ctx2.fillText('Hede', PAD_LEFT + BAR_W + 6, y1 - 4);
+    }
+
+    // Key life text
+    if(barH > 30){
+      ctx2.fillStyle = era.light + 'cc';
+      ctx2.font = '10px "Cabinet Grotesk"';
+      ctx2.textAlign = 'left';
+      const words = era.life.split('. ')[0];
+      wrapText(ctx2, words + '.', PAD_LEFT + BAR_W + 6, y0 + 26, W - PAD_LEFT - BAR_W - PAD_RIGHT - 12, 14);
+    }
+
+    // Divider line
+    ctx2.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx2.lineWidth = 1;
+    ctx2.beginPath(); ctx2.moveTo(PAD_LEFT, y0); ctx2.lineTo(W - PAD_RIGHT, y0); ctx2.stroke();
+  });
+
+  // Ma axis (left)
+  ctx2.fillStyle = 'rgba(210,218,245,0.35)';
+  ctx2.font = '9px "JetBrains Mono"';
+  ctx2.textAlign = 'right';
+  [0, 100, 252, 541, 1000, 2000, 2500, 3500, 4000, 4600].forEach(ma => {
+    const y = maToY(ma);
+    ctx2.fillText(ma === 0 ? '0' : ma + '', PAD_LEFT - 6, y + 3);
+    ctx2.beginPath(); ctx2.moveTo(PAD_LEFT - 3, y); ctx2.lineTo(PAD_LEFT, y);
+    ctx2.strokeStyle = 'rgba(255,255,255,0.2)'; ctx2.lineWidth = 1; ctx2.stroke();
+  });
+  // Axis label
+  ctx2.save();
+  ctx2.fillStyle = 'rgba(210,218,245,0.4)';
+  ctx2.font = '9px "JetBrains Mono"';
+  ctx2.textAlign = 'center';
+  ctx2.translate(18, H / 2);
+  ctx2.rotate(-Math.PI / 2);
+  ctx2.fillText('MILJOENE JARE GELEDE (Ma)', 0, 0);
+  ctx2.restore();
+
+  // Hover highlight
+  if(hoveredEra !== null){
+    const era = ERAS[hoveredEra];
+    const y0 = maToY(era.start), y1 = maToY(era.end);
+    ctx2.strokeStyle = era.light;
+    ctx2.lineWidth = 2;
+    ctx2.strokeRect(PAD_LEFT, y0, W - PAD_LEFT - PAD_RIGHT, y1 - y0);
+  }
+
+  // Title
+  ctx2.fillStyle = 'rgba(252,211,77,0.7)';
+  ctx2.font = 'bold 10px "JetBrains Mono"';
+  ctx2.textAlign = 'left';
+  ctx2.fillText('OUDSTE', 22, H - 10);
+  ctx2.fillText('JONGSTE', 22, 18);
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH){
+  const words = text.split(' ');
+  let line = '';
+  let rows = 0;
+  for(let n = 0; n < words.length; n++){
+    const test = line + words[n] + ' ';
+    if(ctx.measureText(test).width > maxW && n > 0){
+      ctx.fillText(line, x, y + rows * lineH);
+      line = words[n] + ' ';
+      rows++;
+      if(rows >= 3) return;
+    } else {
+      line = test;
+    }
+  }
+  if(rows < 3) ctx.fillText(line, x, y + rows * lineH);
+}
+
+// ── Fossil formation drawing ────────────────────────────────────
+function drawFossil(){
+  const W = canvas.offsetWidth || 800, H = 460;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx2.setTransform(1,0,0,1,0,0);
+  ctx2.scale(devicePixelRatio, devicePixelRatio);
+
+  ctx2.fillStyle = '#04060e';
+  ctx2.fillRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2 - 20;
+  const step = fossilStep;
+
+  // ── Layer palette ─────────────────────────────────────────────
+  const layers = [
+    { y: 0.45, h: 0.12, color: '#5c4317', label: 'Sedimentlaag 1' },
+    { y: 0.57, h: 0.12, color: '#7a5c2e', label: 'Sedimentlaag 2' },
+    { y: 0.69, h: 0.12, color: '#8b6914', label: 'Sedimentlaag 3' },
+    { y: 0.81, h: 0.14, color: '#6b4f1a', label: 'Grondgesteente' },
+  ];
+
+  // Draw water/sea (steps 0–2)
+  if(step <= 2){
+    const seaGrad = ctx2.createLinearGradient(0, 0, 0, H * 0.44);
+    seaGrad.addColorStop(0, '#0d1f3c');
+    seaGrad.addColorStop(1, '#1a3a6e55');
+    ctx2.fillStyle = seaGrad;
+    ctx2.fillRect(0, 0, W, H * 0.44);
+    // Wave hint
+    ctx2.strokeStyle = 'rgba(100,160,255,0.15)';
+    ctx2.lineWidth = 1.5;
+    for(let wx = 0; wx < W; wx += 60){
+      ctx2.beginPath();
+      ctx2.moveTo(wx, H * 0.42);
+      ctx2.bezierCurveTo(wx + 15, H * 0.40, wx + 30, H * 0.43, wx + 60, H * 0.42);
+      ctx2.stroke();
+    }
+    ctx2.fillStyle = 'rgba(100,160,255,0.25)';
+    ctx2.font = '10px "JetBrains Mono"';
+    ctx2.textAlign = 'center';
+    ctx2.fillText('SEEBODEM / SEDIMENT', cx, H * 0.46);
+  }
+
+  // Draw rock layers (steps 3+)
+  if(step >= 3){
+    layers.forEach(l => {
+      ctx2.fillStyle = l.color;
+      ctx2.fillRect(0, H * l.y, W, H * l.h);
+      ctx2.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx2.lineWidth = 1;
+      ctx2.beginPath(); ctx2.moveTo(0, H * l.y); ctx2.lineTo(W, H * l.y); ctx2.stroke();
+    });
+    ctx2.fillStyle = 'rgba(210,218,245,0.3)';
+    ctx2.font = '9px "JetBrains Mono"';
+    ctx2.textAlign = 'right';
+    layers.forEach(l => {
+      ctx2.fillText(l.label, W - 10, H * l.y + 14);
+    });
+  }
+
+  // Draw sediment surface (steps 0–2)
+  if(step <= 2){
+    const numLayers = step + 1;
+    for(let li = 0; li < numLayers; li++){
+      const ly = H * (0.45 + li * 0.10);
+      const lh = H * 0.10;
+      const sedColors = ['#5c4317', '#7a5c2e', '#8b6914'];
+      ctx2.fillStyle = sedColors[li] || '#6b4f1a';
+      ctx2.fillRect(0, ly, W, lh);
+      ctx2.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx2.lineWidth = 1;
+      ctx2.beginPath(); ctx2.moveTo(0, ly); ctx2.lineTo(W, ly); ctx2.stroke();
+    }
+  }
+
+  // Fossil object
+  const fossilY = step <= 2 ? H * (0.44 + step * 0.09 + 0.05) : H * 0.55;
+
+  // Step 0: Live fish
+  if(step === 0){
+    drawFish(ctx2, cx, H * 0.25, 55, 'rgba(100,200,255,0.9)', true);
+    // Arrow going down
+    ctx2.strokeStyle = 'rgba(252,211,77,0.5)';
+    ctx2.lineWidth = 2;
+    ctx2.beginPath(); ctx2.moveTo(cx, H * 0.35); ctx2.lineTo(cx, H * 0.40); ctx2.stroke();
+    arrowHead(ctx2, cx, H * 0.40, 'down', '#fcd34d');
+    ctx2.fillStyle = '#fcd34d'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('STERF & SINK', cx, H * 0.32);
+  }
+
+  // Step 1: Dead fish, partially buried, soft parts fading
+  if(step === 1){
+    drawFish(ctx2, cx, fossilY, 55, 'rgba(180,160,120,0.6)', false);
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('SAGTE DELE VERROT', cx, H * 0.30);
+  }
+
+  // Step 2: Skeleton only
+  if(step === 2){
+    drawSkeleton(ctx2, cx, fossilY, 55);
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('SLEGS HARDE DELE BLY OOR', cx, H * 0.30);
+  }
+
+  // Step 3: Mineral replacement — draw orange/gold skeleton in rock
+  if(step === 3){
+    drawFossilBone(ctx2, cx, fossilY, 55, '#fbbf24');
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('MINERALISASIE AAN DIE GANG', cx, H * 0.30);
+    // Mineral dots
+    for(let i = 0; i < 18; i++){
+      const mx = cx - 50 + Math.random() * 100, my = fossilY - 10 + Math.random() * 25;
+      ctx2.beginPath(); ctx2.arc(mx, my, 1.5, 0, Math.PI * 2);
+      ctx2.fillStyle = 'rgba(251,191,36,0.5)'; ctx2.fill();
+    }
+  }
+
+  // Step 4: Deep burial (more layers)
+  if(step === 4){
+    drawFossilBone(ctx2, cx, fossilY, 55, '#fbbf24');
+    // Crack lines suggesting erosion
+    ctx2.strokeStyle = 'rgba(255,200,100,0.3)';
+    ctx2.lineWidth = 1;
+    ctx2.setLineDash([3, 5]);
+    ctx2.beginPath(); ctx2.moveTo(cx - 80, H * 0.22); ctx2.lineTo(cx + 60, H * 0.34); ctx2.stroke();
+    ctx2.beginPath(); ctx2.moveTo(cx + 40, H * 0.18); ctx2.lineTo(cx - 20, H * 0.38); ctx2.stroke();
+    ctx2.setLineDash([]);
+    ctx2.fillStyle = 'rgba(252,211,77,0.6)'; ctx2.font = 'bold 10px "JetBrains Mono"'; ctx2.textAlign = 'center';
+    ctx2.fillText('GESTEENTE ERODEER — FOSSIEL BLOOTGELÊ', cx, H * 0.16);
+    // Person silhouette
+    ctx2.fillStyle = 'rgba(100,200,255,0.7)';
+    ctx2.beginPath(); ctx2.arc(cx + 130, H * 0.20, 7, 0, Math.PI * 2); ctx2.fill();
+    ctx2.fillRect(cx + 126, H * 0.20 + 7, 8, 18);
+    ctx2.fillStyle = 'rgba(100,200,255,0.5)'; ctx2.font = '9px "Cabinet Grotesk"'; ctx2.textAlign = 'left';
+    ctx2.fillText('Paleontoloog', cx + 142, H * 0.24);
+  }
+
+  // Step label
+  ctx2.fillStyle = 'rgba(252,211,77,0.4)';
+  ctx2.font = 'bold 9px "JetBrains Mono"';
+  ctx2.textAlign = 'left';
+  ctx2.fillText(`STAP ${step + 1} VAN 5`, 16, 18);
+}
+
+function drawFish(ctx, x, y, size, color, alive){
+  ctx.save();
+  ctx.translate(x, y);
+  // Body
+  ctx.beginPath();
+  ctx.ellipse(0, 0, size, size * 0.4, 0, 0, Math.PI * 2);
+  ctx.fillStyle = color;
+  ctx.fill();
+  // Tail
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.8, 0);
+  ctx.lineTo(-size * 1.2, -size * 0.35);
+  ctx.lineTo(-size * 1.2, size * 0.35);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+  // Eye
+  if(alive){
+    ctx.beginPath(); ctx.arc(size * 0.5, -size * 0.1, size * 0.07, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.beginPath(); ctx.arc(size * 0.52, -size * 0.1, size * 0.035, 0, Math.PI * 2);
+    ctx.fillStyle = '#000'; ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawSkeleton(ctx, x, y, size){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.strokeStyle = 'rgba(230,220,180,0.7)';
+  ctx.lineWidth = 1.5;
+  // Spine
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(size * 0.6, 0); ctx.stroke();
+  // Ribs
+  for(let i = -4; i <= 3; i++){
+    const rx = i * size * 0.11;
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, -size * 0.28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, size * 0.28); ctx.stroke();
+  }
+  // Skull
+  ctx.beginPath(); ctx.arc(size * 0.55, 0, size * 0.14, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(230,220,180,0.7)'; ctx.stroke();
+  // Tail fin
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, -size * 0.3);
+  ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, size * 0.3); ctx.stroke();
+  ctx.restore();
+}
+
+function drawFossilBone(ctx, x, y, size, color){
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  // Spine
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(size * 0.6, 0); ctx.stroke();
+  // Ribs
+  for(let i = -4; i <= 3; i++){
+    const rx = i * size * 0.11;
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, -size * 0.28); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(rx, 0); ctx.lineTo(rx - 4, size * 0.28); ctx.stroke();
+  }
+  // Skull
+  ctx.beginPath(); ctx.arc(size * 0.55, 0, size * 0.14, 0, Math.PI * 2); ctx.stroke();
+  // Tail
+  ctx.beginPath(); ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, -size * 0.3);
+  ctx.moveTo(-size * 0.8, 0); ctx.lineTo(-size * 1.1, size * 0.3); ctx.stroke();
+  ctx.restore();
+}
+
+function arrowHead(ctx, x, y, dir, color){
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  if(dir === 'down'){ ctx.moveTo(x, y); ctx.lineTo(x - 6, y - 9); ctx.lineTo(x + 6, y - 9); }
+  ctx.closePath(); ctx.fill();
+}
+
+// ── Canvas click (timeline) ────────────────────────────────────
+function onCanvasClick(e){
+  if(currentMode !== 'time') return;
+  const rect = canvas.getBoundingClientRect();
+  const y = e.clientY - rect.top;
+  const H = 460, totalMa = 4600;
+  const PAD_TOP = 24, PAD_BOT = 24, availH = H - PAD_TOP - PAD_BOT;
+  function maToY(ma){ return PAD_TOP + (ma / totalMa) * availH; }
+
+  let clicked = null;
+  ERAS.forEach((era, i) => {
+    const y0 = maToY(era.start), y1 = maToY(era.end);
+    if(y >= y0 && y <= y1) clicked = i;
+    if(y >= y1 && y <= y0) clicked = i;
+  });
+  if(clicked !== null){
+    hoveredEra = clicked;
+    const era = ERAS[clicked];
+    document.getElementById('timeInfo').innerHTML =
+      `<strong>${era.name} (${era.end === 0 ? '66 Ma–hede' : era.start + '–' + era.end + ' Ma'}):</strong><br>${era.life}`;
+    drawFrame();
+  }
+}
+
+// ── Init ───────────────────────────────────────────────────────
+function initSim(){
+  if(simStarted) return;
+  simStarted = true;
+  canvas = document.getElementById('simCanvas');
+  ctx2 = canvas.getContext('2d');
+  canvas.addEventListener('click', onCanvasClick);
+  updateFossilUI();
+  drawFrame();
+  window.addEventListener('resize', drawFrame);
+}
+
+// ── Practice ───────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    text: 'Watter tipe fossiel word gevorm wanneer \'n organisme se liggaam oplos en \'n holte in die gesteente agterlaat?',
+    opts: ['Liggaamsfossiel', 'Gietsel', 'Afdruk (mal)', 'Spoorfossiel'],
+    ans: 2,
+    exp: '\'n Afdruk (mal) is \'n hol indruksel of holte wat in gesteente agterbly nadat die organisme se harde dele oplos. As minerale later die afdruk vul, word dit \'n gietsel — \'n soliede replika van die oorspronklike organisme.'
+  },
+  {
+    text: 'Waarom word fossiele byna uitsluitlik in sedimentêre gesteente gevind?',
+    opts: [
+      'Sedimentêre gesteente is ouer as ander gesteentetipes',
+      'Sedimentêre gesteente vorm uit saamgepersde lae sediment wat organismes kan begrawe en bewaar',
+      'Stollingsgesteente is te jonk om fossiele te bevat',
+      'Metamorfe gesteente bevat geen minerale nie'
+    ],
+    ans: 1,
+    exp: 'Sedimentêre gesteente vorm wanneer lae sediment (sand, modder, slik) oor tyd saamgepers word. Hierdie laagvormingsproses kan organismes vinnig begrawe en hul harde dele bewaar. Stollingsgesteente vorm uit gesmelte magma, en metamorfe gesteente vorm onder ekstreme hitte en druk — toestande wat enige organiese oorblyfsels vernietig.'
+  },
+  {
+    text: 'Wat stel die Wet van Superposisie?',
+    opts: [
+      'Radioaktiewe elemente verval teen \'n konstante tempo',
+      'Sedimentêre lae word altyd horisontaal afgesit',
+      'In ongesteurde gesteente is diepste lae ouer as lae nader aan die oppervlak',
+      'Alle organismes laat fossiele in die gesteenterekord na'
+    ],
+    ans: 2,
+    exp: 'Die Wet van Superposisie stel dat in enige ongesteurde opeenvolging van sedimentêre gesteente, die oudste lae aan die onderkant is en lae geleidelik jonger word na bo toe. Dit is die grondslag van relatiewe datering.'
+  },
+  {
+    text: 'Watter radiometriese dateringsmetode is die geskikste om \'n stuk organiese materiaal wat ongeveer 20 000 jaar oud is, te dateer?',
+    opts: ['Uraan-lood-datering', 'Kalium-argon-datering', 'Koolstof-14-datering', 'Rubidium-strontium-datering'],
+    ans: 2,
+    exp: 'Koolstof-14 het \'n halfleeftyd van ongeveer 5 730 jaar en is effektief vir die datering van organiese materiaal tot ongeveer 50 000 jaar oud. Vir materiaal ouer as dit, word uraan-lood- of kalium-argon-metodes (met halfleeftye van miljarde jare) benodig.'
+  },
+  {
+    text: 'Archaeopteryx word beskryf as \'n oorgangsfossiel. Wat beteken dit?',
+    opts: [
+      'Dit is die oudste fossiel wat ooit ontdek is',
+      'Dit toon eienskappe van beide dinosourusse en moderne voëls, en verbind die twee groepe',
+      'Dit is gevind in \'n oorgangsgesteentelaag tussen twee era\'s',
+      'Dit is \'n indeksfossiel wat gebruik word om Mesosoïese gesteentelae te dateer'
+    ],
+    ans: 1,
+    exp: 'Archaeopteryx (~150 Ma) is \'n oorgangsfossiel omdat dit eienskappe van beide sy voorvaders (dinosourustande, geklouterde vlerke, lang benerige stert) en sy nakomelinge (vere, vurkbeen) toon. Dit verskaf direkte fossielbewys vir die evolusionêre skakel tussen teropode dinosourusse en moderne voëls.'
+  },
+  {
+    text: 'In watter geologiese era het dinosourusse geleef en uiteindelik uitgesterf?',
+    opts: ['Paleosoïese Era', 'Senosoïese Era', 'Mesosoïese Era', 'Proterosoïese Era'],
+    ans: 2,
+    exp: 'Dinosourusse het ongeveer 230 Ma verskyn en die Aarde tydens die Mesosoïese Era (252–66 Ma) oorheers. Hulle het aan die einde van die Mesosoïkum uitgesterf, tydens die Krieties-Paleogeen (K-Pg) uitwissingsgebeurtenis ~66 Ma, heel waarskynlik veroorsaak deur \'n asteroïedimpak gekombineer met vulkaniese aktiwiteit.'
+  },
+  {
+    text: '\'n Versteende been word getoets en bevat slegs 25% van sy oorspronklike koolstof-14. Koolstof-14 het \'n halfleeftyd van ongeveer 5 730 jaar. Ongeveer hoe oud is die been?',
+    opts: ['5 730 jaar', '11 460 jaar', '17 190 jaar', '22 920 jaar'],
+    ans: 1,
+    exp: '25% oorblywend beteken die monster het TWEE halfleeftye deurgemaak: 100% van die oorspronklike hoeveelheid → 50% bly oor na een halfleeftyd → 25% bly oor na \'n tweede halfleeftyd. Twee halfleeftye van 5 730 jaar elk gee 2 × 5 730 ≈ 11 460 jaar.'
+  },
+  {
+    text: '\'n Geoloog vind trilobietfossiele (indeksfossiele vir die Paleosoïese Era) in \'n ongesteurde gesteentelaag, met ammonietfossiele (indeksfossiele vir die Mesosoïese Era) in die laag direk daarbo. Wat kan sy aflei, en watter beginsel ondersteun dit?',
+    opts: [
+      'Die trilobietlaag is jonger as die ammonietlaag, gebaseer op die Wet van Superposisie',
+      'Die trilobietlaag is ouer as die ammonietlaag — in ooreenstemming met die Wet van Superposisie (diepste lae is ouer) EN met die feit dat die Paleosoïese Era voor die Mesosoïese Era gekom het',
+      'Die twee lae moet dieselfde ouderdom wees, aangesien beide indeksfossiele bevat',
+      'Geen gevolgtrekking kan sonder radiometriese datering gemaak word nie'
+    ],
+    ans: 1,
+    exp: 'Die Wet van Superposisie stel dat in ongesteurde gesteente, diepste lae ouer is. Die trilobietlaag, wat laer lê, is ouer — en dit stem ooreen met die geologiese tydskaal: trilobiete dui op die Paleosoïkum (541–252 Ma) en ammoniete dui op die Mesosoïkum (252–66 Ma), sodat \'n Paleosoïese laag inderdaad onder \'n Mesosoïese laag behoort te lê. Twee onafhanklike bewyslyne dui op dieselfde gevolgtrekking.'
+  },
+];
+
+let score = 0, answered = new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div = document.getElementById('questions');
+  div.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="q-card" id="qcard${qi}">
+      <div class="q-num">Vraag ${qi + 1} van ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="mc-options">${q.opts.map((o, oi) => `
+        <button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})">
+          <span class="opt-letter">${'ABCD'[oi]}</span>${o}
+        </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb${qi}"></div>
+    </div>`).join('');
+}
+function answer(qi, oi){
+  if(answered[qi]) return;
+  answered[qi] = true;
+  const q = QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o => o.disabled = true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb = document.getElementById('fb' + qi);
+  if(oi === q.ans){
+    score++;
+    fb.className = 'feedback ok show';
+    fb.innerHTML = '✓ Reg! ' + q.exp;
+  } else {
+    document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');
+    fb.className = 'feedback bad show';
+    fb.innerHTML = '✗ Nie heeltemal reg nie. ' + q.exp;
+  }
+  if(answered.every(Boolean)){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent = score <= 2 ? 'Bly oefen — gaan die les weer deur!'
+      : score <= 4 ? 'Goeie werk — kyk na die verduidelikings.'
+      : score === 5 ? 'Goed gedaan!' : 'Volpunte! Uitstekend!';
+    banner.scrollIntoView({behavior: 'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
