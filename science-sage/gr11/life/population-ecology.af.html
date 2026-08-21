@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Populasie-ekologie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .playbar{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px 18px}
+    .play-btn{font-family:var(--fd);font-size:12.5px;font-weight:700;padding:9px 18px;border-radius:9px;border:none;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;cursor:pointer;flex-shrink:0}
+    .phase-readout{font-family:var(--fm);font-size:12px;color:var(--muted)}
+    .phase-readout .n{color:#86efac;font-weight:700}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sim-controls-row{grid-template-columns:1fr}
+      .playbar{flex-wrap:wrap}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 11</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 11 · Omgewingstudies · Les 1</div>
+  <h1 class="lesson-title">Populasie-ekologie</h1>
+  <p class="lesson-sub">Populasies groei nie vir ewig nie — hulle word gevorm deur geboortes, sterftes, migrasie, en beperkende faktore. Verken hoe 'n populasie na sy omgewing se drakrag toe groei.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="trending-up" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat verander populasiegrootte?</h2>
+    <p>'n Populasie se grootte verander weens vier faktore:</p>
+    <table class="compare-table">
+      <thead><tr><th>Faktor</th><th>Effek</th></tr></thead>
+      <tbody>
+        <tr><td>Geboortes</td><td>Vermeerder populasiegrootte</td></tr>
+        <tr><td>Sterftes (mortaliteit)</td><td>Verminder populasiegrootte</td></tr>
+        <tr><td>Immigrasie</td><td>Individue wat inkom — vermeerder populasiegrootte</td></tr>
+        <tr><td>Emigrasie</td><td>Individue wat vertrek — verminder populasiegrootte</td></tr>
+      </tbody>
+    </table>
+    <p>Populasiegroottes wissel natuurlik oor tyd namate hierdie vier faktore verander.</p>
+
+    <h2>Die meet van populasiegrootte</h2>
+    <p>Ekoloë skat populasiegrootte deur gebruik te maak van steekproefmetodes soos die <strong>kwadraatmetode</strong> (die tel van organismes in steekproefvierkante en dan opskaal) of <strong>merk-hervangs</strong> (die merk van 'n steekproef individue, hulle vrylaat, en dan 'n tweede steekproef hervang om die totale getal te skat vanaf die proporsie wat weer gevang is).</p>
+
+    <h2>Groeikrommes</h2>
+    <p>Populasies neig om een van twee groeipatrone te volg:</p>
+    <ul>
+      <li><strong>Geometriese (eksponensiële) groei</strong> — groei versnel voortdurend, en vorm 'n J-vormige kromme. Dit duur slegs voort terwyl hulpbronne onbeperk is.</li>
+      <li><strong>Logistiese groei</strong> — groei begin stadig (vertragingsfase), versnel vinnig (eksponensiële fase), en verlangsaam en stabiliseer dan namate die populasie die omgewing se <strong>drakrag</strong> nader, wat 'n S-vormige (sigmoïed) kromme vorm.</li>
+    </ul>
+
+    <h2>Beperkende faktore en drakrag</h2>
+    <p><strong>Beperkende faktore</strong> — soos voedsel, water, ruimte, en siekte — beperk hoe groot 'n populasie kan groei. Die <strong>drakrag</strong> is die maksimum populasiegrootte wat 'n omgewing volhoubaar kan ondersteun gegewe hierdie beperkende faktore.</p>
+    <div class="callout"><strong>Gevallestudie — uitdunning:</strong> in sommige beskermde gebiede (bv. olifante in wildreservate) kan populasies die plaaslike drakrag oorskry, wat die habitat beskadig. Uitdunning (die doelbewuste vermindering van populasiegrootte) word soms as 'n bestuurshulpmiddel gebruik, alhoewel dit omstrede bly.</div>
+
+    <h2>Kompetisie, nis, en nog 'n steekproefmetode</h2>
+    <table class="compare-table">
+      <thead><tr><th>Term</th><th>Betekenis</th></tr></thead>
+      <tbody>
+        <tr><td>Intraspesifieke kompetisie</td><td>Kompetisie tussen individue van <strong>dieselfde</strong> spesie vir 'n identiese stel hulpbronne — gewoonlik die intensste vorm van kompetisie, aangesien hul behoeftes heeltemal oorvleuel</td></tr>
+        <tr><td>Interspesifieke kompetisie</td><td>Kompetisie tussen individue van <strong>verskillende</strong> spesies vir 'n gedeelde (maar nie identiese) hulpbron</td></tr>
+        <tr><td>Ekologiese nis</td><td>Die spesifieke rol wat 'n spesie binne sy gemeenskap speel — insluitend sy habitat, voedingsverhoudinge, en interaksies met ander organismes</td></tr>
+        <tr><td>Sensus</td><td>'n Metode om elke individu in 'n populasie direk te tel — slegs prakties wanneer 'n populasie klein genoeg, en sigbaar/stilstaande genoeg, is om volledig te tel</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Voortplantingstrategieë: r-strategiste teenoor K-strategiste</h2>
+    <table class="compare-table">
+      <thead><tr><th></th><th>r-strategiste</th><th>K-strategiste</th></tr></thead>
+      <tbody>
+        <tr><td>Aantal nageslag</td><td>Baie, per voortplantingsgebeurtenis</td><td>Min, per voortplantingsgebeurtenis</td></tr>
+        <tr><td>Ouerlike sorg</td><td>Min tot geen</td><td>Uitgebreid</td></tr>
+        <tr><td>Grootte van nageslag</td><td>Klein</td><td>Groot</td></tr>
+        <tr><td>Tipiese omgewing</td><td>Onstabiel/onvoorspelbaar, waar die populasie ver onder die drakrag bly</td><td>Stabiel, waar die populasie naby die drakrag leef</td></tr>
+        <tr><td>Voorbeelde</td><td>Insekte, baie visse en plante</td><td>Olifante, walvisse, mense</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">'n Spesie wat baie sade of eiers behou/vertraag om vry te stel totdat toestande gunstig is (eerder as om 'n paar goed versorgde nageslag op 'n vaste tyd vry te stel), gedra steeds soos 'n r-strategis — die bepalende kenmerk is die produksie van groot getalle met min individuele belegging, nie die tydsberekening nie.</div>
+
+    <h2>Ekologiese voetspoor en sosiale dierekaste</h2>
+    <p>'n <strong>Ekologiese voetspoor</strong> is 'n maatstaf van hoeveel grond, water, en hulpbronne nodig is om 'n populasie se verbruik te ondersteun en sy afval te absorbeer — in wese, 'n maatstaf van hoe afhanklik daardie populasie van natuurlike hulpbronne is.</p>
+    <p>By sommige sosiale diere (bv. miere, bye, termiete, naakmolratte) word individue binne 'n kolonie in <strong>kaste</strong> georganiseer — groepe wat gespesialiseerde rolle vervul (soos werkers, soldate, of 'n enkele voortplantende koningin) eerder as dat elke individu alles self doen.</p>
+
+    <h2>Inteling</h2>
+    <p><strong>Inteling</strong> is die paring/teling tussen naverwante individue. Omdat verwante individue reeds baie van dieselfde allele deel, het inteling ernstige genetiese gevolge:</p>
+    <ul>
+      <li>Verhoog <strong>homosigositeit</strong> (die proporsie geenpare met identiese allele) oor die populasie.</li>
+      <li>Verhoog die kans dat skadelike resessiewe allele van albei ouers geërf en uitgedruk word, wat die frekwensie van genetiese abnormaliteite verhoog.</li>
+      <li>Verlaag algehele genetiese variasie, wat <strong>hibriedkrag</strong> en die populasie se vermoë om by 'n veranderende omgewing aan te pas, verminder.</li>
+      <li>Word gekoppel aan swakker voortplantingsgesondheid en hoër sterftes onder nageslag.</li>
+    </ul>
+
+    <h2>Ekologiese opeenvolging</h2>
+    <p><strong>Ekologiese opeenvolging</strong> is die geleidelike, voorspelbare verandering in die spesies wat 'n gemeenskap oor tyd in 'n bepaalde gebied uitmaak.</p>
+    <table class="compare-table">
+      <thead><tr><th></th><th>Primêre opeenvolging</th><th>Sekondêre opeenvolging</th></tr></thead>
+      <tbody>
+        <tr><td>Beginpunt</td><td>Kaal, lewelose substraat sonder grond (bv. kaal rots wat deur 'n terugtrekkende gletser agtergelaat is, of nuwe vulkaniese lawa)</td><td>'n Gebied wat reeds grond EN sommige oorlewende organismes HET, na 'n versteuring (bv. brand, vloed, verlate plaasgrond)</td></tr>
+        <tr><td>Spoed</td><td>Baie stadig — grond moet eers vorm</td><td>Baie vinniger — grond en sommige organismes is reeds teenwoordig</td></tr>
+        <tr><td>Tipiese pioniers</td><td>Korsmosse en mosse, wat help om rots tot vroeë grond af te breek</td><td>Vinnig groeiende grasse en klein plante wat die versteurde gebied vinnig herbevolk</td></tr>
+      </tbody>
+    </table>
+    <div class="key-fact">Eksamenwenk: as 'n scenario grond of oorlewende organismes noem wat reeds voor die verandering teenwoordig was, identifiseer dit SEKONDÊRE opeenvolging — grond/organismes teenwoordig is die sleutelonderskeidende leidraad.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Populasiegroei-simulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Pas die groeitempo en drakrag aan, en druk dan Speel om te sien hoe die populasie langs 'n logistiese (S-vormige) kromme groei.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Populasiegrootte oor tyd</h3>
+      <canvas id="popCanvas" height="280"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Groeitempo <span class="val" id="rateVal">Matig</span></div>
+        <input type="range" id="rateSlider" min="1" max="10" value="4">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Drakrag <span class="val" id="capVal">500</span></div>
+        <input type="range" id="capSlider" min="100" max="1000" value="500" step="50">
+      </div>
+    </div>
+    <div class="playbar">
+      <button class="play-btn" id="playBtn" onclick="togglePlay()">▶ Speel</button>
+      <button class="play-btn" style="background:linear-gradient(135deg,#64748b,#334155)" onclick="resetSim()">↺ Herstel</button>
+      <div class="phase-readout">Fase: <span class="n" id="phaseLabel">Vertraging</span> · Populasie: <span class="n" id="popLabel">10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (4 punte)</div><div class="wb-qtext">Noem die vier faktore wat populasiegrootte verander, en dui aan of elkeen dit vermeerder of verminder.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (3 punte)</div><div class="wb-qtext">Beskryf die merk-hervangsmetode om populasiegrootte te skat.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (4 punte)</div><div class="wb-qtext">Skets en benoem 'n logistiese (S-vormige) populasiegroeikromme, en toon die vertragings-, eksponensiële, en stabiliserende fases.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (2 punte)</div><div class="wb-qtext">Definieer "drakrag".</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (3 punte)</div><div class="wb-qtext">Noem DRIE beperkende faktore wat populasiegroei kan beperk.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (6 punte)</div><div class="wb-qtext">'n Vispopulasie in 'n dam met 'n drakrag van ongeveer 1 000 is elke 2 jaar getel:<br><br>
+    <table class="compare-table" style="max-width:480px">
+      <thead><tr><th>Jaar</th><th>Populasiegrootte</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>50</td></tr>
+        <tr><td>2</td><td>100</td></tr>
+        <tr><td>4</td><td>380</td></tr>
+        <tr><td>6</td><td>850</td></tr>
+        <tr><td>8</td><td>980</td></tr>
+      </tbody>
+    </table><br>
+    (a) Bereken die gemiddelde tempo van populasietoename, in individue per jaar, tussen Jaar 4 en Jaar 6. Toon jou berekeninge. (2 punte)<br>
+    (b) Identifiseer in watter fase van logistiese groei (vertraging, eksponensieel, of stabiliserend) die populasie tussen Jaar 4 en Jaar 6 was, en in watter fase dit tussen Jaar 6 en Jaar 8 was. Gee 'n rede vir elke antwoord, met verwysing na die data. (3 punte)<br>
+    (c) Verduidelik waarom verwag word dat die tempo van populasietoename nul sal nader namate die populasiegrootte die drakrag nader. (1 punt)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // The popCanvas has offsetWidth 0 while its tab panel is display:none,
+  // so the very first resizeCanvas() call (at page load, before any tab
+  // switch) falls back to a hardcoded default width instead of the real
+  // one. Re-measure now that the Explore panel is actually visible.
+  if(id === 'explore' && typeof resizeCanvas === 'function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   POPULATION GROWTH SIMULATOR (logistic growth)
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('popCanvas');
+const ctx = canvas.getContext('2d');
+let W,H;
+let rate = 4, capacity = 500;
+let history = [];
+let pop = 10;
+let playing = false;
+let t = 0;
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600; H = 280;
+  canvas.width = W*devicePixelRatio; canvas.height = H*devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+document.getElementById('rateSlider').addEventListener('input', e=>{
+  rate = +e.target.value;
+  document.getElementById('rateVal').textContent = rate<=3?'Stadig':rate<=6?'Matig':'Vinnig';
+});
+document.getElementById('capSlider').addEventListener('input', e=>{
+  capacity = +e.target.value;
+  document.getElementById('capVal').textContent = capacity;
+  resetSim();
+});
+function togglePlay(){
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸ Pouseer' : '▶ Speel';
+}
+function resetSim(){
+  pop = 10; t = 0; history = [pop];
+  playing = false;
+  document.getElementById('playBtn').textContent = '▶ Speel';
+  updateReadout();
+}
+
+function updateReadout(){
+  document.getElementById('popLabel').textContent = Math.round(pop);
+  const pct = pop/capacity;
+  const phase = pct < 0.15 ? 'Vertraging' : pct < 0.75 ? 'Eksponensieel' : pct < 0.98 ? 'Stabiliserend' : 'By drakrag';
+  document.getElementById('phaseLabel').textContent = phase;
+}
+
+function step(){
+  // logistic growth: dP/dt = r * P * (1 - P/K)
+  const r = rate/100;
+  const growth = r * pop * (1 - pop/capacity);
+  pop = Math.max(1, pop + growth);
+  history.push(pop);
+  if (history.length > 400) history.shift();
+  updateReadout();
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const padL=50, padR=20, padT=20, padB=30;
+  const plotW = W-padL-padR, plotH = H-padT-padB;
+  const maxY = capacity*1.15;
+
+  // axes
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,H-padB); ctx.lineTo(W-padR,H-padB); ctx.stroke();
+
+  // carrying capacity line
+  const capY = padT + plotH - (capacity/maxY)*plotH;
+  ctx.strokeStyle='rgba(251,191,36,0.5)'; ctx.setLineDash([5,4]); ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(padL,capY); ctx.lineTo(W-padR,capY); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(251,191,36,0.7)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='left';
+  ctx.fillText('Drakrag (K)', padL+6, capY-6);
+
+  // population curve
+  if (history.length > 1){
+    ctx.strokeStyle='#4ade80'; ctx.lineWidth=2.5;
+    ctx.beginPath();
+    history.forEach((p,i)=>{
+      const x = padL + (i/399)*plotW;
+      const y = padT + plotH - (p/maxY)*plotH;
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    // current point
+    const lastX = padL + ((history.length-1)/399)*plotW;
+    const lastY = padT + plotH - (history[history.length-1]/maxY)*plotH;
+    ctx.beginPath(); ctx.arc(lastX,lastY,4,0,Math.PI*2);
+    ctx.fillStyle='#86efac'; ctx.fill();
+  }
+
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  ctx.fillText('TYD', W/2, H-8);
+  ctx.save(); ctx.translate(14,H/2); ctx.rotate(-Math.PI/2); ctx.fillText('POPULASIEGROOTTE',0,0); ctx.restore();
+
+  if (playing) step();
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+resetSim();
+draw();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Watter een van hierdie VERMINDER populasiegrootte?',opts:['Geboortes','Immigrasie','Emigrasie','Beide geboortes en immigrasie'],ans:2,exp:'Emigrasie (individue wat die populasie verlaat) verminder populasiegrootte, saam met sterftes. Geboortes en immigrasie vermeerder dit albei.'},
+  {text:'Wat skat die merk-hervangsmetode?',opts:['Die ouderdom van individue','Populasiegrootte','Die presiese ligging van elke individu','Slegs die sterftetempo'],ans:1,exp:"Merk-hervangs skat populasiegrootte deur 'n steekproef te merk, dit vry te laat, en dan die proporsie gemerkte individue in 'n tweede steekproef te gebruik om die totale populasie te skat."},
+  {text:"Watter vorm het 'n logistiese groeikromme?",opts:["'n Reguit lyn","'n J-vorm","'n S-vorm (sigmoïed)","'n U-vorm"],ans:2,exp:"Logistiese groei produseer 'n S-vormige (sigmoïed) kromme: stadige vertragingsfase, vinnige eksponensiële fase, en stabiliseer dan naby die drakrag."},
+  {text:'Wat is "drakrag"?',opts:["Die aanvangsgrootte van 'n populasie","Die maksimum populasiegrootte wat 'n omgewing volhoubaar kan ondersteun","Die tempo waarteen 'n populasie groei","Die aantal roofdiere in 'n gebied"],ans:1,exp:"Drakrag is die maksimum populasiegrootte wat 'n omgewing volhoubaar kan ondersteun, gegewe sy beperkende faktore (voedsel, water, ruimte, ens.)."},
+  {text:"Watter een van hierdie is 'n beperkende faktor op populasiegroei?",opts:['Sonlig se kleur','Voedselbeskikbaarheid','Die populasie se naam','Slegs die tyd van die dag'],ans:1,exp:"Voedselbeskikbaarheid, saam met water, ruimte, en siekte, is voorbeelde van beperkende faktore wat beperk hoe groot 'n populasie kan groei."},
+  {text:"Wat gebeur met populasiegroei namate dit die drakrag nader, in 'n logistiese groeimodel?",opts:['Dit hou aan versnel','Dit stop onmiddellik','Dit verlangsaam en stabiliseer','Dit word permanent negatief'],ans:2,exp:"Namate 'n populasie die drakrag nader, verlangsaam groei en stabiliseer dit, aangesien hulpbronne beperkend word."},
+  {text:"Navorsers gebruik merk-hervangs om 'n dam se vispopulasie te skat. Hulle vang, merk, en laat 40 visse vry. 'n Week later vang hulle 'n tweede steekproef van 50 visse, waarvan 8 merke dra. Gebruik die Lincoln-indeks, N = (n₁ × n₂) ÷ m₂, om die totale vispopulasie te skat.",opts:['250','320','400','62.5'],ans:0,exp:"Deur in die Lincoln-indeks te vervang: N = (n₁ × n₂) ÷ m₂ = (40 × 50) ÷ 8 = 2000 ÷ 8 = 250. Dit werk omdat die fraksie gemerkte visse in die tweede steekproef (8 uit 50) die fraksie behoort te weerspieël wat die oorspronklike 40 gemerkte visse van die hele populasie verteenwoordig — dus gee die opskaal van 40 met dieselfde verhouding (50 ÷ 8) die totale geskatte populasie."},
+  {text:"'n Bewaringspan merk en laat 30 skilpaaie vry, en hervang dan 'n steekproef van 45, waarvan 15 gemerk is, wat 'n skatting gee van N = (30 × 45) ÷ 15 = 90. Skilpaaie beweeg egter stadig, en gedurende die studie het sommige gemerkte individue uit die studiegebied gedwaal terwyl ongemerkte skilpaaie van naburige gebiede ingedwaal het. Watter effek sou dit op die populasieskatting hê?",opts:['Die skatting word nie geraak nie, aangesien die formule nie van daardie aanname afhang nie',"Die skatting sal te LAAG wees, omdat oor die algemeen minder skilpaaie in die gebied gemerk is","Die skatting sal te HOOG wees, omdat die verlies van gemerkte individue (vervang deur ongemerktes) die aantal merke wat in die tweede steekproef gevind word, verminder, en deling deur hierdie kleiner getal die resultaat opblaas",'Die skatting sal altyd presies gelyk wees aan die ware populasiegrootte, ongeag migrasie'],ans:2,exp:"Die Lincoln-indeks aanvaar 'n \"geslote\" populasie tussen die twee steekproewe — geen beduidende geboortes, sterftes, immigrasie, of emigrasie nie, en gemerkte individue meng lukraak met die res. Hier verlaag gemerkte skilpaaie wat vertrek (en 1-vir-1 deur ongemerkte nuwe aankomelinge vervang word) m₂, die aantal merke wat hervang word, sonder om n₁ of n₂ te verander. Aangesien N = (n₁ × n₂) ÷ m₂, maak 'n kleiner m₂ in die noemer N groter — dus kom die populasieskatting te HOOG uit. Dit is presies waarom ekoloë probeer om die tyd tussen steekproefneming kort te hou, om migrasie-effekte te minimaliseer."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
