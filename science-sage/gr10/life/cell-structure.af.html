@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Die Sel — Struktuur en Funksie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body h3{font-weight:700;font-size:15px;letter-spacing:-0.01em;color:#e2e8f0;margin:18px 0 8px}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .mode-row{display:flex;gap:8px}
+    .mode-btn{flex:1;font-family:var(--fd);font-size:12px;font-weight:700;padding:9px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 140ms}
+    .mode-btn.active{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.40);color:#86efac}
+    .readout-row{display:flex;gap:16px;font-family:var(--fm);font-size:12px}
+    .readout-chip{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center}
+    .readout-chip .n{font-size:20px;font-weight:800;color:#86efac}
+    .sim-caption{font-size:12.5px;color:var(--muted);line-height:1.7;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px 16px}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sim-controls-row{grid-template-columns:1fr}
+      .readout-row{flex-direction:column}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 10</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Molekulêre, Sellulêre en Weefselvlak · Les 2</div>
+  <h1 class="lesson-title">Die Sel — Struktuur en Funksie</h1>
+  <p class="lesson-sub">Voortbouend op Graad 9: gaan dieper in op organelstruktuur en -funksie, die vloeibare-mosaïekmodel van die selmembraan, en hoe stowwe oor membrane beweeg deur diffusie, osmose en aktiewe vervoer.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="droplets" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Van lense tot selle</h2>
+    <p>Ons begrip van selle het eers moontlik geword met die uitvinding van die <strong>mikroskoop</strong>. Vroeë lensgebaseerde instrumente het wetenskaplikes vir die eerste keer selle laat sien; moderne <strong>ligmikroskope</strong> gebruik glaslense en sigbare lig, terwyl <strong>elektronmikroskope</strong> elektronstrale gebruik om baie fyner besonderhede te openbaar — insluitend die interne organelle wat jy hieronder gaan leer.</p>
+    <div class="key-fact">Vergroting = grootte van die beeld ÷ werklike grootte van die eksemplaar. As 'n tekening van 'n sel 40mm wyd is en die werklike sel 0.02mm wyd is, is die vergroting 40 ÷ 0.02 = 2000×.</div>
+
+    <h2>Die selmembraan — 'n vloeibare mosaïek</h2>
+    <p>Die selmembraan word beskryf deur die <strong>vloeibare-mosaïekmodel</strong>: 'n buigsame ("vloeibare") dubbellaag van fosfolipiede met proteïene wat daarin dryf soos teëls in 'n mosaïek. Hierdie struktuur beheer wat die sel kan binnegaan en verlaat.</p>
+    <table class="compare-table">
+      <thead><tr><th>Proses</th><th>Beskrywing</th><th>Energie nodig?</th></tr></thead>
+      <tbody>
+        <tr><td>Diffusie</td><td>Beweging van partikels van 'n hoë na 'n lae konsentrasie, totdat dit eweredig versprei is</td><td>Nee</td></tr>
+        <tr><td>Osmose</td><td>Diffusie van spesifiek watermolekules, oor 'n selektief deurlaatbare membraan</td><td>Nee</td></tr>
+        <tr><td>Aktiewe vervoer</td><td>Beweging van partikels teen die konsentrasiegradiënt (laag na hoog)</td><td>Ja (gebruik ATP)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">Probeer die <strong>Diffusie- en Osmosesimulator</strong> in die Verken-oortjie om hierdie prosesse in werklike tyd te sien plaasvind.</div>
+
+    <h2>Organelle — struktuur en funksie</h2>
+    <p>Buiten die basiese beginsels wat jy in Graad 9 geleer het (membraan, sitoplasma, kern, mitochondria, ribosome), stel Graad 10 meer organelle en hul rolle bekend:</p>
+    <ul>
+      <li><strong>Kern</strong> — omring deur 'n kernmembraan met porieë (kernporieë); bevat chromatienmateriaal en 'n kernliggaampie. Dit is die beheersentrum van die sel en die setel van oorerwing (DNS-berging).</li>
+      <li><strong>Endoplasmiese retikulum (ER)</strong> — 'n netwerk van membrane; <em>ruwe ER</em> (besaai met ribosome) help om proteïene te vervoer, <em>gladde ER</em> vervoer lipiede.</li>
+      <li><strong>Golgi-liggaam</strong> — verander, verpak, en monteer afskeidings vanaf die ER vir vervoer uit die sel.</li>
+      <li><strong>Plastiede</strong> (slegs plante) — organelle soos chloroplaste, betrokke by die produksie en berging van voedsel en pigmente.</li>
+      <li><strong>Vakuool, lisosome en vesikels</strong> — betrokke by berging, vertering van afvalmateriaal, en (in plante) osmoregulasie.</li>
+      <li><strong>Selwand</strong> (slegs plante) — 'n rigiede ondersteuningstruktuur buite die selmembraan.</li>
+    </ul>
+    <div class="callout"><strong>Selteorie-opsomming:</strong> alle lewende organismes bestaan uit selle; die sel is die basiese eenheid van lewe; en alle selle ontstaan uit reeds bestaande selle.</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Diffusie- en Osmosesimulator</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Kyk hoe partikels oor 'n membraan beweeg. In Diffusiemodus kan alle partikels vrylik oorsteek. In Osmosemodus kan slegs water (blou) oorsteek — opgeloste stof (oranje) bly staan — en water beweeg om die konsentrasie te balanseer.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Membraankamer</h3>
+      <canvas id="diffCanvas" height="300"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Modus</div>
+        <div class="mode-row">
+          <button class="mode-btn active" id="btnDiff" onclick="setMode('diffusion')">Diffusie</button>
+          <button class="mode-btn" id="btnOsm" onclick="setMode('osmosis')">Osmose</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Beginkonsentrasiegradiënt <span class="val" id="gradVal">Hoog</span></div>
+        <input type="range" id="gradSlider" min="10" max="90" value="85">
+      </div>
+    </div>
+    <div class="readout-row">
+      <div class="readout-chip"><div class="n" id="leftCount">0</div>Linkerkant</div>
+      <div class="readout-chip"><div class="n" id="rightCount">0</div>Regterkant</div>
+    </div>
+    <div class="sim-caption" id="simCaption">Alle partikels begin aan die linkerkant. Kyk hoe hulle versprei totdat die konsentrasie aan albei kante gelyk is — dit is diffusie.</div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/7</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefenboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">'n Student teken 'n sel 45mm wyd. Die werklike sel is 0.03mm wyd. Bereken die vergroting van die tekening. Wys jou berekeninge.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Beskryf die vloeibare-mosaïekmodel van die selmembraan.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (6 punte)</div><div class="wb-qtext">Voltooi 'n tabel wat diffusie, osmose, en aktiewe vervoer vergelyk ten opsigte van: (a) wat beweeg, (b) rigting relatief tot die konsentrasiegradiënt, en (c) of energie benodig word.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (4 punte)</div><div class="wb-qtext">Noem VIER organelle (behalwe die kern, mitochondria, en ribosome) en gee die funksie van elkeen.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (2 punte)</div><div class="wb-qtext">Stel die DRIE stellings van die selteorie.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (5 punte)</div><div class="wb-qtext">'n Leerder sny vyf identiese aartappelsilinders (elk 5.00 g) en plaas een in elk van vyf sukrose-oplossings van toenemende konsentrasie vir 30 minute, en herweeg hulle dan:
+      <table class="symbols-table" style="margin:12px 0 14px;width:100%;border-collapse:collapse">
+        <thead><tr><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Sukrosekonsentrasie (mol/dm³)</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Aanvangsmassa (g)</th><th style="text-align:left;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.12)">Finale massa (g)</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 10px">0.0 (suiwer water)</td><td style="padding:6px 10px">5.00</td><td style="padding:6px 10px">5.75</td></tr>
+          <tr><td style="padding:6px 10px">0.2</td><td style="padding:6px 10px">5.00</td><td style="padding:6px 10px">5.30</td></tr>
+          <tr><td style="padding:6px 10px">0.4</td><td style="padding:6px 10px">5.00</td><td style="padding:6px 10px">5.00</td></tr>
+          <tr><td style="padding:6px 10px">0.6</td><td style="padding:6px 10px">5.00</td><td style="padding:6px 10px">4.55</td></tr>
+          <tr><td style="padding:6px 10px">0.8</td><td style="padding:6px 10px">5.00</td><td style="padding:6px 10px">4.20</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die persentasieverandering in massa vir elk van die vyf aartappelsilinders. Wys jou berekeninge vir minstens twee. (3)<br>
+      (b) By watter sukrosekonsentrasie het die aartappelsilinder geen verandering in massa getoon nie? Verduidelik wat dit jou vertel oor die waterkonsentrasie binne die aartappelselle op daardie punt, in vergelyking met die omringende oplossing. (1)<br>
+      (c) Verduidelik, in terme van die rigting van waterbeweging, waarom die silinders in 0.6 en 0.8 mol/dm³ oplossings massa verloor het terwyl dié in suiwer water massa opgetel het. (1)</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // diffCanvas has offsetWidth 0 while tab-explore is display:none, so the initial
+  // resizeCanvas() call fell back to a hardcoded width. Re-measure now it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   DIFFUSION & OSMOSIS SIMULATOR
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('diffCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let mode = 'diffusion';
+let gradient = 85;
+let particles = [];
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600;
+  H = 300;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  initParticles();
+}
+
+function initParticles(){
+  particles = [];
+  const N = 60;
+  if (mode === 'diffusion'){
+    // all particles start on the left, can cross freely
+    for(let i=0;i<N;i++){
+      particles.push({
+        type:'solute', canCross:true,
+        x: Math.random()*(W/2-20)+10, y: Math.random()*(H-20)+10,
+        vx:(Math.random()-0.5)*1.6, vy:(Math.random()-0.5)*1.6,
+      });
+    }
+  } else {
+    // osmosis: solute fixed distribution (imbalanced), water free to cross
+    const soluteRightFrac = gradient/100;
+    const soluteN = 24, waterN = 40;
+    for(let i=0;i<soluteN;i++){
+      const onRight = i < soluteN*soluteRightFrac;
+      particles.push({
+        type:'solute', canCross:false,
+        x: onRight ? Math.random()*(W/2-20)+W/2+10 : Math.random()*(W/2-20)+10,
+        y: Math.random()*(H-20)+10,
+        vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6,
+      });
+    }
+    for(let i=0;i<waterN;i++){
+      particles.push({
+        type:'water', canCross:true,
+        x: Math.random()*(W-20)+10, y: Math.random()*(H-20)+10,
+        vx:(Math.random()-0.5)*1.8, vy:(Math.random()-0.5)*1.8,
+      });
+    }
+  }
+}
+
+function setMode(m){
+  mode = m;
+  document.getElementById('btnDiff').classList.toggle('active', m==='diffusion');
+  document.getElementById('btnOsm').classList.toggle('active', m==='osmosis');
+  document.getElementById('simCaption').textContent = m==='diffusion'
+    ? 'Alle partikels begin aan die linkerkant. Kyk hoe hulle versprei totdat die konsentrasie aan albei kante gelyk is — dit is diffusie.'
+    : 'Oranje opgeloste-stofpartikels kan nie die membraan oorsteek nie. Blou watermolekules steek vrylik oor, en beweeg na die kant met meer opgeloste stof — dit is osmose.';
+  initParticles();
+}
+
+document.getElementById('gradSlider').addEventListener('input', e=>{
+  gradient = parseInt(e.target.value);
+  document.getElementById('gradVal').textContent = gradient>65?'Hoog':gradient>35?'Medium':'Laag';
+  if (mode==='osmosis') initParticles();
+});
+
+function step(){
+  const midX = W/2;
+  particles.forEach(p=>{
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < 8 || p.y > H-8) p.vy *= -1;
+    if (p.x < 8 || p.x > W-8) p.vx *= -1;
+    // membrane collision for non-crossing particles
+    if (!p.canCross){
+      const onRight = p.x > midX;
+      if (onRight && p.x < midX+8) { p.x = midX+8; p.vx = Math.abs(p.vx); }
+      if (!onRight && p.x > midX-8) { p.x = midX-8; p.vx = -Math.abs(p.vx); }
+    } else if (mode === 'osmosis') {
+      // water: slight bias toward the side with more solute
+      const rightSolute = particles.filter(q=>q.type==='solute'&&q.x>midX).length;
+      const leftSolute = particles.filter(q=>q.type==='solute'&&q.x<=midX).length;
+      const bias = (rightSolute - leftSolute) * 0.006;
+      p.vx += bias * (Math.random()>0.5?1:0.3);
+      p.vx = Math.max(-2.2, Math.min(2.2, p.vx));
+    }
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  // chambers
+  ctx.fillStyle = 'rgba(34,197,94,0.03)';
+  ctx.fillRect(0,0,W/2,H);
+  ctx.fillStyle = 'rgba(96,165,250,0.03)';
+  ctx.fillRect(W/2,0,W/2,H);
+  // membrane
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+  ctx.setLineDash([]);
+
+  particles.forEach(p=>{
+    ctx.beginPath();
+    const r = p.type==='water' ? 4 : 6;
+    ctx.arc(p.x, p.y, r, 0, Math.PI*2);
+    ctx.fillStyle = p.type==='water' ? 'rgba(96,165,250,0.85)' : 'rgba(251,146,60,0.85)';
+    ctx.fill();
+  });
+
+  const leftN = particles.filter(p=>p.x<=W/2).length;
+  const rightN = particles.filter(p=>p.x>W/2).length;
+  document.getElementById('leftCount').textContent = leftN;
+  document.getElementById('rightCount').textContent = rightN;
+
+  step();
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+draw();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Wat beskryf die "vloeibare-mosaïekmodel"?',opts:['Die rigiede struktuur van die selwand','Die buigsame fosfolipied-dubbellaag met dryfproteïene wat die selmembraan vorm','Die rangskikking van chromosome in die kern','Die manier waarop water deur \'n plant beweeg'],ans:1,exp:'Die vloeibare-mosaïekmodel beskryf die selmembraan as \'n buigsame dubbellaag van fosfolipiede met proteïene wat daardeur versprei is soos teëls in \'n mosaïek.'},
+  {text:'Watter van hierdie prosesse benodig energie (ATP)?',opts:['Diffusie','Osmose','Aktiewe vervoer','Nie een van hierdie nie'],ans:2,exp:'Aktiewe vervoer beweeg partikels teen hul konsentrasiegradiënt (laag na hoog), wat energie benodig. Diffusie en osmose vind albei passief plaas, sonder energie-toevoer.'},
+  {text:'Watter organel verander en verpak proteïene vir afskeiding uit die sel?',opts:['Golgi-liggaam','Ribosoom','Vakuool','Selwand'],ans:0,exp:'Die Golgi-liggaam ontvang proteïene vanaf die endoplasmiese retikulum, verander dit, en verpak dit vir vervoer of afskeiding.'},
+  {text:'\'n Tekening van \'n sel is 60mm wyd, en die werklike sel is 0.03mm wyd. Wat is die vergroting?',opts:['200×','2 000×','20 000×','2×'],ans:1,exp:'Vergroting = beeldgrootte ÷ werklike grootte = 60 ÷ 0.03 = 2000×.'},
+  {text:'Ruwe endoplasmiese retikulum is besaai met watter organel?',opts:['Mitochondria','Ribosome','Chloroplaste','Lisosome'],ans:1,exp:'Ruwe ER kry sy "ruwe" voorkoms van ribosome wat aan sy oppervlak vasgeheg is, waar proteïene gesintetiseer word en na die ER vir vervoer aangevoer word.'},
+  {text:'Osmose verwys spesifiek na die diffusie van watter stof?',opts:['Suurstof','Glukose','Water','Proteïen'],ans:2,exp:'Osmose is die diffusie van spesifiek watermolekules, oor \'n selektief deurlaatbare membraan, van \'n gebied met hoë waterkonsentrasie na lae waterkonsentrasie.'},
+  {text:'\'n Blokkie aartappelweefsel word in \'n sukrose-oplossing geplaas. Na 30 minute het sy massa met 8% AFGENEEM. Wat vertel dit jou oor die waterkonsentrasie binne die aartappelselle in vergelyking met die omringende oplossing, en in watter rigting het water oorwegend beweeg?',opts:['Die waterkonsentrasie binne die aartappel was laer as in die oplossing; water het die aartappelselle binnegegaan','Die waterkonsentrasie binne die aartappel was hoër as in die oplossing; water het die aartappelselle verlaat na die oplossing toe','Die sukrose-oplossing het glad geen water bevat nie','Aktiewe vervoer het water met behulp van ATP uit die aartappelselle gepomp'],ans:1,exp:'Dit vereis redenering agteruit vanaf \'n uitkoms na \'n oorsaak. \'n Massa-AFNAME beteken die aartappel het oorwegend water verloor. Aangesien water deur osmose beweeg van \'n gebied met hoër waterkonsentrasie na \'n gebied met laer waterkonsentrasie, beteken water wat die aartappelselle verlaat dat die waterkonsentrasie binne die selle HOËR moes gewees het as in die omringende sukrose-oplossing (m.a.w. die oplossing was meer gekonsentreerd in opgeloste stof, minder gekonsentreerd in water). Dit is \'n passiewe proses — geen energie/ATP word benodig nie, wat aktiewe vervoer uitsluit.'},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=2?'Hou so aan — gaan die les weer deur!':score<=4?'Goeie werk — gaan die verduidelikings na.':score===5?'Goed gedaan!':'Volpunte! Jy ken jou selle!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
