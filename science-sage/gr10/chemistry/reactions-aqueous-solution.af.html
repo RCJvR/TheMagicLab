@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reaksies in Waterige Oplossing — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.readout-eq{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 16px;grid-column:1/-1;font-family:var(--fm);font-size:13px;color:#c084fc;text-align:center;line-height:1.8}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 10px;cursor:pointer;width:100%;margin-bottom:10px}
+select option{background:#1a1f35}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Chemie · Les 9</div>
+  <div class="lesson-title">Reaksies in Waterige Oplossing</div>
+  <div class="lesson-sub">Ondersoek hoe ioniese verbindings in water dissosieer, waarom ioniese oplossings elektrisiteit gelei, pas oplosbaarheidsreëls toe, en skryf volledige en netto-ioniese vergelykings vir presipitasiereaksies.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Seniorsertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📝 Werkboek</button>
+</div>
+
+<!-- ===== LESSON TAB ===== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Oplos van Ioniese Verbindings in Water</h2>
+    <p>Water is 'n polêre molekule — dit het 'n effens negatiewe suurstofkant (δ⁻) en effens positiewe waterstofkante (δ⁺). Wanneer 'n ioniese vaste stof soos natriumchloried in water geplaas word, omring die polêre watermolekules die positiewe en negatiewe ione in die kristalrooster en trek hulle uitmekaar. Hierdie proses word <strong>dissosiasie</strong> genoem: die ioniese verbinding skei in vrybewegende, gehidreerde ione wat regdeur die oplossing versprei is.</p>
+
+    <div class="formula">NaCl(s) → Na⁺(aq) + Cl⁻(aq)</div>
+
+    <p>Die toestandsimbool <strong>(aq)</strong> beteken "waterig" (aqueous) — opgelos in water. Sodra dissosiasie plaasgevind het, is die ione nie meer vasgevang in 'n vaste rooster nie; hulle kan onafhanklik deur die oplossing beweeg, elkeen omring deur 'n "skil" van georiënteerde watermolekules ('n proses genoem hidrasie).</p>
+
+    <div class="key-fact">Vuistreël: wanneer 'n oplosbare ioniese verbinding oplos, skryf dit as afsonderlike (aq)-ione — só bestaan dit werklik in oplossing.</div>
+
+    <h2>Waarom Gelei Ioniese Oplossings Elektrisiteit?</h2>
+    <p>Elektriese geleiding vereis gelaaide deeltjies wat vry kan beweeg. In vaste NaCl is die ione vasgevang in 'n stywe rooster en kan nie beweeg nie — vaste ioniese verbindings gelei NIE elektrisiteit nie. Maar sodra dit in water opgelos is, word die Na⁺- en Cl⁻-ione mobiele ladingdraers. Wanneer 'n spanning toegepas word, dryf positiewe ione na die negatiewe elektrode en negatiewe ione na die positiewe elektrode, wat die stroombaan voltooi.</p>
+
+    <div class="callout">
+      <strong>Elektroliete</strong> is stowwe waarvan die waterige oplossings (of gesmelte vorms) elektrisiteit gelei omdat hulle vrybewegende ione bevat. <strong>Nie-elektroliete</strong> vorm nie ione in oplossing nie, dus gelei hul oplossings nie.
+    </div>
+
+    <p>Die meeste kovalente (molekulêre) verbindings — soos suiker (C₁₂H₂₂O₁₁) of etanol (C₂H₅OH) — los in water op as heel, neutrale molekules. Geen ione word gevorm nie, dus is daar geen vry ladingdraers nie, en hierdie oplossings gelei oor die algemeen <em>nie</em> elektrisiteit nie (hulle is nie-elektroliete). 'n Klein aantal kovalente molekules, soos HCl, ioniseer volledig of gedeeltelik wanneer dit oplos en vorm WEL ione — dit is die sure, wat jy ook as elektroliete sal teëkom.</p>
+
+    <table class="symbols-table">
+      <tr><th>Oplossing</th><th>Tipe stof</th><th>Gelei?</th><th>Rede</th></tr>
+      <tr><td>NaCl(aq)</td><td>Ionies</td><td>Ja</td><td>Dissosieer in vrye Na⁺- en Cl⁻-ione</td></tr>
+      <tr><td>CuSO₄(aq)</td><td>Ionies</td><td>Ja</td><td>Dissosieer in vrye Cu²⁺- en SO₄²⁻-ione</td></tr>
+      <tr><td>Suikeroplossing</td><td>Kovalent (molekulêr)</td><td>Nee</td><td>Los op as neutrale molekules — geen ione</td></tr>
+      <tr><td>Etanoloplossing</td><td>Kovalent (molekulêr)</td><td>Nee</td><td>Los op as neutrale molekules — geen ione</td></tr>
+      <tr><td>HCl(aq)</td><td>Kovalent, maar ioniseer</td><td>Ja</td><td>Reageer met water om H⁺(aq) en Cl⁻(aq) te vorm</td></tr>
+    </table>
+
+    <h2>Oplosbaarheidsreëls</h2>
+    <p>Nie alle ioniese verbindings los in water op nie. Chemici gebruik 'n stel algemene <strong>oplosbaarheidsreëls</strong> om te voorspel of 'n verbinding oplosbaar (los op en vorm 'n helder oplossing) of onoplosbaar (bly 'n vaste stof en vorm 'n presipitaat) sal wees.</p>
+
+    <table class="symbols-table">
+      <tr><th>Ioon-/verbindingsfamilie</th><th>Oplosbaarheidsreël</th></tr>
+      <tr><td>Groep 1 (Na⁺, K⁺, Li⁺...) en NH₄⁺</td><td>Byna alle verbindings is oplosbaar</td></tr>
+      <tr><td>Nitrate (NO₃⁻)</td><td>Alle nitrate is oplosbaar</td></tr>
+      <tr><td>Chloriede (Cl⁻)</td><td>Oplosbaar, BEHALWE AgCl, PbCl₂ (en Hg₂Cl₂)</td></tr>
+      <tr><td>Sulfate (SO₄²⁻)</td><td>Oplosbaar, BEHALWE BaSO₄, PbSO₄ (en CaSO₄ is net effens oplosbaar)</td></tr>
+      <tr><td>Karbonate (CO₃²⁻)</td><td>Oor die algemeen onoplosbaar, BEHALWE Groep 1-karbonate en (NH₄)₂CO₃</td></tr>
+      <tr><td>Hidroksiede (OH⁻)</td><td>Oor die algemeen onoplosbaar, BEHALWE Groep 1-hidroksiede en Ba(OH)₂ (effens oplosbaar)</td></tr>
+    </table>
+
+    <div class="key-fact">Leer hierdie reëls goed — hulle laat jou toe om, sonder 'n oplosbaarheidstabel, te voorspel of die meng van twee oplossings 'n presipitaat sal produseer.</div>
+
+    <h2>Presipitasiereaksies</h2>
+    <p>'n <strong>Presipitaat</strong> is 'n onoplosbare vaste stof wat vorm en uitskei wanneer twee waterige oplossings gemeng word. 'n <strong>Presipitasiereaksie</strong> vind plaas wanneer die katione van een oplossing met die anione van 'n ander oplossing kombineer om 'n nuwe, onoplosbare ioniese verbinding te vorm.</p>
+
+    <p>Dit is 'n tipe dubbele vervangings- (metatese-) reaksie: die positiewe en negatiewe ione "verwissel maats." As die nuwe kombinasie onoplosbaar is (volgens die oplosbaarheidsreëls), vorm 'n presipitaat en kan waargeneem word as waasagtigheid, 'n kleurverandering, of 'n vaste stof wat uitsak. As albei moontlike nuwe kombinasies oplosbaar is, vind geen sigbare reaksie plaas nie — al vier ioontipes bly eenvoudig saam opgelos in oplossing.</p>
+
+    <h2>Volledige Ioniese Vergelykings en Netto-Ioniese Vergelykings</h2>
+    <p>'n Chemiese vergelyking kan op drie vlakke van detail geskryf word:</p>
+    <ul>
+      <li><strong>Molekulêre (formule) vergelyking:</strong> wys volledige verbindingsformules, asof geen dissosiasie plaasvind nie.</li>
+      <li><strong>Volledige ioniese vergelyking:</strong> wys elke oplosbare ioniese verbinding opgebreek in sy vrye (aq)-ione; onoplosbare produkte en suiwer vloeistowwe word as heel formules gehou.</li>
+      <li><strong>Netto-ioniese vergelyking:</strong> die volledige ioniese vergelyking met <strong>toeskouerione</strong> verwyder — toeskouerione is ione wat onveranderd, in dieselfde vorm, aan albei kante van die vergelyking verskyn. Hulle neem geen werklike deel aan die reaksie nie.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Uitgewerkte voorbeeld — Meng van silwernitraat- en natriumchloriedoplossings:</strong><br><br>
+      <strong>Stap 1 — Molekulêre vergelyking:</strong><br>
+      AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)<br><br>
+      <strong>Stap 2 — Volledige ioniese vergelyking</strong> (dissosieer elke oplosbare verbinding; AgCl is onoplosbaar, dus bly dit as 'n vaste-stof-formule):<br>
+      Ag⁺(aq) + NO₃⁻(aq) + Na⁺(aq) + Cl⁻(aq) → AgCl(s) + Na⁺(aq) + NO₃⁻(aq)<br><br>
+      <strong>Stap 3 — Identifiseer toeskouerione:</strong> Na⁺(aq) en NO₃⁻(aq) verskyn onveranderd aan albei kante — hulle is toeskouers en kan geskrap word.<br><br>
+      <strong>Stap 4 — Netto-ioniese vergelyking:</strong><br>
+      Ag⁺(aq) + Cl⁻(aq) → AgCl(s)<br><br>
+      Hierdie netto-ioniese vergelyking vang die ware chemie van die reaksie vas: silwerione en chloriedione kombineer om vaste silwerchloried te vorm, ongeag watter oplosbare silwersout of watter oplosbare chloriedsout jy begin het.
+    </div>
+
+    <p><strong>Metode-opsomming:</strong> (1) Skryf die gebalanseerde molekulêre vergelyking en voorspel die presipitaat met behulp van die oplosbaarheidsreëls. (2) Herskryf alle oplosbare (aq) ioniese verbindings as afsonderlike ione; hou die presipitaat, water, en enige gas as heel formules. (3) Skrap enige ioon wat identies aan albei kante verskyn — dit is die toeskouers. (4) Wat oorbly, is die netto-ioniese vergelyking.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-Uitbreiding — Toepassing van Netto-Ioniese Vergelykings op Nuwe Kombinasies</div>
+      <p>Die werklike waarde van die leer van netto-ioniese vergelykings is om die uitkoms van onbekende kombinasies te kan <strong>voorspel</strong>, nie net een voorbeeld te memoriseer nie. Oorweeg die meng van bariumchloried- en natriumsulfaatoplossings.</p>
+      <p style="margin-top:10px"><strong>Stap 1 — Molekulêre vergelyking:</strong><br>
+      BaCl₂(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2NaCl(aq)</p>
+      <p style="margin-top:10px"><strong>Stap 2 — Volledige ioniese vergelyking:</strong><br>
+      Ba²⁺(aq) + 2Cl⁻(aq) + 2Na⁺(aq) + SO₄²⁻(aq) → BaSO₄(s) + 2Na⁺(aq) + 2Cl⁻(aq)</p>
+      <p style="margin-top:10px"><strong>Stap 3 — Skrap toeskouers</strong> (Na⁺ en Cl⁻ verskyn onveranderd aan albei kante):<br>
+      <strong>Netto-ioniese vergelyking:</strong> Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s)</p>
+      <p style="margin-top:10px">Let daarop dat die vorming van bariumsulfaat uit Ba²⁺ en SO₄²⁻ dieselfde netto reaksie is, ongeag watter oplosbare bariumsout of oplosbare sulfaatsout jy gebruik — dit is waarom die netto-ioniese vergelyking beskou word as die chemies mees betekenisvolle manier om 'n presipitasiereaksie voor te stel. Hierdie idee van 'n gemeenskaplike onderliggende reaksie, onafhanklik van watter toeskouerione teenwoordig is, is 'n belangrike konseptuele brug na suur-basis-neutralisasiereaksies (H⁺(aq) + OH⁻(aq) → H₂O(l)) wat later bestudeer word.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EXPLORE TAB ===== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="precTitle">Presipitasiereaksie-Simulator</h3>
+      <canvas id="precCanvas" height="300"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Oplossing A</div>
+        <select id="solA" onchange="updatePrec()">
+          <option value="AgNO3">Silwernitraat — AgNO₃(aq)</option>
+          <option value="BaCl2">Bariumchloried — BaCl₂(aq)</option>
+          <option value="Pb(NO3)2">Lood(II)nitraat — Pb(NO₃)₂(aq)</option>
+          <option value="KI">Kaliumjodied — KI(aq)</option>
+          <option value="NaCl">Natriumchloried — NaCl(aq)</option>
+          <option value="Na2SO4">Natriumsulfaat — Na₂SO₄(aq)</option>
+        </select>
+        <div class="ctrl-label" style="margin-top:12px">Oplossing B</div>
+        <select id="solB" onchange="updatePrec()">
+          <option value="NaCl">Natriumchloried — NaCl(aq)</option>
+          <option value="AgNO3">Silwernitraat — AgNO₃(aq)</option>
+          <option value="Na2SO4">Natriumsulfaat — Na₂SO₄(aq)</option>
+          <option value="KI">Kaliumjodied — KI(aq)</option>
+          <option value="BaCl2">Bariumchloried — BaCl₂(aq)</option>
+          <option value="Pb(NO3)2">Lood(II)nitraat — Pb(NO₃)₂(aq)</option>
+        </select>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Hoe om te gebruik</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.7">Kies twee waterige oplossings om te meng. Kyk hoe die ione in die beker versprei — as 'n onoplosbare kombinasie vorm, sak 'n presipitaat uit en word die netto-ioniese vergelyking hieronder gewys. Indien nie, bly die ione eenvoudig gemeng in oplossing.</p>
+      </div>
+    </div>
+    <div class="readout-grid" id="precReadouts" style="max-width:900px">
+      <!-- dynamic readouts injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE TAB ===== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/7</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Toets Voltooi</div>
+        <div style="font-size:13px;color:var(--muted)">NSC-Oefeningsvrae</div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 1 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Wanneer vaste NaCl in water oplos, word hierdie proses die beste beskryf as:</div>
+      <div class="mc-options" id="q1opts">
+        <button class="mc-opt" onclick="checkAns(1,0,1)"><span class="opt-letter">A</span>Ionisasie</button>
+        <button class="mc-opt" onclick="checkAns(1,1,1)"><span class="opt-letter">B</span>Dissosiasie</button>
+        <button class="mc-opt" onclick="checkAns(1,2,1)"><span class="opt-letter">C</span>Neutralisasie</button>
+        <button class="mc-opt" onclick="checkAns(1,3,1)"><span class="opt-letter">D</span>Sublimasie</button>
+      </div>
+      <div class="feedback" id="fb1">Dissosiasie is die skeiding van 'n ioniese verbinding in sy reeds bestaande ione wanneer dit oplos: NaCl(s) → Na⁺(aq) + Cl⁻(aq). Ionisasie verwys na kovalente molekules wat ione vorm (bv. HCl wat met water reageer).</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 2 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter oplossing sal NIE elektrisiteit gelei nie?</div>
+      <div class="mc-options" id="q2opts">
+        <button class="mc-opt" onclick="checkAns(2,0,2)"><span class="opt-letter">A</span>NaCl(aq)</button>
+        <button class="mc-opt" onclick="checkAns(2,1,2)"><span class="opt-letter">B</span>Suikeroplossing</button>
+        <button class="mc-opt" onclick="checkAns(2,2,2)"><span class="opt-letter">C</span>CuSO₄(aq)</button>
+        <button class="mc-opt" onclick="checkAns(2,3,2)"><span class="opt-letter">D</span>KI(aq)</button>
+      </div>
+      <div class="feedback" id="fb2">Suiker ('n kovalente/molekulêre verbinding) los op as neutrale molekules — geen vrybewegende ione word gevorm nie, dus kan die oplossing nie elektrisiteit gelei nie. NaCl, CuSO₄ en KI is almal ionies en dissosieer in vrye ione.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 3 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Volgens die oplosbaarheidsreëls, watter van die volgende verbindings is ONOPLOSBAAR in water?</div>
+      <div class="mc-options" id="q3opts">
+        <button class="mc-opt" onclick="checkAns(3,0,3)"><span class="opt-letter">A</span>NaCl</button>
+        <button class="mc-opt" onclick="checkAns(3,1,3)"><span class="opt-letter">B</span>KNO₃</button>
+        <button class="mc-opt" onclick="checkAns(3,2,3)"><span class="opt-letter">C</span>BaSO₄</button>
+        <button class="mc-opt" onclick="checkAns(3,3,3)"><span class="opt-letter">D</span>NH₄Cl</button>
+      </div>
+      <div class="feedback" id="fb3">BaSO₄ (bariumsulfaat) is een van die belangrikste uitsonderings op die reël "sulfate is oplosbaar", saam met PbSO₄. NaCl, KNO₃ en NH₄Cl is almal oplosbaar (Groep 1-/ammoniumsoute en nitrate is altyd oplosbaar).</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 4 &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+      <div class="q-text">In die reaksie Pb(NO₃)₂(aq) + 2KI(aq) → PbI₂(s) + 2KNO₃(aq), is die toeskouerione:</div>
+      <div class="mc-options" id="q4opts">
+        <button class="mc-opt" onclick="checkAns(4,0,4)"><span class="opt-letter">A</span>Pb²⁺ en I⁻</button>
+        <button class="mc-opt" onclick="checkAns(4,1,4)"><span class="opt-letter">B</span>K⁺ en NO₃⁻</button>
+        <button class="mc-opt" onclick="checkAns(4,2,4)"><span class="opt-letter">C</span>Pb²⁺ en NO₃⁻</button>
+        <button class="mc-opt" onclick="checkAns(4,3,4)"><span class="opt-letter">D</span>K⁺ en I⁻</button>
+      </div>
+      <div class="feedback" id="fb4">K⁺ en NO₃⁻ verskyn onveranderd, steeds opgelos as (aq)-ione, aan albei kante van die vergelyking — hulle is die toeskouerione. Pb²⁺ en I⁻ kombineer werklik om die vaste presipitaat PbI₂ te vorm, dus is hulle NIE toeskouers nie.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 5 &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+      <div class="q-text">Wat is die korrekte netto-ioniese vergelyking vir die meng van BaCl₂(aq) met Na₂SO₄(aq)?</div>
+      <div class="mc-options" id="q5opts">
+        <button class="mc-opt" onclick="checkAns(5,0,5)"><span class="opt-letter">A</span>Ba²⁺(aq) + 2Cl⁻(aq) → BaCl₂(s)</button>
+        <button class="mc-opt" onclick="checkAns(5,1,5)"><span class="opt-letter">B</span>Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s)</button>
+        <button class="mc-opt" onclick="checkAns(5,2,5)"><span class="opt-letter">C</span>2Na⁺(aq) + 2Cl⁻(aq) → 2NaCl(aq)</button>
+        <button class="mc-opt" onclick="checkAns(5,3,5)"><span class="opt-letter">D</span>Ba²⁺(aq) + Na₂SO₄(aq) → BaSO₄(s) + 2Na⁺(aq)</button>
+      </div>
+      <div class="feedback" id="fb5">Die presipitaat BaSO₄ vorm direk deur die kombinasie van Ba²⁺- en SO₄²⁻-ione. Na⁺ en Cl⁻ bly as toeskouerione in oplossing en word geskrap, wat Ba²⁺(aq) + SO₄²⁻(aq) → BaSO₄(s) as die netto-ioniese vergelyking laat.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 6 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Die meng van NaCl(aq) met KNO₃(aq) produseer:</div>
+      <div class="mc-options" id="q6opts">
+        <button class="mc-opt" onclick="checkAns(6,0,6)"><span class="opt-letter">A</span>'n Wit presipitaat van NaNO₃</button>
+        <button class="mc-opt" onclick="checkAns(6,1,6)"><span class="opt-letter">B</span>'n Presipitaat van KCl</button>
+        <button class="mc-opt" onclick="checkAns(6,2,6)"><span class="opt-letter">C</span>Geen sigbare reaksie nie — al vier ione bly in oplossing</button>
+        <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>'n Gas word vrygestel</button>
+      </div>
+      <div class="feedback" id="fb6">Albei moontlike nuwe kombinasies, NaNO₃ en KCl, is oplosbaar volgens die oplosbaarheidsreëls (alle nitrate oplosbaar; die meeste chloriede oplosbaar). Aangesien geen onoplosbare produk kan vorm nie, bly al vier ioontipes — Na⁺, Cl⁻, K⁺, NO₃⁻ — eenvoudig saam opgelos sonder enige sigbare verandering.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 7 &nbsp;<span style="color:var(--muted);font-weight:400">(Analise)</span></div>
+      <div class="q-text">'n Leerder meng gelyke volumes van drie oplossings saam in een beker: silwernitraat (AgNO₃), bariumchloried (BaCl₂), en kaliumsulfaat (K₂SO₄). Gebruik die oplosbaarheidsreëls — watter presipitaat/presipitate sal vorm?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>Slegs AgCl vorm</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>Slegs BaSO₄ vorm</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>Beide AgCl en BaSO₄ vorm as afsonderlike presipitate</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>Geen presipitaat vorm nie — al die ione is toeskouerione</button>
+      </div>
+      <div class="feedback" id="fb7">Met drie oplossings gemeng, moet jy elke moontlike nuwe ioonpaar nagaan, nie net een nie. Ag⁺ (van AgNO₃) koppel met Cl⁻ (van BaCl₂): die meeste chloriede is oplosbaar BEHALWE dié van Ag⁺, Pb²⁺, en Hg₂²⁺ — dus is AgCl onoplosbaar en presipiteer. Apart koppel Ba²⁺ (van BaCl₂) met SO₄²⁻ (van K₂SO₄): die meeste sulfate is oplosbaar BEHALWE dié van Ba²⁺, Pb²⁺, en Ca²⁺ — dus is BaSO₄ ook onoplosbaar en presipiteer. K⁺ en NO₃⁻ bly deurgaans as toeskouerione. Omdat twee afsonderlike onoplosbare kombinasies onder die ses moontlike ioonpare bestaan, vorm twee verskillende presipitate gelyktydig.</div>
+    </div>
+
+    <!-- IEB Practice Questions -->
+    <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB-Vraag 1 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+        <div class="q-text">Silwernitraatoplossing word met kaliumjodiedoplossing gemeng, en 'n geel presipitaat vorm. Wat is die netto-ioniese vergelyking vir hierdie reaksie?</div>
+        <div class="mc-options" id="iq1opts">
+          <button class="mc-opt" onclick="checkAns('i1',0,'i1')"><span class="opt-letter">A</span>Ag⁺(aq) + NO₃⁻(aq) → AgNO₃(s)</button>
+          <button class="mc-opt" onclick="checkAns('i1',1,'i1')"><span class="opt-letter">B</span>K⁺(aq) + NO₃⁻(aq) → KNO₃(s)</button>
+          <button class="mc-opt" onclick="checkAns('i1',2,'i1')"><span class="opt-letter">C</span>Ag⁺(aq) + I⁻(aq) → AgI(s)</button>
+          <button class="mc-opt" onclick="checkAns('i1',3,'i1')"><span class="opt-letter">D</span>Ag⁺(aq) + K⁺(aq) → geen reaksie</button>
+        </div>
+        <div class="feedback" id="fbi1">AgI is onoplosbaar, dus presipiteer dit. K⁺ en NO₃⁻ bly as toeskouerione opgelos aan albei kante en word geskrap, wat die netto-ioniese vergelyking Ag⁺(aq) + I⁻(aq) → AgI(s) laat.</div>
+      </div>
+
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB-Vraag 2 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+        <div class="q-text">Watter onderliggende idee verbind netto-ioniese vergelykings vir presipitasie (bv. Ba²⁺ + SO₄²⁻ → BaSO₄) met suur-basis-neutralisasie (H⁺ + OH⁻ → H₂O)?</div>
+        <div class="mc-options" id="iq2opts">
+          <button class="mc-opt" onclick="checkAns('i2',0,'i2')"><span class="opt-letter">A</span>Albei stel altyd 'n gas vry</button>
+          <button class="mc-opt" onclick="checkAns('i2',1,'i2')"><span class="opt-letter">B</span>Albei is voorbeelde van die ware reagerende spesies wat kombineer, onafhanklik van watter toeskouerione ook al teenwoordig was</button>
+          <button class="mc-opt" onclick="checkAns('i2',2,'i2')"><span class="opt-letter">C</span>Albei benodig verhitting om plaas te vind</button>
+          <button class="mc-opt" onclick="checkAns('i2',3,'i2')"><span class="opt-letter">D</span>Albei kom slegs met Groep 1-metale voor</button>
+        </div>
+        <div class="feedback" id="fbi2">In albei gevalle verwyder die netto-ioniese vergelyking die toeskouerione om die werklike reagerende deeltjies te openbaar — die reaksie is dieselfde ongeag watter oplosbare soute of sure/basisse daardie ione verskaf het.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== WORKBOOK TAB ===== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Druk Werkboek</button>
+    <div class="wb-intro">Wys ALLE berekeninge. Gebruik die oplosbaarheidsreëltabel van die les waar nodig.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">(a) Skryf 'n gebalanseerde vergelyking, met toestandsimbole, vir die dissosiasie van magnesiumchloried (MgCl₂) in water.<br>
+      (b) Verduidelik, in terme van deeltjiegedrag, waarom gesmelte MgCl₂ elektrisiteit gelei maar vaste MgCl₂ nie.<br>
+      (c) Verduidelik waarom 'n suikeroplossing nie elektrisiteit gelei nie, al los suiker maklik in water op.</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Voorspel, met behulp van die oplosbaarheidsreëls, of elk van die volgende verbindings oplosbaar of onoplosbaar in water is. Gee 'n rede in elke geval.<br>
+      (a) KNO₃ &nbsp;&nbsp; (b) PbCl₂ &nbsp;&nbsp; (c) Na₂CO₃ &nbsp;&nbsp; (d) CaSO₄ &nbsp;&nbsp; (e) (NH₄)₂SO₄ &nbsp;&nbsp; (f) Fe(OH)₃</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Waterige oplossings van lood(II)nitraat en kaliumjodied word gemeng.<br>
+      (a) Skryf die gebalanseerde molekulêre vergelyking vir hierdie reaksie.<br>
+      (b) Skryf die volledige ioniese vergelyking.<br>
+      (c) Identifiseer die toeskouerione.<br>
+      (d) Skryf die netto-ioniese vergelyking.<br>
+      (e) Noem een sigbare waarneming wat sou bevestig dat 'n reaksie plaasgevind het.</div>
+      <div style="margin-top:14px;height:130px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">'n Leerder meng bariumchloriedoplossing met natriumsulfaatoplossing en let op 'n wit presipitaat.<br>
+      (a) Identifiseer die presipitaat wat gevorm het en verduidelik, met behulp van die oplosbaarheidsreëls, waarom dit onoplosbaar is.<br>
+      (b) Skryf die volledige ioniese vergelyking en die netto-ioniese vergelyking vir hierdie reaksie.<br>
+      (c) Die leerder meng dan bariumchloriedoplossing met natriumnitraatoplossing. Voorspel, met 'n rede, of 'n presipitaat sal vorm.</div>
+      <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Twee ongemerkte bekers, X en Y, bevat elk 'n kleurlose waterige oplossing. 'n Leerder meng 'n klein monster van elk saam en 'n wit presipitaat vorm.<br>
+      (a) Stel 'n moontlike paar oplosbare ioniese verbindings voor (een in X, een in Y) wat hierdie waarneming kon veroorsaak. Regverdig jou keuse met behulp van die oplosbaarheidsreëls.<br>
+      (b) Skryf die netto-ioniese vergelyking vir jou voorgestelde reaksie.<br>
+      (c) Verduidelik waarom die skryf van 'n netto-ioniese vergelyking nuttiger is vir 'n chemikus as om slegs die volledige molekulêre vergelyking te skryf.</div>
+      <div style="margin-top:14px;height:120px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6 — Interpretasie van 'n Resultatetabel</div>
+      <div class="wb-qtext">'n Leerder meng pare oplossings in vier toetsbuise en teken die resultate aan:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Toetsbuis</th><th>Oplossings gemeng</th><th>Waarneming</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>AgNO₃(aq) + NaCl(aq)</td><td>Wit presipitaat vorm</td></tr>
+          <tr><td>2</td><td>AgNO₃(aq) + NaBr(aq)</td><td>Bleekgeel presipitaat vorm</td></tr>
+          <tr><td>3</td><td>BaCl₂(aq) + Na₂SO₄(aq)</td><td>Wit presipitaat vorm</td></tr>
+          <tr><td>4</td><td>BaCl₂(aq) + NaNO₃(aq)</td><td>Geen sigbare verandering</td></tr>
+        </tbody>
+      </table>
+      (a) Noem die presipitaat wat in toetsbuise 1, 2 en 3 gevorm het.<br>
+      (b) Skryf die netto-ioniese vergelyking vir die reaksie in toetsbuis 3.<br>
+      (c) Verduidelik, met behulp van die oplosbaarheidsreëls, waarom toetsbuis 4 geen sigbare verandering toon nie.<br>
+      (d) Identifiseer die toeskouerioon/-ione teenwoordig in toetsbuis 1.<br>
+      (e) Gebaseer op die patroon oor toetsbuise 1–3, watter algemene reël kan jy stel oor verbindings wat Ag⁺- of Ba²⁺-ione en sekere negatiewe ione bevat?</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== CURRICULUM TOGGLE =====
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Seniorsertifikaat':'Independent Examinations Board';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ===== PRACTICE =====
+const correctAnswers = {1:1, 2:1, 3:2, 4:1, 5:1, 6:2, 7:2, i1:2, i2:1};
+const answered = {};
+let score = 0;
+
+function checkAns(qNum, chosenIdx, fbId){
+  if(answered[qNum]) return;
+  answered[qNum] = true;
+  const isCorrect = chosenIdx === correctAnswers[qNum];
+  if(isCorrect) score++;
+
+  let optsContainer;
+  if(typeof qNum === 'string' && qNum === 'i1') optsContainer = document.getElementById('iq1opts');
+  else if(typeof qNum === 'string' && qNum === 'i2') optsContainer = document.getElementById('iq2opts');
+  else optsContainer = document.getElementById('q'+qNum+'opts');
+
+  const opts = optsContainer.querySelectorAll('.mc-opt');
+  opts.forEach((opt,i)=>{
+    opt.disabled = true;
+    if(i === correctAnswers[qNum]) opt.classList.add('correct');
+    else if(i === chosenIdx && !isCorrect) opt.classList.add('wrong');
+  });
+
+  let fbEl;
+  if(typeof qNum === 'string' && qNum === 'i1') fbEl = document.getElementById('fbi1');
+  else if(typeof qNum === 'string' && qNum === 'i2') fbEl = document.getElementById('fbi2');
+  else fbEl = document.getElementById('fb'+qNum);
+
+  fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
+
+  const nscDone = [1,2,3,4,5,6,7].every(k => answered[k]);
+  if(nscDone){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = score + '/7';
+  }
+}
+
+// ===== SIMULATION: PRECIPITATION REACTION SIMULATOR =====
+let canvas, ctx, dpr;
+let simInitialised = false;
+let simState = {};
+let animFrame = null;
+let tick = 0;
+
+// Ion database: charge, colour, and which anions/cations pair to form precipitates
+const ionData = {
+  AgNO3:  {cation:'Ag⁺',  cCharge:1,  anion:'NO₃⁻', aCharge:-1, cColour:'#e5e7eb', aColour:'#93c5fd', name:'Silwernitraat'},
+  BaCl2:  {cation:'Ba²⁺', cCharge:2,  anion:'Cl⁻',  aCharge:-1, cColour:'#86efac', aColour:'#fde68a', name:'Bariumchloried'},
+  'Pb(NO3)2': {cation:'Pb²⁺', cCharge:2, anion:'NO₃⁻', aCharge:-1, cColour:'#c4b5fd', aColour:'#93c5fd', name:'Lood(II)nitraat'},
+  KI:     {cation:'K⁺',   cCharge:1,  anion:'I⁻',   aCharge:-1, cColour:'#fca5a5', aColour:'#d8b4fe', name:'Kaliumjodied'},
+  NaCl:   {cation:'Na⁺',  cCharge:1,  anion:'Cl⁻',  aCharge:-1, cColour:'#fdba74', aColour:'#fde68a', name:'Natriumchloried'},
+  Na2SO4: {cation:'Na⁺',  cCharge:1,  anion:'SO₄²⁻',aCharge:-2, cColour:'#fdba74', aColour:'#67e8f9', name:'Natriumsulfaat'}
+};
+
+// Precipitate lookup: cation+anion -> {formula, colour}
+const precipitateTable = {
+  'Ag⁺+Cl⁻':   {formula:'AgCl',  colour:'wit'},
+  'Ag⁺+I⁻':    {formula:'AgI',   colour:'geel'},
+  'Ag⁺+SO₄²⁻': {formula:'Ag₂SO₄',colour:'wit (effens oplosbaar)'},
+  'Ba²⁺+SO₄²⁻':{formula:'BaSO₄', colour:'wit'},
+  'Pb²⁺+Cl⁻':  {formula:'PbCl₂', colour:'wit'},
+  'Pb²⁺+I⁻':   {formula:'PbI₂',  colour:'geel'},
+  'Pb²⁺+SO₄²⁻':{formula:'PbSO₄', colour:'wit'}
+};
+
+function initSim(){
+  if(!canvas){
+    canvas = document.getElementById('precCanvas');
+    dpr = window.devicePixelRatio || 1;
+    resizeCanvas();
+    ctx = canvas.getContext('2d');
+  }
+  updatePrec();
+  if(!simInitialised){
+    simInitialised = true;
+    animate();
+  }
+}
+
+function resizeCanvas(){
+  const wrap = canvas.parentElement;
+  const w = wrap.clientWidth - 32;
+  const h = 300;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+}
+
+function buildReadouts(){
+  const rod = document.getElementById('precReadouts');
+  rod.innerHTML = `
+    <div class="readout"><div class="readout-label">Oplossing A</div><div class="readout-val" id="ro-a" style="font-size:14px">—</div></div>
+    <div class="readout"><div class="readout-label">Oplossing B</div><div class="readout-val" id="ro-b" style="font-size:14px">—</div></div>
+    <div class="readout"><div class="readout-label">Resultaat</div><div class="readout-val" id="ro-result" style="font-size:14px">—</div></div>
+    <div class="readout"><div class="readout-label">Presipitaat</div><div class="readout-val" id="ro-precip" style="font-size:14px">—</div></div>
+    <div class="readout-eq" id="ro-equation">—</div>
+  `;
+}
+
+function updatePrec(){
+  if(!document.getElementById('precReadouts').children.length) buildReadouts();
+
+  const keyA = document.getElementById('solA').value;
+  const keyB = document.getElementById('solB').value;
+  const dataA = ionData[keyA];
+  const dataB = ionData[keyB];
+
+  document.getElementById('ro-a').textContent = dataA.name;
+  document.getElementById('ro-b').textContent = dataB.name;
+
+  // Determine possible new pairings: cationA+anionB and cationB+anionA
+  const pair1 = dataA.cation + '+' + dataB.anion;
+  const pair2 = dataB.cation + '+' + dataA.anion;
+
+  let precipitate = null;
+  let precipitatePair = null;
+  if(precipitateTable[pair1]){ precipitate = precipitateTable[pair1]; precipitatePair = [dataA.cation, dataB.anion]; }
+  else if(precipitateTable[pair2]){ precipitate = precipitateTable[pair2]; precipitatePair = [dataB.cation, dataA.anion]; }
+
+  let resultText, precipText, eqText;
+  if(precipitate){
+    resultText = 'Presipitaat vorm!';
+    precipText = precipitate.formula + ' (' + precipitate.colour + ')';
+    const catCharge = precipitatePair[0].includes('²') ? '²⁺' : (precipitatePair[0].includes('Ag')||precipitatePair[0].includes('K')||precipitatePair[0].includes('Na') ? '⁺' : '');
+    eqText = precipitatePair[0] + '(aq) + ' + precipitatePair[1] + '(aq) → ' + precipitate.formula + '(s)';
+  } else {
+    resultText = 'Geen sigbare reaksie';
+    precipText = 'Geen — alle ione bly in oplossing';
+    eqText = 'Geen sigbare reaksie (alle ione bly in oplossing)';
+  }
+
+  document.getElementById('ro-result').textContent = resultText;
+  document.getElementById('ro-result').style.color = precipitate ? '#fca5a5' : '#86efac';
+  document.getElementById('ro-precip').textContent = precipText;
+  document.getElementById('ro-equation').textContent = eqText;
+
+  simState = {dataA, dataB, precipitate, tick0: tick};
+  drawSim();
+}
+
+// ===== DRAW SIMULATION =====
+function drawSim(){
+  if(!ctx) return;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+  const W = canvas.width / dpr;
+  const H = canvas.height / dpr;
+  ctx.clearRect(0, 0, W, H);
+
+  ctx.fillStyle = '#040710';
+  ctx.fillRect(0, 0, W, H);
+
+  drawBeaker(W, H);
+}
+
+// Deterministic pseudo-random positions (seeded by index) so ions don't jump every frame
+function seededRand(seed){
+  const x = Math.sin(seed * 999.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+function drawBeaker(W, H){
+  const {dataA, dataB, precipitate} = simState;
+  if(!dataA) return;
+
+  const beakerX = W * 0.15;
+  const beakerW = W * 0.7;
+  const beakerTop = 30;
+  const beakerBottom = H - 25;
+
+  // Beaker outline
+  ctx.strokeStyle = 'rgba(192,132,252,0.5)';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(beakerX, beakerTop);
+  ctx.lineTo(beakerX, beakerBottom);
+  ctx.lineTo(beakerX + beakerW, beakerBottom);
+  ctx.lineTo(beakerX + beakerW, beakerTop);
+  ctx.stroke();
+
+  // Liquid fill
+  ctx.fillStyle = 'rgba(96,165,250,0.06)';
+  ctx.fillRect(beakerX, beakerTop, beakerW, beakerBottom - beakerTop);
+
+  const settleProgress = Math.min(1, tick / 90);
+  const nIons = 14;
+
+  // Cations from A and anions from A (mixed uniformly), same for B
+  const allIons = [];
+  for(let i=0;i<nIons;i++){
+    allIons.push({label:dataA.cation, colour:dataA.cColour, seed:i*2+1, type:'cationA'});
+    allIons.push({label:dataA.anion,  colour:dataA.aColour, seed:i*2+2, type:'anionA'});
+    allIons.push({label:dataB.cation, colour:dataB.cColour, seed:i*2+3+100, type:'cationB'});
+    allIons.push({label:dataB.anion,  colour:dataB.aColour, seed:i*2+4+100, type:'anionB'});
+  }
+
+  // Determine which ion "types" form the precipitate (they sink), others float freely
+  let precipTypesSet = null;
+  if(precipitate){
+    const {dataA:dA, dataB:dB} = simState;
+    const pair1 = dA.cation + '+' + dB.anion;
+    const pair2 = dB.cation + '+' + dA.anion;
+    if(precipitateTable[pair1]) precipTypesSet = ['cationA','anionB'];
+    else if(precipitateTable[pair2]) precipTypesSet = ['cationB','anionA'];
+  }
+
+  allIons.forEach(ion=>{
+    const rx = seededRand(ion.seed);
+    const ry = seededRand(ion.seed + 500);
+    const floatX = beakerX + 20 + rx * (beakerW - 40) + Math.sin(tick*0.02 + ion.seed) * 4;
+    let floatY = beakerTop + 20 + ry * (beakerBottom - beakerTop - 60) + Math.cos(tick*0.02 + ion.seed*1.3) * 3;
+
+    const isPrecipitating = precipTypesSet && precipTypesSet.includes(ion.type);
+    if(isPrecipitating){
+      const sinkY = beakerBottom - 12 - seededRand(ion.seed+300) * 10;
+      floatY = floatY + (sinkY - floatY) * settleProgress;
+    }
+
+    ctx.beginPath();
+    ctx.arc(floatX, floatY, 7, 0, Math.PI*2);
+    ctx.fillStyle = ion.colour;
+    ctx.globalAlpha = isPrecipitating ? (0.5 + 0.5*settleProgress) : 0.75;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = '#040710';
+    ctx.font = 'bold 8px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(ion.label.replace(/[²⁺⁻]/g,''), floatX, floatY + 3);
+  });
+
+  // Precipitate mound at bottom if settled
+  if(precipitate && settleProgress > 0.3){
+    const moundAlpha = (settleProgress - 0.3) / 0.7;
+    ctx.fillStyle = 'rgba(255,255,255,' + (0.12 * moundAlpha) + ')';
+    ctx.beginPath();
+    ctx.ellipse(beakerX + beakerW/2, beakerBottom - 6, beakerW*0.32, 8, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // Label
+  ctx.fillStyle = 'rgba(210,218,245,0.55)';
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  if(precipitate){
+    ctx.fillStyle = '#fca5a5';
+    ctx.fillText('Presipitaat vorm: ' + precipitate.formula + ' (' + precipitate.colour + ')', W/2, beakerTop - 12);
+  } else {
+    ctx.fillStyle = '#86efac';
+    ctx.fillText('Geen sigbare reaksie nie — alle ione bly opgelos', W/2, beakerTop - 12);
+  }
+}
+
+function animate(){
+  if(animFrame) cancelAnimationFrame(animFrame);
+  function loop(){
+    tick++;
+    drawSim();
+    animFrame = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+window.addEventListener('resize', ()=>{
+  if(canvas){
+    resizeCanvas();
+    ctx = canvas.getContext('2d');
+    drawSim();
+  }
+});
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voorstelling van Chemiese Verandering — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 10px;cursor:pointer;width:100%;margin-bottom:10px}
+select option{background:#1a1f35}
+.balancer-eq{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;font-family:var(--fm);font-size:clamp(15px,3vw,22px);color:#fff;padding:20px 8px}
+.eq-term{display:flex;flex-direction:column;align-items:center;gap:6px}
+.eq-coeff-stepper{display:flex;align-items:center;gap:6px}
+.stepper-btn{width:26px;height:26px;border-radius:7px;border:1px solid rgba(192,132,252,.35);background:rgba(192,132,252,.12);color:#e9d5ff;font-family:var(--fm);font-size:14px;font-weight:700;cursor:pointer;transition:all 150ms;display:flex;align-items:center;justify-content:center}
+.stepper-btn:hover{background:rgba(192,132,252,.22)}
+.coeff-num{min-width:20px;text-align:center;font-weight:800;color:#c084fc}
+.eq-formula{font-weight:700}
+.eq-plus,.eq-arrow{color:var(--muted);font-size:1.1em}
+.balance-table{width:100%;border-collapse:collapse;margin:6px 0}
+.balance-table th{font-family:var(--fm);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 10px;text-align:center;border-bottom:1px solid var(--border)}
+.balance-table td{padding:8px 10px;font-size:13px;text-align:center;font-family:var(--fm);border-bottom:1px solid rgba(255,255,255,.04)}
+.bal-ok{color:#86efac;font-weight:700}
+.bal-bad{color:#fca5a5;font-weight:700}
+.balance-status{text-align:center;font-family:var(--fm);font-size:13px;font-weight:700;padding:10px;border-radius:10px;margin-top:6px}
+.balance-status.ok{background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.28);color:#86efac}
+.balance-status.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.24);color:#fca5a5}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Chemie · Les 8</div>
+  <div class="lesson-title">Voorstelling van Chemiese Verandering</div>
+  <div class="lesson-sub">Skryf woord- en gebalanseerde simboolvergelykings, pas die Wet van Behoud van Massa toe, gebruik toestandsimbole korrek, en herken die vyf basiese reaksietipes.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📝 Werkboek</button>
+</div>
+
+<!-- ===== LESSON TAB ===== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Woordvergelykings</h2>
+    <p>'n <strong>Woordvergelyking</strong> beskryf 'n chemiese reaksie deur die name van die reaktante en produkte te gebruik. Reaktante (beginstowwe) word links geskryf, produkte (nuutgevormde stowwe) regs, verbind deur 'n pyl wat die rigting van verandering aandui.</p>
+
+    <div class="formula">waterstof + suurstof → water</div>
+
+    <p>Woordvergelykings is nuttig om te beskryf wat in 'n reaksie gebeur, maar hulle wys nie hoeveelhede nie — daarvoor het ons 'n gebalanseerde simbool- (chemiese) vergelyking nodig.</p>
+
+    <h2>Gebalanseerde Simboolvergelykings</h2>
+    <p>'n <strong>Simboolvergelyking</strong> gebruik chemiese formules in plaas van name, en sluit <strong>koëffisiënte</strong> (getalle wat voor formules geplaas word) in om die presiese verhouding te wys waarin stowwe reageer en vorm.</p>
+
+    <div class="formula">2H₂ + O₂ → 2H₂O</div>
+
+    <p>Hierdie vergelyking lui: "2 molekules (of mol) waterstof reageer met 1 molekule (of mol) suurstof om 2 molekules (of mol) water te vorm."</p>
+
+    <div class="key-fact">Reaktante → Produkte &nbsp;|&nbsp; Koëffisiënt = aantal formule-eenhede; Subskrip = aantal atome binne een formule-eenheid</div>
+
+    <h2>Die Wet van Behoud van Massa</h2>
+    <p>Die <strong>Wet van Behoud van Massa</strong> stel dat materie nie in 'n chemiese reaksie geskep of vernietig kan word nie — atome word slegs herrangskik. Dit beteken die totale massa van die reaktante moet gelyk wees aan die totale massa van die produkte, en <strong>dieselfde aantal van elke tipe atoom</strong> moet aan beide kante van 'n korrek gebalanseerde vergelyking voorkom.</p>
+
+    <div class="callout">
+      <strong>Waarom dit saak maak:</strong> Omdat atome nóg geskep nóg vernietig word, moet ons 'n vergelyking "balanseer" deur koëffisiënte aan te pas totdat die aantal atome van elke element aan beide kante gelyk is. Dit is nie opsioneel nie — 'n ongebalanseerde vergelyking gee 'n verkeerde voorstelling van die werklikheid.
+    </div>
+
+    <h2>Reëls vir die Balansering van Vergelykings</h2>
+    <p>Om 'n chemiese vergelyking te balanseer beteken om die koëffisiënte (die getalle wat voor elke formule geplaas word) aan te pas totdat die atome van elke element aan beide kante ooreenstem. Daar is streng reëls:</p>
+
+    <ul>
+      <li>Jy mag <strong>slegs die koëffisiënte verander</strong> (die getalle voor 'n formule) — nooit die subskripte binne 'n formule nie.</li>
+      <li>Om 'n subskrip te verander, verander die identiteit van die stof self (bv. deur H₂O na H₂O₂ te verander, word water in waterstofperoksied verander — 'n heeltemal ander verbinding). Dit word nie toegelaat nie.</li>
+      <li>Balanseer een element op 'n slag, en laat suurstof en waterstof gewoonlik tot laaste, aangesien hulle dikwels in die meeste formules voorkom.</li>
+      <li>Sodra jy dink die vergelyking is gebalanseer, tel weer elke atoom aan beide kante om te kontroleer.</li>
+      <li>Koëffisiënte moet die kleinste moontlike heelgetalle wees ('n verhouding soos 2:4:2 moet vereenvoudig word na 1:2:1).</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Uitgewerkte voorbeeld — Balansering:</strong> Fe + O₂ → Fe₂O₃<br>
+      Stap 1: Tel atome. Links: 1 Fe, 2 O. Regs: 2 Fe, 3 O. Nie gebalanseer nie.<br>
+      Stap 2: Balanseer eers Fe: 2Fe + O₂ → Fe₂O₃. Fe is nou gebalanseer (2 = 2).<br>
+      Stap 3: Balanseer O: regs is daar 3 O, links is daar 2 O (in O₂). Gebruik 'n gemeenskaplike veelvoud — vermenigvuldig O₂ met 3 en Fe₂O₃ met 2: 4Fe + 3O₂ → 2Fe₂O₃.<br>
+      Stap 4: Kontroleer weer: Links: 4 Fe, 6 O. Regs: 4 Fe, 6 O. Gebalanseer!<br>
+      Finale gebalanseerde vergelyking: <strong>4Fe + 3O₂ → 2Fe₂O₃</strong>
+    </div>
+
+    <h2>Toestandsimbole</h2>
+    <p>Toestandsimbole word in hakies direk na 'n formule geskryf om die fisiese toestand van elke stof in die vergelyking aan te dui:</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Simbool</th><th>Betekenis</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td>(s)</td><td>vaste stof</td><td>Fe(s)</td></tr>
+        <tr><td>(l)</td><td>vloeistof</td><td>H₂O(l)</td></tr>
+        <tr><td>(g)</td><td>gas</td><td>O₂(g), CO₂(g)</td></tr>
+        <tr><td>(aq)</td><td>wateragtig — opgelos in water</td><td>NaCl(aq)</td></tr>
+      </tbody>
+    </table>
+
+    <p>Voorbeeld met toestandsimbole: 2Mg(s) + O₂(g) → 2MgO(s). Dit vertel ons dat vaste magnesium met suurstofgas reageer om vaste magnesiumoksied te vorm.</p>
+
+    <h2>Die Vyf Basiese Reaksietipes</h2>
+    <p>Die meeste chemiese reaksies kan in vyf breë kategorieë gegroepeer word:</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Tipe</th><th>Patroon</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td>Sintese (kombinasie)</td><td>A + B → AB</td><td>2Mg(s) + O₂(g) → 2MgO(s)</td></tr>
+        <tr><td>Ontbinding</td><td>AB → A + B</td><td>CaCO₃(s) → CaO(s) + CO₂(g)</td></tr>
+        <tr><td>Enkelverplasing</td><td>A + BC → AC + B</td><td>Zn(s) + CuSO₄(aq) → ZnSO₄(aq) + Cu(s)</td></tr>
+        <tr><td>Dubbelverplasing</td><td>AB + CD → AD + CB</td><td>AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)</td></tr>
+        <tr><td>Verbranding</td><td>brandstof + O₂ → CO₂ + H₂O</td><td>CH₄(g) + 2O₂(g) → CO₂(g) + 2H₂O(l)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="key-fact">Sintese = "saamvoeg" | Ontbinding = "uitmekaar breek" | Verplasing = "vennote ruil" | Verbranding = "in suurstof brand"</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Ioniese Vergelykings &amp; Netto Ioniese Notasie</div>
+      <p><strong>Volledige vergelyking teenoor ioniese vergelyking:</strong> Wanneer reaksies in wateragtige oplossing plaasvind, bestaan baie verbindings eintlik as afsonderlike ione eerder as volledige formule-eenhede. 'n <strong>Ioniese vergelyking</strong> wys slegs die spesies wat werklik aan die reaksie deelneem, en laat "toeskouerione" (ione wat onveranderd aan beide kante voorkom) weg.</p>
+      <p style="margin-top:12px"><strong>Uitgewerkte voorbeeld:</strong> Die reaksie AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq) kan herskryf word om alle oplosbare ioniese verbindings as vrye ione te wys:<br>
+      Ag⁺(aq) + NO₃⁻(aq) + Na⁺(aq) + Cl⁻(aq) → AgCl(s) + Na⁺(aq) + NO₃⁻(aq)<br>
+      Na⁺(aq) en NO₃⁻(aq) kom onveranderd aan beide kante voor — hulle is toeskouerione en kan verwyder word. Dit gee die <strong>netto ioniese vergelyking</strong>:<br>
+      Ag⁺(aq) + Cl⁻(aq) → AgCl(s)<br>
+      Dit wys die ware chemie van die reaksie: silwerione en chloriedione kombineer om onoplosbare silwerchloriedpresipitaat te vorm.</p>
+      <p style="margin-top:12px"><strong>Kontrolering van netto ioniese vergelykings:</strong> 'n Korrek gebalanseerde netto ioniese vergelyking moet nie net atome balanseer nie, maar ook <strong>lading</strong> aan beide kante. In die voorbeeld hierbo: linkerkant se lading = (+1) + (−1) = 0; regterkant se lading (AgCl is neutraal) = 0. Lading is gebalanseer, wat bevestig dat die vergelyking korrek is.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EXPLORE TAB ===== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="balTitle">Vergelykingsbalanseerder</h3>
+      <div class="balancer-eq" id="balancerEq"></div>
+      <table class="balance-table" id="balanceTable">
+        <thead><tr id="balTableHead"></tr></thead>
+        <tbody><tr id="balTableLeft"></tr><tr id="balTableRight"></tr></tbody>
+      </table>
+      <div class="balance-status" id="balStatus">Nog nie gebalanseer nie</div>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Vergelyking</div>
+        <button class="mode-btn active" onclick="setEquation(0,this)">1. Fe + O₂ → Fe₂O₃</button>
+        <button class="mode-btn" onclick="setEquation(1,this)">2. H₂ + Cl₂ → HCl</button>
+        <button class="mode-btn" onclick="setEquation(2,this)">3. N₂ + H₂ → NH₃</button>
+        <button class="mode-btn" onclick="setEquation(3,this)">4. C₃H₈ + O₂ → CO₂ + H₂O</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Hoe om te gebruik</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.7">Gebruik die + / − stappers onder elke formule om die koëffisiënt daarvan te verander. Hou die atoomtelling-tabel hieronder dop — pasende rye word groen. Maak elke ry groen om die vergelyking te balanseer. Klik 'n ander vergelyking hierbo om nog een te probeer.</p>
+        <button class="mode-btn" style="margin-top:6px" onclick="resetEquation()">↺ Herstel Koëffisiënte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE TAB ===== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/7</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Vasvra Voltooi</div>
+        <div style="font-size:13px;color:var(--muted)">NSC-oefenvrae</div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 1 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter een van die volgende balanseer die vergelyking korrek: __N₂ + __H₂ → __NH₃?</div>
+      <div class="mc-options" id="q1opts">
+        <button class="mc-opt" onclick="checkAns(1,0,1)"><span class="opt-letter">A</span>N₂ + H₂ → NH₃</button>
+        <button class="mc-opt" onclick="checkAns(1,1,1)"><span class="opt-letter">B</span>N₂ + 3H₂ → 2NH₃</button>
+        <button class="mc-opt" onclick="checkAns(1,2,1)"><span class="opt-letter">C</span>2N₂ + 3H₂ → 2NH₃</button>
+        <button class="mc-opt" onclick="checkAns(1,3,1)"><span class="opt-letter">D</span>N₂ + 2H₂ → NH₃</button>
+      </div>
+      <div class="feedback" id="fb1">N₂ + 3H₂ → 2NH₃ is korrek. Kontroleer: N-atome — links 2, regs 2×1=2. H-atome — links 3×2=6, regs 2×3=6. Beide kante balanseer.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 2 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter reël vir die balansering van chemiese vergelykings is korrek?</div>
+      <div class="mc-options" id="q2opts">
+        <button class="mc-opt" onclick="checkAns(2,0,2)"><span class="opt-letter">A</span>Jy mag subskripte verander om 'n vergelyking te balanseer</button>
+        <button class="mc-opt" onclick="checkAns(2,1,2)"><span class="opt-letter">B</span>Jy mag slegs die koëffisiënte voor formules verander, nooit die subskripte nie</button>
+        <button class="mc-opt" onclick="checkAns(2,2,2)"><span class="opt-letter">C</span>Slegs die reaktantkant mag verander word</button>
+        <button class="mc-opt" onclick="checkAns(2,3,2)"><span class="opt-letter">D</span>Balansering is slegs nodig as die reaksie 'n gas produseer</button>
+      </div>
+      <div class="feedback" id="fb2">Jy mag slegs koëffisiënte aanpas (die getalle wat voor 'n formule geplaas word). Om 'n subskrip te verander sou die identiteit van die stof self verander, wat nie toegelaat word nie — dit sou die werklike chemie verkeerd voorstel.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 3 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Wat beteken die toestandsimbool (aq) in 'n chemiese vergelyking?</div>
+      <div class="mc-options" id="q3opts">
+        <button class="mc-opt" onclick="checkAns(3,0,3)"><span class="opt-letter">A</span>'n Vaste presipitaat</button>
+        <button class="mc-opt" onclick="checkAns(3,1,3)"><span class="opt-letter">B</span>'n Gas wat tydens die reaksie vrygestel word</button>
+        <button class="mc-opt" onclick="checkAns(3,2,3)"><span class="opt-letter">C</span>Opgelos in water (wateragtig)</button>
+        <button class="mc-opt" onclick="checkAns(3,3,3)"><span class="opt-letter">D</span>'n Suiwer vloeistof</button>
+      </div>
+      <div class="feedback" id="fb3">(aq) staan vir "wateragtig" (aqueous), wat beteken die stof is in water opgelos. Die ander toestandsimbole is (s) vir vaste stof, (l) vir vloeistof, en (g) vir gas.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 4 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">CaCO₃(s) → CaO(s) + CO₂(g) is 'n voorbeeld van watter reaksietipe?</div>
+      <div class="mc-options" id="q4opts">
+        <button class="mc-opt" onclick="checkAns(4,0,4)"><span class="opt-letter">A</span>Sintese</button>
+        <button class="mc-opt" onclick="checkAns(4,1,4)"><span class="opt-letter">B</span>Ontbinding</button>
+        <button class="mc-opt" onclick="checkAns(4,2,4)"><span class="opt-letter">C</span>Enkelverplasing</button>
+        <button class="mc-opt" onclick="checkAns(4,3,4)"><span class="opt-letter">D</span>Dubbelverplasing</button>
+      </div>
+      <div class="feedback" id="fb4">Dit is ontbinding: een verbinding (CaCO₃) breek af in twee eenvoudiger stowwe (CaO en CO₂). Die algemene patroon is AB → A + B.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 5 &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+      <div class="q-text">Die Wet van Behoud van Massa stel dat in 'n chemiese reaksie:</div>
+      <div class="mc-options" id="q5opts">
+        <button class="mc-opt" onclick="checkAns(5,0,5)"><span class="opt-letter">A</span>Massa kan geskep word, maar nie vernietig word nie</button>
+        <button class="mc-opt" onclick="checkAns(5,1,5)"><span class="opt-letter">B</span>Atome word nóg geskep nóg vernietig — dieselfde aantal van elke tipe atoom kom aan beide kante voor</button>
+        <button class="mc-opt" onclick="checkAns(5,2,5)"><span class="opt-letter">C</span>Massa neem altyd toe soos nuwe produkte vorm</button>
+        <button class="mc-opt" onclick="checkAns(5,3,5)"><span class="opt-letter">D</span>Slegs die massa van gasse hoef behou te word</button>
+      </div>
+      <div class="feedback" id="fb5">Die Wet van Behoud van Massa beteken atome word eenvoudig herrangskik, nooit geskep of vernietig nie. Dit is waarom 'n korrek gebalanseerde vergelyking gelyke getalle van elke tipe atoom aan beide die reaktant- en produkkant moet wys.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 6 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Zn(s) + CuSO₄(aq) → ZnSO₄(aq) + Cu(s) word die beste geklassifiseer as:</div>
+      <div class="mc-options" id="q6opts">
+        <button class="mc-opt" onclick="checkAns(6,0,6)"><span class="opt-letter">A</span>Verbranding</button>
+        <button class="mc-opt" onclick="checkAns(6,1,6)"><span class="opt-letter">B</span>Ontbinding</button>
+        <button class="mc-opt" onclick="checkAns(6,2,6)"><span class="opt-letter">C</span>Enkelverplasing</button>
+        <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>Dubbelverplasing</button>
+      </div>
+      <div class="feedback" id="fb6">Dit is enkelverplasing: sink ('n meer reaktiewe metaal) verplaas koper uit kopersulfaatoplossing, volgens die patroon A + BC → AC + B.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 7 &nbsp;<span style="color:var(--muted);font-weight:400">(Analise)</span></div>
+      <div class="q-text">Magnesium reageer volledig met suurstofgas om magnesiumoksied te vorm: 2Mg + O₂ → 2MgO. 12.0 g magnesium reageer volledig met 8.0 g suurstofgas, sonder enige oorblywende reaktant van enige soort. Watter massa magnesiumoksied vorm, en watter tipe reaksie is dit?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>4.0 g; ontbinding</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>20.0 g; sintese</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>12.0 g; enkelverplasing</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>8.0 g; verbranding</button>
+      </div>
+      <div class="feedback" id="fb7">Dit kombineer twee idees. Eerstens, die Wet van Behoud van Massa: aangesien geen reaktant oorbly nie, moet die totale massa van produkte gelyk wees aan die totale massa van reaktante — 12.0 g Mg + 8.0 g O₂ = 20.0 g MgO. Tweedens, reaksieklassifikasie: twee elemente (Mg en O₂) kombineer om 'n enkele verbinding (MgO) te vorm, wat die definisie is van 'n sintese- (kombinasie-) reaksie — nie ontbinding (een → baie), enkelverplasing (element ruil in 'n verbinding in), of verbranding nie (alhoewel brandende magnesium wel lig vrystel, verwys "verbranding" spesifiek na reaksie met suurstof wat hitte/lig vrystel en word gewoonlik gereserveer vir brandstowwe wat koolstof en waterstof bevat).</div>
+    </div>
+
+    <!-- IEB Practice Questions -->
+    <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Vraag 1 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+        <div class="q-text">Skryf die netto ioniese vergelyking vir: AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq), nadat toeskouerione verwyder is.</div>
+        <div class="mc-options" id="iq1opts">
+          <button class="mc-opt" onclick="checkAns('i1',0,'i1')"><span class="opt-letter">A</span>Ag⁺(aq) + Cl⁻(aq) → AgCl(s)</button>
+          <button class="mc-opt" onclick="checkAns('i1',1,'i1')"><span class="opt-letter">B</span>Na⁺(aq) + NO₃⁻(aq) → NaNO₃(aq)</button>
+          <button class="mc-opt" onclick="checkAns('i1',2,'i1')"><span class="opt-letter">C</span>AgNO₃(aq) + NaCl(aq) → AgCl(s) + NaNO₃(aq)</button>
+          <button class="mc-opt" onclick="checkAns('i1',3,'i1')"><span class="opt-letter">D</span>Ag⁺(aq) + NO₃⁻(aq) → AgNO₃(aq)</button>
+        </div>
+        <div class="feedback" id="fbi1">Na⁺(aq) en NO₃⁻(aq) kom onveranderd aan beide kante van die volledige ioniese vergelyking voor, dus is hulle toeskouerione en word verwyder. Die netto ioniese vergelyking wat slegs die spesies wys wat werklik reageer, is Ag⁺(aq) + Cl⁻(aq) → AgCl(s).</div>
+      </div>
+
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Vraag 2 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+        <div class="q-text">Benewens die balansering van die aantal atome, wat moet 'n korrek geskrewe netto ioniese vergelyking nog balanseer?</div>
+        <div class="mc-options" id="iq2opts">
+          <button class="mc-opt" onclick="checkAns('i2',0,'i2')"><span class="opt-letter">A</span>Totale lading aan beide kante</button>
+          <button class="mc-opt" onclick="checkAns('i2',1,'i2')"><span class="opt-letter">B</span>Temperatuur aan beide kante</button>
+          <button class="mc-opt" onclick="checkAns('i2',2,'i2')"><span class="opt-letter">C</span>Volume aan beide kante</button>
+          <button class="mc-opt" onclick="checkAns('i2',3,'i2')"><span class="opt-letter">D</span>Kleur aan beide kante</button>
+        </div>
+        <div class="feedback" id="fbi2">'n Korrekte netto ioniese vergelyking moet beide atome ÉN totale lading balanseer. Byvoorbeeld, in Ag⁺(aq) + Cl⁻(aq) → AgCl(s), is die linkerkant se lading (+1) + (−1) = 0, wat ooreenstem met die neutrale AgCl aan die regterkant.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== WORKBOOK TAB ===== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Druk Werkboek</button>
+    <div class="wb-intro">Wys alle balanseringsberekeninge. Sluit toestandsimbole in waar versoek.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Skryf gebalanseerde simboolvergelykings (slegs met koëffisiënte — geen subskripte mag verander word nie) vir die volgende woordvergelykings:<br>
+      (a) magnesium + suurstof → magnesiumoksied<br>
+      (b) waterstof + stikstof → ammoniak<br>
+      (c) natrium + water → natriumhidroksied + waterstof<br>
+      (d) kaliumchloraat → kaliumchloried + suurstof</div>
+      <div style="margin-top:14px;height:110px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Balanseer die volgende vergelykings deur die korrekte koëffisiënte in te voeg:<br>
+      (a) __Al + __O₂ → __Al₂O₃<br>
+      (b) __C₃H₈ + __O₂ → __CO₂ + __H₂O<br>
+      (c) __Ca(OH)₂ + __HCl → __CaCl₂ + __H₂O<br>
+      (d) __Fe₂O₃ + __CO → __Fe + __CO₂</div>
+      <div style="margin-top:14px;height:110px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Verduidelik die Wet van Behoud van Massa in jou eie woorde. Gebruik die gebalanseerde vergelyking 4Fe(s) + 3O₂(g) → 2Fe₂O₃(s) om te wys dat die aantal ysteratome en die aantal suurstofatome gelyk is aan beide kante. (4)</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Vir elke vergelyking hieronder, (i) voeg toepaslike toestandsimbole by, en (ii) identifiseer die reaksietipe (sintese, ontbinding, enkelverplasing, dubbelverplasing, of verbranding):<br>
+      (a) 2Na + Cl₂ → 2NaCl<br>
+      (b) AgNO₃ + NaCl → AgCl + NaNO₃ &nbsp;(oplossings wat reageer, silwerchloried is 'n onoplosbare vaste stof)<br>
+      (c) CH₄ + 2O₂ → CO₂ + 2H₂O<br>
+      (d) Zn + 2HCl → ZnCl₂ + H₂ &nbsp;(sinkmetaal wat met soutsuuroplossing reageer)</div>
+      <div style="margin-top:14px;height:130px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">'n Leerder skryf die volgende "gebalanseerde" vergelyking: Fe + O₂ → FeO₂. Verduidelik waarom dit VERKEERD is, met spesifieke verwysing na die reëls vir die balansering van vergelykings, en verskaf die korrekte gebalanseerde vergelyking. (3)</div>
+      <div style="margin-top:14px;height:90px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6 — Eksperimentele Toetsing van Behoud van Massa</div>
+      <div class="wb-qtext">'n Leerder laat marmerstukkies (kalsiumkarbonaat) met soutsuur reageer: CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g). Die reaksie word twee keer op 'n elektroniese balans uitgevoer — een keer in 'n oop fles, en een keer in 'n fles wat met 'n ballon oor die opening verseël is om enige gas wat gevorm word, vas te vang:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Opstelling</th><th>Aanvanklike massa (g)</th><th>Finale massa (g)</th></tr></thead>
+        <tbody>
+          <tr><td>Oop fles</td><td>65.20</td><td>63.85</td></tr>
+          <tr><td>Verseëlde fles (met ballon)</td><td>65.20</td><td>65.20</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die skynbare massaverandering vir die oop fles.<br>
+      (b) Verduidelik, in terme van die reaksievergelyking, waarom die oop fles blyk om massa te verloor.<br>
+      (c) Verduidelik waarom die verseëlde fles geen verandering in massa toon nie, en noem watter opstelling korrek die Wet van Behoud van Massa demonstreer.<br>
+      (d) Bereken, gebaseer op jou antwoord in (a), die massa CO₂-gas wat in die reaksie gevorm is.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== CURRICULUM TOGGLE =====
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ===== PRACTICE =====
+const correctAnswers = {1:1, 2:1, 3:2, 4:1, 5:1, 6:2, 7:1, i1:0, i2:0};
+const answered = {};
+let score = 0;
+
+function checkAns(qNum, chosenIdx, fbId){
+  if(answered[qNum]) return;
+  answered[qNum] = true;
+  const isCorrect = chosenIdx === correctAnswers[qNum];
+  if(isCorrect) score++;
+
+  let optsContainer;
+  if(typeof qNum === 'string' && qNum === 'i1') optsContainer = document.getElementById('iq1opts');
+  else if(typeof qNum === 'string' && qNum === 'i2') optsContainer = document.getElementById('iq2opts');
+  else optsContainer = document.getElementById('q'+qNum+'opts');
+
+  const opts = optsContainer.querySelectorAll('.mc-opt');
+  opts.forEach((opt,i)=>{
+    opt.disabled = true;
+    if(i === correctAnswers[qNum]) opt.classList.add('correct');
+    else if(i === chosenIdx && !isCorrect) opt.classList.add('wrong');
+  });
+
+  let fbEl;
+  if(typeof qNum === 'string' && qNum === 'i1') fbEl = document.getElementById('fbi1');
+  else if(typeof qNum === 'string' && qNum === 'i2') fbEl = document.getElementById('fbi2');
+  else fbEl = document.getElementById('fb'+qNum);
+
+  fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
+
+  const nscDone = [1,2,3,4,5,6,7].every(k => answered[k]);
+  if(nscDone){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = score + '/7';
+  }
+}
+
+// ===== EXPLORE: EQUATION BALANCER =====
+// Each equation: species on left (reactants) and right (products).
+// Each species has a formula (for display), an object of element:count-per-unit, and a starting coefficient.
+const equations = [
+  {
+    title: 'Vergelyking 1 — Sintese (Verroesting van Yster)',
+    left: [
+      {formula:'Fe', atoms:{Fe:1}, coeff:1},
+      {formula:'O₂', atoms:{O:2}, coeff:1}
+    ],
+    right: [
+      {formula:'Fe₂O₃', atoms:{Fe:2,O:3}, coeff:1}
+    ],
+    solution: {leftCoeffs:[4,3], rightCoeffs:[2]}
+  },
+  {
+    title: 'Vergelyking 2 — Sintese (Waterstofchloried)',
+    left: [
+      {formula:'H₂', atoms:{H:2}, coeff:1},
+      {formula:'Cl₂', atoms:{Cl:2}, coeff:1}
+    ],
+    right: [
+      {formula:'HCl', atoms:{H:1,Cl:1}, coeff:1}
+    ],
+    solution: {leftCoeffs:[1,1], rightCoeffs:[2]}
+  },
+  {
+    title: 'Vergelyking 3 — Sintese (Ammoniak / Haber-proses)',
+    left: [
+      {formula:'N₂', atoms:{N:2}, coeff:1},
+      {formula:'H₂', atoms:{H:2}, coeff:1}
+    ],
+    right: [
+      {formula:'NH₃', atoms:{N:1,H:3}, coeff:1}
+    ],
+    solution: {leftCoeffs:[1,3], rightCoeffs:[2]}
+  },
+  {
+    title: 'Vergelyking 4 — Verbranding (Propaan)',
+    left: [
+      {formula:'C₃H₈', atoms:{C:3,H:8}, coeff:1},
+      {formula:'O₂', atoms:{O:2}, coeff:1}
+    ],
+    right: [
+      {formula:'CO₂', atoms:{C:1,O:2}, coeff:1},
+      {formula:'H₂O', atoms:{H:2,O:1}, coeff:1}
+    ],
+    solution: {leftCoeffs:[1,5], rightCoeffs:[3,4]}
+  }
+];
+
+let curEqIdx = 0;
+let curCoeffs = {left:[], right:[]};
+
+function setEquation(idx, btn){
+  curEqIdx = idx;
+  if(btn){
+    document.querySelectorAll('#tab-explore .ctrl-card .mode-btn').forEach(b=>{
+      if(b.textContent.match(/^\d\./)) b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+  resetEquation();
+}
+
+function resetEquation(){
+  const eq = equations[curEqIdx];
+  curCoeffs.left = eq.left.map(()=>1);
+  curCoeffs.right = eq.right.map(()=>1);
+  renderBalancer();
+}
+
+function changeCoeff(side, idx, delta){
+  const arr = curCoeffs[side];
+  arr[idx] = Math.max(1, Math.min(9, arr[idx] + delta));
+  renderBalancer();
+}
+
+function renderBalancer(){
+  const eq = equations[curEqIdx];
+  document.getElementById('balTitle').textContent = eq.title;
+
+  // Build the equation display with steppers
+  let html = '';
+  eq.left.forEach((sp, i)=>{
+    if(i > 0) html += '<span class="eq-plus">+</span>';
+    html += buildTerm('left', i, sp);
+  });
+  html += '<span class="eq-arrow">→</span>';
+  eq.right.forEach((sp, i)=>{
+    if(i > 0) html += '<span class="eq-plus">+</span>';
+    html += buildTerm('right', i, sp);
+  });
+  document.getElementById('balancerEq').innerHTML = html;
+
+  // Build atom count table
+  const elements = new Set();
+  eq.left.forEach(sp=>Object.keys(sp.atoms).forEach(e=>elements.add(e)));
+  eq.right.forEach(sp=>Object.keys(sp.atoms).forEach(e=>elements.add(e)));
+  const elList = Array.from(elements);
+
+  let headHtml = '<th>Element</th>';
+  elList.forEach(e=>{ headHtml += '<th>'+e+'</th>'; });
+  document.getElementById('balTableHead').innerHTML = headHtml;
+
+  let leftCounts = {}, rightCounts = {};
+  elList.forEach(e=>{
+    leftCounts[e] = eq.left.reduce((sum,sp,i)=> sum + (sp.atoms[e]||0) * curCoeffs.left[i], 0);
+    rightCounts[e] = eq.right.reduce((sum,sp,i)=> sum + (sp.atoms[e]||0) * curCoeffs.right[i], 0);
+  });
+
+  let leftRow = '<td style="text-align:left;color:var(--muted)">Linkerkant</td>';
+  let rightRow = '<td style="text-align:left;color:var(--muted)">Regterkant</td>';
+  let allBalanced = true;
+  elList.forEach(e=>{
+    const match = leftCounts[e] === rightCounts[e];
+    if(!match) allBalanced = false;
+    leftRow += '<td class="'+(match?'bal-ok':'bal-bad')+'">'+leftCounts[e]+'</td>';
+    rightRow += '<td class="'+(match?'bal-ok':'bal-bad')+'">'+rightCounts[e]+'</td>';
+  });
+  document.getElementById('balTableLeft').innerHTML = leftRow;
+  document.getElementById('balTableRight').innerHTML = rightRow;
+
+  const statusEl = document.getElementById('balStatus');
+  if(allBalanced){
+    statusEl.textContent = '✓ Gebalanseer! Elke element het gelyke atome aan beide kante.';
+    statusEl.className = 'balance-status ok';
+  } else {
+    statusEl.textContent = 'Nog nie gebalanseer nie — pas die koëffisiënte aan totdat elke kolom ooreenstem.';
+    statusEl.className = 'balance-status bad';
+  }
+}
+
+function buildTerm(side, idx, sp){
+  const coeff = curCoeffs[side][idx];
+  return '<span class="eq-term">' +
+    '<span class="eq-formula">' + (coeff > 1 ? coeff : '') + sp.formula + '</span>' +
+    '<span class="eq-coeff-stepper">' +
+      '<button class="stepper-btn" onclick="changeCoeff(\''+side+'\','+idx+',-1)">−</button>' +
+      '<span class="coeff-num">'+coeff+'</span>' +
+      '<button class="stepper-btn" onclick="changeCoeff(\''+side+'\','+idx+',1)">+</button>' +
+    '</span>' +
+  '</span>';
+}
+
+// initialise first equation
+resetEquation();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

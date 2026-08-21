@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vektore &amp; Skalare — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#93c5fd}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(96,165,250,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Fisika · Les 1</div>
+  <h1 class="lesson-title">Vektore &amp; Skalare</h1>
+  <p class="lesson-sub">Onderskei tussen skalaar- en vektorgroothede, tel vektore grafies en algebraïes bymekaar, en vind die resultant van veelvuldige vektore in een en twee dimensies.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Simuleer</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✓ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<!-- LESSON TAB -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Wat is 'n Skalaar?</h2>
+    <p>'n <strong>Skalaargrootheid</strong> het slegs grootte (omvang) — geen rigting is nodig om dit volledig te beskryf nie. Skalare word met gewone rekenkunde bymekaar getel en afgetrek.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Skalaargrootheid</th><th>Simbool</th><th>SI-eenheid</th></tr></thead>
+      <tbody>
+        <tr><td>Afstand</td><td>d</td><td>meter (m)</td></tr>
+        <tr><td>Spoed</td><td>v</td><td>m·s⁻¹</td></tr>
+        <tr><td>Massa</td><td>m</td><td>kilogram (kg)</td></tr>
+        <tr><td>Temperatuur</td><td>T</td><td>kelvin (K) of °C</td></tr>
+        <tr><td>Tyd</td><td>t</td><td>sekonde (s)</td></tr>
+        <tr><td>Energie</td><td>E</td><td>joule (J)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Wat is 'n Vektor?</h2>
+    <p>'n <strong>Vektorgrootheid</strong> het sowel grootte AS rigting. Jy moet altyd albei aandui om 'n volledige beskrywing van 'n vektor te gee.</p>
+    <table class="symbols-table">
+      <thead><tr><th>Vektorgrootheid</th><th>Simbool</th><th>SI-eenheid</th></tr></thead>
+      <tbody>
+        <tr><td>Verplasing</td><td><strong>s</strong> of <strong>x</strong></td><td>meter (m)</td></tr>
+        <tr><td>Snelheid</td><td><strong>v</strong></td><td>m·s⁻¹</td></tr>
+        <tr><td>Versnelling</td><td><strong>a</strong></td><td>m·s⁻²</td></tr>
+        <tr><td>Krag</td><td><strong>F</strong></td><td>newton (N)</td></tr>
+        <tr><td>Momentum</td><td><strong>p</strong></td><td>kg·m·s⁻¹</td></tr>
+        <tr><td>Gewig</td><td><strong>W</strong></td><td>newton (N)</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Notasie:</strong> Vektore word in <strong>vetdruk</strong> geskryf (bv. <strong>F</strong>) of met 'n pyltjie bo die simbool (→F). Die grootte van 'n vektor word geskryf as |<strong>F</strong>| of eenvoudig F (nie vetdruk nie).</div>
+
+    <h2>Vektordiagramme</h2>
+    <p>'n Vektor word deur 'n pyl voorgestel. Die <strong>lengte</strong> van die pyl stel sy grootte voor (op skaal geteken) en die <strong>rigting</strong> waarin die pyl wys, stel die vektor se rigting voor.</p>
+    <div class="key-fact">Kies altyd 'n skaal (bv. 1 cm = 10 N) en 'n verwysingsrigting (bv. Oos = positief) voordat jy 'n vektordiagram teken.</div>
+
+    <h2>Vektore Bymekaartel in Een Dimensie (1D)</h2>
+    <p>In 1D kies jy 'n konvensie vir die positiewe rigting (bv. Oos = positief, regs = positief). Vektore in die positiewe rigting kry 'n +-teken; vektore in die negatiewe rigting kry 'n −-teken. Die resultant is hul algebraïese som.</p>
+    <div class="callout">
+      <strong>Voorbeeld:</strong> 'n Persoon loop 3 m Oos en dan 5 m Wes.<br>
+      Neem Oos = positief: +3 m + (−5 m) = −2 m<br>
+      Die resulterende verplasing is <strong>2 m Wes</strong>.
+    </div>
+    <p>Die <strong>stert-tot-kop-metode</strong> is 'n grafiese tegniek: teken die tweede vektor sodat dit presies by die punt (kop) van die eerste begin. Die resultant strek van die stert van die eerste vektor na die kop van die laaste.</p>
+    <div class="key-fact">As vektore 'n geslote veelhoek vorm (die kop van die laaste ontmoet die stert van die eerste), is die resultant = 0. Dit word 'n geslote vektordiagram genoem.</div>
+
+    <h2>Vektore in Komponente Ontbind (2D)</h2>
+    <p>Enige 2D-vektor <strong>F</strong> teen hoek θ met die horisontaal kan in twee loodregte komponente verdeel word:</p>
+    <div class="formula">
+      Fₓ = F cos θ &nbsp;&nbsp;&nbsp; (horisontale komponent)<br>
+      Fᵧ = F sin θ &nbsp;&nbsp;&nbsp; (vertikale komponent)
+    </div>
+    <p>waar θ vanaf die positiewe x-as (horisontaal) gemeet word.</p>
+
+    <h2>2D-Vektore Bymekaartel met Komponente</h2>
+    <p>Om die resultant van veelvuldige 2D-vektore te vind:</p>
+    <ul>
+      <li>Ontbind elke vektor in sy x- en y-komponente.</li>
+      <li>Tel al die x-komponente bymekaar: ΣFₓ</li>
+      <li>Tel al die y-komponente bymekaar: ΣFᵧ</li>
+      <li>Vind die resultant se grootte: R = √(ΣFₓ² + ΣFᵧ²)</li>
+      <li>Vind die hoek: θ = arctan(ΣFᵧ / ΣFₓ)</li>
+    </ul>
+    <div class="formula">
+      R = √(ΣFₓ² + ΣFᵧ²)<br>
+      θ = arctan(ΣFᵧ / ΣFₓ)
+    </div>
+    <div class="callout">
+      <strong>Uitgewerkte voorbeeld:</strong> Vektor A = 5 N teen 0° (Oos); Vektor B = 4 N teen 90° (Noord).<br>
+      Aₓ = 5 cos 0° = 5 N; Aᵧ = 5 sin 0° = 0 N<br>
+      Bₓ = 4 cos 90° = 0 N; Bᵧ = 4 sin 90° = 4 N<br>
+      ΣFₓ = 5 N; ΣFᵧ = 4 N<br>
+      R = √(5² + 4²) = √41 ≈ <strong>6.40 N</strong><br>
+      θ = arctan(4/5) ≈ <strong>38.7° Noord van Oos</strong>
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-Uitbreiding — Eenheidsvektore &amp; Vektoraftrekking</div>
+      <p>In IEB sal jy <strong>eenheidsvektor-notasie</strong> gebruik: î stel 'n eenheidsvektor in die x-rigting voor; ĵ stel 'n eenheidsvektor in die y-rigting voor. Enige 2D-vektor kan geskryf word as <strong>F</strong> = Fₓî + Fᵧĵ.</p>
+      <p><strong>Vektoraftrekking</strong> word gedefinieer as die optel van die negatief: <strong>A</strong> − <strong>B</strong> = <strong>A</strong> + (−<strong>B</strong>). Die negatief van 'n vektor het dieselfde grootte maar teenoorgestelde rigting. Dit is belangrik wanneer jy veranderinge in snelheid vind: Δ<strong>v</strong> = <strong>v</strong>f − <strong>v</strong>i.</p>
+      <p><strong>Ewewig van 3 kragte:</strong> Wanneer drie kragte op 'n voorwerp in ewewig inwerk (netto krag = 0), is hul vektorsom nul. Stert-tot-kop geteken, vorm hulle 'n geslote driehoek. Jy kan onbekende kragte oplos met trigonometrie of die komponent-metode.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Vektoroptelling-Speelarea</h3>
+      <canvas id="vecCanvas" height="340"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Modus</div>
+        <button class="mode-btn active" id="mode1d" onclick="setMode('1d')">1D-Getallelyn</button>
+        <button class="mode-btn" id="mode2d" onclick="setMode('2d')">2D-Vektore</button>
+        <div style="margin-top:14px">
+          <div class="ctrl-label">Vektor A (blou)</div>
+          <div class="slider-row">
+            <label>Grootte</label>
+            <input type="range" id="slA" min="1" max="10" value="5" step="0.5" oninput="updateSim()">
+            <span class="slider-val" id="valA">5</span>
+          </div>
+          <div class="slider-row" id="rowAngA">
+            <label>Hoek (°)</label>
+            <input type="range" id="angA" min="0" max="359" value="0" oninput="updateSim()">
+            <span class="slider-val" id="valAngA">0°</span>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="ctrl-label">Vektor B (pers)</div>
+          <div class="slider-row">
+            <label>Grootte</label>
+            <input type="range" id="slB" min="1" max="10" value="4" step="0.5" oninput="updateSim()">
+            <span class="slider-val" id="valB">4</span>
+          </div>
+          <div class="slider-row" id="rowAngB">
+            <label>Hoek (°)</label>
+            <input type="range" id="angB" min="0" max="359" value="90" oninput="updateSim()">
+            <span class="slider-val" id="valAngB">90°</span>
+          </div>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Lesings</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">|A|</div><div class="readout-val" id="ro-a">5<span>eenhede</span></div></div>
+          <div class="readout"><div class="readout-label">|B|</div><div class="readout-val" id="ro-b">4<span>eenhede</span></div></div>
+          <div class="readout"><div class="readout-label">|R| Resultant</div><div class="readout-val" id="ro-r">—<span>eenhede</span></div></div>
+          <div class="readout"><div class="readout-label">Hoek van R</div><div class="readout-val" id="ro-ang">—<span>°</span></div></div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.7">
+          <span style="color:#60a5fa">■</span> Vektor A &nbsp;
+          <span style="color:#a78bfa">■</span> Vektor B &nbsp;
+          <span style="color:#fbbf24">■</span> Resultant R<br>
+          <span style="color:rgba(255,255,255,.25)">- - -</span> Komponente
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-val">0/8</div>
+      <div><div style="font-weight:700;color:#fff;margin-bottom:4px">Vasvra Voltooi</div><div style="font-size:13px;color:var(--muted)">Gaan jou antwoorde hierbo na.</div></div>
+    </div>
+    <div id="practice-nsc"></div>
+    <div class="ieb-practice" id="practice-ieb"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Voltooi hierdie vrae in jou oefeningboek. Wys alle berekeninge. Sluit 'n netjiese vektordiagram in waar van toepassing. Gebruik g = 9.8 m·s⁻² tensy anders aangedui.</div>
+
+    <div class="wb-q"><div class="wb-qnum">Vraag 1</div><div class="wb-qtext">Klassifiseer elk van die volgende as 'n skalaar of 'n vektor, en gee die SI-eenheid: (a) 50 km/h Noord, (b) 200 J, (c) 9.8 m·s⁻² afwaarts, (d) 37°C, (e) 500 N na links.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2</div><div class="wb-qtext">'n Fietsryer ry 8 km Oos, dan 3 km Wes, dan 5 km Oos. Teken 'n vektordiagram op skaal (1 cm = 2 km). Vind die totale afstand afgelê en die resulterende verplasing (grootte en rigting).</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3</div><div class="wb-qtext">'n Krag van 12 N werk teen 30° bo die horisontaal in. Bereken die horisontale en vertikale komponente. Rond af tot twee desimale plekke.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4</div><div class="wb-qtext">Twee kragte werk op 'n voorwerp in: <strong>F₁</strong> = 6 N Oos en <strong>F₂</strong> = 8 N Noord. Gebruik die komponent-metode om die grootte en rigting van die resulterende krag te vind. Teken die stert-tot-kop-vektordiagram.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5</div><div class="wb-qtext">Drie vektore word bymekaargetel: <strong>P</strong> = 4 N teen 0°, <strong>Q</strong> = 3 N teen 90°, <strong>R</strong> = 5 N teen 180°. Wys of hierdie vektore 'n geslote vektordiagram vorm al dan nie. Bereken die grootte en rigting van die resultant.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 — Kragtabel (drie kragte nie langs die asse belyn nie)</div><div class="wb-qtext">Drie toue trek aan 'n ring, met groottes en rigtings (gemeet antikloksgewys vanaf die positiewe x-as) hieronder aangeteken:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Krag</th><th>Grootte (N)</th><th>Hoek vanaf +x-as</th></tr></thead>
+        <tbody>
+          <tr><td>F₁</td><td>12</td><td>0°</td></tr>
+          <tr><td>F₂</td><td>9</td><td>120°</td></tr>
+          <tr><td>F₃</td><td>15</td><td>250°</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die x-komponent en y-komponent van elke krag. Rond elkeen af tot twee desimale plekke.<br>
+      (b) Bereken ΣFₓ en ΣFᵧ (die som van al die x-komponente en al die y-komponente).<br>
+      (c) Bereken die grootte van die resulterende krag, R = √(ΣFₓ² + ΣFᵧ²).<br>
+      (d) Bereken die rigting van die resultant, θ = arctan(ΣFᵧ / ΣFₓ), en gee aan in watter kwadrant dit lê (gebruik die tekens van ΣFₓ en ΣFᵧ om te besluit).</div></div>
+  </div>
+</div>
+
+<script>
+// ── Curriculum toggle ──────────────────────────────────────────────
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ── Tab switching ──────────────────────────────────────────────────
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ── Simulation ─────────────────────────────────────────────────────
+let simMode='1d';
+let simInited=false;
+const DEG=Math.PI/180;
+
+function setMode(m){
+  simMode=m;
+  document.getElementById('mode1d').classList.toggle('active',m==='1d');
+  document.getElementById('mode2d').classList.toggle('active',m==='2d');
+  document.getElementById('rowAngA').style.display=m==='2d'?'flex':'none';
+  document.getElementById('rowAngB').style.display=m==='2d'?'flex':'none';
+  updateSim();
+}
+
+function initSim(){
+  if(simInited) return;
+  simInited=true;
+  setMode('1d');
+  updateSim();
+}
+
+function updateSim(){
+  const canvas=document.getElementById('vecCanvas');
+  if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||600;
+  const H=340;
+  canvas.width=W*dpr;
+  canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+
+  const magA=parseFloat(document.getElementById('slA').value);
+  const magB=parseFloat(document.getElementById('slB').value);
+  const angA=parseFloat(document.getElementById('angA').value);
+  const angB=parseFloat(document.getElementById('angB').value);
+
+  document.getElementById('valA').textContent=magA;
+  document.getElementById('valB').textContent=magB;
+  document.getElementById('valAngA').textContent=angA+'°';
+  document.getElementById('valAngB').textContent=angB+'°';
+  document.getElementById('ro-a').innerHTML=magA+'<span>eenhede</span>';
+  document.getElementById('ro-b').innerHTML=magB+'<span>eenhede</span>';
+
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#040710';
+  ctx.fillRect(0,0,W,H);
+
+  if(simMode==='1d'){
+    draw1D(ctx,W,H,magA,magB,angA,angB);
+  } else {
+    draw2D(ctx,W,H,magA,magB,angA,angB);
+  }
+}
+
+function drawArrow(ctx,x1,y1,x2,y2,color,lw){
+  const dx=x2-x1,dy=y2-y1;
+  const len=Math.sqrt(dx*dx+dy*dy);
+  if(len<2) return;
+  const ux=dx/len,uy=dy/len;
+  const hw=Math.max(8,lw*3);
+  ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=lw;
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2-ux*hw,y2-uy*hw);ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-ux*hw-uy*hw*0.5,y2-uy*hw+ux*hw*0.5);
+  ctx.lineTo(x2-ux*hw+uy*hw*0.5,y2-uy*hw-ux*hw*0.5);
+  ctx.closePath();ctx.fill();
+}
+
+function draw1D(ctx,W,H,magA,magB,angA,angB){
+  const cx=W/2,cy=H/2;
+  const scale=18;
+  // axis
+  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(40,cy);ctx.lineTo(W-40,cy);ctx.stroke();
+  // ticks
+  for(let i=-10;i<=10;i++){
+    const x=cx+i*scale;
+    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x,cy-5);ctx.lineTo(x,cy+5);ctx.stroke();
+    if(i!==0){
+      ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+      ctx.fillText(i,x,cy+16);
+    }
+  }
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText(0,cx,cy+16);
+  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='11px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('+',W-36,cy+4);ctx.textAlign='right';ctx.fillText('−',44,cy+4);
+
+  // direction-aware sign
+  const signA=(angA>=90&&angA<270)?-1:1;
+  const signB=(angB>=90&&angB<270)?-1:1;
+  const ax=signA*magA*scale;
+  const bx=signB*magB*scale;
+  const rx=ax+bx;
+
+  // vector A from origin
+  drawArrow(ctx,cx,cy-18,cx+ax,cy-18,'#60a5fa',3);
+  // vector B from tip of A
+  drawArrow(ctx,cx+ax,cy,cx+ax+bx,cy,'#a78bfa',3);
+  // resultant below
+  if(Math.abs(rx)>2){
+    drawArrow(ctx,cx,cy+22,cx+rx,cy+22,'#fbbf24',3);
+  }
+
+  // labels
+  ctx.font='bold 12px Cabinet Grotesk';ctx.textAlign='center';
+  ctx.fillStyle='#93c5fd';ctx.fillText('A',cx+ax/2,cy-28);
+  ctx.fillStyle='#c4b5fd';ctx.fillText('B',cx+ax+bx/2,cy-12);
+  ctx.fillStyle='#fbbf24';ctx.fillText('R',cx+rx/2,cy+38);
+
+  const r=Math.abs(rx/scale).toFixed(2);
+  const dir=rx>=0?'positiewe rigting':'negatiewe rigting';
+  document.getElementById('ro-r').innerHTML=r+'<span>eenhede</span>';
+  document.getElementById('ro-ang').innerHTML=(rx>=0?'0':'180')+'<span>°</span>';
+  document.getElementById('ro-ang').innerHTML='<span style="font-size:11px">'+dir+'</span>';
+}
+
+function draw2D(ctx,W,H,magA,magB,angA,angB){
+  const cx=W/2,cy=H/2;
+  const scale=22;
+
+  // grid
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
+  for(let i=-12;i<=12;i++){
+    ctx.beginPath();ctx.moveTo(cx+i*scale,0);ctx.lineTo(cx+i*scale,H);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,cy+i*scale);ctx.lineTo(W,cy+i*scale);ctx.stroke();
+  }
+  // axes
+  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(40,cy);ctx.lineTo(W-20,cy);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx,H-20);ctx.lineTo(cx,20);ctx.stroke();
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='10px JetBrains Mono';
+  ctx.textAlign='left';ctx.fillText('+x',W-32,cy-6);
+  ctx.textAlign='center';ctx.fillText('+y',cx+10,28);
+
+  const axA=Math.cos(angA*DEG)*magA*scale,ayA=-Math.sin(angA*DEG)*magA*scale;
+  const axB=Math.cos(angB*DEG)*magB*scale,ayB=-Math.sin(angB*DEG)*magB*scale;
+  const rx=axA+axB,ry=ayA+ayB;
+
+  // components (dashed)
+  ctx.setLineDash([4,4]);ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(96,165,250,.35)';
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+axA,cy);ctx.lineTo(cx+axA,cy+ayA);ctx.stroke();
+  ctx.strokeStyle='rgba(167,139,250,.35)';
+  ctx.beginPath();ctx.moveTo(cx+axA,cy+ayA);ctx.lineTo(cx+axA+axB,cy+ayA);ctx.lineTo(cx+axA+axB,cy+ayA+ayB);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Vector A from origin
+  drawArrow(ctx,cx,cy,cx+axA,cy+ayA,'#60a5fa',3);
+  // Vector B from tip of A (tail-to-head)
+  drawArrow(ctx,cx+axA,cy+ayA,cx+axA+axB,cy+ayA+ayB,'#a78bfa',3);
+  // Resultant from origin
+  drawArrow(ctx,cx,cy,cx+rx,cy+ry,'#fbbf24',2.5);
+
+  // labels
+  ctx.font='bold 13px Cabinet Grotesk';ctx.textAlign='center';
+  ctx.fillStyle='#93c5fd';ctx.fillText('A',cx+axA/2-6,cy+ayA/2-6);
+  ctx.fillStyle='#c4b5fd';ctx.fillText('B',cx+axA+axB/2+6,cy+ayA+ayB/2-6);
+  ctx.fillStyle='#fbbf24';ctx.fillText('R',cx+rx/2+8,cy+ry/2+8);
+
+  const R=Math.sqrt(rx*rx+ry*ry)/scale;
+  const theta=Math.atan2(-ry,rx)/DEG;
+  const thetaPos=(theta+360)%360;
+  document.getElementById('ro-r').innerHTML=R.toFixed(2)+'<span>eenhede</span>';
+  document.getElementById('ro-ang').innerHTML=thetaPos.toFixed(1)+'<span>°</span>';
+}
+
+window.addEventListener('resize',()=>{if(simInited)updateSim();});
+
+// ── Practice ───────────────────────────────────────────────────────
+const nscQs=[
+  {q:"Watter een van die volgende is 'n VEKTORgrootheid?",opts:["Temperatuur","Massa","Verplasing","Spoed"],ans:2,exp:"Verplasing het sowel grootte as rigting, wat dit 'n vektor maak. Temperatuur, massa en spoed is almal skalare."},
+  {q:"'n Motor ry 100 km noord en dan 60 km suid. Wat is sy resulterende verplasing?",opts:["160 km Noord","40 km Noord","40 km Suid","160 km Suid"],ans:1,exp:"Neem Noord = +. Resultaat: +100 + (−60) = +40 km. Die resultant is 40 km Noord."},
+  {q:"Watter notasie stel die GROOTTE van 'n vektor F korrek voor?",opts:["F (in vetdruk)","→F","|F|","F̃"],ans:2,exp:"|F| (vertikale strepe) dui die grootte van vektor F aan. Vetdruk F of →F dui die vektor self aan."},
+  {q:"Twee kragte werk op 'n voorwerp in: 6 N Oos en 8 N Noord. Wat is die grootte van die resultant?",opts:["14 N","10 N","2 N","7 N"],ans:1,exp:"Met die stelling van Pythagoras: R = √(6² + 8²) = √(36 + 64) = √100 = 10 N."},
+  {q:"'n Krag van 20 N werk teen 30° met die horisontaal in. Wat is die horisontale komponent?",opts:["10 N","17.3 N","20 N","11.5 N"],ans:1,exp:"Fₓ = F cos θ = 20 × cos 30° = 20 × 0.866 ≈ 17.3 N."},
+  {q:"Drie vektore vorm 'n GESLOTE vektordiagram. Dit beteken die resultant is:",opts:["Gelyk aan die grootste vektor","Dubbel die eerste vektor","Nul","Onbepaald"],ans:2,exp:"'n Geslote vektordiagram beteken die kop van die laaste vektor ontmoet die stert van die eerste — die resultant is nul, wat beteken die vektore is in ewewig."},
+  {q:"(Analise) Drie gelyke kragte van 10 N elk werk op 'n ring in, teen hoeke van 0°, 120°, en 240° gemeet vanaf die positiewe x-as. Wat is die grootte van die resulterende krag?",opts:["30 N","10 N","0 N","17.3 N"],ans:2,exp:"Ontbind in komponente: ΣFₓ = 10cos0° + 10cos120° + 10cos240° = 10(1 − 0.5 − 0.5) = 0. ΣFᵧ = 10sin0° + 10sin120° + 10sin240° = 10(0 + 0.866 − 0.866) = 0. Aangesien albei komponentsomme nul is, is die resultant 0 N. Drie gelyke vektore wat 120° uitmekaar geplaas is, vorm altyd 'n geslote, simmetriese (gelykbenige) vektordriehoek — 'n kortpad wat die moeite werd is om te herken pleks van elke keer die volledige berekening deur te werk."},
+  {q:"(Analise) 'n Fietsryer ry 3 km Noord, dan 4 km Oos, dan 3 km Suid, en beëindig die rit daar. Wat is die totale AFSTAND afgelê en die grootte van die resulterende VERPLASING?",opts:["Afstand = 10 km; verplasing = 4 km Oos","Afstand = 4 km; verplasing = 10 km Oos","Afstand = 10 km; verplasing = 10 km Oos","Afstand = 4 km; verplasing = 4 km Oos"],ans:0,exp:"Afstand is 'n skalaar — tel eenvoudig elke been bymekaar ongeag rigting: 3 + 4 + 3 = 10 km. Verplasing is 'n vektor — die Noord- en Suid-bene is gelyk en teenoorgesteld, sodat hulle presies ophef (netto noord-suid-verplasing = 0), en slegs die 4 km Oos-been oorbly. Resulterende verplasing = 4 km Oos. Dit wys waarom afstand en verplasing baie verskillende antwoorde vir dieselfde reis kan gee."}
+];
+
+const iebQs=[
+  {q:"'n Krag F⃗ = 3î + 4ĵ N werk op 'n voorwerp in. Wat is die grootte en rigting van F⃗? <span class='ieb-badge'>IEB</span>",opts:["5 N teen 53.1° bo die x-as","5 N teen 36.9° bo die x-as","7 N teen 45°","1 N teen 90°"],ans:0,exp:"Grootte: |F| = √(3²+4²) = 5 N. Rigting: θ = arctan(4/3) ≈ 53.1° bo die x-as (vanaf die î-rigting)."},
+  {q:"Drie kragte werk in ewewig op 'n voorwerp in: F₁ = 10 N Oos, F₂ = 6 N Noord. Wat is F₃ (grootte en rigting)? <span class='ieb-badge'>IEB</span>",opts:["11.7 N Suidwes","4 N Wes","16 N Suidwes","11.7 N Noordoos"],ans:0,exp:"Vir ewewig moet ΣF = 0 wees. F₃ moet dus F₁ en F₂ ophef. F₃ₓ = −10 N, F₃ᵧ = −6 N. |F₃| = √(100+36) ≈ 11.7 N in die Suidwes-rigting."}
+];
+
+let scores=0,answered=0;
+function buildPractice(){
+  const nsc=document.getElementById('practice-nsc');
+  nscQs.forEach((q,i)=>{ nsc.appendChild(makeCard(q,i,'nsc')); });
+  const ieb=document.getElementById('practice-ieb');
+  iebQs.forEach((q,i)=>{ ieb.appendChild(makeCard(q,i+nscQs.length,'ieb')); });
+}
+function makeCard(q,idx,type){
+  const card=document.createElement('div');card.className='q-card';
+  card.innerHTML=`<div class="q-num">Vraag ${idx+1}</div><div class="q-text">${q.q}</div><div class="mc-options" id="opts-${idx}"></div><div class="feedback" id="fb-${idx}"></div>`;
+  const opts=card.querySelector(`#opts-${idx}`);
+  q.opts.forEach((o,oi)=>{
+    const btn=document.createElement('button');btn.className='mc-opt';
+    btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+oi)}</span>${o}`;
+    btn.onclick=()=>pick(idx,oi,q,opts);
+    opts.appendChild(btn);
+  });
+  return card;
+}
+function pick(idx,chosen,q,opts){
+  const btns=opts.querySelectorAll('.mc-opt');
+  btns.forEach(b=>b.disabled=true);
+  btns[chosen].classList.add(chosen===q.ans?'correct':'wrong');
+  if(chosen!==q.ans) btns[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb-'+idx);
+  fb.textContent=q.exp;fb.className='feedback show '+(chosen===q.ans?'ok':'bad');
+  if(chosen===q.ans) scores++;
+  answered++;
+  if(answered===nscQs.length){
+    const b=document.getElementById('score-banner');
+    document.getElementById('score-val').textContent=scores+'/'+nscQs.length;
+    b.classList.add('show');
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
