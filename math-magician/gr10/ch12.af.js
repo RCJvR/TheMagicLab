@@ -223,9 +223,9 @@ MathMagician.registerChapter(12, {
                 const B=180-A;
                 let html='<span style="color:rgba(221,225,240,0.50);">In parallelogram ABCD:</span><br>';
                 html+='<span style="color:#fcd34d;">∠A = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (gegee)</span><br>';
-                html+='<span style="color:#6ee7b7;">∠C = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van 'n parallelogram is gelyk)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠C = '+A+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van \'n parallelogram is gelyk)</span><br>';
                 html+='<span style="color:#6ee7b7;">∠B = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (ko-interne hoeke, AB∥DC → ∠A + ∠B = 180°)</span><br>';
-                html+='<span style="color:#6ee7b7;">∠D = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van 'n parallelogram is gelyk)</span><br>';
+                html+='<span style="color:#6ee7b7;">∠D = '+B+'°</span><span style="color:rgba(221,225,240,0.50);"> (oorstaande hoeke van \'n parallelogram is gelyk)</span><br>';
                 html+='<span style="color:rgba(221,225,240,0.50);">Kontroleer: '+A+' + '+B+' + '+A+' + '+B+' = '+(2*A+2*B)+'° ✓</span>';
                 out.innerHTML=html;
               }

@@ -165,7 +165,7 @@ MathMagician.registerChapter(2, {
             function f(v){return Number.isInteger(v)?String(v):v.toFixed(4);}
             function explore(){
               var n=parseFloat(document.getElementById('rootN').value);
-              if(isNaN(n)){document.getElementById('rootOut').innerHTML='<span style="color:#fca5a5;">Voer \\'n geldige heelgetal in.</span>';return;}
+              if(isNaN(n)){document.getElementById('rootOut').innerHTML='<span style="color:#fca5a5;">Voer \'n geldige heelgetal in.</span>';return;}
               var sq=n*n, cu=n*n*n;
               var sqrtReal=n>=0, sqrtVal=sqrtReal?Math.sqrt(n):NaN;
               var cbrtVal=n>=0?Math.cbrt(n):-Math.cbrt(-n);

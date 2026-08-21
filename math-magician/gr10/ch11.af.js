@@ -76,7 +76,7 @@ MathMagician.registerChapter(11, {
                 const side=document.getElementById('g10c11side').value;
                 const len=parseFloat(document.getElementById('g10c11len').value);
                 const out=document.getElementById('g10c11Out');
-                if(isNaN(ang)||isNaN(len)||ang<=0||ang>=90||len<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \\'n geldige hoek (1°–89°) en positiewe lengte in.</span>';return;}
+                if(isNaN(ang)||isNaN(len)||ang<=0||ang>=90||len<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige hoek (1°–89°) en positiewe lengte in.</span>';return;}
                 const rad=ang*Math.PI/180;
                 const sinA=Math.sin(rad),cosA=Math.cos(rad),tanA=Math.tan(rad);
                 let adj,opp,hyp;

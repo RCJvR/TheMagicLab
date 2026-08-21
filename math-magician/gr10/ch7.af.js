@@ -102,7 +102,7 @@ MathMagician.registerChapter(7, {
                   out.innerHTML='<span style="color:rgba(221,225,240,0.50);">Buite-hoek = som van twee nie-aangrensende binnehoeke</span><br>'
                     +'<span style="color:rgba(221,225,240,0.50);">'+a+'° = '+b+'° + 2de nie-aangrensende hoek</span><br>'
                     +'<span style="color:#6ee7b7;">2de nie-aangrensende hoek = '+other+'°</span><br>'
-                    +'<span style="color:rgba(221,225,240,0.50);">3de binnehoek (aangrensend aan die buitehoek, vorm 'n reguitlynpaar) = 180° − '+a+'° = </span><span style="color:#fcd34d;">'+third+'°</span>';
+                    +'<span style="color:rgba(221,225,240,0.50);">3de binnehoek (aangrensend aan die buitehoek, vorm \'n reguitlynpaar) = 180° − '+a+'° = </span><span style="color:#fcd34d;">'+third+'°</span>';
                 }
               }
               document.getElementById('g10c7mode').addEventListener('change',()=>{updateLabels();});
@@ -226,7 +226,7 @@ MathMagician.registerChapter(7, {
             (function(){
               function makeInput(id, label, val){
                 return '<div><div style="font-size:11px;color:rgba(221,225,240,0.45);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">'+label+'</div>'
-                  +'<input id="'+id+'" type="number" value="'+val+'" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\\'JetBrains Mono\\',monospace;text-align:center;"></div>';
+                  +'<input id="'+id+'" type="number" value="'+val+'" style="width:75px;background:#1e1b4b;border:1px solid rgba(99,102,241,0.40);color:#fcd34d;padding:7px;border-radius:7px;font-size:15px;font-family:\'JetBrains Mono\',monospace;text-align:center;"></div>';
               }
               function buildInputs(){
                 const m=document.getElementById('g10c7bmode').value;
@@ -247,7 +247,7 @@ MathMagician.registerChapter(7, {
                 if(m==='midpoint'){
                   const v1=parseFloat(document.getElementById('g10c7bv1').value);
                   const v2=parseFloat(document.getElementById('g10c7bv2').value);
-                  if(isNaN(v1)||v1<=0){out.innerHTML='<span style="color:#fca5a5;">Voer 'n geldige sylengte in.</span>';return;}
+                  if(isNaN(v1)||v1<=0){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige sylengte in.</span>';return;}
                   if(v2===0){
                     out.innerHTML='<span style="color:rgba(221,225,240,0.50);">BC (volle sy) = '+v1+', dus MN = BC ÷ 2 = </span><span style="color:#6ee7b7;">'+v1/2+' eenhede</span><br>'
                       +'<span style="color:rgba(221,225,240,0.50);font-size:13px;">MN ∥ BC (middellynstelling)</span>';

@@ -164,7 +164,7 @@ MathMagician.registerChapter(7, {
                 el.innerHTML='<span style="color:#fca5a5;">Voer geldige getalle in.</span>'; return;
               }
               if(a===0){
-                el.innerHTML='<span style="color:#fca5a5;">Koëffisiënt a kan nie 0 wees nie — dit is nie 'n lineêre vergelyking nie.</span>'; return;
+                el.innerHTML='<span style="color:#fca5a5;">Koëffisiënt a kan nie 0 wees nie — dit is nie \'n lineêre vergelyking nie.</span>'; return;
               }
               const x = (c - b) / a;
               const absB = Math.abs(b);

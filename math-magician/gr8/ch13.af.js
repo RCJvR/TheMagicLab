@@ -67,7 +67,7 @@ MathMagician.registerChapter(13, {
                 el.innerHTML='<div><span style="opacity:0.5;">b² = '+c+'² − '+a+'² = '+c*c+' − '+a*a+' = '+b2+'</span></div><div><span style="opacity:0.5;">b = √'+b2+' = </span><span style="color:#6ee7b7;font-size:14px;">'+fmt(bv)+'</span></div>';
               } else if(a>0&&b>0&&c>0){
                 const check=Math.abs(a*a+b*b-c*c)<0.01;
-                el.innerHTML=check?'<span style="color:#6ee7b7;">✓ Geldige reghoekige driehoek: '+a+'²+'+b+'²='+c+'²</span>':'<span style="color:#fca5a5;">✗ Nie \\'n reghoekige driehoek nie</span>';
+                el.innerHTML=check?'<span style="color:#6ee7b7;">✓ Geldige reghoekige driehoek: '+a+'²+'+b+'²='+c+'²</span>':'<span style="color:#fca5a5;">✗ Nie \'n reghoekige driehoek nie</span>';
               } else {
                 el.innerHTML='<span style="color:#fca5a5;">Voer presies twee sye in (stel die onbekende op 0).</span>';
               }

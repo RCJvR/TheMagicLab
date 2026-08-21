@@ -267,13 +267,13 @@ MathMagician.registerChapter(14, {
               document.getElementById('g10c14t2compBtn').addEventListener('click',()=>{
                 const p=gv('g10c14t2pcomp');
                 const out=document.getElementById('g10c14t2Out');
-                if(p===null||p<0||p>1){out.innerHTML='<span style="color:#fca5a5;">Voer \\'n waarskynlikheid tussen 0 en 1 in.</span>';return;}
-                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(A\\') = 1 − P(A) = 1 − '+p+' = </span><span style="color:#6ee7b7;">'+f(1-p)+'</span>';
+                if(p===null||p<0||p>1){out.innerHTML='<span style="color:#fca5a5;">Voer \'n waarskynlikheid tussen 0 en 1 in.</span>';return;}
+                out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(A\') = 1 − P(A) = 1 − '+p+' = </span><span style="color:#6ee7b7;">'+f(1-p)+'</span>';
               });
               document.getElementById('g10c14t2atlBtn').addEventListener('click',()=>{
                 const p=gv('g10c14t2pp'),n=parseInt(document.getElementById('g10c14t2pn').value);
                 const out=document.getElementById('g10c14t2Out');
-                if(p===null||p<=0||p>=1||isNaN(n)||n<1){out.innerHTML='<span style="color:#fca5a5;">Voer \\'n geldige sukseswaarskynlikheid in (0–1 uitsluitend) en ten minste 1 poging.</span>';return;}
+                if(p===null||p<=0||p>=1||isNaN(n)||n<1){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige sukseswaarskynlikheid in (0–1 uitsluitend) en ten minste 1 poging.</span>';return;}
                 const pNone=Math.pow(1-p,n);
                 const pAtLeast=1-pNone;
                 out.innerHTML='<span style="color:rgba(221,225,240,0.50);">P(geeneen) = (1−'+p+')^'+n+' = ('+f(1-p)+')^'+n+' = </span><span style="color:#fcd34d;">'+f(pNone)+'</span><br>'

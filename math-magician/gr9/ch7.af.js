@@ -64,7 +64,7 @@ MathMagician.registerChapter(7, {
               var key=document.getElementById('afExpr').value;
               var x=parseFloat(document.getElementById('afX').value);
               var e=exprs[key],out=document.getElementById('afOut');
-              if(isNaN(x)){out.innerHTML='<span style="color:#fca5a5;">Voer \\'n geldige x-waarde in.</span>';return;}
+              if(isNaN(x)){out.innerHTML='<span style="color:#fca5a5;">Voer \'n geldige x-waarde in.</span>';return;}
               var n=e.num(x),d=e.den(x);
               if(Math.abs(d)<1e-10){
                 out.innerHTML='<div style="color:#fca5a5;">⚠ x = '+x+' maak die noemer 0 → ONGEDEFINIEERD</div><div style="color:rgba(221,225,240,0.45);font-size:11px;">Beperking: '+e.restrict+'</div>';

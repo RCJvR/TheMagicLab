@@ -62,13 +62,13 @@ MathMagician.registerChapter(8, {
             function update(){
               const a=parseFloat(document.getElementById('csAngle').value);
               const el=document.getElementById('csOut');
-              if(isNaN(a)||a<0||a>180){el.innerHTML='<span style="color:#fca5a5;">Voer \\'n hoek tussen 0° en 180° in</span>';return;}
+              if(isNaN(a)||a<0||a>180){el.innerHTML='<span style="color:#fca5a5;">Voer \'n hoek tussen 0° en 180° in</span>';return;}
               const comp=90-a;
               const supp=180-a;
               let html='';
               html+='<div><span style="color:rgba(221,225,240,0.45);">Komplement  </span><span style="color:#6ee7b7;">90° − '+a+'° = <strong>'+comp+'°</strong></span>'+(comp<0?' <span style="color:#fca5a5;font-size:11px;">(geen komplement — hoek &gt; 90°)</span>':'')+'</div>';
               html+='<div><span style="color:rgba(221,225,240,0.45);">Supplement  </span><span style="color:#fcd34d;">180° − '+a+'° = <strong>'+supp+'°</strong></span></div>';
-              html+='<div style="margin-top:6px;font-size:11px;opacity:0.4;">'+a+'° is '+(a<90?'skerp':(a===90?'\\'n regte hoek':(a<180?'stomp':'\\'n gestrekte hoek')))+'</div>';
+              html+='<div style="margin-top:6px;font-size:11px;opacity:0.4;">'+a+'° is '+(a<90?'skerp':(a===90?'\'n regte hoek':(a<180?'stomp':'\'n gestrekte hoek')))+'</div>';
               el.innerHTML=html;
             }
             document.getElementById('csAngle').addEventListener('input',update);

@@ -159,10 +159,10 @@ MathMagician.registerChapter(19, {
           (function(){
             var NETS = {
               cube: {
-                title: 'Uitslaanpatroon van \\'n Kubus',
+                title: 'Uitslaanpatroon van \'n Kubus',
                 color: '#a5b4fc',
                 pieces: '6 vierkante',
-                desc: ['6 identiese vierkante', 'Gerangskik in \\'n kruispatroon', 'Vou op tot \\'n kubus met 6 vlakke, 8 hoekpunte, 12 rande'],
+                desc: ['6 identiese vierkante', 'Gerangskik in \'n kruispatroon', 'Vou op tot \'n kubus met 6 vlakke, 8 hoekpunte, 12 rande'],
                 draw: function(){
                   var h='', s=30, ox=60, oy=20;
                   var cells=[[1,0],[0,1],[1,1],[2,1],[3,1],[1,2]];
@@ -174,10 +174,10 @@ MathMagician.registerChapter(19, {
                 }
               },
               tri_prism: {
-                title: 'Uitslaanpatroon van \\'n Driehoekige Prisma',
+                title: 'Uitslaanpatroon van \'n Driehoekige Prisma',
                 color: '#fbbf24',
                 pieces: '2 driehoeke + 3 reghoeke',
-                desc: ['2 driehoeke (die basisse)', '3 reghoeke (die sye)', 'Vou op tot \\'n prisma met 5 vlakke, 6 hoekpunte, 9 rande'],
+                desc: ['2 driehoeke (die basisse)', '3 reghoeke (die sye)', 'Vou op tot \'n prisma met 5 vlakke, 6 hoekpunte, 9 rande'],
                 draw: function(){
                   var h='';
                   h+='<polygon points="20,140 50,80 80,140" fill="rgba(245,158,11,0.12)" stroke="#fbbf24" stroke-width="1.5"/>';
@@ -189,10 +189,10 @@ MathMagician.registerChapter(19, {
                 }
               },
               square_pyr: {
-                title: 'Uitslaanpatroon van \\'n Vierkantige Piramide',
+                title: 'Uitslaanpatroon van \'n Vierkantige Piramide',
                 color: '#6ee7b7',
                 pieces: '1 vierkant + 4 driehoeke',
-                desc: ['1 vierkant (die basis)', '4 driehoeke (die skuins sye)', 'Vou op tot \\'n piramide met 5 vlakke, 5 hoekpunte, 8 rande'],
+                desc: ['1 vierkant (die basis)', '4 driehoeke (die skuins sye)', 'Vou op tot \'n piramide met 5 vlakke, 5 hoekpunte, 8 rande'],
                 draw: function(){
                   var h='', cx=130, cy=100, s=50;
                   h+='<rect x="'+(cx-s/2)+'" y="'+(cy-s/2)+'" width="'+s+'" height="'+s+'" fill="rgba(16,185,129,0.12)" stroke="#6ee7b7" stroke-width="1.5"/>';

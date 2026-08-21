@@ -55,7 +55,7 @@ MathMagician.registerChapter(4, {
               const root=base<0&&n%2!==0?NaN:Math.sign(base)*Math.pow(Math.abs(base),1/n);
               const result=isNaN(root)?NaN:Math.pow(root,m);
               const f=v=>Number.isInteger(v)?String(v):v.toFixed(4);
-              document.getElementById('expOut').innerHTML=isNaN(result)?'<span style="color:#fca5a5;">Nie werklik nie (ewe wortel van \\'n negatiewe getal)</span>':[
+              document.getElementById('expOut').innerHTML=isNaN(result)?'<span style="color:#fca5a5;">Nie werklik nie (ewe wortel van \'n negatiewe getal)</span>':[
                 '<div><span style="color:rgba(221,225,240,0.45);">Uitdrukking: </span><span style="color:#fbbf24;">'+base+'^('+m+'/'+n+')</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);">Stap 1 ⁿ√grondtal: </span><span style="color:#a5b4fc;">'+f(root)+'</span></div>',
                 '<div><span style="color:rgba(221,225,240,0.45);">Stap 2 verhef tot m: </span><span style="color:#a5b4fc;">'+f(result)+'</span></div>',

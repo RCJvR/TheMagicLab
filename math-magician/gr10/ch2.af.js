@@ -83,7 +83,7 @@ MathMagician.registerChapter(2, {
                 const n=parseFloat(document.getElementById('g10c2n').value);
                 const out=document.getElementById('g10c2Out');
                 if(isNaN(a)||isNaN(m)||isNaN(n)||n===0){out.innerHTML='<span style="color:#fca5a5;">Voer geldige waardes in (n ≠ 0).</span>';return;}
-                if(a < 0 && n % 2 === 0){out.innerHTML='<span style="color:#fca5a5;">\\'n Ewewortel van \\'n negatiewe getal is nie reëel nie.</span>';return;}
+                if(a < 0 && n % 2 === 0){out.innerHTML='<span style="color:#fca5a5;">\'n Ewewortel van \'n negatiewe getal is nie reëel nie.</span>';return;}
                 const root = nthRoot(a, n);
                 const result = Math.pow(root, m);
                 const rootNice = isNice(root);
@@ -239,7 +239,7 @@ MathMagician.registerChapter(2, {
                 const b = parseInt(document.getElementById('g10c2eBase').value);
                 const R = parseFloat(document.getElementById('g10c2eResult').value);
                 const out = document.getElementById('g10c2eOut');
-                if(isNaN(R)||R<=0){out.innerHTML='<span style="color:#fca5a5;">Resultaat moet \\'n positiewe getal wees.</span>';return;}
+                if(isNaN(R)||R<=0){out.innerHTML='<span style="color:#fca5a5;">Resultaat moet \'n positiewe getal wees.</span>';return;}
                 const x = logBase(b, R);
                 const nice = isNice(x);
                 // Check if R is a power of b

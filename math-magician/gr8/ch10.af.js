@@ -66,7 +66,7 @@ MathMagician.registerChapter(10, {
                 const missing=180-known[0]-known[1];
                 if(missing<=0||missing>=180){el.innerHTML='<span style="color:#fca5a5;">Ongeldig — hoeke moet tussen 0° en 180° wees</span>';return;}
                 const which=a===0?'â':b===0?'b̂':'ĉ';
-                el.innerHTML='<span style="color:#6ee7b7;">'+which+' = 180° − '+known[0]+'° − '+known[1]+'° = <strong>'+missing+'°</strong></span><br><span style="opacity:0.5;">(som van hoeke in 'n driehoek)</span>';
+                el.innerHTML='<span style="color:#6ee7b7;">'+which+' = 180° − '+known[0]+'° − '+known[1]+'° = <strong>'+missing+'°</strong></span><br><span style="opacity:0.5;">(som van hoeke in \'n driehoek)</span>';
               } else {
                 el.innerHTML='<span style="color:#fca5a5;">Voer minstens twee hoeke in.</span>';
               }
@@ -327,7 +327,7 @@ MathMagician.registerChapter(10, {
               AAS: {
                 title: 'Angle-Angle-Side',
                 color: '#6ee7b7',
-                rule:  'Twee hoeke en 'n nie-ingeslote sy is gelyk.',
+                rule:  'Twee hoeke en \'n nie-ingeslote sy is gelyk.',
                 marks: ['angle','angle','side'],
                 desc: ['∠A = ∠D (hoek)', '∠B = ∠E (hoek)', 'BC = EF (nie-ingeslote sy)'],
                 draw: function(svg){
