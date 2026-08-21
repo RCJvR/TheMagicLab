@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektriese Stroombane — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:80px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:52px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Fisika · Les 6</div>
+  <div class="lesson-title">Elektriese Stroombane</div>
+  <div class="lesson-sub">Bemeester stroom, spanning, weerstand, die wet van Ohm, en die gedrag van serie- en parallelle stroombane — die grondslag van alle elektronika.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📋 Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Elektriese Stroom</h2>
+    <p>Elektriese stroom is die tempo van vloei van elektriese lading. In metale word lading gedra deur elektrone wat deur die geleier beweeg.</p>
+    <div class="formula">I = Q / t</div>
+    <table class="symbols-table">
+      <tr><th>Grootheid</th><th>Simbool</th><th>Eenheid</th></tr>
+      <tr><td>Stroom</td><td>I</td><td>Ampère (A)</td></tr>
+      <tr><td>Lading</td><td>Q</td><td>Coulomb (C)</td></tr>
+      <tr><td>Tyd</td><td>t</td><td>sekonde (s)</td></tr>
+    </table>
+    <div class="callout"><strong>Konvensionele stroom teenoor elektronstroom:</strong> Konvensionele stroom vloei van + na − (positiewe terminaal van battery); elektrone vloei eintlik van − na +. Ons gebruik altyd die konvensionele stroomrigting in stroombaandiagramme.</div>
+
+    <h2>Potensiaalverskil (Spanning)</h2>
+    <p>Potensiaalverskil (spanning) is die arbeid verrig per eenheid lading om lading tussen twee punte te beweeg. Dit is die "stoot" wat stroom om 'n stroombaan laat vloei.</p>
+    <div class="formula">V = W / Q</div>
+    <p>Eenheid: Volt (V). Een volt = een joule per coulomb. 'n Voltmeter word in <strong>parallel</strong> oor 'n komponent gekoppel om sy spanning te meet.</p>
+
+    <h2>Weerstand</h2>
+    <p>Weerstand is die teenstand teen die vloei van stroom. Dit word veroorsaak deur botsings tussen elektrone en die rooster van metaalione in die geleier.</p>
+    <div class="formula">R = V / I</div>
+    <p>Eenheid: Ohm (Ω). 'n Ammeter word in <strong>serie</strong> gekoppel om stroom te meet. 'n Weerstand se weerstandswaarde hang af van: materiaal, lengte (langer → meer R), deursnee-oppervlakte (dikker → minder R), en temperatuur.</p>
+
+    <h2>Wet van Ohm</h2>
+    <p>Vir 'n <strong>ohmiese geleier</strong> by konstante temperatuur is die stroom daardeur direk eweredig aan die spanning daaroor:</p>
+    <div class="formula">V = I × R</div>
+    <p>Die V–I-grafiek van 'n ohmiese geleier is 'n reguit lyn deur die oorsprong. Die gradiënt is gelyk aan die weerstand.</p>
+    <p><strong>Nie-ohmiese geleiers</strong> (bv. gloeilamp-filament) lewer nie 'n reguit V–I-lyn nie, want soos temperatuur toeneem, neem weerstand toe — die grafiek krom.</p>
+
+    <h2>Stroombaansimbole</h2>
+    <p>Sleutelsimbole wat in stroombaandiagramme gebruik word:</p>
+    <ul>
+      <li><strong>Sel:</strong> kort en lang parallelle lyne (kort = negatief)</li>
+      <li><strong>Battery:</strong> verskeie selle in serie</li>
+      <li><strong>Weerstand:</strong> reghoek</li>
+      <li><strong>Veranderlike weerstand (reostaat):</strong> reghoek met 'n pyl</li>
+      <li><strong>Lamp (gloeilamp):</strong> sirkel met kruis binne-in</li>
+      <li><strong>Skakelaar:</strong> oop gaping in lyn</li>
+      <li><strong>Ammeter:</strong> sirkel met A — in serie</li>
+      <li><strong>Voltmeter:</strong> sirkel met V — in parallel</li>
+    </ul>
+
+    <h2>Seriestroombane</h2>
+    <p>In 'n seriestroombaan word komponente end-tot-end in 'n enkele lus gekoppel:</p>
+    <ul>
+      <li>Dieselfde <strong>stroom</strong> vloei deur al die komponente: I<sub>totaal</sub> = I₁ = I₂ = I₃</li>
+      <li>Spannings tel op: V<sub>totaal</sub> = V₁ + V₂ + V₃</li>
+      <li>Weerstande tel op: R<sub>totaal</sub> = R₁ + R₂ + R₃</li>
+    </ul>
+    <div class="key-fact">Voorbeeld: R₁ = 4 Ω, R₂ = 6 Ω in serie → R_totaal = 10 Ω. Met EMK = 20 V: I = V/R = 20/10 = 2 A.</div>
+
+    <h2>Parallelle Stroombane</h2>
+    <p>In 'n parallelle stroombaan deel komponente dieselfde twee nodusse:</p>
+    <ul>
+      <li>Dieselfde <strong>spanning</strong> verskyn oor elke tak: V<sub>totaal</sub> = V₁ = V₂ = V₃</li>
+      <li>Strome tel op: I<sub>totaal</sub> = I₁ + I₂ + I₃</li>
+      <li>Resiproke weerstand: 1/R<sub>totaal</sub> = 1/R₁ + 1/R₂ + ...</li>
+    </ul>
+    <div class="callout"><strong>Let wel:</strong> Die byvoeging van meer parallelle takke verminder die totale weerstand en verhoog die totale stroom wat van die battery getrek word.</div>
+
+    <h2>Krag en Energie</h2>
+    <div class="formula">P = V × I = I²R = V²/R &nbsp;&nbsp;&nbsp; (eenheid: Watt, W)</div>
+    <div class="formula">E = P × t = V × I × t &nbsp;&nbsp;&nbsp; (eenheid: Joule, J)</div>
+    <p>Elektrisiteitsrekeninge gebruik <strong>kilowattuur (kWh)</strong>: 1 kWh = 3.6 × 10⁶ J. 'n 2 kW-verwarmer wat 3 uur lank loop, gebruik 6 kWh energie.</p>
+
+    <h2>EMK en Interne Weerstand</h2>
+    <p>'n Werklike battery het <strong>interne weerstand (r)</strong> wat 'n spanningsval veroorsaak wanneer stroom vloei. Die <strong>EMK (ε)</strong> is die totale energie wat per eenheid lading deur die battery verskaf word:</p>
+    <div class="formula">V<sub>terminaal</sub> = ε − Ir</div>
+    <p>Wanneer 'n hoë stroom getrek word (bv. van 'n pap battery), is die interne-weerstandval (Ir) groot, en die terminaalspanning val merkbaar.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Wette van Kirchhoff</div>
+      <p><strong>Kirchhoff se Stroomwet (KSW):</strong> Die som van strome wat 'n nodus binnegaan, is gelyk aan die som van strome wat dit verlaat. (Behoud van lading)</p>
+      <div class="formula">ΣI<sub>in</sub> = ΣI<sub>uit</sub></div>
+      <p style="margin-top:8px"><strong>Kirchhoff se Spanningswet (KSPW):</strong> Die algebraïese som van alle spannings om enige geslote lus is nul. (Behoud van energie)</p>
+      <div class="formula">ΣV<sub>lus</sub> = 0</div>
+      <p style="margin-top:8px"><strong>Wheatstone-brug:</strong> 'n Gebalanseerde brug het geen stroom deur die galvanometer nie. Balanstoestand:</p>
+      <div class="formula">R₁/R₂ = R₃/R₄</div>
+      <p style="font-size:13px;color:var(--muted);margin-top:4px">Word gebruik om onbekende weerstande met hoë presisie te meet.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Stroombaansimulator</h3>
+      <canvas id="circuitCanvas" height="280"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Stroombaantipe</div>
+        <button class="mode-btn active" id="modeSeries" onclick="setCircuit('series')">Serie</button>
+        <button class="mode-btn" id="modeParallel" onclick="setCircuit('parallel')">Parallel</button>
+        <button class="mode-btn" id="modeMixed" onclick="setCircuit('mixed')">Gemeng</button>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Waardes</div>
+        <div class="slider-row">
+          <label>EMK (V)</label>
+          <input type="range" id="emfSlider" min="3" max="24" value="12" oninput="updateCircuit()">
+          <span class="slider-val" id="emfVal">12 V</span>
+        </div>
+        <div class="slider-row">
+          <label>R₁ (Ω)</label>
+          <input type="range" id="r1Slider" min="1" max="20" value="4" oninput="updateCircuit()">
+          <span class="slider-val" id="r1Val">4 Ω</span>
+        </div>
+        <div class="slider-row">
+          <label>R₂ (Ω)</label>
+          <input type="range" id="r2Slider" min="1" max="20" value="6" oninput="updateCircuit()">
+          <span class="slider-val" id="r2Val">6 Ω</span>
+        </div>
+      </div>
+    </div>
+    <div class="readout-grid" id="readoutGrid">
+      <div class="readout"><div class="readout-label">Totale R</div><div class="readout-val" id="ro-rt">— <span>Ω</span></div></div>
+      <div class="readout"><div class="readout-label">Totale I</div><div class="readout-val" id="ro-it">— <span>A</span></div></div>
+      <div class="readout"><div class="readout-label">V oor R₁</div><div class="readout-val" id="ro-v1">— <span>V</span></div></div>
+      <div class="readout"><div class="readout-label">Krag (W)</div><div class="readout-val" id="ro-pw">— <span>W</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/8</div>
+      <div style="font-size:14px;color:var(--muted)">NSC-oefening voltooi! Gaan jou antwoorde hieronder na.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 1 — Wet van Ohm</div>
+      <div class="q-text">'n Weerstand het 'n spanning van 18 V daaroor en 'n stroom van 3 A daardeur. Wat is sy weerstand?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">A</span>54 Ω</button>
+        <button class="mc-opt" onclick="answer(this,true,'q1')"><span class="opt-letter">B</span>6 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">C</span>15 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">D</span>21 Ω</button>
+      </div>
+      <div class="feedback ok" id="fb-q1-ok">Reg! R = V/I = 18/3 = 6 Ω.</div>
+      <div class="feedback bad" id="fb-q1-bad">Gebruik R = V/I = 18 V ÷ 3 A = 6 Ω.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 2 — Seriestroombaan</div>
+      <div class="q-text">Drie weerstande van 3 Ω, 5 Ω en 2 Ω word in serie aan 'n 20 V-battery gekoppel. Wat is die stroom in die stroombaan?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">A</span>4 A</button>
+        <button class="mc-opt" onclick="answer(this,true,'q2')"><span class="opt-letter">B</span>2 A</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">C</span>6.67 A</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">D</span>0.5 A</button>
+      </div>
+      <div class="feedback ok" id="fb-q2-ok">Reg! R_totaal = 3+5+2 = 10 Ω. I = V/R = 20/10 = 2 A. Dieselfde stroom vloei deur al die komponente in serie.</div>
+      <div class="feedback bad" id="fb-q2-bad">In serie is R_totaal = 3+5+2 = 10 Ω. Dan is I = V/R = 20/10 = 2 A.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 3 — Parallelle Stroombaan</div>
+      <div class="q-text">Twee weerstande, 6 Ω en 12 Ω, word in parallel gekoppel. Wat is die totale (ekwivalente) weerstand?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">A</span>18 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">B</span>9 Ω</button>
+        <button class="mc-opt" onclick="answer(this,true,'q3')"><span class="opt-letter">C</span>4 Ω</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">D</span>2 Ω</button>
+      </div>
+      <div class="feedback ok" id="fb-q3-ok">Reg! 1/R = 1/6 + 1/12 = 2/12 + 1/12 = 3/12 → R = 4 Ω. Parallelle weerstand is altyd kleiner as die kleinste individuele weerstand.</div>
+      <div class="feedback bad" id="fb-q3-bad">1/R_totaal = 1/6 + 1/12 = 3/12 → R_totaal = 4 Ω. Moenie eenvoudig in parallel bymekaartel nie.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 4 — Krag</div>
+      <div class="q-text">'n Lamp trek 'n stroom van 0.5 A wanneer dit aan 'n 220 V-toevoer gekoppel word. Wat is die kragklassifikasie van die lamp?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">A</span>440 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">B</span>0.0023 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q4')"><span class="opt-letter">C</span>110 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">D</span>55 W</button>
+      </div>
+      <div class="feedback ok" id="fb-q4-ok">Reg! P = VI = 220 × 0.5 = 110 W.</div>
+      <div class="feedback bad" id="fb-q4-bad">P = V × I = 220 V × 0.5 A = 110 W.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 5 — EMK &amp; Interne Weerstand</div>
+      <div class="q-text">'n Battery het 'n EMK van 9 V en 'n interne weerstand van 0.5 Ω. Wanneer 'n stroom van 4 A getrek word, wat is die terminaalspanning?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">A</span>9 V</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">B</span>10 V</button>
+        <button class="mc-opt" onclick="answer(this,true,'q5')"><span class="opt-letter">C</span>7 V</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">D</span>11 V</button>
+      </div>
+      <div class="feedback ok" id="fb-q5-ok">Reg! V_terminaal = ε − Ir = 9 − (4 × 0.5) = 9 − 2 = 7 V.</div>
+      <div class="feedback bad" id="fb-q5-bad">V_terminaal = ε − Ir = 9 − (4 × 0.5) = 9 − 2 = 7 V. Die interne weerstand veroorsaak 'n "verlore spanning" van Ir = 2 V.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 6 — Energie</div>
+      <div class="q-text">'n 1500 W-elektriese verwarmer loop vir 2 uur. Hoeveel energie verbruik dit in joule?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">A</span>3 000 J</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">B</span>3 000 000 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q6')"><span class="opt-letter">C</span>10 800 000 J</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">D</span>750 J</button>
+      </div>
+      <div class="feedback ok" id="fb-q6-ok">Reg! E = Pt = 1500 W × (2 × 3600 s) = 1500 × 7200 = 10 800 000 J = 10.8 MJ. Dit is gelyk aan 3 kWh.</div>
+      <div class="feedback bad" id="fb-q6-bad">E = P × t. Skakel 2 uur om na sekondes: 2 × 3600 = 7200 s. E = 1500 × 7200 = 10 800 000 J.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 7 — Gemengde Stroombaan &amp; Krag (Analise)</div>
+      <div class="q-text">'n 12 V-battery word gekoppel aan 'n 4 Ω-weerstand (R₁) in serie met 'n parallelle kombinasie van R₂ = 6 Ω en R₃ = 12 Ω. Bereken die krag wat in R₁ afgevoer word.</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">A</span>18 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q7')"><span class="opt-letter">B</span>9 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">C</span>4.5 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">D</span>12 W</button>
+      </div>
+      <div class="feedback ok" id="fb-q7-ok">Reg! Vind eers die parallelle ekwivalent van R₂ en R₃: 1/Rₚ = 1/6 + 1/12 = 3/12 → Rₚ = 4 Ω. Totale weerstand = R₁ + Rₚ = 4 + 4 = 8 Ω. Totale stroom: I = V/R = 12/8 = 1.5 A. Aangesien R₁ in serie is, vloei hierdie volle 1.5 A daardeur: P = I²R₁ = 1.5² × 4 = 9 W.</div>
+      <div class="feedback bad" id="fb-q7-bad">Werk dit stap vir stap deur: (1) parallelle ekwivalent van R₂ en R₃: 1/Rₚ = 1/6 + 1/12 = 3/12 → Rₚ = 4 Ω. (2) Totale stroombaanweerstand = R₁ + Rₚ = 4 + 4 = 8 Ω. (3) Totale (en serie-) stroom I = V/R = 12/8 = 1.5 A. (4) Krag in R₁: P = I²R₁ = 1.5² × 4 = 9 W.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 8 — Interne Weerstand &amp; Krag (Analise)</div>
+      <div class="q-text">'n Battery het 'n EMK van 24 V en 'n interne weerstand van 2 Ω. Wanneer dit aan 'n eksterne weerstand gekoppel word, vloei 'n stroom van 3 A. Bereken die krag wat in slegs die EKSTERNE weerstand afgevoer word (nie die totale krag wat deur die battery verskaf word nie).</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">A</span>72 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">B</span>18 W</button>
+        <button class="mc-opt" onclick="answer(this,true,'q8')"><span class="opt-letter">C</span>54 W</button>
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">D</span>24 W</button>
+      </div>
+      <div class="feedback ok" id="fb-q8-ok">Reg! Terminaalspanning (die spanning wat werklik aan die eksterne weerstand beskikbaar is) = ε − Ir = 24 − (3×2) = 18 V. Krag afgevoer in die eksterne weerstand = V_terminaal × I = 18 × 3 = 54 W. Let daarop dat dit minder is as die totale krag verskaf deur die EMK (ε×I = 72 W) — die ontbrekende 18 W (= I²r = 3²×2) word "verlore" om die battery se eie interne weerstand te verhit.</div>
+      <div class="feedback bad" id="fb-q8-bad">Moenie eenvoudig P = εI gebruik nie (dit gee die TOTALE krag verskaf, 72 W). Vind eers die terminaalspanning: V_terminaal = ε − Ir = 24 − (3×2) = 18 V. Dit is die spanning wat werklik oor die eksterne weerstand is. Krag in die eksterne weerstand = V_terminaal × I = 18 × 3 = 54 W. Die oorblywende 18 W (I²r) word binne die battery self afgevoer.</div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" id="ieb-practice-section">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB-uitbreidingsoefening <span class="ieb-badge">SLEGS IEB</span></div>
+
+      <div class="q-card">
+        <div class="q-num">IEB-vraag 1 — Kirchhoff se Spanningswet</div>
+        <div class="q-text">In 'n geslote lus het 'n battery met EMK 12 V 'n interne weerstand van 1 Ω. Dit dryf stroom deur twee eksterne weerstande R₁ = 3 Ω en R₂ = 5 Ω in serie. Deur KSPW toe te pas, wat is die stroom in die stroombaan?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">A</span>1.5 A</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq1')"><span class="opt-letter">B</span>1.33 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">C</span>2.4 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">D</span>3 A</button>
+        </div>
+        <div class="feedback ok" id="fb-iq1-ok">Reg! KSPW: ε − Ir − IR₁ − IR₂ = 0 → 12 − I(1+3+5) = 0 → I = 12/9 ≈ 1.33 A.</div>
+        <div class="feedback bad" id="fb-iq1-bad">KSPW: som van alle spannings om die lus = 0. 12 = I×(1+3+5) = 9I → I = 12/9 ≈ 1.33 A.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB-vraag 2 — Kirchhoff se Stroomwet</div>
+        <div class="q-text">By 'n aansluiting in 'n parallelle stroombaan dra twee takke onderskeidelik strome van 2.4 A en 1.6 A. 'n Derde tak dra 'n onbekende stroom I₃ weg van die aansluiting. 'n Totale stroom van 5.5 A gaan die aansluiting binne. Bepaal I₃.</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">A</span>4 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">B</span>9.5 A</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq2')"><span class="opt-letter">C</span>1.5 A</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">D</span>0.5 A</button>
+        </div>
+        <div class="feedback ok" id="fb-iq2-ok">Reg! KSW: I_in = I₁ + I₂ + I₃ → 5.5 = 2.4 + 1.6 + I₃ → I₃ = 5.5 − 4.0 = 1.5 A.</div>
+        <div class="feedback bad" id="fb-iq2-bad">KSW: totale stroom in = som van takstrome uit. 5.5 = 2.4 + 1.6 + I₃ → I₃ = 1.5 A.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Druk Werkboek</button>
+    <div class="wb-intro">Wys alle berekeninge vir berekeningsvrae. Gebruik korrekte eenhede regdeur. Teken netjiese, gemerkte stroombaandiagramme waar vereis.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 — Stroombaanberekeninge</div>
+      <div class="wb-qtext">'n Stroombaan bevat 'n 15 V-battery gekoppel aan drie weerstande: R₁ = 2 Ω in serie met 'n parallelle kombinasie van R₂ = 6 Ω en R₃ = 3 Ω.<br>(a) Bereken die ekwivalente weerstand van R₂ en R₃ in parallel.<br>(b) Bereken die totale weerstand van die stroombaan.<br>(c) Bereken die totale stroom vanaf die battery.<br>(d) Bereken die spanning oor die parallelle kombinasie.<br>(e) Bereken die stroom deur R₂.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 — EMK en Interne Weerstand</div>
+      <div class="wb-qtext">'n Battery het 'n EMK van 6 V. Wanneer 'n 5 Ω-weerstand gekoppel word, is die terminaalspanning 5 V.<br>(a) Bereken die stroom in die stroombaan.<br>(b) Bereken die interne weerstand van die battery.<br>(c) Bereken die "verlore volt" (spanning wat oor die interne weerstand val).<br>(d) Verduidelik waarom die terminaalspanning van 'n battery afneem soos meer stroom daaruit getrek word.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 — Energie en Koste</div>
+      <div class="wb-qtext">'n Huishouding gebruik die volgende toestelle vir die tye getoon: 'n 2 kW-ketel vir 30 min, 'n 150 W-televisie vir 5 uur, en 'n 60 W-lamp vir 8 uur.<br>(a) Bereken die energie wat deur elke toestel verbruik word in kWh.<br>(b) Bereken die totale energie gebruik in joule.<br>(c) As elektrisiteit R2.50 per kWh kos, wat is die totale koste vir hierdie toestelle?</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 — Ohmies teenoor Nie-ohmies</div>
+      <div class="wb-qtext">(a) Verduidelik die verskil tussen 'n ohmiese en 'n nie-ohmiese geleier. Gee een voorbeeld van elk.<br>(b) Skets die V–I-grafiek vir 'n ohmiese geleier en 'n gloeilamp-filament op dieselfde asse. Merk albei krommes.<br>(c) Verduidelik waarom die gloeilamp-filament nie-ohmies is.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 — Kragverhoudings</div>
+      <div class="wb-qtext">'n 60 Ω-weerstand word aan 'n 12 V-kragtoevoer gekoppel.<br>(a) Bereken die stroom deur die weerstand.<br>(b) Bereken die krag wat afgevoer word deur P = V²/R te gebruik.<br>(c) Verifieer jou antwoord deur P = I²R te gebruik.<br>(d) As die spanning tot 24 V verdubbel word, met watter faktor neem die krag toe? Verduidelik met behulp van die formule.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6 — V–I-datatabel: Ohmies teenoor Nie-ohmies</div>
+      <div class="wb-qtext">'n Leerder stel 'n stroombaan op om twee geleiers te ondersoek: 'n vaste weerstand (Geleier A) en 'n gloeilamp-filament (Geleier B). Vir elke geleier verander die leerder die spanning en teken die stroom aan:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Spanning (V)</th><th>Stroom deur A (A)</th><th>Stroom deur B (A)</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>0.40</td><td>0.50</td></tr>
+          <tr><td>4</td><td>0.80</td><td>0.72</td></tr>
+          <tr><td>6</td><td>1.20</td><td>0.86</td></tr>
+          <tr><td>8</td><td>1.60</td><td>0.96</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die weerstand van Geleier A by elk van die vier spanningslesings. Wys jou berekeninge.<br>
+      (b) Bereken die weerstand van Geleier B by elk van die vier spanningslesings.<br>
+      (c) Verklaar, met 'n rede gebaseer op jou berekeninge, watter geleier ohmies en watter nie-ohmies is.<br>
+      (d) As Geleier A se data as 'n V–I-grafiek geplot word (V op die y-as, I op die x-as), bereken die gradiënt van die lyn tussen (0 A, 0 V) en (1.60 A, 8 V), en verklaar watter fisiese grootheid hierdie gradiënt verteenwoordig.<br>
+      (e) Verduidelik, in terme van wat binne die filament gebeur, waarom Geleier B se weerstand verander soos die spanning toeneem.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  const answered={};let score=0;
+  function answer(btn,correct,qid){
+    if(answered[qid])return;answered[qid]=true;
+    btn.closest('.mc-options').querySelectorAll('.mc-opt').forEach(o=>o.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
+    if(fb)fb.classList.add('show');
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===8){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/8';}}
+  }
+
+  // ---- CIRCUIT SIMULATION ----
+  const canvas=document.getElementById('circuitCanvas');
+  const ctx=canvas.getContext('2d');
+  let circuitMode='series';
+  let animFrame=null;
+  let dots=[];
+  let tick=0;
+
+  function setCircuit(mode){
+    circuitMode=mode;
+    ['modeSeries','modeParallel','modeMixed'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    const map={series:'modeSeries',parallel:'modeParallel',mixed:'modeMixed'};
+    document.getElementById(map[mode]).classList.add('active');
+    initDots();
+    updateCircuit();
+  }
+
+  function updateCircuit(){
+    const emf=parseFloat(document.getElementById('emfSlider').value);
+    const r1=parseFloat(document.getElementById('r1Slider').value);
+    const r2=parseFloat(document.getElementById('r2Slider').value);
+    document.getElementById('emfVal').textContent=emf+' V';
+    document.getElementById('r1Val').textContent=r1+' Ω';
+    document.getElementById('r2Val').textContent=r2+' Ω';
+    let rt,it,v1,pw;
+    if(circuitMode==='series'){
+      rt=r1+r2;it=emf/rt;v1=it*r1;pw=emf*it;
+    } else if(circuitMode==='parallel'){
+      rt=1/(1/r1+1/r2);it=emf/rt;v1=emf;pw=emf*it;
+    } else {
+      // mixed: r2 in parallel with r1, in series with nothing — treat as r1 series, r2 parallel to r1
+      const rp=1/(1/r1+1/r2);rt=rp;it=emf/rt;v1=emf*(r2/(r1+r2));pw=emf*it;
+      // Actually: series R1 + parallel(R2, R3) — but we only have 2 resistors. Use: R1 series with R2
+      // For mixed: R1 in series with (R2 parallel R1) — creates interesting result. Let's just use R1 series + R2/2 as a parallel branch of R2
+      const rpar=r2/2; rt=r1+rpar; it=emf/rt; v1=it*r1; pw=emf*it;
+    }
+    document.getElementById('ro-rt').innerHTML=rt.toFixed(2)+'<span>Ω</span>';
+    document.getElementById('ro-it').innerHTML=it.toFixed(2)+'<span>A</span>';
+    document.getElementById('ro-v1').innerHTML=v1.toFixed(2)+'<span>V</span>';
+    document.getElementById('ro-pw').innerHTML=pw.toFixed(2)+'<span>W</span>';
+  }
+
+  function resizeCanvas(){
+    const dpr=window.devicePixelRatio||1;
+    const w=canvas.parentElement.clientWidth-32;
+    canvas.style.width=w+'px';canvas.style.height='280px';
+    canvas.width=w*dpr;canvas.height=280*dpr;
+    ctx.scale(dpr,dpr);
+  }
+
+  function initDots(){
+    dots=[];
+    const n=16;
+    for(let i=0;i<n;i++) dots.push({t:i/n});
+  }
+
+  function drawCircuit(){
+    const w=canvas.clientWidth,h=280;
+    ctx.clearRect(0,0,w,h);
+    const emf=parseFloat(document.getElementById('emfSlider').value);
+    const r1=parseFloat(document.getElementById('r1Slider').value);
+    const r2=parseFloat(document.getElementById('r2Slider').value);
+    // Layout
+    const L=60,R=w-60,T=50,B=h-50;
+    const mx=(L+R)/2;
+
+    function wire(x1,y1,x2,y2){
+      ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    }
+    function resistorBox(x,y,label,val){
+      ctx.fillStyle='rgba(255,255,255,0.06)';ctx.strokeStyle='rgba(96,165,250,0.6)';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.roundRect(x-28,y-12,56,24,5);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#93c5fd';ctx.font='bold 11px monospace';ctx.textAlign='center';
+      ctx.fillText(label,x,y-2);
+      ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='10px monospace';
+      ctx.fillText(val+'Ω',x,y+11);
+    }
+    function battery(x,y){
+      ctx.strokeStyle='#fbbf24';ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x,y+18);ctx.stroke();
+      ctx.lineWidth=4;
+      ctx.beginPath();ctx.moveTo(x-10,y-8);ctx.lineTo(x+10,y-8);ctx.stroke();
+      ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(x-6,y+8);ctx.lineTo(x+6,y+8);ctx.stroke();
+      ctx.fillStyle='#fbbf24';ctx.font='bold 10px monospace';ctx.textAlign='center';
+      ctx.fillText('+',(x),y-24);ctx.fillText('−',x,y+28);
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.font='10px monospace';
+      ctx.fillText(emf+'V',x+22,y+4);
+    }
+
+    if(circuitMode==='series'){
+      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
+      battery(L,h/2);
+      resistorBox(mx-60,T,'R₁',r1);
+      resistorBox(mx+60,T,'R₂',r2);
+    } else if(circuitMode==='parallel'){
+      const mh=(T+B)/2;
+      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
+      wire(mx,T,mx,B);
+      battery(L,mh);
+      resistorBox(mx-60,mh,'R₁',r1);
+      resistorBox(mx+60,mh,'R₂',r2);
+    } else {
+      // Mixed
+      const mh=(T+B)/2;const ph=h*0.28;
+      wire(L,T,R,T);wire(R,T,R,B);wire(R,B,L,B);wire(L,B,L,T);
+      wire(mx,T,mx,ph);wire(mx,B-20,mx,B);
+      wire(mx-50,ph,mx+50,ph);wire(mx-50,B-20,mx+50,B-20);
+      wire(mx-50,ph,mx-50,B-20);wire(mx+50,ph,mx+50,B-20);
+      battery(L,mh);
+      resistorBox(mx-110,T,'R₁',r1);
+      resistorBox(mx-50,(ph+B-20)/2,'R₂',r2);
+      resistorBox(mx+50,(ph+B-20)/2,'R₂',r2);
+      ctx.fillStyle='rgba(147,197,253,0.5)';ctx.font='10px monospace';ctx.textAlign='center';
+      ctx.fillText('(R₁ serie + R₂ parallel)',w/2,h-8);
+    }
+
+    // Animate current dots
+    tick+=0.008;
+    dots.forEach(d=>{
+      d.t=(d.t+0.004)%1;
+      let x,y;
+      const t=d.t;
+      // Trace the outer rectangle
+      const perim=2*(R-L)+2*(B-T);
+      const pos=t*perim;
+      if(pos<R-L){x=L+pos;y=T;}
+      else if(pos<R-L+B-T){x=R;y=T+(pos-(R-L));}
+      else if(pos<2*(R-L)+B-T){x=R-(pos-(R-L+B-T));y=B;}
+      else{x=L;y=B-(pos-(2*(R-L)+B-T));}
+      ctx.fillStyle='rgba(96,165,250,0.85)';
+      ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+    });
+  }
+
+  function animate(){
+    if(animFrame)cancelAnimationFrame(animFrame);
+    function loop(){drawCircuit();animFrame=requestAnimationFrame(loop);}
+    loop();
+  }
+  function initSim(){resizeCanvas();initDots();updateCircuit();animate();}
+  window.addEventListener('resize',()=>{if(document.getElementById('tab-explore').classList.contains('active')){resizeCanvas();}});
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

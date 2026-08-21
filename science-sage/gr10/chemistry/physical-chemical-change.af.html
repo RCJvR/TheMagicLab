@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fisiese en Chemiese Verandering — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+select{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 10px;cursor:pointer;width:100%;margin-bottom:10px}
+select option{background:#1a1f35}
+.scenario-card{display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px}
+.scenario-emoji{font-size:56px;line-height:1}
+.scenario-text{font-size:17px;font-weight:700;color:#fff;text-align:center;max-width:480px}
+.scenario-btns{display:flex;gap:14px;margin-top:6px}
+.pc-btn{font-family:var(--fd);font-size:13px;font-weight:800;padding:12px 26px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--text);cursor:pointer;transition:all 150ms}
+.pc-btn.physical:hover:not(:disabled){background:rgba(96,165,250,.15);border-color:rgba(96,165,250,.4);color:#93c5fd}
+.pc-btn.chemical:hover:not(:disabled){background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#fca5a5}
+.pc-btn:disabled{opacity:.5;cursor:default}
+.pc-btn.chosen-correct{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.5);color:#86efac}
+.pc-btn.chosen-wrong{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);color:#fca5a5}
+.scenario-feedback{font-size:13px;line-height:1.7;color:rgba(210,218,245,.8);text-align:center;max-width:520px;min-height:20px}
+.scenario-progress{font-family:var(--fm);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Chemie · Les 7</div>
+  <div class="lesson-title">Fisiese en Chemiese Verandering</div>
+  <div class="lesson-sub">Onderskei tussen fisiese veranderinge en chemiese veranderinge, herken die waarneembare bewyse van 'n chemiese reaksie, en klassifiseer alledaagse voorbeelde met selfvertroue.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📝 Werkboek</button>
+</div>
+
+<!-- ===== LESSON TAB ===== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Wat is 'n Fisiese Verandering?</h2>
+    <p>'n <strong>Fisiese verandering</strong> is 'n verandering waarin die fisiese eienskappe van 'n stof (toestand, vorm, grootte, of voorkoms) verander, maar <strong>geen nuwe stof word gevorm nie</strong>. Die deeltjies wat voor die verandering teenwoordig was, is presies dieselfde deeltjies wat na die verandering teenwoordig is — hulle is eenvoudig herrangskik, verder uitmekaar geskuif, nader aan mekaar geskuif, of van vorm verander.</p>
+
+    <div class="callout">
+      <strong>Kernidee:</strong> In 'n fisiese verandering bly die chemiese samestelling van die stof dieselfde. Water bly H₂O of dit nou ys, vloeibare water, of stoom is. Fisiese veranderinge is oor die algemeen <strong>maklik omkeerbaar</strong>.
+    </div>
+
+    <p>Algemene tipes fisiese verandering:</p>
+    <ul>
+      <li><strong>Verandering van toestand</strong> — smelt, vries, kook, verdamp, kondenseer, sublimeer (bv. ys wat in water smelt).</li>
+      <li><strong>Oplossing</strong> — 'n opgeloste stof meng eweredig in 'n oplosmiddel om 'n oplossing te vorm (bv. suiker wat in tee oplos). Die suikermolekules is steeds suiker; hulle word bloot tussen die watermolekules versprei.</li>
+      <li><strong>Verandering van vorm of grootte</strong> — sny, skeur, verpletter, buig, rek (bv. 'n vel papier wat geskeur word, 'n stukkie kryt wat breek).</li>
+      <li><strong>Meng</strong> (sonder om te reageer) — bv. sand wat in water geroer word; die sand kan onveranderd uitgefiltreer word.</li>
+    </ul>
+
+    <h2>Wat is 'n Chemiese Verandering?</h2>
+    <p>'n <strong>Chemiese verandering</strong> vind plaas wanneer 'n <strong>chemiese reaksie</strong> plaasvind: die bindings tussen atome in die reaktante breek, en nuwe bindings vorm om <strong>een of meer nuwe stowwe (produkte)</strong> te skep met eienskappe wat heeltemal anders is as die oorspronklike stowwe.</p>
+
+    <div class="callout">
+      <strong>Kernidee:</strong> In 'n chemiese verandering word atome herrangskik in nuwe molekules. Die produkte is chemies anders as die reaktante en kan gewoonlik nie deur eenvoudige fisiese middele na die oorspronklike stowwe teruggeneem word nie. Chemiese veranderinge is oor die algemeen <strong>moeilik (of onmoontlik) om om te keer</strong>.
+    </div>
+
+    <p>Algemene voorbeelde van chemiese verandering: brand (verbranding), roes (korrosie), 'n koek bak, vertering van kos, fotosintese, 'n battery wat ontlaai, en melk wat suur word.</p>
+
+    <h2>Bewyse van 'n Chemiese Verandering</h2>
+    <p>Omdat jy nie altyd 'n nuwe stof direk kan "sien" nie, soek chemici na waarneembare aanduidings (bewyse) dat 'n chemiese reaksie waarskynlik plaasgevind het. Op sy eie is geen enkele aanduiding absolute bewys nie — maar verskeie hiervan saam is sterk bewyse:</p>
+
+    <table class="symbols-table">
+      <thead>
+        <tr><th>Bewys</th><th>Beskrywing</th><th>Voorbeeld</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Kleurverandering</td><td>Die stof verander van kleur, wat 'n nuwe stof met ander ligabsorberende eienskappe aandui</td><td>Yster wat oranjebruin word terwyl dit roes</td></tr>
+        <tr><td>Gas / borrels gevorm</td><td>Bruising of borreling dui aan dat 'n gas vrygestel word</td><td>Borrels wanneer asyn met koeksoda reageer</td></tr>
+        <tr><td>Presipitaat vorm</td><td>'n Onoplosbare vaste stof verskyn skielik in 'n oplossing wat helder was</td><td>'n Wit vaste stof wat vorm wanneer twee helder oplossings gemeng word</td></tr>
+        <tr><td>Temperatuurverandering</td><td>Energie word tydens die reaksie vrygestel (eksotermies) of geabsorbeer (endotermies)</td><td>'n Vuur voel warm; 'n oombliklike koue-pakkie voel koud</td></tr>
+        <tr><td>Lig geproduseer</td><td>Energie word as lig vrygestel</td><td>'n Sterretjie wat brand, 'n vuurwerk wat ontplof</td></tr>
+        <tr><td>Permanent / moeilik om om te keer</td><td>Die verandering kan nie maklik deur fisiese middele ongedaan gemaak word nie</td><td>Jy kan nie 'n koek "onbak" of hout "ontbrand" nie</td></tr>
+      </tbody>
+    </table>
+
+    <div class="key-fact">Eksotermies = stel energie vry (voel warm) &nbsp;|&nbsp; Endotermies = absorbeer energie (voel koud)</div>
+
+    <h2>Fisiese teenoor Chemiese Verandering — Langs Mekaar</h2>
+    <table class="symbols-table">
+      <thead>
+        <tr><th>Kenmerk</th><th>Fisiese Verandering</th><th>Chemiese Verandering</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Nuwe stof gevorm?</td><td>Nee</td><td>Ja</td></tr>
+        <tr><td>Chemiese samestelling</td><td>Onveranderd</td><td>Verander</td></tr>
+        <tr><td>Omkeerbaarheid</td><td>Gewoonlik maklik omkeerbaar</td><td>Gewoonlik moeilik / onmoontlik om om te keer</td></tr>
+        <tr><td>Energieverandering</td><td>Gewoonlik klein</td><td>Dikwels 'n merkbare temperatuur-/ligverandering</td></tr>
+        <tr><td>Voorbeeld</td><td>Ys wat smelt, sout wat oplos</td><td>Hout wat brand, yster wat roes</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Uitgewerkte Klassifikasievoorbeelde</h2>
+    <p>Kom ons klassifiseer 'n paar alledaagse veranderinge en verduidelik waarom:</p>
+    <ul>
+      <li><strong>Sjokolade wat smelt</strong> — Fisiese verandering. Die sjokolade verander eenvoudig van vaste stof na vloeistof weens hitte; dit is steeds dieselfde sjokolade en sal weer verhard by afkoeling.</li>
+      <li><strong>Hout wat brand</strong> — Chemiese verandering. Hout (sellulose) reageer met suurstof om as, koolstofdioksied, en waterdamp te vorm — heeltemal nuwe stowwe met ander eienskappe. Lig en hitte word geproduseer. Dit kan nie omgekeer word nie.</li>
+      <li><strong>Sout wat in water oplos</strong> — Fisiese verandering. Die sout (NaCl) is steeds NaCl, net eweredig tussen watermolekules versprei. Deur die water te verdamp, word die oorspronklike sout herwin.</li>
+      <li><strong>Yster wat roes</strong> — Chemiese verandering. Yster reageer met suurstof en water om ysteroksied (roes) te vorm, 'n rooibruin nuwe stof met heeltemal ander eienskappe as blink metaalagtige yster.</li>
+      <li><strong>Water wat kook</strong> — Fisiese verandering. Vloeibare water word waterdamp (stoom); dit is steeds H₂O. Deur die stoom te kondenseer, word vloeibare water herwin.</li>
+      <li><strong>'n Vuurhoutjie wat brand</strong> — Chemiese verandering. Die vuurhoutjiekop ondergaan verbranding, wat lig, hitte, rook, en as produseer — nuwe stowwe wat nie na die oorspronklike vuurhoutjiekop teruggeneem kan word nie.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Eksamenwenk:</strong> Wanneer jy gevra word om 'n verandering te klassifiseer, gee altyd 'n rede gekoppel aan die bewyse — "geen nuwe stof is gevorm nie" vir fisiese veranderinge, of noem die werklike bewyse (kleurverandering, gas geproduseer, permanente verandering, ens.) vir chemiese veranderinge.
+    </div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Energiediagramme &amp; Alledaagse Toepassings</div>
+      <p><strong>Energieprofiel van 'n reaksie:</strong> Elke chemiese verandering behels 'n energieverandering. In 'n <strong>eksotermiese</strong> reaksie het die produkte minder gestoorde (chemiese potensiële) energie as die reaktante — die verskil word as hitte en/of lig na die omgewing vrygestel (bv. verbranding, respirasie). In 'n <strong>endotermiese</strong> reaksie het die produkte meer gestoorde energie as die reaktante — energie word uit die omgewing geabsorbeer, wat afkoel (bv. fotosintese, die reaksie in 'n oombliklike koue-pakkie).</p>
+      <p style="margin-top:12px"><strong>Toepassing van die konsep:</strong> Dink aan die bak van 'n koek. Die rou deeg (reaktante) ondergaan verskeie gelyktydige chemiese veranderinge wanneer dit verhit word: proteïene denatureer, suikers karameliseer (Maillard-/bruinreaksies), en rysmiddels (bv. bakpoeier) ontbind om CO₂-gas vry te stel — bewys: kleurverandering (bruining), gas geproduseer (rys), en die verandering is permanent (jy kan nie 'n koek "onbak" terug in deeg nie). Dit maak bak 'n ryk werklike-wêreld-voorbeeld wat verskeie tipes bewyse vir chemiese verandering in 'n enkele proses kombineer.</p>
+      <p style="margin-top:12px"><strong>Onderskeiding van lastige gevalle:</strong> Sommige veranderinge lyk chemies maar is fisies, en andersom. Droë-ys (vaste CO₂) wat "rook" terwyl dit sublimeer, lyk dramaties (mis, temperatuurdaling) maar is 'n fisiese verandering van toestand (sublimasie) — die CO₂ bly CO₂. Andersins, 'n battery wat ontlaai, wys van buite geen kleurverandering of sigbare gas nie, tog vind chemiese reaksies binne-in plaas (chemiese energie word na elektriese energie omgeskakel) — 'n chemiese verandering met subtiele eksterne bewyse.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EXPLORE TAB ===== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Klassifiseer die Scenario</h3>
+      <div class="scenario-card">
+        <div class="scenario-progress" id="scenProgress">Scenario 1 van 8</div>
+        <div class="scenario-emoji" id="scenEmoji">🧊</div>
+        <div class="scenario-text" id="scenText">Ys wat in die son smelt</div>
+        <div class="scenario-btns">
+          <button class="pc-btn physical" id="btnPhysical" onclick="chooseScenario('physical')">Fisiese Verandering</button>
+          <button class="pc-btn chemical" id="btnChemical" onclick="chooseScenario('chemical')">Chemiese Verandering</button>
+        </div>
+        <div class="scenario-feedback" id="scenFeedback"></div>
+        <button class="mode-btn" id="scenNextBtn" style="display:none" onclick="nextScenario()">Volgende Scenario →</button>
+      </div>
+    </div>
+    <div class="readout-grid" style="max-width:900px">
+      <div class="readout"><div class="readout-label">Telling</div><div class="readout-val" id="ro-score">0<span>/ 0 beantwoord</span></div></div>
+      <div class="readout"><div class="readout-label">Akkuraatheid</div><div class="readout-val" id="ro-accuracy">—<span>%</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE TAB ===== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/7</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#e9d5ff">Vasvra Voltooi</div>
+        <div style="font-size:13px;color:var(--muted)">NSC-oefenvrae</div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 1 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter een van die volgende is 'n voorbeeld van 'n fisiese verandering?</div>
+      <div class="mc-options" id="q1opts">
+        <button class="mc-opt" onclick="checkAns(1,0,1)"><span class="opt-letter">A</span>'n Spyker wat roes</button>
+        <button class="mc-opt" onclick="checkAns(1,1,1)"><span class="opt-letter">B</span>Ys wat in water smelt</button>
+        <button class="mc-opt" onclick="checkAns(1,2,1)"><span class="opt-letter">C</span>Hout wat brand</button>
+        <button class="mc-opt" onclick="checkAns(1,3,1)"><span class="opt-letter">D</span>Melk wat suur word</button>
+      </div>
+      <div class="feedback" id="fb1">Ys wat smelt is 'n fisiese verandering — die water is steeds H₂O, net van vaste toestand na vloeistof verander. Geen nuwe stof word gevorm nie, en om dit weer te vries keer die verandering om. Roes, brand, en suur word is almal chemiese veranderinge.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 2 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter een van hierdie is NIE goeie bewys dat 'n chemiese verandering plaasgevind het nie?</div>
+      <div class="mc-options" id="q2opts">
+        <button class="mc-opt" onclick="checkAns(2,0,2)"><span class="opt-letter">A</span>'n Kleurverandering</button>
+        <button class="mc-opt" onclick="checkAns(2,1,2)"><span class="opt-letter">B</span>'n Verandering slegs in vorm</button>
+        <button class="mc-opt" onclick="checkAns(2,2,2)"><span class="opt-letter">C</span>'n Gas wat geproduseer word</button>
+        <button class="mc-opt" onclick="checkAns(2,3,2)"><span class="opt-letter">D</span>'n Temperatuurverandering</button>
+      </div>
+      <div class="feedback" id="fb2">'n Verandering slegs in vorm (bv. sny, skeur, verpletter) is bewys van 'n FISIESE verandering, nie 'n chemiese een nie — geen nuwe stof vorm nie. Kleurverandering, gasproduksie, en temperatuurverandering is almal klassieke bewyse van 'n chemiese reaksie.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 3 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Suiker wat in 'n koppie tee oplos, word as 'n fisiese verandering geklassifiseer omdat:</div>
+      <div class="mc-options" id="q3opts">
+        <button class="mc-opt" onclick="checkAns(3,0,3)"><span class="opt-letter">A</span>Die tee van kleur verander</button>
+        <button class="mc-opt" onclick="checkAns(3,1,3)"><span class="opt-letter">B</span>Hitte vrygestel word</button>
+        <button class="mc-opt" onclick="checkAns(3,2,3)"><span class="opt-letter">C</span>Die suikerdeeltjies steeds suiker is, net deur die water versprei</button>
+        <button class="mc-opt" onclick="checkAns(3,3,3)"><span class="opt-letter">D</span>'n Gas geproduseer word</button>
+      </div>
+      <div class="feedback" id="fb3">Oplossing skep nie 'n nuwe stof nie — die suikermolekules bly chemies onveranderd, net tussen die watermolekules versprei. Deur die water af te kook sou die oorspronklike suiker herwin word, wat wys die verandering is omkeerbaar.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 4 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter paar pas 'n verandering korrek by sy tipe?</div>
+      <div class="mc-options" id="q4opts">
+        <button class="mc-opt" onclick="checkAns(4,0,4)"><span class="opt-letter">A</span>Water wat kook — chemiese verandering</button>
+        <button class="mc-opt" onclick="checkAns(4,1,4)"><span class="opt-letter">B</span>'n Vuurwerk wat ontplof — fisiese verandering</button>
+        <button class="mc-opt" onclick="checkAns(4,2,4)"><span class="opt-letter">C</span>Papier wat skeur — fisiese verandering</button>
+        <button class="mc-opt" onclick="checkAns(4,3,4)"><span class="opt-letter">D</span>'n Vuurhoutjie wat brand — fisiese verandering</button>
+      </div>
+      <div class="feedback" id="fb4">Papier wat skeur verander slegs sy vorm/grootte — geen nuwe stof word gevorm nie, dus is dit 'n fisiese verandering. Water wat kook is ook fisies (steeds H₂O); vuurwerke en vuurhoutjies wat brand is chemiese veranderinge (lig, hitte, nuwe stowwe, permanent).</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 5 &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+      <div class="q-text">'n Leerder voeg asyn by koeksoda en sien hewige bruising en borrels, en die houer voel daarna koeler. Dit is bewys van:</div>
+      <div class="mc-options" id="q5opts">
+        <button class="mc-opt" onclick="checkAns(5,0,5)"><span class="opt-letter">A</span>'n Fisiese verandering, want borrels wys eenvoudig menging</button>
+        <button class="mc-opt" onclick="checkAns(5,1,5)"><span class="opt-letter">B</span>'n Chemiese verandering — gasproduksie en 'n temperatuurverandering (endotermies) dui albei op 'n nuwe stof wat gevorm is</button>
+        <button class="mc-opt" onclick="checkAns(5,2,5)"><span class="opt-letter">C</span>'n Fisiese verandering, want geen kleurverandering is genoem nie</button>
+        <button class="mc-opt" onclick="checkAns(5,3,5)"><span class="opt-letter">D</span>Nie een nie — niks het eintlik verander nie</button>
+      </div>
+      <div class="feedback" id="fb5">Twee afsonderlike bewysstukke dui op 'n chemiese reaksie: gas geproduseer (borrels/bruising) en 'n temperatuurverandering (afkoeling = endotermies). 'n Kleurverandering is nie nodig vir 'n verandering om chemies te wees nie — verskeie tipes bewyse kan saam of afsonderlik voorkom.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 6 &nbsp;<span style="color:var(--muted);font-weight:400">(1 punt)</span></div>
+      <div class="q-text">Watter stelling verduidelik die beste waarom chemiese veranderinge oor die algemeen moeilik is om om te keer?</div>
+      <div class="mc-options" id="q6opts">
+        <button class="mc-opt" onclick="checkAns(6,0,6)"><span class="opt-letter">A</span>Omdat hulle altyd baie vinnig gebeur</button>
+        <button class="mc-opt" onclick="checkAns(6,1,6)"><span class="opt-letter">B</span>Omdat nuwe stowwe met ander chemiese bindings en eienskappe gevorm het</button>
+        <button class="mc-opt" onclick="checkAns(6,2,6)"><span class="opt-letter">C</span>Omdat hulle net by hoë temperature gebeur</button>
+        <button class="mc-opt" onclick="checkAns(6,3,6)"><span class="opt-letter">D</span>Omdat hulle altyd lig vrystel</button>
+      </div>
+      <div class="feedback" id="fb6">Chemiese veranderinge herrangskik atome in nuwe bindings, wat werklik nuwe stowwe vorm. Om eenvoudig die fisiese toestande om te keer (bv. afkoeling) kan hierdie nuwe stowwe nie "ongedaan maak" nie, en dit is waarom chemiese veranderinge oor die algemeen moeilik of onmoontlik is om om te keer.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 7 &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte, Analise)</span></div>
+      <div class="q-text">'n Leerder brand 'n strokie magnesiumlint in 'n Bunsenvlam. Dit brand met 'n skitterende wit lig en vorm 'n fyn wit as (magnesiumoksied). Die leerder probeer dan die wit as smelt, in die hoop om die blink metaallint weer te vorm, maar dit bly 'n wit poeier maak nie saak hoeveel dit verhit word nie. Watter kombinasie van waarnemings gee die STERKSTE bewys dat dit 'n chemiese verandering is?</div>
+      <div class="mc-options" id="q7opts">
+        <button class="mc-opt" onclick="checkAns(7,0,7)"><span class="opt-letter">A</span>Lig is geproduseer, en dit alleen bewys altyd 'n chemiese verandering</button>
+        <button class="mc-opt" onclick="checkAns(7,1,7)"><span class="opt-letter">B</span>'n Nuwe stof met duidelik ander eienskappe het gevorm (wit poeier in plaas van blink grys metaal), en die verandering kon nie eenvoudig omgekeer word deur dit weer te verhit of te smelt nie</button>
+        <button class="mc-opt" onclick="checkAns(7,2,7)"><span class="opt-letter">C</span>Die reaksie het vinnig gebeur</button>
+        <button class="mc-opt" onclick="checkAns(7,3,7)"><span class="opt-letter">D</span>Die vlam was baie warm</button>
+      </div>
+      <div class="feedback" id="fb7">Spoed en temperatuur is nie betroubare bewyse van 'n chemiese verandering nie (fisiese veranderinge kan ook vinnig of warm wees). Die sterkste bewys kombineer twee dinge: (1) die produk (wit magnesiumoksiedpoeier) het heeltemal ander eienskappe as die reaktant (blink grys magnesiummetaal), en (2) om die verandering deur eenvoudige fisiese middele (smelt) om te keer, herwin nie die oorspronklike stof nie — omdat die atome nuwe chemiese bindings met suurstof gevorm het, en nie bloot van toestand verander het nie.</div>
+    </div>
+
+    <!-- IEB Practice Questions -->
+    <div class="ieb-practice" id="iebPractice" style="flex-direction:column;gap:0">
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Vraag 1 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+        <div class="q-text">Droë-ys (vaste CO₂) wat op 'n tafel geplaas word, lyk asof dit "rook" en verdwyn stadig, met 'n sigbare temperatuurdaling in die omringende lug. Verduidelik waarom dit as 'n fisiese, nie chemiese, verandering geklassifiseer word nie — ondanks die dramatiese temperatuurverandering en mis.</div>
+        <div class="mc-options" id="iq1opts">
+          <button class="mc-opt" onclick="checkAns('i1',0,'i1')"><span class="opt-letter">A</span>Dit moet chemies wees, want 'n sigbare temperatuurverandering is altyd chemiese bewys</button>
+          <button class="mc-opt" onclick="checkAns('i1',1,'i1')"><span class="opt-letter">B</span>Dit is fisies — die CO₂ sublimeer (verander van toestand van vaste stof direk na gas) en bly CO₂ deurgaans; die "mis" is gekondenseerde waterdamp in die lug, nie 'n nuwe stof van die CO₂ nie</button>
+          <button class="mc-opt" onclick="checkAns('i1',2,'i1')"><span class="opt-letter">C</span>Dit is fisies omdat dit by kamertemperatuur gebeur</button>
+          <button class="mc-opt" onclick="checkAns('i1',3,'i1')"><span class="opt-letter">D</span>Dit is chemies omdat gas geproduseer word</button>
+        </div>
+        <div class="feedback" id="fbi1">Sublimasie is 'n verandering van toestand (vaste stof → gas), dus is dit fisies — die stof is CO₂ voor en na die verandering. Die sigbare "rook" is eintlik waterdamp uit die lug wat in die koue sone rondom die droë-ys kondenseer, nie 'n nuwe stof wat deur die CO₂ self geproduseer word nie. 'n Temperatuurdaling alleen bewys nie 'n chemiese verandering nie; dit moet gekoppel word aan 'n nuwe stof wat vorm.</div>
+      </div>
+
+      <div class="q-card" style="border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.04)">
+        <div class="q-num">IEB Vraag 2 <span class="ieb-badge">IEB</span> &nbsp;<span style="color:var(--muted);font-weight:400">(2 punte)</span></div>
+        <div class="q-text">'n Battery wat in 'n flitslig ontlaai, wys geen sigbare kleurverandering, gas, of presipitaat nie — tog vind 'n chemiese verandering beslis binne-in plaas. Wat is die beste regverdiging om dit as 'n chemiese verandering te klassifiseer?</div>
+        <div class="mc-options" id="iq2opts">
+          <button class="mc-opt" onclick="checkAns('i2',0,'i2')"><span class="opt-letter">A</span>Chemiese reaksies binne-in die battery skakel chemiese potensiële energie om na elektriese energie, en vorm nuwe chemiese stowwe by die elektrodes, selfs al is hierdie bewys nie van buite sigbaar nie</button>
+          <button class="mc-opt" onclick="checkAns('i2',1,'i2')"><span class="opt-letter">B</span>Dit kan nie 'n chemiese verandering wees nie, aangesien daar glad geen sigbare bewys is nie</button>
+          <button class="mc-opt" onclick="checkAns('i2',2,'i2')"><span class="opt-letter">C</span>Dit is 'n fisiese verandering omdat die batteryomhulsel nie van vorm verander nie</button>
+          <button class="mc-opt" onclick="checkAns('i2',3,'i2')"><span class="opt-letter">D</span>Dit is slegs chemies sodra die battery heeltemal pap is</button>
+        </div>
+        <div class="feedback" id="fbi2">Bewys van 'n chemiese verandering is nie altyd ekstern sigbaar nie. Binne-in die battery vind elektrochemiese reaksies voortdurend by die elektrodes plaas, wat nuwe stowwe produseer en gestoorde chemiese energie na elektriese energie omskakel. Die afwesigheid van eksterne bewys (kleur, gas, presipitaat) beteken nie dat geen chemiese verandering plaasvind nie — die reaksie is bloot ingesluit.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== WORKBOOK TAB ===== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Druk Werkboek</button>
+    <div class="wb-intro">Wys duidelike redenasie vir elke klassifikasie. Verwys na die spesifieke bewyse wat jy waarneem of sou verwag om waar te neem.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Klassifiseer elk van die volgende as 'n FISIESE verandering of 'n CHEMIESE verandering. Gee 'n kort rede vir elke antwoord.<br><br>
+      (a) Botter wat in 'n warm pan smelt<br>
+      (b) 'n Vuurwerk wat ontplof<br>
+      (c) 'n Stuk papier wat in 'n origami-vorm gevou word<br>
+      (d) Silwerjuwele wat mettertyd tarnish (swart word)<br>
+      (e) Water wat in ysblokkies vries<br>
+      (f) 'n Kerspit wat met 'n vlam brand<br>
+      (g) Eierwitte wat in 'n skuim geklits word<br>
+      (h) Broodderige wat weens gis-fermentasie rys</div>
+      <div style="margin-top:14px;height:130px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">'n Leerder meng twee kleurlose oplossings, Oplossing A en Oplossing B, in 'n toetsbuis. Onmiddellik vorm 'n geel presipitaat en die toetsbuis word merkbaar warmer.<br>
+      (a) Is dit 'n fisiese of 'n chemiese verandering? (1)<br>
+      (b) Identifiseer TWEE bewysstukke uit die beskrywing wat jou antwoord ondersteun. (2)<br>
+      (c) Verduidelik, in terme van deeltjies/atome, wat met die stowwe in Oplossings A en B gebeur het. (2)</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Verduidelik, met behulp van die term "omkeerbaar", waarom sjokolade wat smelt 'n fisiese verandering is, maar hout wat brand 'n chemiese verandering is. Jou antwoord moet verwys na of die oorspronklike stof herwin kan word. (4)</div>
+      <div style="margin-top:14px;height:100px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">'n Metaallepel word buite gelos en ontwikkel stadig 'n rooibruin laag.<br>
+      (a) Noem die proses wat plaasvind. (1)<br>
+      (b) Gee die tipe verandering (fisies of chemies) en regverdig jou antwoord met TWEE redes. (3)<br>
+      (c) Stel EEN manier voor waarop hierdie verandering voorkom kon word. (1)</div>
+      <div style="margin-top:14px;height:110px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Gee vir elke scenario hieronder aan of dit eksotermies, endotermies, of of daar nie genoeg inligting is om te weet nie — en verduidelik jou keuse.<br><br>
+      (a) 'n Handverwarmer-pakkie word warm wanneer dit geaktiveer word.<br>
+      (b) 'n Oombliklike koue-pakkie word baie koud wanneer dit gedruk en geaktiveer word.<br>
+      (c) Fotosintese in 'n groen blaar.<br>
+      (d) 'n Kersvlam wat gestadig brand.</div>
+      <div style="margin-top:14px;height:110px;border-bottom:1px solid rgba(255,255,255,.06)"></div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6 — Massa- en Digtheidsdata deur 'n Fisiese Verandering</div>
+      <div class="wb-qtext">'n Leerder meet 'n 90.0 g blok ys, laat dit volledig smelt tot vloeibare water by 0°C, en meet die resulterende volume:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Toestand</th><th>Massa (g)</th><th>Volume (cm³)</th></tr></thead>
+        <tbody>
+          <tr><td>Ys (vaste stof)</td><td>90.0</td><td>98.0</td></tr>
+          <tr><td>Water (vloeistof, na smelting)</td><td>90.0</td><td>90.0</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die digtheid van die ys en die digtheid van die water, en wys jou berekeninge.<br>
+      (b) Die massa het presies dieselfde (90.0 g) gebly voor en na smelting. Watter wet illustreer dit, en waarom bevestig dit dat smelting 'n fisiese verandering is?<br>
+      (c) Verduidelik waarom die volume afgeneem het, alhoewel geen massa verlore gegaan het nie — verwys na die rangskikking van watermolekules in ys vergeleke met vloeibare water.<br>
+      (d) Gebruik jou antwoord in (a) om te verduidelik waarom ys op vloeibare water dryf.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== CURRICULUM TOGGLE =====
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ===== PRACTICE =====
+const correctAnswers = {1:1, 2:1, 3:2, 4:2, 5:1, 6:1, 7:1, i1:1, i2:0};
+const answered = {};
+let score = 0;
+
+function checkAns(qNum, chosenIdx, fbId){
+  if(answered[qNum]) return;
+  answered[qNum] = true;
+  const isCorrect = chosenIdx === correctAnswers[qNum];
+  if(isCorrect) score++;
+
+  let optsContainer;
+  if(typeof qNum === 'string' && qNum === 'i1') optsContainer = document.getElementById('iq1opts');
+  else if(typeof qNum === 'string' && qNum === 'i2') optsContainer = document.getElementById('iq2opts');
+  else optsContainer = document.getElementById('q'+qNum+'opts');
+
+  const opts = optsContainer.querySelectorAll('.mc-opt');
+  opts.forEach((opt,i)=>{
+    opt.disabled = true;
+    if(i === correctAnswers[qNum]) opt.classList.add('correct');
+    else if(i === chosenIdx && !isCorrect) opt.classList.add('wrong');
+  });
+
+  let fbEl;
+  if(typeof qNum === 'string' && qNum === 'i1') fbEl = document.getElementById('fbi1');
+  else if(typeof qNum === 'string' && qNum === 'i2') fbEl = document.getElementById('fbi2');
+  else fbEl = document.getElementById('fb'+qNum);
+
+  fbEl.classList.add('show', isCorrect ? 'ok' : 'bad');
+
+  const nscDone = [1,2,3,4,5,6,7].every(k => answered[k]);
+  if(nscDone){
+    const banner = document.getElementById('scoreBanner');
+    banner.classList.add('show');
+    document.getElementById('scoreNum').textContent = score + '/7';
+  }
+}
+
+// ===== EXPLORE: CLASSIFY THE SCENARIO =====
+const scenarios = [
+  {emoji:'🧊', text:'Ys wat in die son smelt', type:'physical', reason:"Ys is vaste H₂O wat in vloeibare H₂O verander. Geen nuwe stof vorm nie, en om dit weer te vries keer die verandering om — 'n klassieke fisiese verandering van toestand."},
+  {emoji:'🔩', text:'n Spyker wat buite roes', type:'chemical', reason:'Yster reageer met suurstof en vog om ysteroksied (roes) te vorm — n nuwe rooibruin stof met heeltemal ander eienskappe as blink yster.'},
+  {emoji:'📄', text:'Papier wat in stukke geskeur word', type:'physical', reason:'Skeur verander slegs die grootte en vorm van die papier. Dit bestaan steeds uit dieselfde papiervesels — geen nuwe stof word gevorm nie.'},
+  {emoji:'🔥', text:'Hout wat in n vuur brand', type:'chemical', reason:'Verbranding skakel hout en suurstof om na as, koolstofdioksied, en waterdamp — nuwe stowwe, plus lig en hitte word vrygestel. Dit kan nie omgekeer word nie.'},
+  {emoji:'🍵', text:'Suiker wat in tee oplos', type:'physical', reason:"Die suikerdeeltjies is steeds suiker — net tussen die watermolekules versprei. Deur die water te verdamp, sou die oorspronklike suiker herwin word."},
+  {emoji:'🥛', text:'Melk wat suur word', type:'chemical', reason:'Bakterieë skakel laktose in die melk om na melksuur, n nuwe stof met n ander reuk, smaak, en tekstuur (skifting). Hierdie verandering kan nie omgekeer word nie.'},
+  {emoji:'💧', text:'Water wat in n ketel kook', type:'physical', reason:'Vloeibare water word waterdamp (stoom) — steeds H₂O. Deur die stoom te kondenseer, word vloeibare water herwin, dus is dit omkeerbaar.'},
+  {emoji:'🎆', text:'n Vuurwerk wat ontplof', type:'chemical', reason:'Die chemikalieë in n vuurwerk verbrand vinnig, en produseer nuwe gasvormige stowwe, intense lig, hitte, en klank — n dramatiese, onomkeerbare chemiese verandering.'}
+];
+let scenIdx = 0;
+let scenScore = 0;
+let scenAnswered = 0;
+
+function loadScenario(){
+  const s = scenarios[scenIdx];
+  document.getElementById('scenProgress').textContent = 'Scenario ' + (scenIdx+1) + ' van ' + scenarios.length;
+  document.getElementById('scenEmoji').textContent = s.emoji;
+  document.getElementById('scenText').textContent = s.text;
+  document.getElementById('scenFeedback').textContent = '';
+  document.getElementById('scenFeedback').style.color = 'rgba(210,218,245,.8)';
+  document.getElementById('btnPhysical').disabled = false;
+  document.getElementById('btnChemical').disabled = false;
+  document.getElementById('btnPhysical').classList.remove('chosen-correct','chosen-wrong');
+  document.getElementById('btnChemical').classList.remove('chosen-correct','chosen-wrong');
+  document.getElementById('scenNextBtn').style.display = 'none';
+}
+
+function chooseScenario(choice){
+  const s = scenarios[scenIdx];
+  const isCorrect = choice === s.type;
+  scenAnswered++;
+  if(isCorrect) scenScore++;
+
+  document.getElementById('btnPhysical').disabled = true;
+  document.getElementById('btnChemical').disabled = true;
+
+  const chosenBtn = choice === 'physical' ? document.getElementById('btnPhysical') : document.getElementById('btnChemical');
+  const correctBtn = s.type === 'physical' ? document.getElementById('btnPhysical') : document.getElementById('btnChemical');
+  if(isCorrect){
+    chosenBtn.classList.add('chosen-correct');
+  } else {
+    chosenBtn.classList.add('chosen-wrong');
+    correctBtn.classList.add('chosen-correct');
+  }
+
+  const fb = document.getElementById('scenFeedback');
+  fb.textContent = (isCorrect ? 'Reg! ' : 'Nie heeltemal reg nie. ') + s.reason;
+  fb.style.color = isCorrect ? '#86efac' : '#fca5a5';
+
+  updateScenReadouts();
+
+  if(scenIdx < scenarios.length - 1){
+    document.getElementById('scenNextBtn').style.display = 'inline-block';
+  } else {
+    document.getElementById('scenNextBtn').style.display = 'none';
+    fb.textContent += ' — Dit was die laaste scenario! Finale telling: ' + scenScore + '/' + scenarios.length + '.';
+  }
+}
+
+function nextScenario(){
+  scenIdx++;
+  if(scenIdx < scenarios.length){
+    loadScenario();
+  }
+}
+
+function updateScenReadouts(){
+  document.getElementById('ro-score').innerHTML = scenScore + '<span>/ ' + scenAnswered + ' beantwoord</span>';
+  const pct = scenAnswered > 0 ? Math.round((scenScore/scenAnswered)*100) : 0;
+  document.getElementById('ro-accuracy').innerHTML = (scenAnswered>0 ? pct : '—') + '<span>%</span>';
+}
+
+// initialise first scenario on load
+loadScenario();
+updateScenReadouts();
+</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

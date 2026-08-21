@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beweging in Een Dimensie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--amber:#fbbf24;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#93c5fd}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(96,165,250,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Fisika · Les 2</div>
+  <h1 class="lesson-title">Beweging in Een Dimensie</h1>
+  <p class="lesson-sub">Ontleed die beweging van voorwerpe deur verplasing, snelheid en versnelling te gebruik — en pas die bewegingsvergelykings toe om kinematika-probleme op te los.</p>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">CAPS NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Simuleer</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✓ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📓 Werkboek</button>
+</div>
+
+<!-- LESSON TAB -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Sleuteldefinisies</h2>
+    <table class="symbols-table">
+      <thead><tr><th>Grootheid</th><th>Tipe</th><th>Definisie</th><th>Eenheid</th></tr></thead>
+      <tbody>
+        <tr><td>Afstand (d)</td><td>Skalaar</td><td>Totale weglengte afgelê</td><td>m</td></tr>
+        <tr><td>Verplasing (s of x)</td><td>Vektor</td><td>Reguitlyn-verandering in posisie van begin tot einde</td><td>m</td></tr>
+        <tr><td>Spoed (v)</td><td>Skalaar</td><td>Afstand ÷ tyd</td><td>m·s⁻¹</td></tr>
+        <tr><td>Snelheid (v)</td><td>Vektor</td><td>Verplasing ÷ tyd</td><td>m·s⁻¹</td></tr>
+        <tr><td>Versnelling (a)</td><td>Vektor</td><td>Verandering in snelheid ÷ tyd (Δv/Δt)</td><td>m·s⁻²</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Oomblikige teenoor gemiddelde snelheid:</strong> Gemiddelde snelheid = totale verplasing / totale tyd. Oomblikige snelheid is die snelheid op 'n spesifieke oomblik — dit is gelyk aan die helling van 'n posisie-tyd-grafiek by daardie punt.</div>
+
+    <h2>Bewegingsgrafieke</h2>
+    <p><strong>Posisie-tyd (x-t) grafiek:</strong></p>
+    <ul>
+      <li>Helling = snelheid</li>
+      <li>Horisontale lyn → voorwerp is stilstaande (v = 0)</li>
+      <li>Reguit lyn (nie-nul helling) → konstante snelheid</li>
+      <li>Geboë lyn → veranderende snelheid (versnelling)</li>
+    </ul>
+    <p><strong>Snelheid-tyd (v-t) grafiek:</strong></p>
+    <ul>
+      <li>Helling = versnelling</li>
+      <li>Oppervlakte onder die grafiek = verplasing</li>
+      <li>Horisontale lyn → konstante snelheid (a = 0)</li>
+      <li>Reguit lyn met positiewe helling → eenvormige positiewe versnelling</li>
+      <li>Lyn wat v = 0 kruis → voorwerp draai om van rigting</li>
+    </ul>
+    <p><strong>Versnelling-tyd (a-t) grafiek:</strong></p>
+    <ul>
+      <li>Oppervlakte onder die grafiek = verandering in snelheid (Δv)</li>
+      <li>Horisontale lyn → konstante (eenvormige) versnelling</li>
+    </ul>
+    <div class="key-fact">Vir eenvormige versnelling: v-t-grafiek is 'n reguit lyn. Die oppervlakte van die trapesium onder v-t gee die verplasing.</div>
+
+    <h2>Bewegingsvergelykings</h2>
+    <p>Hierdie vier vergelykings geld slegs wanneer versnelling <strong>eenvormig (konstant)</strong> is. Definieer altyd eers jou positiewe rigting.</p>
+    <div class="formula">
+      v = u + at<br>
+      s = ut + ½at²<br>
+      v² = u² + 2as<br>
+      s = ½(u + v)t
+    </div>
+    <table class="symbols-table">
+      <thead><tr><th>Simbool</th><th>Betekenis</th><th>Eenheid</th></tr></thead>
+      <tbody>
+        <tr><td>u</td><td>Aanvangsnelheid</td><td>m·s⁻¹</td></tr>
+        <tr><td>v</td><td>Finale snelheid</td><td>m·s⁻¹</td></tr>
+        <tr><td>a</td><td>Versnelling</td><td>m·s⁻²</td></tr>
+        <tr><td>s</td><td>Verplasing</td><td>m</td></tr>
+        <tr><td>t</td><td>Tyd</td><td>s</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Vrye Val</h2>
+    <p>Vrye val is beweging onder swaartekrag alleen — geen lugweerstand nie. Die versnelling weens swaartekrag naby die Aarde se oppervlak is <strong>g = 9.8 m·s⁻² afwaarts</strong>.</p>
+    <div class="callout">
+      <strong>Tekenkonvensie vir vrye val:</strong> Kies opwaarts as positief → g = −9.8 m·s⁻² (of kies afwaarts as positief → g = +9.8 m·s⁻²). Wees deurgaans konsekwent in jou berekening.<br><br>
+      <strong>Uitgewerkte voorbeeld:</strong> 'n Bal word opwaarts gegooi teen 14.7 m·s⁻¹. Hoe hoog gaan dit?<br>
+      Laat op = +; u = +14.7 m·s⁻¹; a = −9.8 m·s⁻²; v = 0 by hoogste punt.<br>
+      v² = u² + 2as → 0 = 14.7² + 2(−9.8)s → s = 216.09/19.6 ≈ <strong>11.0 m</strong>
+    </div>
+    <div class="key-fact">By die hoogste punt van 'n projektiel wat opwaarts gegooi is: v = 0 maar a = g afwaarts (≠ 0).</div>
+
+    <h2>Tikkerbandontleding</h2>
+    <p>'n Tikkertydhouer maak 50 kolletjies per sekonde (periode = 0.02 s). Die spasiëring tussen kolletjies gee inligting oor snelheid en versnelling:</p>
+    <ul>
+      <li>Gelyke spasiëring → konstante snelheid</li>
+      <li>Toenemende spasiëring → versnelling (raak vinniger)</li>
+      <li>Afnemende spasiëring → vertraging (raak stadiger)</li>
+    </ul>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Aflei van Vergelykings &amp; Nie-eenvormige Versnelling</div>
+      <p><strong>Aflei uit eerste beginsels:</strong> Begin met a = Δv/Δt = (v − u)/t, herrangskik om v = u + at te kry. Vervang in s = gemiddelde snelheid × tyd: s = ½(u + v)t = ½(u + u + at)t = ut + ½at². Elimineer t tussen hierdie twee om v² = u² + 2as te kry.</p>
+      <p><strong>Multi-stadium-probleme:</strong> 'n Voorwerp wat opwaarts vanaf die rand van 'n krans gegooi word, kan verskillende toestande hê op pad op teenoor op pad af. Verdeel die probleem in stadiums, deur die finale snelheid van stadium 1 as die aanvangsnelheid van stadium 2 te gebruik. Voorbeeld: 'n Bal opwaarts gegooi teen 10 m·s⁻¹ vanaf 'n 15 m-krans. Vind die tyd om die grond te tref. (Neem op as positief, verplasing = −15 m op grondvlak.)</p>
+      <p><strong>Nie-eenvormige versnelling (kwalitatief):</strong> Wanneer versnelling met tyd verander, geld die bewegingsvergelykings nie meer nie. Die oombliklike versnelling is gelyk aan die helling van die v-t-grafiek by elke punt. Verplasing is steeds die oppervlakte onder die v-t-grafiek (gevind deur blokkies te tel of deur integrasie in hoër grade).</p>
+    </div>
+  </div>
+</div>
+
+<!-- SIMULATE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Bewegingsimulator — Bal op Baan</h3>
+      <canvas id="motionCanvas" height="380"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Parameters</div>
+        <div class="slider-row">
+          <label>Aanvangsnelh. u</label>
+          <input type="range" id="slU" min="-20" max="20" value="10" step="1" oninput="resetSim()">
+          <span class="slider-val" id="valU">10 m/s</span>
+        </div>
+        <div class="slider-row">
+          <label>Versnelling a</label>
+          <input type="range" id="slA" min="-10" max="10" value="-5" step="0.5" oninput="resetSim()">
+          <span class="slider-val" id="valA">-5 m/s²</span>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="mode-btn active" id="btnPlay" onclick="togglePlay()">▶ Speel</button>
+          <button class="mode-btn" onclick="resetSim()">↺ Herstel</button>
+        </div>
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">Lewende Uitlesings</div>
+        <div class="readout-grid">
+          <div class="readout"><div class="readout-label">Posisie x</div><div class="readout-val" id="ro-x">0.00<span>m</span></div></div>
+          <div class="readout"><div class="readout-label">Snelheid v</div><div class="readout-val" id="ro-v">—<span>m/s</span></div></div>
+          <div class="readout"><div class="readout-label">Tyd t</div><div class="readout-val" id="ro-t">0.00<span>s</span></div></div>
+          <div class="readout"><div class="readout-label">Versnelling</div><div class="readout-val" id="ro-a">—<span>m/s²</span></div></div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted)">
+          x-t-grafiek: <span style="color:#60a5fa">■</span> posisie &nbsp;|&nbsp;
+          v-t-grafiek: <span style="color:#a78bfa">■</span> snelheid
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="score-banner">
+      <div class="score-big" id="score-val">0/8</div>
+      <div><div style="font-weight:700;color:#fff;margin-bottom:4px">Toets Voltooi</div><div style="font-size:13px;color:var(--muted)">Gaan jou antwoorde hierbo na.</div></div>
+    </div>
+    <div id="practice-nsc"></div>
+    <div class="ieb-practice" id="practice-ieb"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Wys ALLE berekeninge. Definieer jou positiewe rigting duidelik vir elke vrye-val-probleem. Gebruik g = 9.8 m·s⁻² tensy anders vermeld. Sluit netjiese, gemerkte sketse van bewegingsgrafieke in waar versoek.</div>
+
+    <div class="wb-q"><div class="wb-qnum">Vraag 1</div><div class="wb-qtext">'n Motor begin uit rus en versnel eenvormig teen 3 m·s⁻² vir 8 sekondes. (a) Bereken sy finale snelheid. (b) Bereken die afstand afgelê. (c) Skets die v-t-grafiek vir hierdie beweging en skadu die oppervlakte wat verplasing verteenwoordig.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2</div><div class="wb-qtext">'n v-t-grafiek toon 'n reguit lyn van v = 20 m·s⁻¹ by t = 0 tot v = −4 m·s⁻¹ by t = 6 s. (a) Bereken die versnelling. (b) Op watter tydstip hou die voorwerp oomblikke lank op om te beweeg? (c) Bereken die totale verplasing van t = 0 tot t = 6 s.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3</div><div class="wb-qtext">'n Klip word van 'n brug 44.1 m bo 'n rivier laat val (neem afwaarts as positief, u = 0). Bereken: (a) die tyd om die water te tref, (b) die snelheid net voor impak.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4</div><div class="wb-qtext">'n Bal word vertikaal opwaarts gegooi teen 19.6 m·s⁻¹ vanaf grondvlak. Neem opwaarts as positief. Bereken: (a) die maksimum hoogte bereik, (b) die tyd om die maksimum hoogte te bereik, (c) die totale tyd in die lug voordat dit na dieselfde vlak terugkeer.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5</div><div class="wb-qtext">'n Motor wat teen 25 m·s⁻¹ ry, rem en vertraag teen 5 m·s⁻² totdat dit stilhou. (a) Hoe lank neem die rem? (b) Hoe ver ry die motor terwyl dit rem? (c) Skets 'n netjiese x-t-grafiek vir die hele rembeweging.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 — Posisie-Tyd-Datatabel</div><div class="wb-qtext">'n Karretjie word uit rus bo-aan 'n helling vrygelaat. Sy posisie word elke sekonde aangeteken:<br><br>
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Tyd (s)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+        <tbody>
+          <tr><td>Verplasing (m)</td><td>0</td><td>2</td><td>8</td><td>18</td><td>32</td></tr>
+        </tbody>
+      </table>
+      (a) Bereken die karretjie se gemiddelde snelheid tussen t = 1 s en t = 2 s. Wys jou berekeninge.<br>
+      (b) Bereken die gemiddelde snelheid tussen t = 3 s en t = 4 s.<br>
+      (c) Deur jou antwoord op (a) as die oombliklike snelheid by die middelpunt t = 1.5 s te beskou, en jou antwoord op (b) as die oombliklike snelheid by t = 3.5 s, bereken die karretjie se versnelling deur a = Δv/Δt te gebruik.<br>
+      (d) Die karretjie begin uit rus (u = 0). Deur jou versnelling uit (c) in die vergelyking s = ut + ½at² te gebruik, kyk of dit korrek die verplasing wat by t = 4 s aangeteken is, voorspel. Wys jou berekeninge en kommentaar op die ooreenstemming.</div></div>
+  </div>
+</div>
+
+<script>
+// ── Curriculum toggle ──────────────────────────────────────────────
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+// ── Tab switching ──────────────────────────────────────────────────
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+// ── Motion Simulation ──────────────────────────────────────────────
+let animId=null,playing=false,simT=0,simInited=false;
+let xHistory=[],vHistory=[],tHistory=[];
+const SIM_DT=0.05;
+const MAX_T=8;
+
+function initSim(){
+  if(simInited) return;
+  simInited=true;
+  resetSim();
+}
+
+function resetSim(){
+  if(animId){cancelAnimationFrame(animId);animId=null;}
+  playing=false;
+  document.getElementById('btnPlay').textContent='▶ Speel';
+  document.getElementById('btnPlay').classList.add('active');
+  simT=0;xHistory=[];vHistory=[];tHistory=[];
+  const u=parseFloat(document.getElementById('slU').value);
+  const a=parseFloat(document.getElementById('slA').value);
+  document.getElementById('valU').textContent=u+' m/s';
+  document.getElementById('valA').textContent=a+' m/s²';
+  document.getElementById('ro-x').innerHTML='0.00<span>m</span>';
+  document.getElementById('ro-v').innerHTML=u.toFixed(1)+'<span>m/s</span>';
+  document.getElementById('ro-t').innerHTML='0.00<span>s</span>';
+  document.getElementById('ro-a').innerHTML=a.toFixed(1)+'<span>m/s²</span>';
+  drawFrame(0,u,a);
+}
+
+function togglePlay(){
+  if(playing){
+    playing=false;
+    if(animId){cancelAnimationFrame(animId);animId=null;}
+    document.getElementById('btnPlay').textContent='▶ Speel';
+  } else {
+    if(simT>=MAX_T) resetSim();
+    playing=true;
+    document.getElementById('btnPlay').textContent='⏸ Pouseer';
+    let last=null;
+    function step(ts){
+      if(!playing) return;
+      if(last===null) last=ts;
+      const dt=Math.min((ts-last)/1000,0.1);
+      last=ts;
+      simT+=dt;
+      if(simT>MAX_T){simT=MAX_T;playing=false;document.getElementById('btnPlay').textContent='▶ Speel';}
+      const u=parseFloat(document.getElementById('slU').value);
+      const a=parseFloat(document.getElementById('slA').value);
+      const v=u+a*simT;
+      const x=u*simT+0.5*a*simT*simT;
+      xHistory.push({t:simT,x});
+      vHistory.push({t:simT,v});
+      document.getElementById('ro-x').innerHTML=x.toFixed(2)+'<span>m</span>';
+      document.getElementById('ro-v').innerHTML=v.toFixed(2)+'<span>m/s</span>';
+      document.getElementById('ro-t').innerHTML=simT.toFixed(2)+'<span>s</span>';
+      document.getElementById('ro-a').innerHTML=a.toFixed(1)+'<span>m/s²</span>';
+      drawFrame(simT,u,a);
+      if(playing) animId=requestAnimationFrame(step);
+    }
+    animId=requestAnimationFrame(step);
+  }
+}
+
+function drawFrame(t,u,a){
+  const canvas=document.getElementById('motionCanvas');
+  if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||600;
+  const H=380;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#040710';ctx.fillRect(0,0,W,H);
+
+  const trackY=100,ballR=14;
+  const vNow=u+a*t;
+  const xNow=u*t+0.5*a*t*t;
+
+  // track
+  ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(30,trackY);ctx.lineTo(W-30,trackY);ctx.stroke();
+
+  // position mapping: x in range [-60,60] → track pixels
+  const xMin=-60,xMax=60;
+  const trackLen=W-60;
+  function xToPixel(xv){return 30+((xv-xMin)/(xMax-xMin))*trackLen;}
+
+  // ruler ticks
+  ctx.fillStyle='rgba(210,218,245,.3)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+  for(let xi=xMin;xi<=xMax;xi+=20){
+    const px=xToPixel(xi);
+    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(px,trackY-6);ctx.lineTo(px,trackY+6);ctx.stroke();
+    ctx.fillText(xi+'m',px,trackY+18);
+  }
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='10px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('Posisie (m)',W/2-30,trackY+32);
+
+  // ball
+  const bx=Math.max(30+ballR,Math.min(W-30-ballR,xToPixel(xNow)));
+  const grad=ctx.createRadialGradient(bx-4,trackY-18,2,bx,trackY-16,ballR);
+  grad.addColorStop(0,'#93c5fd');grad.addColorStop(1,'#1d4ed8');
+  ctx.beginPath();ctx.arc(bx,trackY-16,ballR,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
+
+  // velocity arrow on ball
+  if(Math.abs(vNow)>0.5){
+    const arrowLen=Math.min(Math.abs(vNow)*3,70);
+    const dir=vNow>0?1:-1;
+    ctx.strokeStyle='#fbbf24';ctx.fillStyle='#fbbf24';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(bx,trackY-16);ctx.lineTo(bx+dir*arrowLen,trackY-16);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(bx+dir*arrowLen,trackY-16);
+    ctx.lineTo(bx+dir*arrowLen-dir*8,trackY-20);ctx.lineTo(bx+dir*arrowLen-dir*8,trackY-12);
+    ctx.closePath();ctx.fill();
+    ctx.fillStyle='#fbbf24';ctx.font='10px JetBrains Mono';ctx.textAlign=vNow>0?'left':'right';
+    ctx.fillText('v='+vNow.toFixed(1)+' m/s',bx+dir*(arrowLen+4),trackY-20);
+  }
+
+  // ── x-t mini graph ──────────────────────────
+  const gx=30,gy=160,gw=(W-60)/2-10,gh=90;
+  ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=1;ctx.strokeRect(gx,gy,gw,gh);
+  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('x-t',gx+4,gy+12);
+
+  const xVals=Array.from({length:81},(_,i)=>{const ti=i*MAX_T/80;return u*ti+0.5*a*ti*ti;});
+  const xMin2=Math.min(...xVals),xMax2=Math.max(...xVals);
+  const xRange=xMax2-xMin2||1;
+  ctx.strokeStyle='#60a5fa';ctx.lineWidth=1.5;ctx.beginPath();
+  xVals.forEach((xv,i)=>{
+    const px=gx+4+(i/80)*(gw-8);
+    const py=gy+gh-4-((xv-xMin2)/xRange)*(gh-8);
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+  // current marker
+  if(t>0){
+    const px=gx+4+(t/MAX_T)*(gw-8);
+    const py=gy+gh-4-((xNow-xMin2)/xRange)*(gh-8);
+    ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle='#60a5fa';ctx.fill();
+  }
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='9px JetBrains Mono';
+  ctx.textAlign='center';ctx.fillText('tyd (s)',gx+gw/2,gy+gh+12);
+
+  // ── v-t mini graph ──────────────────────────
+  const gx2=gx+gw+20,gy2=gy;
+  ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=1;ctx.strokeRect(gx2,gy2,gw,gh);
+  ctx.fillStyle='rgba(210,218,245,.5)';ctx.font='9px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('v-t',gx2+4,gy2+12);
+
+  const vVals=Array.from({length:81},(_,i)=>u+a*(i*MAX_T/80));
+  const vMin2=Math.min(...vVals),vMax2=Math.max(...vVals);
+  const vRange=vMax2-vMin2||1;
+  const vZero=gy2+gh-4-((0-vMin2)/vRange)*(gh-8);
+  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.moveTo(gx2,vZero);ctx.lineTo(gx2+gw,vZero);ctx.stroke();ctx.setLineDash([]);
+  ctx.strokeStyle='#a78bfa';ctx.lineWidth=1.5;ctx.beginPath();
+  vVals.forEach((vv,i)=>{
+    const px=gx2+4+(i/80)*(gw-8);
+    const py=gy2+gh-4-((vv-vMin2)/vRange)*(gh-8);
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+  if(t>0){
+    const px=gx2+4+(t/MAX_T)*(gw-8);
+    const py=gy2+gh-4-((vNow-vMin2)/vRange)*(gh-8);
+    ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fillStyle='#a78bfa';ctx.fill();
+  }
+  ctx.fillStyle='rgba(210,218,245,.4)';ctx.font='9px JetBrains Mono';
+  ctx.textAlign='center';ctx.fillText('tyd (s)',gx2+gw/2,gy2+gh+12);
+
+  // labels
+  ctx.fillStyle='rgba(96,165,250,.6)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText('x-t-grafiek (helling = snelheid)',gx+gw/2,gy-6);
+  ctx.fillStyle='rgba(167,139,250,.6)';
+  ctx.fillText('v-t-grafiek (helling = versn., opp. = verplasing)',gx2+gw/2,gy2-6);
+
+  // formula display
+  ctx.fillStyle='rgba(251,191,36,.7)';ctx.font='11px JetBrains Mono';ctx.textAlign='left';
+  ctx.fillText('u='+u+' m/s   a='+a+' m/s²   t='+t.toFixed(2)+'s   x='+xNow.toFixed(2)+'m   v='+vNow.toFixed(2)+' m/s',30,310);
+}
+
+window.addEventListener('resize',()=>{if(simInited){const u=parseFloat(document.getElementById('slU').value);const a=parseFloat(document.getElementById('slA').value);drawFrame(simT,u,a);}});
+
+// ── Practice ───────────────────────────────────────────────────────
+const nscQs=[
+  {q:"Wat verteenwoordig die helling van 'n posisie-tyd (x-t) grafiek?",opts:["Versnelling","Verplasing","Snelheid","Afstand"],ans:2,exp:"Die helling (gradiënt) van 'n x-t-grafiek gee die tempo van verandering van posisie, wat snelheid is."},
+  {q:"'n Voorwerp het u = 0 en versnel teen 4 m·s⁻² vir 5 s. Wat is die verplasing?",opts:["20 m","50 m","100 m","10 m"],ans:1,exp:"s = ut + ½at² = 0 + ½(4)(5²) = ½ × 4 × 25 = 50 m."},
+  {q:"'n Motor vertraag van 30 m·s⁻¹ tot rus in 10 s. Wat is die versnelling?",opts:["+3 m·s⁻²","−3 m·s⁻²","−0.33 m·s⁻²","+0.33 m·s⁻²"],ans:1,exp:"a = (v − u)/t = (0 − 30)/10 = −3 m·s⁻². Die negatiewe teken dui vertraging aan (teen die beweging in)."},
+  {q:"Watter bewegingsvergelyking word gebruik wanneer tyd NIE bekend is nie?",opts:["v = u + at","s = ut + ½at²","v² = u² + 2as","s = ½(u+v)t"],ans:2,exp:"v² = u² + 2as bevat nie t nie. Dit is nuttig wanneer tyd nie gegee word en nie nodig is nie."},
+  {q:"'n Klip word uit rus laat val (u = 0, g = 9.8 m·s⁻² afwaarts). Wat is sy spoed na 3 s?",opts:["29.4 m·s⁻¹","9.8 m·s⁻¹","3 m·s⁻¹","44.1 m·s⁻¹"],ans:0,exp:"v = u + gt = 0 + 9.8 × 3 = 29.4 m·s⁻¹ afwaarts."},
+  {q:"Op 'n v-t-grafiek, wat verteenwoordig die oppervlakte onder die lyn van t = 0 tot t = 4 s?",opts:["Spoed by t = 4 s","Versnelling","Verplasing","Afstand slegs as v > 0 die hele tyd"],ans:2,exp:"Die oppervlakte onder 'n v-t-grafiek is altyd gelyk aan verplasing (nie net afstand nie). Verplasing kan negatief wees as v < 0."},
+  {q:"(Analise) 'n v-t-grafiek toon snelheid wat in 'n reguit lyn afneem van 8 m·s⁻¹ by t=0 s, deur nul kruis by t=4 s, tot −4 m·s⁻¹ by t=6 s. Wat is die voorwerp se totale VERPLASING vanaf t=0 s tot t=6 s?",opts:["20 m","16 m","12 m","4 m"],ans:2,exp:"Verdeel die oppervlakte in twee driehoeke aan weerskante van die nulkruising. Van t=0 tot 4 s: oppervlakte = ½ × basis × hoogte = ½ × 4 × 8 = 16 m (positief, aangesien v > 0). Van t=4 tot 6 s: oppervlakte = ½ × 2 × (−4) = −4 m (negatief, aangesien v < 0 hier — die voorwerp het van rigting verander). Totale verplasing = 16 + (−4) = 12 m. (Let wel: die totale AFSTAND afgelê sou 16 + 4 = 20 m wees — verplasing en afstand verskil sodra die voorwerp van rigting verander.)"},
+  {q:"(Analise) 'n Bal word vertikaal opwaarts gegooi teen 24.5 m·s⁻¹ vanaf grondvlak (neem opwaarts as positief, g = −9.8 m·s⁻²). Deur die bewegingsvergelykings direk te gebruik (sonder om eers die tyd tot maksimum hoogte te vind), bereken die bal se snelheid 3 sekondes na dit gegooi is, en gee sy rigting.",opts:["24.5 m·s⁻¹ opwaarts","4.9 m·s⁻¹ afwaarts","4.9 m·s⁻¹ opwaarts","29.4 m·s⁻¹ afwaarts"],ans:1,exp:"Deur v = u + at direk te gebruik: v = 24.5 + (−9.8)(3) = 24.5 − 29.4 = −4.9 m·s⁻¹. Die negatiewe teken (met opwaarts as positief geneem) beteken die bal beweeg teen 4.9 m·s⁻¹ afwaarts. Dit maak sin: die bal bereik sy hoogste punt by t = u/g = 24.5/9.8 = 2.5 s, so teen t = 3 s het dit reeds omgedraai en val terug — jy hoef nie die piektyd apart te vind om v = u + at toe te pas nie."}
+];
+
+const iebQs=[
+  {q:"'n Bal word opwaarts gegooi teen 15 m·s⁻¹ vanaf 'n 20 m-krans. Deur opwaarts as positief te neem (g = −9.8 m·s⁻²), watter vergelyking gee korrek die tyd om die grond te tref? <span class='ieb-badge'>IEB</span>",opts:["0 = 15t − 4.9t²","−20 = 15t − 4.9t²","20 = 15t + 4.9t²","0 = 15t + 4.9t²"],ans:1,exp:"s = ut + ½at². Wanneer die bal die grond tref, is verplasing = −20 m (onder die beginpunt). Dus −20 = 15t + ½(−9.8)t² = 15t − 4.9t²."},
+  {q:"Die snelheid van 'n voorwerp word beskryf deur v(t) = 6 − 3t m·s⁻¹. Op watter tydstip is die voorwerp oomblikke lank stilstaande, en versnel of vertraag dit daarna? <span class='ieb-badge'>IEB</span>",opts:["t = 2 s; vertraag","t = 2 s; versnel steeds teen −3 m·s⁻²","t = 3 s; vertraag","t = 6 s; versnel"],ans:1,exp:"Stel v = 0: 6 − 3t = 0 → t = 2 s. Die versnelling a = dv/dt = −3 m·s⁻² (konstant). Na t = 2 s beweeg die voorwerp in die negatiewe rigting, en versnel steeds teen −3 m·s⁻²."}
+];
+
+let scores=0,answered=0;
+function buildPractice(){
+  const nsc=document.getElementById('practice-nsc');
+  nscQs.forEach((q,i)=>nsc.appendChild(makeCard(q,i)));
+  const ieb=document.getElementById('practice-ieb');
+  iebQs.forEach((q,i)=>ieb.appendChild(makeCard(q,i+nscQs.length)));
+}
+function makeCard(q,idx){
+  const card=document.createElement('div');card.className='q-card';
+  card.innerHTML=`<div class="q-num">Vraag ${idx+1}</div><div class="q-text">${q.q}</div><div class="mc-options" id="opts-${idx}"></div><div class="feedback" id="fb-${idx}"></div>`;
+  const opts=card.querySelector(`#opts-${idx}`);
+  q.opts.forEach((o,oi)=>{
+    const btn=document.createElement('button');btn.className='mc-opt';
+    btn.innerHTML=`<span class="opt-letter">${String.fromCharCode(65+oi)}</span>${o}`;
+    btn.onclick=()=>pick(idx,oi,q,opts);
+    opts.appendChild(btn);
+  });
+  return card;
+}
+function pick(idx,chosen,q,opts){
+  opts.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+  opts.querySelectorAll('.mc-opt')[chosen].classList.add(chosen===q.ans?'correct':'wrong');
+  if(chosen!==q.ans) opts.querySelectorAll('.mc-opt')[q.ans].classList.add('correct');
+  const fb=document.getElementById('fb-'+idx);
+  fb.textContent=q.exp;fb.className='feedback show '+(chosen===q.ans?'ok':'bad');
+  if(chosen===q.ans) scores++;
+  answered++;
+  if(answered===nscQs.length){
+    document.getElementById('score-val').textContent=scores+'/'+nscQs.length;
+    document.getElementById('score-banner').classList.add('show');
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Klassifikasie van Materie — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.08) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#e9d5ff}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:15px;letter-spacing:-0.03em;color:#fff;line-height:1.3}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+    .ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#c084fc;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(192,132,252,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Chemie</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Chemie · Les 1</div>
+  <div class="lesson-title">Klassifikasie van Materie</div>
+  <div class="lesson-sub">Leer om alle materie in suiwer stowwe en mengsels te klassifiseer, onderskei elemente van verbindings, en kies gepaste skeidingstegnieke.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📋 Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Wat is Materie?</h2>
+    <p>Materie is enigiets wat <strong>massa</strong> het en <strong>ruimte inneem (volume)</strong>. Alle fisiese stowwe — van lug tot yster tot water — is materie. Materie kan op verskeie maniere geklassifiseer word, gebaseer op sy samestelling en eienskappe.</p>
+
+    <h2>Suiwer Stowwe vs Mengsels</h2>
+    <p>Die eerste en mees fundamentele klassifikasie skei materie in <strong>suiwer stowwe</strong> en <strong>mengsels</strong>:</p>
+    <table class="symbols-table">
+      <tr><th>Kenmerk</th><th>Suiwer Stof</th><th>Mengsel</th></tr>
+      <tr><td>Samestelling</td><td>Vas, bepaald</td><td>Veranderlik</td></tr>
+      <tr><td>Smelt-/kookpunt</td><td>Skerp, bepaald</td><td>Reeks temperature</td></tr>
+      <tr><td>Alle monsters identies?</td><td>Ja</td><td>Nee</td></tr>
+      <tr><td>Kan fisies geskei word?</td><td>Nee</td><td>Ja</td></tr>
+      <tr><td>Voorbeelde</td><td>Water, goud, NaCl</td><td>Soutwater, lug, sand+yster</td></tr>
+    </table>
+
+    <h2>Elemente</h2>
+    <p>'n <strong>Element</strong> is 'n suiwer stof wat <em>nie deur gewone chemiese middele in eenvoudiger stowwe opgebreek kan word nie</em>. Elke element bestaan uit een tipe atoom. Daar is ongeveer 118 bekende elemente, almal in die Periodieke Tabel te vinde.</p>
+    <div class="key-fact">Voorbeelde: Waterstof (H), Suurstof (O), Yster (Fe), Koolstof (C), Goud (Au), Koper (Cu)</div>
+
+    <h2>Verbindings</h2>
+    <p>'n <strong>Verbinding</strong> is 'n suiwer stof gemaak van twee of meer elemente wat <em>chemies gekombineer</em> is in vaste verhoudings. Verbindings het eienskappe wat heeltemal anders is as die elemente wat hulle vorm, en kan slegs deur chemiese middele opgebreek word (nie fisies nie).</p>
+    <div class="callout"><strong>Voorbeeld:</strong> Water (H₂O) is 'n verbinding van waterstof en suurstof in 'n 2:1-verhouding. Dit het heeltemal ander eienskappe as die plofbare gas H₂ of die reaktiewe gas O₂ wat dit vorm.</div>
+
+    <h2>Klassifikasie van Mengsels</h2>
+    <p>Mengsels word geklassifiseer op grond van of hul samestelling deurgaans eenvormig is:</p>
+    <ul>
+      <li><strong>Homogene mengsel (oplossing):</strong> Eenvormige samestelling regdeur; komponente kan nie met die oog onderskei word nie. Voorbeelde: soutwater, allooie (staal, brons), lug, asyn. Die opgeloste stof is die <em>opgeloste stof</em>; wat dit oplos, is die <em>oplosmiddel</em>.</li>
+      <li><strong>Heterogene mengsel:</strong> Nie-eenvormig; komponente is sigbaar onderskeibaar of in verskillende fases. Voorbeelde: sand en water, olie en water, slaai, graniet.</li>
+    </ul>
+    <div class="callout"><strong>Let wel:</strong> Kolloïede (bv. melk, mis) en suspensies (bv. modderige water) is intermediêr — hulle lyk homogeen, maar deeltjies is groter as in ware oplossings.</div>
+
+    <h2>Skeidingstegnieke</h2>
+    <p>Kies die tegniek gebaseer op die tipe mengsel en die eienskappe van die komponente:</p>
+    <table class="symbols-table">
+      <tr><th>Tegniek</th><th>Tipe Mengsel</th><th>Beginsel</th><th>Voorbeeld</th></tr>
+      <tr><td>Filtrasie</td><td>Vaste stof–vloeistof (onoplosbare vaste stof)</td><td>Verskil in deeltjiegrootte</td><td>Sand uit water</td></tr>
+      <tr><td>Verdamping</td><td>Opgeloste vaste stof in vloeistof</td><td>Vloeistof verdamp, vaste stof bly oor</td><td>Sout uit soutwater</td></tr>
+      <tr><td>Eenvoudige distillasie</td><td>Vloeistowwe met baie verskillende kookpunte</td><td>Verskille in kookpunt</td><td>Water uit alkohol</td></tr>
+      <tr><td>Fraksionele distillasie</td><td>Vloeistowwe met soortgelyke kookpunte</td><td>Herhaalde verdamping/kondensasie</td><td>Ru-olie-raffinering, lug</td></tr>
+      <tr><td>Kristallisasie</td><td>Vaste stof opgelos in vloeistof</td><td>Oplosbaarheid neem af met afkoeling</td><td>Kopersulfaat-kristalle</td></tr>
+      <tr><td>Chromatografie</td><td>Opgeloste mengsels van opgeloste stowwe</td><td>Verskillende affiniteite vir stasionêre/mobiele fase</td><td>Inkkleurstowwe, aminosure</td></tr>
+      <tr><td>Magnetiese skeiding</td><td>Magnetiese + nie-magnetiese vaste stowwe</td><td>Magnetisme</td><td>Ystervyllsel uit swael</td></tr>
+    </table>
+
+    <h2>Fisiese vs Chemiese Eienskappe</h2>
+    <ul>
+      <li><strong>Fisiese eienskappe:</strong> Waarneembaar/meetbaar sonder om die chemiese samestelling te verander. Voorbeelde: kleur, toestand van materie, digtheid, smeltpunt, kookpunt, oplosbaarheid, elektriese geleivermoë.</li>
+      <li><strong>Chemiese eienskappe:</strong> Beskryf hoe 'n stof sy samestelling tydens 'n reaksie verander. Voorbeelde: vlambaarheid, reaktiwiteit met sure, vermoë om te roes, ontvlambaarheid.</li>
+    </ul>
+    <p>Eienskappe kan ook geklassifiseer word as:</p>
+    <ul>
+      <li><strong>Intensief:</strong> Hang NIE af van die hoeveelheid stof nie (digtheid, smeltpunt, kookpunt, kleur).</li>
+      <li><strong>Ekstensief:</strong> Hang WEL af van hoeveelheid (massa, volume, lengte, energie).</li>
+    </ul>
+
+    <h2>Toestande van Materie &amp; Digtheid</h2>
+    <p>Materie bestaan in vier toestande: <strong>vaste stof, vloeistof, gas,</strong> en <strong>plasma</strong>. Die kinetiese molekulêre teorie verduidelik toestande in terme van deeltjierangskikking, energie, en beweging.</p>
+    <div class="formula">ρ = m / V &nbsp;&nbsp;&nbsp; (digtheid = massa ÷ volume; eenheid: kg/m³ of g/cm³)</div>
+    <div class="key-fact">Water: ρ = 1.00 g/cm³ | Goud: ρ = 19.3 g/cm³ | Lug: ρ ≈ 0.0013 g/cm³ | Yster: ρ = 7.87 g/cm³</div>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Kolligatiewe Eienskappe &amp; Allooie</div>
+      <p><strong>Kolligatiewe eienskappe</strong> hang slegs af van die aantal opgeloste deeltjies, nie hul identiteit nie:</p>
+      <ul style="margin-top:8px;font-size:13px;color:rgba(210,218,245,.75)">
+        <li><strong>Kookpuntverhoging:</strong> Die byvoeging van 'n opgeloste stof verhoog die kookpunt van die oplosmiddel (bv. vrieswerende middel in 'n motorradiateur).</li>
+        <li><strong>Vriespuntverlaging:</strong> Die byvoeging van 'n opgeloste stof verlaag die vriespunt (bv. sout op ysige paaie).</li>
+      </ul>
+      <p style="margin-top:10px"><strong>Allooie</strong> is vaste oplossings (homogene mengsels van metale). Algemene voorbeelde:</p>
+      <table class="symbols-table" style="margin-top:8px">
+        <tr><th>Allooi</th><th>Komponente</th><th>Gebruik</th></tr>
+        <tr><td>Staal</td><td>Fe + C (0.2–2%)</td><td>Konstruksie, gereedskap</td></tr>
+        <tr><td>Brons</td><td>Cu + Sn (≈10%)</td><td>Standbeelde, laers</td></tr>
+        <tr><td>Geelkoper</td><td>Cu + Zn (10–45%)</td><td>Musiekinstrumente, loodgieterswerk</td></tr>
+        <tr><td>18-karaat goud</td><td>Au (75%) + Cu/Ag (25%)</td><td>Juweliersware</td></tr>
+      </table>
+      <p style="margin-top:8px;font-size:13px;color:rgba(210,218,245,.7)"><strong>Raoult se Wet (kwalitatief):</strong> Die dampdruk van 'n oplossing is laer as dié van die suiwer oplosmiddel. Dit verduidelik waarom opgeloste stowwe die kookpunt verhoog — meer energie word benodig vir oplosmiddelmolekules om uit die oplossing te ontsnap.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="sim-title">Materieklassifikasie- en Skeidingsinteraktief</h3>
+      <canvas id="matterCanvas" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Modus</div>
+        <button class="mode-btn active" id="modeClassify" onclick="setMode('classify')">Klassifiseer Materie</button>
+        <button class="mode-btn" id="modeSeparate" onclick="setMode('separate')">Skeidingsmetodes</button>
+      </div>
+      <div class="ctrl-card" id="sepCard" style="display:none">
+        <div class="ctrl-label">Skeidingstegniek</div>
+        <button class="mode-btn active" id="sepFilt" onclick="setSep('filtration')">Filtrasie</button>
+        <button class="mode-btn" id="sepDist" onclick="setSep('distillation')">Distillasie</button>
+        <button class="mode-btn" id="sepChrom" onclick="setSep('chromatography')">Chromatografie</button>
+      </div>
+      <div class="ctrl-card" id="classifyInfo">
+        <div class="ctrl-label">Hoe om te gebruik</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.7">Die vloeidiagram wys hoe om enige monster materie te klassifiseer. Volg die besluitpad van bo na onder. Klik op 'n nodus om sy pad uit te lig.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/7</div>
+      <div style="font-size:14px;color:var(--muted)">NSC Oefening voltooi! Hersien jou antwoorde hieronder.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 1 — Klassifikasie</div>
+      <div class="q-text">Watter een van die volgende is 'n suiwer stof?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">A</span>Lug</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">B</span>Seewater</button>
+        <button class="mc-opt" onclick="answer(this,true,'q1')"><span class="opt-letter">C</span>Gedistilleerde water (H₂O)</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">D</span>Vlekvrye staal</button>
+      </div>
+      <div class="feedback ok" id="fb-q1-ok">Korrek! Gedistilleerde water is 'n suiwer verbinding met 'n vaste samestelling (H₂O) en 'n bepaalde kookpunt van 100°C. Lug, seewater, en vlekvrye staal is almal mengsels.</div>
+      <div class="feedback bad" id="fb-q1-bad">Lug is 'n mengsel van gasse. Seewater bevat opgeloste soute. Vlekvrye staal is 'n allooi (mengsel). Slegs gedistilleerde water (H₂O) is 'n suiwer verbinding met 'n vaste samestelling.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 2 — Elemente vs Verbindings</div>
+      <div class="q-text">Koolstofdioksied (CO₂) word die beste beskryf as:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">A</span>'n Element, omdat dit 'n chemiese simbool het</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">B</span>'n Homogene mengsel van koolstof en suurstof</button>
+        <button class="mc-opt" onclick="answer(this,true,'q2')"><span class="opt-letter">C</span>'n Verbinding, omdat dit twee elemente bevat wat chemies in 'n vaste verhouding gekombineer is</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">D</span>'n Heterogene mengsel</button>
+      </div>
+      <div class="feedback ok" id="fb-q2-ok">Korrek! CO₂ is 'n verbinding — dit bevat koolstof- en suurstofatome chemies gebind in 'n vaste 1:2-verhouding. Dit het ander eienskappe as suiwer C of suiwer O₂.</div>
+      <div class="feedback bad" id="fb-q2-bad">CO₂ is 'n verbinding: twee elemente (C en O) chemies gekombineer in 'n vaste verhouding (1:2). Die komponente kan nie fisies geskei word nie, en CO₂ het eienskappe wat verskil van sy samestellende elemente.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 3 — Skeidingstegniek</div>
+      <div class="q-text">'n Leerder moet sout (natriumchloried) van 'n soutwateroplossing skei. Watter tegniek is die geskikste?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">A</span>Filtrasie</button>
+        <button class="mc-opt" onclick="answer(this,true,'q3')"><span class="opt-letter">B</span>Verdamping</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">C</span>Chromatografie</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">D</span>Magnetiese skeiding</button>
+      </div>
+      <div class="feedback ok" id="fb-q3-ok">Korrek! Sout los in water op ('n homogene mengsel). Verdamping dryf die water as damp af en laat vaste sout agter. Filtrasie werk slegs vir onoplosbare vaste stowwe.</div>
+      <div class="feedback bad" id="fb-q3-bad">Filtrasie sal nie werk nie omdat die sout opgelos is (geen vaste deeltjies om te filtreer nie). Verdamping is korrek — verhit die oplossing totdat al die water verdamp, wat droë soutkristalle agterlaat.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 4 — Eienskappe</div>
+      <div class="q-text">Watter een van die volgende is 'n intensiewe eienskap?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">A</span>Massa</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">B</span>Volume</button>
+        <button class="mc-opt" onclick="answer(this,true,'q4')"><span class="opt-letter">C</span>Digtheid</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">D</span>Lengte</button>
+      </div>
+      <div class="feedback ok" id="fb-q4-ok">Korrek! Digtheid (ρ = m/V) is intensief — dit verander nie met die hoeveelheid stof nie. Of jy 1 g of 1 kg goud het, die digtheid is altyd 19.3 g/cm³. Massa, volume, en lengte verander almal met hoeveelheid (ekstensief).</div>
+      <div class="feedback bad" id="fb-q4-bad">Digtheid is intensief — dit is die verhouding van massa tot volume, dus bly dit dieselfde ongeag die hoeveelheid stof. Massa, volume, en lengte is ekstensief (hulle hang af van hoeveel jy het).</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 5 — Homogeen vs Heterogeen</div>
+      <div class="q-text">Watter een van die volgende is 'n heterogene mengsel?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">A</span>Geelkoper (koper-sink-allooi)</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">B</span>Witwyn</button>
+        <button class="mc-opt" onclick="answer(this,true,'q5')"><span class="opt-letter">C</span>Graniet (rots met sigbare kristalle)</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">D</span>Lug</button>
+      </div>
+      <div class="feedback ok" id="fb-q5-ok">Korrek! Graniet is heterogeen — jy kan die verskillende mineraalkristalle (kwarts, veldspaat, mika) met die blote oog sien. Geelkoper, wyn, en lug is homogeen (eenvormige samestelling regdeur).</div>
+      <div class="feedback bad" id="fb-q5-bad">Graniet is heterogeen — duidelike mineraalkorrels is met die blote oog sigbaar. Geelkoper (allooi), wyn (oplossing), en lug (gasmengsel) is almal homogeen — eenvormig regdeur.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 6 — Digtheidsberekening</div>
+      <div class="q-text">'n Reghoekige blok metaal het 'n massa van 540 g en afmetings 3 cm × 4 cm × 5 cm. Wat is sy digtheid?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">A</span>540 g/cm³</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">B</span>4.5 g/cm³</button>
+        <button class="mc-opt" onclick="answer(this,true,'q6')"><span class="opt-letter">C</span>9 g/cm³</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">D</span>27 g/cm³</button>
+      </div>
+      <div class="feedback ok" id="fb-q6-ok">Korrek! V = 3 × 4 × 5 = 60 cm³. ρ = m/V = 540/60 = 9 g/cm³. Dit is naby aan die digtheid van koper (8.96 g/cm³)!</div>
+      <div class="feedback bad" id="fb-q6-bad">Vind eers die volume: V = 3 × 4 × 5 = 60 cm³. Dan ρ = m/V = 540 g ÷ 60 cm³ = 9 g/cm³.</div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Vraag 7 — Multi-stap-skeiding (Analise)</div>
+      <div class="q-text">'n Leerder kry 'n mengsel van ystervyllsel, sand, en gewone sout (NaCl), en moet al drie komponente afsonderlik terugwin. Watter reeks stappe bereik dit?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">A</span>Filtrasie eerste, dan verdamping, dan gebruik 'n magneet</button>
+        <button class="mc-opt" onclick="answer(this,true,'q7')"><span class="opt-letter">B</span>Gebruik 'n magneet om die ystervyllsel te verwyder; voeg water by om die sout op te los, filtreer dan die sand af; verdamp die filtraat om die sout terug te wen</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">C</span>Verdamp die hele mengsel, filtreer dan, gebruik dan 'n magneet</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">D</span>Gebruik chromatografie om al drie komponente gelyktydig te skei</button>
+      </div>
+      <div class="feedback ok" id="fb-q7-ok">Korrek! Elke stap moet 'n ander eienskap benut. Yster is die enigste magnetiese komponent, dus verwyder dit eerste met 'n magneet (droog, werk op die gemengde vaste stof). Die byvoeging van water los slegs die sout op (sand is onoplosbaar), dus skei filtrasie nou vaste sand van die soutoplossing. Ten slotte laat verdamping van die filtraat die droë sout agter. Om die stappe in 'n ander volgorde te doen, misluk — bv. 'n magneet kan nie yster so netjies uit 'n nat brei trek nie, en jy kan nie sout uit oplossing filtreer nie omdat dit opgelos is.</div>
+      <div class="feedback bad" id="fb-q7-bad">Werk vanaf die eienskap wat die maklikste is om eerste te isoleer: ystervyllsel is magneties, dus verwyder 'n magneet dit onmiddellik uit die droë vaste mengsel. Voeg dan water by — sout los op, sand nie — dus skei filtrasie nou vaste sand van die soutoplossing. Verdamping van die oorblywende filtraat dryf die water af en laat vaste sout agter. Elke tegniek mik op een eienskap (magnetisme → oplosbaarheid → vlugtigheid van water) in 'n logiese volgorde.</div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" id="ieb-practice-section">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB-uitbreidingsoefening <span class="ieb-badge">SLEGS IEB</span></div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Vraag 1 — Kolligatiewe Eienskappe</div>
+        <div class="q-text">Waarom verhoog die byvoeging van sout by water sy kookpunt, en watter term beskryf hierdie verskynsel?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">A</span>Dit verlaag dampdruk; word vriespuntverlaging genoem</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq1')"><span class="opt-letter">B</span>Opgeloste ione verlaag die dampdruk, dus word meer energie benodig om te kook; word kookpuntverhoging genoem</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">C</span>Sout reageer met water om hitte-energie vry te stel</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">D</span>Verhoogde digtheid vereis 'n hoër temperatuur om te verdamp</button>
+        </div>
+        <div class="feedback ok" id="fb-iq1-ok">Korrek! Opgeloste deeltjies (ione uit NaCl) verminder die dampdruk van die oplossing (Raoult se Wet). Aangesien 'n laer dampdruk beteken dat meer energie benodig word om atmosferiese druk te bereik, styg die kookpunt. Dit is 'n kolligatiewe eienskap — kookpuntverhoging.</div>
+        <div class="feedback bad" id="fb-iq1-bad">Opgeloste opgeloste-stof-deeltjies verminder die dampdruk (Raoult se Wet). Omdat die dampdruk laer is, word meer energie benodig om die oplossing te kook → kookpuntverhoging. Dit is 'n kolligatiewe eienskap wat slegs afhang van die aantal deeltjies, nie wat hulle is nie.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB Vraag 2 — Allooiklassifikasie</div>
+        <div class="q-text">Brons is 'n allooi van koper (Cu) en tin (Sn). Hoe moet brons geklassifiseer word in terme van die materieklassifikasie-hiërargie, en waarom?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">A</span>Suiwer verbinding — die atome is chemies gebind in vaste verhoudings</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">B</span>Heterogene mengsel — die metale kan as aparte fases gesien word</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq2')"><span class="opt-letter">C</span>Homogene mengsel (vaste oplossing) — eenvormige samestelling met veranderlike Cu:Sn-verhouding</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">D</span>Element — omdat dit slegs uit metaalatome bestaan</button>
+        </div>
+        <div class="feedback ok" id="fb-iq2-ok">Korrek! Allooie is vaste oplossings — homogene mengsels waar die samestelling kan wissel (bv. brons kan 85–95% Cu wees). Die metale is nie chemies gebind nie, dus is brons 'n mengsel, nie 'n verbinding nie. Sy eenvormige voorkoms maak dit homogeen.</div>
+        <div class="feedback bad" id="fb-iq2-bad">Brons is 'n homogene mengsel (vaste oplossing). Die Cu:Sn-verhouding is veranderlik, dus is dit nie 'n verbinding nie (wat vaste verhoudings vereis). Op atoomvlak is die metale eenvormig versprei, dus is dit homogeen, nie heterogeen nie.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Druk Werkboek</button>
+    <div class="wb-intro">Voltooi al die vrae in jou skryfboek. Waar diagramme vereis word, teken groot, netjiese, gemerkte diagramme. Wys alle berekeninge.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 — Klassifiseer 'n Stoflys</div>
+      <div class="wb-qtext">Klassifiseer elk van die volgende as: element, verbinding, homogene mengsel, of heterogene mengsel. Gee 'n rede vir elke antwoord.<br><br>
+      (a) Suiwer koper &nbsp;&nbsp; (b) Tafelsout (NaCl) &nbsp;&nbsp; (c) Modderige rivierwater &nbsp;&nbsp; (d) Asyn &nbsp;&nbsp; (e) Suurstofgas (O₂) &nbsp;&nbsp; (f) Beton &nbsp;&nbsp; (g) Etanol (C₂H₅OH) &nbsp;&nbsp; (h) Vlekvrye staal</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 — Keuse &amp; Regverdiging van Skeidingsmetode</div>
+      <div class="wb-qtext">Vir elke mengsel hieronder, gee die geskikste skeidingstegniek en regverdig jou keuse deur na die eienskap van die komponente te verwys wat hierdie tegniek laat werk.<br><br>
+      (a) Ystervyllsel gemeng met swaelpoeier<br>
+      (b) Alkohol en water (kookpunte: etanol 78°C, water 100°C)<br>
+      (c) 'n Mengsel van blou, rooi, en geel voedselkleursels opgelos in water<br>
+      (d) Sand gemeng met water<br>
+      (e) Kopersulfaatkristalle opgelos in warm water</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 — Eienskappetabel</div>
+      <div class="wb-qtext">Voltooi die tabel deur elke eienskap as fisies of chemies, en intensief of ekstensief te identifiseer:<br><br>
+      (a) Vlambaarheid van petrol &nbsp;&nbsp; (b) Massa van 'n rots &nbsp;&nbsp; (c) Kookpunt van etanol &nbsp;&nbsp; (d) Kleur van koper &nbsp;&nbsp; (e) Volume van 'n gas &nbsp;&nbsp; (f) Reaktiwiteit van natrium met water &nbsp;&nbsp; (g) Digtheid van goud &nbsp;&nbsp; (h) Lengte van 'n ysterstaaf</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 — Digtheidsberekening</div>
+      <div class="wb-qtext">'n Leerder giet 150 mL van 'n onbekende vloeistof in 'n maatsilinder. Die vloeistof het 'n massa van 120 g.<br>
+      (a) Bereken die digtheid van die vloeistof in g/mL en in kg/m³.<br>
+      (b) Is hierdie vloeistof waarskynlik water, etanol (ρ = 0.79 g/mL), of gliserol (ρ = 1.26 g/mL)? Regverdig jou antwoord.<br>
+      (c) As hierdie vloeistof in 'n beker water gegiet word, sal dit dryf of sink? Verduidelik.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 — Klassifikasievloeidiagram</div>
+      <div class="wb-qtext">Teken 'n volledig gemerkte klassifikasievloeidiagram vir materie. Jou vloeidiagram moet insluit: materie → suiwer stof / mengsel → element / verbinding / homogene mengsel / heterogene mengsel. Verskaf vir elke finale kategorie twee voorbeelde en gee twee identifiserende kenmerke. Gebruik vrae soos "Is die samestelling eenvormig?" en "Kan dit chemies opgebreek word?" as besluitpunte.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6 — Identifisering van Metale uit Digtheidsdata</div>
+      <div class="wb-qtext">'n Leerder meet die massa en volume van vier onbekende metaalmonsters in die laboratorium:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Monster</th><th>Massa (g)</th><th>Volume (cm³)</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>54.0</td><td>20.0</td></tr>
+          <tr><td>B</td><td>44.8</td><td>5.00</td></tr>
+          <tr><td>C</td><td>170.1</td><td>15.0</td></tr>
+          <tr><td>D</td><td>118.05</td><td>15.0</td></tr>
+        </tbody>
+      </table>
+      Verwysingsdigthede: aluminium = 2.70 g/cm³, yster = 7.87 g/cm³, koper = 8.96 g/cm³, lood = 11.34 g/cm³.<br><br>
+      (a) Bereken die digtheid van elke monster en wys jou berekeninge.<br>
+      (b) Gebruik die verwysingsdigthede om die metaal in elke monster te identifiseer.<br>
+      (c) Is digtheid 'n intensiewe of ekstensiewe eienskap? Verduidelik hoe hierdie datatabel daardie klassifikasie demonstreer.<br>
+      (d) As monster A middeldeur gesny sou word, wat sou met sy massa, volume, en digtheid gebeur? Verduidelik.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+  const answered={};let score=0;
+  function answer(btn,correct,qid){
+    if(answered[qid])return;answered[qid]=true;
+    btn.closest('.mc-options').querySelectorAll('.mc-opt').forEach(o=>o.disabled=true);
+    btn.classList.add(correct?'correct':'wrong');
+    const fb=document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
+    if(fb)fb.classList.add('show');
+    if(correct&&!qid.startsWith('i')){score++;const n=Object.keys(answered).filter(k=>!k.startsWith('i')).length;if(n===7){document.getElementById('scoreBanner').classList.add('show');document.getElementById('scoreNum').textContent=score+'/7';}}
+  }
+
+  // ---- SIMULATION ----
+  const canvas=document.getElementById('matterCanvas');
+  const ctx=canvas.getContext('2d');
+  let simMode='classify';
+  let sepMode='filtration';
+  let animFrame=null;
+  let tick=0;
+  let highlighted=null;
+
+  function setMode(mode){
+    simMode=mode;
+    document.getElementById('modeClassify').classList.toggle('active',mode==='classify');
+    document.getElementById('modeSeparate').classList.toggle('active',mode==='separate');
+    document.getElementById('sepCard').style.display=mode==='separate'?'block':'none';
+    document.getElementById('classifyInfo').style.display=mode==='classify'?'block':'none';
+    highlighted=null;tick=0;draw();
+  }
+  function setSep(s){
+    sepMode=s;
+    ['sepFilt','sepDist','sepChrom'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    const map={filtration:'sepFilt',distillation:'sepDist',chromatography:'sepChrom'};
+    document.getElementById(map[s]).classList.add('active');
+    tick=0;draw();
+  }
+
+  function resizeCanvas(){
+    const dpr=window.devicePixelRatio||1;
+    const w=canvas.parentElement.clientWidth-32;
+    canvas.style.width=w+'px';canvas.style.height='320px';
+    canvas.width=w*dpr;canvas.height=320*dpr;
+    ctx.scale(dpr,dpr);
+  }
+
+  function box(x,y,w,h,label,sub,col,active){
+    const r=10;
+    ctx.fillStyle=active?col+'33':col+'15';
+    ctx.strokeStyle=active?col:col+'88';
+    ctx.lineWidth=active?2:1.5;
+    ctx.beginPath();ctx.roundRect(x-w/2,y-h/2,w,h,r);ctx.fill();ctx.stroke();
+    ctx.fillStyle=active?'#fff':col+'cc';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(label,x,y+(sub?-4:4));
+    if(sub){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='10px monospace';ctx.fillText(sub,x,y+12);}
+  }
+  function arrow(x1,y1,x2,y2,label){
+    ctx.strokeStyle='rgba(192,132,252,0.35)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+    const ux=dx/len,uy=dy/len;
+    ctx.fillStyle='rgba(192,132,252,0.5)';
+    ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-ux*8+uy*4,y2-uy*8-ux*4);ctx.lineTo(x2-ux*8-uy*4,y2-uy*8+ux*4);ctx.closePath();ctx.fill();
+    if(label){ctx.fillStyle='rgba(210,218,245,0.5)';ctx.font='9px monospace';ctx.textAlign='center';ctx.fillText(label,(x1+x2)/2-6,(y1+y2)/2-6);}
+  }
+
+  function drawClassify(){
+    const W=canvas.clientWidth,H=320;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2;
+    const purple='#c084fc',blue='#60a5fa',green='#86efac',amber='#fbbf24';
+    // Matter (top)
+    box(cx,28,160,36,'MATERIE','enigiets met massa & volume',purple,true);
+    arrow(cx,46,cx-W*0.22,76,'');
+    arrow(cx,46,cx+W*0.22,76,'');
+    // Pure substance
+    box(cx-W*0.22,96,155,36,'Suiwer Stof','vaste samestelling',blue,true);
+    // Mixture
+    box(cx+W*0.22,96,155,36,'Mengsel','veranderlike samestelling',amber,true);
+    // Element & Compound
+    box(cx-W*0.35,180,130,36,'Element','een tipe atoom',green,false);
+    box(cx-W*0.09,180,130,36,'Verbinding','2+ elemente gebind',green,false);
+    arrow(cx-W*0.22,114,cx-W*0.35,162,'kan nie\nopgebreek word nie');
+    arrow(cx-W*0.22,114,cx-W*0.09,162,'kan\nopgebreek word');
+    // Homogeneous & Heterogeneous
+    box(cx+W*0.09,180,140,36,'Homogeen','eenvormig / oplossing',amber,false);
+    box(cx+W*0.35,180,140,36,'Heterogeen','nie-eenvormig',amber,false);
+    arrow(cx+W*0.22,114,cx+W*0.09,162,'eenvormig');
+    arrow(cx+W*0.22,114,cx+W*0.35,162,'nie-eenvormig');
+    // Examples
+    const exStyle='rgba(210,218,245,0.45)';
+    ctx.fillStyle=exStyle;ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillText('bv. Fe, O₂, Cu',cx-W*0.35,225);
+    ctx.fillText('bv. H₂O, NaCl',cx-W*0.09,225);
+    ctx.fillText('bv. soutwater, lug',cx+W*0.09,225);
+    ctx.fillText('bv. sand+water',cx+W*0.35,225);
+    // Decision labels
+    ctx.fillStyle='rgba(192,132,252,0.5)';ctx.font='bold 9px monospace';ctx.textAlign='center';
+    ctx.fillText('Suiwer Stof',cx-W*0.15,72);
+    ctx.fillText('Mengsel',cx+W*0.12,72);
+    ctx.fillText('Titel: Is dit eenvormig?',cx+W*0.22,135);
+    ctx.fillText('Kan dit opgebreek word?',cx-W*0.22,135);
+  }
+
+  function drawSeparation(){
+    const W=canvas.clientWidth,H=320;
+    ctx.clearRect(0,0,W,H);
+    tick++;
+    if(sepMode==='filtration') drawFiltration(W,H);
+    else if(sepMode==='distillation') drawDistillation(W,H);
+    else drawChromatography(W,H);
+  }
+
+  function drawFiltration(W,H){
+    const cx=W*0.38,cy=90;
+    // Funnel
+    ctx.strokeStyle='rgba(192,132,252,0.6)';ctx.lineWidth=2;ctx.fillStyle='rgba(192,132,252,0.07)';
+    ctx.beginPath();ctx.moveTo(cx-70,cy-30);ctx.lineTo(cx+70,cy-30);ctx.lineTo(cx+20,cy+50);ctx.lineTo(cx-20,cy+50);ctx.closePath();ctx.fill();ctx.stroke();
+    // Filter paper
+    ctx.strokeStyle='#e9d5ff';ctx.lineWidth=1.5;ctx.fillStyle='rgba(233,213,255,0.08)';
+    ctx.beginPath();ctx.moveTo(cx-65,cy-28);ctx.lineTo(cx+65,cy-28);ctx.lineTo(cx+18,cy+45);ctx.lineTo(cx-18,cy+45);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(233,213,255,0.5)';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('filtreerpapier',cx,cy+10);
+    // Sand particles on filter
+    for(let i=0;i<18;i++){
+      const px=cx-50+i*6+Math.sin(i)*3;
+      const py=cy+(i%2===0?15:22);
+      ctx.fillStyle='rgba(251,191,36,0.7)';ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fill();
+    }
+    // Stem
+    ctx.strokeStyle='rgba(192,132,252,0.5)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(cx,cy+50);ctx.lineTo(cx,cy+100);ctx.stroke();
+    // Beaker below
+    ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=2;ctx.fillStyle='rgba(96,165,250,0.05)';
+    ctx.beginPath();ctx.moveTo(cx-40,cy+100);ctx.lineTo(cx-40,cy+180);ctx.lineTo(cx+40,cy+180);ctx.lineTo(cx+40,cy+100);ctx.stroke();ctx.fill();
+    // Filtrate drops
+    const dropY=cy+90+(tick%40)*1.5;
+    if(dropY<cy+175){ctx.fillStyle='rgba(96,165,250,0.8)';ctx.beginPath();ctx.arc(cx,dropY,3,0,Math.PI*2);ctx.fill();}
+    // Filtrate water in beaker
+    const level=Math.min(60,Math.floor(tick/30)*4);
+    ctx.fillStyle='rgba(96,165,250,0.18)';ctx.fillRect(cx-38,cy+182-level,76,level);
+    ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(cx-38,cy+182-level);ctx.lineTo(cx+38,cy+182-level);ctx.stroke();
+    // Labels
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText('FILTRASIE',W*0.65,50);
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillText('• Skei onoplosbare',W*0.65,70);
+    ctx.fillText('  vaste stof van vloeistof',W*0.65,83);
+    ctx.fillText('• Vaste stof: residu op',W*0.65,100);
+    ctx.fillText('  filtreerpapier',W*0.65,113);
+    ctx.fillText('• Vloeistof: filtraat',W*0.65,130);
+    ctx.fillText('  versamel onder',W*0.65,143);
+    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillText('Voorbeeld: sand uit water',W*0.65,165);
+  }
+
+  function drawDistillation(W,H){
+    const fx=W*0.18,fy=120;
+    // Flask
+    ctx.strokeStyle='rgba(192,132,252,0.6)';ctx.lineWidth=2;ctx.fillStyle='rgba(192,132,252,0.07)';
+    ctx.beginPath();ctx.arc(fx,fy,50,0,Math.PI*2);ctx.fill();ctx.stroke();
+    // Liquid in flask
+    ctx.fillStyle='rgba(96,165,250,0.2)';ctx.beginPath();ctx.arc(fx,fy,48,0,Math.PI);ctx.fill();
+    // Bubbles
+    if(tick%20<10){
+      for(let i=0;i<3;i++){
+        const bx=fx-20+i*20+Math.sin(tick*0.1+i)*5;
+        const by=fy+20-((tick%20)*3+i*8)%40;
+        ctx.fillStyle='rgba(96,165,250,0.4)';ctx.beginPath();ctx.arc(bx,by,3,0,Math.PI*2);ctx.fill();
+      }
+    }
+    // Flask neck
+    ctx.strokeStyle='rgba(192,132,252,0.5)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(fx,fy-50);ctx.lineTo(fx,fy-80);ctx.lineTo(fx+90,fy-60);ctx.stroke();
+    // Condenser
+    ctx.strokeStyle='rgba(147,197,253,0.6)';ctx.lineWidth=8;
+    ctx.beginPath();ctx.moveTo(fx+90,fy-60);ctx.lineTo(W*0.7,fy+20);ctx.stroke();
+    ctx.strokeStyle='rgba(192,132,252,0.4)';ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(fx+90,fy-60);ctx.lineTo(W*0.7,fy+20);ctx.stroke();
+    // Distillate
+    ctx.strokeStyle='rgba(134,239,172,0.6)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(W*0.7,fy+20);ctx.lineTo(W*0.7,fy+80);ctx.stroke();
+    // Collection flask
+    ctx.strokeStyle='rgba(134,239,172,0.5)';ctx.lineWidth=2;ctx.fillStyle='rgba(134,239,172,0.07)';
+    ctx.beginPath();ctx.arc(W*0.7,fy+105,30,0,Math.PI*2);ctx.fill();ctx.stroke();
+    const lvl=Math.min(25,Math.floor(tick/60)*3);
+    ctx.fillStyle='rgba(134,239,172,0.3)';ctx.beginPath();ctx.arc(W*0.7,fy+105,28,0,Math.PI);ctx.fill();
+    // Labels
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText('DISTILLASIE',W*0.75,50);
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillText('• Skei vloeistowwe',W*0.75,70);
+    ctx.fillText('  volgens kookpunt',W*0.75,83);
+    ctx.fillText('• Laer kookpunt verdamp',W*0.75,100);
+    ctx.fillText('  eerste, kondenseer',W*0.75,113);
+    ctx.fillText('• Kondensator koel',W*0.75,130);
+    ctx.fillText('  damp → vloeistof',W*0.75,143);
+    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillText('Voorbeeld: alkohol uit water',W*0.75,165);
+    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillText('kondensator',W*0.55,fy-20);
+    ctx.fillStyle='rgba(134,239,172,0.7)';
+    ctx.fillText('distillaat',W*0.7,fy+150);
+  }
+
+  function drawChromatography(W,H){
+    const cx=W*0.3,top=30,bottom=H-30;
+    const paperW=100;
+    // Paper
+    ctx.fillStyle='rgba(255,255,255,0.06)';ctx.strokeStyle='rgba(192,132,252,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(cx-paperW/2,top,paperW,bottom-top);ctx.fill();ctx.stroke();
+    // Solvent front (animated)
+    const progress=Math.min(1,(tick%400)/400);
+    const frontY=bottom-progress*(bottom-top-60);
+    ctx.fillStyle='rgba(96,165,250,0.08)';
+    ctx.fillRect(cx-paperW/2+1,frontY,paperW-2,bottom-frontY-1);
+    ctx.strokeStyle='rgba(96,165,250,0.5)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx-paperW/2,frontY);ctx.lineTo(cx+paperW/2,frontY);ctx.stroke();
+    ctx.setLineDash([]);
+    // Dye spots (travel different distances)
+    const startY=bottom-30;
+    const colors=['#ef4444','#3b82f6','#fbbf24'];
+    const rf=[0.8,0.55,0.35];
+    rf.forEach((r,i)=>{
+      const spotY=startY-progress*(bottom-top-60)*r;
+      ctx.fillStyle=colors[i]+'99';
+      ctx.beginPath();ctx.ellipse(cx,spotY,14,6,0,0,Math.PI*2);ctx.fill();
+    });
+    // Origin line
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([2,2]);
+    ctx.beginPath();ctx.moveTo(cx-paperW/2,startY);ctx.lineTo(cx+paperW/2,startY);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillText('oorsprong',cx-paperW/2-30,startY+4);
+    ctx.fillText('oplosmiddelfront',cx+paperW/2+50,frontY+4);
+    // Solvent trough
+    ctx.fillStyle='rgba(96,165,250,0.15)';ctx.strokeStyle='rgba(96,165,250,0.4)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(cx-paperW/2-10,bottom,paperW+20,20);ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(96,165,250,0.6)';ctx.font='9px monospace';ctx.textAlign='center';
+    ctx.fillText('mobiele fase (oplosmiddel)',cx,bottom+13);
+    // Labels right
+    ctx.fillStyle='rgba(233,213,255,0.7)';ctx.font='bold 11px sans-serif';ctx.textAlign='left';
+    ctx.fillText('CHROMATOGRAFIE',W*0.62,50);
+    ctx.fillStyle='rgba(210,218,245,0.55)';ctx.font='11px sans-serif';
+    ctx.fillText('• Skei opgeloste',W*0.62,70);
+    ctx.fillText('  komponente',W*0.62,83);
+    ctx.fillText('• Mobiele fase dra',W*0.62,100);
+    ctx.fillText('  komponente op papier',W*0.62,113);
+    ctx.fillText('• Hoër affiniteit vir',W*0.62,130);
+    ctx.fillText('  stasionêr = laer Rf',W*0.62,143);
+    ctx.fillStyle='#fbbf24';ctx.font='9px monospace';
+    ctx.fillText('Voorbeeld: skeiding van inkkleurstowwe',W*0.62,165);
+  }
+
+  function draw(){
+    if(simMode==='classify') drawClassify();
+    else drawSeparation();
+  }
+
+  function animate(){
+    if(animFrame) cancelAnimationFrame(animFrame);
+    if(simMode==='separate'){
+      function loop(){tick++;drawSeparation();animFrame=requestAnimationFrame(loop);}
+      loop();
+    } else {
+      drawClassify();
+    }
+  }
+
+  function initSim(){resizeCanvas();draw();animate();}
+  canvas.addEventListener('click',e=>{
+    if(simMode==='separate') return;
+    highlighted=!highlighted;drawClassify();
+  });
+  window.addEventListener('resize',()=>{if(document.getElementById('tab-explore').classList.contains('active')){resizeCanvas();draw();}});
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

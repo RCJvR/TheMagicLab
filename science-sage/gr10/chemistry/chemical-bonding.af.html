@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chemiese Binding — Science Sage Gr10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+    #compoundSel option{background:#0d1225;color:var(--text)}
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Chemie</span>
+  <span id="mlLangToggle"></span>
+  <a class="nav-back" href="../../index.html">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 2.5L4 7l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Terug
+  </a>
+</nav>
+
+<!-- HEADER -->
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Chemie · Les 4</div>
+  <div class="lesson-title">Chemiese Binding</div>
+  <div class="lesson-sub">Verstaan waarom atome bind, onderskei tussen ioniese en kovalente binding, teken Lewis-strukture, pas VSEPR-teorie toe om molekulêre vorms te voorspel, en verken metaalbinding.</div>
+</div>
+
+<!-- CURRICULUM TOGGLE -->
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 5h6M4 7.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Les
+  </button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M5 7a2 2 0 104 0 2 2 0 00-4 0" stroke="currentColor" stroke-width="1.3"/></svg>
+    Verken
+  </button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    Oefening
+  </button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2h8a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4"/><path d="M5 5.5h4M5 7.5h2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+    Werkboek
+  </button>
+</div>
+
+<!-- ===== LESSON TAB ===== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>Waarom Bind Atome?</h2>
+    <p>Atome bind om 'n meer stabiele elektronkonfigurasie te bereik — tipies 'n vol buitenste dop van 8 elektrone (die oktetreël), of 2 elektrone vir waterstof en helium. Wanneer atome bind, bereik hulle 'n laer energietoestand, wat meer stabiel is. Die tipe binding wat vorm, hang af van die verskil in elektronegatiwiteit (ΔEN) tussen die twee atome.</p>
+
+    <div class="callout">
+      <strong>Vuistreël vir bindingstipe gebaseer op elektronegatiwiteitsverskil (ΔEN):</strong><br>
+      ΔEN &gt; 1.7 → Ioniese binding (elektronoordrag)<br>
+      ΔEN 0.4–1.7 → Polêre kovalente binding (ongelyke deling)<br>
+      ΔEN &lt; 0.4 → Nie-polêre kovalente binding (gelyke deling)
+    </div>
+
+    <h2>Ioniese Binding</h2>
+    <p>Ioniese binding vind plaas tussen 'n metaal (lae elektronegatiwiteit) en 'n nie-metaal (hoë elektronegatiwiteit). Die metaal dra een of meer elektrone na die nie-metaal oor en vorm teenoorgesteld gelaaide ione. Die elektrostatiese aantrekking tussen hierdie ione is die ioniese binding.</p>
+    <p>Voorbeeld — natriumchloried (NaCl): Na het EN = 0.9, Cl het EN = 3.0, dus ΔEN = 2.1 &gt; 1.7 → ioniese binding. Na verloor 1 elektron → Na⁺; Cl kry 1 elektron → Cl⁻. Die Na⁺- en Cl⁻-ione rangskik in 'n kristalrooster.</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Eienskap</th><th>Verduideliking</th></tr></thead>
+      <tbody>
+        <tr><td>Hoë smelt-/kookpunt</td><td>Sterk elektrostatiese kragte tussen ione vereis baie energie om te breek</td></tr>
+        <tr><td>Bros</td><td>Wanneer die rooster verskuif, lyn soortgelyke ladings op → afstoting → verbrokkel</td></tr>
+        <tr><td>Gelei elektrisiteit wanneer gesmelt of opgelos</td><td>Ione is vry om te beweeg en lading te dra</td></tr>
+        <tr><td>Gelei NIE as vaste stof nie</td><td>Ione is vasgemaak in roosterposisies</td></tr>
+        <tr><td>Hard</td><td>Sterk roosterkragte hou ione styf op hul plek</td></tr>
+      </tbody>
+    </table>
+
+    <div class="key-fact">Voorbeelde: NaCl (tafelsout), MgO (magnesiumoksied), CaCl₂, Al₂O₃</div>
+
+    <h2>Kovalente Binding</h2>
+    <p>Kovalente binding vind plaas tussen twee nie-metale. In plaas daarvan om elektrone oor te dra, DEEL die atome een of meer pare elektrone. Elke gedeelde paar vorm een binding.</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Bindingstipe</th><th>Gedeelde Pare</th><th>Voorbeeld</th><th>Bindingsorde</th></tr></thead>
+      <tbody>
+        <tr><td>Enkelbinding</td><td>1</td><td>H₂, HCl, Cl₂, H₂O</td><td>1</td></tr>
+        <tr><td>Dubbelbinding</td><td>2</td><td>O₂, CO₂, C₂H₄</td><td>2</td></tr>
+        <tr><td>Drievoudige binding</td><td>3</td><td>N₂, CO, C₂H₂</td><td>3</td></tr>
+      </tbody>
+    </table>
+
+    <p>Lewis-kolstrukture wys die elektrone in 'n molekule. Bindingspare (gedeelde elektrone) word tussen atome geteken; los pare (nie-bindende elektrone) word op individuele atome geteken.</p>
+
+    <div class="callout">
+      <strong>Datiewe (koördinaat-) kovalente binding:</strong> albei elektrone in die gedeelde paar kom van DIESELFDE atoom. Voorbeeld: wanneer NH₃ 'n los paar aan H⁺ skenk om NH₄⁺ te vorm, of wanneer H₂O 'n los paar aan H⁺ skenk om H₃O⁺ te vorm.
+    </div>
+
+    <table class="symbols-table">
+      <thead><tr><th>Eienskap</th><th>Verduideliking</th></tr></thead>
+      <tbody>
+        <tr><td>Lae smelt-/kookpunt (gewoonlik)</td><td>Slegs swak intermolekulêre kragte tussen molekules</td></tr>
+        <tr><td>Gelei NIE elektrisiteit nie</td><td>Geen gelaaide deeltjies nie (geen ione, geen vry elektrone nie)</td></tr>
+        <tr><td>Kan gas, vloeistof of vaste stof by kamertemperatuur wees</td><td>Hang af van die sterkte van intermolekulêre kragte</td></tr>
+        <tr><td>Dikwels oplosbaar in nie-polêre oplosmiddels</td><td>Soortgelyke los soortgelyke op</td></tr>
+      </tbody>
+    </table>
+
+    <h2>VSEPR-teorie — Voorspelling van Molekulêre Vorm</h2>
+    <p>VSEPR staan vir Valensiedop-Elektronpaar-Afstoting (Valence Shell Electron Pair Repulsion). Die kernidee: elektronpare (beide bindingspare en los pare) rondom 'n sentrale atoom stoot mekaar af en rangskik hulself om so ver as moontlik uitmekaar te wees. Los pare stoot sterker af as bindingspare.</p>
+
+    <table class="symbols-table">
+      <thead><tr><th>Bindingspare</th><th>Los Pare</th><th>Vorm</th><th>Bindingshoek</th><th>Voorbeeld</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>0</td><td>Lineêr</td><td>180°</td><td>CO₂, BeCl₂</td></tr>
+        <tr><td>3</td><td>0</td><td>Trigonaal-planêr</td><td>120°</td><td>BF₃, SO₃</td></tr>
+        <tr><td>4</td><td>0</td><td>Tetraëdries</td><td>109.5°</td><td>CH₄, CCl₄</td></tr>
+        <tr><td>3</td><td>1</td><td>Trigonaal-piramidaal</td><td>~107°</td><td>NH₃</td></tr>
+        <tr><td>2</td><td>2</td><td>Gebuig/Hoekig</td><td>~104.5°</td><td>H₂O</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Let wel:</strong> los pare neem meer ruimte in beslag as bindingspare, en dis waarom die bindingshoek in NH₃ (107°) kleiner is as tetraëdries (109.5°), en in H₂O (104.5°) selfs kleiner is.
+    </div>
+
+    <h2>Molekulêre Polariteit</h2>
+    <p>'n Binding is polêr as daar 'n elektronegatiwiteitsverskil tussen die twee atome is — elektrone word na die meer elektronegatiewe atoom toe getrek. Maar 'n molekule kan nie-polêr wees selfs al het dit polêre bindings, as die molekule simmetries is (dipole kanselleer).</p>
+    <ul>
+      <li>Polêre molekule: asimmetriese ladingsverspreiding — het 'n netto dipoolmoment. Voorbeelde: H₂O (gebuig), NH₃ (piramidaal), HCl</li>
+      <li>Nie-polêre molekule: simmetries — dipole kanselleer. Voorbeelde: CO₂ (lineêr), CH₄ (tetraëdries), CCl₄</li>
+      <li>Toets: teken die vorm en voeg dipoolpyle by (δ+ na δ-); as hulle nie kanselleer nie, is die molekule polêr</li>
+    </ul>
+
+    <h2>Metaalbinding</h2>
+    <p>In metale is die buitenste valenselektrone nie aan individuele atome geheg nie, maar vry om deur die hele struktuur te beweeg — hulle vorm 'n "see van gedelokaliseerde elektrone". Die positiewe metaalione (katione) is in 'n gereelde rooster gerangskik, omring deur hierdie elektronsee.</p>
+    <ul>
+      <li>Goeie elektriese geleiers — gedelokaliseerde elektrone dra lading</li>
+      <li>Goeie termiese geleiers — gedelokaliseerde elektrone dra kinetiese energie oor</li>
+      <li>Pletbaar en trekbaar — lae ione kan skuif sonder om bindings te breek (die elektronsee pas aan)</li>
+      <li>Blink — gedelokaliseerde elektrone wisselwerk met en weerkaats lig</li>
+      <li>Hoë smeltpunte (oor die algemeen) — sterk elektrostatiese aantrekking tussen katione en die elektronsee</li>
+    </ul>
+
+    <!-- IEB EXTENSION BLOCK -->
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Bindingsorde, Resonansie en Formele Lading</div>
+      <p>Bindingsorde is die aantal gedeelde elektronpare tussen twee atome. Hoër bindingsorde → korter bindingslengte, sterker binding (hoër bindingsenergie). Vir N₂ (drievoudige binding, bindingsorde 3): baie kort (110 pm), baie sterk (945 kJ·mol⁻¹). Vergelyk: N–N-enkelbinding (145 pm, 163 kJ·mol⁻¹).</p>
+      <p>Resonansie vind plaas wanneer 'n molekule nie deur 'n enkele Lewis-struktuur beskryf kan word nie. Vir SO₃ kan drie ekwivalente Lewis-strukture geteken word — elk met 'n dubbelbinding na 'n ander suurstofatoom. Die werklike struktuur is 'n gemiddelde (resonansiehibried) met al die S–O-bindings gelyk in lengte (bindingsorde 1.33). Ander voorbeelde: CO₃²⁻, benseen (C₆H₆), NO₂⁻.</p>
+      <p>Formele lading = (valenselektrone van atoom) − (los-paar-elektrone) − ½(bindingselektrone). Die beste Lewis-struktuur het formele ladings die naaste aan nul. Vir CO₂: C het formele lading 0, elke O het formele lading 0 — wat bevestig dat die dubbelbindingstruktuur korrek is.</p>
+      <p>Uitsonderings op die oktetreël:</p>
+      <ul>
+        <li>Elektrontekort-molekules: BF₃ het slegs 6 elektrone rondom B (tog stabiel — B vorm in die praktyk 'n 3de binding met los pare vanaf F)</li>
+        <li>Molekules met 'n onewe getal elektrone: NO het 11 elektrone (radikaal) — kan nie die oktet vir albei atome bevredig nie</li>
+        <li>Uitgebreide oktette: SF₆ (12 elektrone rondom S), PCl₅ (10 elektrone rondom P) — moontlik omdat elemente in Periode 3+ d-orbitale kan gebruik</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EXPLORE TAB ===== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="simTitle">Bindingsvisualiseerder</h3>
+      <canvas id="bondCanvas" height="340"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Bindingstipe</div>
+        <button class="mode-btn active" onclick="setBondMode('ionic',this)">Ionies</button>
+        <button class="mode-btn" onclick="setBondMode('covalent',this)">Kovalent / VSEPR</button>
+        <button class="mode-btn" onclick="setBondMode('metallic',this)">Metaal</button>
+      </div>
+      <div class="ctrl-card" id="bondSubCtrl">
+        <div class="ctrl-label" id="subCtrlLabel">Verbinding</div>
+        <select id="compoundSel" style="background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;width:100%;margin-bottom:8px" onchange="updateBondSim()">
+          <option value="NaCl">NaCl — Natriumchloried</option>
+          <option value="MgO">MgO — Magnesiumoksied</option>
+          <option value="CaCl2">CaCl₂ — Kalsiumchloried</option>
+        </select>
+        <div id="bondInfo" style="font-size:12px;color:var(--muted);line-height:1.8"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRACTICE TAB ===== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:rgba(210,218,245,.7);">Vrae korrek beantwoord. Hersien die terugvoer hieronder om jou begrip te versterk.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 1 · 2 punte</div>
+      <div class="q-text">Die elektronegatiwiteitswaardes van Na en Cl is onderskeidelik 0.9 en 3.0. Watter tipe binding vorm tussen hulle?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,1,'A')"><span class="opt-letter">A</span>Nie-polêr kovalent</button>
+        <button class="mc-opt" onclick="answer(this,1,'B')"><span class="opt-letter">B</span>Polêr kovalent</button>
+        <button class="mc-opt" onclick="answer(this,1,'C')"><span class="opt-letter">C</span>Ionies</button>
+        <button class="mc-opt" onclick="answer(this,1,'D')"><span class="opt-letter">D</span>Metaal</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 2 · 3 punte</div>
+      <div class="q-text">Watter molekule het 'n TETRAËDRIESE vorm?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,2,'A')"><span class="opt-letter">A</span>H₂O</button>
+        <button class="mc-opt" onclick="answer(this,2,'B')"><span class="opt-letter">B</span>NH₃</button>
+        <button class="mc-opt" onclick="answer(this,2,'C')"><span class="opt-letter">C</span>CO₂</button>
+        <button class="mc-opt" onclick="answer(this,2,'D')"><span class="opt-letter">D</span>CH₄</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 3 · 3 punte</div>
+      <div class="q-text">Water (H₂O) het 'n gebuigde vorm. Die bindingshoek is ongeveer:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,3,'A')"><span class="opt-letter">A</span>180°</button>
+        <button class="mc-opt" onclick="answer(this,3,'B')"><span class="opt-letter">B</span>120°</button>
+        <button class="mc-opt" onclick="answer(this,3,'C')"><span class="opt-letter">C</span>109.5°</button>
+        <button class="mc-opt" onclick="answer(this,3,'D')"><span class="opt-letter">D</span>104.5°</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 4 · 1 punt</div>
+      <div class="q-text">Watter eienskap van metale word die BESTE verduidelik deur die see-van-gedelokaliseerde-elektrone-model?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,4,'A')"><span class="opt-letter">A</span>Hoë digtheid</button>
+        <button class="mc-opt" onclick="answer(this,4,'B')"><span class="opt-letter">B</span>Elektriese geleivermoë</button>
+        <button class="mc-opt" onclick="answer(this,4,'C')"><span class="opt-letter">C</span>Hoë smeltpunt</button>
+        <button class="mc-opt" onclick="answer(this,4,'D')"><span class="opt-letter">D</span>Brosheid</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 5 · 2 punte</div>
+      <div class="q-text">'n Molekule van CO₂ het twee polêre C=O-bindings maar is 'n nie-polêre molekule. Waarom?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,5,'A')"><span class="opt-letter">A</span>Koolstof en suurstof het dieselfde elektronegatiwiteit</button>
+        <button class="mc-opt" onclick="answer(this,5,'B')"><span class="opt-letter">B</span>Die C=O-bindings is enkelbindings</button>
+        <button class="mc-opt" onclick="answer(this,5,'C')"><span class="opt-letter">C</span>Die lineêre vorm beteken die dipole kanselleer</button>
+        <button class="mc-opt" onclick="answer(this,5,'D')"><span class="opt-letter">D</span>CO₂ is ionies, nie kovalent nie</button>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 6 · 2 punte</div>
+      <div class="q-text">In die vorming van NH₄⁺ vanaf NH₃ + H⁺, word die binding wat tussen N en H⁺ vorm, genoem:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,6,'A')"><span class="opt-letter">A</span>Ioniese binding</button>
+        <button class="mc-opt" onclick="answer(this,6,'B')"><span class="opt-letter">B</span>Nie-polêr kovalent</button>
+        <button class="mc-opt" onclick="answer(this,6,'C')"><span class="opt-letter">C</span>Datiewe (koördinaat-) kovalent</button>
+        <button class="mc-opt" onclick="answer(this,6,'D')"><span class="opt-letter">D</span>Metaalbinding</button>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 7 · 3 punte</div>
+      <div class="q-text">Magnesiumoksied (MgO) gelei elektrisiteit wanneer dit gesmelt is, maar tetrachlorometaan (CCl₄, EN: C = 2.5, Cl = 3.0) gelei nie elektrisiteit nie, selfs wanneer dit 'n vloeistof is. Wat is die BESTE verduideliking vir hierdie verskil?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,7,'A')"><span class="opt-letter">A</span>MgO is digter as CCl₄</button>
+        <button class="mc-opt" onclick="answer(this,7,'B')"><span class="opt-letter">B</span>ΔEN vir C–Cl is 0.5, binne die kovalente reeks, dus bestaan CCl₄ uit neutrale molekules sonder vry ione; MgO se ΔEN van 2.3 maak dit ionies, met mobiele ione sodra dit smelt</button>
+        <button class="mc-opt" onclick="answer(this,7,'C')"><span class="opt-letter">C</span>CCl₄ het 'n laer kookpunt as MgO</button>
+        <button class="mc-opt" onclick="answer(this,7,'D')"><span class="opt-letter">D</span>Albei verbindings is ionies, maar die ione in MgO is kleiner</button>
+      </div>
+      <div class="feedback" id="fb7"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 8 · 3 punte</div>
+      <div class="q-text">Fosfortrichloried (PCl₃) het 'n sentrale P-atoom met 5 valenselektrone, gebind aan 3 Cl-atome. Gebruik VSEPR-teorie — wat is PCl₃ se vorm en polariteit?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,8,'A')"><span class="opt-letter">A</span>3 van P se elektrone vorm bindingspare en 2 bly oor as 'n los paar — dieselfde rangskikking as N in NH₃ — wat 'n trigonaal-piramidale, polêre molekule gee</button>
+        <button class="mc-opt" onclick="answer(this,8,'B')"><span class="opt-letter">B</span>Al 5 van P se elektrone vorm bindingspare, wat 'n trigonaal-planêre, nie-polêre molekule gee</button>
+        <button class="mc-opt" onclick="answer(this,8,'C')"><span class="opt-letter">C</span>PCl₃ is ionies omdat P en Cl verskillende elektronegatiwiteite het</button>
+        <button class="mc-opt" onclick="answer(this,8,'D')"><span class="opt-letter">D</span>PCl₃ het geen los pare nie aangesien chloor 'n nie-metaal is</button>
+      </div>
+      <div class="feedback" id="fb8"></div>
+    </div>
+
+    <!-- IEB PRACTICE -->
+    <div class="ieb-practice" id="iebPractice">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:16px;">IEB-uitbreidingsvrae</div>
+
+      <!-- IEB Q1 -->
+      <div class="q-card">
+        <div class="q-num">IEB Vraag 1 · 2 punte <span class="ieb-badge">IEB</span></div>
+        <div class="q-text">Die Lewis-struktuur van SO₃ blyk een S=O-dubbelbinding en twee S–O-enkelbindings te wys. Al die S–O-bindingslengtes in SO₃ is egter gelyk (142 pm). Die beste verduideliking is:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'i1','A')"><span class="opt-letter">A</span>SO₃ is ionies</button>
+          <button class="mc-opt" onclick="answer(this,'i1','B')"><span class="opt-letter">B</span>SO₃ het 'n uitgebreide oktet met drie dubbelbindings</button>
+          <button class="mc-opt" onclick="answer(this,'i1','C')"><span class="opt-letter">C</span>Resonansie — die drie ekwivalente Lewis-strukture gee gemiddeld 'n gelyke bindingsorde</button>
+          <button class="mc-opt" onclick="answer(this,'i1','D')"><span class="opt-letter">D</span>S–O-enkelbindings en -dubbelbindings is toevallig dieselfde lengte</button>
+        </div>
+        <div class="feedback" id="fbi1"></div>
+      </div>
+
+      <!-- IEB Q2 -->
+      <div class="q-card">
+        <div class="q-num">IEB Vraag 2 · 1 punt <span class="ieb-badge">IEB</span></div>
+        <div class="q-text">Bereken die formele lading op elke atoom in CO₂. Gegee: C het 0 los-paar-elektrone en 8 bindingselektrone; elke O het 4 los-paar-elektrone en 4 bindingselektrone.</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,'i2','A')"><span class="opt-letter">A</span>C = +2, elke O = −1</button>
+          <button class="mc-opt" onclick="answer(this,'i2','B')"><span class="opt-letter">B</span>C = 0, elke O = 0</button>
+          <button class="mc-opt" onclick="answer(this,'i2','C')"><span class="opt-letter">C</span>C = +1, elke O = −½</button>
+          <button class="mc-opt" onclick="answer(this,'i2','D')"><span class="opt-letter">D</span>C = −1, elke O = +½</button>
+        </div>
+        <div class="feedback" id="fbi2"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== WORKBOOK TAB ===== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M4 1h7v4H4V1zM2 5h11a1 1 0 011 1v5a1 1 0 01-1 1h-1v2H3v-2H2a1 1 0 01-1-1V6a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="11" cy="8" r=".7" fill="currentColor"/></svg>
+      Druk Werkboek
+    </button>
+    <div class="wb-intro">Antwoord in volledige sinne. Teken Lewis-strukture waar gevra.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Teken die Lewis- (kol-en-kruis-) struktuur vir elk van die volgende molekules en identifiseer al die bindingspare en los pare: (a) Cl₂ &nbsp; (b) H₂O &nbsp; (c) N₂</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">Gebruik VSEPR-teorie om die vorm en bindingshoek te voorspel van: (a) BF₃ &nbsp; (b) NH₃ &nbsp; (c) CCl₄. Verduidelik jou redenasie vir elkeen.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Klassifiseer elke binding as ionies, polêr kovalent, of nie-polêr kovalent gebaseer op elektronegatiwiteitsverskille: (a) H–F (EN: H=2.1, F=4.0) &nbsp; (b) C–H (EN: C=2.5, H=2.1) &nbsp; (c) Na–O (EN: Na=0.9, O=3.5)</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Verduidelik waarom vaste NaCl nie elektrisiteit gelei nie, maar gesmelte NaCl wel. Teken 'n diagram (in woorde beskryf) wat die roosterstruktuur wys.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Vergelyk ioniese en metaalbinding: (a) beskryf die aard van die binding in elke geval &nbsp; (b) gee twee fisiese eienskappe wat verskil tussen ioniese en metaalstowwe en verduidelik waarom &nbsp; (c) noem een voorbeeld van elke tipe.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6</div>
+      <div class="wb-qtext">
+        Die tabel wys smeltpunt- en elektriese geleivermoë-data gemeet vir drie onbekende stowwe, P, Q en R.
+        <table class="symbols-table" style="margin:12px 0 14px">
+          <thead><tr><th>Stof</th><th>Smeltpunt (°C)</th><th>Gelei as vaste stof?</th><th>Gelei wanneer gesmelt of opgelos?</th></tr></thead>
+          <tbody>
+            <tr><td>P</td><td>801</td><td>Nee</td><td>Ja</td></tr>
+            <tr><td>Q</td><td>−114</td><td>Nee</td><td>Nee</td></tr>
+            <tr><td>R</td><td>1085</td><td>Ja</td><td>Ja</td></tr>
+          </tbody>
+        </table>
+        (a) Gebruik slegs die data in die tabel om die tipe binding (ionies, kovalent, of metaal) teenwoordig in elk van P, Q en R te identifiseer.<br>
+        (b) Regverdig jou antwoord vir elke stof deur na die geleipatroon in die tabel te verwys.<br>
+        (c) P is eintlik natriumchloried en R is eintlik koper. Verduidelik, in terme van die deeltjies teenwoordig in elkeen, waarom R selfs as 'n vaste stof elektrisiteit gelei, terwyl P slegs gelei sodra dit gesmelt of opgelos is.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CURRICULUM TOGGLE
+   ============================================================ */
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+  document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+  document.body.classList.toggle('ieb-mode',mode==='ieb');
+}
+
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='explore') initSim();
+}
+
+/* ============================================================
+   PRACTICE LOGIC
+   ============================================================ */
+const ANSWERS={1:'C',2:'D',3:'D',4:'B',5:'C',6:'C',7:'B',8:'A',i1:'C',i2:'B'};
+const FEEDBACK={
+  1:'ΔEN = 3.0 − 0.9 = 2.1, wat groter is as 1.7. Hierdie groot verskil beteken Na dra \'n elektron aan Cl oor, wat \'n ioniese binding vorm.',
+  2:'CH₄ het 4 bindingspare en 0 los pare rondom koolstof — dit gee \'n perfekte tetraëdriese vorm met 109.5°-bindingshoeke.',
+  3:'H₂O het 2 bindingspare en 2 los pare rondom suurstof. Die 2 los pare druk die bindingshoek saam tot ~104.5°, kleiner as die tetraëdriese 109.5°.',
+  4:'Gedelokaliseerde elektrone kan vrylik deur die metaalrooster beweeg en lading dra. Dit is waarom metale uitstekende elektriese geleiers is.',
+  5:'CO₂ is lineêr (180°). Die twee C=O-dipole wys in presies teenoorgestelde rigtings en kanselleer mekaar uit, wat \'n netto dipoolmoment van nul gee — \'n nie-polêre molekule.',
+  6:'Wanneer NH₃ sy los paar elektrone aan die leë orbitaal van H⁺ skenk, vorm \'n datiewe (koördinaat-) kovalente binding. Albei elektrone kom van stikstof af. Die gevolglike NH₄⁺ is \'n tetraëdriese ioon.',
+  7:'ΔEN vir C–Cl = 3.0 − 2.5 = 0.5, wat binne die 0.4–1.7 polêre kovalente reeks val, dus is CCl₄ \'n molekulêre stof sonder ione om lading te dra, of dit nou vloeibaar is of nie. ΔEN vir Mg–O = 3.5 − 1.2 = 2.3 (&gt; 1.7), dus is MgO ionies — sy ione is vasgevang in \'n rooster wanneer vas (geen geleiding nie), maar word mobiel en kan lading dra sodra dit smelt.',
+  8:'Fosfor het 5 valenselektrone. Drie word gebruik om enkelbindings met die 3 Cl-atome te vorm, wat 1 los paar op P laat — presies dieselfde elektrondomein-rangskikking (3 bindingspare + 1 los paar) as stikstof in NH₃. Dit gee \'n trigonaal-piramidale vorm. Omdat die los paar die simmetrie breek, kanselleer die individuele P–Cl-bindingsdipole nie, dus is PCl₃ \'n polêre molekule — net soos NH₃.',
+  i1:'SO₃ is \'n klassieke voorbeeld van resonansie. Drie ekwivalente Lewis-strukture kan geteken word (met die dubbelbinding na elke suurstofatoom om die beurt). Die werklike molekule is \'n resonansiehibried — al die S–O-bindings het gelyke lengte (bindingsorde ~1.33) en gelyke sterkte. Dit word eksperimenteel bevestig.',
+  i2:'Formele lading = valens-e⁻ − los-paar-e⁻ − ½(bindings-e⁻). Vir C: 4 − 0 − ½(8) = 0. Vir elke O: 6 − 4 − ½(4) = 0. Al die formele ladings is nul, wat bevestig dat die dubbelbinding-Lewis-struktuur die beste voorstelling van CO₂ is.'
+};
+const answered={};
+function answer(btn,qn,letter){
+  if(answered[qn]) return;
+  answered[qn]=letter;
+  const correct=ANSWERS[qn];
+  const opts=btn.closest('.mc-options').querySelectorAll('.mc-opt');
+  opts.forEach(o=>{
+    o.disabled=true;
+    const l=o.querySelector('.opt-letter').textContent;
+    if(l===correct) o.classList.add('correct');
+    else if(l===letter && letter!==correct) o.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb'+qn);
+  fb.textContent=FEEDBACK[qn];
+  fb.className='feedback show '+(letter===correct?'ok':'bad');
+  updateScore();
+}
+function updateScore(){
+  const keys=Object.keys(ANSWERS);
+  const total=keys.length;
+  const correct=keys.filter(k=>answered[k]===ANSWERS[k]).length;
+  const answered_count=Object.keys(answered).length;
+  if(answered_count===total){
+    const banner=document.getElementById('scoreBanner');
+    document.getElementById('scoreNum').textContent=correct+'/'+total;
+    banner.classList.add('show');
+  }
+}
+
+/* ============================================================
+   SIMULATION
+   ============================================================ */
+let bondMode='ionic';
+let simRAF=null;
+let simTime=0;
+let metallicElectrons=[];
+
+const ionicData={
+  NaCl:{metal:'Na',nonmetal:'Cl',metalVal:1,nonmetalVal:7,metalCharge:'+1',nonmetalCharge:'−1',metalColor:'#60a5fa',nonmetalColor:'#f472b6',info:'Na (EN 0.9) → dra 1 elektron aan Cl (EN 3.0) oor. ΔEN = 2.1 &gt; 1.7 → ioniese binding.<br>Na⁺ en Cl⁻ vorm \'n kubieke kristalrooster.'},
+  MgO:{metal:'Mg',nonmetal:'O',metalVal:2,nonmetalVal:6,metalCharge:'+2',nonmetalCharge:'2−',metalColor:'#34d399',nonmetalColor:'#f97316',info:'Mg (EN 1.2) → dra 2 elektrone aan O (EN 3.5) oor. ΔEN = 2.3 &gt; 1.7 → ioniese binding.<br>Mg²⁺ en O²⁻ vorm \'n rotssout-kristalrooster. Baie hoë smeltpunt (2852 °C).'},
+  CaCl2:{metal:'Ca',nonmetal:'Cl',metalVal:2,nonmetalVal:7,metalCharge:'+2',nonmetalCharge:'−1',metalColor:'#a78bfa',nonmetalColor:'#fb7185',info:'Ca (EN 1.0) → dra 2 elektrone oor, 1 aan elke Cl (EN 3.0). ΔEN = 2.0 &gt; 1.7 → ionies.<br>Vorm Ca²⁺ en 2 Cl⁻-ione. Word as \'n padysverwyderaar gebruik.'}
+};
+
+const covalentData={
+  H2O:{name:'H₂O — Water',shape:'Gebuig',angle:'104.5°',bondPairs:2,lonePairs:2,bonds:1,color:'#38bdf8',
+    draw:function(ctx,cx,cy,r){drawMolecule(ctx,cx,cy,r,'H2O')}},
+  NH3:{name:'NH₃ — Ammoniak',shape:'Trigonaal-piramidaal',angle:'107°',bondPairs:3,lonePairs:1,bonds:1,color:'#4ade80',
+    draw:function(ctx,cx,cy,r){drawMolecule(ctx,cx,cy,r,'NH3')}},
+  CH4:{name:'CH₄ — Metaan',shape:'Tetraëdries',angle:'109.5°',bondPairs:4,lonePairs:0,bonds:1,color:'#fb923c',
+    draw:function(ctx,cx,cy,r){drawMolecule(ctx,cx,cy,r,'CH4')}},
+  CO2:{name:'CO₂ — Koolstofdioksied',shape:'Lineêr',angle:'180°',bondPairs:2,lonePairs:0,bonds:2,color:'#e879f9',
+    draw:function(ctx,cx,cy,r){drawMolecule(ctx,cx,cy,r,'CO2')}},
+  BF3:{name:'BF₃ — Boortrifluoried',shape:'Trigonaal-planêr',angle:'120°',bondPairs:3,lonePairs:0,bonds:1,color:'#fbbf24',
+    draw:function(ctx,cx,cy,r){drawMolecule(ctx,cx,cy,r,'BF3')}},
+  N2:{name:'N₂ — Stikstof',shape:'Lineêr',angle:'180°',bondPairs:1,lonePairs:2,bonds:3,color:'#c084fc',
+    draw:function(ctx,cx,cy,r){drawMolecule(ctx,cx,cy,r,'N2')}}
+};
+
+function setBondMode(mode,btn){
+  bondMode=mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const sel=document.getElementById('compoundSel');
+  const label=document.getElementById('subCtrlLabel');
+  if(mode==='ionic'){
+    label.textContent='Verbinding';
+    sel.innerHTML='<option value="NaCl">NaCl — Natriumchloried</option><option value="MgO">MgO — Magnesiumoksied</option><option value="CaCl2">CaCl₂ — Kalsiumchloried</option>';
+  } else if(mode==='covalent'){
+    label.textContent='Molekule';
+    sel.innerHTML='<option value="H2O">H₂O — Water</option><option value="NH3">NH₃ — Ammoniak</option><option value="CH4">CH₄ — Metaan</option><option value="CO2">CO₂ — Koolstofdioksied</option><option value="BF3">BF₃ — Boortrifluoried</option><option value="N2">N₂ — Stikstof</option>';
+  } else {
+    label.textContent='Inligting';
+    sel.innerHTML='<option value="metal">Generiese Metaal — Elektronsee-model</option>';
+  }
+  updateBondSim();
+  initSim();
+}
+
+function updateBondSim(){
+  const sel=document.getElementById('compoundSel').value;
+  const info=document.getElementById('bondInfo');
+  if(bondMode==='ionic' && ionicData[sel]){
+    info.innerHTML=ionicData[sel].info;
+  } else if(bondMode==='covalent' && covalentData[sel]){
+    const d=covalentData[sel];
+    info.innerHTML='Vorm: <strong style="color:#e9d5ff">'+d.shape+'</strong><br>Bindingshoek: <strong style="color:#e9d5ff">'+d.angle+'</strong><br>Bindingspare: '+d.bondPairs+' &nbsp; Los pare: '+d.lonePairs;
+  } else if(bondMode==='metallic'){
+    info.innerHTML='Positiewe metaalkatione (blou sirkels) vasgemaak in \'n gereelde rooster.<br>Gedelokaliseerde elektrone (pers kolletjies) dryf vrylik — en dra lading en hitte.';
+  }
+}
+
+function initSim(){
+  if(simRAF) cancelAnimationFrame(simRAF);
+  const canvas=document.getElementById('bondCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const w=canvas.parentElement.clientWidth - 32;
+  const h=340;
+  canvas.style.width=w+'px';
+  canvas.style.height=h+'px';
+  canvas.width=Math.round(w*dpr);
+  canvas.height=Math.round(h*dpr);
+  const ctx=canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+
+  if(bondMode==='ionic'){
+    initIonicSim(ctx,w,h);
+  } else if(bondMode==='covalent'){
+    initCovalentSim(ctx,w,h);
+  } else {
+    initMetallicSim(ctx,w,h);
+  }
+}
+
+/* ---- IONIC SIM ---- */
+function initIonicSim(ctx,w,h){
+  const sel=document.getElementById('compoundSel').value;
+  const data=ionicData[sel]||ionicData.NaCl;
+  simTime=0;
+  const totalFrames=240;
+  let phase='before'; // before -> transfer -> after
+
+  // electron positions (valence electrons arranged in cardinal dirs + diagonals)
+  function getElecPositions(cx,cy,r,count){
+    const positions=[];
+    const angles=[0,Math.PI/2,Math.PI,Math.PI*1.5, Math.PI/4,Math.PI*0.75,Math.PI*1.25,Math.PI*1.75];
+    for(let i=0;i<count;i++){
+      const a=angles[i%8];
+      positions.push({x:cx+Math.cos(a)*(r+12),y:cy+Math.sin(a)*(r+12)});
+    }
+    return positions;
+  }
+
+  function drawAtom(ctx,cx,cy,r,symbol,color,valE,showDots,dotColor){
+    // glow
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,r*1.8);
+    grd.addColorStop(0,color.replace(')',',0.15)').replace('rgb','rgba'));
+    grd.addColorStop(1,'transparent');
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*1.8,0,Math.PI*2);
+    ctx.fillStyle=grd;
+    ctx.fill();
+    // circle
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.fillStyle=color.includes('rgba')?color:hexToRgba(color,0.18);
+    ctx.fill();
+    ctx.strokeStyle=color;
+    ctx.lineWidth=2;
+    ctx.stroke();
+    // symbol
+    ctx.fillStyle='#fff';
+    ctx.font='bold 18px "Cabinet Grotesk",sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(symbol,cx,cy);
+    // valence electrons
+    if(showDots){
+      const pos=getElecPositions(cx,cy,r,valE);
+      pos.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,3.5,0,Math.PI*2);
+        ctx.fillStyle=dotColor||'#c084fc';
+        ctx.fill();
+      });
+    }
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    simTime++;
+    const progress=Math.min(simTime/totalFrames,1);
+
+    const metalX=w*0.25, nonmetalX=w*0.75, atomY=h*0.45;
+    const rA=36, rB=36;
+
+    if(progress<0.35){
+      phase='before';
+    } else if(progress<0.65){
+      phase='transfer';
+    } else {
+      phase='after';
+    }
+
+    // Label phase
+    ctx.fillStyle='rgba(210,218,245,0.35)';
+    ctx.font='11px "JetBrains Mono",monospace';
+    ctx.textAlign='center';
+
+    if(phase==='before'){
+      // draw both atoms with valence electrons
+      drawAtom(ctx,metalX,atomY,rA,data.metal,data.metalColor,data.metalVal,true,'#c084fc');
+      drawAtom(ctx,nonmetalX,atomY,rB,data.nonmetal,data.nonmetalColor,data.nonmetalVal,true,'#c084fc');
+      ctx.fillText('VOOR — neutrale atome',w/2,h*0.82);
+    } else if(phase==='transfer'){
+      // animate electron moving from metal to nonmetal
+      const t=(progress-0.35)/0.30;
+      const ease=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+      const eX=metalX+(nonmetalX-metalX)*ease;
+      const startAngle=0; // electron starts at right of metal
+      const startY=atomY+Math.sin(startAngle)*(rA+12);
+      const startX2=metalX+Math.cos(startAngle)*(rA+12);
+      const endX2=nonmetalX+Math.cos(Math.PI)*(rB+12);
+      const endY=atomY;
+      const ex=startX2+(endX2-startX2)*ease;
+      const ey=startY+(endY-startY)*ease;
+
+      // draw metal with one fewer electron (fading)
+      drawAtom(ctx,metalX,atomY,rA,data.metal,data.metalColor,Math.max(0,data.metalVal-1),true,'#c084fc');
+      // draw nonmetal with same electrons
+      drawAtom(ctx,nonmetalX,atomY,rB,data.nonmetal,data.nonmetalColor,data.nonmetalVal,true,'#c084fc');
+      // draw moving electron
+      ctx.beginPath();
+      ctx.arc(ex,ey,4.5,0,Math.PI*2);
+      ctx.fillStyle='#c084fc';
+      ctx.shadowColor='#c084fc';
+      ctx.shadowBlur=12;
+      ctx.fill();
+      ctx.shadowBlur=0;
+      // arrow trail
+      ctx.strokeStyle='rgba(192,132,252,0.3)';
+      ctx.lineWidth=1.5;
+      ctx.setLineDash([4,4]);
+      ctx.beginPath();
+      ctx.moveTo(startX2,startY);
+      ctx.lineTo(ex,ey);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(210,218,245,0.35)';
+      ctx.fillText('OORDRAG — elektron beweeg →',w/2,h*0.82);
+    } else {
+      // after: show ions with charges
+      // metal loses electrons → show with 0 val electrons, ion color more blue
+      drawAtom(ctx,metalX,atomY,rA,data.metal+data.metalCharge,data.metalColor,0,false,'#c084fc');
+      // nonmetal gains electrons
+      drawAtom(ctx,nonmetalX,atomY,rB,data.nonmetal+data.nonmetalCharge,data.nonmetalColor,data.nonmetalVal+(data.metalVal),true,'#facc15');
+      // draw attraction arrow
+      ctx.strokeStyle='rgba(192,132,252,0.5)';
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.moveTo(metalX+rA+4,atomY);
+      ctx.lineTo(nonmetalX-rB-4,atomY);
+      ctx.stroke();
+      // double-headed arrow tips
+      const mid=(metalX+rA+4+nonmetalX-rB-4)/2;
+      const ay=atomY;
+      const arrowLen=10;
+      // left tip
+      ctx.beginPath();
+      ctx.moveTo(metalX+rA+4,ay);
+      ctx.lineTo(metalX+rA+4+arrowLen,ay-5);
+      ctx.moveTo(metalX+rA+4,ay);
+      ctx.lineTo(metalX+rA+4+arrowLen,ay+5);
+      ctx.stroke();
+      // right tip
+      ctx.beginPath();
+      ctx.moveTo(nonmetalX-rB-4,ay);
+      ctx.lineTo(nonmetalX-rB-4-arrowLen,ay-5);
+      ctx.moveTo(nonmetalX-rB-4,ay);
+      ctx.lineTo(nonmetalX-rB-4-arrowLen,ay+5);
+      ctx.stroke();
+      // label attraction
+      ctx.fillStyle='rgba(192,132,252,0.8)';
+      ctx.font='bold 11px "JetBrains Mono",monospace';
+      ctx.textAlign='center';
+      ctx.fillText('elektrostatiese aantrekking',mid,atomY-20);
+      ctx.fillStyle='rgba(210,218,245,0.35)';
+      ctx.font='11px "JetBrains Mono",monospace';
+      ctx.fillText('NA — ione gevorm (ioniese binding)',w/2,h*0.82);
+    }
+
+    // loop
+    if(simTime<totalFrames*2) simRAF=requestAnimationFrame(loop);
+    else { simTime=0; simRAF=requestAnimationFrame(loop); }
+  }
+  simRAF=requestAnimationFrame(loop);
+}
+
+function hexToRgba(hex,alpha){
+  // handle named colors or already rgba
+  if(hex.startsWith('#')){
+    const r=parseInt(hex.slice(1,3),16);
+    const g=parseInt(hex.slice(3,5),16);
+    const b=parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+','+alpha+')';
+  }
+  return hex;
+}
+
+/* ---- COVALENT / VSEPR SIM ---- */
+function initCovalentSim(ctx,w,h){
+  const sel=document.getElementById('compoundSel').value;
+  const data=covalentData[sel]||covalentData.H2O;
+
+  function render(){
+    ctx.clearRect(0,0,w,h);
+    const cx=w/2, cy=h*0.45;
+    drawMolecule(ctx,cx,cy,sel,w,h,data);
+    drawMoleculeInfo(ctx,w,h,data);
+  }
+
+  simRAF=requestAnimationFrame(render);
+}
+
+function drawMolecule(ctx,cx,cy,mol,w,h,data){
+  const r=24; // atom radius
+  const bondLen=72;
+
+  ctx.lineWidth=2.5;
+
+  switch(mol){
+    case 'H2O': {
+      // bent: O in centre, two H at ~104.5 deg
+      const ang=104.5*Math.PI/180;
+      const a1=-Math.PI/2-ang/2;
+      const a2=-Math.PI/2+ang/2;
+      const hx1=cx+Math.cos(a1)*bondLen, hy1=cy+Math.sin(a1)*bondLen;
+      const hx2=cx+Math.cos(a2)*bondLen, hy2=cy+Math.sin(a2)*bondLen;
+      // bonds
+      drawBond(ctx,cx,cy,hx1,hy1,1,'#38bdf8');
+      drawBond(ctx,cx,cy,hx2,hy2,1,'#38bdf8');
+      // lone pairs on O
+      drawLonePair(ctx,cx,cy+r+14,0);
+      drawLonePair(ctx,cx,cy-r-14,0);
+      // atoms
+      drawAtomCircle(ctx,hx1,hy1,r*0.7,'H','#a3e635');
+      drawAtomCircle(ctx,hx2,hy2,r*0.7,'H','#a3e635');
+      drawAtomCircle(ctx,cx,cy,r,'O','#38bdf8');
+      // shape label
+      drawShapeLabel(ctx,cx,h*0.82,'Gebuig / Hoekig — 104.5°');
+      break;
+    }
+    case 'NH3': {
+      // trigonal pyramidal: N at centre, 3 H below, 1 lone pair above
+      const angles3=[-Math.PI/2+Math.PI*2/3*0,-Math.PI/2+Math.PI*2/3*1,-Math.PI/2+Math.PI*2/3*2];
+      const hPositions=angles3.map(a=>({x:cx+Math.cos(a)*bondLen,y:cy+Math.sin(a)*bondLen}));
+      hPositions.forEach(p=>{
+        drawBond(ctx,cx,cy,p.x,p.y,1,'#4ade80');
+      });
+      // lone pair on top
+      drawLonePair(ctx,cx,cy-r-14,0);
+      hPositions.forEach(p=>drawAtomCircle(ctx,p.x,p.y,r*0.7,'H','#a3e635'));
+      drawAtomCircle(ctx,cx,cy,r,'N','#4ade80');
+      drawShapeLabel(ctx,cx,h*0.82,'Trigonaal-piramidaal — 107°');
+      break;
+    }
+    case 'CH4': {
+      // tetrahedral: C at centre, 4 H
+      const angles4=[-Math.PI/2, Math.PI/6, Math.PI*5/6, Math.PI/2+Math.PI*2/3];
+      // use 4 evenly-ish placed for 2D projection
+      const tAngles=[-Math.PI/4, Math.PI/4, Math.PI*3/4, -Math.PI*3/4];
+      const hPos4=tAngles.map(a=>({x:cx+Math.cos(a)*bondLen,y:cy+Math.sin(a)*bondLen}));
+      hPos4.forEach(p=>drawBond(ctx,cx,cy,p.x,p.y,1,'#fb923c'));
+      hPos4.forEach(p=>drawAtomCircle(ctx,p.x,p.y,r*0.7,'H','#a3e635'));
+      drawAtomCircle(ctx,cx,cy,r,'C','#fb923c');
+      drawShapeLabel(ctx,cx,h*0.82,'Tetraëdries — 109.5°');
+      break;
+    }
+    case 'CO2': {
+      // linear
+      const ox1=cx-bondLen, ox2=cx+bondLen;
+      drawBond(ctx,cx,cy,ox1,cy,2,'#e879f9');
+      drawBond(ctx,cx,cy,ox2,cy,2,'#e879f9');
+      // lone pairs on O
+      drawLonePair(ctx,ox1-r-10,cy,-8);
+      drawLonePair(ctx,ox1-r-10,cy,8);
+      drawLonePair(ctx,ox2+r+10,cy,-8);
+      drawLonePair(ctx,ox2+r+10,cy,8);
+      drawAtomCircle(ctx,ox1,cy,r,'O','#e879f9');
+      drawAtomCircle(ctx,ox2,cy,r,'O','#e879f9');
+      drawAtomCircle(ctx,cx,cy,r*0.85,'C','#fb923c');
+      drawShapeLabel(ctx,cx,h*0.82,'Lineêr — 180° (nie-polêre molekule)');
+      break;
+    }
+    case 'BF3': {
+      // trigonal planar: 3 F evenly spaced
+      const angles3b=[Math.PI/6*5,Math.PI/6*9,Math.PI/6*1];
+      const fPos=angles3b.map(a=>({x:cx+Math.cos(a)*bondLen,y:cy+Math.sin(a)*bondLen}));
+      fPos.forEach(p=>drawBond(ctx,cx,cy,p.x,p.y,1,'#fbbf24'));
+      // 3 lone pairs on each F (simplified: 2 dots on outer side each)
+      fPos.forEach(p=>{
+        const dx=p.x-cx, dy=p.y-cy;
+        const mag=Math.sqrt(dx*dx+dy*dy);
+        const nx=dx/mag, ny=dy/mag;
+        drawLonePair(ctx,p.x+nx*(r+10),p.y+ny*(r+10),ny*8);
+        drawLonePair(ctx,p.x+nx*(r+10),p.y+ny*(r+10),-ny*8);
+      });
+      fPos.forEach(p=>drawAtomCircle(ctx,p.x,p.y,r,'F','#fbbf24'));
+      drawAtomCircle(ctx,cx,cy,r*0.75,'B','#60a5fa');
+      drawShapeLabel(ctx,cx,h*0.82,'Trigonaal-planêr — 120° (elektrontekort)');
+      break;
+    }
+    case 'N2': {
+      // linear with triple bond
+      const nx1=cx-bondLen*0.7, nx2=cx+bondLen*0.7;
+      drawBond(ctx,cx,cy,nx1,cy,3,'#c084fc');
+      drawBond(ctx,cx,cy,nx2,cy,3,'#c084fc');
+      // lone pairs on each N
+      drawLonePair(ctx,nx1-r-10,cy,-6);
+      drawLonePair(ctx,nx1-r-10,cy,6);
+      drawLonePair(ctx,nx2+r+10,cy,-6);
+      drawLonePair(ctx,nx2+r+10,cy,6);
+      drawAtomCircle(ctx,nx1,cy,r,'N','#c084fc');
+      drawAtomCircle(ctx,nx2,cy,r,'N','#c084fc');
+      drawShapeLabel(ctx,cx,h*0.82,'Lineêr — drievoudige binding (bindingsorde 3) — 180°');
+      break;
+    }
+  }
+}
+
+function drawBond(ctx,x1,y1,x2,y2,order,color){
+  ctx.strokeStyle=color;
+  ctx.lineWidth=2.5;
+  const dx=x2-x1, dy=y2-y1;
+  const len=Math.sqrt(dx*dx+dy*dy);
+  const px=-dy/len, py=dx/len;
+  const gap=6;
+  if(order===1){
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  } else if(order===2){
+    ctx.beginPath();ctx.moveTo(x1+px*gap/2,y1+py*gap/2);ctx.lineTo(x2+px*gap/2,y2+py*gap/2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x1-px*gap/2,y1-py*gap/2);ctx.lineTo(x2-px*gap/2,y2-py*gap/2);ctx.stroke();
+  } else if(order===3){
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x1+px*gap,y1+py*gap);ctx.lineTo(x2+px*gap,y2+py*gap);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x1-px*gap,y1-py*gap);ctx.lineTo(x2-px*gap,y2-py*gap);ctx.stroke();
+  }
+}
+
+function drawLonePair(ctx,x,y,offset){
+  ctx.fillStyle='rgba(250,204,21,0.85)';
+  ctx.beginPath();ctx.arc(x-offset/2,y-3,2.5,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(x+offset/2,y+3,2.5,0,Math.PI*2);ctx.fill();
+}
+
+function drawAtomCircle(ctx,x,y,r,symbol,color){
+  const grd=ctx.createRadialGradient(x,y,0,x,y,r);
+  grd.addColorStop(0,hexToRgba(color,0.3));
+  grd.addColorStop(1,hexToRgba(color,0.05));
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fillStyle=grd;ctx.fill();
+  ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#fff';
+  ctx.font='bold '+(r>20?'14':'11')+'px "Cabinet Grotesk",sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(symbol,x,y);
+}
+
+function drawShapeLabel(ctx,cx,y,text){
+  ctx.fillStyle='rgba(192,132,252,0.7)';
+  ctx.font='bold 12px "JetBrains Mono",monospace';
+  ctx.textAlign='center';
+  ctx.fillText(text,cx,y);
+}
+
+function drawMoleculeInfo(ctx,w,h,data){
+  // draw a small legend at bottom right
+  ctx.fillStyle='rgba(210,218,245,0.35)';
+  ctx.font='10px "JetBrains Mono",monospace';
+  ctx.textAlign='right';
+  ctx.fillText('● los-paar-elektrone',w-16,h-36);
+  ctx.fillStyle='rgba(210,218,245,0.35)';
+  ctx.fillText('— bindingspaar',w-16,h-20);
+}
+
+/* ---- METALLIC SIM ---- */
+function initMetallicSim(ctx,w,h){
+  // Create lattice of ions
+  const ionR=18;
+  const gapX=70, gapY=65;
+  const cols=Math.floor(w/gapX);
+  const rows=Math.floor(h/gapY);
+  const offsetX=(w-(cols-1)*gapX)/2;
+  const offsetY=(h-(rows-1)*gapY)/2;
+  const ions=[];
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      ions.push({x:offsetX+c*gapX, y:offsetY+r*gapY});
+    }
+  }
+  // Create electrons
+  metallicElectrons=[];
+  for(let i=0;i<28;i++){
+    metallicElectrons.push({
+      x:Math.random()*w,
+      y:Math.random()*h,
+      vx:(Math.random()-0.5)*2.2,
+      vy:(Math.random()-0.5)*2.2,
+      r:3+Math.random()*1.5
+    });
+  }
+
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+
+    // draw connections between adjacent ions (light grid)
+    ctx.strokeStyle='rgba(96,165,250,0.10)';
+    ctx.lineWidth=1;
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const i=r*cols+c;
+        if(c<cols-1){
+          ctx.beginPath();
+          ctx.moveTo(ions[i].x,ions[i].y);
+          ctx.lineTo(ions[i+1].x,ions[i+1].y);
+          ctx.stroke();
+        }
+        if(r<rows-1){
+          ctx.beginPath();
+          ctx.moveTo(ions[i].x,ions[i].y);
+          ctx.lineTo(ions[i+cols].x,ions[i+cols].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // draw ions
+    ions.forEach(ion=>{
+      const grd=ctx.createRadialGradient(ion.x,ion.y,0,ion.x,ion.y,ionR);
+      grd.addColorStop(0,'rgba(96,165,250,0.35)');
+      grd.addColorStop(1,'rgba(96,165,250,0.04)');
+      ctx.beginPath();
+      ctx.arc(ion.x,ion.y,ionR,0,Math.PI*2);
+      ctx.fillStyle=grd;
+      ctx.fill();
+      ctx.strokeStyle='rgba(96,165,250,0.5)';
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+      ctx.fillStyle='rgba(96,165,250,0.9)';
+      ctx.font='bold 9px "JetBrains Mono",monospace';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.fillText('M⁺',ion.x,ion.y);
+    });
+
+    // update and draw electrons
+    metallicElectrons.forEach(e=>{
+      e.x+=e.vx;
+      e.y+=e.vy;
+      // bounce off walls
+      if(e.x<e.r||e.x>w-e.r) e.vx*=-1;
+      if(e.y<e.r||e.y>h-e.r) e.vy*=-1;
+      // slight random walk
+      e.vx+=(Math.random()-0.5)*0.15;
+      e.vy+=(Math.random()-0.5)*0.15;
+      // clamp speed
+      const spd=Math.sqrt(e.vx*e.vx+e.vy*e.vy);
+      if(spd>3.0){e.vx=e.vx/spd*3.0;e.vy=e.vy/spd*3.0;}
+      // glow
+      const grd2=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r*3);
+      grd2.addColorStop(0,'rgba(192,132,252,0.8)');
+      grd2.addColorStop(1,'rgba(192,132,252,0)');
+      ctx.beginPath();
+      ctx.arc(e.x,e.y,e.r*3,0,Math.PI*2);
+      ctx.fillStyle=grd2;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(232,121,249,0.9)';
+      ctx.shadowColor='#c084fc';
+      ctx.shadowBlur=8;
+      ctx.fill();
+      ctx.shadowBlur=0;
+    });
+
+    // legend
+    ctx.fillStyle='rgba(96,165,250,0.7)';
+    ctx.font='10px "JetBrains Mono",monospace';
+    ctx.textAlign='left';
+    ctx.fillText('M⁺  positiewe metaalkatione (rooster)',16,h-36);
+    ctx.fillStyle='rgba(192,132,252,0.7)';
+    ctx.fillText('●  gedelokaliseerde elektrone (see)',16,h-20);
+
+    simRAF=requestAnimationFrame(loop);
+  }
+  simRAF=requestAnimationFrame(loop);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded',function(){
+  updateBondSim();
+});
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

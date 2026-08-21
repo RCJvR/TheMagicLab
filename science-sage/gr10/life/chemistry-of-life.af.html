@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemie van die Lewe — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--green:#22c55e;--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(34,197,94,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(163,230,53,0.06) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .lesson-header{padding:36px 40px 24px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#86efac;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#22c55e;border-bottom-color:#22c55e}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body h3{font-weight:700;font-size:15px;letter-spacing:-0.01em;color:#e2e8f0;margin:18px 0 8px}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#86efac}
+    .key-fact{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#86efac;font-family:var(--fm)}
+    .compare-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+    .compare-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .compare-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .compare-table td:first-child{color:rgba(210,218,245,.78);font-weight:600}
+    .compare-table tr:last-child td{border-bottom:none}
+    /* Explore */
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
+    .ctrl-label .val{color:#86efac;font-weight:700}
+    input[type=range]{width:100%;accent-color:#22c55e}
+    .rate-readout{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 20px}
+    .rate-num{font-weight:900;font-size:34px;letter-spacing:-0.03em;flex-shrink:0}
+    .rate-bar-wrap{flex:1}
+    .rate-bar-track{height:10px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:8px}
+    .rate-bar-fill{height:100%;border-radius:99px;transition:width 200ms,background 300ms}
+    .rate-status{font-size:12.5px;color:var(--muted);line-height:1.6}
+    /* Practice */
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#22c55e}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#22c55e;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);color:#86efac;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(34,197,94,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap{display:none!important}.tab-panel{display:block!important}}
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .sim-outer{max-width:1000px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+      .sim-controls-row{grid-template-columns:1fr}
+      .rate-readout{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a href="../../index.html" class="nav-logo">🔬 Science Sage</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="nav-strand">Lewenswetenskappe · Gr 10</span>
+    <span id="mlLangToggle"></span>
+    <a href="../../index.html" class="nav-back"><i data-lucide="arrow-left" style="width:13px;height:13px"></i> Terug</a>
+  </div>
+</nav>
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Molekulêre, Sellulêre & Weefselvlak · Les 1</div>
+  <h1 class="lesson-title">Chemie van die Lewe</h1>
+  <p class="lesson-sub">Alle lewende dinge is opgebou uit atome en molekules. Verken die anorganiese en organiese verbindings waaruit selle bestaan — water, koolhidrate, lipiede, proteïene, nukleïensure — en hoe ensieme die chemie van die lewe beheer.</p>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)"><i data-lucide="book-open" style="width:14px;height:14px"></i> Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)"><i data-lucide="flask-conical" style="width:14px;height:14px"></i> Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)"><i data-lucide="check-circle" style="width:14px;height:14px"></i> Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)"><i data-lucide="pencil" style="width:14px;height:14px"></i> Werkboek</button>
+</div>
+
+<!-- LESSON -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+    <h2>Van atome tot organismes</h2>
+    <p>Alle lewende organismes bestaan uit atome wat saamsmelt om molekules te vorm. Hierdie molekules vorm die basiese eenhede van lewe — <strong>selle</strong> — wat georganiseer word in weefsels, organe, en uiteindelik volledige organismes. Om te verstaan hoe selle werk, moet ons eers die chemie verstaan waaruit hulle opgebou is.</p>
+    <p>Biologiese verbindings word in twee breë kategorieë gegroepeer:</p>
+    <ul>
+      <li><strong>Anorganiese verbindings</strong> — bevat nie beide koolstof en waterstof wat saam gebind is as hul hoof strukturele kenmerk nie. In biologie is die belangrikste anorganiese verbinding <strong>water</strong>.</li>
+      <li><strong>Organiese verbindings</strong> — opgebou rondom 'n "ruggraat" van <strong>koolstof (C), waterstof (H), en suurstof (O)</strong> atome (party bevat ook stikstof, fosfor, of swael). Dit is die molekules van die lewe: koolhidrate, lipiede, proteïene, en nukleïensure.</li>
+    </ul>
+
+    <h2>Water — die anorganiese verbinding van die lewe</h2>
+    <p>'n Watermolekule (H₂O) bestaan uit <strong>2 waterstofatome gebind aan 1 suurstofatoom</strong>. Water maak die grootste deel van elke lewende sel uit en is noodsaaklik vir lewe:</p>
+    <ul>
+      <li>Dit is die <strong>oplosmiddel</strong> waarin die meeste chemiese reaksies in die sel plaasvind.</li>
+      <li>Dit <strong>vervoer</strong> opgeloste stowwe deur die liggaam (bv. in bloedplasma of plant-xileem-/floeemsap).</li>
+      <li>Dit help om <strong>temperatuur te reguleer</strong> — water absorbeer en vrystel hitte stadig, wat toestande binne selle stabiel hou.</li>
+      <li>Dit is 'n reaktant in baie biologiese reaksies, soos fotosintese.</li>
+    </ul>
+    <div class="callout"><strong>Minerale</strong> is die ander hoof anorganiese verbindings in lewende organismes — elemente soos kalsium, yster, en kalium speel strukturele rolle (bv. kalsium in been) en word in klein hoeveelhede benodig vir gesonde selfunksie.</div>
+
+    <h2>Koolhidrate — energie en struktuur</h2>
+    <p>Koolhidrate is opgebou uit koolstof, waterstof, en suurstof, en kom in drie groottes voor:</p>
+    <table class="compare-table">
+      <thead><tr><th>Tipe</th><th>Betekenis</th><th>Voorbeelde</th></tr></thead>
+      <tbody>
+        <tr><td>Monosakkariede</td><td>Enkele suikereenheid</td><td>Glukose, fruktose</td></tr>
+        <tr><td>Disakkariede</td><td>Twee suikereenhede saamgevoeg</td><td>Sukrose, maltose</td></tr>
+        <tr><td>Polisakkariede</td><td>Baie suikereenhede saamgevoeg in 'n ketting</td><td>Stysel, sellulose, glikogeen</td></tr>
+      </tbody>
+    </table>
+    <p>Koolhidrate word hoofsaaklik as 'n <strong>energiebron</strong> gebruik (glukose word tydens respirasie afgebreek) en, in die geval van sellulose, verskaf <strong>strukturele ondersteuning</strong> in plantselwande.</p>
+
+    <h2>Lipiede — vette en olies</h2>
+    <p>'n Lipiedmolekule bestaan uit <strong>1 gliserolmolekule gebind aan 3 vetsuurkettings</strong>. Vetsure kan wees:</p>
+    <ul>
+      <li><strong>Versadig</strong> — geen dubbelbindings tussen koolstofatome nie; gewoonlik vas by kamertemperatuur (bv. dierlike vette). Gekoppel aan verhoogde cholesterol en hartsiekterisiko wanneer dit oormatig geëet word.</li>
+      <li><strong>Onversadig</strong> — bevat dubbelbindings; gewoonlik vloeibaar by kamertemperatuur (bv. plantolies).</li>
+    </ul>
+    <p>Lipiede stoor energie (meer energiedig as koolhidrate), isoleer die liggaam, beskerm organe, en vorm die selmembraan.</p>
+
+    <h2>Proteïene — die werkperde van die sel</h2>
+    <p>Proteïene is opgebou uit kleiner eenhede genaamd <strong>aminosure</strong>, wat koolstof, waterstof, suurstof, en stikstof bevat (party bevat ook swael of fosfor). Proteïene het baie rolle: struktureel (bv. keratien in hare), vervoer (bv. hemoglobien), en — die belangrikste vir hierdie les — as <strong>ensieme</strong>.</p>
+    <div class="key-fact">Proteïene is sensitief vir temperatuur en pH. Uiterste toestande verander hul vorm — dit word denaturasie genoem, en dit keer die proteïen om te funksioneer.</div>
+
+    <h2>Nukleïensure — die genetiese kode</h2>
+    <p><strong>DNS</strong> (deoksiribonukleïensuur) en <strong>RNS</strong> (ribonukleïensuur) is nukleïensure wat opgebou is uit koolstof, waterstof, suurstof, stikstof, en fosfor. Hulle stoor en dra die genetiese instruksies oor wat bepaal hoe 'n sel opgebou word en hoe dit funksioneer. Jy sal hul gedetailleerde struktuur in Graad 12 bestudeer — vir nou is dit genoeg om te weet dat hulle bestaan en watter elemente hulle bevat.</p>
+    <p>Selle benodig ook klein hoeveelhede <strong>vitamiene</strong> (soos A, die B-vitamiene, C, D, en E) om normaal te funksioneer.</p>
+
+    <h2>Ensieme — biologiese katalisators</h2>
+    <p>Ensieme is proteïene wat chemiese reaksies in die sel versnel sonder om self opgebruik te word. Elke ensiem het 'n uniek gevormde <strong>aktiewe setel</strong> wat by 'n spesifieke <strong>substraat</strong>molekule pas — dit word die <strong>slot-en-sleutel-model</strong> genoem.</p>
+    <ul>
+      <li>Die substraat bind aan die ensiem se aktiewe setel.</li>
+      <li>Die ensiem versnel die reaksie, en skakel die substraat om in produk(te).</li>
+      <li>Die produk word vrygestel, en die ensiem is vry om 'n ander substraatmolekule te bind.</li>
+    </ul>
+    <div class="callout">Ensieme werk vinnigste by 'n <strong>optimum temperatuur en pH</strong>. Onder die optimum is reaksies stadig omdat molekules minder beweeg. Bo die optimum begin die ensiem se vorm verander (<strong>denatureer</strong>) — die aktiewe setel pas nie meer by die substraat nie, en die ensiem hou op werk. Probeer dit self in die Verken-oortjie!</div>
+  </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="tab-panel" id="tab-explore">
+  <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px">Ensiemwerking-laboratorium</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Verstel temperatuur en pH en kyk hoe dit hierdie ensiem se vorm en reaksietempo beïnvloed. Vind die optimum toestande waar die ensiem vinnigste werk.</p>
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Slot-en-sleutel-model</h3>
+      <canvas id="enzCanvas" height="280"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Temperatuur <span class="val" id="tempVal">37°C</span></div>
+        <input type="range" id="tempSlider" min="0" max="90" value="37">
+      </div>
+      <div class="ctrl-card">
+        <div class="ctrl-label">pH <span class="val" id="phVal">7.0</span></div>
+        <input type="range" id="phSlider" min="0" max="140" value="70">
+      </div>
+    </div>
+    <div class="rate-readout">
+      <div class="rate-num" id="rateNum">100%</div>
+      <div class="rate-bar-wrap">
+        <div class="rate-bar-track"><div class="rate-bar-fill" id="rateBar" style="width:100%;background:#22c55e"></div></div>
+        <div class="rate-status" id="rateStatus">Optimale toestande — die ensiem se aktiewe setel pas perfek by die substraat.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div><div style="font-weight:700;font-size:16px;color:#fff" id="scoreMsg"></div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gaan die verduidelikings hierbo na.</div></div>
+    </div>
+    <div id="questions"></div>
+  </div>
+</div>
+
+<!-- WORKBOOK -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px"></i> Druk Werkboek</button>
+    <div class="wb-intro">Beantwoord in jou oefeningboek.</div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 1 · (3 punte)</div><div class="wb-qtext">Onderskei tussen anorganiese en organiese verbindings. Gee EEN voorbeeld van elkeen soos gevind in 'n lewende sel.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 2 · (4 punte)</div><div class="wb-qtext">Beskryf die struktuur van 'n watermolekule en noem TWEE funksies van water in lewende organismes.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 3 · (5 punte)</div><div class="wb-qtext">Noem die drie kategorieë koolhidrate gebaseer op grootte, en gee EEN voorbeeld van elkeen. Noem die hoof funksie van koolhidrate in die liggaam.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 4 · (3 punte)</div><div class="wb-qtext">Beskryf die basiese struktuur van 'n lipiedmolekule en verduidelik die verskil tussen 'n versadigde en 'n onversadigde vet.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 5 · (5 punte)</div><div class="wb-qtext">Gebruik die slot-en-sleutel-model om te verduidelik hoe 'n ensiem werk. Verduidelik in jou antwoord wat met ensiemaktiwiteit gebeur wanneer die temperatuur ver bo die optimum styg, deur die term "denaturasie" te gebruik.</div></div>
+    <div class="wb-q"><div class="wb-qnum">Vraag 6 · (7 punte)</div><div class="wb-qtext">Die ensiem katalase breek waterstofperoksied af in water en suurstofgas. 'n Leerder versamel die suurstofgas geproduseer deur dieselfde hoeveelheid katalase by twee verskillende temperature en teken die volgende data aan:<br><br>
+    <table class="compare-table" style="margin:10px 0 12px">
+      <thead><tr><th>Tyd (s)</th><th>Volume O₂ by 37°C (cm³)</th><th>Volume O₂ by 60°C (cm³)</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>20</td><td>10</td><td>3</td></tr>
+        <tr><td>40</td><td>18</td><td>4</td></tr>
+        <tr><td>60</td><td>24</td><td>4</td></tr>
+        <tr><td>80</td><td>24</td><td>4</td></tr>
+      </tbody>
+    </table>
+    (a) Bereken die gemiddelde tempo van suurstofproduksie (in cm³/s) gedurende die eerste 40 sekondes by 37°C. Wys jou berekeninge.<br>
+    (b) Bereken die gemiddelde tempo van suurstofproduksie (in cm³/s) gedurende die eerste 40 sekondes by 60°C.<br>
+    (c) Gebruik jou antwoorde vir (a) en (b), en die konsep van denaturasie, om te verduidelik waarom die tempo by 60°C soveel laer is as by 37°C.<br>
+    (d) Verduidelik waarom die volume O₂ ophou toeneem na 60 sekondes by 37°C, al het die ensiem nie gedenatureer nie.</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  // enzCanvas has offsetWidth 0 while tab-explore is display:none, so the initial
+  // resizeCanvas() call fell back to a hardcoded width. Re-measure now it's visible.
+  if(id==='explore' && typeof resizeCanvas==='function') resizeCanvas();
+}
+
+/* ═══════════════════════════════════════════════
+   ENZYME ACTION LAB
+═══════════════════════════════════════════════ */
+const canvas = document.getElementById('enzCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let t = 0;
+let temp = 37, ph = 7.0;
+
+function resizeCanvas(){
+  W = canvas.offsetWidth || 600;
+  H = 280;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+}
+
+function tempFactor(T){
+  const opt = 37;
+  if (T <= opt) return Math.max(0, T/opt);
+  return Math.exp(-Math.pow((T-opt)/12, 2));
+}
+function phFactor(pH){
+  return Math.exp(-Math.pow((pH-7)/2.2, 2));
+}
+function computeRate(){
+  return Math.max(0, Math.min(1, tempFactor(temp) * phFactor(ph)));
+}
+function isDenatured(){
+  return temp > 52 || ph < 3 || ph > 11;
+}
+
+function updateReadout(){
+  const rate = computeRate();
+  const pct = Math.round(rate*100);
+  document.getElementById('rateNum').textContent = pct+'%';
+  document.getElementById('rateNum').style.color = pct>=70?'#22c55e':pct>=35?'#fbbf24':'#ef4444';
+  const bar = document.getElementById('rateBar');
+  bar.style.width = pct+'%';
+  bar.style.background = pct>=70?'#22c55e':pct>=35?'#fbbf24':'#ef4444';
+  let status;
+  if (isDenatured()) status = "Gedenatureer! Die ensiem se aktiewe setel het van vorm verander en pas nie meer by die substraat nie — die reaksie het gestop.";
+  else if (pct >= 85) status = "Optimale toestande — die ensiem se aktiewe setel pas perfek by die substraat.";
+  else if (temp < 20) status = "Te koud — molekules beweeg stadig, sodat botsings tussen ensiem en substraat skaars is.";
+  else if (pct < 40) status = "Toestande beweeg weg van die optimum — die ensiem werk, maar stadig.";
+  else status = "Goeie toestande, maar nie heeltemal optimaal nie.";
+  document.getElementById('rateStatus').textContent = status;
+}
+
+function drawScene(){
+  ctx.clearRect(0,0,W,H);
+  t += 0.03;
+  const rate = computeRate();
+  const denatured = isDenatured();
+  const cx = W*0.32, cy = H*0.52;
+  const pulse = 1 + 0.04*Math.sin(t*4)*rate;
+
+  // Enzyme body (blob) — jagged & red if denatured, smooth & green if healthy
+  ctx.save();
+  ctx.beginPath();
+  const baseR = Math.min(W,H)*0.20;
+  const points = 10;
+  for(let i=0;i<=points;i++){
+    const a = (i/points)*Math.PI*2;
+    let r = baseR*pulse;
+    if (denatured) r += Math.sin(a*5 + t*2)*baseR*0.28;
+    else r += Math.sin(a*3)*baseR*0.06;
+    const px = cx + r*Math.cos(a), py = cy + r*Math.sin(a);
+    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  }
+  ctx.closePath();
+  const color = denatured ? '#ef4444' : rate>0.6 ? '#22c55e' : '#fbbf24';
+  ctx.fillStyle = color+'33';
+  ctx.fill();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // Active site notch label
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.font = '11px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('ENSIEM', cx, cy + baseR + 22);
+
+  // Substrate molecule — orbits toward active site, "docks" and disappears if rate is high
+  const orbitR = baseR*1.9;
+  const speed = 0.5 + rate*1.5;
+  const sAngle = (t*speed) % (Math.PI*2);
+  const dockPhase = denatured ? 0 : Math.max(0, Math.sin(t*speed*0.6));
+  const sx = cx + Math.cos(sAngle)*orbitR*(1-dockPhase*0.55);
+  const sy = cy + Math.sin(sAngle)*orbitR*(1-dockPhase*0.55);
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(sx, sy, 10, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(96,165,250,0.85)';
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.fillText('substraat', sx, sy - 16);
+
+  // Rate meter bar on canvas (right side)
+  const bx = W*0.72, by = H*0.20, bw = 26, bh = H*0.60;
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(bx, by, bw, bh);
+  const fillH = bh*rate;
+  ctx.fillStyle = color;
+  ctx.fillRect(bx, by+bh-fillH, bw, fillH);
+  ctx.fillStyle = 'rgba(255,255,255,0.55)';
+  ctx.font = '10px "JetBrains Mono",monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('TEMPO', bx+bw/2, by-8);
+
+  requestAnimationFrame(drawScene);
+}
+
+document.getElementById('tempSlider').addEventListener('input', e=>{
+  temp = parseInt(e.target.value);
+  document.getElementById('tempVal').textContent = temp+'°C';
+  updateReadout();
+});
+document.getElementById('phSlider').addEventListener('input', e=>{
+  ph = parseInt(e.target.value)/10;
+  document.getElementById('phVal').textContent = ph.toFixed(1);
+  updateReadout();
+});
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+updateReadout();
+drawScene();
+
+/* ═══════════════════════════════════════════════
+   PRACTICE
+═══════════════════════════════════════════════ */
+const QUESTIONS=[
+  {text:'Watter elementkombinasie vorm die "ruggraat" van organiese verbindings?',opts:["Stikstof en fosfor","Koolstof, waterstof en suurstof","Swael en yster","Kalsium en kalium"],ans:1,exp:"Organiese molekules is opgebou rondom koolstof, waterstof en suurstof. Party (soos proteïene en nukleïensure) bevat ook stikstof, en soms fosfor of swael."},
+  {text:"Wat is die korrekte atomiese samestelling van 'n watermolekule?",opts:["1 waterstof, 2 suurstof","2 waterstof, 1 suurstof","2 waterstof, 2 suurstof","1 waterstof, 1 suurstof"],ans:1,exp:"'n Watermolekule (H₂O) het 2 waterstofatome gebind aan 1 suurstofatoom."},
+  {text:"Sukrose (tafelsuiker) is 'n voorbeeld van watter tipe koolhidraat?",opts:["Monosakkaried","Disakkaried","Polisakkaried","Lipied"],ans:1,exp:"Sukrose bestaan uit twee saamgevoegde suikereenhede (glukose + fruktose), wat dit 'n disakkaried maak. Stysel en sellulose is polisakkariede; glukose alleen is 'n monosakkaried."},
+  {text:"'n Lipiedmolekule bestaan uit een gliserolmolekule gebind aan hoeveel vetsuurkettings?",opts:["1","2","3","4"],ans:2,exp:"'n Lipied (vet/olie) bestaan uit 1 gliserolmolekule saamgevoeg met 3 vetsuurkettings."},
+  {text:"Waaruit is proteïene opgebou?",opts:["Vetsure","Aminosure","Monosakkariede","Nukleotiede"],ans:1,exp:"Proteïene is kettings van aminosure. Die volgorde van aminosure bepaal die proteïen se vorm en funksie."},
+  {text:"Volgens die slot-en-sleutel-model, wat gebeur wanneer 'n ensiem denatureer?",opts:["Dit versnel die reaksie nog meer","Sy aktiewe setel verander van vorm en pas nie meer by die substraat nie","Dit verander in 'n koolhidraat","Dit word 'n beter katalisator"],ans:1,exp:"Denaturasie verander die ensiem se 3D-vorm, insluitend sy aktiewe setel. Aangesien die substraat nie meer pas nie, kan die ensiem nie meer die reaksie kataliseer nie."},
+  {text:"(Analise) 'n Navorser analiseer twee onbekende biomolekules. Molekule P is slegs opgebou uit koolstof-, waterstof- en suurstofatome. Molekule Q is opgebou uit koolstof, waterstof, suurstof en stikstof, met 'n klein hoeveelheid swael. Watter biomolekule is Q heel waarskynlik?",opts:["'n Koolhidraat, soos molekule P","'n Lipied, soos molekule P","'n Proteïen","Water"],ans:2,exp:"Koolhidrate en lipiede is albei slegs opgebou uit C, H en O — dit pas by molekule P. Proteïene is die biomolekule wat bykomend stikstof bevat (vanaf hul aminosuur-boustene), en party proteïene bevat ook swael (bv. in die aminosuur sisteïen). Nukleïensure bevat ook stikstof, maar bevat kenmerkend fosfor, nie swael nie, sodat die swael-aanwyser eerder na 'n proteïen as na DNS/RNS wys."},
+  {text:"(Analise) Ensiem X het 'n optimum temperatuur van 37°C en begin eers denatureer sodra die temperatuur 50°C oorskry. 'n Pasiënt met koors het 'n liggaamstemperatuur van 40°C. Wat is die beste voorspelling vir die tempo van die reaksie gekataliseer deur ensiem X by 40°C in vergelyking met by 37°C?",opts:["Die tempo is baie hoër, want hoër temperature versnel ensieme altyd","Die tempo het na nul gedaal, want die ensiem het gedenatureer","Die tempo is effens laer as by die optimum, maar die ensiem het nog nie gedenatureer nie aangesien 40°C steeds ver onder 50°C is","Die tempo is identies, want temperatuur beïnvloed slegs gedenatureerde ensieme"],ans:2,exp:"37°C is ensiem X se optimum — die temperatuur van maksimum reaksietempo. Om weg te beweeg van die optimum na 40°C veroorsaak 'n klein afname in tempo (molekules en die aktiewe setel se passing is nie meer perfek nie), maar denaturasie begin eers by 50°C, sodat die ensiem se vorm steeds intak is by 40°C. Dit is waarom 'n matige koors sommige ensiem-beheerde reaksies effens vertraag sonder om dit te stop — dit is 'n werklik gevaarlike koors (ver bo 40°C) wat die risiko loop om ensieme te denatureer."},
+];
+let score=0,answered=new Array(QUESTIONS.length).fill(false);
+function buildPractice(){
+  const div=document.getElementById('questions');
+  div.innerHTML=QUESTIONS.map((q,qi)=>`<div class="q-card" id="qcard${qi}"><div class="q-num">Vraag ${qi+1} van ${QUESTIONS.length}</div><div class="q-text">${q.text}</div><div class="mc-options">${q.opts.map((o,oi)=>`<button class="mc-opt" id="opt${qi}_${oi}" onclick="answer(${qi},${oi})"><span class="opt-letter">${'ABCD'[oi]}</span>${o}</button>`).join('')}</div><div class="feedback" id="fb${qi}"></div></div>`).join('');
+}
+function answer(qi,oi){
+  if(answered[qi])return;answered[qi]=true;
+  const q=QUESTIONS[qi];
+  document.querySelectorAll(`#qcard${qi} .mc-opt`).forEach(o=>o.disabled=true);
+  document.querySelector(`#opt${qi}_${q.ans}`).classList.add('correct');
+  const fb=document.getElementById('fb'+qi);
+  if(oi===q.ans){score++;fb.className='feedback ok show';fb.innerHTML='✓ Reg! '+q.exp;}
+  else{document.querySelector(`#opt${qi}_${oi}`).classList.add('wrong');fb.className='feedback bad show';fb.innerHTML='✗ Nie heeltemal reg nie. '+q.exp;}
+  if(answered.every(Boolean)){
+    const banner=document.getElementById('scoreBanner');banner.classList.add('show');
+    document.getElementById('scoreNum').textContent=`${score}/${QUESTIONS.length}`;
+    document.getElementById('scoreMsg').textContent=score<=3?'Hou so aan — gaan die les weer deur!':score<=5?'Goeie werk — gaan die verduidelikings na.':score===QUESTIONS.length?'Volpunte! Jy ken jou biomolekules!':'Goed gedaan!';
+    banner.scrollIntoView({behavior:'smooth'});
+  }
+}
+buildPractice();
+</script>
+<script>lucide.createIcons()</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>

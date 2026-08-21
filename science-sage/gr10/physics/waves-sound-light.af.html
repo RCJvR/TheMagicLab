@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golwe, Klank &amp; Lig — Science Sage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+    html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(96,165,250,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(168,85,247,0.07) 0%,transparent 55%)}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+    body>*{position:relative;z-index:1}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+    .nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+    .nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+    .nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+    .nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.22);color:#bfdbfe}
+    .lesson-header{padding:28px 40px 8px}
+    .lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:10px}
+    .lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+    .lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+    .curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+    .curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+    .curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+    .curr-btn.active{background:rgba(96,165,250,.15);color:#bfdbfe;border:1px solid rgba(96,165,250,.28)}
+    .curr-label{font-size:11px;color:var(--muted)}
+    .ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+    .ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+    body.ieb-mode .ieb-block{display:block}
+    body.ieb-mode .ieb-practice{display:flex}
+    .tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+    .tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+    .tab-btn:hover{color:var(--text)}
+    .tab-btn.active{color:#60a5fa;border-bottom-color:#60a5fa}
+    .tab-panel{display:none;padding:32px 40px 48px}
+    .tab-panel.active{display:block}
+    .lesson-body{max-width:720px}
+    .lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+    .lesson-body h2:first-child{margin-top:0}
+    .lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+    .lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+    .callout{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+    .callout strong{color:#93c5fd}
+    .formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#93c5fd;text-align:center;line-height:2}
+    .symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+    .symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    .symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+    .symbols-table tr:last-child td{border-bottom:none}
+    .key-fact{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#93c5fd;font-family:var(--fm)}
+    .sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+    .sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+    .sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+    canvas{display:block;border-radius:10px;background:#040710;width:100%}
+    .sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+    .ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+    .mode-btn.active,.mode-btn:hover{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.30);color:#93c5fd}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+    input[type=range]{flex:1;accent-color:#60a5fa;cursor:pointer}
+    .slider-val{font-family:var(--fm);font-size:11px;color:#93c5fd;min-width:60px;text-align:right}
+    .readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+    .readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+    .readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+    .readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+    .practice-wrap{max-width:640px}
+    .q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+    .q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:8px}
+    .q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+    .mc-options{display:flex;flex-direction:column;gap:8px}
+    .mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+    .mc-opt:hover:not(:disabled){background:rgba(96,165,250,.10);border-color:rgba(96,165,250,.28);color:var(--text)}
+    .mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+    .mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+    .mc-opt:disabled{cursor:default}
+    .opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+    .feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+    .feedback.show{display:block}
+    .feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+    .feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+    .score-banner{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+    .score-banner.show{display:flex;align-items:center;gap:16px}
+    .score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#60a5fa}
+    .ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+    .ieb-practice{display:none;flex-direction:column}
+    .wb-wrap{max-width:680px}
+    .wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+    .wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+    .wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#60a5fa;margin-bottom:6px}
+    .wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+    .print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(96,165,250,.10);border:1px solid rgba(96,165,250,.25);color:#93c5fd;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+    .print-btn:hover{background:rgba(96,165,250,.18)}
+    @media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-strand">Fisika</span>
+    <span id="mlLangToggle"></span>
+    <a class="nav-back" href="../../index.html">← Tuis</a>
+  </div>
+</nav>
+
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Fisika · Les 5</div>
+  <div class="lesson-title">Golwe, Klank &amp; Lig</div>
+  <div class="lesson-sub">Verken hoe golwe energie oordra, hoe klank deur media beweeg, en hoe lig weerkaats, breek, en totale interne weerkaatsing ondergaan.</div>
+</div>
+
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('learn',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📋 Werkboek</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="tab-panel active" id="tab-learn">
+  <div class="lesson-body">
+
+    <h2>Wat is 'n Golf?</h2>
+    <p>'n Golf is 'n versteuring wat energie deur 'n medium (of deur die ruimte vir elektromagnetiese golwe) oordra sonder om materie oor te dra. Die materiaal waardeur die golf beweeg, word die <strong>medium</strong> genoem.</p>
+    <ul>
+      <li><strong>Puls:</strong> 'n enkele versteuring wat deur 'n medium beweeg (bv. 'n tou een keer laat spring).</li>
+      <li><strong>Deurlopende golf:</strong> 'n gereelde, herhaalde versteuring (bv. 'n tou voortdurend op en af skud).</li>
+    </ul>
+    <div class="callout"><strong>Sleutelidee:</strong> Golwe dra energie oor, nie materie nie. Die mediumdeeltjies vibreer om hul rusposisies — hulle beweeg nie saam met die golf nie.</div>
+
+    <h2>Dwarsgolwe</h2>
+    <p>In 'n dwarsgolf vibreer deeltjies <em>loodreg</em> op die rigting van golfbeweging. Voorbeelde: lig, watervlakgolwe, golwe op 'n tou.</p>
+    <ul>
+      <li><strong>Kruin:</strong> hoogste punt bo die rusposisie</li>
+      <li><strong>Trog:</strong> laagste punt onder die rusposisie</li>
+      <li><strong>Amplitude (A):</strong> maksimum verplasing vanaf rus; gemeet in meter (m)</li>
+      <li><strong>Golflengte (λ):</strong> afstand tussen twee opeenvolgende identiese punte (bv. kruin tot kruin); eenheid: meter (m)</li>
+      <li><strong>Rusposisie:</strong> die ongesteurde posisie van die medium</li>
+    </ul>
+
+    <h2>Longitudinale Golwe</h2>
+    <p>In 'n longitudinale golf vibreer deeltjies <em>parallel</em> aan die rigting van golfbeweging. Klank is die belangrikste voorbeeld. Longitudinale golwe kan nie deur 'n vakuum beweeg nie — hulle het 'n medium nodig.</p>
+    <ul>
+      <li><strong>Kompressie:</strong> gebied waar deeltjies opeengehoop is (hoë druk)</li>
+      <li><strong>Rarefaksie:</strong> gebied waar deeltjies uitmekaar gesprei is (lae druk)</li>
+    </ul>
+    <div class="callout"><strong>Onthou:</strong> Klank kan nie deur 'n vakuum beweeg nie omdat daar geen deeltjies is om te kompresseer en te rarefieer nie.</div>
+
+    <h2>Golfeienskappe en Vergelykings</h2>
+    <table class="symbols-table">
+      <tr><th>Grootheid</th><th>Simbool</th><th>Eenheid</th><th>Definisie</th></tr>
+      <tr><td>Amplitude</td><td>A</td><td>m</td><td>Maks. verplasing vanaf rus</td></tr>
+      <tr><td>Golflengte</td><td>λ (lambda)</td><td>m</td><td>Lengte van een volledige golf</td></tr>
+      <tr><td>Frekwensie</td><td>f</td><td>Hz (hertz)</td><td>Aantal volledige golwe per sekonde</td></tr>
+      <tr><td>Periode</td><td>T</td><td>s</td><td>Tyd vir een volledige golf</td></tr>
+      <tr><td>Golfspoed</td><td>v</td><td>m/s</td><td>Afstand afgelê per sekonde</td></tr>
+    </table>
+    <div class="formula">T = 1/f &nbsp;&nbsp;&nbsp; v = f × λ</div>
+    <div class="key-fact">Voorbeeld: f = 200 Hz, λ = 1.7 m → v = 200 × 1.7 = 340 m/s</div>
+
+    <h2>Klankgolwe</h2>
+    <p>Klank is 'n longitudinale drukgolf wat 'n medium vereis. Sy spoed hang af van die eienskappe van die medium:</p>
+    <ul>
+      <li>Klank beweeg vinnigste in <strong>vaste stowwe</strong>, dan vloeistowwe, dan gasse (stadigste)</li>
+      <li>Spoed in lug ≈ <strong>340 m/s</strong> by 20°C</li>
+      <li><strong>Toonhoogte</strong> word deur frekwensie bepaal (hoër f → hoër toonhoogte)</li>
+      <li><strong>Hardheid</strong> word deur amplitude bepaal (groter A → harder)</li>
+      <li><strong>Klankkwaliteit (timbre)</strong> word deur die golfvormvorm bepaal</li>
+    </ul>
+    <p><strong>Eggo:</strong> weerkaatsing van klank teen 'n harde oppervlak. Gebruik in sonar (karteer die oseaanbodem) en ultraklank (mediese beelding, tipies 1–20 MHz, bo die menslike gehoorreikwydte van 20–20 000 Hz).</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Doppler-effek</div>
+      <p>Wanneer 'n klankbron relatief tot 'n waarnemer beweeg, verskil die waargenome frekwensie van die uitgestraalde frekwensie. Na mekaar toe beweeg → hoër toonhoogte; van mekaar af beweeg → laer toonhoogte.</p>
+      <div class="formula">f<sub>o</sub> = f<sub>s</sub> × (v ± v<sub>o</sub>) / (v ∓ v<sub>s</sub>)</div>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px">v = spoed van klank; v<sub>o</sub> = spoed van waarnemer; v<sub>s</sub> = spoed van bron. Gebruik + vir nadering, − vir wegbeweging (bo/onder verwissel dienooreenkomstig).</p>
+    </div>
+
+    <h2>Lig — Elektromagnetiese Golwe</h2>
+    <p>Lig is 'n dwarse elektromagnetiese golf. Dit vereis <em>nie</em> 'n medium nie en beweeg teen <strong>c = 3 × 10⁸ m/s</strong> in 'n vakuum. Sigbare lig het golflengtes van ongeveer 400 nm (violet) tot 700 nm (rooi).</p>
+
+    <h2>Weerkaatsing van Lig</h2>
+    <p>Wanneer lig 'n oppervlak tref, kaats dit terug volgens die <strong>Wet van Weerkaatsing</strong>:</p>
+    <div class="callout"><strong>Invalshoek = Weerkaatsingshoek</strong> (albei gemeet vanaf die normaal tot die oppervlak)</div>
+    <p>'n <strong>Plat spieël</strong> vorm 'n beeld wat: virtueel, regop, lateraal omgekeerd, dieselfde grootte as die voorwerp, en dieselfde afstand agter die spieël as die voorwerp voor die spieël is.</p>
+
+    <h2>Breking van Lig</h2>
+    <p>Breking is die buiging van lig soos dit die grens tussen twee media met verskillende optiese digthede kruis. Die spoed van lig verander, wat die rigting laat verander (tensy dit die grens teen 90° tref).</p>
+    <p>Die <strong>brekingsindeks</strong> van 'n medium:</p>
+    <div class="formula">n = c / v</div>
+    <p>waar c = spoed van lig in vakuum, v = spoed in die medium. 'n Hoër n beteken stadiger lig en meer buiging.</p>
+    <p><strong>Wet van Snell</strong> verbind die hoeke by 'n grens:</p>
+    <div class="formula">n₁ sin θ₁ = n₂ sin θ₂</div>
+    <p>Lig buig <em>na</em> die normaal toe wanneer dit 'n digter medium (hoër n) binnegaan, en weg van die normaal wanneer dit 'n minder digte medium binnegaan.</p>
+
+    <h2>Totale Interne Weerkaatsing</h2>
+    <p>Wanneer lig van 'n digter na 'n minder digte medium beweeg, en die invalshoek die <strong>kritieke hoek (θ<sub>c</sub>)</strong> oorskry, word alle lig terug in die digter medium weerkaats — geen breking vind plaas nie.</p>
+    <div class="formula">n₁ sin θ<sub>c</sub> = n₂ &nbsp;&nbsp;&nbsp; (wanneer n₂ = 1 vir lug: sin θ<sub>c</sub> = 1/n₁)</div>
+    <p>Toepassings: <strong>optiese vesels</strong> (dataoordrag, endoskope), diamantsny, periskope wat prismas gebruik.</p>
+
+    <h2>Dispersie</h2>
+    <p>Wit lig is 'n mengsel van alle sigbare golflengtes. Wanneer dit deur 'n prisma gaan, breek verskillende golflengtes met verskillende hoeveelhede (violet buig die meeste, rooi die minste), wat wit lig in 'n spektrum verdeel: <strong>ROOIOGBIV</strong>.</p>
+
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Huygens se Beginsel &amp; Dun Lense</div>
+      <p><strong>Huygens se Beginsel:</strong> elke punt op 'n golffront tree op as 'n bron van sekondêre golfies; die nuwe golffront is die omhulsel van al die sekondêre golfies. Verklaar diffraksie en breking meetkundig.</p>
+      <p style="margin-top:8px"><strong>Dun-lensvergelyking:</strong></p>
+      <div class="formula">1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub> &nbsp;&nbsp;&nbsp; m = −d<sub>i</sub>/d<sub>o</sub></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:4px">f = fokusafstand; d<sub>o</sub> = voorwerpafstand; d<sub>i</sub> = beeldafstand; m = vergroting. Konvergerende lens: f > 0. Divergerende lens: f &lt; 0.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLORE TAB -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3 id="sim-title">Golf- &amp; Optika-simulator</h3>
+      <canvas id="waveCanvas" height="260"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Simulasiemodus</div>
+        <button class="mode-btn active" id="modeTransverse" onclick="setMode('transverse')">Dwarsgolf</button>
+        <button class="mode-btn" id="modeLong" onclick="setMode('longitudinal')">Klankgolf</button>
+        <button class="mode-btn" id="modeSnell" onclick="setMode('snell')">Wet van Snell</button>
+      </div>
+      <div class="ctrl-card" id="sliderCard">
+        <div class="ctrl-label">Beheertoestelle</div>
+        <div id="transSliders">
+          <div class="slider-row">
+            <label>Frekwensie</label>
+            <input type="range" id="freqSlider" min="1" max="5" value="2" step="0.1" oninput="updateSim()">
+            <span class="slider-val" id="freqVal">2.0 Hz</span>
+          </div>
+          <div class="slider-row">
+            <label>Amplitude</label>
+            <input type="range" id="ampSlider" min="10" max="60" value="35" oninput="updateSim()">
+            <span class="slider-val" id="ampVal">35 px</span>
+          </div>
+        </div>
+        <div id="snellSliders" style="display:none">
+          <div class="slider-row">
+            <label>θ₁ (inval)</label>
+            <input type="range" id="theta1Slider" min="5" max="75" value="30" oninput="updateSim()">
+            <span class="slider-val" id="theta1Val">30°</span>
+          </div>
+          <div class="slider-row">
+            <label>n₂ / n₁</label>
+            <input type="range" id="n2Slider" min="10" max="25" value="15" oninput="updateSim()">
+            <span class="slider-val" id="n2Val">1.5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="readout-grid" id="readoutGrid">
+      <div class="readout"><div class="readout-label">Golflengte λ</div><div class="readout-val" id="ro-lambda">— <span>m</span></div></div>
+      <div class="readout"><div class="readout-label">Golfspoed v</div><div class="readout-val" id="ro-speed">— <span>m/s</span></div></div>
+      <div class="readout"><div class="readout-label">Periode T</div><div class="readout-val" id="ro-period">— <span>s</span></div></div>
+      <div class="readout"><div class="readout-label">Frekwensie f</div><div class="readout-val" id="ro-freq">— <span>Hz</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE TAB -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreNum">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">NSC-oefening voltooi! Gaan jou antwoorde hieronder na.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 1 — Golfvergelyking</div>
+      <div class="q-text">'n Golf het 'n frekwensie van 5 Hz en 'n golflengte van 2 m. Wat is sy spoed?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">A</span>2.5 m/s</button>
+        <button class="mc-opt" onclick="answer(this,true,'q1')"><span class="opt-letter">B</span>10 m/s</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">C</span>7 m/s</button>
+        <button class="mc-opt" onclick="answer(this,false,'q1')"><span class="opt-letter">D</span>0.4 m/s</button>
+      </div>
+      <div class="feedback ok" id="fb-q1-ok">Reg! v = f × λ = 5 × 2 = 10 m/s.</div>
+      <div class="feedback bad" id="fb-q1-bad">Nie heeltemal reg nie. Gebruik v = f × λ: 5 Hz × 2 m = 10 m/s.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 2 — Golftipes</div>
+      <div class="q-text">Watter een van die volgende is 'n longitudinale golf?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">A</span>Lig van die Son</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">B</span>'n Golf op 'n kitaarsnaar</button>
+        <button class="mc-opt" onclick="answer(this,true,'q2')"><span class="opt-letter">C</span>Klank wat deur lug beweeg</button>
+        <button class="mc-opt" onclick="answer(this,false,'q2')"><span class="opt-letter">D</span>'n Watergolfie op 'n dam se oppervlak</button>
+      </div>
+      <div class="feedback ok" id="fb-q2-ok">Reg! Klank is 'n longitudinale golf — deeltjies vibreer parallel aan die rigting van voortplanting.</div>
+      <div class="feedback bad" id="fb-q2-bad">Nie heeltemal reg nie. Lig, kitaarsnare en watergolfies is dwarsgolwe. Klank is longitudinaal.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 3 — Klankeienskappe</div>
+      <div class="q-text">'n Klankgolf het 'n periode van 0.004 s. Wat is sy frekwensie en watter eienskap van klank word deur 'n hoër frekwensie beïnvloed?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">A</span>f = 400 Hz; beïnvloed hardheid</button>
+        <button class="mc-opt" onclick="answer(this,true,'q3')"><span class="opt-letter">B</span>f = 250 Hz; beïnvloed toonhoogte</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">C</span>f = 250 Hz; beïnvloed hardheid</button>
+        <button class="mc-opt" onclick="answer(this,false,'q3')"><span class="opt-letter">D</span>f = 400 Hz; beïnvloed toonhoogte</button>
+      </div>
+      <div class="feedback ok" id="fb-q3-ok">Reg! f = 1/T = 1/0.004 = 250 Hz. Hoër frekwensie → hoër toonhoogte.</div>
+      <div class="feedback bad" id="fb-q3-bad">f = 1/T = 1/0.004 = 250 Hz. Frekwensie bepaal toonhoogte; amplitude bepaal hardheid.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 4 — Weerkaatsing</div>
+      <div class="q-text">'n Ligstraal tref 'n plat spieël teen 'n hoek van 35° tot die spieëloppervlak. Wat is die weerkaatsingshoek (gemeet vanaf die normaal)?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">A</span>35°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">B</span>70°</button>
+        <button class="mc-opt" onclick="answer(this,true,'q4')"><span class="opt-letter">C</span>55°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q4')"><span class="opt-letter">D</span>45°</button>
+      </div>
+      <div class="feedback ok" id="fb-q4-ok">Reg! Hoek vanaf die oppervlak = 35°, dus hoek vanaf die normaal = 90° − 35° = 55°. Volgens die wet van weerkaatsing is die weerkaatsingshoek = 55°.</div>
+      <div class="feedback bad" id="fb-q4-bad">Hoeke word vanaf die normaal gemeet. As die straal 35° vanaf die spieëloppervlak is, is dit 55° vanaf die normaal. Die weerkaatsingshoek is gelyk aan die invalshoek = 55°.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 5 — Wet van Snell</div>
+      <div class="q-text">Lig beweeg vanaf water (n = 1.33) in lug (n = 1.00) in teen 'n invalshoek van 30°. Wat is die brekingshoek?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">A</span>22°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">B</span>30°</button>
+        <button class="mc-opt" onclick="answer(this,true,'q5')"><span class="opt-letter">C</span>41.7°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q5')"><span class="opt-letter">D</span>48.5°</button>
+      </div>
+      <div class="feedback ok" id="fb-q5-ok">Reg! n₁sinθ₁ = n₂sinθ₂ → 1.33 × sin30° = 1.00 × sinθ₂ → sinθ₂ = 0.665 → θ₂ ≈ 41.7°. Lig buig weg van die normaal wanneer dit 'n minder digte medium binnegaan.</div>
+      <div class="feedback bad" id="fb-q5-bad">Pas die Wet van Snell toe: 1.33 × sin30° = 1.00 × sinθ₂ → sinθ₂ = 1.33 × 0.5 = 0.665 → θ₂ = sin⁻¹(0.665) ≈ 41.7°.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 6 — Totale Interne Weerkaatsing</div>
+      <div class="q-text">Glas het 'n brekingsindeks van 1.5. Wat is die kritieke hoek vir 'n glas-lug-grens?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">A</span>48.6°</button>
+        <button class="mc-opt" onclick="answer(this,true,'q6')"><span class="opt-letter">B</span>41.8°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">C</span>33.6°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q6')"><span class="opt-letter">D</span>56.4°</button>
+      </div>
+      <div class="feedback ok" id="fb-q6-ok">Reg! sinθ<sub>c</sub> = n₂/n₁ = 1/1.5 = 0.667 → θ<sub>c</sub> = sin⁻¹(0.667) ≈ 41.8°.</div>
+      <div class="feedback bad" id="fb-q6-bad">Gebruik sinθ<sub>c</sub> = 1/n = 1/1.5 = 0.667 → θ<sub>c</sub> = sin⁻¹(0.667) ≈ 41.8°.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 7 — Eggopeiling (Analise)</div>
+      <div class="q-text">'n Skip se sonar stuur 'n klankpuls reguit af na die seebodem toe. Die puls keer 4 sekondes nadat dit gestuur is na die skip se sensor terug. Klank beweeg teen 1500 m/s in seewater. Bereken die diepte van die seebodem onder die skip.</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">A</span>6000 m</button>
+        <button class="mc-opt" onclick="answer(this,true,'q7')"><span class="opt-letter">B</span>3000 m</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">C</span>1500 m</button>
+        <button class="mc-opt" onclick="answer(this,false,'q7')"><span class="opt-letter">D</span>375 m</button>
+      </div>
+      <div class="feedback ok" id="fb-q7-ok">Reg! Die sleutelinsig is dat die 4 sekondes die HEEN-EN-TERUGRIT dek — af na die seebodem EN terug op na die skip. Totale afstand afgelê deur die puls = spoed × tyd = 1500 × 4 = 6000 m. Aangesien dit heen-en-terug is, is die diepte slegs die helfte daarvan: 6000 ÷ 2 = 3000 m.</div>
+      <div class="feedback bad" id="fb-q7-bad">Moenie vergeet dat die puls 'n HEEN-EN-TERUGRIT maak nie: af na die seebodem en weer terug op. Totale afstand = spoed × tyd = 1500 × 4 = 6000 m. Dit is twee keer die diepte, dus diepte = 6000 ÷ 2 = 3000 m.</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 8 — Kritieke Hoek Tussen Twee Nie-lug-media (Analise)</div>
+      <div class="q-text">Lig beweeg vanaf glas (n = 1.50) in water (n = 1.33) in — let op dat geeneen van die media lug is nie. Bereken die kritieke hoek vir hierdie glas-water-grens.</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">A</span>41.8° (deur n = 1/1.5 te gebruik, en die water te ignoreer)</button>
+        <button class="mc-opt" onclick="answer(this,true,'q8')"><span class="opt-letter">B</span>62.5°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">C</span>27.5°</button>
+        <button class="mc-opt" onclick="answer(this,false,'q8')"><span class="opt-letter">D</span>Geen kritieke hoek bestaan nie, aangesien geeneen van die media lug is nie</button>
+      </div>
+      <div class="feedback ok" id="fb-q8-ok">Reg! Die kritieke-hoek-formule n₁sinθ<sub>c</sub> = n₂ (lig wat van die digter medium, n₁ = 1.50, na die minder digte medium, n₂ = 1.33, beweeg) gee sinθ<sub>c</sub> = n₂/n₁ = 1.33/1.50 = 0.887 → θ<sub>c</sub> = sin⁻¹(0.887) ≈ 62.5°. Die kritieke-hoek-formule werk vir ENIGE twee media waar lig van 'n digter (n₁) na 'n minder digte (n₂) medium beweeg — dit vereis nie dat een daarvan lug moet wees nie; 41.8° sou die (verkeerde) antwoord wees as jy verkeerdelik aangeneem het dat die tweede medium lug is.</div>
+      <div class="feedback bad" id="fb-q8-bad">Die kritieke-hoek-voorwaarde is n₁sinθ<sub>c</sub> = n₂, waar n₁ die digter medium is waarin die lig begin (glas, 1.50) en n₂ die minder digte medium is (water, 1.33) — lug hoef glad nie betrokke te wees nie. sinθ<sub>c</sub> = 1.33/1.50 = 0.887 → θ<sub>c</sub> ≈ 62.5°.</div>
+    </div>
+
+    <!-- IEB Practice -->
+    <div class="ieb-practice" id="ieb-practice-section">
+      <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin:20px 0 12px">IEB-uitbreidingsoefening <span class="ieb-badge">SLEGS IEB</span></div>
+
+      <div class="q-card">
+        <div class="q-num">IEB-vraag 1 — Doppler-effek</div>
+        <div class="q-text">'n Ambulans blaas 'n sirene teen 800 Hz en beweeg teen 30 m/s na 'n stilstaande waarnemer toe. Die spoed van klank is 340 m/s. Watter frekwensie hoor die waarnemer?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">A</span>730 Hz</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq1')"><span class="opt-letter">B</span>873 Hz</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">C</span>856 Hz</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq1')"><span class="opt-letter">D</span>800 Hz</button>
+        </div>
+        <div class="feedback ok" id="fb-iq1-ok">Reg! f<sub>o</sub> = f<sub>s</sub> × v/(v − v<sub>s</sub>) = 800 × 340/(340 − 30) = 800 × 340/310 ≈ 873 Hz. Bron nader → frekwensie neem toe.</div>
+        <div class="feedback bad" id="fb-iq1-bad">f<sub>o</sub> = f<sub>s</sub> × v/(v − v<sub>s</sub>) = 800 × 340/310 ≈ 873 Hz. Die waarnemer is stilstaande (v<sub>o</sub> = 0); die bron beweeg na die waarnemer toe, dus die noemer neem af, wat die frekwensie verhoog.</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB-vraag 2 — Kritieke Hoek &amp; Optiese Vesels</div>
+        <div class="q-text">'n Optiese-veselkern het n = 1.62. Wat is die kritieke hoek, en waarom moet lig die kern-omhulsel-grens teen 'n hoek groter as hierdie waarde tref sodat die vesel kan werk?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">A</span>θ<sub>c</sub> = 51.8°; lig moet deur die omhulsel beweeg</button>
+          <button class="mc-opt" onclick="answer(this,true,'iq2')"><span class="opt-letter">B</span>θ<sub>c</sub> ≈ 38.1°; totale interne weerkaatsing hou lig binne die kern</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">C</span>θ<sub>c</sub> ≈ 38.1°; breking rig lig deur die omhulsel</button>
+          <button class="mc-opt" onclick="answer(this,false,'iq2')"><span class="opt-letter">D</span>θ<sub>c</sub> = 62°; breking by die grens word gemaksimeer</button>
+        </div>
+        <div class="feedback ok" id="fb-iq2-ok">Reg! sinθ<sub>c</sub> = 1/1.62 = 0.617 → θ<sub>c</sub> ≈ 38.1°. Wanneer lig die grens teen hoeke groter as θ<sub>c</sub> tref, vind totale interne weerkaatsing plaas, wat alle lig binne die veselkern hou vir verliesvrye oordrag.</div>
+        <div class="feedback bad" id="fb-iq2-bad">sinθ<sub>c</sub> = 1/n = 1/1.62 ≈ 0.617 → θ<sub>c</sub> ≈ 38.1°. Vir totale interne weerkaatsing (nodig in optiese vesels) moet die invalshoek θ<sub>c</sub> oorskry sodat geen lig in die omhulsel ontsnap nie.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKBOOK TAB -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨 Druk Werkboek</button>
+    <div class="wb-intro">Voltooi hierdie vrae in jou skryfboek. Wys alle berekeninge vir berekeningsvrae. Teken netjiese, gemerkte diagramme waar versoek.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1 — Golfvergelykingberekening</div>
+      <div class="wb-qtext">'n Radiostasie saai uit teen 'n frekwensie van 94.5 MHz. Die spoed van elektromagnetiese golwe is 3 × 10⁸ m/s. Bereken die golflengte van die radiogolwe. Wys alle berekeninge, insluitend die formule gebruik, vervanging, en eenhede in jou antwoord.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2 — Wet van Snell-berekening</div>
+      <div class="wb-qtext">'n Ligstraal beweeg vanaf lug (n₁ = 1.00) in 'n glasblok (n₂ = 1.52) in teen 'n invalshoek van 45°.<br>(a) Bereken die brekingshoek binne die glas.<br>(b) Verklaar of die gebreekte straal na die normaal toe of weg daarvan buig, en verduidelik waarom.<br>(c) Bereken die spoed van lig binne die glasblok.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3 — Weerkaatsingdiagram</div>
+      <div class="wb-qtext">Teken 'n netjiese, gemerkte diagram wat 'n ligstraal toon wat 'n plat spieël teen 'n hoek van 40° tot die normaal tref. Sluit in: die invalstraal, die normaal, die weerkaatste straal, die invalshoek, en die weerkaatsingshoek. Gee die wet van weerkaatsing en verduidelik hoe dit op jou diagram van toepassing is.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4 — Totale Interne Weerkaatsing</div>
+      <div class="wb-qtext">Diamant het 'n brekingsindeks van 2.42.<br>(a) Bereken die kritieke hoek vir diamant in lug.<br>(b) Verduidelik wat totale interne weerkaatsing is en die twee voorwaardes wat daarvoor vereis word.<br>(c) Verduidelik waarom diamante met baie fasette (plat oppervlakke teen spesifieke hoeke) gesny word.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5 — Klankeienskappe</div>
+      <div class="wb-qtext">'n Stemvurk produseer 'n klankgolf met 'n frekwensie van 440 Hz (musieknoot A). Die spoed van klank in lug is 340 m/s.<br>(a) Bereken die golflengte van hierdie klankgolf.<br>(b) Bereken die periode van hierdie golf.<br>(c) As die amplitude van die golf verhoog word, watter eienskap van die klank verander? Verduidelik.<br>(d) Verduidelik waarom hierdie klank nie in die buitenste ruim gehoor kan word nie.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Curriculum toggle
+  function setCurriculum(mode){
+    document.getElementById('btn-nsc').classList.toggle('active',mode==='nsc');
+    document.getElementById('btn-ieb').classList.toggle('active',mode==='ieb');
+    document.getElementById('curr-label').textContent=mode==='nsc'?'Nasionale Senior Sertifikaat':'Onafhanklike Eksamensraad';
+    document.body.classList.toggle('ieb-mode',mode==='ieb');
+  }
+
+  // Tab switching
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    if(btn) btn.classList.add('active');
+    if(id==='explore') initSim();
+  }
+
+  // Practice scoring
+  const answered = {};
+  let score = 0;
+  function answer(btn, correct, qid){
+    if(answered[qid]) return;
+    answered[qid] = true;
+    const opts = btn.closest('.mc-options').querySelectorAll('.mc-opt');
+    opts.forEach(o => o.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+    const fb = document.getElementById('fb-'+qid+'-'+(correct?'ok':'bad'));
+    if(fb){ fb.classList.add('show'); }
+    if(correct && !qid.startsWith('i')) {
+      score++;
+      const nsc = Object.keys(answered).filter(k=>!k.startsWith('i')).length;
+      if(nsc===6){ const b=document.getElementById('scoreBanner'); b.classList.add('show'); document.getElementById('scoreNum').textContent=score+'/6'; }
+    }
+  }
+
+  // ---- SIMULATION ----
+  const canvas = document.getElementById('waveCanvas');
+  const ctx = canvas.getContext('2d');
+  let simMode = 'transverse';
+  let animFrame = null;
+  let t = 0;
+
+  function setMode(mode){
+    simMode = mode;
+    ['modeTransverse','modeLong','modeSnell'].forEach(id=>document.getElementById(id).classList.remove('active'));
+    const map = {transverse:'modeTransverse',longitudinal:'modeLong',snell:'modeSnell'};
+    document.getElementById(map[mode]).classList.add('active');
+    document.getElementById('transSliders').style.display = (mode==='snell') ? 'none' : 'block';
+    document.getElementById('snellSliders').style.display = (mode==='snell') ? 'block' : 'none';
+    t=0;
+    updateSim();
+    animate();
+  }
+
+  function updateSim(){
+    const f = parseFloat(document.getElementById('freqSlider').value);
+    const A = parseFloat(document.getElementById('ampSlider').value);
+    document.getElementById('freqVal').textContent = f.toFixed(1)+' Hz';
+    document.getElementById('ampVal').textContent = A.toFixed(0)+' px';
+    const theta1 = parseFloat(document.getElementById('theta1Slider').value);
+    const n2raw = parseFloat(document.getElementById('n2Slider').value)/10;
+    document.getElementById('theta1Val').textContent = theta1+'°';
+    document.getElementById('n2Val').textContent = n2raw.toFixed(1);
+
+    if(simMode!=='snell'){
+      const v = 340; // m/s representative
+      const lambda = v/f;
+      document.getElementById('ro-lambda').innerHTML = lambda.toFixed(2)+'<span>m</span>';
+      document.getElementById('ro-speed').innerHTML = v+'<span>m/s</span>';
+      document.getElementById('ro-period').innerHTML = (1/f).toFixed(3)+'<span>s</span>';
+      document.getElementById('ro-freq').innerHTML = f.toFixed(1)+'<span>Hz</span>';
+    } else {
+      const t1r = theta1*Math.PI/180;
+      const n1=1.0;
+      const sinT2 = n1*Math.sin(t1r)/n2raw;
+      const t2 = sinT2<=1 ? Math.asin(sinT2)*180/Math.PI : null;
+      document.getElementById('ro-lambda').innerHTML = 'n₁ = 1.00';
+      document.getElementById('ro-speed').innerHTML = 'n₂ = '+n2raw.toFixed(2);
+      document.getElementById('ro-period').innerHTML = 'θ₁ = '+theta1+'°';
+      document.getElementById('ro-freq').innerHTML = t2!==null ? 'θ₂ = '+t2.toFixed(1)+'°' : 'TIW';
+    }
+  }
+
+  function resizeCanvas(){
+    const dpr = window.devicePixelRatio||1;
+    const w = canvas.parentElement.clientWidth - 32;
+    canvas.style.width = w+'px';
+    canvas.style.height = '260px';
+    canvas.width = w*dpr;
+    canvas.height = 260*dpr;
+    ctx.scale(dpr,dpr);
+  }
+
+  function drawTransverse(){
+    const w = canvas.clientWidth, h = 260;
+    ctx.clearRect(0,0,w,h);
+    const f = parseFloat(document.getElementById('freqSlider').value);
+    const A = parseFloat(document.getElementById('ampSlider').value);
+    const lambda = w/3;
+    // Rest line
+    ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+    // Wave
+    ctx.strokeStyle='#60a5fa';ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let x=0;x<=w;x++){
+      const y = h/2 - A*Math.sin(2*Math.PI*(x/lambda - f*t*0.05));
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // λ label
+    const xA=30, xB=30+lambda;
+    ctx.strokeStyle='rgba(147,197,253,0.5)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(xA,h/2-A-18);ctx.lineTo(xA,h/2+A+18);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(xB,h/2-A-18);ctx.lineTo(xB,h/2+A+18);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle='#93c5fd';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(xA,h/2-A-12);ctx.lineTo(xB,h/2-A-12);ctx.stroke();
+    ctx.fillStyle='#93c5fd';ctx.font='bold 12px monospace';ctx.textAlign='center';
+    ctx.fillText('λ',(xA+xB)/2,h/2-A-18);
+    // Amplitude arrow
+    const xM=w*0.7;
+    const yWave = h/2 - A*Math.sin(2*Math.PI*(xM/lambda - f*t*0.05));
+    ctx.strokeStyle='#86efac';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(xM,h/2);ctx.lineTo(xM,yWave);ctx.stroke();
+    ctx.fillStyle='#86efac';ctx.font='bold 11px monospace';ctx.textAlign='left';
+    ctx.fillText('A',xM+5,(h/2+yWave)/2);
+    // Labels
+    ctx.fillStyle='rgba(147,197,253,0.6)';ctx.font='11px monospace';ctx.textAlign='left';
+    ctx.fillText('Kruin',5,h/2-A-4);
+    ctx.fillText('Trog',5,h/2+A+14);
+  }
+
+  function drawLongitudinal(){
+    const w = canvas.clientWidth, h = 260;
+    ctx.clearRect(0,0,w,h);
+    const f = parseFloat(document.getElementById('freqSlider').value);
+    const A = parseFloat(document.getElementById('ampSlider').value);
+    const N = 60;
+    const spacing = w/N;
+    // Draw dots
+    for(let i=0;i<N;i++){
+      const baseX = (i+0.5)*spacing;
+      const disp = A*0.3*Math.sin(2*Math.PI*(baseX/w*2 - f*t*0.05));
+      const x = baseX + disp;
+      const density = 1-disp/(A*0.3+1)*0.5;
+      const alpha = Math.min(1,Math.max(0.2,density));
+      ctx.fillStyle=`rgba(96,165,250,${alpha})`;
+      ctx.beginPath();ctx.arc(x,h/2,4,0,Math.PI*2);ctx.fill();
+    }
+    // Labels
+    ctx.fillStyle='rgba(147,197,253,0.7)';ctx.font='bold 11px monospace';ctx.textAlign='center';
+    ctx.fillText('◄ kompressie',w*0.22,h/2-30);
+    ctx.fillText('rarefaksie ►',w*0.72,h/2+42);
+    ctx.fillStyle='rgba(210,218,245,0.4)';ctx.font='11px sans-serif';
+    ctx.fillText('Longitudinale / klankgolf — deeltjies oscilleer langs die rigting van beweging',w/2,h-16);
+  }
+
+  function drawSnell(){
+    const w = canvas.clientWidth, h = 260;
+    ctx.clearRect(0,0,w,h);
+    const theta1deg = parseFloat(document.getElementById('theta1Slider').value);
+    const n2 = parseFloat(document.getElementById('n2Slider').value)/10;
+    const n1=1.0;
+    const theta1 = theta1deg*Math.PI/180;
+    const sinT2 = n1*Math.sin(theta1)/n2;
+    const tir = sinT2>1;
+
+    // Media
+    ctx.fillStyle='rgba(96,165,250,0.07)';ctx.fillRect(0,0,w,h/2);
+    ctx.fillStyle='rgba(59,130,246,0.13)';ctx.fillRect(0,h/2,w,h/2);
+    ctx.fillStyle='rgba(147,197,253,0.35)';ctx.font='11px monospace';ctx.textAlign='left';
+    ctx.fillText('n₁ = 1.00 (lug)',8,20);
+    ctx.fillText('n₂ = '+n2.toFixed(2)+' (glas)',8,h/2+18);
+
+    // Boundary
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.lineWidth=1;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Normal
+    const cx=w/2;
+    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx,20);ctx.lineTo(cx,h-20);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Incident ray
+    const len=120;
+    const ix = cx - len*Math.sin(theta1);
+    const iy = h/2 - len*Math.cos(theta1);
+    ctx.strokeStyle='#fbbf24';ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(ix,iy);ctx.lineTo(cx,h/2);ctx.stroke();
+    // arrowhead
+    ctx.fillStyle='#fbbf24';
+    const dx1=cx-ix,dy1=h/2-iy,d1=Math.sqrt(dx1*dx1+dy1*dy1);
+    const ux=dx1/d1,uy=dy1/d1;
+    ctx.beginPath();ctx.moveTo(cx,h/2);ctx.lineTo(cx-ux*12+uy*5,h/2-uy*12-ux*5);ctx.lineTo(cx-ux*12-uy*5,h/2-uy*12+ux*5);ctx.closePath();ctx.fill();
+
+    // Refracted or TIR
+    if(!tir){
+      const theta2 = Math.asin(sinT2);
+      const rx = cx + len*Math.sin(theta2);
+      const ry = h/2 + len*Math.cos(theta2);
+      ctx.strokeStyle='#86efac';ctx.lineWidth=2.5;
+      ctx.beginPath();ctx.moveTo(cx,h/2);ctx.lineTo(rx,ry);ctx.stroke();
+      // Angle arcs
+      ctx.strokeStyle='rgba(251,191,36,0.5)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(cx,h/2,40,Math.PI*1.5,Math.PI*1.5+theta1,false);ctx.stroke();
+      ctx.strokeStyle='rgba(134,239,172,0.5)';
+      ctx.beginPath();ctx.arc(cx,h/2,40,Math.PI*0.5-theta2,Math.PI*0.5,false);ctx.stroke();
+      // Labels
+      ctx.fillStyle='#fbbf24';ctx.font='bold 12px monospace';ctx.textAlign='left';
+      ctx.fillText('θ₁='+theta1deg+'°',cx+5,h/2-35);
+      ctx.fillStyle='#86efac';
+      ctx.fillText('θ₂='+(theta2*180/Math.PI).toFixed(1)+'°',cx+5,h/2+50);
+      ctx.fillStyle='rgba(134,239,172,0.6)';ctx.font='11px monospace';
+      ctx.fillText('Gebreekte straal',rx-80,ry-8);
+    } else {
+      // TIR — reflected ray
+      const rx = cx + len*Math.sin(theta1);
+      const ry = h/2 - len*Math.cos(theta1);
+      ctx.strokeStyle='#f87171';ctx.lineWidth=2.5;ctx.setLineDash([6,3]);
+      ctx.beginPath();ctx.moveTo(cx,h/2);ctx.lineTo(rx,ry);ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#f87171';ctx.font='bold 12px monospace';ctx.textAlign='center';
+      ctx.fillText('TOTALE INTERNE WEERKAATSING',w/2,h-28);
+      ctx.fillText('θ > kritieke hoek',w/2,h-12);
+    }
+    ctx.fillStyle='rgba(251,191,36,0.6)';ctx.font='11px monospace';ctx.textAlign='right';
+    ctx.fillText('Invalstraal',ix+55,iy+15);
+  }
+
+  function animate(){
+    if(animFrame) cancelAnimationFrame(animFrame);
+    function loop(){
+      t++;
+      if(simMode==='transverse') drawTransverse();
+      else if(simMode==='longitudinal') drawLongitudinal();
+      else drawSnell();
+      animFrame = requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  function initSim(){
+    resizeCanvas();
+    updateSim();
+    animate();
+  }
+
+  window.addEventListener('resize',()=>{ if(document.getElementById('tab-explore').classList.contains('active')){ resizeCanvas(); }});
+</script>
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
