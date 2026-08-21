@@ -92,7 +92,33 @@ window.WRO_PROGRAM = (function() {
       heading: ((pose.heading + degrees) % 360 + 360) % 360,
     };
   }
-  function applyStep(pose, step) {
+  // A robot with no footprint info yet (e.g. a call site that hasn't been
+  // taught to pass one) falls back to this rather than crashing.
+  const DEFAULT_FOOTPRINT = { w: 220, l: 220 };
+  // 'squareToWall' models driving into the mat's outer wall to hard-reset
+  // drift -- a common real technique this tool otherwise has no way to
+  // represent. Two things a plain 'drive' can't capture: (1) the ROBOT'S
+  // EDGE stops at the wall, not its centre -- ramming forward moves the
+  // centre only as far as (mat edge - half the robot's extent in that
+  // direction), using its *current* footprint (open/closed); (2) contact
+  // with a flat wall squares the chassis flush, so heading snaps to
+  // whichever cardinal direction (0/90/180/270) it was already closest to,
+  // correcting any accumulated drift rather than preserving it.
+  function applySquareToWall(pose, footprint) {
+    const MAT_W = window.WRO_MAT.width, MAT_H = window.WRO_MAT.height;
+    const heading = ((Math.round(pose.heading / 90) * 90) % 360 + 360) % 360;
+    const rad = heading * Math.PI / 180;
+    const fwd = { x: Math.sin(rad), y: -Math.cos(rad) };
+    const halfL = footprint.l / 2;
+    let x = pose.x, y = pose.y;
+    if (Math.abs(fwd.y) > 0.5) { // heading 0 or 180 -- driving toward the top/bottom wall
+      y = fwd.y < 0 ? halfL : MAT_H - halfL;
+    } else { // heading 90 or 270 -- driving toward the left/right wall
+      x = fwd.x < 0 ? halfL : MAT_W - halfL;
+    }
+    return { x, y, heading };
+  }
+  function applyStep(pose, step, footprint) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
       const dist = step.distanceMm;
@@ -105,17 +131,29 @@ window.WRO_PROGRAM = (function() {
     if (step.type === 'arc') {
       return applyArcStep(pose, step.radius, step.degrees);
     }
+    if (step.type === 'squareToWall') {
+      return applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+    }
     return pose;
   }
-  function poseAtIndex(steps, start, idx) {
+  // getFootprint(sizeState) -> { w, l }, so the wall-square's edge math
+  // uses the robot's real open/closed size at that point in the route
+  // instead of a fixed guess. Optional -- callers that never touch
+  // 'squareToWall' steps (or don't have a robot profile handy) can omit it.
+  function poseAtIndex(steps, start, idx, getFootprint) {
     let pose = { x: start.x, y: start.y, heading: start.heading };
-    for (let i = 0; i < idx; i++) pose = applyStep(pose, steps[i]);
+    let sizeState = 'closed';
+    for (let i = 0; i < idx; i++) {
+      const footprint = getFootprint ? getFootprint(sizeState) : DEFAULT_FOOTPRINT;
+      pose = applyStep(pose, steps[i], footprint);
+      if (steps[i].type === 'unfold') sizeState = 'open';
+    }
     return pose;
   }
   // Same as applyStep, but partway through (frac 0..1) -- used to animate
   // the robot smoothly moving/turning during Play instead of jumping
   // straight to each step's endpoint.
-  function applyStepPartial(pose, step, frac) {
+  function applyStepPartial(pose, step, frac, footprint) {
     if (step.type === 'drive' || step.type === 'lineFollow') {
       const rad = pose.heading * Math.PI / 180;
       const dist = step.distanceMm * frac;
@@ -127,6 +165,16 @@ window.WRO_PROGRAM = (function() {
     }
     if (step.type === 'arc') {
       return applyArcStep(pose, step.radius, step.degrees * frac);
+    }
+    if (step.type === 'squareToWall') {
+      const target = applySquareToWall(pose, footprint || DEFAULT_FOOTPRINT);
+      let dh = target.heading - pose.heading;
+      dh = ((dh + 540) % 360) - 180; // shortest-path heading delta, handles the 0/360 wrap
+      return {
+        x: pose.x + (target.x - pose.x) * frac,
+        y: pose.y + (target.y - pose.y) * frac,
+        heading: ((pose.heading + dh * frac) % 360 + 360) % 360,
+      };
     }
     return pose; // instantaneous actions (pickup/place/deliver/settle/motor/wait/etc): no motion, just a dwell
   }
@@ -156,6 +204,8 @@ window.WRO_PROGRAM = (function() {
       }
       case 'wait':
         return Math.max(0, step.seconds || 0);
+      case 'squareToWall':
+        return 1.2; // a deliberately slower dwell -- physically a drive-to-stall against the wall, not instantaneous
       default:
         return DEFAULT_ACTION_DWELL_S;
     }
@@ -169,11 +219,13 @@ window.WRO_PROGRAM = (function() {
     return 'closed';
   }
   const ARC_TRAIL_SAMPLES = 12;
-  function trailPoints(steps, start, uptoIdx) {
+  function trailPoints(steps, start, uptoIdx, getFootprint) {
     const pts = [{ x: start.x, y: start.y }];
     let pose = { x: start.x, y: start.y, heading: start.heading };
+    let sizeState = 'closed';
     for (let i = 0; i < uptoIdx; i++) {
       const step = steps[i];
+      const footprint = getFootprint ? getFootprint(sizeState) : DEFAULT_FOOTPRINT;
       // A straight chord between an arc's start/end would visibly cut the
       // curve's corner, so sample intermediate points along the sweep
       // instead of just pushing the endpoint (as drive/lineFollow do).
@@ -183,8 +235,9 @@ window.WRO_PROGRAM = (function() {
           pts.push({ x: p.x, y: p.y });
         }
       }
-      pose = applyStep(pose, step);
-      if (step.type === 'drive' || step.type === 'lineFollow') pts.push({ x: pose.x, y: pose.y });
+      pose = applyStep(pose, step, footprint);
+      if (step.type === 'unfold') sizeState = 'open';
+      if (step.type === 'drive' || step.type === 'lineFollow' || step.type === 'squareToWall') pts.push({ x: pose.x, y: pose.y });
     }
     return pts;
   }
@@ -218,6 +271,8 @@ window.WRO_PROGRAM = (function() {
           + (step.turnRateDegS ? ` @ ${step.turnRateDegS}°/s` : '');
       case 'arc':
         return `Arc ${step.degrees >= 0 ? 'right' : 'left'} ${Math.abs(step.degrees)}° (radius ${step.radius} mm)`;
+      case 'squareToWall':
+        return 'Drive into wall to square (snap heading to nearest cardinal, edge stops at wall)';
       case 'unfold':
         return 'Unfold to open size';
       case 'frontMotor':
@@ -378,6 +433,9 @@ window.WRO_PROGRAM = (function() {
           break;
         case 'unfold':
           L.push(`# --- ${note}: add your unfolding mechanism call here ---`);
+          break;
+        case 'squareToWall':
+          L.push(`# --- ${note}: add your wall-squaring drive call here ---`);
           break;
         case 'frontMotor': {
           const signed = step.action === 'drop' ? -Math.abs(step.degrees) : Math.abs(step.degrees);
@@ -563,15 +621,19 @@ window.WRO_PROGRAM = (function() {
         return null; // absorbed into the arc step already pushed
       }
 
-      // ---- open-loop drive_base.drive(speed, turn_rate) held for a
-      // fixed wait(ms) then stopped -- common for "back into the wall to
-      // square up" moves that don't have a real target distance. Distance
-      // is only an estimate (speed x time, no accel ramp modelled).
+      // ---- open-loop drive_base.drive(speed, turn_rate) held for a fixed
+      // wait(ms) then stopped, with no encoder/distance target -- this is
+      // how teams commonly ram the mat's outer wall to hard-reset drift
+      // ("squaring"), since driving open-loop with only a timer is
+      // otherwise a strange thing to do. Modelled as 'squareToWall' rather
+      // than a distance guess: the wall (and the robot's own edge, not its
+      // centre) gives an exact stopping point once the direction of travel
+      // is known, and ramming a flat wall genuinely does snap the chassis
+      // heading to square -- so this is trusted MORE than a plain
+      // speed x time estimate would be, not treated as a rough guess.
       if (prevOpenLoopDrive && (m = codePart.match(/^wait\((-?[\d.]+)\)/))) {
-        const ms = parseFloat(m[1]);
-        const distanceMm = Math.round(prevOpenLoopDrive.speed * ms / 1000);
-        notes.push(`Approximated: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${ms} ms -> estimated ${distanceMm} mm (real stopping point, e.g. a wall, isn't known)`);
-        return { type: 'drive', distanceMm, speedMmS: Math.abs(prevOpenLoopDrive.speed) };
+        notes.push(`Recognised as a wall-square: open-loop drive_base.drive(${prevOpenLoopDrive.speed}, 0) held for ${parseFloat(m[1])} ms -- simulated as driving to the wall in the current heading's direction and snapping heading to the nearest cardinal, not a distance estimate`);
+        return { type: 'squareToWall' };
       }
 
       if ((m = codePart.match(/^drive_base\.settings\(straight_speed=(-?[\d.]+)\)/))) { activeSpeed = parseFloat(m[1]); return null; }
@@ -697,10 +759,11 @@ window.WRO_PROGRAM = (function() {
       if (/^\w+\.(hold|brake)\(\)/.test(codePart)) return null; // e.g. left_motor.hold() -- no motion info
 
       // Comment-only action stubs: "# --- <note>: add your ... call here ---"
-      if ((m = trimmed.match(/^#\s*---\s*(.+?):\s*add your (?:unfolding mechanism|gripper\/mechanism) call here\s*---/))) {
+      if ((m = trimmed.match(/^#\s*---\s*(.+?):\s*add your (?:unfolding mechanism|gripper\/mechanism|wall-squaring drive) call here\s*---/))) {
         const note = m[1];
         let n;
         if (note === 'Unfold to open size') return { type: 'unfold' };
+        if (note.startsWith('Drive into wall to square')) return { type: 'squareToWall' };
         if ((n = note.match(new RegExp(`^Pick up (${colourAlt}) tile$`)))) return { type: 'pickupTile', colour: n[1] };
         if ((n = note.match(/^Place tile in frame slot (\d+)$/))) return { type: 'placeTile', slot: parseInt(n[1], 10) - 1 };
         if ((n = note.match(new RegExp(`^Settle (\\d+)\\u00d7 (${colourAlt}) cement$`)))) return { type: 'settleCement', count: parseInt(n[1], 10), colour: n[2] };
@@ -1035,7 +1098,7 @@ window.WRO_PROGRAM = (function() {
         step.direction = directionSel.value;
         const rate = parseFloat(stepTurnRateInput.value);
         if (!isNaN(rate) && rate > 0) step.turnRateDegS = rate;
-      } else if (t === 'unfold') {
+      } else if (t === 'unfold' || t === 'squareToWall') {
         // no parameters
       } else if (t === 'frontMotor' || t === 'backMotor') {
         step.degrees = Math.abs(parseFloat(degreesInput.value) || 0);
@@ -1371,6 +1434,11 @@ window.WRO_PROGRAM = (function() {
         document.removeEventListener('touchend', onRobotDragEndTouch);
       }
 
+      // Passed into poseAtIndex/trailPoints/applyStepPartial so a
+      // 'squareToWall' step can size itself against the robot's real
+      // open/closed footprint at that point in the route.
+      function footprintForState(sizeState) { return tools.getRobotFootprint(sizeState); }
+
       function drawRobotAt(pose, sizeState) {
         clearWalkerLayer();
         const fp = tools.getRobotFootprint(sizeState || 'closed');
@@ -1387,12 +1455,12 @@ window.WRO_PROGRAM = (function() {
         // set heading" step)
         if (state.walker.start) {
           const idx = Math.min(state.walker.stepIndex, state.steps.length);
-          const pts = trailPoints(state.steps, state.walker.start, idx);
+          const pts = trailPoints(state.steps, state.walker.start, idx, footprintForState);
           // Mid-drive during Play: extend the trail's leading edge to the
           // live interpolated position instead of only jumping once the
           // whole step finishes, so the path visibly draws itself.
           const curStep = state.steps[idx];
-          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc')) {
+          if (playFrac > 0 && curStep && (curStep.type === 'drive' || curStep.type === 'lineFollow' || curStep.type === 'arc' || curStep.type === 'squareToWall')) {
             pts.push({ x: pose.x, y: pose.y });
           }
           if (pts.length > 1) {
@@ -1431,9 +1499,10 @@ window.WRO_PROGRAM = (function() {
       // (playFrac 0) this is identical to poseAtIndex(..., stepIndex).
       function currentPose() {
         const idx = Math.min(state.walker.stepIndex, state.steps.length);
-        let pose = poseAtIndex(state.steps, state.walker.start, idx);
+        let pose = poseAtIndex(state.steps, state.walker.start, idx, footprintForState);
         if (playFrac > 0 && idx < state.steps.length) {
-          pose = applyStepPartial(pose, state.steps[idx], playFrac);
+          const sizeState = sizeStateAtIndex(state.steps, idx);
+          pose = applyStepPartial(pose, state.steps[idx], playFrac, footprintForState(sizeState));
         }
         return pose;
       }
