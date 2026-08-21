@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<script>document.documentElement.style.visibility='hidden';</script>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315803d'/%3E%3Cline x1='24' y1='8' x2='40' y2='8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M24 8 L24 28 L10 50 Q8 56 14 56 L50 56 Q56 56 54 50 L40 28 L40 8' stroke='rgba(134%2C239%2C172%2C0.90)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M14 47 L50 47 L52 52 Q52 55 50 55 L14 55 Q12 55 12 52 Z' fill='rgba(134%2C239%2C172%2C0.18)'/%3E%3Ccircle cx='26' cy='45' r='3' fill='rgba(134%2C239%2C172%2C0.60)'/%3E%3Ccircle cx='35' cy='39' r='2' fill='rgba(134%2C239%2C172%2C0.50)'/%3E%3Ccircle cx='30' cy='51' r='2' fill='rgba(134%2C239%2C172%2C0.40)'/%3E%3C/svg%3E">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Die Periodieke Tabel · Graad 10 Chemie · Science Sage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c1a;--surface:rgba(255,255,255,0.045);--border:rgba(255,255,255,0.08);--text:#e4e8f8;--muted:rgba(210,218,245,0.45);--fd:"Cabinet Grotesk",sans-serif;--fm:"JetBrains Mono",monospace}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;background-image:radial-gradient(ellipse 60% 45% at 0% 0%,rgba(192,132,252,0.10) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 100%,rgba(96,165,250,0.07) 0%,transparent 55%)}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.35}
+body>*{position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-0.03em;background:linear-gradient(120deg,#fff 0%,#86efac 50%,#a3e635 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-back{font-size:12px;font-weight:600;padding:6px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 150ms}
+.nav-back:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.nav-strand{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.22);color:#e9d5ff}
+.lesson-header{padding:28px 40px 8px}
+.lesson-tag{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#c084fc;margin-bottom:10px}
+.lesson-title{font-weight:900;font-size:clamp(28px,4vw,44px);letter-spacing:-0.04em;color:#fff;line-height:1.05;margin-bottom:10px}
+.lesson-sub{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7}
+.curr-toggle{display:flex;align-items:center;gap:12px;padding:12px 40px 20px}
+.curr-wrap{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:3px}
+.curr-btn{font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:7px;border:none;background:none;color:var(--muted);cursor:pointer;transition:all 150ms}
+.curr-btn.active{background:rgba(192,132,252,.15);color:#e9d5ff;border:1px solid rgba(192,132,252,.28)}
+.curr-label{font-size:11px;color:var(--muted)}
+.ieb-block{display:none;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.18);border-radius:12px;padding:14px 18px;margin:16px 0}
+.ieb-block-title{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#fcd34d;margin-bottom:8px}
+body.ieb-mode .ieb-block{display:block}
+body.ieb-mode .ieb-practice{display:flex}
+.tabs{display:flex;gap:4px;padding:0 40px;border-bottom:1px solid var(--border)}
+.tab-btn{font-family:var(--fd);font-size:13px;font-weight:700;padding:12px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 150ms;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:#c084fc;border-bottom-color:#c084fc}
+.tab-panel{display:none;padding:32px 40px 48px}
+.tab-panel.active{display:block}
+.lesson-body{max-width:720px}
+.lesson-body h2{font-weight:800;font-size:20px;letter-spacing:-0.02em;color:#fff;margin:28px 0 12px}
+.lesson-body h2:first-child{margin-top:0}
+.lesson-body p{font-size:14.5px;line-height:1.8;color:rgba(210,218,245,.75);margin-bottom:14px}
+.lesson-body ul{margin:0 0 14px 20px;color:rgba(210,218,245,.70);font-size:14px;line-height:1.85}
+.callout{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:12px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:rgba(210,218,245,.80);line-height:1.7}
+.callout strong{color:#e9d5ff}
+.formula{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:14px 20px;margin:14px 0;font-family:var(--fm);font-size:14px;color:#c084fc;text-align:center;line-height:2}
+.symbols-table{width:100%;border-collapse:collapse;margin:14px 0}
+.symbols-table th{font-family:var(--fm);font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.symbols-table td{padding:10px 12px;font-size:13.5px;color:rgba(210,218,245,.78);border-bottom:1px solid rgba(255,255,255,.04)}
+.symbols-table tr:last-child td{border-bottom:none}
+.key-fact{background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.18);border-radius:10px;padding:10px 16px;margin:10px 0;font-size:13px;color:#c084fc;font-family:var(--fm)}
+.sim-outer{display:flex;flex-direction:column;gap:20px;max-width:900px}
+.sim-canvas-wrap{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:20px;padding:16px}
+.sim-canvas-wrap h3{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px;font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
+canvas{display:block;border-radius:10px;background:#040710;width:100%}
+.sim-controls-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctrl-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px}
+.ctrl-label{font-family:var(--fm);font-size:9px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.mode-btn{font-size:12px;font-weight:700;padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:all 150ms;margin:3px}
+.mode-btn.active,.mode-btn:hover{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.30);color:#e9d5ff}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.slider-row label{font-size:12px;font-weight:600;color:var(--text);min-width:90px}
+input[type=range]{flex:1;accent-color:#c084fc;cursor:pointer}
+.slider-val{font-family:var(--fm);font-size:11px;color:#c084fc;min-width:60px;text-align:right}
+.readout-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.readout{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 12px}
+.readout-label{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.readout-val{font-weight:800;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.readout-val span{font-size:10px;font-weight:500;color:var(--muted);margin-left:2px}
+.practice-wrap{max-width:640px}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.q-num{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:8px}
+.q-text{font-size:14.5px;line-height:1.75;color:rgba(210,218,245,.88);margin-bottom:16px}
+.mc-options{display:flex;flex-direction:column;gap:8px}
+.mc-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:13.5px;color:rgba(210,218,245,.75);transition:all 140ms;text-align:left;width:100%}
+.mc-opt:hover:not(:disabled){background:rgba(192,132,252,.10);border-color:rgba(192,132,252,.28);color:var(--text)}
+.mc-opt.correct{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}
+.mc-opt.wrong{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.30);color:#fca5a5}
+.mc-opt:disabled{cursor:default}
+.opt-letter{font-family:var(--fm);font-size:10px;font-weight:700;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+.feedback{margin-top:12px;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#86efac}
+.feedback.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);color:#fca5a5}
+.score-banner{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.22);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:none}
+.score-banner.show{display:flex;align-items:center;gap:16px}
+.score-big{font-weight:900;font-size:40px;letter-spacing:-0.04em;color:#c084fc}
+.ieb-badge{font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.30);color:#fcd34d;margin-left:8px}
+.ieb-practice{display:none;flex-direction:column}
+.wb-wrap{max-width:680px}
+.wb-intro{font-size:13px;color:var(--muted);margin-bottom:24px;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+.wb-q{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+.wb-qnum{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:#c084fc;margin-bottom:6px}
+.wb-qtext{font-size:13.5px;color:rgba(210,218,245,.82);line-height:1.8}
+.print-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:rgba(192,132,252,.10);border:1px solid rgba(192,132,252,.25);color:#e9d5ff;font-weight:700;font-size:13px;cursor:pointer;transition:all 150ms;margin-bottom:20px}
+.print-btn:hover{background:rgba(192,132,252,.18)}
+@media print{nav,.tabs,.print-btn,.sim-canvas-wrap,.curr-toggle{display:none!important}.tab-panel{display:block!important}}
+
+    @media(min-width:1100px){
+      .lesson-body{max-width:860px;margin:0 auto}
+      .practice-wrap{max-width:780px;margin:0 auto}
+      .wb-wrap{max-width:820px;margin:0 auto}
+      .explore-layout,.explore-wrap,.explore-top,.explore-cols{max-width:1280px;margin-inline:auto}
+    }
+    @media(max-width:640px){
+      nav{padding:12px 16px}
+      .lesson-header{padding:20px 16px 16px}
+      .tabs{padding:0 8px;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;scrollbar-width:none}
+      .tabs::-webkit-scrollbar{display:none}
+      .tab-btn{padding:10px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+      .tab-panel{padding:20px 16px 36px}
+      .sim-layout{grid-template-columns:1fr}
+      .lesson-body,.practice-wrap,.wb-wrap{max-width:100%}
+      .lesson-title{font-size:clamp(22px,7vw,36px)}
+    }
+  </style>
+<script defer src="../../../auth.js"></script>
+<script defer src="../../../require-auth.js"></script>
+<script src="../../../lang-toggle.js"></script>
+<script defer src="../../../progress.js"></script>
+<script defer src="../../../lesson-progress-observer.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../../index.html">Science Sage</a>
+  <span class="nav-strand">Chemie</span>
+  <span id="mlLangToggle"></span>
+  <a class="nav-back" href="../../index.html">← Tuis</a>
+</nav>
+
+<!-- LESSON HEADER -->
+<div class="lesson-header">
+  <div class="lesson-tag">Graad 10 · Chemie · Les 3</div>
+  <div class="lesson-title">Die Periodieke Tabel</div>
+  <div class="lesson-sub">Verken hoe elemente in die periodieke tabel gerangskik is, verstaan groep- en periode-neigings, en voorspel elementeienskappe deur periodisiteit te gebruik.</div>
+</div>
+
+<!-- CURRICULUM TOGGLE -->
+<div class="curr-toggle">
+  <div class="curr-wrap">
+    <button class="curr-btn active" id="btn-nsc" onclick="setCurriculum('nsc')">NSC</button>
+    <button class="curr-btn" id="btn-ieb" onclick="setCurriculum('ieb')">IEB</button>
+  </div>
+  <span class="curr-label" id="curr-label">Nasionale Senior Sertifikaat</span>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('lesson',this)">📖 Les</button>
+  <button class="tab-btn" onclick="switchTab('explore',this)">🔬 Verken</button>
+  <button class="tab-btn" onclick="switchTab('practice',this)">✏️ Oefening</button>
+  <button class="tab-btn" onclick="switchTab('workbook',this)">📝 Werkboek</button>
+</div>
+
+<!-- ===================== LESSON TAB ===================== -->
+<div class="tab-panel active" id="tab-lesson">
+  <div class="lesson-body">
+
+    <h2>'n Kort Geskiedenis van die Periodieke Tabel</h2>
+    <p>In 1869 het Dmitri Mendeleev die 63 bekende elemente volgens toenemende atoommassa gerangskik en herhalende (periodieke) patrone in hul eienskappe opgemerk. Hy het gapings gelaat vir onontdekte elemente en hul eienskappe met merkwaardige akkuraatheid voorspel. Henry Moseley (1913) het getoon dat atoomGETAL — nie massa nie — die ware organiserende beginsel is, wat anomalieë in Mendeleev se rangskikking opgelos het.</p>
+
+    <div class="callout">Sleutelinsig: Die moderne periodieke tabel rangskik 118 elemente in volgorde van <strong>TOENEMENDE ATOOMGETAL</strong>. Die herhalende patroon van eienskappe word <strong>periodisiteit</strong> genoem.</div>
+
+    <h2>Struktuur van die Periodieke Tabel</h2>
+    <p>Die tabel is georganiseer in PERIODES (horisontale rye) en GROEPE (vertikale kolomme).</p>
+    <ul>
+      <li>Periodes: Daar is 7 periodes. Die periodenommer vertel jou hoeveel elektrondoppe (energievlakke) 'n atoom van daardie element het.</li>
+      <li>Groepe: Daar is 18 groepe. Elemente in dieselfde groep het dieselfde aantal valanselektrone, wat hulle soortgelyke chemiese eienskappe gee.</li>
+      <li>Die tabel bevat 118 bevestigde elemente.</li>
+    </ul>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Groep</th>
+          <th>Naam</th>
+          <th>Voorbeelde</th>
+          <th>Sleuteleienskap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Groep 1</td>
+          <td>Alkalimetale</td>
+          <td>Li, Na, K</td>
+          <td>Baie reaktief; vorm 1+-ione; reageer hewig met water</td>
+        </tr>
+        <tr>
+          <td>Groep 2</td>
+          <td>Aardalkalimetale</td>
+          <td>Be, Mg, Ca</td>
+          <td>Reaktief; vorm 2+-ione; minder reaktief as Groep 1</td>
+        </tr>
+        <tr>
+          <td>Groepe 3–12</td>
+          <td>Oorgangsmetale</td>
+          <td>Fe, Cu, Zn, Cr</td>
+          <td>Wisselende valensie; gekleurde verbindings; goeie geleiers</td>
+        </tr>
+        <tr>
+          <td>Groep 17</td>
+          <td>Halogene</td>
+          <td>F, Cl, Br, I</td>
+          <td>Baie reaktiewe nie-metale; vorm 1−-ione; twee-atomige molekules</td>
+        </tr>
+        <tr>
+          <td>Groep 18</td>
+          <td>Edelgasse</td>
+          <td>He, Ne, Ar</td>
+          <td>Onreaktief; vol buitenste dop; bestaan as enkelatome</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Metale, Nie-metale en Metalloïede</h2>
+    <p>'n Vetgedrukte trapvormige lyn skei metale (links/middel) van nie-metale (regs). Metalloïede (halfmetale) lê langs die trap.</p>
+
+    <table class="symbols-table">
+      <thead>
+        <tr>
+          <th>Kategorie</th>
+          <th>Ligging</th>
+          <th>Eienskappe</th>
+          <th>Voorbeelde</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Metale</td>
+          <td>Links en middel</td>
+          <td>Blink, smeebaar, trekbaar, goeie geleiers, hoë smelt-/kookpunt</td>
+          <td>Na, Fe, Cu, Al</td>
+        </tr>
+        <tr>
+          <td>Nie-metale</td>
+          <td>Bo-regs</td>
+          <td>Dof, bros (vaste stof), swak geleiers, lae smelt-/kookpunt</td>
+          <td>C, N, O, S, Cl</td>
+        </tr>
+        <tr>
+          <td>Metalloïede</td>
+          <td>Langs die trap</td>
+          <td>Intermediêre eienskappe; halfgeleiers</td>
+          <td>B, Si, As, Ge, Te</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Periodieke Neigings Oor 'n Periode (links → regs)</h2>
+
+    <div class="callout">Soos jy van <strong>LINKS na REGS</strong> oor 'n periode beweeg, neem die aantal protone toe terwyl elektrone by dieselfde <strong>DOP</strong> bygevoeg word. Dit beteken die kernlading neem toe, maar afskerming bly redelik konstant — dus neem die kern se trekkrag op elektrone toe.</div>
+
+    <div class="key-fact">Atoomradius NEEM AF → meer protone trek elektrone nader aan die kern</div>
+    <div class="key-fact">Ionisasie-energie NEEM TOE → 'n elektron is moeiliker om te verwyder van 'n kleiner atoom met hoër Z</div>
+    <div class="key-fact">Elektronegatiwiteit NEEM TOE → die atoom trek gedeelde elektrone sterker aan</div>
+    <div class="key-fact">Metaalkarakter NEEM AF → die linkerkant is metaalagtig, die regterkant nie-metaalagtig</div>
+
+    <h2>Periodieke Neigings Af 'n Groep (bo → onder)</h2>
+
+    <div class="callout">Soos jy <strong>AF 'n groep</strong> beweeg, het elke opeenvolgende element een meer elektrondop. Die buitenste elektrone is verder van die kern af en word meer deur binneste elektrone afgeskerm — dus neem die kern se trekkrag op buitenste elektrone af.</div>
+
+    <div class="key-fact">Atoomradius NEEM TOE → meer elektrondoppe</div>
+    <div class="key-fact">Ionisasie-energie NEEM AF → die buitenste elektron is verder weg en meer afgeskerm</div>
+    <div class="key-fact">Elektronegatiwiteit NEEM AF → die atoom trek bindingselektrone minder sterk aan</div>
+    <div class="key-fact">Metaalkarakter NEEM TOE → elemente word meer metaalagtig na onder toe</div>
+
+    <h2>Ioonvorming</h2>
+    <p>Die posisie van 'n element in die periodieke tabel voorspel die lading van die ioon wat dit vorm:</p>
+    <ul>
+      <li>Metale (linkerkant) VERLOOR elektrone om positiewe ione (katione) te vorm. Groep 1 → 1+-lading; Groep 2 → 2+-lading; Groep 13 (Al) → 3+-lading.</li>
+      <li>Nie-metale (regterkant) KRY elektrone by om negatiewe ione (anione) te vorm. Groep 17 → 1−-lading; Groep 16 → 2−-lading; Groep 15 → 3−-lading.</li>
+      <li>Edelgasse (Groep 18) vorm gewoonlik nie ione nie — hul buitenste dop is reeds vol.</li>
+    </ul>
+
+    <div class="formula">Na → Na⁺ + e⁻&nbsp;&nbsp;&nbsp;&nbsp; Cl + e⁻ → Cl⁻&nbsp;&nbsp;&nbsp;&nbsp; Mg → Mg²⁺ + 2e⁻&nbsp;&nbsp;&nbsp;&nbsp; O + 2e⁻ → O²⁻</div>
+
+    <h2>Elektronkonfigurasie en die Periodieke Tabel</h2>
+    <p>Die periodenommer = aantal elektrondoppe. Die groepnommer (vir hoofgroep-elemente) = aantal valanselektrone. Byvoorbeeld, natrium (Na, Z=11) is in Periode 3 → 3 doppe; Groep 1 → 1 valanselektron. Konfigurasie: 2,8,1.</p>
+
+    <div class="callout">Skakel vorentoe: Chemiese binding (Les 4) gebruik valanselektrone direk. Elektronegatiwiteitswaardes uit hierdie les bepaal bindingstipe.</div>
+
+    <!-- IEB BLOCK -->
+    <div class="ieb-block">
+      <div class="ieb-block-title">IEB-uitbreiding — Gevorderde Periodisiteit</div>
+      <p>Opeenvolgende ionisasie-energieë verskaf direkte bewys vir elektrondoppe. Vir natrium (Na) is die eerste ionisasie-energie laag (een valanselektron, maklik om te verwyder). Die tweede ionisasie-energie is dramaties hoër — die elektron word nou uit 'n volledige binneste dop verwyder. Hierdie groot sprong in IE-waardes bewys die dopstruktuur.</p>
+      <p>Oorgangsmetale het onreëlmatighede in elektronkonfigurasie. Die d-subdop is effens laer in energie as 4s, wat veroorsaak dat:</p>
+      <ul>
+        <li>Chroom (Cr, Z=24): verwag [Ar]3d⁴4s² maar in werklikheid [Ar]3d⁵4s¹ — 'n half-gevulde d-subdop is ekstra stabiel</li>
+        <li>Koper (Cu, Z=29): verwag [Ar]3d⁹4s² maar in werklikheid [Ar]3d¹⁰4s¹ — 'n volgevulde d-subdop is ekstra stabiel</li>
+      </ul>
+      <p>Effektiewe kernlading (Zeff) = Z − afskermingskonstante (σ). Soos jy oor 'n periode beweeg, neem Z met 1 toe by elke stap, maar afskerming neem met minder as 1 toe (binneste elektrone skerm meer af as buitenste elektrone), dus styg Zeff — dit verduidelik waarom atoomradius afneem en IE toeneem oor 'n periode.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== EXPLORE TAB ===================== -->
+<div class="tab-panel" id="tab-explore">
+  <div class="sim-outer">
+    <div class="sim-canvas-wrap">
+      <h3>Interaktiewe Periodieke Tabel — Periodes 1–4</h3>
+      <canvas id="ptCanvas" height="320"></canvas>
+    </div>
+    <div class="sim-controls-row">
+      <div class="ctrl-card">
+        <div class="ctrl-label">Modus</div>
+        <button class="mode-btn active" id="btnBrowse" onclick="setMode('browse',this)">Blaai deur Elemente</button>
+        <button class="mode-btn" id="btnTrends" onclick="setMode('trends',this)">Periodieke Neigings</button>
+        <div style="margin-top:12px;font-size:11px;color:var(--muted)" id="modeHint">Klik of beweeg oor enige elementblokkie om besonderhede te sien.</div>
+      </div>
+      <div class="ctrl-card" id="elemInfo">
+        <div class="ctrl-label">Elementinligting</div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:6px">
+          <div>
+            <div id="elemName" style="font-size:18px;font-weight:800;color:#fff;margin-bottom:2px">—</div>
+            <div id="elemSym" style="font-family:var(--fm);font-size:32px;color:#c084fc;line-height:1">?</div>
+          </div>
+          <div id="elemImg" style="width:130px;height:130px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto">
+            <span id="elemImgHint" style="font-size:9px;color:var(--muted);font-family:var(--fm)">klik blokkie</span>
+          </div>
+        </div>
+        <div id="elemDetail" style="font-size:12px;color:var(--muted);line-height:1.8;margin-top:8px">Beweeg oor 'n element om besonderhede te sien · klik om 'n foto te laai.</div>
+      </div>
+    </div>
+    <div class="sim-controls-row" style="margin-top:0">
+      <div class="ctrl-card" style="grid-column:1/-1">
+        <div class="ctrl-label">Legende</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:12px">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(239,68,68,0.55);display:inline-block"></span>Alkalimetale</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(251,146,60,0.55);display:inline-block"></span>Aardalkalimetale</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(251,191,36,0.55);display:inline-block"></span>Oorgangsmetale</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(163,230,53,0.55);display:inline-block"></span>Ander metale</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(20,184,166,0.55);display:inline-block"></span>Metalloïede</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(96,165,250,0.55);display:inline-block"></span>Nie-metale</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:13px;border-radius:3px;background:rgba(168,85,247,0.55);display:inline-block"></span>Edelgasse</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PRACTICE TAB ===================== -->
+<div class="tab-panel" id="tab-practice">
+  <div class="practice-wrap">
+
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreVal">0/6</div>
+      <div style="font-size:14px;color:var(--muted)">Vrae korrek beantwoord</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 1</div>
+      <div class="q-text">Wat vertel die periodenommer van 'n element jou?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q1')"><span class="opt-letter">A</span>Aantal valanselektrone</button>
+        <button class="mc-opt" onclick="answer(this,1,false,'q1')"><span class="opt-letter">B</span>Aantal protone</button>
+        <button class="mc-opt" onclick="answer(this,2,true,'q1')"><span class="opt-letter">C</span>Aantal elektrondoppe</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q1')"><span class="opt-letter">D</span>Atoommassa</button>
+      </div>
+      <div class="feedback" id="fb-q1">Die periodenommer is gelyk aan die aantal elektrondoppe. Natrium is in Periode 3, so dit het 3 elektrondoppe.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 2</div>
+      <div class="q-text">Wanneer jy van links na regs oor Periode 3 beweeg, doen die atoomradius die volgende:</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q2')"><span class="opt-letter">A</span>Neem toe</button>
+        <button class="mc-opt" onclick="answer(this,1,true,'q2')"><span class="opt-letter">B</span>Neem af</button>
+        <button class="mc-opt" onclick="answer(this,2,false,'q2')"><span class="opt-letter">C</span>Bly dieselfde</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q2')"><span class="opt-letter">D</span>Neem eers toe en dan af</button>
+      </div>
+      <div class="feedback" id="fb-q2">Oor 'n periode neem die kernlading toe, maar elektrone word by dieselfde dop bygevoeg — 'n sterker trekkrag op elektrone maak die atoom kleiner.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 3</div>
+      <div class="q-text">Watter groep bevat elemente wat die maklikste 1−-ione vorm?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q3')"><span class="opt-letter">A</span>Groep 1</button>
+        <button class="mc-opt" onclick="answer(this,1,false,'q3')"><span class="opt-letter">B</span>Groep 2</button>
+        <button class="mc-opt" onclick="answer(this,2,true,'q3')"><span class="opt-letter">C</span>Groep 17</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q3')"><span class="opt-letter">D</span>Groep 18</button>
+      </div>
+      <div class="feedback" id="fb-q3">Groep 17 (halogene) het 7 valanselektrone — hulle kry een elektron by om hul buitenste dop te voltooi, en vorm sodoende 1−-ione.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 4</div>
+      <div class="q-text">Watter een van die volgende is 'n metalloïed?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q4')"><span class="opt-letter">A</span>Natrium (Na)</button>
+        <button class="mc-opt" onclick="answer(this,1,true,'q4')"><span class="opt-letter">B</span>Silikon (Si)</button>
+        <button class="mc-opt" onclick="answer(this,2,false,'q4')"><span class="opt-letter">C</span>Swael (S)</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q4')"><span class="opt-letter">D</span>Argon (Ar)</button>
+      </div>
+      <div class="feedback" id="fb-q4">Silikon lê langs die trapvormige lyn wat metale van nie-metale skei — dit is 'n metalloïed (halfgeleier) wat in rekenaarskyfies gebruik word.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 5</div>
+      <div class="q-text">Af Groep 1 (alkalimetale), watter neiging is korrek?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q5')"><span class="opt-letter">A</span>Ionisasie-energie neem toe</button>
+        <button class="mc-opt" onclick="answer(this,1,false,'q5')"><span class="opt-letter">B</span>Elektronegatiwiteit neem toe</button>
+        <button class="mc-opt" onclick="answer(this,2,true,'q5')"><span class="opt-letter">C</span>Atoomradius neem toe</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q5')"><span class="opt-letter">D</span>Metaalkarakter neem af</button>
+      </div>
+      <div class="feedback" id="fb-q5">Af 'n groep het elke element een meer elektrondop. Die buitenste elektrone is verder van die kern af, so atoomradius neem toe.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 6</div>
+      <div class="q-text">'n Element is in Periode 3, Groep 2. Wat is die lading van die ioon wat dit heel waarskynlik vorm?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q6')"><span class="opt-letter">A</span>1+</button>
+        <button class="mc-opt" onclick="answer(this,1,true,'q6')"><span class="opt-letter">B</span>2+</button>
+        <button class="mc-opt" onclick="answer(this,2,false,'q6')"><span class="opt-letter">C</span>1−</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q6')"><span class="opt-letter">D</span>2−</button>
+      </div>
+      <div class="feedback" id="fb-q6">Groep 2-elemente het 2 valanselektrone, wat hulle verloor om 2+-katione te vorm. Magnesium (Mg, Periode 3, Groep 2) vorm Mg²⁺.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Vraag 7 (Analise)</div>
+      <div class="q-text">Beskou drie elemente: natrium (Na, Periode 3, Groep 1), magnesium (Mg, Periode 3, Groep 2), en kalium (K, Periode 4, Groep 1). In volgorde van GROOTSTE na KLEINSTE atoomradius, watter volgorde is korrek?</div>
+      <div class="mc-options">
+        <button class="mc-opt" onclick="answer(this,0,false,'q7')"><span class="opt-letter">A</span>Mg &gt; Na &gt; K</button>
+        <button class="mc-opt" onclick="answer(this,1,true,'q7')"><span class="opt-letter">B</span>K &gt; Na &gt; Mg</button>
+        <button class="mc-opt" onclick="answer(this,2,false,'q7')"><span class="opt-letter">C</span>Na &gt; K &gt; Mg</button>
+        <button class="mc-opt" onclick="answer(this,3,false,'q7')"><span class="opt-letter">D</span>K &gt; Mg &gt; Na</button>
+      </div>
+      <div class="feedback" id="fb-q7">Dit vereis die kombinering van albei neigings. K is in Periode 4 (4 elektrondoppe) terwyl Na en Mg albei in Periode 3 (3 doppe) is — 'n ekstra dop weeg swaarder as enige groepverskil, dus is K die grootste. As jy Na en Mg vergelyk (dieselfde periode, dieselfde aantal doppe): Mg het een meer proton (Z=12 teenoor Z=11), wat 'n sterker kern-trekkrag op dieselfde buitenste dop gee, dus is Mg kleiner as Na. Oorhoofs: K &gt; Na &gt; Mg.</div>
+    </div>
+
+    <!-- IEB PRACTICE -->
+    <div class="ieb-practice" id="iebPractice">
+
+      <div class="q-card">
+        <div class="q-num">IEB-Vraag 1 <span class="ieb-badge">IEB</span></div>
+        <div class="q-text">Die opeenvolgende ionisasie-energieë (in kJ·mol⁻¹) van 'n onbekende element is: 738, 1451, 7733, 10 543. Tussen watter verwyderings is daar 'n groot sprong, en wat dui dit aan?</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,0,false,'qi1')"><span class="opt-letter">A</span>Tussen die 1ste en 2de — die element het 1 valanselektron</button>
+          <button class="mc-opt" onclick="answer(this,1,true,'qi1')"><span class="opt-letter">B</span>Tussen die 2de en 3de — die element het 2 valanselektrone</button>
+          <button class="mc-opt" onclick="answer(this,2,false,'qi1')"><span class="opt-letter">C</span>Tussen die 3de en 4de — die element het 3 valanselektrone</button>
+          <button class="mc-opt" onclick="answer(this,3,false,'qi1')"><span class="opt-letter">D</span>Daar is geen beduidende sprong nie</button>
+        </div>
+        <div class="feedback" id="fb-qi1">Die groot sprong vind plaas tussen die 2de en 3de ionisasie-energieë (1451 → 7733 kJ·mol⁻¹). Dit beteken die eerste 2 elektrone is maklik uit die buitenste dop verwyder, maar die 3de kom uit 'n binneste dop — wat bevestig dat die element 2 valanselektrone het. Die element is magnesium (Mg, Groep 2).</div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-num">IEB-Vraag 2 <span class="ieb-badge">IEB</span></div>
+        <div class="q-text">Chroom het die elektronkonfigurasie [Ar]3d⁵4s¹ eerder as die verwagte [Ar]3d⁴4s². Die beste verduideliking is:</div>
+        <div class="mc-options">
+          <button class="mc-opt" onclick="answer(this,0,false,'qi2')"><span class="opt-letter">A</span>Chroom is 'n oorgangsmetaal, dus geld die normale reëls nie</button>
+          <button class="mc-opt" onclick="answer(this,1,true,'qi2')"><span class="opt-letter">B</span>'n Half-gevulde d-subdop (3d⁵) verskaf ekstra stabiliteit</button>
+          <button class="mc-opt" onclick="answer(this,2,false,'qi2')"><span class="opt-letter">C</span>Die 4s-orbitaal is hoër in energie as 3d</button>
+          <button class="mc-opt" onclick="answer(this,3,false,'qi2')"><span class="opt-letter">D</span>Chroom verloor een 4s-elektron om Cr⁺ te vorm</button>
+        </div>
+        <div class="feedback" id="fb-qi2">'n Half-gevulde d-subdop (d⁵, een elektron in elk van die vyf d-orbitale) het ekstra stabiliteit weens uitruilenergie. Dit veroorsaak dat Cr een 4s-elektron na die 3d-vlak "bevorder". Dieselfde geld vir Cu ([Ar]3d¹⁰4s¹), wat 'n volgevulde d-subdop verkies.</div>
+      </div>
+
+    </div><!-- end ieb-practice -->
+
+  </div><!-- end practice-wrap -->
+</div>
+
+<!-- ===================== WORKBOOK TAB ===================== -->
+<div class="tab-panel" id="tab-workbook">
+  <div class="wb-wrap">
+    <button class="print-btn" onclick="window.print()">🖨️ Druk Werkboek</button>
+    <div class="wb-intro">Antwoord in volledige sinne. Wys alle berekeninge waar van toepassing.</div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 1</div>
+      <div class="wb-qtext">Verduidelik waarom die atoomradius oor 'n periode van links na regs afneem. Gebruik die terme "kernlading", "elektrondoppe" en "afskerming" in jou antwoord.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 2</div>
+      <div class="wb-qtext">'n Element het die elektronkonfigurasie 2,8,7. (a) In watter periode en groep is dit? (b) Watter tipe ioon sal dit vorm? (c) Noem die element en gee sy simbool.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 3</div>
+      <div class="wb-qtext">Vergelyk die eienskappe van metale, nie-metale en metalloïede. Sluit ten minste drie eienskappe vir elke kategorie in.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 4</div>
+      <div class="wb-qtext">Verduidelik die verskil tussen ionisasie-energie en elektronegatiwiteit. Hoe verander hierdie neigings oor Periode 2?</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 5</div>
+      <div class="wb-qtext">Deur die konsep van elektronkonfigurasie te gebruik, verduidelik waarom elemente in dieselfde groep soortgelyke chemiese eienskappe het. Gee natrium (Na) en kalium (K) as voorbeelde.</div>
+    </div>
+
+    <div class="wb-q">
+      <div class="wb-qnum">Vraag 6 — Lees van Eerste-Ionisasie-Energiedata</div>
+      <div class="wb-qtext">Die tabel hieronder gee die eerste ionisasie-energie van elke element in Periode 3:
+      <table class="symbols-table" style="margin:12px 0 14px">
+        <thead><tr><th>Element</th><th>Na</th><th>Mg</th><th>Al</th><th>Si</th><th>P</th><th>S</th><th>Cl</th><th>Ar</th></tr></thead>
+        <tbody><tr><td>1ste IE (kJ·mol⁻¹)</td><td>496</td><td>738</td><td>577</td><td>786</td><td>1012</td><td>1000</td><td>1251</td><td>1521</td></tr></tbody>
+      </table>
+      (a) Beskryf die algehele neiging in eerste ionisasie-energie van Na tot Ar, deur waardes uit die tabel te gebruik.<br>
+      (b) Deur die konsepte van kernlading en elektrondoppe te gebruik, verduidelik waarom hierdie algehele neiging voorkom.<br>
+      (c) Twee elemente in die tabel breek die gelykmatige toenemende patroon (hul IE is laer as die element voor hulle). Identifiseer hierdie twee elemente uit die data.<br>
+      (d) Kalium (K) is die eerste element van Periode 4. Sou jy verwag dat sy eerste ionisasie-energie hoër of laer as natrium s'n (496 kJ·mol⁻¹) sal wees? Noem die neiging (oor 'n periode of af 'n groep) wat hier van toepassing is, en verduidelik jou redenasie.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+/* ---- Curriculum toggle ---- */
+function setCurriculum(mode){
+  document.getElementById('btn-nsc').classList.toggle('active', mode==='nsc');
+  document.getElementById('btn-ieb').classList.toggle('active', mode==='ieb');
+  document.getElementById('curr-label').textContent = mode==='nsc' ? 'Nasionale Senior Sertifikaat' : 'Independent Examinations Board';
+  document.body.classList.toggle('ieb-mode', mode==='ieb');
+  updateScore();
+}
+
+/* ---- Tab switching ---- */
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id === 'explore') initSim();
+}
+
+/* ---- Practice logic ---- */
+const answered = {};
+
+function answer(btn, idx, correct, qid){
+  if(answered[qid]) return;
+  answered[qid] = correct ? 1 : 0;
+  const card = btn.closest('.q-card');
+  const opts = card.querySelectorAll('.mc-opt');
+  opts.forEach(o => o.disabled = true);
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if(!correct){
+    // highlight the correct one
+    opts.forEach(o => {
+      if(o.onclick && o.onclick.toString().includes('true')) o.classList.add('correct');
+    });
+  }
+  const fb = document.getElementById('fb-' + qid);
+  if(fb){
+    fb.classList.add('show', correct ? 'ok' : 'bad');
+  }
+  updateScore();
+}
+
+function updateScore(){
+  const isIEB = document.body.classList.contains('ieb-mode');
+  const nscKeys = ['q1','q2','q3','q4','q5','q6','q7'];
+  const iebKeys = ['qi1','qi2'];
+  const allKeys = isIEB ? [...nscKeys, ...iebKeys] : nscKeys;
+  const total = allKeys.length;
+  const done = allKeys.filter(k => k in answered).length;
+  const correct = allKeys.filter(k => answered[k] === 1).length;
+
+  const banner = document.getElementById('scoreBanner');
+  const scoreVal = document.getElementById('scoreVal');
+  if(done === total){
+    scoreVal.textContent = correct + ' / ' + total;
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+/* ---- Canvas Periodic Table ---- */
+const PT_DATA = [
+  // period 1
+  {sym:'H',  name:'Hydrogen',   nameAf:'Waterstof',   Z:1,  A:1,  period:1, group:1,  type:'nonmetal',  config:'1',         groupName:'—',                  ion:'H⁺ of H⁻'},
+  {sym:'He', name:'Helium',     nameAf:'Helium',       Z:2,  A:4,  period:1, group:18, type:'noble',     config:'2',         groupName:'Noble Gases',        ion:'Geen'},
+  // period 2
+  {sym:'Li', name:'Lithium',    nameAf:'Litium',       Z:3,  A:7,  period:2, group:1,  type:'metal',     config:'2,1',       groupName:'Alkali Metals',      ion:'Li⁺'},
+  {sym:'Be', name:'Beryllium',  nameAf:'Berillium',    Z:4,  A:9,  period:2, group:2,  type:'metal',     config:'2,2',       groupName:'Alk. Earth Metals',  ion:'Be²⁺'},
+  {sym:'B',  name:'Boron',      nameAf:'Boor',         Z:5,  A:11, period:2, group:13, type:'metalloid', config:'2,3',       groupName:'—',                  ion:'B³⁺'},
+  {sym:'C',  name:'Carbon',     nameAf:'Koolstof',     Z:6,  A:12, period:2, group:14, type:'nonmetal',  config:'2,4',       groupName:'—',                  ion:'Gewoonlik geen'},
+  {sym:'N',  name:'Nitrogen',   nameAf:'Stikstof',     Z:7,  A:14, period:2, group:15, type:'nonmetal',  config:'2,5',       groupName:'—',                  ion:'N³⁻'},
+  {sym:'O',  name:'Oxygen',     nameAf:'Suurstof',     Z:8,  A:16, period:2, group:16, type:'nonmetal',  config:'2,6',       groupName:'—',                  ion:'O²⁻'},
+  {sym:'F',  name:'Fluorine',   nameAf:'Fluoor',       Z:9,  A:19, period:2, group:17, type:'nonmetal',  config:'2,7',       groupName:'Halogens',           ion:'F⁻'},
+  {sym:'Ne', name:'Neon',       nameAf:'Neon',         Z:10, A:20, period:2, group:18, type:'noble',     config:'2,8',       groupName:'Noble Gases',        ion:'Geen'},
+  // period 3
+  {sym:'Na', name:'Sodium',     nameAf:'Natrium',      Z:11, A:23, period:3, group:1,  type:'metal',     config:'2,8,1',     groupName:'Alkali Metals',      ion:'Na⁺'},
+  {sym:'Mg', name:'Magnesium',  nameAf:'Magnesium',    Z:12, A:24, period:3, group:2,  type:'metal',     config:'2,8,2',     groupName:'Alk. Earth Metals',  ion:'Mg²⁺'},
+  {sym:'Al', name:'Aluminium',  nameAf:'Aluminium',    Z:13, A:27, period:3, group:13, type:'metal',     config:'2,8,3',     groupName:'—',                  ion:'Al³⁺'},
+  {sym:'Si', name:'Silicon',    nameAf:'Silikon',      Z:14, A:28, period:3, group:14, type:'metalloid', config:'2,8,4',     groupName:'—',                  ion:'—'},
+  {sym:'P',  name:'Phosphorus', nameAf:'Fosfor',       Z:15, A:31, period:3, group:15, type:'nonmetal',  config:'2,8,5',     groupName:'—',                  ion:'P³⁻'},
+  {sym:'S',  name:'Sulfur',     nameAf:'Swael',        Z:16, A:32, period:3, group:16, type:'nonmetal',  config:'2,8,6',     groupName:'—',                  ion:'S²⁻'},
+  {sym:'Cl', name:'Chlorine',   nameAf:'Chloor',       Z:17, A:35, period:3, group:17, type:'nonmetal',  config:'2,8,7',     groupName:'Halogens',           ion:'Cl⁻'},
+  {sym:'Ar', name:'Argon',      nameAf:'Argon',        Z:18, A:40, period:3, group:18, type:'noble',     config:'2,8,8',     groupName:'Noble Gases',        ion:'Geen'},
+  // period 4
+  {sym:'K',  name:'Potassium',  nameAf:'Kalium',       Z:19, A:39, period:4, group:1,  type:'metal',     config:'2,8,8,1',   groupName:'Alkali Metals',      ion:'K⁺'},
+  {sym:'Ca', name:'Calcium',    nameAf:'Kalsium',      Z:20, A:40, period:4, group:2,  type:'metal',     config:'2,8,8,2',   groupName:'Alk. Earth Metals',  ion:'Ca²⁺'},
+  {sym:'Sc', name:'Scandium',   nameAf:'Skandium',     Z:21, A:45, period:4, group:3,  type:'metal',     config:'2,8,9,2',   groupName:'Transition Metals',  ion:'Sc³⁺'},
+  {sym:'Ti', name:'Titanium',   nameAf:'Titaan',       Z:22, A:48, period:4, group:4,  type:'metal',     config:'2,8,10,2',  groupName:'Transition Metals',  ion:'Ti²⁺/Ti⁴⁺'},
+  {sym:'V',  name:'Vanadium',   nameAf:'Vanadium',     Z:23, A:51, period:4, group:5,  type:'metal',     config:'2,8,11,2',  groupName:'Transition Metals',  ion:'V²⁺–V⁵⁺'},
+  {sym:'Cr', name:'Chromium',   nameAf:'Chroom',       Z:24, A:52, period:4, group:6,  type:'metal',     config:'2,8,13,1',  groupName:'Transition Metals',  ion:'Cr²⁺/Cr³⁺'},
+  {sym:'Mn', name:'Manganese',  nameAf:'Mangaan',      Z:25, A:55, period:4, group:7,  type:'metal',     config:'2,8,13,2',  groupName:'Transition Metals',  ion:'Mn²⁺'},
+  {sym:'Fe', name:'Iron',       nameAf:'Yster',        Z:26, A:56, period:4, group:8,  type:'metal',     config:'2,8,14,2',  groupName:'Transition Metals',  ion:'Fe²⁺/Fe³⁺'},
+  {sym:'Co', name:'Cobalt',     nameAf:'Kobalt',       Z:27, A:59, period:4, group:9,  type:'metal',     config:'2,8,15,2',  groupName:'Transition Metals',  ion:'Co²⁺'},
+  {sym:'Ni', name:'Nickel',     nameAf:'Nikkel',       Z:28, A:58, period:4, group:10, type:'metal',     config:'2,8,16,2',  groupName:'Transition Metals',  ion:'Ni²⁺'},
+  {sym:'Cu', name:'Copper',     nameAf:'Koper',        Z:29, A:63, period:4, group:11, type:'metal',     config:'2,8,18,1',  groupName:'Transition Metals',  ion:'Cu⁺/Cu²⁺'},
+  {sym:'Zn', name:'Zinc',       nameAf:'Sink',         Z:30, A:65, period:4, group:12, type:'metal',     config:'2,8,18,2',  groupName:'Transition Metals',  ion:'Zn²⁺'},
+  {sym:'Ga', name:'Gallium',    nameAf:'Gallium',      Z:31, A:70, period:4, group:13, type:'metal',     config:'2,8,18,3',  groupName:'—',                  ion:'Ga³⁺'},
+  {sym:'Ge', name:'Germanium',  nameAf:'Germanium',    Z:32, A:73, period:4, group:14, type:'metalloid', config:'2,8,18,4',  groupName:'—',                  ion:'Ge⁴⁺'},
+  {sym:'As', name:'Arsenic',    nameAf:'Arseen',       Z:33, A:75, period:4, group:15, type:'metalloid', config:'2,8,18,5',  groupName:'—',                  ion:'As³⁻'},
+  {sym:'Se', name:'Selenium',   nameAf:'Seleen',       Z:34, A:79, period:4, group:16, type:'nonmetal',  config:'2,8,18,6',  groupName:'—',                  ion:'Se²⁻'},
+  {sym:'Br', name:'Bromine',    nameAf:'Broom',        Z:35, A:80, period:4, group:17, type:'nonmetal',  config:'2,8,18,7',  groupName:'Halogens',           ion:'Br⁻'},
+  {sym:'Kr', name:'Krypton',    nameAf:'Kripton',      Z:36, A:84, period:4, group:18, type:'noble',     config:'2,8,18,8',  groupName:'Noble Gases',        ion:'Geen'},
+];
+
+let currentMode = 'browse';
+let hoveredElem = null;
+let simInited = false;
+
+function groupLabel(gn){
+  const map = {
+    'Alkali Metals': 'Alkalimetale',
+    'Alk. Earth Metals': 'Aardalkalimetale',
+    'Transition Metals': 'Oorgangsmetale',
+    'Halogens': 'Halogene',
+    'Noble Gases': 'Edelgasse'
+  };
+  return map[gn] || gn;
+}
+
+function typeLabel(t){
+  if(t === 'metal') return 'Metaal';
+  if(t === 'nonmetal') return 'Nie-metaal';
+  if(t === 'metalloid') return 'Metalloïed';
+  if(t === 'noble') return 'Edelgas';
+  return t;
+}
+
+function setMode(mode, btn){
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const hint = document.getElementById('modeHint');
+  if(mode === 'browse'){
+    hint.textContent = 'Klik of beweeg oor enige elementblokkie om besonderhede te sien.';
+  } else {
+    hint.textContent = 'Kleurintensiteit dui relatiewe atoomradius aan. Pyle dui neigingsrigtings aan.';
+  }
+  drawPT();
+}
+
+function typeColor(el, alpha){
+  if(el.type === 'noble')                      return `rgba(168,85,247,${alpha})`;
+  if(el.type === 'metalloid')                  return `rgba(20,184,166,${alpha})`;
+  if(el.type === 'nonmetal')                   return `rgba(96,165,250,${alpha})`;
+  if(el.groupName === 'Alkali Metals')         return `rgba(239,68,68,${alpha})`;
+  if(el.groupName === 'Alk. Earth Metals')     return `rgba(251,146,60,${alpha})`;
+  if(el.groupName === 'Transition Metals')     return `rgba(251,191,36,${alpha})`;
+  return `rgba(163,230,53,${alpha})`;
+}
+
+function initSim(){
+  if(simInited) return;
+  simInited = true;
+
+  const canvas = document.getElementById('ptCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.parentElement.clientWidth - 32;
+  const cssH = Math.round(cssW / 18) * 5;
+  canvas.style.width = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  canvas.width = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssH * dpr);
+
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+
+  canvas.addEventListener('mousemove', function(e){
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const cw = cssW;
+    const ch = cssH;
+    const cellW = cw / 18;
+    const cellH = ch / 5;
+    hoveredElem = null;
+    PT_DATA.forEach(el => {
+      const x = (el.group - 1) * cellW;
+      const y = el.period * cellH;
+      if(mx >= x && mx < x + cellW && my >= y && my < y + cellH){
+        hoveredElem = el;
+      }
+    });
+    if(hoveredElem){
+      document.getElementById('elemName').textContent = hoveredElem.nameAf;
+      document.getElementById('elemSym').textContent = hoveredElem.sym;
+      document.getElementById('elemDetail').innerHTML =
+        'Z = ' + hoveredElem.Z + ' &nbsp;|&nbsp; A = ' + hoveredElem.A + '<br>' +
+        'Periode ' + hoveredElem.period + ' · Groep ' + hoveredElem.group + '<br>' +
+        'Konfig: ' + hoveredElem.config + '<br>' +
+        'Tipe: ' + typeLabel(hoveredElem.type) + '<br>' +
+        (hoveredElem.groupName !== '—' ? 'Familie: ' + groupLabel(hoveredElem.groupName) + '<br>' : '') +
+        'Ioon: ' + hoveredElem.ion;
+    } else {
+      document.getElementById('elemName').textContent = '—';
+      document.getElementById('elemSym').textContent = '?';
+      document.getElementById('elemDetail').textContent = "Beweeg oor 'n element om sy besonderhede te sien.";
+    }
+    drawPT();
+  });
+
+  canvas.addEventListener('mouseleave', function(){
+    hoveredElem = null;
+    document.getElementById('elemName').textContent = '—';
+    document.getElementById('elemSym').textContent = '?';
+    document.getElementById('elemDetail').textContent = "Beweeg oor 'n element om besonderhede te sien · klik om 'n foto te laai.";
+    drawPT();
+  });
+
+  canvas.addEventListener('click', function(){
+    if(hoveredElem) fetchElemImage(hoveredElem.name, hoveredElem.nameAf);
+  });
+
+  function fetchElemImage(name, displayName) {
+    const wrap = document.getElementById('elemImg');
+    const hint = document.getElementById('elemImgHint');
+    wrap.querySelectorAll('img').forEach(i => i.remove());
+    hint.style.display = 'block';
+    hint.textContent = 'laai…';
+    fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`)
+      .then(r => r.json())
+      .then(data => {
+        if(data.thumbnail && data.thumbnail.source) {
+          hint.style.display = 'none';
+          const img = document.createElement('img');
+          img.src = data.thumbnail.source;
+          img.alt = displayName || name;
+          img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+          img.onerror = () => { hint.style.display = 'block'; hint.textContent = '—'; };
+          wrap.appendChild(img);
+        } else {
+          hint.textContent = '—';
+        }
+      })
+      .catch(() => { hint.textContent = '—'; });
+  }
+
+  drawPT();
+}
+
+function drawPT(){
+  const canvas = document.getElementById('ptCanvas');
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = parseFloat(canvas.style.width) || canvas.width / dpr;
+  const cssH = parseFloat(canvas.style.height) || canvas.height / dpr;
+  const ctx = canvas.getContext('2d');
+
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr, dpr);
+
+  // clear
+  ctx.clearRect(0, 0, cssW, cssH);
+  ctx.fillStyle = '#040710';
+  ctx.fillRect(0, 0, cssW, cssH);
+
+  const cellW = cssW / 18;
+  const cellH = cssH / 5;
+  const pad = 1.5;
+
+  // Draw group number headers (row 0)
+  ctx.font = '600 ' + Math.max(7, Math.floor(cellW * 0.38)) + 'px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for(let g = 1; g <= 18; g++){
+    const x = (g - 1) * cellW;
+    ctx.fillStyle = 'rgba(210,218,245,0.30)';
+    ctx.fillText(String(g), x + cellW/2, cellH/2);
+  }
+
+  if(currentMode === 'browse'){
+    // Draw elements
+    PT_DATA.forEach(el => {
+      const x = (el.group - 1) * cellW;
+      const y = el.period * cellH;
+      const isHovered = hoveredElem && hoveredElem.Z === el.Z;
+      const alpha = isHovered ? 0.70 : 0.30;
+
+      // cell background
+      ctx.fillStyle = typeColor(el, alpha);
+      ctx.beginPath();
+      ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 4);
+      ctx.fill();
+
+      if(isHovered){
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 4);
+        ctx.stroke();
+      }
+
+      // atomic number — small, top-left
+      const znSize = Math.max(5, Math.floor(cellW * 0.26));
+      ctx.font = `600 ${znSize}px "JetBrains Mono", monospace`;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = isHovered ? 'rgba(255,255,255,0.70)' : 'rgba(210,218,245,0.42)';
+      ctx.fillText(String(el.Z), x + pad + 2, y + pad + 2);
+
+      // symbol — centered, slightly below mid to balance with Z number
+      const symSize = Math.max(8, Math.floor(cellW * 0.40));
+      ctx.font = '700 ' + symSize + 'px "Cabinet Grotesk", sans-serif';
+      ctx.fillStyle = isHovered ? '#fff' : 'rgba(228,232,248,0.88)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(el.sym, x + cellW/2, y + cellH * 0.60);
+    });
+  } else {
+    // TRENDS MODE
+    // Atomic radius: largest at bottom-left (K, Ca), smallest at top-right (He, F)
+    // Map: larger radius = more blue tint. radius is roughly proportional to (period / group_position)
+    // We'll use a simple heuristic: radius ~ period * 40 - group * 2 (arbitrary scale)
+    PT_DATA.forEach(el => {
+      const x = (el.group - 1) * cellW;
+      const y = el.period * cellH;
+
+      // Radius proxy: higher period = larger, higher group (for main group) = smaller
+      // For transition metals, group 3-12, treat as middle
+      let groupPos = el.group;
+      if(groupPos >= 3 && groupPos <= 12) groupPos = 7; // middle
+      const radiusProxy = el.period * 3 - groupPos * 0.15; // rough scale
+      // Normalise 0-1
+      const rMin = 1 * 3 - 18 * 0.15; // period1, group18 ~ 0.3
+      const rMax = 4 * 3 - 1 * 0.15;  // period4, group1 ~ 11.85
+      const t = Math.max(0, Math.min(1, (radiusProxy - rMin) / (rMax - rMin)));
+
+      // Color: large radius = blue-ish, small radius = purple-ish
+      const r = Math.round(96 + (192-96) * (1-t));
+      const g2 = Math.round(165 + (132-165) * (1-t));
+      const b = Math.round(250 + (252-250) * (1-t));
+      ctx.fillStyle = `rgba(${r},${g2},${b},${0.25 + t * 0.45})`;
+      ctx.beginPath();
+      ctx.roundRect(x + pad, y + pad, cellW - pad*2, cellH - pad*2, 3);
+      ctx.fill();
+
+      // symbol
+      const symSize = Math.max(7, Math.floor(cellW * 0.40));
+      ctx.font = '700 ' + symSize + 'px "Cabinet Grotesk", sans-serif';
+      ctx.fillStyle = 'rgba(228,232,248,0.80)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(el.sym, x + cellW/2, y + cellH/2);
+    });
+
+    // Draw trend arrows
+    ctx.save();
+
+    // Arrow across top: IE and EN increase left to right
+    const arrowY = cellH * 0.5;
+    const arrowXstart = cellW * 0.5;
+    const arrowXend = cellW * 17.5;
+    ctx.strokeStyle = 'rgba(251,191,36,0.7)';
+    ctx.fillStyle = 'rgba(251,191,36,0.7)';
+    ctx.lineWidth = 1.5;
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(arrowXstart, arrowY);
+    ctx.lineTo(arrowXend - 6, arrowY);
+    ctx.stroke();
+    // Arrowhead
+    ctx.beginPath();
+    ctx.moveTo(arrowXend, arrowY);
+    ctx.lineTo(arrowXend - 7, arrowY - 4);
+    ctx.lineTo(arrowXend - 7, arrowY + 4);
+    ctx.closePath();
+    ctx.fill();
+    // Label
+    ctx.font = '600 9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('IE, EN neem toe →', cssW / 2, arrowY - 2);
+
+    // Arrow down left side: radius and metallic increase going down
+    const arrowX = cellW * 0.5;
+    const arrowYtop = cellH * 1.5;
+    const arrowYbot = cellH * 4.5;
+    ctx.strokeStyle = 'rgba(96,165,250,0.7)';
+    ctx.fillStyle = 'rgba(96,165,250,0.7)';
+    ctx.beginPath();
+    ctx.moveTo(arrowX, arrowYtop);
+    ctx.lineTo(arrowX, arrowYbot - 6);
+    ctx.stroke();
+    // Arrowhead
+    ctx.beginPath();
+    ctx.moveTo(arrowX, arrowYbot);
+    ctx.lineTo(arrowX - 4, arrowYbot - 7);
+    ctx.lineTo(arrowX + 4, arrowYbot - 7);
+    ctx.closePath();
+    ctx.fill();
+    // Label (rotated)
+    ctx.save();
+    ctx.translate(arrowX - 10, (arrowYtop + arrowYbot) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.font = '600 8px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('↓ Radius, metaalkarakter neem toe', 0, 0);
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  // Period labels on left
+  ctx.font = '600 9px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(210,218,245,0.25)';
+  for(let p = 1; p <= 4; p++){
+    ctx.fillText('P' + p, cellW * 0.9 - 2, p * cellH + cellH/2);
+  }
+}
+
+// Polyfill roundRect if needed
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){
+    if(w < 2*r) r = w/2;
+    if(h < 2*r) r = h/2;
+    this.moveTo(x+r, y);
+    this.arcTo(x+w, y, x+w, y+h, r);
+    this.arcTo(x+w, y+h, x, y+h, r);
+    this.arcTo(x, y+h, x, y, r);
+    this.arcTo(x, y, x+w, y, r);
+    this.closePath();
+    return this;
+  };
+}
+</script>
+
+<script>const _st=window.switchTab;window.switchTab=function(id,btn){_st(id,btn);if(id==='explore')setTimeout(()=>window.dispatchEvent(new Event('resize')),60);}</script>
+  <script>
+(function(){
+  if (!window.MLLang) return;
+  var isAf = /\.af\.html$/.test(location.pathname);
+  MLLang.setLang(isAf ? 'af' : 'en');
+  MLLang.mount('mlLangToggle', {
+    onChange: function(next){
+      var target = next === 'af'
+        ? location.pathname.replace(/\.html$/, '.af.html')
+        : location.pathname.replace(/\.af\.html$/, '.html');
+      location.href = target;
+    }
+  });
+})();
+</script>
+  <script src="/contact-button.js" defer></script>
+</body>
+</html>
